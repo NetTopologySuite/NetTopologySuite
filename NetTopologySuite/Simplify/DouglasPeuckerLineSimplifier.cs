@@ -16,7 +16,7 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         public static Coordinate[] Simplify(Coordinate[] pts, double distanceTolerance)
         {
-            DouglasPeuckerLineSimplifier simp = new DouglasPeuckerLineSimplifier(pts);
+            var simp = new DouglasPeuckerLineSimplifier(pts);
             simp.DistanceTolerance = distanceTolerance;
             return simp.Simplify();
         }
@@ -41,11 +41,11 @@ namespace NetTopologySuite.Simplify
         public Coordinate[] Simplify()
         {
             _usePt = new bool[_pts.Length];
-            for (int i = 0; i < _pts.Length; i++)
+            for (var i = 0; i < _pts.Length; i++)
                 _usePt[i] = true;
             SimplifySection(0, _pts.Length - 1);
-            CoordinateList coordList = new CoordinateList();
-            for (int i = 0; i < _pts.Length; i++)
+            var coordList = new CoordinateList();
+            for (var i = 0; i < _pts.Length; i++)
                 if (_usePt[i])
                     coordList.Add(new Coordinate(_pts[i]));
             return coordList.ToCoordinateArray();
@@ -57,11 +57,11 @@ namespace NetTopologySuite.Simplify
                 return;
             _seg.P0 = _pts[i];
             _seg.P1 = _pts[j];
-            double maxDistance = -1.0;
-            int maxIndex = i;
-            for (int k = i + 1; k < j; k++)
+            var maxDistance = -1.0;
+            var maxIndex = i;
+            for (var k = i + 1; k < j; k++)
             {
-                double distance = _seg.Distance(_pts[k]);
+                var distance = _seg.Distance(_pts[k]);
                 if (distance > maxDistance)
                 {
                     maxDistance = distance;
@@ -69,7 +69,7 @@ namespace NetTopologySuite.Simplify
                 }
             }
             if (maxDistance <= DistanceTolerance)
-                for (int k = i + 1; k < j; k++)
+                for (var k = i + 1; k < j; k++)
                     _usePt[k] = false;
             else
             {

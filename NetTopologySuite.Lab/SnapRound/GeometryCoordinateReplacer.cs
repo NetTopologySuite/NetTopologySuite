@@ -16,9 +16,9 @@ namespace NetTopologySuite.SnapRound
         {
             if (_geometryLinesMap.ContainsKey(geometry))
             {
-                Coordinate[] pts = _geometryLinesMap[geometry];
+                var pts = _geometryLinesMap[geometry];
                 // Assert: pts should always have length > 0
-                bool isValidPts = IsValidSize(pts, geometry);
+                var isValidPts = IsValidSize(pts, geometry);
                 if (!isValidPts) return null;
                 return targetFactory.CoordinateSequenceFactory.Create(pts);
             }
@@ -30,7 +30,7 @@ namespace NetTopologySuite.SnapRound
         {
             if (pts.Length == 0)
                 return true;
-            int minSize = MinimumNonEmptyCoordinatesSize(geom);
+            var minSize = MinimumNonEmptyCoordinatesSize(geom);
             if (pts.Length < minSize)
                 return false;
             return true;

@@ -76,7 +76,7 @@ namespace Open.Topology.TestRunner.Functions
         private static IGeometry CreateS(IGeometry g)
         {
             var gf = FunctionsUtil.GetFactoryOrDefault(g);
-            double centreX = WIDTH - S_RADIUS;
+            var centreX = WIDTH - S_RADIUS;
             var top = new[]
                           {
                               new Coordinate(WIDTH, HEIGHT),

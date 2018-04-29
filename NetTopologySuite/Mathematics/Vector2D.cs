@@ -240,8 +240,8 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The distance between the vectors</returns>
         public double Distance(Vector2D v)
         {
-            double delx = v.X - X;
-            double dely = v.Y - Y;
+            var delx = v.X - X;
+            var dely = v.Y - Y;
             return System.Math.Sqrt(delx * delx + dely * dely);
         }
         /// <summary>
@@ -294,8 +294,8 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The rotated vector</returns>
         public Vector2D Rotate(double angle)
         {
-            double cos = System.Math.Cos(angle);
-            double sin = System.Math.Sin(angle);
+            var cos = System.Math.Cos(angle);
+            var sin = System.Math.Sin(angle);
             return Create(
                     X * cos - Y * sin,
                     X * sin + Y * cos

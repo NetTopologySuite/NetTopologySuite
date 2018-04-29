@@ -40,16 +40,16 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance
         private static double TOLERANCE = 0.00001;
         private void RunTest(String wkt1, String wkt2, double expectedDistance)
         {
-            IGeometry g1 = GeometryUtils.ReadWKT(wkt1);
-            IGeometry g2 = GeometryUtils.ReadWKT(wkt2);
-            double distance = DiscreteHausdorffDistance.Distance(g1, g2);
+            var g1 = GeometryUtils.ReadWKT(wkt1);
+            var g2 = GeometryUtils.ReadWKT(wkt2);
+            var distance = DiscreteHausdorffDistance.Distance(g1, g2);
             Assert.AreEqual(distance, expectedDistance, TOLERANCE);
         }
         private void RunTest(String wkt1, String wkt2, double densifyFrac, double expectedDistance)
         {
-            IGeometry g1 = GeometryUtils.ReadWKT(wkt1);
-            IGeometry g2 = GeometryUtils.ReadWKT(wkt2);
-            double distance = DiscreteHausdorffDistance.Distance(g1, g2, densifyFrac);
+            var g1 = GeometryUtils.ReadWKT(wkt1);
+            var g2 = GeometryUtils.ReadWKT(wkt2);
+            var distance = DiscreteHausdorffDistance.Distance(g1, g2, densifyFrac);
             Assert.AreEqual(distance, expectedDistance, TOLERANCE);
         }
     }

@@ -67,7 +67,7 @@ namespace NetTopologySuite.Algorithm.Distance
                 Initialize(p0, p1);
                 return;
             }
-            double dist = p0.Distance(p1);
+            var dist = p0.Distance(p1);
             if (dist > Distance)
                 Initialize(p0, p1, dist);
         }
@@ -82,7 +82,7 @@ namespace NetTopologySuite.Algorithm.Distance
                 Initialize(p0, p1);
                 return;
             }
-            double dist = p0.Distance(p1);
+            var dist = p0.Distance(p1);
             if (dist < Distance)
                 Initialize(p0, p1, dist);
         }

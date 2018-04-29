@@ -41,19 +41,19 @@ namespace NetTopologySuite.Densify
         {
             var seg = new LineSegment();
             var coordList = new CoordinateList();
-            for (int i = 0; i < pts.Length - 1; i++)
+            for (var i = 0; i < pts.Length - 1; i++)
             {
                 seg.P0 = pts[i];
                 seg.P1 = pts[i + 1];
                 coordList.Add(seg.P0, false);
-                double len = seg.Length;
-                int densifiedSegCount = (int) (len/distanceTolerance) + 1;
+                var len = seg.Length;
+                var densifiedSegCount = (int) (len/distanceTolerance) + 1;
                 if (densifiedSegCount > 1)
                 {
-                    double densifiedSegLen = len/densifiedSegCount;
-                    for (int j = 1; j < densifiedSegCount; j++)
+                    var densifiedSegLen = len/densifiedSegCount;
+                    for (var j = 1; j < densifiedSegCount; j++)
                     {
-                        double segFract = (j*densifiedSegLen)/len;
+                        var segFract = (j*densifiedSegLen)/len;
                         var p = seg.PointAlong(segFract);
                         precModel.MakePrecise(p);
                         coordList.Add(p, false);

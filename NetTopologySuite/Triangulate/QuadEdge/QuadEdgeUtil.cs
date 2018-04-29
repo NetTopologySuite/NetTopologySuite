@@ -12,7 +12,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public static IList<QuadEdge> FindEdgesIncidentOnOrigin(QuadEdge start)
         {
             var incEdge = new List<QuadEdge>();
-            QuadEdge qe = start;
+            var qe = start;
             do
             {
                 incEdge.Add(qe);

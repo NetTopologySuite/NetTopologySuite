@@ -19,7 +19,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// or -1 if no subquad wholly contains the envelope</returns>
         public static int GetSubnodeIndex(Envelope env, double centreX, double centreY)
         {
-            int subnodeIndex = -1;
+            var subnodeIndex = -1;
             if (env.MinX >= centreX)
             {
                 if (env.MinY >= centreY)
@@ -87,8 +87,8 @@ namespace NetTopologySuite.Index.Quadtree
             // use envelope to restrict nodes scanned
             if (!IsSearchMatch(itemEnv))
                 return false;
-            bool found = false;
-            for (int i = 0; i < 4; i++)
+            var found = false;
+            for (var i = 0; i < 4; i++)
             {
                 if (Subnode[i] != null)
                 {
@@ -124,7 +124,7 @@ namespace NetTopologySuite.Index.Quadtree
         {
             get
             {
-                for (int i = 0; i < 4; i++)
+                for (var i = 0; i < 4; i++)
                 {
                     if (Subnode[i] != null)
                         return true;
@@ -144,7 +144,7 @@ namespace NetTopologySuite.Index.Quadtree
                     isEmpty = false;
                 else
                 {
-                    for (int i = 0; i < 4; i++)
+                    for (var i = 0; i < 4; i++)
                         if (Subnode[i] != null)
                             if (!Subnode[i].IsEmpty)
                                 isEmpty = false;
@@ -162,9 +162,9 @@ namespace NetTopologySuite.Index.Quadtree
             // this node may have items as well as subnodes (since items may not
             // be wholely contained in any single subnode
             // resultItems.addAll(this.items);
-            foreach (T o in _items)
+            foreach (var o in _items)
                 resultItems.Add(o);
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
                 if (Subnode[i] != null)
                     Subnode[i].AddAllItems(ref resultItems);
             return resultItems;
@@ -186,9 +186,9 @@ namespace NetTopologySuite.Index.Quadtree
                 return;
             // this node may have items as well as subnodes (since items may not
             // be wholely contained in any single subnode
-            foreach (T o in _items)
+            foreach (var o in _items)
                 resultItems.Add(o);
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
                 if (Subnode[i] != null)
                     Subnode[i].AddAllItemsFromOverlapping(searchEnv, ref resultItems);
         }
@@ -204,7 +204,7 @@ namespace NetTopologySuite.Index.Quadtree
             // this node may have items as well as subnodes (since items may not
             // be wholely contained in any single subnode
             VisitItems(searchEnv, visitor);
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
                 if (Subnode[i] != null)
                     Subnode[i].Visit(searchEnv, visitor);
         }
@@ -226,12 +226,12 @@ namespace NetTopologySuite.Index.Quadtree
         {
             get
             {
-                int maxSubDepth = 0;
-                for (int i = 0; i < 4; i++)
+                var maxSubDepth = 0;
+                for (var i = 0; i < 4; i++)
                 {
                     if (Subnode[i] != null)
                     {
-                        int sqd = Subnode[i].Depth;
+                        var sqd = Subnode[i].Depth;
                         if (sqd > maxSubDepth)
                             maxSubDepth = sqd;
                     }
@@ -246,8 +246,8 @@ namespace NetTopologySuite.Index.Quadtree
         {
             get
             {
-                int subSize = 0;
-                for (int i = 0; i < 4; i++)
+                var subSize = 0;
+                for (var i = 0; i < 4; i++)
                     if (Subnode[i] != null)
                         subSize += Subnode[i].Count;
                 return subSize + _items.Count;
@@ -260,8 +260,8 @@ namespace NetTopologySuite.Index.Quadtree
         {
             get
             {
-                int subSize = 0;
-                for (int i = 0; i < 4; i++)
+                var subSize = 0;
+                for (var i = 0; i < 4; i++)
                     if (Subnode[i] != null)
                         subSize += Subnode[i].Count;
                 return subSize + 1;

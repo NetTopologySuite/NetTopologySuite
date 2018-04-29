@@ -16,7 +16,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         public STRtreeDemo()
         {
             var envelopes = SourceData();
-            TestTree t = new TestTree(NODE_CAPACITY);
+            var t = new TestTree(NODE_CAPACITY);
             InitTree(t, envelopes);
             PrintSourceData(envelopes);
             PrintLevels(t);
@@ -54,7 +54,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         {
             Console.WriteLine("============ Source Data ============\n");
             Console.Write("GEOMETRYCOLLECTION(");
-            bool first = true;
+            var first = true;
             foreach (var e in sourceEnvelopes)
             {
                 IGeometry g = factory.CreatePolygon(factory.CreateLinearRing(new Coordinate[] {
@@ -76,7 +76,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         private static IList<Envelope> SourceData()
         {
             var envelopes = new List<Envelope>();
-            for (int i = 0; i < ITEM_COUNT; i++)
+            for (var i = 0; i < ITEM_COUNT; i++)
             {
                 envelopes.Add(RandomRectangle().EnvelopeInternal);
             }
@@ -85,12 +85,12 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         private static IPolygon RandomRectangle()
         {
             var random = new Random();
-            double width = MIN_ITEM_EXTENT + ((MAX_ITEM_EXTENT - MIN_ITEM_EXTENT) * random.NextDouble());
-            double height = MIN_ITEM_EXTENT + ((MAX_ITEM_EXTENT - MIN_ITEM_EXTENT) * random.NextDouble());
-            double bottom = EXTENT * random.NextDouble();
-            double left = EXTENT * random.NextDouble();
-            double top = bottom + height;
-            double right = left + width;
+            var width = MIN_ITEM_EXTENT + ((MAX_ITEM_EXTENT - MIN_ITEM_EXTENT) * random.NextDouble());
+            var height = MIN_ITEM_EXTENT + ((MAX_ITEM_EXTENT - MIN_ITEM_EXTENT) * random.NextDouble());
+            var bottom = EXTENT * random.NextDouble();
+            var left = EXTENT * random.NextDouble();
+            var top = bottom + height;
+            var right = left + width;
             return factory.CreatePolygon(factory.CreateLinearRing(new Coordinate[]{
                 new Coordinate(left, bottom), new Coordinate(right, bottom),
                 new Coordinate(right, top), new Coordinate(left, top),
@@ -98,7 +98,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         }
         public static void PrintLevels(TestTree t)
         {
-            for (int i = 0; i <= t.Root.Level; i++)
+            for (var i = 0; i <= t.Root.Level; i++)
             {
                 PrintBoundables(t.BoundablesAtLevel(i), "Level " + i);
             }
@@ -107,8 +107,8 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         {
             Console.WriteLine("============ " + title + " ============\n");
             Console.Write("GEOMETRYCOLLECTION(");
-            bool first = true;
-            foreach (IBoundable<Envelope, object> boundable in boundables)
+            var first = true;
+            foreach (var boundable in boundables)
             {
                 if (first)
                 {

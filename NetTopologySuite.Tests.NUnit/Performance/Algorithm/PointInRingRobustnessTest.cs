@@ -77,9 +77,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         }
         private void CheckRightTriangles(double maxHeight, double width, int numEdgePts)
         {
-            for (int height = 0; height < maxHeight; height++)
+            for (var height = 0; height < maxHeight; height++)
             {
-                Coordinate[] triPts = new Coordinate[] {
+                var triPts = new Coordinate[] {
                     new Coordinate(0,0),
                     new Coordinate(0, height),
                     new Coordinate(width, 0),
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         }
         public void CheckTriangleEdgePoints(Coordinate[] triPts, int numEdgePts)
         {
-            for (int i = 0; i < numEdgePts; i++)
+            for (var i = 0; i < numEdgePts; i++)
             {
                 var lenFrac = i / (double)(numEdgePts + 1);
                 CheckTriangleConsistent(triPts, lenFrac);
@@ -98,23 +98,23 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         }
         public void CheckTriangleEdge(double height, double width, int numPts)
         {
-            for (int i = 0; i < numPts; i++)
+            for (var i = 0; i < numPts; i++)
             {
-                double lenFrac = i / (double) (numPts + 1);
+                var lenFrac = i / (double) (numPts + 1);
                 CheckTriangle(height, width, lenFrac);
             }
         }
         private bool CheckTriangle(double height, double width, double lenFraction)
         {
-            Coordinate[] triPts = new Coordinate[]
+            var triPts = new Coordinate[]
             {
                 new Coordinate(0, 0),
                 new Coordinate(0, height),
                 new Coordinate(width, 0),
                 new Coordinate(0, 0)
             };
-            LineSegment seg = new LineSegment(0, height, width, 0);
-            Coordinate pt = seg.PointAlong(lenFraction);
+            var seg = new LineSegment(0, height, width, 0);
+            var pt = seg.PointAlong(lenFraction);
             return CheckTriangleConsistent(triPts, lenFraction);
         }
         bool CheckTriangleConsistent(Coordinate[] triPts, double lenFraction)

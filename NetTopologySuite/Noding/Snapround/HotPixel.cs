@@ -65,7 +65,7 @@ namespace NetTopologySuite.Noding.Snapround
         {
             if (_safeEnv == null)
             {
-                double safeTolerance = SafeEnvelopeExpansionFactor / _scaleFactor;
+                var safeTolerance = SafeEnvelopeExpansionFactor / _scaleFactor;
                 _safeEnv = new Envelope(Coordinate.X - safeTolerance, Coordinate.X + safeTolerance,
                                        Coordinate.Y - safeTolerance, Coordinate.Y + safeTolerance);
             }
@@ -131,9 +131,9 @@ namespace NetTopologySuite.Noding.Snapround
         public bool IntersectsScaled(Coordinate p0, Coordinate p1)
         {
             var segMinx = Math.Min(p0.X, p1.X);
-            double segMaxx = Math.Max(p0.X, p1.X);
-            double segMiny = Math.Min(p0.Y, p1.Y);
-            double segMaxy = Math.Max(p0.Y, p1.Y);
+            var segMaxx = Math.Max(p0.X, p1.X);
+            var segMiny = Math.Min(p0.Y, p1.Y);
+            var segMaxy = Math.Max(p0.Y, p1.Y);
             var isOutsidePixelEnv = _maxx < segMinx || _minx > segMaxx ||
                                      _maxy < segMiny || _miny > segMaxy;
             if (isOutsidePixelEnv)

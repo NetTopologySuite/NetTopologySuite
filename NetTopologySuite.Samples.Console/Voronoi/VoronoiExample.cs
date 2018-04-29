@@ -44,7 +44,7 @@ namespace NetTopologySuite.Samples.Voronoi
             }
             // draw sites
             var blueVioletBrush = new SolidBrush(Color.BlueViolet);
-            foreach (Coordinate C in Coords)
+            foreach (var C in Coords)
             {
                 gr.FillEllipse(blueVioletBrush, (float)C.X, (float)C.Y, 20, 20);
             }

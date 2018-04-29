@@ -27,7 +27,7 @@ namespace NetTopologySuite.Algorithm
                 var poly = (IPolygon) geom;
                 // add linear components of a polygon
                 Add(poly.ExteriorRing.Coordinates);
-                for (int i = 0; i < poly.NumInteriorRings; i++)
+                for (var i = 0; i < poly.NumInteriorRings; i++)
                 {
                     Add(poly.GetInteriorRingN(i).Coordinates);
                 }
@@ -35,7 +35,7 @@ namespace NetTopologySuite.Algorithm
             else if (geom is IGeometryCollection)
             {
                 var gc = (IGeometryCollection)geom;
-                foreach (IGeometry geometry in gc.Geometries)
+                foreach (var geometry in gc.Geometries)
                     Add(geometry);
             }
         }
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Algorithm
         {
             get
             {
-                Coordinate cent = new Coordinate();
+                var cent = new Coordinate();
                 cent.X = _centSum.X / _totalLength;
                 cent.Y = _centSum.Y / _totalLength;
                 return cent;
@@ -58,13 +58,13 @@ namespace NetTopologySuite.Algorithm
         /// <param name="pts">An array of <c>Coordinate</c>s.</param>
         public void Add(Coordinate[] pts)
         {
-            for (int i = 0; i < pts.Length - 1; i++)
+            for (var i = 0; i < pts.Length - 1; i++)
             {
-                double segmentLen = pts[i].Distance(pts[i + 1]);
+                var segmentLen = pts[i].Distance(pts[i + 1]);
                 _totalLength += segmentLen;
-                double midx = (pts[i].X + pts[i + 1].X) / 2;
+                var midx = (pts[i].X + pts[i + 1].X) / 2;
                 _centSum.X += segmentLen * midx;
-                double midy = (pts[i].Y + pts[i + 1].Y) / 2;
+                var midy = (pts[i].Y + pts[i + 1].Y) / 2;
                 _centSum.Y += segmentLen * midy;
             }
         }

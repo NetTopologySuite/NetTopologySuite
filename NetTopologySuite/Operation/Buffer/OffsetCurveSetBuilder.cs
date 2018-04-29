@@ -219,7 +219,7 @@ namespace NetTopologySuite.Operation.Buffer
              */
             var ring = _inputGeom.Factory.CreateLinearRing(ringCoord);
             var md = new MinimumDiameter(ring);
-            double minDiam = md.Length;
+            var minDiam = md.Length;
             return minDiam < 2 * Math.Abs(bufferDistance);
         }
         /// <summary>

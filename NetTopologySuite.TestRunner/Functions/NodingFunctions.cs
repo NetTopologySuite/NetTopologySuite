@@ -44,25 +44,25 @@ namespace Open.Topology.TestRunner.Functions
         }
         public static bool IsNodingValid(IGeometry geom)
         {
-            FastNodingValidator nv = new FastNodingValidator(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
+            var nv = new FastNodingValidator(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
             return nv.IsValid;
         }
         public static IGeometry FindSingleNodePoint(IGeometry geom)
         {
-            FastNodingValidator nv = new FastNodingValidator(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
-            bool temp = nv.IsValid;
+            var nv = new FastNodingValidator(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
+            var temp = nv.IsValid;
             var intPts = nv.Intersections;
             if (intPts.Count == 0) return null;
             return FunctionsUtil.GetFactoryOrDefault((IGeometry)null).CreatePoint((Coordinate)intPts[0]);
         }
         public static IGeometry FindNodePoints(IGeometry geom)
         {
-            IList<Coordinate> intPts = FastNodingValidator.ComputeIntersections(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
+            var intPts = FastNodingValidator.ComputeIntersections(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
             return FunctionsUtil.GetFactoryOrDefault((IGeometry)null).CreateMultiPoint(CoordinateArrays.ToCoordinateArray(intPts));
         }
         public static int InteriorIntersectionCount(IGeometry geom)
         {
-            InteriorIntersectionFinder intCounter = InteriorIntersectionFinder.CreateIntersectionCounter(new RobustLineIntersector());
+            var intCounter = InteriorIntersectionFinder.CreateIntersectionCounter(new RobustLineIntersector());
             INoder noder = new MCIndexNoder(intCounter);
             noder.ComputeNodes(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
             return intCounter.Count;

@@ -134,8 +134,8 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
         void RunRounding(string[] wkt)
         {
             var geoms = FromWKT(wkt);
-            PrecisionModel pm = new PrecisionModel(SnapTolerance);
-            GeometryNoder noder = new GeometryNoder(pm);
+            var pm = new PrecisionModel(SnapTolerance);
+            var noder = new GeometryNoder(pm);
             noder.IsValidityChecked = true;
             var nodedLines = noder.Node(geoms);
             foreach ( var ls in nodedLines)
@@ -145,7 +145,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
         ICollection<IGeometry> FromWKT(string[] wkts)
         {
             ICollection<IGeometry> geomList = new List<IGeometry>();
-            for (int i = 0; i < wkts.Length; i++)
+            for (var i = 0; i < wkts.Length; i++)
             {
                 try {
                     geomList.Add(rdr.Read(wkts[i]));
@@ -158,7 +158,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
         }
         private static bool IsSnapped(IList<ILineString> lines, double tol)
         {
-            for (int i = 0; i < lines.Count; i++)
+            for (var i = 0; i < lines.Count; i++)
             {
                 var line = lines[i];
                 for (var j = 0; j < line.NumPoints; j++)

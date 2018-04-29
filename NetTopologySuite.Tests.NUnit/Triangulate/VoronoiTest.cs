@@ -22,14 +22,14 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
         private const double ComparisonTolerance = 1.0e-7;
         private static void RunVoronoi(string sitesWKT, string expectedWKT)
         {
-            WKTReader reader = new WKTReader();
-            IGeometry sites = reader.Read(sitesWKT);
-            DelaunayTriangulationBuilder builder = new DelaunayTriangulationBuilder();
+            var reader = new WKTReader();
+            var sites = reader.Read(sitesWKT);
+            var builder = new DelaunayTriangulationBuilder();
             builder.SetSites(sites);
-            QuadEdgeSubdivision subdiv = builder.GetSubdivision();
+            var subdiv = builder.GetSubdivision();
             IGeometry result = subdiv.GetVoronoiDiagram(GeometryFactory.Default);
             Assert.IsNotNull(result);
-            IGeometry expectedEdges = reader.Read(expectedWKT);
+            var expectedEdges = reader.Read(expectedWKT);
             result.Normalize();
             expectedEdges.Normalize();
             Assert.IsTrue(expectedEdges.EqualsExact(result, ComparisonTolerance));

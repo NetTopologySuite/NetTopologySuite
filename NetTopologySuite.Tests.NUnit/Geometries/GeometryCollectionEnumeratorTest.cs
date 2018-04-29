@@ -9,9 +9,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestGeometryCollection()
         {
-            IGeometryCollection g = (IGeometryCollection)Read(
+            var g = (IGeometryCollection)Read(
                   "GEOMETRYCOLLECTION (GEOMETRYCOLLECTION (POINT (10 10)))");
-            GeometryCollectionEnumerator i = new GeometryCollectionEnumerator(g);
+            var i = new GeometryCollectionEnumerator(g);
             Assert.IsTrue(i.MoveNext());
             Assert.IsTrue(i.Current is IGeometryCollection);
             Assert.IsTrue(i.MoveNext());
@@ -45,10 +45,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestAtomic()
         {
-            IPolygon g = (IPolygon)Read("POLYGON ((1 9, 9 9, 9 1, 1 1, 1 9))");
-            GeometryCollectionEnumerator i = new GeometryCollectionEnumerator(g);
+            var g = (IPolygon)Read("POLYGON ((1 9, 9 9, 9 1, 1 1, 1 9))");
+            var i = new GeometryCollectionEnumerator(g);
             Assert.IsTrue(i.MoveNext());
-            IGeometry current = i.Current;
+            var current = i.Current;
             Assert.IsTrue(i.Current is IPolygon);
             Assert.DoesNotThrow(() => current = i.Current);
             Assert.IsTrue(i.Current is IPolygon);

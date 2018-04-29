@@ -45,8 +45,8 @@ namespace NetTopologySuite.Triangulate
         /// <returns>A split point on the segment</returns>
         public static Coordinate ProjectedSplitPoint(Segment seg, Coordinate encroachPt)
         {
-            LineSegment lineSeg = seg.LineSegment;
-            Coordinate projPt = lineSeg.Project(encroachPt);
+            var lineSeg = seg.LineSegment;
+            var projPt = lineSeg.Project(encroachPt);
             return projPt;
         }
     }

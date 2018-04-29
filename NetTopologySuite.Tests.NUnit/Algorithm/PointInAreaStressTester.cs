@@ -30,20 +30,20 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             // default is to use the simple, non-indexed tester
             if (ExpectedPointInAreaLocator == null)
                 ExpectedPointInAreaLocator = new SimplePointInAreaLocator(_area);
-            int ptGridWidth = (int)Math.Sqrt(NumPoints);
-            Envelope areaEnv = _area.EnvelopeInternal;
-            double xStep = areaEnv.Width / (ptGridWidth - 1);
-            double yStep = areaEnv.Height / (ptGridWidth - 1);
-            for (int i = 0; i < ptGridWidth; i++)
+            var ptGridWidth = (int)Math.Sqrt(NumPoints);
+            var areaEnv = _area.EnvelopeInternal;
+            var xStep = areaEnv.Width / (ptGridWidth - 1);
+            var yStep = areaEnv.Height / (ptGridWidth - 1);
+            for (var i = 0; i < ptGridWidth; i++)
             {
-                for (int j = 0; j < ptGridWidth; j++)
+                for (var j = 0; j < ptGridWidth; j++)
                 {
                     // compute test point
-                    double x = areaEnv.MinX + i * xStep;
-                    double y = areaEnv.MinY + j * yStep;
+                    var x = areaEnv.MinX + i * xStep;
+                    var y = areaEnv.MinY + j * yStep;
                     var pt = new Coordinate(x, y);
                     _geomFactory.PrecisionModel.MakePrecise(pt);
-                    Boolean isEqual = TestPointInArea(pt);
+                    var isEqual = TestPointInArea(pt);
                     if (!isEqual)
                         return false;
                 }
@@ -69,8 +69,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         private Boolean TestPointInArea(Coordinate p)
         {
             //Console.WriteLine(WKTWriter.toPoint(p));
-            Location loc1 = TestPointInAreaLocator.Locate(p);
-            Location loc2 = ExpectedPointInAreaLocator.Locate(p);
+            var loc1 = TestPointInAreaLocator.Locate(p);
+            var loc2 = ExpectedPointInAreaLocator.Locate(p);
             _locationCount[(Int32)loc1]++;
             if ((loc1 == Location.Boundary || loc2 == Location.Boundary)
                 && IgnoreBoundaryResults)

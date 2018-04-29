@@ -6,9 +6,9 @@ namespace Open.Topology.TestRunner.Utility
     {
         public static String GetClassname(Type javaClass)
         {
-            String nClassName = javaClass.FullName;
+            var nClassName = javaClass.FullName;
             Debug.Assert(!string.IsNullOrEmpty(nClassName));
-            int lastDotPos = nClassName.LastIndexOf(".");
+            var lastDotPos = nClassName.LastIndexOf(".");
             return nClassName.Substring(lastDotPos + 1, nClassName.Length);
         }
     }

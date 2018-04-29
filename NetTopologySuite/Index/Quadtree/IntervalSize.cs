@@ -31,12 +31,12 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         public static bool IsZeroWidth(double min, double max)
         {
-            double width = max - min;
+            var width = max - min;
             if (width == 0.0)
                 return true;
-            double maxAbs = System.Math.Max(System.Math.Abs(min), System.Math.Abs(max));
-            double scaledInterval = width / maxAbs;
-            int level = DoubleBits.GetExponent(scaledInterval);
+            var maxAbs = System.Math.Max(System.Math.Abs(min), System.Math.Abs(max));
+            var scaledInterval = width / maxAbs;
+            var level = DoubleBits.GetExponent(scaledInterval);
             return level <= MinBinaryExponent;
         }
     }

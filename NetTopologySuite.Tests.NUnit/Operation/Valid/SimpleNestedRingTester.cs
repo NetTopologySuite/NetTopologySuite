@@ -40,17 +40,17 @@ namespace NetTopologySuite.Operation.Valid
         /// <returns></returns>
         public bool IsNonNested()
         {
-            foreach (ILinearRing innerRing in rings)
+            foreach (var innerRing in rings)
             {
-                Coordinate[] innerRingPts = innerRing.Coordinates;
-                foreach (ILinearRing searchRing in rings)
+                var innerRingPts = innerRing.Coordinates;
+                foreach (var searchRing in rings)
                 {
-                    Coordinate[] searchRingPts = searchRing.Coordinates;
+                    var searchRingPts = searchRing.Coordinates;
                     if (innerRing == searchRing) continue;
                     if (!innerRing.EnvelopeInternal.Intersects(searchRing.EnvelopeInternal)) continue;
-                    Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
+                    var innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
                     Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
-                    bool isInside = PointLocation.IsInRing(innerRingPt, searchRingPts);
+                    var isInside = PointLocation.IsInRing(innerRingPt, searchRingPts);
                     if (isInside)
                     {
                         NestedPoint = innerRingPt;

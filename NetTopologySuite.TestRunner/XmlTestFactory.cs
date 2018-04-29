@@ -40,22 +40,22 @@ namespace Open.Topology.TestRunner
         }
         public XmlTest Create(XmlTestInfo testInfo, double tolerance)
         {
-            XmlTest xmlTest = new XmlTest(testInfo.GetValue("desc"),
+            var xmlTest = new XmlTest(testInfo.GetValue("desc"),
                 testInfo.IsDefaultTarget(), tolerance, _geometryOperation, _resultMatcher);
             // Handle test type or name.
-            string strTestType = testInfo.GetValue("name");
+            var strTestType = testInfo.GetValue("name");
             if (string.IsNullOrEmpty(strTestType))
                 return null;
             ParseType(strTestType, xmlTest);
             // Handle the Geometry A:
-            string wkt = testInfo.GetValue("a");
+            var wkt = testInfo.GetValue("a");
             if (!string.IsNullOrEmpty(wkt))
                 ParseGeometry(Target.A, wkt, xmlTest);
             // Handle the Geometry B:
             wkt = testInfo.GetValue("b");
             if (!string.IsNullOrEmpty(wkt))
                 ParseGeometry(Target.B, wkt, xmlTest);
-            string arg2 = testInfo.GetValue("arg2");
+            var arg2 = testInfo.GetValue("arg2");
             if (!string.IsNullOrEmpty(arg2))
             {
                 if (arg2 == "a" || arg2 == "A")
@@ -65,10 +65,10 @@ namespace Open.Topology.TestRunner
                 else
                     xmlTest.Argument1 = arg2;
             }
-            string arg3 = testInfo.GetValue("arg3");
+            var arg3 = testInfo.GetValue("arg3");
             if (!string.IsNullOrEmpty(arg3))
                 xmlTest.Argument2 = arg3;
-            string strResult = testInfo.GetValue("result");
+            var strResult = testInfo.GetValue("result");
             if (string.IsNullOrEmpty(strResult))
                 return null;
             ParseResult(strResult, xmlTest);
@@ -260,7 +260,7 @@ namespace Open.Topology.TestRunner
                     }
                 }
                 default:
-                    string format = String.Format("Test not implemented: {0}",  xmlTestItem.TestType);
+                    var format = String.Format("Test not implemented: {0}",  xmlTestItem.TestType);
                     throw new NotImplementedException(format);
             }
         }

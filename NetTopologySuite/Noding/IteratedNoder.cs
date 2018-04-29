@@ -57,13 +57,13 @@ namespace NetTopologySuite.Noding
         {
             var numInteriorIntersections = new int[1];
             _nodedSegStrings = segStrings;
-            int nodingIterationCount = 0;
-            int lastNodesCreated = -1;
+            var nodingIterationCount = 0;
+            var lastNodesCreated = -1;
             do
             {
               Node(_nodedSegStrings, numInteriorIntersections);
               nodingIterationCount++;
-              int nodesCreated = numInteriorIntersections[0];
+              var nodesCreated = numInteriorIntersections[0];
               /*
                * Fail if the number of nodes created is not declining.
                * However, allow a few iterations at least before doing this

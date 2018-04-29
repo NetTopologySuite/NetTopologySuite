@@ -24,7 +24,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         public void Insert(Envelope itemEnv, T item)
         {
-            int index = GetSubnodeIndex(itemEnv, Origin.X, Origin.Y);
+            var index = GetSubnodeIndex(itemEnv, Origin.X, Origin.Y);
             // if index is -1, itemEnv must cross the X or Y axis.
             if (index == -1)
             {
@@ -64,8 +64,8 @@ namespace NetTopologySuite.Index.Quadtree
             * to infinite recursion. Instead, use a heuristic of simply returning
             * the smallest existing quad containing the query
             */
-            bool isZeroX = IntervalSize.IsZeroWidth(itemEnv.MinX, itemEnv.MaxX);
-            bool isZeroY = IntervalSize.IsZeroWidth(itemEnv.MinY, itemEnv.MaxY);
+            var isZeroX = IntervalSize.IsZeroWidth(itemEnv.MinX, itemEnv.MaxX);
+            var isZeroY = IntervalSize.IsZeroWidth(itemEnv.MinY, itemEnv.MaxY);
             NodeBase<T> node;
             if (isZeroX || isZeroY)
                  node = tree.Find(itemEnv);

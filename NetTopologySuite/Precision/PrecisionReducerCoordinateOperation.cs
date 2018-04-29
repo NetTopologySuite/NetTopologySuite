@@ -18,7 +18,7 @@ namespace NetTopologySuite.Precision
                 return null;
             var reducedCoords = new Coordinate[coordinates.Length];
             // copy coordinates and reduce
-            for (int i = 0; i < coordinates.Length; i++)
+            for (var i = 0; i < coordinates.Length; i++)
             {
                 var coord = new Coordinate(coordinates[i]);
                 _targetPrecModel.MakePrecise(coord);
@@ -37,12 +37,12 @@ namespace NetTopologySuite.Precision
              * being removed. (This may create an invalid geometry - the client must
              * handle this.)
              */
-            int minLength = 0;
+            var minLength = 0;
             if (geom is ILineString)
                 minLength = 2;
             if (geom is ILinearRing)
                 minLength = LinearRing.MinimumValidSize;
-            Coordinate[] collapsedCoords = reducedCoords;
+            var collapsedCoords = reducedCoords;
             if (_removeCollapsed)
                 collapsedCoords = null;
             // return null or orginal length coordinate array

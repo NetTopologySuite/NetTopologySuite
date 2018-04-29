@@ -166,7 +166,7 @@ namespace RTools_NTS.Util
 				}
 				else
 				{
-					byte digit = (byte)CharTypeBits.Digit;
+					var digit = (byte)CharTypeBits.Digit;
 					for (int i = '0'; i <= '9'; i++)
 					{
 						CharTypes[i] &= (byte)(~digit); // not digit
@@ -199,7 +199,7 @@ namespace RTools_NTS.Util
 				}
 				else
 				{
-					byte digit = (byte)CharTypeBits.HexDigit;
+					var digit = (byte)CharTypeBits.HexDigit;
 					for (int i = 'A'; i <= 'F'; i++)
 					{
 						CharTypes[i] &= (byte)(~digit); // not digit
@@ -329,7 +329,7 @@ namespace RTools_NTS.Util
 		/// <param name="endChar">Last character.</param>
 		public void WordChars(int startChar, int endChar)
 		{
-			for (int i = startChar; i <= endChar; i++)
+			for (var i = startChar; i <= endChar; i++)
 			{
 				CharTypes[i] |= (byte)CharTypeBits.Word;
 			}
@@ -343,7 +343,7 @@ namespace RTools_NTS.Util
 		/// <param name="s"></param>
 		public void WordChars(string s)
 		{
-			for (int i = 0; i < s.Length; i++)
+			for (var i = 0; i < s.Length; i++)
 				CharTypes[s[i]] |= (byte)CharTypeBits.Word;
 		}
 		/// <summary>
@@ -366,7 +366,7 @@ namespace RTools_NTS.Util
 		/// <param name="endChar">Last character.</param>
 		public void WhitespaceChars(int startChar, int endChar)
 		{
-			for (int i = startChar; i <= endChar; i++)
+			for (var i = startChar; i <= endChar; i++)
 				CharTypes[i] = (byte)CharTypeBits.Whitespace;
 		}
 		/// <summary>
@@ -377,7 +377,7 @@ namespace RTools_NTS.Util
 		/// <param name="endChar"></param>
 		public void OrdinaryChars(int startChar, int endChar)
 		{
-			for (int i = startChar; i <= endChar; i++)
+			for (var i = startChar; i <= endChar; i++)
 				CharTypes[i] = 0;
 		}
 		/// <summary>
@@ -420,7 +420,7 @@ namespace RTools_NTS.Util
 		/// <returns>The string representation of the type flags.</returns>
 		public string CharTypeToString(byte ctype)
 		{
-			StringBuilder str = new StringBuilder();
+			var str = new StringBuilder();
 			if (IsCharType(ctype, CharTypeBits.Quote)) str.Append('q');
 			if (IsCharType(ctype, CharTypeBits.Comment)) str.Append('m');
 			if (IsCharType(ctype, CharTypeBits.Whitespace)) str.Append('w');
@@ -769,11 +769,11 @@ namespace RTools_NTS.Util
 		public bool NextToken(out Token token)
 		{
 			token = null;
-			int thisChar = 0; // current character
+			var thisChar = 0; // current character
 			byte ctype; // type of this character
-			NextTokenState state = NextTokenState.Start;
-			int prevChar = 0; // previous character
-			byte prevCtype = (byte)CharTypeBits.Eof;
+			var state = NextTokenState.Start;
+			var prevChar = 0; // previous character
+			var prevCtype = (byte)CharTypeBits.Eof;
 			// get previous char from nextTokenSb if there
 			// (nextTokenSb is a StringBuilder containing the characters
 			//  of the next token to be emitted)
@@ -784,12 +784,12 @@ namespace RTools_NTS.Util
 				state = PickNextState(prevCtype, prevChar);
 			}
 			// extra state for number parse
-			int seenDot = 0; // how many .'s in the number
-			int seenE = 0; // how many e's or E's have we seen in the number
-			bool seenDigit = false; // seen any digits (numbers can start with -)
+			var seenDot = 0; // how many .'s in the number
+			var seenE = 0; // how many e's or E's have we seen in the number
+			var seenDigit = false; // seen any digits (numbers can start with -)
 			// lineNumber can change with each GetNextChar()
 			// tokenLineNumber is the line on which the token started
-			int tokenLineNumber = lineNumber;
+			var tokenLineNumber = lineNumber;
 			// State Machine: Produces a single token.
 			// Enter a state based on a single character.
 			// Generally, being in a state means we're currently collecting chars
@@ -797,7 +797,7 @@ namespace RTools_NTS.Util
 			// We do state machine until it builds a token (Eof is a token), then
 			// return that token.
 			thisChar = prevChar;  // for first iteration, since prevChar is set to this
-			bool done = false; // optimization
+			var done = false; // optimization
 			while (!done)
 			{
 				prevChar = thisChar;
@@ -864,8 +864,8 @@ namespace RTools_NTS.Util
 							// handle escaped backslashes: count the immediately prior backslashes
 							// - even (including 0) means it's not escaped
 							// - odd means it is escaped
-							int backSlashCount = 0;
-							for (int i = nextTokenSb.Length - 1; i >= 0; i--)
+							var backSlashCount = 0;
+							for (var i = nextTokenSb.Length - 1; i >= 0; i--)
 							{
 								if (nextTokenSb[ i ] == '\\') backSlashCount++;
 								else break;
@@ -1042,7 +1042,7 @@ namespace RTools_NTS.Util
 						// the number parse.  We terminate when it's clear it's not
 						// a number or no longer a number.
 						//
-						bool term = false;
+						var term = false;
 						if (Settings.IsCharType(ctype, CharTypeBits.Digit)
 							|| Settings.IsCharType(prevChar, CharTypeBits.Digit)) seenDigit = true;
 						// term conditions
@@ -1198,7 +1198,7 @@ namespace RTools_NTS.Util
 				return(false);
 			}
 			// rest of chars have to be digits
-			bool gotInt = false;
+			var gotInt = false;
 			while(((thisChar = (char)GetNextChar()) != Eof)
 				&& (Settings.IsCharType(thisChar, CharTypeBits.Digit)))
 			{
@@ -1264,7 +1264,7 @@ namespace RTools_NTS.Util
 		/// <returns>bool - true for success, false for failure.</returns>
 		public bool TokenizeFile(string fileName, IList<Token> tokens)
 		{
-			FileInfo fi = new FileInfo(fileName);
+			var fi = new FileInfo(fileName);
 			FileStream fr = null;
 			try
 			{

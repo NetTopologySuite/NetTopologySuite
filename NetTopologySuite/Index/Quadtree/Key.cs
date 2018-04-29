@@ -17,10 +17,10 @@ namespace NetTopologySuite.Index.Quadtree
         /// <returns></returns>
         public static int ComputeQuadLevel(Envelope env)
         {
-            double dx = env.Width;
-            double dy = env.Height;
-            double dMax = dx > dy ? dx : dy;
-            int level = DoubleBits.GetExponent(dMax) + 1;
+            var dx = env.Width;
+            var dy = env.Height;
+            var dMax = dx > dy ? dx : dy;
+            var level = DoubleBits.GetExponent(dMax) + 1;
             return level;
         }
         // the fields which make up the key
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <param name="itemEnv"></param>
         private void ComputeKey(int level, Envelope itemEnv)
         {
-            double quadSize = DoubleBits.PowerOf2(level);
+            var quadSize = DoubleBits.PowerOf2(level);
             Point.X = Math.Floor(itemEnv.MinX / quadSize) * quadSize;
             Point.Y = Math.Floor(itemEnv.MinY / quadSize) * quadSize;
             Envelope.Init(Point.X, Point.X + quadSize, Point.Y, Point.Y + quadSize);

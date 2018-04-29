@@ -59,8 +59,8 @@ namespace Open.Topology.TestRunner.Operations
         /// <exception cref="Exception">If some error was encountered trying to find or process the operation</exception>
         public IResult Invoke(XmlTestType op, IGeometry geometry, Object[] args)
         {
-            string opName = op.ToString();
-            bool isBufferOp = opName.Equals("buffer", StringComparison.InvariantCultureIgnoreCase);
+            var opName = op.ToString();
+            var isBufferOp = opName.Equals("buffer", StringComparison.InvariantCultureIgnoreCase);
             // if not a buffer op, do the default
             if (! isBufferOp)
             {
@@ -80,7 +80,7 @@ namespace Open.Topology.TestRunner.Operations
         }
         private IResult InvokeBufferOpValidated(IGeometry geometry /*, Object[] args*/)
         {
-            IGeometry result = InvokeBuffer(geometry);
+            var result = InvokeBuffer(geometry);
             // validate
             Validate(geometry, result);
             /**
@@ -171,7 +171,7 @@ namespace Open.Topology.TestRunner.Operations
         }
         private static void ReportError(String msg, Coordinate loc)
         {
-            String locStr = "";
+            var locStr = "";
             if (loc != null)
             {
                 locStr = " at " + WKTWriter.ToPoint(loc);

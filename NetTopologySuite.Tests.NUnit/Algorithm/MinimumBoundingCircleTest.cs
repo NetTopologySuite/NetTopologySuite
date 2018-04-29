@@ -64,14 +64,14 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
         private void DoMinimumBoundingCircleTest(String wkt, String expectedWKT, Coordinate expectedCentre, double expectedRadius)
         {
-            MinimumBoundingCircle mbc = new MinimumBoundingCircle(reader.Read(wkt));
-            Coordinate[] exPts = mbc.GetExtremalPoints();
+            var mbc = new MinimumBoundingCircle(reader.Read(wkt));
+            var exPts = mbc.GetExtremalPoints();
             IGeometry actual = geometryFactory.CreateMultiPoint(exPts);
-            double actualRadius = mbc.GetRadius();
-            Coordinate actualCentre = mbc.GetCentre();
+            var actualRadius = mbc.GetRadius();
+            var actualCentre = mbc.GetCentre();
             //Console.WriteLine("   Centre = " + actualCentre + "   Radius = " + actualRadius);
-            IGeometry expected = reader.Read(expectedWKT);
-            bool isEqual = actual.Equals(expected);
+            var expected = reader.Read(expectedWKT);
+            var isEqual = actual.Equals(expected);
             // need this hack because apparently equals does not work for MULTIPOINT EMPTY
             if (actual.IsEmpty && expected.IsEmpty)
                 isEqual = true;

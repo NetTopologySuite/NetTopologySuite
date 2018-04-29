@@ -229,7 +229,7 @@ namespace NetTopologySuite.Geometries
         /// <returns><c>true</c> if <c>pt</c> is one of this <c>LineString</c>'s vertices.</returns>
         public bool IsCoordinate(Coordinate pt)
         {
-            for (int i = 0; i < _points.Count; i++)
+            for (var i = 0; i < _points.Count; i++)
                 if (_points.GetCoordinate(i).Equals(pt))
                     return true;
             return false;
@@ -245,12 +245,12 @@ namespace NetTopologySuite.Geometries
             //Convert to array, then access array directly, to avoid the function-call overhead
             //of calling Getter millions of times. ToArray may be inefficient for
             //non-BasicCoordinateSequence CoordinateSequences. [Jon Aquino]
-            Coordinate[] coordinates = _points.ToCoordinateArray();
-            double minx = coordinates[0].X;
-            double miny = coordinates[0].Y;
-            double maxx = coordinates[0].X;
-            double maxy = coordinates[0].Y;
-            for (int i = 1; i < coordinates.Length; i++)
+            var coordinates = _points.ToCoordinateArray();
+            var minx = coordinates[0].X;
+            var miny = coordinates[0].Y;
+            var maxx = coordinates[0].X;
+            var maxy = coordinates[0].Y;
+            for (var i = 1; i < coordinates.Length; i++)
             {
                 minx = minx < coordinates[i].X ? minx : coordinates[i].X;
                 maxx = maxx > coordinates[i].X ? maxx : coordinates[i].X;
@@ -276,10 +276,10 @@ namespace NetTopologySuite.Geometries
         {
             if (!IsEquivalentClass(other))
                 return false;
-            ILineString otherLineString = (ILineString)other;
+            var otherLineString = (ILineString)other;
             if (_points.Count != otherLineString.NumPoints)
                 return false;
-            for (int i = 0; i < _points.Count; i++)
+            for (var i = 0; i < _points.Count; i++)
                 if (!Equal(_points.GetCoordinate(i), otherLineString.GetCoordinateN(i), tolerance))
                     return false;
             return true;
@@ -290,14 +290,14 @@ namespace NetTopologySuite.Geometries
         /// <param name="filter"></param>
         public override void Apply(ICoordinateFilter filter)
         {
-            for (int i = 0; i < _points.Count; i++)
+            for (var i = 0; i < _points.Count; i++)
                 filter.Filter(_points.GetCoordinate(i));
         }
         public override void Apply(ICoordinateSequenceFilter filter)
         {
             if (_points.Count == 0)
                 return;
-            for (int i = 0; i < _points.Count; i++)
+            for (var i = 0; i < _points.Count; i++)
             {
                 filter.Filter(_points, i);
                 if (filter.Done)
@@ -349,9 +349,9 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public override void Normalize()
         {
-            for (int i = 0; i < _points.Count / 2; i++)
+            for (var i = 0; i < _points.Count / 2; i++)
             {
-                int j = _points.Count - 1 - i;
+                var j = _points.Count - 1 - i;
                 // skip equal points on both ends
                 if (!_points.GetCoordinate(i).Equals(_points.GetCoordinate(j)))
                 {
@@ -377,13 +377,13 @@ namespace NetTopologySuite.Geometries
         protected internal override int CompareToSameClass(object o)
         {
             Assert.IsTrue(o is ILineString);
-            ILineString line = (ILineString)o;
+            var line = (ILineString)o;
             // MD - optimized implementation
-            int i = 0;
-            int j = 0;
+            var i = 0;
+            var j = 0;
             while (i < _points.Count && j < line.CoordinateSequence.Count)
             {
-                int comparison = _points.GetCoordinate(i).CompareTo(line.CoordinateSequence.GetCoordinate(j));
+                var comparison = _points.GetCoordinate(i).CompareTo(line.CoordinateSequence.GetCoordinate(j));
                 if (comparison != 0)
                     return comparison;
                 i++;
@@ -434,11 +434,11 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                double deltaX = EndPoint.X - StartPoint.X;
-                double deltaY = EndPoint.Y - StartPoint.Y;
-                double length = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
-                double angleRAD = Math.Asin(Math.Abs(EndPoint.Y - StartPoint.Y) / length);
-                double angle = (angleRAD * 180) / Math.PI;
+                var deltaX = EndPoint.X - StartPoint.X;
+                var deltaY = EndPoint.Y - StartPoint.Y;
+                var length = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
+                var angleRAD = Math.Asin(Math.Abs(EndPoint.Y - StartPoint.Y) / length);
+                var angle = (angleRAD * 180) / Math.PI;
                 if (((StartPoint.X < EndPoint.X) && (StartPoint.Y > EndPoint.Y)) ||
                      ((StartPoint.X > EndPoint.X) && (StartPoint.Y < EndPoint.Y)))
                     angle = 360 - angle;

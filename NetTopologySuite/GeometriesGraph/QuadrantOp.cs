@@ -82,7 +82,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             if (quad1 == quad2)
                 return false;
-            int diff = (quad1 - quad2 + 4) % 4;
+            var diff = (quad1 - quad2 + 4) % 4;
             // if quadrants are not adjacent, they are opposite
             if (diff == 2)
                 return true;
@@ -100,12 +100,12 @@ namespace NetTopologySuite.GeometriesGraph
             // Simply return one of the two possibilities
             if (quad1 == quad2)
                 return quad1;
-            int diff = (quad1 - quad2 + 4) % 4;
+            var diff = (quad1 - quad2 + 4) % 4;
             // if quadrants are not adjacent, they do not share a common halfplane
             if (diff == 2)
                 return -1;
-            int min = (quad1 < quad2) ? quad1 : quad2;
-            int max = (quad1 > quad2) ? quad1 : quad2;
+            var min = (quad1 < quad2) ? quad1 : quad2;
+            var max = (quad1 > quad2) ? quad1 : quad2;
             // for this one case, the righthand plane is NOT the minimum index;
             if (min == 0 && max == 3)
                 return 3;

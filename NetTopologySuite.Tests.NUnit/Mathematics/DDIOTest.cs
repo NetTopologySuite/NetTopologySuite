@@ -20,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             CheckStandardNotation(DD.ValueOf(1e12).Subtract(DD.ValueOf(1)),	"999999999999.0");
             CheckStandardNotation(DD.ValueOf(1e14).Subtract(DD.ValueOf(1)),	"99999999999999.0");
             CheckStandardNotation(DD.ValueOf(1e16).Subtract(DD.ValueOf(1)),	"9999999999999999.0");
-            DD num8Dec = DD.ValueOf(-379363639).Divide(
+            var num8Dec = DD.ValueOf(-379363639).Divide(
                 DD.ValueOf(100000000));
             CheckStandardNotation(num8Dec, "-3.79363639");
             CheckStandardNotation(new DD(-3.79363639, 8.039137357367426E-17),
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             CheckStandardNotation(DD.ValueOf(x), expectedStr);
         }
         private static void CheckStandardNotation(DD x, String expectedStr) {
-            String xStr = x.ToStandardNotation();
+            var xStr = x.ToStandardNotation();
             //System.Console.WriteLine("Standard Notation: " + xStr);
             Assert.AreEqual(expectedStr, xStr);
         }
@@ -95,7 +95,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         }
         private static void CheckParse(String str, DD expectedVal,
             double relErrBound) {
-            DD xdd = DD.Parse(str);
+            var xdd = DD.Parse(str);
             var err = (xdd - expectedVal).ToDoubleValue();
             var relErr = err / xdd.ToDoubleValue();
             //System.Console.WriteLine(("Parsed= " + xdd + " rel err= " + relErr);
@@ -131,23 +131,23 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         /// </summary>
         private static void WriteRepeatedSqrt(DD xdd)
         {
-            int count = 0;
+            var count = 0;
             while (xdd.ToDoubleValue() > 1e-300) {
                 count++;
                 //if (count == 100)
                 //    count = count;
-                double x = xdd.ToDoubleValue();
-                DD xSqrt = xdd.Sqrt();
-                String s = xSqrt.ToString();
+                var x = xdd.ToDoubleValue();
+                var xSqrt = xdd.Sqrt();
+                var s = xSqrt.ToString();
                 //System.Console.WriteLine((count + ": " + s);
-                DD xSqrt2 = DD.Parse(s);
-                DD xx = xSqrt2.Multiply(xSqrt2);
-                double err = Math.Abs(xx.ToDoubleValue() - x);
+                var xSqrt2 = DD.Parse(s);
+                var xx = xSqrt2.Multiply(xSqrt2);
+                var err = Math.Abs(xx.ToDoubleValue() - x);
                 //assertTrue(err < 1e-10);
                 xdd = xSqrt;
                 // square roots converge on 1 - stop when very close
-                DD distFrom1DD = xSqrt.Subtract(DD.ValueOf(1.0));
-                double distFrom1 = distFrom1DD.ToDoubleValue();
+                var distFrom1DD = xSqrt.Subtract(DD.ValueOf(1.0));
+                var distFrom1 = distFrom1DD.ToDoubleValue();
                 if (Math.Abs(distFrom1) < 1.0e-40)
                     break;
             }
@@ -164,20 +164,20 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         {
             if (xdd.GreaterOrEqualThan(DD.ValueOf(1)))
                 throw new ArgumentException("Argument must be < 1");
-            int count = 0;
+            var count = 0;
             while (xdd.ToDoubleValue() > 1e-300) {
                 count++;
-                double x = xdd.ToDoubleValue();
-                DD xSqr = xdd.Sqr();
-                String s = xSqr.ToString();
+                var x = xdd.ToDoubleValue();
+                var xSqr = xdd.Sqr();
+                var s = xSqr.ToString();
                 //System.Console.WriteLine(count + ": " + s);
-                DD xSqr2 = DD.Parse(s);
+                var xSqr2 = DD.Parse(s);
                 xdd = xSqr;
             }
         }
         [Test]
         public void TestIOSquaresStress() {
-            for (int i = 1; i < 10000; i++) {
+            for (var i = 1; i < 10000; i++) {
                 WriteAndReadSqrt(i);
             }
         }
@@ -186,16 +186,16 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         /// This tests the correctness and robustness of both output and input.
         /// </summary>
         static void WriteAndReadSqrt(double x) {
-            DD xdd = DD.ValueOf(x);
-            DD xSqrt = xdd.Sqrt();
-            String s = xSqrt.ToString();
+            var xdd = DD.ValueOf(x);
+            var xSqrt = xdd.Sqrt();
+            var s = xSqrt.ToString();
             //System.Console.WriteLine(s);
-            DD xSqrt2 = DD.Parse(s);
-            DD xx = xSqrt2 * xSqrt2;
-            String xxStr = xx.ToString();
+            var xSqrt2 = DD.Parse(s);
+            var xx = xSqrt2 * xSqrt2;
+            var xxStr = xx.ToString();
             //System.Console.WriteLine("==>  " + xxStr);
-            DD xx2 = DD.Parse(xxStr);
-            double err = Math.Abs(xx2.ToDoubleValue() - x);
+            var xx2 = DD.Parse(xxStr);
+            var err = Math.Abs(xx2.ToDoubleValue() - x);
             Assert.IsTrue(err < 1e-10);
         }
     }

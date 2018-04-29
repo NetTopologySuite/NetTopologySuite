@@ -21,7 +21,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestEverything()
         {
-            Envelope e1 = new Envelope();
+            var e1 = new Envelope();
             Assert.IsTrue(e1.IsNull);
             Assert.AreEqual(0, e1.Width, 1E-3);
             Assert.AreEqual(0, e1.Height, 1E-3);
@@ -38,7 +38,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(101, e1.Height, 1E-3);
             Assert.AreEqual(100, e1.Width, 1E-3);
             Assert.IsTrue(!e1.IsNull);
-            Envelope e2 = new Envelope(499, 500, 500, 501);
+            var e2 = new Envelope(499, 500, 500, 501);
             Assert.IsTrue(!e1.Contains(e2));
             Assert.IsTrue(!e1.Intersects(e2));
             e1.ExpandToInclude(e2);
@@ -48,10 +48,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(501, e1.MaxY, 1E-3);
             Assert.AreEqual(100, e1.MinX, 1E-3);
             Assert.AreEqual(101, e1.MinY, 1E-3);
-            Envelope e3 = new Envelope(300, 700, 300, 700);
+            var e3 = new Envelope(300, 700, 300, 700);
             Assert.IsTrue(!e1.Contains(e3));
             Assert.IsTrue(e1.Intersects(e3));
-            Envelope e4 = new Envelope(300, 301, 300, 301);
+            var e4 = new Envelope(300, 301, 300, 301);
             Assert.IsTrue(e1.Contains(e4));
             Assert.IsTrue(e1.Intersects(e4));
         }
@@ -94,7 +94,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(0, new Envelope().Height, 0);
             Assert.AreEqual(0, new Envelope().Width, 0);
             Assert.AreEqual(new Envelope(), new Envelope());
-            Envelope e = new Envelope(100, 101, 100, 101);
+            var e = new Envelope(100, 101, 100, 101);
             e.Init(new Envelope());
             Assert.AreEqual(new Envelope(), e);
         }
@@ -103,18 +103,18 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             Assert.IsTrue(geometryFactory.CreatePoint((Coordinate)null).Envelope
                     .IsEmpty);
-            IGeometry g = geometryFactory.CreatePoint(new Coordinate(5, 6))
-                    .Envelope;
+            var g = geometryFactory.CreatePoint(new Coordinate(5, 6))
+                .Envelope;
             Assert.IsTrue(!g.IsEmpty);
             Assert.IsTrue(g is Point);
-            Point p = (Point)g;
+            var p = (Point)g;
             Assert.AreEqual(5, p.X, 1E-1);
             Assert.AreEqual(6, p.Y, 1E-1);
-            LineString l = (LineString)reader.Read("LINESTRING(10 10, 20 20, 30 40)");
-            IGeometry g2 = l.Envelope;
+            var l = (LineString)reader.Read("LINESTRING(10 10, 20 20, 30 40)");
+            var g2 = l.Envelope;
             Assert.IsTrue(!g2.IsEmpty);
             Assert.IsTrue(g2 is Polygon);
-            Polygon poly = (Polygon)g2;
+            var poly = (Polygon)g2;
             poly.Normalize();
             Assert.AreEqual(5, poly.ExteriorRing.NumPoints);
             Assert.AreEqual(new Coordinate(10, 10), poly.ExteriorRing.GetCoordinateN(
@@ -131,7 +131,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestSetToNull()
         {
-            Envelope e1 = new Envelope();
+            var e1 = new Envelope();
             Assert.IsTrue(e1.IsNull);
             e1.ExpandToInclude(5, 5);
             Assert.IsTrue(!e1.IsNull);
@@ -141,11 +141,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestEquals()
         {
-            Envelope e1 = new Envelope(1, 2, 3, 4);
-            Envelope e2 = new Envelope(1, 2, 3, 4);
+            var e1 = new Envelope(1, 2, 3, 4);
+            var e2 = new Envelope(1, 2, 3, 4);
             Assert.AreEqual(e1, e2);
             Assert.AreEqual(e1.GetHashCode(), e2.GetHashCode());
-            Envelope e3 = new Envelope(1, 2, 3, 5);
+            var e3 = new Envelope(1, 2, 3, 5);
             Assert.IsTrue(!e1.Equals(e3));
             Assert.IsTrue(e1.GetHashCode() != e3.GetHashCode());
             e1.SetToNull();
@@ -165,8 +165,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestCopyConstructor()
         {
-            Envelope e1 = new Envelope(1, 2, 3, 4);
-            Envelope e2 = new Envelope(e1);
+            var e1 = new Envelope(1, 2, 3, 4);
+            var e2 = new Envelope(e1);
             Assert.AreEqual(1, e2.MinX, 1E-5);
             Assert.AreEqual(2, e2.MaxX, 1E-5);
             Assert.AreEqual(3, e2.MinY, 1E-5);
@@ -179,7 +179,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             checkExpectedEnvelopeGeometry("POINT (100 13)");
             checkExpectedEnvelopeGeometry("LINESTRING (0 0, 0 10)");
             checkExpectedEnvelopeGeometry("LINESTRING (0 0, 10 0)");
-            String poly10 = "POLYGON ((0 10, 10 10, 10 0, 0 0, 0 10))";
+            String poly10 = "POLYGOvar10, 10 10, 10 0, 0 0, 0 10))";
             checkExpectedEnvelopeGeometry(poly10);
             checkExpectedEnvelopeGeometry("LINESTRING (0 0, 10 10)",
                     poly10);
@@ -192,11 +192,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
         void checkExpectedEnvelopeGeometry(String wktInput, String wktEnvGeomExpected)
         {
-            IGeometry input = reader.Read(wktInput);
-            IGeometry envGeomExpected = reader.Read(wktEnvGeomExpected);
-            Envelope env = input.EnvelopeInternal;
-            IGeometry envGeomActual = geometryFactory.ToGeometry(env);
-            bool isEqual = envGeomActual.Equals(envGeomExpected);
+            var input = reader.Read(wktInput);
+            var envGeomExpected = reader.Read(wktEnvGeomExpected);
+            var env = input.EnvelopeInternal;
+            var envGeomActual = geometryFactory.ToGeometry(env);
+            var isEqual = envGeomActual.Equals(envGeomExpected);
             Assert.IsTrue(isEqual);
         }
         [Test]

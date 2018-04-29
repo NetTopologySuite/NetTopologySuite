@@ -92,16 +92,16 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
             IndexedFacetDistance bbd = null;
             if (USE_INDEXED_DIST)
                 bbd = new IndexedFacetDistance(geom);
-            for (int i = 0; i < pts.Length; i++)
+            for (var i = 0; i < pts.Length; i++)
             {
                 if (USE_INDEXED_DIST)
                 {
-                    double dist = bbd.GetDistance(pts[i]);
+                    var dist = bbd.GetDistance(pts[i]);
                     //        double dist = bbd.getDistanceWithin(pts[i].getCoordinate(), 100000);
                 }
                 else
                 {
-                    double dist = geom.Distance(pts[i]);
+                    var dist = geom.Distance(pts[i]);
                 }
             }
         }
@@ -109,7 +109,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
         {
             var circles = new IPolygon[nSegs];
             var inc = extent/nSegs;
-            for (int i = 0; i < nSegs; i++)
+            for (var i = 0; i < nSegs; i++)
             {
                 var ord = i*inc;
                 var p = new Coordinate(ord, ord);
@@ -129,17 +129,17 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
                         new Coordinate(extent, 0)
                     };
             var outline = geomFact.CreateLineString(pts);
-            double inc = extent/nSegs;
+            var inc = extent/nSegs;
             return Densifier.Densify(outline, inc);
         }
         private IGeometry CreateDiagonalLine(double extent, int nSegs)
         {
             var pts = new Coordinate[nSegs + 1];
             pts[0] = new Coordinate(0, 0);
-            double inc = extent/nSegs;
-            for (int i = 1; i <= nSegs; i++)
+            var inc = extent/nSegs;
+            for (var i = 1; i <= nSegs; i++)
             {
-                double ord = i*inc;
+                var ord = i*inc;
                 pts[i] = new Coordinate(ord, ord);
             }
             return geomFact.CreateLineString(pts);
@@ -147,12 +147,12 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
         private static IGeometry[] CreatePoints(Envelope extent, int nPtsSide)
         {
             var pts = new IGeometry[nPtsSide*nPtsSide];
-            int index = 0;
-            double xinc = extent.Width/nPtsSide;
-            double yinc = extent.Height/nPtsSide;
-            for (int i = 0; i < nPtsSide; i++)
+            var index = 0;
+            var xinc = extent.Width/nPtsSide;
+            var yinc = extent.Height/nPtsSide;
+            for (var i = 0; i < nPtsSide; i++)
             {
-                for (int j = 0; j < nPtsSide; j++)
+                for (var j = 0; j < nPtsSide; j++)
                 {
                     pts[index++] = geomFact.CreatePoint(
                         new Coordinate(

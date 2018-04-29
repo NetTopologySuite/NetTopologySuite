@@ -184,9 +184,9 @@ public class ShewchuksDeterminant
   public static int orientationIndexFilter(Coordinate pa, Coordinate pb, Coordinate pc)
   {
     double detsum;
-    double detleft = (pa.X - pc.X) * (pb.Y - pc.Y);
-    double detright = (pa.Y - pc.Y) * (pb.X - pc.X);
-    double det = detleft - detright;
+    var detleft = (pa.X - pc.X) * (pb.Y - pc.Y);
+    var detright = (pa.Y - pc.Y) * (pb.X - pc.X);
+    var det = detleft - detright;
     if (detleft > 0.0) {
       if (detright <= 0.0) {
         return signum(det);
@@ -206,8 +206,8 @@ public class ShewchuksDeterminant
     else {
       return signum(det);
     }
-    double ERR_BOUND = 1e-15;
-    double errbound = ERR_BOUND * detsum;
+    var ERR_BOUND = 1e-15;
+    var errbound = ERR_BOUND * detsum;
     //double errbound = ccwerrboundA * detsum;
     if ((det >= errbound) || (-det >= errbound)) {
       return signum(det);
@@ -237,7 +237,7 @@ public class ShewchuksDeterminant
    */
   public static int OrientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
   {
-    double orientation = orient2d(p1, p2, q);
+    var orientation = orient2d(p1, p2, q);
     if (orientation > 0.0) return 1;
     if (orientation < 0.0) return -1;
     return 0;
@@ -245,9 +245,9 @@ public class ShewchuksDeterminant
   private static double orient2d(Coordinate pa, Coordinate pb, Coordinate pc)
   {
     double detsum;
-    double detleft = (pa.X - pc.X) * (pb.Y - pc.Y);
-    double detright = (pa.Y - pc.Y) * (pb.X - pc.X);
-    double det = detleft - detright;
+    var detleft = (pa.X - pc.X) * (pb.Y - pc.Y);
+    var detright = (pa.Y - pc.Y) * (pb.X - pc.X);
+    var det = detleft - detright;
     if (detleft > 0.0) {
       if (detright <= 0.0) {
         return det;
@@ -267,7 +267,7 @@ public class ShewchuksDeterminant
     else {
       return det;
     }
-    double errbound = ccwerrboundA * detsum;
+    var errbound = ccwerrboundA * detsum;
     if ((det >= errbound) || (-det >= errbound)) {
       return det;
     }
@@ -295,29 +295,29 @@ public class ShewchuksDeterminant
   private static double orient2dadapt(Coordinate pa, Coordinate pb,
       Coordinate pc, double detsum)
   {
-    double acx = pa.X - pc.X;
-    double bcx = pb.X - pc.X;
-    double acy = pa.Y - pc.Y;
-    double bcy = pb.Y - pc.Y;
-    double detleft = Two_Product_Head(acx, bcy);
-    double detlefttail = Two_Product_Tail(acx, bcy, detleft);
-    double detright = Two_Product_Head(acy, bcx);
-    double detrighttail = Two_Product_Tail(acy, bcx, detright);
-    double[] B = new double[4];
+    var acx = pa.X - pc.X;
+    var bcx = pb.X - pc.X;
+    var acy = pa.Y - pc.Y;
+    var bcy = pb.Y - pc.Y;
+    var detleft = Two_Product_Head(acx, bcy);
+    var detlefttail = Two_Product_Tail(acx, bcy, detleft);
+    var detright = Two_Product_Head(acy, bcx);
+    var detrighttail = Two_Product_Tail(acy, bcx, detright);
+    var B = new double[4];
     B[2] = Two_Two_Diff__x2(detleft, detlefttail, detright, detrighttail);
     B[1] = Two_Two_Diff__x1(detleft, detlefttail, detright, detrighttail);
     B[0] = Two_Two_Diff__x0(detleft, detlefttail, detright, detrighttail);
     B[3] = Two_Two_Diff__x3(detleft, detlefttail, detright, detrighttail);
-    double det = B[0] + B[1] + B[2] + B[3];
+    var det = B[0] + B[1] + B[2] + B[3];
     //det = estimate(4, B);
-    double errbound = ccwerrboundB * detsum;
+    var errbound = ccwerrboundB * detsum;
     if ((det >= errbound) || (-det >= errbound)) {
       return det;
     }
-    double acxtail = Two_Diff_Tail(pa.X, pc.X, acx);
-    double bcxtail = Two_Diff_Tail(pb.X, pc.X, bcx);
-    double acytail = Two_Diff_Tail(pa.Y, pc.Y, acy);
-    double bcytail = Two_Diff_Tail(pb.Y, pc.Y, bcy);
+    var acxtail = Two_Diff_Tail(pa.X, pc.X, acx);
+    var bcxtail = Two_Diff_Tail(pb.X, pc.X, bcx);
+    var acytail = Two_Diff_Tail(pa.Y, pc.Y, acy);
+    var bcytail = Two_Diff_Tail(pb.Y, pc.Y, bcy);
     if ((acxtail == 0.0) && (acytail == 0.0) && (bcxtail == 0.0)
         && (bcytail == 0.0)) {
       return det;
@@ -327,18 +327,18 @@ public class ShewchuksDeterminant
     if ((det >= errbound) || (-det >= errbound)) {
       return det;
     }
-    double s1 = Two_Product_Head(acxtail, bcy);
-    double s0 = Two_Product_Tail(acxtail, bcy, s1);
-    double t1 = Two_Product_Head(acytail, bcx);
-    double t0 = Two_Product_Tail(acytail, bcx, t1);
-    double u3 = Two_Two_Diff__x3(s1, s0, t1, t0);
-    double[] u = new double[4];
+    var s1 = Two_Product_Head(acxtail, bcy);
+    var s0 = Two_Product_Tail(acxtail, bcy, s1);
+    var t1 = Two_Product_Head(acytail, bcx);
+    var t0 = Two_Product_Tail(acytail, bcx, t1);
+    var u3 = Two_Two_Diff__x3(s1, s0, t1, t0);
+    var u = new double[4];
     u[2] = Two_Two_Diff__x2(s1, s0, t1, t0);
     u[1] = Two_Two_Diff__x1(s1, s0, t1, t0);
     u[0] = Two_Two_Diff__x0(s1, s0, t1, t0);
     u[3] = u3;
-    double[] C1 = new double[8];
-    int C1length = fast_expansion_sum_zeroelim(4, B, 4, u, C1);
+    var C1 = new double[8];
+    var C1length = fast_expansion_sum_zeroelim(4, B, 4, u, C1);
     s1 = Two_Product_Head(acx, bcytail);
     s0 = Two_Product_Tail(acx, bcytail, s1);
     t1 = Two_Product_Head(acy, bcxtail);
@@ -348,8 +348,8 @@ public class ShewchuksDeterminant
     u[1] = Two_Two_Diff__x1(s1, s0, t1, t0);
     u[0] = Two_Two_Diff__x0(s1, s0, t1, t0);
     u[3] = u3;
-    double[] C2 = new double[12];
-    int C2length = fast_expansion_sum_zeroelim(C1length, C1, 4, u, C2);
+    var C2 = new double[12];
+    var C2length = fast_expansion_sum_zeroelim(C1length, C1, 4, u, C2);
     s1 = Two_Product_Head(acxtail, bcytail);
     s0 = Two_Product_Tail(acxtail, bcytail, s1);
     t1 = Two_Product_Head(acytail, bcxtail);
@@ -359,8 +359,8 @@ public class ShewchuksDeterminant
     u[1] = Two_Two_Diff__x1(s1, s0, t1, t0);
     u[0] = Two_Two_Diff__x0(s1, s0, t1, t0);
     u[3] = u3;
-    double[] D = new double[16];
-    int Dlength = fast_expansion_sum_zeroelim(C2length, C2, 4, u, D);
+    var D = new double[16];
+    var Dlength = fast_expansion_sum_zeroelim(C2length, C2, 4, u, D);
     return (D[Dlength - 1]);
   }
   private static readonly double epsilon;
@@ -402,11 +402,11 @@ public class ShewchuksDeterminant
     /* rounding. Not that this library will work on such machines anyway. */
     static ShewchuksDeterminant()
     {
-    double epsilon_temp = 1.0d;
-    double splitter_temp = 1.0d;
+    var epsilon_temp = 1.0d;
+    var splitter_temp = 1.0d;
         const double half = 0.5d;
         double check = 1d, lastcheck;
-        int every_other = 1;
+        var every_other = 1;
     do {
       lastcheck = check;
       epsilon_temp *= half;
@@ -440,129 +440,129 @@ public class ShewchuksDeterminant
   }
   private static double Fast_Two_Sum_Tail(double a, double b, double x)
   {
-    double bvirt = x - a;
-    double y = b - bvirt;
+    var bvirt = x - a;
+    var y = b - bvirt;
     return y;
   }
   private static double Fast_Two_Sum_Head(double a, double b)
   {
-    double x = (double) (a + b);
+    var x = (double) (a + b);
     return x;
   }
   private static double Two_Sum_Tail(double a, double b, double x)
   {
-    double bvirt = (double) (x - a);
-    double avirt = x - bvirt;
-    double bround = b - bvirt;
-    double around = a - avirt;
-    double y = around + bround;
+    var bvirt = (double) (x - a);
+    var avirt = x - bvirt;
+    var bround = b - bvirt;
+    var around = a - avirt;
+    var y = around + bround;
     return y;
   }
   private static double Two_Sum_Head(double a, double b)
   {
-    double x = (double) (a + b);
+    var x = (double) (a + b);
     return x;
   }
   private static double Two_Diff_Tail(double a, double b, double x)
   {
-    double bvirt = (double) (a - x); // porting issue: why this cast?
-    double avirt = x + bvirt;
-    double bround = bvirt - b;
-    double around = a - avirt;
-    double y = around + bround;
+    var bvirt = (double) (a - x); // porting issue: why this cast?
+    var avirt = x + bvirt;
+    var bround = bvirt - b;
+    var around = a - avirt;
+    var y = around + bround;
     return y;
   }
   private static double Two_Diff_Head(double a, double b)
   {
-    double x = (double) (a - b);
+    var x = (double) (a - b);
     return x;
   }
   private static double SplitLo(double a)
   {
-    double c = (double) (splitter * a); // porting issue: why this cast?
-    double abig = (double) (c - a); // porting issue: why this cast?
-    double ahi = c - abig;
-    double alo = a - ahi;
+    var c = (double) (splitter * a); // porting issue: why this cast?
+    var abig = (double) (c - a); // porting issue: why this cast?
+    var ahi = c - abig;
+    var alo = a - ahi;
     return alo;
   }
   private static double SplitHi(double a)
   {
-    double c = (double) (splitter * a); // porting issue: why this cast?
-    double abig = (double) (c - a); // porting issue: why this cast?
-    double ahi = c - abig;
+    var c = (double) (splitter * a); // porting issue: why this cast?
+    var abig = (double) (c - a); // porting issue: why this cast?
+    var ahi = c - abig;
     return ahi;
   }
   private static double Two_Product_Tail(double a, double b, double x)
   {
-    double ahi = SplitHi(a);
-    double alo = SplitLo(a);
-    double bhi = SplitHi(b);
-    double blo = SplitLo(b);
-    double err1 = x - (ahi * bhi);
-    double err2 = err1 - (alo * bhi);
-    double err3 = err2 - (ahi * blo);
-    double y = (alo * blo) - err3;
+    var ahi = SplitHi(a);
+    var alo = SplitLo(a);
+    var bhi = SplitHi(b);
+    var blo = SplitLo(b);
+    var err1 = x - (ahi * bhi);
+    var err2 = err1 - (alo * bhi);
+    var err3 = err2 - (ahi * blo);
+    var y = (alo * blo) - err3;
     return y;
   }
   private static double Two_Product_Head(double a, double b)
   {
-    double x = (double) (a * b);
+    var x = (double) (a * b);
     return x;
   }
   // #define Two_One_Diff(a1, a0, b, x2, x1, x0)
   private static double Two_One_Diff__x0(double a1, double a0, double b)
   {
-    double _i = Two_Diff_Head(a0, b);
-    double x0 = Two_Diff_Tail(a0, b, _i);
+    var _i = Two_Diff_Head(a0, b);
+    var x0 = Two_Diff_Tail(a0, b, _i);
     return x0;
   }
   // #define Two_One_Diff(a1, a0, b, x2, x1, x0)
   private static double Two_One_Diff__x1(double a1, double a0, double b)
   {
-    double _i = Two_Diff_Head(a0, b);
-    double x2 = Two_Sum_Head(a1, _i);
-    double x1 = Two_Sum_Tail(a1, _i, x2);
+    var _i = Two_Diff_Head(a0, b);
+    var x2 = Two_Sum_Head(a1, _i);
+    var x1 = Two_Sum_Tail(a1, _i, x2);
     return x1;
   }
   // #define Two_One_Diff(a1, a0, b, x2, x1, x0)
   private static double Two_One_Diff__x2(double a1, double a0, double b)
   {
-    double _i = Two_Diff_Head(a0, b);
-    double x2 = Two_Sum_Head(a1, _i);
+    var _i = Two_Diff_Head(a0, b);
+    var x2 = Two_Sum_Head(a1, _i);
     return x2;
   }
   // #define Two_Two_Diff(a1, a0, b1, b0, x3, x2, x1, x0)
   private static double Two_Two_Diff__x0(double a1, double a0, double b1,
       double b0)
   {
-    double x0 = Two_One_Diff__x0(a1, a0, b0);
+    var x0 = Two_One_Diff__x0(a1, a0, b0);
     return x0;
   }
   // #define Two_Two_Diff(a1, a0, b1, b0, x3, x2, x1, x0)
   private static double Two_Two_Diff__x1(double a1, double a0, double b1,
       double b0)
   {
-    double _j = Two_One_Diff__x2(a1, a0, b0);
-    double _0 = Two_One_Diff__x1(a1, a0, b0);
-    double x1 = Two_One_Diff__x0(_j, _0, b1);
+    var _j = Two_One_Diff__x2(a1, a0, b0);
+    var _0 = Two_One_Diff__x1(a1, a0, b0);
+    var x1 = Two_One_Diff__x0(_j, _0, b1);
     return x1;
   }
   // #define Two_Two_Diff(a1, a0, b1, b0, x3, x2, x1, x0)
   private static double Two_Two_Diff__x2(double a1, double a0, double b1,
       double b0)
   {
-    double _j = Two_One_Diff__x2(a1, a0, b0);
-    double _0 = Two_One_Diff__x1(a1, a0, b0);
-    double x2 = Two_One_Diff__x1(_j, _0, b1);
+    var _j = Two_One_Diff__x2(a1, a0, b0);
+    var _0 = Two_One_Diff__x1(a1, a0, b0);
+    var x2 = Two_One_Diff__x1(_j, _0, b1);
     return x2;
   }
   // #define Two_Two_Diff(a1, a0, b1, b0, x3, x2, x1, x0)
   private static double Two_Two_Diff__x3(double a1, double a0, double b1,
       double b0)
   {
-    double _j = Two_One_Diff__x2(a1, a0, b0);
-    double _0 = Two_One_Diff__x1(a1, a0, b0);
-    double x3 = Two_One_Diff__x2(_j, _0, b1);
+    var _j = Two_One_Diff__x2(a1, a0, b0);
+    var _0 = Two_One_Diff__x1(a1, a0, b0);
+    var x3 = Two_One_Diff__x2(_j, _0, b1);
     return x3;
   }
   /*****************************************************************************/

@@ -218,7 +218,7 @@ namespace NetTopologySuite.Geometries.Utilities
                     return factory.CreateLineString(Edit(geometry.Coordinates, geometry));
                 if (geometry is Point)
                 {
-                    Coordinate[] newCoordinates = Edit(geometry.Coordinates, geometry);
+                    var newCoordinates = Edit(geometry.Coordinates, geometry);
                     return factory.CreatePoint((newCoordinates.Length > 0) ? newCoordinates[0] : null);
                 }
                 return geometry;

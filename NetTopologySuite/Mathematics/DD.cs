@@ -445,19 +445,19 @@ namespace NetTopologySuite.Mathematics
         public static DD operator *(DD lhs, DD rhs)
         {
             if (IsNaN(rhs)) return CreateNaN();
-            double C = Split * lhs._hi;
-            double hx = C - lhs._hi;
-            double c = Split * rhs._hi;
+            var C = Split * lhs._hi;
+            var hx = C - lhs._hi;
+            var c = Split * rhs._hi;
             hx = C - hx;
-            double tx = lhs._hi - hx;
-            double hy = c - rhs._hi;
+            var tx = lhs._hi - hx;
+            var hy = c - rhs._hi;
             C = lhs._hi * rhs._hi;
             hy = c - hy;
-            double ty = rhs._hi - hy;
+            var ty = rhs._hi - hy;
             c = ((((hx * hy - C) + hx * ty) + tx * hy) + tx * ty) + (lhs._hi * rhs._lo + lhs._lo * rhs._hi);
-            double zhi = C + c;
+            var zhi = C + c;
             hx = C - zhi;
-            double zlo = c + hx;
+            var zlo = c + hx;
             return new DD(zhi, zlo);
         }
         /*
@@ -502,8 +502,8 @@ namespace NetTopologySuite.Mathematics
             u = (((hc*hy - U) + hc*ty) + tc*hy) + tc*ty;
             c = ((((_hi - U) - u) + _lo) - C*y._lo)/y._hi;
             u = C + c;
-            double zhi = u;
-            double zlo = (C - u) + c;
+            var zhi = u;
+            var zlo = (C - u) + c;
             return new DD(zhi, zlo);
         }
         /// <summary>
@@ -604,8 +604,8 @@ namespace NetTopologySuite.Mathematics
             ty = _hi - hy;
             u = (((hc*hy - U) + hc*ty) + tc*hy) + tc*ty;
             c = ((((1.0 - U) - u)) - C*_lo)/_hi;
-            double zhi = C + c;
-            double zlo = (C - zhi) + c;
+            var zhi = C + c;
+            var zlo = (C - zhi) + c;
             return new DD(zhi, zlo);
         }
         #region Ordering Functions
@@ -644,8 +644,8 @@ namespace NetTopologySuite.Mathematics
         public DD Floor()
         {
             if (IsNaN(this)) return NaN;
-            double fhi = Math.Floor(_hi);
-            double flo = 0.0;
+            var fhi = Math.Floor(_hi);
+            var flo = 0.0;
             // Hi is already integral.  Floor the low word
             if (fhi == _hi)
             {
@@ -669,8 +669,8 @@ namespace NetTopologySuite.Mathematics
         public DD Ceiling()
         {
             if (IsNaN(this)) return NaN;
-            double fhi = Math.Ceiling(_hi);
-            double flo = 0.0;
+            var fhi = Math.Ceiling(_hi);
+            var flo = 0.0;
             // Hi is already integral.  Ceil the low word
             if (fhi == _hi)
             {
@@ -784,8 +784,8 @@ namespace NetTopologySuite.Mathematics
             {
                 return NaN;
             }
-            double x = 1.0/Math.Sqrt(_hi);
-            double ax = _hi*x;
+            var x = 1.0/Math.Sqrt(_hi);
+            var ax = _hi*x;
             var axdd = ValueOf(ax);
             var diffSq = this - axdd.Sqr();
             var d2 = diffSq._hi*(x*0.5);
@@ -805,9 +805,9 @@ namespace NetTopologySuite.Mathematics
         {
             if (exp == 0.0)
                 return ValueOf(1.0);
-            DD r = new DD(this);
-            DD s = ValueOf(1.0);
-            int n = Math.Abs(exp);
+            var r = new DD(this);
+            var s = ValueOf(1.0);
+            var n = Math.Abs(exp);
             if (n > 1)
             {
                 /* Use binary exponentiation */
@@ -1002,8 +1002,8 @@ namespace NetTopologySuite.Mathematics
                 return specialStr;
             var magnitude = new int[1];
             var sigDigits = ExtractSignificantDigits(true, magnitude);
-            int decimalPointPos = magnitude[0] + 1;
-            String num = sigDigits;
+            var decimalPointPos = magnitude[0] + 1;
+            var num = sigDigits;
             // add a leading 0 if the decimal point is the first char
             if (sigDigits[0] == '.')
             {
@@ -1017,7 +1017,7 @@ namespace NetTopologySuite.Mathematics
             {
                 // no point inserted - sig digits must be smaller than magnitude of number
                 // add zeroes to end to make number the correct size
-                int numZeroes = decimalPointPos - sigDigits.Length;
+                var numZeroes = decimalPointPos - sigDigits.Length;
                 var zeroes = new string('0', numZeroes);
                 num = sigDigits + zeroes + ".0";
             }
@@ -1034,12 +1034,12 @@ namespace NetTopologySuite.Mathematics
             // special case zero, to allow as
             if (IsZero)
                 return SCI_NOT_ZERO;
-            String specialStr = GetSpecialNumberString();
+            var specialStr = GetSpecialNumberString();
             if (specialStr != null)
                 return specialStr;
-            int[] magnitude = new int[1];
-            String digits = ExtractSignificantDigits(false, magnitude);
-            String expStr = SCI_NOT_EXPONENT_CHAR + magnitude[0];
+            var magnitude = new int[1];
+            var digits = ExtractSignificantDigits(false, magnitude);
+            var expStr = SCI_NOT_EXPONENT_CHAR + magnitude[0];
             // should never have leading zeroes
             // MD - is this correct?  Or should we simply strip them if they are present?
             if (digits[0] == '0')
@@ -1047,10 +1047,10 @@ namespace NetTopologySuite.Mathematics
                 throw new InvalidOperationException("Found leading zero: " + digits);
             }
             // add decimal point
-            String trailingDigits = "";
+            var trailingDigits = "";
             if (digits.Length > 1)
                 trailingDigits = digits.Substring(1);
-            String digitsWithDecimal = digits[0] + "." + trailingDigits;
+            var digitsWithDecimal = digits[0] + "." + trailingDigits;
             if (IsNegative)
                 return "-" + digitsWithDecimal + expStr;
             return digitsWithDecimal + expStr;
@@ -1083,16 +1083,16 @@ namespace NetTopologySuite.Mathematics
                 y *= Ten;
                 mag -= 1;
             }
-            int decimalPointPos = mag + 1;
+            var decimalPointPos = mag + 1;
             var buf = new StringBuilder();
-            int numDigits = MaxPrintDigits - 1;
-            for (int i = 0; i <= numDigits; i++)
+            var numDigits = MaxPrintDigits - 1;
+            for (var i = 0; i <= numDigits; i++)
             {
                 if (insertDecimalPoint && i == decimalPointPos)
                 {
                     buf.Append('.');
                 }
-                int digit = (int) y._hi;
+                var digit = (int) y._hi;
                 //      System.out.println("printDump: [" + i + "] digit: " + digit + "  y: " + y.dump() + "  buf: " + buf);
                 /**
                  * This should never happen, due to heuristic checks on remainder below
@@ -1113,7 +1113,7 @@ namespace NetTopologySuite.Mathematics
                     break;
                     // throw new IllegalStateException("Internal errror: found digit = " + digit);
                 }
-                bool rebiasBy10 = false;
+                var rebiasBy10 = false;
                 char digitChar;
                 if (digit > 9)
                 {
@@ -1130,7 +1130,7 @@ namespace NetTopologySuite.Mathematics
                 y = (y - ValueOf(digit)) * Ten;
                 if (rebiasBy10)
                     y += Ten;
-                bool continueExtractingDigits = true;
+                var continueExtractingDigits = true;
                 /**
                  * Heuristic check: if the remaining portion of
                  * y is non-positive, assume that output is complete
@@ -1142,7 +1142,7 @@ namespace NetTopologySuite.Mathematics
                  * Check if remaining digits will be 0, and if so don't output them.
                  * Do this by comparing the magnitude of the remainder with the expected precision.
                  */
-                int remMag = Magnitude(y._hi);
+                var remMag = Magnitude(y._hi);
                 if (remMag < 0 && Math.Abs(remMag) >= (numDigits - i))
                     continueExtractingDigits = false;
                 if (!continueExtractingDigits)
@@ -1201,16 +1201,16 @@ namespace NetTopologySuite.Mathematics
         /// <exception cref="FormatException">Thrown if <tt>str</tt> is not a valid representation of a number</exception>
         public static DD Parse(String str)
         {
-            int i = 0;
-            int strlen = str.Length;
+            var i = 0;
+            var strlen = str.Length;
             // skip leading whitespace
             while (Char.IsWhiteSpace(str[i]))
                 i++;
             // check for sign
-            bool isNegative = false;
+            var isNegative = false;
             if (i < strlen)
             {
-                char signCh = str[i];
+                var signCh = str[i];
                 if (signCh == '-' || signCh == '+')
                 {
                     i++;
@@ -1219,16 +1219,16 @@ namespace NetTopologySuite.Mathematics
             }
             // scan all digits and accumulate into an integral value
             // Keep track of the location of the decimal point (if any) to allow scaling later
-            DD val = new DD();
-            int numDigits = 0;
-            int numBeforeDec = 0;
-            int exp = 0;
+            var val = new DD();
+            var numDigits = 0;
+            var numBeforeDec = 0;
+            var exp = 0;
             var hasDecimalChar = false;
             while (true)
             {
                 if (i >= strlen)
                     break;
-                char ch = str[i];
+                var ch = str[i];
                 i++;
                 if (Char.IsDigit(ch))
                 {
@@ -1247,7 +1247,7 @@ namespace NetTopologySuite.Mathematics
                 }
                 if (ch == 'e' || ch == 'E')
                 {
-                    String expStr = str.Substring(i);
+                    var expStr = str.Substring(i);
                     // this should catch any format problems with the exponent
                     try
                     {
@@ -1263,7 +1263,7 @@ namespace NetTopologySuite.Mathematics
                                           + "' at position " + i
                                           + " in string " + str);
             }
-            DD val2 = val;
+            var val2 = val;
             // correct number of digits before decimal sign if we don't have a decimal sign in the string
             if (!hasDecimalChar) numBeforeDec = numDigits;
             // scale the number correctly
@@ -1279,7 +1279,7 @@ namespace NetTopologySuite.Mathematics
             }
             else if (numDecPlaces < 0)
             {
-                DD scale = Ten.Pow(-numDecPlaces);
+                var scale = Ten.Pow(-numDecPlaces);
                 val2 = val * scale;
             }
             // apply leading sign, if any

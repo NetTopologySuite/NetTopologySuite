@@ -17,13 +17,13 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
         public bool Test(IList<IGeometry> geoms, double minimumMeasure)
         {
             //System.Console.WriteLine("Computing Iterated union ");
-            IGeometry union1 = UnionIterated(geoms);
+            var union1 = UnionIterated(geoms);
             //System.Console.WriteLine("Computing Cascaded union");
-            IGeometry union2 = UnionCascaded(geoms);
+            var union2 = UnionCascaded(geoms);
             //System.Console.WriteLine("Testing similarity with min measure = " + minimumMeasure);
-            double areaMeasure = (new AreaSimilarityMeasure()).Measure(union1, union2);
-            double hausMeasure = (new HausdorffSimilarityMeasure()).Measure(union1, union2);
-            double overallMeasure = SimilarityMeasureCombiner.Combine(areaMeasure, hausMeasure);
+            var areaMeasure = (new AreaSimilarityMeasure()).Measure(union1, union2);
+            var hausMeasure = (new HausdorffSimilarityMeasure()).Measure(union1, union2);
+            var overallMeasure = SimilarityMeasureCombiner.Combine(areaMeasure, hausMeasure);
             //Console.WriteLine(
             //        "Area measure = " + areaMeasure
             //        + "   Hausdorff measure = " + hausMeasure

@@ -37,11 +37,11 @@ namespace Open.Topology.TestRunner.Operations
         public static Type GetGeometryReturnType(String functionName)
         {
             //MethodInfo[] methods = typeof(IGeometry).GetMethods();
-            for (int i = 0; i < GeometryMethods.Length; i++)
+            for (var i = 0; i < GeometryMethods.Length; i++)
             {
                 if (GeometryMethods[i].Name.Equals(functionName, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    Type returnClass = GeometryMethods[i].ReturnType;
+                    var returnClass = GeometryMethods[i].ReturnType;
                     /**
                      * Filter out only acceptable classes. (For instance, don't accept the
                      * relate()=>IntersectionMatrix method)
@@ -71,8 +71,8 @@ namespace Open.Topology.TestRunner.Operations
         }
         public IResult Invoke(String opName, IGeometry geometry, Object[] args)
         {
-            Object[] actualArgs = new Object[args.Length];
-            MethodInfo geomMethod = GetGeometryMethod(opName, args, actualArgs);
+            var actualArgs = new Object[args.Length];
+            var geomMethod = GetGeometryMethod(opName, args, actualArgs);
             if (geomMethod == null)
                 throw new NTSTestReflectionException(opName, args);
             return InvokeMethod(geomMethod, geometry, actualArgs);
@@ -80,7 +80,7 @@ namespace Open.Topology.TestRunner.Operations
         private MethodInfo GetGeometryMethod(String opName, Object[] args, Object[] actualArgs)
         {
             // could index methods by name for efficiency...
-            for (int i = 0; i < GeometryMethods.Length; i++)
+            for (var i = 0; i < GeometryMethods.Length; i++)
             {
                 if (!GeometryMethods[i].Name.Equals(opName, StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -95,8 +95,8 @@ namespace Open.Topology.TestRunner.Operations
         }
         private static int NonNullItemCount(Object[] obj)
         {
-            int count = 0;
-            for (int i = 0; i < obj.Length; i++)
+            var count = 0;
+            for (var i = 0; i < obj.Length; i++)
             {
                 if (obj[i] != null)
                     count++;
@@ -108,9 +108,9 @@ namespace Open.Topology.TestRunner.Operations
         {
             if (parameterTypes.Length != NonNullItemCount(args))
                 return false;
-            for (int i = 0; i < args.Length; i++)
+            for (var i = 0; i < args.Length; i++)
             {
-                bool isCompatible = ConvertArg(parameterTypes[i].ParameterType, args[i], _convArg);
+                var isCompatible = ConvertArg(parameterTypes[i].ParameterType, args[i], _convArg);
                 if (!isCompatible)
                     return false;
                 actualArgs[i] = _convArg[0];

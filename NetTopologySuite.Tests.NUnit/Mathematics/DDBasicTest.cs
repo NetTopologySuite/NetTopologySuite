@@ -45,8 +45,8 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         }
         private void CheckSqrt(DD x, double errBound)
         {
-            DD sqrt = x.Sqrt();
-            DD x2 = sqrt.Multiply(sqrt);
+            var sqrt = x.Sqrt();
+            var x2 = sqrt.Multiply(sqrt);
             CheckErrorBound("Sqrt", x, x2, errBound);
         }
         [TestAttribute]
@@ -62,7 +62,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         }
         private static void CheckTrunc(DD x, DD expected)
         {
-            DD trunc = x.Truncate();
+            var trunc = x.Truncate();
             var isEqual = trunc.Equals(expected);
             Assert.True(isEqual);
             isEqual = trunc == expected;
@@ -104,18 +104,18 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         }
         private static void CheckAddMult2(DD dd)
         {
-            DD sum = dd.Add(dd);
-            DD prod = dd.Multiply(new DD(2.0));
+            var sum = dd.Add(dd);
+            var prod = dd.Multiply(new DD(2.0));
             CheckErrorBound("AddMult2", sum, prod, 0.0);
         }
         private static void CheckMultiplyDivide(DD a, DD b, double errBound)
         {
-            DD a2 = a.Multiply(b).Divide(b);
+            var a2 = a.Multiply(b).Divide(b);
             CheckErrorBound("MultiplyDivide", a, a2, errBound);
         }
         private static void CheckDivideMultiply(DD a, DD b, double errBound)
         {
-            DD a2 = a.Divide(b).Multiply(b);
+            var a2 = a.Divide(b).Multiply(b);
             CheckErrorBound("DivideMultiply", a, a2, errBound);
         }
         private static DD Delta(DD x, DD y)
@@ -124,7 +124,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         }
         private static void CheckErrorBound(String tag, DD x, DD y, double errBound)
         {
-            DD err = x.Subtract(y).Abs();
+            var err = x.Subtract(y).Abs();
             Console.WriteLine(tag + " err=" + err);
             var isWithinEps = err.ToDoubleValue() <= errBound;
             Assert.True(isWithinEps);
@@ -229,7 +229,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             var pow = xdd.Pow(exp);
             //System.Console.WriteLine("Pow(" + x + ", " + exp + ") = " + pow);
             var pow2 = SlowPow(xdd, exp);
-            double err = pow.Subtract(pow2).ToDoubleValue();
+            var err = pow.Subtract(pow2).ToDoubleValue();
             var isOK = err < errBound;
             if (!isOK)
                 Console.WriteLine("Test slowPow value " + pow2);
@@ -242,7 +242,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             var n = Math.Abs(exp);
             // MD - could use binary exponentiation for better precision & speed
             var pow = new DD(x);
-            for (int i = 1; i < n; i++)
+            for (var i = 1; i < n; i++)
             {
                 pow = pow.Multiply(x);
             }

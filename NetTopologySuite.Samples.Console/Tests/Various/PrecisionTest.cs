@@ -12,13 +12,13 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void OverlayUsingDefaultPrecision()
         {
-            IGeometryFactory factory = GeometryFactory.Default;
-            WKTReader reader = new WKTReader(factory);
-            IGeometry pol = reader.Read(wktpol);
+            var factory = GeometryFactory.Default;
+            var reader = new WKTReader(factory);
+            var pol = reader.Read(wktpol);
             Assert.IsNotNull(pol);
             Assert.IsTrue(pol.IsValid);
             Assert.IsTrue(pol.Factory.PrecisionModel == factory.PrecisionModel);
-            IGeometry line = reader.Read(wktline);
+            var line = reader.Read(wktline);
             Assert.IsNotNull(line);
             Assert.IsTrue(line.IsValid);
             Assert.IsTrue(line.Factory.PrecisionModel == factory.PrecisionModel);
@@ -27,13 +27,13 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void OverlayUsingFixedPrecision()
         {
-            IGeometryFactory factory = GeometryFactory.Fixed;
-            WKTReader reader = new WKTReader(factory);
-            IGeometry pol = reader.Read(wktpol);
+            var factory = GeometryFactory.Fixed;
+            var reader = new WKTReader(factory);
+            var pol = reader.Read(wktpol);
             Assert.IsNotNull(pol);
             Assert.IsTrue(pol.IsValid);
             Assert.IsTrue(pol.Factory.PrecisionModel == factory.PrecisionModel);
-            IGeometry line = reader.Read(wktline);
+            var line = reader.Read(wktline);
             Assert.IsNotNull(line);
             Assert.IsTrue(line.IsValid);
             Assert.IsTrue(line.Factory.PrecisionModel == factory.PrecisionModel);

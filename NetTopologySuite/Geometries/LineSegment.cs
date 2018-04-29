@@ -267,13 +267,13 @@ namespace NetTopologySuite.Geometries
         public Coordinate PointAlongOffset(double segmentLengthFraction, double offsetDistance)
         {
             // the point on the segment line
-            double segx = _p0.X + segmentLengthFraction * (_p1.X - _p0.X);
-            double segy = _p0.Y + segmentLengthFraction * (_p1.Y - _p0.Y);
-            double dx = _p1.X - _p0.X;
-            double dy = _p1.Y - _p0.Y;
-            double len = Math.Sqrt(dx * dx + dy * dy);
-            double ux = 0.0;
-            double uy = 0.0;
+            var segx = _p0.X + segmentLengthFraction * (_p1.X - _p0.X);
+            var segy = _p0.Y + segmentLengthFraction * (_p1.Y - _p0.Y);
+            var dx = _p1.X - _p0.X;
+            var dy = _p1.Y - _p0.Y;
+            var len = Math.Sqrt(dx * dx + dy * dy);
+            var ux = 0.0;
+            var uy = 0.0;
             if (offsetDistance != 0.0)
             {
                 if (len <= 0.0)
@@ -283,8 +283,8 @@ namespace NetTopologySuite.Geometries
                 uy = offsetDistance * dy / len;
             }
             // the offset point is the seg point plus the offset vector rotated 90 degrees CCW
-            double offsetx = segx - uy;
-            double offsety = segy + ux;
+            var offsetx = segx - uy;
+            var offsety = segy + ux;
             var coord = new Coordinate(offsetx, offsety);
             return coord;
         }
@@ -319,7 +319,7 @@ namespace NetTopologySuite.Geometries
             var len = dx * dx + dy * dy;
             // handle zero-length segments
             if (len <= 0.0) return Double.NaN;
-            double r = ((p.X - _p0.X) * dx + (p.Y - _p0.Y) * dy)
+            var r = ((p.X - _p0.X) * dx + (p.Y - _p0.Y) * dy)
                       / len;
             return r;
         }
@@ -337,7 +337,7 @@ namespace NetTopologySuite.Geometries
         /// <returns> the fraction along the line segment the projection of the point occurs</returns>
         public double SegmentFraction(Coordinate inputPt)
         {
-            double segFrac = ProjectionFactor(inputPt);
+            var segFrac = ProjectionFactor(inputPt);
             if (segFrac < 0.0)
                 segFrac = 0.0;
             else if (segFrac > 1.0)
@@ -420,11 +420,11 @@ namespace NetTopologySuite.Geometries
             */
             var closestPt = new Coordinate[2];
             var close00 = ClosestPoint(line._p0);
-            double minDistance = close00.Distance(line._p0);
+            var minDistance = close00.Distance(line._p0);
             closestPt[0] = close00;
             closestPt[1] = line._p0;
             var close01 = ClosestPoint(line._p1);
-            double dist = close01.Distance(line._p1);
+            var dist = close01.Distance(line._p1);
             if (dist < minDistance)
             {
                 minDistance = dist;
@@ -596,12 +596,12 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public override int GetHashCode()
         {
-            long bits0 = BitConverter.DoubleToInt64Bits(_p0.X);
+            var bits0 = BitConverter.DoubleToInt64Bits(_p0.X);
             bits0 ^= BitConverter.DoubleToInt64Bits(_p0.Y) * 31;
-            int hash0 = (((int)bits0) ^ ((int)(bits0 >> 32)));
-            long bits1 = BitConverter.DoubleToInt64Bits(_p1.X);
+            var hash0 = (((int)bits0) ^ ((int)(bits0 >> 32)));
+            var bits1 = BitConverter.DoubleToInt64Bits(_p1.X);
             bits1 ^= BitConverter.DoubleToInt64Bits(_p1.Y) * 31;
-            int hash1 = (((int)bits1) ^ ((int)(bits1 >> 32)));
+            var hash1 = (((int)bits1) ^ ((int)(bits1 >> 32)));
             // XOR is supposed to be a good way to combine hashcodes
             return hash0 ^ hash1;
             //return base.GetHashCode();

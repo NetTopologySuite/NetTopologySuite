@@ -29,7 +29,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void ExtractTest()
         {
-            Coordinate[] result = CoordinateArrays.Extract(array, 1, 5);
+            var result = CoordinateArrays.Extract(array, 1, 5);
             Assert.AreEqual(5, result.Length);
             Assert.AreEqual(result[0], array[1]);
             Assert.AreEqual(result[1], array[2]);
@@ -44,7 +44,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         [ExpectedException("System.ArgumentException")]
         public void ExtractTest2()
         {
-            Coordinate[] result = CoordinateArrays.Extract(array, 1, 10);
+            var result = CoordinateArrays.Extract(array, 1, 10);
             Assert.IsNull(result);
         }
         /// <summary>
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void EqualsComparerTest()
         {
-            Coordinate[] reverse = CoordinateArrays.CopyDeep(array);
+            var reverse = CoordinateArrays.CopyDeep(array);
             CoordinateArrays.Reverse(reverse);
             Assert.IsFalse(CoordinateArrays.Equals(array, reverse));
             Assert.IsFalse(CoordinateArrays.Equals(array, reverse, new CoordinateArrays.ForwardComparator()));

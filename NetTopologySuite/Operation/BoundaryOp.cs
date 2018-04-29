@@ -54,7 +54,7 @@ namespace NetTopologySuite.Operation
             {
                 return GetEmptyMultiPoint();
             }
-            Coordinate[] bdyPts = ComputeBoundaryCoordinates(mLine);
+            var bdyPts = ComputeBoundaryCoordinates(mLine);
             // return Point or MultiPoint
             if (bdyPts.Length == 1)
             {
@@ -81,18 +81,18 @@ namespace NetTopologySuite.Operation
         {
             IList<Coordinate> bdyPts = new List<Coordinate>();
             _endpointMap = new SortedDictionary<Coordinate, Counter>();
-            for (int i = 0; i < mLine.NumGeometries; i++)
+            for (var i = 0; i < mLine.NumGeometries; i++)
             {
-                ILineString line = (ILineString)mLine.GetGeometryN(i);
+                var line = (ILineString)mLine.GetGeometryN(i);
                 if (line.NumPoints == 0)
                     continue;
                 AddEndpoint(line.GetCoordinateN(0));
                 AddEndpoint(line.GetCoordinateN(line.NumPoints - 1));
             }
-            foreach (KeyValuePair<Coordinate, Counter> entry in _endpointMap)
+            foreach (var entry in _endpointMap)
             {
-                Counter counter = entry.Value;
-                int valence = counter.Count;
+                var counter = entry.Value;
+                var valence = counter.Count;
                 if (_bnRule.IsInBoundary(valence))
                 {
                     bdyPts.Add(entry.Key);
@@ -119,7 +119,7 @@ namespace NetTopologySuite.Operation
             if (line.IsClosed)
             {
                 // check whether endpoints of valence 2 are on the boundary or not
-                bool closedEndpointOnBoundary = _bnRule.IsInBoundary(2);
+                var closedEndpointOnBoundary = _bnRule.IsInBoundary(2);
                 if (closedEndpointOnBoundary)
                 {
                     return line.StartPoint;

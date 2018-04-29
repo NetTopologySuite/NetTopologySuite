@@ -42,11 +42,11 @@ namespace NetTopologySuite.Operation.Predicate
         /// <returns></returns>
         public bool HasIntersection(ICoordinateSequence seq0, ICoordinateSequence seq1)
         {
-            for (int i = 1; i < seq0.Count && ! _hasIntersection; i++)
+            for (var i = 1; i < seq0.Count && ! _hasIntersection; i++)
             {
                 seq0.GetCoordinate(i - 1, pt00);
                 seq0.GetCoordinate(i, pt01);
-                for (int j = 1; j < seq1.Count && ! _hasIntersection; j++)
+                for (var j = 1; j < seq1.Count && ! _hasIntersection; j++)
                 {
                     seq1.GetCoordinate(j - 1, pt10);
                     seq1.GetCoordinate(j, pt11);

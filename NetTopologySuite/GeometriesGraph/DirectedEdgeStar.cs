@@ -28,7 +28,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="ee"></param>
         public override void Insert(EdgeEnd ee)
         {
-            DirectedEdge de = (DirectedEdge) ee;
+            var de = (DirectedEdge) ee;
             InsertEdgeEnd(de, de);
         }
         /// <summary>
@@ -41,7 +41,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public int GetOutgoingDegree()
         {
-            int degree = 0;
+            var degree = 0;
             foreach (DirectedEdge de in Edges)
                 if (de.IsInResult)
                     degree++;
@@ -54,7 +54,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public int GetOutgoingDegree(EdgeRing er)
         {
-            int degree = 0;
+            var degree = 0;
             foreach (DirectedEdge de in Edges)
                 if (de.EdgeRing == er)
                     degree++;
@@ -66,16 +66,16 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public DirectedEdge GetRightmostEdge()
         {
-            IList<EdgeEnd> edges = Edges;
-            int size = edges.Count;
+            var edges = Edges;
+            var size = edges.Count;
             if (size < 1)
                 return null;
-            DirectedEdge de0 = (DirectedEdge)edges[0];
+            var de0 = (DirectedEdge)edges[0];
             if (size == 1)
                 return de0;
-            DirectedEdge deLast = (DirectedEdge)edges[size - 1];
-            int quad0 = de0.Quadrant;
-            int quad1 = deLast.Quadrant;
+            var deLast = (DirectedEdge)edges[size - 1];
+            var quad0 = de0.Quadrant;
+            var quad1 = deLast.Quadrant;
             if (QuadrantOp.IsNorthern(quad0) && QuadrantOp.IsNorthern(quad1))
                 return de0;
             else if (!QuadrantOp.IsNorthern(quad0) && !QuadrantOp.IsNorthern(quad1))
@@ -102,15 +102,15 @@ namespace NetTopologySuite.GeometriesGraph
             // determine the overall labelling for this DirectedEdgeStar
             // (i.e. for the node it is based at)
             Label = new Label(Location.Null);
-            IEnumerator<EdgeEnd> it = GetEnumerator();
+            var it = GetEnumerator();
             while(it.MoveNext())
             {
-                EdgeEnd ee = it.Current;
-                Edge e = ee.Edge;
-                Label eLabel = e.Label;
-                for (int i = 0; i < 2; i++)
+                var ee = it.Current;
+                var e = ee.Edge;
+                var eLabel = e.Label;
+                for (var i = 0; i < 2; i++)
                 {
-                    Location eLoc = eLabel.GetLocation(i);
+                    var eLoc = eLabel.GetLocation(i);
                     if (eLoc == Location.Interior || eLoc == Location.Boundary)
                         Label.SetLocation(i, Location.Interior);
                 }
@@ -123,7 +123,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             foreach (DirectedEdge de in Edges)
             {
-                Label label = de.Label;
+                var label = de.Label;
                 label.Merge(de.Sym.Label);
             }
         }
@@ -135,7 +135,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             foreach (DirectedEdge de in Edges)
             {
-                Label label = de.Label;
+                var label = de.Label;
                 label.SetAllLocationsIfNull(0, nodeLabel.GetLocation(0));
                 label.SetAllLocationsIfNull(1, nodeLabel.GetLocation(1));
             }
@@ -177,12 +177,12 @@ namespace NetTopologySuite.GeometriesGraph
             // find first area edge (if any) to start linking at
             DirectedEdge firstOut = null;
             DirectedEdge incoming = null;
-            int state = ScanningForIncoming;
+            var state = ScanningForIncoming;
             // link edges in CCW order
-            for (int i = 0; i < _resultAreaEdgeList.Count; i++)
+            for (var i = 0; i < _resultAreaEdgeList.Count; i++)
             {
-                DirectedEdge nextOut = _resultAreaEdgeList[i];
-                DirectedEdge nextIn = nextOut.Sym;
+                var nextOut = _resultAreaEdgeList[i];
+                var nextIn = nextOut.Sym;
                 // skip de's that we're not interested in
                 if (! nextOut.Label.IsArea())
                     continue;
@@ -224,12 +224,12 @@ namespace NetTopologySuite.GeometriesGraph
             // find first area edge (if any) to start linking at
             DirectedEdge firstOut = null;
             DirectedEdge incoming = null;
-            int state = ScanningForIncoming;
+            var state = ScanningForIncoming;
             // link edges in CW order
-            for (int i = _resultAreaEdgeList.Count - 1; i >= 0; i--)
+            for (var i = _resultAreaEdgeList.Count - 1; i >= 0; i--)
             {
-                DirectedEdge nextOut = this._resultAreaEdgeList[i];
-                DirectedEdge nextIn = nextOut.Sym;
+                var nextOut = this._resultAreaEdgeList[i];
+                var nextIn = nextOut.Sym;
                 // record first outgoing edge, in order to link the last incoming edge
                 if (firstOut == null && nextOut.EdgeRing == er)
                     firstOut = nextOut;
@@ -263,16 +263,16 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public void LinkAllDirectedEdges()
         {
-            IList<EdgeEnd> temp = Edges;
+            var temp = Edges;
             temp = null;    //Hack
             // find first area edge (if any) to start linking at
             DirectedEdge prevOut = null;
             DirectedEdge firstIn = null;
             // link edges in CW order
-            for (int i = edgeList.Count - 1; i >= 0; i--)
+            for (var i = edgeList.Count - 1; i >= 0; i--)
             {
-                DirectedEdge nextOut = (DirectedEdge)edgeList[i];
-                DirectedEdge nextIn = nextOut.Sym;
+                var nextOut = (DirectedEdge)edgeList[i];
+                var nextIn = nextOut.Sym;
                 if (firstIn == null)
                     firstIn = nextIn;
                 if (prevOut != null)
@@ -298,10 +298,10 @@ namespace NetTopologySuite.GeometriesGraph
             * - Interior if the edge is outgoing
             * - Exterior if the edge is incoming
             */
-            Location startLoc = Location.Null;
+            var startLoc = Location.Null;
             foreach (DirectedEdge nextOut in Edges)
             {
-                DirectedEdge nextIn   = nextOut.Sym;
+                var nextIn   = nextOut.Sym;
                 if (!nextOut.IsLineEdge)
                 {
                     if (nextOut.IsInResult)
@@ -324,10 +324,10 @@ namespace NetTopologySuite.GeometriesGraph
             * (Interior or Exterior) for the result area.
             * If Curve edges are found, mark them as covered if they are in the interior
             */
-            Location currLoc = startLoc;
+            var currLoc = startLoc;
             foreach (DirectedEdge nextOut in Edges)
             {
-                DirectedEdge nextIn   = nextOut.Sym;
+                var nextIn   = nextOut.Sym;
                 if (nextOut.IsLineEdge)
                     nextOut.Edge.Covered = (currLoc == Location.Interior);
                 else {
@@ -345,13 +345,13 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="de"></param>
         public void ComputeDepths(DirectedEdge de)
         {
-            int edgeIndex = FindIndex(de);
-            int startDepth = de.GetDepth(Positions.Left);
-            int targetLastDepth = de.GetDepth(Positions.Right);
+            var edgeIndex = FindIndex(de);
+            var startDepth = de.GetDepth(Positions.Left);
+            var targetLastDepth = de.GetDepth(Positions.Right);
             // compute the depths from this edge up to the end of the edge array
-            int nextDepth = ComputeDepths(edgeIndex + 1, edgeList.Count, startDepth);
+            var nextDepth = ComputeDepths(edgeIndex + 1, edgeList.Count, startDepth);
             // compute the depths for the initial part of the array
-            int lastDepth = ComputeDepths(0, edgeIndex, nextDepth);
+            var lastDepth = ComputeDepths(0, edgeIndex, nextDepth);
             if (lastDepth != targetLastDepth)
                 throw new TopologyException("depth mismatch at " + de.Coordinate);
         }
@@ -361,10 +361,10 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns>The last depth assigned (from the R side of the last edge visited).</returns>
         private int ComputeDepths(int startIndex, int endIndex, int startDepth)
         {
-            int currDepth = startDepth;
-            for (int i = startIndex; i < endIndex ; i++)
+            var currDepth = startDepth;
+            for (var i = startIndex; i < endIndex ; i++)
             {
-                DirectedEdge nextDe = (DirectedEdge)edgeList[i];
+                var nextDe = (DirectedEdge)edgeList[i];
                 nextDe.SetEdgeDepths(Positions.Right, currDepth);
                 currDepth = nextDe.GetDepth(Positions.Left);
             }

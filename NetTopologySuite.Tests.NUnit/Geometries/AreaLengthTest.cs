@@ -38,14 +38,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
         public void checkLength(String wkt, double expectedValue)
         {
-            IGeometry g = reader.Read(wkt);
-            double len = g.Length;
+            var g = reader.Read(wkt);
+            var len = g.Length;
             //System.Console.WriteLine(len);
             Assert.AreEqual(expectedValue, len, TOLERANCE);
         }
         public void checkArea(String wkt, double expectedValue)
         {
-            IGeometry g = reader.Read(wkt);
+            var g = reader.Read(wkt);
             Assert.AreEqual(expectedValue, g.Area, TOLERANCE);
         }
     }

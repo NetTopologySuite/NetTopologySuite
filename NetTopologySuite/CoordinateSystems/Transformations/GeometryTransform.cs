@@ -155,7 +155,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
                 var seq = currPoint.CoordinateSequence;
                 foreach (var ordinate in ordinates)
                 {
-                    double d = seq.GetOrdinate(0, ordinate);
+                    var d = seq.GetOrdinate(0, ordinate);
                     coordSequence.SetOrdinate(i, ordinate, d);
                 }
             }

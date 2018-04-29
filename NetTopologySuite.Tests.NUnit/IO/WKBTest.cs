@@ -87,7 +87,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [TestAttribute]
         public void TestBigPolygon()
         {
-            GeometricShapeFactory shapeFactory = new GeometricShapeFactory(GeomFactory);
+            var shapeFactory = new GeometricShapeFactory(GeomFactory);
             shapeFactory.Base = new Coordinate(0, 0);
             shapeFactory.Size = 1000;
             shapeFactory.NumPoints = 1000;
@@ -126,17 +126,17 @@ namespace NetTopologySuite.Tests.NUnit.IO
         }
         private void RunWKBTestPackedCoordinate(String wkt)
         {
-            GeometryFactory factory = new GeometryFactory(
+            var factory = new GeometryFactory(
                 new PackedCoordinateSequenceFactory(PackedCoordinateSequenceFactory.PackedType.Double, 2));
-            WKTReader reader = new WKTReader(factory);
-            IGeometry g = reader.Read(wkt);
+            var reader = new WKTReader(factory);
+            var g = reader.Read(wkt);
             // Since we are using a PCS of dim=2, only check 2-dimensional storage
             RunWKBTest(g, 2, true);
             RunWKBTest(g, 2, false);
         }
         private void RunWKBTestCoordinateArray(String wkt)
         {
-            IGeometry g = Rdr.Read(wkt);
+            var g = Rdr.Read(wkt);
             // CoordinateArrays support dimension 3, so test both dimensions
             g = SetDimension(g, 2);
             RunWKBTest(g, 2, true);
@@ -222,26 +222,26 @@ namespace NetTopologySuite.Tests.NUnit.IO
         readonly WKBReader _wkbReader = new WKBReader(GeomFactory);
         void RunGeometry(Geometry g, int dimension, ByteOrder byteOrder, bool toHex, int srid)
         {
-            bool includeSRID = false;
+            var includeSRID = false;
             if (srid >= 0)
             {
                 includeSRID = true;
                 g.SRID = srid;
             }
-            WKBWriter wkbWriter = new WKBWriter(byteOrder, includeSRID, dimension==2 ? false : true);
-            byte[] wkb = wkbWriter.Write(g);
+            var wkbWriter = new WKBWriter(byteOrder, includeSRID, dimension==2 ? false : true);
+            var wkb = wkbWriter.Write(g);
             String wkbHex = null;
             if (toHex)
                 wkbHex = WKBWriter.ToHex(wkb);
             if (toHex)
                 wkb = WKBReader.HexToBytes(wkbHex);
-            Geometry g2 = (Geometry)_wkbReader.Read(wkb);
-            CoordinateSequenceComparator comp = (dimension == 2) ? Comp2 : Comp3;
-            bool isEqual = (g.CompareTo(g2, comp) == 0);
+            var g2 = (Geometry)_wkbReader.Read(wkb);
+            var comp = (dimension == 2) ? Comp2 : Comp3;
+            var isEqual = (g.CompareTo(g2, comp) == 0);
             Assert.IsTrue(isEqual);
             if (includeSRID)
             {
-                bool isSRIDEqual = g.SRID == g2.SRID;
+                var isSRIDEqual = g.SRID == g2.SRID;
                 Assert.IsTrue(isSRIDEqual);
             }
         }

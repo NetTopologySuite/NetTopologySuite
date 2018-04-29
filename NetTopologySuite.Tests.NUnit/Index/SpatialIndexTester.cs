@@ -55,11 +55,11 @@ namespace NetTopologySuite.Tests.NUnit.Index
         private const double QueryEnvelopeExtent2 = 11.7;
         private static void AddSourceData(double offset, List<Envelope> sourceData)
         {
-            for (int i = 0; i < CellsPerGridSide; i++)
+            for (var i = 0; i < CellsPerGridSide; i++)
             {
-                double minx = (i*CellExtent) + offset;
-                double maxx = minx + FeatureExtent;
-                for (int j = 0; j < CellsPerGridSide; j++)
+                var minx = (i*CellExtent) + offset;
+                var maxx = minx + FeatureExtent;
+                for (var j = 0; j < CellsPerGridSide; j++)
                 {
                     var miny = (j*CellExtent) + offset;
                     var maxy = miny + FeatureExtent;
@@ -75,10 +75,10 @@ namespace NetTopologySuite.Tests.NUnit.Index
                 //System.Console.WriteLine("---------------");
                 //System.Console.WriteLine("Envelope Extent: " + queryEnvelopeExtent);
             }
-            int extraMatchCount = 0;
-            int expectedMatchCount = 0;
-            int actualMatchCount = 0;
-            int queryCount = 0;
+            var extraMatchCount = 0;
+            var expectedMatchCount = 0;
+            var actualMatchCount = 0;
+            var queryCount = 0;
             for (var x = 0d; x < CellExtent*CellsPerGridSide; x += queryEnvelopeExtent)
             {
                 for (var y = 0d; y < CellExtent*CellsPerGridSide; y += queryEnvelopeExtent)

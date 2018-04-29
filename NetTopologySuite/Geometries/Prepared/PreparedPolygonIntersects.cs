@@ -42,7 +42,7 @@ namespace NetTopologySuite.Geometries.Prepared
              *
              * If a point of any test components lie in target, result is true
              */
-            bool isInPrepGeomArea = IsAnyTestComponentInTarget(geom);
+            var isInPrepGeomArea = IsAnyTestComponentInTarget(geom);
             if (isInPrepGeomArea)
                 return true;
             /**
@@ -54,7 +54,7 @@ namespace NetTopologySuite.Geometries.Prepared
             /*
              * If any segments intersect, result is true
              */
-            IList<ISegmentString> lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
+            var lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
             // only request intersection finder if there are segments (ie NOT for point inputs)
             if (lineSegStr.Count > 0)
             {
@@ -70,7 +70,7 @@ namespace NetTopologySuite.Geometries.Prepared
             if (geom.Dimension == Dimension.Surface)
             {
                 // TODO: generalize this to handle GeometryCollections
-                bool isPrepGeomInArea = IsAnyTargetComponentInAreaTest(geom, prepPoly.RepresentativePoints);
+                var isPrepGeomInArea = IsAnyTargetComponentInAreaTest(geom, prepPoly.RepresentativePoints);
                 if (isPrepGeomInArea) return true;
             }
             return false;

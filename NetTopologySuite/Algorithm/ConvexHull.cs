@@ -101,7 +101,7 @@ namespace NetTopologySuite.Algorithm
                 return pts;
             // add points defining polygon
             var reducedSet = new HashSet<Coordinate>();
-            for (int i = 0; i < polyPts.Length; i++)
+            for (var i = 0; i < polyPts.Length; i++)
                 reducedSet.Add(polyPts[i]);
             /*
              * Add all unique points not in the interior poly.
@@ -122,7 +122,7 @@ namespace NetTopologySuite.Algorithm
         private static Coordinate[] PadArray3(Coordinate[] pts)
         {
             var pad = new Coordinate[3];
-            for (int i = 0; i < pad.Length; i++)
+            for (var i = 0; i < pad.Length; i++)
             {
                 if (i < pts.Length)
                 {
@@ -143,7 +143,7 @@ namespace NetTopologySuite.Algorithm
             // find the lowest point in the set. If two or more points have
             // the same minimum y coordinate choose the one with the minimu x.
             // This focal point is put in array location pts[0].
-            for (int i = 1; i < pts.Length; i++)
+            for (var i = 1; i < pts.Length; i++)
             {
                 if ((pts[i].Y < pts[0].Y) || ((pts[i].Y == pts[0].Y)
                      && (pts[i].X < pts[0].X)))
@@ -168,7 +168,7 @@ namespace NetTopologySuite.Algorithm
             ps.Push(c[0]);
             ps.Push(c[1]);
             ps.Push(c[2]);
-            for (int i = 3; i < c.Length; i++)
+            for (var i = 3; i < c.Length; i++)
             {
                 var p = ps.Pop();
                 // check for empty stack to guard against robustness problems
@@ -255,9 +255,9 @@ namespace NetTopologySuite.Algorithm
         private static Coordinate[] ComputeOctPts(Coordinate[] inputPts)
         {
             var pts = new Coordinate[8];
-            for (int j = 0; j < pts.Length; j++)
+            for (var j = 0; j < pts.Length; j++)
                 pts[j] = inputPts[0];
-            for (int i = 1; i < inputPts.Length; i++)
+            for (var i = 1; i < inputPts.Length; i++)
             {
                 if (inputPts[i].X < pts[0].X)
                     pts[0] = inputPts[i];
@@ -302,7 +302,7 @@ namespace NetTopologySuite.Algorithm
             Assert.IsEquals(original[0], original[original.Length - 1]);
             var cleanedRing = new List<Coordinate>();
             Coordinate previousDistinctCoordinate = null;
-            for (int i = 0; i <= original.Length - 2; i++)
+            for (var i = 0; i <= original.Length - 2; i++)
             {
                 var currentCoordinate = original[i];
                 var nextCoordinate = original[i + 1];
@@ -351,18 +351,18 @@ namespace NetTopologySuite.Algorithm
             /// <returns></returns>
             private static int PolarCompare(Coordinate o, Coordinate p, Coordinate q)
             {
-                double dxp = p.X - o.X;
-                double dyp = p.Y - o.Y;
-                double dxq = q.X - o.X;
-                double dyq = q.Y - o.Y;
+                var dxp = p.X - o.X;
+                var dyp = p.Y - o.Y;
+                var dxq = q.X - o.X;
+                var dyq = q.Y - o.Y;
                 var orient = Orientation.Index(o, p, q);
                 if(orient == OrientationIndex.CounterClockwise)
                     return 1;
                 if(orient == OrientationIndex.Clockwise)
                     return -1;
                 // points are collinear - check distance
-                double op = dxp * dxp + dyp * dyp;
-                double oq = dxq * dxq + dyq * dyq;
+                var op = dxp * dxp + dyp * dyp;
+                var oq = dxq * dxq + dyq * dyq;
                 if (op < oq)
                     return -1;
                 if (op > oq)

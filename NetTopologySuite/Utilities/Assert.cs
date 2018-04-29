@@ -25,8 +25,8 @@ namespace NetTopologySuite.Utilities
         {
             if (actualValue.Equals(expectedValue))
                 return;
-            string s = message != null ? ": " + message : String.Empty;
-            string format = String.Format("Expected {0} but encountered {1}{2}", expectedValue, actualValue, s);
+            var s = message != null ? ": " + message : String.Empty;
+            var format = String.Format("Expected {0} but encountered {1}{2}", expectedValue, actualValue, s);
             throw new AssertionFailedException(format);
         }
         public static void ShouldNeverReachHere()
@@ -35,8 +35,8 @@ namespace NetTopologySuite.Utilities
         }
         public static void ShouldNeverReachHere(string message)
         {
-            string s = (message != null ? ": " + message : String.Empty);
-            string format = String.Format("Should never reach here{0}", s);
+            var s = (message != null ? ": " + message : String.Empty);
+            var format = String.Format("Should never reach here{0}", s);
             throw new AssertionFailedException(format);
         }
     }

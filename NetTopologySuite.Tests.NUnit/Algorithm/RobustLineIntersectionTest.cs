@@ -238,7 +238,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             LineIntersector li = new RobustLineIntersector();
             li.ComputeIntersection(pt[0], pt[1], pt[2], pt[3]);
-            int intNum = li.IntersectionNum;
+            var intNum = li.IntersectionNum;
             Assert.AreEqual(expectedIntersectionNum, intNum, "Number of intersections not as expected");
             if (expectedIntPt != null)
             {
@@ -280,8 +280,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
         private void CheckInputNotAltered(String wkt1, String wkt2, int scaleFactor)
         {
-            LineString l1 = (LineString)_reader.Read(wkt1);
-            LineString l2 = (LineString)_reader.Read(wkt2);
+            var l1 = (LineString)_reader.Read(wkt1);
+            var l2 = (LineString)_reader.Read(wkt2);
             Coordinate[] pt =
             {
                 l1.GetCoordinateN(0),
@@ -294,8 +294,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         public void CheckInputNotAltered(Coordinate[] pt, int scaleFactor)
         {
             // save input points
-            Coordinate[] savePt = new Coordinate[4];
-            for (int i = 0; i < 4; i++)
+            var savePt = new Coordinate[4];
+            for (var i = 0; i < 4; i++)
             {
                 savePt[i] = new Coordinate(pt[i]);
             }
@@ -303,7 +303,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             li.PrecisionModel = new PrecisionModel(scaleFactor);
             li.ComputeIntersection(pt[0], pt[1], pt[2], pt[3]);
             // check that input points are unchanged
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
             {
                 Assert.AreEqual(savePt[i], pt[i], "Input point " + i + " was altered - ");
             }

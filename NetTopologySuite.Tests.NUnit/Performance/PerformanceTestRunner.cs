@@ -27,7 +27,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
                 var ctor = clz.GetConstructor(new Type[0]);
                 var test = (PerformanceTestCase) ctor.Invoke(new object[0]);
                 var runSize = test.RunSize;
-                int runIter = test.RunIterations;
+                var runIter = test.RunIterations;
                 var runMethod = FindMethods(clz, RunPrefix);
                 // do the run
                 test.SetUp();

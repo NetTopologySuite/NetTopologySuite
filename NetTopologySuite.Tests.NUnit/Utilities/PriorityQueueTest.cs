@@ -10,7 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
         [Test]
         public void TestOrder1()
         {
-            PriorityQueue<int> q = new PriorityQueue<int>();
+            var q = new PriorityQueue<int>();
             q.Add(1);
             q.Add(10);
             q.Add(5);
@@ -21,14 +21,14 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
         [Test]
         public void TestOrderRandom1()
         {
-            PriorityQueue<int> q = new PriorityQueue<int>();
+            var q = new PriorityQueue<int>();
             addRandomItems(q, 100);
             CheckOrder(q);
         }
         private void addRandomItems(PriorityQueue<int> q, int num)
         {
             var random = new Random();
-            for (int i = 0; i < num; i++)
+            for (var i = 0; i < num; i++)
             {
                 // This usually inserts lots of duplicate values in an order
                 // that *tends* to be increasing, but usually has some values
@@ -39,11 +39,11 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
         private void CheckOrder<T>(PriorityQueue<T> q)
             where T: struct, IComparable<T>
         {
-            T curr = default(T);
-            bool first = true;
+            var curr = default(T);
+            var first = true;
             while (!q.IsEmpty())
             {
-                T next = q.Poll();
+                var next = q.Poll();
                 //System.Console.WriteLine(next);
                 if (!first)
                 {

@@ -138,15 +138,15 @@ namespace NetTopologySuite.Geometries
                 var coordinates = new Coordinate[NumPoints];
                 var k = -1;
                 var shellCoordinates = _shell.Coordinates;
-                for (int x = 0; x < shellCoordinates.Length; x++)
+                for (var x = 0; x < shellCoordinates.Length; x++)
                 {
                     k++;
                     coordinates[k] = shellCoordinates[x];
                 }
-                for (int i = 0; i < _holes.Length; i++)
+                for (var i = 0; i < _holes.Length; i++)
                 {
-                    Coordinate[] childCoordinates = _holes[i].Coordinates;
-                    for (int j = 0; j < childCoordinates.Length; j++)
+                    var childCoordinates = _holes[i].Coordinates;
+                    for (var j = 0; j < childCoordinates.Length; j++)
                     {
                         k++;
                         coordinates[k] = childCoordinates[j];
@@ -190,7 +190,7 @@ namespace NetTopologySuite.Geometries
             get
             {
                 var numPoints = _shell.NumPoints;
-                for (int i = 0; i < _holes.Length; i++)
+                for (var i = 0; i < _holes.Length; i++)
                     numPoints += _holes[i].NumPoints;
                 return numPoints;
             }
@@ -275,7 +275,7 @@ namespace NetTopologySuite.Geometries
             {
                 var area = 0.0;
                 area += Algorithm.Area.OfRing(_shell.CoordinateSequence);
-                for (int i = 0; i < _holes.Length; i++)
+                for (var i = 0; i < _holes.Length; i++)
                     area -= Algorithm.Area.OfRing(_holes[i].CoordinateSequence);
                 return area;
             }
@@ -288,9 +288,9 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                double len = 0.0;
+                var len = 0.0;
                 len += _shell.Length;
-                for (int i = 0; i < _holes.Length; i++)
+                for (var i = 0; i < _holes.Length; i++)
                     len += _holes[i].Length;
                 return len;
             }
@@ -339,7 +339,7 @@ namespace NetTopologySuite.Geometries
                 return false;
             if (_holes.Length != otherPolygon.Holes.Length)
                 return false;
-            for (int i = 0; i < _holes.Length; i++)
+            for (var i = 0; i < _holes.Length; i++)
                 if (!(_holes[i]).EqualsExact(otherPolygon.Holes[i], tolerance))
                     return false;
             return true;
@@ -351,7 +351,7 @@ namespace NetTopologySuite.Geometries
         public override void Apply(ICoordinateFilter filter)
         {
             _shell.Apply(filter);
-            for (int i = 0; i < _holes.Length; i++)
+            for (var i = 0; i < _holes.Length; i++)
                 _holes[i].Apply(filter);
         }
         public override void Apply(ICoordinateSequenceFilter filter)
@@ -359,7 +359,7 @@ namespace NetTopologySuite.Geometries
             ((LinearRing)_shell).Apply(filter);
             if (!filter.Done)
             {
-                for (int i = 0; i < _holes.Length; i++)
+                for (var i = 0; i < _holes.Length; i++)
                 {
                     ((LinearRing)_holes[i]).Apply(filter);
                     if (filter.Done)
@@ -385,7 +385,7 @@ namespace NetTopologySuite.Geometries
         {
             filter.Filter(this);
             _shell.Apply(filter);
-            for (int i = 0; i < _holes.Length; i++)
+            for (var i = 0; i < _holes.Length; i++)
                 _holes[i].Apply(filter);
         }
         /// <summary>
@@ -436,7 +436,7 @@ namespace NetTopologySuite.Geometries
         public override void Normalize()
         {
             Normalize(_shell, true);
-            foreach(ILinearRing hole in Holes)
+            foreach(var hole in Holes)
                 Normalize(hole, false);
             Array.Sort(_holes);
         }
@@ -447,8 +447,8 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         protected internal override int CompareToSameClass(object o)
         {
-            LinearRing thisShell = (LinearRing) _shell;
-            ILinearRing otherShell = ((IPolygon) o).Shell;
+            var thisShell = (LinearRing) _shell;
+            var otherShell = ((IPolygon) o).Shell;
             return thisShell.CompareToSameClass(otherShell);
         }
         /// <summary>
@@ -462,11 +462,11 @@ namespace NetTopologySuite.Geometries
             var poly = (IPolygon)other;
             var thisShell = (LinearRing)_shell;
             var otherShell = (LinearRing)poly.Shell;
-            int shellComp = thisShell.CompareToSameClass(otherShell, comparer);
+            var shellComp = thisShell.CompareToSameClass(otherShell, comparer);
             if (shellComp != 0) return shellComp;
-            int nHole1 = NumInteriorRings;
-            int nHole2 = poly.NumInteriorRings;
-            int i = 0;
+            var nHole1 = NumInteriorRings;
+            var nHole2 = poly.NumInteriorRings;
+            var i = 0;
             while (i < nHole1 && i < nHole2)
             {
                 var thisHole = (LinearRing)GetInteriorRingN(i);
@@ -513,10 +513,10 @@ namespace NetTopologySuite.Geometries
                 var env = EnvelopeInternal;
                 for (var i = 0; i < 5; i++)
                 {
-                    double x = seq.GetX(i);
+                    var x = seq.GetX(i);
                     if (!(x == env.MinX || x == env.MaxX))
                         return false;
-                    double y = seq.GetY(i);
+                    var y = seq.GetY(i);
                     if (!(y == env.MinY || y == env.MaxY))
                         return false;
                 }

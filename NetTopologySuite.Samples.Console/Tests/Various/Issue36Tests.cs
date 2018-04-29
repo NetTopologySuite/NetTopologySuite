@@ -91,7 +91,7 @@ namespace NetTopologySuite.Tests.Various
 166.74557327980631,1139.485009866369 125.36515638486206,1137.8786 121.7019)");
             Assert.IsNotNull(geometry);
             Assert.IsTrue(geometry.IsValid);
-            BufferParameters parameters = new BufferParameters() {EndCapStyle = EndCapStyle.Round};
+            var parameters = new BufferParameters() {EndCapStyle = EndCapStyle.Round};
             var curveBuilder = new OffsetCurveBuilder(
                 geometry.PrecisionModel, parameters);
             var curveSetBuilder = new OffsetCurveSetBuilder(geometry, 5, curveBuilder);

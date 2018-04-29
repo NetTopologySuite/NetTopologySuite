@@ -80,8 +80,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
         }
         public void DoIteratedBuffer(IGeometry g, double initDist, double distanceInc, int maxCount)
         {
-            int i = 0;
-            double dist = initDist;
+            var i = 0;
+            var dist = initDist;
             while (i < maxCount)
             {
                 i++;
@@ -95,7 +95,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
         }
         public void DoAlternatingIteratedBuffer(IGeometry g, double dist, int maxCount)
         {
-            int i = 0;
+            var i = 0;
             while (i < maxCount)
             {
                 i++;

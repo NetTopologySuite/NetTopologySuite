@@ -39,8 +39,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
         public void DoPredicates(String[] wkt)
         {
-            IGeometry a = rdr.Read(wkt[0]);
-            IGeometry b = rdr.Read(wkt[1]);
+            var a = rdr.Read(wkt[0]);
+            var b = rdr.Read(wkt[1]);
             DoPredicates(a, b);
             DoPredicates(b, a);
         }

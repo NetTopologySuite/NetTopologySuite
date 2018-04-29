@@ -79,8 +79,8 @@ namespace NetTopologySuite.Operation.Distance
         /// <returns>The distance between this and <paramref name="facetSeq"/>.</returns>
         public double Distance(FacetSequence facetSeq)
         {
-            bool isPoint = IsPoint;
-            bool isPointOther = facetSeq.IsPoint;
+            var isPoint = IsPoint;
+            var isPointOther = facetSeq.IsPoint;
             if (isPoint && isPointOther)
             {
                 _pts.GetCoordinate(_start, _pt);
@@ -112,15 +112,15 @@ namespace NetTopologySuite.Operation.Distance
             var p1 = new Coordinate();
             var q0 = new Coordinate();
             var q1 = new Coordinate();
-            for (int i = _start; i < _end - 1; i++)
+            for (var i = _start; i < _end - 1; i++)
             {
-                for (int j = facetSeq._start; j < facetSeq._end - 1; j++)
+                for (var j = facetSeq._start; j < facetSeq._end - 1; j++)
                 {
                     _pts.GetCoordinate(i, p0);
                     _pts.GetCoordinate(i + 1, p1);
                     facetSeq._pts.GetCoordinate(j, q0);
                     facetSeq._pts.GetCoordinate(j + 1, q1);
-                    double dist = DistanceComputer.SegmentToSegment(p0, p1, q0, q1);
+                    var dist = DistanceComputer.SegmentToSegment(p0, p1, q0, q1);
                     if (dist == 0.0)
                         return 0.0;
                     if (dist < minDistance)
@@ -155,7 +155,7 @@ namespace NetTopologySuite.Operation.Distance
             var buf = new StringBuilder();
             buf.Append(IsPoint ? "LINESTRING ( " : "POINT (");
             var p = new Coordinate();
-            for (int i = _start; i < _end; i++)
+            for (var i = _start; i < _end; i++)
             {
                 if (i > _start)
                     buf.Append(", ");

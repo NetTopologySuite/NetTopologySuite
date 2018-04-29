@@ -326,7 +326,7 @@ namespace NetTopologySuite.Operation.Overlay
                 newEdges.Add(e.CollapsedEdge);
             }
             // Removing all collapsed edges at the end of iteration.
-            foreach (Edge obj in edgesToRemove)
+            foreach (var obj in edgesToRemove)
                 _edgeList.Remove(obj);
             foreach (var obj in newEdges)
                 _edgeList.Add(obj);

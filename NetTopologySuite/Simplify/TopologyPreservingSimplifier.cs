@@ -62,7 +62,7 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         public static IGeometry Simplify(IGeometry geom, double distanceTolerance)
         {
-            TopologyPreservingSimplifier tss = new TopologyPreservingSimplifier(geom);
+            var tss = new TopologyPreservingSimplifier(geom);
             tss.DistanceTolerance = distanceTolerance;
             return tss.GetResultGeometry();
         }
@@ -97,11 +97,11 @@ namespace NetTopologySuite.Simplify
             if (_inputGeom.IsEmpty)
                 return (IGeometry)_inputGeom.Copy();
             _lineStringMap = new Dictionary<ILineString, TaggedLineString>();
-            LineStringMapBuilderFilter filter = new LineStringMapBuilderFilter(this);
+            var filter = new LineStringMapBuilderFilter(this);
             _inputGeom.Apply(filter);
             _lineSimplifier.Simplify(_lineStringMap.Values);
-            LineStringTransformer transformer = new LineStringTransformer(this);
-            IGeometry result = transformer.Transform(_inputGeom);
+            var transformer = new LineStringTransformer(this);
+            var result = transformer.Transform(_inputGeom);
             return result;
         }
         /// <summary>
@@ -121,10 +121,10 @@ namespace NetTopologySuite.Simplify
                 if (coords.Count == 0)
                     return null;
                 // for linear components (including rings), simplify the LineString
-                ILineString s = parent as ILineString;
+                var s = parent as ILineString;
                 if (s != null)
                 {
-                    TaggedLineString taggedLine = _container._lineStringMap[s];
+                    var taggedLine = _container._lineStringMap[s];
                     return CreateCoordinateSequence(taggedLine.ResultCoordinates);
                 }
                 // for anything else (e.g. points) just copy the coordinates
@@ -153,13 +153,13 @@ namespace NetTopologySuite.Simplify
             /// <param name="geom">A geometry of any type</param>
             public void Filter(IGeometry geom)
             {
-                ILineString line = geom as ILineString;
+                var line = geom as ILineString;
                 if (line == null)
                     return;
                 if (line.IsEmpty)
                     return;
-                int minSize = line.IsClosed ? 4 : 2;
-                TaggedLineString taggedLine = new TaggedLineString(line, minSize);
+                var minSize = line.IsClosed ? 4 : 2;
+                var taggedLine = new TaggedLineString(line, minSize);
                 _container._lineStringMap.Add(line, taggedLine);
             }
         }

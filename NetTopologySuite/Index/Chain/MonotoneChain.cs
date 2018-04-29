@@ -82,8 +82,8 @@ namespace NetTopologySuite.Index.Chain
             {
                 if (_env == null)
                 {
-                    Coordinate p0 = _pts[StartIndex];
-                    Coordinate p1 = _pts[EndIndex];
+                    var p0 = _pts[StartIndex];
+                    var p1 = _pts[EndIndex];
                     _env = new Envelope(p0, p1);
                 }
                 return _env;
@@ -115,9 +115,9 @@ namespace NetTopologySuite.Index.Chain
         {
             get
             {
-                Coordinate[] coord = new Coordinate[EndIndex - StartIndex + 1];
-                int index = 0;
-                for (int i = StartIndex; i <= EndIndex; i++)
+                var coord = new Coordinate[EndIndex - StartIndex + 1];
+                var index = 0;
+                for (var i = StartIndex; i <= EndIndex; i++)
                     coord[index++] = _pts[i];
                 return coord;
             }
@@ -150,8 +150,8 @@ namespace NetTopologySuite.Index.Chain
         /// <param name="mcs"></param>
         private void ComputeSelect(Envelope searchEnv, int start0, int end0, MonotoneChainSelectAction mcs)
         {
-            Coordinate p0 = _pts[start0];
-            Coordinate p1 = _pts[end0];
+            var p0 = _pts[start0];
+            var p1 = _pts[end0];
             // terminating condition for the recursion
             if (end0 - start0 == 1)
             {
@@ -162,7 +162,7 @@ namespace NetTopologySuite.Index.Chain
             if (!searchEnv.Intersects(p0, p1))
                 return;
             // the chains overlap, so split each in half and iterate  (binary search)
-            int mid = (start0 + end0) / 2;
+            var mid = (start0 + end0) / 2;
             // Assert: mid != start or end (since we checked above for end - start <= 1)
             // check terminating conditions before recursing
             if (start0 < mid)
@@ -199,8 +199,8 @@ namespace NetTopologySuite.Index.Chain
             // nothing to do if the envelopes of these sub-chains don't overlap
             if (!Overlaps(start0, end0, mc, start1, end1)) return;
             // the chains overlap, so split each in half and iterate  (binary search)
-            int mid0 = (start0 + end0) / 2;
-            int mid1 = (start1 + end1) / 2;
+            var mid0 = (start0 + end0) / 2;
+            var mid1 = (start1 + end1) / 2;
             // Assert: mid != start or end (since we checked above for end - start <= 1)
             // check terminating conditions before recursing
             if (start0 < mid0)

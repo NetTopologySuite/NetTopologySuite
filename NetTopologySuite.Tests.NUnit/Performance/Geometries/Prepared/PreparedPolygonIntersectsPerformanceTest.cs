@@ -65,14 +65,14 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
         }
         private static IList<IGeometry> CreateLines(Envelope env, int nItems, double size, int nPts)
         {
-            int nCells = (int) Math.Sqrt(nItems);
+            var nCells = (int) Math.Sqrt(nItems);
             var geoms = new List<IGeometry>();
-            double width = env.Width;
-            double xInc = width/nCells;
-            double yInc = width/nCells;
-            for (int i = 0; i < nCells; i++)
+            var width = env.Width;
+            var xInc = width/nCells;
+            var yInc = width/nCells;
+            for (var i = 0; i < nCells; i++)
             {
-                for (int j = 0; j < nCells; j++)
+                for (var j = 0; j < nCells; j++)
                 {
                     var @base = new Coordinate(
                         env.MinX + i*xInc,
@@ -104,7 +104,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             var time1 = 0L;
             var time2 = 0L;
             var time3 = 0L;
-            for (int i = 0; i < MaxIter; i++)
+            for (var i = 0; i < MaxIter; i++)
             {
                 Console.WriteLine(string.Format("\nIteration {0}", i));
                 sw.Start();
@@ -166,7 +166,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             Console.WriteLine("Using NON-CACHED Prepared Geometry");
             var pgFact = new PreparedGeometryFactory();
             //    PreparedGeometry prepGeom = pgFact.create(g);
-            int count = 0;
+            var count = 0;
             foreach (var line in lines)
             {
                 // test performance of creating the prepared geometry each time

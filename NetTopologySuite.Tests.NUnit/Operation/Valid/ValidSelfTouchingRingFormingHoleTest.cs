@@ -29,7 +29,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         [TestAttribute]
         public void TestShellAndHoleSelfTouch()
         {
-            String wkt = "POLYGON ((0 0, 0 340, 320 340, 320 0, 120 0, 180 100, 60 100, 120 0, 0 0),   (80 300, 80 180, 200 180, 200 240, 280 200, 280 280, 200 240, 200 300, 80 300))";
+            var wkt = "POLYGON ((0 0, 0 340, 320 340, 320 0, 120 0, 180 100, 60 100, 120 0, 0 0),   (80 300, 80 180, 200 180, 200 240, 280 200, 280 280, 200 240, 200 300, 80 300))";
             CheckIsValidSTR(wkt, true);
             CheckIsValidDefault(wkt, false);
         }
@@ -41,7 +41,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         [TestAttribute]
         public void TestShellHoleAndHoleHoleTouch()
         {
-            String wkt = "POLYGON ((0 0, 0 340, 320 340, 320 0, 120 0, 0 0),   (120 0, 180 100, 60 100, 120 0),   (80 300, 80 180, 200 180, 200 240, 200 300, 80 300),  (200 240, 280 200, 280 280, 200 240))";
+            var wkt = "POLYGON ((0 0, 0 340, 320 340, 320 0, 120 0, 0 0),   (120 0, 180 100, 60 100, 120 0),   (80 300, 80 180, 200 180, 200 240, 200 300, 80 300),  (200 240, 280 200, 280 280, 200 240))";
             CheckIsValidSTR(wkt, true);
             CheckIsValidDefault(wkt, true);
         }
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         [TestAttribute]
         public void TestShellSelfTouchHoleOverlappingHole()
         {
-            String wkt = "POLYGON ((0 0, 220 0, 220 200, 120 200, 140 100, 80 100, 120 200, 0 200, 0 0),   (200 80, 20 80, 120 200, 200 80))";
+            var wkt = "POLYGON ((0 0, 220 0, 220 200, 120 200, 140 100, 80 100, 120 200, 0 200, 0 0),   (200 80, 20 80, 120 200, 200 80))";
             CheckIsValidSTR(wkt, false);
             CheckIsValidDefault(wkt, false);
         }
@@ -62,7 +62,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         [TestAttribute]
         public void TestDisconnectedInteriorShellSelfTouchAtNonVertex()
         {
-            String wkt = "POLYGON ((40 180, 40 60, 240 60, 240 180, 140 60, 40 180))";
+            var wkt = "POLYGON ((40 180, 40 60, 240 60, 240 180, 140 60, 40 180))";
             CheckIsValidSTR(wkt, false);
             CheckIsValidDefault(wkt, false);
         }
@@ -72,37 +72,37 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         [TestAttribute]
         public void TestDisconnectedInteriorShellSelfTouchAtVertex()
         {
-            String wkt = "POLYGON ((20 20, 20 100, 140 100, 140 180, 260 180, 260 100, 140 100, 140 20, 20 20))";
+            var wkt = "POLYGON ((20 20, 20 100, 140 100, 140 180, 260 180, 260 100, 140 100, 140 20, 20 20))";
             CheckIsValidSTR(wkt, false);
             CheckIsValidDefault(wkt, false);
         }
         [TestAttribute]
         public void TestShellCross()
         {
-            String wkt = "POLYGON ((20 20, 120 20, 120 220, 240 220, 240 120, 20 120, 20 20))";
+            var wkt = "POLYGON ((20 20, 120 20, 120 220, 240 220, 240 120, 20 120, 20 20))";
             CheckIsValidSTR(wkt, false);
             CheckIsValidDefault(wkt, false);
         }
         [TestAttribute]
         public void TestShellCrossAndSTR()
         {
-            String wkt = "POLYGON ((20 20, 120 20, 120 220, 180 220, 140 160, 200 160, 180 220, 240 220, 240 120, 20 120,  20 20))";
+            var wkt = "POLYGON ((20 20, 120 20, 120 220, 180 220, 140 160, 200 160, 180 220, 240 220, 240 120, 20 120,  20 20))";
             CheckIsValidSTR(wkt, false);
             CheckIsValidDefault(wkt, false);
         }
         private void CheckIsValidDefault(String wkt, bool expected)
         {
-            IGeometry geom = FromWKT(wkt);
-            IsValidOp validator = new IsValidOp(geom);
-            bool isValid = validator.IsValid;
+            var geom = FromWKT(wkt);
+            var validator = new IsValidOp(geom);
+            var isValid = validator.IsValid;
             Assert.IsTrue(isValid == expected);
         }
         private void CheckIsValidSTR(String wkt, bool expected)
         {
-            IGeometry geom = FromWKT(wkt);
-            IsValidOp validator = new IsValidOp(geom);
+            var geom = FromWKT(wkt);
+            var validator = new IsValidOp(geom);
             validator.IsSelfTouchingRingFormingHoleValid = true;
-            bool isValid = validator.IsValid;
+            var isValid = validator.IsValid;
             Assert.IsTrue(isValid == expected);
         }
         IGeometry FromWKT(String wkt)

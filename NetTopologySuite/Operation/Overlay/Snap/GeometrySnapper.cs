@@ -30,7 +30,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <returns>The estimated snap tolerance</returns>
         public static double ComputeOverlaySnapTolerance(IGeometry g)
         {
-            double snapTolerance = ComputeSizeBasedSnapTolerance(g);
+            var snapTolerance = ComputeSizeBasedSnapTolerance(g);
             /*
 		     * Overlay is carried out in the precision model
 		     * of the two inputs.
@@ -40,10 +40,10 @@ namespace NetTopologySuite.Operation.Overlay.Snap
 		     * the distance from a corner of a precision grid cell
 		     * to the centre point of the cell.
              */
-            IPrecisionModel pm = g.PrecisionModel;
+            var pm = g.PrecisionModel;
             if (pm.PrecisionModelType == PrecisionModels.Fixed)
             {
-                double fixedSnapTol = (1 / pm.Scale) * 2 / 1.415;
+                var fixedSnapTol = (1 / pm.Scale) * 2 / 1.415;
                 if (fixedSnapTol > snapTolerance)
                     snapTolerance = fixedSnapTol;
             }
@@ -56,9 +56,9 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <returns></returns>
         public static double ComputeSizeBasedSnapTolerance(IGeometry g)
         {
-            Envelope env = g.EnvelopeInternal;
-            double minDimension = Math.Min(env.Height, env.Width);
-            double snapTol = minDimension * SnapPrexisionFactor;
+            var env = g.EnvelopeInternal;
+            var minDimension = Math.Min(env.Height, env.Width);
+            var snapTol = minDimension * SnapPrexisionFactor;
             return snapTol;
         }
         /// <summary>
@@ -124,8 +124,8 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <returns>a new snapped Geometry</returns>
         public IGeometry SnapTo(IGeometry g, double tolerance)
         {
-            Coordinate[] snapPts = ExtractTargetCoordinates(g);
-            SnapTransformer snapTrans = new SnapTransformer(tolerance, snapPts);
+            var snapPts = ExtractTargetCoordinates(g);
+            var snapTrans = new SnapTransformer(tolerance, snapPts);
             return snapTrans.Transform(_srcGeom);
         }
         /// Snaps the vertices in the component <see cref="ILineString" />s
@@ -157,7 +157,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         {
             // TODO: should do this more efficiently.  Use CoordSeq filter to get points, KDTree for uniqueness & queries
             var ptSet = new HashSet<Coordinate>(g.Coordinates);
-            Coordinate[] result = new Coordinate[ptSet.Count];
+            var result = new Coordinate[ptSet.Count];
             ptSet.CopyTo(result, 0);
             Array.Sort(result);
             return result;
@@ -215,8 +215,8 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <returns></returns>
         protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
         {
-            Coordinate[] srcPts = coords.ToCoordinateArray();
-            Coordinate[] newPts = SnapLine(srcPts, _snapPts);
+            var srcPts = coords.ToCoordinateArray();
+            var newPts = SnapLine(srcPts, _snapPts);
             return Factory.CoordinateSequenceFactory.Create(newPts);
         }
         /// <summary>

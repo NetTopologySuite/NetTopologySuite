@@ -46,7 +46,7 @@ namespace NetTopologySuite.Shape.Random
         public override IGeometry GetGeometry()
         {
             var pts = new Coordinate[NumPoints];
-            int i = 0;
+            var i = 0;
             while (i < NumPoints)
             {
                 var p = CreateRandomCoord(Extent);

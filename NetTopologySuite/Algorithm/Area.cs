@@ -37,17 +37,17 @@ namespace NetTopologySuite.Algorithm
         {
             if (ring.Length < 3)
                 return 0.0;
-            double sum = 0.0;
+            var sum = 0.0;
             /**
              * Based on the Shoelace formula.
              * http://en.wikipedia.org/wiki/Shoelace_formula
              */
-            double x0 = ring[0].X;
-            for (int i = 1; i < ring.Length - 1; i++)
+            var x0 = ring[0].X;
+            for (var i = 1; i < ring.Length - 1; i++)
             {
-                double x = ring[i].X - x0;
-                double y1 = ring[i + 1].Y;
-                double y2 = ring[i - 1].Y;
+                var x = ring[i].X - x0;
+                var y1 = ring[i + 1].Y;
+                var y2 = ring[i - 1].Y;
                 sum += x * (y2 - y1);
             }
             return sum / 2.0;

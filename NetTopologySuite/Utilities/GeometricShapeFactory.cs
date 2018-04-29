@@ -190,7 +190,7 @@ namespace NetTopologySuite.Utilities
             var centreY = env.MinY + yRadius;
             var pts = new Coordinate[NumPoints + 1];
             var iPt = 0;
-            for (int i = 0; i < NumPoints; i++)
+            for (var i = 0; i < NumPoints; i++)
             {
                 var ang = i * (2 * Math.PI / NumPoints);
                 var x = xRadius * Math.Cos(ang) + centreX;

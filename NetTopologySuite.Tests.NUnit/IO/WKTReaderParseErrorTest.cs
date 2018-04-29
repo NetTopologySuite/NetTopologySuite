@@ -51,10 +51,10 @@ namespace NetTopologySuite.Tests.NUnit.IO
         }
         private void ReadBad(String wkt)
         {
-            bool threwParseEx = false;
+            var threwParseEx = false;
             try
             {
-                IGeometry g = rdr.Read(wkt);
+                var g = rdr.Read(wkt);
             }
             catch (GeoAPI.IO.ParseException ex)
             {

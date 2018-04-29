@@ -20,8 +20,8 @@ namespace NetTopologySuite.Index.Chain
         /// <returns></returns>
         public static int[] ToIntArray(IList<int> list)
         {
-            int[] array = new int[list.Count];
-            for (int i = 0; i < array.Length; i++)
+            var array = new int[list.Count];
+            for (var i = 0; i < array.Length; i++)
                 array[i] = list[i];
             return array;
         }
@@ -61,12 +61,12 @@ namespace NetTopologySuite.Index.Chain
         public static int[] GetChainStartIndices(Coordinate[] pts)
         {
             // find the startpoint (and endpoints) of all monotone chains in this edge
-            int start = 0;
+            var start = 0;
             var startIndexList = new List<int>();
             startIndexList.Add(start);
             do
             {
-                int last = FindChainEnd(pts, start);
+                var last = FindChainEnd(pts, start);
                 startIndexList.Add(last);
                 start = last;
             }
@@ -88,7 +88,7 @@ namespace NetTopologySuite.Index.Chain
         /// </returns>
         private static int FindChainEnd(Coordinate[] pts, int start)
         {
-            int safeStart = start;
+            var safeStart = start;
             // skip any zero-length segments at the start of the sequence
             // (since they cannot be used to establish a quadrant)
             while (safeStart < pts.Length - 1 && pts[safeStart].Equals2D(pts[safeStart + 1]))
@@ -101,15 +101,15 @@ namespace NetTopologySuite.Index.Chain
                 return pts.Length - 1;
             }
             // determine overall quadrant for chain (which is the starting quadrant)
-            int chainQuad = QuadrantOp.Quadrant(pts[safeStart], pts[safeStart + 1]);
-            int last = start + 1;
+            var chainQuad = QuadrantOp.Quadrant(pts[safeStart], pts[safeStart + 1]);
+            var last = start + 1;
             while (last < pts.Length)
             {
                 // skip zero-length segments, but include them in the chain
                 if (!pts[last - 1].Equals2D(pts[last]))
                 {
                     // compute quadrant for next possible segment in chain
-                    int quad = QuadrantOp.Quadrant(pts[last - 1], pts[last]);
+                    var quad = QuadrantOp.Quadrant(pts[last - 1], pts[last]);
                     if (quad != chainQuad) break;
                 }
                 last++;

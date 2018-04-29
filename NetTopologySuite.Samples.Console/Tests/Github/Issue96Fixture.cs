@@ -12,8 +12,8 @@ namespace NetTopologySuite.Samples.Tests.Github
         [Test]
         public void linearring_should_be_written_as_wkb()
         {
-            IGeometryFactory factory = GeometryFactory.Default;
-            ILinearRing expected = factory.CreateLinearRing(new[]
+            var factory = GeometryFactory.Default;
+            var expected = factory.CreateLinearRing(new[]
             {
                 new Coordinate(0, 0),
                 new Coordinate(10, 0),
@@ -21,12 +21,12 @@ namespace NetTopologySuite.Samples.Tests.Github
                 new Coordinate(0, 10),
                 new Coordinate(0, 0)
             });
-            WKBWriter writer  = new WKBWriter();
-            byte[] bytes =  writer.Write(expected);
+            var writer  = new WKBWriter();
+            var bytes =  writer.Write(expected);
             Assert.That(bytes, Is.Not.Null);
             Assert.That(bytes, Is.Not.Empty);
-            WKBReader reader = new WKBReader();
-            IGeometry actual = reader.Read(bytes);
+            var reader = new WKBReader();
+            var actual = reader.Read(bytes);
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual, Is.EqualTo(expected));
             Assert.That(actual.OgcGeometryType, Is.EqualTo(expected.OgcGeometryType));

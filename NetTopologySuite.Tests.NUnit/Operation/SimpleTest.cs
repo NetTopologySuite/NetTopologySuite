@@ -22,7 +22,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
         [TestAttribute]
         public void Test2TouchAtEndpoint()
         {
-            String a = "MULTILINESTRING((0 1, 1 1, 2 1), (0 0, 1 0, 2 1))";
+            var a = "MULTILINESTRING((0 1, 1 1, 2 1), (0 0, 1 0, 2 1))";
             RunIsSimpleTest(a, BoundaryNodeRules.Mod2BoundaryRule, true,
                     new Coordinate(2, 1));
             RunIsSimpleTest(a, BoundaryNodeRules.EndpointBoundaryRule, true,
@@ -32,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
         [TestAttribute]
         public void Test3TouchAtEndpoint()
         {
-            String a = "MULTILINESTRING ((0 1, 1 1, 2 1),   (0 0, 1 0, 2 1),  (0 2, 1 2, 2 1))";
+            var a = "MULTILINESTRING ((0 1, 1 1, 2 1),   (0 0, 1 0, 2 1),  (0 2, 1 2, 2 1))";
             // rings are simple under all rules
             RunIsSimpleTest(a, BoundaryNodeRules.Mod2BoundaryRule, true,
                     new Coordinate(2, 1));
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
         [TestAttribute]
         public void TestCross()
         {
-            String a = "MULTILINESTRING ((20 120, 120 20), (20 20, 120 120))";
+            var a = "MULTILINESTRING ((20 120, 120 20), (20 20, 120 120))";
             RunIsSimpleTest(a, BoundaryNodeRules.Mod2BoundaryRule, false,
                     new Coordinate(70, 70));
             RunIsSimpleTest(a, BoundaryNodeRules.EndpointBoundaryRule, false,
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
         [TestAttribute]
         public void TestMultiLineStringWithRingTouchAtEndpoint()
         {
-            String a = "MULTILINESTRING ((100 100, 20 20, 200 20, 100 100), (100 200, 100 100))";
+            var a = "MULTILINESTRING ((100 100, 20 20, 200 20, 100 100), (100 200, 100 100))";
             // under Mod-2, the ring has no boundary, so the line intersects the interior ==> not simple
             RunIsSimpleTest(a, BoundaryNodeRules.Mod2BoundaryRule, false, new Coordinate(100, 100));
             // under Endpoint, the ring has a boundary point, so the line does NOT intersect the interior ==> simple
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
         [TestAttribute]
         public void TestRing()
         {
-            String a = "LINESTRING (100 100, 20 20, 200 20, 100 100)";
+            var a = "LINESTRING (100 100, 20 20, 200 20, 100 100)";
             // rings are simple under all rules
             RunIsSimpleTest(a, BoundaryNodeRules.Mod2BoundaryRule, true);
             RunIsSimpleTest(a, BoundaryNodeRules.EndpointBoundaryRule, true);
@@ -72,10 +72,10 @@ namespace NetTopologySuite.Tests.NUnit.Operation
         private static void RunIsSimpleTest(String wkt, IBoundaryNodeRule bnRule, bool expectedResult,
                                      Coordinate expectedLocation)
         {
-            IGeometry g = rdr.Read(wkt);
-            IsSimpleOp op = new IsSimpleOp(g, bnRule);
-            bool isSimple = op.IsSimple();
-            Coordinate nonSimpleLoc = op.NonSimpleLocation;
+            var g = rdr.Read(wkt);
+            var op = new IsSimpleOp(g, bnRule);
+            var isSimple = op.IsSimple();
+            var nonSimpleLoc = op.NonSimpleLocation;
             // if geom is not simple, should have a valid location
             Assert.IsTrue(isSimple || nonSimpleLoc != null);
             Assert.IsTrue(expectedResult == isSimple);

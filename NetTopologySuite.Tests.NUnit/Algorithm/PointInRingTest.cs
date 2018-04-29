@@ -15,10 +15,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             // isPointInRing is not defined for pts on boundary
             if (expectedLoc == Location.Boundary)
   	            return;
-            IGeometry geom = reader.Read(wkt);
-            bool expected = expectedLoc == Location.Interior;
+            var geom = reader.Read(wkt);
+            var expected = expectedLoc == Location.Interior;
             Assert.AreEqual(expected, PointLocation.IsInRing(pt, geom.Coordinates));
-            IPolygon poly = geom as IPolygon;
+            var poly = geom as IPolygon;
             if (poly == null)
                 return;
             Assert.AreEqual(expected, PointLocation.IsInRing(pt, poly.ExteriorRing.CoordinateSequence));

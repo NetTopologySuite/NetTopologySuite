@@ -32,7 +32,7 @@ namespace Open.Topology.TestRunner.Operations
         {
             Console.WriteLine("Operation <" + opName + ">");
             Console.WriteLine("Geometry: " + geometry);
-            for (int i = 0; i < args.Length; i++)
+            for (var i = 0; i < args.Length; i++)
             {
                 Console.WriteLine("Arg[" + i + "]: " + args[i]);
             }

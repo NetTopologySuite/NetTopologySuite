@@ -26,7 +26,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <returns></returns>
         public static Coordinate FindDifferentPoint(Coordinate[] coord, Coordinate pt)
         {
-            foreach (Coordinate c in coord)
+            foreach (var c in coord)
                 if (!c.Equals(pt))
                     return c;
             return null;
@@ -57,11 +57,11 @@ namespace NetTopologySuite.Operation.Valid
             IList<Edge> splitEdges = new List<Edge>();
             _geomGraph.ComputeSplitEdges(splitEdges);
             // form the edges into rings
-            PlanarGraph graph = new PlanarGraph(new OverlayNodeFactory());
+            var graph = new PlanarGraph(new OverlayNodeFactory());
             graph.AddEdges(splitEdges);
             SetInteriorEdgesInResult(graph);
             graph.LinkResultDirectedEdges();
-            IList<EdgeRing> edgeRings = BuildEdgeRings(graph.EdgeEnds);
+            var edgeRings = BuildEdgeRings(graph.EdgeEnds);
             /*
              * Mark all the edges for the edgeRings corresponding to the shells
              * of the input polygons.  Note only ONE ring gets marked for each shell.
@@ -101,10 +101,10 @@ namespace NetTopologySuite.Operation.Valid
                 // if this edge has not yet been processed
                 if (de.IsInResult && de.EdgeRing == null)
                 {
-                    MaximalEdgeRing er = new MaximalEdgeRing(de, _geometryFactory);
+                    var er = new MaximalEdgeRing(de, _geometryFactory);
                     er.LinkDirectedEdgesForMinimalEdgeRings();
-                    IList<EdgeRing> minEdgeRings = er.BuildMinimalRings();
-                    foreach(EdgeRing o in minEdgeRings)
+                    var minEdgeRings = er.BuildMinimalRings();
+                    foreach(var o in minEdgeRings)
                         edgeRings.Add(o);
                 }
             }
@@ -121,12 +121,12 @@ namespace NetTopologySuite.Operation.Valid
         {
             if (g is IPolygon)
             {
-                IPolygon p = (IPolygon) g;
+                var p = (IPolygon) g;
                 VisitInteriorRing(p.Shell, graph);
             }
             if (g is IMultiPolygon)
             {
-                IMultiPolygon mp = (IMultiPolygon) g;
+                var mp = (IMultiPolygon) g;
                 foreach (IPolygon p in mp.Geometries)
                     VisitInteriorRing(p.Shell, graph);
             }
@@ -138,15 +138,15 @@ namespace NetTopologySuite.Operation.Valid
         /// <param name="graph"></param>
         private void VisitInteriorRing(ILineString ring, PlanarGraph graph)
         {
-            Coordinate[] pts = ring.Coordinates;
-            Coordinate pt0 = pts[0];
+            var pts = ring.Coordinates;
+            var pt0 = pts[0];
             /*
              * Find first point in coord list different to initial point.
              * Need special check since the first point may be repeated.
              */
-            Coordinate pt1 = FindDifferentPoint(pts, pt0);
-            Edge e = graph.FindEdgeInSameDirection(pt0, pt1);
-            DirectedEdge de = (DirectedEdge) graph.FindEdgeEnd(e);
+            var pt1 = FindDifferentPoint(pts, pt0);
+            var e = graph.FindEdgeInSameDirection(pt0, pt1);
+            var de = (DirectedEdge) graph.FindEdgeEnd(e);
             DirectedEdge intDe = null;
             if (de.Label.GetLocation(0, Positions.Right) == Location.Interior)
                 intDe = de;
@@ -161,8 +161,8 @@ namespace NetTopologySuite.Operation.Valid
         /// <param name="start"></param>
         protected void VisitLinkedDirectedEdges(DirectedEdge start)
         {
-            DirectedEdge startDe = start;
-            DirectedEdge de = start;
+            var startDe = start;
+            var de = start;
             do
             {
                 Assert.IsTrue(de != null, "found null Directed Edge");
@@ -183,17 +183,17 @@ namespace NetTopologySuite.Operation.Valid
         /// <returns><c>true</c> if there is an unvisited edge in a non-hole ring.</returns>
         private bool HasUnvisitedShellEdge(IList<EdgeRing> edgeRings)
         {
-            for (int i = 0; i < edgeRings.Count; i++)
+            for (var i = 0; i < edgeRings.Count; i++)
             {
-                EdgeRing er = edgeRings[i];
+                var er = edgeRings[i];
                 if (er.IsHole) continue;
-                IList<DirectedEdge> edges = er.Edges;
-                DirectedEdge de = edges[0];
+                var edges = er.Edges;
+                var de = edges[0];
                 // don't check CW rings which are holes
                 if (de.Label.GetLocation(0, Positions.Right) != Location.Interior) continue;
                 // must have a CW ring which surrounds the INT of the area, so check all
                 // edges have been visited
-                for (int j = 0; j < edges.Count; j++)
+                for (var j = 0; j < edges.Count; j++)
                 {
                     de = edges[j];
                     if (!de.IsVisited)

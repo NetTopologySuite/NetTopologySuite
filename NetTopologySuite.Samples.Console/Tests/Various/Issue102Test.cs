@@ -30,12 +30,12 @@ namespace NetTopologySuite.Tests.Various
             _finishedJob = 0;
             try
             {
-                LineString line = Helper.GetLine(Encoded);
-                ILineString res = (ILineString)TopologyPreservingSimplifier.Simplify(line, Tolerance);
+                var line = Helper.GetLine(Encoded);
+                var res = (ILineString)TopologyPreservingSimplifier.Simplify(line, Tolerance);
                 Simplify(line, Tolerance, res, 0);
-                for (int i = 1; i <= Max; i++)
+                for (var i = 1; i <= Max; i++)
                 {
-                    int index = i;
+                    var index = i;
                     WaitCallback callback = delegate { Simplify(line, Tolerance, res, index); };
                     ThreadPool.QueueUserWorkItem(callback);
                 }
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Tests.Various
             try
             {
                 Console.WriteLine("Job {0} started", index);
-                IGeometry geometry = TopologyPreservingSimplifier.Simplify((ILineString)line.Copy(), tolerance);
+                var geometry = TopologyPreservingSimplifier.Simplify((ILineString)line.Copy(), tolerance);
                 Assert.IsTrue(geometry.Equals(supposedResult));
                 Console.WriteLine("Job {0} terminated", index);
             }
@@ -81,11 +81,11 @@ namespace NetTopologySuite.Tests.Various
         /// <returns></returns>
         public static LineString GetLine(string encoded)
         {
-            List<Coordinate> locs = new List<Coordinate>();
-            int index = 0;
-            int lat = 0;
-            int lng = 0;
-            int len = encoded.Length;
+            var locs = new List<Coordinate>();
+            var index = 0;
+            var lat = 0;
+            var lng = 0;
+            var len = encoded.Length;
             while (index < len)
             {
                 lat += DecodePoint(encoded, index, out index);
@@ -97,8 +97,8 @@ namespace NetTopologySuite.Tests.Various
         private static int DecodePoint(string encoded, int startindex, out int finishindex)
         {
             int b;
-            int shift = 0;
-            int result = 0;
+            var shift = 0;
+            var result = 0;
             do
             {
                 //get binary encoding
@@ -109,7 +109,7 @@ namespace NetTopologySuite.Tests.Various
                 shift += BinaryChunkSize;
             } while (b >= 0x20); //see if another binary value
             //if negivite flip
-            int dlat = (((result & 1) > 0) ? ~(result >> 1) : (result >> 1));
+            var dlat = (((result & 1) > 0) ? ~(result >> 1) : (result >> 1));
             //set output index
             finishindex = startindex;
             return dlat;

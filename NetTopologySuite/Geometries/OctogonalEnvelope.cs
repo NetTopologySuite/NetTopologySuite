@@ -139,10 +139,10 @@ namespace NetTopologySuite.Geometries
         /// <returns>A reference to <c>this</c> octagonal envelope, expanded by <paramref name="seq"/></returns>
         public OctagonalEnvelope ExpandToInclude(ICoordinateSequence seq)
         {
-            for (int i = 0; i < seq.Count; i++)
+            for (var i = 0; i < seq.Count; i++)
             {
-                double x = seq.GetX(i);
-                double y = seq.GetY(i);
+                var x = seq.GetX(i);
+                var y = seq.GetY(i);
                 ExpandToInclude(x, y);
             }
             return this;
@@ -237,7 +237,7 @@ namespace NetTopologySuite.Geometries
         public void ExpandBy(double distance)
         {
             if (IsNull) return;
-            double diagonalDistance = SQRT2 * distance;
+            var diagonalDistance = SQRT2 * distance;
             MinX -= distance;
             MaxX += distance;
             MinY -= distance;
@@ -293,8 +293,8 @@ namespace NetTopologySuite.Geometries
             if (MaxX < p.X) return false;
             if (MinY > p.Y) return false;
             if (MaxY < p.Y) return false;
-            double A = ComputeA(p.X, p.Y);
-            double B = ComputeB(p.X, p.Y);
+            var A = ComputeA(p.X, p.Y);
+            var B = ComputeB(p.X, p.Y);
             if (MinA > A) return false;
             if (MaxA < A) return false;
             if (MinB > B) return false;

@@ -11,8 +11,8 @@ namespace Open.Topology.TestRunner.Operations
          */
         public Object[] Convert(Type[] parameterTypes, Object[] args)
         {
-            Object[] actualArgs = new Object[args.Length];
-            for (int i = 0; i < args.Length; i++)
+            var actualArgs = new Object[args.Length];
+            for (var i = 0; i < args.Length; i++)
             {
                 actualArgs[i] = Convert(parameterTypes[i], args[i]);
             }

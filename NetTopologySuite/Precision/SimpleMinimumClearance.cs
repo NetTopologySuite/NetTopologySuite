@@ -107,7 +107,7 @@ namespace NetTopologySuite.Precision
             }
             private void CheckVertexDistance(Coordinate vertex)
             {
-                double vertexDist = vertex.Distance(_queryPt);
+                var vertexDist = vertex.Distance(_queryPt);
                 if (vertexDist > 0)
                 {
                     _smc.UpdateClearance(vertexDist, _queryPt, vertex);
@@ -117,7 +117,7 @@ namespace NetTopologySuite.Precision
             {
                 if (_queryPt.Equals2D(seg0) || _queryPt.Equals2D(seg1))
                     return;
-                double segDist = DistanceComputer.PointToSegment(_queryPt, seg1, seg0);
+                var segDist = DistanceComputer.PointToSegment(_queryPt, seg1, seg0);
                 if (segDist > 0)
                     _smc.UpdateClearance(segDist, _queryPt, seg1, seg0);
             }

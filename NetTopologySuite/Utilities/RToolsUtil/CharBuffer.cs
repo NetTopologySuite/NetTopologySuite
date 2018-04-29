@@ -70,9 +70,9 @@ namespace RTools_NTS.Util
 		/// <param name="requestedLen">The new requested length.</param>
 		protected void Grow(int requestedLen)
 		{
-			int newLen = Math.Max(Capacity*2, requestedLen);
+			var newLen = Math.Max(Capacity*2, requestedLen);
 			newLen = Math.Max(newLen, 16);
-			char[] newBuffer = new char[newLen];
+			var newBuffer = new char[newLen];
 			Array.Copy(buffer, 0, newBuffer, 0, Capacity);
 			buffer = newBuffer;
 			Capacity = newLen;
@@ -106,8 +106,8 @@ namespace RTools_NTS.Util
 		/// </summary>
 		protected void ShiftToZero()
 		{
-			int len = Length;
-			for (int i = 0; i < len; i++)
+			var len = Length;
+			for (var i = 0; i < len; i++)
 			{
 				buffer[i] = buffer[i + headIndex];
 			}
@@ -146,7 +146,7 @@ namespace RTools_NTS.Util
 		public void Append(string s)
 		{
 			if (s.Length + tailIndex >= Capacity) CheckCapacity(Length + s.Length);
-			for(int i = 0; i < s.Length; i++)
+			for(var i = 0; i < s.Length; i++)
 				buffer[tailIndex++] = s[i];
 		}
 		/// <summary>
@@ -156,7 +156,7 @@ namespace RTools_NTS.Util
 		public void Append(CharBuffer s)
 		{
 			if (s.Length + tailIndex >= Capacity) CheckCapacity(Length + s.Length);
-			for(int i = 0; i < s.Length; i++)
+			for(var i = 0; i < s.Length; i++)
 				buffer[tailIndex++] = s[i];
 		}
 		/// <summary>
@@ -196,7 +196,7 @@ namespace RTools_NTS.Util
 		/// for not found.</returns>
 		public int IndexOf(char c)
 		{
-			for (int i = headIndex; i < tailIndex; i++)
+			for (var i = headIndex; i < tailIndex; i++)
 			{
 				if (buffer[i] == c) return(i - headIndex);
 			}

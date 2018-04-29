@@ -39,7 +39,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public Node AddNode(Node n)
         {
-            Node node = _nodeMap[n.Coordinate];
+            var node = _nodeMap[n.Coordinate];
             if (node == null)
             {
                 _nodeMap.Add(n.Coordinate, n);
@@ -56,8 +56,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="e"></param>
         public void Add(EdgeEnd e)
         {
-            Coordinate p = e.Coordinate;
-            Node n = AddNode(p);
+            var p = e.Coordinate;
+            var n = AddNode(p);
             n.Add(e);
         }
         /// <returns>
@@ -91,7 +91,7 @@ namespace NetTopologySuite.GeometriesGraph
         public IList<Node> GetBoundaryNodes(int geomIndex)
         {
             IList<Node> bdyNodes = new List<Node>();
-            foreach (Node node in _nodeMap.Values)
+            foreach (var node in _nodeMap.Values)
             {
                 if (node.Label.GetLocation(geomIndex) == Location.Boundary)
                     bdyNodes.Add(node);
@@ -104,7 +104,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="outstream"></param>
         public void Write(StreamWriter outstream)
         {
-            foreach (Node node in _nodeMap.Values)
+            foreach (var node in _nodeMap.Values)
             {
                 node.Write(outstream);
             }

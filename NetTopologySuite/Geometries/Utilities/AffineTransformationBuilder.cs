@@ -78,7 +78,7 @@ namespace NetTopologySuite.Geometries.Utilities
         public AffineTransformation GetTransformation()
         {
             // compute full 3-point transformation
-            bool isSolvable = Compute();
+            var isSolvable = Compute();
             if (isSolvable)
                 return new AffineTransformation(_m00, _m01, _m02, _m10, _m11, _m12);
             return null;

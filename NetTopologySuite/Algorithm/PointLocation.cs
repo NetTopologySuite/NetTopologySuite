@@ -48,8 +48,8 @@ namespace NetTopologySuite.Algorithm
             var lineIntersector = new RobustLineIntersector();
             var p0 = new Coordinate();
             var p1 = new Coordinate();
-            int n = line.Count;
-            for (int i = 1; i < n; i++)
+            var n = line.Count;
+            for (var i = 1; i < n; i++)
             {
                 line.GetCoordinate(i - 1, p0);
                 line.GetCoordinate(i, p1);

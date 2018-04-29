@@ -19,7 +19,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>The Collection of linear components (LineStrings or LinearRings)</returns>
         public static ICollection<IGeometry> GetLines(ICollection<IGeometry> geoms, ICollection<IGeometry> lines)
         {
-            foreach (IGeometry g in geoms)
+            foreach (var g in geoms)
             {
                 GetLines(g, lines);
             }
@@ -35,7 +35,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>The Collection of linear components (LineStrings or LinearRings)</returns>
         public static ICollection<IGeometry> GetLines(ICollection<IGeometry> geoms, ICollection<IGeometry> lines, bool forceToLineString)
         {
-            foreach (IGeometry g in geoms)
+            foreach (var g in geoms)
             {
                 GetLines(g, lines, forceToLineString);
             }
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>The list of linear components.</returns>
         public static ICollection<IGeometry> GetLines(IGeometry geom)
         {
-            Collection<IGeometry> lines = new Collection<IGeometry>();
+            var lines = new Collection<IGeometry>();
             geom.Apply(new LinearComponentExtracter(lines));
             return lines;
         }
@@ -98,7 +98,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>The list of linear components</returns>
         public static ICollection<IGeometry> GetLines(IGeometry geom, bool forceToLineString)
         {
-            Collection<IGeometry> lines = new Collection<IGeometry>();
+            var lines = new Collection<IGeometry>();
             geom.Apply(new LinearComponentExtracter(lines, forceToLineString));
             return lines;
         }
@@ -110,7 +110,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>A linear geometry</returns>
         public static IGeometry GetGeometry(IGeometry geom)
         {
-            ICollection<IGeometry> list = GetLines(geom);
+            var list = GetLines(geom);
             return geom.Factory.BuildGeometry(list);
         }
         /// <summary>
@@ -122,7 +122,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>A linear geometry</returns>
         public static IGeometry GetGeometry(IGeometry geom, bool forceToLineString)
         {
-            ICollection<IGeometry> lines = GetLines(geom, forceToLineString);
+            var lines = GetLines(geom, forceToLineString);
             return geom.Factory.BuildGeometry(lines);
         }
         private readonly ICollection<IGeometry> _lines;
@@ -153,7 +153,7 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             if (IsForcedToLineString && geom is ILinearRing)
             {
-                ILineString line = geom.Factory.CreateLineString(((ILinearRing)geom).CoordinateSequence);
+                var line = geom.Factory.CreateLineString(((ILinearRing)geom).CoordinateSequence);
                 _lines.Add(line);
                 return;
             }

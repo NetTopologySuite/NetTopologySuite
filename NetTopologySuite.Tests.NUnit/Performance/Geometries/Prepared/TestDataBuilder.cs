@@ -43,14 +43,14 @@ public class TestDataBuilder
 	}
   public IList<IGeometry> CreateTestGeoms(Envelope env, int nItems, double size, int nPts)
   {
-    int nCells = (int) Math.Sqrt(nItems);
+    var nCells = (int) Math.Sqrt(nItems);
   	var geoms = new List<IGeometry>();
-  	double width = env.Width;
-  	double xInc = width / nCells;
-  	double yInc = width / nCells;
-  	for (int i = 0; i < nCells; i++) {
-    	for (int j = 0; j < nCells; j++) {
-    		Coordinate @base = new Coordinate(
+  	var width = env.Width;
+  	var xInc = width / nCells;
+  	var yInc = width / nCells;
+  	for (var i = 0; i < nCells; i++) {
+    	for (var j = 0; j < nCells; j++) {
+    		var @base = new Coordinate(
     				env.MinX + i * xInc,
     				env.MinY + j * yInc);
     		var line = CreateLine(@base, size, nPts);

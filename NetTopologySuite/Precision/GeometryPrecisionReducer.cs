@@ -98,7 +98,7 @@ namespace NetTopologySuite.Precision
              * For polygonal geometries, collapses are always removed, in order
              * to produce correct topology
              */
-            bool finalRemoveCollapsed = RemoveCollapsedComponents;
+            var finalRemoveCollapsed = RemoveCollapsedComponents;
             if (geom.Dimension >= Dimension.Surface)
                 finalRemoveCollapsed = true;
             var reduceGeom = geomEdit.Edit(geom,

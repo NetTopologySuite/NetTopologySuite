@@ -58,11 +58,11 @@ namespace NetTopologySuite.Operation.Distance
         }
         private static void AddFacetSequences(ICoordinateSequence pts, List<FacetSequence> sections)
         {
-            int i = 0;
-            int size = pts.Count;
+            var i = 0;
+            var size = pts.Count;
             while (i <= size - 1)
             {
-                int end = i + FacetSequenceSize + 1;
+                var end = i + FacetSequenceSize + 1;
                 // if only one point remains after this section, include it in this
                 // section
                 if (end >= size - 1)

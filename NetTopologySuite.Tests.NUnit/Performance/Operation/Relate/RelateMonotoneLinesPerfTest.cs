@@ -37,7 +37,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Relate
         private ILineString _line2;
         public override void StartRun(int runSize)
         {
-            int nVertices = runSize*DENSIFY_FACTOR;
+            var nVertices = runSize*DENSIFY_FACTOR;
             _line1 = CreateLine("LINESTRING (0 0, 100 100)", nVertices);
             _line2 = CreateLine("LINESTRING (0 1, 100 99)", nVertices);
             // force compilation of intersects code
@@ -73,8 +73,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Relate
         private double[] ComputeTimeFactors()
         {
             var runTime = RunTime;
-            double[] timeFactor = new double[runTime.Length - 1];
-            for (int i = 0; i < runTime.Length - 1; i++)
+            var timeFactor = new double[runTime.Length - 1];
+            for (var i = 0; i < runTime.Length - 1; i++)
             {
                 timeFactor[i] = (double) runTime[i + 1]/(double) runTime[i];
             }

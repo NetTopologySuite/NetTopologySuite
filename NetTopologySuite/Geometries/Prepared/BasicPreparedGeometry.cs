@@ -40,7 +40,7 @@ namespace NetTopologySuite.Geometries.Prepared
         public bool IsAnyTargetComponentInTest(IGeometry testGeom)
         {
             var locator = new PointLocator();
-            foreach (Coordinate representativePoint in RepresentativePoints)
+            foreach (var representativePoint in RepresentativePoints)
             {
                 if (locator.Intersects(representativePoint, testGeom))
                     return true;

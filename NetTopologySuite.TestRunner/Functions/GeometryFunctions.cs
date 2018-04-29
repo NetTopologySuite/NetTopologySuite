@@ -39,13 +39,13 @@ namespace Open.Topology.TestRunner.Functions
         public static IGeometry Reverse(IGeometry g) { return g.Reverse(); }
         public static IGeometry Normalize(IGeometry g)
         {
-            IGeometry gNorm = (IGeometry)g.Copy();
+            var gNorm = (IGeometry)g.Copy();
             gNorm.Normalize();
             return gNorm;
         }
         public static IGeometry Snap(IGeometry g, IGeometry g2, double distance)
         {
-            IGeometry[] snapped = GeometrySnapper.Snap(g, g2, distance);
+            var snapped = GeometrySnapper.Snap(g, g2, distance);
             return snapped[0];
         }
         public static IGeometry GetGeometryN(IGeometry g, int i)
@@ -56,15 +56,15 @@ namespace Open.Topology.TestRunner.Functions
         {
             if (g is IPolygon)
             {
-                ILinearRing shell = (ILinearRing)((IPolygon)g).ExteriorRing;
+                var shell = (ILinearRing)((IPolygon)g).ExteriorRing;
                 return g.Factory.CreatePolygon(shell, null);
             }
             if (g is IMultiPolygon)
             {
-                IPolygon[] poly = new IPolygon[g.NumGeometries];
-                for (int i = 0; i < g.NumGeometries; i++)
+                var poly = new IPolygon[g.NumGeometries];
+                for (var i = 0; i < g.NumGeometries; i++)
                 {
-                    ILinearRing shell = (ILinearRing)((IPolygon)g.GetGeometryN(i)).ExteriorRing;
+                    var shell = (ILinearRing)((IPolygon)g.GetGeometryN(i)).ExteriorRing;
                     poly[i] = g.Factory.CreatePolygon(shell, null);
                 }
                 return g.Factory.CreateMultiPolygon(poly);
@@ -82,10 +82,10 @@ namespace Open.Topology.TestRunner.Functions
             {
                 if (!(geom is IPolygon))
                     return;
-                IPolygon poly = (IPolygon)geom;
-                for (int i = 0; i < poly.NumInteriorRings; i++)
+                var poly = (IPolygon)geom;
+                for (var i = 0; i < poly.NumInteriorRings; i++)
                 {
-                    IPolygon hole = geom.Factory.CreatePolygon((ILinearRing)poly.GetInteriorRingN(i), null);
+                    var hole = geom.Factory.CreatePolygon((ILinearRing)poly.GetInteriorRingN(i), null);
                     _holePolys.Add(hole);
                 }
             }
@@ -100,7 +100,7 @@ namespace Open.Topology.TestRunner.Functions
         {
             if (g is IPolygon)
             {
-                ILinearRing ring = (ILinearRing)((IPolygon)g).GetInteriorRingN(i);
+                var ring = (ILinearRing)((IPolygon)g).GetInteriorRingN(i);
                 return ring;
             }
             return null;
@@ -110,12 +110,12 @@ namespace Open.Topology.TestRunner.Functions
             if (g is IPolygon)
                 return g;
             // TODO: ensure ring is valid
-            ILinearRing ring = g.Factory.CreateLinearRing(g.Coordinates);
+            var ring = g.Factory.CreateLinearRing(g.Coordinates);
             return g.Factory.CreatePolygon(ring, null);
         }
         public static IGeometry GetCoordinates(IGeometry g)
         {
-            Coordinate[] pts = g.Coordinates;
+            var pts = g.Coordinates;
             return g.Factory.CreateMultiPoint(pts);
         }
     }

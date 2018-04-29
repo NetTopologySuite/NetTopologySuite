@@ -29,7 +29,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         {
             this.e = e;
             Coordinates = e.Coordinates;
-            MonotoneChainIndexer mcb = new MonotoneChainIndexer();
+            var mcb = new MonotoneChainIndexer();
             StartIndexes = mcb.GetChainStartIndices(Coordinates);
         }
         /// <summary>
@@ -47,8 +47,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <returns></returns>
         public double GetMinX(int chainIndex)
         {
-            double x1 = Coordinates[StartIndexes[chainIndex]].X;
-            double x2 = Coordinates[StartIndexes[chainIndex + 1]].X;
+            var x1 = Coordinates[StartIndexes[chainIndex]].X;
+            var x2 = Coordinates[StartIndexes[chainIndex + 1]].X;
             return x1 < x2 ? x1 : x2;
         }
         /// <summary>
@@ -58,8 +58,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <returns></returns>
         public double GetMaxX(int chainIndex)
         {
-            double x1 = Coordinates[StartIndexes[chainIndex]].X;
-            double x2 = Coordinates[StartIndexes[chainIndex + 1]].X;
+            var x1 = Coordinates[StartIndexes[chainIndex]].X;
+            var x2 = Coordinates[StartIndexes[chainIndex + 1]].X;
             return x1 > x2 ? x1 : x2;
         }
         /// <summary>
@@ -69,8 +69,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="si"></param>
         public void ComputeIntersects(MonotoneChainEdge mce, SegmentIntersector si)
         {
-            for (int i = 0; i < StartIndexes.Length - 1; i++)
-                for (int j = 0; j < mce.StartIndexes.Length - 1; j++)
+            for (var i = 0; i < StartIndexes.Length - 1; i++)
+                for (var j = 0; j < mce.StartIndexes.Length - 1; j++)
                     ComputeIntersectsForChain(i, mce, j, si);
         }
         /// <summary>
@@ -106,8 +106,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
             if (!Overlaps(start0, end0, mce, start1, end1))
                 return;
             // the chains overlap, so split each in half and iterate  (binary search)
-            int mid0 = (start0 + end0) / 2;
-            int mid1 = (start1 + end1) / 2;
+            var mid0 = (start0 + end0) / 2;
+            var mid1 = (start1 + end1) / 2;
             // check terminating conditions before recursing
             if (start0 < mid0)
             {

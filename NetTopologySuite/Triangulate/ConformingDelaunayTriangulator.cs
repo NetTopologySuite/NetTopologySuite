@@ -51,8 +51,8 @@ namespace NetTopologySuite.Triangulate
     {
         private static Envelope ComputeVertexEnvelope(IEnumerable<Vertex> vertices)
         {
-            Envelope env = new Envelope();
-            foreach (Vertex v in vertices)
+            var env = new Envelope();
+            foreach (var v in vertices)
                 env.ExpandToInclude(v.Coordinate);
             return env;
         }
@@ -141,33 +141,33 @@ namespace NetTopologySuite.Triangulate
         // ==================================================================
         private void ComputeBoundingBox()
         {
-            Envelope vertexEnv = ComputeVertexEnvelope(InitialVertices);
-            Envelope segEnv = ComputeVertexEnvelope(_segVertices);
-            Envelope allPointsEnv = new Envelope(vertexEnv);
+            var vertexEnv = ComputeVertexEnvelope(InitialVertices);
+            var segEnv = ComputeVertexEnvelope(_segVertices);
+            var allPointsEnv = new Envelope(vertexEnv);
             allPointsEnv.ExpandToInclude(segEnv);
-            double deltaX = allPointsEnv.Width * 0.2;
-            double deltaY = allPointsEnv.Height * 0.2;
-            double delta = Math.Max(deltaX, deltaY);
+            var deltaX = allPointsEnv.Width * 0.2;
+            var deltaY = allPointsEnv.Height * 0.2;
+            var delta = Math.Max(deltaX, deltaY);
             _computeAreaEnv = new Envelope(allPointsEnv);
             _computeAreaEnv.ExpandBy(delta);
         }
         private void ComputeConvexHull()
         {
-            GeometryFactory fact = new GeometryFactory();
-            Coordinate[] coords = GetPointArray();
-            ConvexHull hull = new ConvexHull(coords, fact);
+            var fact = new GeometryFactory();
+            var coords = GetPointArray();
+            var hull = new ConvexHull(coords, fact);
             ConvexHull = hull.GetConvexHull();
         }
         private Coordinate[] GetPointArray()
         {
-            Coordinate[] pts = new Coordinate[InitialVertices.Count
+            var pts = new Coordinate[InitialVertices.Count
                     + _segVertices.Count];
-            int index = 0;
-            foreach (Vertex v in InitialVertices)
+            var index = 0;
+            foreach (var v in InitialVertices)
             {
                 pts[index++] = v.Coordinate;
             }
-            foreach (Vertex v in _segVertices)
+            foreach (var v in _segVertices)
             {
                 pts[index++] = v.Coordinate;
             }
@@ -205,21 +205,21 @@ namespace NetTopologySuite.Triangulate
         private void InsertSites(ICollection<Vertex> vertices)
         {
             Debug.WriteLine("Adding sites: " + vertices.Count);
-            foreach (Vertex v in vertices)
+            foreach (var v in vertices)
             {
                 InsertSite((ConstraintVertex)v);
             }
         }
         private ConstraintVertex InsertSite(ConstraintVertex v)
         {
-            KdNode<Vertex> kdnode = KDT.Insert(v.Coordinate, v);
+            var kdnode = KDT.Insert(v.Coordinate, v);
             if (!kdnode.IsRepeated)
             {
                 _incDel.InsertSite(v);
             }
             else
             {
-                ConstraintVertex snappedV = (ConstraintVertex)kdnode.Data;
+                var snappedV = (ConstraintVertex)kdnode.Data;
                 snappedV.Merge(v);
                 return snappedV;
                 // testing
@@ -263,7 +263,7 @@ namespace NetTopologySuite.Triangulate
         {
             AddConstraintVertices();
             // if (true) return;
-            int count = 0;
+            var count = 0;
             int splits /*, oldSegmentCount = _segments.Count*/;
             do
             {
@@ -297,25 +297,25 @@ namespace NetTopologySuite.Triangulate
          */
         private int EnforceGabriel(ICollection<Segment> segsToInsert)
         {
-            List<Segment> newSegments = new List<Segment>();
-            int splits = 0;
-            List<Segment> segsToRemove = new List<Segment>();
+            var newSegments = new List<Segment>();
+            var splits = 0;
+            var segsToRemove = new List<Segment>();
             /*
              * On each iteration must always scan all constraint (sub)segments, since
              * some constraints may be rebroken by Delaunay triangle flipping caused by
              * insertion of another constraint. However, this process must converge
              * eventually, with no splits remaining to find.
              */
-            foreach (Segment seg in segsToInsert)
+            foreach (var seg in segsToInsert)
             {
                 // System.out.println(seg);
-                Coordinate encroachPt = FindNonGabrielPoint(seg);
+                var encroachPt = FindNonGabrielPoint(seg);
                 // no encroachment found - segment must already be in subdivision
                 if (encroachPt == null)
                     continue;
                 // compute split point
                 _splitPt = SplitPointFinder.FindSplitPoint(seg, encroachPt);
-                ConstraintVertex splitVertex = CreateVertex(_splitPt, seg);
+                var splitVertex = CreateVertex(_splitPt, seg);
                 /*
                  * Check whether the inserted point still equals the split pt. This will
                  * not be the case if the split pt was too close to an existing site. If
@@ -331,7 +331,7 @@ namespace NetTopologySuite.Triangulate
                  * equidistant from the corner.
                  * </ul>
                  */
-                ConstraintVertex insertedVertex = InsertSite(splitVertex);
+                var insertedVertex = InsertSite(splitVertex);
                 //Debugging FObermaier
                 //Console.WriteLine("inserted vertex: " + insertedVertex.ToString());
                 if (!insertedVertex.Coordinate.Equals2D(_splitPt))
@@ -343,10 +343,10 @@ namespace NetTopologySuite.Triangulate
                     // splitPt);
                 }
                 // split segment and record the new halves
-                Segment s1 = new Segment(seg.StartX, seg.StartY, seg.StartZ,
+                var s1 = new Segment(seg.StartX, seg.StartY, seg.StartZ,
                                      splitVertex.X, splitVertex.Y, splitVertex.Z,
                                      seg.Data);
-                Segment s2 = new Segment(splitVertex.X, splitVertex.Y, splitVertex.Z,
+                var s2 = new Segment(splitVertex.X, splitVertex.Y, splitVertex.Z,
                                      seg.EndX, seg.EndY, seg.EndZ,
                                      seg.Data);
                 //Debugging FObermaier
@@ -356,11 +356,11 @@ namespace NetTopologySuite.Triangulate
                 segsToRemove.Add(seg);
                 splits = splits + 1;
             }
-            foreach (Segment seg in segsToRemove)
+            foreach (var seg in segsToRemove)
             {
                 segsToInsert.Remove(seg);
             }
-            foreach (Segment seg in newSegments)
+            foreach (var seg in newSegments)
             {
                 segsToInsert.Add(seg);
             }
@@ -382,31 +382,31 @@ namespace NetTopologySuite.Triangulate
         /// </returns>
         private Coordinate FindNonGabrielPoint(Segment seg)
         {
-            Coordinate p = seg.Start;
-            Coordinate q = seg.End;
+            var p = seg.Start;
+            var q = seg.End;
             // Find the mid point on the line and compute the radius of enclosing circle
-            Coordinate midPt = new Coordinate((p.X + q.X) / 2.0, (p.Y + q.Y) / 2.0);
-            double segRadius = p.Distance(midPt);
+            var midPt = new Coordinate((p.X + q.X) / 2.0, (p.Y + q.Y) / 2.0);
+            var segRadius = p.Distance(midPt);
             // compute envelope of circumcircle
-            Envelope env = new Envelope(midPt);
+            var env = new Envelope(midPt);
             env.ExpandBy(segRadius);
             // Find all points in envelope
             ICollection<KdNode<Vertex>> result = KDT.Query(env);
             // For each point found, test if it falls strictly in the circle
             // find closest point
             Coordinate closestNonGabriel = null;
-            double minDist = Double.MaxValue;
-            foreach (KdNode<Vertex> nextNode in result)
+            var minDist = Double.MaxValue;
+            foreach (var nextNode in result)
             {
-                Coordinate testPt = nextNode.Coordinate;
+                var testPt = nextNode.Coordinate;
                 // ignore segment endpoints
                 if (testPt.Equals2D(p) || testPt.Equals2D(q))
                     continue;
-                double testRadius = midPt.Distance(testPt);
+                var testRadius = midPt.Distance(testPt);
                 if (testRadius < segRadius)
                 {
                     // double testDist = seg.distance(testPt);
-                    double testDist = testRadius;
+                    var testDist = testRadius;
                     if (closestNonGabriel == null || testDist < minDist)
                     {
                         closestNonGabriel = testPt;

@@ -94,8 +94,8 @@ namespace NetTopologySuite.Algorithm
             }
             else
             {
-                double pdx = Math.Abs(p.X - p0.X);
-                double pdy = Math.Abs(p.Y - p0.Y);
+                var pdx = Math.Abs(p.X - p0.X);
+                var pdy = Math.Abs(p.Y - p0.Y);
                 dist = dx > dy ? pdx : pdy;
                 // <FIX>: hack to ensure that non-endpoints always have a non-zero distance
                 if (dist == 0.0 && ! p.Equals2D(p0))
@@ -110,9 +110,9 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         public static double NonRobustComputeEdgeDistance(Coordinate p, Coordinate p1, Coordinate p2)
         {
-            double dx = p.X - p1.X;
-            double dy = p.Y - p1.Y;
-            double dist = Math.Sqrt(dx * dx + dy * dy);   // dummy value
+            var dx = p.X - p1.X;
+            var dy = p.Y - p1.Y;
+            var dist = Math.Sqrt(dx * dx + dy * dy);   // dummy value
             Assert.IsTrue(! (dist == 0.0 && ! p.Equals(p1)), "Invalid distance calculation");
             return dist;
         }
@@ -359,7 +359,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The edge distance of the intersection point.</returns>
         public double GetEdgeDistance(int segmentIndex, int intIndex)
         {
-            double dist = ComputeEdgeDistance(IntersectionPoint[intIndex], InputLines[segmentIndex][0],
+            var dist = ComputeEdgeDistance(IntersectionPoint[intIndex], InputLines[segmentIndex][0],
                 InputLines[segmentIndex][1]);
             return dist;
         }

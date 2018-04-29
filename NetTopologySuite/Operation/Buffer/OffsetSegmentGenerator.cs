@@ -158,7 +158,7 @@ namespace NetTopologySuite.Operation.Buffer
             // do nothing if points are equal
             if (_s1.Equals(_s2)) return;
             var orientation = Orientation.Index(_s0, _s1, _s2);
-            bool outsideTurn =
+            var outsideTurn =
                   (orientation == OrientationIndex.Clockwise && _side == Positions.Left)
               || (orientation == OrientationIndex.CounterClockwise && _side == Positions.Right);
             if (orientation == 0)
@@ -181,7 +181,7 @@ namespace NetTopologySuite.Operation.Buffer
              * but the situation of exact collinearity should be fairly rare.
              */
             _li.ComputeIntersection(_s0, _s1, _s1, _s2);
-            int numInt = _li.IntersectionNum;
+            var numInt = _li.IntersectionNum;
             /*
              * if numInt is < 2, the lines are parallel and in the same direction. In
              * this case the point can be ignored, since the offset lines will also be
@@ -336,13 +336,13 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="offset">The points computed for the offset segment</param>
         private static void ComputeOffsetSegment(LineSegment seg, Positions side, double distance, LineSegment offset)
         {
-            int sideSign = side == Positions.Left ? 1 : -1;
-            double dx = seg.P1.X - seg.P0.X;
-            double dy = seg.P1.Y - seg.P0.Y;
-            double len = Math.Sqrt(dx * dx + dy * dy);
+            var sideSign = side == Positions.Left ? 1 : -1;
+            var dx = seg.P1.X - seg.P0.X;
+            var dy = seg.P1.Y - seg.P0.Y;
+            var len = Math.Sqrt(dx * dx + dy * dy);
             // u is the vector that is the length of the offset, in the direction of the segment
-            double ux = sideSign * distance * dx / len;
-            double uy = sideSign * distance * dy / len;
+            var ux = sideSign * distance * dx / len;
+            var uy = sideSign * distance * dy / len;
             offset.P0.X = seg.P0.X - uy;
             offset.P0.Y = seg.P0.Y + ux;
             offset.P1.X = seg.P1.X - uy;
@@ -519,12 +519,12 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="radius">The radius of the fillet</param>
         private void AddCornerFillet(Coordinate p, Coordinate p0, Coordinate p1, OrientationIndex direction, double radius)
         {
-            double dx0 = p0.X - p.X;
-            double dy0 = p0.Y - p.Y;
-            double startAngle = Math.Atan2(dy0, dx0);
-            double dx1 = p1.X - p.X;
-            double dy1 = p1.Y - p.Y;
-            double endAngle = Math.Atan2(dy1, dx1);
+            var dx0 = p0.X - p.X;
+            var dy0 = p0.Y - p.Y;
+            var startAngle = Math.Atan2(dy0, dx0);
+            var dx1 = p1.X - p.X;
+            var dy1 = p1.Y - p.Y;
+            var endAngle = Math.Atan2(dy1, dx1);
             if (direction == OrientationIndex.Clockwise)
             {
                 if (startAngle <= endAngle) startAngle += 2.0 * Math.PI;

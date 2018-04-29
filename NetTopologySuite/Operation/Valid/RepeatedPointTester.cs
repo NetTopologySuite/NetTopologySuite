@@ -40,7 +40,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <returns></returns>
         public bool HasRepeatedPoint(Coordinate[] coord)
         {
-            for (int i = 1; i < coord.Length; i++)
+            for (var i = 1; i < coord.Length; i++)
             {
                 if (coord[i - 1].Equals(coord[i]))
                 {
@@ -59,7 +59,7 @@ namespace NetTopologySuite.Operation.Valid
         {
             if (HasRepeatedPoint(p.ExteriorRing.Coordinates))
                 return true;
-            for (int i = 0; i < p.NumInteriorRings; i++)
+            for (var i = 0; i < p.NumInteriorRings; i++)
                 if (HasRepeatedPoint(p.GetInteriorRingN(i).Coordinates))
                     return true;
             return false;
@@ -71,9 +71,9 @@ namespace NetTopologySuite.Operation.Valid
         /// <returns></returns>
         private bool HasRepeatedPoint(IGeometryCollection gc)
         {
-            for (int i = 0; i < gc.NumGeometries; i++)
+            for (var i = 0; i < gc.NumGeometries; i++)
             {
-                IGeometry g = gc.GetGeometryN(i);
+                var g = gc.GetGeometryN(i);
                 if (HasRepeatedPoint(g))
                     return true;
             }

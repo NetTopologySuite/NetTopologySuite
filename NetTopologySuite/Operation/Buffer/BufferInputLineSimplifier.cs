@@ -104,14 +104,14 @@ namespace NetTopologySuite.Operation.Buffer
              * Do not simplify end line segments of the line string.
              * This ensures that end caps are generated consistently.
              */
-            int index = 1;
-            int midIndex = FindNextNonDeletedIndex(index);
-            int lastIndex = FindNextNonDeletedIndex(midIndex);
-            bool isChanged = false;
+            var index = 1;
+            var midIndex = FindNextNonDeletedIndex(index);
+            var lastIndex = FindNextNonDeletedIndex(midIndex);
+            var isChanged = false;
             while (lastIndex < _inputLine.Length)
             {
                 // test triple for shallow concavity
-                bool isMiddleVertexDeleted = false;
+                var isMiddleVertexDeleted = false;
                 if (IsDeletable(index, midIndex, lastIndex, _distanceTol))
                 {
                     _isDeleted[midIndex] = Delete;
@@ -137,7 +137,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// </returns>
         private int FindNextNonDeletedIndex(int index)
         {
-            int next = index + 1;
+            var next = index + 1;
             while (next < _inputLine.Length - 1 && _isDeleted[next] == Delete)
                 next++;
             return next;
@@ -145,7 +145,7 @@ namespace NetTopologySuite.Operation.Buffer
         private Coordinate[] CollapseLine()
         {
             var coordList = new CoordinateList();
-            for (int i = 0; i < _inputLine.Length; i++)
+            for (var i = 0; i < _inputLine.Length; i++)
             {
                 if (_isDeleted[i] != Delete)
                     coordList.Add(_inputLine[i]);
@@ -188,9 +188,9 @@ namespace NetTopologySuite.Operation.Buffer
         private bool IsShallowSampled(Coordinate p0, Coordinate p2, int i0, int i2, double distanceTol)
         {
             // check every n'th point to see if it is within tolerance
-            int inc = (i2 - i0) / NumPtsToCheck;
+            var inc = (i2 - i0) / NumPtsToCheck;
             if (inc <= 0) inc = 1;
-            for (int i = i0; i < i2; i += inc)
+            for (var i = i0; i < i2; i += inc)
             {
                 if (!IsShallow(p0, p2, _inputLine[i], distanceTol)) return false;
             }
@@ -198,7 +198,7 @@ namespace NetTopologySuite.Operation.Buffer
         }
         private static bool IsShallow(Coordinate p0, Coordinate p1, Coordinate p2, double distanceTol)
         {
-            double dist = DistanceComputer.PointToSegment(p1, p0, p2);
+            var dist = DistanceComputer.PointToSegment(p1, p0, p2);
             return dist < distanceTol;
         }
         private bool IsConcave(Coordinate p0, Coordinate p1, Coordinate p2)

@@ -27,7 +27,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         [Test]
         public void Test()
         {
-            TestTree t = new TestTree(2);
+            var t = new TestTree(2);
             t.Insert(2, 6, "A");
             t.Insert(2, 4, "B");
             t.Insert(2, 3, "C");
@@ -47,7 +47,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         [Test]
         public void TestEmptyTree()
         {
-            TestTree t = new TestTree(2);
+            var t = new TestTree(2);
             t.Build();
             Assert.AreEqual(0, t.Root().Level);
             Assert.AreEqual(1, t.BoundablesAtLevel(0).Count);

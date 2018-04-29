@@ -101,7 +101,7 @@ namespace NetTopologySuite.Operation.Distance3D
         {
             if (Location.Exterior == Locate(intPt, Polygon.ExteriorRing))
                 return false;
-            for (int i = 0; i < Polygon.NumInteriorRings; i++)
+            for (var i = 0; i < Polygon.NumInteriorRings; i++)
             {
                 if (Location.Interior == Locate(intPt, Polygon.GetInteriorRingN(i)))
                     return false;
@@ -119,7 +119,7 @@ namespace NetTopologySuite.Operation.Distance3D
         {
             var seq = ring.CoordinateSequence;
             var seqProj = Project(seq, _facingPlane);
-            Coordinate ptProj = Project(pt, _facingPlane);
+            var ptProj = Project(pt, _facingPlane);
             return Location.Exterior != RayCrossingCounter.LocatePointInRing(ptProj, seqProj);
         }
         private static ICoordinateSequence Project(ICoordinateSequence seq, Plane facingPlane)

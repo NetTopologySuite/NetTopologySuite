@@ -66,7 +66,7 @@ namespace NetTopologySuite.Index.Sweepline
         /// <param name="o"></param>
         public int CompareTo(object o)
         {
-            SweepLineEvent pe = (SweepLineEvent) o;
+            var pe = (SweepLineEvent) o;
             if (xValue < pe.xValue) return  -1;
             if (xValue > pe.xValue) return   1;
             if (eventType < pe.eventType) return  -1;

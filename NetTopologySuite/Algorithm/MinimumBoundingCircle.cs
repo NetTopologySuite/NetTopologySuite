@@ -72,7 +72,7 @@ namespace NetTopologySuite.Algorithm
             Compute();
             if (_centre == null)
                 return _input.Factory.CreatePolygon();
-            IPoint centrePoint = _input.Factory.CreatePoint(_centre);
+            var centrePoint = _input.Factory.CreatePoint(_centre);
             if (_radius == 0.0)
                 return centrePoint;
             return centrePoint.Buffer(_radius);
@@ -121,8 +121,8 @@ namespace NetTopologySuite.Algorithm
                     return _input.Factory.CreatePoint(_centre);
             }
             //TODO: handle case of 3 extremal points, by computing a line from one of them through the centre point with len = 2*radius
-            Coordinate p0 = _extremalPts[0];
-            Coordinate p1 = _extremalPts[1];
+            var p0 = _extremalPts[0];
+            var p1 = _extremalPts[1];
             return _input.Factory.CreateLineString(new Coordinate[] { p0, p1 });
         }
         /// <summary>
@@ -235,7 +235,7 @@ namespace NetTopologySuite.Algorithm
              * at most <tt>pts.length</tt> iterations are required to terminate
              * with a correct result.
              */
-            for (int i = 0; i < pts.Length; i++)
+            for (var i = 0; i < pts.Length; i++)
             {
                 var R = PointWithMinAngleWithSegment(pts, P, Q);
                 // if PRQ is obtuse, then MBC is determined by P and Q
@@ -264,8 +264,8 @@ namespace NetTopologySuite.Algorithm
         }
         private static Coordinate LowestPoint(Coordinate[] pts)
         {
-            Coordinate min = pts[0];
-            for (int i = 1; i < pts.Length; i++)
+            var min = pts[0];
+            for (var i = 1; i < pts.Length; i++)
             {
                 if (pts[i].Y < min.Y)
                     min = pts[i];
@@ -274,20 +274,20 @@ namespace NetTopologySuite.Algorithm
         }
         private static Coordinate PointWitMinAngleWithX(Coordinate[] pts, Coordinate P)
         {
-            double minSin = Double.MaxValue;
+            var minSin = Double.MaxValue;
             Coordinate minAngPt = null;
-            for (int i = 0; i < pts.Length; i++)
+            for (var i = 0; i < pts.Length; i++)
             {
-                Coordinate p = pts[i];
+                var p = pts[i];
                 if (p == P) continue;
                 /**
                  * The sin of the angle is a simpler proxy for the angle itself
                  */
-                double dx = p.X - P.X;
-                double dy = p.Y - P.Y;
+                var dx = p.X - P.X;
+                var dy = p.Y - P.Y;
                 if (dy < 0) dy = -dy;
-                double len = Math.Sqrt(dx * dx + dy * dy);
-                double sin = dy / len;
+                var len = Math.Sqrt(dx * dx + dy * dy);
+                var sin = dy / len;
                 if (sin < minSin)
                 {
                     minSin = sin;
@@ -298,14 +298,14 @@ namespace NetTopologySuite.Algorithm
         }
         private static Coordinate PointWithMinAngleWithSegment(Coordinate[] pts, Coordinate P, Coordinate Q)
         {
-            double minAng = Double.MaxValue;
+            var minAng = Double.MaxValue;
             Coordinate minAngPt = null;
-            for (int i = 0; i < pts.Length; i++)
+            for (var i = 0; i < pts.Length; i++)
             {
-                Coordinate p = pts[i];
+                var p = pts[i];
                 if (p == P) continue;
                 if (p == Q) continue;
-                double ang = AngleUtility.AngleBetween(P, p, Q);
+                var ang = AngleUtility.AngleBetween(P, p, Q);
                 if (ang < minAng)
                 {
                     minAng = ang;

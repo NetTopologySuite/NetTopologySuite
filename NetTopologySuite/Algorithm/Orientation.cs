@@ -122,18 +122,18 @@ namespace NetTopologySuite.Algorithm
         public static bool IsCCW(Coordinate[] ring)
         {
             // # of points without closing endpoint
-            int nPts = ring.Length - 1;
+            var nPts = ring.Length - 1;
             // sanity check
             if (nPts < 3)
                 throw new ArgumentException(
                     "Ring has fewer than 4 points, so orientation cannot be determined",
                     nameof(ring));
             // find highest point
-            Coordinate hiPt = ring[0];
-            int hiIndex = 0;
-            for (int i = 1; i <= nPts; i++)
+            var hiPt = ring[0];
+            var hiIndex = 0;
+            for (var i = 1; i <= nPts; i++)
             {
-                Coordinate p = ring[i];
+                var p = ring[i];
                 if (p.Y > hiPt.Y)
                 {
                     hiPt = p;
@@ -141,7 +141,7 @@ namespace NetTopologySuite.Algorithm
                 }
             }
             // find distinct point before highest point
-            int iPrev = hiIndex;
+            var iPrev = hiIndex;
             do
             {
                 iPrev = iPrev - 1;
@@ -149,13 +149,13 @@ namespace NetTopologySuite.Algorithm
                     iPrev = nPts;
             } while (ring[iPrev].Equals2D(hiPt) && iPrev != hiIndex);
             // find distinct point after highest point
-            int iNext = hiIndex;
+            var iNext = hiIndex;
             do
             {
                 iNext = (iNext + 1) % nPts;
             } while (ring[iNext].Equals2D(hiPt) && iNext != hiIndex);
-            Coordinate prev = ring[iPrev];
-            Coordinate next = ring[iNext];
+            var prev = ring[iPrev];
+            var next = ring[iNext];
             /**
              * This check catches cases where the ring contains an A-B-A configuration
              * of points. This can happen if the ring does not contain 3 distinct points

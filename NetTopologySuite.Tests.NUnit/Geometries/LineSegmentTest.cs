@@ -40,8 +40,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         void CheckOffset(double x0, double y0, double x1, double y1, double segFrac, double offset,
             double expectedX, double expectedY)
         {
-            LineSegment seg = new LineSegment(x0, y0, x1, y1);
-            Coordinate p = seg.PointAlongOffset(segFrac, offset);
+            var seg = new LineSegment(x0, y0, x1, y1);
+            var p = seg.PointAlongOffset(segFrac, offset);
             Assert.IsTrue(EqualsTolerance(new Coordinate(expectedX, expectedY), p, 0.000001));
         }
         public static bool EqualsTolerance(Coordinate p0, Coordinate p1, double tolerance)
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestOrientationIndexCoordinate()
         {
-            LineSegment seg = new LineSegment(0, 0, 10, 10);
+            var seg = new LineSegment(0, 0, 10, 10);
             CheckOrientationIndex(seg, 10, 11, 1);
             CheckOrientationIndex(seg, 10, 9, -1);
             CheckOrientationIndex(seg, 11, 11, 0);
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestOrientationIndexSegment()
         {
-            LineSegment seg = new LineSegment(100, 100, 110, 110);
+            var seg = new LineSegment(100, 100, 110, 110);
             CheckOrientationIndex(seg, 100, 101, 105, 106, 1);
             CheckOrientationIndex(seg, 100, 99, 105, 96, -1);
             CheckOrientationIndex(seg, 200, 200, 210, 210, 0);
@@ -73,15 +73,15 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         void CheckOrientationIndex(double x0, double y0, double x1, double y1, double px, double py,
             int expectedOrient)
         {
-            LineSegment seg = new LineSegment(x0, y0, x1, y1);
+            var seg = new LineSegment(x0, y0, x1, y1);
             CheckOrientationIndex(seg, px, py, expectedOrient);
         }
         void CheckOrientationIndex(LineSegment seg,
             double px, double py,
             int expectedOrient)
         {
-            Coordinate p = new Coordinate(px, py);
-            int orient = seg.OrientationIndex(p);
+            var p = new Coordinate(px, py);
+            var orient = seg.OrientationIndex(p);
             Assert.IsTrue(orient == expectedOrient);
         }
         void CheckOrientationIndex(LineSegment seg,
@@ -89,8 +89,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             double s1x, double s1y,
             int expectedOrient)
         {
-            LineSegment seg2 = new LineSegment(s0x, s0y, s1x, s1y);
-            int orient = seg.OrientationIndex(seg2);
+            var seg2 = new LineSegment(s0x, s0y, s1x, s1y);
+            var orient = seg.OrientationIndex(seg2);
             Assert.IsTrue(orient == expectedOrient);
         }
     }

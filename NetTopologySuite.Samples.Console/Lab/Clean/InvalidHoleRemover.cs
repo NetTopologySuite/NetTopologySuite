@@ -25,7 +25,7 @@ namespace NetTopologySuite.Samples.Lab.Clean
         /// <returns>The geometry with invalid holes removed</returns>
         public static IGeometry Clean(IGeometry geom)
         {
-            InvalidHoleRemover pihr = new InvalidHoleRemover(geom);
+            var pihr = new InvalidHoleRemover(geom);
             return pihr.GetResult();
         }
         private readonly IGeometry _geom;
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Samples.Lab.Clean
             {
                 if (geom is IPolygon)
                 {
-                    IPolygon poly = (IPolygon)geom;
+                    var poly = (IPolygon)geom;
                     return PolygonInvalidHoleRemover.Clean(poly);
                 }
                 return geom;
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Samples.Lab.Clean
         {
             public static IPolygon Clean(IPolygon poly)
             {
-                PolygonInvalidHoleRemover pihr = new PolygonInvalidHoleRemover(poly);
+                var pihr = new PolygonInvalidHoleRemover(poly);
                 return pihr.GetResult();
             }
             private readonly IPolygon _poly;
@@ -71,11 +71,11 @@ namespace NetTopologySuite.Samples.Lab.Clean
             }
             private IPolygon GetResult()
             {
-                IGeometryFactory gf = _poly.Factory;
-                ILinearRing shell = (ILinearRing)_poly.ExteriorRing;
-                IPreparedGeometry shellPrep = PreparedGeometryFactory.Prepare(gf.CreatePolygon(shell));
+                var gf = _poly.Factory;
+                var shell = (ILinearRing)_poly.ExteriorRing;
+                var shellPrep = PreparedGeometryFactory.Prepare(gf.CreatePolygon(shell));
                 IList<IGeometry> holes = new List<IGeometry>();
-                for (int i = 0; i < _poly.NumInteriorRings; i++)
+                for (var i = 0; i < _poly.NumInteriorRings; i++)
                 {
                     IGeometry hole = _poly.GetInteriorRingN(i);
                     if (shellPrep.Covers(hole))
@@ -85,8 +85,8 @@ namespace NetTopologySuite.Samples.Lab.Clean
                 if (holes.Count == _poly.NumInteriorRings)
                     return _poly;
                 // return new polygon with covered holes only
-                ILinearRing[] arr = GeometryFactory.ToLinearRingArray(holes);
-                IPolygon result = gf.CreatePolygon(shell, arr);
+                var arr = GeometryFactory.ToLinearRingArray(holes);
+                var result = gf.CreatePolygon(shell, arr);
                 return result;
             }
         }

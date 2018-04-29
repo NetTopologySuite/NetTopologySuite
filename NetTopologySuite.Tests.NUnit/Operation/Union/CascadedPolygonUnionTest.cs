@@ -50,13 +50,13 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
         private IList<IGeometry> CreateDiscs(int num, double radius)
         {
             var geoms = new List<IGeometry>();
-            for (int i = 0; i < num; i++)
+            for (var i = 0; i < num; i++)
             {
-                for (int j = 0; j < num; j++)
+                for (var j = 0; j < num; j++)
                 {
-                    Coordinate pt = new Coordinate(i, j);
+                    var pt = new Coordinate(i, j);
                     IGeometry ptGeom = _geomFact.CreatePoint(pt);
-                    IGeometry disc = ptGeom.Buffer(radius);
+                    var disc = ptGeom.Buffer(radius);
                     geoms.Add(disc);
                 }
             }

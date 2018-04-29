@@ -102,7 +102,7 @@ namespace RTools_NTS.Util
 		public bool Equals(char c)
 		{
 			if (!(this is CharToken)) return(false);
-			CharToken ct = this as CharToken;
+			var ct = this as CharToken;
 			return(ct.Object.Equals(c));
 		}
 		/// <summary>
@@ -632,7 +632,7 @@ namespace RTools_NTS.Util
             //}
 			// not a normal int, try other bases
 			int[] bases = {16, 2, 8};
-			foreach(int b in bases)
+			foreach(var b in bases)
 			{
 				try
 				{

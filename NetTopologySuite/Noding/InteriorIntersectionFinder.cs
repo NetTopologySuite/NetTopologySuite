@@ -28,7 +28,7 @@ namespace NetTopologySuite.Noding
         /// <returns>a intersection finder which finds all interior intersections.</returns>
         public static InteriorIntersectionFinder CreateAllIntersectionsFinder(LineIntersector li)
         {
-            InteriorIntersectionFinder finder = new InteriorIntersectionFinder(li);
+            var finder = new InteriorIntersectionFinder(li);
             finder.FindAllIntersections = true;
             return finder;
         }
@@ -40,7 +40,7 @@ namespace NetTopologySuite.Noding
         /// <returns>a intersection finder which counts all interior intersections.</returns>
         public static InteriorIntersectionFinder CreateIntersectionCounter(LineIntersector li)
         {
-            InteriorIntersectionFinder finder = new InteriorIntersectionFinder(li);
+            var finder = new InteriorIntersectionFinder(li);
             finder.FindAllIntersections = true;
             finder.KeepIntersections = false;
             return finder;
@@ -131,14 +131,14 @@ namespace NetTopologySuite.Noding
              */
             if (CheckEndSegmentsOnly)
             {
-                Boolean isEndSegPresent = IsEndSegment(e0, segIndex0) || IsEndSegment(e1, segIndex1);
+                var isEndSegPresent = IsEndSegment(e0, segIndex0) || IsEndSegment(e1, segIndex1);
                 if (!isEndSegPresent)
                     return;
             }
-            Coordinate p00 = e0.Coordinates[segIndex0];
-            Coordinate p01 = e0.Coordinates[segIndex0 + 1];
-            Coordinate p10 = e1.Coordinates[segIndex1];
-            Coordinate p11 = e1.Coordinates[segIndex1 + 1];
+            var p00 = e0.Coordinates[segIndex0];
+            var p01 = e0.Coordinates[segIndex0 + 1];
+            var p10 = e1.Coordinates[segIndex1];
+            var p11 = e1.Coordinates[segIndex1 + 1];
             _li.ComputeIntersection(p00, p01, p10, p11);
             if (_li.HasIntersection)
             {

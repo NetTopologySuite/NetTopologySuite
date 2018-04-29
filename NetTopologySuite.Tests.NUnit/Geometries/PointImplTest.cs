@@ -21,53 +21,53 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestEquals1()
         {
-            Point p1 = (Point)reader.Read("POINT(1.234 5.678)");
-            Point p2 = (Point)reader.Read("POINT(1.234 5.678)");
+            var p1 = (Point)reader.Read("POINT(1.234 5.678)");
+            var p2 = (Point)reader.Read("POINT(1.234 5.678)");
             Assert.IsTrue(p1.Equals(p2));
         }
         [TestAttribute]
         public void TestEquals2()
         {
-            Point p1 = (Point)reader.Read("POINT(1.23 5.67)");
-            Point p2 = (Point)reader.Read("POINT(1.23 5.67)");
+            var p1 = (Point)reader.Read("POINT(1.23 5.67)");
+            var p2 = (Point)reader.Read("POINT(1.23 5.67)");
             Assert.IsTrue(p1.Equals(p2));
         }
         [TestAttribute]
         public void TestEquals3()
         {
-            Point p1 = (Point)reader.Read("POINT(1.235 5.678)");
-            Point p2 = (Point)reader.Read("POINT(1.234 5.678)");
+            var p1 = (Point)reader.Read("POINT(1.235 5.678)");
+            var p2 = (Point)reader.Read("POINT(1.234 5.678)");
             Assert.IsTrue(!p1.Equals(p2));
         }
         [TestAttribute]
         public void TestEquals4()
         {
-            Point p1 = (Point)reader.Read("POINT(1.2334 5.678)");
-            Point p2 = (Point)reader.Read("POINT(1.2333 5.678)");
+            var p1 = (Point)reader.Read("POINT(1.2334 5.678)");
+            var p2 = (Point)reader.Read("POINT(1.2333 5.678)");
             Assert.IsTrue(p1.Equals(p2));
         }
         [TestAttribute]
         public void TestEquals5()
         {
-            Point p1 = (Point)reader.Read("POINT(1.2334 5.678)");
-            Point p2 = (Point)reader.Read("POINT(1.2335 5.678)");
+            var p1 = (Point)reader.Read("POINT(1.2334 5.678)");
+            var p2 = (Point)reader.Read("POINT(1.2335 5.678)");
             Assert.IsTrue(!p1.Equals(p2));
         }
         [TestAttribute]
         public void TestEquals6()
         {
-            Point p1 = (Point)reader.Read("POINT(1.2324 5.678)");
-            Point p2 = (Point)reader.Read("POINT(1.2325 5.678)");
+            var p1 = (Point)reader.Read("POINT(1.2324 5.678)");
+            var p2 = (Point)reader.Read("POINT(1.2325 5.678)");
             Assert.IsTrue(!p1.Equals(p2));
         }
         [TestAttribute]
         public void TestNegRounding1()
         {
-            Point pLo = (Point)reader.Read("POINT(-1.233 5.678)");
-            Point pHi = (Point)reader.Read("POINT(-1.232 5.678)");
-            Point p1 = (Point)reader.Read("POINT(-1.2326 5.678)");
-            Point p2 = (Point)reader.Read("POINT(-1.2325 5.678)");
-            Point p3 = (Point)reader.Read("POINT(-1.2324 5.678)");
+            var pLo = (Point)reader.Read("POINT(-1.233 5.678)");
+            var pHi = (Point)reader.Read("POINT(-1.232 5.678)");
+            var p1 = (Point)reader.Read("POINT(-1.2326 5.678)");
+            var p2 = (Point)reader.Read("POINT(-1.2325 5.678)");
+            var p3 = (Point)reader.Read("POINT(-1.2324 5.678)");
             Assert.IsTrue(!p1.Equals(p2));
             Assert.IsTrue(p3.Equals(p2));
             Assert.IsTrue(p1.Equals(pLo));
@@ -77,9 +77,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestIsSimple()
         {
-            Point p1 = (Point)reader.Read("POINT(1.2324 5.678)");
+            var p1 = (Point)reader.Read("POINT(1.2324 5.678)");
             Assert.IsTrue(p1.IsSimple);
-            Point p2 = (Point)reader.Read("POINT EMPTY");
+            var p2 = (Point)reader.Read("POINT EMPTY");
             Assert.IsTrue(p2.IsSimple);
         }
     }

@@ -79,7 +79,7 @@ namespace NetTopologySuite.IO
             else
             {
                 buf.Append("(");
-                for (int i = 0; i < coord.Length; i++)
+                for (var i = 0; i < coord.Length; i++)
                 {
                     if (i > 0)
                         buf.Append(", ");
@@ -191,7 +191,7 @@ namespace NetTopologySuite.IO
         /// <returns>A Geometry Tagged Text string (see the OpenGIS Simple Features Specification).</returns>
         public virtual string Write(IGeometry geometry)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             TextWriter sw = new StringWriter(sb);
             TryWrite(geometry, sw);
             return sb.ToString();
@@ -279,7 +279,7 @@ namespace NetTopologySuite.IO
                 throw new ArgumentNullException("geometry");
             _useFormating = useFormatting;
             // Enable maxPrecision (via {0:R} formatter) in WriteNumber method
-            IPrecisionModel precisionModel = geometry.Factory.PrecisionModel;
+            var precisionModel = geometry.Factory.PrecisionModel;
             _useMaxPrecision = precisionModel.PrecisionModelType == PrecisionModels.Floating;
             _formatter = CreateFormatter(geometry.PrecisionModel);
             _format = "0." + StringOfChar('#', _formatter.NumberDecimalDigits);
@@ -450,7 +450,7 @@ namespace NetTopologySuite.IO
             writer.Write(WriteNumber(seq.GetX(i)) + " " + WriteNumber(seq.GetY(i)));
             if (_outputDimension >= 3 && seq.Dimension >= 3)
             {
-                double z = seq.GetOrdinate(i, Ordinate.Z);
+                var z = seq.GetOrdinate(i, Ordinate.Z);
                 if (!Double.IsNaN(z))
                 {
                     writer.Write(" ");
@@ -515,7 +515,7 @@ namespace NetTopologySuite.IO
             {
                 if (doIndent) Indent(level, writer);
                 writer.Write("(");
-                for (int i = 0; i < seq.Count; i++)
+                for (var i = 0; i < seq.Count; i++)
                 {
                     if (i > 0)
                     {
@@ -724,7 +724,7 @@ namespace NetTopologySuite.IO
         {
             if (!_useFormating || level <= 0) return;
             writer.Write("\n");
-            for (int i = 0; i < level; i++)
+            for (var i = 0; i < level; i++)
                 writer.Write(_indentTabStr);
         }
         #region Implementation of IGeometryIOSettings

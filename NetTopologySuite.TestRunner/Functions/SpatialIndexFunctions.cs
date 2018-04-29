@@ -26,7 +26,7 @@ namespace Open.Topology.TestRunner.Functions
         {
             var index = new KdTree<object>(tolerance);
             var pt = geom.Coordinates;
-            for (int i = 0; i < pt.Length; i++)
+            for (var i = 0; i < pt.Length; i++)
             {
                 index.Insert(pt[i]);
             }

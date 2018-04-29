@@ -17,12 +17,12 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
         public const int ORDERED = 4;
         public static void run(String testName, int testType, IList<IGeometry> polys)
         {
-            UnionPerfTester test = new UnionPerfTester(polys);
+            var test = new UnionPerfTester(polys);
             test.run(testName, testType);
         }
         public static void runAll(IList<IGeometry> polys)
         {
-            UnionPerfTester test = new UnionPerfTester(polys);
+            var test = new UnionPerfTester(polys);
             test.runAll();
         }
         private const int MAX_ITER = 1;
@@ -43,8 +43,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
         {
             Console.WriteLine();
             Console.WriteLine("======= Union Algorithm: " + testName + " ===========");
-            Stopwatch sw = new Stopwatch();
-            for (int i = 0; i < MAX_ITER; i++)
+            var sw = new Stopwatch();
+            for (var i = 0; i < MAX_ITER; i++)
             {
                 IGeometry union = null;
                 switch (testType)
@@ -65,13 +65,13 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
         }
         private void printFormatted(IGeometry geom)
         {
-            WKTWriter writer = new WKTWriter();
+            var writer = new WKTWriter();
             Console.WriteLine(writer.WriteFormatted(geom));
         }
         public IGeometry unionAllSimple(IList<IGeometry> geoms)
         {
             IGeometry unionAll = null;
-            int count = 0;
+            var count = 0;
             foreach (var geom in geoms)
             {
                 if (unionAll == null)
@@ -103,8 +103,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
         }
         private void printItemEnvelopes(IList tree)
         {
-            Envelope itemEnv = new Envelope();
-            foreach (object o in tree)
+            var itemEnv = new Envelope();
+            foreach (var o in tree)
             {
                 if (o is IList)
                 {

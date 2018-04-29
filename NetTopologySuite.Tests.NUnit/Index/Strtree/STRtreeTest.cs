@@ -78,7 +78,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         [Test]
         public void TestDisallowedInserts()
         {
-            STRtree t = new STRtree(5);
+            var t = new STRtree(5);
             t.Insert(new Envelope(0, 0, 0, 0), new Object());
             t.Insert(new Envelope(0, 0, 0, 0), new Object());
             t.Query(new Envelope());
@@ -108,7 +108,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
                                                          {
                                                              new Coordinate(20, 20), new Coordinate(30, 30)
                                                          }));
-            STRtree t = new STRtree(4);
+            var t = new STRtree(4);
             foreach (var g in geometries)
             {
                 t.Insert(g.EnvelopeInternal, new Object());
@@ -161,7 +161,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             /*
              * Generate the random test data set
              */
-            for (int i = 0; i < totalRecords; i++)
+            for (var i = 0; i < totalRecords; i++)
             {
                 coordinate = new Coordinate(-100 + random.Next(valueRange) * 1.1, random.Next(valueRange) * (-5.1));
                 var spatialObject = geometryFactory.CreatePoint(coordinate);
@@ -174,12 +174,12 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             /*
              * Get the correct top K
              */
-            for (int i = 0; i < topK; i++)
+            for (var i = 0; i < topK; i++)
             {
                 correctData.Add(testDataset[i]);
             }
             var strtree = new STRtree<IGeometry>();
-            for (int i = 0; i < totalRecords; i++)
+            for (var i = 0; i < totalRecords; i++)
             {
                 strtree.Insert(testDataset[i].EnvelopeInternal, testDataset[i]);
             }
@@ -197,7 +197,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
              * Check the difference between correct result and test result. The difference should be 0.
              */
             var difference = 0;
-            for (int i = 0; i < topK; i++)
+            for (var i = 0; i < topK; i++)
             {
                 if (distanceComparator.Compare(correctData[i], topKList[i]) != 0)
                 {
@@ -213,7 +213,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             var t = new STRtreeDemo.TestTree(nodeCapacity);
             var parentBoundables
                 = t.CreateParentBoundablesFromVerticalSlice(ItemWrappers(childCount), 0);
-            for (int i = 0; i < parentBoundables.Count - 1; i++)
+            for (var i = 0; i < parentBoundables.Count - 1; i++)
             {
                 //-1
                 var parentBoundable = (AbstractNode)parentBoundables[i];
@@ -228,7 +228,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             var t = new STRtreeDemo.TestTree(2);
             var slices = t.VerticalSlices(ItemWrappers(itemCount), sliceCount);
             Assert.AreEqual(sliceCount, slices.Length);
-            for (int i = 0; i < sliceCount - 1; i++)
+            for (var i = 0; i < sliceCount - 1; i++)
             {
                 //-1
                 Assert.AreEqual(expectedBoundablesPerSlice, slices[i].Count);

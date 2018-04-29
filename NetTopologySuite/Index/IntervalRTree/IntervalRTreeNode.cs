@@ -37,8 +37,8 @@ namespace NetTopologySuite.Index.IntervalRTree
             public static NodeComparator Instance = new NodeComparator();
             public int Compare(IntervalRTreeNode<T> n1, IntervalRTreeNode<T> n2)
             {
-                double mid1 = (n1.Min + n1.Max) / 2;
-                double mid2 = (n2.Min + n2.Max) / 2;
+                var mid1 = (n1.Min + n1.Max) / 2;
+                var mid2 = (n2.Min + n2.Max) / 2;
                 if (mid1 < mid2) return -1;
                 if (mid1 > mid2) return 1;
                 return 0;

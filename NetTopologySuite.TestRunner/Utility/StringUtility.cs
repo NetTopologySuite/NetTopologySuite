@@ -22,7 +22,7 @@ namespace Open.Topology.TestRunner.Utility
         {
             if (s == null || strToRemove == null) return s;
             if (s.Length < strToRemove.Length) return s;
-            int subLoc = s.Length - strToRemove.Length;
+            var subLoc = s.Length - strToRemove.Length;
             if (s.Substring(subLoc).Equals(strToRemove, StringComparison.CurrentCultureIgnoreCase))
                 return s.Substring(0, subLoc);
             return s;
@@ -56,11 +56,11 @@ namespace Open.Topology.TestRunner.Utility
         }
         public static String GetStackTrace(Exception t, int depth)
         {
-            String stackTrace = "";
-            StringReader stringReader = new StringReader(GetStackTrace(t));
+            var stackTrace = "";
+            var stringReader = new StringReader(GetStackTrace(t));
             //LineNumberReader lineNumberReader = new LineNumberReader(stringReader);
             var lineNumber = 0;
-            for (int i = 0; i < depth; i++)
+            for (var i = 0; i < depth; i++)
             {
                 try
                 {
@@ -78,14 +78,14 @@ namespace Open.Topology.TestRunner.Utility
          */
         public static String GetTimeString(long milliseconds)
         {
-            long remainder = milliseconds;
-            long days = remainder/86400000;
+            var remainder = milliseconds;
+            var days = remainder/86400000;
             remainder = remainder%86400000;
-            long hours = remainder/3600000;
+            var hours = remainder/3600000;
             remainder = remainder%3600000;
-            long minutes = remainder/60000;
+            var minutes = remainder/60000;
             remainder = remainder%60000;
-            long seconds = remainder/1000;
+            var seconds = remainder/1000;
             return days + "d " + hours + "h " + minutes + "m " + seconds + "s";
         }
         /**
@@ -109,7 +109,7 @@ namespace Open.Topology.TestRunner.Utility
         public static String Replace(String str, char oldChar, String newStr)
         {
             var buf = new StringBuilder();
-            for (int i = 0; i < str.Length; i++)
+            for (var i = 0; i < str.Length; i++)
             {
                 var ch = str[i];
                 if (ch == oldChar)
@@ -130,7 +130,7 @@ namespace Open.Topology.TestRunner.Utility
         public static String StringOfChar(char ch, int count)
         {
             var buf = new StringBuilder();
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 buf.Append(ch);
             }
@@ -138,8 +138,8 @@ namespace Open.Topology.TestRunner.Utility
         }
         public static String Indent(String original, int spaces)
         {
-            String indent = StringOfChar(' ', spaces);
-            String indented = indent + original;
+            var indent = StringOfChar(' ', spaces);
+            var indented = indent + original;
             indented = ReplaceAll(indented, "\r\n", "<<<<.CRLF.>>>>");
             indented = ReplaceAll(indented, "\r", "<<<<.CR.>>>>");
             indented = ReplaceAll(indented, "\n", "<<<<.LF.>>>>");
@@ -222,7 +222,7 @@ namespace Open.Topology.TestRunner.Utility
             {
                 throw new ArgumentException("Null or zero-length String");
             }
-            int i = 0;
+            var i = 0;
             while (i + o.Length <= orig.Length)
             {
                 if (orig.ToString().Substring(i, i + o.Length).Equals(o))
@@ -323,8 +323,8 @@ namespace Open.Topology.TestRunner.Utility
          */
         public static String Format(double d, int decimals)
         {
-            double factor = Math.Pow(10, decimals);
-            double digits = Math.Round(factor*d);
+            var factor = Math.Pow(10, decimals);
+            var digits = Math.Round(factor*d);
             return ((int) Math.Floor(digits/factor)) + "." + ((int) (digits%factor));
         }
         /**
@@ -335,13 +335,13 @@ namespace Open.Topology.TestRunner.Utility
         {
             var b = new StringBuilder();
             var wrapPending = false;
-            for (int i = 0; i < s.Length; i++)
+            for (var i = 0; i < s.Length; i++)
             {
                 if (i%n == 0 && i > 0)
                 {
                     wrapPending = true;
                 }
-                char c = s[i];
+                var c = s[i];
                 if (wrapPending && c == ' ')
                 {
                     b.Append("\n");
@@ -359,7 +359,7 @@ namespace Open.Topology.TestRunner.Utility
          */
         public static String RemoveVowels(String s)
         {
-            String result = s;
+            var result = s;
             result = ReplaceAll(result, "a", "");
             result = ReplaceAll(result, "e", "");
             result = ReplaceAll(result, "i", "");
@@ -378,7 +378,7 @@ namespace Open.Topology.TestRunner.Utility
          */
         public static String RemoveVowelsSkipStarts(String s)
         {
-            String result = s;
+            var result = s;
             if (!s.StartsWith(" "))
             {
                 result = result.Substring(1);
@@ -398,11 +398,11 @@ namespace Open.Topology.TestRunner.Utility
          */
         public static String RemoveConsecutiveDuplicates(String s)
         {
-            String previous = "??";
+            var previous = "??";
             var result = new StringBuilder();
-            for (int i = 0; i < s.Length; i++)
+            for (var i = 0; i < s.Length; i++)
             {
-                String c = s[i] + "";
+                var c = s[i] + "";
                 if (!previous.Equals(c, StringComparison.InvariantCultureIgnoreCase))
                 {
                     result.Append(c);
@@ -418,10 +418,10 @@ namespace Open.Topology.TestRunner.Utility
          */
         public static int IndexOfIgnoreParentheses(char c, String s, int start)
         {
-            int level = 0;
-            for (int i = start; i < s.Length; i++)
+            var level = 0;
+            for (var i = start; i < s.Length; i++)
             {
-                char other = s[i];
+                var other = s[i];
                 if (other == '(')
                 {
                     level++;
@@ -457,7 +457,7 @@ namespace Open.Topology.TestRunner.Utility
          */
         private static String EncodeStartingVowels(String s)
         {
-            String result = s;
+            var result = s;
             result = ReplaceAll(result, " a", "!~b");
             result = ReplaceAll(result, " e", "!~f");
             result = ReplaceAll(result, " i", "!~j");
@@ -475,7 +475,7 @@ namespace Open.Topology.TestRunner.Utility
          */
         private static String DecodeStartingVowels(String s)
         {
-            String result = s;
+            var result = s;
             result = ReplaceAll(result, "!~b", " a");
             result = ReplaceAll(result, "!~f", " e");
             result = ReplaceAll(result, "!~j", " i");
@@ -498,10 +498,10 @@ namespace Open.Topology.TestRunner.Utility
             Replace(s, "\n\r", "\n", true);
             Replace(s, "\r", "\n", true);
             var sb = new StringBuilder();
-            int n = s.Length;
-            for (int i = 0; i < n; i++)
+            var n = s.Length;
+            for (var i = 0; i < n; i++)
             {
-                char c = s[i];
+                var c = s[i];
                 switch (c)
                 {
                     case '<':

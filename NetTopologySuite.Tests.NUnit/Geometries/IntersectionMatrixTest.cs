@@ -11,18 +11,18 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestToString()
         {
-            IntersectionMatrix i = new IntersectionMatrix();
+            var i = new IntersectionMatrix();
             i.Set("012*TF012");
             Assert.AreEqual("012*TF012", i.ToString());
-            IntersectionMatrix c = new IntersectionMatrix(i);
+            var c = new IntersectionMatrix(i);
             Assert.AreEqual("012*TF012", c.ToString());
         }
         [TestAttribute]
         public void TestTranspose()
         {
-            IntersectionMatrix x = new IntersectionMatrix("012*TF012");
-            IntersectionMatrix i = new IntersectionMatrix(x);
-            IntersectionMatrix j = i.Transpose();
+            var x = new IntersectionMatrix("012*TF012");
+            var i = new IntersectionMatrix(x);
+            var j = i.Transpose();
             Assert.AreSame(i, j);
             Assert.AreEqual("0*01T12F2", i.ToString());
             Assert.AreEqual("012*TF012", x.ToString());

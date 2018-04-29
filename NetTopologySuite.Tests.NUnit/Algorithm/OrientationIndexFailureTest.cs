@@ -157,15 +157,15 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
         private static int OrientationIndexDD(Coordinate p1, Coordinate p2, Coordinate q)
         {
-            DD dx1 = DD.ValueOf(p2.X) - p1.X;
-            DD dy1 = DD.ValueOf(p2.Y) - p1.Y;
-            DD dx2 = DD.ValueOf(q.X) - p2.X;
-            DD dy2 = DD.ValueOf(q.Y) - p2.Y;
+            var dx1 = DD.ValueOf(p2.X) - p1.X;
+            var dy1 = DD.ValueOf(p2.Y) - p1.Y;
+            var dx2 = DD.ValueOf(q.X) - p2.X;
+            var dy2 = DD.ValueOf(q.Y) - p2.Y;
             return SignOfDet2x2DD(dx1, dy1, dx2, dy2);
         }
         private static int SignOfDet2x2DD(DD x1, DD y1, DD x2, DD y2)
         {
-            DD det = x1 * y2 - y1 * x2;
+            var det = x1 * y2 - y1 * x2;
             if (det.IsZero)
                 return 0;
             if (det.IsNegative)
@@ -174,14 +174,14 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
         public static bool IsAllOrientationsEqualSD(Coordinate[] pts)
         {
-            int orient0 = ShewchuksDeterminant.OrientationIndex(pts[0], pts[1], pts[2]);
-            int orient1 = ShewchuksDeterminant.OrientationIndex(pts[1], pts[2], pts[0]);
-            int orient2 = ShewchuksDeterminant.OrientationIndex(pts[2], pts[0], pts[1]);
+            var orient0 = ShewchuksDeterminant.OrientationIndex(pts[0], pts[1], pts[2]);
+            var orient1 = ShewchuksDeterminant.OrientationIndex(pts[1], pts[2], pts[0]);
+            var orient2 = ShewchuksDeterminant.OrientationIndex(pts[2], pts[0], pts[1]);
             return orient0 == orient1 && orient0 == orient2;
         }
         public static bool IsAllOrientationsEqualRD(Coordinate[] pts)
         {
-            int[] orient = new int[3];
+            var orient = new int[3];
             orient[0] = RobustDeterminant.OrientationIndex(pts[0], pts[1], pts[2]);
             orient[1] = RobustDeterminant.OrientationIndex(pts[1], pts[2], pts[0]);
             orient[2] = RobustDeterminant.OrientationIndex(pts[2], pts[0], pts[1]);

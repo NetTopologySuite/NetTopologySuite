@@ -181,8 +181,8 @@ namespace NetTopologySuite.Operation.Distance3D
         {
             if (g0 is IGeometryCollection)
             {
-                int n = g0.NumGeometries;
-                for (int i = 0; i < n; i++)
+                var n = g0.NumGeometries;
+                for (var i = 0; i < n; i++)
                 {
                     var g = g0.GetGeometryN(i);
                     ComputeMinDistanceMultiMulti(g, g1, flip);
@@ -224,8 +224,8 @@ namespace NetTopologySuite.Operation.Distance3D
         {
             if (geom is IGeometryCollection)
             {
-                int n = geom.NumGeometries;
-                for (int i = 0; i < n; i++)
+                var n = geom.NumGeometries;
+                for (var i = 0; i < n; i++)
                 {
                     var g = geom.GetGeometryN(i);
                     ComputeMinDistanceOneMulti(poly, g, flip);
@@ -346,8 +346,8 @@ namespace NetTopologySuite.Operation.Distance3D
             ComputeMinDistancePolygonLine(poly, ringPoly.ExteriorRing, flip);
             if (_isDone) return;
             // compute hole rings
-            int nHole = ringPoly.NumInteriorRings;
-            for (int i = 0; i < nHole; i++)
+            var nHole = ringPoly.NumInteriorRings;
+            for (var i = 0; i < nHole; i++)
             {
                 ComputeMinDistancePolygonLine(poly, ringPoly.GetInteriorRingN(i), flip);
                 if (_isDone) return;
@@ -370,8 +370,8 @@ namespace NetTopologySuite.Operation.Distance3D
             // if no intersection, then compute line distance to polygon rings
             ComputeMinDistanceLineLine(poly.Polygon.ExteriorRing, line, flip);
             if (_isDone) return;
-            int nHole = poly.Polygon.NumInteriorRings;
-            for (int i = 0; i < nHole; i++)
+            var nHole = poly.Polygon.NumInteriorRings;
+            for (var i = 0; i < nHole; i++)
             {
                 ComputeMinDistanceLineLine(poly.Polygon.GetInteriorRingN(i), line, flip);
                 if (_isDone) return;
@@ -426,7 +426,7 @@ namespace NetTopologySuite.Operation.Distance3D
             {
                 // point is either inside or in a hole
                 var nHole = polyPlane.Polygon.NumInteriorRings;
-                for (int i = 0; i < nHole; i++)
+                for (var i = 0; i < nHole; i++)
                 {
                     var hole = polyPlane.Polygon.GetInteriorRingN(i);
                     if (polyPlane.Intersects(pt, hole))
@@ -455,7 +455,7 @@ namespace NetTopologySuite.Operation.Distance3D
             // brute force approach!
             for (var i = 0; i < coord0.Length - 1; i++)
             {
-                for (int j = 0; j < coord1.Length - 1; j++)
+                for (var j = 0; j < coord1.Length - 1; j++)
                 {
                     var dist = CGAlgorithms3D.DistanceSegmentSegment(coord0[i],
                                                                      coord0[i + 1], coord1[j], coord1[j + 1]);
@@ -482,7 +482,7 @@ namespace NetTopologySuite.Operation.Distance3D
             var lineCoord = line.Coordinates;
             var coord = point.Coordinate;
             // brute force approach!
-            for (int i = 0; i < lineCoord.Length - 1; i++)
+            for (var i = 0; i < lineCoord.Length - 1; i++)
             {
                 var dist = CGAlgorithms3D.DistancePointSegment(coord, lineCoord[i],
                                                                lineCoord[i + 1]);

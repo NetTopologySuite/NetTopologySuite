@@ -33,7 +33,7 @@ namespace NetTopologySuite.Planargraph
         {
             if (!_nodeMap.ContainsKey(pt))
                 return null;
-            Node node = _nodeMap[pt];
+            var node = _nodeMap[pt];
             _nodeMap.Remove(pt);
             return node;
         }

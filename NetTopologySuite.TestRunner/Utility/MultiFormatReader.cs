@@ -11,7 +11,7 @@ namespace Open.Topology.TestRunner.Utility
     {
         private static Boolean IsHex(String str, int maxCharsToTest)
         {
-            for (int i = 0; i < maxCharsToTest && i < str.Length; i++)
+            for (var i = 0; i < maxCharsToTest && i < str.Length; i++)
             {
                 var ch = str[i];
                 if (!IsHexDigit(ch))
@@ -22,7 +22,7 @@ namespace Open.Topology.TestRunner.Utility
         private static Boolean IsHexDigit(char ch)
         {
             if (char.IsDigit(ch)) return true;
-            char chLow = char.ToLower(ch);
+            var chLow = char.ToLower(ch);
             if (chLow >= 'a' && chLow <= 'f') return true;
             return false;
         }

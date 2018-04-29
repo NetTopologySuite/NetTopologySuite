@@ -19,10 +19,10 @@ namespace NetTopologySuite.Samples.Tests.Github
         }
         private static bool TestWktWkb(int number, IGeometryFactory factory, string wkt, string wkb)
         {
-            WKTReader r = new WKTReader(factory);
-            IGeometry wktGeom = r.Read(wkt);
-            WKBReader s = new WKBReader(factory);
-            IGeometry wkbGeom = s.Read(WKBReader.HexToBytes(wkb));
+            var r = new WKTReader(factory);
+            var wktGeom = r.Read(wkt);
+            var s = new WKBReader(factory);
+            var wkbGeom = s.Read(WKBReader.HexToBytes(wkb));
             try
             {
                 Assert.AreEqual(wkb, WKBWriter.ToHex(wktGeom.AsBinary()), "wkb's don't match");

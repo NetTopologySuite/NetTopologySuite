@@ -53,7 +53,7 @@ namespace Open.Topology.TestRunner
         }
         public bool IsDefaultTarget()
         {
-            string arg1 = GetValue("arg1");
+            var arg1 = GetValue("arg1");
             if (!string.IsNullOrEmpty(arg1))
             {
                 return (arg1 == "a") || (arg1 == "A");

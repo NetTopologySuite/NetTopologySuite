@@ -38,22 +38,22 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         private IGeometry BuildGrid()
         {
             var lines = new ILineString[NumLines * 2];
-            int index = 0;
-            for (int i = 0; i < NumLines; i++)
+            var index = 0;
+            for (var i = 0; i < NumLines; i++)
             {
-                Coordinate p0 = new Coordinate(GetRandOrdinate(), 0);
-                Coordinate p1 = new Coordinate(GetRandOrdinate(), GridWidth);
-                ILineString line = _geomFactory.CreateLineString(new [] { p0, p1 });
+                var p0 = new Coordinate(GetRandOrdinate(), 0);
+                var p1 = new Coordinate(GetRandOrdinate(), GridWidth);
+                var line = _geomFactory.CreateLineString(new [] { p0, p1 });
                 lines[index++] = line;
             }
-            for (int i = 0; i < NumLines; i++)
+            for (var i = 0; i < NumLines; i++)
             {
-                Coordinate p0 = new Coordinate(0, GetRandOrdinate());
-                Coordinate p1 = new Coordinate(GridWidth, GetRandOrdinate());
-                ILineString line = _geomFactory.CreateLineString(new [] { p0, p1 });
+                var p0 = new Coordinate(0, GetRandOrdinate());
+                var p1 = new Coordinate(GridWidth, GetRandOrdinate());
+                var line = _geomFactory.CreateLineString(new [] { p0, p1 });
                 lines[index++] = line;
             }
-            IMultiLineString ml = _geomFactory.CreateMultiLineString(lines);
+            var ml = _geomFactory.CreateMultiLineString(lines);
             _grid = ml.Buffer(LineWidth);
             var wktWriter = new WKTWriter(2) {Formatted = true, MaxCoordinatesPerLine = 6};
             if (Verbose)
@@ -71,8 +71,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
         private double GetRandOrdinate()
         {
-            double randNum = GetRand();
-            double ord = _precisionModel.MakePrecise(randNum * GridWidth);
+            var randNum = GetRand();
+            var ord = _precisionModel.MakePrecise(randNum * GridWidth);
             return ord;
         }
     }

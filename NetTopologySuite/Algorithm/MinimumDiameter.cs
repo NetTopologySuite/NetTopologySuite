@@ -128,7 +128,7 @@ namespace NetTopologySuite.Algorithm
                     //Coordinate[] nullCoords = null;
                     return _inputGeom.Factory.CreateLineString();
                 }
-                Coordinate basePt = _minBaseSeg.Project(_minWidthPt);
+                var basePt = _minBaseSeg.Project(_minWidthPt);
                 return _inputGeom.Factory.CreateLineString(new[] { basePt, _minWidthPt });
             }
         }
@@ -143,7 +143,7 @@ namespace NetTopologySuite.Algorithm
             if (_isConvex) ComputeWidthConvex(_inputGeom);
             else
             {
-                IGeometry convexGeom = (new ConvexHull(_inputGeom)).GetConvexHull();
+                var convexGeom = (new ConvexHull(_inputGeom)).GetConvexHull();
                 ComputeWidthConvex(convexGeom);
             }
         }
@@ -190,10 +190,10 @@ namespace NetTopologySuite.Algorithm
         {
             // for each segment in the ring
             _minWidth = Double.MaxValue;
-            int currMaxIndex = 1;
-            LineSegment seg = new LineSegment();
+            var currMaxIndex = 1;
+            var seg = new LineSegment();
             // compute the max distance for all segments in the ring, and pick the minimum
-            for (int i = 0; i < pts.Length - 1; i++)
+            for (var i = 0; i < pts.Length - 1; i++)
             {
                 seg.P0 = pts[i];
                 seg.P1 = pts[i + 1];
@@ -209,10 +209,10 @@ namespace NetTopologySuite.Algorithm
         /// <returns></returns>
         private int FindMaxPerpDistance(Coordinate[] pts, LineSegment seg, int startIndex)
         {
-            double maxPerpDistance = seg.DistancePerpendicular(pts[startIndex]);
-            double nextPerpDistance = maxPerpDistance;
-            int maxIndex = startIndex;
-            int nextIndex = maxIndex;
+            var maxPerpDistance = seg.DistancePerpendicular(pts[startIndex]);
+            var nextPerpDistance = maxPerpDistance;
+            var maxIndex = startIndex;
+            var nextIndex = maxIndex;
             while (nextPerpDistance >= maxPerpDistance)
             {
                 maxPerpDistance = nextPerpDistance;
@@ -268,37 +268,37 @@ namespace NetTopologySuite.Algorithm
                 return _minBaseSeg.ToGeometry(_inputGeom.Factory);
             }
             // deltas for the base segment of the minimum diameter
-            double dx = _minBaseSeg.P1.X - _minBaseSeg.P0.X;
-            double dy = _minBaseSeg.P1.Y - _minBaseSeg.P0.Y;
+            var dx = _minBaseSeg.P1.X - _minBaseSeg.P0.X;
+            var dy = _minBaseSeg.P1.Y - _minBaseSeg.P0.Y;
             /*
             double c0 = computeC(dx, dy, minBaseSeg.p0);
             double c1 = computeC(dx, dy, minBaseSeg.p1);
             */
-            double minPara = Double.MaxValue;
-            double maxPara = -Double.MaxValue;
-            double minPerp = Double.MaxValue;
-            double maxPerp = -Double.MaxValue;
+            var minPara = Double.MaxValue;
+            var maxPara = -Double.MaxValue;
+            var minPerp = Double.MaxValue;
+            var maxPerp = -Double.MaxValue;
             // compute maxima and minima of lines parallel and perpendicular to base segment
-            for (int i = 0; i < _convexHullPts.Length; i++)
+            for (var i = 0; i < _convexHullPts.Length; i++)
             {
-                double paraC = ComputeC(dx, dy, _convexHullPts[i]);
+                var paraC = ComputeC(dx, dy, _convexHullPts[i]);
                 if (paraC > maxPara) maxPara = paraC;
                 if (paraC < minPara) minPara = paraC;
-                double perpC = ComputeC(-dy, dx, _convexHullPts[i]);
+                var perpC = ComputeC(-dy, dx, _convexHullPts[i]);
                 if (perpC > maxPerp) maxPerp = perpC;
                 if (perpC < minPerp) minPerp = perpC;
             }
             // compute lines along edges of minimum rectangle
-            LineSegment maxPerpLine = ComputeSegmentForLine(-dx, -dy, maxPerp);
-            LineSegment minPerpLine = ComputeSegmentForLine(-dx, -dy, minPerp);
-            LineSegment maxParaLine = ComputeSegmentForLine(-dy, dx, maxPara);
-            LineSegment minParaLine = ComputeSegmentForLine(-dy, dx, minPara);
+            var maxPerpLine = ComputeSegmentForLine(-dx, -dy, maxPerp);
+            var minPerpLine = ComputeSegmentForLine(-dx, -dy, minPerp);
+            var maxParaLine = ComputeSegmentForLine(-dy, dx, maxPara);
+            var minParaLine = ComputeSegmentForLine(-dy, dx, minPara);
             // compute vertices of rectangle (where the para/perp max & min lines intersect)
-            Coordinate p0 = maxParaLine.LineIntersection(maxPerpLine);
-            Coordinate p1 = minParaLine.LineIntersection(maxPerpLine);
-            Coordinate p2 = minParaLine.LineIntersection(minPerpLine);
-            Coordinate p3 = maxParaLine.LineIntersection(minPerpLine);
-            ILinearRing shell = _inputGeom.Factory.CreateLinearRing(
+            var p0 = maxParaLine.LineIntersection(maxPerpLine);
+            var p1 = minParaLine.LineIntersection(maxPerpLine);
+            var p2 = minParaLine.LineIntersection(minPerpLine);
+            var p3 = maxParaLine.LineIntersection(minPerpLine);
+            var shell = _inputGeom.Factory.CreateLinearRing(
                 new[] { p0, p1, p2, p3, p0 });
             return _inputGeom.Factory.CreatePolygon(shell);
         }

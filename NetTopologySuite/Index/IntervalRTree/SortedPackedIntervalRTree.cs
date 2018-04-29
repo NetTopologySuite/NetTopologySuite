@@ -76,7 +76,7 @@ namespace NetTopologySuite.Index.IntervalRTree
         {
             level++;
             dest.Clear();
-            for (int i = 0; i < src.Count; i += 2)
+            for (var i = 0; i < src.Count; i += 2)
             {
                 var n1 = src[i];
                 var n2 = (i + 1 < src.Count) ? src[i] : null;

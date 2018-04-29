@@ -23,11 +23,11 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         public void Test()
         {
             Console.WriteLine("InCircle perf");
-            int n = 1000000;
-            double doubleTime = RunDouble(n);
-            double ddSelfTime = RunDDSelf(n);
-            double ddSelf2Time = runDDSelf2(n);
-            double ddTime = RunDD(n);
+            var n = 1000000;
+            var doubleTime = RunDouble(n);
+            var ddSelfTime = RunDDSelf(n);
+            var ddSelf2Time = runDDSelf2(n);
+            var ddTime = RunDD(n);
             //		double ddSelfTime = runDoubleDoubleSelf(10000000);
             Console.WriteLine("DD VS double performance factor      = " + ddTime/doubleTime);
             Console.WriteLine("DDSelf VS double performance factor  = " + ddSelfTime/doubleTime);
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         {
             var sw = new Stopwatch();
             sw.Start();
-            for (int i = 0; i < nIter; i++)
+            for (var i = 0; i < nIter; i++)
             {
                 TriPredicate.IsInCircle(_pa, _pb, _pc, _pp);
             }
@@ -48,9 +48,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         }
         public double RunDD(int nIter)
         {
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
-            for (int i = 0; i < nIter; i++)
+            for (var i = 0; i < nIter; i++)
             {
                 TriPredicate.IsInCircleDD(_pa, _pb, _pc, _pp);
             }
@@ -61,9 +61,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         }
         public double RunDDSelf(int nIter)
         {
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
-            for (int i = 0; i < nIter; i++)
+            for (var i = 0; i < nIter; i++)
             {
                 TriPredicate.IsInCircleDD2(_pa, _pb, _pc, _pp);
             }
@@ -74,9 +74,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         }
         public double runDDSelf2(int nIter)
         {
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
-            for (int i = 0; i < nIter; i++)
+            for (var i = 0; i < nIter; i++)
             {
                 TriPredicate.IsInCircleDD3(_pa, _pb, _pc, _pp);
             }

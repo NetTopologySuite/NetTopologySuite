@@ -51,10 +51,10 @@ namespace NetTopologySuite.Geometries
         public static HCoordinate PerpendicularBisector(Coordinate a, Coordinate b)
         {
             // returns the perpendicular bisector of the line segment ab
-            double dx = b.X - a.X;
-            double dy = b.Y - a.Y;
-            HCoordinate l1 = new HCoordinate(a.X + dx / 2.0, a.Y + dy / 2.0, 1.0);
-            HCoordinate l2 = new HCoordinate(a.X - dy + dx / 2.0, a.Y + dx + dy / 2.0, 1.0);
+            var dx = b.X - a.X;
+            var dy = b.Y - a.Y;
+            var l1 = new HCoordinate(a.X + dx / 2.0, a.Y + dy / 2.0, 1.0);
+            var l2 = new HCoordinate(a.X - dy + dx / 2.0, a.Y + dx + dy / 2.0, 1.0);
             return new HCoordinate(l1, l2);
         }
         ///<summary>Computes the circumcentre of a triangle.</summary>
@@ -80,17 +80,17 @@ namespace NetTopologySuite.Geometries
         /// <returns>The circumcentre of the triangle</returns>
         public static Coordinate Circumcentre(Coordinate a, Coordinate b, Coordinate c)
         {
-            double cx = c.X;
-            double cy = c.Y;
-            double ax = a.X - cx;
-            double ay = a.Y - cy;
-            double bx = b.X - cx;
-            double by = b.Y - cy;
-            double denom = 2 * Det(ax, ay, bx, by);
-            double numx = Det(ay, ax * ax + ay * ay, by, bx * bx + by * by);
-            double numy = Det(ax, ax * ax + ay * ay, bx, bx * bx + by * by);
-            double ccx = cx - numx / denom;
-            double ccy = cy + numy / denom;
+            var cx = c.X;
+            var cy = c.Y;
+            var ax = a.X - cx;
+            var ay = a.Y - cy;
+            var bx = b.X - cx;
+            var by = b.Y - cy;
+            var denom = 2 * Det(ax, ay, bx, by);
+            var numx = Det(ay, ax * ax + ay * ay, by, bx * bx + by * by);
+            var numy = Det(ax, ax * ax + ay * ay, bx, bx * bx + by * by);
+            var ccx = cx - numx / denom;
+            var ccy = cy + numy / denom;
             return new Coordinate(ccx, ccy);
         }
         /// <summary>
@@ -123,12 +123,12 @@ namespace NetTopologySuite.Geometries
         public static Coordinate InCentre(Coordinate a, Coordinate b, Coordinate c)
         {
             // the lengths of the sides, labelled by their opposite vertex
-            double len0 = b.Distance(c);
-            double len1 = a.Distance(c);
-            double len2 = a.Distance(b);
-            double circum = len0 + len1 + len2;
-            double inCentreX = (len0 * a.X + len1 * b.X + len2 * c.X) / circum;
-            double inCentreY = (len0 * a.Y + len1 * b.Y + len2 * c.Y) / circum;
+            var len0 = b.Distance(c);
+            var len1 = a.Distance(c);
+            var len2 = a.Distance(b);
+            var circum = len0 + len1 + len2;
+            var inCentreX = (len0 * a.X + len1 * b.X + len2 * c.X) / circum;
+            var inCentreY = (len0 * a.Y + len1 * b.Y + len2 * c.Y) / circum;
             return new Coordinate(inCentreX, inCentreY);
         }
         ///<summary>Computes the centroid (centre of mass) of a triangle.</summary>
@@ -145,8 +145,8 @@ namespace NetTopologySuite.Geometries
         ///<returns>The centroid of the triangle</returns>
         public static Coordinate Centroid(Coordinate a, Coordinate b, Coordinate c)
         {
-            double x = (a.X + b.X + c.X) / 3;
-            double y = (a.Y + b.Y + c.Y) / 3;
+            var x = (a.X + b.X + c.X) / 3;
+            var y = (a.Y + b.Y + c.Y) / 3;
             return new Coordinate(x, y);
         }
         ///<summary>Computes the length of the longest side of a triangle</summary>
@@ -157,11 +157,11 @@ namespace NetTopologySuite.Geometries
         public static double LongestSideLength(Coordinate a, Coordinate b, Coordinate c)
         {
             // ReSharper disable InconsistentNaming
-            double lenAB = a.Distance(b);
-            double lenBC = b.Distance(c);
-            double lenCA = c.Distance(a);
+            var lenAB = a.Distance(b);
+            var lenBC = b.Distance(c);
+            var lenCA = c.Distance(a);
             // ReSharper restore InconsistentNaming
-            double maxLen = lenAB;
+            var maxLen = lenAB;
             if (lenBC > maxLen)
                 maxLen = lenBC;
             if (lenCA > maxLen)
@@ -179,12 +179,12 @@ namespace NetTopologySuite.Geometries
              * Uses the fact that the lengths of the parts of the split segment
              * are proportional to the lengths of the adjacent triangle sides
              */
-            double len0 = b.Distance(a);
-            double len2 = b.Distance(c);
-            double frac = len0 / (len0 + len2);
-            double dx = c.X - a.X;
-            double dy = c.Y - a.Y;
-            Coordinate splitPt = new Coordinate(a.X + frac * dx,
+            var len0 = b.Distance(a);
+            var len2 = b.Distance(c);
+            var frac = len0 / (len0 + len2);
+            var dx = c.X - a.X;
+            var dy = c.Y - a.Y;
+            var splitPt = new Coordinate(a.X + frac * dx,
                                                 a.Y + frac * dy);
             return splitPt;
         }
@@ -254,19 +254,19 @@ namespace NetTopologySuite.Geometries
              *  x is the vector cross-product
              */
             // side vectors u and v
-            double ux = b.X - a.X;
-            double uy = b.Y - a.Y;
-            double uz = b.Z - a.Z;
-            double vx = c.X - a.X;
-            double vy = c.Y - a.Y;
-            double vz = c.Z - a.Z;
+            var ux = b.X - a.X;
+            var uy = b.Y - a.Y;
+            var uz = b.Z - a.Z;
+            var vx = c.X - a.X;
+            var vy = c.Y - a.Y;
+            var vz = c.Z - a.Z;
             // cross-product = u x v
-            double crossx = uy * vz - uz * vy;
-            double crossy = uz * vx - ux * vz;
-            double crossz = ux * vy - uy * vx;
+            var crossx = uy * vz - uz * vy;
+            var crossy = uz * vx - ux * vz;
+            var crossz = ux * vy - uy * vx;
             // tri area = 1/2 * | u x v |
-            double absSq = crossx * crossx + crossy * crossy + crossz * crossz;
-            double area3D = Math.Sqrt(absSq) / 2;
+            var absSq = crossx * crossx + crossy * crossy + crossz * crossz;
+            var area3D = Math.Sqrt(absSq) / 2;
             return area3D;
         }
         /// <summary>
@@ -289,18 +289,18 @@ namespace NetTopologySuite.Geometries
         /// <returns>The computed Z-value (elevation) of the point</returns>
         public static double InterpolateZ(Coordinate p, Coordinate v0, Coordinate v1, Coordinate v2)
         {
-            double x0 = v0.X;
-            double y0 = v0.Y;
-            double a = v1.X - x0;
-            double b = v2.X - x0;
-            double c = v1.Y - y0;
-            double d = v2.Y - y0;
-            double det = a * d - b * c;
-            double dx = p.X - x0;
-            double dy = p.Y - y0;
-            double t = (d * dx - b * dy) / det;
-            double u = (-c * dx + a * dy) / det;
-            double z = v0.Z + t * (v1.Z - v0.Z) + u * (v2.Z - v0.Z);
+            var x0 = v0.X;
+            var y0 = v0.Y;
+            var a = v1.X - x0;
+            var b = v2.X - x0;
+            var c = v1.Y - y0;
+            var d = v2.Y - y0;
+            var det = a * d - b * c;
+            var dx = p.X - x0;
+            var dy = p.Y - y0;
+            var t = (d * dx - b * dy) / det;
+            var u = (-c * dx + a * dy) / det;
+            var z = v0.Z + t * (v1.Z - v0.Z) + u * (v2.Z - v0.Z);
             return z;
         }
         /// <summary>

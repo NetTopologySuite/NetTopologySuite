@@ -80,15 +80,15 @@ namespace NetTopologySuite.Noding
         /// <param name="segString"></param>
         public void Dissolve(ISegmentString segString)
         {
-            OrientedCoordinateArray oca = new OrientedCoordinateArray(segString.Coordinates);
-            ISegmentString existing = FindMatching(oca /*, segString*/);
+            var oca = new OrientedCoordinateArray(segString.Coordinates);
+            var existing = FindMatching(oca /*, segString*/);
             if (existing == null)
                 Add(oca, segString);
             else
             {
                 if (_merger != null)
                 {
-                    bool isSameOrientation = CoordinateArrays.Equals(existing.Coordinates, segString.Coordinates);
+                    var isSameOrientation = CoordinateArrays.Equals(existing.Coordinates, segString.Coordinates);
                     _merger.Merge(existing, segString, isSameOrientation);
                 }
             }

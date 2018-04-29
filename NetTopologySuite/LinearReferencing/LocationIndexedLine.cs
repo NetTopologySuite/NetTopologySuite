@@ -56,7 +56,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>The Coordinate at the given index</returns>
         public Coordinate ExtractPoint(LinearLocation index, double offsetDistance)
         {
-            LinearLocation indexLow = index.ToLowest(_linearGeom);
+            var indexLow = index.ToLowest(_linearGeom);
             return indexLow.GetSegment(_linearGeom).PointAlongOffset(indexLow.SegmentFraction, offsetDistance);
         }
         ///<summary>
@@ -73,7 +73,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>The Coordinate at the given index</returns>
         public Coordinate ExtractPoint(double index, double offsetDistance)
         {
-            LinearLocation loc = LengthLocationMap.GetLocation(_linearGeom, index);
+            var loc = LengthLocationMap.GetLocation(_linearGeom, index);
             return loc.GetSegment(_linearGeom).PointAlongOffset(loc.SegmentFraction, offsetDistance);
         }
         /// <summary>
@@ -180,7 +180,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>A valid index value.</returns>
         public LinearLocation ClampIndex(LinearLocation index)
         {
-            LinearLocation loc = (LinearLocation)index.Copy();
+            var loc = (LinearLocation)index.Copy();
             loc.Clamp(_linearGeom);
             return loc;
         }

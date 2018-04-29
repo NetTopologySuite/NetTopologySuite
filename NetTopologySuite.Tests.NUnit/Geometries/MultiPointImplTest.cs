@@ -37,12 +37,12 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
         [TestAttribute]
         public void TestGetGeometryN()  {
-            MultiPoint m = (MultiPoint) reader.Read("MULTIPOINT(1.111 2.222, 3.333 4.444, 3.333 4.444)");
-            IGeometry g = m.GetGeometryN(1);
+            var m = (MultiPoint) reader.Read("MULTIPOINT(1.111 2.222, 3.333 4.444, 3.333 4.444)");
+            var g = m.GetGeometryN(1);
             Assert.IsTrue(g is Point);
-            Point p = (Point) g;
-            Coordinate externalCoordinate = new Coordinate();
-            Coordinate internaCoordinate = p.Coordinate;
+            var p = (Point) g;
+            var externalCoordinate = new Coordinate();
+            var internaCoordinate = p.Coordinate;
             externalCoordinate.X = internaCoordinate.X;
             externalCoordinate.Y = internaCoordinate.Y;
             Assert.AreEqual(3.333, externalCoordinate.X, 1E-10);
@@ -51,8 +51,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestGetEnvelope()
         {
-            MultiPoint m = (MultiPoint)reader.Read("MULTIPOINT(1.111 2.222, 3.333 4.444, 3.333 4.444)");
-            Envelope e = m.EnvelopeInternal;
+            var m = (MultiPoint)reader.Read("MULTIPOINT(1.111 2.222, 3.333 4.444, 3.333 4.444)");
+            var e = m.EnvelopeInternal;
             Assert.AreEqual(1.111, e.MinX, 1E-10);
             Assert.AreEqual(3.333, e.MaxX, 1E-10);
             Assert.AreEqual(2.222, e.MinY, 1E-10);
@@ -61,16 +61,16 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestEquals()
         {
-            MultiPoint m1 = (MultiPoint)reader.Read("MULTIPOINT(5 6, 7 8, 9 10)");
-            MultiPoint m2 = (MultiPoint)reader.Read("MULTIPOINT(5 6, 7 8, 9 10)");
+            var m1 = (MultiPoint)reader.Read("MULTIPOINT(5 6, 7 8, 9 10)");
+            var m2 = (MultiPoint)reader.Read("MULTIPOINT(5 6, 7 8, 9 10)");
             Assert.That(m1, Is.EqualTo(m2).Using(GeometryTestCase.EqualityComparer));
             Assert.IsTrue(m1.Equals((object)m2));
         }
         [TestAttribute]
         public void TestEquals2()
         {
-            MultiPoint m1 = (MultiPoint)reader.Read("MULTIPOINT (20.564 46.3493254, 45 32, 23 54)");
-            MultiPoint m2 = (MultiPoint)reader.Read("MULTIPOINT (20.564 46.3493254, 45 32, 23 54)");
+            var m1 = (MultiPoint)reader.Read("MULTIPOINT (20.564 46.3493254, 45 32, 23 54)");
+            var m2 = (MultiPoint)reader.Read("MULTIPOINT (20.564 46.3493254, 45 32, 23 54)");
             Assert.That(m1, Is.EqualTo(m2).Using(GeometryTestCase.EqualityComparer));
             Assert.IsTrue(m1.Equals(m2));
         }

@@ -66,7 +66,7 @@ namespace Open.Topology.TestRunner.Functions
                 var pts = ss.Coordinates;
                 lines.Add(g.Factory.CreateLineString(pts));
             }
-            IGeometry curve = g.Factory.BuildGeometry(lines);
+            var curve = g.Factory.BuildGeometry(lines);
             return curve;
         }
         public static IGeometry BufferLineSimplifier(Geometry g, double distance)

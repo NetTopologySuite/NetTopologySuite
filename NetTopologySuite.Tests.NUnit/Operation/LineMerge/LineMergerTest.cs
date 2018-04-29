@@ -65,7 +65,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
         }
         public static void DoTest(String[] inputWKT, String[] expectedOutputWKT, bool compareDirections)
         {
-            LineMerger lineMerger = new LineMerger();
+            var lineMerger = new LineMerger();
             lineMerger.Add(ToGeometries(inputWKT));
             Compare(ToGeometries(expectedOutputWKT), lineMerger.GetMergedLineStrings(), compareDirections);
         }

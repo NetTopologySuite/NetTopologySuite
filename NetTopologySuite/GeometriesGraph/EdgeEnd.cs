@@ -150,10 +150,10 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="outstream"></param>
         public virtual void Write(StreamWriter outstream)
         {
-            double angle = Math.Atan2(Dy, Dx);
-            string fullname = GetType().FullName;
-            int lastDotPos = fullname.LastIndexOf('.');
-            string name = fullname.Substring(lastDotPos + 1);
+            var angle = Math.Atan2(Dy, Dx);
+            var fullname = GetType().FullName;
+            var lastDotPos = fullname.LastIndexOf('.');
+            var name = fullname.Substring(lastDotPos + 1);
             outstream.Write("  " + name + ": " + Coordinate + " - " + DirectedCoordinate + " " + Quadrant + ":" + angle + "   " + _label);
         }
         /// <inheritdoc cref="object.ToString()"/>

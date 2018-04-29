@@ -46,7 +46,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="edges"></param>
         private void AddEdges(IEnumerable<Edge> edges)
         {
-            foreach (Edge edge in edges)
+            foreach (var edge in edges)
             {
                 // edge is its own group
                 AddEdge(edge, edge);
@@ -59,7 +59,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="edgeSet"></param>
         private void AddEdges(IEnumerable<Edge> edges, object edgeSet)
         {
-            foreach (Edge edge in edges)
+            foreach (var edge in edges)
             {
                 AddEdge(edge, edgeSet);
             }
@@ -71,12 +71,12 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="edgeSet"></param>
         private void AddEdge(Edge edge, object edgeSet)
         {
-            MonotoneChainEdge mce = edge.MonotoneChainEdge;
-            int[] startIndex = mce.StartIndexes;
-            for (int i = 0; i < startIndex.Length - 1; i++)
+            var mce = edge.MonotoneChainEdge;
+            var startIndex = mce.StartIndexes;
+            for (var i = 0; i < startIndex.Length - 1; i++)
             {
-                MonotoneChain mc = new MonotoneChain(mce, i);
-                SweepLineEvent insertEvent = new SweepLineEvent(edgeSet, mce.GetMinX(i), mc);
+                var mc = new MonotoneChain(mce, i);
+                var insertEvent = new SweepLineEvent(edgeSet, mce.GetMinX(i), mc);
                 _events.Add(insertEvent);
                 _events.Add(new SweepLineEvent(mce.GetMaxX(i), insertEvent));
             }
@@ -90,9 +90,9 @@ namespace NetTopologySuite.GeometriesGraph.Index
         {
             _events.Sort();
             // set DELETE event indexes
-            for (int i = 0; i < _events.Count; i++ )
+            for (var i = 0; i < _events.Count; i++ )
             {
-                SweepLineEvent ev = _events[i];
+                var ev = _events[i];
                 if (ev.IsDelete)
                     ev.InsertEvent.DeleteEventIndex = i;
             }
@@ -105,9 +105,9 @@ namespace NetTopologySuite.GeometriesGraph.Index
         {
             _nOverlaps = 0;
             PrepareEvents();
-            for (int i = 0; i < _events.Count; i++ )
+            for (var i = 0; i < _events.Count; i++ )
             {
-                SweepLineEvent ev = _events[i];
+                var ev = _events[i];
                 if (ev.IsInsert)
                 {
                     // Console.WriteLine("Processing event " + i);
@@ -126,18 +126,18 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="si"></param>
         private void ProcessOverlaps(int start, int end, SweepLineEvent ev0, SegmentIntersector si)
         {
-            MonotoneChain mc0 = (MonotoneChain)ev0.Object;
+            var mc0 = (MonotoneChain)ev0.Object;
             /*
             * Since we might need to test for self-intersections,
             * include current INSERT event object in list of event objects to test.
             * Last index can be skipped, because it must be a Delete event.
             */
-            for (int i = start; i < end; i++ )
+            for (var i = start; i < end; i++ )
             {
-                SweepLineEvent ev1 = _events[i];
+                var ev1 = _events[i];
                 if (ev1.IsInsert)
                 {
-                    MonotoneChain mc1 = (MonotoneChain)ev1.Object;
+                    var mc1 = (MonotoneChain)ev1.Object;
                     // don't compare edges in same group, if labels are present
                     if (!ev0.IsSameLabel(ev1))
                     {

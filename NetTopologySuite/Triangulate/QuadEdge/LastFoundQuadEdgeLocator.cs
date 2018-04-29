@@ -43,7 +43,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             {
                 Init();
             }
-            QuadEdge e = _subdiv.LocateFromEdge(v, _lastEdge);
+            var e = _subdiv.LocateFromEdge(v, _lastEdge);
             _lastEdge = e;
             return e;
         }

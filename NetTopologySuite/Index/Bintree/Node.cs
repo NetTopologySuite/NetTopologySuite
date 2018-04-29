@@ -75,12 +75,12 @@ namespace NetTopologySuite.Index.Bintree
         /// <param name="searchInterval"></param>
         public  Node<T> GetNode(Interval searchInterval)
         {
-            int subnodeIndex = GetSubnodeIndex(searchInterval, _centre);
+            var subnodeIndex = GetSubnodeIndex(searchInterval, _centre);
             // if index is -1 searchEnv is not contained in a subnode
             if (subnodeIndex != -1)
             {
                 // create the node if it does not exist
-                Node<T> node = GetSubnode(subnodeIndex);
+                var node = GetSubnode(subnodeIndex);
                 // recursively search the found/created node
                 return node.GetNode(searchInterval);
             }
@@ -93,13 +93,13 @@ namespace NetTopologySuite.Index.Bintree
         /// <param name="searchInterval"></param>
         public  NodeBase<T> Find(Interval searchInterval)
         {
-            int subnodeIndex = GetSubnodeIndex(searchInterval, _centre);
+            var subnodeIndex = GetSubnodeIndex(searchInterval, _centre);
             if (subnodeIndex == -1)
                 return this;
             if (Subnode[subnodeIndex] != null)
             {
                 // query lies in subnode, so search it
-                Node<T> node = Subnode[subnodeIndex];
+                var node = Subnode[subnodeIndex];
                 return node.Find(searchInterval);
             }
             // no existing subnode, so return this one anyway
@@ -112,14 +112,14 @@ namespace NetTopologySuite.Index.Bintree
         public  void Insert(Node<T> node)
         {
             Assert.IsTrue(Interval == null || Interval.Contains(node.Interval));
-            int index = GetSubnodeIndex(node.Interval, _centre);
+            var index = GetSubnodeIndex(node.Interval, _centre);
             if (node._level == _level - 1)
                 Subnode[index] = node;
             else
             {
                 // the node is not a direct child, so make a new child node to contain it
                 // and recursively insert the node
-                Node<T> childNode = CreateSubnode(index);
+                var childNode = CreateSubnode(index);
                 childNode.Insert(node);
                 Subnode[index] = childNode;
             }
@@ -142,8 +142,8 @@ namespace NetTopologySuite.Index.Bintree
         private Node<T> CreateSubnode(int index)
         {
             // create a new subnode in the appropriate interval
-            double min = 0.0;
-            double max = 0.0;
+            var min = 0.0;
+            var max = 0.0;
             switch (index)
             {
                 case 0:

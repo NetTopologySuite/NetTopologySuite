@@ -20,7 +20,7 @@ namespace NetTopologySuite.Utilities
         /// <returns>Converted value, as string.</returns>
         public static string ConvertAny2Any(string valueIn, int baseIn, int baseOut)
         {
-              string result = "Error";
+              var result = "Error";
               valueIn = valueIn.ToUpper();
               const string codice = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
               // test per limite errato sulle basi in input e/o in output
@@ -41,16 +41,16 @@ namespace NetTopologySuite.Utilities
                       valore = double.Parse(valueIn);
                   else
                   {
-                        char[] c = valueIn.ToCharArray();
+                        var c = valueIn.ToCharArray();
                         // mi serve per l'elevazione a potenza e la trasformazione
                         // in valore base 10 della cifra
-                        int posizione = c.Length;
+                        var posizione = c.Length;
                         // ciclo sui caratteri di valueIn
                         // calcolo del valore decimale
-                        for (int k = 0; k < c.Length; k++)
+                        for (var k = 0; k < c.Length; k++)
                         {
                               // valore posizionale del carattere
-                              int valPos = codice.IndexOf(c[k]);
+                              var valPos = codice.IndexOf(c[k]);
                               // verifica per caratteri errati
                               if ((valPos < 0) || (valPos > baseIn - 1))
                                          return result;
@@ -68,7 +68,7 @@ namespace NetTopologySuite.Utilities
                            result = String.Empty;
                            while (valore > 0)
                           {
-                                int resto = (int) (valore % baseOut);
+                                var resto = (int) (valore % baseOut);
                                 valore = (valore - resto) / baseOut;
                                 result = codice.Substring(resto,1) + result;
                            }

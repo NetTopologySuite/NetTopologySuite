@@ -123,8 +123,8 @@ namespace NetTopologySuite.LinearReferencing
                 {
                     if (totalLength == length)
                     {
-                        int compIndex = it.ComponentIndex;
-                        int segIndex = it.VertexIndex;
+                        var compIndex = it.ComponentIndex;
+                        var segIndex = it.VertexIndex;
                         return new LinearLocation(compIndex, segIndex, 0.0);
                     }
                 }
@@ -152,7 +152,7 @@ namespace NetTopologySuite.LinearReferencing
         {
             if (!loc.IsEndpoint(_linearGeom))
                 return loc;
-            int compIndex = loc.ComponentIndex;
+            var compIndex = loc.ComponentIndex;
             // if last component can't resolve any higher
             if (compIndex >= _linearGeom.NumGeometries - 1) return loc;
             do

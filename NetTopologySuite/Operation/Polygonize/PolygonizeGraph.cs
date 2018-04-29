@@ -22,8 +22,8 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <returns></returns>
         private static int GetDegreeNonDeleted(Node node)
         {
-            IList<DirectedEdge> edges = node.OutEdges.Edges;
-            int degree = 0;
+            var edges = node.OutEdges.Edges;
+            var degree = 0;
             foreach (PolygonizeDirectedEdge de in edges)
             {
                 if (! de.IsMarked)
@@ -39,8 +39,8 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <returns></returns>
         private static int GetDegree(Node node, long label)
         {
-            IList<DirectedEdge> edges = node.OutEdges.Edges;
-            int degree = 0;
+            var edges = node.OutEdges.Edges;
+            var degree = 0;
             foreach (PolygonizeDirectedEdge de in edges)
             {
                 if (de.Label == label)
@@ -54,11 +54,11 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="node"></param>
         public static void DeleteAllEdges(Node node)
         {
-            IList<DirectedEdge> edges = node.OutEdges.Edges;
+            var edges = node.OutEdges.Edges;
             foreach (PolygonizeDirectedEdge de in edges)
             {
                 de.Marked = true;
-                PolygonizeDirectedEdge sym = (PolygonizeDirectedEdge) de.Sym;
+                var sym = (PolygonizeDirectedEdge) de.Sym;
                 if (sym != null) sym.Marked = true;
             }
         }
@@ -79,13 +79,13 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             if (line.IsEmpty)
                 return;
-            Coordinate[] linePts = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
+            var linePts = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
             if (linePts.Length < 2)
                 return; // see #87
-            Coordinate startPt = linePts[0];
-            Coordinate endPt = linePts[linePts.Length - 1];
-            Node nStart = GetNode(startPt);
-            Node nEnd = GetNode(endPt);
+            var startPt = linePts[0];
+            var endPt = linePts[linePts.Length - 1];
+            var nStart = GetNode(startPt);
+            var nEnd = GetNode(endPt);
             DirectedEdge de0 = new PolygonizeDirectedEdge(nStart, nEnd, linePts[1], true);
             DirectedEdge de1 = new PolygonizeDirectedEdge(nEnd, nStart, linePts[linePts.Length - 2], false);
             Edge edge = new PolygonizeEdge(line);
@@ -99,7 +99,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <returns></returns>
         private Node GetNode(Coordinate pt)
         {
-            Node node = FindNode(pt);
+            var node = FindNode(pt);
             if (node == null)
             {
                 node = new Node(pt);
@@ -126,7 +126,7 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             foreach (PolygonizeDirectedEdge de in ringEdges)
             {
-                long label = de.Label;
+                var label = de.Label;
                 var intNodes = FindIntersectionNodes(de, label);
                 if (intNodes == null)
                     continue;
@@ -148,11 +148,11 @@ namespace NetTopologySuite.Operation.Polygonize
         /// </returns>
         private static IEnumerable<Node> FindIntersectionNodes(PolygonizeDirectedEdge startDE, long label)
         {
-            PolygonizeDirectedEdge de = startDE;
+            var de = startDE;
             IList<Node> intNodes = null;
             do
             {
-                Node node = de.FromNode;
+                var node = de.FromNode;
                 if (GetDegree(node, label) > 1)
                 {
                     if (intNodes == null)
@@ -176,7 +176,7 @@ namespace NetTopologySuite.Operation.Polygonize
             ComputeNextCWEdges();
             // clear labels of all edges in graph
             Label(dirEdges, -1);
-            IList<DirectedEdge> maximalRings = FindLabeledEdgeRings(dirEdges);
+            var maximalRings = FindLabeledEdgeRings(dirEdges);
             ConvertMaximalToMinimalEdgeRings(maximalRings);
             // find all edgerings (which will now be minimal ones, as required)
             IList<EdgeRing> edgeRingList = new List<EdgeRing>();
@@ -184,7 +184,7 @@ namespace NetTopologySuite.Operation.Polygonize
             {
                 if (de.IsMarked) continue;
                 if (de.IsInRing) continue;
-                EdgeRing er = FindEdgeRing(de);
+                var er = FindEdgeRing(de);
                 edgeRingList.Add(er);
             }
             return edgeRingList;
@@ -229,13 +229,13 @@ namespace NetTopologySuite.Operation.Polygonize
             foreach (PolygonizeDirectedEdge de in dirEdges)
             {
                 if (de.IsMarked) continue;
-                PolygonizeDirectedEdge sym = (PolygonizeDirectedEdge) de.Sym;
+                var sym = (PolygonizeDirectedEdge) de.Sym;
                 if (de.Label == sym.Label)
                 {
                     de.Marked = true;
                     sym.Marked = true;
                     // save the line as a cut edge
-                    PolygonizeEdge e = (PolygonizeEdge) de.Edge;
+                    var e = (PolygonizeEdge) de.Edge;
                     cutLines.Add(e.Line);
                 }
             }
@@ -257,7 +257,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="node"></param>
         private static void ComputeNextCWEdges(Node node)
         {
-            DirectedEdgeStar deStar = node.OutEdges;
+            var deStar = node.OutEdges;
             PolygonizeDirectedEdge startDE = null;
             PolygonizeDirectedEdge prevDE = null;
             // the edges are stored in CCW order around the star
@@ -268,14 +268,14 @@ namespace NetTopologySuite.Operation.Polygonize
                     startDE = outDE;
                 if (prevDE != null)
                 {
-                    PolygonizeDirectedEdge sym = (PolygonizeDirectedEdge) prevDE.Sym;
+                    var sym = (PolygonizeDirectedEdge) prevDE.Sym;
                     sym.Next = outDE;
                 }
                 prevDE = outDE;
             }
             if (prevDE != null)
             {
-                PolygonizeDirectedEdge sym = (PolygonizeDirectedEdge) prevDE.Sym;
+                var sym = (PolygonizeDirectedEdge) prevDE.Sym;
                 sym.Next = startDE;
             }
         }
@@ -288,17 +288,17 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="label"></param>
         private static void ComputeNextCCWEdges(Node node, long label)
         {
-            DirectedEdgeStar deStar = node.OutEdges;
+            var deStar = node.OutEdges;
             //PolyDirectedEdge lastInDE = null;
             PolygonizeDirectedEdge firstOutDE = null;
             PolygonizeDirectedEdge prevInDE = null;
             // the edges are stored in CCW order around the star
-            IList<DirectedEdge> edges = deStar.Edges;
+            var edges = deStar.Edges;
             //for (IEnumerator i = deStar.Edges.GetEnumerator(); i.MoveNext(); ) {
-            for (int i = edges.Count - 1; i >= 0; i--)
+            for (var i = edges.Count - 1; i >= 0; i--)
             {
-                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) edges[i];
-                PolygonizeDirectedEdge sym = (PolygonizeDirectedEdge) de.Sym;
+                var de = (PolygonizeDirectedEdge) edges[i];
+                var sym = (PolygonizeDirectedEdge) de.Sym;
                 PolygonizeDirectedEdge outDE = null;
                 if (de.Label == label) outDE = de;
                 PolygonizeDirectedEdge inDE = null;
@@ -346,25 +346,25 @@ namespace NetTopologySuite.Operation.Polygonize
         public ICollection<ILineString> DeleteDangles()
         {
             var nodesToRemove = FindNodesOfDegree(1);
-            HashSet<ILineString> dangleLines = new HashSet<ILineString>();
-            Stack<Node> nodeStack = new Stack<Node>();
-            foreach (Node node in nodesToRemove)
+            var dangleLines = new HashSet<ILineString>();
+            var nodeStack = new Stack<Node>();
+            foreach (var node in nodesToRemove)
                 nodeStack.Push(node);
             while (nodeStack.Count != 0)
             {
-                Node node = nodeStack.Pop();
+                var node = nodeStack.Pop();
                 DeleteAllEdges(node);
-                IList<DirectedEdge> nodeOutEdges = node.OutEdges.Edges;
+                var nodeOutEdges = node.OutEdges.Edges;
                 foreach (PolygonizeDirectedEdge de in nodeOutEdges)
                 {
                     // delete this edge and its sym
                     de.Marked = true;
-                    PolygonizeDirectedEdge sym = (PolygonizeDirectedEdge) de.Sym;
+                    var sym = (PolygonizeDirectedEdge) de.Sym;
                     if (sym != null) sym.Marked = true;
                     // save the line as a dangle
-                    PolygonizeEdge e = (PolygonizeEdge) de.Edge;
+                    var e = (PolygonizeEdge) de.Edge;
                     dangleLines.Add(e.Line);
-                    Node toNode = de.ToNode;
+                    var toNode = de.ToNode;
                     // add the toNode to the list to be processed, if it is now a dangle
                     if (GetDegreeNonDeleted(toNode) == 1)
                         nodeStack.Push(toNode);

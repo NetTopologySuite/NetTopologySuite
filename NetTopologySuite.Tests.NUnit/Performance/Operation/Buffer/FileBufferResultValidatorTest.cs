@@ -35,7 +35,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
         }
         void RunTest(Stream file)
         {
-            WKTFileReader fileRdr = new WKTFileReader(new StreamReader(file), rdr);
+            var fileRdr = new WKTFileReader(new StreamReader(file), rdr);
             var polys = fileRdr.Read();
             RunAll(polys, 0.01);
             RunAll(polys, 0.1);
@@ -46,8 +46,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
         }
         void PerformanceTest(Stream file)
         {
-            WKTFileReader fileRdr = new WKTFileReader(new StreamReader(file), rdr);
-            IList<IGeometry> polys = fileRdr.Read();
+            var fileRdr = new WKTFileReader(new StreamReader(file), rdr);
+            var polys = fileRdr.Read();
             //RunAll(polys, 0.01);
             //RunAll(polys, 0.1);
             RunAll(polys, 1.0);
@@ -78,7 +78,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             var validator = new BufferResultValidator(g, dist, buf);
             if (!validator.IsValid())
             {
-                String msg = validator.ErrorMessage;
+                var msg = validator.ErrorMessage;
                 Console.WriteLine(msg);
                 Console.WriteLine(WKTWriter.ToPoint(validator.ErrorLocation));
                 Console.WriteLine(g);

@@ -39,14 +39,14 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
         public void TestNoding()
         {
             var iterLimit = ITER_LIMIT;
-            for (int i = 0; i < iterLimit; i++)
+            for (var i = 0; i < iterLimit; i++)
             {
                 Console.WriteLine("Iter: " + i
                         + "  Noding failure count = " + _failureCount);
-                double ang1 = GetRandomDouble() * Math.PI;
-                double ang2 = GetRandomDouble() * Math.PI;
+                var ang1 = GetRandomDouble() * Math.PI;
+                var ang2 = GetRandomDouble() * Math.PI;
                 //			Geometry[] geom = generateGeometryStar(ang1, ang2);
-                IGeometry[] geom = GenerateGeometryAccum(ang1, ang2);
+                var geom = GenerateGeometryAccum(ang1, ang2);
                 CheckIntersection(geom[0], geom[1]);
             }
             Console.WriteLine(

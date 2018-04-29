@@ -107,7 +107,7 @@ namespace NetTopologySuite.LinearReferencing
         private static double SegmentNearestMeasure(LineSegment seg, Coordinate inputPt, double segmentStartMeasure)
         {
             // found new minimum, so compute location distance of point
-            double projFactor = seg.ProjectionFactor(inputPt);
+            var projFactor = seg.ProjectionFactor(inputPt);
             if (projFactor <= 0.0)
                 return segmentStartMeasure;
             if (projFactor <= 1.0)

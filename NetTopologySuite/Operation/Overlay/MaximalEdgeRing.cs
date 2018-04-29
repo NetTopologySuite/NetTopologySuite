@@ -48,10 +48,10 @@ namespace NetTopologySuite.Operation.Overlay
         /// </summary>
         public void LinkDirectedEdgesForMinimalEdgeRings()
         {
-            DirectedEdge de = startDe;
+            var de = startDe;
             do
             {
-                Node node = de.Node;
+                var node = de.Node;
                 ((DirectedEdgeStar) node.Edges).LinkMinimalDirectedEdges(this);
                 de = de.Next;
             }
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Operation.Overlay
         public IList<EdgeRing> BuildMinimalRings()
         {
             IList<EdgeRing> minEdgeRings = new List<EdgeRing>();
-            DirectedEdge de = startDe;
+            var de = startDe;
             do
             {
                 if (de.MinEdgeRing == null)

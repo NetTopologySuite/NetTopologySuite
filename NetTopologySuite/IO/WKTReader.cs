@@ -169,7 +169,7 @@ namespace NetTopologySuite.IO
 		/// </returns>
         private Coordinate[] GetCoordinates(IEnumerator<Token> tokens, Boolean skipExtraParenthesis, ref Boolean hasZ)
 		{
-            string nextToken = GetNextEmptyOrOpener(tokens);
+            var nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY"))
                 return new Coordinate[]{};
             var coordinates = new List<Coordinate>();
@@ -286,7 +286,7 @@ namespace NetTopologySuite.IO
         /// The next "EMPTY" or "(" in the stream as uppercase text.</returns>
         private static string GetNextEmptyOrOpener(IEnumerator<Token> tokens)
         {
-            string nextWord = GetNextWord(tokens);
+            var nextWord = GetNextWord(tokens);
             if (nextWord.Equals("EMPTY") || nextWord.Equals("("))
                 return nextWord;
             throw new GeoAPI.IO.ParseException("Expected 'EMPTY' or '(' but encountered '" + nextWord + "'");
@@ -302,7 +302,7 @@ namespace NetTopologySuite.IO
         /// The next ")" or "," in the stream.</returns>
         private static string GetNextCloserOrComma(IEnumerator<Token> tokens)
         {
-            string nextWord = GetNextWord(tokens);
+            var nextWord = GetNextWord(tokens);
             if (nextWord.Equals(",") || nextWord.Equals(")"))
                 return nextWord;
             throw new GeoAPI.IO.ParseException("Expected ')' or ',' but encountered '" + nextWord
@@ -553,7 +553,7 @@ namespace NetTopologySuite.IO
         /// </returns>
         private IPolygon ReadPolygonText(IEnumerator<Token> tokens, IGeometryFactory factory)
         {
-            string nextToken = GetNextEmptyOrOpener(tokens);
+            var nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY"))
                 return factory.CreatePolygon();
             var holes = new List<ILinearRing>();
@@ -561,7 +561,7 @@ namespace NetTopologySuite.IO
             nextToken = GetNextCloserOrComma(tokens);
             while (nextToken.Equals(","))
             {
-                ILinearRing hole = ReadLinearRingText(tokens, factory);
+                var hole = ReadLinearRingText(tokens, factory);
                 holes.Add(hole);
                 nextToken = GetNextCloserOrComma(tokens);
             }
@@ -580,7 +580,7 @@ namespace NetTopologySuite.IO
         /// next token in the stream.</returns>
         private IMultiLineString ReadMultiLineStringText(IEnumerator<Token> tokens, IGeometryFactory factory)
         {
-            string nextToken = GetNextEmptyOrOpener(tokens);
+            var nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY"))
                 return factory.CreateMultiLineString();
             var lineStrings = new List<ILineString>();
@@ -607,7 +607,7 @@ namespace NetTopologySuite.IO
         /// <c>Polygon</c> shells and holes do not form closed linestrings.</returns>
         private IMultiPolygon ReadMultiPolygonText(IEnumerator<Token> tokens, IGeometryFactory factory)
         {
-            string nextToken = GetNextEmptyOrOpener(tokens);
+            var nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY"))
                 return factory.CreateMultiPolygon();
             var polygons = new List<IPolygon>();
@@ -636,7 +636,7 @@ namespace NetTopologySuite.IO
         /// next token in the stream.</returns>
         private IGeometryCollection ReadGeometryCollectionText(IEnumerator<Token> tokens, IGeometryFactory factory)
         {
-            string nextToken = GetNextEmptyOrOpener(tokens);
+            var nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY"))
                 return factory.CreateGeometryCollection();
             var geometries = new List<IGeometry>();

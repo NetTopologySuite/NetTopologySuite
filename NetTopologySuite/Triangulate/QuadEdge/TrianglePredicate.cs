@@ -37,7 +37,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             Coordinate a, Coordinate b, Coordinate c,
             Coordinate p)
         {
-            bool isInCircle =
+            var isInCircle =
                   (a.X*a.X + a.Y*a.Y)*TriArea(b, c, p)
                 - (b.X*b.X + b.Y*b.Y)*TriArea(a, c, p)
                 + (c.X*c.X + c.Y*c.Y)*TriArea(a, b, p)
@@ -65,19 +65,19 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             Coordinate a, Coordinate b, Coordinate c,
             Coordinate p)
         {
-            double adx = a.X - p.X;
-            double ady = a.Y - p.Y;
-            double bdx = b.X - p.X;
-            double bdy = b.Y - p.Y;
-            double cdx = c.X - p.X;
-            double cdy = c.Y - p.Y;
-            double abdet = adx*bdy - bdx*ady;
-            double bcdet = bdx*cdy - cdx*bdy;
-            double cadet = cdx*ady - adx*cdy;
-            double alift = adx*adx + ady*ady;
-            double blift = bdx*bdx + bdy*bdy;
-            double clift = cdx*cdx + cdy*cdy;
-            double disc = alift*bcdet + blift*cadet + clift*abdet;
+            var adx = a.X - p.X;
+            var ady = a.Y - p.Y;
+            var bdx = b.X - p.X;
+            var bdy = b.Y - p.Y;
+            var cdx = c.X - p.X;
+            var cdy = c.Y - p.Y;
+            var abdet = adx*bdy - bdx*ady;
+            var bcdet = bdx*cdy - cdx*bdy;
+            var cadet = cdx*ady - adx*cdy;
+            var alift = adx*adx + ady*ady;
+            var blift = bdx*bdx + bdy*bdy;
+            var clift = cdx*cdx + cdy*cdy;
+            var disc = alift*bcdet + blift*cadet + clift*abdet;
             return disc > 0;
         }
         /// <summary>
@@ -130,24 +130,24 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             Coordinate a, Coordinate b, Coordinate c,
             Coordinate p)
         {
-            DD px = DD.ValueOf(p.X);
-            DD py = DD.ValueOf(p.Y);
-            DD ax = DD.ValueOf(a.X);
-            DD ay = DD.ValueOf(a.Y);
-            DD bx = DD.ValueOf(b.X);
-            DD by = DD.ValueOf(b.Y);
-            DD cx = DD.ValueOf(c.X);
-            DD cy = DD.ValueOf(c.Y);
-            DD aTerm = (ax.Multiply(ax).Add(ay.Multiply(ay)))
+            var px = DD.ValueOf(p.X);
+            var py = DD.ValueOf(p.Y);
+            var ax = DD.ValueOf(a.X);
+            var ay = DD.ValueOf(a.Y);
+            var bx = DD.ValueOf(b.X);
+            var by = DD.ValueOf(b.Y);
+            var cx = DD.ValueOf(c.X);
+            var cy = DD.ValueOf(c.Y);
+            var aTerm = (ax.Multiply(ax).Add(ay.Multiply(ay)))
                 .Multiply(TriAreaDDSlow(bx, by, cx, cy, px, py));
-            DD bTerm = (bx.Multiply(bx).Add(by.Multiply(by)))
+            var bTerm = (bx.Multiply(bx).Add(by.Multiply(by)))
                 .Multiply(TriAreaDDSlow(ax, ay, cx, cy, px, py));
-            DD cTerm = (cx.Multiply(cx).Add(cy.Multiply(cy)))
+            var cTerm = (cx.Multiply(cx).Add(cy.Multiply(cy)))
                 .Multiply(TriAreaDDSlow(ax, ay, bx, by, px, py));
-            DD pTerm = (px.Multiply(px).Add(py.Multiply(py)))
+            var pTerm = (px.Multiply(px).Add(py.Multiply(py)))
                 .Multiply(TriAreaDDSlow(ax, ay, bx, by, cx, cy));
-            DD sum = aTerm.Subtract(bTerm).Add(cTerm).Subtract(pTerm);
-            bool isInCircle = sum.ToDoubleValue() > 0;
+            var sum = aTerm.Subtract(bTerm).Add(cTerm).Subtract(pTerm);
+            var isInCircle = sum.ToDoubleValue() > 0;
             return isInCircle;
         }
         /// <summary>
@@ -187,12 +187,12 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             Coordinate a, Coordinate b, Coordinate c,
             Coordinate p)
         {
-            DD aTerm = (DD.Sqr(a.X) + DD.Sqr(a.Y)) * TriAreaDDFast(b, c, p);
-            DD bTerm = (DD.Sqr(b.X) + DD.Sqr(b.Y)) * TriAreaDDFast(a, c, p);
-            DD cTerm = (DD.Sqr(c.X) + DD.Sqr(c.Y)) * TriAreaDDFast(a, b, p);
-            DD pTerm = (DD.Sqr(p.X) + DD.Sqr(p.Y)) * TriAreaDDFast(a, b, c);
-            DD sum = aTerm - bTerm + cTerm - pTerm;
-            bool isInCircle = sum.ToDoubleValue() > 0;
+            var aTerm = (DD.Sqr(a.X) + DD.Sqr(a.Y)) * TriAreaDDFast(b, c, p);
+            var bTerm = (DD.Sqr(b.X) + DD.Sqr(b.Y)) * TriAreaDDFast(a, c, p);
+            var cTerm = (DD.Sqr(c.X) + DD.Sqr(c.Y)) * TriAreaDDFast(a, b, p);
+            var pTerm = (DD.Sqr(p.X) + DD.Sqr(p.Y)) * TriAreaDDFast(a, b, c);
+            var sum = aTerm - bTerm + cTerm - pTerm;
+            var isInCircle = sum.ToDoubleValue() > 0;
             return isInCircle;
         }
         /// <summary>
@@ -209,8 +209,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         private static DD TriAreaDDFast(
             Coordinate a, Coordinate b, Coordinate c)
         {
-            DD t1 = (DD.ValueOf(b.X)-a.X) * (DD.ValueOf(c.Y)- a.Y);
-            DD t2 = (DD.ValueOf(b.Y)-a.Y) * (DD.ValueOf(c.X) -a.X);
+            var t1 = (DD.ValueOf(b.X)-a.X) * (DD.ValueOf(c.Y)- a.Y);
+            var t2 = (DD.ValueOf(b.Y)-a.Y) * (DD.ValueOf(c.X) -a.X);
             return t1 - t2;
         }
         /// <summary>
@@ -225,20 +225,20 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             Coordinate a, Coordinate b, Coordinate c,
             Coordinate p)
         {
-            DD adx = DD.ValueOf(a.X)-p.X;
-            DD ady = DD.ValueOf(a.Y)-p.Y;
-            DD bdx = DD.ValueOf(b.X)-p.X;
-            DD bdy = DD.ValueOf(b.Y)-p.Y;
-            DD cdx = DD.ValueOf(c.X)-p.X;
-            DD cdy = DD.ValueOf(c.Y)-p.Y;
-            DD abdet = adx*bdy - bdx*ady;
-            DD bcdet = bdx*cdy - cdx*bdy;
-            DD cadet = cdx*ady - adx*cdy;
-            DD alift = adx*adx + ady*ady;
-            DD blift = bdx*bdx + bdy*bdy;
-            DD clift = cdx*cdx + cdy*cdy;
-            DD sum = alift * bcdet + blift* cadet + clift * abdet;
-            bool isInCircle = sum.ToDoubleValue() > 0;
+            var adx = DD.ValueOf(a.X)-p.X;
+            var ady = DD.ValueOf(a.Y)-p.Y;
+            var bdx = DD.ValueOf(b.X)-p.X;
+            var bdy = DD.ValueOf(b.Y)-p.Y;
+            var cdx = DD.ValueOf(c.X)-p.X;
+            var cdy = DD.ValueOf(c.Y)-p.Y;
+            var abdet = adx*bdy - bdx*ady;
+            var bcdet = bdx*cdy - cdx*bdy;
+            var cadet = cdx*ady - adx*cdy;
+            var alift = adx*adx + ady*ady;
+            var blift = bdx*bdx + bdy*bdy;
+            var clift = cdx*cdx + cdy*cdy;
+            var sum = alift * bcdet + blift* cadet + clift * abdet;
+            var isInCircle = sum.ToDoubleValue() > 0;
             return isInCircle;
         }
         /// <summary>
@@ -263,9 +263,9 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public static bool IsInCircleCC(Coordinate a, Coordinate b, Coordinate c,
                                         Coordinate p)
         {
-            Coordinate cc = Triangle.Circumcentre(a, b, c);
-            double ccRadius = a.Distance(cc);
-            double pRadiusDiff = p.Distance(cc) - ccRadius;
+            var cc = Triangle.Circumcentre(a, b, c);
+            var ccRadius = a.Distance(cc);
+            var pRadiusDiff = p.Distance(cc) - ccRadius;
             return pRadiusDiff <= 0;
         }
         /// <summary>
@@ -280,10 +280,10 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         private static void CheckRobustInCircle(Coordinate a, Coordinate b, Coordinate c,
                                                 Coordinate p)
         {
-            bool nonRobustInCircle = IsInCircleNonRobust(a, b, c, p);
-            bool isInCircleDD = IsInCircleDDSlow(a, b, c, p);
-            bool isInCircleCC = IsInCircleCC(a, b, c, p);
-            Coordinate circumCentre = Triangle.Circumcentre(a, b, c);
+            var nonRobustInCircle = IsInCircleNonRobust(a, b, c, p);
+            var isInCircleDD = IsInCircleDDSlow(a, b, c, p);
+            var isInCircleCC = IsInCircleCC(a, b, c, p);
+            var circumCentre = Triangle.Circumcentre(a, b, c);
 // ReSharper disable RedundantStringFormatCall
             // String.Format needed to build 2.0 release!
             Debug.WriteLine(String.Format("p radius diff a = {0}", Math.Abs(p.Distance(circumCentre) - a.Distance(circumCentre))/a.Distance(circumCentre)));

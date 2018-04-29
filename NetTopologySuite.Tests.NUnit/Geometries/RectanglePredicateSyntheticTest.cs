@@ -33,7 +33,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         public void TestLines()
         {
             //Console.WriteLine(rect);
-            List<IGeometry> testGeoms = getTestGeometries();
+            var testGeoms = getTestGeometries();
             foreach (var testGeom in testGeoms)
             {
                 runRectanglePredicates(rect, testGeom);
@@ -46,8 +46,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var testGeoms = getTestGeometries();
             foreach (var testGeom in testGeoms)
             {
-                SegmentDensifier densifier = new SegmentDensifier((LineString)testGeom);
-                LineString denseLine = (LineString)densifier.Densify(testGeomSize / 400);
+                var densifier = new SegmentDensifier((LineString)testGeom);
+                var denseLine = (LineString)densifier.Densify(testGeomSize / 400);
                 runRectanglePredicates(rect, denseLine);
             }
         }
@@ -62,19 +62,19 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
         private List<IGeometry> getTestGeometries()
         {
-            Envelope testEnv = new Envelope(rectEnv.MinX - bufSize, rectEnv.MaxX + bufSize,
+            var testEnv = new Envelope(rectEnv.MinX - bufSize, rectEnv.MaxX + bufSize,
                                             rectEnv.MinY - bufSize, rectEnv.MaxY + bufSize);
             var testGeoms = CreateTestGeometries(testEnv, 5, testGeomSize);
             return testGeoms;
         }
         private void runRectanglePredicates(IGeometry rect, IGeometry testGeom)
         {
-            bool intersectsValue = rect.Intersects(testGeom);
-            bool relateIntersectsValue = rect.Relate(testGeom).IsIntersects();
-            bool intersectsOK = intersectsValue == relateIntersectsValue;
-            bool containsValue = rect.Contains(testGeom);
-            bool relateContainsValue = rect.Relate(testGeom).IsContains();
-            bool containsOK = containsValue == relateContainsValue;
+            var intersectsValue = rect.Intersects(testGeom);
+            var relateIntersectsValue = rect.Relate(testGeom).IsIntersects();
+            var intersectsOK = intersectsValue == relateIntersectsValue;
+            var containsValue = rect.Contains(testGeom);
+            var relateContainsValue = rect.Relate(testGeom).IsContains();
+            var containsOK = containsValue == relateContainsValue;
             //System.out.println(testGeom);
             if (!intersectsOK || !containsOK)
             {
@@ -86,11 +86,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         public List<IGeometry> CreateTestGeometries(Envelope env, double inc, double size)
         {
             var testGeoms = new List<IGeometry>();
-            for (double y = env.MinY; y <= env.MaxY; y += inc)
+            for (var y = env.MinY; y <= env.MaxY; y += inc)
             {
-                for (double x = env.MinX; x <= env.MaxX; x += inc)
+                for (var x = env.MinX; x <= env.MaxX; x += inc)
                 {
-                    Coordinate baseCoord = new Coordinate(x, y);
+                    var baseCoord = new Coordinate(x, y);
                     testGeoms.Add(CreateAngle(baseCoord, size, 0));
                     testGeoms.Add(CreateAngle(baseCoord, size, 1));
                     testGeoms.Add(CreateAngle(baseCoord, size, 2));
@@ -107,10 +107,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                                     { -1, 0 },
                                     { 0, -1 }
                                     };
-            int xFac = factor[quadrant, 0];
-            int yFac = factor[quadrant, 1];
-            Coordinate p0 = new Coordinate(baseCoord.X + xFac * size, baseCoord.Y + yFac * size);
-            Coordinate p2 = new Coordinate(baseCoord.X + yFac * size, baseCoord.Y + (-xFac) * size);
+            var xFac = factor[quadrant, 0];
+            var yFac = factor[quadrant, 1];
+            var p0 = new Coordinate(baseCoord.X + xFac * size, baseCoord.Y + yFac * size);
+            var p2 = new Coordinate(baseCoord.X + yFac * size, baseCoord.Y + (-xFac) * size);
             return fact.CreateLineString(new Coordinate[] { p0, baseCoord, p2 });
         }
     }

@@ -28,7 +28,7 @@ namespace NetTopologySuite.Index.Quadtree
             if (exp > 1023 || exp < -1022)
                 throw new ArgumentException("Exponent out of bounds");
             long expBias = exp + ExponentBias;
-            long bits = expBias << 52;
+            var bits = expBias << 52;
             return BitConverter.Int64BitsToDouble(bits);
         }
         /// <summary>
@@ -38,7 +38,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <returns></returns>
         public static int GetExponent(double d)
         {
-            DoubleBits db = new DoubleBits(d);
+            var db = new DoubleBits(d);
             return db.Exponent;
         }
         /// <summary>
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <returns></returns>
         public static double TruncateToPowerOfTwo(double d)
         {
-            DoubleBits db = new DoubleBits(d);
+            var db = new DoubleBits(d);
             db.ZeroLowerBits(52);
             return db.Double;
         }
@@ -59,7 +59,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <returns></returns>
         public static string ToBinaryString(double d)
         {
-            DoubleBits db = new DoubleBits(d);
+            var db = new DoubleBits(d);
             return db.ToString();
         }
         /// <summary>
@@ -72,11 +72,11 @@ namespace NetTopologySuite.Index.Quadtree
         {
             if (d1 == 0.0 || d2 == 0.0)
                 return 0.0;
-            DoubleBits db1 = new DoubleBits(d1);
-            DoubleBits db2 = new DoubleBits(d2);
+            var db1 = new DoubleBits(d1);
+            var db2 = new DoubleBits(d2);
             if (db1.Exponent != db2.Exponent)
                 return 0.0;
-            int maxCommon = db1.NumCommonMantissaBits(db2);
+            var maxCommon = db1.NumCommonMantissaBits(db2);
             db1.ZeroLowerBits(64 - (12 + maxCommon));
             return db1.Double;
         }
@@ -102,8 +102,8 @@ namespace NetTopologySuite.Index.Quadtree
         {
             get
             {
-                int signExp = (int)(_xBits >> 52);
-                int exp = signExp & 0x07ff;
+                var signExp = (int)(_xBits >> 52);
+                var exp = signExp & 0x07ff;
                 return exp;
             }
         }
@@ -117,8 +117,8 @@ namespace NetTopologySuite.Index.Quadtree
         /// <param name="nBits"></param>
         public void ZeroLowerBits(int nBits)
         {
-            long invMask = (1L << nBits) - 1L;
-            long mask = ~invMask;
+            var invMask = (1L << nBits) - 1L;
+            var mask = ~invMask;
             _xBits &= mask;
         }
         /// <summary>
@@ -128,7 +128,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <returns></returns>
         public int GetBit(int i)
         {
-            long mask = (1L << i);
+            var mask = (1L << i);
             return (_xBits & mask) != 0 ? 1 : 0;
         }
         /// <summary>
@@ -141,7 +141,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <returns> The number of common most-significant mantissa bits.</returns>
         public int NumCommonMantissaBits(DoubleBits db)
         {
-            for (int i = 0; i < 52; i++)
+            for (var i = 0; i < 52; i++)
             {
                 if (GetBit(i) != db.GetBit(i))
                     return i;
@@ -153,12 +153,12 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         public override string ToString()
         {
-            string numStr = HexConverter.ConvertAny2Any(_xBits.ToString(), 10, 2);
+            var numStr = HexConverter.ConvertAny2Any(_xBits.ToString(), 10, 2);
             // 64 zeroes!
-            string zero64 = "0000000000000000000000000000000000000000000000000000000000000000";
-            string padStr = zero64 + numStr;
-            string bitStr = padStr.Substring(padStr.Length - 64);
-            string str = bitStr.Substring(0, 1) + "  "
+            var zero64 = "0000000000000000000000000000000000000000000000000000000000000000";
+            var padStr = zero64 + numStr;
+            var bitStr = padStr.Substring(padStr.Length - 64);
+            var str = bitStr.Substring(0, 1) + "  "
                 + bitStr.Substring(1, 12) + "(" + Exponent + ") "
                 + bitStr.Substring(12)
                 + " [ " + x + " ]";

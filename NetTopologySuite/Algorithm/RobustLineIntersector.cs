@@ -114,10 +114,10 @@ namespace NetTopologySuite.Algorithm
         /// <returns></returns>
         private int ComputeCollinearIntersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            bool p1q1p2 = Envelope.Intersects(p1, p2, q1);
-            bool p1q2p2 = Envelope.Intersects(p1, p2, q2);
-            bool q1p1q2 = Envelope.Intersects(q1, q2, p1);
-            bool q1p2q2 = Envelope.Intersects(q1, q2, p2);
+            var p1q1p2 = Envelope.Intersects(p1, p2, q1);
+            var p1q2p2 = Envelope.Intersects(p1, p2, q2);
+            var q1p1q2 = Envelope.Intersects(q1, q2, p1);
+            var q1p2q2 = Envelope.Intersects(q1, q2, p2);
             if (p1q1p2 && p1q2p2)
             {
                 IntersectionPoint[0] = q1;
@@ -171,7 +171,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns></returns>
         private Coordinate Intersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            Coordinate intPt = IntersectionWithNormalization(p1, p2, q1, q2);
+            var intPt = IntersectionWithNormalization(p1, p2, q1, q2);
             /*
             // TESTING ONLY
             var intPtDD = CGAlgorithmsDD.Intersection(p1, p2, q1, q2);
@@ -208,22 +208,22 @@ namespace NetTopologySuite.Algorithm
         private void CheckDD(Coordinate p1, Coordinate p2, Coordinate q1,
             Coordinate q2, Coordinate intPt)
         {
-            Coordinate intPtDD = CGAlgorithmsDD.Intersection(p1, p2, q1, q2);
-            bool isIn = IsInSegmentEnvelopes(intPtDD);
+            var intPtDD = CGAlgorithmsDD.Intersection(p1, p2, q1, q2);
+            var isIn = IsInSegmentEnvelopes(intPtDD);
             Debug.WriteLine("DD in env = " + isIn + "  --------------------- " + intPtDD);
-            double distance = intPt.Distance(intPtDD);
+            var distance = intPt.Distance(intPtDD);
             if (distance > 0.0001)
                 Debug.WriteLine("Distance = " + distance);
         }
         private Coordinate IntersectionWithNormalization(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            Coordinate n1 = new Coordinate(p1);
-            Coordinate n2 = new Coordinate(p2);
-            Coordinate n3 = new Coordinate(q1);
-            Coordinate n4 = new Coordinate(q2);
-            Coordinate normPt = new Coordinate();
+            var n1 = new Coordinate(p1);
+            var n2 = new Coordinate(p2);
+            var n3 = new Coordinate(q1);
+            var n4 = new Coordinate(q2);
+            var normPt = new Coordinate();
             NormalizeToEnvCentre(n1, n2, n3, n4, normPt);
-            Coordinate intPt = SafeHCoordinateIntersection(n1, n2, n3, n4);
+            var intPt = SafeHCoordinateIntersection(n1, n2, n3, n4);
             intPt.X += normPt.X;
             intPt.Y += normPt.Y;
             return intPt;
@@ -256,20 +256,20 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         private void NormalizeToEnvCentre(Coordinate n00, Coordinate n01, Coordinate n10, Coordinate n11, Coordinate normPt)
         {
-            double minX0 = n00.X < n01.X ? n00.X : n01.X;
-            double minY0 = n00.Y < n01.Y ? n00.Y : n01.Y;
-            double maxX0 = n00.X > n01.X ? n00.X : n01.X;
-            double maxY0 = n00.Y > n01.Y ? n00.Y : n01.Y;
-            double minX1 = n10.X < n11.X ? n10.X : n11.X;
-            double minY1 = n10.Y < n11.Y ? n10.Y : n11.Y;
-            double maxX1 = n10.X > n11.X ? n10.X : n11.X;
-            double maxY1 = n10.Y > n11.Y ? n10.Y : n11.Y;
-            double intMinX = minX0 > minX1 ? minX0 : minX1;
-            double intMaxX = maxX0 < maxX1 ? maxX0 : maxX1;
-            double intMinY = minY0 > minY1 ? minY0 : minY1;
-            double intMaxY = maxY0 < maxY1 ? maxY0 : maxY1;
-            double intMidX = (intMinX + intMaxX) / 2.0;
-            double intMidY = (intMinY + intMaxY) / 2.0;
+            var minX0 = n00.X < n01.X ? n00.X : n01.X;
+            var minY0 = n00.Y < n01.Y ? n00.Y : n01.Y;
+            var maxX0 = n00.X > n01.X ? n00.X : n01.X;
+            var maxY0 = n00.Y > n01.Y ? n00.Y : n01.Y;
+            var minX1 = n10.X < n11.X ? n10.X : n11.X;
+            var minY1 = n10.Y < n11.Y ? n10.Y : n11.Y;
+            var maxX1 = n10.X > n11.X ? n10.X : n11.X;
+            var maxY1 = n10.Y > n11.Y ? n10.Y : n11.Y;
+            var intMinX = minX0 > minX1 ? minX0 : minX1;
+            var intMaxX = maxX0 < maxX1 ? maxX0 : maxX1;
+            var intMinY = minY0 > minY1 ? minY0 : minY1;
+            var intMaxY = maxY0 < maxY1 ? maxY0 : maxY1;
+            var intMidX = (intMinX + intMaxX) / 2.0;
+            var intMidY = (intMinY + intMaxY) / 2.0;
             normPt.X = intMidX;
             normPt.Y = intMidY;
             n00.X -= normPt.X; n00.Y -= normPt.Y;
@@ -288,8 +288,8 @@ namespace NetTopologySuite.Algorithm
         /// <returns><c>true</c> if the input point lies within both input segment envelopes.</returns>
         private bool IsInSegmentEnvelopes(Coordinate intPoint)
         {
-            Envelope env0 = new Envelope(InputLines[0][0], InputLines[0][1]);
-            Envelope env1 = new Envelope(InputLines[1][0], InputLines[1][1]);
+            var env0 = new Envelope(InputLines[0][0], InputLines[0][1]);
+            var env1 = new Envelope(InputLines[1][0], InputLines[1][1]);
             return env0.Contains(intPoint) && env1.Contains(intPoint);
         }
         /// <summary>
@@ -314,9 +314,9 @@ namespace NetTopologySuite.Algorithm
         private static Coordinate NearestEndpoint(Coordinate p1, Coordinate p2,
             Coordinate q1, Coordinate q2)
         {
-            Coordinate nearestPt = p1;
-            double minDist = DistanceComputer.PointToSegment(p1, q1, q2);
-            double dist = DistanceComputer.PointToSegment(p2, q1, q2);
+            var nearestPt = p1;
+            var minDist = DistanceComputer.PointToSegment(p1, q1, q2);
+            var dist = DistanceComputer.PointToSegment(p2, q1, q2);
             if (dist < minDist)
             {
                 minDist = dist;

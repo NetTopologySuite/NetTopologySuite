@@ -66,7 +66,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
         }
         private String Supplement(String message)
         {
-            String newMessage = "\n" + message + "\n";
+            var newMessage = "\n" + message + "\n";
             newMessage += "Original: " + _wktWriter.WriteFormatted(GetOriginal()) + "\n";
             newMessage += "Buffer Distance: " + _bufferDistance + "\n";
             newMessage += "Buffer: " + _wktWriter.WriteFormatted(GetBuffer()) + "\n";
@@ -81,7 +81,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
         {
             try
             {
-                double tolerance =
+                var tolerance =
                     Math.Abs(
                         GetBuffer().Area
                         - GetOriginal()
@@ -130,7 +130,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             if (polygon != null)
                 return polygon.NumInteriorRings > 0;
             var multiPolygon = (IMultiPolygon) buffer;
-            for (int i = 0; i < multiPolygon.NumGeometries; i++)
+            for (var i = 0; i < multiPolygon.NumGeometries; i++)
             {
                 if (HasHoles(multiPolygon.GetGeometryN(i)))
                 {
@@ -228,7 +228,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             {
                 return true;
             }
-            bool isContained = a.Contains(b);
+            var isContained = a.Contains(b);
             return isContained;
         }
         private void AddBufferResultValidatorTest()

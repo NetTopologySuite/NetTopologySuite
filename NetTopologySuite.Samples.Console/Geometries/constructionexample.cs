@@ -18,12 +18,12 @@ namespace NetTopologySuite.Samples.Geometries
 		public static void main(string[] args)
 		{
 			// create a factory using default values (e.g. floating precision)
-			GeometryFactory fact = new GeometryFactory();
-			IPoint p1 = fact.CreatePoint(new Coordinate(0, 0));
+			var fact = new GeometryFactory();
+			var p1 = fact.CreatePoint(new Coordinate(0, 0));
 			Console.WriteLine(p1);
-			IPoint p2 = fact.CreatePoint(new Coordinate(1, 1));
+			var p2 = fact.CreatePoint(new Coordinate(1, 1));
 			Console.WriteLine(p1);
-			IMultiPoint mpt = fact.CreateMultiPoint(new Coordinate[]{ new Coordinate(0, 0), new Coordinate(1, 1), });
+			var mpt = fact.CreateMultiPoint(new Coordinate[]{ new Coordinate(0, 0), new Coordinate(1, 1), });
 			Console.WriteLine(mpt);
 		}
 	}

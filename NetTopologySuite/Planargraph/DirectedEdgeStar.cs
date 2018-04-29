@@ -95,9 +95,9 @@ namespace NetTopologySuite.Planargraph
         public int GetIndex(Edge edge)
         {
             SortEdges();
-            for (int i = 0; i < _outEdges.Count; i++)
+            for (var i = 0; i < _outEdges.Count; i++)
             {
-                DirectedEdge de = _outEdges[i];
+                var de = _outEdges[i];
                 if (de.Edge == edge)
                     return i;
             }
@@ -112,9 +112,9 @@ namespace NetTopologySuite.Planargraph
         public int GetIndex(DirectedEdge dirEdge)
         {
             SortEdges();
-            for (int i = 0; i < _outEdges.Count; i++)
+            for (var i = 0; i < _outEdges.Count; i++)
             {
-                DirectedEdge de = _outEdges[i];
+                var de = _outEdges[i];
                 if (de == dirEdge)
                     return i;
             }
@@ -128,7 +128,7 @@ namespace NetTopologySuite.Planargraph
         /// <returns></returns>
         public int GetIndex(int i)
         {
-            int modi = i % _outEdges.Count;
+            var modi = i % _outEdges.Count;
             //I don't think modi can be 0 (assuming i is positive) [Jon Aquino 10/28/2003]
             if (modi < 0)
                 modi += _outEdges.Count;
@@ -143,7 +143,7 @@ namespace NetTopologySuite.Planargraph
         /// <returns></returns>
         public DirectedEdge GetNextEdge(DirectedEdge dirEdge)
         {
-            int i = GetIndex(dirEdge);
+            var i = GetIndex(dirEdge);
             return _outEdges[GetIndex(i + 1)];
         }
         ///<summary>
@@ -153,7 +153,7 @@ namespace NetTopologySuite.Planargraph
         /// </summary>
         public DirectedEdge GetNextCWEdge(DirectedEdge dirEdge)
         {
-            int i = GetIndex(dirEdge);
+            var i = GetIndex(dirEdge);
             return _outEdges[GetIndex(i - 1)];
         }
     }

@@ -26,7 +26,7 @@ namespace NetTopologySuite.Precision
             ApplicationException originalEx;
             try
             {
-                IGeometry result = geom0.Intersection(geom1);
+                var result = geom0.Intersection(geom1);
                 return result;
             }
             catch (ApplicationException ex)
@@ -40,8 +40,8 @@ namespace NetTopologySuite.Precision
              */
             try
             {
-                CommonBitsOp cbo = new CommonBitsOp(true);
-                IGeometry resultEP = cbo.Intersection(geom0, geom1);
+                var cbo = new CommonBitsOp(true);
+                var resultEP = cbo.Intersection(geom0, geom1);
                 // check that result is a valid point after the reshift to orginal precision
                 if (!resultEP.IsValid)
                     throw originalEx;
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Precision
             ApplicationException originalEx;
             try
             {
-                IGeometry result = geom0.Union(geom1);
+                var result = geom0.Union(geom1);
                 return result;
             }
             catch (ApplicationException ex)
@@ -77,8 +77,8 @@ namespace NetTopologySuite.Precision
              */
             try
             {
-                CommonBitsOp cbo = new CommonBitsOp(true);
-                IGeometry resultEP = cbo.Union(geom0, geom1);
+                var cbo = new CommonBitsOp(true);
+                var resultEP = cbo.Union(geom0, geom1);
                 // check that result is a valid point after the reshift to orginal precision
                 if (!resultEP.IsValid)
                     throw originalEx;
@@ -100,7 +100,7 @@ namespace NetTopologySuite.Precision
             ApplicationException originalEx;
             try
             {
-                IGeometry result = geom0.Difference(geom1);
+                var result = geom0.Difference(geom1);
                 return result;
             }
             catch (ApplicationException ex)
@@ -114,8 +114,8 @@ namespace NetTopologySuite.Precision
              */
             try
             {
-                CommonBitsOp cbo = new CommonBitsOp(true);
-                IGeometry resultEP = cbo.Difference(geom0, geom1);
+                var cbo = new CommonBitsOp(true);
+                var resultEP = cbo.Difference(geom0, geom1);
                 // check that result is a valid point after the reshift to orginal precision
                 if (!resultEP.IsValid)
                     throw originalEx;
@@ -137,7 +137,7 @@ namespace NetTopologySuite.Precision
             ApplicationException originalEx;
             try
             {
-                IGeometry result = geom0.SymmetricDifference(geom1);
+                var result = geom0.SymmetricDifference(geom1);
                 return result;
             }
             catch (ApplicationException ex)
@@ -151,8 +151,8 @@ namespace NetTopologySuite.Precision
              */
             try
             {
-                CommonBitsOp cbo = new CommonBitsOp(true);
-                IGeometry resultEP = cbo.SymDifference(geom0, geom1);
+                var cbo = new CommonBitsOp(true);
+                var resultEP = cbo.SymDifference(geom0, geom1);
                 // check that result is a valid point after the reshift to orginal precision
                 if (!resultEP.IsValid)
                     throw originalEx;
@@ -177,7 +177,7 @@ namespace NetTopologySuite.Precision
             ApplicationException originalEx;
             try
             {
-                IGeometry result = geom.Buffer(distance);
+                var result = geom.Buffer(distance);
                 return result;
             }
             catch (ApplicationException ex)
@@ -191,8 +191,8 @@ namespace NetTopologySuite.Precision
              */
             try
             {
-                CommonBitsOp cbo = new CommonBitsOp(true);
-                IGeometry resultEP = cbo.Buffer(geom, distance);
+                var cbo = new CommonBitsOp(true);
+                var resultEP = cbo.Buffer(geom, distance);
                 // check that result is a valid point after the reshift to orginal precision
                 if (!resultEP.IsValid)
                     throw originalEx;

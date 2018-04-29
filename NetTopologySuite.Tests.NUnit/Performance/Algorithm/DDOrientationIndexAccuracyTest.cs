@@ -22,9 +22,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         }
         private void CheckLine45(int width, int nPts, double precision)
         {
-            Coordinate p1 = new Coordinate(0, width);
-            Coordinate p2 = new Coordinate(width, 0);
-            for (int i = 0; i <= nPts; i++)
+            var p1 = new Coordinate(0, width);
+            var p2 = new Coordinate(width, 0);
+            for (var i = 0; i <= nPts; i++)
             {
                 var d = width / (double) nPts;
                 var q = new Coordinate(0.0 + i * d, width - i * d);
@@ -44,10 +44,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         public static DD OrientationDet(Coordinate p1, Coordinate p2, Coordinate q, Func<double, DD> convert)
         {
             // normalize coordinates
-            DD dx1 = convert(p2.X) + convert(-p1.X);
-            DD dy1 = convert(p2.Y) + convert(-p1.Y);
-            DD dx2 = convert(q.X) + convert(-p2.X);
-            DD dy2 = convert(q.Y) + convert(-p2.Y);
+            var dx1 = convert(p2.X) + convert(-p1.X);
+            var dy1 = convert(p2.Y) + convert(-p1.Y);
+            var dx2 = convert(q.X) + convert(-p2.X);
+            var dy2 = convert(q.Y) + convert(-p2.Y);
             // sign of determinant - unrolled for performance
             return dx1 * dy2 - dy1 * dx2;
         }

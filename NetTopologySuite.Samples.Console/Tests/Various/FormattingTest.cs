@@ -48,9 +48,9 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void FloatFormatting17DigitsTest1()
         {
-            Coordinate coordinate = new Coordinate(0.00000000000000000001, 0.00000000000000000001);
-            IPoint point = GeometryFactory.Floating.CreatePoint(coordinate);
-            IPoint test = (IPoint)new WKTReader(GeometryFactory.Floating).Read(point.ToString());
+            var coordinate = new Coordinate(0.00000000000000000001, 0.00000000000000000001);
+            var point = GeometryFactory.Floating.CreatePoint(coordinate);
+            var test = (IPoint)new WKTReader(GeometryFactory.Floating).Read(point.ToString());
             // If i modify PrecisionModel.MaximumSignificantDigits from 16 to (as example) 20, all the digits are printed...
             Debug.WriteLine(point.ToString());
             Debug.WriteLine(test.ToString());
@@ -63,14 +63,14 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void FloatFormatting9MoreDigitsTest1()
         {
-            Coordinate coordinate = new Coordinate(0.0000000000001, 0.0000000000002);
-            IPoint point = GeometryFactory.Floating.CreatePoint(coordinate);
-            IPoint test = (IPoint) new WKTReader(GeometryFactory.Floating).Read(point.ToString());
+            var coordinate = new Coordinate(0.0000000000001, 0.0000000000002);
+            var point = GeometryFactory.Floating.CreatePoint(coordinate);
+            var test = (IPoint) new WKTReader(GeometryFactory.Floating).Read(point.ToString());
             Debug.WriteLine(point.ToString());
             Debug.WriteLine(test.ToString());
             Assert.AreEqual(test.X, point.X);
             Assert.AreEqual(test.Y, point.Y);
-            Boolean result = test.Equals(point);   // Geometry not overrides ==...
+            var result = test.Equals(point);   // Geometry not overrides ==...
             Assert.IsTrue(result);
         }
         /// <summary>
@@ -79,14 +79,14 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void FloatFormatting9MoreDigitsTest2()
         {
-            Coordinate coordinate = new Coordinate(0.0000000000001, 0.0000000000002);
-            IPoint point = GeometryFactory.FloatingSingle.CreatePoint(coordinate);
-            IPoint test = (IPoint)new WKTReader(GeometryFactory.FloatingSingle).Read(point.ToString());
+            var coordinate = new Coordinate(0.0000000000001, 0.0000000000002);
+            var point = GeometryFactory.FloatingSingle.CreatePoint(coordinate);
+            var test = (IPoint)new WKTReader(GeometryFactory.FloatingSingle).Read(point.ToString());
             Debug.WriteLine(point.ToString());
             Debug.WriteLine(test.ToString());
             // Assertis correct because WktReader creates test with coordinates == 0
             // point has the double values as coordinates
-            Boolean result = test.Equals(point);   // Remember: Geometry not overrides ==...
+            var result = test.Equals(point);   // Remember: Geometry not overrides ==...
             Assert.IsFalse(result);
         }
         /// <summary>
@@ -95,14 +95,14 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void FloatFormatting9MoreDigitsTest3()
         {
-            Coordinate coordinate = new Coordinate(0.0000000000001, 0.0000000000002);
-            IPoint point = GeometryFactory.Fixed.CreatePoint(coordinate);
-            IPoint test = (IPoint)new WKTReader(GeometryFactory.Fixed).Read(point.ToString());
+            var coordinate = new Coordinate(0.0000000000001, 0.0000000000002);
+            var point = GeometryFactory.Fixed.CreatePoint(coordinate);
+            var test = (IPoint)new WKTReader(GeometryFactory.Fixed).Read(point.ToString());
             Debug.WriteLine(point.ToString());
             Debug.WriteLine(test.ToString());
             // Assertis correct because WktReader creates test with coordinates == 0
             // point has the double values as coordinates
-            Boolean result = test.Equals(point);   // Are you read that Geometry not overrides ==...
+            var result = test.Equals(point);   // Are you read that Geometry not overrides ==...
             Assert.IsFalse(result);
         }
         /// <summary>
@@ -110,7 +110,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         /// </summary>
         private void TestDoubleValueResult()
         {
-            string result = Convert.ToString(longDouble, nfi);
+            var result = Convert.ToString(longDouble, nfi);
             Assert.IsNotNull(result);
             Debug.WriteLine(result);
         }

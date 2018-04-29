@@ -31,7 +31,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                                      NumPoints = 100000,
                                      TestPointInAreaLocator = pia
                                  };
-            Boolean isCorrect = gridTester.Run();
+            var isCorrect = gridTester.Run();
             Assert.IsTrue(isCorrect);
         }
     }

@@ -43,7 +43,7 @@ namespace Open.Topology.TestRunner.Functions
         private static List<IGeometry> Components(IGeometry g)
         {
             var comp = new List<IGeometry>();
-            for (int i = 0; i < g.NumGeometries; i++)
+            for (var i = 0; i < g.NumGeometries; i++)
             {
                 comp.Add(g.GetGeometryN(i));
             }

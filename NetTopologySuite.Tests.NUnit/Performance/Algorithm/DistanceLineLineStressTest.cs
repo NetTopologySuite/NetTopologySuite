@@ -10,12 +10,12 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         [CategoryAttribute("Stress")]
         public void TestRandomDisjointCollinearSegments()
         {
-            int n = 1000000;
-            int failCount = 0;
-            for (int i = 0; i < n; i++)
+            var n = 1000000;
+            var failCount = 0;
+            for (var i = 0; i < n; i++)
             {
                 //System.out.println(i);
-                Coordinate[] seg = RandomDisjointCollinearSegments();
+                var seg = RandomDisjointCollinearSegments();
                 if (0 == DistanceComputer.SegmentToSegment(seg[0], seg[1], seg[2], seg[3]))
                 {
                     /*
@@ -36,8 +36,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             var seg = new Coordinate[4];
             double gap = 1;
             double x1 = 10;
-            double x2 = x1 + gap;
-            double x3 = x1 + gap + 10;
+            var x2 = x1 + gap;
+            var x3 = x1 + gap + 10;
             seg[0] = new Coordinate(0, 0);
             seg[1] = new Coordinate(x1, slope*x1);
             seg[2] = new Coordinate(x2, slope*x2);

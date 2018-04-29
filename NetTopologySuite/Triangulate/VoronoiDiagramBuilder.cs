@@ -74,16 +74,16 @@ namespace NetTopologySuite.Triangulate
         private void Create()
         {
             if (_subdiv != null) return;
-            Envelope siteEnv = DelaunayTriangulationBuilder.Envelope(_siteCoords);
+            var siteEnv = DelaunayTriangulationBuilder.Envelope(_siteCoords);
             _diagramEnv = siteEnv;
             // add a buffer around the final envelope
-            double expandBy = Math.Max(_diagramEnv.Width, _diagramEnv.Height);
+            var expandBy = Math.Max(_diagramEnv.Width, _diagramEnv.Height);
             _diagramEnv.ExpandBy(expandBy);
             if (_clipEnv != null)
                 _diagramEnv.ExpandToInclude(_clipEnv);
             var vertices = DelaunayTriangulationBuilder.ToVertices(_siteCoords);
             _subdiv = new QuadEdgeSubdivision(siteEnv, _tolerance);
-            IncrementalDelaunayTriangulator triangulator = new IncrementalDelaunayTriangulator(_subdiv);
+            var triangulator = new IncrementalDelaunayTriangulator(_subdiv);
             triangulator.InsertSites(vertices);
         }
         /// <summary>
@@ -108,7 +108,7 @@ namespace NetTopologySuite.Triangulate
         public IGeometryCollection GetDiagram(IGeometryFactory geomFact)
         {
             Create();
-            IGeometryCollection polys = _subdiv.GetVoronoiDiagram(geomFact);
+            var polys = _subdiv.GetVoronoiDiagram(geomFact);
             // clip polys to diagramEnv
             return ClipGeometryCollection(polys, _diagramEnv);
         }
@@ -116,7 +116,7 @@ namespace NetTopologySuite.Triangulate
         {
             var clipPoly = geom.Factory.ToGeometry(clipEnv);
             var clipped = new List<IGeometry>();
-            for (int i = 0; i < geom.NumGeometries; i++)
+            for (var i = 0; i < geom.NumGeometries; i++)
             {
                 var g = geom.GetGeometryN(i);
                 IGeometry result = null;

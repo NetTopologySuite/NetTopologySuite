@@ -115,7 +115,7 @@ namespace NetTopologySuite.Operation.Buffer
             else
                 ComputeLineBufferCurve(inputPts);
             //System.out.println(vertexList);
-            Coordinate[] lineCoord = _vertexList.Coordinates;
+            var lineCoord = _vertexList.Coordinates;
             lineList.Add(lineCoord);
             return lineList;
         }
@@ -141,8 +141,8 @@ namespace NetTopologySuite.Operation.Buffer
         }
         private static Coordinate[] CopyCoordinates(Coordinate[] pts)
         {
-            Coordinate[] copy = new Coordinate[pts.Length];
-            for (int i = 0; i < copy.Length; i++)
+            var copy = new Coordinate[pts.Length];
+            for (var i = 0; i < copy.Length; i++)
             {
                 copy[i] = new Coordinate(pts[i]);
             }
@@ -180,15 +180,15 @@ namespace NetTopologySuite.Operation.Buffer
         }
         private void ComputeLineBufferCurve(Coordinate[] inputPts)
         {
-            double distTol = SimplifyTolerance(_distance);
+            var distTol = SimplifyTolerance(_distance);
             //--------- compute points for left side of line
             // Simplify the appropriate side of the line before generating
             var simp1 = BufferInputLineSimplifier.Simplify(inputPts, distTol);
             // MD - used for testing only (to eliminate simplification)
             //    Coordinate[] simp1 = inputPts;
-            int n1 = simp1.Length - 1;
+            var n1 = simp1.Length - 1;
             InitSideSegments(simp1[0], simp1[1], Positions.Left);
-            for (int i = 2; i <= n1; i++)
+            for (var i = 2; i <= n1; i++)
             {
                 AddNextSegment(simp1[i], true);
             }
@@ -200,10 +200,10 @@ namespace NetTopologySuite.Operation.Buffer
             var simp2 = BufferInputLineSimplifier.Simplify(inputPts, -distTol);
             // MD - used for testing only (to eliminate simplification)
             //    Coordinate[] simp2 = inputPts;
-            int n2 = simp2.Length - 1;
+            var n2 = simp2.Length - 1;
             // since we are traversing line in opposite order, offset position is still LEFT
             InitSideSegments(simp2[n2], simp2[n2 - 1], Positions.Left);
-            for (int i = n2 - 2; i >= 0; i--)
+            for (var i = n2 - 2; i >= 0; i--)
             {
                 AddNextSegment(simp2[i], true);
             }
@@ -214,10 +214,10 @@ namespace NetTopologySuite.Operation.Buffer
         }
         private void OldcomputeLineBufferCurve(Coordinate[] inputPts)
         {
-            int n = inputPts.Length - 1;
+            var n = inputPts.Length - 1;
             // compute points for left side of line
             InitSideSegments(inputPts[0], inputPts[1], Positions.Left);
-            for (int i = 2; i <= n; i++)
+            for (var i = 2; i <= n; i++)
             {
                 AddNextSegment(inputPts[i], true);
             }
@@ -226,7 +226,7 @@ namespace NetTopologySuite.Operation.Buffer
             AddLineEndCap(inputPts[n - 1], inputPts[n]);
             // compute points for right side of line
             InitSideSegments(inputPts[n], inputPts[n - 1], Positions.Left);
-            for (int i = n - 2; i >= 0; i--)
+            for (var i = n - 2; i >= 0; i--)
             {
                 AddNextSegment(inputPts[i], true);
             }
@@ -238,17 +238,17 @@ namespace NetTopologySuite.Operation.Buffer
         private void ComputeRingBufferCurve(Coordinate[] inputPts, Positions side)
         {
             // simplify input line to improve performance
-            double distTol = SimplifyTolerance(_distance);
+            var distTol = SimplifyTolerance(_distance);
             // ensure that correct side is simplified
             if (side == Positions.Right)
                 distTol = -distTol;
             var simp = BufferInputLineSimplifier.Simplify(inputPts, distTol);
             //    Coordinate[] simp = inputPts;
-            int n = simp.Length - 1;
+            var n = simp.Length - 1;
             InitSideSegments(simp[n - 1], simp[0], side);
-            for (int i = 1; i <= n; i++)
+            for (var i = 1; i <= n; i++)
             {
-                bool addStartPoint = i != 1;
+                var addStartPoint = i != 1;
                 AddNextSegment(simp[i], addStartPoint);
             }
             _vertexList.CloseRing();
@@ -281,7 +281,7 @@ namespace NetTopologySuite.Operation.Buffer
             // do nothing if points are equal
             if (_s1.Equals(_s2)) return;
             var orientation = Orientation.Index(_s0, _s1, _s2);
-            bool outsideTurn =
+            var outsideTurn =
                   (orientation == OrientationIndex.Clockwise && _side == Positions.Left)
               || (orientation == OrientationIndex.CounterClockwise && _side == Positions.Right);
             if (orientation == 0)
@@ -304,7 +304,7 @@ namespace NetTopologySuite.Operation.Buffer
              * but the situation of exact collinearity should be fairly rare.
              */
             _li.ComputeIntersection(_s0, _s1, _s1, _s2);
-            int numInt = _li.IntersectionNum;
+            var numInt = _li.IntersectionNum;
             /*
              * if numInt is < 2, the lines are parallel and in the same direction. In
              * this case the point can be ignored, since the offset lines will also be
@@ -462,13 +462,13 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="offset">The points computed for the offset segment</param>
         private static void ComputeOffsetSegment(LineSegment seg, Positions side, double distance, LineSegment offset)
         {
-            int sideSign = side == Positions.Left ? 1 : -1;
-            double dx = seg.P1.X - seg.P0.X;
-            double dy = seg.P1.Y - seg.P0.Y;
-            double len = System.Math.Sqrt(dx * dx + dy * dy);
+            var sideSign = side == Positions.Left ? 1 : -1;
+            var dx = seg.P1.X - seg.P0.X;
+            var dy = seg.P1.Y - seg.P0.Y;
+            var len = System.Math.Sqrt(dx * dx + dy * dy);
             // u is the vector that is the length of the offset, in the direction of the segment
-            double ux = sideSign * distance * dx / len;
-            double uy = sideSign * distance * dy / len;
+            var ux = sideSign * distance * dx / len;
+            var uy = sideSign * distance * dy / len;
             offset.P0.X = seg.P0.X - uy;
             offset.P0.Y = seg.P0.Y + ux;
             offset.P1.X = seg.P1.X - uy;
@@ -479,14 +479,14 @@ namespace NetTopologySuite.Operation.Buffer
         ///</summary>
         private void AddLineEndCap(Coordinate p0, Coordinate p1)
         {
-            LineSegment seg = new LineSegment(p0, p1);
-            LineSegment offsetL = new LineSegment();
+            var seg = new LineSegment(p0, p1);
+            var offsetL = new LineSegment();
             ComputeOffsetSegment(seg, Positions.Left, _distance, offsetL);
-            LineSegment offsetR = new LineSegment();
+            var offsetR = new LineSegment();
             ComputeOffsetSegment(seg, Positions.Right, _distance, offsetR);
-            double dx = p1.X - p0.X;
-            double dy = p1.Y - p0.Y;
-            double angle = Math.Atan2(dy, dx);
+            var dx = p1.X - p0.X;
+            var dy = p1.Y - p0.Y;
+            var angle = Math.Atan2(dy, dx);
             switch (_bufParams.EndCapStyle)
             {
                 case EndCapStyle.Round:
@@ -502,13 +502,13 @@ namespace NetTopologySuite.Operation.Buffer
                     break;
                 case EndCapStyle.Square:
                     // add a square defined by extensions of the offset segment endpoints
-                    Coordinate squareCapSideOffset = new Coordinate();
+                    var squareCapSideOffset = new Coordinate();
                     squareCapSideOffset.X = Math.Abs(_distance) * Math.Cos(angle);
                     squareCapSideOffset.Y = Math.Abs(_distance) * Math.Sin(angle);
-                    Coordinate squareCapLOffset = new Coordinate(
+                    var squareCapLOffset = new Coordinate(
                         offsetL.P1.X + squareCapSideOffset.X,
                         offsetL.P1.Y + squareCapSideOffset.Y);
-                    Coordinate squareCapROffset = new Coordinate(
+                    var squareCapROffset = new Coordinate(
                         offsetR.P1.X + squareCapSideOffset.X,
                         offsetR.P1.Y + squareCapSideOffset.Y);
                     _vertexList.AddPt(squareCapLOffset);
@@ -529,7 +529,7 @@ namespace NetTopologySuite.Operation.Buffer
               LineSegment offset1,
               double distance)
         {
-            bool isMitreWithinLimit = true;
+            var isMitreWithinLimit = true;
             Coordinate intPt;
             /*
              * This computation is unstable if the offset segments are nearly collinear.
@@ -540,7 +540,7 @@ namespace NetTopologySuite.Operation.Buffer
             {
                 intPt = HCoordinate.Intersection(offset0.P0,
                        offset0.P1, offset1.P0, offset1.P1);
-                double mitreRatio = distance <= 0.0 ? 1.0
+                var mitreRatio = distance <= 0.0 ? 1.0
                         : intPt.Distance(p) / Math.Abs(distance);
                 if (mitreRatio > _bufParams.MitreLimit)
                     isMitreWithinLimit = false;
@@ -577,33 +577,33 @@ namespace NetTopologySuite.Operation.Buffer
               double distance,
               double mitreLimit)
         {
-            Coordinate basePt = _seg0.P1;
-            double ang0 = AngleUtility.Angle(basePt, _seg0.P0);
-            double ang1 = AngleUtility.Angle(basePt, _seg1.P1);
+            var basePt = _seg0.P1;
+            var ang0 = AngleUtility.Angle(basePt, _seg0.P0);
+            var ang1 = AngleUtility.Angle(basePt, _seg1.P1);
             // oriented angle between segments
-            double angDiff = AngleUtility.AngleBetweenOriented(_seg0.P0, basePt, _seg1.P1);
+            var angDiff = AngleUtility.AngleBetweenOriented(_seg0.P0, basePt, _seg1.P1);
             // half of the interior angle
-            double angDiffHalf = angDiff / 2;
+            var angDiffHalf = angDiff / 2;
             // angle for bisector of the interior angle between the segments
-            double midAng = AngleUtility.Normalize(ang0 + angDiffHalf);
+            var midAng = AngleUtility.Normalize(ang0 + angDiffHalf);
             // rotating this by PI gives the bisector of the reflex angle
-            double mitreMidAng = AngleUtility.Normalize(midAng + Math.PI);
+            var mitreMidAng = AngleUtility.Normalize(midAng + Math.PI);
             // the miterLimit determines the distance to the mitre bevel
-            double mitreDist = mitreLimit * distance;
+            var mitreDist = mitreLimit * distance;
             // the bevel delta is the difference between the buffer distance
             // and half of the length of the bevel segment
-            double bevelDelta = mitreDist * Math.Abs(Math.Sin(angDiffHalf));
-            double bevelHalfLen = distance - bevelDelta;
+            var bevelDelta = mitreDist * Math.Abs(Math.Sin(angDiffHalf));
+            var bevelHalfLen = distance - bevelDelta;
             // compute the midpoint of the bevel segment
-            double bevelMidX = basePt.X + mitreDist * Math.Cos(mitreMidAng);
-            double bevelMidY = basePt.Y + mitreDist * Math.Sin(mitreMidAng);
-            Coordinate bevelMidPt = new Coordinate(bevelMidX, bevelMidY);
+            var bevelMidX = basePt.X + mitreDist * Math.Cos(mitreMidAng);
+            var bevelMidY = basePt.Y + mitreDist * Math.Sin(mitreMidAng);
+            var bevelMidPt = new Coordinate(bevelMidX, bevelMidY);
             // compute the mitre midline segment from the corner point to the bevel segment midpoint
-            LineSegment mitreMidLine = new LineSegment(basePt, bevelMidPt);
+            var mitreMidLine = new LineSegment(basePt, bevelMidPt);
             // finally the bevel segment endpoints are computed as offsets from
             // the mitre midline
-            Coordinate bevelEndLeft = mitreMidLine.PointAlongOffset(1.0, bevelHalfLen);
-            Coordinate bevelEndRight = mitreMidLine.PointAlongOffset(1.0, -bevelHalfLen);
+            var bevelEndLeft = mitreMidLine.PointAlongOffset(1.0, bevelHalfLen);
+            var bevelEndRight = mitreMidLine.PointAlongOffset(1.0, -bevelHalfLen);
             if (_side == Positions.Left)
             {
                 _vertexList.AddPt(bevelEndLeft);
@@ -637,12 +637,12 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="radius">The radius of the fillet</param>
         private void AddFillet(Coordinate p, Coordinate p0, Coordinate p1, OrientationIndex direction, double radius)
         {
-            double dx0 = p0.X - p.X;
-            double dy0 = p0.Y - p.Y;
-            double startAngle = Math.Atan2(dy0, dx0);
-            double dx1 = p1.X - p.X;
-            double dy1 = p1.Y - p.Y;
-            double endAngle = Math.Atan2(dy1, dx1);
+            var dx0 = p0.X - p.X;
+            var dy0 = p0.Y - p.Y;
+            var startAngle = Math.Atan2(dy0, dx0);
+            var dx1 = p1.X - p.X;
+            var dy1 = p1.Y - p.Y;
+            var endAngle = Math.Atan2(dy1, dx1);
             if (direction == OrientationIndex.Clockwise)
             {
                 if (startAngle <= endAngle) startAngle += 2.0 * Math.PI;
@@ -668,19 +668,19 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="radius">The radius of the fillet</param>
         private void AddFillet(Coordinate p, double startAngle, double endAngle, OrientationIndex direction, double radius)
         {
-            int directionFactor = direction == OrientationIndex.Clockwise ? -1 : 1;
-            double totalAngle = Math.Abs(startAngle - endAngle);
-            int nSegs = (int)(totalAngle / _filletAngleQuantum + 0.5);
+            var directionFactor = direction == OrientationIndex.Clockwise ? -1 : 1;
+            var totalAngle = Math.Abs(startAngle - endAngle);
+            var nSegs = (int)(totalAngle / _filletAngleQuantum + 0.5);
             if (nSegs < 1) return;    // no segments because angle is less than increment - nothing to do!
             double initAngle, currAngleInc;
             // choose angle increment so that each segment has equal length
             initAngle = 0.0;
             currAngleInc = totalAngle / nSegs;
-            double currAngle = initAngle;
-            Coordinate pt = new Coordinate();
+            var currAngle = initAngle;
+            var pt = new Coordinate();
             while (currAngle < totalAngle)
             {
-                double angle = startAngle + directionFactor * currAngle;
+                var angle = startAngle + directionFactor * currAngle;
                 pt.X = p.X + radius * Math.Cos(angle);
                 pt.Y = p.Y + radius * Math.Sin(angle);
                 _vertexList.AddPt(pt);
@@ -693,7 +693,7 @@ namespace NetTopologySuite.Operation.Buffer
         private void AddCircle(Coordinate p, double distance)
         {
             // add start point
-            Coordinate pt = new Coordinate(p.X + distance, p.Y);
+            var pt = new Coordinate(p.X + distance, p.Y);
             _vertexList.AddPt(pt);
             AddFillet(p, 0.0, 2.0 * Math.PI, OrientationIndex.Clockwise, distance);
         }

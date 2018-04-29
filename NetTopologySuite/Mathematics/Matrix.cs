@@ -11,9 +11,9 @@ namespace NetTopologySuite.Mathematics
         private static void SwapRows(double[][] m, int i, int j)
         {
             if (i == j) return;
-            for (int col = 0; col < m[0].Length; col++)
+            for (var col = 0; col < m[0].Length; col++)
             {
-                double temp = m[i][col];
+                var temp = m[i][col];
                 m[i][col] = m[j][col];
                 m[j][col] = temp;
             }
@@ -21,7 +21,7 @@ namespace NetTopologySuite.Mathematics
         private static void SwapRows(double[] m, int i, int j)
         {
             if (i == j) return;
-            double temp = m[i];
+            var temp = m[i];
             m[i] = m[j];
             m[j] = temp;
         }
@@ -37,16 +37,16 @@ namespace NetTopologySuite.Mathematics
         /// <exception cref="ArgumentException">If the matrix has the wrong size</exception>
         public static double[] Solve(double[][] a, double[] b)
         {
-            int n = b.Length;
+            var n = b.Length;
             if (a.Length != n || a[0].Length != n)
                 throw new ArgumentException("Matrix A is incorrectly sized");
             // Use Gaussian Elimination with partial pivoting.
             // Iterate over each row
-            for (int i = 0; i < n; i++)
+            for (var i = 0; i < n; i++)
             {
                 // Find the largest pivot in the rows below the current one.
-                int maxElementRow = i;
-                for (int j = i + 1; j < n; j++)
+                var maxElementRow = i;
+                for (var j = i + 1; j < n; j++)
                     if (System.Math.Abs(a[j][i]) > System.Math.Abs(a[maxElementRow][i]))
                         maxElementRow = j;
                 if (a[maxElementRow][i] == 0.0)
@@ -55,10 +55,10 @@ namespace NetTopologySuite.Mathematics
                 SwapRows(a, i, maxElementRow);
                 SwapRows(b, i, maxElementRow);
                 // Eliminate using row i
-                for (int j = i + 1; j < n; j++)
+                for (var j = i + 1; j < n; j++)
                 {
-                    double rowFactor = a[j][i] / a[i][i];
-                    for (int k = n - 1; k >= i; k--)
+                    var rowFactor = a[j][i] / a[i][i];
+                    for (var k = n - 1; k >= i; k--)
                         a[j][k] -= a[i][k] * rowFactor;
                     b[j] -= b[i] * rowFactor;
                 }
@@ -67,11 +67,11 @@ namespace NetTopologySuite.Mathematics
              * A is now (virtually) in upper-triangular form.
              * The solution vector is determined by back-substitution.
              */
-            double[] solution = new double[n];
-            for (int j = n - 1; j >= 0; j--)
+            var solution = new double[n];
+            for (var j = n - 1; j >= 0; j--)
             {
-                double t = 0.0;
-                for (int k = j + 1; k < n; k++)
+                var t = 0.0;
+                for (var k = j + 1; k < n; k++)
                     t += a[j][k] * solution[k];
                 solution[j] = (b[j] - t) / a[j][j];
             }

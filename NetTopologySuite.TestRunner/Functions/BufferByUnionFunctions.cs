@@ -44,7 +44,7 @@ namespace Open.Topology.TestRunner.Functions
             if (maxChainSize <= 0)
                 throw new ArgumentOutOfRangeException("maxChainSize", "Maximum Chain Size must be specified as an input parameter");
             var segs = LineHandlingFunctions.ExtractChains(g, maxChainSize);
-            double posDist = Math.Abs(distance);
+            var posDist = Math.Abs(distance);
             var segBuf = BufferByComponents(segs, posDist);
             if (distance < 0.0)
                 return g.Difference(segBuf);

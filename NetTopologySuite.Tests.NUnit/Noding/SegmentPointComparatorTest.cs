@@ -25,7 +25,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding
             int expectedPositionValue
             )
         {
-            int posValue = SegmentPointComparator.Compare(octant,
+            var posValue = SegmentPointComparator.Compare(octant,
                 new Coordinate(x0, y0),
                 new Coordinate(x1, y1)
                 );

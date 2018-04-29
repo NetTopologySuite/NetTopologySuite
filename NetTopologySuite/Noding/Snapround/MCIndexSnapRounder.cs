@@ -66,7 +66,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="li"></param>
         private void SnapRound(IList<ISegmentString> segStrings, LineIntersector li)
         {
-            IList<Coordinate> intersections = FindInteriorIntersections(segStrings, li);
+            var intersections = FindInteriorIntersections(segStrings, li);
             ComputeIntersectionSnaps(intersections);
             ComputeVertexSnaps(segStrings);
         }
@@ -81,7 +81,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <returns>A list of Coordinates for the intersections.</returns>
         private IList<Coordinate> FindInteriorIntersections(IList<ISegmentString> segStrings, LineIntersector li)
         {
-            InteriorIntersectionFinderAdder intFinderAdder = new InteriorIntersectionFinderAdder(li);
+            var intFinderAdder = new InteriorIntersectionFinderAdder(li);
             _noder.SegmentIntersector = intFinderAdder;
             _noder.ComputeNodes(segStrings);
             return intFinderAdder.InteriorIntersections;

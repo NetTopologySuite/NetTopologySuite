@@ -85,7 +85,7 @@ namespace NetTopologySuite.Geometries
             {
                 if (IsEmpty)
                     return false;
-                for (int i = 0; i < Geometries.Length; i++)
+                for (var i = 0; i < Geometries.Length; i++)
                     if (!((ILineString) Geometries[i]).IsClosed)
                         return false;
                 return true;
@@ -111,9 +111,9 @@ namespace NetTopologySuite.Geometries
         /// <returns>a <see cref="MultiLineString" /> in the reverse order.</returns>
         public override IGeometry Reverse()
         {
-            int nLines = Geometries.Length;
-            ILineString[] revLines = new ILineString[nLines];
-            for (int i = 0; i < Geometries.Length; i++)
+            var nLines = Geometries.Length;
+            var revLines = new ILineString[nLines];
+            for (var i = 0; i < Geometries.Length; i++)
                 revLines[nLines - 1 - i] = (ILineString) Geometries[i].Reverse();
             return Factory.CreateMultiLineString(revLines);
         }

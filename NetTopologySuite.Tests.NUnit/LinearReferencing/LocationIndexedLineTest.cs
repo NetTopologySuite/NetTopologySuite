@@ -37,37 +37,37 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         }
         private void RunExtractLine(String wkt, LinearLocation start, LinearLocation end, String expected)
         {
-            IGeometry geom = Read(wkt);
-            LocationIndexedLine lil = new LocationIndexedLine(geom);
-            IGeometry result = lil.ExtractLine(start, end);
+            var geom = Read(wkt);
+            var lil = new LocationIndexedLine(geom);
+            var result = lil.ExtractLine(start, end);
             //System.out.println(result);
             CheckExpected(result, expected);
         }
         protected override IGeometry IndicesOfThenExtract(IGeometry input, IGeometry subLine)
         {
-            LocationIndexedLine indexedLine = new LocationIndexedLine(input);
-            LinearLocation[] loc = indexedLine.IndicesOf(subLine);
-            IGeometry result = indexedLine.ExtractLine(loc[0], loc[1]);
+            var indexedLine = new LocationIndexedLine(input);
+            var loc = indexedLine.IndicesOf(subLine);
+            var result = indexedLine.ExtractLine(loc[0], loc[1]);
             return result;
         }
         protected override bool IndexOfAfterCheck(IGeometry linearGeom, Coordinate testPt)
         {
-            LocationIndexedLine indexedLine = new LocationIndexedLine(linearGeom);
+            var indexedLine = new LocationIndexedLine(linearGeom);
             // check locations are consecutive
-            LinearLocation loc1 = indexedLine.IndexOf(testPt);
-            LinearLocation loc2 = indexedLine.IndexOfAfter(testPt, loc1);
+            var loc1 = indexedLine.IndexOf(testPt);
+            var loc2 = indexedLine.IndexOfAfter(testPt, loc1);
             if (loc2.CompareTo(loc1) <= 0) return false;
             // check extracted points are the same as the input
-            Coordinate pt1 = indexedLine.ExtractPoint(loc1);
-            Coordinate pt2 = indexedLine.ExtractPoint(loc2);
+            var pt1 = indexedLine.ExtractPoint(loc1);
+            var pt2 = indexedLine.ExtractPoint(loc2);
             if (!pt1.Equals2D(testPt)) return false;
             if (!pt2.Equals2D(testPt)) return false;
             return true;
         }
         protected override Coordinate ExtractOffsetAt(IGeometry linearGeom, Coordinate testPt, double offsetDistance)
         {
-            LocationIndexedLine indexedLine = new LocationIndexedLine(linearGeom);
-            LinearLocation index = indexedLine.IndexOf(testPt);
+            var indexedLine = new LocationIndexedLine(linearGeom);
+            var index = indexedLine.IndexOf(testPt);
             return indexedLine.ExtractPoint(index, offsetDistance);
         }
     }

@@ -63,10 +63,10 @@ namespace NetTopologySuite.Precision
         {
             if (CommonCoordinate.X == 0.0 && CommonCoordinate.Y == 0.0)
                 return geom;
-            Coordinate invCoord = new Coordinate(CommonCoordinate);
+            var invCoord = new Coordinate(CommonCoordinate);
             invCoord.X = -invCoord.X;
             invCoord.Y = -invCoord.Y;
-            Translater trans = new Translater(invCoord);
+            var trans = new Translater(invCoord);
             geom.Apply(trans);
             geom.GeometryChanged();
             return geom;

@@ -15,33 +15,33 @@ namespace Open.Topology.TestRunner.Functions
         {
             var pi = method.GetParameters();
             Debug.Assert(typeof(IGeometry).IsAssignableFrom(pi[0].GetType()));
-            Type clz = method.DeclaringType;
-            String category = ExtractCategory(ClassUtility.GetClassname(clz));
-            String funcName = method.Name;
-            String[] paramNames = ExtractParamNames(method);
-            Type[] paramTypes = ExtractParamTypes(method);
-            Type returnType = method.ReturnType;
+            var clz = method.DeclaringType;
+            var category = ExtractCategory(ClassUtility.GetClassname(clz));
+            var funcName = method.Name;
+            var paramNames = ExtractParamNames(method);
+            var paramTypes = ExtractParamTypes(method);
+            var returnType = method.ReturnType;
             return new StaticMethodGeometryFunction(category, funcName, paramNames, paramTypes,
                                                     returnType, method);
         }
         private static String ExtractCategory(String className)
         {
-            String trim = StringUtil.RemoveFromEnd(className, "Functions");
+            var trim = StringUtil.RemoveFromEnd(className, "Functions");
             return trim;
         }
         private static String[] ExtractParamNames(MethodInfo method)
         {
             var pi = method.GetParameters();
-            String[] name = new String[pi.Length - 1];
-            for (int i = 1; i < name.Length; i++)
+            var name = new String[pi.Length - 1];
+            for (var i = 1; i < name.Length; i++)
                 name[i] = "arg" + i;
             return name;
         }
         private static Type[] ExtractParamTypes(MethodInfo method)
         {
             var methodParamTypes = method.GetParameters();
-            Type[] types = new Type[methodParamTypes.Length - 1];
-            for (int i = 1; i < methodParamTypes.Length; i++)
+            var types = new Type[methodParamTypes.Length - 1];
+            for (var i = 1; i < methodParamTypes.Length; i++)
                 types[i - 1] = methodParamTypes[i].ParameterType;
             return types;
         }
@@ -101,8 +101,8 @@ namespace Open.Topology.TestRunner.Functions
         }
         public static String GetClassName(Type javaClass)
         {
-            String jClassName = javaClass.Name;
-            int lastDotPos = jClassName.LastIndexOf(".");
+            var jClassName = javaClass.Name;
+            var lastDotPos = jClassName.LastIndexOf(".");
             return jClassName.Substring(lastDotPos + 1, jClassName.Length);
         }
     }

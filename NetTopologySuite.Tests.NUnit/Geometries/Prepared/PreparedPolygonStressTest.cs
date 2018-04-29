@@ -17,7 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
         [CategoryAttribute("Stress")]
         public void Test()
         {
-            PredicateStressTester tester = new PredicateStressTester();
+            var tester = new PredicateStressTester();
             tester.Run(1000);
         }
         class PredicateStressTester : StressTestHarness
@@ -30,10 +30,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             }
             private static bool CheckContains(IGeometry target, IGeometry test)
             {
-                bool expectedResult = target.Contains(test);
-                PreparedGeometryFactory pgFact = new PreparedGeometryFactory();
-                IPreparedGeometry prepGeom = pgFact.Create(target);
-                bool prepResult = prepGeom.Contains(test);
+                var expectedResult = target.Contains(test);
+                var pgFact = new PreparedGeometryFactory();
+                var prepGeom = pgFact.Create(target);
+                var prepResult = prepGeom.Contains(test);
                 if (prepResult != expectedResult)
                 {
                     return false;
@@ -42,10 +42,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             }
             private static Boolean CheckIntersects(IGeometry target, IGeometry test)
             {
-                bool expectedResult = target.Intersects(test);
-                PreparedGeometryFactory pgFact = new PreparedGeometryFactory();
-                IPreparedGeometry prepGeom = pgFact.Create(target);
-                bool prepResult = prepGeom.Intersects(test);
+                var expectedResult = target.Intersects(test);
+                var pgFact = new PreparedGeometryFactory();
+                var prepGeom = pgFact.Create(target);
+                var prepResult = prepGeom.Intersects(test);
                 if (prepResult != expectedResult)
                 {
                     return false;

@@ -31,7 +31,7 @@ namespace NetTopologySuite.Algorithm.Locate
                 IEnumerator<IGeometry> geomi = new GeometryCollectionEnumerator((IGeometryCollection)geom);
                 while (geomi.MoveNext())
                 {
-                    IGeometry g2 = geomi.Current;
+                    var g2 = geomi.Current;
                     if (g2 != geom)
                     {
                         var loc = LocateInGeometry(p, g2);

@@ -29,7 +29,7 @@ namespace NetTopologySuite.Utilities
         {
             // TODO: BitConverter.SingleToInt32Bits will exist eventually
             // see https://github.com/dotnet/coreclr/pull/833
-            byte[] bytes = System.BitConverter.GetBytes(value);
+            var bytes = System.BitConverter.GetBytes(value);
             Debug.Assert(bytes.Length == 4);
             Array.Reverse(bytes, 0, 4);
             return System.BitConverter.ToSingle(bytes, 0);

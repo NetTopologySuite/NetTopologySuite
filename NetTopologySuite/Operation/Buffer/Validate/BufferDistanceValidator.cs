@@ -47,8 +47,8 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         }
         public bool IsValid()
         {
-            double posDistance = Math.Abs(_bufDistance);
-            double distDelta = MaxDistanceDiffFrac * posDistance;
+            var posDistance = Math.Abs(_bufDistance);
+            var distDelta = MaxDistanceDiffFrac * posDistance;
             _minValidDistance = posDistance - distDelta;
             _maxValidDistance = posDistance + distDelta;
             // can't use this test if either is empty
@@ -89,7 +89,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         public IGeometry ErrorIndicator { get; private set; }
         private void CheckPositiveValid()
         {
-            IGeometry bufCurve = _result.Boundary;
+            var bufCurve = _result.Boundary;
             CheckMinimumDistance(_input, bufCurve, _minValidDistance);
             if (!_isValid) return;
             CheckMaximumDistance(_input, bufCurve, _maxValidDistance);
@@ -105,7 +105,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             {
                 return;
             }
-            IGeometry inputCurve = GetPolygonLines(_input);
+            var inputCurve = GetPolygonLines(_input);
             CheckMinimumDistance(inputCurve, _result, _minValidDistance);
             if (!_isValid) return;
             CheckMaximumDistance(inputCurve, _result, _maxValidDistance);

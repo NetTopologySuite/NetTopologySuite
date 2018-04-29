@@ -24,7 +24,7 @@ namespace NetTopologySuite.Index.Bintree
         /// <param name="item"></param>
         public void Insert(Interval itemInterval, T item)
         {
-            int index = GetSubnodeIndex(itemInterval, Origin);
+            var index = GetSubnodeIndex(itemInterval, Origin);
             // if index is -1, itemEnv must contain the origin.
             if (index == -1)
             {
@@ -35,14 +35,14 @@ namespace NetTopologySuite.Index.Bintree
             * the item must be contained in one interval, so insert it into the
             * tree for that interval (which may not yet exist)
             */
-            Node<T> node = Subnode[index];
+            var node = Subnode[index];
             /*
             *  If the subnode doesn't exist or this item is not contained in it,
             *  have to expand the tree upward to contain the item.
             */
             if (node == null || ! node.Interval.Contains(itemInterval))
             {
-                Node<T> largerNode = Node<T>.CreateExpanded(node, itemInterval);
+                var largerNode = Node<T>.CreateExpanded(node, itemInterval);
                 Subnode[index] = largerNode;
             }
             /*
@@ -67,7 +67,7 @@ namespace NetTopologySuite.Index.Bintree
             * to infinite recursion. Instead, use a heuristic of simply returning
             * the smallest existing node containing the query
             */
-            bool isZeroArea = IntervalSize.IsZeroWidth(itemInterval.Min, itemInterval.Max);
+            var isZeroArea = IntervalSize.IsZeroWidth(itemInterval.Min, itemInterval.Max);
             NodeBase<T> node;
             if (isZeroArea)
                 node = tree.Find(itemInterval);

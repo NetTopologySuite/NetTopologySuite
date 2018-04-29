@@ -62,7 +62,7 @@ namespace NetTopologySuite.Tests.NUnit
         protected List<IGeometry> ReadList(string[] wkt)
         {
             var geometries = new List<IGeometry>(wkt.Length);
-            for (int i = 0; i < wkt.Length; i++)
+            for (var i = 0; i < wkt.Length; i++)
             {
                 geometries.Add(Read(wkt[i]));
             }

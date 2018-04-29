@@ -55,7 +55,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
         public bool IsRectangle(String wkt)
         {
-            IGeometry a = rdr.Read(wkt);
+            var a = rdr.Read(wkt);
             return a.IsRectangle;
         }
     }

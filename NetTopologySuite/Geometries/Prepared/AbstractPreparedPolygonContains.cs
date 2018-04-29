@@ -61,7 +61,7 @@ namespace NetTopologySuite.Geometries.Prepared
              *
              * If a point of any test components does not lie in target, result is false
              */
-            bool isAllInTargetArea = IsAllTestComponentsInTarget(geom);
+            var isAllInTargetArea = IsAllTestComponentsInTarget(geom);
             if (!isAllInTargetArea) return false;
             /*
              * If the test geometry consists of only Points,
@@ -74,7 +74,7 @@ namespace NetTopologySuite.Geometries.Prepared
             if (RequireSomePointInInterior
                     && geom.Dimension == 0)
             {
-                bool isAnyInTargetInterior = IsAnyTestComponentInTargetInterior(geom);
+                var isAnyInTargetInterior = IsAnyTestComponentInTargetInterior(geom);
                 return isAnyInTargetInterior;
             }
             /*
@@ -91,7 +91,7 @@ namespace NetTopologySuite.Geometries.Prepared
              * is some portion of the interior of the test geometry lying outside
              * the target, which means that the test is not contained.
              */
-            bool properIntersectionImpliesNotContained = IsProperIntersectionImpliesNotContainedSituation(geom);
+            var properIntersectionImpliesNotContained = IsProperIntersectionImpliesNotContainedSituation(geom);
             // MD - testing only
             //		properIntersectionImpliesNotContained = true;
             // find all intersection types which exist
@@ -133,7 +133,7 @@ namespace NetTopologySuite.Geometries.Prepared
             if (geom is IPolygonal)
             {
                 // TODO: generalize this to handle GeometryCollections
-                bool isTargetInTestArea = IsAnyTargetComponentInAreaTest(geom, prepPoly.RepresentativePoints);
+                var isTargetInTestArea = IsAnyTargetComponentInAreaTest(geom, prepPoly.RepresentativePoints);
                 if (isTargetInTestArea) return false;
             }
             return true;
@@ -166,14 +166,14 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             // handles single-element MultiPolygons, as well as Polygons
             if (geom.NumGeometries != 1) return false;
-            IPolygon poly = (IPolygon)geom.GetGeometryN(0);
-            int numHoles = poly.NumInteriorRings;
+            var poly = (IPolygon)geom.GetGeometryN(0);
+            var numHoles = poly.NumInteriorRings;
             if (numHoles == 0) return true;
             return false;
         }
         private void FindAndClassifyIntersections(IGeometry geom)
         {
-            IList<ISegmentString> lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
+            var lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
             var intDetector = new SegmentIntersectionDetector();
             intDetector.FindAllIntersectionTypes = true;
             prepPoly.IntersectionFinder.Intersects(lineSegStr, intDetector);

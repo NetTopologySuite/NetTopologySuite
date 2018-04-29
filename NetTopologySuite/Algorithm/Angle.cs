@@ -47,8 +47,8 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The normalized angle (in radians) that p0-p1 makes with the positive X-axis</returns>
         public static double Angle(Coordinate p0, Coordinate p1)
         {
-            double dx = p1.X - p0.X;
-            double dy = p1.Y - p0.Y;
+            var dx = p1.X - p0.X;
+            var dy = p1.Y - p0.Y;
             return System.Math.Atan2(dy, dx);
         }
         ///<summary>
@@ -76,11 +76,11 @@ namespace NetTopologySuite.Algorithm
         public static Boolean IsAcute(Coordinate p0, Coordinate p1, Coordinate p2)
         {
             // relies on fact that A dot B is positive iff A ang B is acute
-            double dx0 = p0.X - p1.X;
-            double dy0 = p0.Y - p1.Y;
-            double dx1 = p2.X - p1.X;
-            double dy1 = p2.Y - p1.Y;
-            double dotprod = dx0 * dx1 + dy0 * dy1;
+            var dx0 = p0.X - p1.X;
+            var dy0 = p0.Y - p1.Y;
+            var dx1 = p2.X - p1.X;
+            var dy1 = p2.Y - p1.Y;
+            var dotprod = dx0 * dx1 + dy0 * dy1;
             return dotprod > 0;
         }
         ///<summary>
@@ -96,11 +96,11 @@ namespace NetTopologySuite.Algorithm
         public static Boolean IsObtuse(Coordinate p0, Coordinate p1, Coordinate p2)
         {
             // relies on fact that A dot B is negative iff A ang B is obtuse
-            double dx0 = p0.X - p1.X;
-            double dy0 = p0.Y - p1.Y;
-            double dx1 = p2.X - p1.X;
-            double dy1 = p2.Y - p1.Y;
-            double dotprod = dx0 * dx1 + dy0 * dy1;
+            var dx0 = p0.X - p1.X;
+            var dy0 = p0.Y - p1.Y;
+            var dx1 = p2.X - p1.X;
+            var dy1 = p2.Y - p1.Y;
+            var dotprod = dx0 * dx1 + dy0 * dy1;
             return dotprod < 0;
         }
         ///<summary>
@@ -114,8 +114,8 @@ namespace NetTopologySuite.Algorithm
         /// <param name="tip2">The tip of the other vector</param>
         public static double AngleBetween(Coordinate tip1, Coordinate tail, Coordinate tip2)
         {
-            double a1 = Angle(tail, tip1);
-            double a2 = Angle(tail, tip2);
+            var a1 = Angle(tail, tip1);
+            var a2 = Angle(tail, tip2);
             return Diff(a1, a2);
         }
         /// <summary>
@@ -131,9 +131,9 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The angle between v1 and v2, relative to v1</returns>
         public static double AngleBetweenOriented(Coordinate tip1, Coordinate tail, Coordinate tip2)
         {
-            double a1 = Angle(tail, tip1);
-            double a2 = Angle(tail, tip2);
-            double angDel = a2 - a1;
+            var a1 = Angle(tail, tip1);
+            var a2 = Angle(tail, tip2);
+            var angDel = a2 - a1;
             // normalize, maintaining orientation
             if (angDel <= -System.Math.PI)
                 return angDel + PiTimes2;
@@ -152,8 +152,8 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The interior angle based at <see paramref="p1"/>p1</returns>
         public static double InteriorAngle(Coordinate p0, Coordinate p1, Coordinate p2)
         {
-            double anglePrev = Angle(p1, p0);
-            double angleNext = Angle(p1, p2);
+            var anglePrev = Angle(p1, p0);
+            var angleNext = Angle(p1, p2);
             return System.Math.Abs(angleNext - anglePrev);
         }
         ///<summary>
@@ -164,7 +164,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>Whether a1 must turn <see cref="OrientationIndex.Clockwise"/>, <see cref="OrientationIndex.CounterClockwise"/> or <see cref="OrientationIndex.None"/> to overlap a2.</returns>
         public static OrientationIndex GetTurn(double ang1, double ang2)
         {
-            double crossproduct = System.Math.Sin(ang2 - ang1);
+            var crossproduct = System.Math.Sin(ang2 - ang1);
             if (crossproduct > 0)
             {
                 return OrientationIndex.CounterClockwise;

@@ -103,7 +103,7 @@ namespace NetTopologySuite.Tests.NUnit
             var b = (ILineString)reader.Read("LINESTRING(0 100, 100 0)");
             var lineStrings = new List<ILineString>(new[] {a, b});
             var nodedLineStrings = (IGeometry)lineStrings[0];
-            for (int i = 1; i < lineStrings.Count; i++) {
+            for (var i = 1; i < lineStrings.Count; i++) {
                 nodedLineStrings = nodedLineStrings.Union(lineStrings[i]);
             }
             var expected =

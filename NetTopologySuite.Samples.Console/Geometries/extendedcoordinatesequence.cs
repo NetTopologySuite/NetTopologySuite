@@ -110,9 +110,9 @@ namespace NetTopologySuite.Samples.Geometries
         /// </returns>
 		public override string ToString()
 		{
-			StringBuilder strBuf = new StringBuilder();
+			var strBuf = new StringBuilder();
 			strBuf.Append("ExtendedCoordinateSequence [");
-			for (int i = 0; i < _coordinates.Length; i++)
+			for (var i = 0; i < _coordinates.Length; i++)
 			{
 				if (i > 0)
 					strBuf.Append(", ");
@@ -227,7 +227,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// <returns>A reference to the expanded envelope.</returns>
         public Envelope ExpandEnvelope(Envelope env)
         {
-            for (int i = 0; i < _coordinates.Length; i++)
+            for (var i = 0; i < _coordinates.Length; i++)
                 env.ExpandToInclude(_coordinates[i]);
             return env;
         }

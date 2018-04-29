@@ -49,22 +49,22 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         ///<returns>A lineal geometry containing the extracted linework</returns>
         private static IMultiLineString ExtractLinework(IGeometry g)
         {
-            PolygonalLineworkExtracter extracter = new PolygonalLineworkExtracter();
+            var extracter = new PolygonalLineworkExtracter();
             g.Apply(extracter);
-            List<ILineString> linework = extracter.Linework;
+            var linework = extracter.Linework;
             return g.Factory.CreateMultiLineString(linework.ToArray());
         }
         private bool IsWithinToleranceOfBoundary(Coordinate pt)
         {
-            for (int i = 0; i < _linework.NumGeometries; i++)
+            for (var i = 0; i < _linework.NumGeometries; i++)
             {
-                ILineString line = (ILineString)_linework.GetGeometryN(i);
-                ICoordinateSequence seq = line.CoordinateSequence;
-                for (int j = 0; j < seq.Count - 1; j++)
+                var line = (ILineString)_linework.GetGeometryN(i);
+                var seq = line.CoordinateSequence;
+                for (var j = 0; j < seq.Count - 1; j++)
                 {
                     seq.GetCoordinate(j, _seg.P0);
                     seq.GetCoordinate(j + 1, _seg.P1);
-                    double dist = _seg.Distance(pt);
+                    var dist = _seg.Distance(pt);
                     if (dist <= _boundaryDistanceTolerance)
                         return true;
                 }
@@ -89,9 +89,9 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         {
             if (g is IPolygon)
             {
-                IPolygon poly = (IPolygon)g;
+                var poly = (IPolygon)g;
                 Linework.Add(poly.ExteriorRing);
-                for (int i = 0; i < poly.NumInteriorRings; i++)
+                for (var i = 0; i < poly.NumInteriorRings; i++)
                 {
                     Linework.Add(poly.InteriorRings[i]);
                 }

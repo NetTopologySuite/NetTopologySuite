@@ -152,18 +152,18 @@
         {
             if (i >= this.Count)
                 return new TestResults("i > Count", true);
-            XmlTest test = this.Tests[i];
+            var test = this.Tests[i];
             var b = test.RunTest();
             return new TestResults(test.Description, b);
         }
         protected virtual void TestAll()
         {
-            bool success = true;
-            for (int i = 0; i < this.Count; i++)
+            var success = true;
+            for (var i = 0; i < this.Count; i++)
             {
                 try
                 {
-                    TestResults result = this.ExecuteTest(i);
+                    var result = this.ExecuteTest(i);
                     if (result.Success)
                     {
                         Console.WriteLine("Test {0} success\n{1}", i, result.Description);

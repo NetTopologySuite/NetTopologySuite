@@ -104,7 +104,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
                         return true;
                     if (e0.IsClosed)
                     {
-                        int maxSegIndex = e0.NumPoints - 1;
+                        var maxSegIndex = e0.NumPoints - 1;
                         if ((segIndex0 == 0 && segIndex1 == maxSegIndex) ||
                             (segIndex1 == 0 && segIndex0 == maxSegIndex))
                                 return true;
@@ -129,10 +129,10 @@ namespace NetTopologySuite.GeometriesGraph.Index
             if (ReferenceEquals(e0, e1) && segIndex0 == segIndex1)
                 return;             // Diego Guidi say's: Avoid overload equality, i use references equality, otherwise TOPOLOGY ERROR!
             NumTests++;
-            Coordinate p00 = e0.Coordinates[segIndex0];
-            Coordinate p01 = e0.Coordinates[segIndex0 + 1];
-            Coordinate p10 = e1.Coordinates[segIndex1];
-            Coordinate p11 = e1.Coordinates[segIndex1 + 1];
+            var p00 = e0.Coordinates[segIndex0];
+            var p01 = e0.Coordinates[segIndex0 + 1];
+            var p10 = e1.Coordinates[segIndex1];
+            var p11 = e1.Coordinates[segIndex1 + 1];
             _li.ComputeIntersection(p00, p01, p10, p11);
             /*
              *  Always record any non-proper intersections.
@@ -192,9 +192,9 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <returns></returns>
         private static bool IsBoundaryPointInternal(LineIntersector li, IEnumerable<Node> bdyNodes)
         {
-            foreach (Node node in bdyNodes)
+            foreach (var node in bdyNodes)
             {
-                Coordinate pt = node.Coordinate;
+                var pt = node.Coordinate;
                 if (li.IsIntersection(pt))
                     return true;
             }

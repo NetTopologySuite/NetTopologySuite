@@ -38,10 +38,10 @@ namespace NetTopologySuite.Operation.Linemerge
             {
                 if (coordinates == null)
                 {
-                    int forwardDirectedEdges = 0;
-                    int reverseDirectedEdges = 0;
-                    CoordinateList coordinateList = new CoordinateList();
-                    foreach (LineMergeDirectedEdge directedEdge in directedEdges)
+                    var forwardDirectedEdges = 0;
+                    var reverseDirectedEdges = 0;
+                    var coordinateList = new CoordinateList();
+                    foreach (var directedEdge in directedEdges)
                     {
                         if (directedEdge.EdgeDirection)
                              forwardDirectedEdges++;

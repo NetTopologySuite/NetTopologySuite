@@ -64,7 +64,7 @@ namespace NetTopologySuite.Algorithm
             else if (geom is IGeometryCollection)
             {
                 var gc = (IGeometryCollection) geom;
-                foreach (IGeometry geometry in gc.Geometries)
+                foreach (var geometry in gc.Geometries)
                     Add(geometry);
             }
         }
@@ -113,7 +113,7 @@ namespace NetTopologySuite.Algorithm
                 return gc;
             var widestGeometry = gc.GetGeometryN(0);
             // scan remaining geom components to see if any are wider
-            for (int i = 1; i < gc.NumGeometries; i++) //Start at 1
+            for (var i = 1; i < gc.NumGeometries; i++) //Start at 1
                 if (gc.GetGeometryN(i).EnvelopeInternal.Width > widestGeometry.EnvelopeInternal.Width)
                     widestGeometry = gc.GetGeometryN(i);
             return widestGeometry;
@@ -125,14 +125,14 @@ namespace NetTopologySuite.Algorithm
         /// <returns></returns>
         protected ILineString HorizontalBisector(IGeometry geometry)
         {
-            Envelope envelope = geometry.EnvelopeInternal;
+            var envelope = geometry.EnvelopeInternal;
             /**
              * Original algorithm.  Fails when geometry contains a horizontal
              * segment at the Y midpoint.
              */
             // Assert: for areas, minx <> maxx
             //double avgY = Avg(envelope.MinY, envelope.MaxY);
-            double bisectY = SafeBisectorFinder.GetBisectorY((IPolygon) geometry);
+            var bisectY = SafeBisectorFinder.GetBisectorY((IPolygon) geometry);
             return _factory.CreateLineString(
                 new[] {new Coordinate(envelope.MinX, bisectY), new Coordinate(envelope.MaxX, bisectY)});
         }
@@ -176,7 +176,7 @@ namespace NetTopologySuite.Algorithm
             private double GetBisectorY()
             {
                 Process(_poly.ExteriorRing);
-                for (int i = 0; i < _poly.NumInteriorRings; i++)
+                for (var i = 0; i < _poly.NumInteriorRings; i++)
                 {
                     Process(_poly.GetInteriorRingN(i));
                 }
@@ -188,7 +188,7 @@ namespace NetTopologySuite.Algorithm
                 var seq = line.CoordinateSequence;
                 for (var i = 0; i < seq.Count; i++)
                 {
-                    double y = seq.GetY(i);
+                    var y = seq.GetY(i);
                     UpdateInterval(y);
                 }
             }

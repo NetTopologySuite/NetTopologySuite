@@ -187,18 +187,18 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         {
             try
             {
-                IEnumerable<IGeometry> inputGeoms = FromWKT(inputWKT);
-                LineSequencer sequencer = new LineSequencer();
+                var inputGeoms = FromWKT(inputWKT);
+                var sequencer = new LineSequencer();
                 sequencer.Add(inputGeoms);
                 if (!sequencer.IsSequenceable())
                     Assert.IsNull(expectedWKT);
                 else
                 {
-                    IGeometry expected = rdr.Read(expectedWKT);
-                    IGeometry result = sequencer.GetSequencedLineStrings();
-                    bool isTrue = expected.EqualsExact(result);
+                    var expected = rdr.Read(expectedWKT);
+                    var result = sequencer.GetSequencedLineStrings();
+                    var isTrue = expected.EqualsExact(result);
                     Assert.IsTrue(isTrue, "Expected " + expected + " but was " + result);
-                    bool isSequenced = LineSequencer.IsSequenced(result);
+                    var isSequenced = LineSequencer.IsSequenced(result);
                     Assert.IsTrue(isSequenced, "result is not sequenced");
                 }
             }
@@ -208,8 +208,8 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         {
             try
             {
-                IGeometry g = rdr.Read(inputWKT);
-                bool isSequenced = LineSequencer.IsSequenced(g);
+                var g = rdr.Read(inputWKT);
+                var isSequenced = LineSequencer.IsSequenced(g);
                 Assert.IsTrue(isSequenced == expected);
             }
             catch(Exception ex) { Debug.WriteLine(ex.ToString()); throw ex; }
@@ -217,7 +217,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         private static IEnumerable<IGeometry> FromWKT(String[] wkts)
         {
             IList<IGeometry> geomList = new List<IGeometry>();
-            foreach (string wkt in wkts)
+            foreach (var wkt in wkts)
             {
                 try
                 {

@@ -111,26 +111,26 @@ namespace Open.Topology.TestRunner.Operations
             if (!validator.IsValid(opCode))
             {
                 var invalidLoc = validator.InvalidLocation;
-                String msg = "Operation result is invalid [OverlayResultValidator] ( " + WKTWriter.ToPoint(invalidLoc) + " )";
+                var msg = "Operation result is invalid [OverlayResultValidator] ( " + WKTWriter.ToPoint(invalidLoc) + " )";
                 ReportError(msg);
             }
         }
         private const double AreaDiffTol = 5.0;
         private static void AreaValidate(IGeometry g0, IGeometry g1)
         {
-            double areaDiff = AreaDiff(g0, g1);
+            var areaDiff = AreaDiff(g0, g1);
             //  	System.out.println("Area diff = " + areaDiff);
             if (Math.Abs(areaDiff) > AreaDiffTol)
             {
-                String msg = "Operation result is invalid [AreaTest] (" + areaDiff + ")";
+                var msg = "Operation result is invalid [AreaTest] (" + areaDiff + ")";
                 ReportError(msg);
             }
         }
         public static double AreaDiff(IGeometry g0, IGeometry g1)
         {
-            double areaA = g0.Area;
-            double areaAdiffB = g0.Difference(g1).Area;
-            double areaAintB = g0.Intersection(g1).Area;
+            var areaA = g0.Area;
+            var areaAdiffB = g0.Difference(g1).Area;
+            var areaAintB = g0.Intersection(g1).Area;
             return areaA - areaAdiffB - areaAintB;
         }
         private static void ReportError(String msg)

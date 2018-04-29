@@ -132,15 +132,15 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         }
         protected void RunIndicesOfThenExtract(String inputStr, String subLineStr)
         {
-            IGeometry input = Read(inputStr);
-            IGeometry subLine = Read(subLineStr);
-            IGeometry result = IndicesOfThenExtract(input, subLine);
+            var input = Read(inputStr);
+            var subLine = Read(subLineStr);
+            var result = IndicesOfThenExtract(input, subLine);
             CheckExpected(result, subLineStr);
         }
         protected void CheckExpected(IGeometry result, String expected)
         {
-            IGeometry subLine = Read(expected);
-            bool isEqual = result.EqualsExact(subLine, 1.0e-5);
+            var subLine = Read(expected);
+            var isEqual = result.EqualsExact(subLine, 1.0e-5);
             if (!isEqual)
                 Console.WriteLine("Computed result is: " + result);
             Assert.IsTrue(isEqual);
@@ -158,23 +158,23 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         */
         protected void RunIndexOfAfterTest(String inputStr, String testPtWKT)
         {
-            IGeometry input = Read(inputStr);
-            IGeometry testPoint = Read(testPtWKT);
-            Coordinate testPt = testPoint.Coordinate;
-            bool resultOk = IndexOfAfterCheck(input, testPt);
+            var input = Read(inputStr);
+            var testPoint = Read(testPtWKT);
+            var testPt = testPoint.Coordinate;
+            var resultOk = IndexOfAfterCheck(input, testPt);
             Assert.IsTrue(resultOk);
         }
         protected abstract bool IndexOfAfterCheck(IGeometry input, Coordinate testPt);
         private const double ToleranceDist = 0.001;
         protected void RunOffsetTest(String inputWKT, String testPtWKT, double offsetDistance, String expectedPtWKT)
         {
-            IGeometry input = Read(inputWKT);
-            IGeometry testPoint = Read(testPtWKT);
-            IGeometry expectedPoint = Read(expectedPtWKT);
-            Coordinate testPt = testPoint.Coordinate;
-            Coordinate expectedPt = expectedPoint.Coordinate;
-            Coordinate offsetPt = ExtractOffsetAt(input, testPt, offsetDistance);
-            bool isOk = offsetPt.Distance(expectedPt) < ToleranceDist;
+            var input = Read(inputWKT);
+            var testPoint = Read(testPtWKT);
+            var expectedPoint = Read(expectedPtWKT);
+            var testPt = testPoint.Coordinate;
+            var expectedPt = expectedPoint.Coordinate;
+            var offsetPt = ExtractOffsetAt(input, testPt, offsetDistance);
+            var isOk = offsetPt.Distance(expectedPt) < ToleranceDist;
             if (!isOk)
                 Console.WriteLine("Expected = " + expectedPoint + "  Actual = " + offsetPt);
             Assert.IsTrue(isOk);

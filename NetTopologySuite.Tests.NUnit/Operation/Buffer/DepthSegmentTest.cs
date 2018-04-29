@@ -60,8 +60,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             SubgraphDepthLocater.DepthSegment ds1)
         {
             // should never have ds1 < ds2 && ds2 < ds1
-            int cmp0 = ds0.CompareTo(ds1);
-            int cmp1 = ds1.CompareTo(ds0);
+            var cmp0 = ds0.CompareTo(ds1);
+            var cmp1 = ds1.CompareTo(ds0);
             var isFail = cmp0 != 0 && cmp0 == cmp1;
             Assert.IsTrue(!isFail);
         }

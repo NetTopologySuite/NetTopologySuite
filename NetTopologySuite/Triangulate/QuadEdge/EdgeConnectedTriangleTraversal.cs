@@ -37,7 +37,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             while (_triQueue.Count > 0)
             {
-                QuadEdgeTriangle tri = _triQueue.First.Value;
+                var tri = _triQueue.First.Value;
                 _triQueue.RemoveFirst();
                 Process(tri, visitor);
             }
@@ -45,9 +45,9 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         private void Process(QuadEdgeTriangle currTri, ITraversalVisitor visitor)
         {
             currTri.GetNeighbours();
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
-                QuadEdgeTriangle neighTri = (QuadEdgeTriangle)currTri.GetEdge(i).Sym.Data;
+                var neighTri = (QuadEdgeTriangle)currTri.GetEdge(i).Sym.Data;
                 if (neighTri == null)
                     continue;
                 if (visitor.Visit(currTri, i, neighTri))

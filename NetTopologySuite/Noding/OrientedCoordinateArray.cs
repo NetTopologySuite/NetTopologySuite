@@ -43,7 +43,7 @@ namespace NetTopologySuite.Noding
         /// </returns>
         public int CompareTo(object o1)
         {
-            OrientedCoordinateArray oca = (OrientedCoordinateArray) o1;
+            var oca = (OrientedCoordinateArray) o1;
             return CompareOriented(_pts, _orientation, oca._pts, oca._orientation);
         }
         /// <summary>
@@ -56,21 +56,21 @@ namespace NetTopologySuite.Noding
         /// <returns></returns>
         private static int CompareOriented(Coordinate[] pts1, bool orientation1, Coordinate[] pts2, bool orientation2)
         {
-            int dir1 = orientation1 ? 1 : -1;
-            int dir2 = orientation2 ? 1 : -1;
-            int limit1 = orientation1 ? pts1.Length : -1;
-            int limit2 = orientation2 ? pts2.Length : -1;
-            int i1 = orientation1 ? 0 : pts1.Length - 1;
-            int i2 = orientation2 ? 0 : pts2.Length - 1;
+            var dir1 = orientation1 ? 1 : -1;
+            var dir2 = orientation2 ? 1 : -1;
+            var limit1 = orientation1 ? pts1.Length : -1;
+            var limit2 = orientation2 ? pts2.Length : -1;
+            var i1 = orientation1 ? 0 : pts1.Length - 1;
+            var i2 = orientation2 ? 0 : pts2.Length - 1;
             while (true)
             {
-                int compPt = pts1[i1].CompareTo(pts2[i2]);
+                var compPt = pts1[i1].CompareTo(pts2[i2]);
                 if (compPt != 0)
                     return compPt;
                 i1 += dir1;
                 i2 += dir2;
-                bool done1 = i1 == limit1;
-                bool done2 = i2 == limit2;
+                var done1 = i1 == limit1;
+                var done2 = i2 == limit2;
                 if(done1 && !done2)
                     return -1;
                 if(!done1 && done2)

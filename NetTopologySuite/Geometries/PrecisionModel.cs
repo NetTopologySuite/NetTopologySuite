@@ -349,7 +349,7 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public override string ToString()
         {
-            string description = "UNKNOWN";
+            var description = "UNKNOWN";
             if (_modelType == PrecisionModels.Floating)
                 description = "Floating";
             else if (_modelType == PrecisionModels.FloatingSingle)
@@ -428,8 +428,8 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public int CompareTo(IPrecisionModel other)
         {
-            int sigDigits = MaximumSignificantDigits;
-            int otherSigDigits = other.MaximumSignificantDigits;
+            var sigDigits = MaximumSignificantDigits;
+            var otherSigDigits = other.MaximumSignificantDigits;
             return (sigDigits).CompareTo(otherSigDigits);
         }
     }

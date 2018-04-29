@@ -26,7 +26,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         private const double MaxEnvDiffFrac = .012;
         public static bool IsValid(IGeometry g, double distance, IGeometry result)
         {
-            BufferResultValidator validator = new BufferResultValidator(g, distance, result);
+            var validator = new BufferResultValidator(g, distance, result);
             if (validator.IsValid())
                 return true;
             return false;
@@ -121,7 +121,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         private void CheckEnvelope()
         {
             if (_distance < 0.0) return;
-            double padding = _distance * MaxEnvDiffFrac;
+            var padding = _distance * MaxEnvDiffFrac;
             if (padding == 0.0) padding = 0.001;
             var expectedEnv = new Envelope(_input.EnvelopeInternal);
             expectedEnv.ExpandBy(_distance);
@@ -137,8 +137,8 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         }
         private void CheckArea()
         {
-            double inputArea = _input.Area;
-            double resultArea = _result.Area;
+            var inputArea = _input.Area;
+            var resultArea = _result.Area;
             if (_distance > 0.0
                     && inputArea > resultArea)
             {
@@ -157,7 +157,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         }
         private void CheckDistance()
         {
-            BufferDistanceValidator distValid = new BufferDistanceValidator(_input, _distance, _result);
+            var distValid = new BufferDistanceValidator(_input, _distance, _result);
             if (!distValid.IsValid())
             {
                 _isValid = false;

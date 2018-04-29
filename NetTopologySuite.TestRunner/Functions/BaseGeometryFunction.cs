@@ -52,7 +52,7 @@ namespace Open.Topology.TestRunner.Functions
             {
                 var paramTypes = new StringBuilder();
                 paramTypes.Append("Geometry");
-                for (int i = 0; i < parameterTypes.Length; i++)
+                for (var i = 0; i < parameterTypes.Length; i++)
                 {
                     paramTypes.Append(",");
                     paramTypes.Append(ClassUtility.GetClassname(parameterTypes[i]));
@@ -82,7 +82,7 @@ namespace Open.Topology.TestRunner.Functions
         /// <returns>true if this object is the same as the <tt>obj</tt> argument</returns>
         public int CompareTo(IGeometryFunction o)
         {
-            int cmp = name.CompareTo(o.Name);
+            var cmp = name.CompareTo(o.Name);
             if (cmp != 0)
                 return cmp;
             return CompareTo(returnType, o.ReturnType);
@@ -94,9 +94,9 @@ namespace Open.Topology.TestRunner.Functions
             var func = (IGeometryFunction)obj;
             if (!name.Equals(func.Name)) return false;
             if (!returnType.Equals(func.ReturnType)) return false;
-            Type[] funcParamTypes = func.ParameterTypes;
+            var funcParamTypes = func.ParameterTypes;
             if (parameterTypes.Length != funcParamTypes.Length) return false;
-            for (int i = 0; i < parameterTypes.Length; i++)
+            for (var i = 0; i < parameterTypes.Length; i++)
             {
                 if (!parameterTypes[i].Equals(funcParamTypes[i]))
                     return false;

@@ -18,7 +18,7 @@ namespace NetTopologySuite.Index.Bintree
         /// <param name="centre"></param>
         public static int GetSubnodeIndex(Interval interval, double centre)
         {
-            int subnodeIndex = -1;
+            var subnodeIndex = -1;
             if (interval.Min >= centre)
                 subnodeIndex = 1;
             if (interval.Max <= centre)
@@ -65,9 +65,9 @@ namespace NetTopologySuite.Index.Bintree
         public  IList<T> AddAllItems(IList<T> items)
         {
             // items.addAll(this.items);
-            foreach (T o in _items)
+            foreach (var o in _items)
                 items.Add(o);
-            for (int i = 0; i < 2; i++)
+            for (var i = 0; i < 2; i++)
                 if (Subnode[i] != null)
                     Subnode[i].AddAllItems(items);
             return items;
@@ -95,7 +95,7 @@ namespace NetTopologySuite.Index.Bintree
              */
             // some of these may not actually overlap - this is allowed by the bintree contract
             //resultItems.AddAll(items);
-            foreach (T o in _items)
+            foreach (var o in _items)
                 resultItems.Add(o);
             if (Subnode[0] != null) Subnode[0].AddAllItemsFromOverlapping(interval, resultItems);
             if (Subnode[1] != null) Subnode[1].AddAllItemsFromOverlapping(interval, resultItems);
@@ -111,8 +111,8 @@ namespace NetTopologySuite.Index.Bintree
             // use interval to restrict nodes scanned
             if (!IsSearchMatch(itemInterval))
                 return false;
-            bool found = false;
-            for (int i = 0; i < 2; i++)
+            var found = false;
+            for (var i = 0; i < 2; i++)
             {
                 if (Subnode[i] != null)
                 {
@@ -143,7 +143,7 @@ namespace NetTopologySuite.Index.Bintree
         {
             get
             {
-                for (int i = 0; i < 2; i++)
+                for (var i = 0; i < 2; i++)
                 {
                     if (Subnode[i] != null)
                         return true;
@@ -162,12 +162,12 @@ namespace NetTopologySuite.Index.Bintree
         {
             get
             {
-                int maxSubDepth = 0;
-                for (int i = 0; i < 2; i++)
+                var maxSubDepth = 0;
+                for (var i = 0; i < 2; i++)
                 {
                     if (Subnode[i] != null)
                     {
-                        int sqd = Subnode[i].Depth;
+                        var sqd = Subnode[i].Depth;
                         if (sqd > maxSubDepth)
                             maxSubDepth = sqd;
                     }
@@ -182,8 +182,8 @@ namespace NetTopologySuite.Index.Bintree
         {
             get
             {
-                int subSize = 0;
-                for (int i = 0; i < 2; i++)
+                var subSize = 0;
+                for (var i = 0; i < 2; i++)
                     if (Subnode[i] != null)
                         subSize += Subnode[i].Count;
                 return subSize + _items.Count;
@@ -196,8 +196,8 @@ namespace NetTopologySuite.Index.Bintree
         {
             get
             {
-                int subCount = 0;
-                for (int i = 0; i < 2; i++)
+                var subCount = 0;
+                for (var i = 0; i < 2; i++)
                     if (Subnode[i] != null)
                         subCount += Subnode[i].NodeCount;
                 return subCount + 1;

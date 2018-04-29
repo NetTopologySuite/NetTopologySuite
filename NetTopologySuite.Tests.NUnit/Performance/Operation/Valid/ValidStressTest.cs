@@ -60,15 +60,15 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
     {
         public static IPolygon Star(Envelope env, int nSeg, IGeometryFactory geomFact)
         {
-            Coordinate[] pts = new Coordinate[nSeg + 1];
-            Coordinate centre = env.Centre;
-            double len = 0.5 * System.Math.Min(env.Height, env.Width);
-            double angInc = System.Math.PI + 2 * System.Math.PI / nSeg;
+            var pts = new Coordinate[nSeg + 1];
+            var centre = env.Centre;
+            var len = 0.5 * System.Math.Min(env.Height, env.Width);
+            var angInc = System.Math.PI + 2 * System.Math.PI / nSeg;
             double ang = 0;
-            for (int i = 0; i < nSeg; i++)
+            for (var i = 0; i < nSeg; i++)
             {
-                double x = centre.X + len * System.Math.Cos(ang);
-                double y = centre.X + len * System.Math.Sin(ang);
+                var x = centre.X + len * System.Math.Cos(ang);
+                var y = centre.X + len * System.Math.Sin(ang);
                 pts[i] = new Coordinate(x, y);
                 ang += angInc;
             }
@@ -94,17 +94,17 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
         }
         private static IPolygon CreateComb(Envelope env, int nArms, IGeometryFactory geomFact)
         {
-            int npts = 4 * (nArms - 1) + 2 + 2 + 1;
-            Coordinate[] pts = new Coordinate[npts];
-            double armWidth = env.Width / (2 * nArms - 1);
-            double armLen = env.Height - armWidth;
-            double xBase = env.MinX;
-            double yBase = env.MinY;
-            int ipts = 0;
-            for (int i = 0; i < nArms; i++)
+            var npts = 4 * (nArms - 1) + 2 + 2 + 1;
+            var pts = new Coordinate[npts];
+            var armWidth = env.Width / (2 * nArms - 1);
+            var armLen = env.Height - armWidth;
+            var xBase = env.MinX;
+            var yBase = env.MinY;
+            var ipts = 0;
+            for (var i = 0; i < nArms; i++)
             {
-                double x1 = xBase + i * 2 * armWidth;
-                double y1 = yBase + armLen + armWidth;
+                var x1 = xBase + i * 2 * armWidth;
+                var y1 = yBase + armLen + armWidth;
                 pts[ipts++] = new Coordinate(x1, y1);
                 pts[ipts++] = new Coordinate(x1 + armWidth, y1);
                 if (i < nArms - 1)

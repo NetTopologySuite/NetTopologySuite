@@ -110,7 +110,7 @@ namespace NetTopologySuite.Operation.Union
              * to be eliminated on each round.
              */
             var index = new STRtree<object>(StrtreeNodeCapacity);
-            foreach (IGeometry item in _inputPolys)
+            foreach (var item in _inputPolys)
                 index.Insert(item.EnvelopeInternal, item);
             // To avoiding holding memory remove references to the input geometries,
             _inputPolys = null;
@@ -133,7 +133,7 @@ namespace NetTopologySuite.Operation.Union
         private IGeometry RepeatedUnion(IEnumerable<IGeometry> geoms)
         {
             IGeometry union = null;
-            foreach (IGeometry g in geoms)
+            foreach (var g in geoms)
             {
                 if (union == null)
                     union = (IGeometry)g.Copy();

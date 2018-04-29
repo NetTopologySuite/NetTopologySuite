@@ -26,7 +26,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 Coordinate src1, Coordinate src2, Coordinate dest0, Coordinate dest1,
                 Coordinate dest2)
         {
-            AffineTransformationBuilder builder = new AffineTransformationBuilder(src0,
+            var builder = new AffineTransformationBuilder(src0,
                     src1, src2, dest0, dest1, dest2);
             return builder.GetTransformation();
         }
@@ -47,14 +47,14 @@ namespace NetTopologySuite.Geometries.Utilities
         public static AffineTransformation CreateFromControlVectors(Coordinate src0,
                 Coordinate src1, Coordinate dest0, Coordinate dest1)
         {
-            Coordinate rotPt = new Coordinate(dest1.X - dest0.X, dest1.Y - dest0.Y);
-            double ang = AngleUtility.AngleBetweenOriented(src1, src0, rotPt);
-            double srcDist = src1.Distance(src0);
-            double destDist = dest1.Distance(dest0);
+            var rotPt = new Coordinate(dest1.X - dest0.X, dest1.Y - dest0.Y);
+            var ang = AngleUtility.AngleBetweenOriented(src1, src0, rotPt);
+            var srcDist = src1.Distance(src0);
+            var destDist = dest1.Distance(dest0);
             if (srcDist == 0.0)
                 return null;
-            double scale = destDist / srcDist;
-            AffineTransformation trans = AffineTransformation.TranslationInstance(
+            var scale = destDist / srcDist;
+            var trans = AffineTransformation.TranslationInstance(
                     -src0.X, -src0.Y);
             trans.Rotate(ang);
             trans.Scale(scale, scale);
@@ -73,8 +73,8 @@ namespace NetTopologySuite.Geometries.Utilities
         public static AffineTransformation CreateFromControlVectors(Coordinate src0,
                 Coordinate dest0)
         {
-            double dx = dest0.X - src0.X;
-            double dy = dest0.Y - src0.Y;
+            var dx = dest0.X - src0.X;
+            var dy = dest0.Y - src0.Y;
             return AffineTransformation.TranslationInstance(dx, dy);
         }
         /// <summary>
@@ -121,15 +121,15 @@ namespace NetTopologySuite.Geometries.Utilities
                 Coordinate src0, Coordinate src1,
                 Coordinate dest0, Coordinate dest1)
         {
-            Coordinate rotPt = new Coordinate(src0.X + dest1.X - dest0.X, src0.Y + dest1.Y - dest0.Y);
-            double ang = AngleUtility.AngleBetweenOriented(src1, src0, rotPt);
-            double srcDist = src1.Distance(src0);
-            double destDist = dest1.Distance(dest0);
+            var rotPt = new Coordinate(src0.X + dest1.X - dest0.X, src0.Y + dest1.Y - dest0.Y);
+            var ang = AngleUtility.AngleBetweenOriented(src1, src0, rotPt);
+            var srcDist = src1.Distance(src0);
+            var destDist = dest1.Distance(dest0);
             // return identity if transformation would be degenerate
             if (srcDist == 0.0)
                 return new AffineTransformation();
-            double scale = destDist / srcDist;
-            AffineTransformation trans = AffineTransformation.TranslationInstance(
+            var scale = destDist / srcDist;
+            var trans = AffineTransformation.TranslationInstance(
                     -src0.X, -src0.Y);
             trans.Rotate(ang);
             trans.Scale(scale, scale);

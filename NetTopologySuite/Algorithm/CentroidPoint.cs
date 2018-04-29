@@ -47,7 +47,7 @@ namespace NetTopologySuite.Algorithm
         {
             get
             {
-                Coordinate cent = new Coordinate();
+                var cent = new Coordinate();
                 cent.X = _centSum.X / _ptCount;
                 cent.Y = _centSum.Y / _ptCount;
                 return cent;

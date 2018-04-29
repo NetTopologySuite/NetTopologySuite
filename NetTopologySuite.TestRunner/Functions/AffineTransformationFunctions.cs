@@ -11,7 +11,7 @@ namespace Open.Topology.TestRunner.Functions
             var nControl = control.NumGeometries;
             var src = new Coordinate[nControl];
             var dest = new Coordinate[nControl];
-            for (int i = 0; i < nControl; i++)
+            for (var i = 0; i < nControl; i++)
             {
                 var contComp = control.GetGeometryN(i);
                 var pts = contComp.Coordinates;

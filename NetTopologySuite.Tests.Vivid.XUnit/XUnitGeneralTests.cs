@@ -61,7 +61,7 @@ namespace NetTopologySuite.Tests.XUnit
         }
         protected override void TestAll()
         {
-            foreach (string file in Directory.GetFiles(TestLocation))
+            foreach (var file in Directory.GetFiles(TestLocation))
             {
                 var ext = Path.GetExtension(file);
                 if (string.IsNullOrEmpty(ext))

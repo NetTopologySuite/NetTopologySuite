@@ -96,7 +96,7 @@ namespace NetTopologySuite.Index.Strtree
             parentBoundables.Add(CreateNode(newLevel));
             // JTS does a stable sort here.  List<T>.Sort is not stable.
             var sortedChildBoundables = CollectionUtil.StableSort(childBoundables, GetComparer());
-            foreach (IBoundable<T, TItem> childBoundable in sortedChildBoundables)
+            foreach (var childBoundable in sortedChildBoundables)
             {
                 if (LastNode(parentBoundables).ChildBoundables.Count == NodeCapacity)
                     parentBoundables.Add(CreateNode(newLevel));

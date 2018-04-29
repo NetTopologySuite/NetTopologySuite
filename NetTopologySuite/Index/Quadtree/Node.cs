@@ -20,7 +20,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <returns></returns>
         public static Node<T> CreateNode(Envelope env)
         {
-            Key key = new Key(env);
+            var key = new Key(env);
             var node = new Node<T>(key.Envelope, key.Level);
             return node;
         }
@@ -32,7 +32,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <returns></returns>
         public static Node<T> CreateExpanded(Node<T> node, Envelope addEnv)
         {
-            Envelope expandEnv = new Envelope(addEnv);
+            var expandEnv = new Envelope(addEnv);
             if (node != null)
                 expandEnv.ExpandToInclude(node.Envelope);
             var largerNode = CreateNode(expandEnv);
@@ -78,7 +78,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <returns>The subquad containing the search envelope.</returns>
         public Node<T> GetNode(Envelope searchEnv)
         {
-            int subnodeIndex = GetSubnodeIndex(searchEnv, _centreX, _centreY);
+            var subnodeIndex = GetSubnodeIndex(searchEnv, _centreX, _centreY);
             // if subquadIndex is -1 searchEnv is not contained in a subquad
             if (subnodeIndex != -1)
             {
@@ -96,7 +96,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <param name="searchEnv"></param>
         public NodeBase<T> Find(Envelope searchEnv)
         {
-            int subnodeIndex = GetSubnodeIndex(searchEnv, _centreX, _centreY);
+            var subnodeIndex = GetSubnodeIndex(searchEnv, _centreX, _centreY);
             if (subnodeIndex == -1)
                 return this;
             if (Subnode[subnodeIndex] != null)
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Index.Quadtree
         public void InsertNode(Node<T> node)
         {
             Assert.IsTrue(Envelope == null || Envelope.Contains(node.Envelope));
-            int index = GetSubnodeIndex(node.Envelope, _centreX, _centreY);
+            var index = GetSubnodeIndex(node.Envelope, _centreX, _centreY);
             if (node._level == _level - 1)
                 Subnode[index] = node;
             else
@@ -146,10 +146,10 @@ namespace NetTopologySuite.Index.Quadtree
         private Node<T> CreateSubnode(int index)
         {
             // create a new subquad in the appropriate quadrant
-            double minx = 0.0;
-            double maxx = 0.0;
-            double miny = 0.0;
-            double maxy = 0.0;
+            var minx = 0.0;
+            var maxx = 0.0;
+            var miny = 0.0;
+            var maxy = 0.0;
             switch (index)
             {
                 case 0:
@@ -179,7 +179,7 @@ namespace NetTopologySuite.Index.Quadtree
 	            default:
 		            break;
             }
-            Envelope sqEnv = new Envelope(minx, maxx, miny, maxy);
+            var sqEnv = new Envelope(minx, maxx, miny, maxy);
             var node = new Node<T>(sqEnv, _level - 1);
             return node;
         }

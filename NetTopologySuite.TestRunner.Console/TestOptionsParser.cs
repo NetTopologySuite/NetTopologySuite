@@ -23,54 +23,54 @@ namespace ConsoleTestRunner
             }
             try
             {
-                TestInfoCollection collection = new TestInfoCollection();
-                XmlDocument xmldoc = new XmlDocument();
+                var collection = new TestInfoCollection();
+                var xmldoc = new XmlDocument();
                 xmldoc.Load(projectFile);
-                XmlElement root = xmldoc.DocumentElement;
+                var root = xmldoc.DocumentElement;
                 // Now, handle the "case" nodes
-                XmlNodeList elemList = xmldoc.GetElementsByTagName("test");
-                for (int i = 0; i < elemList.Count; i++)
+                var elemList = xmldoc.GetElementsByTagName("test");
+                for (var i = 0; i < elemList.Count; i++)
                 {
-                    XmlNode element = elemList[i];
+                    var element = elemList[i];
                     if (element != null)
                     {
-                        XmlTestType filterType = XmlTestType.None;
-                        bool bDisplayException = true;
-                        bool bVerbose          = true;
-                        bool bInteractive      = false;
-                        XmlAttributeCollection attributes = element.Attributes;
+                        var filterType = XmlTestType.None;
+                        var bDisplayException = true;
+                        var bVerbose          = true;
+                        var bInteractive      = false;
+                        var attributes = element.Attributes;
                         if (attributes != null && attributes.Count > 0)
                         {
-                            XmlAttribute attFilter = attributes["filter"];
+                            var attFilter = attributes["filter"];
                             if (attFilter != null)
                             {
                                 filterType = ParseXmlTestType(attFilter.InnerText);
                             }
-                            XmlAttribute attException = attributes["exception"];
+                            var attException = attributes["exception"];
                             if (attException != null)
                             {
                                 bDisplayException = Boolean.Parse(attException.InnerText);
                             }
-                            XmlAttribute attVerbose = attributes["verbose"];
+                            var attVerbose = attributes["verbose"];
                             if (attVerbose != null)
                             {
                                 bVerbose = Boolean.Parse(attVerbose.InnerText);
                             }
-                            XmlAttribute attInteractive = attributes["interactive"];
+                            var attInteractive = attributes["interactive"];
                             if (attInteractive != null)
                             {
                                 bInteractive = Boolean.Parse(attInteractive.InnerText);
                             }
                         }
-                        XmlNodeList elemFiles = element.SelectNodes("files/file");
+                        var elemFiles = element.SelectNodes("files/file");
                         if (elemFiles != null)
                         {
-                            for (int j = 0; j < elemFiles.Count; j++)
+                            for (var j = 0; j < elemFiles.Count; j++)
                             {
-                                XmlNode xmlFile = elemFiles[j];
+                                var xmlFile = elemFiles[j];
                                 if (xmlFile != null)
                                 {
-                                    TestInfo info    = new TestInfo(filterType);
+                                    var info    = new TestInfo(filterType);
                                     info.FileName    = xmlFile.InnerText;
                                     info.Verbose     = bVerbose;
                                     info.Exception   = bDisplayException;
@@ -79,15 +79,15 @@ namespace ConsoleTestRunner
                                 }
                             }
                         }
-                        XmlNodeList elemDirs = element.SelectNodes("dirs/dir");
+                        var elemDirs = element.SelectNodes("dirs/dir");
                         if (elemDirs != null)
                         {
-                            for (int k = 0; k < elemDirs.Count; k++)
+                            for (var k = 0; k < elemDirs.Count; k++)
                             {
-                                XmlNode xmlDir = elemDirs[k];
+                                var xmlDir = elemDirs[k];
                                 if (xmlDir != null)
                                 {
-                                    TestInfo info    = new TestInfo(filterType);
+                                    var info    = new TestInfo(filterType);
                                     info.Directory   = xmlDir.InnerText;
                                     info.Verbose     = bVerbose;
                                     info.Exception   = bDisplayException;
@@ -108,9 +108,9 @@ namespace ConsoleTestRunner
         }
         public TestInfoCollection Parse(string[] args)
         {
-            TestInfoCollection collection = new TestInfoCollection();
+            var collection = new TestInfoCollection();
             // Command line parsing
-            Arguments commandLine = new Arguments(args);
+            var commandLine = new Arguments(args);
             // Check if default total test is requested...
             IsDefault = false;
             if (commandLine["default"] != null)
@@ -123,37 +123,37 @@ namespace ConsoleTestRunner
                 return ParseProject(commandLine["proj"]);
             }
             // 2. Handle the display filter option
-            XmlTestType testType = XmlTestType.None;
+            var testType = XmlTestType.None;
             if (commandLine["filter"] != null)
             {
                 testType = ParseXmlTestType(commandLine["filter"]);
             }
             // 3. Handle the display of the exception messages option
-            bool bDisplayException = true;
+            var bDisplayException = true;
             if (commandLine["exception"] != null)
             {
-                string strException = commandLine["exception"];
+                var strException = commandLine["exception"];
                 strException        = strException.ToLower();
                 bDisplayException   = (strException == "true");
             }
             // 4. Handle the verbose display option
-            bool bVerbose = true;
+            var bVerbose = true;
             if (commandLine["verbose"] != null)
             {
-                string strVerbose = commandLine["verbose"];
+                var strVerbose = commandLine["verbose"];
                 strVerbose        = strVerbose.ToLower();
                 bVerbose   = (strVerbose == "true");
             }
             // 4. Handle the interactivity option
-            bool bInteractive = false;
+            var bInteractive = false;
             if (commandLine["interactive"] != null)
             {
-                string strInteractive = commandLine["interactive"];
+                var strInteractive = commandLine["interactive"];
                 strInteractive        = strInteractive.ToLower();
                 bInteractive          = (strInteractive == "true");
                 if (bInteractive)
                 {
-                    TestInfo info = new TestInfo(testType);
+                    var info = new TestInfo(testType);
                     info.Verbose     = bVerbose;
                     info.Exception   = bDisplayException;
                     info.Interactive = bInteractive;
@@ -164,12 +164,12 @@ namespace ConsoleTestRunner
             // 5. Handle the files option, if any
             if (commandLine["files"] != null)
             {
-                string strFiles = commandLine["files"];
+                var strFiles = commandLine["files"];
                 Console.WriteLine(strFiles);
-                string[] strSplits = strFiles.Split(',');
-                for (int i = 0; i < strSplits.Length; i++)
+                var strSplits = strFiles.Split(',');
+                for (var i = 0; i < strSplits.Length; i++)
                 {
-                    TestInfo info    = new TestInfo(testType);
+                    var info    = new TestInfo(testType);
                     info.FileName    = strSplits[i].Trim();
                     info.Verbose     = bVerbose;
                     info.Exception   = bDisplayException;
@@ -180,11 +180,11 @@ namespace ConsoleTestRunner
             // 6. Handle the dirs option, if any
             if (commandLine["dirs"] != null)
             {
-                string strDirs = commandLine["dirs"];
-                string[] strSplits = strDirs.Split(',');
-                for (int i = 0; i < strSplits.Length; i++)
+                var strDirs = commandLine["dirs"];
+                var strSplits = strDirs.Split(',');
+                for (var i = 0; i < strSplits.Length; i++)
                 {
-                    TestInfo info    = new TestInfo(testType);
+                    var info    = new TestInfo(testType);
                     info.Directory   = strSplits[i].Trim();
                     info.Verbose     = bVerbose;
                     info.Exception   = bDisplayException;
@@ -196,7 +196,7 @@ namespace ConsoleTestRunner
         }
         public XmlTestType ParseXmlTestType(string testType)
         {
-            string strTemp = testType.ToLower();
+            var strTemp = testType.ToLower();
             if (strTemp == "area")
             {
                 return XmlTestType.Area;

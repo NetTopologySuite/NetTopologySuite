@@ -46,8 +46,8 @@ namespace Open.Topology.TestRunner.Operations
         }
         private static void CheckIntersects(IPreparedGeometry pg, IGeometry g2)
         {
-            bool pgResult = pg.Intersects(g2);
-            bool expected = pg.Geometry.Intersects(g2);
+            var pgResult = pg.Intersects(g2);
+            var expected = pg.Geometry.Intersects(g2);
             if (pgResult != expected)
             {
                 //			pg.intersects(g2);

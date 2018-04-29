@@ -120,7 +120,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             _edge = CopyOf(edge);
             // link the quadedges back to this triangle
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 edge[i].Data = this;
             }
@@ -163,7 +163,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public Vertex[] GetVertices()
         {
             var vert = new Vertex[3];
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 vert[i] = GetVertex(i);
             }
@@ -182,7 +182,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// </returns>
         public int GetEdgeIndex(QuadEdge e)
         {
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 if (_edge[i] == e)
                     return i;
@@ -198,7 +198,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// </returns>
         public int GetEdgeIndex(Vertex v)
         {
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 if (_edge[i].Orig == v)
                     return i;
@@ -208,13 +208,13 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public void GetEdgeSegment(int i, LineSegment seg)
         {
             seg.P0 = _edge[i].Orig.Coordinate;
-            int nexti = (i + 1)%3;
+            var nexti = (i + 1)%3;
             seg.P1 = _edge[nexti].Orig.Coordinate;
         }
         public Coordinate[] GetCoordinates()
         {
             var pts = new Coordinate[4];
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 pts[i] = _edge[i].Orig.Coordinate;
             }
@@ -243,7 +243,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>true if the triangle is adjacent to the subdivision exterior</returns>
         public bool IsBorder()
         {
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 if (GetAdjacentTriangleAcrossEdge(i) == null)
                     return true;
@@ -272,8 +272,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             // Assert: isVertex
             var adjTris = new List<QuadEdgeTriangle>();
-            QuadEdge start = GetEdge(vertexIndex);
-            QuadEdge qe = start;
+            var start = GetEdge(vertexIndex);
+            var qe = start;
             do
             {
                 var adjTri = (QuadEdgeTriangle) qe.Data;
@@ -293,7 +293,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public QuadEdgeTriangle[] GetNeighbours()
         {
             var neigh = new QuadEdgeTriangle[3];
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 neigh[i] = (QuadEdgeTriangle) GetEdge(i).Sym.Data;
             }

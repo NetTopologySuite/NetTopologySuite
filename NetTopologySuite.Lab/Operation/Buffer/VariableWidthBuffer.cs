@@ -49,7 +49,7 @@ namespace NetTopologySuite.Operation.Buffer
             var totalLen = line.Length;
             var pts = line.Coordinates;
             var currLen = 0.0;
-            for (int i = 1; i < widths.Length; i++)
+            for (var i = 1; i < widths.Length; i++)
             {
                 var segLen = pts[i].Distance(pts[i - 1]);
                 currLen += segLen;

@@ -35,7 +35,7 @@ namespace NetTopologySuite.Geometries
         public DefaultCoordinateSequence(ICoordinateSequence coordSeq)
         {
             _coordinates = new Coordinate[coordSeq.Count];
-            for (int i = 0; i < _coordinates.Length; i++)
+            for (var i = 0; i < _coordinates.Length; i++)
                 _coordinates[i] = coordSeq.GetCoordinateCopy(i);
         }
         /// <summary>
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Geometries
         public DefaultCoordinateSequence(int size)
         {
             _coordinates = new Coordinate[size];
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
                 _coordinates[i] = new Coordinate();
         }
         /// <summary>
@@ -162,7 +162,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>A reference to the expanded envelope.</returns>
         public Envelope ExpandEnvelope(Envelope env)
         {
-            for (int i = 0; i < _coordinates.Length; i++)
+            for (var i = 0; i < _coordinates.Length; i++)
                 env.ExpandToInclude(_coordinates[i]);
             return env;
         }
@@ -194,7 +194,7 @@ namespace NetTopologySuite.Geometries
         public ICoordinateSequence Copy()
         {
             var cloneCoordinates = new Coordinate[_coordinates.Length];
-            for (int i = 0; i < _coordinates.Length; i++)
+            for (var i = 0; i < _coordinates.Length; i++)
                 cloneCoordinates[i] = (Coordinate) _coordinates[i].Copy();
             return new DefaultCoordinateSequence(cloneCoordinates);
         }
@@ -227,7 +227,7 @@ namespace NetTopologySuite.Geometries
                 var sb = new StringBuilder(17 * _coordinates.Length);
                 sb.Append('(');
                 sb.Append(_coordinates[0]);
-                for (int i = 1; i < _coordinates.Length; i++)
+                for (var i = 1; i < _coordinates.Length; i++)
                 {
                     sb.Append(", ");
                     sb.Append(_coordinates[i]);

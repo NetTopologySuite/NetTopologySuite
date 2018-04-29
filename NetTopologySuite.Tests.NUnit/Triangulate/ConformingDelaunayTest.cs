@@ -24,16 +24,16 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
         private const double ComparisonTolerance = 1.0e-7;
         private static void RunDelaunay(string sitesWKT, string constraintsWKT, bool computeTriangles, string expectedWKT)
         {
-            WKTReader reader = new WKTReader();
-            IGeometry sites = reader.Read(sitesWKT);
-            IGeometry constraints = reader.Read(constraintsWKT);
-            ConformingDelaunayTriangulationBuilder builder = new ConformingDelaunayTriangulationBuilder();
+            var reader = new WKTReader();
+            var sites = reader.Read(sitesWKT);
+            var constraints = reader.Read(constraintsWKT);
+            var builder = new ConformingDelaunayTriangulationBuilder();
             builder.SetSites(sites);
             builder.Constraints = constraints;
-            IGeometryFactory geomFact = GeometryFactory.Default;
+            var geomFact = GeometryFactory.Default;
             IGeometry result = computeTriangles ? builder.GetTriangles(geomFact) : builder.GetEdges(geomFact);
             Assert.IsNotNull(result);
-            IGeometry expectedEdges = reader.Read(expectedWKT);
+            var expectedEdges = reader.Read(expectedWKT);
             result.Normalize();
             expectedEdges.Normalize();
             Assert.IsTrue(expectedEdges.EqualsExact(result, ComparisonTolerance));

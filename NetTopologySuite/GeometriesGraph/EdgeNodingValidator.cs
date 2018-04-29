@@ -16,14 +16,14 @@ namespace NetTopologySuite.GeometriesGraph
         /// <exception cref="TopologyException">If the SegmentStrings are not correctly noded</exception>
         public static void CheckValid(IEnumerable<Edge> edges)
         {
-            EdgeNodingValidator validator = new EdgeNodingValidator(edges);
+            var validator = new EdgeNodingValidator(edges);
             validator.CheckValid();
         }
         public static IEnumerable<ISegmentString> ToSegmentStrings(IEnumerable<Edge> edges)
         {
             // convert Edges to SegmentStrings
             IList<ISegmentString> segStrings = new List<ISegmentString>();
-            foreach (Edge e in edges)
+            foreach (var e in edges)
                 segStrings.Add(new BasicSegmentString(e.Coordinates, e));
             return segStrings;
         }

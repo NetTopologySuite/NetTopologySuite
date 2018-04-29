@@ -44,7 +44,7 @@ namespace Open.Topology.TestRunner.Functions
         private static IGeometry Select(IGeometry geom, Func<IGeometry, bool> predicate)
         {
             var selected = new List<IGeometry>();
-            for (int i = 0; i < geom.NumGeometries; i++)
+            for (var i = 0; i < geom.NumGeometries; i++)
             {
                 var g = geom.GetGeometryN(i);
                 if (predicate(g))
@@ -57,7 +57,7 @@ namespace Open.Topology.TestRunner.Functions
         public static IGeometry FirstNComponents(IGeometry g, int n)
         {
             var comp = new List<IGeometry>();
-            for (int i = 0; i < g.NumGeometries && i < n; i++)
+            for (var i = 0; i < g.NumGeometries && i < n; i++)
             {
                 comp.Add(g.GetGeometryN(i));
             }

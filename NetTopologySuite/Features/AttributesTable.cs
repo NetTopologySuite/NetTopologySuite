@@ -88,9 +88,9 @@ namespace NetTopologySuite.Features
         /// <returns></returns>
         public string[] GetNames()
         {
-            int index = 0;
-            string[] names = new string[_attributes.Count];
-            foreach (string name in _attributes.Keys)
+            var index = 0;
+            var names = new string[_attributes.Count];
+            foreach (var name in _attributes.Keys)
                 names[index++] = name;
             return names;
         }

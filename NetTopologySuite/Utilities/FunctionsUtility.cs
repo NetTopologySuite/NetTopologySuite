@@ -48,7 +48,7 @@ namespace NetTopologySuite.Utilities
             var size = 0;
             if (a != null) size++;
             if (b != null) size++;
-            IGeometry[] geoms = new IGeometry[size];
+            var geoms = new IGeometry[size];
             size = 0;
             if (a != null) geoms[size++] = a;
             if (b != null) geoms[size] = b;

@@ -34,7 +34,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
             var det = 0d;
             var sw = new Stopwatch();
             sw.Start();
-            for (int i = 0; i < nIter; i++)
+            for (var i = 0; i < nIter; i++)
             {
                 var a = 9.0;
                 const double factor = 10.0;
@@ -69,15 +69,15 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         }
         public double RunDoubleDouble(int nIter)
         {
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
-            for (int i = 0; i < nIter; i++)
+            for (var i = 0; i < nIter; i++)
             {
-                DD a = new DD(9.0);
-                DD factor = new DD(10.0);
-                DD aMul = factor.Multiply(a);
-                DD aDiv = a.Divide(factor);
-                DD det = a.Multiply(a)
+                var a = new DD(9.0);
+                var factor = new DD(10.0);
+                var aMul = factor.Multiply(a);
+                var aDiv = a.Divide(factor);
+                var det = a.Multiply(a)
                     .Subtract(aMul.Multiply(aDiv));
                 //      Console.WriteLine(aDiv);
                 //      Console.WriteLine(det);
@@ -108,22 +108,22 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         //*
         public double RunDoubleDoubleSelf(int nIter)
         {
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
-            for (int i = 0; i < nIter; i++)
+            for (var i = 0; i < nIter; i++)
             {
-                double a = 9.0;
-                double factor = 10.0;
-                DD c = new DD(9.0);
+                var a = 9.0;
+                var factor = 10.0;
+                var c = new DD(9.0);
                 c*=factor;
-                DD b = new DD(9.0);
+                var b = new DD(9.0);
                 b/=factor;
-                DD a2 = new DD(a);
+                var a2 = new DD(a);
                 a2*=a;
-                DD b2 = new DD(b);
+                var b2 = new DD(b);
                 b2*=c;
                 a2/=b2;
-                DD det = a2;
+                var det = a2;
                 //			Console.WriteLine(aDiv);
                 //			Console.WriteLine(det);
             }

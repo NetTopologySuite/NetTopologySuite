@@ -19,11 +19,11 @@ namespace NetTopologySuite.Planargraph.Algorithm
         {
             IList<Subgraph> subgraphs = new List<Subgraph>();
             GraphComponent.SetVisited(graph.GetNodeEnumerator(), false);
-            IEnumerator<Edge> ienum = graph.GetEdgeEnumerator();
+            var ienum = graph.GetEdgeEnumerator();
             while(ienum.MoveNext())
             {
-                Edge e = ienum.Current;
-                Node node = e.GetDirEdge(0).FromNode;
+                var e = ienum.Current;
+                var node = e.GetDirEdge(0).FromNode;
                 if (!node.IsVisited)
                     subgraphs.Add(FindSubgraph(node));
             }
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Planargraph.Algorithm
         }
         private Subgraph FindSubgraph(Node node)
         {
-            Subgraph subgraph = new Subgraph(graph);
+            var subgraph = new Subgraph(graph);
             AddReachable(node, subgraph);
             return subgraph;
         }
@@ -43,11 +43,11 @@ namespace NetTopologySuite.Planargraph.Algorithm
         /// <param name="subgraph"></param>
         private void AddReachable(Node startNode, Subgraph subgraph)
         {
-            Stack<Node> nodeStack = new Stack<Node>();
+            var nodeStack = new Stack<Node>();
             nodeStack.Push(startNode);
             while (nodeStack.Count != 0)
             {
-                Node node = nodeStack.Pop();
+                var node = nodeStack.Pop();
                 AddEdges(node, nodeStack, subgraph);
             }
         }
@@ -60,10 +60,10 @@ namespace NetTopologySuite.Planargraph.Algorithm
         private static void AddEdges(Node node, Stack<Node> nodeStack, Subgraph subgraph)
         {
             node.Visited = true;
-            foreach (DirectedEdge de in node.OutEdges)
+            foreach (var de in node.OutEdges)
             {
                 subgraph.Add(de.Edge);
-                Node toNode = de.ToNode;
+                var toNode = de.ToNode;
                 if (!toNode.IsVisited)
                     nodeStack.Push(toNode);
             }

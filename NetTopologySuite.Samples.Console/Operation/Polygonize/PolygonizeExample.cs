@@ -15,7 +15,7 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
 		[STAThread]
 		public static void main(string[] args)
 		{
-			PolygonizeExample test = new PolygonizeExample();
+			var test = new PolygonizeExample();
 			try
 			{
 				test.Run();
@@ -32,7 +32,7 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
         }
 		internal virtual void Run()
 		{
-			WKTReader rdr = new WKTReader();
+			var rdr = new WKTReader();
 			IList<IGeometry> lines = new List<IGeometry>
 			                             {
 			                                 rdr.Read("LINESTRING (0 0 , 10 10)"),
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
 			                                 rdr.Read("LINESTRING (189 98, 83 187, 185 221)"),
 			                                 rdr.Read("LINESTRING (189 98, 325 168, 185 221)")
 			                             };
-		    Polygonizer polygonizer = new Polygonizer();
+		    var polygonizer = new Polygonizer();
 			polygonizer.Add(lines);
 			var polys = polygonizer.GetPolygons();
 			Console.WriteLine("Polygons formed (" + polys.Count + "):");

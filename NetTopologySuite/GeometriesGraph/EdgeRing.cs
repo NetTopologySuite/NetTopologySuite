@@ -92,10 +92,10 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public IPolygon ToPolygon(IGeometryFactory geometryFactory)
         {
-            ILinearRing[] holeLR = new ILinearRing[_holes.Count];
-            for (int i = 0; i < _holes.Count; i++)
+            var holeLR = new ILinearRing[_holes.Count];
+            for (var i = 0; i < _holes.Count; i++)
                 holeLR[i] = _holes[i].LinearRing;
-            IPolygon poly = geometryFactory.CreatePolygon(LinearRing, holeLR);
+            var poly = geometryFactory.CreatePolygon(LinearRing, holeLR);
             return poly;
         }
         /// <summary>
@@ -107,7 +107,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             if (LinearRing != null)
                 return;   // don't compute more than once
-            Coordinate[] coord = _pts.ToArray();
+            var coord = _pts.ToArray();
             /* new Coordinate[_pts.Count];
             for (int i = 0; i < _pts.Count; i++)
                 coord[i] = (Coordinate) _pts[i];
@@ -138,8 +138,8 @@ namespace NetTopologySuite.GeometriesGraph
         protected void ComputePoints(DirectedEdge start)
         {
             startDe = start;
-            DirectedEdge de = start;
-            bool isFirstEdge = true;
+            var de = start;
+            var isFirstEdge = true;
             do
             {
                 if (de == null)
@@ -147,7 +147,7 @@ namespace NetTopologySuite.GeometriesGraph
                 if (de.EdgeRing == this)
                     throw new TopologyException("Directed Edge visited twice during ring-building at " + de.Coordinate);
                 _edges.Add(de);
-                Label label = de.Label;
+                var label = de.Label;
                 Assert.IsTrue(label.IsArea());
                 MergeLabel(label);
                 AddPoints(de.Edge, de.IsForward, isFirstEdge);
@@ -175,11 +175,11 @@ namespace NetTopologySuite.GeometriesGraph
         private void ComputeMaxNodeDegree()
         {
             _maxNodeDegree = 0;
-            DirectedEdge de = startDe;
+            var de = startDe;
             do
             {
-                Node node = de.Node;
-                int degree = ((DirectedEdgeStar) node.Edges).GetOutgoingDegree(this);
+                var node = de.Node;
+                var degree = ((DirectedEdgeStar) node.Edges).GetOutgoingDegree(this);
                 if (degree > _maxNodeDegree)
                     _maxNodeDegree = degree;
                 de = GetNext(de);
@@ -192,7 +192,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public void SetInResult()
         {
-            DirectedEdge de = startDe;
+            var de = startDe;
             do
             {
                 de.Edge.InResult = true;
@@ -220,7 +220,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         protected void MergeLabel(Label deLabel, int geomIndex)
         {
-            Location loc = deLabel.GetLocation(geomIndex, Positions.Right);
+            var loc = deLabel.GetLocation(geomIndex, Positions.Right);
             // no information to be had from this label
             if (loc == Location.Null)
                 return;
@@ -239,22 +239,22 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="isFirstEdge"></param>
         protected void AddPoints(Edge edge, bool isForward, bool isFirstEdge)
         {
-            Coordinate[] edgePts = edge.Coordinates;
+            var edgePts = edge.Coordinates;
             if (isForward)
             {
-                int startIndex = 1;
+                var startIndex = 1;
                 if (isFirstEdge)
                     startIndex = 0;
-                for (int i = startIndex; i < edgePts.Length; i++)
+                for (var i = startIndex; i < edgePts.Length; i++)
                     _pts.Add(edgePts[i]);
             }
             else
             {
                 // is backward
-                int startIndex = edgePts.Length - 2;
+                var startIndex = edgePts.Length - 2;
                 if (isFirstEdge)
                     startIndex = edgePts.Length - 1;
-                for (int i = startIndex; i >= 0; i--)
+                for (var i = startIndex; i >= 0; i--)
                     _pts.Add(edgePts[i]);
             }
         }
@@ -265,13 +265,13 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="p"></param>
         public bool ContainsPoint(Coordinate p)
         {
-            ILinearRing shell = LinearRing;
-            Envelope env = shell.EnvelopeInternal;
+            var shell = LinearRing;
+            var env = shell.EnvelopeInternal;
             if (!env.Contains(p))
                 return false;
             if (!PointLocation.IsInRing(p, shell.Coordinates))
                 return false;
-            foreach (EdgeRing hole in _holes)
+            foreach (var hole in _holes)
             {
                 if (hole.ContainsPoint(p))
                     return false;

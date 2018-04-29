@@ -15,7 +15,7 @@ namespace NetTopologySuite.Simplify
     {
         public static Coordinate[] Simplify(Coordinate[] pts, double distanceTolerance)
         {
-            VWLineSimplifier simp = new VWLineSimplifier(pts, distanceTolerance);
+            var simp = new VWLineSimplifier(pts, distanceTolerance);
             return simp.Simplify();
         }
         private readonly Coordinate[] _pts;
@@ -37,9 +37,9 @@ namespace NetTopologySuite.Simplify
             // ideal.
             var queue = new AlternativePriorityQueue<IndexWithArea, int>(_pts.Length);
             // First and last coordinates are included automatically.
-            for (int i = 1; i < _pts.Length - 1; i++)
+            for (var i = 1; i < _pts.Length - 1; i++)
             {
-                double area = Triangle.Area(_pts[i - 1], _pts[i], _pts[i + 1]);
+                var area = Triangle.Area(_pts[i - 1], _pts[i], _pts[i + 1]);
                 nodes[i] = new PriorityQueueNode<IndexWithArea, int>(i);
                 queue.Enqueue(nodes[i], new IndexWithArea(i, area));
             }
@@ -52,11 +52,11 @@ namespace NetTopologySuite.Simplify
                 nodes[node.Data] = null;
                 // Find index of the not-yet-deleted coord before the deleted
                 // one.  This could be the first coord in the sequence.
-                int prev = node.Data - 1;
+                var prev = node.Data - 1;
                 while (prev > 0 && nodes[prev] == null) { --prev; }
                 // Find index of the not-yet-deleted coord after the deleted
                 // one.  This could be the last coord in the sequence.
-                int next = node.Data + 1;
+                var next = node.Data + 1;
                 while (next < _pts.Length - 1 && nodes[next] == null) { ++next; }
                 // If the previous coord is not the first one, then its
                 // effective area has changed.  For example:
@@ -69,9 +69,9 @@ namespace NetTopologySuite.Simplify
                 if (prev > 0 &&
                     queue.Contains(nodes[prev]))
                 {
-                    int prev2 = prev - 1;
+                    var prev2 = prev - 1;
                     while (prev2 > 0 && nodes[prev2] == null) { --prev2; }
-                    double area = Triangle.Area(_pts[prev2], _pts[prev], _pts[next]);
+                    var area = Triangle.Area(_pts[prev2], _pts[prev], _pts[next]);
                     queue.ChangePriority(nodes[prev], new IndexWithArea(prev, area));
                 }
                 // Same idea as what we did above for prev.
@@ -81,9 +81,9 @@ namespace NetTopologySuite.Simplify
                 if (next < _pts.Length - 1 &&
                     queue.Contains(nodes[next]))
                 {
-                    int next2 = next + 1;
+                    var next2 = next + 1;
                     while (next2 < _pts.Length - 1 && nodes[next2] == null) { ++next2; }
-                    double area = Triangle.Area(_pts[prev], _pts[next], _pts[next2]);
+                    var area = Triangle.Area(_pts[prev], _pts[next], _pts[next2]);
                     queue.ChangePriority(nodes[next], new IndexWithArea(next, area));
                 }
             }
@@ -91,9 +91,9 @@ namespace NetTopologySuite.Simplify
             // good idea anyway, we want to make sure we don't output the same
             // coord multiple times in a row, so we pass "false" for the second
             // parameter to "Add".
-            CoordinateList list = new CoordinateList();
+            var list = new CoordinateList();
             list.Add(_pts[0], false);
-            for (int i = 0; i < nodes.Length; i++)
+            for (var i = 0; i < nodes.Length; i++)
             {
                 if (nodes[i] == null)
                 {
@@ -122,7 +122,7 @@ namespace NetTopologySuite.Simplify
             public double Area { get; }
             public int CompareTo(IndexWithArea other)
             {
-                int areaComparison = this.Area.CompareTo(other.Area);
+                var areaComparison = this.Area.CompareTo(other.Area);
                 // Do the index comparison if areas are equal, to ensure
                 // equivalence with JTS / old NTS.
                 return areaComparison == 0

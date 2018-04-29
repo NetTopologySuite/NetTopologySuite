@@ -69,7 +69,7 @@ namespace NetTopologySuite.Operation.Buffer
             * Check all forward DirectedEdges only.  This is still general,
             * because each Edge has a forward DirectedEdge.
             */
-            foreach (DirectedEdge de in dirEdges)
+            foreach (var de in dirEdges)
             {
                 if (!de.IsForward)
                     continue;
@@ -86,8 +86,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="stabbedSegments">The current list of DepthSegments intersecting the stabbing line.</param>
         private void FindStabbedSegments(Coordinate stabbingRayLeftPt, DirectedEdge dirEdge, IList<DepthSegment> stabbedSegments)
         {
-            Coordinate[] pts = dirEdge.Edge.Coordinates;
-            for (int i = 0; i < pts.Length - 1; i++)
+            var pts = dirEdge.Edge.Coordinates;
+            for (var i = 0; i < pts.Length - 1; i++)
             {
                 _seg.P0 = pts[i];
                 _seg.P1 = pts[i + 1];
@@ -104,7 +104,7 @@ namespace NetTopologySuite.Operation.Buffer
                 // skip if stabbing ray is right of the segment
                 if (Orientation.Index(_seg.P0, _seg.P1, stabbingRayLeftPt) == OrientationIndex.Right) continue;
                 // stabbing line cuts this segment, so record it
-                int depth = dirEdge.GetDepth(Positions.Left);
+                var depth = dirEdge.GetDepth(Positions.Left);
                 // if segment direction was flipped, use RHS depth instead
                 if (!_seg.P0.Equals(pts[i]))
                     depth = dirEdge.GetDepth(Positions.Right);

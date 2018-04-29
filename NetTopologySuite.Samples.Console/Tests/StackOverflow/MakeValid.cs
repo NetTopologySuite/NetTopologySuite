@@ -85,7 +85,7 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
                     return geom; // If the multipolygon is valid just return it
                 }
                 var polygonizer = new Polygonizer();
-                for (int n = geom.NumGeometries; n-- > 0;)
+                for (var n = geom.NumGeometries; n-- > 0;)
                 {
                     AddPolygon((IPolygon)geom.GetGeometryN(n), polygonizer);
                 }

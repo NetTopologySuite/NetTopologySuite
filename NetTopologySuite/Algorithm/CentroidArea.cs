@@ -109,7 +109,7 @@ namespace NetTopologySuite.Algorithm
         private void Add(IPolygon poly)
         {
             AddShell(poly.ExteriorRing.Coordinates);
-            foreach (ILineString ls in poly.InteriorRings)
+            foreach (var ls in poly.InteriorRings)
                 AddHole(ls.Coordinates);
         }
         /// <summary>
@@ -118,8 +118,8 @@ namespace NetTopologySuite.Algorithm
         /// <param name="pts"></param>
         private void AddShell(Coordinate[] pts)
         {
-            bool isPositiveArea = !Orientation.IsCCW(pts);
-            for (int i = 0; i < pts.Length - 1; i++)
+            var isPositiveArea = !Orientation.IsCCW(pts);
+            for (var i = 0; i < pts.Length - 1; i++)
                 AddTriangle(_basePt, pts[i], pts[i + 1], isPositiveArea);
             AddLinearSegments(pts);
         }
@@ -129,8 +129,8 @@ namespace NetTopologySuite.Algorithm
         /// <param name="pts"></param>
         private void AddHole(Coordinate[] pts)
         {
-            bool isPositiveArea = Orientation.IsCCW(pts);
-            for (int i = 0; i < pts.Length - 1; i++)
+            var isPositiveArea = Orientation.IsCCW(pts);
+            for (var i = 0; i < pts.Length - 1; i++)
                 AddTriangle(_basePt, pts[i], pts[i + 1], isPositiveArea);
             AddLinearSegments(pts);
         }
@@ -143,9 +143,9 @@ namespace NetTopologySuite.Algorithm
         /// <param name="isPositiveArea"></param>
         private void AddTriangle(Coordinate p0, Coordinate p1, Coordinate p2, bool isPositiveArea)
         {
-            double sign = (isPositiveArea) ? 1.0 : -1.0;
+            var sign = (isPositiveArea) ? 1.0 : -1.0;
             Centroid3(p0, p1, p2, ref _triangleCent3);
-            double area2 = Area2(p0, p1, p2);
+            var area2 = Area2(p0, p1, p2);
             _cg3.X += sign * area2 * _triangleCent3.X;
             _cg3.Y += sign * area2 * _triangleCent3.Y;
             _areasum2 += sign * area2;
@@ -177,13 +177,13 @@ namespace NetTopologySuite.Algorithm
         /// <param name="pts">an array of <see cref="Coordinate"/>s</param>
         private void AddLinearSegments(Coordinate[] pts)
         {
-            for (int i = 0; i < pts.Length - 1; i++)
+            for (var i = 0; i < pts.Length - 1; i++)
             {
-                double segmentLen = pts[i].Distance(pts[i + 1]);
+                var segmentLen = pts[i].Distance(pts[i + 1]);
                 _totalLength += segmentLen;
-                double midx = (pts[i].X + pts[i + 1].X) / 2;
+                var midx = (pts[i].X + pts[i + 1].X) / 2;
                 _centSum.X += segmentLen * midx;
-                double midy = (pts[i].Y + pts[i + 1].Y) / 2;
+                var midy = (pts[i].Y + pts[i + 1].Y) / 2;
                 _centSum.Y += segmentLen * midy;
             }
         }

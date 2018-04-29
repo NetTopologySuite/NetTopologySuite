@@ -206,9 +206,9 @@ namespace NetTopologySuite.Precision
             }
             private double VertexDistance(FacetSequence fs1, FacetSequence fs2)
             {
-                for (int i1 = 0; i1 < fs1.Count; i1++)
+                for (var i1 = 0; i1 < fs1.Count; i1++)
                 {
-                    for (int i2 = 0; i2 < fs2.Count; i2++)
+                    for (var i2 = 0; i2 < fs2.Count; i2++)
                     {
                         var p1 = fs1.GetCoordinate(i1);
                         var p2 = fs2.GetCoordinate(i2);

@@ -46,17 +46,17 @@ namespace NetTopologySuite.Tests.NUnit.IO
         }
         private void ReadGoodCheckCoordinate(String wkt, double x, double y)
         {
-            IGeometry g = rdr.Read(wkt);
-            Coordinate pt = g.Coordinate;
+            var g = rdr.Read(wkt);
+            var pt = g.Coordinate;
             Assert.AreEqual(pt.X, x, 0.0001);
             Assert.AreEqual(pt.Y, y, 0.0001);
         }
         private void ReadBad(String wkt)
         {
-            bool threwParseEx = false;
+            var threwParseEx = false;
             try
             {
-                IGeometry g = rdr.Read(wkt);
+                var g = rdr.Read(wkt);
             }
             catch (GeoAPI.IO.ParseException ex)
             {

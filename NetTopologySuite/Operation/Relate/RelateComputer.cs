@@ -39,7 +39,7 @@ namespace NetTopologySuite.Operation.Relate
         /// <returns></returns>
         public IntersectionMatrix ComputeIM()
         {
-            IntersectionMatrix im = new IntersectionMatrix();
+            var im = new IntersectionMatrix();
             // since Geometries are finite and embedded in a 2-D space, the EE element must always be 2
             im.Set(Location.Exterior, Location.Exterior, Dimension.Surface);
             // if the Geometries don't overlap there is nothing to do
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Operation.Relate
             _arg[0].ComputeSelfNodes(_li, false);
             _arg[1].ComputeSelfNodes(_li, false);
             // compute intersections between edges of the two input geometries
-            SegmentIntersector intersector = _arg[0].ComputeEdgeIntersections(_arg[1], _li, false);
+            var intersector = _arg[0].ComputeEdgeIntersections(_arg[1], _li, false);
             ComputeIntersectionNodes(0);
             ComputeIntersectionNodes(1);
             /*
@@ -70,10 +70,10 @@ namespace NetTopologySuite.Operation.Relate
              * We need to compute the edge graph at all nodes to determine the IM.
              */
             // build EdgeEnds for all intersections
-            EdgeEndBuilder eeBuilder = new EdgeEndBuilder();
-            IList<EdgeEnd> ee0 = eeBuilder.ComputeEdgeEnds(_arg[0].Edges);
+            var eeBuilder = new EdgeEndBuilder();
+            var ee0 = eeBuilder.ComputeEdgeEnds(_arg[0].Edges);
             InsertEdgeEnds(ee0);
-            IList<EdgeEnd> ee1 = eeBuilder.ComputeEdgeEnds(_arg[1].Edges);
+            var ee1 = eeBuilder.ComputeEdgeEnds(_arg[1].Edges);
             InsertEdgeEnds(ee1);
             LabelNodeEdges();
             /*
@@ -97,7 +97,7 @@ namespace NetTopologySuite.Operation.Relate
         /// <param name="ee"></param>
         private void InsertEdgeEnds(IEnumerable<EdgeEnd> ee)
         {
-            foreach (EdgeEnd e in ee)
+            foreach (var e in ee)
                 _nodes.Add(e);
         }
         /// <summary>
@@ -108,10 +108,10 @@ namespace NetTopologySuite.Operation.Relate
         private void ComputeProperIntersectionIM(SegmentIntersector intersector, IntersectionMatrix im)
         {
             // If a proper intersection is found, we can set a lower bound on the IM.
-            Dimension dimA = _arg[0].Geometry.Dimension;
-            Dimension dimB = _arg[1].Geometry.Dimension;
-            bool hasProper = intersector.HasProperIntersection;
-            bool hasProperInterior = intersector.HasProperInteriorIntersection;
+            var dimA = _arg[0].Geometry.Dimension;
+            var dimB = _arg[1].Geometry.Dimension;
+            var hasProper = intersector.HasProperIntersection;
+            var hasProperInterior = intersector.HasProperInteriorIntersection;
             // For Geometry's of dim 0 there can never be proper intersections.
             /*
              * If edge segments of Areas properly intersect, the areas must properly overlap.
@@ -170,9 +170,9 @@ namespace NetTopologySuite.Operation.Relate
         /// <param name="argIndex"></param>
         private void CopyNodesAndLabels(int argIndex)
         {
-            foreach (Node graphNode in _arg[argIndex].Nodes)
+            foreach (var graphNode in _arg[argIndex].Nodes)
             {
-                Node newNode = _nodes.AddNode(graphNode.Coordinate);
+                var newNode = _nodes.AddNode(graphNode.Coordinate);
                 newNode.SetLabel(argIndex, graphNode.Label.GetLocation(argIndex));
             }
         }
@@ -186,12 +186,12 @@ namespace NetTopologySuite.Operation.Relate
         /// <param name="argIndex"></param>
         private void ComputeIntersectionNodes(int argIndex)
         {
-            foreach (Edge e in _arg[argIndex].Edges)
+            foreach (var e in _arg[argIndex].Edges)
             {
-                Location eLoc = e.Label.GetLocation(argIndex);
-                foreach (EdgeIntersection ei in e.EdgeIntersectionList)
+                var eLoc = e.Label.GetLocation(argIndex);
+                foreach (var ei in e.EdgeIntersectionList)
                 {
-                    RelateNode n = (RelateNode)_nodes.AddNode(ei.Coordinate);
+                    var n = (RelateNode)_nodes.AddNode(ei.Coordinate);
                     if (eLoc == Location.Boundary)
                         n.SetLabelBoundary(argIndex);
                     else
@@ -212,12 +212,12 @@ namespace NetTopologySuite.Operation.Relate
         /// <param name="argIndex"></param>
         private void LabelIntersectionNodes(int argIndex)
         {
-            foreach (Edge e in _arg[argIndex].Edges)
+            foreach (var e in _arg[argIndex].Edges)
             {
-                Location eLoc = e.Label.GetLocation(argIndex);
-                foreach (EdgeIntersection ei in e.EdgeIntersectionList)
+                var eLoc = e.Label.GetLocation(argIndex);
+                foreach (var ei in e.EdgeIntersectionList)
                 {
-                    RelateNode n = (RelateNode)_nodes.Find(ei.Coordinate);
+                    var n = (RelateNode)_nodes.Find(ei.Coordinate);
                     if (n.Label.IsNull(argIndex))
                     {
                         if (eLoc == Location.Boundary)
@@ -234,13 +234,13 @@ namespace NetTopologySuite.Operation.Relate
         /// <param name="im"></param>
         private void ComputeDisjointIM(IntersectionMatrix im)
         {
-            IGeometry ga = _arg[0].Geometry;
+            var ga = _arg[0].Geometry;
             if (!ga.IsEmpty)
             {
                 im.Set(Location.Interior, Location.Exterior, ga.Dimension);
                 im.Set(Location.Boundary, Location.Exterior, ga.BoundaryDimension);
             }
-            IGeometry gb = _arg[1].Geometry;
+            var gb = _arg[1].Geometry;
             if (!gb.IsEmpty)
             {
                 im.Set(Location.Exterior, Location.Interior, gb.Dimension);
@@ -261,7 +261,7 @@ namespace NetTopologySuite.Operation.Relate
         /// <param name="im"></param>
         private void UpdateIM(IntersectionMatrix im)
         {
-            foreach (Edge e in _isolatedEdges)
+            foreach (var e in _isolatedEdges)
             {
                 e.UpdateIM(im);
             }
@@ -317,7 +317,7 @@ namespace NetTopologySuite.Operation.Relate
                 // since edge is not in boundary, may not need the full generality of PointLocator?
                 // Possibly should use ptInArea locator instead?  We probably know here
                 // that the edge does not touch the bdy of the target Geometry
-                Location loc = _ptLocator.Locate(e.Coordinate, target);
+                var loc = _ptLocator.Locate(e.Coordinate, target);
                 e.Label.SetAllLocations(targetIndex, loc);
             }
             else e.Label.SetAllLocations(targetIndex, Location.Exterior);
@@ -333,9 +333,9 @@ namespace NetTopologySuite.Operation.Relate
         /// </summary>
         private void LabelIsolatedNodes()
         {
-            foreach (Node n in _nodes)
+            foreach (var n in _nodes)
             {
-                Label label = n.Label;
+                var label = n.Label;
                 // isolated nodes should always have at least one point in their label
                 Assert.IsTrue(label.GeometryCount > 0, "node with empty label found");
                 if (n.IsIsolated)
@@ -353,7 +353,7 @@ namespace NetTopologySuite.Operation.Relate
         /// <param name="targetIndex"></param>
         private void LabelIsolatedNode(Node n, int targetIndex)
         {
-            Location loc = _ptLocator.Locate(n.Coordinate, _arg[targetIndex].Geometry);
+            var loc = _ptLocator.Locate(n.Coordinate, _arg[targetIndex].Geometry);
             n.Label.SetAllLocations(targetIndex, loc);
         }
     }

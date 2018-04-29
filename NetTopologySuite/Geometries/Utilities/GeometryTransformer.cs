@@ -156,9 +156,9 @@ namespace NetTopologySuite.Geometries.Utilities
         protected virtual IGeometry TransformMultiPoint(IMultiPoint geom, IGeometry parent)
         {
             var transGeomList = new List<IGeometry>();
-            for (int i = 0; i < geom.NumGeometries; i++)
+            for (var i = 0; i < geom.NumGeometries; i++)
             {
-                IGeometry transformGeom = TransformPoint((IPoint)geom.GetGeometryN(i), geom);
+                var transformGeom = TransformPoint((IPoint)geom.GetGeometryN(i), geom);
                 if (transformGeom == null) continue;
                 if (transformGeom.IsEmpty) continue;
                 transGeomList.Add(transformGeom);
@@ -211,9 +211,9 @@ namespace NetTopologySuite.Geometries.Utilities
         protected virtual IGeometry TransformMultiLineString(IMultiLineString geom, IGeometry parent)
         {
             var transGeomList = new List<IGeometry>();
-            for (int i = 0; i < geom.NumGeometries; i++)
+            for (var i = 0; i < geom.NumGeometries; i++)
             {
-                IGeometry transformGeom = TransformLineString((ILineString)geom.GetGeometryN(i), geom);
+                var transformGeom = TransformLineString((ILineString)geom.GetGeometryN(i), geom);
                 if (transformGeom == null) continue;
                 if (transformGeom.IsEmpty) continue;
                 transGeomList.Add(transformGeom);
@@ -228,14 +228,14 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>A <c>Polygon</c></returns>
         protected virtual IGeometry TransformPolygon(IPolygon geom, IGeometry parent)
         {
-            bool isAllValidLinearRings = true;
-            IGeometry shell = TransformLinearRing(geom.Shell, geom);
+            var isAllValidLinearRings = true;
+            var shell = TransformLinearRing(geom.Shell, geom);
             if (shell == null || !(shell is ILinearRing) || shell.IsEmpty)
                 isAllValidLinearRings = false;
             var holes = new List<ILineString>();
-            for (int i = 0; i < geom.NumInteriorRings; i++)
+            for (var i = 0; i < geom.NumInteriorRings; i++)
             {
-                IGeometry hole = TransformLinearRing(geom.Holes[i], geom);
+                var hole = TransformLinearRing(geom.Holes[i], geom);
                 if (hole == null || hole.IsEmpty) continue;
                 if (!(hole is ILinearRing))
                     isAllValidLinearRings = false;
@@ -243,7 +243,7 @@ namespace NetTopologySuite.Geometries.Utilities
             }
             if (isAllValidLinearRings)
             {
-                ILinearRing[] holesAsLinearRing = new ILinearRing[holes.Count];
+                var holesAsLinearRing = new ILinearRing[holes.Count];
                 // in case your IDE whines about array covariance on this line,
                 // don't worry, it's safe -- we proved above that it will work.
                 holes.CopyTo(holesAsLinearRing);
@@ -268,9 +268,9 @@ namespace NetTopologySuite.Geometries.Utilities
         protected virtual IGeometry TransformMultiPolygon(IMultiPolygon geom, IGeometry parent)
         {
             var transGeomList = new List<IGeometry>();
-            for (int i = 0; i < geom.NumGeometries; i++)
+            for (var i = 0; i < geom.NumGeometries; i++)
             {
-                IGeometry transformGeom = TransformPolygon((IPolygon)geom.GetGeometryN(i), geom);
+                var transformGeom = TransformPolygon((IPolygon)geom.GetGeometryN(i), geom);
                 if (transformGeom == null) continue;
                 if (transformGeom.IsEmpty) continue;
                 transGeomList.Add(transformGeom);
@@ -286,9 +286,9 @@ namespace NetTopologySuite.Geometries.Utilities
         protected virtual IGeometry TransformGeometryCollection(IGeometryCollection geom, IGeometry parent)
         {
             var transGeomList = new List<IGeometry>();
-            for (int i = 0; i < geom.NumGeometries; i++)
+            for (var i = 0; i < geom.NumGeometries; i++)
             {
-                IGeometry transformGeom = Transform(geom.GetGeometryN(i));
+                var transformGeom = Transform(geom.GetGeometryN(i));
                 if (transformGeom == null) continue;
                 if (pruneEmptyGeometry && transformGeom.IsEmpty) continue;
                 transGeomList.Add(transformGeom);

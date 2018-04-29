@@ -69,8 +69,8 @@ namespace NetTopologySuite.Noding
         {
             if (dx == 0.0 && dy == 0.0)
                 throw new ArgumentException("Cannot compute the octant for point ( " + dx + ", " + dy + " )");
-            double adx = System.Math.Abs(dx);
-            double ady = System.Math.Abs(dy);
+            var adx = System.Math.Abs(dx);
+            var ady = System.Math.Abs(dy);
             if (dx >= 0)
             {
                 if (dy >= 0)
@@ -114,8 +114,8 @@ namespace NetTopologySuite.Noding
         /// <returns></returns>
         public static Octants GetOctant(Coordinate p0, Coordinate p1)
         {
-            double dx = p1.X - p0.X;
-            double dy = p1.Y - p0.Y;
+            var dx = p1.X - p0.X;
+            var dy = p1.Y - p0.Y;
             if (dx == 0.0 && dy == 0.0)
                 throw new ArgumentException("Cannot compute the octant for two identical points " + p0);
             return GetOctant(dx, dy);

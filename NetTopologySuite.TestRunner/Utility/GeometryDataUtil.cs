@@ -5,9 +5,9 @@ namespace Open.Topology.TestRunner.Utility
     {
         public static void SetComponentDataToIndex(IGeometry geom)
         {
-            for (int i = 0; i < geom.NumGeometries; i++)
+            for (var i = 0; i < geom.NumGeometries; i++)
             {
-                IGeometry comp = geom.GetGeometryN(i);
+                var comp = geom.GetGeometryN(i);
                 comp.UserData = "Component # " + i;
             }
         }

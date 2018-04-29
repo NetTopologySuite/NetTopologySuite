@@ -24,7 +24,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
     {
         public static bool IsValid(IGeometry a, IGeometry b, SpatialFunction overlayOp, IGeometry result)
         {
-            OverlayResultValidator validator = new OverlayResultValidator(a, b, result);
+            var validator = new OverlayResultValidator(a, b, result);
             return validator.IsValid(overlayOp);
         }
         private static double ComputeBoundaryDistanceTolerance(IGeometry g0, IGeometry g1)
@@ -57,7 +57,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         {
             AddTestPts(_geom[0]);
             AddTestPts(_geom[1]);
-            bool isValid = CheckValid(overlayOp);
+            var isValid = CheckValid(overlayOp);
             /*
             System.out.println("OverlayResultValidator: " + isValid);
             System.out.println("G0");
@@ -72,14 +72,14 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         public Coordinate InvalidLocation { get; private set; }
         private void AddTestPts(IGeometry g)
         {
-            OffsetPointGenerator ptGen = new OffsetPointGenerator(g);
+            var ptGen = new OffsetPointGenerator(g);
             _testCoords.AddRange(ptGen.GetPoints(5 * _boundaryDistanceTolerance));
         }
         private bool CheckValid(SpatialFunction overlayOp)
         {
-            for (int i = 0; i < _testCoords.Count; i++)
+            for (var i = 0; i < _testCoords.Count; i++)
             {
-                Coordinate pt = _testCoords[i];
+                var pt = _testCoords[i];
                 if (!CheckValid(overlayOp, pt))
                 {
                     InvalidLocation = pt;
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         }
         private static bool HasLocation(Location[] location, Location loc)
         {
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 if (location[i] == loc)
                     return true;
@@ -111,10 +111,10 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         }
         private static bool IsValidResult(SpatialFunction overlayOp, Location[] location)
         {
-            bool expectedInterior = OverlayOp.IsResultOfOp(location[0], location[1], overlayOp);
-            bool resultInInterior = (location[2] == Location.Interior);
+            var expectedInterior = OverlayOp.IsResultOfOp(location[0], location[1], overlayOp);
+            var resultInInterior = (location[2] == Location.Interior);
             // MD use simpler: boolean isValid = (expectedInterior == resultInInterior);
-            bool isValid = !(expectedInterior ^ resultInInterior);
+            var isValid = !(expectedInterior ^ resultInInterior);
             if (!isValid) ReportResult(overlayOp, location, expectedInterior);
             return isValid;
         }

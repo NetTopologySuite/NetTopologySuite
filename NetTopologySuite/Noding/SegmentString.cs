@@ -126,7 +126,7 @@ namespace NetTopologySuite.Noding
         /// <param name="intIndex"></param>
         public void AddIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
         {
-            Coordinate intPt = new Coordinate(li.GetIntersection(intIndex));
+            var intPt = new Coordinate(li.GetIntersection(intIndex));
             AddIntersection(intPt, segmentIndex);
         }
         /// <summary>

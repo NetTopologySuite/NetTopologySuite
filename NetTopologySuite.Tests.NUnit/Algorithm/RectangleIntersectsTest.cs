@@ -95,9 +95,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             var rectSegIntersector = new RectangleLineIntersector(_rectEnv);
             var rectSideIntersector = new SimpleRectangleIntersector(_rectEnv);
-            for (int i = 0; i < _pts.Length; i++)
+            for (var i = 0; i < _pts.Length; i++)
             {
-                for (int j = 0; j < _pts.Length; j++)
+                for (var j = 0; j < _pts.Length; j++)
                 {
                     if (i == j) continue;
                     var segResult = false;

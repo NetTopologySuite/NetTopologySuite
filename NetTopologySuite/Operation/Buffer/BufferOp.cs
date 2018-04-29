@@ -99,7 +99,7 @@ namespace NetTopologySuite.Operation.Buffer
             // the smallest power of 10 greater than the buffer envelope
             var bufEnvPrecisionDigits = (int)(Math.Log(bufEnvMax) / Math.Log(10) + 1.0);
             var minUnitLog10 = maxPrecisionDigits - bufEnvPrecisionDigits;
-            double scaleFactor = Math.Pow(10.0, minUnitLog10);
+            var scaleFactor = Math.Pow(10.0, minUnitLog10);
             return scaleFactor;
         }
         /*
@@ -240,7 +240,7 @@ namespace NetTopologySuite.Operation.Buffer
         {
             BufferOriginalPrecision();
             if (_resultGeometry != null) return;
-            IPrecisionModel argPrecModel = _argGeom.Factory.PrecisionModel;
+            var argPrecModel = _argGeom.Factory.PrecisionModel;
             if (argPrecModel.PrecisionModelType == PrecisionModels.Fixed)
                 BufferFixedPrecision(argPrecModel);
             else
@@ -249,7 +249,7 @@ namespace NetTopologySuite.Operation.Buffer
         private void BufferReducedPrecision()
         {
             // try and compute with decreasing precision
-            for (int precDigits = MaxPrecisionDigits; precDigits >= 0; precDigits--)
+            for (var precDigits = MaxPrecisionDigits; precDigits >= 0; precDigits--)
             {
                 try
                 {
@@ -284,7 +284,7 @@ namespace NetTopologySuite.Operation.Buffer
         }
         private void BufferReducedPrecision(int precisionDigits)
         {
-            double sizeBasedScaleFactor = PrecisionScaleFactor(_argGeom, _distance, precisionDigits);
+            var sizeBasedScaleFactor = PrecisionScaleFactor(_argGeom, _distance, precisionDigits);
             //    System.out.println("recomputing with precision scale factor = " + sizeBasedScaleFactor);
             var fixedPrecModel = new PrecisionModel(sizeBasedScaleFactor);
             BufferFixedPrecision(fixedPrecModel);

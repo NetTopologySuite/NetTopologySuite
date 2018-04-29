@@ -28,9 +28,9 @@ namespace NetTopologySuite.IO
         public static String ToHex(byte[] bytes)
         {
             var buf = new StringBuilder(bytes.Length * 2);
-            for (int i = 0; i < bytes.Length; i++)
+            for (var i = 0; i < bytes.Length; i++)
             {
-                byte b = bytes[i];
+                var b = bytes[i];
                 buf.Append(ToHexDigit((b >> 4) & 0x0F));
                 buf.Append(ToHexDigit(b & 0x0F));
             }
@@ -223,7 +223,7 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         public virtual byte[] Write(IGeometry geometry)
         {
-            byte[] bytes = GetBytes(geometry);
+            var bytes = GetBytes(geometry);
             Write(geometry, new MemoryStream(bytes));
             return bytes;
         }
@@ -382,7 +382,7 @@ namespace NetTopologySuite.IO
             //else writer.Write((int)WKBGeometryTypes.WKBPolygonZ);
             writer.Write(polygon.NumInteriorRings + 1);
             Write(polygon.ExteriorRing as ILinearRing, writer);
-            for (int i = 0; i < polygon.NumInteriorRings; i++)
+            for (var i = 0; i < polygon.NumInteriorRings; i++)
                 Write(polygon.InteriorRings[i] as ILinearRing, writer);
         }
         /// <summary>
@@ -502,7 +502,7 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         protected int SetByteStream(IGeometryCollection geometry)
         {
-            int count = InitCount;
+            var count = InitCount;
             count += 4;
             foreach (var geom in geometry.Geometries)
                 count += SetByteStream(geom);
@@ -515,7 +515,7 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         protected int SetByteStream(IMultiPolygon geometry)
         {
-            int count = InitCount;
+            var count = InitCount;
             count += 4;
             foreach (IPolygon geom in geometry.Geometries)
                 count += SetByteStream(geom);
@@ -528,7 +528,7 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         protected int SetByteStream(IMultiLineString geometry)
         {
-            int count = InitCount;
+            var count = InitCount;
             count += 4;
             foreach (ILineString geom in geometry.Geometries)
                 count += SetByteStream(geom);
@@ -541,7 +541,7 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         protected int SetByteStream(IMultiPoint geometry)
         {
-            int count = InitCount;
+            var count = InitCount;
             count += 4;     // NumPoints
             foreach (IPoint geom in geometry.Geometries)
                 count += SetByteStream(geom);
@@ -568,9 +568,9 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         protected int SetByteStream(ILineString geometry)
         {
-            int pointSize = _coordinateSize; //Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
-            int numPoints = geometry.NumPoints;
-            int count = InitCount;
+            var pointSize = _coordinateSize; //Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
+            var numPoints = geometry.NumPoints;
+            var count = InitCount;
             count += 4;                             // NumPoints
             count += pointSize * numPoints;
             return count;

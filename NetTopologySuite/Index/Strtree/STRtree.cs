@@ -145,7 +145,7 @@ namespace NetTopologySuite.Index.Strtree
         {
             Assert.IsTrue(verticalSlices.Length > 0);
             var parentBoundables = new List<IBoundable<Envelope, TItem>>();
-            for (int i = 0; i < verticalSlices.Length; i++)
+            for (var i = 0; i < verticalSlices.Length; i++)
             {
                 var tempList = CreateParentBoundablesFromVerticalSlice(verticalSlices[i], newLevel);
                 foreach (var o in tempList)
@@ -480,9 +480,9 @@ namespace NetTopologySuite.Index.Strtree
              * Iterate the K Nearest Neighbour Queue and retrieve the item from each BoundablePair
              * in this queue
              */
-            TItem[] items = new TItem[kNearestNeighbors.Size];
+            var items = new TItem[kNearestNeighbors.Size];
             var resultIterator = kNearestNeighbors.GetEnumerator();
-            int count = 0;
+            var count = 0;
             while (resultIterator.MoveNext())
             {
                 items[count] = ((ItemBoundable<Envelope, TItem>)resultIterator.Current.GetBoundable(0)).Item;

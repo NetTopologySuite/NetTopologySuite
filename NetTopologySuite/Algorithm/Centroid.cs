@@ -42,7 +42,7 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public static Coordinate GetCentroid(IGeometry geom)
         {
-            Centroid cent = new Centroid(geom);
+            var cent = new Centroid(geom);
             return cent.GetCentroid();
         }
         /// <summary>
@@ -92,13 +92,13 @@ namespace NetTopologySuite.Algorithm
             }
             else if (geom is IPolygon)
             {
-                IPolygon poly = (IPolygon)geom;
+                var poly = (IPolygon)geom;
                 Add(poly);
             }
             else if (geom is IGeometryCollection)
             {
-                IGeometryCollection gc = (IGeometryCollection)geom;
-                for (int i = 0; i < gc.NumGeometries; i++)
+                var gc = (IGeometryCollection)geom;
+                for (var i = 0; i < gc.NumGeometries; i++)
                 {
                     Add(gc.GetGeometryN(i));
                 }
@@ -116,7 +116,7 @@ namespace NetTopologySuite.Algorithm
              * Degenerate geometry are computed using their effective dimension
              * (e.g. areas may degenerate to lines or points)
              */
-            Coordinate cent = new Coordinate();
+            var cent = new Coordinate();
             if (Math.Abs(_areasum2) > 0.0)
             {
                 // Input contains areal geometry
@@ -148,7 +148,7 @@ namespace NetTopologySuite.Algorithm
         private void Add(IPolygon poly)
         {
             AddShell(poly.ExteriorRing.Coordinates);
-            for (int i = 0; i < poly.NumInteriorRings; i++)
+            for (var i = 0; i < poly.NumInteriorRings; i++)
             {
                 AddHole(poly.GetInteriorRingN(i).Coordinates);
             }
@@ -157,8 +157,8 @@ namespace NetTopologySuite.Algorithm
         {
             if (pts.Length > 0)
                 SetAreaBasePoint(pts[0]);
-            bool isPositiveArea = !Orientation.IsCCW(pts);
-            for (int i = 0; i < pts.Length - 1; i++)
+            var isPositiveArea = !Orientation.IsCCW(pts);
+            for (var i = 0; i < pts.Length - 1; i++)
             {
                 AddTriangle(_areaBasePt, pts[i], pts[i + 1], isPositiveArea);
             }
@@ -166,8 +166,8 @@ namespace NetTopologySuite.Algorithm
         }
         private void AddHole(Coordinate[] pts)
         {
-            bool isPositiveArea = Orientation.IsCCW(pts);
-            for (int i = 0; i < pts.Length - 1; i++)
+            var isPositiveArea = Orientation.IsCCW(pts);
+            for (var i = 0; i < pts.Length - 1; i++)
             {
                 AddTriangle(_areaBasePt, pts[i], pts[i + 1], isPositiveArea);
             }
@@ -175,9 +175,9 @@ namespace NetTopologySuite.Algorithm
         }
         private void AddTriangle(Coordinate p0, Coordinate p1, Coordinate p2, bool isPositiveArea)
         {
-            double sign = (isPositiveArea) ? 1.0 : -1.0;
+            var sign = (isPositiveArea) ? 1.0 : -1.0;
             Centroid3(p0, p1, p2, _triangleCent3);
-            double area2 = Area2(p0, p1, p2);
+            var area2 = Area2(p0, p1, p2);
             _cg3.X += sign * area2 * _triangleCent3.X;
             _cg3.Y += sign * area2 * _triangleCent3.Y;
             _areasum2 += sign * area2;
@@ -209,16 +209,16 @@ namespace NetTopologySuite.Algorithm
         /// <param name="pts">An array of <see cref="Coordinate"/>s</param>
         private void AddLineSegments(Coordinate[] pts)
         {
-            double lineLen = 0.0d;
-            for (int i = 0; i < pts.Length - 1; i++)
+            var lineLen = 0.0d;
+            for (var i = 0; i < pts.Length - 1; i++)
             {
-                double segmentLen = pts[i].Distance(pts[i + 1]);
+                var segmentLen = pts[i].Distance(pts[i + 1]);
                 if (segmentLen == 0.0)
                     continue;
                 lineLen += segmentLen;
-                double midx = (pts[i].X + pts[i + 1].X) / 2;
+                var midx = (pts[i].X + pts[i + 1].X) / 2;
                 _lineCentSum.X += segmentLen * midx;
-                double midy = (pts[i].Y + pts[i + 1].Y) / 2;
+                var midy = (pts[i].Y + pts[i + 1].Y) / 2;
                 _lineCentSum.Y += segmentLen * midy;
             }
             _totalLength += lineLen;

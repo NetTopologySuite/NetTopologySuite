@@ -60,7 +60,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 return;
             }
             // Point lies on line - check to see whether it lies in line segment.
-            double dist = RParameter(p1, p2, p);
+            var dist = RParameter(p1, p2, p);
             if (dist < 0.0 || dist > 1.0)
             {
                 Result = NoIntersection;
@@ -137,12 +137,12 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             /*
             *  Line segments intersect: compute intersection point.
             */
-            double denom = a1 * b2 - a2 * b1;
+            var denom = a1 * b2 - a2 * b1;
             if (denom == 0)
                 return ComputeCollinearIntersection(p1, p2, p3, p4);
-            double numX = b1 * c2 - b2 * c1;
+            var numX = b1 * c2 - b2 * c1;
             Pa.X = numX / denom;
-            double numY = a2 * c1 - a1 * c2;
+            var numY = a2 * c1 - a1 * c2;
             Pa.Y = numY / denom;
             // check if this is a proper intersection BEFORE truncating values,
             // to avoid spurious equality comparisons with endpoints
@@ -223,8 +223,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             // compute maximum delta, for numerical stability
             // also handle case of p1-p2 being vertical or horizontal
             double r;
-            double dx = Math.Abs(p2.X - p1.X);
-            double dy = Math.Abs(p2.Y - p1.Y);
+            var dx = Math.Abs(p2.X - p1.X);
+            var dy = Math.Abs(p2.Y - p1.Y);
             if (dx > dy)
                  r = (p.X - p1.X) / (p2.X - p1.X);
             else r = (p.Y - p1.Y) / (p2.Y - p1.Y);

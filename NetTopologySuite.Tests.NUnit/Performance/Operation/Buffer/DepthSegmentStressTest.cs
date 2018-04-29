@@ -63,15 +63,15 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
         }
         private static bool IsSymmetric(DepthSegment seg1, DepthSegment seg2)
         {
-            int cmp12 = seg1.CompareTo(seg2);
-            int cmp21 = seg2.CompareTo(seg1);
+            var cmp12 = seg1.CompareTo(seg2);
+            var cmp21 = seg2.CompareTo(seg1);
             return cmp12 == -cmp21;
         }
         private bool IsTransitive(DepthSegment seg1, DepthSegment seg2, DepthSegment seg3)
         {
-            int cmp12 = seg1.CompareTo(seg2);
-            int cmp23 = seg2.CompareTo(seg3);
-            int cmp13 = seg1.CompareTo(seg3);
+            var cmp12 = seg1.CompareTo(seg2);
+            var cmp23 = seg2.CompareTo(seg3);
+            var cmp13 = seg1.CompareTo(seg3);
             if (cmp12 > 0 && cmp23 > 0)
             {
                 if (cmp13 <= 0)
@@ -85,7 +85,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
         private List<DepthSegment> CreateRandomDepthSegments(int n)
         {
             var segs = new List<DepthSegment>();
-            for (int i = 0; i < n; i++)
+            for (var i = 0; i < n; i++)
             {
                 segs.Add(CreateRandomDepthSegment());
             }
@@ -98,13 +98,13 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
         private DepthSegment CreateRandomDepthSegment()
         {
             double scale = 10;
-            int max = 10;
+            var max = 10;
             double x0 = Randint(max);
             double y0 = Randint(max);
-            double ang = 2*Math.PI*_rnd.NextDouble();
-            double x1 = Math.Round(x0 + max*Math.Cos(ang), MidpointRounding.AwayFromZero);
-            double y1 = Math.Round(y0 + max*Math.Sin(ang), MidpointRounding.AwayFromZero);
-            LineSegment seg = new LineSegment(x0, y0, x1, y1);
+            var ang = 2*Math.PI*_rnd.NextDouble();
+            var x1 = Math.Round(x0 + max*Math.Cos(ang), MidpointRounding.AwayFromZero);
+            var y1 = Math.Round(y0 + max*Math.Sin(ang), MidpointRounding.AwayFromZero);
+            var seg = new LineSegment(x0, y0, x1, y1);
             seg.Normalize();
             return new DepthSegment(seg, 0);
         }
@@ -144,7 +144,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
                 if (!envelopesOverlap(upwardSeg, other.upwardSeg))
                     return upwardSeg.CompareTo(other.upwardSeg);
                 // check orientations
-                int orientIndex = upwardSeg.OrientationIndex(other.upwardSeg);
+                var orientIndex = upwardSeg.OrientationIndex(other.upwardSeg);
                 if (orientIndex != 0) return orientIndex;
                 orientIndex = -other.upwardSeg.OrientationIndex(upwardSeg);
                 if (orientIndex != 0) return orientIndex;
@@ -153,7 +153,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             }
             public int XcompareTo(Object obj)
             {
-                DepthSegment other = (DepthSegment) obj;
+                var other = (DepthSegment) obj;
                 // if segments are collinear and vertical compare endpoints
                 if (isVertical() && other.isVertical()
                     && upwardSeg.P0.X == other.upwardSeg.P0.X)
@@ -165,7 +165,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
                  * try and compute a determinate orientation for the segments.
                  * Test returns 1 if other is left of this (i.e. this > other)
                  */
-                int orientIndex = upwardSeg.OrientationIndex(other.upwardSeg);
+                var orientIndex = upwardSeg.OrientationIndex(other.upwardSeg);
                 // if orientation is determinate, return it
                 if (orientIndex != 0)
                     return orientIndex;
@@ -209,7 +209,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
      */
             private int compareX(LineSegment seg0, LineSegment seg1)
             {
-                int compare0 = seg0.P0.CompareTo(seg1.P0);
+                var compare0 = seg0.P0.CompareTo(seg1.P0);
                 if (compare0 != 0)
                     return compare0;
                 return seg0.P1.CompareTo(seg1.P1);

@@ -138,7 +138,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [Explicit("doesn't works on my machine")]
         public void RepeatedTestThreading()
         {
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
                 ThreadPool.QueueUserWorkItem(o => DoTestThreading(), i);
         }
         [TestAttribute]
@@ -149,9 +149,9 @@ namespace NetTopologySuite.Tests.NUnit.IO
         }
         public void DoTestThreading()
         {
-            IGeometryServices services = GeometryServiceProvider.Instance;
+            var services = GeometryServiceProvider.Instance;
             services.CreateGeometryFactory();
-            int before = ((NtsGeometryServices) services).NumFactories;
+            var before = ((NtsGeometryServices) services).NumFactories;
             Debug.WriteLine("{0} factories already created", before);
             var wkts = new[]
                 {
@@ -167,13 +167,13 @@ namespace NetTopologySuite.Tests.NUnit.IO
             int[] srids = {4326, 31467, 3857};
             const int numJobs = 30;
             var waitHandles = new WaitHandle[numJobs];
-            for (int i = 0; i < numJobs; i++)
+            for (var i = 0; i < numJobs; i++)
             {
                 waitHandles[i] = new AutoResetEvent(false);
                 ThreadPool.QueueUserWorkItem(TestReaderInThreadedContext, new object[] {wkts, waitHandles[i], srids, i});
             }
             WaitHandle.WaitAll(waitHandles, 10000);
-            int after = ((NtsGeometryServices)services).NumFactories;
+            var after = ((NtsGeometryServices)services).NumFactories;
             Console.WriteLine("Now {0} factories created", after);
             Assert.LessOrEqual(after, before + srids.Length);
         }

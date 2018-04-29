@@ -55,28 +55,28 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
         {
             if (!_expectedSameStructure)
                 return this;
-            bool test = SameStructureTester.IsSameStructure(_ioGeometry[0], _ioGeometry[1]);
+            var test = SameStructureTester.IsSameStructure(_ioGeometry[0], _ioGeometry[1]);
             Assert.IsTrue(test, "simplified geometry has different structure than input");
             return this;
         }
         public GeometryOperationValidator TestValid()
         {
-            bool test = _ioGeometry[1].IsValid;
+            var test = _ioGeometry[1].IsValid;
             Assert.IsTrue(test, "simplified geometry is not valid");
             return this;
         }
         public GeometryOperationValidator TestEmpty(bool isEmpty)
         {
-            String failureCondition = isEmpty ? "not empty" : "empty";
-            bool test = _ioGeometry[1].IsEmpty == isEmpty;
+            var failureCondition = isEmpty ? "not empty" : "empty";
+            var test = _ioGeometry[1].IsEmpty == isEmpty;
             Assert.IsTrue(test, String.Format("simplified geometry is {0}", failureCondition));
             return this;
         }
         private void TestExpectedResult()
         {
             if (_wktExpected == null) return;
-            IGeometry expectedGeom = _reader.Read(_wktExpected);
-            bool test = expectedGeom.EqualsExact(_ioGeometry[1]);
+            var expectedGeom = _reader.Read(_wktExpected);
+            var test = expectedGeom.EqualsExact(_ioGeometry[1]);
             Assert.IsTrue(test, "Expected result not found");
         }
     }

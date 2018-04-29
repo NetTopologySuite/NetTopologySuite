@@ -36,15 +36,15 @@ namespace NetTopologySuite.Triangulate
         }
         public void LoadSourceGeometries(IGeometryCollection geomColl)
         {
-            for (int i = 0; i < geomColl.NumGeometries; i++)
+            for (var i = 0; i < geomColl.NumGeometries; i++)
             {
-                IGeometry geom = geomColl.GetGeometryN(i);
+                var geom = geomColl.GetGeometryN(i);
                 LoadVertices(geom.Coordinates, geom.UserData);
             }
         }
         private void LoadVertices(Coordinate[] pts, object data)
         {
-            for (int i = 0; i < pts.Length; i++)
+            for (var i = 0; i < pts.Length; i++)
             {
                 _coordDataMap.Add(pts[i], data);
             }
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Triangulate
         /// <param name="targetGeom" />
         public void TransferData(IGeometry targetGeom)
         {
-            for (int i = 0; i < targetGeom.NumGeometries; i++)
+            for (var i = 0; i < targetGeom.NumGeometries; i++)
             {
                 var geom = targetGeom.GetGeometryN(i);
                 var vertexKey = (Coordinate)geom.UserData;

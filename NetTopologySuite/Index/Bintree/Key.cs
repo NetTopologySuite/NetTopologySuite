@@ -17,8 +17,8 @@ namespace NetTopologySuite.Index.Bintree
         /// <returns></returns>
         public static int ComputeLevel(Interval interval)
         {
-            double dx = interval.Width;
-            int level = DoubleBits.GetExponent(dx) + 1;
+            var dx = interval.Width;
+            var level = DoubleBits.GetExponent(dx) + 1;
             return level;
         }
         // the fields which make up the key

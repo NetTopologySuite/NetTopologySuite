@@ -190,8 +190,8 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns></returns>
         protected Coordinate[] GetClonedCoordinates()
         {
-            Coordinate[] cloneCoordinates = new Coordinate[Count];
-            for (int i = 0; i < Coordinates.Length; i++)
+            var cloneCoordinates = new Coordinate[Count];
+            for (var i = 0; i < Coordinates.Length; i++)
                 cloneCoordinates[i] = Coordinates[i].Copy();
             return cloneCoordinates;
         }
@@ -238,7 +238,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>A reference to the expanded envelope.</returns>
         public Envelope ExpandEnvelope(Envelope env)
         {
-            for (int i = 0; i < Coordinates.Length; i++ )
+            for (var i = 0; i < Coordinates.Length; i++ )
                 env.ExpandToInclude(Coordinates[i]);
             return env;
         }
@@ -259,10 +259,10 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             if (Coordinates.Length > 0)
             {
-                StringBuilder strBuf = new StringBuilder(17 * Coordinates.Length);
+                var strBuf = new StringBuilder(17 * Coordinates.Length);
                 strBuf.Append('(');
                 strBuf.Append(Coordinates[0]);
-                for (int i = 1; i < Coordinates.Length; i++)
+                for (var i = 1; i < Coordinates.Length; i++)
                 {
                     strBuf.Append(", ");
                     strBuf.Append(Coordinates[i]);

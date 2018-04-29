@@ -120,12 +120,12 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns></returns>
         public Coordinate[] ToCoordinateArray()
         {
-            Coordinate[] arr = GetCachedCoords();
+            var arr = GetCachedCoords();
             // testing - never cache
             if (arr != null)
                 return arr;
             arr = new Coordinate[Count];
-            for (int i = 0; i < arr.Length; i++)
+            for (var i = 0; i < arr.Length; i++)
                 arr[i] = GetCoordinateInternal(i);
             CoordRef = new WeakReference(arr);
             return arr;
@@ -284,7 +284,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             _coords = new double[coordinates.Length];
             Dimension = dimensions;
-            for (int i = 0; i < coordinates.Length; i++)
+            for (var i = 0; i < coordinates.Length; i++)
                 _coords[i] = coordinates[i];
         }
         /// <summary>
@@ -298,7 +298,7 @@ namespace NetTopologySuite.Geometries.Implementation
                 coordinates = new Coordinate[0];
             Dimension = dimension;
             _coords = new double[coordinates.Length * Dimension];
-            for (int i = 0; i < coordinates.Length; i++)
+            for (var i = 0; i < coordinates.Length; i++)
             {
                 _coords[i * Dimension] = coordinates[i].X;
                 if (Dimension >= 2)
@@ -330,9 +330,9 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns></returns>
         protected override Coordinate GetCoordinateInternal(int index)
         {
-            double x = _coords[index * Dimension];
-            double y = _coords[index * Dimension + 1];
-            double z = Dimension == 2 ? Coordinate.NullOrdinate : _coords[index * Dimension + 2];
+            var x = _coords[index * Dimension];
+            var y = _coords[index * Dimension + 1];
+            var z = Dimension == 2 ? Coordinate.NullOrdinate : _coords[index * Dimension + 2];
             return new Coordinate(x, y, z);
         }
         /// <summary>
@@ -362,7 +362,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <inheritdoc cref="ICoordinateSequence.Copy"/>
         public override ICoordinateSequence Copy()
         {
-            double[] clone = new double[_coords.Length];
+            var clone = new double[_coords.Length];
             Array.Copy(_coords, clone, _coords.Length);
             return new PackedDoubleCoordinateSequence(clone, Dimension);
         }
@@ -409,7 +409,7 @@ namespace NetTopologySuite.Geometries.Implementation
         public override Envelope ExpandEnvelope(Envelope env)
         {
             var dim = Dimension;
-            for (int i = 0; i < _coords.Length; i += dim)
+            for (var i = 0; i < _coords.Length; i += dim)
                 env.ExpandToInclude(_coords[i], _coords[i + 1]);
             return env;
         }
@@ -461,7 +461,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             _coords = new float[coordinates.Length];
             Dimension = dimensions;
-            for (int i = 0; i < coordinates.Length; i++)
+            for (var i = 0; i < coordinates.Length; i++)
                 _coords[i] = (float) coordinates[i];
         }
         /// <summary>
@@ -475,7 +475,7 @@ namespace NetTopologySuite.Geometries.Implementation
                 coordinates = new Coordinate[0];
             Dimension = dimension;
             _coords = new float[coordinates.Length * Dimension];
-            for (int i = 0; i < coordinates.Length; i++)
+            for (var i = 0; i < coordinates.Length; i++)
             {
                 _coords[i * Dimension] = (float) coordinates[i].X;
                 if (Dimension >= 2)
@@ -504,7 +504,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             double x = _coords[index * Dimension];
             double y = _coords[index * Dimension + 1];
-            double z = Dimension == 2 ? 0.0 : _coords[index * Dimension + 2];
+            var z = Dimension == 2 ? 0.0 : _coords[index * Dimension + 2];
             return new Coordinate(x, y, z);
         }
         /// <summary>
@@ -534,7 +534,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <inheritdoc cref="ICoordinateSequence.Copy"/>
         public override ICoordinateSequence Copy()
         {
-            float[] clone = new float[_coords.Length];
+            var clone = new float[_coords.Length];
             Array.Copy(_coords, clone, _coords.Length);
             return new PackedFloatCoordinateSequence(clone, Dimension);
         }
@@ -580,7 +580,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>A reference to the expanded envelope.</returns>
         public override Envelope ExpandEnvelope(Envelope env)
         {
-        for (int i = 0; i < _coords.Length; i += Dimension )
+        for (var i = 0; i < _coords.Length; i += Dimension )
             env.ExpandToInclude(_coords[i], _coords[i + 1]);
         return env;
         }

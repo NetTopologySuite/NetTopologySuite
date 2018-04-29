@@ -31,8 +31,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns>Label as Line label.</returns>
         public static Label ToLineLabel(Label label)
         {
-            Label lineLabel = new Label(Location.Null);
-            for (int i = 0; i < 2; i++)
+            var lineLabel = new Label(Location.Null);
+            for (var i = 0; i < 2; i++)
                 lineLabel.SetLocation(i, label.GetLocation(i));
             return lineLabel;
         }
@@ -174,7 +174,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="lbl"></param>
         public  void Merge(Label lbl)
         {
-            for (int i = 0; i < 2; i++)
+            for (var i = 0; i < 2; i++)
             {
                 if (elt[i] == null && lbl.elt[i] != null)
                      elt[i] = new TopologyLocation(lbl.elt[i]);
@@ -199,7 +199,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             get
             {
-                int count = 0;
+                var count = 0;
                 if (!elt[0].IsNull)
                     count++;
                 if (!elt[1].IsNull)
@@ -292,7 +292,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             if (elt[0] != null)
             {
                 sb.Append("A:");

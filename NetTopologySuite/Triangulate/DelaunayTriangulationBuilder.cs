@@ -22,7 +22,7 @@ namespace NetTopologySuite.Triangulate
         {
             if (geom == null)
                 return new CoordinateList();
-            Coordinate[] coords = geom.Coordinates;
+            var coords = geom.Coordinates;
             return Unique(coords);
         }
         public static CoordinateList Unique(Coordinate[] coords)
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Triangulate
         /// <returns>the envelope of the set of coordinates</returns>
         public static Envelope Envelope(ICollection<Coordinate> coords)
         {
-            Envelope env = new Envelope();
+            var env = new Envelope();
             foreach (var coord in coords)
             {
                 env.ExpandToInclude(coord);
@@ -99,7 +99,7 @@ namespace NetTopologySuite.Triangulate
             var siteEnv = Envelope(_siteCoords);
             var vertices = ToVertices(_siteCoords);
             _subdiv = new QuadEdgeSubdivision(siteEnv, _tolerance);
-            IncrementalDelaunayTriangulator triangulator = new IncrementalDelaunayTriangulator(_subdiv);
+            var triangulator = new IncrementalDelaunayTriangulator(_subdiv);
             triangulator.InsertSites(vertices);
         }
         /// <summary>

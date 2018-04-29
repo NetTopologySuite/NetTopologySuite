@@ -35,8 +35,8 @@ namespace NetTopologySuite.Triangulate
         public Coordinate SplitPoint { get; private set; }
         public void SplitAt(double length, Coordinate endPt)
         {
-            double actualLen = GetConstrainedLength(length);
-            double frac = actualLen/_segLen;
+            var actualLen = GetConstrainedLength(length);
+            var frac = actualLen/_segLen;
             if (endPt.Equals2D(_seg.P0))
                 SplitPoint = _seg.PointAlong(frac);
             else
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Triangulate
         public void SplitAt(Coordinate pt)
         {
             // check that given pt doesn't violate min length
-            double minFrac = MinimumLength/_segLen;
+            var minFrac = MinimumLength/_segLen;
             if (pt.Distance(_seg.P0) < MinimumLength)
             {
                 SplitPoint = _seg.PointAlong(minFrac);

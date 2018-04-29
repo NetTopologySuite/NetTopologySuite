@@ -60,17 +60,17 @@ namespace NetTopologySuite.Algorithm
             }
             else
             {
-                double denom = (B.X - A.X) * (D.Y - C.Y) - (B.Y - A.Y) * (D.X - C.X);
+                var denom = (B.X - A.X) * (D.Y - C.Y) - (B.Y - A.Y) * (D.X - C.X);
                 if (denom == 0)
                 {
                     noIntersection = true;
                 }
                 else
                 {
-                    double r_num = (A.Y - C.Y) * (D.X - C.X) - (A.X - C.X) * (D.Y - C.Y);
-                    double s_num = (A.Y - C.Y) * (B.X - A.X) - (A.X - C.X) * (B.Y - A.Y);
-                    double s = s_num / denom;
-                    double r = r_num / denom;
+                    var r_num = (A.Y - C.Y) * (D.X - C.X) - (A.X - C.X) * (D.Y - C.Y);
+                    var s_num = (A.Y - C.Y) * (B.X - A.X) - (A.X - C.X) * (B.Y - A.Y);
+                    var s = s_num / denom;
+                    var r = r_num / denom;
                     if ((r < 0) || (r > 1) || (s < 0) || (s > 1))
                     {
                         noIntersection = true;
@@ -162,8 +162,8 @@ namespace NetTopologySuite.Algorithm
              *   r>1 P is on the forward extension of AB
              *   0<r<1 P is interior to AB
              */
-            double len2 = (B.X - A.X) * (B.X - A.X) + (B.Y - A.Y) * (B.Y - A.Y);
-            double r = ((p.X - A.X) * (B.X - A.X) + (p.Y - A.Y) * (B.Y - A.Y))
+            var len2 = (B.X - A.X) * (B.X - A.X) + (B.Y - A.Y) * (B.Y - A.Y);
+            var r = ((p.X - A.X) * (B.X - A.X) + (p.Y - A.Y) * (B.Y - A.Y))
                 / len2;
             if (r <= 0.0)
                 return p.Distance(A);

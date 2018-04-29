@@ -232,7 +232,7 @@ namespace NetTopologySuite.Operation.Polygonize
         }
         private static void AssignHolesToShells(IEnumerable<EdgeRing> holeList, List<EdgeRing> shellList)
         {
-            foreach (EdgeRing holeEdgeRing in holeList)
+            foreach (var holeEdgeRing in holeList)
             {
                 AssignHoleToShell(holeEdgeRing, shellList);
                 /*

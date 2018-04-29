@@ -32,10 +32,10 @@ namespace Open.Topology.TestRunner
             {
                 if (index >= 0 && index < FileNames.Count)
                 {
-                    string fileName = FileNames[index];
+                    var fileName = FileNames[index];
                     if (m_objCurrentDoc != null && m_objCurrentDoc.LoadFile(fileName))
                     {
-                        XmlTestCollection listTests = m_objCurrentDoc.CurrentTests;
+                        var listTests = m_objCurrentDoc.CurrentTests;
                         if (listTests != null && listTests.Count > 0)
                             return listTests.RunTests();
                     }
@@ -49,8 +49,8 @@ namespace Open.Topology.TestRunner
                 FileNames = new StringCollection();
             try
             {
-                string[] dirs = Directory.GetFiles(directory, "*.xml");
-                foreach (string dir in dirs)
+                var dirs = Directory.GetFiles(directory, "*.xml");
+                foreach (var dir in dirs)
                     FileNames.Add(dir);
                 return true;
             }

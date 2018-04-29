@@ -42,8 +42,8 @@ namespace NetTopologySuite.Algorithm
                 AddInterior(geom.Coordinates);
             else if(geom is IGeometryCollection)
             {
-                IGeometryCollection gc = (IGeometryCollection) geom;
-                foreach (IGeometry geometry in gc.Geometries)
+                var gc = (IGeometryCollection) geom;
+                foreach (var geometry in gc.Geometries)
                     AddInterior(geometry);
             }
         }
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="pts"></param>
         private void AddInterior(Coordinate[] pts)
         {
-            for (int i = 1; i < pts.Length - 1; i++)
+            for (var i = 1; i < pts.Length - 1; i++)
                 Add(pts[i]);
         }
         /// <summary>
@@ -68,8 +68,8 @@ namespace NetTopologySuite.Algorithm
                 AddEndpoints(geom.Coordinates);
             else if(geom is IGeometryCollection)
             {
-                IGeometryCollection gc = (IGeometryCollection) geom;
-                foreach (IGeometry geometry in gc.Geometries)
+                var gc = (IGeometryCollection) geom;
+                foreach (var geometry in gc.Geometries)
                     AddEndpoints(geometry);
             }
         }
@@ -88,7 +88,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="point"></param>
         private void Add(Coordinate point)
         {
-            double dist = point.Distance(_centroid);
+            var dist = point.Distance(_centroid);
             if (dist < _minDistance)
             {
                 InteriorPoint = new Coordinate(point);

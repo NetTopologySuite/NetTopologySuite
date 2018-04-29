@@ -122,7 +122,7 @@ namespace NetTopologySuite.Index.Bintree
         /// <returns><c>true</c> if the item was found (and thus removed)</returns>
         public bool Remove(Interval itemInterval, T item)
         {
-            Interval insertInterval = EnsureExtent(itemInterval, _minExtent);
+            var insertInterval = EnsureExtent(itemInterval, _minExtent);
             return _root.Remove(insertInterval, item);
         }
         /// <summary>
@@ -179,7 +179,7 @@ namespace NetTopologySuite.Index.Bintree
         /// <param name="interval"></param>
         private void CollectStats(Interval interval)
         {
-            double del = interval.Width;
+            var del = interval.Width;
             if (del < _minExtent && del > 0.0)
                 _minExtent = del;
         }

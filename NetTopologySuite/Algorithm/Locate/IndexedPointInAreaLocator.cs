@@ -88,17 +88,17 @@ namespace NetTopologySuite.Algorithm.Locate
                 var lines = LinearComponentExtracter.GetLines(geom);
                 foreach (ILineString line in lines)
                 {
-                    Coordinate[] pts = line.Coordinates;
+                    var pts = line.Coordinates;
                     AddLine(pts);
                 }
             }
             private void AddLine(Coordinate[] pts)
             {
-                for (int i = 1; i < pts.Length; i++)
+                for (var i = 1; i < pts.Length; i++)
                 {
-                    LineSegment seg = new LineSegment(pts[i - 1], pts[i]);
-                    double min = Math.Min(seg.P0.Y, seg.P1.Y);
-                    double max = Math.Max(seg.P0.Y, seg.P1.Y);
+                    var seg = new LineSegment(pts[i - 1], pts[i]);
+                    var min = Math.Min(seg.P0.Y, seg.P1.Y);
+                    var max = Math.Max(seg.P0.Y, seg.P1.Y);
                     _index.Insert(min, max, seg);
                 }
             }

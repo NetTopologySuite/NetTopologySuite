@@ -242,8 +242,8 @@ namespace NetTopologySuite.Index.KdTree
                 max = queryEnv.MaxY;
                 discriminant = currentNode.Y;
             }
-            bool searchLeft = min < discriminant;
-            bool searchRight = discriminant <= max;
+            var searchLeft = min < discriminant;
+            var searchRight = discriminant <= max;
             // search is computed via in-order traversal
             if (searchLeft)
             {

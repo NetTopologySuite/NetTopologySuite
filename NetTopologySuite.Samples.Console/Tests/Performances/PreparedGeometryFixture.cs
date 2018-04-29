@@ -35,17 +35,17 @@ namespace NetTopologySuite.Samples.Tests.Performances
         }
         private Coordinate gimme_a_coord()
         {
-            int x = _generator.Next();
-            int y = _generator.Next();
+            var x = _generator.Next();
+            var y = _generator.Next();
             return new Coordinate(x, y);
         }
         private IEnumerable<IPolygon> create_polygons(int total)
         {
-            int count = 0;
+            var count = 0;
             while (count++ < total)
             {
-                Coordinate[] coords = new Coordinate[NumShellCoords];
-                for (int j = 0; j < NumShellCoords - 1; j++)
+                var coords = new Coordinate[NumShellCoords];
+                for (var j = 0; j < NumShellCoords - 1; j++)
                     coords[j] = gimme_a_coord();
                 coords[NumShellCoords - 1] = coords[0];
                 yield return _factory.CreatePolygon(coords);
@@ -53,11 +53,11 @@ namespace NetTopologySuite.Samples.Tests.Performances
         }
         private void TestPerformances(int total)
         {
-            IPoint point = _factory.CreatePoint(gimme_a_coord());
-            IEnumerable<IPolygon> polygons = create_polygons(total);
-            IEnumerable<IPreparedGeometry> prepared = polygons.Select(PreparedGeometryFactory.Prepare);
-            Stopwatch sw = Stopwatch.StartNew();
-            int match = prepared.Count(pg => pg.Contains(point));
+            var point = _factory.CreatePoint(gimme_a_coord());
+            var polygons = create_polygons(total);
+            var prepared = polygons.Select(PreparedGeometryFactory.Prepare);
+            var sw = Stopwatch.StartNew();
+            var match = prepared.Count(pg => pg.Contains(point));
             sw.Stop();
             Console.WriteLine("matched '{0}' of '{1}': elapsed time: '{2}'", match, total, sw.Elapsed);
         }

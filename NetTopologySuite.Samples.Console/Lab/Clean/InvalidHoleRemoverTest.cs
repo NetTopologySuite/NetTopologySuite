@@ -51,14 +51,14 @@ namespace NetTopologySuite.Samples.Lab.Clean
         }
         private void CheckHolesRemoved(string inputWKT, string expectedWKT)
         {
-            IGeometry input = read(inputWKT);
-            IGeometry expected = read(expectedWKT);
-            IGeometry actual = InvalidHoleRemover.Clean(input);
+            var input = read(inputWKT);
+            var expected = read(expectedWKT);
+            var actual = InvalidHoleRemover.Clean(input);
             CheckEqual(expected, actual);
         }
         private IGeometry read(string wkt)
         {
-            WKTReader reader = new WKTReader();
+            var reader = new WKTReader();
             return reader.Read(wkt);
         }
     }

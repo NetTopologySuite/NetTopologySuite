@@ -23,7 +23,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if the polygon contains the geometry</returns>
         public static bool Contains(PreparedPolygon prep, IGeometry geom)
         {
-            PreparedPolygonContains polyInt = new PreparedPolygonContains(prep);
+            var polyInt = new PreparedPolygonContains(prep);
             return polyInt.Contains(geom);
         }
         ///<summary>
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if this prepared polygon contains the test geometry</returns>
         protected override bool FullTopologicalPredicate(IGeometry geom)
         {
-            bool isContained = prepPoly.Geometry.Contains(geom);
+            var isContained = prepPoly.Geometry.Contains(geom);
             return isContained;
         }
     }

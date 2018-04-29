@@ -219,10 +219,10 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         private static HCoordinate Bisector(Vertex a, Vertex b)
         {
             // returns the perpendicular bisector of the line segment ab
-            double dx = b.X - a.X;
-            double dy = b.Y - a.Y;
-            HCoordinate l1 = new HCoordinate(a.X + dx/2.0, a.Y + dy/2.0, 1.0);
-            HCoordinate l2 = new HCoordinate(a.X - dy + dx/2.0, a.Y + dx + dy/2.0, 1.0);
+            var dx = b.X - a.X;
+            var dy = b.Y - a.Y;
+            var l1 = new HCoordinate(a.X + dx/2.0, a.Y + dy/2.0, 1.0);
+            var l2 = new HCoordinate(a.X - dy + dx/2.0, a.Y + dx + dy/2.0, 1.0);
             return new HCoordinate(l1, l2);
         }
         private static double Distance(Vertex v1, Vertex v2)
@@ -263,9 +263,9 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>the point mid-way between this and that.</returns>
         public Vertex MidPoint(Vertex a)
         {
-            double xm = (Coordinate.X + a.X)/2.0;
-            double ym = (Coordinate.Y + a.Y)/2.0;
-            double zm = (Coordinate.Z + a.Z)/2.0;
+            var xm = (Coordinate.X + a.X)/2.0;
+            var ym = (Coordinate.Y + a.Y)/2.0;
+            var zm = (Coordinate.Z + a.Z)/2.0;
             return new Vertex(xm, ym, zm);
         }
         /// <summary>
@@ -302,18 +302,18 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// </summary>
         public double InterpolateZValue(Vertex v0, Vertex v1, Vertex v2)
         {
-            double x0 = v0.X;
-            double y0 = v0.Y;
-            double a = v1.X - x0;
-            double b = v2.X - x0;
-            double c = v1.Y - y0;
-            double d = v2.Y - y0;
-            double det = a*d - b*c;
-            double dx = X - x0;
-            double dy = Y - y0;
-            double t = (d*dx - b*dy)/det;
-            double u = (-c*dx + a*dy)/det;
-            double z = v0.Z + t*(v1.Z - v0.Z) + u*(v2.Z - v0.Z);
+            var x0 = v0.X;
+            var y0 = v0.Y;
+            var a = v1.X - x0;
+            var b = v2.X - x0;
+            var c = v1.Y - y0;
+            var d = v2.Y - y0;
+            var det = a*d - b*c;
+            var dx = X - x0;
+            var dy = Y - y0;
+            var t = (d*dx - b*dy)/det;
+            var u = (-c*dx + a*dy)/det;
+            var z = v0.Z + t*(v1.Z - v0.Z) + u*(v2.Z - v0.Z);
             return z;
         }
         /// <summary>
@@ -330,18 +330,18 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>The interpolated Z-value (height) of the point</returns>
         public static double InterpolateZ(Coordinate p, Coordinate v0, Coordinate v1, Coordinate v2)
         {
-            double x0 = v0.X;
-            double y0 = v0.Y;
-            double a = v1.X - x0;
-            double b = v2.X - x0;
-            double c = v1.Y - y0;
-            double d = v2.Y - y0;
-            double det = a*d - b*c;
-            double dx = p.X - x0;
-            double dy = p.Y - y0;
-            double t = (d*dx - b*dy)/det;
-            double u = (-c*dx + a*dy)/det;
-            double z = v0.Z + t*(v1.Z - v0.Z) + u*(v2.Z - v0.Z);
+            var x0 = v0.X;
+            var y0 = v0.Y;
+            var a = v1.X - x0;
+            var b = v2.X - x0;
+            var c = v1.Y - y0;
+            var d = v2.Y - y0;
+            var det = a*d - b*c;
+            var dx = p.X - x0;
+            var dy = p.Y - y0;
+            var t = (d*dx - b*dy)/det;
+            var u = (-c*dx + a*dy)/det;
+            var z = v0.Z + t*(v1.Z - v0.Z) + u*(v2.Z - v0.Z);
             return z;
         }
         /// <summary>
@@ -353,10 +353,10 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>The interpolated Z-value (height) of the point</returns>
         public static double InterpolateZ(Coordinate p, Coordinate p0, Coordinate p1)
         {
-            double segLen = p0.Distance(p1);
-            double ptLen = p.Distance(p0);
-            double dz = p1.Z - p0.Z;
-            double pz = p0.Z + dz*(ptLen/segLen);
+            var segLen = p0.Distance(p1);
+            var ptLen = p.Distance(p0);
+            var dz = p1.Z - p0.Z;
+            var pz = p0.Z + dz*(ptLen/segLen);
             return pz;
         }
     }

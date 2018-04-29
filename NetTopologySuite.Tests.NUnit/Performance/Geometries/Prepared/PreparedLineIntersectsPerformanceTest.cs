@@ -50,10 +50,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
                               + "      # lines: " + lines.Count
                               + "   # pts in line: " + NumLinePts
                 );
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
-            int count = 0;
-            for (int i = 0; i < MaxIter; i++)
+            var count = 0;
+            for (var i = 0; i < MaxIter; i++)
             {
 //    	count = testPrepGeomNotCached(g, lines);
                 count = testPrepGeomCached(g, lines);
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
         public static int testOriginal(IGeometry g, IEnumerable<IGeometry> lines)
         {
             Console.WriteLine("Using orginal JTS algorithm");
-            int count = 0;
+            var count = 0;
             foreach (var line in lines)
             {
                 if (g.Intersects(line))
@@ -79,7 +79,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             Console.WriteLine("Using cached Prepared Geometry");
             var pgFact = new PreparedGeometryFactory();
             var prepGeom = pgFact.Create(g);
-            int count = 0;
+            var count = 0;
             foreach (var line in lines)
             {
                 if (prepGeom.Intersects(line))
@@ -103,7 +103,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             Console.WriteLine("Using NON-CACHED Prepared Geometry");
             var pgFact = new PreparedGeometryFactory();
 //    PreparedGeometry prepGeom = pgFact.create(g);
-            int count = 0;
+            var count = 0;
             foreach (var line in lines)
             {
                 // test performance of creating the prepared geometry each time

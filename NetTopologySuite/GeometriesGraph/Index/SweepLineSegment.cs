@@ -27,8 +27,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
         {
             get
             {
-                double x1 = pts[ptIndex].X;
-                double x2 = pts[ptIndex + 1].X;
+                var x1 = pts[ptIndex].X;
+                var x2 = pts[ptIndex + 1].X;
                 return x1 < x2 ? x1 : x2;
             }
         }
@@ -39,8 +39,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
         {
             get
             {
-                double x1 = pts[ptIndex].X;
-                double x2 = pts[ptIndex + 1].X;
+                var x1 = pts[ptIndex].X;
+                var x2 = pts[ptIndex + 1].X;
                 return x1 > x2 ? x1 : x2;
             }
         }

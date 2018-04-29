@@ -82,7 +82,7 @@ namespace NetTopologySuite.Operation.Buffer
             {
                 return CopyCoordinates(inputPts);
             }
-            OffsetSegmentGenerator segGen = GetSegmentGenerator(distance);
+            var segGen = GetSegmentGenerator(distance);
             ComputeRingBufferCurve(inputPts, side, segGen);
             return segGen.GetCoordinates();
         }
@@ -92,8 +92,8 @@ namespace NetTopologySuite.Operation.Buffer
             // a zero width offset curve is empty
             if (distance == 0.0) return null;
             var isRightSide = distance < 0.0;
-            double posDistance = Math.Abs(distance);
-            OffsetSegmentGenerator segGen = GetSegmentGenerator(posDistance);
+            var posDistance = Math.Abs(distance);
+            var segGen = GetSegmentGenerator(posDistance);
             if (inputPts.Length <= 1)
             {
                 ComputePointCurve(inputPts[0], segGen);
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Operation.Buffer
             {
                 ComputeOffsetCurve(inputPts, isRightSide, segGen);
             }
-            Coordinate[] curvePts = segGen.GetCoordinates();
+            var curvePts = segGen.GetCoordinates();
             // for right side line is traversed in reverse direction, so have to reverse generated line
             if (isRightSide)
                 CoordinateArrays.Reverse(curvePts);
@@ -111,7 +111,7 @@ namespace NetTopologySuite.Operation.Buffer
         private static Coordinate[] CopyCoordinates(Coordinate[] pts)
         {
             var copy = new Coordinate[pts.Length];
-            for (int i = 0; i < copy.Length; i++)
+            for (var i = 0; i < copy.Length; i++)
             {
                 copy[i] = new Coordinate(pts[i]);
             }
@@ -154,7 +154,7 @@ namespace NetTopologySuite.Operation.Buffer
             //    Coordinate[] simp1 = inputPts;
             var n1 = simp1.Length - 1;
             segGen.InitSideSegments(simp1[0], simp1[1], Positions.Left);
-            for (int i = 2; i <= n1; i++)
+            for (var i = 2; i <= n1; i++)
             {
                 segGen.AddNextSegment(simp1[i], true);
             }

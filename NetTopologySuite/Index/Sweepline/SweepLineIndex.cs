@@ -23,7 +23,7 @@ namespace NetTopologySuite.Index.Sweepline
         /// <param name="sweepInt"></param>
         public void Add(SweepLineInterval sweepInt)
         {
-            SweepLineEvent insertEvent = new SweepLineEvent(sweepInt.Min, null, sweepInt);
+            var insertEvent = new SweepLineEvent(sweepInt.Min, null, sweepInt);
             _events.Add(insertEvent);
             _events.Add(new SweepLineEvent(sweepInt.Max, insertEvent, sweepInt));
         }
@@ -37,9 +37,9 @@ namespace NetTopologySuite.Index.Sweepline
             if (_indexBuilt)
                 return;
             _events.Sort();
-            for (int i = 0; i < _events.Count; i++)
+            for (var i = 0; i < _events.Count; i++)
             {
-                SweepLineEvent ev = _events[i];
+                var ev = _events[i];
                 if (ev.IsDelete)
                     ev.InsertEvent.DeleteEventIndex = i;
             }
@@ -53,9 +53,9 @@ namespace NetTopologySuite.Index.Sweepline
         {
             _nOverlaps = 0;
             BuildIndex();
-            for (int i = 0; i < _events.Count; i++)
+            for (var i = 0; i < _events.Count; i++)
             {
-                SweepLineEvent ev = _events[i];
+                var ev = _events[i];
                 if (ev.IsInsert)
                     ProcessOverlaps(i, ev.DeleteEventIndex, ev.Interval, action);
             }
@@ -74,12 +74,12 @@ namespace NetTopologySuite.Index.Sweepline
              * include current insert event object in list of event objects to test.
              * Last index can be skipped, because it must be a Delete event.
              */
-            for (int i = start; i < end; i++)
+            for (var i = start; i < end; i++)
             {
-                SweepLineEvent ev = _events[i];
+                var ev = _events[i];
                 if (ev.IsInsert)
                 {
-                    SweepLineInterval s1 = ev.Interval;
+                    var s1 = ev.Interval;
                     action.Overlap(s0, s1);
                     _nOverlaps++;
                 }

@@ -45,7 +45,7 @@ namespace NetTopologySuite.Samples.Operation.Linemerge
 		[STAThread]
 		public static void main(string[] args)
 		{
-			LineMergeExample test = new LineMergeExample();
+			var test = new LineMergeExample();
 			try
 			{
 				test.Run();
@@ -57,8 +57,8 @@ namespace NetTopologySuite.Samples.Operation.Linemerge
 		}
 		internal virtual void Run()
 		{
-			IList<IGeometry> lineStrings = Data;
-			LineMerger lineMerger = new LineMerger();
+			var lineStrings = Data;
+			var lineMerger = new LineMerger();
 			lineMerger.Add(lineStrings);
 		    var mergedLineStrings = lineMerger.GetMergedLineStrings();
 			Console.WriteLine("Lines formed (" + mergedLineStrings.Count + "):");
@@ -69,7 +69,7 @@ namespace NetTopologySuite.Samples.Operation.Linemerge
 		{
 			try
 			{
-				IGeometry geom = reader.Read(lineWKT);
+				var geom = reader.Read(lineWKT);
 				return geom;
 			}
 			catch (Exception ex)

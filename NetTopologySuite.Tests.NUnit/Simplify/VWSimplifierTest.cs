@@ -155,22 +155,22 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
         {
             // at 0.02, Simplify deletes about 50% of world.wkt points
             const double DistanceTolerance = 0.02;
-            int pointsRemoved = 0;
-            int totalPointCount = 0;
+            var pointsRemoved = 0;
+            var totalPointCount = 0;
             // track how long the new takes compared to the old
             long oldTicks = 0;
             long newTicks = 0;
-            using (Stream file = EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.world.wkt"))
+            using (var file = EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.world.wkt"))
             {
                 foreach (ILineString line in GeometryUtils.ReadWKTFile(file).SelectMany(LinearComponentExtracter.GetLines))
                 {
-                    Coordinate[] coordinates = line.Coordinates;
-                    Stopwatch sw = Stopwatch.StartNew();
-                    Coordinate[] oldResults = OldVWLineSimplifier.Simplify(coordinates, DistanceTolerance);
+                    var coordinates = line.Coordinates;
+                    var sw = Stopwatch.StartNew();
+                    var oldResults = OldVWLineSimplifier.Simplify(coordinates, DistanceTolerance);
                     sw.Stop();
                     oldTicks += sw.ElapsedTicks;
                     sw.Restart();
-                    Coordinate[] newResults = VWLineSimplifier.Simplify(coordinates, DistanceTolerance);
+                    var newResults = VWLineSimplifier.Simplify(coordinates, DistanceTolerance);
                     sw.Stop();
                     newTicks += sw.ElapsedTicks;
                     CollectionAssert.AreEqual(oldResults, newResults);
@@ -187,7 +187,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
         private static readonly WKTReader Rdr = new WKTReader();
         public static IGeometry[] GetResult(String wkt, double tolerance)
         {
-            IGeometry[] ioGeom = new IGeometry[2];
+            var ioGeom = new IGeometry[2];
             ioGeom[0] = Rdr.Read(wkt);
             ioGeom[1] = VWSimplifier.Simplify(ioGeom[0], tolerance);
             Console.WriteLine(ioGeom[1]);

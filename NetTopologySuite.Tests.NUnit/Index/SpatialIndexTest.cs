@@ -45,15 +45,15 @@ namespace NetTopologySuite.Tests.NUnit.Index
         private static double QUERY_ENVELOPE_EXTENT_2 = 11.7;
         private void AddSourceData(double offset, IList<Envelope> sourceData)
         {
-            for (int i = 0; i < CELLS_PER_GRID_SIDE; i++)
+            for (var i = 0; i < CELLS_PER_GRID_SIDE; i++)
             {
-                double minx = (i * CELL_EXTENT) + offset;
-                double maxx = minx + FEATURE_EXTENT;
-                for (int j = 0; j < CELLS_PER_GRID_SIDE; j++)
+                var minx = (i * CELL_EXTENT) + offset;
+                var maxx = minx + FEATURE_EXTENT;
+                for (var j = 0; j < CELLS_PER_GRID_SIDE; j++)
                 {
-                    double miny = (j * CELL_EXTENT) + offset;
-                    double maxy = miny + FEATURE_EXTENT;
-                    Envelope e = new Envelope(minx, maxx, miny, maxy);
+                    var miny = (j * CELL_EXTENT) + offset;
+                    var maxy = miny + FEATURE_EXTENT;
+                    var e = new Envelope(minx, maxx, miny, maxy);
                     sourceData.Add(e);
                 }
             }
@@ -62,15 +62,15 @@ namespace NetTopologySuite.Tests.NUnit.Index
         {
             Console.WriteLine("---------------");
             Console.WriteLine("Envelope Extent: " + queryEnvelopeExtent);
-            int extraMatchCount = 0;
-            int expectedMatchCount = 0;
-            int actualMatchCount = 0;
-            int queryCount = 0;
+            var extraMatchCount = 0;
+            var expectedMatchCount = 0;
+            var actualMatchCount = 0;
+            var queryCount = 0;
             for (double x = 0; x < CELL_EXTENT * CELLS_PER_GRID_SIDE; x += queryEnvelopeExtent)
             {
                 for (double y = 0; y < CELL_EXTENT * CELLS_PER_GRID_SIDE; y += queryEnvelopeExtent)
                 {
-                    Envelope queryEnvelope = new Envelope(x, x + queryEnvelopeExtent, y, y + queryEnvelopeExtent);
+                    var queryEnvelope = new Envelope(x, x + queryEnvelopeExtent, y, y + queryEnvelopeExtent);
                     var expectedMatches = IntersectingEnvelopes(queryEnvelope, sourceData);
                     var actualMatches = index.Query(queryEnvelope);
                     Assert.IsTrue(expectedMatches.Count <= actualMatches.Count);
@@ -95,7 +95,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             //==, not #equals. [Jon Aquino]
             foreach (var expected in expectedEnvelopes)
             {
-                bool found = false;
+                var found = false;
                 foreach (var actual in actualEnvelopes)
                 {
                     if (actual == expected)

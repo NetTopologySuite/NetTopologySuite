@@ -49,10 +49,10 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <returns>list of the snapped points</returns>
         public Coordinate[] SnapTo(Coordinate[] snapPts)
         {
-            CoordinateList coordList = new CoordinateList(_srcPts);
+            var coordList = new CoordinateList(_srcPts);
             SnapVertices(coordList, snapPts);
             SnapSegments(coordList, snapPts);
-            Coordinate[] newPts = coordList.ToCoordinateArray();
+            var newPts = coordList.ToCoordinateArray();
             return newPts;
         }
         /// <summary>
@@ -87,7 +87,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <returns></returns>
         private Coordinate FindSnapForVertex(Coordinate pt, Coordinate[] snapPts)
         {
-            foreach (Coordinate coord in snapPts)
+            foreach (var coord in snapPts)
             {
                 // if point is already equal to a src pt, don't snap
                 if (pt.Equals2D(coord))

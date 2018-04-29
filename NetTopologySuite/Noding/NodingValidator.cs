@@ -41,7 +41,7 @@ namespace NetTopologySuite.Noding
         /// </summary>
         private void CheckCollapses()
         {
-            foreach (ISegmentString ss in _segStrings)
+            foreach (var ss in _segStrings)
                 CheckCollapses(ss);
         }
         private static void CheckCollapses(ISegmentString ss)
@@ -61,8 +61,8 @@ namespace NetTopologySuite.Noding
         /// </summary>
         private void CheckInteriorIntersections()
         {
-            foreach (ISegmentString ss0 in _segStrings)
-                foreach (ISegmentString ss1 in _segStrings)
+            foreach (var ss0 in _segStrings)
+                foreach (var ss1 in _segStrings)
                     CheckInteriorIntersections(ss0, ss1);
         }
         private void CheckInteriorIntersections(ISegmentString ss0, ISegmentString ss1)
@@ -104,7 +104,7 @@ namespace NetTopologySuite.Noding
         /// </summary>
         private void CheckEndPtVertexIntersections()
         {
-            foreach(ISegmentString ss in _segStrings)
+            foreach(var ss in _segStrings)
             {
                 var pts = ss.Coordinates;
                 CheckEndPtVertexIntersections(pts[0], _segStrings);
@@ -113,7 +113,7 @@ namespace NetTopologySuite.Noding
         }
         private static void CheckEndPtVertexIntersections(Coordinate testPt, IEnumerable<ISegmentString> segStrings)
         {
-            foreach (ISegmentString ss in segStrings)
+            foreach (var ss in segStrings)
             {
                 var pts = ss.Coordinates;
                 for (var j = 1; j < pts.Length - 1; j++)

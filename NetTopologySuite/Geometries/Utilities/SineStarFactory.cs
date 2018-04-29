@@ -42,40 +42,40 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>The geometry representing the sine star</returns>
         public IGeometry CreateSineStar()
         {
-            Envelope env = Envelope;
-            double radius = env.Width / 2.0;
-            double armRatio = ArmLengthRatio;
+            var env = Envelope;
+            var radius = env.Width / 2.0;
+            var armRatio = ArmLengthRatio;
             if (armRatio < 0.0)
                 armRatio = 0.0;
             if (armRatio > 1.0)
                 armRatio = 1.0;
-            double armMaxLen = armRatio * radius;
-            double insideRadius = (1 - armRatio) * radius;
-            double centreX = env.MinX + radius;
-            double centreY = env.MinY + radius;
-            Coordinate[] pts = new Coordinate[NumPoints + 1];
-            int iPt = 0;
-            for (int i = 0; i < NumPoints; i++)
+            var armMaxLen = armRatio * radius;
+            var insideRadius = (1 - armRatio) * radius;
+            var centreX = env.MinX + radius;
+            var centreY = env.MinY + radius;
+            var pts = new Coordinate[NumPoints + 1];
+            var iPt = 0;
+            for (var i = 0; i < NumPoints; i++)
             {
                 // the fraction of the way thru the current arm - in [0,1]
-                double ptArcFrac = (i / (double)NumPoints) * NumArms;
-                double armAngFrac = ptArcFrac - Math.Floor(ptArcFrac);
+                var ptArcFrac = (i / (double)NumPoints) * NumArms;
+                var armAngFrac = ptArcFrac - Math.Floor(ptArcFrac);
                 // the angle for the current arm - in [0,2Pi]
                 // (each arm is a complete sine wave cycle)
-                double armAng = 2 * Math.PI * armAngFrac;
+                var armAng = 2 * Math.PI * armAngFrac;
                 // the current length of the arm
-                double armLenFrac = (Math.Cos(armAng) + 1.0) / 2.0;
+                var armLenFrac = (Math.Cos(armAng) + 1.0) / 2.0;
                 // the current radius of the curve (core + arm)
-                double curveRadius = insideRadius + armMaxLen * armLenFrac;
+                var curveRadius = insideRadius + armMaxLen * armLenFrac;
                 // the current angle of the curve
-                double ang = i * (2 * Math.PI / NumPoints);
-                double x = curveRadius * Math.Cos(ang) + centreX;
-                double y = curveRadius * Math.Sin(ang) + centreY;
+                var ang = i * (2 * Math.PI / NumPoints);
+                var x = curveRadius * Math.Cos(ang) + centreX;
+                var y = curveRadius * Math.Sin(ang) + centreY;
                 pts[iPt++] = CreateCoord(x, y);
             }
             pts[iPt] = new Coordinate(pts[0]);
-            ILinearRing ring = GeomFact.CreateLinearRing(pts);
-            IPolygon poly = GeomFact.CreatePolygon(ring);
+            var ring = GeomFact.CreateLinearRing(pts);
+            var poly = GeomFact.CreatePolygon(ring);
             return poly;
         }
     }

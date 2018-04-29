@@ -42,7 +42,7 @@ namespace NetTopologySuite.GeometriesGraph
                 Init(edge.GetCoordinate(0), edge.GetCoordinate(1));
             else
             {
-                int n = edge.NumPoints - 1;
+                var n = edge.NumPoints - 1;
                 Init(edge.GetCoordinate(n), edge.GetCoordinate(n-1));
             }
             ComputeDirectedLabel();
@@ -99,7 +99,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             get
             {
-                int depthDelta = Edge.DepthDelta;
+                var depthDelta = Edge.DepthDelta;
                 if (!IsForward)
                     depthDelta = -depthDelta;
                 return depthDelta;
@@ -150,10 +150,10 @@ namespace NetTopologySuite.GeometriesGraph
         {
             get
             {
-                bool isLine = Label.IsLine(0) || Label.IsLine(1);
-                bool isExteriorIfArea0 =
+                var isLine = Label.IsLine(0) || Label.IsLine(1);
+                var isExteriorIfArea0 =
                     !Label.IsArea(0) || Label.AllPositionsEqual(0, Location.Exterior);
-                bool isExteriorIfArea1 =
+                var isExteriorIfArea1 =
                     !Label.IsArea(1) || Label.AllPositionsEqual(1, Location.Exterior);
                 return isLine && isExteriorIfArea0 && isExteriorIfArea1;
             }
@@ -168,8 +168,8 @@ namespace NetTopologySuite.GeometriesGraph
         {
             get
             {
-                bool isInteriorAreaEdge = true;
-                for (int i = 0; i < 2; i++)
+                var isInteriorAreaEdge = true;
+                for (var i = 0; i < 2; i++)
                 {
                     if (!(Label.IsArea(i)
                         && Label.GetLocation(i, Positions.Left)  == Location.Interior
@@ -201,16 +201,16 @@ namespace NetTopologySuite.GeometriesGraph
         public void SetEdgeDepths(Positions position, int depth)
         {
             // get the depth transition delta from R to Curve for this directed Edge
-            int depthDelta = Edge.DepthDelta;
+            var depthDelta = Edge.DepthDelta;
             if (!_isForward)
                 depthDelta = -depthDelta;
             // if moving from Curve to R instead of R to Curve must change sign of delta
-            int directionFactor = 1;
+            var directionFactor = 1;
             if (position == Positions.Left)
                 directionFactor = -1;
-            Positions oppositePos = Position.Opposite(position);
-            int delta = depthDelta * directionFactor;
-            int oppositeDepth = depth + delta;
+            var oppositePos = Position.Opposite(position);
+            var delta = depthDelta * directionFactor;
+            var oppositeDepth = depth + delta;
             SetDepth(position, depth);
             SetDepth(oppositePos, oppositeDepth);
         }
@@ -223,12 +223,12 @@ namespace NetTopologySuite.GeometriesGraph
         [Obsolete("Use SetEdgeDepths instead")]
         public void OLDSetEdgeDepths(Positions position, int depth)
         {
-            int depthDelta = Edge.DepthDelta;
-            Location loc = Label.GetLocation(0, position);
-            Positions oppositePos = Position.Opposite(position);
-            Location oppositeLoc = Label.GetLocation(0, oppositePos);
-            int delta = Math.Abs(depthDelta) * DepthFactor(loc, oppositeLoc);
-            int oppositeDepth = depth + delta;
+            var depthDelta = Edge.DepthDelta;
+            var loc = Label.GetLocation(0, position);
+            var oppositePos = Position.Opposite(position);
+            var oppositeLoc = Label.GetLocation(0, oppositePos);
+            var delta = Math.Abs(depthDelta) * DepthFactor(loc, oppositeLoc);
+            var oppositeDepth = depth + delta;
             SetDepth(position, depth);
             SetDepth(oppositePos, oppositeDepth);
         }

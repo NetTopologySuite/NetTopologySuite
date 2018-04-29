@@ -42,7 +42,7 @@ namespace NetTopologySuite.Algorithm
         public static Location LocatePointInRing(Coordinate p, Coordinate[] ring)
         {
             var counter = new RayCrossingCounter(p);
-            for (int i = 1; i < ring.Length; i++)
+            for (var i = 1; i < ring.Length; i++)
             {
                 var p1 = ring[i];
                 var p2 = ring[i - 1];
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Algorithm
             var counter = new RayCrossingCounter(p);
             var p1 = new Coordinate();
             var p2 = new Coordinate();
-            int count = ring.Count;
+            var count = ring.Count;
             for (var i = 1; i < count; i++)
             {
                 ring.GetCoordinate(i, p1);
@@ -107,8 +107,8 @@ namespace NetTopologySuite.Algorithm
              */
             if (p1.Y == _p.Y && p2.Y == _p.Y)
             {
-                double minx = p1.X;
-                double maxx = p2.X;
+                var minx = p1.X;
+                var maxx = p2.X;
                 if (minx > maxx)
                 {
                     minx = p2.X;

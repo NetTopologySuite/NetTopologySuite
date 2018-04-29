@@ -98,8 +98,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
              */
             if (p1.Y == _p.Y && p2.Y == _p.Y)
             {
-                double minx = p1.X;
-                double maxx = p2.X;
+                var minx = p1.X;
+                var maxx = p2.X;
                 if (minx > maxx)
                 {
                     minx = p2.X;

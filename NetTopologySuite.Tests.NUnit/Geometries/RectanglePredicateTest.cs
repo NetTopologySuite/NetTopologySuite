@@ -32,18 +32,18 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
         private void RunRectanglePred(String[] wkt)
         {
-            IGeometry rect = rdr.Read(wkt[0]);
-            IGeometry b = rdr.Read(wkt[1]);
+            var rect = rdr.Read(wkt[0]);
+            var b = rdr.Read(wkt[1]);
             RunRectanglePred(rect, b);
         }
         private void RunRectanglePred(IGeometry rect, IGeometry testGeom)
         {
-            bool intersectsValue = rect.Intersects(testGeom);
-            bool relateIntersectsValue = rect.Relate(testGeom).IsIntersects();
-            bool intersectsOK = intersectsValue == relateIntersectsValue;
-            bool containsValue = rect.Contains(testGeom);
-            bool relateContainsValue = rect.Relate(testGeom).IsContains();
-            bool containsOK = containsValue == relateContainsValue;
+            var intersectsValue = rect.Intersects(testGeom);
+            var relateIntersectsValue = rect.Relate(testGeom).IsIntersects();
+            var intersectsOK = intersectsValue == relateIntersectsValue;
+            var containsValue = rect.Contains(testGeom);
+            var relateContainsValue = rect.Relate(testGeom).IsContains();
+            var containsOK = containsValue == relateContainsValue;
             ////System.Console.WriteLine(testGeom);
             //if (!intersectsOK || !containsOK)
             //    Console.WriteLine(testGeom);

@@ -50,7 +50,7 @@ namespace NetTopologySuite.Simplify
         {
             get
             {
-                int resultSegsSize = _resultSegs.Count;
+                var resultSegsSize = _resultSegs.Count;
                 return resultSegsSize == 0 ? 0 : resultSegsSize + 1;
             }
         }
@@ -68,11 +68,11 @@ namespace NetTopologySuite.Simplify
         /// </summary>
         private void Init()
         {
-            Coordinate[] pts = Parent.Coordinates;
+            var pts = Parent.Coordinates;
             Segments = new TaggedLineSegment[pts.Length - 1];
-            for (int i = 0; i < pts.Length - 1; i++)
+            for (var i = 0; i < pts.Length - 1; i++)
             {
-                TaggedLineSegment seg = new TaggedLineSegment(pts[i], pts[i + 1], Parent, i);
+                var seg = new TaggedLineSegment(pts[i], pts[i + 1], Parent, i);
                 Segments[i] = seg;
             }
         }
@@ -94,7 +94,7 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         public ILineString AsLineString()
         {
-            Coordinate[] coordinates = ExtractCoordinates(_resultSegs);
+            var coordinates = ExtractCoordinates(_resultSegs);
             return Parent.Factory.CreateLineString(coordinates);
         }
         /// <summary>
@@ -103,7 +103,7 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         public ILinearRing AsLinearRing()
         {
-            Coordinate[] coordinates = ExtractCoordinates(_resultSegs);
+            var coordinates = ExtractCoordinates(_resultSegs);
             return Parent.Factory.CreateLinearRing(coordinates);
         }
         /// <summary>
@@ -113,9 +113,9 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         private static Coordinate[] ExtractCoordinates(IList<LineSegment> segs)
         {
-            Coordinate[] pts = new Coordinate[segs.Count + 1];
+            var pts = new Coordinate[segs.Count + 1];
             LineSegment seg = null;
-            for (int i = 0; i < segs.Count; i++)
+            for (var i = 0; i < segs.Count; i++)
             {
                 seg = segs[i];
                 pts[i] = seg.P0;

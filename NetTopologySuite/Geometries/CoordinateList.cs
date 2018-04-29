@@ -78,9 +78,9 @@ namespace NetTopologySuite.Geometries
         /// <returns>true (as by general collection contract)</returns>
         public bool Add(Coordinate[] coord, bool allowRepeated, int start, int end)
         {
-            int inc = 1;
+            var inc = 1;
             if (start > end) inc = -1;
-            for (int i = start; i != end; i += inc)
+            for (var i = start; i != end; i += inc)
             {
                 Add(coord[i], allowRepeated);
             }
@@ -96,10 +96,10 @@ namespace NetTopologySuite.Geometries
         public bool Add(Coordinate[] coord, bool allowRepeated, bool direction)
         {
             if (direction)
-                for (int i = 0; i < coord.Length; i++)
+                for (var i = 0; i < coord.Length; i++)
                     Add(coord[i], allowRepeated);
             else
-                for (int i = coord.Length - 1; i >= 0; i--)
+                for (var i = coord.Length - 1; i >= 0; i--)
                     Add(coord[i], allowRepeated);
             return true;
         }
@@ -136,7 +136,7 @@ namespace NetTopologySuite.Geometries
             {
                 if (Count >= 1)
                 {
-                    Coordinate last = this[Count - 1];
+                    var last = this[Count - 1];
                     if (last.Equals2D(coord))
                         return false;
                 }
@@ -155,17 +155,17 @@ namespace NetTopologySuite.Geometries
             // don't add duplicate coordinates
             if (!allowRepeated)
             {
-                int size = Count;
+                var size = Count;
                 if (size > 0)
                 {
                     if (i > 0)
                     {
-                        Coordinate prev = this[i - 1];
+                        var prev = this[i - 1];
                         if (prev.Equals2D(coord)) return;
                     }
                     if (i < size)
                     {
-                        Coordinate next = this[i];
+                        var next = this[i];
                         if (next.Equals2D(coord)) return;
                     }
                 }
@@ -180,8 +180,8 @@ namespace NetTopologySuite.Geometries
         /// <returns>Return true if at least one element has added (IList not empty).</returns>
         public bool AddAll(IList<Coordinate> coll, bool allowRepeated)
         {
-            bool isChanged = false;
-            foreach (Coordinate c in coll)
+            var isChanged = false;
+            foreach (var c in coll)
             {
                 Add(c, allowRepeated);
                 isChanged = true;
@@ -210,7 +210,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The copied object.</returns>
         public object Clone()
         {
-            CoordinateList copy = new CoordinateList();
+            var copy = new CoordinateList();
             foreach (var c in this)
                 copy.Add(c.Copy());
             return copy;

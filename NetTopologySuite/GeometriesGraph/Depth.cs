@@ -32,8 +32,8 @@ namespace NetTopologySuite.GeometriesGraph
         public Depth()
         {
             // initialize depth array to a sentinel value
-            for (int i = 0; i < 2; i++)
-                for (int j = 0; j < 3; j++)
+            for (var i = 0; i < 2; i++)
+                for (var j = 0; j < 3; j++)
                     depth[i,j] = @null;
         }
         /// <summary>
@@ -95,9 +95,9 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public bool IsNull()
         {
-                for (int i = 0; i < 2; i++)
+                for (var i = 0; i < 2; i++)
                 {
-                    for (int j = 0; j < 3; j++)
+                    for (var j = 0; j < 3; j++)
                     {
                         if (depth[i,j] != @null)
                             return false;
@@ -130,11 +130,11 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="lbl"></param>
         public void Add(Label lbl)
         {
-            for (int i = 0; i < 2; i++)
+            for (var i = 0; i < 2; i++)
             {
-                for (int j = 1; j < 3; j++)
+                for (var j = 1; j < 3; j++)
                 {
-                    Location loc = lbl.GetLocation(i, (Positions)j);
+                    var loc = lbl.GetLocation(i, (Positions)j);
                     if (loc == Location.Exterior || loc == Location.Interior)
                     {
                         // initialize depth if it is null, otherwise add this location value
@@ -164,17 +164,17 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public void Normalize()
         {
-            for (int i = 0; i < 2; i++)
+            for (var i = 0; i < 2; i++)
             {
                 if (! IsNull(i))
                 {
-                    int minDepth = depth[i,1];
+                    var minDepth = depth[i,1];
                     if (depth[i,2] < minDepth)
                     minDepth = depth[i,2];
                     if (minDepth < 0) minDepth = 0;
-                    for (int j = 1; j < 3; j++)
+                    for (var j = 1; j < 3; j++)
                     {
-                        int newValue = 0;
+                        var newValue = 0;
                         if (depth[i,j] > minDepth)
                             newValue = 1;
                         depth[i,j] = newValue;

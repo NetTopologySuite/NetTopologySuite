@@ -38,14 +38,14 @@ namespace NetTopologySuite.Operation.Buffer
         {
             if (isForward)
             {
-                for (int i = 0; i < pt.Length; i++)
+                for (var i = 0; i < pt.Length; i++)
                 {
                     AddPt(pt[i]);
                 }
             }
             else
             {
-                for (int i = pt.Length - 1; i >= 0; i--)
+                for (var i = pt.Length - 1; i >= 0; i--)
                 {
                     AddPt(pt[i]);
                 }
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Operation.Buffer
             if (_ptList.Count < 1)
                 return false;
             var lastPt = _ptList[_ptList.Count - 1];
-            double ptDist = pt.Distance(lastPt);
+            var ptDist = pt.Distance(lastPt);
             if (ptDist < MinimumVertexDistance)
                 return true;
             return false;

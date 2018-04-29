@@ -24,7 +24,7 @@ namespace NetTopologySuite.Planargraph
         public static IList<Edge> ToEdges(IList<DirectedEdge> dirEdges)
         {
             IList<Edge> edges = new List<Edge>();
-            foreach (DirectedEdge directedEdge in dirEdges)
+            foreach (var directedEdge in dirEdges)
                 edges.Add(directedEdge.parentEdge);
             return edges;
         }
@@ -54,8 +54,8 @@ namespace NetTopologySuite.Planargraph
             this.EdgeDirection = edgeDirection;
             p0 = from.Coordinate;
             p1 = directionPt;
-            double dx = p1.X - p0.X;
-            double dy = p1.Y - p0.Y;
+            var dx = p1.X - p0.X;
+            var dy = p1.Y - p0.Y;
             Quadrant = QuadrantOp.Quadrant(dx, dy);
             Angle = Math.Atan2(dy, dx);
         }
@@ -124,7 +124,7 @@ namespace NetTopologySuite.Planargraph
         /// <returns></returns>
         public int CompareTo(Object obj)
         {
-            DirectedEdge de = (DirectedEdge) obj;
+            var de = (DirectedEdge) obj;
             return CompareDirection(de);
         }
         /// <summary>
@@ -158,9 +158,9 @@ namespace NetTopologySuite.Planargraph
         /// <param name="outstream"></param>
         public void Write(StreamWriter outstream)
         {
-            string className = GetType().FullName;
-            int lastDotPos = className.LastIndexOf('.');
-            string name = className.Substring(lastDotPos + 1);
+            var className = GetType().FullName;
+            var lastDotPos = className.LastIndexOf('.');
+            var name = className.Substring(lastDotPos + 1);
             outstream.Write("  " + name + ": " + p0 + " - " + p1 + " " + Quadrant + ":" + Angle);
         }
         /// <summary>

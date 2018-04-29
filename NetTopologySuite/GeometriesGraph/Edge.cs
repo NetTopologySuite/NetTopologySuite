@@ -196,7 +196,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="intIndex"></param>
         public void AddIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
         {
-            Coordinate intPt = new Coordinate(li.GetIntersection(intIndex));
+            var intPt = new Coordinate(li.GetIntersection(intIndex));
             var normalizedSegmentIndex = segmentIndex;
             var dist = li.GetEdgeDistance(geomIndex, intIndex);
             // normalize the intersection point location
@@ -311,7 +311,7 @@ namespace NetTopologySuite.GeometriesGraph
             var buf = new StringBuilder();
             buf.Append("edge " + Name + ": ");
             buf.Append("LINESTRING (");
-            for (int i = 0; i < Points.Length; i++)
+            for (var i = 0; i < Points.Length; i++)
             {
                 if (i > 0) buf.Append(",");
                 buf.Append(Points[i].X + " " + Points[i].Y);

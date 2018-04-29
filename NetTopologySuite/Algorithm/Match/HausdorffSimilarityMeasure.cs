@@ -31,12 +31,12 @@ namespace NetTopologySuite.Algorithm.Match
         private static readonly double DensifyFraction = 0.25;
         public double Measure(IGeometry g1, IGeometry g2)
         {
-            double distance = DiscreteHausdorffDistance.Distance(g1, g2, DensifyFraction);
-            Envelope env = new Envelope(g1.EnvelopeInternal);
+            var distance = DiscreteHausdorffDistance.Distance(g1, g2, DensifyFraction);
+            var env = new Envelope(g1.EnvelopeInternal);
             env.ExpandToInclude(g2.EnvelopeInternal);
-            double envSize = DiagonalSize(env);
+            var envSize = DiagonalSize(env);
             // normalize so that more similarity produces a measure closer to 1
-            double measure = 1 - distance/envSize;
+            var measure = 1 - distance/envSize;
             //System.out.println("Hausdorff distance = " + distance + ", measure = " + measure);
             return measure;
         }
@@ -48,8 +48,8 @@ namespace NetTopologySuite.Algorithm.Match
         public static double DiagonalSize(Envelope env)
         {
             if (env.IsNull) return 0.0;
-            double width = env.Width;
-            double hgt = env.Height;
+            var width = env.Width;
+            var hgt = env.Height;
             return Math.Sqrt(width*width + hgt*hgt);
         }
     }

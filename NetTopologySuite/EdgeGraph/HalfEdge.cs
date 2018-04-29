@@ -38,8 +38,8 @@ namespace NetTopologySuite.EdgeGraph
         /// <returns>the HalfEdge with origin at p0</returns>
         public static HalfEdge Create(Coordinate p0, Coordinate p1)
         {
-            HalfEdge e0 = new HalfEdge(p0);
-            HalfEdge e1 = new HalfEdge(p1);
+            var e0 = new HalfEdge(p0);
+            var e1 = new HalfEdge(p1);
             e0.Init(e1);
             return e0;
         }
@@ -114,7 +114,7 @@ namespace NetTopologySuite.EdgeGraph
         /// </returns>
         public HalfEdge Find(Coordinate dest)
         {
-            HalfEdge oNext = this;
+            var oNext = this;
             do
             {
                 if (oNext == null)
@@ -152,12 +152,12 @@ namespace NetTopologySuite.EdgeGraph
                 return;
             }
             // otherwise, find edge to insert after
-            int ecmp = CompareTo(e);
-            HalfEdge ePrev = this;
+            var ecmp = CompareTo(e);
+            var ePrev = this;
             do
             {
-                HalfEdge oNext = ePrev.ONext;
-                int cmp = oNext.CompareTo(e);
+                var oNext = ePrev.ONext;
+                var cmp = oNext.CompareTo(e);
                 if (cmp != ecmp || oNext == this)
                 {
                     ePrev.InsertAfter(e);
@@ -176,7 +176,7 @@ namespace NetTopologySuite.EdgeGraph
         private void InsertAfter(HalfEdge e)
         {
             Assert.IsEquals(Orig, e.Orig);
-            HalfEdge save = ONext;
+            var save = ONext;
             Sym.Next = e;
             e.Sym.Next = save;
         }
@@ -210,10 +210,10 @@ namespace NetTopologySuite.EdgeGraph
         /// </remarks>
         public int CompareAngularDirection(HalfEdge e)
         {
-            double dx = DeltaX;
-            double dy = DeltaY;
-            double dx2 = e.DeltaX;
-            double dy2 = e.DeltaY;
+            var dx = DeltaX;
+            var dy = DeltaY;
+            var dx2 = e.DeltaX;
+            var dy2 = e.DeltaY;
             // same vector
             if (dx == dx2 && dy == dy2)
                 return 0;
@@ -252,8 +252,8 @@ namespace NetTopologySuite.EdgeGraph
         /// <returns>the degree of the origin vertex</returns>
         public int Degree()
         {
-            int degree = 0;
-            HalfEdge e = this;
+            var degree = 0;
+            var e = this;
             do
             {
                 degree++;
@@ -273,7 +273,7 @@ namespace NetTopologySuite.EdgeGraph
         /// </returns>
         public HalfEdge PrevNode()
         {
-            HalfEdge e = this;
+            var e = this;
             while (e.Degree() == 2)
             {
                 e = e.Prev;

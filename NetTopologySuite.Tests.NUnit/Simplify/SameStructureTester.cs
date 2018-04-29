@@ -27,7 +27,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
         {
             if (g1.NumGeometries != g2.NumGeometries)
                 return false;
-            for (int i = 0; i < g1.NumGeometries; i++)
+            for (var i = 0; i < g1.NumGeometries; i++)
             {
                 if (!IsSameStructure(g1.GetGeometryN(i), g2.GetGeometryN(i)))
                     return false;

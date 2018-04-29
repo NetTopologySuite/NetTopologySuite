@@ -21,14 +21,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestGetDimension()
         {
-            GeometryCollection g = (GeometryCollection)reader.Read("GEOMETRYCOLLECTION (POINT (10 10), POINT (30 30), LINESTRING (15 15, 20 20))");
+            var g = (GeometryCollection)reader.Read("GEOMETRYCOLLECTION (POINT (10 10), POINT (30 30), LINESTRING (15 15, 20 20))");
             Assert.AreEqual(1, (int)g.Dimension);
         }
         [TestAttribute]
         public void TestGetCoordinates()
         {
-            GeometryCollection g = (GeometryCollection)reader.Read("GEOMETRYCOLLECTION (POINT (10 10), POINT (30 30), LINESTRING (15 15, 20 20))");
-            Coordinate[] coordinates = g.Coordinates;
+            var g = (GeometryCollection)reader.Read("GEOMETRYCOLLECTION (POINT (10 10), POINT (30 30), LINESTRING (15 15, 20 20))");
+            var coordinates = g.Coordinates;
             Assert.AreEqual(4, g.NumPoints);
             Assert.AreEqual(4, coordinates.Length);
             Assert.AreEqual(new Coordinate(10, 10), coordinates[0]);
@@ -37,9 +37,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestGeometryCollectionIterator()
         {
-            GeometryCollection g = (GeometryCollection)reader.Read(
+            var g = (GeometryCollection)reader.Read(
                   "GEOMETRYCOLLECTION (GEOMETRYCOLLECTION (POINT (10 10)))");
-            GeometryCollectionEnumerator i = new GeometryCollectionEnumerator(g);
+            var i = new GeometryCollectionEnumerator(g);
             //The NTS GeometryCollectionEnumerator does not have a HasNext property, and the interfaces is slightly different
             //assertTrue(i.hasNext());
             //assertTrue(i.next() instanceof GeometryCollection);
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestGetLength()
         {
-            GeometryCollection g = (GeometryCollection)new WKTReader().Read(
+            var g = (GeometryCollection)new WKTReader().Read(
                   "MULTIPOLYGON("
                   + "((0 0, 10 0, 10 10, 0 10, 0 0), (3 3, 3 7, 7 7, 7 3, 3 3)),"
                   + "((100 100, 110 100, 110 110, 100 110, 100 100), (103 103, 103 107, 107 107, 107 103, 103 103)))");

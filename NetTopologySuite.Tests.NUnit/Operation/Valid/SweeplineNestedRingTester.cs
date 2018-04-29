@@ -45,7 +45,7 @@ namespace NetTopologySuite.Operation.Valid
         public bool IsNonNested()
         {
             BuildIndex();
-            OverlapAction action = new OverlapAction(this);
+            var action = new OverlapAction(this);
             sweepLine.ComputeOverlaps(action);
             return action.IsNonNested;
         }
@@ -55,10 +55,10 @@ namespace NetTopologySuite.Operation.Valid
         private void BuildIndex()
         {
             sweepLine = new SweepLineIndex();
-            foreach (ILinearRing ring in rings)
+            foreach (var ring in rings)
             {
-                Envelope env = ring.EnvelopeInternal;
-                SweepLineInterval sweepInt = new SweepLineInterval(env.MinX, env.MaxX, ring);
+                var env = ring.EnvelopeInternal;
+                var sweepInt = new SweepLineInterval(env.MinX, env.MaxX, ring);
                 sweepLine.Add(sweepInt);
             }
         }
@@ -70,13 +70,13 @@ namespace NetTopologySuite.Operation.Valid
         /// <returns></returns>
         private bool IsInside(ILinearRing innerRing, ILinearRing searchRing)
         {
-            Coordinate[] innerRingPts = innerRing.Coordinates;
-            Coordinate[] searchRingPts = searchRing.Coordinates;
+            var innerRingPts = innerRing.Coordinates;
+            var searchRingPts = searchRing.Coordinates;
             if (!innerRing.EnvelopeInternal.Intersects(searchRing.EnvelopeInternal))
                 return false;
-            Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
+            var innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
             Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
-            bool isInside = PointLocation.IsInRing(innerRingPt, searchRingPts);
+            var isInside = PointLocation.IsInRing(innerRingPt, searchRingPts);
             if (isInside)
             {
                 NestedPoint = innerRingPt;
@@ -109,8 +109,8 @@ namespace NetTopologySuite.Operation.Valid
             /// <param name="s1"></param>
             public void Overlap(SweepLineInterval s0, SweepLineInterval s1)
             {
-                ILinearRing innerRing = (ILinearRing) s0.Item;
-                ILinearRing searchRing = (ILinearRing) s1.Item;
+                var innerRing = (ILinearRing) s0.Item;
+                var searchRing = (ILinearRing) s1.Item;
                 if (innerRing == searchRing)
                     return;
                 if (container.IsInside(innerRing, searchRing))

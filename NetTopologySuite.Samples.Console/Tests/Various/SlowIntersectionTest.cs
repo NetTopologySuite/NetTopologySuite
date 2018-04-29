@@ -30,7 +30,7 @@ namespace NetTopologySuite.Tests.Various
                         var d = 1.5d * r.NextDouble();
                         var dtmp = matfak * d;
                         var fMatFak = (float)matfak;
-                        float ftmp = fMatFak * (float)d;
+                        var ftmp = fMatFak * (float)d;
                         d1 += dtmp;
                         d2 += ftmp;
                     }
@@ -52,20 +52,20 @@ namespace NetTopologySuite.Tests.Various
         {
             if (factory == null)
                 throw new ArgumentNullException("factory");
-            WKTReader reader = new WKTReader(factory);
-            IGeometry g1 = reader.Read(t1);
+            var reader = new WKTReader(factory);
+            var g1 = reader.Read(t1);
             Assert.IsNotNull(g1);
             Assert.IsTrue(g1.IsValid);
             Assert.IsInstanceOf(typeof(IPolygon), g1);
             Assert.IsInstanceOf(typeof(Polygon), g1);
-            IGeometry g2 = reader.Read(t2);
+            var g2 = reader.Read(t2);
             Assert.IsNotNull(g2);
             Assert.IsTrue(g2.IsValid);
             Assert.IsInstanceOf(typeof(IMultiPolygon), g2);
             Assert.IsInstanceOf(typeof(MultiPolygon), g2);
-            Stopwatch watch = new Stopwatch();
+            var watch = new Stopwatch();
             watch.Start();
-            IGeometry r = g1.Intersection(g2);
+            var r = g1.Intersection(g2);
             watch.Stop();
             Assert.IsNotNull(r);
             Assert.IsInstanceOf(typeof(IMultiPolygon), r);
@@ -76,50 +76,50 @@ namespace NetTopologySuite.Tests.Various
         [Test]
         public void TestSegmentStringWithCoordinateArraySequenceFactory()
         {
-            string[] strings = ss.Split('|');
-            Coordinate[] coordinates = new Coordinate[strings.Length];
-            for (int i = 0; i < strings.Length; i++)
+            var strings = ss.Split('|');
+            var coordinates = new Coordinate[strings.Length];
+            for (var i = 0; i < strings.Length; i++)
             {
-                string[] components = strings[i].Split(',');
-                double x = Convert.ToDouble(components[0], CultureInfo.InvariantCulture);
-                double y = Convert.ToDouble(components[1], CultureInfo.InvariantCulture);
+                var components = strings[i].Split(',');
+                var x = Convert.ToDouble(components[0], CultureInfo.InvariantCulture);
+                var y = Convert.ToDouble(components[1], CultureInfo.InvariantCulture);
                 coordinates[i] = new Coordinate(x, y);
             }
-            CoordinateArraySequenceFactory factory = CoordinateArraySequenceFactory.Instance;
-            ICoordinateSequence sequence = factory.Create(coordinates);
+            var factory = CoordinateArraySequenceFactory.Instance;
+            var sequence = factory.Create(coordinates);
             PerformTest(sequence);
         }
         [Test]
         public void TestSegmentStringWithDotSpatialAffineCoordinateSequenceFactory()
         {
-            string[] strings = ss.Split('|');
-            Coordinate[] coordinates = new Coordinate[strings.Length];
-            for (int i = 0; i < strings.Length; i++)
+            var strings = ss.Split('|');
+            var coordinates = new Coordinate[strings.Length];
+            for (var i = 0; i < strings.Length; i++)
             {
-                string[] components = strings[i].Split(',');
-                double x = Convert.ToDouble(components[0], CultureInfo.InvariantCulture);
-                double y = Convert.ToDouble(components[1], CultureInfo.InvariantCulture);
+                var components = strings[i].Split(',');
+                var x = Convert.ToDouble(components[0], CultureInfo.InvariantCulture);
+                var y = Convert.ToDouble(components[1], CultureInfo.InvariantCulture);
                 coordinates[i] = new Coordinate(x, y);
             }
-            DotSpatialAffineCoordinateSequenceFactory factory = DotSpatialAffineCoordinateSequenceFactory.Instance;
-            ICoordinateSequence sequence = factory.Create(coordinates);
+            var factory = DotSpatialAffineCoordinateSequenceFactory.Instance;
+            var sequence = factory.Create(coordinates);
             PerformTest(sequence);
         }
         private static void PerformTest(ICoordinateSequence sequence)
         {
             if (sequence == null)
                 throw new ArgumentNullException("sequence");
-            Coordinate[] coordinates = sequence.ToCoordinateArray();
-            NodedSegmentString segmentString = new NodedSegmentString(coordinates, null);
-            Stopwatch watch = new Stopwatch();
-            NodingValidator validator = new NodingValidator(new[] { segmentString });
+            var coordinates = sequence.ToCoordinateArray();
+            var segmentString = new NodedSegmentString(coordinates, null);
+            var watch = new Stopwatch();
+            var validator = new NodingValidator(new[] { segmentString });
             validator.CheckValid();
             watch.Start();
             validator.CheckValid();
             watch.Stop();
             Console.WriteLine("NodingValidator.CheckValid => ElapsedMilliseconds: {0}", watch.ElapsedMilliseconds);
-            BasicSegmentString segmentStringBasic = new BasicSegmentString(coordinates, null);
-            FastNodingValidator fastValidator = new FastNodingValidator(new[] { segmentStringBasic });
+            var segmentStringBasic = new BasicSegmentString(coordinates, null);
+            var fastValidator = new FastNodingValidator(new[] { segmentStringBasic });
             watch.Reset(); watch.Start();
             fastValidator.CheckValid();
             watch.Stop();

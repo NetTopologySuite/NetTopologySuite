@@ -109,7 +109,7 @@ namespace NetTopologySuite.Operation.Overlay
                     else
                     {
                         // freeHoleList.addAll(minEdgeRings);
-                        foreach (EdgeRing obj in minEdgeRings)
+                        foreach (var obj in minEdgeRings)
                             freeHoleList.Add(obj);
                     }
                 }
@@ -128,9 +128,9 @@ namespace NetTopologySuite.Operation.Overlay
         /// <value>null</value>, if all the rings are holes.</returns>
         private static EdgeRing FindShell(IEnumerable<EdgeRing> minEdgeRings)
         {
-            int shellCount = 0;
+            var shellCount = 0;
             EdgeRing shell = null;
-            foreach (/*Minimal*/EdgeRing er in minEdgeRings)
+            foreach (/*Minimal*/var er in minEdgeRings)
             {
                 if (!er.IsHole)
                 {
@@ -172,7 +172,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="freeHoleList"></param>
         private static void SortShellsAndHoles(IEnumerable<EdgeRing> edgeRings, IList<EdgeRing> shellList, IList<EdgeRing> freeHoleList)
         {
-            foreach (EdgeRing er in edgeRings)
+            foreach (var er in edgeRings)
             {
                 er.SetInResult();
                 if (er.IsHole)
@@ -195,12 +195,12 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="freeHoleList"></param>
         private static void PlaceFreeHoles(IList<EdgeRing> shellList, IEnumerable<EdgeRing> freeHoleList)
         {
-            foreach (EdgeRing hole in freeHoleList)
+            foreach (var hole in freeHoleList)
             {
                 // only place this hole if it doesn't yet have a shell
                 if (hole.Shell == null)
                 {
-                    EdgeRing shell = FindEdgeRingContaining(hole, shellList);
+                    var shell = FindEdgeRingContaining(hole, shellList);
                     //Assert.IsTrue(shell != null, "unable to assign hole to a shell");
                     if (shell == null)
                         throw new TopologyException("unable to assign hole to a shell", hole.GetCoordinate(0));
@@ -223,18 +223,18 @@ namespace NetTopologySuite.Operation.Overlay
         /// <value>null</value> if no containing EdgeRing is found.</returns>
         private static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IEnumerable<EdgeRing> shellList)
         {
-            ILinearRing teString = testEr.LinearRing;
-            Envelope testEnv = teString.EnvelopeInternal;
-            Coordinate testPt = teString.GetCoordinateN(0);
+            var teString = testEr.LinearRing;
+            var testEnv = teString.EnvelopeInternal;
+            var testPt = teString.GetCoordinateN(0);
             EdgeRing minShell = null;
             Envelope minEnv = null;
-            foreach (EdgeRing tryShell in shellList)
+            foreach (var tryShell in shellList)
             {
-                ILinearRing tryRing = tryShell.LinearRing;
-                Envelope tryEnv = tryRing.EnvelopeInternal;
+                var tryRing = tryShell.LinearRing;
+                var tryEnv = tryRing.EnvelopeInternal;
                 if (minShell != null)
                     minEnv = minShell.LinearRing.EnvelopeInternal;
-                bool isContained = false;
+                var isContained = false;
                 if (tryEnv.Contains(testEnv) && PointLocation.IsInRing(testPt, tryRing.Coordinates))
                         isContained = true;
                 // check if this new containing ring is smaller than the current minimum ring
@@ -255,9 +255,9 @@ namespace NetTopologySuite.Operation.Overlay
         {
             IList<IGeometry> resultPolyList = new List<IGeometry>();
             // add Polygons for all shells
-            foreach (EdgeRing er in shellList)
+            foreach (var er in shellList)
             {
-                IPolygon poly = er.ToPolygon(_geometryFactory);
+                var poly = er.ToPolygon(_geometryFactory);
                 resultPolyList.Add(poly);
             }
             return resultPolyList;
@@ -270,7 +270,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <returns></returns>
         public bool ContainsPoint(Coordinate p)
         {
-            foreach (EdgeRing er in _shellList)
+            foreach (var er in _shellList)
             {
                 if (er.ContainsPoint(p))
                     return true;

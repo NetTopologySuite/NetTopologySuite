@@ -98,7 +98,7 @@ namespace NetTopologySuite.Geometries
                 {
                     var polygon = (IPolygon) Geometries[i];
                     var rings = polygon.Boundary;
-                    for (int j = 0; j < rings.NumGeometries; j++)
+                    for (var j = 0; j < rings.NumGeometries; j++)
                         allRings.Add((ILineString) rings.GetGeometryN(j));
                 }
                 return Factory.CreateMultiLineString(allRings.ToArray());
@@ -122,9 +122,9 @@ namespace NetTopologySuite.Geometries
         /// <returns>An <see cref="IMultiPolygon"/> in the reverse order</returns>
         public override IGeometry Reverse()
         {
-            int n = Geometries.Length;
-            IPolygon[] revGeoms = new IPolygon[n];
-            for (int i = 0; i < Geometries.Length; i++)
+            var n = Geometries.Length;
+            var revGeoms = new IPolygon[n];
+            for (var i = 0; i < Geometries.Length; i++)
             {
                 revGeoms[i] = (Polygon)Geometries[i].Reverse();
             }

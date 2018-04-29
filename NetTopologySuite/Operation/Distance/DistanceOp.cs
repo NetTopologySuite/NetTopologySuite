@@ -31,7 +31,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <returns>The distance between the geometries.</returns>
         public static double Distance(IGeometry g0, IGeometry g1)
         {
-            DistanceOp distOp = new DistanceOp(g0, g1);
+            var distOp = new DistanceOp(g0, g1);
             return distOp.Distance();
         }
         /// <summary>
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <returns></returns>
         public static bool IsWithinDistance(IGeometry g0, IGeometry g1, double distance)
         {
-            DistanceOp distOp = new DistanceOp(g0, g1, distance);
+            var distOp = new DistanceOp(g0, g1, distance);
             return distOp.Distance() <= distance;
         }
         /// <summary>
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <returns>The closest points in the geometries.</returns>
         public static Coordinate[] NearestPoints(IGeometry g0, IGeometry g1)
         {
-            DistanceOp distOp = new DistanceOp(g0, g1);
+            var distOp = new DistanceOp(g0, g1);
             return distOp.NearestPoints();
         }
         /// <summary>
@@ -254,9 +254,9 @@ namespace NetTopologySuite.Operation.Distance
         }
         private void ComputeContainmentDistance(IList<GeometryLocation> locs, ICollection<IGeometry> polys, GeometryLocation[] locPtPoly)
         {
-            for (int i = 0; i < locs.Count; i++)
+            for (var i = 0; i < locs.Count; i++)
             {
-                GeometryLocation loc = locs[i];
+                var loc = locs[i];
                 foreach (IPolygon t in polys)
                 {
                     ComputeContainmentDistance(loc, t, locPtPoly);
@@ -448,17 +448,17 @@ namespace NetTopologySuite.Operation.Distance
         private void ComputeMinDistance(ILineString line, IPoint pt, GeometryLocation[] locGeom)
         {
             if (line.EnvelopeInternal.Distance(pt.EnvelopeInternal) > _minDistance) return;
-            Coordinate[] coord0 = line.Coordinates;
-            Coordinate coord = pt.Coordinate;
+            var coord0 = line.Coordinates;
+            var coord = pt.Coordinate;
             // brute force approach!
-            for (int i = 0; i < coord0.Length - 1; i++)
+            for (var i = 0; i < coord0.Length - 1; i++)
             {
-                double dist = DistanceComputer.PointToSegment(coord, coord0[i], coord0[i + 1]);
+                var dist = DistanceComputer.PointToSegment(coord, coord0[i], coord0[i + 1]);
                 if (dist < _minDistance)
                 {
                     _minDistance = dist;
-                    LineSegment seg = new LineSegment(coord0[i], coord0[i + 1]);
-                    Coordinate segClosestPoint = seg.ClosestPoint(coord);
+                    var seg = new LineSegment(coord0[i], coord0[i + 1]);
+                    var segClosestPoint = seg.ClosestPoint(coord);
                     locGeom[0] = new GeometryLocation(line, i, segClosestPoint);
                     locGeom[1] = new GeometryLocation(pt, 0, coord);
                 }

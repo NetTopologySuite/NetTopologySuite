@@ -30,17 +30,17 @@ namespace NetTopologySuite.Algorithm
             Coordinate q1, Coordinate q2)
         {
             // unrolled computation
-            double px = p1.Y - p2.Y;
-            double py = p2.X - p1.X;
-            double pw = p1.X*p2.Y - p2.X*p1.Y;
-            double qx = q1.Y - q2.Y;
-            double qy = q2.X - q1.X;
-            double qw = q1.X*q2.Y - q2.X*q1.Y;
-            double x = py*qw - qy*pw;
-            double y = qx*pw - px*qw;
-            double w = px*qy - qx*py;
-            double xInt = x/w;
-            double yInt = y/w;
+            var px = p1.Y - p2.Y;
+            var py = p2.X - p1.X;
+            var pw = p1.X*p2.Y - p2.X*p1.Y;
+            var qx = q1.Y - q2.Y;
+            var qy = q2.X - q1.X;
+            var qw = q1.X*q2.Y - q2.X*q1.Y;
+            var x = py*qw - qy*pw;
+            var y = qx*pw - px*qw;
+            var w = px*qy - qx*py;
+            var xInt = x/w;
+            var yInt = y/w;
             if ((Double.IsNaN(xInt)) || (Double.IsInfinity(xInt)
                                          || Double.IsNaN(yInt)) || (Double.IsInfinity(yInt)))
             {
@@ -64,10 +64,10 @@ namespace NetTopologySuite.Algorithm
         /// <returns></returns>
         public static Coordinate OldIntersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            HCoordinate l1 = new HCoordinate(new HCoordinate(p1), new HCoordinate(p2));
-            HCoordinate l2 = new HCoordinate(new HCoordinate(q1), new HCoordinate(q2));
-            HCoordinate intHCoord = new HCoordinate(l1, l2);
-            Coordinate intPt = intHCoord.Coordinate;
+            var l1 = new HCoordinate(new HCoordinate(p1), new HCoordinate(p2));
+            var l2 = new HCoordinate(new HCoordinate(q1), new HCoordinate(q2));
+            var intHCoord = new HCoordinate(l1, l2);
+            var intPt = intHCoord.Coordinate;
             return intPt;
         }
         /// <summary>
@@ -133,7 +133,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns></returns>
         public double GetX()
         {
-            double a = X/W;
+            var a = X/W;
             if ((Double.IsNaN(a)) || (Double.IsInfinity(a)))
                 throw new NotRepresentableException();
             return a;
@@ -144,7 +144,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns></returns>
         public double GetY()
         {
-            double a = Y/W;
+            var a = Y/W;
             if ((Double.IsNaN(a)) || (Double.IsInfinity(a)))
                 throw new NotRepresentableException();
             return a;
@@ -176,12 +176,12 @@ namespace NetTopologySuite.Algorithm
         public HCoordinate(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
             // unrolled computation
-            double px = p1.Y - p2.Y;
-            double py = p2.X - p1.X;
-            double pw = p1.X * p2.Y - p2.X * p1.Y;
-            double qx = q1.Y - q2.Y;
-            double qy = q2.X - q1.X;
-            double qw = q1.X * q2.Y - q2.X * q1.Y;
+            var px = p1.Y - p2.Y;
+            var py = p2.X - p1.X;
+            var pw = p1.X * p2.Y - p2.X * p1.Y;
+            var qx = q1.Y - q2.Y;
+            var qy = q2.X - q1.X;
+            var qw = q1.X * q2.Y - q2.X * q1.Y;
             X = py * qw - qy * pw;
             Y = qx * pw - px * qw;
             W = px * qy - qx * py;

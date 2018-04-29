@@ -128,8 +128,8 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         public void ExpandToQueue(PriorityQueue<BoundablePair<TItem>> priQ, double minDistance)
         {
-            bool isComp1 = IsComposite(_boundable1);
-            bool isComp2 = IsComposite(_boundable2);
+            var isComp1 = IsComposite(_boundable1);
+            var isComp2 = IsComposite(_boundable2);
             /**
              * HEURISTIC: If both boundable are composite,
              * choose the one with largest area to expand.

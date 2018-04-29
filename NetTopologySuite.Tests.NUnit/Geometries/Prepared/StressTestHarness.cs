@@ -21,7 +21,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
         {
             //System.Console.WriteLine("Running " + nIter + " tests");
             //  	Geometry poly = createCircle(new Coordinate(0, 0), 100, nPts);
-            IGeometry poly = CreateSineStar(new Coordinate(0, 0), 100, TargetSize);
+            var poly = CreateSineStar(new Coordinate(0, 0), 100, TargetSize);
             Console.WriteLine(poly);
             //System.Console.WriteLine();
             //System.out.Console.WriteLine("Running with " + nPts + " points");
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
         }
         static IGeometry CreateCircle(Coordinate origin, double size, int nPts)
         {
-            GeometricShapeFactory gsf = new GeometricShapeFactory();
+            var gsf = new GeometricShapeFactory();
             gsf.Centre = origin;
             gsf.Size = size;
             gsf.NumPoints = nPts;
@@ -40,25 +40,25 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
         }
         static IGeometry CreateSineStar(Coordinate origin, double size, int nPts)
         {
-            SineStarFactory gsf = new SineStarFactory();
+            var gsf = new SineStarFactory();
             gsf.Centre = origin;
             gsf.Size = size;
             gsf.NumPoints = nPts;
             gsf.ArmLengthRatio = 0.1;
             gsf.NumArms = 20;
-            IGeometry poly = gsf.CreateSineStar();
+            var poly = gsf.CreateSineStar();
             return poly;
         }
         static IGeometry CreateRandomTestGeometry(Envelope env, double size, int nPts)
         {
-            Random rnd = new Random(1);
-            double width = env.Width;
-            double xOffset = width * rnd.NextDouble();
-            double yOffset = env.Height * rnd.NextDouble();
-            Coordinate basePt = new Coordinate(
+            var rnd = new Random(1);
+            var width = env.Width;
+            var xOffset = width * rnd.NextDouble();
+            var yOffset = env.Height * rnd.NextDouble();
+            var basePt = new Coordinate(
                             env.MinX + xOffset,
                             env.MinY + yOffset);
-            IGeometry test = CreateTestCircle(basePt, size, nPts);
+            var test = CreateTestCircle(basePt, size, nPts);
             if (test is IPolygon && rnd.NextDouble() > 0.5)
             {
                 test = test.Boundary;
@@ -67,7 +67,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
         }
         static IGeometry CreateTestCircle(Coordinate origin, double size, int nPts)
         {
-            GeometricShapeFactory gsf = new GeometricShapeFactory();
+            var gsf = new GeometricShapeFactory();
             gsf.Centre = origin;
             gsf.Size = size;
             gsf.NumPoints = nPts;
@@ -77,15 +77,15 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
         }
         public void Run(int nIter, IGeometry target)
         {
-            int count = 0;
+            var count = 0;
             while (count < nIter)
             {
                 count++;
-                IGeometry test = CreateRandomTestGeometry(target.EnvelopeInternal, 10, 20);
+                var test = CreateRandomTestGeometry(target.EnvelopeInternal, 10, 20);
                 //Console.WriteLine("Test # " + count);
                 //Console.WriteLine(line);
                 //Console.WriteLine("Test[" + count + "] " + target.GetType().Name + "/" + test.GetType().Name);
-                bool isResultCorrect = CheckResult(target, test);
+                var isResultCorrect = CheckResult(target, test);
                 if (!isResultCorrect)
                 {
                     throw new Exception("Invalid result found");

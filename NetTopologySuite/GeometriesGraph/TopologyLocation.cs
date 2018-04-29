@@ -71,7 +71,7 @@ namespace NetTopologySuite.GeometriesGraph
             if (gl == null)
                 throw new ArgumentNullException("gl", "null topology location specified");
             Init(gl._location.Length);
-            for (int i = 0; i < _location.Length; i++)
+            for (var i = 0; i < _location.Length; i++)
                 _location[i] = gl._location[i];
         }
         /// <summary>
@@ -90,7 +90,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public  Location Get(Positions posIndex)
         {
-            int index = (int)posIndex;
+            var index = (int)posIndex;
             if (index < _location.Length)
                 return _location[index];
             return Location.Null;
@@ -113,7 +113,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             get
             {
-                for (int i = 0; i < _location.Length; i++)
+                for (var i = 0; i < _location.Length; i++)
                     if (_location[i] != Location.Null)
                         return false;
                 return true;
@@ -126,7 +126,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             get
             {
-                for (int i = 0; i < _location.Length; i++)
+                for (var i = 0; i < _location.Length; i++)
                     if (_location[i] == Location.Null)
                         return true;
                 return false;
@@ -157,7 +157,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             if (_location.Length <= 1)
                 return;
-            Location temp = _location[(int)Positions.Left];
+            var temp = _location[(int)Positions.Left];
             _location[(int)Positions.Left] = _location[(int)Positions.Right];
             _location[(int)Positions.Right] = temp;
         }
@@ -167,7 +167,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="locValue"></param>
         public  void SetAllLocations(Location locValue)
         {
-            for (int i = 0; i < _location.Length; i++)
+            for (var i = 0; i < _location.Length; i++)
                 _location[i] = locValue;
         }
         /// <summary>
@@ -176,7 +176,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="locValue"></param>
         public  void SetAllLocationsIfNull(Location locValue)
         {
-            for (int i = 0; i < _location.Length; i++)
+            for (var i = 0; i < _location.Length; i++)
                 if (_location[i] == Location.Null)
                     _location[i] = locValue;
         }
@@ -223,7 +223,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="gl"></param>
         public  void SetLocations(TopologyLocation gl)
         {
-            for (int i = 0; i < gl._location.Length; i++)
+            for (var i = 0; i < gl._location.Length; i++)
                 _location[i] = gl._location[i];
         }
         /// <summary>
@@ -233,7 +233,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public  bool AllPositionsEqual(Location loc)
         {
-            for (int i = 0; i < _location.Length; i++)
+            for (var i = 0; i < _location.Length; i++)
                 if (_location[i] != loc)
                     return false;
             return true;
@@ -247,13 +247,13 @@ namespace NetTopologySuite.GeometriesGraph
             // if the src is an Area label & and the dest is not, increase the dest to be an Area
             if (gl._location.Length > _location.Length)
             {
-                Location[] newLoc = new Location[3];
+                var newLoc = new Location[3];
                 newLoc[(int)Positions.On] = _location[(int)Positions.On];
                 newLoc[(int)Positions.Left] = Location.Null;
                 newLoc[(int)Positions.Right] = Location.Null;
                 _location = newLoc;
             }
-            for (int i = 0; i < _location.Length; i++)
+            for (var i = 0; i < _location.Length; i++)
                 if (_location[i] == Location.Null && i < gl._location.Length)
                     _location[i] = gl._location[i];
         }
@@ -263,7 +263,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             if (_location.Length > 1)
                 sb.Append(LocationUtility.ToLocationSymbol(_location[(int)Positions.Left]));
             sb.Append(LocationUtility.ToLocationSymbol(_location[(int)Positions.On]));

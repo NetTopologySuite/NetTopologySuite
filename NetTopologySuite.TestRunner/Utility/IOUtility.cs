@@ -53,7 +53,7 @@ namespace Open.Topology.TestRunner.Utility
         public static IGeometry ReadGeometriesFromWktString(String wkt, IGeometryFactory geomFact)
         {
             var reader = new WKTReader(geomFact);
-            WKTFileReader fileReader = new WKTFileReader(new StringReader(wkt), reader);
+            var fileReader = new WKTFileReader(new StringReader(wkt), reader);
             var geomList = fileReader.Read();
             if (geomList.Count == 1)
                 return geomList[0];

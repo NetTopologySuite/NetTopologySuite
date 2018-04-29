@@ -32,8 +32,8 @@ namespace NetTopologySuite.EdgeGraph
         }
         private HalfEdge Create(Coordinate p0, Coordinate p1)
         {
-            HalfEdge e0 = CreateEdge(p0);
-            HalfEdge e1 = CreateEdge(p1);
+            var e0 = CreateEdge(p0);
+            var e1 = CreateEdge(p1);
             HalfEdge.Init(e0, e1);
             return e0;
         }
@@ -56,13 +56,13 @@ namespace NetTopologySuite.EdgeGraph
             // Return it if found.
             // Otherwise, use a found edge with same origin (if any) to construct new edge.
             HalfEdge eAdj;
-            bool eAdjFound = vertexMap.TryGetValue(orig, out eAdj);
+            var eAdjFound = vertexMap.TryGetValue(orig, out eAdj);
             HalfEdge eSame = null;
             if (eAdjFound)
                 eSame = eAdj.Find(dest);
             if (eSame != null)
                 return eSame;
-            HalfEdge e = Insert(orig, dest, eAdj);
+            var e = Insert(orig, dest, eAdj);
             return e;
         }
         /// <summary>
@@ -86,13 +86,13 @@ namespace NetTopologySuite.EdgeGraph
         private HalfEdge Insert(Coordinate orig, Coordinate dest, HalfEdge eAdj)
         {
             // edge does not exist, so create it and insert in graph
-            HalfEdge e = Create(orig, dest);
+            var e = Create(orig, dest);
             if (eAdj != null)
                 eAdj.Insert(e);
             else vertexMap.Add(orig, e);
             HalfEdge eAdjDest;
-            bool eAdjDestFound = vertexMap.TryGetValue(dest, out eAdjDest);
-            HalfEdge sym = e.Sym;
+            var eAdjDestFound = vertexMap.TryGetValue(dest, out eAdjDest);
+            var sym = e.Sym;
             if (eAdjDestFound)
                 eAdjDest.Insert(sym);
             else vertexMap.Add(dest, sym);
@@ -111,7 +111,7 @@ namespace NetTopologySuite.EdgeGraph
         /// <returns>an edge with the given orig and dest, or null if none exists</returns>
         public HalfEdge FindEdge(Coordinate orig, Coordinate dest)
         {
-            HalfEdge e = vertexMap[orig];
+            var e = vertexMap[orig];
             return e == null ? null : e.Find(dest);
         }
     }
