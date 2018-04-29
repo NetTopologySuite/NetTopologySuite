@@ -134,9 +134,9 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var indexedLine = new LengthIndexedLine(linearGeom);
             var projIndex = indexedLine.Project(new Coordinate(5, 5));
             var projPt = indexedLine.ExtractPoint(projIndex);
-            Assert.IsTrue(Double.IsNaN(projPt.Z));
+            Assert.IsTrue(double.IsNaN(projPt.Z));
         }
-        private void CheckExtractLine(String wkt, double start, double end, String expected)
+        private void CheckExtractLine(string wkt, double start, double end, string expected)
         {
             var linearGeom = Read(wkt);
             var indexedLine = new LengthIndexedLine(linearGeom);

@@ -104,7 +104,7 @@ namespace NetTopologySuite.IO.KML
         /// The Z value to be output for all coordinates.
         /// This overrides any Z value present in the Geometry coordinates.
         /// </summary>
-        public double Z { get; set; } = Double.NaN;
+        public double Z { get; set; } = double.NaN;
         /// <summary>
         /// The flag to be output in the <c>extrude</c> element.
         /// </summary>
@@ -137,7 +137,7 @@ namespace NetTopologySuite.IO.KML
                 : new PrecisionModel(precision);
             _formatter = WKTWriter.CreateFormatter(precisionModel);
             var digits = WKTWriter.StringOfChar('#', _formatter.NumberDecimalDigits);
-            _format = String.Format("0.{0}", digits);
+            _format = string.Format("0.{0}", digits);
         }
         /// <summary>
         /// Writes a <see cref="IGeometry"/> in KML format as a string.
@@ -206,7 +206,7 @@ namespace NetTopologySuite.IO.KML
                 StartLine("<tesselate>1</tesselate>\n", level, sb);
             if (AltitudeMode != null)
             {
-                var s = String.Format("<altitudeMode>{0}</altitudeMode>\n", AltitudeMode);
+                var s = string.Format("<altitudeMode>{0}</altitudeMode>\n", AltitudeMode);
                 StartLine(s, level, sb);
             }
         }
@@ -299,11 +299,11 @@ namespace NetTopologySuite.IO.KML
             Write(p.Y, sb);
             var z = p.Z;
             // if altitude was specified directly, use it
-            if (!Double.IsNaN(Z))
+            if (!double.IsNaN(Z))
                 z = Z;
             // only write if Z present
             // MD - is this right? Or should it always be written?
-            if (!Double.IsNaN(z))
+            if (!double.IsNaN(z))
             {
                 sb.Append(CoordinateSeparator);
                 Write(z, sb);

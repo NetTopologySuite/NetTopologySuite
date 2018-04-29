@@ -1031,7 +1031,7 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="GetHashCode"/>
         /// <seealso cref="Normalized"/>
         /// <seealso cref="Normalize"/>
-        public override bool Equals(Object o)
+        public override bool Equals(object o)
         {
             var g = o as IGeometry;
             return g != null && EqualsExact(g);
@@ -1885,7 +1885,7 @@ namespace NetTopologySuite.Geometries
         /// defined in "Normal Form For Geometry" in the NTS Technical
         /// Specifications.
         /// </returns>
-        public int CompareTo(Object o, IComparer<ICoordinateSequence> comp)
+        public int CompareTo(object o, IComparer<ICoordinateSequence> comp)
         {
             var other = o as Geometry;
             if (other == null)
@@ -1986,7 +1986,7 @@ namespace NetTopologySuite.Geometries
         ///      defined in "Normal Form For Geometry" in the JTS Technical
         ///      Specifications
         /// </returns>
-        protected internal abstract int CompareToSameClass(Object o, IComparer<ICoordinateSequence> comp);
+        protected internal abstract int CompareToSameClass(object o, IComparer<ICoordinateSequence> comp);
         /// <summary>
         /// Returns the first non-zero result of <c>CompareTo</c> encountered as
         /// the two <c>Collection</c>s are iterated over. If, by the time one of

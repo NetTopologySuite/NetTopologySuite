@@ -38,14 +38,14 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance
             RunTest("LINESTRING (130 0, 0 0, 0 150)", "LINESTRING (10 10, 10 150, 130 10)", 0.5, 70.0);
         }
         private static double TOLERANCE = 0.00001;
-        private void RunTest(String wkt1, String wkt2, double expectedDistance)
+        private void RunTest(string wkt1, string wkt2, double expectedDistance)
         {
             var g1 = GeometryUtils.ReadWKT(wkt1);
             var g2 = GeometryUtils.ReadWKT(wkt2);
             var distance = DiscreteHausdorffDistance.Distance(g1, g2);
             Assert.AreEqual(distance, expectedDistance, TOLERANCE);
         }
-        private void RunTest(String wkt1, String wkt2, double densifyFrac, double expectedDistance)
+        private void RunTest(string wkt1, string wkt2, double densifyFrac, double expectedDistance)
         {
             var g1 = GeometryUtils.ReadWKT(wkt1);
             var g2 = GeometryUtils.ReadWKT(wkt2);

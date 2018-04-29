@@ -77,7 +77,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// </summary>
         public Coordinate Coordinate { get; }
         /// <inheritdoc cref="object.ToString()"/>
-        public override String ToString()
+        public override string ToString()
         {
             return "POINT (" + Coordinate.X + " " + Coordinate.Y + ")";
         }
@@ -176,7 +176,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <returns>true if this vertex is inside the circumcircle (a, b, c)</returns>
-        public Boolean IsInCircle(Vertex a, Vertex b, Vertex c)
+        public bool IsInCircle(Vertex a, Vertex b, Vertex c)
         {
             return TrianglePredicate.IsInCircleRobust(a.Coordinate, b.Coordinate, c.Coordinate, Coordinate);
             // non-robust - best to not use

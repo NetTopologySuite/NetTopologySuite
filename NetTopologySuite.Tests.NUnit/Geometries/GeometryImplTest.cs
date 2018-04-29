@@ -126,7 +126,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             bool equalsObject, bool equalsExact, bool equalsHash)
         {
             Assert.AreEqual(equalsGeometry, a.Equals(b));
-            Assert.AreEqual(equalsObject, a.Equals((Object) b));
+            Assert.AreEqual(equalsObject, a.Equals((object) b));
             Assert.AreEqual(equalsExact, a.EqualsExact(b));
             Assert.AreEqual(equalsHash, a.GetHashCode() == b.GetHashCode());
         }
@@ -161,7 +161,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var polygon = reader.Read("POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
             Assert.IsTrue(!polygon.Equals(null));
-            Object g = null;
+            object g = null;
             Assert.IsTrue(!polygon.Equals(g));
         }
         [Ignore("This was commented out in JTS - not sure why")]

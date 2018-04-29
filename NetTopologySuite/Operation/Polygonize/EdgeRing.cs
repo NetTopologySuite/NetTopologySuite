@@ -378,7 +378,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Gets a string representation of this object.
         /// </summary>
-        public override String ToString()
+        public override string ToString()
         {
             return WKTWriter.ToLineString(new CoordinateArraySequence(Coordinates));
         }

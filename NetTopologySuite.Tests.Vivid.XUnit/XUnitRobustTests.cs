@@ -4,7 +4,7 @@
     public abstract class RobustXUnitRunner : XUnitRunner
     {
         protected RobustXUnitRunner(string testFile) : base(testFile) { }
-        private const String testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\robust";
+        private const string testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\robust";
         protected override string TestLocation => testLocation;
     }
     // 1 expected exception thrown

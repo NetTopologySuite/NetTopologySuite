@@ -336,7 +336,7 @@ namespace NetTopologySuite.Index.Strtree
         }
         private static TItem[] NearestNeighbour(BoundablePair<TItem> initBndPair)
         {
-            return NearestNeighbour(initBndPair, Double.PositiveInfinity);
+            return NearestNeighbour(initBndPair, double.PositiveInfinity);
         }
         private TItem[] NearestNeighbour(BoundablePair<TItem> initBndPair, int k)
         {

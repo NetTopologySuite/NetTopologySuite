@@ -957,22 +957,22 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             Transform(seq, i);
         }
-        public Boolean GeometryChanged => true;
+        public bool GeometryChanged => true;
         /// <summary>
         /// Reports that this filter should continue to be executed until
         /// all coordinates have been transformed.
         /// </summary>
         /// <returns> false</returns>
-        public Boolean Done => false;
+        public bool Done => false;
         ///<summary>Tests if this transformation is the identity transformation.</summary>
-        public Boolean IsIdentity => (_m00 == 1 && _m01 == 0 && _m02 == 0
+        public bool IsIdentity => (_m00 == 1 && _m01 == 0 && _m02 == 0
                                       && _m10 == 0 && _m11 == 1 && _m12 == 0);
         ///<summary>
         /// Tests if an object is an <c>AffineTransformation</c> and has the same matrix as this transformation.
         ///</summary>
         /// <param name="obj">An object to test</param>
         /// <returns>true if the given object is equal to this object</returns>
-        public override Boolean Equals(Object obj)
+        public override bool Equals(object obj)
         {
             return Equals(obj as AffineTransformation);
             /*
@@ -1006,7 +1006,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </code>
         /// </summary>
         ///<returns>A string representing this transformation</returns>
-        public override String ToString()
+        public override string ToString()
         {
             return "AffineTransformation[[" + _m00 + ", " + _m01 + ", " + _m02
             + "], ["

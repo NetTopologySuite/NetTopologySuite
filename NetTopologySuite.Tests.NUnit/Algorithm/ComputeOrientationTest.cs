@@ -43,7 +43,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             orient[2] = Orientation.Index(pts[2], pts[0], pts[1]);
             return orient[0] == orient[1] && orient[0] == orient[2];
         }
-        private Coordinate[] GetCoordinates(String wkt)
+        private Coordinate[] GetCoordinates(string wkt)
         {
             var geom = _reader.Read(wkt);
             return geom.Coordinates;

@@ -65,7 +65,7 @@ namespace NetTopologySuite.Utilities
                            result = valore.ToString();
                   else
                   {
-                           result = String.Empty;
+                           result = string.Empty;
                            while (valore > 0)
                           {
                                 var resto = (int) (valore % baseOut);

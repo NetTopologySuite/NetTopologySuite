@@ -57,7 +57,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     };
     return IsAllOrientationsEqual(pts);
   }
-  public static Coordinate[] GetCoordinates(String wkt)
+  public static Coordinate[] GetCoordinates(string wkt)
   {
     var geom = reader.Read(wkt);
     return geom.Coordinates;

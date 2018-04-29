@@ -15,7 +15,7 @@ namespace Open.Topology.TestRunner
         #region Constructors and Destructors
         public XmlTestCollection() : base()
 		{
-            Name = String.Empty;
+            Name = string.Empty;
 		}
         #endregion
         #region Public Properties

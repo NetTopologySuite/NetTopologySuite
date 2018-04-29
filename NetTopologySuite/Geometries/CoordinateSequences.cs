@@ -166,7 +166,7 @@ namespace NetTopologySuite.Geometries
                     if (cs1.GetOrdinate(i, ordinate) == cs2.GetOrdinate(i, ordinate))
                         continue;
                     // special check for NaNs
-                    if (Double.IsNaN(v1) && Double.IsNaN(v2))
+                    if (double.IsNaN(v1) && double.IsNaN(v2))
                         continue;
                     return false;
                 }
@@ -182,7 +182,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="cs">the sequence to output</param>
         /// <returns>the string representation of the sequence</returns>
-        public static String ToString(ICoordinateSequence cs)
+        public static string ToString(ICoordinateSequence cs)
         {
             var size = cs.Count;
             if (size == 0)
@@ -197,7 +197,7 @@ namespace NetTopologySuite.Geometries
                 {
                     if (d > 0) sb.Append(",");
                     var ordinate = cs.GetOrdinate(i, (Ordinate)d);
-                    sb.Append(String.Format("{0:0.#}", ordinate));
+                    sb.Append(string.Format("{0:0.#}", ordinate));
                 }
             }
             sb.Append(')');

@@ -25,7 +25,7 @@ namespace NetTopologySuite.LinearReferencing
         {
             if (!(linear is ILineString || linear is IMultiLineString))
             {
-                var message = String.Format("Expected {0} or {1}, but was {2}",
+                var message = string.Format("Expected {0} or {1}, but was {2}",
                     typeof(ILineString), typeof(IMultiLineString), linear.GetType());
                 throw new ArgumentException(message, "linear");
             }

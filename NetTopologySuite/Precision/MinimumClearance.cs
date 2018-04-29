@@ -153,7 +153,7 @@ namespace NetTopologySuite.Precision
             if (_minClearancePts != null) return;
             // initialize to "No Distance Exists" state
             _minClearancePts = new Coordinate[2];
-            _minClearance = Double.MaxValue;
+            _minClearance = double.MaxValue;
             // handle empty geometries
             if (_inputGeom.IsEmpty)
             {
@@ -184,13 +184,13 @@ namespace NetTopologySuite.Precision
         /// <author>Martin Davis</author>
         private class MinClearanceDistance : IItemDistance<Envelope, FacetSequence>
         {
-            private double _minDist = Double.MaxValue;
+            private double _minDist = double.MaxValue;
             public Coordinate[] Coordinates { get; } = new Coordinate[2];
             public double Distance(IBoundable<Envelope, FacetSequence> b1, IBoundable<Envelope, FacetSequence> b2)
             {
                 var fs1 = b1.Item;
                 var fs2 = b2.Item;
-                _minDist = Double.MaxValue;
+                _minDist = double.MaxValue;
                 return Distance(fs1, fs2);
             }
             public double Distance(FacetSequence fs1, FacetSequence fs2)

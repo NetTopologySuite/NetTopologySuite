@@ -17,7 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestShortAngleOnBoundary()
         {
-            String[] onBoundary =
+            string[] onBoundary =
             { "POLYGON ((10 10, 30 10, 30 30, 10 30, 10 10))",
                 "LINESTRING (10 25, 10 10, 25 10)" };
             RunRectanglePred(onBoundary);
@@ -25,12 +25,12 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestAngleOnBoundary()
         {
-            String[] onBoundary =
+            string[] onBoundary =
             { "POLYGON ((10 10, 30 10, 30 30, 10 30, 10 10))",
                 "LINESTRING (10 30, 10 10, 30 10)" };
             RunRectanglePred(onBoundary);
         }
-        private void RunRectanglePred(String[] wkt)
+        private void RunRectanglePred(string[] wkt)
         {
             var rect = rdr.Read(wkt[0]);
             var b = rdr.Read(wkt[1]);

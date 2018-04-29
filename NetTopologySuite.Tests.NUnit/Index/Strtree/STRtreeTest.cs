@@ -79,12 +79,12 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         public void TestDisallowedInserts()
         {
             var t = new STRtree(5);
-            t.Insert(new Envelope(0, 0, 0, 0), new Object());
-            t.Insert(new Envelope(0, 0, 0, 0), new Object());
+            t.Insert(new Envelope(0, 0, 0, 0), new object());
+            t.Insert(new Envelope(0, 0, 0, 0), new object());
             t.Query(new Envelope());
             try
             {
-                t.Insert(new Envelope(0, 0, 0, 0), new Object());
+                t.Insert(new Envelope(0, 0, 0, 0), new object());
                 Assert.IsTrue(false);
             }
             catch (NetTopologySuite.Utilities.AssertionFailedException e)
@@ -111,7 +111,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             var t = new STRtree(4);
             foreach (var g in geometries)
             {
-                t.Insert(g.EnvelopeInternal, new Object());
+                t.Insert(g.EnvelopeInternal, new object());
             }
             t.Build();
             try
@@ -240,7 +240,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             var itemWrappers = new List<IBoundable<Envelope, object>>();
             for (var i = 0; i < size; i++)
             {
-                itemWrappers.Add(new ItemBoundable<Envelope, object>(new Envelope(0, 0, 0, 0), new Object()));
+                itemWrappers.Add(new ItemBoundable<Envelope, object>(new Envelope(0, 0, 0, 0), new object()));
             }
             return itemWrappers;
         }

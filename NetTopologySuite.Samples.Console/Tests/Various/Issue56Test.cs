@@ -18,7 +18,7 @@ namespace NetTopologySuite.Tests.Various
         [Test, Category("Issue56")]
         public void IntMinValueTest()
         {
-            var coord = new Coordinate(300000, Int32.MinValue);
+            var coord = new Coordinate(300000, int.MinValue);
             var point = factory.CreatePoint(coord);
             var text = writer.Write(point);
             Assert.IsNotNull(text);
@@ -27,7 +27,7 @@ namespace NetTopologySuite.Tests.Various
         [Test, Category("Issue56")]
         public void DoubleMinValueTest()
         {
-            var coord = new Coordinate(300000, Double.MinValue);
+            var coord = new Coordinate(300000, double.MinValue);
             var point = factory.CreatePoint(coord);
             var text = writer.Write(point);
             Assert.IsNotNull(text);

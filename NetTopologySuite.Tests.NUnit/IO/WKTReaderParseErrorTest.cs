@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         {
             ReadBad("POINT ( +1e+01 1X02)");
         }
-        private void ReadBad(String wkt)
+        private void ReadBad(string wkt)
         {
             var threwParseEx = false;
             try

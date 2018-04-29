@@ -48,7 +48,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             DoMinimumDiameterTest(false, "LINESTRING ( 39 119, 162 197, 135 70, 95 35, 33 66, 111 82, 97 131, 48 160, -4 182, 57 195, 94 202, 90 174, 75 134, 47 114, 0 100, 59 81, 123 60, 136 43, 163 75, 145 114, 93 136, 92 159, 105 175 )", new Coordinate(64.46262341325811, 196.41184767277855), new Coordinate(95, 35));
         }
-        private void DoMinimumDiameterTest(bool convex, String wkt, Coordinate c0, Coordinate c1)
+        private void DoMinimumDiameterTest(bool convex, string wkt, Coordinate c0, Coordinate c1)
         {
             var minimumDiameter = new MinimumDiameter(new WKTReader().Read(wkt), convex).Diameter.Coordinates;
             var tolerance = 1E-10;

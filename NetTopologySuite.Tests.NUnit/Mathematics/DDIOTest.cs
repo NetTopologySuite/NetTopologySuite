@@ -33,10 +33,10 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
                 DD.ValueOf(100)), "0.34");
             CheckStandardNotation(14, "14.0");
         }
-        private static void CheckStandardNotation(double x, String expectedStr) {
+        private static void CheckStandardNotation(double x, string expectedStr) {
             CheckStandardNotation(DD.ValueOf(x), expectedStr);
         }
-        private static void CheckStandardNotation(DD x, String expectedStr) {
+        private static void CheckStandardNotation(DD x, string expectedStr) {
             var xStr = x.ToStandardNotation();
             //System.Console.WriteLine("Standard Notation: " + xStr);
             Assert.AreEqual(expectedStr, xStr);
@@ -50,10 +50,10 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
                 DD.ValueOf(34).Divide(DD.ValueOf(100)), "3.4E-1");
             CheckSciNotation(14, "1.4E1");
         }
-        private static void CheckSciNotation(double x, String expectedStr) {
+        private static void CheckSciNotation(double x, string expectedStr) {
             CheckSciNotation(DD.ValueOf(x), expectedStr);
         }
-        private static void CheckSciNotation(DD x, String expectedStr) {
+        private static void CheckSciNotation(DD x, string expectedStr) {
             var xStr = x.ToSciNotation();
             //System.Console.WriteLine("Sci Notation: " + xStr);
             Assert.AreEqual(xStr, expectedStr);
@@ -89,11 +89,11 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             CheckParse("39.5", 39.5, 1e-30);
             CheckParse("-39.5", -39.5, 1e-30);
         }
-        private static void CheckParse(String str, double expectedVal, double errBound)
+        private static void CheckParse(string str, double expectedVal, double errBound)
         {
             CheckParse(str, new DD(expectedVal), errBound);
         }
-        private static void CheckParse(String str, DD expectedVal,
+        private static void CheckParse(string str, DD expectedVal,
             double relErrBound) {
             var xdd = DD.Parse(str);
             var err = (xdd - expectedVal).ToDoubleValue();
@@ -110,7 +110,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             CheckParseError("%-1.05E2w");
             CheckParseError("-1.0512345678t");
         }
-        private static void CheckParseError(String str) {
+        private static void CheckParseError(string str) {
             var foundParseError = false;
             try {
                 DD.Parse(str);

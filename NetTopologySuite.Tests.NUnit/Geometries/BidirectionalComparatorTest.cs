@@ -26,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                                             )
                          );
         }
-        public int compareBiDir(String wkt0, String wkt1)
+        public int compareBiDir(string wkt0, string wkt1)
         {
             var g0 = (LineString)rdr.Read(wkt0);
             var g1 = (LineString)rdr.Read(wkt1);

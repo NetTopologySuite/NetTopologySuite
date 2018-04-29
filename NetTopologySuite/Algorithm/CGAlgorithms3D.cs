@@ -20,7 +20,7 @@ namespace NetTopologySuite.Algorithm
         public static double Distance(Coordinate p0, Coordinate p1)
         {
             // default to 2D distance if either Z is not set
-            if (Double.IsNaN(p0.Z) || Double.IsNaN(p1.Z))
+            if (double.IsNaN(p0.Z) || double.IsNaN(p1.Z))
                 return p0.Distance(p1);
             var dx = p0.X - p1.X;
             var dy = p0.Y - p1.Y;
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Algorithm
              *   0<r<1 P is interior to AB
              */
             var len2 = (B.X - A.X) * (B.X - A.X) + (B.Y - A.Y) * (B.Y - A.Y) + (B.Z - A.Z) * (B.Z - A.Z);
-            if (Double.IsNaN(len2))
+            if (double.IsNaN(len2))
                 throw new ArgumentException("Ordinates must not be NaN");
             var r = ((p.X - A.X) * (B.X - A.X) + (p.Y - A.Y) * (B.Y - A.Y) + (p.Z - A.Z) * (B.Z - A.Z))
                 / len2;
@@ -100,7 +100,7 @@ namespace NetTopologySuite.Algorithm
             var d = Vector3D.Dot(A, B, C, A);
             var e = Vector3D.Dot(C, D, C, A);
             var denom = a * c - b * b;
-            if (Double.IsNaN(denom))
+            if (double.IsNaN(denom))
                 throw new ArgumentException("Ordinates must not be NaN");
             double s;
             double t;

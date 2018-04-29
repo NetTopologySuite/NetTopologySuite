@@ -49,7 +49,7 @@ taken to solve it.";
         public void IntersectionWithLineCreatedWithLargestCoordinates()
         {
             // returns POINT (0 0) => Same as JTS
-            PerformTest(Double.MaxValue);
+            PerformTest(double.MaxValue);
         }
         private static void PerformTest(double value)
         {

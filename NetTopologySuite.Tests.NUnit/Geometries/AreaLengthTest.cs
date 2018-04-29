@@ -36,14 +36,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             checkArea("POLYGON ((20 20, 40 20, 40 40, 20 40, 20 20))", 400.0);
             checkArea("POLYGON ((20 20, 40 20, 40 40, 20 40, 20 20), (25 35, 35 35, 35 25, 25 25, 25 35))", 300.0);
         }
-        public void checkLength(String wkt, double expectedValue)
+        public void checkLength(string wkt, double expectedValue)
         {
             var g = reader.Read(wkt);
             var len = g.Length;
             //System.Console.WriteLine(len);
             Assert.AreEqual(expectedValue, len, TOLERANCE);
         }
-        public void checkArea(String wkt, double expectedValue)
+        public void checkArea(string wkt, double expectedValue)
         {
             var g = reader.Read(wkt);
             Assert.AreEqual(expectedValue, g.Area, TOLERANCE);

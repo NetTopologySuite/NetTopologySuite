@@ -44,14 +44,14 @@ namespace NetTopologySuite.Tests.NUnit.IO
         {
             ReadBad("POINT ( +1e+01 1X02)");
         }
-        private void ReadGoodCheckCoordinate(String wkt, double x, double y)
+        private void ReadGoodCheckCoordinate(string wkt, double x, double y)
         {
             var g = rdr.Read(wkt);
             var pt = g.Coordinate;
             Assert.AreEqual(pt.X, x, 0.0001);
             Assert.AreEqual(pt.Y, y, 0.0001);
         }
-        private void ReadBad(String wkt)
+        private void ReadBad(string wkt)
         {
             var threwParseEx = false;
             try

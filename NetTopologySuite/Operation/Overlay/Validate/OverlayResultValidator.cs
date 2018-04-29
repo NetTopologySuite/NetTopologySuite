@@ -122,7 +122,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         {
 // ReSharper disable RedundantStringFormatCall
             // String.Format needed to build 2.0 release!
-            Debug.WriteLine(String.Format("{0}:" + " A:{1} B:{2} expected:{3} actual:{4}",
+            Debug.WriteLine(string.Format("{0}:" + " A:{1} B:{2} expected:{3} actual:{4}",
                 overlayOp,
                 LocationUtility.ToLocationSymbol(location[0]),
                 LocationUtility.ToLocationSymbol(location[1]), expectedInterior ? 'i' : 'e',

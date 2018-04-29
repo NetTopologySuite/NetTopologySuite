@@ -11,7 +11,7 @@ namespace NetTopologySuite.Noding
     /// </summary>
     public class SegmentNodeList : IEnumerable<object>
     {
-        private readonly IDictionary<SegmentNode, Object> _nodeMap = new SortedDictionary<SegmentNode, Object>();
+        private readonly IDictionary<SegmentNode, object> _nodeMap = new SortedDictionary<SegmentNode, object>();
         /// <summary>
         /// Initializes a new instance of the <see cref="SegmentNodeList"/> class.
         /// </summary>

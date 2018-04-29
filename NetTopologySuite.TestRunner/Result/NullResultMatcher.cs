@@ -11,7 +11,7 @@ namespace Open.Topology.TestRunner.Result
     {
         ///<inheritdoc/>
         ///<remarks>Always reports a match.</remarks>
-        public bool IsMatch(IGeometry geom, String opName, Object[] args,
+        public bool IsMatch(IGeometry geom, string opName, object[] args,
                             TResult actualResult, TResult expectedResult,
                             double tolerance)
         {

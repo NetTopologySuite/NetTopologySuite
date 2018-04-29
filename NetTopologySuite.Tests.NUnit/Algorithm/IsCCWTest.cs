@@ -30,7 +30,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 GetCoordinateSequence("POLYGON ((60 180, 140 120, 100 180, 140 240, 140 240, 60 180))");
             Assert.IsTrue(Orientation.IsCCW(seq2x));
         }
-        private Coordinate[] GetCoordinates(String wkt)
+        private Coordinate[] GetCoordinates(string wkt)
         {
             var geom = reader.Read(wkt);
             return geom.Coordinates;

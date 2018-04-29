@@ -43,22 +43,22 @@ namespace ConsoleTestRunner
         }
         #endregion
         #region Protected Overridable Methods
-        protected override void OnInsert(int index, Object value)
+        protected override void OnInsert(int index, object value)
         {
             if (value.GetType() != Type.GetType("ConsoleTestRunner.TestInfo"))
                 throw new ArgumentException("value must be of type TestInfo.", "value");
         }
-        protected override void OnRemove(int index, Object value)
+        protected override void OnRemove(int index, object value)
         {
             if (value.GetType() != Type.GetType("ConsoleTestRunner.TestInfo"))
                 throw new ArgumentException("value must be of type TestInfo.", "value");
         }
-        protected override void OnSet( int index, Object oldValue, Object newValue )
+        protected override void OnSet( int index, object oldValue, object newValue )
         {
             if (newValue.GetType() != Type.GetType("ConsoleTestRunner.TestInfo"))
                 throw new ArgumentException("newValue must be of type TestInfo.", "newValue");
         }
-        protected override void OnValidate(Object value)
+        protected override void OnValidate(object value)
         {
             if (value.GetType() != Type.GetType("ConsoleTestRunner.TestInfo"))
                 throw new ArgumentException("value must be of type TestInfo.");

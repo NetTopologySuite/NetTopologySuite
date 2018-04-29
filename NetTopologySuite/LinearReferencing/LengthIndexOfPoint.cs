@@ -72,7 +72,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns></returns>
         private double IndexOfFromStart(Coordinate inputPt, double minIndex)
         {
-            var minDistance = Double.MaxValue;
+            var minDistance = double.MaxValue;
             var ptMeasure = minIndex;
             var segmentStartMeasure = 0.0;
             var seg = new LineSegment();

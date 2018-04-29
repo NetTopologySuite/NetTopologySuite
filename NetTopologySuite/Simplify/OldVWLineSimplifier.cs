@@ -83,7 +83,7 @@ namespace NetTopologySuite.Simplify
                 }
                 return first;
             }
-            private const double MaxArea = Double.MaxValue;
+            private const double MaxArea = double.MaxValue;
             private readonly Coordinate _pt;
             private double _area = MaxArea;
             public VWVertex(Coordinate pt)

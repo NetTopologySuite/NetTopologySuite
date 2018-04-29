@@ -119,12 +119,12 @@ namespace NetTopologySuite.Tests.NUnit.IO
         {
             RunWKBTest("GEOMETRYCOLLECTION EMPTY");
         }
-        private void RunWKBTest(String wkt)
+        private void RunWKBTest(string wkt)
         {
             RunWKBTestCoordinateArray(wkt);
             RunWKBTestPackedCoordinate(wkt);
         }
-        private void RunWKBTestPackedCoordinate(String wkt)
+        private void RunWKBTestPackedCoordinate(string wkt)
         {
             var factory = new GeometryFactory(
                 new PackedCoordinateSequenceFactory(PackedCoordinateSequenceFactory.PackedType.Double, 2));
@@ -134,7 +134,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             RunWKBTest(g, 2, true);
             RunWKBTest(g, 2, false);
         }
-        private void RunWKBTestCoordinateArray(String wkt)
+        private void RunWKBTestCoordinateArray(string wkt)
         {
             var g = Rdr.Read(wkt);
             // CoordinateArrays support dimension 3, so test both dimensions
@@ -230,7 +230,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             }
             var wkbWriter = new WKBWriter(byteOrder, includeSRID, dimension==2 ? false : true);
             var wkb = wkbWriter.Write(g);
-            String wkbHex = null;
+            string wkbHex = null;
             if (toHex)
                 wkbHex = WKBWriter.ToHex(wkb);
             if (toHex)

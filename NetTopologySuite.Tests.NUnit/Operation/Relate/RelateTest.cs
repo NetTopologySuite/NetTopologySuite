@@ -31,7 +31,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             var b = "LINESTRING (0 0, 2 2)";
             RunRelateTest(a, b, "101F00FF2");
         }
-        private static void RunRelateTest(String wkt1, String wkt2, String expectedIM)
+        private static void RunRelateTest(string wkt1, string wkt2, string expectedIM)
         {
             var g1 = Reader.Read(wkt1);
             var g2 = Reader.Read(wkt2);

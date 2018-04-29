@@ -23,7 +23,7 @@ namespace NetTopologySuite.Triangulate
         /// <summary>
         /// Creates a new instance for the given ordinates,  with associated external data.
         /// </summary>
-        public Segment(double x1, double y1, double z1, double x2, double y2, double z2, Object data)
+        public Segment(double x1, double y1, double z1, double x2, double y2, double z2, object data)
             : this(new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2), data)
         {
         }
@@ -33,7 +33,7 @@ namespace NetTopologySuite.Triangulate
         /// <param name="p0">the start point</param>
         /// <param name="p1">the end point</param>
         /// <param name="data">an external data object</param>
-        public Segment(Coordinate p0, Coordinate p1, Object data)
+        public Segment(Coordinate p0, Coordinate p1, object data)
         {
             LineSegment = new LineSegment(p0, p1);
             this.Data = data;
@@ -138,7 +138,7 @@ namespace NetTopologySuite.Triangulate
         /// Gets or sets the external data associated with this segment
         /// </summary>
         /// <remarks>a data object</remarks>
-        public Object Data { get; set; }
+        public object Data { get; set; }
         /// <summary>
         /// Determines whether two segments are topologically equal.
         /// I.e. equal up to orientation.
@@ -162,7 +162,7 @@ namespace NetTopologySuite.Triangulate
         /// Computes a string representation of this segment.
         /// </summary>
         /// <returns>a string</returns>
-        public override String ToString()
+        public override string ToString()
         {
             return LineSegment.ToString();
         }

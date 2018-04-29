@@ -49,7 +49,7 @@ namespace NetTopologySuite.Precision
         {
             if (_minClearancePts != null) return;
             _minClearancePts = new Coordinate[2];
-            _minClearance = Double.MaxValue;
+            _minClearance = double.MaxValue;
             _inputGeom.Apply(new VertexCoordinateFilter(this, _inputGeom));
         }
         private void UpdateClearance(double candidateValue, Coordinate p0, Coordinate p1)
@@ -121,7 +121,7 @@ namespace NetTopologySuite.Precision
                 if (segDist > 0)
                     _smc.UpdateClearance(segDist, _queryPt, seg1, seg0);
             }
-            public Boolean Done => false;
+            public bool Done => false;
             public bool GeometryChanged => false;
         }
     }

@@ -40,7 +40,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
                 }
                 return true;
             }
-            private static Boolean CheckIntersects(IGeometry target, IGeometry test)
+            private static bool CheckIntersects(IGeometry target, IGeometry test)
             {
                 var expectedResult = target.Intersects(test);
                 var pgFact = new PreparedGeometryFactory();

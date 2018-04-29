@@ -83,7 +83,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating the minimal x-ordinate value
         /// </summary>
-        public double MinX { get; private set; } = Double.NaN;
+        public double MinX { get; private set; } = double.NaN;
         /// <summary>
         /// Gets a value indicating the maximal x-ordinate value
         /// </summary>
@@ -115,13 +115,13 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating that this object is null
         /// </summary>
-        public Boolean IsNull
+        public bool IsNull
         {
-            get => Double.IsNaN(MinX);
+            get => double.IsNaN(MinX);
             private set
             {
                 if (value)
-                    MinX = Double.NaN;
+                    MinX = double.NaN;
             }
         }
         /// <summary>
@@ -253,7 +253,7 @@ namespace NetTopologySuite.Geometries
         /// Gets a value indicating if the extremal values for this octagon are valid.
         /// </summary>
         /// <returns><c>true</c> if this object has valid values</returns>
-        private Boolean IsValid
+        private bool IsValid
         {
             get
             {
@@ -269,7 +269,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other">An octagonal envelope </param>
         /// <returns><c>true</c> if <c>this</c> octagonal envelope intersects <paramref name="other"/> octagonal envelope .</returns>
-        public Boolean Intersects(OctagonalEnvelope other)
+        public bool Intersects(OctagonalEnvelope other)
         {
             if (IsNull || other.IsNull) { return false; }
             if (MinX > other.MaxX) return false;
@@ -287,7 +287,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="p">A coordinate</param>
         /// <returns><c>true</c> if <c>this</c> octagonal envelope contains <paramref name="p"/> coordinate.</returns>
-        public Boolean Intersects(Coordinate p)
+        public bool Intersects(Coordinate p)
         {
             if (MinX > p.X) return false;
             if (MaxX < p.X) return false;
@@ -306,7 +306,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other">An octagonal envelope</param>
         /// <returns><c>true</c> if <c>this</c> octagonal envelope contains <paramref name="other"/> octagonal envelope.</returns>
-        public Boolean Contains(OctagonalEnvelope other)
+        public bool Contains(OctagonalEnvelope other)
         {
             if (IsNull || other.IsNull) { return false; }
             return other.MinX >= MinX

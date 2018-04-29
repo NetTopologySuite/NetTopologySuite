@@ -28,10 +28,10 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="p0">The point coordinate.</param>
         /// <returns>The WKT</returns>
-        public static String ToPoint(Coordinate p0)
+        public static string ToPoint(Coordinate p0)
         {
 #if LikeJTS
-            return String.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", p0.X, p0.Y);
+            return string.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", p0.X, p0.Y);
 #else
             if (double.IsNaN(p0.Z))
 				return String.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", p0.X, p0.Y);
@@ -43,7 +43,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="seq">The sequence to write.</param>
         /// <returns>The WKT</returns>
-        public static String ToLineString(ICoordinateSequence seq)
+        public static string ToLineString(ICoordinateSequence seq)
         {
             var buf = new StringBuilder();
             buf.Append("LINESTRING");
@@ -56,7 +56,7 @@ namespace NetTopologySuite.IO
                 {
                     if (i > 0)
                         buf.Append(", ");
-                    buf.Append(String.Format(CultureInfo.InvariantCulture, "{0} {1}", seq.GetX(i), seq.GetY(i)));
+                    buf.Append(string.Format(CultureInfo.InvariantCulture, "{0} {1}", seq.GetX(i), seq.GetY(i)));
               }
               buf.Append(")");
             }
@@ -95,10 +95,10 @@ namespace NetTopologySuite.IO
         /// <param name="p0">The first coordinate.</param>
         /// <param name="p1">The second coordinate.</param>
         /// <returns>The WKT</returns>
-        public static String ToLineString(Coordinate p0, Coordinate p1)
+        public static string ToLineString(Coordinate p0, Coordinate p1)
         {
 #if LikeJTS
-            return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0:R} {1:R}, {2:R} {3:R})", p0.X, p0.Y, p1.X, p1.Y);
+            return string.Format(CultureInfo.InvariantCulture, "LINESTRING({0:R} {1:R}, {2:R} {3:R})", p0.X, p0.Y, p1.X, p1.Y);
 #else
             if (double.IsNaN(p0.Z))
 				return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1}, {2} {3})", p0.X, p0.Y, p1.X, p1.Y);
@@ -128,7 +128,7 @@ namespace NetTopologySuite.IO
             {
                 NumberDecimalSeparator = ".",
                 NumberDecimalDigits = decimalPlaces,
-                NumberGroupSeparator = String.Empty,
+                NumberGroupSeparator = string.Empty,
                 NumberGroupSizes = new int[] {}
             };
             return nfi;
@@ -152,7 +152,7 @@ namespace NetTopologySuite.IO
         private string _format;
         private bool _useFormating;
         private bool _useMaxPrecision;
-        private String _indentTabStr = "  ";
+        private string _indentTabStr = "  ";
         public WKTWriter() { }
         public WKTWriter(int outputDimension)
         {
@@ -451,7 +451,7 @@ namespace NetTopologySuite.IO
             if (_outputDimension >= 3 && seq.Dimension >= 3)
             {
                 var z = seq.GetOrdinate(i, Ordinate.Z);
-                if (!Double.IsNaN(z))
+                if (!double.IsNaN(z))
                 {
                     writer.Write(" ");
                     writer.Write(WriteNumber(z));
@@ -495,12 +495,12 @@ namespace NetTopologySuite.IO
                 // check if some precision is lost during text conversion: if so, use {0:R} formatter
                 if (converted == d)
                     return standard;
-                return String.Format(_formatter, MaxPrecisionFormat, d);
+                return string.Format(_formatter, MaxPrecisionFormat, d);
             }
             catch (OverflowException ex)
             {
                 // Use MaxPrecisionFormat anyway
-                return String.Format(_formatter, MaxPrecisionFormat, d);
+                return string.Format(_formatter, MaxPrecisionFormat, d);
             }
         }
         ///<summary>Converts a <see cref="ICoordinateSequence"/> to &lt;LineString Text&gt; format, then appends it to the writer</summary>

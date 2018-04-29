@@ -17,16 +17,16 @@ namespace NetTopologySuite.Utilities
                 throw new AssertionFailedException();
             throw new AssertionFailedException(message);
         }
-        public static void IsEquals(Object expectedValue, Object actualValue)
+        public static void IsEquals(object expectedValue, object actualValue)
         {
             IsEquals(expectedValue, actualValue, null);
         }
-        public static void IsEquals(Object expectedValue, Object actualValue, string message)
+        public static void IsEquals(object expectedValue, object actualValue, string message)
         {
             if (actualValue.Equals(expectedValue))
                 return;
-            var s = message != null ? ": " + message : String.Empty;
-            var format = String.Format("Expected {0} but encountered {1}{2}", expectedValue, actualValue, s);
+            var s = message != null ? ": " + message : string.Empty;
+            var format = string.Format("Expected {0} but encountered {1}{2}", expectedValue, actualValue, s);
             throw new AssertionFailedException(format);
         }
         public static void ShouldNeverReachHere()
@@ -35,8 +35,8 @@ namespace NetTopologySuite.Utilities
         }
         public static void ShouldNeverReachHere(string message)
         {
-            var s = (message != null ? ": " + message : String.Empty);
-            var format = String.Format("Should never reach here{0}", s);
+            var s = (message != null ? ": " + message : string.Empty);
+            var format = string.Format("Should never reach here{0}", s);
             throw new AssertionFailedException(format);
         }
     }

@@ -124,7 +124,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         ///
         /// </summary>
-        public String Message => errMsg[(int) ErrorType];
+        public string Message => errMsg[(int) ErrorType];
         /// <summary>
         ///
         /// </summary>

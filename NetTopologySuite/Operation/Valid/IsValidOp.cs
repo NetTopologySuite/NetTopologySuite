@@ -25,13 +25,13 @@ namespace NetTopologySuite.Operation.Valid
         /// <returns><c>true</c> if the coordinate is valid.</returns>
         public static bool IsValidCoordinate(Coordinate coord)
         {
-            if (Double.IsNaN(coord.X))
+            if (double.IsNaN(coord.X))
                 return false;
-            if (Double.IsInfinity(coord.X))
+            if (double.IsInfinity(coord.X))
                 return false;
-            if (Double.IsNaN(coord.Y))
+            if (double.IsNaN(coord.Y))
                 return false;
-            if (Double.IsInfinity(coord.Y))
+            if (double.IsInfinity(coord.Y))
                 return false;
             return true;
         }

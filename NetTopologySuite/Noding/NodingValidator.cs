@@ -53,7 +53,7 @@ namespace NetTopologySuite.Noding
         private static void CheckCollapse(Coordinate p0, Coordinate p1, Coordinate p2)
         {
             if (p0.Equals(p2))
-                throw new ApplicationException(String.Format(
+                throw new ApplicationException(string.Format(
                     "found non-noded collapse at: {0}", Factory.CreateLineString(new [] { p0, p1, p2 })));
         }
         /// <summary>
@@ -84,7 +84,7 @@ namespace NetTopologySuite.Noding
             _li.ComputeIntersection(p00, p01, p10, p11);
             if (_li.HasIntersection)
                 if (_li.IsProper || HasInteriorIntersection(_li, p00, p01) || HasInteriorIntersection(_li, p10, p11))
-                    throw new ApplicationException(String.Format(
+                    throw new ApplicationException(string.Format(
                         "found non-noded intersection at {0}-{1} and {2}-{3}", p00, p01, p10, p11));
         }
         private static bool HasInteriorIntersection(LineIntersector li, Coordinate p0, Coordinate p1)
@@ -118,7 +118,7 @@ namespace NetTopologySuite.Noding
                 var pts = ss.Coordinates;
                 for (var j = 1; j < pts.Length - 1; j++)
                     if (pts[j].Equals(testPt))
-                        throw new ApplicationException(String.Format(
+                        throw new ApplicationException(string.Format(
                             "found endpt/interior pt intersection at index {0} :pt {1}", j, testPt));
             }
         }

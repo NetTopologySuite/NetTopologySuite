@@ -18,12 +18,12 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         public int NumPoints { get; set; } = 10000;
         public IPointOnGeometryLocator TestPointInAreaLocator { get; set; }
         public IPointOnGeometryLocator ExpectedPointInAreaLocator { get; set; }
-        public Boolean IgnoreBoundaryResults { get; set; } = true;
+        public bool IgnoreBoundaryResults { get; set; } = true;
         /// <summary>
         /// Run
         /// </summary>
         /// <returns> true if all point locations were computed correctly</returns>
-        public Boolean Run()
+        public bool Run()
         {
             var sw = new Stopwatch();
             sw.Start();
@@ -56,9 +56,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         public void PrintStats()
         {
             Console.WriteLine("Location counts: "
-                              + "\nBoundary = " + _locationCount[(Int32)Location.Boundary]
-                              + "\nInterior = " + _locationCount[(Int32)Location.Interior]
-                              + "\nExterior = " + _locationCount[(Int32)Location.Exterior]
+                              + "\nBoundary = " + _locationCount[(int)Location.Boundary]
+                              + "\nInterior = " + _locationCount[(int)Location.Interior]
+                              + "\nExterior = " + _locationCount[(int)Location.Exterior]
                 );
         }
         /// <summary>
@@ -66,12 +66,12 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// </summary>
         /// <param name="p"></param>
         /// <returns>true if the point location is determined to be the same by both PIA locators</returns>
-        private Boolean TestPointInArea(Coordinate p)
+        private bool TestPointInArea(Coordinate p)
         {
             //Console.WriteLine(WKTWriter.toPoint(p));
             var loc1 = TestPointInAreaLocator.Locate(p);
             var loc2 = ExpectedPointInAreaLocator.Locate(p);
-            _locationCount[(Int32)loc1]++;
+            _locationCount[(int)loc1]++;
             if ((loc1 == Location.Boundary || loc2 == Location.Boundary)
                 && IgnoreBoundaryResults)
                 return true;

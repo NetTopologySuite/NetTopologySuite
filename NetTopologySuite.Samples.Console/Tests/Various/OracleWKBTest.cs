@@ -14,7 +14,7 @@ namespace NetTopologySuite.Samples.Tests.Various
     [TestFixture]
     public class OracleWKBTest : BaseSamples
     {
-        private string blobFile = String.Empty;
+        private string blobFile = string.Empty;
         /// <summary>
         /// Initializes a new instance of the <see cref="OracleWKBTest"/> class.
         /// </summary>

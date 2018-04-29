@@ -60,7 +60,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
                 Console.WriteLine(e.StackTrace);
             }
         }
-        private static MethodInfo[] FindMethods(Type clz, String methodPrefix)
+        private static MethodInfo[] FindMethods(Type clz, string methodPrefix)
         {
             var runMeths = new List<MethodInfo>();
             var meth = clz.GetMethods();

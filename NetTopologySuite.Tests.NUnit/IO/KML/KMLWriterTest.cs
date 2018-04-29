@@ -126,8 +126,8 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
             var actual = writer.Write(geom);
             var actualNorm = normalizeKML(actual);
             var expectedNorm = normalizeKML(expected);
-            var isEqual = String.Equals(actualNorm, expectedNorm, StringComparison.OrdinalIgnoreCase);
-            Assert.IsTrue(isEqual, String.Format("\nGenerated KML:  {0}\n  Expected KML: {1}", actualNorm, expectedNorm));
+            var isEqual = string.Equals(actualNorm, expectedNorm, StringComparison.OrdinalIgnoreCase);
+            Assert.IsTrue(isEqual, string.Format("\nGenerated KML:  {0}\n  Expected KML: {1}", actualNorm, expectedNorm));
         }
         /// <summary>
         /// Normalizes an XML string by converting all whitespace to a single blank char.

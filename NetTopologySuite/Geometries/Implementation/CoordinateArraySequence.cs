@@ -163,7 +163,7 @@ namespace NetTopologySuite.Geometries.Implementation
                 case Ordinate.Z:
                     return Coordinates[index].Z;
                 default:
-                    return Double.NaN;
+                    return double.NaN;
             }
         }
         /// <summary>

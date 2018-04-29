@@ -89,14 +89,14 @@ namespace NetTopologySuite.Mathematics
         /// <summary>
         /// A value representing the result of an operation which does not return a valid number.
         /// </summary>
-        public static readonly DD NaN = new DD(Double.NaN, Double.NaN);
+        public static readonly DD NaN = new DD(double.NaN, double.NaN);
         /// <summary>
         /// The smallest representable relative difference between two <see cref="DD"/> values
         /// </summary>
         public static readonly double Epsilon = 1.23259516440783e-32; /* = 2^-106 */
         private static DD CreateNaN()
         {
-            return new DD(Double.NaN, Double.NaN);
+            return new DD(double.NaN, double.NaN);
         }
         /// <summary>
         /// Converts the string argument to a DoubleDouble number.
@@ -104,11 +104,11 @@ namespace NetTopologySuite.Mathematics
         /// <param name="str">A string containing a representation of a numeric value</param>
         /// <returns>The extended precision version of the value</returns>
         /// <exception cref="FormatException">Thrown if <paramref name="str"/> is not a valid representation of a number</exception>
-        public static DD ValueOf(String str)
+        public static DD ValueOf(string str)
         {
             return Parse(str);
         }
-        public static explicit operator DD (String val)
+        public static explicit operator DD (string val)
         {
             return Parse(val);
         }
@@ -122,7 +122,7 @@ namespace NetTopologySuite.Mathematics
         {
             return new DD(x);
         }
-        public static implicit operator DD(Double val)
+        public static implicit operator DD(double val)
         {
             return new DD(val);
         }
@@ -171,7 +171,7 @@ namespace NetTopologySuite.Mathematics
          * @param str the value to initialize by
          * @throws NumberFormatException if <tt>str</tt> is not a valid representation of a number
          */
-        public DD(String str)
+        public DD(string str)
             : this(Parse(str))
         {
         }
@@ -188,7 +188,7 @@ namespace NetTopologySuite.Mathematics
         /// Creates and returns a copy of this value.
         /// </summary>
         /// <returns>A copy of this value</returns>
-        public Object Clone()
+        public object Clone()
         {
             return new DD(_hi, _lo);
         }
@@ -260,7 +260,7 @@ namespace NetTopologySuite.Mathematics
         /// <param name="lhs">The left hand side</param>
         /// <param name="rhs">The right hand side</param>
         /// <returns>The sum of <paramref name="lhs"/> and <paramref name="rhs"/></returns>
-        public static DD operator +(DD lhs, Double rhs)
+        public static DD operator +(DD lhs, double rhs)
         {
             return lhs + new DD(rhs, 0);
         }
@@ -280,7 +280,7 @@ namespace NetTopologySuite.Mathematics
         /// <param name="lhs">The left hand side</param>
         /// <param name="rhs">The right hand side</param>
         /// <returns>The difference of <paramref name="lhs"/> and <paramref name="rhs"/></returns>
-        public static DD operator -(DD lhs, Double rhs)
+        public static DD operator -(DD lhs, double rhs)
         {
             return lhs + new DD(-rhs, 0);
         }
@@ -438,7 +438,7 @@ namespace NetTopologySuite.Mathematics
         //{
         //    return SelfMultiply(y, 0.0);
         //}
-        public static DD operator *(DD lhs, Double rhs)
+        public static DD operator *(DD lhs, double rhs)
         {
             return lhs*new DD(rhs, 0d);
         }
@@ -541,7 +541,7 @@ namespace NetTopologySuite.Mathematics
         //{
         //    return SelfDivide(y, 0.0);
         //}
-        public static DD operator /(DD lhs, Double rhs)
+        public static DD operator /(DD lhs, double rhs)
         {
             return lhs/new DD(rhs, 0d);
         }
@@ -877,11 +877,11 @@ namespace NetTopologySuite.Mathematics
         /// </summary>
         public static bool IsNaN(DD value)
         {
-            return Double.IsNaN(value._hi);
+            return double.IsNaN(value._hi);
         }
         public static bool IsInfinity(DD value)
         {
-            return Double.IsInfinity(value._hi);
+            return double.IsInfinity(value._hi);
         }
         /**
          * Tests whether this value is equal to another <tt>DoubleDouble</tt> value.
@@ -952,7 +952,7 @@ namespace NetTopologySuite.Mathematics
             if (_lo > other._lo) return 1;
             return 0;
         }
-        public int CompareTo(Object o)
+        public int CompareTo(object o)
         {
             var other = (DD) o;
             if (_hi < other._hi) return -1;
@@ -968,13 +968,13 @@ namespace NetTopologySuite.Mathematics
         private const int MaxPrintDigits = 32;
         private static readonly DD Ten = ValueOf(10.0);
         private static readonly DD One = ValueOf(1.0);
-        private static readonly String SCI_NOT_EXPONENT_CHAR = "E";
-        private static readonly String SCI_NOT_ZERO = "0.0E0";
+        private static readonly string SCI_NOT_EXPONENT_CHAR = "E";
+        private static readonly string SCI_NOT_ZERO = "0.0E0";
         /// <summary>
         /// Dumps the components of this number to a string.
         /// </summary>
         /// <returns>A string showing the components of the number</returns>
-        public String Dump()
+        public string Dump()
         {
             return string.Format(NumberFormatInfo.InvariantInfo, "DD<{0}, {1}>", _hi, _lo);
         }
@@ -984,7 +984,7 @@ namespace NetTopologySuite.Mathematics
         /// standard notation will be used.  Otherwise, scientific notation will be used.
         /// </summary>
         /// <returns>A string representation of this number</returns>
-        public override String ToString()
+        public override string ToString()
         {
             var mag = Magnitude(_hi);
             if (mag >= -3 && mag <= 20)
@@ -995,7 +995,7 @@ namespace NetTopologySuite.Mathematics
         /// Returns the string representation of this value in standard notation.
         /// </summary>
         /// <returns>The string representation in standard notation</returns>
-        public String ToStandardNotation()
+        public string ToStandardNotation()
         {
             var specialStr = GetSpecialNumberString();
             if (specialStr != null)
@@ -1029,7 +1029,7 @@ namespace NetTopologySuite.Mathematics
         /// Returns the string representation of this value in scientific notation.
         /// </summary>
         /// <returns>The string representation in scientific notation</returns>
-        public String ToSciNotation()
+        public string ToSciNotation()
         {
             // special case zero, to allow as
             if (IsZero)
@@ -1065,7 +1065,7 @@ namespace NetTopologySuite.Mathematics
          * @param decimalPointPos the position in which to insert a decimal point
          * @return the string containing the significant digits and possibly a decimal point
          */
-        private String ExtractSignificantDigits(bool insertDecimalPoint, int[] magnitudes)
+        private string ExtractSignificantDigits(bool insertDecimalPoint, int[] magnitudes)
         {
             var y = this.Abs();
             // compute *correct* magnitude of y
@@ -1156,7 +1156,7 @@ namespace NetTopologySuite.Mathematics
         /// </summary>
         /// <returns>The string for this special number <br/>
         /// or <c>null</c> if the number is not a special number</returns>
-        private String GetSpecialNumberString()
+        private string GetSpecialNumberString()
         {
             if (IsZero) return "0.0";
             if (IsNaN(this)) return "NaN ";
@@ -1199,12 +1199,12 @@ namespace NetTopologySuite.Mathematics
         /// <param name="str">The string to parse</param>
         /// <returns>The value of the parsed number</returns>
         /// <exception cref="FormatException">Thrown if <tt>str</tt> is not a valid representation of a number</exception>
-        public static DD Parse(String str)
+        public static DD Parse(string str)
         {
             var i = 0;
             var strlen = str.Length;
             // skip leading whitespace
-            while (Char.IsWhiteSpace(str[i]))
+            while (char.IsWhiteSpace(str[i]))
                 i++;
             // check for sign
             var isNegative = false;
@@ -1230,7 +1230,7 @@ namespace NetTopologySuite.Mathematics
                     break;
                 var ch = str[i];
                 i++;
-                if (Char.IsDigit(ch))
+                if (char.IsDigit(ch))
                 {
                     double d = ch - '0';
                     val *= Ten;

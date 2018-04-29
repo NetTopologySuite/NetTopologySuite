@@ -188,7 +188,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             }
         }
         static readonly WKTReader WktReader = new WKTReader();
-        static void CheckTransformation(String geomStr)
+        static void CheckTransformation(string geomStr)
         {
             var geom = (Geometry)WktReader.Read(geomStr);
             var trans = AffineTransformation

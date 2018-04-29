@@ -53,7 +53,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             Assert.IsTrue(!IsRectangle("POLYGON ((0 0, 0 100, 100 0, 100 100, 0 0))"));
         }
-        public bool IsRectangle(String wkt)
+        public bool IsRectangle(string wkt)
         {
             var a = rdr.Read(wkt);
             return a.IsRectangle;

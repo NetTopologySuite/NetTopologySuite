@@ -15,7 +15,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
         public const int ITERATED = 2;
         public const int BUFFER0 = 3;
         public const int ORDERED = 4;
-        public static void run(String testName, int testType, IList<IGeometry> polys)
+        public static void run(string testName, int testType, IList<IGeometry> polys)
         {
             var test = new UnionPerfTester(polys);
             test.run(testName, testType);
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
 //    run("Buffer-0", BUFFER0, polys);
             run("Iterated", ITERATED, _polys);
         }
-        public void run(String testName, int testType)
+        public void run(string testName, int testType)
         {
             Console.WriteLine();
             Console.WriteLine("======= Union Algorithm: " + testName + " ===========");

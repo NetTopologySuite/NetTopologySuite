@@ -42,7 +42,7 @@ namespace NetTopologySuite.IO
         ///</summary>
         /// <param name="filename">The name of the file to read from</param>
         /// <param name="wktReader">The geometry reader to use</param>
-        public WKTFileReader(String filename, WKTReader wktReader)
+        public WKTFileReader(string filename, WKTReader wktReader)
             : this(new FileInfo(filename), wktReader)
         {
         }

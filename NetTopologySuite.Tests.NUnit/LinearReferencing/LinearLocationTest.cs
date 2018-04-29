@@ -21,7 +21,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var line = reader.Read("LINESTRING (10 0, 10 0)");
             var indexedLine = new LocationIndexedLine(line);
             var loc0 = indexedLine.IndexOf(new Coordinate(11, 0));
-            Assert.IsTrue(loc0.CompareTo(new LinearLocation(0, Double.NaN)) == 0);
+            Assert.IsTrue(loc0.CompareTo(new LinearLocation(0, double.NaN)) == 0);
         }
         [TestAttribute]
         public void TestRepeatedCoordsLineString()

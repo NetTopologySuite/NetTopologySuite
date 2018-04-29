@@ -53,13 +53,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var g2Seq = g2.CoordinateSequence;
             Assert.AreEqual(2, g2Seq.Dimension);
         }
-        private void CheckCreateGeometryExact(String wkt)
+        private void CheckCreateGeometryExact(string wkt)
         {
             var g = Read(wkt);
             var g2 = Factory.CreateGeometry(g);
             Assert.IsTrue(g.EqualsExact(g2));
         }
-        private IGeometry Read(String wkt)
+        private IGeometry Read(string wkt)
         {
             return _reader.Read(wkt);
         }

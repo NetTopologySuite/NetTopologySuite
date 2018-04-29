@@ -34,7 +34,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             RunPtLocator(Location.Exterior, new Coordinate(11, 11),
                 "LINEARRING(10 10, 10 20, 20 10, 10 10)");
         }
-        private void RunPtLocator(Location expected, Coordinate pt, String wkt)
+        private void RunPtLocator(Location expected, Coordinate pt, string wkt)
         {
             var geom = reader.Read(wkt);
             var pointLocator = new PointLocator();

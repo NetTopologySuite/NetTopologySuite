@@ -23,7 +23,7 @@ namespace ConsoleTestRunner
         }
         static void RunInteractive(XmlTestType filter, bool verbose)
         {
-            var fileName = String.Empty;
+            var fileName = string.Empty;
             var controller = new XmlTestController();
             var runner = new TestRunner(filter, verbose);
             PrintMenu();

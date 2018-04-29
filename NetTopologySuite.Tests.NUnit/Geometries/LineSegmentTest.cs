@@ -19,7 +19,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             // zero-length line
             var seg = new LineSegment(10, 0, 10, 0);
-            Assert.IsTrue(Double.IsNaN(seg.ProjectionFactor(new Coordinate(11, 0))));
+            Assert.IsTrue(double.IsNaN(seg.ProjectionFactor(new Coordinate(11, 0))));
             var seg2 = new LineSegment(10, 0, 20, 0);
             Assert.IsTrue(seg2.ProjectionFactor(new Coordinate(11, 0)) == 0.1);
         }

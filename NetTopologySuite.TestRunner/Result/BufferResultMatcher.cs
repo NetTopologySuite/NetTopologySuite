@@ -25,14 +25,14 @@ namespace Open.Topology.TestRunner.Result
         /// <param name="expectedResult">The expected result of the test</param>
         /// <param name="tolerance">The tolerance for the test</param>
         /// <returns>true if the actual and expected results are considered equal</returns>
-        public bool IsMatch(IGeometry geom, String opName, Object[] args,
+        public bool IsMatch(IGeometry geom, string opName, object[] args,
                             GeometryResult actualResult, GeometryResult expectedResult,
                             double tolerance)
         {
-            if (String.Compare(opName, "buffer", true) != 0)
+            if (string.Compare(opName, "buffer", true) != 0)
                 return _defaultMatcher.IsMatch(geom, opName, args, actualResult, expectedResult, tolerance);
             double distance;
-            double.TryParse(((String) args[0]), NumberStyles.Any, CultureInfo.InvariantCulture, out distance);
+            double.TryParse(((string) args[0]), NumberStyles.Any, CultureInfo.InvariantCulture, out distance);
             return IsBufferResultMatch(actualResult.Value, expectedResult.Value, distance);
         }
         private const double MaxRelativeAreaDifference = 1.0E-3;
@@ -68,7 +68,7 @@ namespace Open.Topology.TestRunner.Result
             // can't get closer than difference area = 0 !  This also handles case when symDiff is empty
             if (areaDiff <= 0.0)
                 return true;
-            var frac = Double.PositiveInfinity;
+            var frac = double.PositiveInfinity;
             if (area > 0.0)
                 frac = areaDiff/area;
             return frac < MaxRelativeAreaDifference;

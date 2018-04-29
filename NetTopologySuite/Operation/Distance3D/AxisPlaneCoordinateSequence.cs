@@ -104,7 +104,7 @@ namespace NetTopologySuite.Operation.Distance3D
             throw new NotSupportedException();
         }
         [Obsolete]
-        public Object Clone()
+        public object Clone()
         {
             return Copy();
         }

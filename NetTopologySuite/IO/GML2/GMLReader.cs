@@ -221,7 +221,7 @@ namespace NetTopologySuite.IO.GML2
                             var coords = cleaned.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                             foreach (var coord in coords)
                             {
-                                if (String.IsNullOrEmpty(coord))
+                                if (string.IsNullOrEmpty(coord))
                                     continue;
                                 var c = ReadCoordinates(coord);
                                 coordinates.Add(c);

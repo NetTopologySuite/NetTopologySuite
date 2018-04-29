@@ -174,7 +174,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         }
         private static double ComputeMinimumSegmentLength(Coordinate[] pts)
         {
-            var minSegLen = Double.MaxValue;
+            var minSegLen = double.MaxValue;
             for (var i = 0; i < pts.Length - 1; i++)
             {
                 var segLen = pts[i].Distance(pts[i + 1]);

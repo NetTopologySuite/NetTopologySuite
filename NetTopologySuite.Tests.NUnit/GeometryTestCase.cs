@@ -20,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit
             var expectedNorm = expected.Normalized();
             var equal = actualNorm.EqualsExact(expectedNorm);
             //var writer = new WKTWriter {MaxCoordinatesPerLine };
-            Assert.That(equal, Is.True, String.Format("\nExpected = {0}\nactual   = {1}", expected, actual));
+            Assert.That(equal, Is.True, string.Format("\nExpected = {0}\nactual   = {1}", expected, actual));
         }
         protected void CheckEqual(ICollection<IGeometry> expected, ICollection<IGeometry> actual)
         {
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Tests.NUnit
                 throw new AssertionException(e.Message, e);
             }
         }
-        protected IGeometry Read(String wkt)
+        protected IGeometry Read(string wkt)
         {
             try
             {

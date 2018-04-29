@@ -65,11 +65,11 @@ namespace NetTopologySuite.Tests.NUnit.Operation
             RunIsSimpleTest(a, BoundaryNodeRules.Mod2BoundaryRule, true);
             RunIsSimpleTest(a, BoundaryNodeRules.EndpointBoundaryRule, true);
         }
-        private static void RunIsSimpleTest(String wkt, IBoundaryNodeRule bnRule, bool expectedResult)
+        private static void RunIsSimpleTest(string wkt, IBoundaryNodeRule bnRule, bool expectedResult)
         {
             RunIsSimpleTest(wkt, bnRule, expectedResult, null);
         }
-        private static void RunIsSimpleTest(String wkt, IBoundaryNodeRule bnRule, bool expectedResult,
+        private static void RunIsSimpleTest(string wkt, IBoundaryNodeRule bnRule, bool expectedResult,
                                      Coordinate expectedLocation)
         {
             var g = rdr.Read(wkt);

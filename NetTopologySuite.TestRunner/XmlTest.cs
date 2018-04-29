@@ -87,7 +87,7 @@ namespace Open.Topology.TestRunner
         #region Private Members
         private static int _nCount        = 1;
 	    private object[]  _objArguments = new object[3];
-	    private readonly double    _dTolerance     = Double.Epsilon;
+	    private readonly double    _dTolerance     = double.Epsilon;
 	    private IResultMatcher _resultMatcher;
 	    private readonly IGeometryOperation _geometryOperation;
         #endregion
@@ -264,7 +264,7 @@ namespace Open.Topology.TestRunner
                 case XmlTestType.EqualsTopo:
                     return TestEqualsTopo();
                 default:
-                    var format = String.Format("Test not implemented: {0}", this.TestType);
+                    var format = string.Format("Test not implemented: {0}", this.TestType);
                     throw new NotImplementedException(format);
             }
             }
@@ -392,9 +392,9 @@ namespace Open.Topology.TestRunner
             var geoResult = (Geometry)Result;
             double dArg;
             if (Argument1 is IGeometry)
-                Double.TryParse((string)Argument2, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
+                double.TryParse((string)Argument2, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
             else
-                Double.TryParse((string)Argument1, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
+                double.TryParse((string)Argument1, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
             if (IsDefaultTarget && A != null)
             {
                 var buffer = (Geometry) A.Buffer(dArg);
@@ -447,7 +447,7 @@ namespace Open.Topology.TestRunner
         {
             var geoResult = (Geometry)Result;
             double dArg;
-            Double.TryParse((string)Argument1, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
+            double.TryParse((string)Argument1, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
             if (IsDefaultTarget && A != null)
             {
                 var bp = new BufferParameters {JoinStyle = JoinStyle.Mitre};
@@ -606,8 +606,8 @@ namespace Open.Topology.TestRunner
 	    private double GetDoubleArgument()
 	    {
             if (Argument1 is IGeometry)
-                return Double.Parse((string) Argument2, NumberStyles.Any, GetNumberFormatInfo());
-            return Double.Parse((string)Argument1, NumberStyles.Any, GetNumberFormatInfo());
+                return double.Parse((string) Argument2, NumberStyles.Any, GetNumberFormatInfo());
+            return double.Parse((string)Argument1, NumberStyles.Any, GetNumberFormatInfo());
         }
 	    protected virtual bool TestDifference()
         {
@@ -980,7 +980,7 @@ namespace Open.Topology.TestRunner
         protected virtual bool TestIsWithinDistance()
         {
             var bResult = (bool)Result;
-            var dArg = Double.Parse((string)Argument2, GetNumberFormatInfo());
+            var dArg = double.Parse((string)Argument2, GetNumberFormatInfo());
             if (IsDefaultTarget && A != null)
             {
                 if (Argument1 == null)

@@ -4,7 +4,7 @@ namespace NetTopologySuite.Tests.XUnit
     public abstract class ValidateXUnitRunner : XUnitRunner
     {
         protected ValidateXUnitRunner(string testFile) : base(testFile) { }
-        private const String testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\validate";
+        private const string testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\validate";
         protected override string TestLocation => testLocation;
     }
     public class TestRelateAA : ValidateXUnitRunner

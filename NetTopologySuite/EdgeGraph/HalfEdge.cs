@@ -242,7 +242,7 @@ namespace NetTopologySuite.EdgeGraph
         /// </summary>
         public override string ToString()
         {
-            return String.Format("HE({0} {1}, {2} {3})", Orig.X, Orig.Y, Sym.Orig.X, Sym.Orig.Y);
+            return string.Format("HE({0} {1}, {2} {3})", Orig.X, Orig.Y, Sym.Orig.X, Sym.Orig.Y);
         }
         /// <summary>
         /// Computes the degree of the origin vertex.

@@ -13,7 +13,7 @@ namespace Open.Topology.TestRunner.Result
         /// <remarks>Tests whether the two results are equal within the given tolerance.
         /// The input parameters are not considered.
         /// </remarks>
-        public bool IsMatch(IGeometry geom, String opName, Object[] args,
+        public bool IsMatch(IGeometry geom, string opName, object[] args,
                             TResult actualResult, TResult expectedResult,
                             double tolerance)
         {

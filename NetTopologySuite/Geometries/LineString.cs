@@ -395,7 +395,7 @@ namespace NetTopologySuite.Geometries
                 return -1;
             return 0;
         }
-        protected internal override int CompareToSameClass(Object o, IComparer<ICoordinateSequence> comp)
+        protected internal override int CompareToSameClass(object o, IComparer<ICoordinateSequence> comp)
         {
             Assert.IsTrue(o is ILineString);
             ILineString line = (LineString)o;

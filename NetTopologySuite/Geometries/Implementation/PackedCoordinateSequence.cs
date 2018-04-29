@@ -230,7 +230,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// A new object that is a copy of this instance.
         /// </returns>
         [Obsolete("Use Copy()")]
-        public abstract Object Clone();
+        public abstract object Clone();
         public abstract ICoordinateSequence Copy();
         /// <summary>
         /// Expands the given Envelope to include the coordinates in the sequence.
@@ -355,7 +355,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// A new object that is a copy of this instance.
         /// </returns>
         [Obsolete]
-        public override Object Clone()
+        public override object Clone()
         {
             return Copy();
         }
@@ -527,7 +527,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// A new object that is a copy of this instance.
         /// </returns>
         [Obsolete]
-        public override Object Clone()
+        public override object Clone()
         {
             return Copy();
         }

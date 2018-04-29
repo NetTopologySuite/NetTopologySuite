@@ -182,7 +182,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 },
                 0);
         }
-        private void CheckIntersectionNone(String wkt1, String wkt2)
+        private void CheckIntersectionNone(string wkt1, string wkt2)
         {
             var l1 = (LineString)_reader.Read(wkt1);
             var l2 = (LineString)_reader.Read(wkt2);
@@ -193,7 +193,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                      };
             CheckIntersection(pt, 0, null, 0);
         }
-        private void CheckIntersection(String wkt1, String wkt2,
+        private void CheckIntersection(string wkt1, string wkt2,
             int expectedIntersectionNum,
             Coordinate[] intPt,
             double distanceTolerance)
@@ -207,9 +207,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                      };
             CheckIntersection(pt, expectedIntersectionNum, intPt, distanceTolerance);
         }
-        private void CheckIntersection(String wkt1, String wkt2,
+        private void CheckIntersection(string wkt1, string wkt2,
             int expectedIntersectionNum,
-            String expectedWKT,
+            string expectedWKT,
             double distanceTolerance)
         {
             var l1 = (LineString)_reader.Read(wkt1);
@@ -278,7 +278,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             return p0.Distance(p1) <= distanceTolerance;
         }
-        private void CheckInputNotAltered(String wkt1, String wkt2, int scaleFactor)
+        private void CheckInputNotAltered(string wkt1, string wkt2, int scaleFactor)
         {
             var l1 = (LineString)_reader.Read(wkt1);
             var l2 = (LineString)_reader.Read(wkt2);

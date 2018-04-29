@@ -72,7 +72,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             // this result is different - the A node is now on the boundary, so A.bdy/B.ext = 0
             RunRelateTest(a, b, BoundaryNodeRules.EndpointBoundaryRule, "F01FF0102");
         }
-        void RunRelateTest(String wkt1, String wkt2, IBoundaryNodeRule bnRule, String expectedIM)
+        void RunRelateTest(string wkt1, string wkt2, IBoundaryNodeRule bnRule, string expectedIM)
         {
             var g1 = rdr.Read(wkt1);
             var g2 = rdr.Read(wkt2);

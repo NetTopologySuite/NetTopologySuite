@@ -44,7 +44,7 @@ namespace NetTopologySuite.Samples.Lab.Clean
             CheckHolesRemoved("GEOMETRYCOLLECTION (POLYGON ((1 9, 9 9, 9 1, 1 1, 1 9), (2 5, 2 2, 12 2, 2 5)), LINESTRING (15 9, 19 5))",
                 "GEOMETRYCOLLECTION (POLYGON ((1 9, 9 9, 9 1, 1 1, 1 9)), LINESTRING (15 9, 19 5))");
         }
-        private void CheckHolesRemoved(String inputWKT, String expectedWKT)
+        private void CheckHolesRemoved(string inputWKT, string expectedWKT)
         {
             var input = Read(inputWKT);
             var expected = Read(expectedWKT);

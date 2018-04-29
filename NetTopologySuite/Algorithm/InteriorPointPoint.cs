@@ -11,7 +11,7 @@ namespace NetTopologySuite.Algorithm
     public class InteriorPointPoint
     {
         private readonly Coordinate _centroid;
-        private double _minDistance = Double.MaxValue;
+        private double _minDistance = double.MaxValue;
         /// <summary>
         ///
         /// </summary>

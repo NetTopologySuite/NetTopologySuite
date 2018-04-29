@@ -136,7 +136,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
             var rnorm = result.Normalized();
             var enorm = expected.Normalized();
             var equal = rnorm.EqualsExact(enorm);
-            Assert.IsTrue(equal, String.Format("Expected = {0} actual = {1}", expected, rnorm));
+            Assert.IsTrue(equal, string.Format("Expected = {0} actual = {1}", expected, rnorm));
         }
     }
 }

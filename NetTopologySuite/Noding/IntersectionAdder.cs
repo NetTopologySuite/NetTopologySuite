@@ -161,6 +161,6 @@ namespace NetTopologySuite.Noding
         ///<summary>
         /// Always process all intersections
         ///</summary>
-        public Boolean IsDone => false;
+        public bool IsDone => false;
     }
 }

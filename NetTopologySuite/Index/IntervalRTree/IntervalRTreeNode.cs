@@ -11,8 +11,8 @@ namespace NetTopologySuite.Index.IntervalRTree
         public double Max { get; protected set; }
         protected IntervalRTreeNode()
         {
-            Min = Double.PositiveInfinity;
-            Max = Double.NegativeInfinity;
+            Min = double.PositiveInfinity;
+            Max = double.NegativeInfinity;
         }
         protected IntervalRTreeNode(double min, double max)
         {
@@ -28,7 +28,7 @@ namespace NetTopologySuite.Index.IntervalRTree
             return true;
         }
         /// <inheritdoc cref="object.ToString()"/>
-        public override String ToString()
+        public override string ToString()
         {
             return WKTWriter.ToLineString(new Coordinate(Min, 0), new Coordinate(Max, 0));
         }

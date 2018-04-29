@@ -10,7 +10,7 @@ namespace NetTopologySuite.Triangulate
     /// <version>1.0</version>
     public class ConstraintEnforcementException : Exception
     {
-        private static String MsgWithCoord(String msg, Coordinate pt) {
+        private static string MsgWithCoord(string msg, Coordinate pt) {
             if (pt != null)
                 return msg + " [ " + WKTWriter.ToPoint(pt) + " ]";
             return msg;
@@ -28,7 +28,7 @@ namespace NetTopologySuite.Triangulate
         /// </summary>
         /// <param name="msg">a string</param>
         /// <param name="pt">the location of the error</param>
-        public ConstraintEnforcementException(String msg, Coordinate pt)
+        public ConstraintEnforcementException(string msg, Coordinate pt)
             : base(MsgWithCoord(msg, pt))
         {
             Coordinate = new Coordinate(pt);

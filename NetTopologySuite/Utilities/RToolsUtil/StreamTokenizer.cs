@@ -475,7 +475,7 @@ namespace RTools_NTS.Util
 		/// </summary>
 		public void Display()
 		{
-			Display(String.Empty);
+			Display(string.Empty);
 		}
 		/// <summary>
 		/// Display the state of this object, with a per-line prefix.
@@ -644,7 +644,7 @@ namespace RTools_NTS.Util
 		/// </summary>
 		public void Display()
 		{
-			Display(String.Empty);
+			Display(string.Empty);
 		}
 		/// <summary>
 		/// Display the state of this object, with a per-line prefix.

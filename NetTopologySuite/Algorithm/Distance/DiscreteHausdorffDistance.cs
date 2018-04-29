@@ -190,8 +190,8 @@ namespace NetTopologySuite.Algorithm.Distance
                     MaxPointDistance.SetMaximum(_minPtDist);
                 }
             }
-            public Boolean GeometryChanged => false;
-            public Boolean Done => false;
+            public bool GeometryChanged => false;
+            public bool Done => false;
             public PointPairDistance MaxPointDistance { get; } = new PointPairDistance();
         }
     }

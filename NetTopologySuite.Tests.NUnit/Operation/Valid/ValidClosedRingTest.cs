@@ -64,7 +64,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             var isValid = validator.IsValid;
             Assert.IsTrue(isValid == expected);
         }
-        IGeometry FromWKT(String wkt)
+        IGeometry FromWKT(string wkt)
         {
             IGeometry geom = null;
             try

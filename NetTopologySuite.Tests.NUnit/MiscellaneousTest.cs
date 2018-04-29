@@ -434,20 +434,20 @@ namespace NetTopologySuite.Tests.NUnit
         public void testCoordinateNaN()
         {
             var c1 = new Coordinate();
-            Assert.IsTrue(!Double.IsNaN(c1.X));
-            Assert.IsTrue(!Double.IsNaN(c1.Y));
-            Assert.IsTrue(Double.IsNaN(c1.Z));
+            Assert.IsTrue(!double.IsNaN(c1.X));
+            Assert.IsTrue(!double.IsNaN(c1.Y));
+            Assert.IsTrue(double.IsNaN(c1.Z));
             var c2 = new Coordinate(3, 4);
             Assert.AreEqual(3, c2.X, 1E-10);
             Assert.AreEqual(4, c2.Y, 1E-10);
-            Assert.IsTrue(Double.IsNaN(c2.Z));
+            Assert.IsTrue(double.IsNaN(c2.Z));
             Assert.AreEqual(c1, c1);
             Assert.AreEqual(c2, c2);
             Assert.IsTrue(!c1.Equals(c2));
             Assert.AreEqual(new Coordinate(), new Coordinate(0, 0));
             Assert.AreEqual(new Coordinate(3, 5), new Coordinate(3, 5));
-            Assert.AreEqual(new Coordinate(3, 5, Double.NaN), new Coordinate(3, 5, Double.NaN));
-            Assert.IsTrue(new Coordinate(3, 5, 0).Equals(new Coordinate(3, 5, Double.NaN)));
+            Assert.AreEqual(new Coordinate(3, 5, double.NaN), new Coordinate(3, 5, double.NaN));
+            Assert.IsTrue(new Coordinate(3, 5, 0).Equals(new Coordinate(3, 5, double.NaN)));
         }
         [TestAttribute]
         public void testPredicatesReturnFalseForEmptyGeometries()

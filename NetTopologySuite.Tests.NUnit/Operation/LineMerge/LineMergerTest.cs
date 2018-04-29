@@ -15,22 +15,22 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
         [TestAttribute]
         public void Test1()
         {
-            DoTest(new String[] {
+            DoTest(new string[] {
                 "LINESTRING (120 120, 180 140)", "LINESTRING (200 180, 180 140)",
                 "LINESTRING (200 180, 240 180)"
-              }, new String[] { "LINESTRING (120 120, 180 140, 200 180, 240 180)" });
+              }, new string[] { "LINESTRING (120 120, 180 140, 200 180, 240 180)" });
         }
         [TestAttribute]
         public void Test2()
         {
-            DoTest(new String[]{"LINESTRING (120 300, 80 340)",
+            DoTest(new string[]{"LINESTRING (120 300, 80 340)",
               "LINESTRING (120 300, 140 320, 160 320)",
               "LINESTRING (40 320, 20 340, 0 320)",
               "LINESTRING (0 320, 20 300, 40 320)",
               "LINESTRING (40 320, 60 320, 80 340)",
               "LINESTRING (160 320, 180 340, 200 320)",
               "LINESTRING (200 320, 180 300, 160 320)"},
-              new String[]{
+              new string[]{
               "LINESTRING (160 320, 180 340, 200 320, 180 300, 160 320)",
               "LINESTRING (40 320, 20 340, 0 320, 20 300, 40 320)",
               "LINESTRING (40 320, 60 320, 80 340, 120 300, 140 320, 160 320)"});
@@ -38,32 +38,32 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
         [TestAttribute]
         public void Test3()
         {
-            DoTest(new String[] { "LINESTRING (0 0, 100 100)", "LINESTRING (0 100, 100 0)" },
-              new String[] { "LINESTRING (0 0, 100 100)", "LINESTRING (0 100, 100 0)" });
+            DoTest(new string[] { "LINESTRING (0 0, 100 100)", "LINESTRING (0 100, 100 0)" },
+              new string[] { "LINESTRING (0 0, 100 100)", "LINESTRING (0 100, 100 0)" });
         }
         [TestAttribute]
         public void Test4()
         {
-            DoTest(new String[] { "LINESTRING EMPTY", "LINESTRING EMPTY" },
-              new String[] { });
+            DoTest(new string[] { "LINESTRING EMPTY", "LINESTRING EMPTY" },
+              new string[] { });
         }
         [TestAttribute]
         public void Test5()
         {
-            DoTest(new String[] { },
-              new String[] { });
+            DoTest(new string[] { },
+              new string[] { });
         }
         [Ignore("This test is currently failing due to the generalization of the line (removal of repeated points) in the AddEdge method of NetTopologySuite.Operation.Linemerge.LineMergeGraph.  Need to see if this test is working in JTS")]
         public void TestSingleUniquePoint()
         {
-            DoTest(new String[] { "LINESTRING (10642 31441, 10642 31441)", "LINESTRING EMPTY" },
-                new String[] { });
+            DoTest(new string[] { "LINESTRING (10642 31441, 10642 31441)", "LINESTRING EMPTY" },
+                new string[] { });
         }
-        private void DoTest(String[] inputWKT, String[] expectedOutputWKT)
+        private void DoTest(string[] inputWKT, string[] expectedOutputWKT)
         {
             DoTest(inputWKT, expectedOutputWKT, true);
         }
-        public static void DoTest(String[] inputWKT, String[] expectedOutputWKT, bool compareDirections)
+        public static void DoTest(string[] inputWKT, string[] expectedOutputWKT, bool compareDirections)
         {
             var lineMerger = new LineMerger();
             lineMerger.Add(ToGeometries(inputWKT));
@@ -93,7 +93,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             }
             return false;
         }
-        public static IList<IGeometry> ToGeometries(String[] inputWKT)
+        public static IList<IGeometry> ToGeometries(string[] inputWKT)
         {
             var geometries = new List<IGeometry>();
             foreach (var geomWkt in inputWKT)

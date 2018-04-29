@@ -79,7 +79,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Distance
         {
             DoNearestPointsTest("POLYGON ((76 185, 125 283, 331 276, 324 122, 177 70, 184 155, 69 123, 76 185), (267 237, 148 248, 135 185, 223 189, 251 151, 286 183, 267 237))", "LINESTRING (120 215, 185 224, 209 207, 238 222, 254 186)", 0.0, new Coordinate(120, 215), new Coordinate(120, 215));
         }
-        private void DoNearestPointsTest(String wkt0, String wkt1, double distance,
+        private void DoNearestPointsTest(string wkt0, string wkt1, double distance,
                                         Coordinate p0, Coordinate p1)
         {
             var op = new DistanceOp(new WKTReader().Read(wkt0), new WKTReader().Read(wkt1));

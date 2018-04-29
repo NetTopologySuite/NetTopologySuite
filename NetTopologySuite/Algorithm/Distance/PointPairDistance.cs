@@ -12,7 +12,7 @@ namespace NetTopologySuite.Algorithm.Distance
     /// </remarks>
     public class PointPairDistance
     {
-        private Boolean _isNull = true;
+        private bool _isNull = true;
         ///<summary>
         /// Initializes to null.
         ///</summary>
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Algorithm.Distance
         /// <summary>
         /// The distance between the paired coordinates
         /// </summary>
-        public double Distance { get; private set; } = Double.NaN;
+        public double Distance { get; private set; } = double.NaN;
         /// <summary>
         /// Returns an array containing the paired points
         /// </summary>

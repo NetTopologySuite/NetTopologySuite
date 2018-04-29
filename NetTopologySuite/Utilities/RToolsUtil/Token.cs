@@ -111,7 +111,7 @@ namespace RTools_NTS.Util
 		/// <param name="t">The token to compare.</param>
 		/// <param name="o">The other object.</param>
 		/// <returns>bool</returns>
-		public static bool operator == (Token t, Object o)
+		public static bool operator == (Token t, object o)
 		{
 			if ((object)t == null)
 				if (o == null) return(true);
@@ -125,7 +125,7 @@ namespace RTools_NTS.Util
 		/// <param name="t">The token to compare.</param>
 		/// <param name="o">The other object.</param>
 		/// <returns>bool</returns>
-		public static bool operator != (Token t, Object o)
+		public static bool operator != (Token t, object o)
 		{
 			if ((object)t == null)
 				if (o == null) return(false);
@@ -201,7 +201,7 @@ namespace RTools_NTS.Util
 		/// <returns></returns>
 		public string ToLineString()
 		{
-			return(String.Format("{0}: line {1}", ToDebugString(), _lineNumber));
+			return(string.Format("{0}: line {1}", ToDebugString(), _lineNumber));
 		}
 		/// <summary>
 		/// Produce a string which includes the token type.
@@ -209,7 +209,7 @@ namespace RTools_NTS.Util
 		/// <returns></returns>
 		public virtual string ToDebugString()
 		{
-			return(String.Format("{0}: line {1}", ToString(), _lineNumber));
+			return(string.Format("{0}: line {1}", ToString(), _lineNumber));
 		}
 		/// <summary>
 		/// Create an object of the specified type corresponding to
@@ -217,7 +217,7 @@ namespace RTools_NTS.Util
 		/// </summary>
 		/// <param name="t">The type of object to create.</param>
 		/// <returns>The new object, or null for error.</returns>
-		public Object ConvertToType(Type t)
+		public object ConvertToType(Type t)
 		{
             return Convert.ChangeType(StringValue, t, CultureInfo.InvariantCulture);
 		}
@@ -263,7 +263,7 @@ namespace RTools_NTS.Util
 		/// <summary>Constructor that takes line number.</summary>
 		public EofToken(int line) : base(line) {}
 		/// <summary>Override, see base <see cref="Token"/></summary>
-		public override string ToString() { return(String.Empty); }
+		public override string ToString() { return(string.Empty); }
 		/// <summary>Override, see base <see cref="Token"/></summary>
 		public override string ToDebugString() { return("Eof"); }
 		/// <summary>Override, see base <see cref="Token"/></summary>
@@ -382,23 +382,23 @@ namespace RTools_NTS.Util
 			obj = c;
 		}
 		/// <summary>Override, see base <see cref="Token"/></summary>
-		public override string ToDebugString() { return(String.Format("CharToken: {0}", (Char)obj)); }
+		public override string ToDebugString() { return(string.Format("CharToken: {0}", (char)obj)); }
 		/// <summary>Override, see base <see cref="Token"/></summary>
-		public override string ToString() { return(String.Format("{0}", (Char)obj)); }
+		public override string ToString() { return(string.Format("{0}", (char)obj)); }
 		/// <summary>Override, see base <see cref="Token"/></summary>
 		public override int GetHashCode()
 		{
 			return(ToString().GetHashCode());
 		}
 		/// <summary>Override, see base <see cref="Token"/></summary>
-		public override string StringValue => (String.Format("{0}", (Char)obj));
+		public override string StringValue => (string.Format("{0}", (char)obj));
 	    /// <summary>Override, see base <see cref="Token"/></summary>
 		public override bool Equals(object other)
 		{
 			if (other == null) return(false);
 			if (!GetType().Equals(other.GetType())) return(false);
 			if ((obj == null) || (((CharToken)other).obj == null)) return(false);
-			if (((Char)obj).Equals((Char)((CharToken)other).Object)) return(true);
+			if (((char)obj).Equals((char)((CharToken)other).Object)) return(true);
 			else return(false);
 		}
 	}
@@ -429,7 +429,7 @@ namespace RTools_NTS.Util
 		{
 			try
 			{
-				obj = Double.Parse(s, GetNumberFormatInfo());
+				obj = double.Parse(s, GetNumberFormatInfo());
 			}
 			catch(Exception) { obj = null; }
 		}
@@ -462,7 +462,7 @@ namespace RTools_NTS.Util
 		{
 			try
 			{
-                obj = Double.Parse(s, GetNumberFormatInfo());
+                obj = double.Parse(s, GetNumberFormatInfo());
 			}
             catch (Exception) { obj = null; }
 		}
@@ -483,8 +483,8 @@ namespace RTools_NTS.Util
 		public override string ToDebugString()
 		{
 			if (obj != null)
-				 return(String.Format("FloatToken: {0:R}", (Double) obj));
-			else return(String.Format("FloatToken: null"));
+				 return(string.Format("FloatToken: {0:R}", (double) obj));
+			else return(string.Format("FloatToken: null"));
 		}
 		/// <summary>
         /// Override, see base <see cref="Token"/>
@@ -492,8 +492,8 @@ namespace RTools_NTS.Util
 		public override string ToString()
 		{
 			if (obj != null)
-				 return(String.Format("{0:R}", (Double) obj));
-			else return(String.Format("null"));
+				 return(string.Format("{0:R}", (double) obj));
+			else return(string.Format("null"));
 		}
 		/// <summary>
         /// Override, see base <see cref="Token"/>
@@ -511,8 +511,8 @@ namespace RTools_NTS.Util
 			{
 			    if (obj != null)
 					 // return(String.Format("{0:f9}", (Double)obj));
-                     return ( String.Format(GetNumberFormatInfo(), "{0:R}", (Double) obj));
-			    return(String.Format("null"));
+                     return ( string.Format(GetNumberFormatInfo(), "{0:R}", (double) obj));
+			    return(string.Format("null"));
 			}
 		}
 		/// <summary>
@@ -526,7 +526,7 @@ namespace RTools_NTS.Util
                 return false;
 			if ((obj == null) || (((FloatToken)other).obj == null))
                 return false ;
-			if (((Double) obj).Equals((Double) ((FloatToken) other).Object))
+			if (((double) obj).Equals((double) ((FloatToken) other).Object))
                 return true;
 			else return false;
 		}
@@ -601,14 +601,14 @@ namespace RTools_NTS.Util
 		{
 			// try base 10 separately since it will be the most
 			// common case
-		    Int32 val32;
-            if (Int32.TryParse(s, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out val32))
+		    int val32;
+            if (int.TryParse(s, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out val32))
             {
                 obj = val32;
                 return;
             }
-		    Int64 val64;
-            if (Int64.TryParse(s, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out val64))
+		    long val64;
+            if (long.TryParse(s, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out val64))
             {
                 obj = val64;
                 return;
@@ -656,17 +656,17 @@ namespace RTools_NTS.Util
 		public override string ToDebugString()
 		{
 			if (obj != null)
-				return(String.Format("IntToken: {0}", obj));
+				return(string.Format("IntToken: {0}", obj));
 			else
-				return(String.Format("IntToken: null"));
+				return(string.Format("IntToken: null"));
 		}
 		/// <summary>Override, see base <see cref="Token"/></summary>
 		public override string ToString()
 		{
 			if (obj != null)
-				return(String.Format("{0}", obj));
+				return(string.Format("{0}", obj));
 			else
-				return(String.Format("null"));
+				return(string.Format("null"));
 		}
 		/// <summary>Override, see base <see cref="Token"/></summary>
 		public override int GetHashCode()
@@ -679,9 +679,9 @@ namespace RTools_NTS.Util
 			get
 			{
 				if (obj != null)
-					return(String.Format("{0}", obj));
+					return(string.Format("{0}", obj));
 				else
-					return(String.Format("null"));
+					return(string.Format("null"));
 			}
 		}
 		/// <summary>Override, see base <see cref="Token"/></summary>
@@ -691,13 +691,13 @@ namespace RTools_NTS.Util
 			if (!GetType().Equals(other.GetType())) return(false);
 			if ((obj == null) || (((IntToken)other).obj == null)) return(false);
 			if (!obj.GetType().Equals(((IntToken)other).obj.GetType())) return(false);
-			if (obj is Int32)
+			if (obj is int)
 			{
-				if (((Int32)obj).Equals((Int32)((IntToken)other).Object)) return(true);
+				if (((int)obj).Equals((int)((IntToken)other).Object)) return(true);
 			}
 			else
 			{
-				if (((Int64)obj).Equals((Int64)((IntToken)other).Object)) return(true);
+				if (((long)obj).Equals((long)((IntToken)other).Object)) return(true);
 			}
 			return(false);
 		}

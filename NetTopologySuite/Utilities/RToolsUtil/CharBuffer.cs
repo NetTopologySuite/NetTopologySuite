@@ -222,9 +222,9 @@ namespace RTools_NTS.Util
 		/// Return the current contents as a string.
 		/// </summary>
 		/// <returns>The new string.</returns>
-		public override String ToString()
+		public override string ToString()
 		{
-			return(new String(buffer, headIndex, tailIndex - headIndex));
+			return(new string(buffer, headIndex, tailIndex - headIndex));
 		}
 		#endregion
 	}

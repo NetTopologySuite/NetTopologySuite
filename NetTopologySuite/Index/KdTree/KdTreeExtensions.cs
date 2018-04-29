@@ -15,7 +15,7 @@ namespace NetTopologySuite.Index.KdTree
         public static KdNode<T> NearestNeighbor<T>(this KdTree<T> self, Coordinate coord) where T : class
         {
             KdNode<T> result = null;
-            var closestDistSq = Double.MaxValue;
+            var closestDistSq = double.MaxValue;
             NearestNeighbor(self.Root, coord, ref result, ref closestDistSq, true);
             return result;
         }

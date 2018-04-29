@@ -40,19 +40,19 @@ namespace NetTopologySuite.Samples.Tests.Various
             Debug.WriteLine(result);
             var geom = new WKTReader(GeometryFactory.Floating).Read(result);
             var tos = geom.ToString();
-            Assert.IsTrue(String.Equals(tos, result));
+            Assert.IsTrue(string.Equals(tos, result));
             point = GeometryFactory.FloatingSingle.CreatePoint(c);
             result = writer.Write(point);
             Debug.WriteLine(result);
             geom = new WKTReader(GeometryFactory.Floating).Read(result);
             tos = geom.ToString();
-            Assert.IsTrue(String.Equals(tos, result));
+            Assert.IsTrue(string.Equals(tos, result));
             point = GeometryFactory.Fixed.CreatePoint(c);
             result = writer.Write(point);
             Debug.WriteLine(result);
             geom = new WKTReader(GeometryFactory.Floating).Read(result);
             tos = geom.ToString();
-            Assert.IsTrue(String.Equals(tos, result));
+            Assert.IsTrue(string.Equals(tos, result));
         }
 		/// <summary>
 		/// Issue 12

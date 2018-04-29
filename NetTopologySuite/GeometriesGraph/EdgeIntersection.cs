@@ -96,7 +96,7 @@ namespace NetTopologySuite.GeometriesGraph
             outstream.WriteLine(" dist = " + Distance);
         }
         /// <inheritdoc cref="object.ToString()"/>
-        public override String ToString()
+        public override string ToString()
         {
             return Coordinate + " seg # = " + SegmentIndex + " dist = " + Distance;
         }

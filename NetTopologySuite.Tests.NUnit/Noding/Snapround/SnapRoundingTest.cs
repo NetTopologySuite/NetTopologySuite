@@ -28,7 +28,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
         [TestAttribute]
         public void TestLineStringLongShort()
         {
-            String[] geoms = {
+            string[] geoms = {
                                  "LINESTRING (0 0, 2 0)",
                                  "LINESTRING (0 0, 10 -1)"
                              };
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                     shortestDistanceToPointBeforeNoding = Math.Min(lineString.Distance(middlePoint),
                                                                    shortestDistanceToPointBeforeNoding);
                 }
-                var shortestDistanceToPointAfterNoding = Double.MaxValue;
+                var shortestDistanceToPointAfterNoding = double.MaxValue;
                 foreach (var lineString in nodedLineStrings)
                 {
                     shortestDistanceToPointAfterNoding = Math.Min(lineString.Distance(middlePoint),

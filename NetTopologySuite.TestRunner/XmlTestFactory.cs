@@ -160,7 +160,7 @@ namespace Open.Topology.TestRunner
             else
             {
                 System.Diagnostics.Debug.Assert(false);
-                throw new ArgumentException(String.Format("The operation type \"{0}\" is not valid: ", testType));
+                throw new ArgumentException(string.Format("The operation type \"{0}\" is not valid: ", testType));
             }
             return true;
         }
@@ -176,7 +176,7 @@ namespace Open.Topology.TestRunner
                 {
                     try
                     {
-                        xmlTestItem.Result = Double.Parse(result, GetNumberFormatInfo());
+                        xmlTestItem.Result = double.Parse(result, GetNumberFormatInfo());
                         return true;
                     }
                     catch (Exception ex)
@@ -193,7 +193,7 @@ namespace Open.Topology.TestRunner
                 {
                     try
                     {
-                        xmlTestItem.Result = Int32.Parse(result);
+                        xmlTestItem.Result = int.Parse(result);
                         return true;
                     }
                     catch (Exception ex)
@@ -250,7 +250,7 @@ namespace Open.Topology.TestRunner
                 {
                     try
                     {
-                        xmlTestItem.Result = Boolean.Parse(result);
+                        xmlTestItem.Result = bool.Parse(result);
                         return true;
                     }
                     catch (Exception ex)
@@ -260,7 +260,7 @@ namespace Open.Topology.TestRunner
                     }
                 }
                 default:
-                    var format = String.Format("Test not implemented: {0}",  xmlTestItem.TestType);
+                    var format = string.Format("Test not implemented: {0}",  xmlTestItem.TestType);
                     throw new NotImplementedException(format);
             }
         }

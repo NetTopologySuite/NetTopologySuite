@@ -4,7 +4,7 @@ namespace Open.Topology.TestRunner.Utility
 {
     public class ClassUtility
     {
-        public static String GetClassname(Type javaClass)
+        public static string GetClassname(Type javaClass)
         {
             var nClassName = javaClass.FullName;
             Debug.Assert(!string.IsNullOrEmpty(nClassName));

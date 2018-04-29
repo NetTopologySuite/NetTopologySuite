@@ -28,6 +28,6 @@ namespace Open.Topology.TestRunner.Operations
         /// <param name="geometry">The geometry to process</param>
         /// <param name="args">The arguments to the operation (which may be typed as Strings)</param>
         /// <exception cref="Exception">If some error was encountered trying to find or process the operation</exception>
-        IResult Invoke(XmlTestType opName, IGeometry geometry, Object[] args);
+        IResult Invoke(XmlTestType opName, IGeometry geometry, object[] args);
     }
 }

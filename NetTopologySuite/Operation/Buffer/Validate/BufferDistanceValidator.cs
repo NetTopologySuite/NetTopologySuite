@@ -66,7 +66,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             {
 // ReSharper disable once RedundantStringFormatCall
                 // String.Format needed to build 2.0 release!
-                Debug.WriteLine(String.Format("Min Dist= {0}  err= {1}  Max Dist= {2}  err= {3}",
+                Debug.WriteLine(string.Format("Min Dist= {0}  err= {1}  Max Dist= {2}  err= {3}",
                     _minDistanceFound,
                     1.0 - _minDistanceFound / _bufDistance,
                     _maxDistanceFound,
@@ -75,7 +75,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             }
             return _isValid;
         }
-        public String ErrorMessage { get; private set; }
+        public string ErrorMessage { get; private set; }
         public Coordinate ErrorLocation { get; private set; }
         /// <summary>
         /// Gets a geometry which indicates the location and nature of a validation failure.

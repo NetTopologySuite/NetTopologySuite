@@ -73,7 +73,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p0">An endpoint of the angle</param>
         /// <param name="p1">The base of the angle</param>
         /// <param name="p2">Another endpoint of the angle</param>
-        public static Boolean IsAcute(Coordinate p0, Coordinate p1, Coordinate p2)
+        public static bool IsAcute(Coordinate p0, Coordinate p1, Coordinate p2)
         {
             // relies on fact that A dot B is positive iff A ang B is acute
             var dx0 = p0.X - p1.X;
@@ -93,7 +93,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p0">An endpoint of the angle</param>
         /// <param name="p1">The base of the angle</param>
         /// <param name="p2">Another endpoint of the angle</param>
-        public static Boolean IsObtuse(Coordinate p0, Coordinate p1, Coordinate p2)
+        public static bool IsObtuse(Coordinate p0, Coordinate p1, Coordinate p2)
         {
             // relies on fact that A dot B is negative iff A ang B is obtuse
             var dx0 = p0.X - p1.X;

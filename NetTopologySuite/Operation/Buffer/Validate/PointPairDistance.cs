@@ -31,7 +31,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             Distance = distance;
             _isNull = false;
         }
-        public double Distance { get; private set; } = Double.NaN;
+        public double Distance { get; private set; } = double.NaN;
         public Coordinate[] Coordinates { get; } = { new Coordinate(), new Coordinate() };
         public Coordinate GetCoordinate(int i) { return Coordinates[i]; }
         public void SetMaximum(PointPairDistance ptDist)

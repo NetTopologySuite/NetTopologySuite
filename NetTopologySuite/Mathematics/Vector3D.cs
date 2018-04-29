@@ -157,7 +157,7 @@ namespace NetTopologySuite.Mathematics
             return new Coordinate(v.X / len, v.Y / len, v.Z / len);
         }
         /// <inheritdoc cref="object.ToString()"/>
-        public override String ToString()
+        public override string ToString()
         {
             return string.Format(NumberFormatInfo.InvariantInfo, "[{0}, {1}, {2}]", X, Y, Z);
         }

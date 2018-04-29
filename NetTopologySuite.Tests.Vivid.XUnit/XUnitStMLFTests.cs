@@ -4,7 +4,7 @@ namespace NetTopologySuite.Tests.XUnit
     public abstract class StMLFXUnitRunner : XUnitRunner
     {
         protected StMLFXUnitRunner(string testFile) : base(testFile) { }
-        private const String testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\stmlf";
+        private const string testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\stmlf";
         protected override string TestLocation => testLocation;
     }
     public class TestStMLF20061020 : StMLFXUnitRunner

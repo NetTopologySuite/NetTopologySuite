@@ -185,7 +185,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
     static class VWSimplifierResult
     {
         private static readonly WKTReader Rdr = new WKTReader();
-        public static IGeometry[] GetResult(String wkt, double tolerance)
+        public static IGeometry[] GetResult(string wkt, double tolerance)
         {
             var ioGeom = new IGeometry[2];
             ioGeom[0] = Rdr.Read(wkt);

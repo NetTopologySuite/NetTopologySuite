@@ -49,17 +49,17 @@ namespace ConsoleTestRunner
                             var attException = attributes["exception"];
                             if (attException != null)
                             {
-                                bDisplayException = Boolean.Parse(attException.InnerText);
+                                bDisplayException = bool.Parse(attException.InnerText);
                             }
                             var attVerbose = attributes["verbose"];
                             if (attVerbose != null)
                             {
-                                bVerbose = Boolean.Parse(attVerbose.InnerText);
+                                bVerbose = bool.Parse(attVerbose.InnerText);
                             }
                             var attInteractive = attributes["interactive"];
                             if (attInteractive != null)
                             {
-                                bInteractive = Boolean.Parse(attInteractive.InnerText);
+                                bInteractive = bool.Parse(attInteractive.InnerText);
                             }
                         }
                         var elemFiles = element.SelectNodes("files/file");

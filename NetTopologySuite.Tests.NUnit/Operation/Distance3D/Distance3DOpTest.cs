@@ -223,7 +223,7 @@ public class Distance3DOpTest
 				"POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0))",
 				0);
 	}
-	const String PolyHoleFlat = "POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0), (120 180 0, 180 180 0, 180 120 0, 120 120 0, 120 180 0))";
+	const string PolyHoleFlat = "POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0), (120 180 0, 180 180 0, 180 120 0, 120 120 0, 120 180 0))";
     [TestAttribute]
 	public void TestLinePolygonHoleFlat()
 	{
@@ -246,7 +246,7 @@ public class Distance3DOpTest
 		// point above poly
 		CheckDistance(	"POINT (110 110 100)", 	PolyHoleFlat, 100);
 	}
-	const String Poly2HoleFlat = "POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0), (110 110 0, 110 130 0, 130 130 0, 130 110 0, 110 110 0), (190 110 0, 170 110 0, 170 130 0, 190 130 0, 190 110 0))";
+	const string Poly2HoleFlat = "POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0), (110 110 0, 110 130 0, 130 130 0, 130 110 0, 110 110 0), (190 110 0, 170 110 0, 170 130 0, 190 130 0, 190 110 0))";
 	/**
 	 * A case proving that polygon/polygon distance requires
 	 * computing distance between all rings, not just the shells.
@@ -311,11 +311,11 @@ public class Distance3DOpTest
 	// Convenience methods
 	//==========================================================
     private const double DistanceTolerance = 0.00001;
-    private void CheckDistance(String wkt1, String wkt2, double expectedDistance)
+    private void CheckDistance(string wkt1, string wkt2, double expectedDistance)
 	{
 		CheckDistance(wkt1, wkt2, expectedDistance, DistanceTolerance);
 	}
-	private void CheckDistance(String wkt1, String wkt2, double expectedDistance, double tolerance)
+	private void CheckDistance(string wkt1, string wkt2, double expectedDistance, double tolerance)
 	{
 		IGeometry g1;
 		IGeometry g2;

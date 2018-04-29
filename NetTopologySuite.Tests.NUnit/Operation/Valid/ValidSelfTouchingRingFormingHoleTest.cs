@@ -90,14 +90,14 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             CheckIsValidSTR(wkt, false);
             CheckIsValidDefault(wkt, false);
         }
-        private void CheckIsValidDefault(String wkt, bool expected)
+        private void CheckIsValidDefault(string wkt, bool expected)
         {
             var geom = FromWKT(wkt);
             var validator = new IsValidOp(geom);
             var isValid = validator.IsValid;
             Assert.IsTrue(isValid == expected);
         }
-        private void CheckIsValidSTR(String wkt, bool expected)
+        private void CheckIsValidSTR(string wkt, bool expected)
         {
             var geom = FromWKT(wkt);
             var validator = new IsValidOp(geom);
@@ -105,7 +105,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             var isValid = validator.IsValid;
             Assert.IsTrue(isValid == expected);
         }
-        IGeometry FromWKT(String wkt)
+        IGeometry FromWKT(string wkt)
         {
             IGeometry geom = null;
             try

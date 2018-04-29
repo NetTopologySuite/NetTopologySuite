@@ -19,14 +19,14 @@ namespace Open.Topology.TestRunner
             if (Parameters != null)
             {
                 Parameters.Clear();
-                Parameters.Add("desc",   String.Empty);
-                Parameters.Add("a",      String.Empty);
-                Parameters.Add("b",      String.Empty);
-                Parameters.Add("name",   String.Empty);
-                Parameters.Add("result", String.Empty);
-                Parameters.Add("arg1",   String.Empty);
-                Parameters.Add("arg2",   String.Empty);
-                Parameters.Add("arg3",   String.Empty);
+                Parameters.Add("desc",   string.Empty);
+                Parameters.Add("a",      string.Empty);
+                Parameters.Add("b",      string.Empty);
+                Parameters.Add("name",   string.Empty);
+                Parameters.Add("result", string.Empty);
+                Parameters.Add("arg1",   string.Empty);
+                Parameters.Add("arg2",   string.Empty);
+                Parameters.Add("arg3",   string.Empty);
             }
         }
         public void SetValue(string key, string value)
@@ -42,7 +42,7 @@ namespace Open.Topology.TestRunner
             {
                 return Parameters[key];
             }
-            return String.Empty;
+            return string.Empty;
         }
         public void Clear()
         {

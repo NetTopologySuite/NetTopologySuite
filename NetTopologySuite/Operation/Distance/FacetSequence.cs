@@ -107,7 +107,7 @@ namespace NetTopologySuite.Operation.Distance
         private double ComputeLineLineDistance(FacetSequence facetSeq)
         {
             // both linear - compute minimum segment-segment distance
-            var minDistance = Double.MaxValue;
+            var minDistance = double.MaxValue;
             var p0 = new Coordinate();
             var p1 = new Coordinate();
             var q0 = new Coordinate();
@@ -133,7 +133,7 @@ namespace NetTopologySuite.Operation.Distance
         }
         private static double ComputePointLineDistance(Coordinate pt, FacetSequence facetSeq)
         {
-            var minDistance = Double.MaxValue;
+            var minDistance = double.MaxValue;
             var q0 = new Coordinate();
             var q1 = new Coordinate();
             for (var i = facetSeq._start; i < facetSeq._end - 1; i++)
@@ -150,7 +150,7 @@ namespace NetTopologySuite.Operation.Distance
             return minDistance;
         }
         /// <inheritdoc cref="object.ToString()"/>
-        public override String ToString()
+        public override string ToString()
         {
             var buf = new StringBuilder();
             buf.Append(IsPoint ? "LINESTRING ( " : "POINT (");

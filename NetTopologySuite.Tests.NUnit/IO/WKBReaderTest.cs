@@ -72,11 +72,11 @@ namespace NetTopologySuite.Tests.NUnit.IO
             CheckWkbGeometry("00000000030000000140590000000000004069000000000000",
                              "POLYGON ((100 200, 100 200, 100 200, 100 200)");
         }
-        private static void CheckWkbGeometry(String wkbHex, String expectedWKT)
+        private static void CheckWkbGeometry(string wkbHex, string expectedWKT)
         {
             CheckWkbGeometry(WKBReader.HexToBytes(wkbHex), expectedWKT);
         }
-        private static void CheckWkbGeometry(byte[] wkb, String expectedWKT)
+        private static void CheckWkbGeometry(byte[] wkb, string expectedWKT)
         {
             var wkbReader = new WKBReader();
             var g2 = wkbReader.Read(wkb);

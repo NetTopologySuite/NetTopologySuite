@@ -119,7 +119,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             RunOffsetTest("MULTILINESTRING ((0 0, 10 0), (10 0, 20 0))", "POINT(10 0)", -1.0, "POINT (10 -1)");
             RunOffsetTest("MULTILINESTRING ((0 0, 10 0), (10 0, 20 0))", "POINT(20 0)", 1.0, "POINT (20 1)");
         }
-        protected IGeometry Read(String wkt)
+        protected IGeometry Read(string wkt)
         {
             try
             {
@@ -130,14 +130,14 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
                 throw new ApplicationException("An exception occured while reading the wkt", ex);
             }
         }
-        protected void RunIndicesOfThenExtract(String inputStr, String subLineStr)
+        protected void RunIndicesOfThenExtract(string inputStr, string subLineStr)
         {
             var input = Read(inputStr);
             var subLine = Read(subLineStr);
             var result = IndicesOfThenExtract(input, subLine);
             CheckExpected(result, subLineStr);
         }
-        protected void CheckExpected(IGeometry result, String expected)
+        protected void CheckExpected(IGeometry result, string expected)
         {
             var subLine = Read(expected);
             var isEqual = result.EqualsExact(subLine, 1.0e-5);
@@ -156,7 +156,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             return result;
         }
         */
-        protected void RunIndexOfAfterTest(String inputStr, String testPtWKT)
+        protected void RunIndexOfAfterTest(string inputStr, string testPtWKT)
         {
             var input = Read(inputStr);
             var testPoint = Read(testPtWKT);
@@ -166,7 +166,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         }
         protected abstract bool IndexOfAfterCheck(IGeometry input, Coordinate testPt);
         private const double ToleranceDist = 0.001;
-        protected void RunOffsetTest(String inputWKT, String testPtWKT, double offsetDistance, String expectedPtWKT)
+        protected void RunOffsetTest(string inputWKT, string testPtWKT, double offsetDistance, string expectedPtWKT)
         {
             var input = Read(inputWKT);
             var testPoint = Read(testPtWKT);

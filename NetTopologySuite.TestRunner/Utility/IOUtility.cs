@@ -23,21 +23,21 @@ namespace Open.Topology.TestRunner.Utility
         //    var result = shpfile.ReadAll();
         //    return result;
         //}
-        private static IGeometry ReadGeometryFromWKBHexFile(String filename, IGeometryFactory geomFact)
+        private static IGeometry ReadGeometryFromWKBHexFile(string filename, IGeometryFactory geomFact)
         {
             return ReadGeometryFromWkbHexString(File.OpenText(filename).ReadToEnd(), geomFact);
         }
-        private static IGeometry ReadGeometryFromWkbHexString(String wkbHexFile, IGeometryFactory geomFact)
+        private static IGeometry ReadGeometryFromWkbHexString(string wkbHexFile, IGeometryFactory geomFact)
         {
             var reader = new WKBReader();
             var wkbHex = CleanHex(wkbHexFile);
             return reader.Read(WKBReader.HexToBytes(wkbHex));
         }
-        private static String CleanHex(String hexStuff)
+        private static string CleanHex(string hexStuff)
         {
             return System.Text.RegularExpressions.Regex.Replace(hexStuff, "[^0123456789ABCDEFabcdef]", "");
         }
-        private static IGeometry ReadGeometriesFromWktFile(String filename, IGeometryFactory geomFact)
+        private static IGeometry ReadGeometriesFromWktFile(string filename, IGeometryFactory geomFact)
         {
             return ReadGeometriesFromWktString(File.OpenText(filename).ReadToEnd(), geomFact);
         }
@@ -50,7 +50,7 @@ namespace Open.Topology.TestRunner.Utility
          * @throws ParseException
          * @throws IOException
          */
-        public static IGeometry ReadGeometriesFromWktString(String wkt, IGeometryFactory geomFact)
+        public static IGeometry ReadGeometriesFromWktString(string wkt, IGeometryFactory geomFact)
         {
             var reader = new WKTReader(geomFact);
             var fileReader = new WKTFileReader(new StringReader(wkt), reader);
@@ -59,7 +59,7 @@ namespace Open.Topology.TestRunner.Utility
                 return geomList[0];
             return geomFact.CreateGeometryCollection(GeometryFactory.ToGeometryArray(geomList));
         }
-        public static IGeometry ReadGeometriesFromWkbHexString(String wkb, IGeometryFactory geomFact)
+        public static IGeometry ReadGeometriesFromWkbHexString(string wkb, IGeometryFactory geomFact)
         {
             var reader = new WKBReader(geomFact);
             var fileReader = new WKBHexFileReader(reader);

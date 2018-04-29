@@ -114,8 +114,8 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
                 queryEnv, false,
                 IOUtil.Read(wktExpected).Coordinates);
         }
-        private void TestQueryRepeated(String wktInput, double tolerance,
-            Envelope queryEnv, String wktExpected)
+        private void TestQueryRepeated(string wktInput, double tolerance,
+            Envelope queryEnv, string wktExpected)
         {
             var index = Build(wktInput, tolerance);
             TestQuery(

@@ -16,7 +16,7 @@ namespace Open.Topology.TestRunner.Functions
         }
         public static IGeometry BufferWithParams(IGeometry g, double? distance,
                                                  int? quadrantSegments, int? capStyle, int? joinStyle,
-                                                 Double? mitreLimit)
+                                                 double? mitreLimit)
         {
             double dist = 0;
             if (distance != null) dist = distance.Value;
@@ -41,9 +41,9 @@ namespace Open.Topology.TestRunner.Functions
         {
             return BuildCurveSet(g, distance, new BufferParameters());
         }
-        public static IGeometry BufferOffsetCurveWithParams(IGeometry g, Double? distance,
+        public static IGeometry BufferOffsetCurveWithParams(IGeometry g, double? distance,
             int? quadrantSegments, int? capStyle, int? joinStyle,
-            Double? mitreLimit)
+            double? mitreLimit)
         {
             double dist = 0;
             if (distance != null) dist = distance.Value;

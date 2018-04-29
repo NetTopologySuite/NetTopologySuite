@@ -64,7 +64,7 @@ namespace Open.Topology.TestRunner
                 var root = xmldoc.DocumentElement;
                 // Retrieve the "desc" tag, if any.
                 XmlNode desc = root["desc"];
-                var strTestDescription = String.Empty;
+                var strTestDescription = string.Empty;
                 if (desc != null && desc.InnerText.Length > 0)
                 {
                     strTestDescription = desc.InnerText;
@@ -91,7 +91,7 @@ namespace Open.Topology.TestRunner
                     var strTolerance = tolerance.InnerText;
                     try
                     {
-                        dTolerance = Double.Parse(strTolerance, GetNumberFormatInfo());
+                        dTolerance = double.Parse(strTolerance, GetNumberFormatInfo());
                     }
                     catch (Exception ex)
                     {
@@ -115,11 +115,11 @@ namespace Open.Topology.TestRunner
                                 try
                                 {
                                     var scale   =
-                                        Double.Parse(precisionAttributes["scale"].InnerText, GetNumberFormatInfo());
+                                        double.Parse(precisionAttributes["scale"].InnerText, GetNumberFormatInfo());
                                     var offsetx =
-                                        Double.Parse(precisionAttributes["offsetx"].InnerText, GetNumberFormatInfo());
+                                        double.Parse(precisionAttributes["offsetx"].InnerText, GetNumberFormatInfo());
                                     var offsety =
-                                        Double.Parse(precisionAttributes["offsety"].InnerText, GetNumberFormatInfo());
+                                        double.Parse(precisionAttributes["offsety"].InnerText, GetNumberFormatInfo());
                                     pm = new PrecisionModel(scale);
                                 }
                                 catch (Exception ex)
@@ -137,11 +137,11 @@ namespace Open.Topology.TestRunner
                             if (precisionAttributes.Count == 3)
                             {
                                 var scale   =
-                                    Double.Parse(precisionAttributes["scale"].InnerText, GetNumberFormatInfo());
+                                    double.Parse(precisionAttributes["scale"].InnerText, GetNumberFormatInfo());
                                 var offsetx =
-                                    Double.Parse(precisionAttributes["offsetx"].InnerText, GetNumberFormatInfo());
+                                    double.Parse(precisionAttributes["offsetx"].InnerText, GetNumberFormatInfo());
                                 var offsety =
-                                    Double.Parse(precisionAttributes["offsety"].InnerText, GetNumberFormatInfo());
+                                    double.Parse(precisionAttributes["offsety"].InnerText, GetNumberFormatInfo());
                                 pm = new PrecisionModel(scale);
                             }
                         }

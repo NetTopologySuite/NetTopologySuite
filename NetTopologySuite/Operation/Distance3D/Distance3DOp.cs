@@ -67,7 +67,7 @@ namespace NetTopologySuite.Operation.Distance3D
         private readonly double _terminateDistance;
         // working
         private GeometryLocation[] _minDistanceLocation;
-        private double _minDistance = Double.MaxValue;
+        private double _minDistance = double.MaxValue;
         private bool _isDone;
         /// <summary>
         /// Constructs a DistanceOp that computes the distance and nearest points

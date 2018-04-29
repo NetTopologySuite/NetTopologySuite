@@ -6,26 +6,26 @@ namespace Open.Topology.TestRunner.Result
     public interface IResult
     {
         bool Equals(IResult other, double tolerance);
-        String ToShortString();
-        String ToLongString();
-        String ToFormattedString();
+        string ToShortString();
+        string ToLongString();
+        string ToFormattedString();
     }
     public interface IResult<T> : IResult
     {
         T Value { get; }
     }
-    public class BooleanResult : IResult<Boolean>
+    public class BooleanResult : IResult<bool>
     {
         public BooleanResult(bool result)
         {
             Value = result;
         }
-        public Boolean Value { get; private set; }
+        public bool Value { get; private set; }
         public bool Equals(IResult other, double tolerance)
         {
-            if (!(other is IResult<Boolean>))
+            if (!(other is IResult<bool>))
                 return false;
-            return Value == ((IResult<Boolean>)other).Value;
+            return Value == ((IResult<bool>)other).Value;
         }
         public string ToShortString()
         {
@@ -40,18 +40,18 @@ namespace Open.Topology.TestRunner.Result
             return ToShortString();
         }
     }
-    public class DoubleResult : IResult<Double>
+    public class DoubleResult : IResult<double>
     {
-        public DoubleResult(Double result)
+        public DoubleResult(double result)
         {
             Value = result;
         }
-        public Double Value { get; private set; }
+        public double Value { get; private set; }
         public bool Equals(IResult other, double tolerance)
         {
-            if (!(other is IResult<Double>))
+            if (!(other is IResult<double>))
                 return false;
-            return Math.Abs(Value - ((IResult<Double>)other).Value) <= tolerance;
+            return Math.Abs(Value - ((IResult<double>)other).Value) <= tolerance;
         }
         public string ToShortString()
         {
@@ -66,18 +66,18 @@ namespace Open.Topology.TestRunner.Result
             return Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
         }
     }
-    public class IntegerResult : IResult<Int32>
+    public class IntegerResult : IResult<int>
     {
         public IntegerResult(int result)
         {
             Value = result;
         }
-        public Int32 Value { get; private set; }
+        public int Value { get; private set; }
         public bool Equals(IResult other, double tolerance)
         {
             if (!(other is IResult<int>))
                 return false;
-            return Math.Abs(Value - ((IResult<Int32>)other).Value) <= tolerance;
+            return Math.Abs(Value - ((IResult<int>)other).Value) <= tolerance;
         }
         public string ToShortString()
         {

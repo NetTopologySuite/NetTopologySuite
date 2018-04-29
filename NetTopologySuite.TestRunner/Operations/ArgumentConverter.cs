@@ -9,20 +9,20 @@ namespace Open.Topology.TestRunner.Operations
 	    {
 	    }
          */
-        public Object[] Convert(Type[] parameterTypes, Object[] args)
+        public object[] Convert(Type[] parameterTypes, object[] args)
         {
-            var actualArgs = new Object[args.Length];
+            var actualArgs = new object[args.Length];
             for (var i = 0; i < args.Length; i++)
             {
                 actualArgs[i] = Convert(parameterTypes[i], args[i]);
             }
             return actualArgs;
         }
-        public Object Convert(Type destClass, Object srcValue)
+        public object Convert(Type destClass, object srcValue)
         {
-            if (srcValue is String)
+            if (srcValue is string)
             {
-                return ConvertFromString(destClass, (String) srcValue);
+                return ConvertFromString(destClass, (string) srcValue);
             }
             if (destClass.IsAssignableFrom(srcValue.GetType()))
             {
@@ -31,9 +31,9 @@ namespace Open.Topology.TestRunner.Operations
             ThrowInvalidConversion(destClass, srcValue);
             return null;
         }
-        private static Object ConvertFromString(Type destClass, String src)
+        private static object ConvertFromString(Type destClass, string src)
         {
-            if (destClass == typeof (Boolean) || destClass == typeof (bool))
+            if (destClass == typeof (bool) || destClass == typeof (bool))
             {
                 if (src.Equals("true"))
                 {
@@ -45,7 +45,7 @@ namespace Open.Topology.TestRunner.Operations
                 }
                 ThrowInvalidConversion(destClass, src);
             }
-            else if (destClass == typeof(Int32) ||
+            else if (destClass == typeof(int) ||
             destClass == typeof(int))
             {
                 // try as an int
@@ -65,7 +65,7 @@ namespace Open.Topology.TestRunner.Operations
                  */
             }
         else
-            if (destClass == typeof(Double) ||
+            if (destClass == typeof(double) ||
             destClass == typeof(double))
             {
                 // try as a double
@@ -91,7 +91,7 @@ namespace Open.Topology.TestRunner.Operations
             ThrowInvalidConversion(destClass, src);
             return null;
         }
-        private static void ThrowInvalidConversion(Type destClass, Object srcValue)
+        private static void ThrowInvalidConversion(Type destClass, object srcValue)
         {
             throw new ArgumentException("Cannot convert " + srcValue + " to " + destClass);
         }

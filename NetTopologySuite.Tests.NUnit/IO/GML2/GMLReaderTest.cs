@@ -46,8 +46,8 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML2
         private static void DoTest(Type expectedType)
         {
             var name = expectedType.Name;
-            var file = String.Format("{0}s", name.ToLowerInvariant().Substring(1));
-            var resname = String.Format("NetTopologySuite.Tests.NUnit.TestData.{0}.xml", file);
+            var file = string.Format("{0}s", name.ToLowerInvariant().Substring(1));
+            var resname = string.Format("NetTopologySuite.Tests.NUnit.TestData.{0}.xml", file);
             var xml = new StreamReader(EmbeddedResourceManager.GetResourceStream(resname)).ReadToEnd();
             var gr = new GMLReader();
             // different target frameworks have different overload sets...

@@ -151,7 +151,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
                 // segments cross or are collinear.  Use segment ordering
                 return upwardSeg.CompareTo(other.upwardSeg);
             }
-            public int XcompareTo(Object obj)
+            public int XcompareTo(object obj)
             {
                 var other = (DepthSegment) obj;
                 // if segments are collinear and vertical compare endpoints

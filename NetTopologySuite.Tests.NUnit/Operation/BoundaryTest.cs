@@ -83,7 +83,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
             RunBoundaryTest(a, BoundaryNodeRules.EndpointBoundaryRule,
                             "POINT (100 100)");
         }
-        private static void RunBoundaryTest(String wkt, IBoundaryNodeRule bnRule, String wktExpected)
+        private static void RunBoundaryTest(string wkt, IBoundaryNodeRule bnRule, string wktExpected)
         {
             var g = rdr.Read(wkt);
             var expected = rdr.Read(wktExpected);
