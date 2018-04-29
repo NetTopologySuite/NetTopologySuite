@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using RTools_NTS.Util;
-
 namespace NetTopologySuite.IO
 {
     ///<summary>
@@ -19,17 +18,14 @@ namespace NetTopologySuite.IO
         private const int MaxLookahead = 2048;
         private readonly FileInfo _file;
 #endif
-
         private TextReader _reader;
         private readonly WKTReader _wktReader;
         private int _count;
-
         private WKTFileReader(WKTReader wktReader)
         {
             _wktReader = wktReader;
             Limit = -1;
         }
-
 #if FEATURE_FILE_IO
         ///<summary>
         /// Creates a new <see cref="WKTFileReader" /> given the <paramref name="file" /> to read from and a <see cref="WKTReader" /> to use to parse the geometries.
@@ -41,13 +37,12 @@ namespace NetTopologySuite.IO
         {
             _file = file;
         }
-
         ///<summary>
         /// Creates a new <see cref="WKTFileReader" />, given the name of the file to read from.
         ///</summary>
         /// <param name="filename">The name of the file to read from</param>
         /// <param name="wktReader">The geometry reader to use</param>
-        public WKTFileReader(String filename, WKTReader wktReader)
+        public WKTFileReader(string filename, WKTReader wktReader)
             : this(new FileInfo(filename), wktReader)
         {
         }
@@ -61,7 +56,6 @@ namespace NetTopologySuite.IO
             : this(new StreamReader(stream), wktReader)
         {
         }
-
         ///<summary>
         /// Creates a new <see cref="WKTFileReader" />, given a <see cref="TextReader"/> to read with.
         ///</summary>
@@ -72,17 +66,14 @@ namespace NetTopologySuite.IO
         {
             _reader = reader;
         }
-
         ///<summary>
         /// Gets/Sets the maximum number of geometries to read.
         ///</summary>
         public int Limit { get; set; }
-
         ///<summary>
         /// Gets/Sets the number of geometries to skip before reading.
         ///</summary>
         public int Offset { get; set; }
-
         ///<summary>
         /// Reads a sequence of geometries.
         ///</summary>
@@ -97,14 +88,13 @@ namespace NetTopologySuite.IO
         public IList<IGeometry> Read()
         {
             _count = 0;
-
 #if FEATURE_FILE_IO
             if (_file != null)
-                _reader =  new StreamReader(new FileStream(_file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read, MaxLookahead)); 
+                _reader =  new StreamReader(new FileStream(_file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read, MaxLookahead));
 #endif
             try
             {
-                return Read(_reader);                
+                return Read(_reader);
             }
             finally
             {
@@ -113,7 +103,6 @@ namespace NetTopologySuite.IO
 #endif
             }
         }
-
         private IList<IGeometry> Read(TextReader bufferedReader)
         {
             IList<IGeometry> geoms = new List<IGeometry>();
@@ -126,7 +115,6 @@ namespace NetTopologySuite.IO
                     geoms.Add(g);
                 _count++;
             }
-
             /*
             while (!IsAtEndOfFile(bufferedReader) && !IsAtLimit(geoms))
             {
@@ -138,24 +126,20 @@ namespace NetTopologySuite.IO
              */
             return geoms;
         }
-
         private bool IsAtLimit(IList<IGeometry> geoms)
         {
             if (Limit < 0) return false;
             if (geoms.Count < Limit) return false;
             return true;
         }
-
         //private bool IsAtEndOfTokens(IList<Token> tokens)
         //{
         //    return !(_wktReader.Index < tokens.Count);
         //}
-
         private static bool IsAtEndOfTokens(Token token)
         {
             return token is EofToken;
         }
-
         ///<summary>
         /// Tests if reader is at EOF.
         ///</summary>
@@ -164,10 +148,8 @@ namespace NetTopologySuite.IO
             return bufferedReader.EndOfStream;
             /*
             bufferedReader.mark(1000);
-
             StreamTokenizer tokenizer = new StreamTokenizer(bufferedReader);
             int type = tokenizer.nextToken();
-
             if (type == StreamTokenizer.TT_EOF) {
                 return true;
             }

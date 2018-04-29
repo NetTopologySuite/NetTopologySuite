@@ -7,7 +7,6 @@ using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
 using NetTopologySuite.Planargraph;
 using NetTopologySuite.Utilities;
-
 namespace NetTopologySuite.Operation.Polygonize
 {
     /// <summary>
@@ -34,7 +33,6 @@ namespace NetTopologySuite.Operation.Polygonize
             var testRing = testEr.Ring;
             var testEnv = testRing.EnvelopeInternal;
             //var testPt = testRing.GetCoordinateN(0);
-
             EdgeRing minShell = null;
             Envelope minShellEnv = null;
             foreach (var tryShell in shellList)
@@ -43,16 +41,13 @@ namespace NetTopologySuite.Operation.Polygonize
                 var tryShellEnv = tryShellRing.EnvelopeInternal;
                 if (minShell != null)
                     minShellEnv = minShell.Ring.EnvelopeInternal;
-
                 // the hole envelope cannot equal the shell envelope
                 // (also guards against testing rings against themselves)
                 if (tryShellEnv.Equals(testEnv)) continue;
                 // hole must be contained in shell
                 if (!tryShellEnv.Contains(testEnv)) continue;
-
                 var testPt = CoordinateArrays.PointNotInList(testRing.Coordinates, tryShellRing.Coordinates);
                 var isContained = PointLocation.IsInRing(testPt, tryShellRing.Coordinates);
-
                 // check if this new containing ring is smaller than the current minimum ring
                 if (isContained)
                 {
@@ -65,7 +60,6 @@ namespace NetTopologySuite.Operation.Polygonize
             }
             return minShell;
         }
-
         /// <summary>
         /// Finds a point in a list of points which is not contained in another list of points.
         /// </summary>
@@ -76,12 +70,11 @@ namespace NetTopologySuite.Operation.Polygonize
         [Obsolete("Use CoordinateArrays.PointNotInList instead")]
         public static Coordinate PointNotInList(Coordinate[] testPts, Coordinate[] pts)
         {
-            foreach (Coordinate testPt in testPts)
+            foreach (var testPt in testPts)
                 if (!IsInList(testPt, pts))
                     return testPt;
             return null;
         }
-
         /// <summary>
         /// Tests whether a given point is in an array of points.
         /// Uses a value-based test.
@@ -92,13 +85,11 @@ namespace NetTopologySuite.Operation.Polygonize
         [Obsolete]
         public static bool IsInList(Coordinate pt, Coordinate[] pts)
         {
-            foreach (Coordinate p in pts)
+            foreach (var p in pts)
                 if (pt.Equals(p))
                     return true;
             return true;
         }
-
-
         /**
          * Traverses a ring of DirectedEdges, accumulating them into a list.
          * This assumes that all dangling directed edges have been removed
@@ -107,7 +98,6 @@ namespace NetTopologySuite.Operation.Polygonize
          * @param startDE the DirectedEdge to start traversing at
          * @return a List of DirectedEdges that form a ring
          */
-
         public static List<DirectedEdge> FindDirEdgesInRing(PolygonizeDirectedEdge startDE)
         {
             var de = startDE;
@@ -121,35 +111,26 @@ namespace NetTopologySuite.Operation.Polygonize
             } while (de != startDE);
             return edges;
         }
-
-
         private readonly IGeometryFactory _factory;
         private readonly List<DirectedEdge> _deList = new List<DirectedEdge>();
         private DirectedEdge lowestEdge = null;
-
         // cache the following data for efficiency
         private ILinearRing _ring;
-
         private Coordinate[] _ringPts;
         private List<ILinearRing> _holes;
         private EdgeRing _shell;
-        private bool _isHole;
-        private bool _isProcessed;
-        private bool _isIncludedSet;
         private bool _isIncluded = false;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="factory"></param>
         public EdgeRing(IGeometryFactory factory)
         {
             _factory = factory;
         }
-
         public void Build(PolygonizeDirectedEdge startDE)
         {
-            PolygonizeDirectedEdge de = startDE;
+            var de = startDE;
             do
             {
                 Add(de);
@@ -159,8 +140,6 @@ namespace NetTopologySuite.Operation.Polygonize
                 Utilities.Assert.IsTrue(de == startDE || !de.IsInRing, "found DE already in ring");
             } while (de != startDE);
         }
-
-
         /// <summary>
         /// Adds a DirectedEdge which is known to form part of this ring.
         /// </summary>
@@ -169,18 +148,13 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             _deList.Add(de);
         }
-
         /// <summary>
         /// Tests whether this ring is a hole.
         /// Due to the way the edges in the polygonization graph are linked,
         /// a ring is a hole if it is oriented counter-clockwise.
         /// </summary>
         /// <returns><c>true</c> if this ring is a hole.</returns>
-        public bool IsHole
-        {
-            get { return _isHole; }
-        }
-
+        public bool IsHole { get; private set; }
         ///<summary>
         /// Computes whether this ring is a hole.
         /// Due to the way the edges in the polygonization graph are linked,
@@ -189,10 +163,9 @@ namespace NetTopologySuite.Operation.Polygonize
         public void ComputeHole()
         {
             var ring = Ring;
-            _isHole = Orientation.IsCCW(ring.CoordinateSequence);
+            IsHole = Orientation.IsCCW(ring.CoordinateSequence);
             Assert.IsTrue(Orientation.IsCCW(ring.CoordinateSequence) == Orientation.IsCCW(ring.Coordinates));
         }
-
         /// <summary>
         /// Adds a hole to the polygon formed by this ring.
         /// </summary>
@@ -203,7 +176,6 @@ namespace NetTopologySuite.Operation.Polygonize
                 _holes = new List<ILinearRing>();
             _holes.Add(hole);
         }
-
         /// <summary>
         /// Adds a hole to the polygon formed by this ring.
         /// </summary>
@@ -216,7 +188,6 @@ namespace NetTopologySuite.Operation.Polygonize
                 _holes = new List<ILinearRing>();
             _holes.Add(hole);
         }
-
         /// <summary>
         /// Computes and returns the Polygon formed by this ring and any contained holes.
         /// </summary>
@@ -228,14 +199,13 @@ namespace NetTopologySuite.Operation.Polygonize
                 if (_holes != null)
                 {
                     holeLR = new ILinearRing[_holes.Count];
-                    for (int i = 0; i < _holes.Count; i++)
+                    for (var i = 0; i < _holes.Count; i++)
                         holeLR[i] = _holes[i];
                 }
-                IPolygon poly = _factory.CreatePolygon(_ring, holeLR);
+                var poly = _factory.CreatePolygon(_ring, holeLR);
                 return poly;
             }
         }
-
         /// <summary>
         /// Tests if the <see cref="ILinearRing" /> ring formed by this edge ring is topologically valid.
         /// </summary>
@@ -244,31 +214,25 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             get
             {
-                Coordinate[] tempcoords = Coordinates;
+                var tempcoords = Coordinates;
                 tempcoords = null;
                 if (_ringPts.Length <= 3)
                     return false;
-                ILinearRing tempring = Ring;
+                var tempring = Ring;
                 tempring = null;
                 return _ring.IsValid;
             }
         }
-
-        public bool IsIncludedSet
-        {
-            get { return _isIncludedSet; }
-        }
-
+        public bool IsIncludedSet { get; private set; }
         public bool IsIncluded
         {
-            get { return _isIncluded; }
+            get => _isIncluded;
             set
             {
                 _isIncluded = value;
-                _isIncludedSet = true;
+                IsIncludedSet = true;
             }
         }
-
         /// <summary>
         /// Computes and returns the list of coordinates which are contained in this ring.
         /// The coordinates are computed once only and cached.
@@ -279,10 +243,10 @@ namespace NetTopologySuite.Operation.Polygonize
             {
                 if (_ringPts == null)
                 {
-                    CoordinateList coordList = new CoordinateList();
-                    foreach (DirectedEdge de in _deList)
+                    var coordList = new CoordinateList();
+                    foreach (var de in _deList)
                     {
-                        PolygonizeEdge edge = (PolygonizeEdge) de.Edge;
+                        var edge = (PolygonizeEdge) de.Edge;
                         AddEdge(edge.Line.Coordinates, de.EdgeDirection, coordList);
                     }
                     _ringPts = coordList.ToCoordinateArray();
@@ -290,23 +254,21 @@ namespace NetTopologySuite.Operation.Polygonize
                 return _ringPts;
             }
         }
-
         /// <summary>
         /// Gets the coordinates for this ring as a <c>LineString</c>.
         /// Used to return the coordinates in this ring
         /// as a valid point, when it has been detected that the ring is topologically
         /// invalid.
-        /// </summary>        
+        /// </summary>
         public ILineString LineString
         {
             get
             {
-                Coordinate[] tempcoords = Coordinates;
+                var tempcoords = Coordinates;
                 tempcoords = null;
                 return _factory.CreateLineString(_ringPts);
             }
         }
-
         /// <summary>
         /// Returns this ring as a LinearRing, or null if an Exception occurs while
         /// creating it (such as a topology problem). Details of problems are written to
@@ -318,7 +280,7 @@ namespace NetTopologySuite.Operation.Polygonize
             {
                 if (_ring != null)
                     return _ring;
-                Coordinate[] tempcoords = Coordinates;
+                var tempcoords = Coordinates;
                 try
                 {
                     _ring = _factory.CreateLinearRing(_ringPts);
@@ -329,9 +291,8 @@ namespace NetTopologySuite.Operation.Polygonize
                 return _ring;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coords"></param>
         /// <param name="isForward"></param>
@@ -340,33 +301,27 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             if (isForward)
             {
-                for (int i = 0; i < coords.Length; i++)
+                for (var i = 0; i < coords.Length; i++)
                     coordList.Add(coords[i], false);
             }
             else
             {
-                for (int i = coords.Length - 1; i >= 0; i--)
+                for (var i = coords.Length - 1; i >= 0; i--)
                     coordList.Add(coords[i], false);
             }
         }
-
         /// <summary>
         /// Gets or sets a value indicating the containing shell ring of a ring that has been determined to be a hole.
         /// </summary>
         public EdgeRing Shell
         {
-            get { return IsHole ? _shell : this; }
-            private set { _shell = value; }
+            get => IsHole ? _shell : this;
+            private set => _shell = value;
         }
-
         /// <summary>
         /// Gets a value indicating whether this ring has a shell assigned to it.
         /// </summary>
-        public bool HasShell
-        {
-            get { return _shell != null; }
-        }
-
+        public bool HasShell => _shell != null;
         /// <summary>
         /// Tests whether this ring is an outer hole.
         /// A hole is an outer hole if it is not contained by a shell.
@@ -375,19 +330,14 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             get
             {
-                if (!_isHole) return false;
+                if (!IsHole) return false;
                 return !HasShell;
             }
         }
-
         /// <summary>
         /// Tests whether this ring is an outer shell.
         /// </summary>
-        public bool IsOuterShell
-        {
-            get { return OuterHole != null; }
-        }
-
+        public bool IsOuterShell => OuterHole != null;
         public EdgeRing OuterHole
         {
             get
@@ -397,16 +347,15 @@ namespace NetTopologySuite.Operation.Polygonize
                  * A shell is an outer shell if any edge is also in an outer hole.
                  * A hole is an outer hole if it is not contained by a shell.
                  */
-                for (int i = 0; i < _deList.Count; i++)
+                for (var i = 0; i < _deList.Count; i++)
                 {
-                    PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) _deList[i];
-                    EdgeRing adjRing = ((PolygonizeDirectedEdge) de.Sym).Ring;
+                    var de = (PolygonizeDirectedEdge) _deList[i];
+                    var adjRing = ((PolygonizeDirectedEdge) de.Sym).Ring;
                     if (adjRing.IsOuterHole) return adjRing;
                 }
                 return null;
             }
         }
-
         /// <summary>
         /// Updates the included status for currently non-included shells
         /// based on whether they are adjacent to an included shell.
@@ -414,11 +363,10 @@ namespace NetTopologySuite.Operation.Polygonize
         internal void UpdateIncluded()
         {
             if (IsHole) return;
-            for (int i = 0; i < _deList.Count; i++)
+            for (var i = 0; i < _deList.Count; i++)
             {
-                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) _deList[i];
-                EdgeRing adjShell = ((PolygonizeDirectedEdge) de.Sym).Ring.Shell;
-
+                var de = (PolygonizeDirectedEdge) _deList[i];
+                var adjShell = ((PolygonizeDirectedEdge) de.Sym).Ring.Shell;
                 if (adjShell != null && adjShell.IsIncludedSet)
                 {
                     // adjacent ring has been processed, so set included to inverse of adjacent included
@@ -427,24 +375,17 @@ namespace NetTopologySuite.Operation.Polygonize
                 }
             }
         }
-
         /// <summary>
         /// Gets a string representation of this object.
         /// </summary>
-        public override String ToString()
+        public override string ToString()
         {
             return WKTWriter.ToLineString(new CoordinateArraySequence(Coordinates));
         }
-
         /// <summary>
         /// Gets or sets a value indicating whether this ring has been processed.
         /// </summary>
-        public bool IsProcessed
-        {
-            get { return _isProcessed; }
-            set { _isProcessed = value; }
-        }
-
+        public bool IsProcessed { get; set; }
         /// <summary>
         /// Compares EdgeRings based on their envelope,
         /// using the standard lexicographic ordering.
@@ -456,9 +397,7 @@ namespace NetTopologySuite.Operation.Polygonize
             public int Compare(EdgeRing r0, EdgeRing r1)
             {
                 return r0.Ring.Envelope.CompareTo(r1.Ring.Envelope);
-
             }
         }
     }
 }
-

@@ -1,20 +1,15 @@
 ﻿using System;
 using System.IO;
-
 namespace NetTopologySuite.Tests.XUnit
 {
     public class GeneralXUnitRunner : XUnitRunner
     {
         //protected GeneralXUnitRunner(string testFile) : base(testFile) { }
-
-        private const String testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\general";
-
-        public GeneralXUnitRunner() : base(String.Empty)
+        private const string testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\general";
+        public GeneralXUnitRunner() : base(string.Empty)
         {
         }
-
-        protected override string TestLocation { get { return testLocation; } }
-
+        protected override string TestLocation => testLocation;
         [NUnit.Framework.Ignore]
         public override void Test00() { }
         [NUnit.Framework.Ignore]
@@ -59,7 +54,6 @@ namespace NetTopologySuite.Tests.XUnit
         public override void Test20() { }
         [NUnit.Framework.Ignore]
         public override void TestCountOk() { }
-
         [NUnit.Framework.Test]
         public void TestAllFiles()
         {
@@ -67,21 +61,18 @@ namespace NetTopologySuite.Tests.XUnit
         }
         protected override void TestAll()
         {
-            foreach (string file in Directory.GetFiles(TestLocation))
+            foreach (var file in Directory.GetFiles(TestLocation))
             {
                 var ext = Path.GetExtension(file);
                 if (string.IsNullOrEmpty(ext))
                     continue;
-                
                 if (ext.ToLowerInvariant() != ".xml")
                     continue;
-
                 TestFile = Path.GetFileName(file);
                 Console.WriteLine(string.Format("Processing '{0}'", TestFile));
                 LoadTests();
                 base.TestAll();
             }
         }
-
     }
 }

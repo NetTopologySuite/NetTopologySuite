@@ -1,6 +1,5 @@
 ﻿using System;
 using GeoAPI.Geometries;
-
 namespace Open.Topology.TestRunner.Functions
 {
     /// <summary>
@@ -14,38 +13,31 @@ namespace Open.Topology.TestRunner.Functions
         /// <summary>
         /// Gets the category name of this function
         /// </summary>
-        String Category { get; }
-
+        string Category { get; }
         /// <summary>
         /// Gets the name of this function
         /// </summary>
-        String Name { get; }
-
+        string Name { get; }
         /// <summary>
         /// Gets the parameter names for this function
         /// </summary>
-        String[] ParameterNames { get; }
-
+        string[] ParameterNames { get; }
         /// <summary>
         /// Gets the types of the other function arguments, if any.
         /// </summary>
         Type[] ParameterTypes { get; }
-
         /// <summary>
         /// Gets the return type of this function
         /// </summary>
         Type ReturnType { get; }
-
         /// <summary>
         /// Gets a value indicating that a parameter is a geometry
         /// </summary>
         bool IsBinary { get; }
-
         /// <summary>
         /// Gets a string representing the signature of this function.
         /// </summary>
-        String Signature { get; }
-
+        string Signature { get; }
         /// <summary>
         /// Invokes this function.
         /// </summary>
@@ -53,6 +45,6 @@ namespace Open.Topology.TestRunner.Functions
         /// <param name="geom">The target geometry</param>
         /// <param name="args">The other arguments to the function</param>
         /// <returns>The value computed by the function</returns>
-        Object Invoke(IGeometry geom, Object[] args);        
+        object Invoke(IGeometry geom, object[] args);
     }
 }

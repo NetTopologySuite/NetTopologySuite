@@ -1,7 +1,6 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Operation;
 using NetTopologySuite.Operation.Relate;
-
 namespace NetTopologySuite.Algorithm
 {
     ///<summary>
@@ -13,20 +12,20 @@ namespace NetTopologySuite.Algorithm
     /// However, other kinds of Boundary Node Rules are appropriate
     /// in specific situations (for instance, linear network topology
     /// usually follows the <see cref="BoundaryNodeRules.EndPointBoundaryNodeRule"/>.)
-    /// Some JTS operations  
+    /// Some JTS operations
     /// (such as <see cref="RelateOp"/>, <see cref="BoundaryOp"/> and <see cref="IsSimpleOp"/>)
     /// allow the BoundaryNodeRule to be specified,
     /// and respect the supplied rule when computing the results of the operation.
     /// <para/>
     /// An example use case for a non-SFS-standard Boundary Node Rule is
-    /// that of checking that a set of <see cref="ILineString"/>s have 
+    /// that of checking that a set of <see cref="ILineString"/>s have
     /// valid linear network topology, when turn-arounds are represented
     /// as closed rings.  In this situation, the entry road to the
     /// turn-around is only valid when it touches the turn-around ring
-    /// at the single (common) endpoint.  This is equivalent 
-    /// to requiring the set of <tt>LineString</tt>s to be 
+    /// at the single (common) endpoint.  This is equivalent
+    /// to requiring the set of <tt>LineString</tt>s to be
     /// <b>simple</b> under the <see cref="BoundaryNodeRules.EndPointBoundaryNodeRule"/>.
-    /// The SFS-standard <see cref="BoundaryNodeRules.Mod2BoundaryNodeRule"/> is not 
+    /// The SFS-standard <see cref="BoundaryNodeRules.Mod2BoundaryNodeRule"/> is not
     /// sufficient to perform this test, since it
     /// states that closed rings have <b>no</b> boundary points.
     /// <para/>
@@ -48,7 +47,6 @@ namespace NetTopologySuite.Algorithm
         ///<returns>true if points in this number of boundaries lie in the parent boundary</returns>
         bool IsInBoundary(int boundaryCount);
     }
-
     /// <summary>
     /// Provides access to static instances of common <see cref="IBoundaryNodeRule"/>s.
     /// </summary>
@@ -59,26 +57,21 @@ namespace NetTopologySuite.Algorithm
         ///</summary>
         /// <see cref="Mod2BoundaryNodeRule"/>
         public static readonly IBoundaryNodeRule Mod2BoundaryRule = new Mod2BoundaryNodeRule();
-
         ///<summary>The Endpoint Boundary Node Rule.</summary>
         /// <see cref="EndPointBoundaryNodeRule"/>
         public static readonly IBoundaryNodeRule EndpointBoundaryRule = new EndPointBoundaryNodeRule();
-
         ///<summary>The MultiValent Endpoint Boundary Node Rule.</summary>
         ///<see cref="MultiValentEndPointBoundaryNodeRule"/>
         public static readonly IBoundaryNodeRule MultivalentEndpointBoundaryRule = new MultiValentEndPointBoundaryNodeRule();
-
         ///<summary>The Monovalent Endpoint Boundary Node Rule.</summary>
         ///<see cref="MonoValentEndPointBoundaryNodeRule"/>
         public static readonly IBoundaryNodeRule MonoValentEndpointBoundaryRule = new MonoValentEndPointBoundaryNodeRule();
-
         ///<summary>
         /// The Boundary Node Rule specified by the OGC Simple Features Specification,
         /// which is the same as the Mod-2 rule.
         /// </summary>
         /// <see cref="Mod2BoundaryNodeRule"/>
         public static readonly IBoundaryNodeRule OgcSfsBoundaryRule = Mod2BoundaryRule;
-
         ///<summary>
         /// A <see cref="IBoundaryNodeRule"/> specifies that points are in the
         /// boundary of a lineal geometry iff
@@ -100,7 +93,6 @@ namespace NetTopologySuite.Algorithm
                 return boundaryCount % 2 == 1;
             }
         }
-
         /// <summary>
         /// A <see cref="IBoundaryNodeRule" /> which specifies that any points which are endpoints
         /// of lineal components are in the boundary of the
@@ -129,7 +121,6 @@ namespace NetTopologySuite.Algorithm
                 return boundaryCount > 0;
             }
         }
-
         ///<summary>
         /// A <see cref="IBoundaryNodeRule"/> which determines that only
         /// endpoints with valency greater than 1 are on the boundary.
@@ -145,7 +136,6 @@ namespace NetTopologySuite.Algorithm
                 return boundaryCount > 1;
             }
         }
-
         ///<summary>
         /// A <see cref="IBoundaryNodeRule"/> which determines that only
         /// endpoints with valency of exactly 1 are on the boundary.
@@ -160,7 +150,5 @@ namespace NetTopologySuite.Algorithm
                 return boundaryCount == 1;
             }
         }
-
-
     }
 }

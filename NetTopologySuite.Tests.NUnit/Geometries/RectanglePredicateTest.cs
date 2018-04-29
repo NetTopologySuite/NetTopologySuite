@@ -4,7 +4,6 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     /*
@@ -15,46 +14,39 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     {
         private WKTReader rdr = new WKTReader();
         private GeometryFactory fact = new GeometryFactory();
-
         [TestAttribute]
         public void TestShortAngleOnBoundary()
         {
-            String[] onBoundary =
+            string[] onBoundary =
             { "POLYGON ((10 10, 30 10, 30 30, 10 30, 10 10))",
                 "LINESTRING (10 25, 10 10, 25 10)" };
             RunRectanglePred(onBoundary);
         }
-
         [TestAttribute]
         public void TestAngleOnBoundary()
         {
-            String[] onBoundary =
+            string[] onBoundary =
             { "POLYGON ((10 10, 30 10, 30 30, 10 30, 10 10))",
                 "LINESTRING (10 30, 10 10, 30 10)" };
             RunRectanglePred(onBoundary);
         }
-
-        private void RunRectanglePred(String[] wkt)
+        private void RunRectanglePred(string[] wkt)
         {
-            IGeometry rect = rdr.Read(wkt[0]);
-            IGeometry b = rdr.Read(wkt[1]);
+            var rect = rdr.Read(wkt[0]);
+            var b = rdr.Read(wkt[1]);
             RunRectanglePred(rect, b);
         }
-
         private void RunRectanglePred(IGeometry rect, IGeometry testGeom)
         {
-            bool intersectsValue = rect.Intersects(testGeom);
-            bool relateIntersectsValue = rect.Relate(testGeom).IsIntersects();
-            bool intersectsOK = intersectsValue == relateIntersectsValue;
-
-            bool containsValue = rect.Contains(testGeom);
-            bool relateContainsValue = rect.Relate(testGeom).IsContains();
-            bool containsOK = containsValue == relateContainsValue;
-
+            var intersectsValue = rect.Intersects(testGeom);
+            var relateIntersectsValue = rect.Relate(testGeom).IsIntersects();
+            var intersectsOK = intersectsValue == relateIntersectsValue;
+            var containsValue = rect.Contains(testGeom);
+            var relateContainsValue = rect.Relate(testGeom).IsContains();
+            var containsOK = containsValue == relateContainsValue;
             ////System.Console.WriteLine(testGeom);
             //if (!intersectsOK || !containsOK)
             //    Console.WriteLine(testGeom);
-
             Assert.IsTrue(intersectsOK);
             Assert.IsTrue(containsOK);
         }

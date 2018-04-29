@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Planargraph
 {
     /// <summary>
@@ -17,20 +16,17 @@ namespace NetTopologySuite.Planargraph
     public abstract class PlanarGraph
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private IList<Edge> _edges = new List<Edge>();
-        
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected IList<DirectedEdge> dirEdges = new List<DirectedEdge>();
-        
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected NodeMap nodeMap = new NodeMap();
-
         /// <summary>
         /// Returns the <see cref="Node"/> at the given <paramref name="pt">location</paramref>, or <value>null</value> if no <see cref="Node"/> was there.
         /// </summary>
@@ -42,7 +38,6 @@ namespace NetTopologySuite.Planargraph
         {
             return nodeMap.Find(pt);
         }
-
         /// <summary>
         /// Adds a node to the map, replacing any that is already at that location.
         /// Only subclasses can add Nodes, to ensure Nodes are of the right type.
@@ -53,7 +48,6 @@ namespace NetTopologySuite.Planargraph
         {
             nodeMap.Add(node);
         }
-
         /// <summary>
         /// Adds the Edge and its DirectedEdges with this PlanarGraph.
         /// Assumes that the Edge has already been created with its associated DirectEdges.
@@ -66,7 +60,6 @@ namespace NetTopologySuite.Planargraph
             Add(edge.GetDirEdge(0));
             Add(edge.GetDirEdge(1));
         }
-
         /// <summary>
         /// Adds the Edge to this PlanarGraph; only subclasses can add DirectedEdges,
         /// to ensure the edges added are of the right class.
@@ -76,34 +69,27 @@ namespace NetTopologySuite.Planargraph
         {
             dirEdges.Add(dirEdge);
         }
-
         /// <summary>
         /// Returns an IEnumerator over the Nodes in this PlanarGraph.
         /// </summary>
         /// <returns></returns>
         public IEnumerator<Node> GetNodeEnumerator()
-        {            
-            return nodeMap.GetEnumerator();          
+        {
+            return nodeMap.GetEnumerator();
         }
-
         /// <summary>
         /// Returns the Nodes in this PlanarGraph.
         /// </summary>
-        public ICollection<Node> Nodes
-        {
-            get { return nodeMap.Values; }
-        }
-
-        /// <summary> 
+        public ICollection<Node> Nodes => nodeMap.Values;
+        /// <summary>
         /// Returns an Iterator over the DirectedEdges in this PlanarGraph, in the order in which they
         /// were added.
         /// </summary>
         /// <returns></returns>
-        public IEnumerator<DirectedEdge> GetDirEdgeEnumerator() 
-        {            
-            return dirEdges.GetEnumerator();          
+        public IEnumerator<DirectedEdge> GetDirEdgeEnumerator()
+        {
+            return dirEdges.GetEnumerator();
         }
-
         /// <summary>
         /// Returns an Iterator over the Edges in this PlanarGraph, in the order in which they
         /// were added.
@@ -111,18 +97,16 @@ namespace NetTopologySuite.Planargraph
         /// <returns></returns>
         public IEnumerator<Edge> GetEdgeEnumerator()
         {
-            return _edges.GetEnumerator(); 
+            return _edges.GetEnumerator();
         }
-
         /// <summary>
         /// Returns the Edges that have been added to this PlanarGraph.
         /// </summary>
         public IList<Edge> Edges
         {
-            get { return _edges; }
-            protected set { _edges = value; }
+            get => _edges;
+            protected set => _edges = value;
         }
-
         /// <summary>
         /// Removes an Edge and its associated DirectedEdges from their from-Nodes and
         /// from this PlanarGraph. Note: This method does not remove the Nodes associated
@@ -137,8 +121,7 @@ namespace NetTopologySuite.Planargraph
             _edges.Remove(edge);
             edge.Remove();
         }
-
-        /// <summary> 
+        /// <summary>
         /// Removes a <see cref="DirectedEdge"/> from its from-<see cref="Node"/> and from this PlanarGraph.
         /// </summary>
         /// <remarks>
@@ -148,14 +131,13 @@ namespace NetTopologySuite.Planargraph
         /// <param name="de"></param>
         public void Remove(DirectedEdge de)
         {
-            DirectedEdge sym = de.Sym;
-            if (sym != null) 
+            var sym = de.Sym;
+            if (sym != null)
                 sym.Sym = null;
             de.FromNode.Remove(de);
             de.Remove();
             dirEdges.Remove(de);
         }
-
         /// <summary>
         /// Removes a node from the graph, along with any associated DirectedEdges and
         /// Edges.
@@ -164,25 +146,23 @@ namespace NetTopologySuite.Planargraph
         public void Remove(Node node)
         {
             // unhook all directed edges
-            IList<DirectedEdge> outEdges = node.OutEdges.Edges;
-            foreach (DirectedEdge de in outEdges)
+            var outEdges = node.OutEdges.Edges;
+            foreach (var de in outEdges)
             {
-                DirectedEdge sym = de.Sym;
+                var sym = de.Sym;
                 // remove the diredge that points to this node
-                if (sym != null) 
+                if (sym != null)
                     Remove(sym);
                 // remove this diredge from the graph collection
                 dirEdges.Remove(de);
-
-                Edge edge = de.Edge;
-                if (edge != null)                
-                    _edges.Remove(edge);                
+                var edge = de.Edge;
+                if (edge != null)
+                    _edges.Remove(edge);
             }
             // remove the node from the graph
             nodeMap.Remove(node.Coordinate);
             node.Remove();
         }
-
         /// <summary>
         /// Returns all Nodes with the given number of Edges around it.
         /// </summary>

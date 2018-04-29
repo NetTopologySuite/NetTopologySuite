@@ -1,13 +1,11 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Operation;
-
 namespace Open.Topology.TestRunner.Functions
 {
     public class BoundaryFunctions
     {
         public static IGeometry boundary(IGeometry g) { return g.Boundary; }
-
         public static IGeometry boundaryMod2(IGeometry g)
         {
             return BoundaryOp.GetBoundary(g, BoundaryNodeRules.Mod2BoundaryRule);
@@ -24,6 +22,5 @@ namespace Open.Topology.TestRunner.Functions
         {
             return BoundaryOp.GetBoundary(g, BoundaryNodeRules.MultivalentEndpointBoundaryRule);
         }
-
     }
 }

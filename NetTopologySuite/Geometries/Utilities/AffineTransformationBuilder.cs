@@ -1,5 +1,4 @@
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries.Utilities
 {
     ///<summary>
@@ -40,10 +39,8 @@ namespace NetTopologySuite.Geometries.Utilities
         private readonly Coordinate _dest0;
         private readonly Coordinate _dest1;
         private readonly Coordinate _dest2;
-
         // the matrix entries for the transformation
         private double _m00, _m01, _m02, _m10, _m11, _m12;
-
         ///<summary>
         /// Constructs a new builder for the transformation defined by the given set of control point mappings.
         ///</summary>
@@ -67,7 +64,6 @@ namespace NetTopologySuite.Geometries.Utilities
             _dest1 = dest1;
             _dest2 = dest2;
         }
-
         ///<summary>
         /// Computes the <see cref="AffineTransformation"/>
         /// determined by the control point mappings,
@@ -82,12 +78,11 @@ namespace NetTopologySuite.Geometries.Utilities
         public AffineTransformation GetTransformation()
         {
             // compute full 3-point transformation
-            bool isSolvable = Compute();
+            var isSolvable = Compute();
             if (isSolvable)
                 return new AffineTransformation(_m00, _m01, _m02, _m10, _m11, _m12);
             return null;
         }
-
         ///<summary>
         /// Computes the transformation matrix by
         /// solving the two systems of linear equations
@@ -103,7 +98,6 @@ namespace NetTopologySuite.Geometries.Utilities
             _m00 = row0[0];
             _m01 = row0[1];
             _m02 = row0[2];
-
             var by = new[] { _dest0.Y, _dest1.Y, _dest2.Y };
             var row1 = Solve(by);
             if (row1 == null) return false;
@@ -112,7 +106,6 @@ namespace NetTopologySuite.Geometries.Utilities
             _m12 = row1[2];
             return true;
         }
-
         ///<summary>
         /// Solves the transformation matrix system of linear equations
         /// for the given right-hand side vector.

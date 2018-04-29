@@ -1,5 +1,4 @@
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Precision
 {
     /// <summary>
@@ -31,16 +30,13 @@ namespace NetTopologySuite.Precision
     /// </summary>
     public class CommonBitsRemover
     {
-        private Coordinate _commonCoord;
         private readonly CommonCoordinateFilter _ccFilter = new CommonCoordinateFilter();
-
         /*
         /// <summary>
         ///
         /// </summary>
         public CommonBitsRemover() { }
         */
-
         /// <summary>
         /// Add a point to the set of geometries whose common bits are
         /// being computed.  After this method has executed the
@@ -51,17 +47,12 @@ namespace NetTopologySuite.Precision
         public void Add(IGeometry geom)
         {
             geom.Apply(_ccFilter);
-            _commonCoord = _ccFilter.CommonCoordinate;
+            CommonCoordinate = _ccFilter.CommonCoordinate;
         }
-
         /// <summary>
         /// The common bits of the Coordinates in the supplied Geometries.
         /// </summary>
-        public Coordinate CommonCoordinate
-        {
-            get { return _commonCoord; }
-        }
-
+        public Coordinate CommonCoordinate { get; private set; }
         /// <summary>
         /// Removes the common coordinate bits from a Geometry.
         /// The coordinates of the Geometry are changed.
@@ -70,17 +61,16 @@ namespace NetTopologySuite.Precision
         /// <returns>The shifted Geometry.</returns>
         public IGeometry RemoveCommonBits(IGeometry geom)
         {
-            if (_commonCoord.X == 0.0 && _commonCoord.Y == 0.0)
+            if (CommonCoordinate.X == 0.0 && CommonCoordinate.Y == 0.0)
                 return geom;
-            Coordinate invCoord = new Coordinate(_commonCoord);
+            var invCoord = new Coordinate(CommonCoordinate);
             invCoord.X = -invCoord.X;
             invCoord.Y = -invCoord.Y;
-            Translater trans = new Translater(invCoord);
+            var trans = new Translater(invCoord);
             geom.Apply(trans);
             geom.GeometryChanged();
             return geom;
         }
-
         /// <summary>
         /// Adds the common coordinate bits back into a Geometry.
         /// The coordinates of the Geometry are changed.
@@ -88,11 +78,10 @@ namespace NetTopologySuite.Precision
         /// <param name="geom">The Geometry to which to add the common coordinate bits.</param>
         public void AddCommonBits(IGeometry geom)
         {
-            var trans = new Translater(_commonCoord);
+            var trans = new Translater(CommonCoordinate);
             geom.Apply(trans);
             geom.GeometryChanged();
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -100,7 +89,6 @@ namespace NetTopologySuite.Precision
         {
             private readonly CommonBits _commonBitsX = new CommonBits();
             private readonly CommonBits _commonBitsY = new CommonBits();
-
             /// <summary>
             ///
             /// </summary>
@@ -110,26 +98,17 @@ namespace NetTopologySuite.Precision
                 _commonBitsX.Add(coord.X);
                 _commonBitsY.Add(coord.Y);
             }
-
             /// <summary>
             ///
             /// </summary>
-            public Coordinate CommonCoordinate
-            {
-                get
-                {
-                    return new Coordinate(_commonBitsX.Common, _commonBitsY.Common);
-                }
-            }
+            public Coordinate CommonCoordinate => new Coordinate(_commonBitsX.Common, _commonBitsY.Common);
         }
-
         /// <summary>
         ///
         /// </summary>
         private class Translater : ICoordinateSequenceFilter
         {
             private readonly Coordinate _trans;
-
             /// <summary>
             ///
             /// </summary>
@@ -138,7 +117,6 @@ namespace NetTopologySuite.Precision
             {
                 _trans = trans;
             }
-
             /// <summary>
             ///
             /// </summary>
@@ -150,10 +128,8 @@ namespace NetTopologySuite.Precision
                 seq.SetOrdinate(i, Ordinate.X, xp);
                 seq.SetOrdinate(i, Ordinate.Y, yp);
             }
-
-            public bool Done {  get { return false; } }
-
-            public bool GeometryChanged {  get { return true; } }
+            public bool Done => false;
+            public bool GeometryChanged => true;
         }
     }
 }

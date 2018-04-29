@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-
 namespace NetTopologySuite.Operation.Overlay.Validate
 {
     ///<summary>
@@ -26,15 +25,13 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         private bool _doLeft = true;
         private bool _doRight = true;
         private readonly IGeometry _g;
-
         public OffsetPointGenerator(IGeometry g)
         {
             _g = g;
         }
-
         /**
          * Set the sides on which to generate offset points.
-         * 
+         *
          * @param doLeft
          * @param doRight
          */
@@ -43,7 +40,6 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             _doLeft = doLeft;
             _doRight = doRight;
         }
-
         ///<summary>
         /// Gets the computed offset points.
         ///</summary>
@@ -53,23 +49,20 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             var lines = LinearComponentExtracter.GetLines(_g);
             foreach (ILineString line in lines)
                 ExtractPoints(line, offsetDistance, offsetPts);
-
             //System.out.println(toMultiPoint(offsetPts));
             return offsetPts;
         }
-
         private void ExtractPoints(ILineString line, double offsetDistance, IList<Coordinate> offsetPts)
         {
-            ICoordinateSequence coordinateSequence = line.CoordinateSequence;
-            int maxIndex = coordinateSequence.Count - 1;
-            for (int i = 0; i < maxIndex; i++)
+            var coordinateSequence = line.CoordinateSequence;
+            var maxIndex = coordinateSequence.Count - 1;
+            for (var i = 0; i < maxIndex; i++)
             {
                 ComputeOffsetPoints(
                     coordinateSequence.GetCoordinate(i),
                                         coordinateSequence.GetCoordinate(i+1), offsetDistance, offsetPts);
             }
         }
-
         ///<summary>
         /// Generates the two points which are offset from the
         /// midpoint of the segment <c>(p0, p1)</c> by the <c>offsetDistance</c>
@@ -80,28 +73,24 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         ///<param name="offsetPts"></param>
         private void ComputeOffsetPoints(Coordinate p0, Coordinate p1, double offsetDistance, IList<Coordinate> offsetPts)
         {
-            double dx = p1.X - p0.Y;
-            double dy = p1.Y - p0.Y;
-            double len = Math.Sqrt(dx * dx + dy * dy);
+            var dx = p1.X - p0.Y;
+            var dy = p1.Y - p0.Y;
+            var len = Math.Sqrt(dx * dx + dy * dy);
             // u is the vector that is the length of the offset, in the direction of the segment
-            double ux = offsetDistance * dx / len;
-            double uy = offsetDistance * dy / len;
-
-            double midX = (p1.X + p0.X) / 2;
-            double midY = (p1.Y + p0.Y) / 2;
-
+            var ux = offsetDistance * dx / len;
+            var uy = offsetDistance * dy / len;
+            var midX = (p1.X + p0.X) / 2;
+            var midY = (p1.Y + p0.Y) / 2;
             if (_doLeft)
             {
-                Coordinate offsetLeft = new Coordinate(midX - uy, midY + ux);
+                var offsetLeft = new Coordinate(midX - uy, midY + ux);
                 offsetPts.Add(offsetLeft);
             }
-
             if (_doRight)
             {
-                Coordinate offsetRight = new Coordinate(midX + uy, midY - ux);
+                var offsetRight = new Coordinate(midX + uy, midY - ux);
                 offsetPts.Add(offsetRight);
             }
         }
-
     }
 }

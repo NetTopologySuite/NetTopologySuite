@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Algorithm.Locate
 {
     ///<summary>
@@ -12,7 +11,7 @@ namespace NetTopologySuite.Algorithm.Locate
     public class SimplePointInAreaLocator : IPointOnGeometryLocator
     {
         /// <summary>
-        /// Determines the <see cref="Location"/> of a point in an areal <see cref="IGeometry"/>. 
+        /// Determines the <see cref="Location"/> of a point in an areal <see cref="IGeometry"/>.
         /// Computes <see cref="Location.Boundary"/> if the point lies exactly on a geometry line segment.
         /// </summary>
         /// <param name="p">The point to test</param>
@@ -21,21 +20,18 @@ namespace NetTopologySuite.Algorithm.Locate
         public static Location Locate(Coordinate p, IGeometry geom)
         {
             if (geom.IsEmpty) return Location.Exterior;
-
             return LocateInGeometry(p, geom);
         }
-
         private static Location LocateInGeometry(Coordinate p, IGeometry geom)
         {
             if (geom is IPolygon)
                 return LocatePointInPolygon(p, (IPolygon)geom);
-
             if (geom is IGeometryCollection)
             {
                 IEnumerator<IGeometry> geomi = new GeometryCollectionEnumerator((IGeometryCollection)geom);
                 while (geomi.MoveNext())
                 {
-                    IGeometry g2 = geomi.Current;
+                    var g2 = geomi.Current;
                     if (g2 != geom)
                     {
                         var loc = LocateInGeometry(p, g2);
@@ -45,7 +41,6 @@ namespace NetTopologySuite.Algorithm.Locate
             }
             return Location.Exterior;
         }
-
         /// <summary>
         /// Determines the <see cref="Location"/> of a point in a <see cref="IPolygon"/>.
         /// Computes <see cref="Location.Boundary"/> if the point lies exactly
@@ -69,14 +64,12 @@ namespace NetTopologySuite.Algorithm.Locate
                 if (holeLoc == Location.Interior) return Location.Exterior;
                 // if in EXTERIOR of this hole keep checking the other ones
             }
-
             // If not in any hole must be inside polygon
             return Location.Interior;
         }
-
         /// <summary>
         /// Determines whether a point lies in a <see cref="IPolygon"/>.
-        /// If the point lies on the polygon boundary it is 
+        /// If the point lies on the polygon boundary it is
         /// considered to be inside.
         /// </summary>
         /// <param name="p">The point to test</param>
@@ -86,7 +79,6 @@ namespace NetTopologySuite.Algorithm.Locate
         {
             return Location.Exterior != LocatePointInPolygon(p, poly);
         }
-
         ///<summary>
         /// Determines whether a point lies in a LinearRing, using the ring envelope to short-circuit if possible.
         ///</summary>
@@ -100,18 +92,14 @@ namespace NetTopologySuite.Algorithm.Locate
                 return Location.Exterior;
             return PointLocation.LocateInRing(p, ring.CoordinateSequence);
         }
-
         private readonly IGeometry _geom;
-
         public SimplePointInAreaLocator(IGeometry geom)
         {
             _geom = geom;
         }
-
         public Location Locate(Coordinate p)
         {
             return Locate(p, _geom);
         }
-
     }
 }

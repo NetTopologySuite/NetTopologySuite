@@ -7,14 +7,12 @@ using GeoAPI.Geometries;
 using GeoAPI.Operation.Buffer;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.Performances
 {
     [TestFixture]
     public class SortedListsFixture
     {
         public static StreamWriter OutFile = new StreamWriter("log.txt");
-
         public static void LogLine(string format, params object[] data)
         {
             var line = string.Format(format, data);
@@ -22,21 +20,16 @@ namespace NetTopologySuite.Tests.Performances
             OutFile.WriteLine(line);
             OutFile.Flush();
         }
-
         [Test]
         public void Performances()
         {
             LogLine("ServerGC: {0}, LatencyMode: {1}", GCSettings.IsServerGC, GCSettings.LatencyMode);
             LogLine("CLR Implementation: {0}", FileVersionInfo.GetVersionInfo(typeof(string).Assembly.Location).FileDescription);
-
             LogLine("Rings \tpoints \tvalid \tseconds");
-
             BenchmarkPolygons();
-
             //Console.Write("Press any key to continue . . . ");
             //Console.ReadKey(true);
         }
-
         private void Benchmark(IPolygon poly)
         {
             var start = DateTime.Now;
@@ -46,12 +39,11 @@ namespace NetTopologySuite.Tests.Performances
             var td = diff.TotalSeconds;
             LogLine("{0} \t{1} \t{2} \t{3}", poly.NumInteriorRings, poly.NumPoints, valid, td);
         }
-
         public void BenchmarkPolygons()
         {
             var factory = GeometryFactory.Default;
             var holes = new List<ILinearRing>(100);
-            var shell = CreateRing(0, 0, 20, 10000);            
+            var shell = CreateRing(0, 0, 20, 10000);
             Benchmark(factory.CreatePolygon(shell, holes.ToArray()));
             for (var i = 0; i < 100; i += 5)
             {
@@ -59,7 +51,6 @@ namespace NetTopologySuite.Tests.Performances
                 Benchmark(factory.CreatePolygon(shell, holes.ToArray()));
             }
         }
-
         public ILinearRing CreateRing(double x, double y, double radius, int points)
         {
             var factory = GeometryFactory.Default;

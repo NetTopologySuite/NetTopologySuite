@@ -4,15 +4,12 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     [TestFixtureAttribute]
     public class NonRobustLineIntersectorTest
     {
         private NonRobustLineIntersector li = new NonRobustLineIntersector();
-
-
         [TestAttribute]
         [IgnoreAttribute("The JTS testNegativeZero test was being ignored")]
         public void TestNegativeZero() {

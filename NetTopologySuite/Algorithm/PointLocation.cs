@@ -1,5 +1,4 @@
 ﻿using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Algorithm
 {
      /// <summary>
@@ -34,7 +33,6 @@ namespace NetTopologySuite.Algorithm
             }
             return false;
         }
-
         /// <summary>
         /// Tests whether a point lies on the line defined by a list of
         /// coordinates.
@@ -50,8 +48,8 @@ namespace NetTopologySuite.Algorithm
             var lineIntersector = new RobustLineIntersector();
             var p0 = new Coordinate();
             var p1 = new Coordinate();
-            int n = line.Count;
-            for (int i = 1; i < n; i++)
+            var n = line.Count;
+            for (var i = 1; i < n; i++)
             {
                 line.GetCoordinate(i - 1, p0);
                 line.GetCoordinate(i, p1);
@@ -63,7 +61,6 @@ namespace NetTopologySuite.Algorithm
             }
             return false;
         }
-
         /// <summary>
         /// Tests whether a point lies inside or on a ring. The ring may be oriented in
         /// either direction. A point lying exactly on the ring boundary is considered
@@ -80,7 +77,6 @@ namespace NetTopologySuite.Algorithm
         {
             return LocateInRing(p, ring) != Location.Exterior;
         }
-
         /// <summary>
         /// Tests whether a point lies inside or on a ring. The ring may be oriented in
         /// either direction. A point lying exactly on the ring boundary is considered
@@ -97,7 +93,6 @@ namespace NetTopologySuite.Algorithm
         {
             return LocateInRing(p, ring) != Location.Exterior;
         }
-
         /// <summary>
         /// Determines whether a point lies in the interior, on the boundary, or in the
         /// exterior of a ring.The ring may be oriented in either direction.
@@ -113,7 +108,6 @@ namespace NetTopologySuite.Algorithm
         {
             return RayCrossingCounter.LocatePointInRing(p, ring);
         }
-
         /// <summary>
         /// Determines whether a point lies in the interior, on the boundary, or in the
         /// exterior of a ring.The ring may be oriented in either direction.

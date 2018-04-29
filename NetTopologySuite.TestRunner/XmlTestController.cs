@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Specialized;
 using System.IO;
-
 namespace Open.Topology.TestRunner
 {
 	/// <summary>
@@ -9,76 +8,58 @@ namespace Open.Topology.TestRunner
 	/// </summary>
 	public class XmlTestController
 	{
-        private StringCollection m_listFileNames = null;
-
-        private XmlTestDocument  m_objCurrentDoc = null;
-
+	    private XmlTestDocument  m_objCurrentDoc = null;
 		public XmlTestController()
 		{
-            m_listFileNames = new StringCollection();
+            FileNames = new StringCollection();
             m_objCurrentDoc = new XmlTestDocument();
 		}
-
-        public StringCollection FileNames
+        public StringCollection FileNames { get; private set; } = null;
+	    public void ResetFiles()
         {
-            get
-            {
-                return m_listFileNames;
-            }
-        }
-
-        public void ResetFiles()
-        {
-            if (m_listFileNames != null)
-                m_listFileNames.Clear();            
+            if (FileNames != null)
+                FileNames.Clear();
        }
-
         public void Reset()
         {
             if (m_objCurrentDoc != null)
                 m_objCurrentDoc.ResetTests();
-            
             ResetFiles();
         }
-
         public bool RunFile(int index)
         {
-            if (m_listFileNames != null && m_listFileNames.Count > 0)
+            if (FileNames != null && FileNames.Count > 0)
             {
-                if (index >= 0 && index < m_listFileNames.Count)
+                if (index >= 0 && index < FileNames.Count)
                 {
-                    string fileName = m_listFileNames[index];
+                    var fileName = FileNames[index];
                     if (m_objCurrentDoc != null && m_objCurrentDoc.LoadFile(fileName))
                     {
-                        XmlTestCollection listTests = m_objCurrentDoc.CurrentTests;
+                        var listTests = m_objCurrentDoc.CurrentTests;
                         if (listTests != null && listTests.Count > 0)
-                            return listTests.RunTests();                        
+                            return listTests.RunTests();
                     }
                 }
-            }    
+            }
             return false;
         }
-
         public bool GetFiles(string directory)
         {
-            if (m_listFileNames == null)
-                m_listFileNames = new StringCollection();
-            
+            if (FileNames == null)
+                FileNames = new StringCollection();
             try
             {
-                string[] dirs = Directory.GetFiles(directory, "*.xml");
-                foreach (string dir in dirs) 
-                    m_listFileNames.Add(dir);                
+                var dirs = Directory.GetFiles(directory, "*.xml");
+                foreach (var dir in dirs)
+                    FileNames.Add(dir);
                 return true;
             }
             catch (Exception ex)
             {
                 XmlTestExceptionManager.Publish(ex);
             }
-
             return false;
         }
-
         public XmlTestCollection Load(string filePath)
         {
             if (m_objCurrentDoc != null)

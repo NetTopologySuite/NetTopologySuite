@@ -1,15 +1,13 @@
 ﻿using System.Collections.Generic;
-
 namespace NetTopologySuite.Noding
 {
     /// <summary>
-    /// Intersects two sets of <see cref="ISegmentString"/>s using 
+    /// Intersects two sets of <see cref="ISegmentString"/>s using
     /// brute-force comparison.
     /// </summary>
     public class SimpleSegmentSetMutualIntersector : ISegmentSetMutualIntersector
     {
         private readonly ICollection<ISegmentString> _baseBaseSegStrings;
-
         /// <summary>
         /// Constructs a new intersector for a given set of <see cref="ISegmentString"/>s.
         /// </summary>
@@ -18,18 +16,16 @@ namespace NetTopologySuite.Noding
         {
             _baseBaseSegStrings = baseSegStrings;
         }
-
         /// <summary>
-        /// Calls <see cref="ISegmentIntersector.ProcessIntersections(ISegmentString, int, ISegmentString, int)"/> 
+        /// Calls <see cref="ISegmentIntersector.ProcessIntersections(ISegmentString, int, ISegmentString, int)"/>
         /// for all <i>candidate</i> intersections between
-        /// the given collection of SegmentStrings and the set of base segments. 
+        /// the given collection of SegmentStrings and the set of base segments.
         /// </summary>
         /// <param name="segmentStrings">A collection of <see cref="ISegmentString"/>s to node</param>
         /// <param name="segmentIntersector">The intersection detector to either record intersection occurences
         /// or add intersection nodes to the input segment strings.</param>
         public void Process(ICollection<ISegmentString> segmentStrings, ISegmentIntersector segmentIntersector)
         {
-
             foreach (var baseSegmentString in _baseBaseSegStrings)
             {
                 foreach (var segmentString in segmentStrings)
@@ -40,7 +36,6 @@ namespace NetTopologySuite.Noding
                 }
             }
         }
-
         /// <summary>
         /// Processes all of the segment pairs in the given segment strings
         /// using the given <paramref name="segInt">SegmentIntersector</paramref>.
@@ -61,8 +56,6 @@ namespace NetTopologySuite.Noding
                         return;
                 }
             }
-
         }
-
     }
 }

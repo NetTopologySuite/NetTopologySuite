@@ -1,6 +1,5 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.SnapRound
 {
     public static class SnapRoundFunctions
@@ -23,25 +22,19 @@ namespace NetTopologySuite.SnapRound
             var snapped = gsr.Execute(geom);
             return snapped;
         }
-
         public static IGeometry SnapRound(
             IGeometry geomA, IGeometry geomB,
             double scaleFactor)
         {
             var pm = new PrecisionModel(scaleFactor);
-
             var geom = geomA;
-
             if (geomB != null)
             {
                 geom = geomA.Factory.CreateGeometryCollection(new IGeometry[] { geomA, geomB });
             }
-
-            GeometrySnapRounder gsr = new GeometrySnapRounder(pm);
+            var gsr = new GeometrySnapRounder(pm);
             var snapped = gsr.Execute(geom);
             return snapped;
         }
-
-
     }
 }

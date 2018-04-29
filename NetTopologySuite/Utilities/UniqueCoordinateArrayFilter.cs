@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Utilities
 {
     /// <summary>
@@ -16,24 +15,18 @@ namespace NetTopologySuite.Utilities
         /// <returns>an array of the unique coordinates</returns>
         public static Coordinate[] FilterCoordinates(Coordinate[] coords)
         {
-            UniqueCoordinateArrayFilter filter = new UniqueCoordinateArrayFilter();
-            for (int i = 0; i < coords.Length; i++)
+            var filter = new UniqueCoordinateArrayFilter();
+            for (var i = 0; i < coords.Length; i++)
                 filter.Filter(coords[i]);
             return filter.Coordinates;
         }
-
         private readonly List<Coordinate> _list = new List<Coordinate>();
-
         /// <summary>
         /// Returns the gathered <see cref="Coordinate"/>s.
         /// </summary>
-        public Coordinate[] Coordinates
-        {
-            get { return _list.ToArray(); }
-        }
-
+        public Coordinate[] Coordinates => _list.ToArray();
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coord"></param>
         public void Filter(Coordinate coord)

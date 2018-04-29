@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries.Utilities
 {
     ///<summary>
@@ -23,9 +22,7 @@ namespace NetTopologySuite.Geometries.Utilities
             geom.Apply(new ComponentCoordinateExtracter(coords));
             return coords;
         }
-
         private readonly List<Coordinate> _coords;
-
         ///<summary>
         /// Constructs a LineExtracterFilter with a list in which to store LineStrings found.
         ///</summary>
@@ -33,7 +30,6 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             _coords = coords;
         }
-
         public void Filter(IGeometry geom)
         {
             // add coordinates from connected components

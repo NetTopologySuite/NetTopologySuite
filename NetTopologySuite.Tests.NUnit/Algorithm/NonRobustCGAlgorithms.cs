@@ -1,10 +1,9 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
-    /// <summary> 
+    /// <summary>
     /// Non-robust versions of various fundamental Computational Geometric algorithms,
     /// FOR TESTING PURPOSES ONLY!.
     /// The non-robustness is due to rounding error in floating point computation.
@@ -12,7 +11,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     public static class NonRobustCGAlgorithms
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="p"></param>
         /// <param name="ring"></param>
@@ -21,21 +20,19 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             int i, i1; // point index; i1 = i-1 mod n
             double xInt; // x intersection of e with ray
-            int crossings = 0; // number of edge/ray crossings
+            var crossings = 0; // number of edge/ray crossings
             double x1, y1, x2, y2;
-            int nPts = ring.Length;
-
+            var nPts = ring.Length;
             /* For each line edge l = (i-1, i), see if it crosses ray from test point in positive x direction. */
             for (i = 1; i < nPts; i++)
             {
                 i1 = i - 1;
-                Coordinate p1 = ring[i];
-                Coordinate p2 = ring[i1];
+                var p1 = ring[i];
+                var p2 = ring[i1];
                 x1 = p1.X - p.X;
                 y1 = p1.Y - p.Y;
                 x2 = p2.X - p.X;
                 y2 = p2.Y - p.Y;
-
                 if (((y1 > 0) && (y2 <= 0)) || ((y2 > 0) && (y1 <= 0)))
                 {
                     /* e straddles x axis, so compute intersection. */
@@ -44,13 +41,11 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                     if (0.0 < xInt) crossings++;
                 }
             }
-
             /* p is inside if an odd number of crossings. */
             if ((crossings%2) == 1)
                 return true;
             else return false;
         }
-
         /// <summary>
         /// Computes whether a ring defined by an array of <c>Coordinate</c> is
         /// oriented counter-clockwise.
@@ -64,68 +59,57 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         public static bool IsCCW(Coordinate[] ring)
         {
             // # of points without closing endpoint
-            int nPts = ring.Length - 1;
-
+            var nPts = ring.Length - 1;
             // check that this is a valid ring - if not, simply return a dummy value
             if (nPts < 4)
                 return false;
-
             // algorithm to check if a Ring is stored in CCW order
             // find highest point
-            Coordinate hip = ring[0];
-            int hii = 0;
-            for (int i = 1; i <= nPts; i++)
+            var hip = ring[0];
+            var hii = 0;
+            for (var i = 1; i <= nPts; i++)
             {
-                Coordinate p = ring[i];
+                var p = ring[i];
                 if (p.Y > hip.Y)
                 {
                     hip = p;
                     hii = i;
                 }
             }
-
             // find different point before highest point
-            int iPrev = hii;
+            var iPrev = hii;
             do
                 iPrev = (iPrev - 1)%nPts; while (ring[iPrev].Equals(hip) && iPrev != hii);
-
             // find different point after highest point
-            int iNext = hii;
+            var iNext = hii;
             do
                 iNext = (iNext + 1)%nPts; while (ring[iNext].Equals(hip) && iNext != hii);
-
-            Coordinate prev = ring[iPrev];
-            Coordinate next = ring[iNext];
+            var prev = ring[iPrev];
+            var next = ring[iNext];
             if (prev.Equals(hip) || next.Equals(hip) || prev.Equals(next))
                 throw new ArgumentException("degenerate ring (does not contain 3 different points)");
-
             // translate so that hip is at the origin.
             // This will not affect the area calculation, and will avoid
             // finite-accuracy errors (i.e very small vectors with very large coordinates)
             // This also simplifies the discriminant calculation.
-            double prev2x = prev.X - hip.X;
-            double prev2y = prev.Y - hip.Y;
-            double next2x = next.X - hip.X;
-            double next2y = next.Y - hip.Y;
-
+            var prev2x = prev.X - hip.X;
+            var prev2y = prev.Y - hip.Y;
+            var next2x = next.X - hip.X;
+            var next2y = next.Y - hip.Y;
             // compute cross-product of vectors hip->next and hip->previous
             // (e.g. area of parallelogram they enclose)
-            double disc = next2x*prev2y - next2y*prev2x;
-
+            var disc = next2x*prev2y - next2y*prev2x;
             /* If disc is exactly 0, lines are collinear.  There are two possible cases:
                     (1) the lines lie along the x axis in opposite directions
                     (2) the line lie on top of one another
-                    
                     (2) should never happen, so we're going to ignore it!
                         (Might want to assert this)
-            
                     (1) is handled by checking if next is left of previous ==> CCW
             */
             if (disc == 0.0)
                 return (prev.X > next.X); // polygon is CCW if previous x is right of next x
-            else return (disc > 0.0); // if area is positive, points are ordered CCW                 
+            else return (disc > 0.0); // if area is positive, points are ordered CCW
         }
-
         /// <summary>
         /// Returns the index of the direction of the point <c>q</c> relative to
         /// a vector specified by <c>p1-p2</c>.
@@ -138,18 +122,16 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// <returns>0 if q is collinear with p1-p2</returns>
         public static int OrientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
         {
-            double dx1 = p2.X - p1.X;
-            double dy1 = p2.Y - p1.Y;
-            double dx2 = q.X - p2.X;
-            double dy2 = q.Y - p2.Y;
-            double det = dx1*dy2 - dx2*dy1;
-
+            var dx1 = p2.X - p1.X;
+            var dy1 = p2.Y - p1.Y;
+            var dx2 = q.X - p2.X;
+            var dy2 = q.Y - p2.Y;
+            var det = dx1*dy2 - dx2*dy1;
             if (det > 0.0) return 1;
             if (det < 0.0) return -1;
             return 0;
         }
-
-        /// <summary> 
+        /// <summary>
         /// Computes the distance from a line segment AB to a line segment CD.
         /// Note: NON-ROBUST!
         /// </summary>
@@ -166,39 +148,35 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 return DistanceComputer.PointToSegment(A, C, D);
             if (C.Equals(D))
                 return DistanceComputer.PointToSegment(D, A, B);
-
             // AB and CD are line segments
             /*
              * from comp.graphics.algo
-             * 
-             * Solving the above for r and s yields 
-             *     (Ay-Cy)(Dx-Cx)-(Ax-Cx)(Dy-Cy) 
-             * r = ----------------------------- (eqn 1) 
+             *
+             * Solving the above for r and s yields
+             *     (Ay-Cy)(Dx-Cx)-(Ax-Cx)(Dy-Cy)
+             * r = ----------------------------- (eqn 1)
              *     (Bx-Ax)(Dy-Cy)-(By-Ay)(Dx-Cx)
-             * 
-             *     (Ay-Cy)(Bx-Ax)-(Ax-Cx)(By-Ay) 
+             *
+             *     (Ay-Cy)(Bx-Ax)-(Ax-Cx)(By-Ay)
              * s = ----------------------------- (eqn 2)
-             *     (Bx-Ax)(Dy-Cy)-(By-Ay)(Dx-Cx) 
-             * 
+             *     (Bx-Ax)(Dy-Cy)-(By-Ay)(Dx-Cx)
+             *
              * Let P be the position vector of the
-             * intersection point, then 
-             * P=A+r(B-A) or 
-             * Px=Ax+r(Bx-Ax) 
-             * Py=Ay+r(By-Ay) 
+             * intersection point, then
+             * P=A+r(B-A) or
+             * Px=Ax+r(Bx-Ax)
+             * Py=Ay+r(By-Ay)
              * By examining the values of r & s, you can also determine some other limiting
-             * conditions: 
-             * If 0<=r<=1 & 0<=s<=1, intersection exists 
-             *    r<0 or r>1 or s<0 or s>1 line segments do not intersect 
-             * If the denominator in eqn 1 is zero, AB & CD are parallel 
+             * conditions:
+             * If 0<=r<=1 & 0<=s<=1, intersection exists
+             *    r<0 or r>1 or s<0 or s>1 line segments do not intersect
+             * If the denominator in eqn 1 is zero, AB & CD are parallel
              * If the numerator in eqn 1 is also zero, AB & CD are collinear.
              */
-            
-            double r_top = (A.Y - C.Y)*(D.X - C.X) - (A.X - C.X)*(D.Y - C.Y);
-            double r_bot = (B.X - A.X)*(D.Y - C.Y) - (B.Y - A.Y)*(D.X - C.X);
-
-            double s_top = (A.Y - C.Y)*(B.X - A.X) - (A.X - C.X)*(B.Y - A.Y);
-            double s_bot = (B.X - A.X)*(D.Y - C.Y) - (B.Y - A.Y)*(D.X - C.X);
-
+            var r_top = (A.Y - C.Y)*(D.X - C.X) - (A.X - C.X)*(D.Y - C.Y);
+            var r_bot = (B.X - A.X)*(D.Y - C.Y) - (B.Y - A.Y)*(D.X - C.X);
+            var s_top = (A.Y - C.Y)*(B.X - A.X) - (A.X - C.X)*(B.Y - A.Y);
+            var s_bot = (B.X - A.X)*(D.Y - C.Y) - (B.Y - A.Y)*(D.X - C.X);
             if ((r_bot == 0) || (s_bot == 0))
             {
                 return Math
@@ -208,11 +186,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                             DistanceComputer.PointToSegment(B, C, D),
                             Math.Min(DistanceComputer.PointToSegment(C, A, B),
                                 DistanceComputer.PointToSegment(D, A, B))));
-
             }
-            double s = s_top/s_bot;
-            double r = r_top/r_bot;
-
+            var s = s_top/s_bot;
+            var r = r_top/r_bot;
             if ((r < 0) || (r > 1) || (s < 0) || (s > 1))
             {
                 // no intersection
@@ -226,6 +202,5 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             }
             return 0.0; // intersection exists
         }
-
     }
 }

@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-
 namespace NetTopologySuite.Noding
 {
-
     /// <summary>
     /// Computes all intersections between segments in a set of <see cref="ISegmentString" />s.
     /// Intersections found are represented as <see cref="SegmentNode" />s and added to the
@@ -18,13 +16,11 @@ namespace NetTopologySuite.Noding
         /// </summary>
         /// <param name="segStrings"></param>
         void ComputeNodes(IList<ISegmentString> segStrings);
-
         /// <summary>
         /// Returns a <see cref="IList{ISegmentString}" /> of fully noded <see cref="ISegmentString" />s.
         /// The <see cref="ISegmentString" />s have the same context as their parent.
         /// </summary>
         /// <returns></returns>
         IList<ISegmentString> GetNodedSubstrings();
-
     }
 }

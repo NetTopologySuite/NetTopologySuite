@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
     /// <summary>
@@ -10,12 +9,10 @@ namespace NetTopologySuite.Triangulate.QuadEdge
     public class EdgeConnectedTriangleTraversal
     {
         private readonly LinkedList<QuadEdgeTriangle> _triQueue = new LinkedList<QuadEdgeTriangle>();
-
         public void Init(QuadEdgeTriangle tri)
         {
             _triQueue.AddLast(tri);
         }
-
         /// <summary>
         /// Called to initialize the traversal queue with a given set of <see cref="QuadEdgeTriangle"/>s
         /// </summary>
@@ -25,7 +22,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             foreach(var tri in tris)
             _triQueue.AddLast(tri);
         }
-
         /* <summary>
         // Subclasses can call this method to add a triangle to the end of the queue. This is useful for
         // initializing the queue to a chosen set of triangles.
@@ -34,7 +30,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /*
          * protected void addLast(QuadEdgeTriangle tri) { triQueue.addLast(tri); }
          */
-
         /// <summary>
         /// Subclasses call this method to perform the visiting process.
         /// </summary>
@@ -42,24 +37,22 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             while (_triQueue.Count > 0)
             {
-                QuadEdgeTriangle tri = _triQueue.First.Value;
+                var tri = _triQueue.First.Value;
                 _triQueue.RemoveFirst();
                 Process(tri, visitor);
             }
         }
-
         private void Process(QuadEdgeTriangle currTri, ITraversalVisitor visitor)
         {
             currTri.GetNeighbours();
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
-                QuadEdgeTriangle neighTri = (QuadEdgeTriangle)currTri.GetEdge(i).Sym.Data;
+                var neighTri = (QuadEdgeTriangle)currTri.GetEdge(i).Sym.Data;
                 if (neighTri == null)
                     continue;
                 if (visitor.Visit(currTri, i, neighTri))
                     _triQueue.AddLast(neighTri);
             }
         }
-
     }
 }

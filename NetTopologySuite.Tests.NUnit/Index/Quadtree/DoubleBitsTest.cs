@@ -1,6 +1,5 @@
 using NetTopologySuite.Index.Quadtree;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Index.Quadtree
 {
     [TestFixture]

@@ -1,7 +1,6 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Mathematics;
-
 namespace NetTopologySuite.Operation.Distance3D
 {
     /// <summary>
@@ -16,20 +15,15 @@ namespace NetTopologySuite.Operation.Distance3D
     /// <author>Martin Davis</author>
     public class PlanarPolygon3D
     {
-
-        private readonly Plane3D _plane;
-        private readonly IPolygon _poly;
         private readonly Plane _facingPlane = Mathematics.Plane.Undefined;
-
         public PlanarPolygon3D(IPolygon poly)
         {
-            _poly = poly;
-            _plane = FindBestFitPlane(poly);
-            _facingPlane = _plane.ClosestAxisPlane();
+            Polygon = poly;
+            Plane = FindBestFitPlane(poly);
+            _facingPlane = Plane.ClosestAxisPlane();
         }
-
         /// <summary>
-        /// Finds a best-fit plane for the polygon, 
+        /// Finds a best-fit plane for the polygon,
         /// by sampling a few points from the exterior ring.
         /// <para/>
         /// The algorithm used is Newell's algorithm:
@@ -47,14 +41,13 @@ namespace NetTopologySuite.Operation.Distance3D
             var normal = AverageNormal(seq);
             return new Plane3D(normal, basePt);
         }
-
         /**
          * Computes an average normal vector from a list of polygon coordinates.
          * Uses Newell's method, which is based
          * on the fact that the vector with components
-         * equal to the areas of the projection of the polygon onto 
+         * equal to the areas of the projection of the polygon onto
          * the Cartesian axis planes is normal.
-         * 
+         *
          * @param seq the sequence of coordinates for the polygon
          * @return a normal vector
          */
@@ -78,13 +71,12 @@ namespace NetTopologySuite.Operation.Distance3D
             var norm = Vector3D.Create(sum).Normalize();
             return norm;
         }
-
         /**
          * Computes a point which is the average of all coordinates
          * in a sequence.
          * If the sequence lies in a single plane,
          * the computed point also lies in the plane.
-         * 
+         *
          * @param seq a coordinate sequence
          * @return a Coordinate with averaged ordinates
          */
@@ -103,30 +95,19 @@ namespace NetTopologySuite.Operation.Distance3D
             a.Z /= n;
             return a;
         }
-
-        public Plane3D Plane
-        {
-            get { return _plane; }
-        }
-
-        public IPolygon Polygon
-        {
-            get { return _poly; }
-        }
-
+        public Plane3D Plane { get; }
+        public IPolygon Polygon { get; }
         public bool Intersects(Coordinate intPt)
         {
-            if (Location.Exterior == Locate(intPt, _poly.ExteriorRing))
+            if (Location.Exterior == Locate(intPt, Polygon.ExteriorRing))
                 return false;
-
-            for (int i = 0; i < _poly.NumInteriorRings; i++)
+            for (var i = 0; i < Polygon.NumInteriorRings; i++)
             {
-                if (Location.Interior == Locate(intPt, _poly.GetInteriorRingN(i)))
+                if (Location.Interior == Locate(intPt, Polygon.GetInteriorRingN(i)))
                     return false;
             }
             return true;
         }
-
         private Location Locate(Coordinate pt, ILineString ring)
         {
             var seq = ring.CoordinateSequence;
@@ -134,15 +115,13 @@ namespace NetTopologySuite.Operation.Distance3D
             var ptProj = Project(pt, _facingPlane);
             return RayCrossingCounter.LocatePointInRing(ptProj, seqProj);
         }
-
         public bool Intersects(Coordinate pt, ILineString ring)
         {
             var seq = ring.CoordinateSequence;
             var seqProj = Project(seq, _facingPlane);
-            Coordinate ptProj = Project(pt, _facingPlane);
+            var ptProj = Project(pt, _facingPlane);
             return Location.Exterior != RayCrossingCounter.LocatePointInRing(ptProj, seqProj);
         }
-
         private static ICoordinateSequence Project(ICoordinateSequence seq, Plane facingPlane)
         {
             switch (facingPlane)
@@ -152,7 +131,6 @@ namespace NetTopologySuite.Operation.Distance3D
                 default: return AxisPlaneCoordinateSequence.ProjectToYZ(seq);
             }
         }
-
         private static Coordinate Project(Coordinate p, Plane facingPlane)
         {
             switch (facingPlane)
@@ -163,7 +141,5 @@ namespace NetTopologySuite.Operation.Distance3D
                 default: return new Coordinate(p.Y, p.Z);
             }
         }
-
-
     }
 }

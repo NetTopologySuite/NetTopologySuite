@@ -1,5 +1,4 @@
 using System;
-
 namespace NetTopologySuite.Features
 {
     /// <summary>
@@ -12,12 +11,10 @@ namespace NetTopologySuite.Features
             // According to GeoJSON name of the feature's identifier
             IdAttributeName = "id";
         }
-
         /// <summary>
         /// Gets or sets a name that is used to retrieve the ID of a feature from the attribute table
         /// </summary>
         public static string IdAttributeName { get; set; }
-
         /// <summary>
         /// Function to get a feature's ID
         /// </summary>
@@ -30,7 +27,6 @@ namespace NetTopologySuite.Features
                 ? feature.Attributes[IdAttributeName]
                 : null;
         }
-
         /// <summary>
         /// Function to evaluate if a feature has an ID
         /// </summary>
@@ -41,7 +37,6 @@ namespace NetTopologySuite.Features
         {
             if (feature == null)
                 throw new ArgumentNullException("feature");
-
             return feature.Attributes.Exists(IdAttributeName);
         }
     }

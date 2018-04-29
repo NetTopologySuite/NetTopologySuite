@@ -1,10 +1,8 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Triangulate.QuadEdge;
-
 namespace NetTopologySuite.Triangulate
 {
-
     /// <summary>
     /// A vertex in a Constrained Delaunay Triangulation.
     /// The vertex may or may not lie on a constraint.
@@ -13,9 +11,7 @@ namespace NetTopologySuite.Triangulate
     /// <author>Martin Davis</author>
     public class ConstraintVertex : Vertex
     {
-        private bool isOnConstraint;
         private object constraint;
-
         /// <summary>
         /// Creates a new constraint vertex
         /// </summary>
@@ -24,50 +20,34 @@ namespace NetTopologySuite.Triangulate
             : base(p)
         {
         }
-
         /// <summary>
         /// Gets or sets whether this vertex lies on a constraint.
         /// </summary>
         /// <remarks>true if the vertex lies on a constraint</remarks>
-        public bool IsOnConstraint
-        {
-            get
-            {
-                return isOnConstraint;
-            }
-            set
-            {
-                this.isOnConstraint = value;
-            }
-        }
-
+        public bool IsOnConstraint { get; set; }
         /// <summary>
         /// Gets or sets the external constraint object
         /// </summary>
         /// <remarks>object which carries information about the constraint this vertex lies on</remarks>
         public object Constraint
         {
-            get
-            {
-                return constraint;
-            }
+            get => constraint;
             set
             {
-                isOnConstraint = true;
+                IsOnConstraint = true;
                 this.constraint = value;
             }
         }
-
         /// <summary>
-        /// Merges the constraint data in the vertex <tt>other</tt> into this vertex. 
+        /// Merges the constraint data in the vertex <tt>other</tt> into this vertex.
         /// This method is called when an inserted vertex is
         /// very close to an existing vertex in the triangulation.
         /// </summary>
         /// <param name="other">the constraint vertex to merge</param>
         protected internal void Merge(ConstraintVertex other)
         {
-            if (other.isOnConstraint) {
-                isOnConstraint = true;
+            if (other.IsOnConstraint) {
+                IsOnConstraint = true;
                 constraint = other.constraint;
             }
         }

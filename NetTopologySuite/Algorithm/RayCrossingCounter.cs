@@ -1,5 +1,4 @@
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Algorithm
 {
     ///<summary>
@@ -43,8 +42,7 @@ namespace NetTopologySuite.Algorithm
         public static Location LocatePointInRing(Coordinate p, Coordinate[] ring)
         {
             var counter = new RayCrossingCounter(p);
-
-            for (int i = 1; i < ring.Length; i++)
+            for (var i = 1; i < ring.Length; i++)
             {
                 var p1 = ring[i];
                 var p2 = ring[i - 1];
@@ -54,7 +52,6 @@ namespace NetTopologySuite.Algorithm
             }
             return counter.Location;
         }
-
         /// <summary>
         /// Determines the <see cref="GeoAPI.Geometries.Location"/> of a point in a ring.
         /// </summary>
@@ -64,10 +61,9 @@ namespace NetTopologySuite.Algorithm
         public static Location LocatePointInRing(Coordinate p, ICoordinateSequence ring)
         {
             var counter = new RayCrossingCounter(p);
-
             var p1 = new Coordinate();
             var p2 = new Coordinate();
-            int count = ring.Count;
+            var count = ring.Count;
             for (var i = 1; i < count; i++)
             {
                 ring.GetCoordinate(i, p1);
@@ -78,17 +74,13 @@ namespace NetTopologySuite.Algorithm
             }
             return counter.Location;
         }
-
         private readonly Coordinate _p;
         private int _crossingCount;
         // true if the test point lies on an input segment
-        private bool _isPointOnSegment;
-
         public RayCrossingCounter(Coordinate p)
         {
             _p = p;
         }
-
         ///<summary>
         /// Counts a segment
         ///</summary>
@@ -97,18 +89,16 @@ namespace NetTopologySuite.Algorithm
         public void CountSegment(Coordinate p1, Coordinate p2)
         {
             /*
-             * For each segment, check if it crosses 
+             * For each segment, check if it crosses
              * a horizontal ray running from the test point in the positive x direction.
              */
-
             // check if the segment is strictly to the left of the test point
             if (p1.X < _p.X && p2.X < _p.X)
                 return;
-
             // check if the point is equal to the current ring vertex
             if (_p.X == p2.X && _p.Y == p2.Y)
             {
-                _isPointOnSegment = true;
+                IsOnSegment = true;
                 return;
             }
             /*
@@ -117,8 +107,8 @@ namespace NetTopologySuite.Algorithm
              */
             if (p1.Y == _p.Y && p2.Y == _p.Y)
             {
-                double minx = p1.X;
-                double maxx = p2.X;
+                var minx = p1.X;
+                var maxx = p2.X;
                 if (minx > maxx)
                 {
                     minx = p2.X;
@@ -126,7 +116,7 @@ namespace NetTopologySuite.Algorithm
                 }
                 if (_p.X >= minx && _p.X <= maxx)
                 {
-                    _isPointOnSegment = true;
+                    IsOnSegment = true;
                 }
                 return;
             }
@@ -147,7 +137,7 @@ namespace NetTopologySuite.Algorithm
                 var orient = Orientation.Index(p1, p2, _p);
                 if (orient == OrientationIndex.Collinear)
                 {
-                    _isPointOnSegment = true;
+                    IsOnSegment = true;
                     return;
                 }
                 // Re-orient the result if needed to ensure effective segment direction is upwards
@@ -162,31 +152,28 @@ namespace NetTopologySuite.Algorithm
                 }
             }
         }
-
         ///<summary>
         /// Reports whether the point lies exactly on one of the supplied segments.
         /// </summary>
         /// <remarks>
-        /// This method may be called at any time as segments are processed. If the result of this method is <c>true</c>, 
+        /// This method may be called at any time as segments are processed. If the result of this method is <c>true</c>,
         /// no further segments need be supplied, since the result will never change again.
         /// </remarks>
-        public bool IsOnSegment { get { return _isPointOnSegment; } }
-
+        public bool IsOnSegment { get; private set; }
         /// <summary>
         /// Gets the <see cref="GeoAPI.Geometries.Location"/> of the point relative to  the ring, polygon
         /// or multipolygon from which the processed segments were provided.
         /// </summary>
         /// <remarks>
-        /// This property only determines the correct location 
+        /// This property only determines the correct location
         /// if <b>all</b> relevant segments have been processed.
         /// </remarks>
         public Location Location
         {
             get
             {
-                if (_isPointOnSegment)
+                if (IsOnSegment)
                     return Location.Boundary;
-
                 // The point is in the interior of the ring if the number of X-crossings is
                 // odd.
                 if ((_crossingCount%2) == 1)
@@ -196,19 +183,15 @@ namespace NetTopologySuite.Algorithm
                 return Location.Exterior;
             }
         }
-
         /// <summary>
-        /// Tests whether the point lies in or on 
-        /// the ring, polygon or multipolygon from which the processed 
+        /// Tests whether the point lies in or on
+        /// the ring, polygon or multipolygon from which the processed
         /// segments were provided.
         /// </summary>
         /// <remarks>
-        /// This property only determines the correct location 
+        /// This property only determines the correct location
         /// if <b>all</b> relevant segments have been processed
         /// </remarks>
-        public bool IsPointInPolygon
-        {
-            get { return Location != Location.Exterior; } 
-        }
+        public bool IsPointInPolygon => Location != Location.Exterior;
     }
 }

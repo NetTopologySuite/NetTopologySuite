@@ -30,7 +30,6 @@
 *     (250)385-6040
 *     www.vividsolutions.com
 */
-
 namespace NetTopologySuite.Index.KdTree
 {
     /// <summary>

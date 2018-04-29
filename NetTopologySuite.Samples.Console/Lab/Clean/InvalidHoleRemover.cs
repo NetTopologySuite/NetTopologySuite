@@ -4,7 +4,6 @@ using GeoAPI.Geometries.Prepared;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Prepared;
 using NetTopologySuite.Geometries.Utilities;
-
 namespace NetTopologySuite.Samples.Lab.Clean
 {
     /// <summary>
@@ -26,12 +25,10 @@ namespace NetTopologySuite.Samples.Lab.Clean
         /// <returns>The geometry with invalid holes removed</returns>
         public static IGeometry Clean(IGeometry geom)
         {
-            InvalidHoleRemover pihr = new InvalidHoleRemover(geom);
+            var pihr = new InvalidHoleRemover(geom);
             return pihr.GetResult();
         }
-
         private readonly IGeometry _geom;
-
         /// <summary>
         /// Creates a new invalid hole remover instance.
         /// </summary>
@@ -40,7 +37,6 @@ namespace NetTopologySuite.Samples.Lab.Clean
         {
             _geom = geom;
         }
-
         /// <summary>
         /// Gets the cleaned geometry.
         /// </summary>
@@ -49,43 +45,37 @@ namespace NetTopologySuite.Samples.Lab.Clean
         {
             return GeometryMapper.Map(_geom, new InvalidHoleRemoverMapOp());
         }
-
         private class InvalidHoleRemoverMapOp : GeometryMapper.IMapOp
         {
             public IGeometry Map(IGeometry geom)
             {
                 if (geom is IPolygon)
                 {
-                    IPolygon poly = (IPolygon)geom;
+                    var poly = (IPolygon)geom;
                     return PolygonInvalidHoleRemover.Clean(poly);
                 }
                 return geom;
             }
         }
-
         private class PolygonInvalidHoleRemover
         {
             public static IPolygon Clean(IPolygon poly)
             {
-                PolygonInvalidHoleRemover pihr = new PolygonInvalidHoleRemover(poly);
+                var pihr = new PolygonInvalidHoleRemover(poly);
                 return pihr.GetResult();
             }
-
             private readonly IPolygon _poly;
-
             private PolygonInvalidHoleRemover(IPolygon poly)
             {
                 _poly = poly;
             }
-
             private IPolygon GetResult()
             {
-                IGeometryFactory gf = _poly.Factory;
-                ILinearRing shell = (ILinearRing)_poly.ExteriorRing;
-                IPreparedGeometry shellPrep = PreparedGeometryFactory.Prepare(gf.CreatePolygon(shell));
-
+                var gf = _poly.Factory;
+                var shell = (ILinearRing)_poly.ExteriorRing;
+                var shellPrep = PreparedGeometryFactory.Prepare(gf.CreatePolygon(shell));
                 IList<IGeometry> holes = new List<IGeometry>();
-                for (int i = 0; i < _poly.NumInteriorRings; i++)
+                for (var i = 0; i < _poly.NumInteriorRings; i++)
                 {
                     IGeometry hole = _poly.GetInteriorRingN(i);
                     if (shellPrep.Covers(hole))
@@ -94,10 +84,9 @@ namespace NetTopologySuite.Samples.Lab.Clean
                 // all holes valid, so return original
                 if (holes.Count == _poly.NumInteriorRings)
                     return _poly;
-
                 // return new polygon with covered holes only
-                ILinearRing[] arr = GeometryFactory.ToLinearRingArray(holes);
-                IPolygon result = gf.CreatePolygon(shell, arr);
+                var arr = GeometryFactory.ToLinearRingArray(holes);
+                var result = gf.CreatePolygon(shell, arr);
                 return result;
             }
         }

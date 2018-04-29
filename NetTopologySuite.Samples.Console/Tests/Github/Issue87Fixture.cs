@@ -3,7 +3,6 @@ using System.Linq;
 using GeoAPI.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Samples.Tests.Github
 {
     [TestFixture]
@@ -31,7 +30,6 @@ namespace NetTopologySuite.Samples.Tests.Github
             "LINESTRING (1615 1469, 1614 1233)", "LINESTRING (1615 1723, 1615 1469)",
             "LINESTRING (1494 2358, 1615 1723)",
             "LINESTRING (2160 3024, 1494 2358)"};
-
         [Test]
         public void TestIssue87()
         {
@@ -40,7 +38,6 @@ namespace NetTopologySuite.Samples.Tests.Github
             lines.AddRange(_wkts.Select(wkt => wktReader.Read(wkt))/*.Where(g => g.Length > 0 )*/);
             var polygonizer = new NetTopologySuite.Operation.Polygonize.Polygonizer();
             polygonizer.Add(lines);
-
             IGeometry res;
             Assert.DoesNotThrow( () =>  res = polygonizer.GetGeometry());
         }

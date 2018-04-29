@@ -1,7 +1,6 @@
 ﻿using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Dissolve;
-
 namespace NetTopologySuite.EdgeGraph
 {
     /// <summary>
@@ -15,17 +14,14 @@ namespace NetTopologySuite.EdgeGraph
         {
             return ((MarkHalfEdge)e).Marked;
         }
-
         public static void Mark(HalfEdge e)
         {
             ((MarkHalfEdge)e).Mark();
         }
-
         public static void SetMark(HalfEdge e, bool isMarked)
         {
             ((MarkHalfEdge)e).Marked = isMarked;
         }
-
         /// <summary>
         /// Sets the mark for the given edge pair to a boolean value.
         /// </summary>
@@ -36,7 +32,6 @@ namespace NetTopologySuite.EdgeGraph
             ((MarkHalfEdge)e).Marked = isMarked;
             ((MarkHalfEdge)e.Sym).Marked = isMarked;
         }
-
         /// <summary>
         /// Marks the edges in a pair.
         /// </summary>
@@ -46,16 +41,12 @@ namespace NetTopologySuite.EdgeGraph
             ((MarkHalfEdge)e).Mark();
             ((MarkHalfEdge)e.Sym).Mark();
         }
-
-        private bool _marked;
-
         /// <summary>
         /// Creates a new marked edge.
         /// </summary>
         /// <param name="orig">the coordinate of the edge origin</param>
         public MarkHalfEdge(Coordinate orig)
             : base(orig) { }
-
         /// <summary>
         /// Marks this edge.
         /// </summary>
@@ -63,11 +54,6 @@ namespace NetTopologySuite.EdgeGraph
         {
             Marked = true;
         }
-
-        public bool Marked
-        {
-            get { return _marked; }
-            set { _marked = value; }
-        }
+        public bool Marked { get; set; }
     }
 }

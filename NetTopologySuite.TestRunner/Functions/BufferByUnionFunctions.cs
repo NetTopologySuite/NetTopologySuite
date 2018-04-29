@@ -4,7 +4,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 using Open.Topology.TestRunner.Utility;
-
 namespace Open.Topology.TestRunner.Functions
 {
     public static class BufferByUnionFunctions
@@ -20,12 +19,10 @@ namespace Open.Topology.TestRunner.Functions
             return FunctionsUtil.GetFactoryOrDefault(g)
                 .CreateGeometryCollection(GeometryFactory.ToGeometryArray(bufs));
         }
-
         public static IGeometry BufferByComponents(IGeometry g, double distance)
         {
             return ComponentBuffers(g, distance).Union();
         }
-
         /// <summary>
         /// Buffer polygons by buffering the individual boundary segments and
         /// either unioning or differencing them.
@@ -42,13 +39,12 @@ namespace Open.Topology.TestRunner.Functions
                 return g.Difference(segBuf);
             return g.Union(segBuf);
         }
-
         public static IGeometry BufferByChains(IGeometry g, double distance, int maxChainSize)
         {
             if (maxChainSize <= 0)
                 throw new ArgumentOutOfRangeException("maxChainSize", "Maximum Chain Size must be specified as an input parameter");
             var segs = LineHandlingFunctions.ExtractChains(g, maxChainSize);
-            double posDist = Math.Abs(distance);
+            var posDist = Math.Abs(distance);
             var segBuf = BufferByComponents(segs, posDist);
             if (distance < 0.0)
                 return g.Difference(segBuf);

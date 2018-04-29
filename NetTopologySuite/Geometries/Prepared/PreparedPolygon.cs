@@ -2,7 +2,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Noding;
 using NetTopologySuite.Operation.Predicate;
-
 namespace NetTopologySuite.Geometries.Prepared
 {
     /// <summary>
@@ -22,13 +21,11 @@ namespace NetTopologySuite.Geometries.Prepared
         private readonly object _lockSif = new object(), _lockPia = new object();
         private volatile FastSegmentSetIntersectionFinder _segIntFinder;
         private volatile IPointOnGeometryLocator _pia;
-
         public PreparedPolygon(IPolygonal poly)
             : base((IGeometry)poly)
         {
             _isRectangle = Geometry.IsRectangle;
         }
-
         public FastSegmentSetIntersectionFinder IntersectionFinder
         {
             get
@@ -47,11 +44,9 @@ namespace NetTopologySuite.Geometries.Prepared
                             _segIntFinder = new FastSegmentSetIntersectionFinder(SegmentStringUtil.ExtractSegmentStrings(Geometry));
                     }
                 }
-
                 return _segIntFinder;
             }
         }
-
         public IPointOnGeometryLocator PointLocator
         {
             get
@@ -64,40 +59,32 @@ namespace NetTopologySuite.Geometries.Prepared
                             _pia = new IndexedPointInAreaLocator(Geometry);
                     }
                 }
-
                 return _pia;
             }
         }
-
         public override bool Intersects(IGeometry g)
         {
             // envelope test
             if (!EnvelopesIntersect(g)) return false;
-
             // optimization for rectangles
             if (_isRectangle)
             {
                 return RectangleIntersects.Intersects((IPolygon)Geometry, g);
             }
-
             return PreparedPolygonIntersects.Intersects(this, g);
         }
-
         public override bool Contains(IGeometry g)
         {
             // short-circuit test
             if (!EnvelopeCovers(g))
                 return false;
-
             // optimization for rectangles
             if (_isRectangle)
             {
                 return RectangleContains.Contains((IPolygon)Geometry, g);
             }
-
             return PreparedPolygonContains.Contains(this, g);
         }
-
         public override bool ContainsProperly(IGeometry g)
         {
             // short-circuit test
@@ -105,7 +92,6 @@ namespace NetTopologySuite.Geometries.Prepared
                 return false;
             return PreparedPolygonContainsProperly.ContainsProperly(this, g);
         }
-
         public override bool Covers(IGeometry g)
         {
             // short-circuit test

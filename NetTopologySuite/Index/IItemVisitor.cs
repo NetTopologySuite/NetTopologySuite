@@ -6,7 +6,7 @@ namespace NetTopologySuite.Index
     public interface IItemVisitor< T>
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="item"></param>
         void VisitItem(T item);

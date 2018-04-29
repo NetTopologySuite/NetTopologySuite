@@ -1,6 +1,5 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Triangulate
 {
     /// <summary>
@@ -22,8 +21,8 @@ namespace NetTopologySuite.Triangulate
         /// </summary>
         public Coordinate FindSplitPoint(Segment seg, Coordinate encroachPt)
         {
-            Coordinate p0 = seg.Start;
-            Coordinate p1 = seg.End;
+            var p0 = seg.Start;
+            var p1 = seg.End;
             return new Coordinate((p0.X + p1.X) / 2, (p0.Y + p1.Y) / 2);
         }
     }

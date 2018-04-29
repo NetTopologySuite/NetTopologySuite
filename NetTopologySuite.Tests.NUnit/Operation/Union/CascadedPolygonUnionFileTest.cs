@@ -2,7 +2,6 @@ using System.IO;
 using NetTopologySuite.Operation.Union;
 using NetTopologySuite.Tests.NUnit.TestData;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Operation.Union
 {
     /// <summary>
@@ -19,7 +18,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
             var africa = EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.africa.wkt");
             RunTest(africa, CascadedPolygonUnionTester.MinSimilarityMeaure);
         }
-
         [TestAttribute]
         [CategoryAttribute("LongRunning")]
         [Explicit("takes ages to complete")]
@@ -28,9 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
             var europe = EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.europe.wkt");
             RunTest(europe, CascadedPolygonUnionTester.MinSimilarityMeaure);
         }
-
         private static readonly CascadedPolygonUnionTester Tester = new CascadedPolygonUnionTester();
-
         private static void RunTest(Stream stream, double minimumMeasure)
         {
             var geoms = GeometryUtils.ReadWKTFile(stream);

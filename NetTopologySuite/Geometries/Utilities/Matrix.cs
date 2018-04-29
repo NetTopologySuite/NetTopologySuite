@@ -1,5 +1,4 @@
 using System;
-
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
@@ -18,7 +17,6 @@ namespace NetTopologySuite.Geometries.Utilities
                 m[j][col] = temp;
             }
         }
-
         private static void SwapRows(double[] m, int i, int j)
         {
             if (i == j) return;
@@ -26,7 +24,6 @@ namespace NetTopologySuite.Geometries.Utilities
             m[i] = m[j];
             m[j] = temp;
         }
-
         ///<summary>
         /// Solves a system of equations using Gaussian Elimination.<br/>
         /// In order to avoid overhead the algorithm runs in-place
@@ -46,7 +43,6 @@ namespace NetTopologySuite.Geometries.Utilities
             var n = b.Length;
             if (a.Length != n || a[0].Length != n)
                 throw new ArgumentException("Matrix A is incorrectly sized");
-
             // Use Gaussian Elimination with partial pivoting.
             // Iterate over each row
             for (var i = 0; i < n; i++)
@@ -58,14 +54,11 @@ namespace NetTopologySuite.Geometries.Utilities
                     if (Math.Abs(a[j][i]) > Math.Abs(a[maxElementRow][i]))
                         maxElementRow = j;
                 }
-
                 if (a[maxElementRow][i] == 0.0)
                     return null;
-
                 // Exchange current row and maxElementRow in A and b.
                 SwapRows(a, i, maxElementRow);
                 SwapRows(b, i, maxElementRow);
-
                 // Eliminate using row i
                 for (var j = i + 1; j < n; j++)
                 {
@@ -75,7 +68,6 @@ namespace NetTopologySuite.Geometries.Utilities
                     b[j] -= b[i] * rowFactor;
                 }
             }
-
             /*
              * A is now (virtually) in upper-triangular form.
              * The solution vector is determined by back-substitution.

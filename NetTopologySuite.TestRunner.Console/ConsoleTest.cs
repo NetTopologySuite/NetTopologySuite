@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Reflection;
 using Open.Topology.TestRunner;
-
 namespace ConsoleTestRunner
 {
 	/// <summary>
@@ -22,19 +21,13 @@ namespace ConsoleTestRunner
             Console.WriteLine();
             Console.Write("Test Runner>>");
         }
-
         static void RunInteractive(XmlTestType filter, bool verbose)
         {
-            string fileName = String.Empty;
-
-            XmlTestController controller = new XmlTestController();
-
-            TestRunner runner = new TestRunner(filter, verbose);
-
+            var fileName = string.Empty;
+            var controller = new XmlTestController();
+            var runner = new TestRunner(filter, verbose);
             PrintMenu();
-
             fileName = Console.ReadLine().Trim();
-
             while (fileName != "exit")
             {
                 XmlTestCollection listTests = null;
@@ -55,7 +48,7 @@ namespace ConsoleTestRunner
                         default:
                             if (Directory.Exists(fileName))
                             {
-                                string tmp = Path.GetTempFileName();
+                                var tmp = Path.GetTempFileName();
                                 File.AppendAllText(tmp,
                                                    string.Format(
                                                        "<?xml version=\"1.0\" encoding=\"utf-8\" ?><project><test verbose=\"false\" exception=\"true\" interactive=\"false\" filter=\"none\"><dirs><dir>{0}</dir></dirs></test></project>",
@@ -64,27 +57,21 @@ namespace ConsoleTestRunner
                             }
                             else
                                 listTests = controller.Load(fileName);
-
                             break;
                     }
                 }
                 catch (Exception ex)
                 {
                     XmlTestExceptionManager.Publish(ex);
-                } 
-
+                }
                 if (listTests != null && listTests.Count > 0)
                 {
                     listTests.TestEvent += new XmlTextEventHandler(runner.OnSimpleTest);
-
                     try
                     {
                         Console.WriteLine("Running...{0}", listTests.Name);
-
                         listTests.RunTests();
-
                         runner.PrintSimpleTestResult(listTests.Count);
-
                         runner.SimpleTestReset(XmlTestType.None, verbose);
                     }
                     catch (Exception ex)
@@ -92,17 +79,13 @@ namespace ConsoleTestRunner
                         XmlTestExceptionManager.Publish(ex);
                     }
                 }
-
                 PrintMenu();
-
                 fileName = Console.ReadLine().Trim();
             }
         }
-
         static void OnErrorEvent(object sender, XmlTestErrorEventArgs args)
         {
-            Exception ex = args.Thrown;
-
+            var ex = args.Thrown;
             if (ex != null)
             {
                 Console.WriteLine(ex.Message);
@@ -112,35 +95,30 @@ namespace ConsoleTestRunner
                 Console.WriteLine(ex.StackTrace);
             }
         }
-
         static void RunDefault()
         {
-            TestOptionsParser parserOptions = new TestOptionsParser();
-            TestInfoCollection listTests =
+            var parserOptions = new TestOptionsParser();
+            var listTests =
                 parserOptions.ParseProject(@"..\..\..\NetTopologySuite.TestRunner.Tests\Default.xml");
-            
             if (listTests != null && listTests.Count > 0)
             {
-                TestRunner runner = new TestRunner(listTests);
-                runner.Run();
-                runner.PrintResult();
-            }   
-        }
-
-        static void RunOther()
-        {
-            TestOptionsParser parserOptions = new TestOptionsParser();
-            TestInfoCollection listTests =
-                parserOptions.ParseProject(@"..\..\..\NetTopologySuite.TestRunner.Tests\Other.xml");
-
-            if (listTests != null && listTests.Count > 0)
-            {
-                TestRunner runner = new TestRunner(listTests);
+                var runner = new TestRunner(listTests);
                 runner.Run();
                 runner.PrintResult();
             }
         }
-
+        static void RunOther()
+        {
+            var parserOptions = new TestOptionsParser();
+            var listTests =
+                parserOptions.ParseProject(@"..\..\..\NetTopologySuite.TestRunner.Tests\Other.xml");
+            if (listTests != null && listTests.Count > 0)
+            {
+                var runner = new TestRunner(listTests);
+                runner.Run();
+                runner.PrintResult();
+            }
+        }
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -159,9 +137,8 @@ namespace ConsoleTestRunner
             }
             else
             {
-                TestOptionsParser parser = new TestOptionsParser();
-                TestInfoCollection collection = parser.Parse(args);
-
+                var parser = new TestOptionsParser();
+                var collection = parser.Parse(args);
                 if (parser.IsDefault)
                 {
                     RunDefault();
@@ -173,7 +150,7 @@ namespace ConsoleTestRunner
                         if (collection.Count == 1)
                         {
                             // see if it is the interactive type
-                            TestInfo info = collection[0];
+                            var info = collection[0];
                             if (info.Interactive)
                             {
                                 if (info.Exception)
@@ -183,7 +160,7 @@ namespace ConsoleTestRunner
                         }
                         else
                         {
-                            TestRunner runner = new TestRunner(collection);
+                            var runner = new TestRunner(collection);
                             runner.Run();
                         }
                     }
@@ -194,8 +171,6 @@ namespace ConsoleTestRunner
                     }
                 }
             }
-
         }
     }
-
 }

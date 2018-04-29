@@ -3,7 +3,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
 {
     /// <summary>
@@ -17,11 +16,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
     /// <author>mdavis</author>
     public class ValidStressTest
     {
-
         //public static int SIZE = 10000;
-
         private static readonly GeometryFactory geomFact = new GeometryFactory();
-
         [Test]
         public void runComb()
         {
@@ -31,7 +27,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
             //System.Console.WriteLine(geom);
             checkValid("Crossed combs (size = " + size + ")", geom);
         }
-
         [Test]
         public void runStarCrossRing()
         {
@@ -42,7 +37,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
             //System.Console.WriteLine(geom);
             checkValid("StarCross " + geom.GeometryType + "   (size = " + size + ")", geom);
         }
-
         [Test]
         public void runStarCrossPoly()
         {
@@ -52,7 +46,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
             //System.out.println(geom);
             checkValid("StarCross " + geom.GeometryType + "   (size = " + size + ")", geom);
         }
-
         private void checkValid(string name, IGeometry g)
         {
             System.Console.WriteLine("Running " + name);
@@ -63,21 +56,19 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
             System.Console.WriteLine("Is Valid = {0}, Ticks: {1:N0}", isValid, sw.ElapsedTicks);
         }
     }
-
     internal class StarCross
     {
         public static IPolygon Star(Envelope env, int nSeg, IGeometryFactory geomFact)
         {
-            Coordinate[] pts = new Coordinate[nSeg + 1];
-            Coordinate centre = env.Centre;
-            double len = 0.5 * System.Math.Min(env.Height, env.Width);
-            double angInc = System.Math.PI + 2 * System.Math.PI / nSeg;
-
+            var pts = new Coordinate[nSeg + 1];
+            var centre = env.Centre;
+            var len = 0.5 * System.Math.Min(env.Height, env.Width);
+            var angInc = System.Math.PI + 2 * System.Math.PI / nSeg;
             double ang = 0;
-            for (int i = 0; i < nSeg; i++)
+            for (var i = 0; i < nSeg; i++)
             {
-                double x = centre.X + len * System.Math.Cos(ang);
-                double y = centre.X + len * System.Math.Sin(ang);
+                var x = centre.X + len * System.Math.Cos(ang);
+                var y = centre.X + len * System.Math.Sin(ang);
                 pts[i] = new Coordinate(x, y);
                 ang += angInc;
             }
@@ -85,8 +76,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
             return geomFact.CreatePolygon(pts);
         }
     }
-
-
     /// <summary>
     /// Creates comb-like geometries.
     /// Crossed combs provide a geometry with a very high ratio of intersections to edges.
@@ -94,7 +83,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
     /// <author>Martin Davis</author>
     internal class Comb
     {
-
         public static IMultiPolygon CrossedComb(Envelope env, int size, GeometryFactory geomFact)
         {
             var comb1 = CreateComb(env, size, geomFact);
@@ -104,22 +92,19 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
             var mp = geomFact.CreateMultiPolygon(new [] { comb1, comb2 });
             return mp;
         }
-
         private static IPolygon CreateComb(Envelope env, int nArms, IGeometryFactory geomFact)
         {
-            int npts = 4 * (nArms - 1) + 2 + 2 + 1;
-            Coordinate[] pts = new Coordinate[npts];
-            double armWidth = env.Width / (2 * nArms - 1);
-            double armLen = env.Height - armWidth;
-
-            double xBase = env.MinX;
-            double yBase = env.MinY;
-
-            int ipts = 0;
-            for (int i = 0; i < nArms; i++)
+            var npts = 4 * (nArms - 1) + 2 + 2 + 1;
+            var pts = new Coordinate[npts];
+            var armWidth = env.Width / (2 * nArms - 1);
+            var armLen = env.Height - armWidth;
+            var xBase = env.MinX;
+            var yBase = env.MinY;
+            var ipts = 0;
+            for (var i = 0; i < nArms; i++)
             {
-                double x1 = xBase + i * 2 * armWidth;
-                double y1 = yBase + armLen + armWidth;
+                var x1 = xBase + i * 2 * armWidth;
+                var y1 = yBase + armLen + armWidth;
                 pts[ipts++] = new Coordinate(x1, y1);
                 pts[ipts++] = new Coordinate(x1 + armWidth, y1);
                 if (i < nArms - 1)
@@ -131,9 +116,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
             pts[ipts++] = new Coordinate(env.MaxX, yBase);
             pts[ipts++] = new Coordinate(xBase, yBase);
             pts[ipts++] = new Coordinate(pts[0]);
-
             return geomFact.CreatePolygon(pts);
         }
-
     }
 }

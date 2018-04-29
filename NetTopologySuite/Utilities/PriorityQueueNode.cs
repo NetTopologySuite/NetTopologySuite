@@ -2,19 +2,15 @@
 // which has the following license text:
 /*
 The MIT License (MIT)
-
 Copyright (c) 2013 Daniel "BlueRaja" Pflughoeft
-
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in
 all copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,7 +19,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-
 namespace NetTopologySuite.Utilities
 {
     /// <summary>
@@ -38,8 +33,6 @@ namespace NetTopologySuite.Utilities
     /// </typeparam>
     public sealed class PriorityQueueNode<TPriority, TData>
     {
-        private readonly TData data;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PriorityQueueNode{TPriority, TData}"/> class.
         /// </summary>
@@ -48,21 +41,18 @@ namespace NetTopologySuite.Utilities
         /// </param>
         public PriorityQueueNode(TData data)
         {
-            this.data = data;
+            this.Data = data;
         }
-
         internal PriorityQueueNode(PriorityQueueNode<TPriority, TData> copyFrom)
         {
-            this.data = copyFrom.data;
+            this.Data = copyFrom.Data;
             this.Priority = copyFrom.Priority;
             this.QueueIndex = copyFrom.QueueIndex;
         }
-
         /// <summary>
         /// Gets the <typeparamref name="TData"/> that is stored in this node.
         /// </summary>
-        public TData Data { get { return this.data; } }
-
+        public TData Data { get; }
         /// <summary>
         /// Gets the <typeparamref name="TPriority"/> of this node in the queue.
         /// </summary>
@@ -70,7 +60,6 @@ namespace NetTopologySuite.Utilities
         /// The queue may update this priority while the node is still in the queue.
         /// </remarks>
         public TPriority Priority { get; internal set; }
-
         /// <summary>
         /// Gets or sets the index of this node in the queue.
         /// </summary>

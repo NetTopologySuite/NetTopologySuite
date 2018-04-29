@@ -4,10 +4,9 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.GeometriesGraph.Index;
 using NetTopologySuite.Operation.Relate;
-
 namespace NetTopologySuite.Operation.Valid
 {
-    /// <summary> 
+    /// <summary>
     /// Checks that a {GeometryGraph} representing an area
     /// (a <c>Polygon</c> or <c>MultiPolygon</c> )
     /// is consistent with the SFS semantics for area geometries.
@@ -16,37 +15,26 @@ namespace NetTopologySuite.Operation.Valid
     /// Testing for duplicate rings.
     /// If an inconsistency if found the location of the problem is recorded.
     /// </summary>
-    public class ConsistentAreaTester 
+    public class ConsistentAreaTester
     {
         private readonly LineIntersector li = new RobustLineIntersector();
         private readonly GeometryGraph geomGraph;
         private readonly RelateNodeGraph nodeGraph = new RelateNodeGraph();
-
         // the intersection point found (if any)
-        private Coordinate invalidPoint;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomGraph"></param>
         public ConsistentAreaTester(GeometryGraph geomGraph)
         {
             this.geomGraph = geomGraph;
         }
-
         /// <summary>
         /// Returns the intersection point, or <c>null</c> if none was found.
-        /// </summary>        
-        public Coordinate InvalidPoint
-        {
-            get
-            {
-                return invalidPoint;
-            }
-        }
-
+        /// </summary>
+        public Coordinate InvalidPoint { get; private set; }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsNodeConsistentArea
         {
@@ -56,17 +44,16 @@ namespace NetTopologySuite.Operation.Valid
                 * To fully check validity, it is necessary to
                 * compute ALL intersections, including self-intersections within a single edge.
                 */
-                SegmentIntersector intersector = geomGraph.ComputeSelfNodes(li, true, true);
+                var intersector = geomGraph.ComputeSelfNodes(li, true, true);
                 if (intersector.HasProperIntersection)
                 {
-                    invalidPoint = intersector.ProperIntersectionPoint;
+                    InvalidPoint = intersector.ProperIntersectionPoint;
                     return false;
                 }
                 nodeGraph.Build(geomGraph);
                 return IsNodeEdgeAreaLabelsConsistent;
             }
         }
-
         /// <summary>
         /// Check all nodes to see if their labels are consistent.
         /// If any are not, return false.
@@ -77,17 +64,16 @@ namespace NetTopologySuite.Operation.Valid
             {
                 for (IEnumerator nodeIt = nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext(); )
                 {
-                    RelateNode node = (RelateNode) nodeIt.Current;
+                    var node = (RelateNode) nodeIt.Current;
                     if (!node.Edges.IsAreaLabelsConsistent(geomGraph))
                     {
-                        invalidPoint = (Coordinate) node.Coordinate.Copy();
+                        InvalidPoint = (Coordinate) node.Coordinate.Copy();
                         return false;
                     }
                 }
                 return true;
             }
         }
-
         /// <summary>
         /// Checks for two duplicate rings in an area.
         /// Duplicate rings are rings that are topologically equal
@@ -106,13 +92,13 @@ namespace NetTopologySuite.Operation.Valid
             {
                 for (IEnumerator nodeIt = nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext(); )
                 {
-                    RelateNode node = (RelateNode) nodeIt.Current;
+                    var node = (RelateNode) nodeIt.Current;
                     for (IEnumerator i = node.Edges.GetEnumerator(); i.MoveNext(); )
                     {
-                        EdgeEndBundle eeb = (EdgeEndBundle) i.Current;
+                        var eeb = (EdgeEndBundle) i.Current;
                         if (eeb.EdgeEnds.Count > 1)
                         {
-                            invalidPoint = eeb.Edge.GetCoordinate(0);
+                            InvalidPoint = eeb.Edge.GetCoordinate(0);
                             return true;
                         }
                     }

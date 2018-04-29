@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
@@ -10,31 +9,22 @@ namespace NetTopologySuite.GeometriesGraph
     /// </summary>
     public class EdgeIntersectionList
     {
-        // a list of EdgeIntersections      
+        // a list of EdgeIntersections
         private readonly IDictionary<EdgeIntersection, EdgeIntersection> nodeMap = new SortedDictionary<EdgeIntersection, EdgeIntersection>();
         private readonly Edge edge;  // the parent edge
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edge"></param>
         public EdgeIntersectionList(Edge edge)
         {
             this.edge = edge;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public int Count
-        {
-            get
-            {
-                return nodeMap.Count;
-            }
-        }
-
-        /// <summary> 
+        public int Count => nodeMap.Count;
+        /// <summary>
         /// Adds an intersection into the list, if it isn't already there.
         /// The input segmentIndex and dist are expected to be normalized.
         /// </summary>
@@ -44,48 +34,44 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns>The EdgeIntersection found or added.</returns>
         public EdgeIntersection Add(Coordinate intPt, int segmentIndex, double dist)
         {
-            EdgeIntersection eiNew = new EdgeIntersection(intPt, segmentIndex, dist);
+            var eiNew = new EdgeIntersection(intPt, segmentIndex, dist);
             EdgeIntersection ei;
             if (nodeMap.TryGetValue(eiNew, out ei))
                 return ei;
             nodeMap[eiNew] = eiNew;
             return eiNew;
         }
-
-        /// <summary> 
+        /// <summary>
         /// Returns an iterator of EdgeIntersections.
         /// </summary>
-        public IEnumerator<EdgeIntersection> GetEnumerator() 
-        { 
-            return nodeMap.Values.GetEnumerator(); 
+        public IEnumerator<EdgeIntersection> GetEnumerator()
+        {
+            return nodeMap.Values.GetEnumerator();
         }
-            
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
         public bool IsIntersection(Coordinate pt)
         {
-            foreach (EdgeIntersection ei in nodeMap.Values    )
+            foreach (var ei in nodeMap.Values    )
             {
                 if (ei.Coordinate.Equals(pt))
                     return true;
             }
             return false;
         }
-
         /// <summary>
         /// Adds entries for the first and last points of the edge to the list.
         /// </summary>
         public void AddEndpoints()
         {
-            int maxSegIndex = edge.Points.Length - 1;
+            var maxSegIndex = edge.Points.Length - 1;
             Add(edge.Points[0], 0, 0.0);
             Add(edge.Points[maxSegIndex], maxSegIndex, 0.0);
         }
-
-        /// <summary> 
+        /// <summary>
         /// Creates new edges for all the edges that the intersections in this
         /// list split the parent edge into.
         /// Adds the edges to the input list (this is so a single list
@@ -96,21 +82,18 @@ namespace NetTopologySuite.GeometriesGraph
         {
             // ensure that the list has entries for the first and last point of the edge
             AddEndpoints();
-
-            IEnumerator<EdgeIntersection> it = GetEnumerator();
+            var it = GetEnumerator();
             it.MoveNext();
             // there should always be at least two entries in the list
-            EdgeIntersection eiPrev = it.Current;
-            while (it.MoveNext()) 
+            var eiPrev = it.Current;
+            while (it.MoveNext())
             {
-                EdgeIntersection ei = it.Current;
-                Edge newEdge = CreateSplitEdge(eiPrev, ei);
+                var ei = it.Current;
+                var newEdge = CreateSplitEdge(eiPrev, ei);
                 edgeList.Add(newEdge);
-
                 eiPrev = ei;
             }
         }
-
         /// <summary>
         /// Create a new "split edge" with the section of points between
         /// (and including) the two intersections.
@@ -119,38 +102,35 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="ei0"></param>
         /// <param name="ei1"></param>
         public Edge CreateSplitEdge(EdgeIntersection ei0, EdgeIntersection ei1)
-        {        
-            int npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
-            Coordinate lastSegStartPt = edge.Points[ei1.SegmentIndex];
+        {
+            var npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
+            var lastSegStartPt = edge.Points[ei1.SegmentIndex];
             // if the last intersection point is not equal to the its segment start pt,
             // add it to the points list as well.
             // (This check is needed because the distance metric is not totally reliable!)
             // The check for point equality is 2D only - Z values are ignored
-            bool useIntPt1 = ei1.Distance > 0.0 || ! ei1.Coordinate.Equals2D(lastSegStartPt);
-            if (! useIntPt1) 
+            var useIntPt1 = ei1.Distance > 0.0 || ! ei1.Coordinate.Equals2D(lastSegStartPt);
+            if (! useIntPt1)
                 npts--;
-
-            Coordinate[] pts = new Coordinate[npts];
-            int ipt = 0;
+            var pts = new Coordinate[npts];
+            var ipt = 0;
             pts[ipt++] = new Coordinate(ei0.Coordinate);
-            for (int i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++) 
+            for (var i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
                 pts[ipt++] = edge.Points[i];
-
-            if (useIntPt1) 
+            if (useIntPt1)
                 pts[ipt] = ei1.Coordinate;
             return new Edge(pts, new Label(edge.Label));
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="outstream"></param>
         public void Write(StreamWriter outstream)
         {
             outstream.WriteLine("Intersections:");
-            for (IEnumerator<EdgeIntersection> it = GetEnumerator(); it.MoveNext(); ) 
+            for (var it = GetEnumerator(); it.MoveNext(); )
             {
-                EdgeIntersection ei = it.Current;
+                var ei = it.Current;
                 ei.Write(outstream);
             }
         }

@@ -1,6 +1,5 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.LinearReferencing;
-
 namespace Open.Topology.TestRunner.Functions
 {
     public static class LinearReferencingFunctions
@@ -11,13 +10,11 @@ namespace Open.Topology.TestRunner.Functions
             var p = ll.ExtractPoint(index);
             return g.Factory.CreatePoint(p);
         }
-
         public static IGeometry ExtractLine(IGeometry g, double start, double end)
         {
             var ll = new LengthIndexedLine(g);
             return ll.ExtractLine(start, end);
         }
-
         public static IGeometry Project(IGeometry g, IGeometry g2)
         {
             var ll = new LengthIndexedLine(g);

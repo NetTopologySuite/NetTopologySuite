@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.GeometriesGraph;
-
 namespace NetTopologySuite.Operation.Overlay
 {
     /// <summary>
@@ -15,7 +14,6 @@ namespace NetTopologySuite.Operation.Overlay
         private readonly IGeometryFactory _geometryFactory;
         private readonly List<IGeometry> _resultPointList = new List<IGeometry>();
         //private PointLocator _ptLocator;
-
         /// <summary>
         /// Creates an instance of this class
         /// </summary>
@@ -27,7 +25,6 @@ namespace NetTopologySuite.Operation.Overlay
             _geometryFactory = geometryFactory;
             //_ptLocator = ptLocator;
         }
-
         /// <summary>
         /// Creates an instance of this class
         /// </summary>
@@ -38,7 +35,6 @@ namespace NetTopologySuite.Operation.Overlay
         public PointBuilder(OverlayOp op, IGeometryFactory geometryFactory, PointLocator ptLocator = null)
             :this(op,geometryFactory)
         { }
-
         /// <summary>
         /// Computes the Point geometries which will appear in the result,
         /// given the specified overlay operation.
@@ -57,7 +53,6 @@ namespace NetTopologySuite.Operation.Overlay
              */
             return _resultPointList;
         }
-
         /// <summary>
         /// Determines nodes which are in the result, and creates <see cref="IPoint"/>s for them.
         /// </summary>
@@ -70,7 +65,6 @@ namespace NetTopologySuite.Operation.Overlay
         {
             // testing only
             //if (true) return resultNodeList;
-
             foreach (var n in _op.Graph.Nodes)
             {
                 // filter out nodes which are known to be in the result
@@ -81,12 +75,11 @@ namespace NetTopologySuite.Operation.Overlay
                     continue;
                 if (n.Edges.Degree == 0 || opCode == SpatialFunction.Intersection)
                 {
-
                     /**
                      * For nodes on edges, only INTERSECTION can result in edge nodes being included even
                      * if none of their incident edges are included
                      */
-                    Label label = n.Label;
+                    var label = n.Label;
                     if (OverlayOp.IsResultOfOp(label, opCode))
                     {
                         FilterCoveredNodeToPoint(n);
@@ -95,7 +88,6 @@ namespace NetTopologySuite.Operation.Overlay
             }
             //Console.Writeline("connectedResultNodes collected = " + connectedResultNodes.size());
         }
-
         /// <summary>
         /// Converts non-covered nodes to Point objects and adds them to the result.
         /// </summary>
@@ -107,7 +99,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="n">The node to test</param>
         private void FilterCoveredNodeToPoint(Node n)
         {
-            Coordinate coord = n.Coordinate;
+            var coord = n.Coordinate;
             if (!_op.IsCoveredByLA(coord))
             {
                 var pt = _geometryFactory.CreatePoint(coord);

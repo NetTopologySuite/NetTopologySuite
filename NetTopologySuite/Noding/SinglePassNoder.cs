@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-
 namespace NetTopologySuite.Noding
 {
     /// <summary>
@@ -13,7 +12,6 @@ namespace NetTopologySuite.Noding
         /// Initializes a new instance of the <see cref="SinglePassNoder"/> class.
         /// </summary>
         protected SinglePassNoder() { }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SinglePassNoder"/> class.
         /// </summary>
@@ -22,7 +20,6 @@ namespace NetTopologySuite.Noding
         {
             SegmentIntersector = segInt;
         }
-
         /// <summary>
         /// Gets/sets the <see cref="ISegmentIntersector" /> to use with this noder.
         /// A <see cref="ISegmentIntersector" />  will normally add intersection nodes
@@ -31,8 +28,6 @@ namespace NetTopologySuite.Noding
         /// However, some <see cref="INoder" />s may require that intersections be added.
         /// </summary>
         public ISegmentIntersector SegmentIntersector { get; set; }
-
-
         /// <summary>
         /// Computes the noding for a collection of <see cref="ISegmentString"/>s.
         /// Some Noders may add all these nodes to the input <see cref="ISegmentString"/>s;
@@ -40,13 +35,11 @@ namespace NetTopologySuite.Noding
         /// </summary>
         /// <param name="segStrings"></param>
         public abstract void ComputeNodes(IList<ISegmentString> segStrings);
-
         /// <summary>
         /// Returns a <see cref="IList{ISegmentString}"/> of fully noded <see cref="ISegmentString"/>s.
         /// The <see cref="ISegmentString"/>s have the same context as their parent.
         /// </summary>
         /// <returns></returns>
         public abstract IList<ISegmentString> GetNodedSubstrings();
-
     }
 }

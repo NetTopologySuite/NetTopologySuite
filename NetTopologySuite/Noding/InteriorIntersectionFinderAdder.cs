@@ -1,23 +1,20 @@
 ﻿using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-
 namespace NetTopologySuite.Noding
 {
     /// <summary>
-    /// Finds <b>interior</b> intersections 
+    /// Finds <b>interior</b> intersections
     /// between line segments in <see cref="NodedSegmentString"/>s,
     /// and adds them as nodes
     /// using <see cref="NodedSegmentString.AddIntersection(NetTopologySuite.Algorithm.LineIntersector,int,int,int)"/>.
-    /// This class is used primarily for Snap-Rounding.  
+    /// This class is used primarily for Snap-Rounding.
     /// For general-purpose noding, use <see cref="IntersectionAdder"/>.
     /// </summary>
     /// <seealso cref="IntersectionAdder"/>
     public class InteriorIntersectionFinderAdder : ISegmentIntersector
     {
         private readonly LineIntersector _li;
-        private readonly IList<Coordinate> _interiorIntersections;
-
         /// <summary>
         /// Creates an intersection finder which finds all proper intersections.
         /// </summary>
@@ -25,17 +22,12 @@ namespace NetTopologySuite.Noding
         public InteriorIntersectionFinderAdder(LineIntersector li)
         {
             _li = li;
-            _interiorIntersections = new List<Coordinate>();
+            InteriorIntersections = new List<Coordinate>();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public IList<Coordinate> InteriorIntersections
-        {
-            get { return _interiorIntersections; }
-        }
-
+        public IList<Coordinate> InteriorIntersections { get; }
         /// <summary>
         /// This method is called by clients
         /// of the <see cref="ISegmentIntersector" /> class to process
@@ -53,32 +45,25 @@ namespace NetTopologySuite.Noding
             // don't bother intersecting a segment with itself
             if (e0 == e1 && segIndex0 == segIndex1)
                 return;
-
-            Coordinate[] coordinates0 = e0.Coordinates;
-            Coordinate p00 = coordinates0[segIndex0];
-            Coordinate p01 = coordinates0[segIndex0 + 1];
-            Coordinate[] coordinates1 = e1.Coordinates;
-            Coordinate p10 = coordinates1[segIndex1];
-            Coordinate p11 = coordinates1[segIndex1 + 1];
+            var coordinates0 = e0.Coordinates;
+            var p00 = coordinates0[segIndex0];
+            var p01 = coordinates0[segIndex0 + 1];
+            var coordinates1 = e1.Coordinates;
+            var p10 = coordinates1[segIndex1];
+            var p11 = coordinates1[segIndex1 + 1];
             _li.ComputeIntersection(p00, p01, p10, p11);
-
             if (!_li.HasIntersection) return;
             if (!_li.IsInteriorIntersection()) return;
-            for (int intIndex = 0; intIndex < _li.IntersectionNum; intIndex++)
-                _interiorIntersections.Add(_li.GetIntersection(intIndex));
-
-            NodedSegmentString nss0 = (NodedSegmentString)e0;
+            for (var intIndex = 0; intIndex < _li.IntersectionNum; intIndex++)
+                InteriorIntersections.Add(_li.GetIntersection(intIndex));
+            var nss0 = (NodedSegmentString)e0;
             nss0.AddIntersections(_li, segIndex0, 0);
-            NodedSegmentString nss1 = (NodedSegmentString)e1;
+            var nss1 = (NodedSegmentString)e1;
             nss1.AddIntersections(_li, segIndex1, 1);
         }
-
         ///<summary>
         /// Always process all intersections
         ///</summary>
-        public bool IsDone
-        {
-            get { return false; }
-        }
+        public bool IsDone => false;
     }
 }

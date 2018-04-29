@@ -2,7 +2,6 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
-
 namespace Open.Topology.TestRunner.Utility
 {
     /// <summary>
@@ -10,9 +9,9 @@ namespace Open.Topology.TestRunner.Utility
     /// </summary>
     public class MultiFormatReader
     {
-        private static Boolean IsHex(String str, int maxCharsToTest)
+        private static bool IsHex(string str, int maxCharsToTest)
         {
-            for (int i = 0; i < maxCharsToTest && i < str.Length; i++)
+            for (var i = 0; i < maxCharsToTest && i < str.Length; i++)
             {
                 var ch = str[i];
                 if (!IsHexDigit(ch))
@@ -20,41 +19,35 @@ namespace Open.Topology.TestRunner.Utility
             }
             return true;
         }
-
-        private static Boolean IsHexDigit(char ch)
+        private static bool IsHexDigit(char ch)
         {
             if (char.IsDigit(ch)) return true;
-            char chLow = char.ToLower(ch);
+            var chLow = char.ToLower(ch);
             if (chLow >= 'a' && chLow <= 'f') return true;
             return false;
         }
-
         private const int MaxCharsToCheck = 6;
-
         //private GeometryFactory _geomFactory;
         private readonly WKTReader _wktReader;
         private readonly WKBReader _wkbReader;
         private readonly IGeometryFactory _factory;
-
         public MultiFormatReader()
             : this(new GeometryFactory())
         {
         }
-
         public MultiFormatReader(GeometryFactory geomFactory)
         {
             _wktReader = new WKTReader(geomFactory);
             _wkbReader = new WKBReader(geomFactory);
             _factory = geomFactory;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomStr"></param>
         /// <returns></returns>
         /// <exception cref="ParseException"></exception>
-        public IGeometry Read(String geomStr)
+        public IGeometry Read(string geomStr)
         {
             var trimStr = geomStr.Trim();
             if (IsHex(trimStr, MaxCharsToCheck))

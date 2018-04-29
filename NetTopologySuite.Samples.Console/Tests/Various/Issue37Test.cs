@@ -3,22 +3,18 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.Various
 {
     [TestFixture]
     public class Issue37Tests
     {
         private readonly IGeometryFactory factory = GeometryFactory.Default;
-
-        private WKTReader reader;        
-
+        private WKTReader reader;
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
             reader = new WKTReader(factory);
         }
-
         [Test, ExpectedException(typeof(TopologyException)), Category("Issue37")]
         [Ignore("What does JTS do with these geometries?")]
         public void Difference()
@@ -51,7 +47,6 @@ namespace NetTopologySuite.Tests.Various
 7063334.0714834519))");
             Assert.IsNotNull(geom1);
             Assert.IsTrue(geom1.IsValid);
-
             var geom2 = reader.Read(@"POLYGON((14518.078277259594
 7023464.5692419875,11497.562933872843 7025662.3046554783,8431.9481214536681
 7028335.26856397,5617.0474384991358 7031264.45683008,3074.235016295675
@@ -76,7 +71,6 @@ namespace NetTopologySuite.Tests.Various
 7023464.5692419875))");
             Assert.IsNotNull(geom2);
             Assert.IsTrue(geom2.IsValid);
-
             Exception exception = null;
             try
             {
@@ -88,15 +82,12 @@ namespace NetTopologySuite.Tests.Various
             }
             Assert.IsNotNull(exception);
             Assert.IsInstanceOf(typeof(TopologyException), exception);
-
             var buf1 = geom1.Buffer(0);
             Assert.IsNotNull(buf1);
             Assert.IsTrue(buf1.IsValid);
-
             var buf2 = geom2.Buffer(0);
             Assert.IsNotNull(buf2);
             Assert.IsTrue(buf2.IsValid);
-
             var result = buf1.Difference(buf2);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.IsValid);

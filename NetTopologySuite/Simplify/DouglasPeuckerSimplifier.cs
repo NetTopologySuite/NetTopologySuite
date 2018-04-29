@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-
 namespace NetTopologySuite.Simplify
 {
     /// <summary>
@@ -10,7 +9,7 @@ namespace NetTopologySuite.Simplify
     /// <remarks>
     /// Ensures that any polygonal geometries returned are valid.
     /// Simple lines are not guaranteed to remain simple after simplification.
-    /// All geometry types are handled. 
+    /// All geometry types are handled.
     /// Empty and point geometries are returned unchanged.
     /// Empty geometry components are deleted.
     /// <para/>
@@ -23,7 +22,7 @@ namespace NetTopologySuite.Simplify
     /// <para/>
     /// KNOWN BUGS:
     /// In some cases the approach used to clean invalid simplified polygons
-    /// can distort the output geometry severely.  
+    /// can distort the output geometry severely.
     /// </remarks>
     /// <seealso cref="TopologyPreservingSimplifier"/>
     public class DouglasPeuckerSimplifier
@@ -36,15 +35,12 @@ namespace NetTopologySuite.Simplify
         /// <returns>A simplified version of the geometry.</returns>
         public static IGeometry Simplify(IGeometry geom, double distanceTolerance)
         {
-            DouglasPeuckerSimplifier tss = new DouglasPeuckerSimplifier(geom);
+            var tss = new DouglasPeuckerSimplifier(geom);
             tss.DistanceTolerance = distanceTolerance;
             return tss.GetResultGeometry();
         }
-
         private readonly IGeometry _inputGeom;
         private double _distanceTolerance;
-        private bool _isEnsureValidTopology = true;
-
         /// <summary>
         /// Creates a simplifier for a given geometry.
         /// </summary>
@@ -53,18 +49,17 @@ namespace NetTopologySuite.Simplify
         {
             _inputGeom = inputGeom;
         }
-
         /// <summary>
         /// The distance tolerance for the simplification.
         /// </summary>
         /// <remarks>
         /// All vertices in the simplified geometry will be within this
         /// distance of the original geometry.
-        /// The tolerance value must be non-negative. 
+        /// The tolerance value must be non-negative.
         /// </remarks>
         public double DistanceTolerance
         {
-            get { return _distanceTolerance; }
+            get => _distanceTolerance;
             set
             {
                 if (value < 0)
@@ -72,7 +67,6 @@ namespace NetTopologySuite.Simplify
                 _distanceTolerance = value;
             }
         }
-
         /// <summary>
         /// Controls whether simplified polygons will be "fixed"
         /// to have valid topology.
@@ -86,12 +80,7 @@ namespace NetTopologySuite.Simplify
         /// </list>
         /// The default is to fix polygon topology.
         /// </remarks>
-        public bool EnsureValidTopology
-        {
-            get { return _isEnsureValidTopology; }
-            set { _isEnsureValidTopology = value; }
-        }
-
+        public bool EnsureValidTopology { get; set; } = true;
         /// <summary>
         /// Gets the simplified geometry.
         /// </summary>
@@ -99,13 +88,11 @@ namespace NetTopologySuite.Simplify
         public IGeometry GetResultGeometry()
         {
             // empty input produces an empty result
-            if (_inputGeom.IsEmpty) 
+            if (_inputGeom.IsEmpty)
                 return (IGeometry)_inputGeom.Copy();
-
-            DPTransformer transformer = new DPTransformer(this, EnsureValidTopology);
+            var transformer = new DPTransformer(this, EnsureValidTopology);
             return transformer.Transform(_inputGeom);
         }
-
         /// <summary>
         /// The transformer class
         /// </summary>
@@ -113,25 +100,20 @@ namespace NetTopologySuite.Simplify
         {
             private readonly DouglasPeuckerSimplifier _container;
             private readonly bool _ensureValidTopology;
-
             public DPTransformer(DouglasPeuckerSimplifier container, bool ensureValidTopology)
             {
                 _container = container;
                 _ensureValidTopology = ensureValidTopology;
             }
-
-
             /// <inheritdoc cref="GeometryTransformer.TransformCoordinates(ICoordinateSequence, IGeometry)"/>
             protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
             {
-                Coordinate[] inputPts = coords.ToCoordinateArray();
-                Coordinate[] newPts = inputPts.Length == 0
+                var inputPts = coords.ToCoordinateArray();
+                var newPts = inputPts.Length == 0
                     ? new Coordinate[0]
                     : DouglasPeuckerLineSimplifier.Simplify(inputPts, _container.DistanceTolerance);
-
                 return Factory.CoordinateSequenceFactory.Create(newPts);
             }
-
             /// <summary>
             /// Simplifies a polygon, fixing it if required.
             /// </summary>
@@ -143,35 +125,30 @@ namespace NetTopologySuite.Simplify
                 // empty geometries are simply removed
                 if (geom.IsEmpty)
                     return null;
-
-                IGeometry rawGeom = base.TransformPolygon(geom, parent);
+                var rawGeom = base.TransformPolygon(geom, parent);
                 // don't try and correct if the parent is going to do this
                 if (parent is IMultiPolygon)
                     return rawGeom;
                 return CreateValidArea(rawGeom);
             }
-
             ///<summary>
             /// Simplifies a LinearRing.  If the simplification results in a degenerate ring, remove the component.
             ///</summary>
             /// <returns>null if the simplification results in a degenerate ring</returns>
             protected override IGeometry TransformLinearRing(ILinearRing geom, IGeometry parent)
             {
-                Boolean removeDegenerateRings = parent is IPolygon;
-                IGeometry simpResult = base.TransformLinearRing(geom, parent);
-
+                var removeDegenerateRings = parent is IPolygon;
+                var simpResult = base.TransformLinearRing(geom, parent);
                 if (removeDegenerateRings && !(simpResult is ILinearRing))
                     return null;
                 return simpResult;
             }
-
             /// <inheritdoc cref="GeometryTransformer.TransformMultiPolygon(IMultiPolygon, IGeometry)"/>
             protected override IGeometry TransformMultiPolygon(IMultiPolygon geom, IGeometry parent)
             {
-                IGeometry roughGeom = base.TransformMultiPolygon(geom, parent);
+                var roughGeom = base.TransformMultiPolygon(geom, parent);
                 return CreateValidArea(roughGeom);
             }
-
             /// <summary>
             /// Creates a valid area point from one that possibly has
             /// bad topology (i.e. self-intersections).

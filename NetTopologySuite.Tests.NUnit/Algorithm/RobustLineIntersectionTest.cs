@@ -4,14 +4,12 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     [TestFixtureAttribute]
     public class RobustLineIntersectionTest
     {
         private readonly WKTReader _reader = new WKTReader();
-
         /// <summary>
         /// Following cases were failures when using the CentralEndpointIntersector heuristic.
         /// This is because one segment lies at a significant angle to the other,
@@ -20,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// The fix is to use a new heuristic which out of the 4 endpoints
         /// chooses the one which is closest to the other segment.
         /// This works in all known failure cases.
-        /// </summary>                  
+        /// </summary>
         [TestAttribute]
         public void TestCentralEndpointHeuristicFailure()
         {
@@ -31,7 +29,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 "POINT (163.81867067 -211.31840378)",
                 0);
         }
-
         [TestAttribute]
         public void TestCentralEndpointHeuristicFailure2()
         {
@@ -42,12 +39,11 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 "POINT ( -215.22279674875 -158.65425425385 )",
                 0);
         }
-
         /// <summary>
-        /// Tests a case where intersection point is rounded, 
+        /// Tests a case where intersection point is rounded,
         /// and it is computed as a nearest endpoint.
-        /// Exposed a bug due to aliasing of endpoint. 
-        ///  
+        /// Exposed a bug due to aliasing of endpoint.
+        ///
         /// MD 8 Mar 2013
         /// </summary>
         [TestAttribute]
@@ -58,7 +54,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 "LINESTRING (-215.22279674875 -158.65425425385, -218.1208801283 -160.68343590235)",
                 100000);
         }
-
         /// <summary>
         /// Test from Tomas Fa - JTS list 6/13/2012
         /// </summary>
@@ -73,7 +68,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 "LINESTRING (-42.0 163.2, 21.2 265.2)",
                 "LINESTRING (-26.2 188.7, 37.0 290.7)");
         }
-
         /// <summary>
         /// Test from Tomas Fa - JTS list 6/13/2012
         /// </summary>
@@ -88,7 +82,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 "LINESTRING (-5.9 163.1, 76.1 250.7)",
                 "LINESTRING (14.6 185.0, 96.6 272.6)");
         }
-
         /// <summary>
         /// Test involving two non-almost-parallel lines.
         /// Does not seem to cause problems with basic line inersection algorithm.
@@ -103,11 +96,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 "POINT (305690.0434123494 254176.46578338774)",
                 0);
         }
-
         /*
         * Test from strk which is bad in GEOS (2009-04-14).
         */
-
         [TestAttribute]
         public void TestGEOS_1()
         {
@@ -118,11 +109,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 "POINT (588748.2060416829 4518933.945284994)",
                 0);
         }
-
         /*
         * Test from strk which is bad in GEOS (2009-04-14).
         */
-
         [TestAttribute]
         public void TestGEOS_2()
         {
@@ -133,12 +122,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 "POINT (588733.8306132929 4518925.319423238)",
                 0);
         }
-
         /*
         * This used to be a failure case (exception), but apparently works now.
         * Possibly normalization has fixed this?
         */
-
         [Ignore(
             "The result of this test is currently failing.  The lines are very close to colinear along a partial segment, so I think there is rounding problems occuring.  There are changes in versions of JTS beyond version 1.9 which calculate HCoordinate intersections slightly differently, so those changes may resolve this test failure in the future."
             )]
@@ -154,11 +141,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 },
                 0);
         }
-
         /*
         * Outside envelope using HCoordinate method.
         */
-
         [Ignore(
             "The result of this test is currently failing.  The lines are very close to colinear, so I think there is rounding problems occuring.  There are changes in versions of JTS beyond version 1.9 which calculate HCoordinate intersections slightly differently, so those changes may resolve this test failure in the future."
             )]
@@ -174,11 +159,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 },
                 0);
         }
-
         /*
         * Result of this test should be the same as the WKT one!
         */
-
         [Ignore(
             "The result of this test is currently failing.  The lines are very close to colinear, so I think there is rounding problems occuring.  There are changes in versions of JTS beyond version 1.9 which calculate HCoordinate intersections slightly differently, so those changes may resolve this test failure in the future."
             )]
@@ -189,7 +172,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 {
                     new Coordinate(4348433.262114629, 5552595.478385733),
                     new Coordinate(4348440.849387404, 5552599.272022122),
-
                     new Coordinate(4348433.26211463, 5552595.47838573),
                     new Coordinate(4348440.8493874, 5552599.27202212)
                 },
@@ -200,8 +182,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 },
                 0);
         }
-
-        private void CheckIntersectionNone(String wkt1, String wkt2)
+        private void CheckIntersectionNone(string wkt1, string wkt2)
         {
             var l1 = (LineString)_reader.Read(wkt1);
             var l2 = (LineString)_reader.Read(wkt2);
@@ -212,9 +193,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                      };
             CheckIntersection(pt, 0, null, 0);
         }
-
-
-        private void CheckIntersection(String wkt1, String wkt2,
+        private void CheckIntersection(string wkt1, string wkt2,
             int expectedIntersectionNum,
             Coordinate[] intPt,
             double distanceTolerance)
@@ -228,10 +207,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                      };
             CheckIntersection(pt, expectedIntersectionNum, intPt, distanceTolerance);
         }
-
-        private void CheckIntersection(String wkt1, String wkt2,
+        private void CheckIntersection(string wkt1, string wkt2,
             int expectedIntersectionNum,
-            String expectedWKT,
+            string expectedWKT,
             double distanceTolerance)
         {
             var l1 = (LineString)_reader.Read(wkt1);
@@ -245,7 +223,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             var intPt = g.Coordinates;
             CheckIntersection(pt, expectedIntersectionNum, intPt, distanceTolerance);
         }
-
         /// <summary>
         /// Check that intersection of segment defined by points in pt array
         /// is equal to the expectedIntPt value (up to the given distanceTolerance)
@@ -261,10 +238,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             LineIntersector li = new RobustLineIntersector();
             li.ComputeIntersection(pt[0], pt[1], pt[2], pt[3]);
-
-            int intNum = li.IntersectionNum;
+            var intNum = li.IntersectionNum;
             Assert.AreEqual(expectedIntersectionNum, intNum, "Number of intersections not as expected");
-
             if (expectedIntPt != null)
             {
                 Assert.AreEqual(intNum, expectedIntPt.Length, "Wrong number of expected int pts provided");
@@ -277,7 +252,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 {
                     CheckIntPoints(expectedIntPt[1], li.GetIntersection(0), distanceTolerance);
                     CheckIntPoints(expectedIntPt[1], li.GetIntersection(0), distanceTolerance);
-
                     if (!(Equals(expectedIntPt[0], li.GetIntersection(0), distanceTolerance)
                           || Equals(expectedIntPt[0], li.GetIntersection(1), distanceTolerance)))
                     {
@@ -293,7 +267,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 }
             }
         }
-
         private void CheckIntPoints(Coordinate p, Coordinate q, double distanceTolerance)
         {
             var isEqual = Equals(p, q, distanceTolerance);
@@ -301,41 +274,36 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                                    + WKTWriter.ToPoint(p) + " vs "
                                    + WKTWriter.ToPoint(q));
         }
-
         public bool Equals(Coordinate p0, Coordinate p1, double distanceTolerance)
         {
             return p0.Distance(p1) <= distanceTolerance;
         }
-
-        private void CheckInputNotAltered(String wkt1, String wkt2, int scaleFactor)
+        private void CheckInputNotAltered(string wkt1, string wkt2, int scaleFactor)
         {
-            LineString l1 = (LineString)_reader.Read(wkt1);
-            LineString l2 = (LineString)_reader.Read(wkt2);
+            var l1 = (LineString)_reader.Read(wkt1);
+            var l2 = (LineString)_reader.Read(wkt2);
             Coordinate[] pt =
             {
                 l1.GetCoordinateN(0),
-                l1.GetCoordinateN(1), 
-                l2.GetCoordinateN(0), 
+                l1.GetCoordinateN(1),
+                l2.GetCoordinateN(0),
                 l2.GetCoordinateN(1)
             };
             CheckInputNotAltered(pt, scaleFactor);
         }
-
         public void CheckInputNotAltered(Coordinate[] pt, int scaleFactor)
         {
             // save input points
-            Coordinate[] savePt = new Coordinate[4];
-            for (int i = 0; i < 4; i++)
+            var savePt = new Coordinate[4];
+            for (var i = 0; i < 4; i++)
             {
                 savePt[i] = new Coordinate(pt[i]);
             }
-
             LineIntersector li = new RobustLineIntersector();
             li.PrecisionModel = new PrecisionModel(scaleFactor);
             li.ComputeIntersection(pt[0], pt[1], pt[2], pt[3]);
-
             // check that input points are unchanged
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
             {
                 Assert.AreEqual(savePt[i], pt[i], "Input point " + i + " was altered - ");
             }

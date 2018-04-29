@@ -6,7 +6,6 @@ using GeoAPI.CoordinateSystems;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit
 {
     [TestFixtureAttribute]
@@ -17,15 +16,12 @@ namespace NetTopologySuite.Tests.NUnit
         {
             var nts = new NtsGeometryServices();
             var ntsFromGeoApi = GeometryServiceProvider.Instance;
-
             Assert.IsNotNull(ntsFromGeoApi);
             Assert.IsNotNull(ntsFromGeoApi.DefaultCoordinateSequenceFactory);
             Assert.IsNotNull(ntsFromGeoApi.DefaultPrecisionModel);
-
             Assert.IsTrue(nts.DefaultCoordinateSequenceFactory == ntsFromGeoApi.DefaultCoordinateSequenceFactory);
             Assert.IsTrue(nts.DefaultPrecisionModel.Equals(ntsFromGeoApi.DefaultPrecisionModel));
         }
-
         [TestAttribute]
         public void TestInitialized()
         {
@@ -33,21 +29,16 @@ namespace NetTopologySuite.Tests.NUnit
                 new NtsGeometryServices(
                     NetTopologySuite.Geometries.Implementation.DotSpatialAffineCoordinateSequenceFactory.Instance,
                     new PrecisionModel(10d), 4326);
-
             Assert.Throws<ArgumentNullException>(() => GeometryServiceProvider.Instance = null);
-
             GeometryServiceProvider.Instance = nts;
             var factory = nts.CreateGeometryFactory();
-
             Assert.IsNotNull(factory);
             Assert.AreEqual(nts.DefaultSRID, factory.SRID);
             Assert.AreEqual(nts.DefaultPrecisionModel, factory.PrecisionModel);
             Assert.AreEqual(nts.DefaultCoordinateSequenceFactory, factory.CoordinateSequenceFactory);
-
             // restore default!
             GeometryServiceProvider.Instance = new NtsGeometryServices();
         }
-
         [TestAttribute]
         public void TestThreading()
         {
@@ -56,13 +47,12 @@ namespace NetTopologySuite.Tests.NUnit
                 var srids = new[] {4326, 31467, 3857, 27700};
                 var precisionModels = new[]
                     {
-                        new PrecisionModel(PrecisionModels.Floating), 
+                        new PrecisionModel(PrecisionModels.Floating),
                         new PrecisionModel(PrecisionModels.FloatingSingle),
                         new PrecisionModel(1),
                         new PrecisionModel(10),
                         new PrecisionModel(100),
                     };
-
                 const int numWorkItems = 30;
                 var waitHandles = new WaitHandle[numWorkItems];
                 for (var i = 0; i < numWorkItems; i++)
@@ -70,7 +60,6 @@ namespace NetTopologySuite.Tests.NUnit
                     waitHandles[i] = new AutoResetEvent(false);
                     ThreadPool.QueueUserWorkItem(TestFacories, new object[] {srids, precisionModels, waitHandles[i], i+1, false});
                 }
-
                 WaitHandle.WaitAll(waitHandles);
                 Console.WriteLine("\nDone!");
                 Assert.LessOrEqual(srids.Length * precisionModels.Length, ((NtsGeometryServices)GeometryServiceProvider.Instance).NumFactories,
@@ -81,9 +70,7 @@ namespace NetTopologySuite.Tests.NUnit
             {
                 Assert.IsTrue(false);
             }
-
         }
-
         private static void TestFacories(object info)
         {
             var parameters = (object[]) info;
@@ -93,12 +80,10 @@ namespace NetTopologySuite.Tests.NUnit
             var workItemId = (int) parameters[3];
             var verbose = (bool) parameters[4];
             var rnd = new Random();
-
             for (var i = 0; i < 1000; i++)
             {
                 var srid = srids[rnd.Next(0, srids.Length)];
                 var precisionModel = precisionModels[rnd.Next(0, precisionModels.Length)];
-
                 var factory = GeometryServiceProvider.Instance.CreateGeometryFactory(precisionModel, srid);
                 if (verbose)
                 {
@@ -110,20 +95,16 @@ namespace NetTopologySuite.Tests.NUnit
             Console.WriteLine("Thread_{0} finished workitem {1}!", Thread.CurrentThread.ManagedThreadId, workItemId);
             wh.Set();
         }
-
         #region ProjNet
-
         //private static void RunTestWkt(ICoordinateSystemServices<ICoordinateSystem> csp, int srid)
         //{
         //    var wkt = csp.GetCoordinateSystemInitializationString("EPSG", srid);
         //    wkt = wkt.Replace(",", ", ");
         //    Console.WriteLine(wkt);
-
         //    var cs = csp.GetCoordinateSytem(wkt);
         //    Assert.IsNotNull(cs);
         //    Console.WriteLine(cs.WKT);
         //}
-
         #endregion ProjNet
     }
 }

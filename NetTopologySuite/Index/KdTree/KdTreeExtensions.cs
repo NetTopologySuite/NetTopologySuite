@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Index.KdTree
 {
     /// <summary>
@@ -16,13 +15,12 @@ namespace NetTopologySuite.Index.KdTree
         public static KdNode<T> NearestNeighbor<T>(this KdTree<T> self, Coordinate coord) where T : class
         {
             KdNode<T> result = null;
-            var closestDistSq = Double.MaxValue;
+            var closestDistSq = double.MaxValue;
             NearestNeighbor(self.Root, coord, ref result, ref closestDistSq, true);
             return result;
         }
-
         private static void NearestNeighbor<T>(
-            KdNode<T> currentNode, Coordinate queryCoordinate, 
+            KdNode<T> currentNode, Coordinate queryCoordinate,
             ref KdNode<T> closestNode, ref double closestDistanceSq,
             bool isOddLevel) where T : class
         {
@@ -30,16 +28,13 @@ namespace NetTopologySuite.Index.KdTree
             {
                 if (currentNode == null)
                     return;
-
                 var distSq = Math.Pow(currentNode.X - queryCoordinate.X, 2) +
                              Math.Pow(currentNode.Y - queryCoordinate.Y, 2);
-
                 if (distSq < closestDistanceSq)
                 {
                     closestNode = currentNode;
                     closestDistanceSq = distSq;
                 }
-
                 // Start with the branch that is more likely to produce the final result
                 var firstBranch = currentNode.Left;
                 var secondBranch = currentNode.Right;
@@ -49,29 +44,24 @@ namespace NetTopologySuite.Index.KdTree
                     firstBranch = currentNode.Right;
                     secondBranch = currentNode.Left;
                 }
-
                 if (firstBranch != null
-                    && NeedsToBeSearched(queryCoordinate, currentNode, closestDistanceSq, 
+                    && NeedsToBeSearched(queryCoordinate, currentNode, closestDistanceSq,
                                          firstBranch == currentNode.Left, isOddLevel))
                 {
                     NearestNeighbor(firstBranch, queryCoordinate, ref closestNode, ref closestDistanceSq, !isOddLevel);
                 }
-
                 if (secondBranch != null
-                    && NeedsToBeSearched(queryCoordinate, currentNode, closestDistanceSq, 
+                    && NeedsToBeSearched(queryCoordinate, currentNode, closestDistanceSq,
                                          secondBranch == currentNode.Left, isOddLevel))
                 {
                     currentNode = secondBranch;
                     isOddLevel = !isOddLevel;
                     continue;
                 }
-
                 break;
-
             }
         }
-
-        private static bool NeedsToBeSearched<T>(Coordinate target, KdNode<T> node, 
+        private static bool NeedsToBeSearched<T>(Coordinate target, KdNode<T> node,
             double closestDistSq, bool left, bool isOddLevel) where T : class
         {
             if (isOddLevel)

@@ -1,9 +1,7 @@
 //using System.Collections;
-
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>
@@ -24,34 +22,25 @@ namespace NetTopologySuite.LinearReferencing
                 return loc.SegmentIndex + 1;
             return loc.SegmentIndex;
         }
-
         private readonly IGeometry _linearGeom;
         private readonly int _numLines;
-
         /// <summary>
         /// Invariant: currentLine &lt;&gt; null if the iterator is pointing at a valid coordinate
         /// </summary>
         private ILineString _currentLine;
-        private int _componentIndex;
-        private int _vertexIndex;
-
         //// Used for avoid the first call to Next() in MoveNext()
         //private bool _atStart;
-
         //// Returned by Ienumerator.Current
         //private LinearElement _current;
-
         //// Cached start values - for Reset() call
         //private readonly int _startComponentIndex;
         //private readonly int _startVertexIndex;
-
         /// <summary>
         /// Creates an iterator initialized to the start of a linear <see cref="Geometry" />.
         /// </summary>
         /// <param name="linearGeom">The linear geometry to iterate over.</param>
         /// <exception cref="ArgumentException"> if <paramref name="linearGeom"/> is not <see cref="ILineal"/></exception>
         public LinearIterator(IGeometry linearGeom) : this(linearGeom, 0, 0) { }
-
         /// <summary>
         /// Creates an iterator starting at a <see cref="LinearLocation" /> on a linear <see cref="Geometry" />.
         /// </summary>
@@ -60,7 +49,6 @@ namespace NetTopologySuite.LinearReferencing
         /// <exception cref="ArgumentException"> if <paramref name="linearGeom"/> is not <see cref="ILineal"/></exception>
         public LinearIterator(IGeometry linearGeom, LinearLocation start) :
             this(linearGeom, start.ComponentIndex, SegmentEndVertexIndex(start)) { }
-
         /// <summary>
         /// Creates an iterator starting at
         /// a component and vertex in a linear <see cref="Geometry" />.
@@ -75,43 +63,38 @@ namespace NetTopologySuite.LinearReferencing
                 throw new ArgumentException("Lineal geometry is required.");
             _linearGeom = linearGeom;
             _numLines = linearGeom.NumGeometries;
-
-            _componentIndex = componentIndex;
-            _vertexIndex = vertexIndex;
-
+            ComponentIndex = componentIndex;
+            VertexIndex = vertexIndex;
             LoadCurrentLine();
         }
-
         /// <summary>
         ///
         /// </summary>
         private void LoadCurrentLine()
         {
-            if (_componentIndex >= _numLines)
+            if (ComponentIndex >= _numLines)
             {
                 _currentLine = null;
                 return;
             }
-            _currentLine = (ILineString)_linearGeom.GetGeometryN(_componentIndex);
+            _currentLine = (ILineString)_linearGeom.GetGeometryN(ComponentIndex);
         }
-
         /// <summary>
         /// Tests whether there are any vertices left to iterator over.
         /// Specifically, <c>HasNext()</c> returns <tt>true</tt> if the
         /// current state of the iterator represents a valid location
-        /// on the linear geometry. 
+        /// on the linear geometry.
         /// </summary>
         /// <returns><c>true</c> if there are more vertices to scan.</returns>
         public bool HasNext()
         {
-            if (_componentIndex >= _numLines)
+            if (ComponentIndex >= _numLines)
                 return false;
-            if (_componentIndex == _numLines - 1 &&
-                _vertexIndex >= _currentLine.NumPoints)
+            if (ComponentIndex == _numLines - 1 &&
+                VertexIndex >= _currentLine.NumPoints)
                 return false;
             return true;
         }
-
         /// <summary>
         /// Jump to the next element of the iteration.
         /// </summary>
@@ -119,16 +102,14 @@ namespace NetTopologySuite.LinearReferencing
         {
             if (!HasNext())
                 return;
-
-            _vertexIndex++;
-            if (_vertexIndex >= _currentLine.NumPoints)
+            VertexIndex++;
+            if (VertexIndex >= _currentLine.NumPoints)
             {
-                _componentIndex++;
+                ComponentIndex++;
                 LoadCurrentLine();
-                _vertexIndex = 0;
+                VertexIndex = 0;
             }
         }
-
         /// <summary>
         /// Checks whether the iterator cursor is pointing to the
         /// endpoint of a component <see cref="ILineString"/>.
@@ -137,59 +118,30 @@ namespace NetTopologySuite.LinearReferencing
         {
             get
             {
-                if (_componentIndex >= _numLines)
+                if (ComponentIndex >= _numLines)
                     return false;
-                if (_vertexIndex < _currentLine.NumPoints - 1)
+                if (VertexIndex < _currentLine.NumPoints - 1)
                     return false;
                 return true;
             }
         }
-
         /// <summary>
         /// The component index of the vertex the iterator is currently at.
         /// </summary>
-        public int ComponentIndex
-        {
-            get
-            {
-                return _componentIndex;
-            }
-        }
-
+        public int ComponentIndex { get; private set; }
         /// <summary>
         /// The vertex index of the vertex the iterator is currently at.
         /// </summary>
-        public int VertexIndex
-        {
-            get
-            {
-                return _vertexIndex;
-            }
-        }
-
+        public int VertexIndex { get; private set; }
         /// <summary>
         /// Gets the <see cref="LineString" /> component the iterator is current at.
         /// </summary>
-        public ILineString Line
-        {
-            get
-            {
-                return _currentLine;
-            }
-        }
-
+        public ILineString Line => _currentLine;
         /// <summary>
         /// Gets the first <see cref="Coordinate" /> of the current segment
         /// (the coordinate of the current vertex).
         /// </summary>
-        public Coordinate SegmentStart
-        {
-            get
-            {
-                return _currentLine.GetCoordinateN(_vertexIndex);
-            }
-        }
-
+        public Coordinate SegmentStart => _currentLine.GetCoordinateN(VertexIndex);
         /// <summary>
         /// Gets the second <see cref="Coordinate" /> of the current segment
         /// (the coordinate of the next vertex).
@@ -199,14 +151,12 @@ namespace NetTopologySuite.LinearReferencing
         {
             get
             {
-                if (_vertexIndex < Line.NumPoints - 1)
-                    return _currentLine.GetCoordinateN(_vertexIndex + 1);
+                if (VertexIndex < Line.NumPoints - 1)
+                    return _currentLine.GetCoordinateN(VertexIndex + 1);
                 return null;
             }
         }
-
         //#region IEnumerator<LinearIterator.LinearElement> Members
-
         ///// <summary>
         ///// Gets the <see cref="LinearElement">element</see> in the collection
         ///// at the current position of the enumerator.
@@ -223,9 +173,7 @@ namespace NetTopologySuite.LinearReferencing
         //        return _current;
         //    }
         //}
-
         //#region IEnumerator Members
-
         ///// <summary>
         ///// Tests whether there are any vertices left to iterator over.
         ///// If <c>true</c>, then moves the iterator ahead to the next vertex and (possibly) linear component,
@@ -244,7 +192,6 @@ namespace NetTopologySuite.LinearReferencing
         //    }
         //    return HasNext();
         //}
-
         ///// <summary>
         ///// Gets the <see cref="LinearElement">element</see> in the collection
         ///// at the current position of the enumerator.
@@ -261,7 +208,6 @@ namespace NetTopologySuite.LinearReferencing
         //        return Current;
         //    }
         //}
-
         ///// <summary>
         ///// Sets the enumerator to its initial position,
         ///// which is before the first element in the collection.
@@ -275,14 +221,10 @@ namespace NetTopologySuite.LinearReferencing
         //    _componentIndex = _startComponentIndex;
         //    _vertexIndex = _startVertexIndex;
         //    LoadCurrentLine();
-
         //    _atStart = true;
         //}
-
         //#endregion IEnumerator Members
-
         //#region IDisposable Members
-
         ///// <summary>
         ///// Performs application-defined tasks associated with freeing,
         ///// releasing, or resetting unmanaged resources.
@@ -291,7 +233,6 @@ namespace NetTopologySuite.LinearReferencing
         //{
         //    Dispose(false);
         //}
-
         ///// <summary>
         /////
         ///// </summary>
@@ -302,16 +243,12 @@ namespace NetTopologySuite.LinearReferencing
         //    {
         //        // Dispose unmanaged resources
         //    }
-
         //    // Dispose managed resources
         //    _current = null;
         //    _currentLine = null;
         //}
-
         //#endregion IDisposable Members
-
         //#region IEnumerable<LinearIterator.LinearElement> Members
-
         ///// <summary>
         ///// Returns an enumerator that iterates through the collection.
         ///// </summary>
@@ -323,11 +260,8 @@ namespace NetTopologySuite.LinearReferencing
         //{
         //    return this;
         //}
-
         //#endregion IEnumerable<LinearIterator.LinearElement> Members
-
         //#region IEnumerable Members
-
         ///// <summary>
         ///// Returns an enumerator (of <see cref="LinearElement" />elements)
         ///// that iterates through a collection.
@@ -340,18 +274,14 @@ namespace NetTopologySuite.LinearReferencing
         //{
         //    return GetEnumerator();
         //}
-
         //#endregion IEnumerable Members
-
         //#region LinearElement
-
         ///// <summary>
         ///// A class that exposes <see cref="LinearIterator" /> elements.
         ///// </summary>
         //public class LinearElement
         //{
         //    private readonly LinearIterator _iterator;
-
         //    /// <summary>
         //    /// Initializes a new instance of the <see cref="LinearElement"/> class.
         //    /// </summary>
@@ -360,7 +290,6 @@ namespace NetTopologySuite.LinearReferencing
         //    {
         //        _iterator = iterator;
         //    }
-
         //    /// <summary>
         //    /// The component index of the vertex the iterator is currently at.
         //    /// </summary>
@@ -371,7 +300,6 @@ namespace NetTopologySuite.LinearReferencing
         //            return _iterator.ComponentIndex;
         //        }
         //    }
-
         //    /// <summary>
         //    /// The vertex index of the vertex the iterator is currently at.
         //    /// </summary>
@@ -382,7 +310,6 @@ namespace NetTopologySuite.LinearReferencing
         //            return _iterator.VertexIndex;
         //        }
         //    }
-
         //    /// <summary>
         //    /// Gets the <see cref="LineString" /> component the iterator is current at.
         //    /// </summary>
@@ -393,7 +320,6 @@ namespace NetTopologySuite.LinearReferencing
         //            return _iterator.Line;
         //        }
         //    }
-
         //    /// <summary>
         //    /// Checks whether the iterator cursor is pointing to the
         //    /// endpoint of a linestring.
@@ -405,7 +331,6 @@ namespace NetTopologySuite.LinearReferencing
         //            return _iterator.IsEndOfLine;
         //        }
         //    }
-
         //    /// <summary>
         //    /// Gets the first <see cref="Coordinate" /> of the current segment
         //    /// (the coordinate of the current vertex).
@@ -417,7 +342,6 @@ namespace NetTopologySuite.LinearReferencing
         //            return _iterator.SegmentStart;
         //        }
         //    }
-
         //    /// <summary>
         //    /// Gets the second <see cref="Coordinate" /> of the current segment
         //    /// (the coordinate of the next vertex).
@@ -431,7 +355,6 @@ namespace NetTopologySuite.LinearReferencing
         //        }
         //    }
         //}
-
         //#endregion LinearElement
     }
 }

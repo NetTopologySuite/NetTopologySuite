@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Noding
 {
     ///<summary>
@@ -14,7 +13,7 @@ namespace NetTopologySuite.Noding
         ///<summary>
         /// Gets/Sets the user-defined data for this segment string.
         ///</summary>
-        Object Context { get; set; }
+        object Context { get; set; }
         ///<summary>
         /// Points that make up ISegmentString
         ///</summary>
@@ -22,12 +21,11 @@ namespace NetTopologySuite.Noding
         ///<summary>
         /// Size of Coordinate Sequence
         ///</summary>
-        Int32 Count { get; }
+        int Count { get; }
         /// <summary>
         /// States whether ISegmentString is closed
         /// </summary>
-        Boolean IsClosed { get; }
-
-        LineSegment this[Int32 index] { get; set; }
+        bool IsClosed { get; }
+        LineSegment this[int index] { get; set; }
     }
 }

@@ -4,7 +4,6 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     [TestFixtureAttribute]
@@ -13,16 +12,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         private IPrecisionModel precisionModel;
         private IGeometryFactory geometryFactory;
         WKTReader reader;
-
         public AreaLengthTest()
         {
             precisionModel = new PrecisionModel(1);
             geometryFactory = new GeometryFactory(precisionModel, 0);
             reader = new WKTReader(geometryFactory);
         }
-
         private static double TOLERANCE = 1E-5;
-
         [TestAttribute]
         public void TestLength()
         {
@@ -32,7 +28,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             checkLength("POLYGON ((20 20, 40 20, 40 40, 20 40, 20 20))", 80.0);
             checkLength("POLYGON ((20 20, 40 20, 40 40, 20 40, 20 20), (25 35, 35 35, 35 25, 25 25, 25 35))", 120.0);
         }
-
         [TestAttribute]
         public void TestArea()
         {
@@ -41,18 +36,16 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             checkArea("POLYGON ((20 20, 40 20, 40 40, 20 40, 20 20))", 400.0);
             checkArea("POLYGON ((20 20, 40 20, 40 40, 20 40, 20 20), (25 35, 35 35, 35 25, 25 25, 25 35))", 300.0);
         }
-
-        public void checkLength(String wkt, double expectedValue)
+        public void checkLength(string wkt, double expectedValue)
         {
-            IGeometry g = reader.Read(wkt);
-            double len = g.Length;
+            var g = reader.Read(wkt);
+            var len = g.Length;
             //System.Console.WriteLine(len);
             Assert.AreEqual(expectedValue, len, TOLERANCE);
         }
-
-        public void checkArea(String wkt, double expectedValue)
+        public void checkArea(string wkt, double expectedValue)
         {
-            IGeometry g = reader.Read(wkt);
+            var g = reader.Read(wkt);
             Assert.AreEqual(expectedValue, g.Area, TOLERANCE);
         }
     }

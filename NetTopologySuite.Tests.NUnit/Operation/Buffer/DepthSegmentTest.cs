@@ -30,19 +30,14 @@
  *     (250)385-6040
  *     www.vividsolutions.com
  */
-
 using NUnit.Framework;
 using NetTopologySuite.Operation.Buffer;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 {
-
-
     /**
      * @version 1.7
      */
-
     [TestFixture]
     public class DepthSegmentTest
     {
@@ -53,7 +48,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             var ds1 = depthSeg(0.3, 1.1, 0.7, 0.2);
             checkContract(ds0, ds1);
         }
-
         [Test]
         public void TestContract2()
         {
@@ -61,22 +55,19 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             var ds1 = depthSeg(1.0, 0.9, 1.9, 1.4);
             checkContract(ds0, ds1);
         }
-
         private void checkContract(
             SubgraphDepthLocater.DepthSegment ds0,
             SubgraphDepthLocater.DepthSegment ds1)
         {
             // should never have ds1 < ds2 && ds2 < ds1
-            int cmp0 = ds0.CompareTo(ds1);
-            int cmp1 = ds1.CompareTo(ds0);
+            var cmp0 = ds0.CompareTo(ds1);
+            var cmp1 = ds1.CompareTo(ds0);
             var isFail = cmp0 != 0 && cmp0 == cmp1;
             Assert.IsTrue(!isFail);
         }
-
         private SubgraphDepthLocater.DepthSegment depthSeg(double x0, double y0, double x1, double y1)
         {
             return new SubgraphDepthLocater.DepthSegment(new LineSegment(x0, y0, x1, y1), 0);
         }
-
     }
 }

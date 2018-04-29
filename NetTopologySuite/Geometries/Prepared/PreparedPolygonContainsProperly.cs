@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Noding;
-
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
@@ -32,10 +31,9 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if the polygon properly contains the geometry</returns>
         public static bool ContainsProperly(PreparedPolygon prep, IGeometry geom)
         {
-            PreparedPolygonContainsProperly polyInt = new PreparedPolygonContainsProperly(prep);
+            var polyInt = new PreparedPolygonContainsProperly(prep);
             return polyInt.ContainsProperly(geom);
         }
-
         ///<summary>
         /// Creates an instance of this operation.
         ///</summary>
@@ -44,7 +42,6 @@ namespace NetTopologySuite.Geometries.Prepared
             : base(prepPoly)
         {
         }
-
         ///<summary>
         /// Tests whether this PreparedPolygon containsProperly a given geometry.
         ///</summary>
@@ -58,17 +55,15 @@ namespace NetTopologySuite.Geometries.Prepared
              *
              * If a point of any test components does not lie in the target interior, result is false
              */
-            bool isAllInPrepGeomAreaInterior = IsAllTestComponentsInTargetInterior(geom);
+            var isAllInPrepGeomAreaInterior = IsAllTestComponentsInTargetInterior(geom);
             if (!isAllInPrepGeomAreaInterior) return false;
-
             /*
              * If any segments intersect, result is false.
              */
-            IList<ISegmentString> lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
-            bool segsIntersect = prepPoly.IntersectionFinder.Intersects(lineSegStr);
+            var lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
+            var segsIntersect = prepPoly.IntersectionFinder.Intersects(lineSegStr);
             if (segsIntersect)
                 return false;
-
             /*
              * Given that no segments intersect, if any vertex of the target
              * is contained in some test component.
@@ -77,10 +72,9 @@ namespace NetTopologySuite.Geometries.Prepared
             if (geom is IPolygonal)
             {
                 // TODO: generalize this to handle GeometryCollections
-                bool isTargetGeomInTestArea = IsAnyTargetComponentInAreaTest(geom, prepPoly.RepresentativePoints);
+                var isTargetGeomInTestArea = IsAnyTargetComponentInAreaTest(geom, prepPoly.RepresentativePoints);
                 if (isTargetGeomInTestArea) return false;
             }
-
             return true;
         }
     }

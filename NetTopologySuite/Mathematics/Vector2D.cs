@@ -1,13 +1,11 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Utilities;
-
 #if HAS_SYSTEM_ICLONEABLE
 using ICloneable = System.ICloneable;
 #else
 using ICloneable = GeoAPI.ICloneable;
 #endif
-
 namespace NetTopologySuite.Mathematics
 {
     /// <summary>
@@ -26,7 +24,6 @@ namespace NetTopologySuite.Mathematics
         {
             return new Vector2D(x, y);
         }
-
         /// <summary>
         /// Creates a new vector from an existing one.
         /// </summary>
@@ -36,8 +33,6 @@ namespace NetTopologySuite.Mathematics
         {
             return new Vector2D(v);
         }
-
-
         /// <summary>
         /// Creates a vector from a <see cref="Coordinate"/>.
         /// </summary>
@@ -47,9 +42,8 @@ namespace NetTopologySuite.Mathematics
         {
             return new Vector2D(coord);
         }
-
         ///<summary>Creates a vector with the direction and magnitude
-        /// of the difference between the 
+        /// of the difference between the
         /// <paramref name="to"/> and <paramref name="from"/> <see cref="Coordinate"/>s.
         /// </summary>
         /// <param name="from">The origin coordinate</param>
@@ -59,24 +53,18 @@ namespace NetTopologySuite.Mathematics
         {
             return new Vector2D(from, to);
         }
-
         /**
          * The X component of this vector.
          */
-        private readonly double _x;
-
         /**
          * The Y component of this vector.
          */
-        private readonly double _y;
-
         /// <summary>
         /// Creates an new vector instance
         /// </summary>
         public Vector2D() : this(0.0, 0.0)
         {
         }
-
         /// <summary>
         /// Creates a new vector instance using the provided <paramref name="x"/> and <paramref name="y"/> ordinates
         /// </summary>
@@ -84,32 +72,29 @@ namespace NetTopologySuite.Mathematics
         /// <param name="y">The y-ordinate value</param>
         public Vector2D(double x, double y)
         {
-            _x = x;
-            _y = y;
+            X = x;
+            Y = y;
         }
-
         /// <summary>
         /// Creates a new vector instance based on <paramref name="v"/>.
         /// </summary>
         /// <param name="v">The vector</param>
         public Vector2D(Vector2D v)
         {
-            _x = v._x;
-            _y = v._y;
+            X = v.X;
+            Y = v.Y;
         }
-
         /// <summary>Creates a new vector with the direction and magnitude
-        /// of the difference between the 
+        /// of the difference between the
         /// <paramref name="to"/> and <paramref name="from"/> <see cref="Coordinate"/>s.
         /// </summary>
         /// <param name="from">The origin coordinate</param>
         /// <param name="to">The destination coordinate</param>
         public Vector2D(Coordinate from, Coordinate to)
         {
-            _x = to.X - from.X;
-            _y = to.Y - from.Y;
+            X = to.X - from.X;
+            Y = to.Y - from.Y;
         }
-
         /// <summary>
         /// Creates a vector from a <see cref="Coordinate"/>.
         /// </summary>
@@ -117,26 +102,17 @@ namespace NetTopologySuite.Mathematics
         /// <returns>A new vector</returns>
         public Vector2D(Coordinate v)
         {
-            _x = v.X;
-            _y = v.Y;
+            X = v.X;
+            Y = v.Y;
         }
-
         /// <summary>
         /// Gets the x-ordinate value
         /// </summary>
-        public double X
-        {
-            get { return _x; }
-        }
-
+        public double X { get; }
         /// <summary>
         /// Gets the y-ordinate value
         /// </summary>
-        public double Y
-        {
-            get { return _y; }
-        }
-
+        public double Y { get; }
         /// <summary>
         /// Gets the ordinate values by index
         /// </summary>
@@ -149,15 +125,14 @@ namespace NetTopologySuite.Mathematics
                 switch (index)
                 {
                     case 0:
-                        return _x;
+                        return X;
                     case 1:
-                        return _y;
+                        return Y;
                     default:
                         throw new System.ArgumentOutOfRangeException("index");
                 }
             }
         }
-
         /// <summary>
         /// Adds <paramref name="v"/> to this vector instance.
         /// </summary>
@@ -165,9 +140,8 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The result vector</returns>
         public Vector2D Add(Vector2D v)
         {
-            return Create(_x + v._x, _y + v._y);
+            return Create(X + v.X, Y + v.Y);
         }
-
         /// <summary>
         /// Subtracts <paramref name="v"/> from this vector instance
         /// </summary>
@@ -175,9 +149,8 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The result vector</returns>
         public Vector2D Subtract(Vector2D v)
         {
-            return Create(_x - v._x, _y - v._y);
+            return Create(X - v.X, Y - v.Y);
         }
-
         /// <summary>
         /// Multiplies the vector by a scalar value.
         /// </summary>
@@ -185,9 +158,8 @@ namespace NetTopologySuite.Mathematics
         /// <returns>A new vector with the value v * d</returns>
         public Vector2D Multiply(double d)
         {
-            return Create(_x * d, _y * d);
+            return Create(X * d, Y * d);
         }
-
         /// <summary>
         /// Divides the vector by a scalar value.
         /// </summary>
@@ -195,36 +167,32 @@ namespace NetTopologySuite.Mathematics
         /// <returns>A new vector with the value v / d</returns>
         public Vector2D Divide(double d)
         {
-            return Create(_x / d, _y / d);
+            return Create(X / d, Y / d);
         }
-
         /// <summary>
         /// Negates this vector
         /// </summary>
         /// <returns>A new vector with [-_x, -_y]</returns>
         public Vector2D Negate()
         {
-            return Create(-_x, -_y);
+            return Create(-X, -Y);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public double Length()
         {
-            return System.Math.Sqrt(_x * _x + _y * _y);
+            return System.Math.Sqrt(X * X + Y * Y);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public double LengthSquared()
         {
-            return _x * _x + _y * _y;
+            return X * X + Y * Y;
         }
-
         /// <summary>
         /// Normalizes the vector
         /// </summary>
@@ -236,9 +204,8 @@ namespace NetTopologySuite.Mathematics
                 return Divide(length);
             return Create(0.0, 0.0);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
@@ -246,14 +213,13 @@ namespace NetTopologySuite.Mathematics
         {
             return WeightedSum(v, 0.5);
         }
-
         /// <summary>
         /// Computes the weighted sum of this vector
         /// with another vector,
         /// with this vector contributing a fraction
         /// of <tt>frac</tt> to the total.
         /// <para/>
-        /// In other words, 
+        /// In other words,
         /// <pre>
         /// sum = frac * this + (1 - frac) * v
         /// </pre>
@@ -264,10 +230,9 @@ namespace NetTopologySuite.Mathematics
         public Vector2D WeightedSum(Vector2D v, double frac)
         {
             return Create(
-                    frac * _x + (1.0 - frac) * v._x,
-                    frac * _y + (1.0 - frac) * v._y);
+                    frac * X + (1.0 - frac) * v.X,
+                    frac * Y + (1.0 - frac) * v.Y);
         }
-
         /// <summary>
         /// Computes the distance between this vector and another one.
         /// </summary>
@@ -275,11 +240,10 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The distance between the vectors</returns>
         public double Distance(Vector2D v)
         {
-            double delx = v._x - _x;
-            double dely = v._y - _y;
+            var delx = v.X - X;
+            var dely = v.Y - Y;
             return System.Math.Sqrt(delx * delx + dely * dely);
         }
-
         /// <summary>
         /// Computes the dot-product of two vectors
         /// </summary>
@@ -287,20 +251,18 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The dot product of the vectors</returns>
         public double Dot(Vector2D v)
         {
-            return _x * v._x + _y * v._y;
+            return X * v.X + Y * v.Y;
         }
-
         /// <summary>
         /// Computes the angle this vector describes to the horizontal axis
         /// </summary>
         /// <returns>The angle</returns>
         public double Angle()
         {
-            return System.Math.Atan2(_y, _x);
+            return System.Math.Atan2(Y, X);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
@@ -308,9 +270,8 @@ namespace NetTopologySuite.Mathematics
         {
             return AngleUtility.Diff(v.Angle(), Angle());
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
@@ -319,7 +280,6 @@ namespace NetTopologySuite.Mathematics
             var a1 = Angle();
             var a2 = v.Angle();
             var angDel = a2 - a1;
-
             // normalize, maintaining orientation
             if (angDel <= -System.Math.PI)
                 return angDel + AngleUtility.PiTimes2;
@@ -327,7 +287,6 @@ namespace NetTopologySuite.Mathematics
                 return angDel - AngleUtility.PiTimes2;
             return angDel;
         }
-
         /// <summary>
         /// Rotates this vector by <paramref name="angle"/>
         /// </summary>
@@ -335,14 +294,13 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The rotated vector</returns>
         public Vector2D Rotate(double angle)
         {
-            double cos = System.Math.Cos(angle);
-            double sin = System.Math.Sin(angle);
+            var cos = System.Math.Cos(angle);
+            var sin = System.Math.Sin(angle);
             return Create(
-                    _x * cos - _y * sin,
-                    _x * sin + _y * cos
+                    X * cos - Y * sin,
+                    X * sin + Y * cos
                     );
         }
-
         /// <summary>
         /// Rotates a vector by a given number of quarter-circles (i.e. multiples of 90
         /// degrees or Pi/2 radians). A positive number rotates counter-clockwise, a
@@ -362,28 +320,26 @@ namespace NetTopologySuite.Mathematics
             switch (nQuad)
             {
                 case 0:
-                    return Create(_x, _y);
+                    return Create(X, Y);
                 case 1:
-                    return Create(-_y, _x);
+                    return Create(-Y, X);
                 case 2:
-                    return Create(-_x, -_y);
+                    return Create(-X, -Y);
                 case 3:
-                    return Create(_y, -_x);
+                    return Create(Y, -X);
             }
             Assert.ShouldNeverReachHere();
             return null;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
         public bool IsParallel(Vector2D v)
         {
-            return 0 == CGAlgorithmsDD.SignOfDet2x2(_x, _y, v._x, v._y);
+            return 0 == CGAlgorithmsDD.SignOfDet2x2(X, Y, v.X, v.Y);
         }
-
         /// <summary>
         /// Gets a <see cref="Coordinate"/> made of this vector translated by <paramref name="coord"/>.
         /// </summary>
@@ -391,19 +347,16 @@ namespace NetTopologySuite.Mathematics
         /// <returns>A coordinate</returns>
         public Coordinate Translate(Coordinate coord)
         {
-            return new Coordinate(_x + coord.X, _y + coord.Y);
+            return new Coordinate(X + coord.X, Y + coord.Y);
         }
-
         /// <summary>
         /// Gets a <see cref="Coordinate"/> from this vector
         /// </summary>
         /// <returns>A coordinate</returns>
         public Coordinate ToCoordinate()
         {
-            return new Coordinate(_x, _y);
+            return new Coordinate(X, Y);
         }
-
-
         /// <summary>
         /// Creates a copy of this vector
         /// </summary>
@@ -412,16 +365,14 @@ namespace NetTopologySuite.Mathematics
         {
             return new Vector2D(this);
         }
-
         /// <summary>
         /// Gets a string representation of this vector
         /// </summary>
         /// <returns>A string representing this vector</returns>
         public override string ToString()
         {
-            return "[" + _x + ", " + _y + "]";
+            return "[" + X + ", " + Y + "]";
         }
-
         /// <summary>
         /// Tests if a vector <paramref name="o"/> has the same values for the x and y components.
         /// </summary>
@@ -433,9 +384,8 @@ namespace NetTopologySuite.Mathematics
 			    return false;
 		    }
 		    var v = (Vector2D) o;
-		    return _x == v._x && _y == v._y;
+		    return X == v.X && Y == v.Y;
 	    }
-
         /// <summary>
         /// Gets a hashcode for this vector.
         /// </summary>
@@ -444,11 +394,9 @@ namespace NetTopologySuite.Mathematics
         {
             // Algorithm from Effective Java by Joshua Bloch
             var result = 17;
-            result = 37 * result + Coordinate.GetHashCode(_x);
-            result = 37 * result + Coordinate.GetHashCode(_y);
+            result = 37 * result + Coordinate.GetHashCode(X);
+            result = 37 * result + Coordinate.GetHashCode(Y);
             return result;
         }
-
-
     }
 }

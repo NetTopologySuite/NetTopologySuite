@@ -3,7 +3,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NUnit.Framework;
 using NetTopologySuite.Mathematics;
-
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     /// <summary>
@@ -12,7 +11,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     [TestFixtureAttribute]
     public class OrientationIndexFailureTest
     {
-
         /// <summary>
         /// This is included to confirm this test is operating correctly
         /// </summary>
@@ -22,7 +20,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(OrientationIndexTest.IsAllOrientationsEqual(
                 OrientationIndexTest.GetCoordinates("LINESTRING ( 0 0, 0 1, 1 1)")));
         }
-
         [TestAttribute/*, ExpectedException(typeof(AssertionException))*/]
         public void TestBadCCW()
         {
@@ -34,7 +31,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                                };
             CheckOrientation(pts);
         }
-
         [TestAttribute/*, ExpectedException(typeof(AssertionException))*/]
         public void TestBadCCW2()
         {
@@ -46,7 +42,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                                };
             CheckOrientation(pts);
         }
-
         [TestAttribute/*, ExpectedException(typeof(AssertionException))*/]
         public void TestBadCCW3()
         {
@@ -58,7 +53,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                                };
             CheckOrientation(pts);
         }
-
         [TestAttribute]
         public void TestBadCCW4()
         {
@@ -70,7 +64,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                                };
             CheckOrientation(pts);
         }
-
         [TestAttribute]
         public void TestBadCCW5()
         {
@@ -96,7 +89,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     CheckShewchuk(pts, false);
     CheckOriginalJTS(pts, false);
   }
-
   [TestAttribute]
         public void TestBadCCW7_2()
   {
@@ -111,8 +103,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     CheckShewchuk(pts, true);
     CheckOriginalJTS(pts, true);
   }
-
-
   public void TestBadCCW6()
   {
     // from JTS Convex Hull "Almost collinear" unit test
@@ -123,34 +113,26 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     };
     CheckOrientation(pts);
   }
-
         private static void CheckOrientation(Coordinate[] pts)
         {
             // this should succeed
             CheckDD(pts, true);
             CheckShewchuk(pts, true);
-
             // this is expected to fail
             CheckOriginalJTS(pts, false);
         }
-
         private static void CheckShewchuk(Coordinate[] pts, bool expected)
         {
             Assert.IsTrue(expected == IsAllOrientationsEqualSD(pts), "Shewchuk");
         }
-
         private static void CheckOriginalJTS(Coordinate[] pts, bool expected)
         {
             Assert.IsTrue(expected == IsAllOrientationsEqualRD(pts), "NTS RobustDeterminant FAIL");
         }
-
         private static void CheckDD(Coordinate[] pts, bool expected)
         {
             Assert.IsTrue(expected == IsAllOrientationsEqualDD(pts), "DD");
         }
-  
-
-
         public static bool IsAllOrientationsEqual(
             double p0x, double p0y,
             double p1x, double p1y,
@@ -165,7 +147,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 throw new InvalidOperationException("High-precision orientation computation FAILED");
             return OrientationIndexTest.IsAllOrientationsEqual(pts);
         }
-
         public static bool IsAllOrientationsEqualDD(Coordinate[] pts)
         {
             var orient = new int[3];
@@ -174,39 +155,33 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             orient[2] = NetTopologySuite.Algorithm.CGAlgorithmsDD.OrientationIndex(pts[2], pts[0], pts[1]);
             return orient[0] == orient[1] && orient[0] == orient[2];
         }
-
         private static int OrientationIndexDD(Coordinate p1, Coordinate p2, Coordinate q)
         {
-            DD dx1 = DD.ValueOf(p2.X) - p1.X;
-            DD dy1 = DD.ValueOf(p2.Y) - p1.Y;
-            DD dx2 = DD.ValueOf(q.X) - p2.X;
-            DD dy2 = DD.ValueOf(q.Y) - p2.Y;
-
+            var dx1 = DD.ValueOf(p2.X) - p1.X;
+            var dy1 = DD.ValueOf(p2.Y) - p1.Y;
+            var dx2 = DD.ValueOf(q.X) - p2.X;
+            var dy2 = DD.ValueOf(q.Y) - p2.Y;
             return SignOfDet2x2DD(dx1, dy1, dx2, dy2);
         }
-
         private static int SignOfDet2x2DD(DD x1, DD y1, DD x2, DD y2)
         {
-            DD det = x1 * y2 - y1 * x2;
+            var det = x1 * y2 - y1 * x2;
             if (det.IsZero)
                 return 0;
             if (det.IsNegative)
                 return -1;
             return 1;
-
         }
-
         public static bool IsAllOrientationsEqualSD(Coordinate[] pts)
         {
-            int orient0 = ShewchuksDeterminant.OrientationIndex(pts[0], pts[1], pts[2]);
-            int orient1 = ShewchuksDeterminant.OrientationIndex(pts[1], pts[2], pts[0]);
-            int orient2 = ShewchuksDeterminant.OrientationIndex(pts[2], pts[0], pts[1]);
+            var orient0 = ShewchuksDeterminant.OrientationIndex(pts[0], pts[1], pts[2]);
+            var orient1 = ShewchuksDeterminant.OrientationIndex(pts[1], pts[2], pts[0]);
+            var orient2 = ShewchuksDeterminant.OrientationIndex(pts[2], pts[0], pts[1]);
             return orient0 == orient1 && orient0 == orient2;
         }
-
         public static bool IsAllOrientationsEqualRD(Coordinate[] pts)
         {
-            int[] orient = new int[3];
+            var orient = new int[3];
             orient[0] = RobustDeterminant.OrientationIndex(pts[0], pts[1], pts[2]);
             orient[1] = RobustDeterminant.OrientationIndex(pts[1], pts[2], pts[0]);
             orient[2] = RobustDeterminant.OrientationIndex(pts[2], pts[0], pts[1]);

@@ -5,7 +5,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Planargraph;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Samples.Tests.Github
 {
     [TestFixture, Ignore("Problem in Framework")]
@@ -18,14 +17,12 @@ namespace NetTopologySuite.Samples.Tests.Github
             failed |= TestWktWkb(1, GeometryFactory.Default, Issue27Fixture.Poly2Wkt, Issue27Fixture.Poly2Wkb);
             Assert.IsFalse(failed);
         }
-
         private static bool TestWktWkb(int number, IGeometryFactory factory, string wkt, string wkb)
         {
-            WKTReader r = new WKTReader(factory);
-            IGeometry wktGeom = r.Read(wkt);
-            WKBReader s = new WKBReader(factory);
-            IGeometry wkbGeom = s.Read(WKBReader.HexToBytes(wkb));
-
+            var r = new WKTReader(factory);
+            var wktGeom = r.Read(wkt);
+            var s = new WKBReader(factory);
+            var wkbGeom = s.Read(WKBReader.HexToBytes(wkb));
             try
             {
                 Assert.AreEqual(wkb, WKBWriter.ToHex(wktGeom.AsBinary()), "wkb's don't match");
@@ -46,7 +43,6 @@ namespace NetTopologySuite.Samples.Tests.Github
                 return true;
             }
         }
-
         [Test]
         public void TestNumber()
         {
@@ -60,9 +56,7 @@ namespace NetTopologySuite.Samples.Tests.Github
             theBytes[0] = (byte)(theBytes[0] + 1);
             theWkbedNumber = BitConverter.ToDouble(theBytes, 0);
             Console.WriteLine("0x{1} -> {0:R}", theWkbedNumber, WKBWriter.ToHex(theBytes));
-
             Assert.AreEqual(theNumber, theWkbedNumber);
         }
-
     }
 }

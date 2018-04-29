@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Algorithm
 {
     /// <summary>
@@ -18,7 +17,6 @@ namespace NetTopologySuite.Algorithm
         /// A value that indicates an orientation of clockwise, or a right turn.
         /// </summary>
         public const int Right              = Clockwise;
-
         /// <summary>
         /// A value that indicates an orientation of counterclockwise, or a left turn.
         /// </summary>
@@ -27,7 +25,6 @@ namespace NetTopologySuite.Algorithm
         /// A value that indicates an orientation of counterclockwise, or a left turn.
         /// </summary>
         public const int Left               = CounterClockwise;
-
         /// <summary>
         /// A value that indicates an orientation of collinear, or no turn (straight).
         /// </summary>
@@ -36,7 +33,6 @@ namespace NetTopologySuite.Algorithm
         /// A value that indicates an orientation of collinear, or no turn (straight).
         /// </summary>
         public const int Straight           = Collinear;
-
         /// <summary>
         /// Returns the index of the direction of the point <c>q</c>
         /// relative to a vector specified by <c>p1-p2</c>.
@@ -67,7 +63,6 @@ namespace NetTopologySuite.Algorithm
              * Coordinate p = new Coordinate(186.80814046338352, 46.28973405831556);
              * int orient = orientationIndex(p0, p1, p);
              * int orientInv = orientationIndex(p1, p0, p);
-
              * A way to force consistent results is to normalize the orientation of the vector
              * using the following code.
              * However, this may make the results of orientationIndex inconsistent
@@ -76,18 +71,15 @@ namespace NetTopologySuite.Algorithm
              *
              */
             return (int)Orientation.Index(p1, p2, q);
-
             /*
             //Testing only
             return ShewchuksDeterminant.OrientationIndex(p1, p2, q);
              */
-
             /*
             //previous implementation - not quite fully robust
             return RobustDeterminant.OrientationIndex(p1, p2, q);
              */
         }
-
         /// <summary>
         /// Tests whether a point lies inside or on a ring.
         /// </summary>
@@ -105,7 +97,6 @@ namespace NetTopologySuite.Algorithm
         {
             return PointLocation.IsInRing(p, ring);
         }
-
         /// <summary>
         /// Tests whether a point lies inside or on a ring.
         /// </summary>
@@ -123,7 +114,6 @@ namespace NetTopologySuite.Algorithm
         {
             return PointLocation.IsInRing(p, ring);
         }
-
         ///<summary>
         /// Determines whether a point lies in the interior, on the boundary, or in the exterior of a ring.
         ///</summary>
@@ -139,7 +129,6 @@ namespace NetTopologySuite.Algorithm
         {
             return PointLocation.LocateInRing(p, ring);
         }
-
         ///<summary>
         /// Determines whether a point lies in the interior, on the boundary, or in the exterior of a ring.
         ///</summary>
@@ -155,7 +144,6 @@ namespace NetTopologySuite.Algorithm
         {
             return PointLocation.LocateInRing(p, ring);
         }
-
         /// <summary>
         /// Tests whether a point lies on the line segments defined by a
         /// list of coordinates.
@@ -170,7 +158,6 @@ namespace NetTopologySuite.Algorithm
         {
             return PointLocation.IsOnLine(p, pt);
         }
-
         /// <summary>
         /// Computes whether a ring defined by an array of <see cref="Coordinate" />s is oriented counter-clockwise.
         /// </summary>>
@@ -189,7 +176,6 @@ namespace NetTopologySuite.Algorithm
         {
             return Orientation.IsCCW(ring);
         }
-
         /// <summary>
         /// Computes whether a ring defined by a coordinate sequence is oriented counter-clockwise.
         /// </summary>>
@@ -208,8 +194,6 @@ namespace NetTopologySuite.Algorithm
         {
             return Orientation.IsCCW(ring);
         }
-
-
         /// <summary>
         /// Computes the orientation of a point q to the directed line segment p1-p2.
         /// The orientation of a point relative to a directed line segment indicates
@@ -228,7 +212,6 @@ namespace NetTopologySuite.Algorithm
         {
             return (int)Orientation.Index(p1, p2, q);
         }
-
         /// <summary>
         /// Computes the distance from a point p to a line segment AB.
         /// Note: NON-ROBUST!
@@ -242,7 +225,6 @@ namespace NetTopologySuite.Algorithm
         {
             return DistanceComputer.PointToSegment(p, A, B);
         }
-
         /// <summary>
         /// Computes the perpendicular distance from a point p
         /// to the (infinite) line containing the points AB
@@ -256,7 +238,6 @@ namespace NetTopologySuite.Algorithm
         {
             return DistanceComputer.PointToLinePerpendicular(p, A, B);
         }
-
         /// <summary>
         /// Computes the distance from a point to a sequence of line segments.
         /// </summary>
@@ -269,8 +250,6 @@ namespace NetTopologySuite.Algorithm
         {
             return DistanceComputer.PointToSegmentString(p, line);
         }
-
-
         /// <summary>
         /// Computes the distance from a line segment AB to a line segment CD.
         /// Note: NON-ROBUST!
@@ -285,7 +264,6 @@ namespace NetTopologySuite.Algorithm
         {
             return DistanceComputer.SegmentToSegment(A, B, C, D);
         }
-
         /// <summary>
         /// Computes the signed area for a ring.
         /// <remarks>
@@ -306,7 +284,6 @@ namespace NetTopologySuite.Algorithm
         {
             return Area.OfRingSigned(ring);
         }
-
         /// <summary>
         /// Computes the signed area for a ring.
         /// <remarks>
@@ -327,7 +304,6 @@ namespace NetTopologySuite.Algorithm
         {
             return Area.OfRingSigned(ring);
         }
-
         /// <summary>
         /// Computes the length of a <c>LineString</c> specified by a sequence of points.
         /// </summary>

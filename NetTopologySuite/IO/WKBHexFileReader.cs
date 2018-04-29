@@ -4,11 +4,10 @@ using System.IO;
 using GeoAPI.Geometries;
 using GeoAPI.IO;
 using RTools_NTS.Util;
-
 namespace NetTopologySuite.IO
 {
     /// <summary>
-    /// Reads a sequence of {@link Geometry}s in WKBHex format 
+    /// Reads a sequence of {@link Geometry}s in WKBHex format
     /// from a text file.
     /// Each WKBHex geometry must be on a single line
     /// The geometries in the file may be separated by any amount
@@ -18,7 +17,6 @@ namespace NetTopologySuite.IO
     public class WKBHexFileReader
     {
         private readonly IBinaryGeometryReader _wkbReader;
-
         /// <summary>
         /// Creates a new <see cref="WKBHexFileReader"/> given the
         /// <see cref="WKBReader"/> to use to parse the geometries.
@@ -28,21 +26,17 @@ namespace NetTopologySuite.IO
         {
             if (wkbReader == null)
                 throw new ArgumentNullException("wkbReader");
-
             Limit = -1;
             _wkbReader = wkbReader;
         }
-
         /// <summary>
         /// Gets or sets a value indicating the maximum number of geometries to read
         /// </summary>
         public int Limit { get; set; }
-
         /// <summary>
         /// Gets or sets the number of geometries to skip before storing.
         /// </summary>
         public int Offset { get; set; }
-
 #if FEATURE_FILE_IO
         /// <summary>
         /// Reads a sequence of geometries.<br/>
@@ -58,7 +52,6 @@ namespace NetTopologySuite.IO
         {
             if (string.IsNullOrEmpty(file))
                 throw new ArgumentNullException("file");
-
             // do this here so that constructors don't throw exceptions
             using (var stream = new FileStream(file, FileMode.Open, FileAccess.Read))
             {
@@ -66,7 +59,6 @@ namespace NetTopologySuite.IO
             }
         }
 #endif
-
         /// <summary>
         /// Reads a sequence of geometries.<br/>
         /// If an <see cref="Offset"/> is specified, geometries read up to the offset count are skipped.
@@ -81,19 +73,15 @@ namespace NetTopologySuite.IO
         {
             if (stream == null)
                 throw new ArgumentNullException("stream");
-
             if (!stream.CanRead)
                 throw new Exception("Stream must be readable");
             if (!stream.CanSeek)
                 throw new Exception("Stream must be seekable");
-
             using (var sr = new StreamReader(stream))
             {
                 return Read(sr);
             }
-
         }
-
         /// <summary>
         /// Reads a sequence of geometries.<br/>
         /// If an <see cref="Offset"/> is specified, geometries read up to the offset count are skipped.
@@ -110,7 +98,6 @@ namespace NetTopologySuite.IO
             {
                 var line = streamReader.ReadLine();
                 if (string.IsNullOrEmpty(line)) continue;
-
                 var g = _wkbReader.Read(WKBReader.HexToBytes(line));
                 if (count >= Offset)
                     geoms.Add(g);
@@ -118,7 +105,6 @@ namespace NetTopologySuite.IO
             }
             return geoms;
         }
-
         /// <summary>
         /// Tests if reader has reached limit
         /// </summary>
@@ -126,23 +112,20 @@ namespace NetTopologySuite.IO
         /// <returns><value>true</value> if <see cref="Limit"/> number of geometries has been read.</returns>
         private bool IsAtLimit(ICollection<IGeometry> geoms)
         {
-            if (Limit < 0) 
+            if (Limit < 0)
                 return false;
             return geoms.Count >= Limit;
         }
-
         /// <summary>
         /// Tests if reader is at EOF.
         /// </summary>
         private static bool IsAtEndOfFile(StreamReader bufferedReader)
         {
             var position = bufferedReader.BaseStream.Position;
-
             var tokenizer = new StreamTokenizer(bufferedReader);
             Token t;
             if (!tokenizer.NextToken(out t) || t is EofToken)
                 return true;
-
             bufferedReader.BaseStream.Seek(position, SeekOrigin.Begin);
             return false;
         }

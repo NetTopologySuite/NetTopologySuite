@@ -1,7 +1,6 @@
 ﻿namespace NetTopologySuite.CoordinateSystems
 {
     using System.Collections.Generic;
-
     /// <summary>
     /// Base class for all ICRSObject implementing types
     /// </summary>
@@ -14,7 +13,6 @@
         //[JsonProperty(PropertyName = "type", Required = Required.Always)]
         //[JsonConverter(typeof(CamelCaseStringEnumConverter))]
         public CRSTypes Type { get; internal set; }
-
         /// <summary>
         /// Gets the properties.
         /// </summary>

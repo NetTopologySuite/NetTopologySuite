@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries
 {
     ///<summary>
@@ -14,10 +13,10 @@ namespace NetTopologySuite.Geometries
     /// ordinate dimensions above the limit will not be compared.
     /// </para>
     /// <para>
-    /// If different behaviour is required for comparing size, dimension, 
+    /// If different behaviour is required for comparing size, dimension,
     /// or coordinate values, any or all methods can be overridden.</para>
     /// </remarks>
-    public class CoordinateSequenceComparator : IComparer<ICoordinateSequence> 
+    public class CoordinateSequenceComparator : IComparer<ICoordinateSequence>
     {
         ///<summary>
         /// Compare two <code>double</code>s, allowing for NaN values.
@@ -30,22 +29,18 @@ namespace NetTopologySuite.Geometries
         {
             if (a < b) return -1;
             if (a > b) return 1;
-
-            if (Double.IsNaN(a))
+            if (double.IsNaN(a))
             {
-                if (Double.IsNaN(b)) return 0;
+                if (double.IsNaN(b)) return 0;
                 return -1;
             }
-
-            if (Double.IsNaN(b)) return 1;
+            if (double.IsNaN(b)) return 1;
             return 0;
         }
-
         /// <summary>
         /// The number of dimensions to test
         /// </summary>
         protected int DimensionLimit;
-
         /// <summary>
         /// Creates a comparator which will test all dimensions.
         /// </summary>
@@ -53,7 +48,6 @@ namespace NetTopologySuite.Geometries
         {
             DimensionLimit = int.MaxValue;
         }
-
         /// <summary>
         /// Creates a comparator which will test only the specified number of dimensions.
         /// </summary>
@@ -62,20 +56,18 @@ namespace NetTopologySuite.Geometries
         {
             DimensionLimit = dimensionLimit;
         }
-
         ///<summary>
         /// Compares two <see cref="ICoordinateSequence" />s for relative order.
         ///</summary>
         /// <param name="o1">A coordinate sequence</param>
         /// <param name="o2">A coordinate sequence</param>
         /// <returns>-1, 0, or 1 depending on whether o1 is less than, equal to, or greater than o2</returns>
-        public int Compare(Object o1, Object o2)
+        public int Compare(object o1, object o2)
         {
-            ICoordinateSequence s1 = (ICoordinateSequence)o1;
-            ICoordinateSequence s2 = (ICoordinateSequence)o2;
+            var s1 = (ICoordinateSequence)o1;
+            var s2 = (ICoordinateSequence)o2;
             return Compare(s1, s2);
         }
-
         ///<summary>
         /// Compares the same coordinate of two <see cref="ICoordinateSequence"/>s
         ///</summary>
@@ -85,16 +77,15 @@ namespace NetTopologySuite.Geometries
         /// <param name="dimension">the number of dimensions to test</param>
         protected int CompareCoordinate(ICoordinateSequence s1, ICoordinateSequence s2, int i, int dimension)
         {
-            for (int d = 0; d < dimension; d++)
+            for (var d = 0; d < dimension; d++)
             {
-                double ord1 = s1.GetOrdinate(i, (Ordinate)d);
-                double ord2 = s2.GetOrdinate(i, (Ordinate)d);
-                int comp = Compare(ord1, ord2);
+                var ord1 = s1.GetOrdinate(i, (Ordinate)d);
+                var ord2 = s2.GetOrdinate(i, (Ordinate)d);
+                var comp = Compare(ord1, ord2);
                 if (comp != 0) return comp;
             }
             return 0;
         }
-
         /// <summary>
         /// Compares two <see cref="ICoordinateSequence"/>s for relative order.
         /// </summary>
@@ -103,40 +94,35 @@ namespace NetTopologySuite.Geometries
         /// <returns>-1, 0, or 1 depending on whether s1 is less than, equal to, or greater than s2</returns>
         public int Compare(ICoordinateSequence s1, ICoordinateSequence s2)
         {
-            int size1 = s1.Count;
-            int size2 = s2.Count;
-
-            int dim1 = s1.Dimension;
-            int dim2 = s2.Dimension;
-
-            int minDim = dim1;
+            var size1 = s1.Count;
+            var size2 = s2.Count;
+            var dim1 = s1.Dimension;
+            var dim2 = s2.Dimension;
+            var minDim = dim1;
             if (dim2 < minDim)
                 minDim = dim2;
-            bool dimLimited = false;
+            var dimLimited = false;
             if (DimensionLimit <= minDim)
             {
                 minDim = DimensionLimit;
                 dimLimited = true;
             }
-
             // lower dimension is less than higher
             if (!dimLimited)
             {
                 if (dim1 < dim2) return -1;
                 if (dim1 > dim2) return 1;
             }
-
             // lexicographic ordering of point sequences
-            int i = 0;
+            var i = 0;
             while (i < size1 && i < size2)
             {
-                int ptComp = CompareCoordinate(s1, s2, i, minDim);
+                var ptComp = CompareCoordinate(s1, s2, i, minDim);
                 if (ptComp != 0) return ptComp;
                 i++;
             }
             if (i < size1) return 1;
             if (i < size2) return -1;
-
             return 0;
         }
     }

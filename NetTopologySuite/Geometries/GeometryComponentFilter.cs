@@ -1,5 +1,4 @@
 ﻿using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
@@ -7,14 +6,12 @@ namespace NetTopologySuite.Geometries
     /// </summary>
     /// <param name="geom">The geometry to filter</param>
     public delegate void FilterMethod(IGeometry geom);
-
     /// <summary>
     /// An <see cref="IGeometryComponentFilter"/> implementation that applies filtering with the provided <see cref="FilterMethod"/>
     /// </summary>
     public class GeometryComponentFilter : IGeometryComponentFilter
     {
         private readonly FilterMethod _do;
-
         /// <summary>
         /// Creates an instance of this class
         /// </summary>
@@ -24,7 +21,6 @@ namespace NetTopologySuite.Geometries
             //Assert.IsTrue(filterMethod != null);
             _do = filterMethod;
         }
-
         public void Filter(IGeometry geom)
         {
             _do(geom);

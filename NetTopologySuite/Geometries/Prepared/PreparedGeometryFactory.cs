@@ -1,6 +1,5 @@
 using GeoAPI.Geometries;
 using GeoAPI.Geometries.Prepared;
-
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
@@ -25,7 +24,6 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             return (new PreparedGeometryFactory()).Create(geom);
         }
-
         ///<summary>
         /// Creates a new <see cref="IPreparedGeometry"/> appropriate for the argument <see cref="IGeometry"/>.
         ///</summary>
@@ -41,7 +39,6 @@ namespace NetTopologySuite.Geometries.Prepared
                 return new PreparedLineString((ILineal)geom);
             if (geom is IPuntal)
                 return new PreparedPoint((IPuntal)geom);
-
             /*
              * Default representation.
              */

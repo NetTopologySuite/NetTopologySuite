@@ -4,19 +4,16 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     [TestFixtureAttribute]
     public class ComputeOrientationTest
     {
         private readonly WKTReader _reader = new WKTReader();
-
         [TestAttribute]
         public void TestCCW()
         {
             Assert.IsTrue(IsAllOrientationsEqual(GetCoordinates("LINESTRING ( 0 0, 0 1, 1 1)")));
-
             // experimental case - can't make it fail
             Coordinate[] pts2 = {
             new Coordinate(1.0000000000004998, -7.989685402102996),
@@ -25,7 +22,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             };
             Assert.IsTrue(IsAllOrientationsEqual(pts2));
         }
-  
         // MD - deliberately disabled
         [TestAttribute]
         [IgnoreAttribute("This case fails because subtraction of small from large loses precision")]
@@ -39,7 +35,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             };
             Assert.IsTrue(IsAllOrientationsEqual(pts1));
         }
-
         private static bool IsAllOrientationsEqual(Coordinate[] pts)
         {
             var orient = new OrientationIndex[3];
@@ -48,10 +43,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             orient[2] = Orientation.Index(pts[2], pts[0], pts[1]);
             return orient[0] == orient[1] && orient[0] == orient[2];
         }
-
-        private Coordinate[] GetCoordinates(String wkt)
+        private Coordinate[] GetCoordinates(string wkt)
         {
-            IGeometry geom = _reader.Read(wkt);
+            var geom = _reader.Read(wkt);
             return geom.Coordinates;
         }
     }

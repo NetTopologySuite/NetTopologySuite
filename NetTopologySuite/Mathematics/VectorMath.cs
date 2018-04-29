@@ -1,7 +1,6 @@
 ﻿using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Mathematics
 {
     /// <summary>
@@ -20,25 +19,23 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The normal vector to the triangle <paramref name="p0"/>-<paramref name="p1"/>-<paramref name="p2"/></returns>
         public static Coordinate NormalToTriangle(Coordinate p0, Coordinate p1, Coordinate p2)
         {
-            Coordinate v1 = new Coordinate(p1.X - p0.X, p1.Y - p0.Y, p1.Z - p0.Z);
-            Coordinate v2 = new Coordinate(p2.X - p0.X, p2.Y - p0.Y, p2.Z - p0.Z);
-            Coordinate cp = CrossProduct(v1, v2);
+            var v1 = new Coordinate(p1.X - p0.X, p1.Y - p0.Y, p1.Z - p0.Z);
+            var v2 = new Coordinate(p2.X - p0.X, p2.Y - p0.Y, p2.Z - p0.Z);
+            var cp = CrossProduct(v1, v2);
             Normalize(cp);
             return cp;
         }
-
         /// <summary>
         /// Normalizes the vector <param name="v"></param>
         /// </summary>
         /// <param name="v">The normalized <paramref name="v"/></param>
         public static void Normalize(Coordinate v)
         {
-            double absVal = Math.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z);
+            var absVal = Math.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z);
             v.X /= absVal;
             v.Y /= absVal;
             v.Z /= absVal;
         }
-
         /// <summary>
         /// Computes the cross product of <paramref name="v1"/> and <paramref name="v2"/>
         /// </summary>
@@ -47,12 +44,11 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The cross product of <paramref name="v1"/> and <paramref name="v2"/></returns>
         public static Coordinate CrossProduct(Coordinate v1, Coordinate v2)
         {
-            double x = Det(v1.Y, v1.Z, v2.Y, v2.Z);
-            double y = -Det(v1.X, v1.Z, v2.X, v2.Z);
-            double z = Det(v1.X, v1.Y, v2.X, v2.Y);
+            var x = Det(v1.Y, v1.Z, v2.Y, v2.Z);
+            var y = -Det(v1.X, v1.Z, v2.X, v2.Z);
+            var z = Det(v1.X, v1.Y, v2.X, v2.Y);
             return new Coordinate(x, y, z);
         }
-
         /// <summary>
         /// Computes the dot product of <paramref name="v1"/> and <paramref name="v2"/>
         /// </summary>
@@ -63,7 +59,6 @@ namespace NetTopologySuite.Mathematics
         {
             return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
         }
-
         /// <summary>
         /// Computes the determinant of a 2x2 matrix
         /// </summary>

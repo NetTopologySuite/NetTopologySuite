@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Noding;
-
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
@@ -36,12 +35,10 @@ namespace NetTopologySuite.Geometries.Prepared
          * For covers the value is false.
          */
         protected bool RequireSomePointInInterior = true;
-
         // information about geometric situation
         private bool _hasSegmentIntersection;
         private bool _hasProperIntersection;
         private bool _hasNonProperIntersection;
-
         ///<summary>
         /// Creates an instance of this operation.
         /// </summary>
@@ -50,7 +47,6 @@ namespace NetTopologySuite.Geometries.Prepared
             : base(prepPoly)
         {
         }
-
         ///<summary>
         /// Evaluate the <i>contains</i> or <i>covers</i> relationship
         /// for the given geometry.
@@ -65,9 +61,8 @@ namespace NetTopologySuite.Geometries.Prepared
              *
              * If a point of any test components does not lie in target, result is false
              */
-            bool isAllInTargetArea = IsAllTestComponentsInTarget(geom);
+            var isAllInTargetArea = IsAllTestComponentsInTarget(geom);
             if (!isAllInTargetArea) return false;
-
             /*
              * If the test geometry consists of only Points,
              * then it is now sufficient to test if any of those
@@ -79,10 +74,9 @@ namespace NetTopologySuite.Geometries.Prepared
             if (RequireSomePointInInterior
                     && geom.Dimension == 0)
             {
-                bool isAnyInTargetInterior = IsAnyTestComponentInTargetInterior(geom);
+                var isAnyInTargetInterior = IsAnyTestComponentInTargetInterior(geom);
                 return isAnyInTargetInterior;
             }
-
             /*
              * Check if there is any intersection between the line segments
              * in target and test.
@@ -97,16 +91,13 @@ namespace NetTopologySuite.Geometries.Prepared
              * is some portion of the interior of the test geometry lying outside
              * the target, which means that the test is not contained.
              */
-            bool properIntersectionImpliesNotContained = IsProperIntersectionImpliesNotContainedSituation(geom);
+            var properIntersectionImpliesNotContained = IsProperIntersectionImpliesNotContainedSituation(geom);
             // MD - testing only
             //		properIntersectionImpliesNotContained = true;
-
             // find all intersection types which exist
             FindAndClassifyIntersections(geom);
-
             if (properIntersectionImpliesNotContained && _hasProperIntersection)
                 return false;
-
             /*
              * If all intersections are proper
              * (i.e. no non-proper intersections occur)
@@ -123,7 +114,6 @@ namespace NetTopologySuite.Geometries.Prepared
              */
             if (_hasSegmentIntersection && !_hasNonProperIntersection)
                 return false;
-
             /*
              * If there is a segment intersection and the situation is not one
              * of the ones above, the only choice is to compute the full topological
@@ -135,7 +125,6 @@ namespace NetTopologySuite.Geometries.Prepared
                 return FullTopologicalPredicate(geom);
                 //			System.out.println(geom);
             }
-
             /*
              * This tests for the case where a ring of the target lies inside
              * a test polygon - which implies the exterior of the Target
@@ -144,12 +133,11 @@ namespace NetTopologySuite.Geometries.Prepared
             if (geom is IPolygonal)
             {
                 // TODO: generalize this to handle GeometryCollections
-                bool isTargetInTestArea = IsAnyTargetComponentInAreaTest(geom, prepPoly.RepresentativePoints);
+                var isTargetInTestArea = IsAnyTargetComponentInAreaTest(geom, prepPoly.RepresentativePoints);
                 if (isTargetInTestArea) return false;
             }
             return true;
         }
-
         private bool IsProperIntersectionImpliesNotContainedSituation(IGeometry testGeom)
         {
             /*
@@ -170,7 +158,6 @@ namespace NetTopologySuite.Geometries.Prepared
             if (IsSingleShell(prepPoly.Geometry)) return true;
             return false;
         }
-
         /// <summary>
         /// Tests whether a geometry consists of a single polygon with no holes.
         /// </summary>
@@ -179,26 +166,21 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             // handles single-element MultiPolygons, as well as Polygons
             if (geom.NumGeometries != 1) return false;
-
-            IPolygon poly = (IPolygon)geom.GetGeometryN(0);
-            int numHoles = poly.NumInteriorRings;
+            var poly = (IPolygon)geom.GetGeometryN(0);
+            var numHoles = poly.NumInteriorRings;
             if (numHoles == 0) return true;
             return false;
         }
-
         private void FindAndClassifyIntersections(IGeometry geom)
         {
-            IList<ISegmentString> lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
-
+            var lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
             var intDetector = new SegmentIntersectionDetector();
             intDetector.FindAllIntersectionTypes = true;
             prepPoly.IntersectionFinder.Intersects(lineSegStr, intDetector);
-
             _hasSegmentIntersection = intDetector.HasIntersection;
             _hasProperIntersection = intDetector.HasProperIntersection;
             _hasNonProperIntersection = intDetector.HasNonProperIntersection;
         }
-
         ///<summary>
         /// Computes the full topological predicate.
         /// Used when short-circuit tests are not conclusive.

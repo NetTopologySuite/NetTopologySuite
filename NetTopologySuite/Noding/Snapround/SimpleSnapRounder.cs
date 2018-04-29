@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Noding.Snapround
 {
     /// <summary>
@@ -27,7 +26,6 @@ namespace NetTopologySuite.Noding.Snapround
         private readonly LineIntersector _li;
         private readonly double _scaleFactor;
         private IList<ISegmentString> _nodedSegStrings;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleSnapRounder"/> class.
         /// </summary>
@@ -37,7 +35,6 @@ namespace NetTopologySuite.Noding.Snapround
             _li = new RobustLineIntersector { PrecisionModel = pm };
             _scaleFactor = pm.Scale;
         }
-
         /// <summary>
         /// Returns a <see cref="IList"/> of fully noded <see cref="ISegmentString"/>s.
         /// The <see cref="ISegmentString"/>s have the same context as their parent.
@@ -47,7 +44,6 @@ namespace NetTopologySuite.Noding.Snapround
         {
             return NodedSegmentString.GetNodedSubstrings(_nodedSegStrings);
         }
-
         /// <summary>
         /// Computes the noding for a collection of <see cref="ISegmentString" />s.
         /// Some Noders may add all these nodes to the input <see cref="ISegmentString" />s;
@@ -59,7 +55,6 @@ namespace NetTopologySuite.Noding.Snapround
             _nodedSegStrings = inputSegmentStrings;
             SnapRound(inputSegmentStrings, _li);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -67,11 +62,10 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="li"></param>
         private void SnapRound(IList<ISegmentString> segStrings, LineIntersector li)
         {
-            IList<Coordinate> intersections = FindInteriorIntersections(segStrings, li);
+            var intersections = FindInteriorIntersections(segStrings, li);
             ComputeSnaps(segStrings, intersections);
             ComputeVertexSnaps(segStrings);
         }
-
         /// <summary>
         /// Computes all interior intersections in the collection of <see cref="ISegmentString" />s,
         /// and returns their <see cref="Coordinate" />s.
@@ -82,12 +76,11 @@ namespace NetTopologySuite.Noding.Snapround
         /// <returns>A list of <see cref="Coordinate" />s for the intersections.</returns>
         private static IList<Coordinate> FindInteriorIntersections(IList<ISegmentString> segStrings, LineIntersector li)
         {
-            InteriorIntersectionFinderAdder intFinderAdder = new InteriorIntersectionFinderAdder(li);
+            var intFinderAdder = new InteriorIntersectionFinderAdder(li);
             SinglePassNoder noder = new MCIndexNoder(intFinderAdder);
             noder.ComputeNodes(segStrings);
             return intFinderAdder.InteriorIntersections;
         }
-
         /// <summary>
         /// Computes nodes introduced as a result of snapping segments to snap points (hot pixels).
         /// </summary>
@@ -98,7 +91,6 @@ namespace NetTopologySuite.Noding.Snapround
             foreach (INodableSegmentString ss in segStrings)
                 ComputeSnaps(ss, snapPts);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -106,15 +98,14 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="snapPts"></param>
         private void ComputeSnaps(INodableSegmentString ss, IEnumerable<Coordinate> snapPts)
         {
-            foreach (Coordinate snapPt in snapPts)
+            foreach (var snapPt in snapPts)
             {
-                HotPixel hotPixel = new HotPixel(snapPt, _scaleFactor, _li);
-                for (int i = 0; i < ss.Count - 1; i++)
+                var hotPixel = new HotPixel(snapPt, _scaleFactor, _li);
+                for (var i = 0; i < ss.Count - 1; i++)
                     //AddSnappedNode(hotPixel, ss, i);
                     hotPixel.AddSnappedNode(ss, i);
             }
         }
-
         /// <summary>
         /// Computes nodes introduced as a result of
         /// snapping segments to vertices of other segments.
@@ -126,7 +117,6 @@ namespace NetTopologySuite.Noding.Snapround
                 foreach (INodableSegmentString edge1 in edges)
                     ComputeVertexSnaps(edge0, edge1);
         }
-
         /// <summary>
         /// Performs a brute-force comparison of every segment in each <see cref="ISegmentString" />.
         /// This has n^2 performance.
@@ -135,19 +125,18 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="e1"></param>
         private void ComputeVertexSnaps(INodableSegmentString e0, INodableSegmentString e1)
         {
-            Coordinate[] pts0 = e0.Coordinates;
-            Coordinate[] pts1 = e1.Coordinates;
-            for (int i0 = 0; i0 < pts0.Length - 1; i0++)
+            var pts0 = e0.Coordinates;
+            var pts1 = e1.Coordinates;
+            for (var i0 = 0; i0 < pts0.Length - 1; i0++)
             {
-                HotPixel hotPixel = new HotPixel(pts0[i0], _scaleFactor, _li);
-                for (int i1 = 0; i1 < pts1.Length - 1; i1++)
+                var hotPixel = new HotPixel(pts0[i0], _scaleFactor, _li);
+                for (var i1 = 0; i1 < pts1.Length - 1; i1++)
                 {
                     // don't snap a vertex to itself
                     if (e0 == e1)
                         if (i0 == i1)
                             continue;
-
-                    bool isNodeAdded = //AddSnappedNode(hotPixel, e1, i1);
+                    var isNodeAdded = //AddSnappedNode(hotPixel, e1, i1);
                                        hotPixel.AddSnappedNode(e1, i1);
                     // if a node is created for a vertex, that vertex must be noded too
                     if (isNodeAdded)

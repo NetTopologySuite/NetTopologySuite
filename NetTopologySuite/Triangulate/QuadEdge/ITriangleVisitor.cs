@@ -2,7 +2,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 {
     /// <summary>
     /// An interface for algorithms which process the triangles in a <see cref="QuadEdgeSubdivision"/>.
-    /// </summary>  
+    /// </summary>
     /// <author>Martin Davis</author>
     /// <version>1.0</version>
     public interface ITriangleVisitor

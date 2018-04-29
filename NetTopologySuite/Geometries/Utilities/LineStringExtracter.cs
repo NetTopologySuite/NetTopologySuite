@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries.Utilities
 {
     ///<summary>
@@ -10,7 +9,7 @@ namespace NetTopologySuite.Geometries.Utilities
     public class LineStringExtracter : IGeometryFilter
     {
         ///<summary>
-        /// Extracts the <see cref="ILineString"/> elements from a single <see cref="IGeometry"/> 
+        /// Extracts the <see cref="ILineString"/> elements from a single <see cref="IGeometry"/>
         /// and adds them to the<see cref="List{ILineString}"/>.
         ///</summary>
         /// <param name="geom">The geometry from which to extract</param>
@@ -29,9 +28,8 @@ namespace NetTopologySuite.Geometries.Utilities
             // skip non-LineString elemental geometries
             return lines;
         }
-
         ///<summary>
-        /// Extracts the <see cref="ILineString"/> elements from a single <see cref="IGeometry"/> 
+        /// Extracts the <see cref="ILineString"/> elements from a single <see cref="IGeometry"/>
         /// and returns them in a <see cref="ICollection{ILineString}"/>.
         ///</summary>
         /// <param name="geom">The geometry from which to extract</param>
@@ -40,21 +38,18 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             return GetLines(geom, new List<IGeometry>());
         }
-
         /// <summary>
         /// Extracts the <see cref="ILineString"/> elements from a single <see cref="IGeometry"/>
         /// and returns them as either a <see cref="ILineString"/> or <see cref="IMultiLineString"/>.
         /// </summary>
         /// <param name="geom">The geometry from which to extract</param>
-        /// <returns>A linear geometry</returns>         
+        /// <returns>A linear geometry</returns>
         public static IGeometry GetGeometry(IGeometry geom)
         {
-            ICollection<IGeometry> list = GetLines(geom);
+            var list = GetLines(geom);
             return geom.Factory.BuildGeometry(list);
         }
-
         private readonly ICollection<IGeometry> _comps;
-
         ///<summary>
         /// Constructs a filter with a list in which to store the elements found.
         ///</summary>
@@ -62,7 +57,6 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             _comps = comps;
         }
-
         public void Filter(IGeometry geom)
         {
             if (geom is ILineString) _comps.Add(geom);

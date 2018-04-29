@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
@@ -25,38 +24,22 @@ namespace NetTopologySuite.Geometries
         {
             return (new OctagonalEnvelope(geom)).ToGeometry(geom.Factory);
         }
-
-        
         private static double ComputeA(double x, double y)
         {
             return x + y;
         }
-
         private static double ComputeB(double x, double y)
         {
             return x - y;
         }
-
         private static readonly double SQRT2 = Math.Sqrt(2.0);
-  
-
         // initialize in the null state
-        private double _minX = Double.NaN;
-        private double _maxX;
-        private double _minY;
-        private double _maxY;
-        private double _minA;
-        private double _maxA;
-        private double _minB;
-        private double _maxB;
-
         /// <summary>
         /// Creates a new null bounding octagon
         /// </summary>
         public OctagonalEnvelope()
         {
         }
-
         /// <summary>
         /// Creates a new null bounding octagon bounding a <see cref="Coordinate" />
         /// </summary>
@@ -65,7 +48,6 @@ namespace NetTopologySuite.Geometries
         {
             ExpandToInclude(p);
         }
-
         /// <summary>
         /// Creates a new null bounding octagon bounding a pair of <see cref="Coordinate" />s
         /// </summary>
@@ -76,7 +58,6 @@ namespace NetTopologySuite.Geometries
             ExpandToInclude(p0);
             ExpandToInclude(p1);
         }
-
         /// <summary>
         /// Creates a new null bounding octagon bounding an <see cref="Envelope" />
         /// </summary>
@@ -84,7 +65,6 @@ namespace NetTopologySuite.Geometries
         {
             ExpandToInclude(env);
         }
-
         /// <summary>
         /// Creates a new null bounding octagon bounding an <see cref="OctagonalEnvelope" />
         /// (the copy constructor).
@@ -93,7 +73,6 @@ namespace NetTopologySuite.Geometries
         {
             ExpandToInclude(oct);
         }
-
         /// <summary>
         /// Creates a new null bounding octagon bounding a <see cref="IGeometry" />
         /// </summary>
@@ -101,53 +80,50 @@ namespace NetTopologySuite.Geometries
         {
             ExpandToInclude(geom);
         }
-
         /// <summary>
         /// Gets a value indicating the minimal x-ordinate value
         /// </summary>
-        public double MinX { get { return _minX; } }
+        public double MinX { get; private set; } = double.NaN;
         /// <summary>
         /// Gets a value indicating the maximal x-ordinate value
         /// </summary>
-        public double MaxX { get { return _maxX; } }
+        public double MaxX { get; private set; }
         /// <summary>
         /// Gets a value indicating the minimal y-ordinate value
         /// </summary>
-        public double MinY { get { return _minY; } }
+        public double MinY { get; private set; }
         /// <summary>
         /// Gets a value indicating the maximal y-ordinate value
         /// </summary>
-        public double MaxY { get { return _maxY; } }
+        public double MaxY { get; private set; }
         /// <summary>
         /// Gets a value indicating the minimal <c>a</c> value
         /// </summary>
-        public double MinA { get { return _minA; } }
+        public double MinA { get; private set; }
         /// <summary>
         /// Gets a value indicating the maximal <c>a</c> value
         /// </summary>
-        public double MaxA { get { return _maxA; } }
+        public double MaxA { get; private set; }
         /// <summary>
         /// Gets a value indicating the minimal <c>b</c> value
         /// </summary>
-        public double MinB { get { return _minB; } }
+        public double MinB { get; private set; }
         /// <summary>
         /// Gets a value indicating the maximal <c>b</c> value
         /// </summary>
-        public double MaxB { get { return _maxB; } }
-
+        public double MaxB { get; private set; }
         /// <summary>
         /// Gets a value indicating that this object is null
         /// </summary>
-        public Boolean IsNull
+        public bool IsNull
         {
-            get { return Double.IsNaN(_minX); }
+            get => double.IsNaN(MinX);
             private set
             {
                 if (value)
-                    _minX = Double.NaN;
+                    MinX = double.NaN;
             }
         }
-
         /// <summary>
         /// Method to expand this <see cref="OctagonalEnvelope"/> to include the provided <paramref name="g"/> geometry.
         /// </summary>
@@ -156,7 +132,6 @@ namespace NetTopologySuite.Geometries
         {
             g.Apply(new BoundingOctagonComponentFilter(this));
         }
-
         /// <summary>
         /// Method to expand this <see cref="OctagonalEnvelope"/> to include the provided <paramref name="seq"/> coordinate sequence.
         /// </summary>
@@ -164,15 +139,14 @@ namespace NetTopologySuite.Geometries
         /// <returns>A reference to <c>this</c> octagonal envelope, expanded by <paramref name="seq"/></returns>
         public OctagonalEnvelope ExpandToInclude(ICoordinateSequence seq)
         {
-            for (int i = 0; i < seq.Count; i++)
+            for (var i = 0; i < seq.Count; i++)
             {
-                double x = seq.GetX(i);
-                double y = seq.GetY(i);
+                var x = seq.GetX(i);
+                var y = seq.GetY(i);
                 ExpandToInclude(x, y);
             }
             return this;
         }
-
         /// <summary>
         /// Method to expand this <see cref="OctagonalEnvelope"/> to include the provided <paramref name="oct"/> OctogonalEnvelope.
         /// </summary>
@@ -181,30 +155,28 @@ namespace NetTopologySuite.Geometries
         public OctagonalEnvelope ExpandToInclude(OctagonalEnvelope oct)
         {
             if (oct.IsNull) return this;
-
             if (IsNull)
             {
-                _minX = oct._minX;
-                _maxX = oct._maxX;
-                _minY = oct._minY;
-                _maxY = oct._maxY;
-                _minA = oct._minA;
-                _maxA = oct._maxA;
-                _minB = oct._minB;
-                _maxB = oct._maxB;
+                MinX = oct.MinX;
+                MaxX = oct.MaxX;
+                MinY = oct.MinY;
+                MaxY = oct.MaxY;
+                MinA = oct.MinA;
+                MaxA = oct.MaxA;
+                MinB = oct.MinB;
+                MaxB = oct.MaxB;
                 return this;
             }
-            if (oct._minX < _minX) _minX = oct._minX;
-            if (oct._maxX > _maxX) _maxX = oct._maxX;
-            if (oct._minY < _minY) _minY = oct._minY;
-            if (oct._maxY > _maxY) _maxY = oct._maxY;
-            if (oct._minA < _minA) _minA = oct._minA;
-            if (oct._maxA > _maxA) _maxA = oct._maxA;
-            if (oct._minB < _minB) _minB = oct._minB;
-            if (oct._maxB > _maxB) _maxB = oct._maxB;
+            if (oct.MinX < MinX) MinX = oct.MinX;
+            if (oct.MaxX > MaxX) MaxX = oct.MaxX;
+            if (oct.MinY < MinY) MinY = oct.MinY;
+            if (oct.MaxY > MaxY) MaxY = oct.MaxY;
+            if (oct.MinA < MinA) MinA = oct.MinA;
+            if (oct.MaxA > MaxA) MaxA = oct.MaxA;
+            if (oct.MinB < MinB) MinB = oct.MinB;
+            if (oct.MaxB > MaxB) MaxB = oct.MaxB;
             return this;
         }
-
         /// <summary>
         /// Function to expand this <see cref="OctagonalEnvelope"/> to include the provided <paramref name="p"/> coordinate.
         /// </summary>
@@ -215,7 +187,6 @@ namespace NetTopologySuite.Geometries
             ExpandToInclude(p.X, p.Y);
             return this;
         }
-
         /// <summary>
         /// Function to expand this <see cref="OctagonalEnvelope"/> to include the provided <paramref name="env"/> envelope.
         /// </summary>
@@ -229,7 +200,6 @@ namespace NetTopologySuite.Geometries
             ExpandToInclude(env.MaxX, env.MaxY);
             return this;
         }
-
         /// <summary>
         /// Function to expand this <see cref="OctagonalEnvelope"/> to include the provided <paramref name="x"/>- and <paramref name="y"/> ordinates.
         /// </summary>
@@ -240,128 +210,114 @@ namespace NetTopologySuite.Geometries
         {
             var A = ComputeA(x, y);
             var B = ComputeB(x, y);
-
             if (IsNull)
             {
-                _minX = x;
-                _maxX = x;
-                _minY = y;
-                _maxY = y;
-                _minA = A;
-                _maxA = A;
-                _minB = B;
-                _maxB = B;
+                MinX = x;
+                MaxX = x;
+                MinY = y;
+                MaxY = y;
+                MinA = A;
+                MaxA = A;
+                MinB = B;
+                MaxB = B;
             }
             else
             {
-                if (x < _minX) _minX = x;
-                if (x > _maxX) _maxX = x;
-                if (y < _minY) _minY = y;
-                if (y > _maxY) _maxY = y;
-                if (A < _minA) _minA = A;
-                if (A > _maxA) _maxA = A;
-                if (B < _minB) _minB = B;
-                if (B > _maxB) _maxB = B;
+                if (x < MinX) MinX = x;
+                if (x > MaxX) MaxX = x;
+                if (y < MinY) MinY = y;
+                if (y > MaxY) MaxY = y;
+                if (A < MinA) MinA = A;
+                if (A > MaxA) MaxA = A;
+                if (B < MinB) MinB = B;
+                if (B > MaxB) MaxB = B;
             }
             return this;
         }
-
         public void ExpandBy(double distance)
         {
             if (IsNull) return;
-
-            double diagonalDistance = SQRT2 * distance;
-
-            _minX -= distance;
-            _maxX += distance;
-            _minY -= distance;
-            _maxY += distance;
-            _minA -= diagonalDistance;
-            _maxA += diagonalDistance;
-            _minB -= diagonalDistance;
-            _maxB += diagonalDistance;
-
+            var diagonalDistance = SQRT2 * distance;
+            MinX -= distance;
+            MaxX += distance;
+            MinY -= distance;
+            MaxY += distance;
+            MinA -= diagonalDistance;
+            MaxA += diagonalDistance;
+            MinB -= diagonalDistance;
+            MaxB += diagonalDistance;
             if (!IsValid)
                 IsNull = true;
         }
-
         /// <summary>
         /// Gets a value indicating if the extremal values for this octagon are valid.
         /// </summary>
         /// <returns><c>true</c> if this object has valid values</returns>
-        private Boolean IsValid
+        private bool IsValid
         {
             get
             {
                 if (IsNull) return true;
-                return _minX <= _maxX
-                       && _minY <= _maxY
-                       && _minA <= _maxA
-                       && _minB <= _maxB;
+                return MinX <= MaxX
+                       && MinY <= MaxY
+                       && MinA <= MaxA
+                       && MinB <= MaxB;
             }
         }
-
         /// <summary>
         /// Function to test if <c>this</c> octagonal envelope intersects <paramref name="other"/> octagonal envelope .
         /// </summary>
         /// <param name="other">An octagonal envelope </param>
         /// <returns><c>true</c> if <c>this</c> octagonal envelope intersects <paramref name="other"/> octagonal envelope .</returns>
-        public Boolean Intersects(OctagonalEnvelope other)
+        public bool Intersects(OctagonalEnvelope other)
         {
             if (IsNull || other.IsNull) { return false; }
-
-            if (_minX > other._maxX) return false;
-            if (_maxX < other._minX) return false;
-            if (_minY > other._maxY) return false;
-            if (_maxY < other._minY) return false;
-            if (_minA > other._maxA) return false;
-            if (_maxA < other._minA) return false;
-            if (_minB > other._maxB) return false;
-            if (_maxB < other._minB) return false;
+            if (MinX > other.MaxX) return false;
+            if (MaxX < other.MinX) return false;
+            if (MinY > other.MaxY) return false;
+            if (MaxY < other.MinY) return false;
+            if (MinA > other.MaxA) return false;
+            if (MaxA < other.MinA) return false;
+            if (MinB > other.MaxB) return false;
+            if (MaxB < other.MinB) return false;
             return true;
         }
-
         /// <summary>
         /// Function to test if <c>this</c> octagonal envelope contains <paramref name="p"/> coordinate.
         /// </summary>
         /// <param name="p">A coordinate</param>
         /// <returns><c>true</c> if <c>this</c> octagonal envelope contains <paramref name="p"/> coordinate.</returns>
-        public Boolean Intersects(Coordinate p)
+        public bool Intersects(Coordinate p)
         {
-            if (_minX > p.X) return false;
-            if (_maxX < p.X) return false;
-            if (_minY > p.Y) return false;
-            if (_maxY < p.Y) return false;
-
-            double A = ComputeA(p.X, p.Y);
-            double B = ComputeB(p.X, p.Y);
-            if (_minA > A) return false;
-            if (_maxA < A) return false;
-            if (_minB > B) return false;
-            if (_maxB < B) return false;
+            if (MinX > p.X) return false;
+            if (MaxX < p.X) return false;
+            if (MinY > p.Y) return false;
+            if (MaxY < p.Y) return false;
+            var A = ComputeA(p.X, p.Y);
+            var B = ComputeB(p.X, p.Y);
+            if (MinA > A) return false;
+            if (MaxA < A) return false;
+            if (MinB > B) return false;
+            if (MaxB < B) return false;
             return true;
         }
-
         /// <summary>
         /// Function to test if <c>this</c> octagonal envelope contains <paramref name="other"/> octagonal envelope.
         /// </summary>
         /// <param name="other">An octagonal envelope</param>
         /// <returns><c>true</c> if <c>this</c> octagonal envelope contains <paramref name="other"/> octagonal envelope.</returns>
-        public Boolean Contains(OctagonalEnvelope other)
+        public bool Contains(OctagonalEnvelope other)
         {
             if (IsNull || other.IsNull) { return false; }
-
-            return other._minX >= _minX
-                && other._maxX <= _maxX
-                && other._minY >= _minY
-                && other._maxY <= _maxY
-                && other._minA >= _minA
-                && other._maxA <= _maxA
-                && other._minB >= _minB
-                && other._maxB <= _maxB;
+            return other.MinX >= MinX
+                && other.MaxX <= MaxX
+                && other.MinY >= MinY
+                && other.MaxY <= MaxY
+                && other.MinA >= MinA
+                && other.MaxA <= MaxA
+                && other.MinB >= MinB
+                && other.MaxB <= MaxB;
         }
-
-
         /// <summary>
         /// Function to convert <c>this</c> octagonal envelope into a geometry
         /// </summary>
@@ -371,24 +327,18 @@ namespace NetTopologySuite.Geometries
         {
             if (geomFactory == null)
                 throw new ArgumentNullException(nameof(geomFactory));
-
             if (IsNull)
             {
                 return geomFactory.CreatePoint();
             }
-
-            var px00 = new Coordinate(_minX, _minA - _minX);
-            var px01 = new Coordinate(_minX, _minX - _minB);
-
-            var px10 = new Coordinate(_maxX, _maxX - _maxB);
-            var px11 = new Coordinate(_maxX, _maxA - _maxX);
-
-            var py00 = new Coordinate(_minA - _minY, _minY);
-            var py01 = new Coordinate(_minY + _maxB, _minY);
-
-            var py10 = new Coordinate(_maxY + _minB, _maxY);
-            var py11 = new Coordinate(_maxA - _maxY, _maxY);
-
+            var px00 = new Coordinate(MinX, MinA - MinX);
+            var px01 = new Coordinate(MinX, MinX - MinB);
+            var px10 = new Coordinate(MaxX, MaxX - MaxB);
+            var px11 = new Coordinate(MaxX, MaxA - MaxX);
+            var py00 = new Coordinate(MinA - MinY, MinY);
+            var py01 = new Coordinate(MinY + MaxB, MinY);
+            var py10 = new Coordinate(MaxY + MinB, MaxY);
+            var py11 = new Coordinate(MaxA - MaxY, MaxY);
             var pm = geomFactory.PrecisionModel;
             pm.MakePrecise(px00);
             pm.MakePrecise(px01);
@@ -398,7 +348,6 @@ namespace NetTopologySuite.Geometries
             pm.MakePrecise(py01);
             pm.MakePrecise(py10);
             pm.MakePrecise(py11);
-
             var coordList = new CoordinateList();
             coordList.Add(px00, false);
             coordList.Add(px01, false);
@@ -408,7 +357,6 @@ namespace NetTopologySuite.Geometries
             coordList.Add(px10, false);
             coordList.Add(py01, false);
             coordList.Add(py00, false);
-
             if (coordList.Count == 1)
             {
                 return geomFactory.CreatePoint(px00);
@@ -424,16 +372,13 @@ namespace NetTopologySuite.Geometries
             pts = coordList.ToCoordinateArray();
             return geomFactory.CreatePolygon(geomFactory.CreateLinearRing(pts));
         }
-
         private class BoundingOctagonComponentFilter : IGeometryComponentFilter
         {
             private readonly OctagonalEnvelope _octogonalEnvelope;
-
             public BoundingOctagonComponentFilter(OctagonalEnvelope octagonalEnvelope)
             {
                 _octogonalEnvelope = octagonalEnvelope;
             }
-
             public void Filter(IGeometry geom)
             {
                 if (geom is ILineString lgeom)

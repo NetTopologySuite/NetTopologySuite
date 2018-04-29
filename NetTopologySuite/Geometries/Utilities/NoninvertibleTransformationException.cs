@@ -1,5 +1,4 @@
 ﻿using System;
-
 namespace NetTopologySuite.Geometries.Utilities
 {
     ///<summary>
@@ -14,7 +13,6 @@ namespace NetTopologySuite.Geometries.Utilities
         public NoninvertibleTransformationException(string transformationIsNonInvertible)
             :base(transformationIsNonInvertible)
         {
-                
         }
     }
 }

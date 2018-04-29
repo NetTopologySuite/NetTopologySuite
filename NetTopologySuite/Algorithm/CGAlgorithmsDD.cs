@@ -1,6 +1,5 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.Mathematics;
-
 namespace NetTopologySuite.Algorithm
 {
     /// <summary>
@@ -28,17 +27,14 @@ namespace NetTopologySuite.Algorithm
             // avoids use of slow extended-precision arithmetic in many cases
             var index = OrientationIndexFilter(p1, p2, q);
             if (index <= 1) return index;
-
             // normalize coordinates
             var dx1 = DD.ValueOf(p2.X) - p1.X;
             var dy1 = DD.ValueOf(p2.Y) - p1.Y;
             var dx2 = DD.ValueOf(q.X) - p2.X;
             var dy2 = DD.ValueOf(q.Y) - p2.Y;
-
             return ((dx1 * dy2) - (dy1 * dx2)).Signum();
             //return SignOfDet2x2(dx1, dy1, dx2, dy2);
         }
-
         /// <summary>
         /// Computes the sign of the determinant of the 2x2 matrix
         /// with the given entries.
@@ -58,22 +54,20 @@ namespace NetTopologySuite.Algorithm
         {
             return (x1 * y2 - y1 * x2).Signum();
         }
-
         /// <summary>
         /// A value which is safely greater than the
         /// relative round-off error in double-precision numbers
         /// </summary>
         private const double DoublePrecisionSafeEpsilon = 1e-15;
-
         /// <summary>
         /// A filter for computing the orientation index of three coordinates.
         /// <para/>
         /// If the orientation can be computed safely using standard DP
         /// arithmetic, this routine returns the orientation index.
         /// Otherwise, a value i > 1 is returned.
-        /// In this case the orientation index must 
+        /// In this case the orientation index must
         /// be computed using some other more robust method.
-        /// The filter is fast to compute, so can be used to 
+        /// The filter is fast to compute, so can be used to
         /// avoid the use of slower robust methods except when they are really needed,
         /// thus providing better average performance.
         /// <para/>
@@ -88,11 +82,9 @@ namespace NetTopologySuite.Algorithm
         private static int OrientationIndexFilter(Coordinate pa, Coordinate pb, Coordinate pc)
         {
             double detsum;
-
             var detleft = (pa.X - pc.X)*(pb.Y - pc.Y);
             var detright = (pa.Y - pc.Y)*(pb.X - pc.X);
             var det = detleft - detright;
-
             if (detleft > 0.0)
             {
                 if (detright <= 0.0)
@@ -113,23 +105,19 @@ namespace NetTopologySuite.Algorithm
             {
                 return Signum(det);
             }
-
             var errbound = DoublePrecisionSafeEpsilon*detsum;
             if ((det >= errbound) || (-det >= errbound))
             {
                 return Signum(det);
             }
-
             return 2;
         }
-
         private static int Signum(double x)
         {
             if (x > 0) return 1;
             if (x < 0) return -1;
             return 0;
         }
-
         /// <summary>
         /// Computes an intersection point between two lines
         /// using DD arithmetic.
@@ -147,28 +135,22 @@ namespace NetTopologySuite.Algorithm
             var denom1 = (DD.ValueOf(q2.Y) - DD.ValueOf(q1.Y))*(DD.ValueOf(p2.X) - DD.ValueOf(p1.X));
             var denom2 = (DD.ValueOf(q2.X) - DD.ValueOf(q1.X))*(DD.ValueOf(p2.Y) - DD.ValueOf(p1.Y));
             var denom = denom1 - denom2;
-
             /**
              * Cases:
              * - denom is 0 if lines are parallel
              * - intersection point lies within line segment p if fracP is between 0 and 1
              * - intersection point lies within line segment q if fracQ is between 0 and 1
              */
-
             var numx1 = (DD.ValueOf(q2.X) - DD.ValueOf(q1.X)) * (DD.ValueOf(p1.Y) - DD.ValueOf(q1.Y));
             var numx2 = (DD.ValueOf(q2.Y) - DD.ValueOf(q1.Y)) * (DD.ValueOf(p1.X) - DD.ValueOf(q1.X));
             var numx = numx1 - numx2;
             var fracP = (numx / denom)/*.ToDoubleValue()*/;
-
             var x = (DD.ValueOf(p1.X) + (DD.ValueOf(p2.X) - DD.ValueOf(p1.X)) * fracP).ToDoubleValue();
-
             var numy1 = (DD.ValueOf(p2.X) - DD.ValueOf(p1.X)) * (DD.ValueOf(p1.Y) - DD.ValueOf(q1.Y));
             var numy2 = (DD.ValueOf(p2.Y) - DD.ValueOf(p1.Y)) * (DD.ValueOf(p1.X) - DD.ValueOf(q1.X));
             var numy = numy1 - numy2;
             var fracQ = numy / denom;
-
             var y = (DD.ValueOf(q1.Y) + (DD.ValueOf(q2.Y) - DD.ValueOf(q1.Y)) * fracQ).ToDoubleValue();
-
             return new Coordinate(x, y);
         }
     }

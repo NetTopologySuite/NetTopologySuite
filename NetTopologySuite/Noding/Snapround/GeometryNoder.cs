@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-
 namespace NetTopologySuite.Noding.Snapround
 {
     /// <summary>
@@ -24,7 +23,6 @@ namespace NetTopologySuite.Noding.Snapround
         private IGeometryFactory _geomFact;
         private readonly IPrecisionModel _pm;
         //private bool isValidityChecked = false;
-
         /// <summary>
         /// Creates a new noder which snap-rounds to a grid specified by the given <see cref="IPrecisionModel"/>
         /// </summary>
@@ -33,12 +31,10 @@ namespace NetTopologySuite.Noding.Snapround
         {
             _pm = pm;
         }
-
         /// <summary>
         /// Gets or sets whether noding validity is checked after noding is performed.
         /// </summary>
         public bool IsValidityChecked { get; set; }
-
         /// <summary>
         /// Nodes the linework of a set of Geometrys using SnapRounding.
         /// </summary>
@@ -52,27 +48,23 @@ namespace NetTopologySuite.Noding.Snapround
                 _geomFact = g.Factory;
                 break;
             }
-
             var segStrings = ToSegmentStrings(ExtractLines(geoms));
             //Noder sr = new SimpleSnapRounder(pm);
             INoder sr = new MCIndexSnapRounder(_pm);
             sr.ComputeNodes(segStrings);
             var nodedLines = sr.GetNodedSubstrings();
-
             //TODO: improve this to check for full snap-rounded correctness
             if (IsValidityChecked)
             {
-                NodingValidator nv = new NodingValidator(nodedLines);
+                var nv = new NodingValidator(nodedLines);
                 nv.CheckValid();
             }
-
             return ToLineStrings(nodedLines);
         }
-
         private IList<ILineString> ToLineStrings(IEnumerable<ISegmentString> segStrings)
         {
             var lines = new List<ILineString>();
-            foreach (ISegmentString ss in segStrings)
+            foreach (var ss in segStrings)
             {
                 // skip collapsed lines
                 if (ss.Count < 2)
@@ -81,7 +73,6 @@ namespace NetTopologySuite.Noding.Snapround
             }
             return lines;
         }
-
         private static IEnumerable<IGeometry> ExtractLines(IEnumerable<IGeometry> geoms)
         {
             var lines = new List<IGeometry>();
@@ -92,7 +83,6 @@ namespace NetTopologySuite.Noding.Snapround
             }
             return lines;
         }
-
         private static IList<ISegmentString> ToSegmentStrings(IEnumerable<IGeometry> lines)
         {
             var segStrings = new List<ISegmentString>();

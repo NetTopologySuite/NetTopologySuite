@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
@@ -23,9 +22,7 @@ namespace NetTopologySuite.Geometries.Utilities
             var mapper = new GeometryCollectionMapper(op);
             return mapper.Map(gc);
         }
-
         private readonly Func<IGeometry, IGeometry> _mapOp;
-
         /// <summary>
         /// Creates an instance of this class
         /// </summary>
@@ -34,7 +31,6 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             _mapOp = mapOp;
         }
-
         /// <summary>
         ///
         /// </summary>

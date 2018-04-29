@@ -1,6 +1,5 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Utilities;
-
 namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
@@ -9,140 +8,80 @@ namespace NetTopologySuite.GeometriesGraph
     /// Label.
     /// </summary>
     abstract public class GraphComponent
-    {        
+    {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private Label _label;
-
         // isInResult indicates if this component has already been included in the result
-
         private bool _isCovered;
-        private bool _isCoveredSet;
-        private bool _isVisited;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected GraphComponent() { }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="label"></param>
         protected GraphComponent(Label label)
         {
             _label = label;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Label Label
         {
-            get
-            {
-                return _label;
-            }
-            protected internal set
-            {
-                _label = value;
-            }
+            get => _label;
+            protected internal set => _label = value;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool InResult { get; set; }
-
-        /// <summary> 
+        /// <summary>
         /// IsInResult indicates if this component has already been included in the result.
         /// </summary>
-        public bool IsInResult
-        {
-            get
-            {
-                return InResult;
-            }
-        }
-
+        public bool IsInResult => InResult;
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool Covered
         {
-            get
-            {
-                return _isCovered;
-            }
+            get => _isCovered;
             set
             {
                 _isCovered = value;
-                _isCoveredSet = true;                
+                IsCoveredSet = true;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public bool IsCovered
-        {
-            get
-            {
-                return Covered;
-            }
-        }
-
+        public bool IsCovered => Covered;
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public bool IsCoveredSet 
-        {
-            get
-            {
-                return _isCoveredSet;
-            }
-        }
-
+        public bool IsCoveredSet { get; private set; }
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public bool Visited
-        {
-            get
-            {
-                return _isVisited;
-            }
-            set
-            {
-                _isVisited = value;
-            }
-        }
-
+        public bool Visited { get; set; }
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public bool IsVisited
-        {
-            get
-            {
-                return _isVisited;
-            }
-        }
-    
+        public bool IsVisited => Visited;
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns>
         /// A coordinate in this component (or null, if there are none).
         /// </returns>
         abstract public Coordinate Coordinate { get; protected set; }
-
         /// <summary>
         /// Compute the contribution to an IM for this component.
         /// </summary>
         abstract public void ComputeIM(IntersectionMatrix im);
-
         /// <summary>
         /// An isolated component is one that does not intersect or touch any other
         /// component.  This is the case if the label has valid locations for
@@ -150,7 +89,6 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <returns><c>true</c> if this component is isolated.</returns>
         abstract public bool IsIsolated { get; }
-
         /// <summary>
         /// Update the IM with the contribution for this component.
         /// A component only contributes if it has a labelling for both parent geometries.

@@ -1,10 +1,8 @@
 ﻿using System;
 using GeoAPI.Geometries;
 using Open.Topology.TestRunner.Result;
-
 namespace Open.Topology.TestRunner.Operations
 {
-
     /// <summary>
     /// Interface for classes which execute operations on {@link Geometry}s.
     /// The arguments may be presented as Strings, even if they
@@ -23,7 +21,6 @@ namespace Open.Topology.TestRunner.Operations
         /// <param name="opName">The name of the operation</param>
         /// <returns>The return type of the specified operation</returns>
         Type GetReturnType(XmlTestType opName);
-
         /// <summary>
         /// Invokes an operation on a <see cref="IGeometry"/>.
         /// </summary>
@@ -31,6 +28,6 @@ namespace Open.Topology.TestRunner.Operations
         /// <param name="geometry">The geometry to process</param>
         /// <param name="args">The arguments to the operation (which may be typed as Strings)</param>
         /// <exception cref="Exception">If some error was encountered trying to find or process the operation</exception>
-        IResult Invoke(XmlTestType opName, IGeometry geometry, Object[] args);
+        IResult Invoke(XmlTestType opName, IGeometry geometry, object[] args);
     }
 }

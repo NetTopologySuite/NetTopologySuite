@@ -1,6 +1,5 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     /// <remarks>
@@ -14,7 +13,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     /// </list>
     /// The only exception is when the point-on-segment situation is detected, in which
     /// case no further processing is required.
-    /// The implication of the above rule is that segments 
+    /// The implication of the above rule is that segments
     /// which can be a priori determined to<i> not</i> touch the ray
     /// (i.e. by a test of their bounding box or Y-extent)
     /// do not need to be counted.This allows for optimization by indexing.
@@ -35,7 +34,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         public static Location LocatePointInRing(Coordinate p, Coordinate[] ring)
         {
             var counter = new NonRobustRayCrossingCounter(p);
-
             for (var i = 1; i < ring.Length; i++)
             {
                 var p1 = ring[i];
@@ -44,10 +42,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 if (counter.IsOnSegment)
                     return counter.Location;
             }
-
             return counter.Location;
         }
-
         /// <summary>
         /// Determines the <see cref="GeoAPI.Geometries.Location"/> of a point in a ring.
         /// </summary>
@@ -57,7 +53,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         public static Location LocatePointInRing(Coordinate p, ICoordinateSequence ring)
         {
             var counter = new NonRobustRayCrossingCounter(p);
-
             var p1 = new Coordinate();
             var p2 = new Coordinate();
             for (var i = 1; i < ring.Count; i++)
@@ -68,20 +63,15 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 if (counter.IsOnSegment)
                     return counter.Location;
             }
-
             return counter.Location;
         }
-
         private readonly Coordinate _p;
         private int _crossingCount;
         // true if the test point lies on an input segment
-        private bool _isPointOnSegment;
-
         public NonRobustRayCrossingCounter(Coordinate p)
         {
             _p = p;
         }
-
         /// <summary>
         /// Counts a segment
         /// </summary>
@@ -90,43 +80,37 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         public void CountSegment(Coordinate p1, Coordinate p2)
         {
             /**
-             * For each segment, check if it crosses 
+             * For each segment, check if it crosses
              * a horizontal ray running from the test point in the positive x direction.
              */
-
             // check if the segment is strictly to the left of the test point
             if (p1.X < _p.X && p2.X < _p.X)
                 return;
-
             // check if the point is equal to the current ring vertex
             if (_p.Y == p2.Y && _p.Y == p2.Y)
             {
-                _isPointOnSegment = true;
+                IsOnSegment = true;
                 return;
             }
-
             /**
              * For horizontal segments, check if the point is on the segment.
              * Otherwise, horizontal segments are not counted.
              */
             if (p1.Y == _p.Y && p2.Y == _p.Y)
             {
-                double minx = p1.X;
-                double maxx = p2.X;
+                var minx = p1.X;
+                var maxx = p2.X;
                 if (minx > maxx)
                 {
                     minx = p2.X;
                     maxx = p1.X;
                 }
-
                 if (_p.X >= minx && _p.X <= maxx)
                 {
-                    _isPointOnSegment = true;
+                    IsOnSegment = true;
                 }
-
                 return;
             }
-
             /**
              * Evaluate all non-horizontal segments which cross a horizontal ray to the
              * right of the test pt. To avoid double-counting shared vertices, we use the
@@ -141,21 +125,17 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             if (((p1.Y > _p.Y) && (p2.Y <= _p.Y))
                 || ((p2.Y > _p.Y) && (p1.Y <= _p.Y)))
             {
-
                 var orient = Orientation.Index(p1, p2, _p);
-
                 if (orient == 0)
                 {
-                    _isPointOnSegment = true;
+                    IsOnSegment = true;
                     return;
                 }
-
                 // Re-orient the result if needed to ensure effective segment direction is upwards
                 if (p2.Y < p1.Y)
                 {
                     orient = Orientation.ReOrient(orient);
                 }
-
                 // The upward segment crosses the ray if the test point lies to the left (CCW) of the segment.
                 if (orient == OrientationIndex.Left)
                 {
@@ -163,24 +143,19 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 }
             }
         }
-
         ///<summary>
         /// Gets a value indicating whether the point lies exactly on one of the supplied segments.
         /// </summary>
         /// <remarks>
         /// This property may be called at any time as segments are processed.
-        /// If the result of this method is <tt>true</tt>, 
+        /// If the result of this method is <tt>true</tt>,
         /// no further segments need be supplied, since the result
         /// will never change again.
         /// </remarks>
-        public bool IsOnSegment
-        {
-            get { return _isPointOnSegment; }
-        }
-
+        public bool IsOnSegment { get; private set; }
         /// <summary>
-        /// Gets the <see cref="GeoAPI.Geometries.Location"/> of the point relative to 
-        /// the ring, polygon or multipolygon from which the processed 
+        /// Gets the <see cref="GeoAPI.Geometries.Location"/> of the point relative to
+        /// the ring, polygon or multipolygon from which the processed
         /// segments were provided.
         /// </summary>
         /// <remarks>
@@ -191,32 +166,26 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             get
             {
-                if (_isPointOnSegment)
+                if (IsOnSegment)
                     return Location.Boundary;
-
                 // The point is in the interior of the ring if the number of X-crossings is
                 // odd.
                 if ((_crossingCount % 2) == 1)
                 {
                     return Location.Interior;
                 }
-
                 return Location.Exterior;
             }
         }
-
         /// <summary>
-        /// Tests whether the point lies in or on 
-        /// the ring, polygon or multipolygon from which the processed 
+        /// Tests whether the point lies in or on
+        /// the ring, polygon or multipolygon from which the processed
         /// segments were provided.
         /// </summary>
         /// <remarks>
-        /// This method only determines the correct location 
+        /// This method only determines the correct location
         /// if <b>all</b> relevant segments must have been processed.
         /// </remarks>
-        public bool IsPointInPolygon
-        {
-            get { return Location != Location.Exterior; }
-        }
+        public bool IsPointInPolygon => Location != Location.Exterior;
     }
 }

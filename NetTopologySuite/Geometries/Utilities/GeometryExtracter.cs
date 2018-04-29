@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
@@ -12,7 +11,6 @@ namespace NetTopologySuite.Geometries.Utilities
         //{
         //    return o is T;
         //}
-    
         ///<summary>
         /// Extracts the <c>T</c> components from an <see cref="IGeometry"/> and adds them to the provided <see cref="List{T}"/>.
         ///</summary>
@@ -32,7 +30,6 @@ namespace NetTopologySuite.Geometries.Utilities
             // skip non-T elemental geometries
             return list;
         }
-
         ///<summary>
         /// Extracts the <code>T</code> elements from a single <see cref="IGeometry"/> and returns them in a <see cref="List{T}"/>.
         ///</summary>
@@ -41,19 +38,15 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             return Extract<T>(geom, new List<IGeometry>());
         }
-
     }
-
     ///<summary>
     /// Extracts the components of type <c>T</c> from a <see cref="IGeometry"/>.
     ///</summary>
     public class GeometryExtracter<T> : IGeometryFilter
         where T: IGeometry
     {
-
         //private readonly Type _clz;
         private readonly IList<IGeometry> _comps;
-
         ///<summary>
         /// Constructs a filter with a list in which to store the elements found.
         ///</summary>
@@ -63,11 +56,9 @@ namespace NetTopologySuite.Geometries.Utilities
             //_clz = clz;
             _comps = comps;
         }
-
         public void Filter(IGeometry geom)
         {
             if (geom is T) _comps.Add((T)geom);
         }
-
     }
 }

@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries.Implementation
 {
     /// <summary>
@@ -13,42 +12,35 @@ namespace NetTopologySuite.Geometries.Implementation
     public class PackedCoordinateSequenceFactory : ICoordinateSequenceFactory
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public enum PackedType
         {
             /// <summary>
-            /// 
+            ///
             /// </summary>
             Double = 0,
-
             /// <summary>
-            /// 
+            ///
             /// </summary>
             Float = 1,
         }
-
         public static readonly PackedCoordinateSequenceFactory DoubleFactory =
             new PackedCoordinateSequenceFactory(PackedType.Double);
-
         public static readonly PackedCoordinateSequenceFactory FloatFactory =
             new PackedCoordinateSequenceFactory(PackedType.Float);
-
         private PackedType type = PackedType.Double;
         private int dimension = 3;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="PackedCoordinateSequenceFactory"/> class, 
+        /// Initializes a new instance of the <see cref="PackedCoordinateSequenceFactory"/> class,
         /// using double values.
         /// </summary>
         public PackedCoordinateSequenceFactory() : this(PackedType.Double) { }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedCoordinateSequenceFactory"/> class.
         /// </summary>
         /// <param name="type">The type.</param>
         public PackedCoordinateSequenceFactory(PackedType type) : this(type, 3) { }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedCoordinateSequenceFactory"/> class.
         /// </summary>
@@ -59,13 +51,12 @@ namespace NetTopologySuite.Geometries.Implementation
             Type = type;
             Dimension = dimension;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public PackedType Type
         {
-            get { return type; }
+            get => type;
             set
             {
                 if (value != PackedType.Double && value != PackedType.Float)
@@ -73,16 +64,14 @@ namespace NetTopologySuite.Geometries.Implementation
                 this.type = value;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int Dimension
         {
-            get { return dimension; }
-            set { this.dimension = value; }
+            get => dimension;
+            set => this.dimension = value;
         }
-
         /// <summary>
         /// Returns a CoordinateSequence based on the given array; whether or not the
         /// array is copied is implementation-dependent.
@@ -95,7 +84,6 @@ namespace NetTopologySuite.Geometries.Implementation
                  return new PackedDoubleCoordinateSequence(coordinates, dimension);
             return new PackedFloatCoordinateSequence(coordinates, dimension);
         }
-
         /// <summary>
         /// Returns a CoordinateSequence based on the given coordinate sequence; whether or not the
         /// array is copied is implementation-dependent.
@@ -108,7 +96,6 @@ namespace NetTopologySuite.Geometries.Implementation
                  return new PackedDoubleCoordinateSequence(coordSeq.ToCoordinateArray(), dimension);
             return new PackedFloatCoordinateSequence(coordSeq.ToCoordinateArray(), dimension);
         }
-
         /// <summary>
         /// Creates a <see cref="ICoordinateSequence" /> of the specified size and ordinates.
         /// For this to be useful, the <see cref="ICoordinateSequence" /> implementation must be mutable.
@@ -122,14 +109,9 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             return Create(size, OrdinatesUtility.OrdinatesToDimension(ordinates));
         }
-
-        public Ordinates Ordinates
-        {
-            get { return Ordinates.XYZ; }
-        }
-
+        public Ordinates Ordinates => Ordinates.XYZ;
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="packedCoordinates"></param>
         /// <param name="dimension"></param>
@@ -140,9 +122,8 @@ namespace NetTopologySuite.Geometries.Implementation
                  return new PackedDoubleCoordinateSequence(packedCoordinates, dimension);
             return new PackedFloatCoordinateSequence(packedCoordinates, dimension);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="packedCoordinates"></param>
         /// <param name="dimension"></param>
@@ -153,9 +134,8 @@ namespace NetTopologySuite.Geometries.Implementation
                  return new PackedDoubleCoordinateSequence(packedCoordinates, dimension);
             else return new PackedFloatCoordinateSequence(packedCoordinates, dimension);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="size"></param>
         /// <param name="dimension"></param>

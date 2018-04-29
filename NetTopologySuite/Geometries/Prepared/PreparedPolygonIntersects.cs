@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Noding;
-
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
@@ -24,14 +23,12 @@ namespace NetTopologySuite.Geometries.Prepared
             var polyInt = new PreparedPolygonIntersects(prep);
             return polyInt.Intersects(geom);
         }
-
         ///<summary>
         /// Creates an instance of this operation.
         ///</summary>
         /// <param name="prepPoly">The prepared polygon</param>
         public PreparedPolygonIntersects(PreparedPolygon prepPoly) :
             base(prepPoly) { }
-
         ///<summary>
         /// Tests whether this PreparedPolygon intersects a given geometry.
         ///</summary>
@@ -45,7 +42,7 @@ namespace NetTopologySuite.Geometries.Prepared
              *
              * If a point of any test components lie in target, result is true
              */
-            bool isInPrepGeomArea = IsAnyTestComponentInTarget(geom);
+            var isInPrepGeomArea = IsAnyTestComponentInTarget(geom);
             if (isInPrepGeomArea)
                 return true;
             /**
@@ -57,7 +54,7 @@ namespace NetTopologySuite.Geometries.Prepared
             /*
              * If any segments intersect, result is true
              */
-            IList<ISegmentString> lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
+            var lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
             // only request intersection finder if there are segments (ie NOT for point inputs)
             if (lineSegStr.Count > 0)
             {
@@ -65,7 +62,6 @@ namespace NetTopologySuite.Geometries.Prepared
                 if (segsIntersect)
                     return true;
             }
-
             /*
              * If the test has dimension = 2 as well, it is necessary to
              * test for proper inclusion of the target.
@@ -74,10 +70,9 @@ namespace NetTopologySuite.Geometries.Prepared
             if (geom.Dimension == Dimension.Surface)
             {
                 // TODO: generalize this to handle GeometryCollections
-                bool isPrepGeomInArea = IsAnyTargetComponentInAreaTest(geom, prepPoly.RepresentativePoints);
+                var isPrepGeomInArea = IsAnyTargetComponentInAreaTest(geom, prepPoly.RepresentativePoints);
                 if (isPrepGeomInArea) return true;
             }
-
             return false;
         }
     }

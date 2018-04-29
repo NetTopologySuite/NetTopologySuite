@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary>
@@ -38,19 +37,17 @@ namespace NetTopologySuite.GeometriesGraph.Index
         [Obsolete("Use List<int>.ToArray()")]
         public static int[] ToIntArray(IList<int> list)
         {
-            int[] array = new int[list.Count];
-            for (int i = 0; i < array.Length; i++)
+            var array = new int[list.Count];
+            for (var i = 0; i < array.Length; i++)
                 array[i] = Convert.ToInt32(list[i]);
             return array;
         }
-
         /*
         /// <summary>
         /// Default empty constructor.
         /// </summary>
         public MonotoneChainIndexer() { }
         */
-
         /// <summary>
         ///
         /// </summary>
@@ -59,21 +56,20 @@ namespace NetTopologySuite.GeometriesGraph.Index
         public int[] GetChainStartIndices(Coordinate[] pts)
         {
             // find the startpoint (and endpoints) of all monotone chains in this edge
-            int start = 0;
+            var start = 0;
             var startIndexList = new List<int>();
             startIndexList.Add(start);
             do
             {
-                int last = FindChainEnd(pts, start);
+                var last = FindChainEnd(pts, start);
                 startIndexList.Add(last);
                 start = last;
             }
             while (start < pts.Length - 1);
             // copy list to an array of ints, for efficiency
-            int[] startIndex = startIndexList.ToArray(); /*ToIntArray(startIndexList);*/
+            var startIndex = startIndexList.ToArray(); /*ToIntArray(startIndexList);*/
             return startIndex;
         }
-
         /// <returns>
         /// The index of the last point in the monotone chain.
         ///
@@ -81,13 +77,13 @@ namespace NetTopologySuite.GeometriesGraph.Index
         private static int FindChainEnd(Coordinate[] pts, int start)
         {
             // determine quadrant for chain
-            int chainQuad = QuadrantOp.Quadrant(pts[start], pts[start + 1]);
-            int last = start + 1;
+            var chainQuad = QuadrantOp.Quadrant(pts[start], pts[start + 1]);
+            var last = start + 1;
             while (last < pts.Length)
             {
                 //if (last - start > 100) break;
                 // compute quadrant for next possible segment in chain
-                int quad = QuadrantOp.Quadrant(pts[last - 1], pts[last]);
+                var quad = QuadrantOp.Quadrant(pts[last - 1], pts[last]);
                 if (quad != chainQuad)
                     break;
                 last++;

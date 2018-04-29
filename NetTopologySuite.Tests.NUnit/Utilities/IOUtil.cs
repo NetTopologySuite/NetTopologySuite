@@ -3,12 +3,11 @@ using GeoAPI.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 using ParseException = GeoAPI.IO.ParseException;
-
 namespace NetTopologySuite.Tests.NUnit.Utilities
 {
     public class IOUtil
     {
-        public static IGeometry Read(String wkt)
+        public static IGeometry Read(string wkt)
         {
             var rdr = new WKTReader();
             try

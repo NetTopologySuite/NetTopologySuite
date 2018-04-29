@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Specialized;
-
 namespace Open.Topology.TestRunner
 {
 	/// <summary>
@@ -8,76 +7,57 @@ namespace Open.Topology.TestRunner
 	/// </summary>
 	public struct XmlTestInfo
 	{
-        private readonly StringDictionary _listParameters;
-
-		public XmlTestInfo(bool bReset)
+	    public XmlTestInfo(bool bReset)
 		{
-            _listParameters = new StringDictionary();
-
+            Parameters = new StringDictionary();
             if (bReset)
                 Reset();
 		}
-
-        public StringDictionary Parameters
+        public StringDictionary Parameters { get; }
+	    public void Reset()
         {
-            get
+            if (Parameters != null)
             {
-                return _listParameters;
+                Parameters.Clear();
+                Parameters.Add("desc",   string.Empty);
+                Parameters.Add("a",      string.Empty);
+                Parameters.Add("b",      string.Empty);
+                Parameters.Add("name",   string.Empty);
+                Parameters.Add("result", string.Empty);
+                Parameters.Add("arg1",   string.Empty);
+                Parameters.Add("arg2",   string.Empty);
+                Parameters.Add("arg3",   string.Empty);
             }
         }
-
-        public void Reset()
-        {
-            if (_listParameters != null)
-            {
-                _listParameters.Clear();
-
-                _listParameters.Add("desc",   String.Empty);
-                _listParameters.Add("a",      String.Empty);
-                _listParameters.Add("b",      String.Empty);
-                _listParameters.Add("name",   String.Empty);
-                _listParameters.Add("result", String.Empty);
-                _listParameters.Add("arg1",   String.Empty);
-                _listParameters.Add("arg2",   String.Empty);
-                _listParameters.Add("arg3",   String.Empty);
-            }
-        }
-
         public void SetValue(string key, string value)
         {
-            if (_listParameters != null)
+            if (Parameters != null)
             {
-                _listParameters[key] = value;
+                Parameters[key] = value;
             }
         }
-
         public string GetValue(string key)
         {
-            if (_listParameters != null)
+            if (Parameters != null)
             {
-                return _listParameters[key];
+                return Parameters[key];
             }
-
-            return String.Empty;
+            return string.Empty;
         }
-
         public void Clear()
         {
-            if (_listParameters != null)
+            if (Parameters != null)
             {
-                _listParameters.Clear();
+                Parameters.Clear();
             }
         }
-
         public bool IsDefaultTarget()
         {
-            string arg1 = GetValue("arg1");
-
+            var arg1 = GetValue("arg1");
             if (!string.IsNullOrEmpty(arg1))
             {
                 return (arg1 == "a") || (arg1 == "A");
             }
-
             return true;
         }
 	}

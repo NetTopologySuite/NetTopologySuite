@@ -1,7 +1,6 @@
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
     using System.Collections.Generic;
-
     public class QuadEdgeUtil
     {
         /// <summary>
@@ -13,16 +12,13 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public static IList<QuadEdge> FindEdgesIncidentOnOrigin(QuadEdge start)
         {
             var incEdge = new List<QuadEdge>();
-
-            QuadEdge qe = start;
+            var qe = start;
             do
             {
                 incEdge.Add(qe);
                 qe = qe.ONext;
             } while (qe != start);
-
             return incEdge;
         }
-
     }
 }

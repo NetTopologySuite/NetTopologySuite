@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
@@ -19,6 +18,5 @@ namespace NetTopologySuite.Index.Strtree
         /// <exception cref="ArgumentException">If the metric is not applicable to the arguments</exception>
         /// <returns>The distance between <paramref name="item1"/> and <paramref name="item2"/>.</returns>
         double Distance(IBoundable<T, TItem> item1, IBoundable<T, TItem> item2);
-
     }
 }

@@ -6,7 +6,6 @@ using GeoAPI.Geometries;
 using NUnit.Framework;
 using NetTopologySuite.IO;
 using NetTopologySuite.Tests.NUnit.TestData;
-
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     public class InteriorPointTest
@@ -21,20 +20,16 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             stream = EmbeddedResourceManager.GetResourceStream(name);
             CheckInteriorPointFile(stream, name);
         }
-
-
         private static void CheckInteriorPointFile(Stream stream, string name)
         {
             var fileRdr = new WKTFileReader(new StreamReader(stream), new WKTReader());
             CheckInteriorPointFile(fileRdr, name);
         }
-
         private static void CheckInteriorPointFile(WKTFileReader fileRdr, string name)
         {
             var polys = fileRdr.Read();
             CheckInteriorPoint(name, polys);
         }
-
         private static void CheckInteriorPoint(string name, IEnumerable<IGeometry> geoms)
         {
             Console.WriteLine(name);
@@ -48,7 +43,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             sw.Stop();
             //Console.WriteLine("\n {0}ms\n", sw.ElapsedMilliseconds);
         }
-
         private static void CheckInteriorPoint(IGeometry g)
         {
             var ip = g.InteriorPoint;

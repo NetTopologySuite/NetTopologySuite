@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-
 namespace NetTopologySuite.Tests.NUnit.Performance
 {
     /// <summary>
@@ -13,29 +12,23 @@ namespace NetTopologySuite.Tests.NUnit.Performance
     {
         private const string RunPrefix = "Run";
         private const string InitMethod = "Init";
-
         public static void Run(Type clz)
         {
             var runner = new PerformanceTestRunner();
             runner.RunInternal(clz);
         }
-
         private PerformanceTestRunner()
         {
-
         }
-
         private void RunInternal(Type clz)
         {
             try
             {
                 var ctor = clz.GetConstructor(new Type[0]);
-
                 var test = (PerformanceTestCase) ctor.Invoke(new object[0]);
                 var runSize = test.RunSize;
-                int runIter = test.RunIterations;
+                var runIter = test.RunIterations;
                 var runMethod = FindMethods(clz, RunPrefix);
-
                 // do the run
                 test.SetUp();
                 for (var runNum = 0; runNum < runSize.Length; runNum++)
@@ -67,9 +60,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
                 Console.WriteLine(e.StackTrace);
             }
         }
-
-
-        private static MethodInfo[] FindMethods(Type clz, String methodPrefix)
+        private static MethodInfo[] FindMethods(Type clz, string methodPrefix)
         {
             var runMeths = new List<MethodInfo>();
             var meth = clz.GetMethods();

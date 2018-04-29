@@ -1,7 +1,6 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
-
 namespace NetTopologySuite.Noding
 {
     /// <summary>
@@ -13,7 +12,6 @@ namespace NetTopologySuite.Noding
     /// </summary>
     public class SegmentPointComparator
     {
-
         /// <summary>
         /// Compares two <see cref="Coordinate" />s for their relative position along a segment
         /// lying in the specified <see cref="Octant" />.
@@ -29,15 +27,13 @@ namespace NetTopologySuite.Noding
         public static int Compare(Octants octant, Coordinate p0, Coordinate p1)
         {
             // nodes can only be equal if their coordinates are equal
-            if (p0.Equals2D(p1)) 
+            if (p0.Equals2D(p1))
                 return 0;
-
             var xSign = RelativeSign(p0.X, p1.X);
             var ySign = RelativeSign(p0.Y, p1.Y);
-
             switch (octant)
             {
-                case Octants.Zero: 
+                case Octants.Zero:
                     return CompareValue(xSign, ySign);
                 case Octants.One:
                     return CompareValue(ySign, xSign);
@@ -54,28 +50,25 @@ namespace NetTopologySuite.Noding
                 case Octants.Seven:
                     return CompareValue(xSign, -ySign);
             }
-
             Assert.ShouldNeverReachHere("invalid octant value: " + octant);
             return 0;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="x0"></param>
         /// <param name="x1"></param>
         /// <returns></returns>
         public static int RelativeSign(double x0, double x1)
         {
-            if (x0 < x1) 
+            if (x0 < x1)
                 return -1;
-            if (x0 > x1) 
+            if (x0 > x1)
                 return 1;
             return 0;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="compareSign0"></param>
         /// <param name="compareSign1"></param>
@@ -84,14 +77,13 @@ namespace NetTopologySuite.Noding
         {
             if (compareSign0 < 0)
                 return -1;
-            if (compareSign0 > 0) 
+            if (compareSign0 > 0)
                 return 1;
             if (compareSign1 < 0)
                 return -1;
-            if (compareSign1 > 0) 
+            if (compareSign1 > 0)
                 return 1;
             return 0;
-
         }
     }
 }

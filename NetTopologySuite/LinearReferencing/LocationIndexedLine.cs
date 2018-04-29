@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>
@@ -11,7 +10,6 @@ namespace NetTopologySuite.LinearReferencing
     public class LocationIndexedLine
     {
         private readonly IGeometry _linearGeom;
-
         /// <summary>
         /// Constructs an object which allows linear referencing along
         /// a given linear <see cref="Geometry" />.
@@ -23,12 +21,10 @@ namespace NetTopologySuite.LinearReferencing
                 throw new ArgumentException("Input geometry must be linear", "linearGeom");
             _linearGeom = linearGeom;
         }
-
         private static bool CheckGeometryType(IGeometry linearGeometry)
         {
             return ((linearGeometry is ILineString || linearGeometry is IMultiLineString));
         }
-
         /// <summary>
         /// Computes the <see cref="Coordinate" />for the point on the line at the given index.
         /// If the <paramref name="index" /> is out of range,
@@ -44,7 +40,6 @@ namespace NetTopologySuite.LinearReferencing
         {
             return index.GetCoordinate(_linearGeom);
         }
-
         /// <summary>
         /// Computes the <see cref="Coordinate"/> for the point
         /// on the line at the given index, offset by the given distance.
@@ -61,10 +56,9 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>The Coordinate at the given index</returns>
         public Coordinate ExtractPoint(LinearLocation index, double offsetDistance)
         {
-            LinearLocation indexLow = index.ToLowest(_linearGeom);
+            var indexLow = index.ToLowest(_linearGeom);
             return indexLow.GetSegment(_linearGeom).PointAlongOffset(indexLow.SegmentFraction, offsetDistance);
         }
-
         ///<summary>
         /// Computes the <see cref="Coordinate"/> for the point on the line at the given index, offset by the given distance.
         ///</summary>
@@ -79,7 +73,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>The Coordinate at the given index</returns>
         public Coordinate ExtractPoint(double index, double offsetDistance)
         {
-            LinearLocation loc = LengthLocationMap.GetLocation(_linearGeom, index);
+            var loc = LengthLocationMap.GetLocation(_linearGeom, index);
             return loc.GetSegment(_linearGeom).PointAlongOffset(loc.SegmentFraction, offsetDistance);
         }
         /// <summary>
@@ -95,7 +89,6 @@ namespace NetTopologySuite.LinearReferencing
         {
             return ExtractLineByLocation.Extract(_linearGeom, startIndex, endIndex);
         }
-
         /// <summary>
         /// Computes the index for a given point on the line.
         /// The supplied point does not necessarily have to lie precisely
@@ -111,7 +104,6 @@ namespace NetTopologySuite.LinearReferencing
         {
             return LocationIndexOfPoint.IndexOf(_linearGeom, pt);
         }
-
         /// <summary>
         /// Computes the indices for a subline of the line.
         /// (The subline must conform to the line; that is,
@@ -124,9 +116,8 @@ namespace NetTopologySuite.LinearReferencing
         {
             return LocationIndexOfLine.IndicesOf(_linearGeom, subLine);
         }
-
         ///<summary>
-        /// Finds the index for a point on the line which is greater than the given index. 
+        /// Finds the index for a point on the line which is greater than the given index.
         /// If no such index exists, returns <paramref name="minIndex" />.
         ///</summary>
         /// <remarks>
@@ -153,7 +144,6 @@ namespace NetTopologySuite.LinearReferencing
         {
             return LocationIndexOfPoint.IndexOfAfter(_linearGeom, pt, minIndex);
         }
-
         /// <summary>
         /// Computes the index for the closest point on the line to the given point.
         /// If more than one point has the closest distance the first one along the line is returned.
@@ -165,29 +155,14 @@ namespace NetTopologySuite.LinearReferencing
         {
             return LocationIndexOfPoint.IndexOf(_linearGeom, pt);
         }
-
         /// <summary>
         /// Returns the index of the start of the line.
         /// </summary>
-        public LinearLocation StartIndex
-        {
-            get
-            {
-                return new LinearLocation();
-            }
-        }
-
+        public LinearLocation StartIndex => new LinearLocation();
         /// <summary>
         /// Returns the index of the end of the line.
         /// </summary>
-        public LinearLocation EndIndex
-        {
-            get
-            {
-                return LinearLocation.GetEndLocation(_linearGeom);
-            }
-        }
-
+        public LinearLocation EndIndex => LinearLocation.GetEndLocation(_linearGeom);
         /// <summary>
         /// Tests whether an index is in the valid index range for the line.
         /// </summary>
@@ -197,16 +172,15 @@ namespace NetTopologySuite.LinearReferencing
         {
             return index.IsValid(_linearGeom);
         }
-
         /// <summary>
-        /// Computes a valid index for this line by clamping 
+        /// Computes a valid index for this line by clamping
         /// the given index to the valid range of index values.
         /// </summary>
         /// <param name="index"></param>
         /// <returns>A valid index value.</returns>
         public LinearLocation ClampIndex(LinearLocation index)
         {
-            LinearLocation loc = (LinearLocation)index.Copy();
+            var loc = (LinearLocation)index.Copy();
             loc.Clamp(_linearGeom);
             return loc;
         }

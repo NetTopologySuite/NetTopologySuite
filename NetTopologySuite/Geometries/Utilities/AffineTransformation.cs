@@ -3,7 +3,6 @@ using GeoAPI.Geometries;
 #if !HAS_SYSTEM_ICLONEABLE
 using ICloneable = GeoAPI.ICloneable;
 #endif
-
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
@@ -89,7 +88,6 @@ namespace NetTopologySuite.Geometries.Utilities
             trans.SetToReflection(x0, y0, x1, y1);
             return trans;
         }
-
         /// <summary>
         /// Creates a transformation for a reflection about the
         /// line (0,0) - (x,y).
@@ -103,7 +101,6 @@ namespace NetTopologySuite.Geometries.Utilities
             trans.SetToReflection(x, y);
             return trans;
         }
-
         /// <summary>
         /// Creates a transformation for a rotation
         /// about the origin
@@ -119,7 +116,6 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             return RotationInstance(Math.Sin(theta), Math.Cos(theta));
         }
-
         /// <summary>
         /// Creates a transformation for a rotation
         /// by an angle <i>theta</i>,
@@ -138,7 +134,6 @@ namespace NetTopologySuite.Geometries.Utilities
             trans.SetToRotation(sinTheta, cosTheta);
             return trans;
         }
-
         /// <summary>
         /// Creates a transformation for a rotation
         /// about the point (x,y) by an angle <i>theta</i>.
@@ -155,7 +150,6 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             return RotationInstance(Math.Sin(theta), Math.Cos(theta), x, y);
         }
-
         /// <summary>
         /// Creates a transformation for a rotation
         /// about the point (x,y) by an angle <i>theta</i>,
@@ -176,7 +170,6 @@ namespace NetTopologySuite.Geometries.Utilities
             trans.SetToRotation(sinTheta, cosTheta, x, y);
             return trans;
         }
-
         /// <summary>
         /// Creates a transformation for a scaling relative to the origin.
         /// </summary>
@@ -189,7 +182,6 @@ namespace NetTopologySuite.Geometries.Utilities
             trans.SetToScale(xScale, yScale);
             return trans;
         }
-
         /// <summary>
         /// Creates a transformation for a scaling relative to the point (x,y).
         /// </summary>
@@ -206,7 +198,6 @@ namespace NetTopologySuite.Geometries.Utilities
             trans.Translate(x, y);
             return trans;
         }
-
         /// <summary>
         /// Creates a transformation for a shear.
         /// </summary>
@@ -219,7 +210,6 @@ namespace NetTopologySuite.Geometries.Utilities
             trans.SetToShear(xShear, yShear);
             return trans;
         }
-
         /// <summary>
         /// Creates a transformation for a translation.
         /// </summary>
@@ -232,7 +222,6 @@ namespace NetTopologySuite.Geometries.Utilities
             trans.SetToTranslation(x, y);
             return trans;
         }
-
         // affine matrix entries
         // (bottom row is always [ 0 0 1 ])
         private double _m00;
@@ -241,7 +230,6 @@ namespace NetTopologySuite.Geometries.Utilities
         private double _m10;
         private double _m11;
         private double _m12;
-
         /// <summary>
         /// Constructs a new identity transformation
         /// </summary>
@@ -249,7 +237,6 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             SetToIdentity();
         }
-
         /// <summary>
         /// Constructs a new transformation whose
         /// matrix has the specified values.
@@ -266,7 +253,6 @@ namespace NetTopologySuite.Geometries.Utilities
             _m11 = matrix[4];
             _m12 = matrix[5];
         }
-
         /// <summary>
         /// Constructs a new transformation whose
         /// matrix has the specified values.
@@ -286,7 +272,6 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             SetTransformation(m00, m01, m02, m10, m11, m12);
         }
-
         /// <summary>
         /// Constructs a transformation which is
         /// a copy of the given one.
@@ -296,7 +281,6 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             SetTransformation(trans);
         }
-
         /// <summary>
         /// Constructs a transformation
         /// which maps the given source
@@ -317,7 +301,6 @@ namespace NetTopologySuite.Geometries.Utilities
             : this(new AffineTransformationBuilder(src0, src1, src2, dest0, dest1, dest2).GetTransformation())
         {
         }
-
         /// <summary>
         /// Sets this transformation to be the identity transformation.
         /// </summary>
@@ -336,7 +319,6 @@ namespace NetTopologySuite.Geometries.Utilities
             _m10 = 0.0; _m11 = 1.0; _m12 = 0.0;
             return this;
         }
-
         /// <summary>
         /// Sets this transformation's matrix to have the given values.
         /// </summary>
@@ -362,7 +344,6 @@ namespace NetTopologySuite.Geometries.Utilities
             _m12 = m12;
             return this;
         }
-
         /// <summary>
         /// Sets this transformation to be a copy of the given one
         /// </summary>
@@ -374,7 +355,6 @@ namespace NetTopologySuite.Geometries.Utilities
             _m10 = trans._m10; _m11 = trans._m11; _m12 = trans._m12;
             return this;
         }
-
         /// <summary>
         /// Gets an array containing the entries
         /// of the transformation matrix.
@@ -387,14 +367,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </pre>
         /// </remarks>
         /// <returns> an array of length 6</returns>
-        public double[] MatrixEntries
-        {
-            get
-            {
-                return new[] { _m00, _m01, _m02, _m10, _m11, _m12 };
-            }
-        }
-
+        public double[] MatrixEntries => new[] { _m00, _m01, _m02, _m10, _m11, _m12 };
         /// <summary>
         /// Computes the determinant of the transformation matrix.
         /// </summary>
@@ -419,11 +392,7 @@ namespace NetTopologySuite.Geometries.Utilities
         ///
         /// <returns>The determinant of the transformation</returns>
         /// <see cref="GetInverse"/>
-        public double Determinant
-        {
-            get { return _m00 * _m11 - _m01 * _m10; }
-        }
-
+        public double Determinant => _m00 * _m11 - _m01 * _m10;
         /// <summary>
         /// Computes the inverse of this transformation, if one
         /// exists.
@@ -469,20 +438,17 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <exception cref="NoninvertibleTransformationException"></exception>
         public AffineTransformation GetInverse()
         {
-            double det = Determinant;
+            var det = Determinant;
             if (det == 0)
                 throw new NoninvertibleTransformationException("Transformation is non-invertible");
-
-            double im00 = _m11 / det;
-            double im10 = -_m10 / det;
-            double im01 = -_m01 / det;
-            double im11 = _m00 / det;
-            double im02 = (_m01 * _m12 - _m02 * _m11) / det;
-            double im12 = (-_m00 * _m12 + _m10 * _m02) / det;
-
+            var im00 = _m11 / det;
+            var im10 = -_m10 / det;
+            var im01 = -_m01 / det;
+            var im11 = _m00 / det;
+            var im02 = (_m01 * _m12 - _m02 * _m11) / det;
+            var im12 = (-_m00 * _m12 + _m10 * _m02) / det;
             return new AffineTransformation(im00, im01, im02, im10, im11, im12);
         }
-
         ///<summary>
         /// Explicitly computes the math for a reflection.  May not work.
         /// </summary>
@@ -497,18 +463,17 @@ namespace NetTopologySuite.Geometries.Utilities
             {
                 throw new ArgumentException("Reflection line points must be distinct");
             }
-            double dx = x1 - x0;
-            double dy = y1 - y0;
-            double d = System.Math.Sqrt(dx * dx + dy * dy);
-            double sin = dy / d;
-            double cos = dx / d;
-            double cs2 = 2 * sin * cos;
-            double c2s2 = cos * cos - sin * sin;
+            var dx = x1 - x0;
+            var dy = y1 - y0;
+            var d = System.Math.Sqrt(dx * dx + dy * dy);
+            var sin = dy / d;
+            var cos = dx / d;
+            var cs2 = 2 * sin * cos;
+            var c2s2 = cos * cos - sin * sin;
             _m00 = c2s2; _m01 = cs2; _m02 = 0.0;
             _m10 = cs2; _m11 = -c2s2; _m12 = 0.0;
             return this;
         }
-
         /// <summary>
         /// Sets this transformation to be a reflection about the line defined by a line <tt>(x0,y0) - (x1,y1)</tt>.
         /// </summary>
@@ -525,13 +490,12 @@ namespace NetTopologySuite.Geometries.Utilities
             }
             // translate line vector to origin
             SetToTranslation(-x0, -y0);
-
             // rotate vector to positive x axis direction
-            double dx = x1 - x0;
-            double dy = y1 - y0;
-            double d = System.Math.Sqrt(dx * dx + dy * dy);
-            double sin = dy / d;
-            double cos = dx / d;
+            var dx = x1 - x0;
+            var dy = y1 - y0;
+            var d = System.Math.Sqrt(dx * dx + dy * dy);
+            var sin = dy / d;
+            var cos = dx / d;
             Rotate(-sin, cos);
             // reflect about the x axis
             Scale(1, -1);
@@ -541,7 +505,6 @@ namespace NetTopologySuite.Geometries.Utilities
             Translate(x0, y0);
             return this;
         }
-
         /// <summary>
         /// Sets this transformation to be a reflection
         /// about the line defined by vector (x,y).
@@ -565,7 +528,6 @@ namespace NetTopologySuite.Geometries.Utilities
             {
                 throw new ArgumentException("Reflection vector must be non-zero");
             }
-
             /**
              * Handle special case - x = y.
              * This case is specified explicitly to avoid roundoff error.
@@ -580,11 +542,10 @@ namespace NetTopologySuite.Geometries.Utilities
                 _m12 = 0.0;
                 return this;
             }
-
             // rotate vector to positive x axis direction
-            double d = System.Math.Sqrt(x * x + y * y);
-            double sin = y / d;
-            double cos = x / d;
+            var d = System.Math.Sqrt(x * x + y * y);
+            var sin = y / d;
+            var cos = x / d;
             Rotate(-sin, cos);
             // reflect about the x-axis
             Scale(1, -1);
@@ -592,7 +553,6 @@ namespace NetTopologySuite.Geometries.Utilities
             Rotate(sin, cos);
             return this;
         }
-
         /// <summary>
         /// Sets this transformation to be a rotation around the orign.
         /// </summary>
@@ -615,7 +575,6 @@ namespace NetTopologySuite.Geometries.Utilities
             SetToRotation(System.Math.Sin(theta), System.Math.Cos(theta));
             return this;
         }
-
         /// <summary>
         /// Sets this transformation to be a rotation around the origin
         /// by specifying the sin and cos of the rotation angle directly.
@@ -638,7 +597,6 @@ namespace NetTopologySuite.Geometries.Utilities
             _m10 = sinTheta; _m11 = cosTheta; _m12 = 0.0;
             return this;
         }
-
         /// <summary>
         /// Sets this transformation to be a rotation
         /// around a given point (x,y).
@@ -664,7 +622,6 @@ namespace NetTopologySuite.Geometries.Utilities
             SetToRotation(System.Math.Sin(theta), System.Math.Cos(theta), x, y);
             return this;
         }
-
         /// <summary>
         /// Sets this transformation to be a rotation
         /// around a given point (x,y)
@@ -690,7 +647,6 @@ namespace NetTopologySuite.Geometries.Utilities
             _m10 = sinTheta; _m11 = cosTheta; _m12 = y - x * sinTheta - y * cosTheta;
             return this;
         }
-
         /// <summary>
         /// Sets this transformation to be a scaling.
         /// </summary>
@@ -712,7 +668,6 @@ namespace NetTopologySuite.Geometries.Utilities
             _m10 = 0.0; _m11 = yScale; _m12 = 0.0;
             return this;
         }
-
         /// <summary>
         /// Sets this transformation to be a shear.
         /// </summary>
@@ -738,7 +693,6 @@ namespace NetTopologySuite.Geometries.Utilities
             _m10 = yShear; _m11 = 1.0; _m12 = 0.0;
             return this;
         }
-
         /// <summary>
         /// Sets this transformation to be a translation.
         /// </summary>
@@ -760,7 +714,6 @@ namespace NetTopologySuite.Geometries.Utilities
             _m10 = 0.0; _m11 = 1.0; _m12 = dy;
             return this;
         }
-
         /// <summary>
         /// Updates the value of this transformation
         /// to that of a reflection transformation composed
@@ -776,7 +729,6 @@ namespace NetTopologySuite.Geometries.Utilities
             Compose(ReflectionInstance(x0, y0, x1, y1));
             return this;
         }
-
         /// <summary>
         /// Updates the value of this transformation
         /// to that of a reflection transformation composed
@@ -790,7 +742,6 @@ namespace NetTopologySuite.Geometries.Utilities
             Compose(ReflectionInstance(x, y));
             return this;
         }
-
         /// <summary>
         /// Updates the value of this transformation
         /// to that of a rotation transformation composed
@@ -807,7 +758,6 @@ namespace NetTopologySuite.Geometries.Utilities
             Compose(RotationInstance(theta));
             return this;
         }
-
         /// <summary>
         /// Updates the value of this transformation
         /// to that of a rotation around the origin composed
@@ -822,7 +772,6 @@ namespace NetTopologySuite.Geometries.Utilities
             Compose(RotationInstance(sinTheta, cosTheta));
             return this;
         }
-
         /// <summary>
         /// Updates the value of this transformation
         /// to that of a rotation around a given point composed
@@ -841,7 +790,6 @@ namespace NetTopologySuite.Geometries.Utilities
             Compose(RotationInstance(theta, x, y));
             return this;
         }
-
         /// <summary>
         /// Updates the value of this transformation
         /// to that of a rotation around a given point composed
@@ -858,7 +806,6 @@ namespace NetTopologySuite.Geometries.Utilities
             Compose(RotationInstance(sinTheta, cosTheta));
             return this;
         }
-
         /// <summary>
         /// Updates the value of this transformation
         /// to that of a scale transformation composed
@@ -872,7 +819,6 @@ namespace NetTopologySuite.Geometries.Utilities
             Compose(ScaleInstance(xScale, yScale));
             return this;
         }
-
         /// <summary>
         /// Updates the value of this transformation
         /// to that of a shear transformation composed
@@ -886,7 +832,6 @@ namespace NetTopologySuite.Geometries.Utilities
             Compose(ShearInstance(xShear, yShear));
             return this;
         }
-
         /// <summary>
         /// Updates the value of this transformation
         /// to that of a translation transformation composed
@@ -900,7 +845,6 @@ namespace NetTopologySuite.Geometries.Utilities
             Compose(TranslationInstance(x, y));
             return this;
         }
-
         /// <summary>
         /// Updates this transformation to be
         /// the composition of this transformation with the given <see cref="AffineTransformation" />.
@@ -918,12 +862,12 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation Compose(AffineTransformation trans)
         {
-            double mp00 = trans._m00 * _m00 + trans._m01 * _m10;
-            double mp01 = trans._m00 * _m01 + trans._m01 * _m11;
-            double mp02 = trans._m00 * _m02 + trans._m01 * _m12 + trans._m02;
-            double mp10 = trans._m10 * _m00 + trans._m11 * _m10;
-            double mp11 = trans._m10 * _m01 + trans._m11 * _m11;
-            double mp12 = trans._m10 * _m02 + trans._m11 * _m12 + trans._m12;
+            var mp00 = trans._m00 * _m00 + trans._m01 * _m10;
+            var mp01 = trans._m00 * _m01 + trans._m01 * _m11;
+            var mp02 = trans._m00 * _m02 + trans._m01 * _m12 + trans._m02;
+            var mp10 = trans._m10 * _m00 + trans._m11 * _m10;
+            var mp11 = trans._m10 * _m01 + trans._m11 * _m11;
+            var mp12 = trans._m10 * _m02 + trans._m11 * _m12 + trans._m12;
             _m00 = mp00;
             _m01 = mp01;
             _m02 = mp02;
@@ -932,7 +876,6 @@ namespace NetTopologySuite.Geometries.Utilities
             _m12 = mp12;
             return this;
         }
-
         /// <summary>
         /// Updates this transformation to be the composition
         /// of a given <see cref="AffineTransformation" /> with this transformation.
@@ -950,12 +893,12 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation ComposeBefore(AffineTransformation trans)
         {
-            double mp00 = _m00 * trans._m00 + _m01 * trans._m10;
-            double mp01 = _m00 * trans._m01 + _m01 * trans._m11;
-            double mp02 = _m00 * trans._m02 + _m01 * trans._m12 + _m02;
-            double mp10 = _m10 * trans._m00 + _m11 * trans._m10;
-            double mp11 = _m10 * trans._m01 + _m11 * trans._m11;
-            double mp12 = _m10 * trans._m02 + _m11 * trans._m12 + _m12;
+            var mp00 = _m00 * trans._m00 + _m01 * trans._m10;
+            var mp01 = _m00 * trans._m01 + _m01 * trans._m11;
+            var mp02 = _m00 * trans._m02 + _m01 * trans._m12 + _m02;
+            var mp10 = _m10 * trans._m00 + _m11 * trans._m10;
+            var mp11 = _m10 * trans._m01 + _m11 * trans._m11;
+            var mp12 = _m10 * trans._m02 + _m11 * trans._m12 + _m12;
             _m00 = mp00;
             _m01 = mp01;
             _m02 = mp02;
@@ -964,7 +907,6 @@ namespace NetTopologySuite.Geometries.Utilities
             _m12 = mp12;
             return this;
         }
-
         /// <summary>
         /// Applies this transformation to the <paramref name="src" /> coordinate
         /// and places the results in the <paramref name="dest" /> coordinate
@@ -976,13 +918,12 @@ namespace NetTopologySuite.Geometries.Utilities
         ///
         public Coordinate Transform(Coordinate src, Coordinate dest)
         {
-            double xp = _m00 * src.X + _m01 * src.Y + _m02;
-            double yp = _m10 * src.X + _m11 * src.Y + _m12;
+            var xp = _m00 * src.X + _m01 * src.Y + _m02;
+            var yp = _m10 * src.X + _m11 * src.Y + _m12;
             dest.X = xp;
             dest.Y = yp;
             return dest;
         }
-
         /// <summary>
         /// Creates a new <see cref="IGeometry"/> which is the result of this transformation applied to the input Geometry.
         /// </summary>
@@ -990,11 +931,10 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>The transformed Geometry</returns>
         public IGeometry Transform(IGeometry g)
         {
-            IGeometry g2 = g.Copy();
+            var g2 = g.Copy();
             g2.Apply(this);
             return g2;
         }
-
         /// <summary>
         /// Applies this transformation to the i'th coordinate
         /// in the given CoordinateSequence.
@@ -1003,12 +943,11 @@ namespace NetTopologySuite.Geometries.Utilities
         ///<param name="i"> the index of the coordinate to transform</param>
         public void Transform(ICoordinateSequence seq, int i)
         {
-            double xp = _m00 * seq.GetOrdinate(i, Ordinate.X) + _m01 * seq.GetOrdinate(i, Ordinate.Y) + _m02;
-            double yp = _m10 * seq.GetOrdinate(i, Ordinate.X) + _m11 * seq.GetOrdinate(i, Ordinate.Y) + _m12;
+            var xp = _m00 * seq.GetOrdinate(i, Ordinate.X) + _m01 * seq.GetOrdinate(i, Ordinate.Y) + _m02;
+            var yp = _m10 * seq.GetOrdinate(i, Ordinate.X) + _m11 * seq.GetOrdinate(i, Ordinate.Y) + _m12;
             seq.SetOrdinate(i, Ordinate.X, xp);
             seq.SetOrdinate(i, Ordinate.Y, yp);
         }
-
         ///<summary>
         /// Transforms the i'th coordinate in the input sequence
         ///</summary>
@@ -1018,44 +957,27 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             Transform(seq, i);
         }
-
-        public Boolean GeometryChanged
-        {
-            get { return true; }
-        }
-
+        public bool GeometryChanged => true;
         /// <summary>
         /// Reports that this filter should continue to be executed until
         /// all coordinates have been transformed.
         /// </summary>
         /// <returns> false</returns>
-        public Boolean Done
-        {
-            get { return false; }
-        }
-
+        public bool Done => false;
         ///<summary>Tests if this transformation is the identity transformation.</summary>
-        public Boolean IsIdentity
-        {
-            get
-            {
-                return (_m00 == 1 && _m01 == 0 && _m02 == 0
-                        && _m10 == 0 && _m11 == 1 && _m12 == 0);
-            }
-        }
-
+        public bool IsIdentity => (_m00 == 1 && _m01 == 0 && _m02 == 0
+                                      && _m10 == 0 && _m11 == 1 && _m12 == 0);
         ///<summary>
         /// Tests if an object is an <c>AffineTransformation</c> and has the same matrix as this transformation.
         ///</summary>
         /// <param name="obj">An object to test</param>
         /// <returns>true if the given object is equal to this object</returns>
-        public override Boolean Equals(Object obj)
+        public override bool Equals(object obj)
         {
             return Equals(obj as AffineTransformation);
             /*
             if (!(obj is AffineTransformation))
                 return false;
-
             AffineTransformation trans = (AffineTransformation)obj;
             return m00 == trans.m00
             && m01 == trans.m01
@@ -1065,12 +987,10 @@ namespace NetTopologySuite.Geometries.Utilities
             && m12 == trans.m12;
              */
         }
-
         public bool Equals(AffineTransformation trans)
         {
             if (trans == null)
                 return false;
-
             return _m00 == trans._m00
             && _m01 == trans._m01
             && _m02 == trans._m02
@@ -1078,7 +998,6 @@ namespace NetTopologySuite.Geometries.Utilities
             && _m11 == trans._m11
             && _m12 == trans._m12;
         }
-
         ///<summary>
         /// Gets a text representation of this transformation.
         /// The string is of the form:
@@ -1087,13 +1006,12 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </code>
         /// </summary>
         ///<returns>A string representing this transformation</returns>
-        public override String ToString()
+        public override string ToString()
         {
             return "AffineTransformation[[" + _m00 + ", " + _m01 + ", " + _m02
             + "], ["
             + _m10 + ", " + _m11 + ", " + _m12 + "]]";
         }
-
         ///<summary>
         /// Clones this transformation
         ///</summary>

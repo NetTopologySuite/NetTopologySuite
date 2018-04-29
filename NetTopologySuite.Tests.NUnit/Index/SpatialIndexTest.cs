@@ -5,14 +5,12 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Index
 {
     [TestFixtureAttribute]
     public abstract class SpatialIndexTest
     {
         protected abstract ISpatialIndex<object> CreateSpatialIndex();
-
         [TestAttribute]
         public void TestSpatialIndex()
         {
@@ -32,7 +30,6 @@ namespace NetTopologySuite.Tests.NUnit.Index
             DoTest(index, QUERY_ENVELOPE_EXTENT_1, sourceData);
             DoTest(index, QUERY_ENVELOPE_EXTENT_2, sourceData);
         }
-
         private void Insert(IList<Envelope> sourceData, ISpatialIndex<object> index)
         {
             foreach (var envelope in sourceData)
@@ -40,43 +37,40 @@ namespace NetTopologySuite.Tests.NUnit.Index
                 index.Insert(envelope, envelope);
             }
         }
-
         private static double CELL_EXTENT = 20.31;
         private static int CELLS_PER_GRID_SIDE = 10;
         private static double FEATURE_EXTENT = 10.1;
         private static double OFFSET = 5.03;
         private static double QUERY_ENVELOPE_EXTENT_1 = 1.009;
         private static double QUERY_ENVELOPE_EXTENT_2 = 11.7;
-
         private void AddSourceData(double offset, IList<Envelope> sourceData)
         {
-            for (int i = 0; i < CELLS_PER_GRID_SIDE; i++)
+            for (var i = 0; i < CELLS_PER_GRID_SIDE; i++)
             {
-                double minx = (i * CELL_EXTENT) + offset;
-                double maxx = minx + FEATURE_EXTENT;
-                for (int j = 0; j < CELLS_PER_GRID_SIDE; j++)
+                var minx = (i * CELL_EXTENT) + offset;
+                var maxx = minx + FEATURE_EXTENT;
+                for (var j = 0; j < CELLS_PER_GRID_SIDE; j++)
                 {
-                    double miny = (j * CELL_EXTENT) + offset;
-                    double maxy = miny + FEATURE_EXTENT;
-                    Envelope e = new Envelope(minx, maxx, miny, maxy);
+                    var miny = (j * CELL_EXTENT) + offset;
+                    var maxy = miny + FEATURE_EXTENT;
+                    var e = new Envelope(minx, maxx, miny, maxy);
                     sourceData.Add(e);
                 }
             }
         }
-
         private void DoTest(ISpatialIndex<object> index, double queryEnvelopeExtent, IList<Envelope> sourceData)
         {
             Console.WriteLine("---------------");
             Console.WriteLine("Envelope Extent: " + queryEnvelopeExtent);
-            int extraMatchCount = 0;
-            int expectedMatchCount = 0;
-            int actualMatchCount = 0;
-            int queryCount = 0;
+            var extraMatchCount = 0;
+            var expectedMatchCount = 0;
+            var actualMatchCount = 0;
+            var queryCount = 0;
             for (double x = 0; x < CELL_EXTENT * CELLS_PER_GRID_SIDE; x += queryEnvelopeExtent)
             {
                 for (double y = 0; y < CELL_EXTENT * CELLS_PER_GRID_SIDE; y += queryEnvelopeExtent)
                 {
-                    Envelope queryEnvelope = new Envelope(x, x + queryEnvelopeExtent, y, y + queryEnvelopeExtent);
+                    var queryEnvelope = new Envelope(x, x + queryEnvelopeExtent, y, y + queryEnvelopeExtent);
                     var expectedMatches = IntersectingEnvelopes(queryEnvelope, sourceData);
                     var actualMatches = index.Query(queryEnvelope);
                     Assert.IsTrue(expectedMatches.Count <= actualMatches.Count);
@@ -95,14 +89,13 @@ namespace NetTopologySuite.Tests.NUnit.Index
             Console.WriteLine("Average Actual Matches: " + (actualMatchCount/(double)queryCount));
             Console.WriteLine("Average Extra Matches: " + (extraMatchCount/(double)queryCount));
         }
-
         private void Compare(IList<object> expectedEnvelopes, IList<object> actualEnvelopes)
         {
             //Don't use #containsAll because we want to check using
             //==, not #equals. [Jon Aquino]
             foreach (var expected in expectedEnvelopes)
             {
-                bool found = false;
+                var found = false;
                 foreach (var actual in actualEnvelopes)
                 {
                     if (actual == expected)
@@ -114,7 +107,6 @@ namespace NetTopologySuite.Tests.NUnit.Index
                 Assert.IsTrue(found);
             }
         }
-
         private IList<object> IntersectingEnvelopes(Envelope queryEnvelope, IList<Envelope> envelopes)
         {
             var intersectingEnvelopes = new List<object>();

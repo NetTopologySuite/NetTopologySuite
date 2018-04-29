@@ -3,7 +3,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Simplify;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Simplify
 {
     [TestFixtureAttribute]
@@ -20,7 +19,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .SetExpectedResult(geomStr)
                 .Test();
         }
-
         [TestAttribute]
         public void TestPoint()
         {
@@ -32,8 +30,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .SetExpectedResult(geomStr)
                 .Test();
         }
-
-
         [TestAttribute]
         public void TestPolygonNoReduction()
         {
@@ -45,7 +41,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                         10.0))
                 .Test();
         }
-
         [TestAttribute]
         public void TestPolygonReductionWithSplit()
         {
@@ -56,7 +51,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                         10.0))
                 .Test();
         }
-
         [TestAttribute]
         public void TestPolygonReduction()
         {
@@ -67,7 +61,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                         10.0))
                 .Test();
         }
-
         [TestAttribute]
         public void TestPolygonWithTouchingHole()
         {
@@ -82,7 +75,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .SetExpectedResult(resStr)
                 .Test();
         }
-
         [TestAttribute]
         public void TestFlattishPolygon()
         {
@@ -93,7 +85,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     10.0))
                 .Test();
         }
-
         [TestAttribute]
         public void TestTinySquare()
         {
@@ -104,7 +95,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     10.0))
             .Test();
         }
-
         [TestAttribute]
         public void TestTinyHole()
         {
@@ -116,7 +106,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     30.0))
             .TestEmpty(false);
         }
-
         [TestAttribute]
         public void TestTinyLineString()
         {
@@ -127,7 +116,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                         10.0))
                 .Test();
         }
-
         [TestAttribute]
         public void TestMultiPoint()
         {
@@ -139,7 +127,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .SetExpectedResult(geomStr)
                 .Test();
         }
-
         [TestAttribute]
         public void TestMultiLineString()
         {
@@ -150,7 +137,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                         10.0))
                 .Test();
         }
-
         [TestAttribute]
         public void TestMultiLineStringWithEmpty()
         {
@@ -160,7 +146,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     10.0))
                 .Test();
         }
-
         [TestAttribute]
         public void TestMultiPolygonWithEmpty()
         {
@@ -170,7 +155,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     10.0))
                 .Test();
         }
-
         [TestAttribute]
         public void TestGeometryCollection()
         {
@@ -186,14 +170,12 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
     }
-
     static class DPSimplifierResult
     {
         private static readonly WKTReader Rdr = new WKTReader();
-
-        public static IGeometry[] GetResult(String wkt, double tolerance)
+        public static IGeometry[] GetResult(string wkt, double tolerance)
         {
-            IGeometry[] ioGeom = new IGeometry[2];
+            var ioGeom = new IGeometry[2];
             ioGeom[0] = Rdr.Read(wkt);
             ioGeom[1] = DouglasPeuckerSimplifier.Simplify(ioGeom[0], tolerance);
             //System.Console.WriteLine(ioGeom[1]);

@@ -2,7 +2,6 @@ using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Simplify
 {
     /// <summary>
@@ -13,25 +12,21 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
         private readonly WKTReader _reader = new WKTReader();
         private readonly IGeometry[] _ioGeometry;
         private bool _expectedSameStructure;
-        private String _wktExpected;
-
+        private string _wktExpected;
         public GeometryOperationValidator(IGeometry[] ioGeometry)
         {
             _ioGeometry = ioGeometry;
         }
-
-        public GeometryOperationValidator SetExpectedResult(String wktExpected)
+        public GeometryOperationValidator SetExpectedResult(string wktExpected)
         {
             _wktExpected = wktExpected;
             return this;
         }
-
         public GeometryOperationValidator SetExpectedSameStructure()
         {
             _expectedSameStructure = true;
             return this;
         }
-
         public bool IsAllTestsPassed()
         {
             try
@@ -44,7 +39,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 return false;
             }
         }
-
         /// <summary>
         /// Tests if the result is valid.
         /// Throws an exception if result is not valid.
@@ -57,36 +51,32 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
             TestValid();
             TestExpectedResult();
         }
-
         public GeometryOperationValidator TestSameStructure()
         {
             if (!_expectedSameStructure)
                 return this;
-            bool test = SameStructureTester.IsSameStructure(_ioGeometry[0], _ioGeometry[1]);
+            var test = SameStructureTester.IsSameStructure(_ioGeometry[0], _ioGeometry[1]);
             Assert.IsTrue(test, "simplified geometry has different structure than input");
             return this;
         }
-
         public GeometryOperationValidator TestValid()
         {
-            bool test = _ioGeometry[1].IsValid;
+            var test = _ioGeometry[1].IsValid;
             Assert.IsTrue(test, "simplified geometry is not valid");
             return this;
         }
-
         public GeometryOperationValidator TestEmpty(bool isEmpty)
         {
-            String failureCondition = isEmpty ? "not empty" : "empty";
-            bool test = _ioGeometry[1].IsEmpty == isEmpty;
-            Assert.IsTrue(test, String.Format("simplified geometry is {0}", failureCondition));
+            var failureCondition = isEmpty ? "not empty" : "empty";
+            var test = _ioGeometry[1].IsEmpty == isEmpty;
+            Assert.IsTrue(test, string.Format("simplified geometry is {0}", failureCondition));
             return this;
         }
-
         private void TestExpectedResult()
         {
             if (_wktExpected == null) return;
-            IGeometry expectedGeom = _reader.Read(_wktExpected);
-            bool test = expectedGeom.EqualsExact(_ioGeometry[1]);
+            var expectedGeom = _reader.Read(_wktExpected);
+            var test = expectedGeom.EqualsExact(_ioGeometry[1]);
             Assert.IsTrue(test, "Expected result not found");
         }
     }

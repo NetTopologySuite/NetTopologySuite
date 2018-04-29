@@ -1,5 +1,4 @@
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
@@ -13,7 +12,6 @@ namespace NetTopologySuite.Geometries.Prepared
             : base((IGeometry)point)
         {
         }
-
         ///<summary>
         /// Tests whether this point intersects a <see cref="IGeometry"/>.
         ///</summary>
@@ -25,7 +23,6 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             if (!EnvelopesIntersect(g))
                 return false;
-
             /*
              * This avoids computing topology for the test geometry
              */

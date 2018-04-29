@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-
 namespace NetTopologySuite.Operation.Union
 {
     ///<summary>
@@ -15,19 +14,14 @@ namespace NetTopologySuite.Operation.Union
     {
         public static IGeometry Union(IGeometry g0, IGeometry g1)
         {
-            UnionInteracting uue = new UnionInteracting(g0, g1);
+            var uue = new UnionInteracting(g0, g1);
             return uue.Union();
         }
-
-
         private readonly IGeometryFactory _geomFactory;
-
         private readonly IGeometry _g0;
         private readonly IGeometry _g1;
-
         private readonly bool[] _interacts0;
         private readonly bool[] _interacts1;
-
         public UnionInteracting(IGeometry g0, IGeometry g1)
         {
             _g0 = g0;
@@ -36,70 +30,59 @@ namespace NetTopologySuite.Operation.Union
             _interacts0 = new bool[g0.NumGeometries];
             _interacts1 = new bool[g1.NumGeometries];
         }
-
         public IGeometry Union()
         {
             ComputeInteracting();
-
             // check for all interacting or none interacting!
-            IGeometry int0 = ExtractElements(_g0, _interacts0, true);
-            IGeometry int1 = ExtractElements(_g1, _interacts1, true);
-
+            var int0 = ExtractElements(_g0, _interacts0, true);
+            var int1 = ExtractElements(_g1, _interacts1, true);
             if (int0.IsEmpty || int1.IsEmpty)
                 Debug.WriteLine("found empty!");
-
-            IGeometry union = int0.Union(int1);
-            IGeometry disjoint0 = ExtractElements(_g0, _interacts0, false);
-            IGeometry disjoint1 = ExtractElements(_g1, _interacts1, false);
-            IGeometry overallUnion = GeometryCombiner.Combine(union, disjoint0, disjoint1);
+            var union = int0.Union(int1);
+            var disjoint0 = ExtractElements(_g0, _interacts0, false);
+            var disjoint1 = ExtractElements(_g1, _interacts1, false);
+            var overallUnion = GeometryCombiner.Combine(union, disjoint0, disjoint1);
             return overallUnion;
-
         }
-
         private IGeometry BufferUnion(IGeometry g0, IGeometry g1)
         {
-            IGeometryFactory factory = g0.Factory;
+            var factory = g0.Factory;
             IGeometry gColl = factory.CreateGeometryCollection(new IGeometry[] { g0, g1 });
-            IGeometry unionAll = gColl.Buffer(0.0);
+            var unionAll = gColl.Buffer(0.0);
             return unionAll;
         }
-
         private void ComputeInteracting()
         {
-            for (int i = 0; i < _g0.NumGeometries; i++)
+            for (var i = 0; i < _g0.NumGeometries; i++)
             {
-                IGeometry elem = _g0.GetGeometryN(i);
+                var elem = _g0.GetGeometryN(i);
                 _interacts0[i] = ComputeInteracting(elem);
             }
         }
-
         private bool ComputeInteracting(IGeometry elem0)
         {
-            bool interactsWithAny = false;
-            for (int i = 0; i < _g1.NumGeometries; i++)
+            var interactsWithAny = false;
+            for (var i = 0; i < _g1.NumGeometries; i++)
             {
-                IGeometry elem1 = _g1.GetGeometryN(i);
-                bool interacts = elem1.EnvelopeInternal.Intersects(elem0.EnvelopeInternal);
+                var elem1 = _g1.GetGeometryN(i);
+                var interacts = elem1.EnvelopeInternal.Intersects(elem0.EnvelopeInternal);
                 if (interacts) _interacts1[i] = true;
                 if (interacts)
                     interactsWithAny = true;
             }
             return interactsWithAny;
         }
-
         private IGeometry ExtractElements(IGeometry geom,
               bool[] interacts, bool isInteracting)
         {
-            List<IGeometry> extractedGeoms = new List<IGeometry>();
-            for (int i = 0; i < geom.NumGeometries; i++)
+            var extractedGeoms = new List<IGeometry>();
+            for (var i = 0; i < geom.NumGeometries; i++)
             {
-                IGeometry elem = geom.GetGeometryN(i);
+                var elem = geom.GetGeometryN(i);
                 if (interacts[i] == isInteracting)
                     extractedGeoms.Add(elem);
             }
             return _geomFactory.BuildGeometry(extractedGeoms);
         }
-
-
     }
 }

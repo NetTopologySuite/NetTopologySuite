@@ -1,15 +1,14 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Algorithm
 {
-    /// <summary> 
+    /// <summary>
     /// Computes a point in the interior of an areal geometry.
     /// </summary>
     /// <remarks>
     /// <h2>Algorithm:</h2>
     /// <list type="Bullet">
-    /// <item>Find a Y value which is close to the centre of 
+    /// <item>Find a Y value which is close to the centre of
     /// the geometry's vertical extent but is different
     /// to any of it's Y ordinates.</item>
     /// <item>Create a horizontal bisector line using the Y value
@@ -27,7 +26,7 @@ namespace NetTopologySuite.Algorithm
     public class InteriorPointArea
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -36,11 +35,8 @@ namespace NetTopologySuite.Algorithm
         {
             return (a + b)/2.0;
         }
-
         private readonly IGeometryFactory _factory;
-        private Coordinate _interiorPoint;
         private double _maxWidth;
-
         /// <summary>
         /// Creates a new interior point finder
         /// for an areal geometry.
@@ -51,16 +47,11 @@ namespace NetTopologySuite.Algorithm
             _factory = g.Factory;
             Add(g);
         }
-
         /// <summary>
         /// Gets the computed interior point.
         /// </summary>
-        public Coordinate InteriorPoint
-        {
-            get { return _interiorPoint; }
-        }
-
-        /// <summary> 
+        public Coordinate InteriorPoint { get; private set; }
+        /// <summary>
         /// Tests the interior vertices (if any)
         /// defined by an areal Geometry for the best inside point.
         /// If a component Geometry is not of dimension 2 it is not tested.
@@ -73,12 +64,11 @@ namespace NetTopologySuite.Algorithm
             else if (geom is IGeometryCollection)
             {
                 var gc = (IGeometryCollection) geom;
-                foreach (IGeometry geometry in gc.Geometries)
+                foreach (var geometry in gc.Geometries)
                     Add(geometry);
             }
         }
-
-        /// <summary> 
+        /// <summary>
         /// Finds an interior point of a Polygon.
         /// </summary>
         /// <param name="geometry">The geometry to analyze.</param>
@@ -86,10 +76,8 @@ namespace NetTopologySuite.Algorithm
         {
             if (geometry.IsEmpty)
                 return;
-
             Coordinate intPt;
             double width;
-
             var bisector = HorizontalBisector(geometry);
             if (bisector.Length == 0.0)
             {
@@ -103,13 +91,12 @@ namespace NetTopologySuite.Algorithm
                 width = widestIntersection.EnvelopeInternal.Width;
                 intPt = Centre(widestIntersection.EnvelopeInternal);
             }
-            if (_interiorPoint == null || width > _maxWidth)
+            if (InteriorPoint == null || width > _maxWidth)
             {
-                _interiorPoint = intPt;
+                InteriorPoint = intPt;
                 _maxWidth = width;
             }
         }
-
         /// <returns>
         /// If point is a collection, the widest sub-point; otherwise,
         /// the point itself.
@@ -120,42 +107,36 @@ namespace NetTopologySuite.Algorithm
                 return geometry;
             return WidestGeometry((IGeometryCollection) geometry);
         }
-
         private static IGeometry WidestGeometry(IGeometryCollection gc)
         {
             if (gc.IsEmpty)
                 return gc;
-
             var widestGeometry = gc.GetGeometryN(0);
             // scan remaining geom components to see if any are wider
-            for (int i = 1; i < gc.NumGeometries; i++) //Start at 1        
+            for (var i = 1; i < gc.NumGeometries; i++) //Start at 1
                 if (gc.GetGeometryN(i).EnvelopeInternal.Width > widestGeometry.EnvelopeInternal.Width)
                     widestGeometry = gc.GetGeometryN(i);
             return widestGeometry;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
         protected ILineString HorizontalBisector(IGeometry geometry)
         {
-            Envelope envelope = geometry.EnvelopeInternal;
-
+            var envelope = geometry.EnvelopeInternal;
             /**
              * Original algorithm.  Fails when geometry contains a horizontal
              * segment at the Y midpoint.
              */
             // Assert: for areas, minx <> maxx
             //double avgY = Avg(envelope.MinY, envelope.MaxY);
-            double bisectY = SafeBisectorFinder.GetBisectorY((IPolygon) geometry);
-
+            var bisectY = SafeBisectorFinder.GetBisectorY((IPolygon) geometry);
             return _factory.CreateLineString(
                 new[] {new Coordinate(envelope.MinX, bisectY), new Coordinate(envelope.MaxX, bisectY)});
         }
-
-        /// <summary> 
+        /// <summary>
         /// Returns the centre point of the envelope.
         /// </summary>
         /// <param name="envelope">The envelope to analyze.</param>
@@ -164,7 +145,6 @@ namespace NetTopologySuite.Algorithm
         {
             return new Coordinate(Avg(envelope.MinX, envelope.MaxX), Avg(envelope.MinY, envelope.MaxY));
         }
-
         /// <summary>
         /// Finds a safe bisector Y ordinate
         /// by projecting to the Y axis
@@ -180,45 +160,38 @@ namespace NetTopologySuite.Algorithm
                 var finder = new SafeBisectorFinder(poly);
                 return finder.GetBisectorY();
             }
-
             private readonly IPolygon _poly;
-
             private readonly double _centreY;
             private double _hiY;// = double.MaxValue;
             private double _loY;// = -double.MaxValue;
-
             private SafeBisectorFinder(IPolygon poly)
             {
                 _poly = poly;
-
                 // initialize using extremal values
                 var env = poly.EnvelopeInternal;
                 _hiY = env.MaxY;
                 _loY = env.MinY;
                 _centreY = Avg(_loY, _hiY);
             }
-
             private double GetBisectorY()
             {
                 Process(_poly.ExteriorRing);
-                for (int i = 0; i < _poly.NumInteriorRings; i++)
+                for (var i = 0; i < _poly.NumInteriorRings; i++)
                 {
                     Process(_poly.GetInteriorRingN(i));
                 }
                 var bisectY = Avg(_hiY, _loY);
                 return bisectY;
             }
-
             private void Process(ILineString line)
             {
                 var seq = line.CoordinateSequence;
                 for (var i = 0; i < seq.Count; i++)
                 {
-                    double y = seq.GetY(i);
+                    var y = seq.GetY(i);
                     UpdateInterval(y);
                 }
             }
-
             private void UpdateInterval(double y)
             {
                 if (y <= _centreY)
@@ -233,7 +206,6 @@ namespace NetTopologySuite.Algorithm
                         _hiY = y;
                     }
                 }
-
             }
         }
     }

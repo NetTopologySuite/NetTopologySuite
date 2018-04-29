@@ -9,7 +9,6 @@ using NetTopologySuite.Noding;
 using NetTopologySuite.Noding.Snapround;
 using NetTopologySuite.Precision;
 using NetTopologySuite.Utilities;
-
 namespace Open.Topology.TestRunner.Functions
 {
     public static class NodingFunctions
@@ -17,18 +16,13 @@ namespace Open.Topology.TestRunner.Functions
         public static IGeometry NodeWithPointwisePrecision(IGeometry geom, double scaleFactor)
         {
             var pm = new PrecisionModel(scaleFactor);
-
             var roundedGeom = SimpleGeometryPrecisionReducer.Reduce(geom, pm);
-
             var geomList = new List<IGeometry>();
             geomList.Add(roundedGeom);
-
             var noder = new GeometryNoder(pm);
             var lines = noder.Node(geomList);
-
             return FunctionsUtil.GetFactoryOrDefault(geom).BuildGeometry(lines.Cast<IGeometry>().ToArray());
         }
-
         /// <summary>
         /// Reduces precision pointwise, then snap-rounds.
         /// Note that output set may not contain non-unique linework
@@ -41,66 +35,53 @@ namespace Open.Topology.TestRunner.Functions
         public static IGeometry SnapRoundWithPointwisePrecisionReduction(IGeometry geom, double scaleFactor)
         {
             var pm = new PrecisionModel(scaleFactor);
-
             var roundedGeom = GeometryPrecisionReducer.ReducePointwise(geom, pm);
-
             var geomList = new List<IGeometry>();
             geomList.Add(roundedGeom);
-
             var noder = new GeometryNoder(pm);
             var lines = noder.Node(geomList);
-
             return FunctionsUtil.GetFactoryOrDefault(geom).BuildGeometry(lines.Cast<IGeometry>().ToArray());
         }
-
         public static bool IsNodingValid(IGeometry geom)
         {
-            FastNodingValidator nv = new FastNodingValidator(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
+            var nv = new FastNodingValidator(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
             return nv.IsValid;
         }
-
         public static IGeometry FindSingleNodePoint(IGeometry geom)
         {
-            FastNodingValidator nv = new FastNodingValidator(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
-            bool temp = nv.IsValid;
+            var nv = new FastNodingValidator(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
+            var temp = nv.IsValid;
             var intPts = nv.Intersections;
             if (intPts.Count == 0) return null;
             return FunctionsUtil.GetFactoryOrDefault((IGeometry)null).CreatePoint((Coordinate)intPts[0]);
         }
-
         public static IGeometry FindNodePoints(IGeometry geom)
         {
-            IList<Coordinate> intPts = FastNodingValidator.ComputeIntersections(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
+            var intPts = FastNodingValidator.ComputeIntersections(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
             return FunctionsUtil.GetFactoryOrDefault((IGeometry)null).CreateMultiPoint(CoordinateArrays.ToCoordinateArray(intPts));
         }
-
         public static int InteriorIntersectionCount(IGeometry geom)
         {
-            InteriorIntersectionFinder intCounter = InteriorIntersectionFinder.CreateIntersectionCounter(new RobustLineIntersector());
+            var intCounter = InteriorIntersectionFinder.CreateIntersectionCounter(new RobustLineIntersector());
             INoder noder = new MCIndexNoder(intCounter);
             noder.ComputeNodes(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
             return intCounter.Count;
         }
-
         public static IGeometry MCIndexNodingWithPrecision(IGeometry geom, double scaleFactor)
         {
             IPrecisionModel fixedPM = new PrecisionModel(scaleFactor);
-
             LineIntersector li = new RobustLineIntersector();
             li.PrecisionModel = fixedPM;
-
             INoder noder = new MCIndexNoder(new IntersectionAdder(li));
             noder.ComputeNodes(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
             return SegmentStringUtil.ToGeometry(noder.GetNodedSubstrings(), geom.Factory);
         }
-
         public static IGeometry MCIndexNoding(IGeometry geom)
         {
             INoder noder = new MCIndexNoder(new IntersectionAdder(new RobustLineIntersector()));
             noder.ComputeNodes(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
             return SegmentStringUtil.ToGeometry(noder.GetNodedSubstrings(), geom.Factory);
         }
-
         /// <summary>
         /// Runs a ScaledNoder on input.
         /// Input vertices should be rounded to precision model.
@@ -118,7 +99,6 @@ namespace Open.Topology.TestRunner.Functions
             var nodedSegStrings = noder.GetNodedSubstrings();
             return SegmentStringUtil.ToGeometry(nodedSegStrings, geom.Factory);
         }
-
         private static List<ISegmentString> CreateSegmentStrings(IGeometry geom)
         {
             var segs = new List<ISegmentString>();

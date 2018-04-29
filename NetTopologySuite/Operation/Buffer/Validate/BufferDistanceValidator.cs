@@ -6,7 +6,6 @@ using NetTopologySuite.Algorithm.Distance;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Distance;
-
 namespace NetTopologySuite.Operation.Buffer.Validate
 {
     /// <summary>
@@ -32,40 +31,29 @@ namespace NetTopologySuite.Operation.Buffer.Validate
          * 1% sometimes causes an error - 1.2% should be safe.
          */
         private const double MaxDistanceDiffFrac = .012;
-
         private readonly IGeometry _input;
         private readonly double _bufDistance;
         private readonly IGeometry _result;
-
         private double _minValidDistance;
         private double _maxValidDistance;
-
         private double _minDistanceFound;
         private double _maxDistanceFound;
-
         private bool _isValid = true;
-        private String _errMsg;
-        private Coordinate _errorLocation;
-        private IGeometry _errorIndicator;
-
         public BufferDistanceValidator(IGeometry input, double bufDistance, IGeometry result)
         {
             _input = input;
             _bufDistance = bufDistance;
             _result = result;
         }
-
         public bool IsValid()
         {
-            double posDistance = Math.Abs(_bufDistance);
-            double distDelta = MaxDistanceDiffFrac * posDistance;
+            var posDistance = Math.Abs(_bufDistance);
+            var distDelta = MaxDistanceDiffFrac * posDistance;
             _minValidDistance = posDistance - distDelta;
             _maxValidDistance = posDistance + distDelta;
-
             // can't use this test if either is empty
             if (_input.IsEmpty || _result.IsEmpty)
                 return true;
-
             if (_bufDistance > 0.0)
             {
                 CheckPositiveValid();
@@ -78,26 +66,17 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             {
 // ReSharper disable once RedundantStringFormatCall
                 // String.Format needed to build 2.0 release!
-                Debug.WriteLine(String.Format("Min Dist= {0}  err= {1}  Max Dist= {2}  err= {3}", 
-                    _minDistanceFound, 
-                    1.0 - _minDistanceFound / _bufDistance, 
+                Debug.WriteLine(string.Format("Min Dist= {0}  err= {1}  Max Dist= {2}  err= {3}",
+                    _minDistanceFound,
+                    1.0 - _minDistanceFound / _bufDistance,
                     _maxDistanceFound,
                     _maxDistanceFound / _bufDistance - 1.0)
                   );
             }
             return _isValid;
         }
-
-        public String ErrorMessage
-        {
-            get { return _errMsg; }
-        }
-
-        public Coordinate ErrorLocation
-        {
-            get { return _errorLocation; }
-        }
-
+        public string ErrorMessage { get; private set; }
+        public Coordinate ErrorLocation { get; private set; }
         /// <summary>
         /// Gets a geometry which indicates the location and nature of a validation failure.
         /// <para>
@@ -105,26 +84,19 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// of the distance discrepancy.
         /// </para>
         /// </summary>
-        /// <returns>A geometric error indicator 
+        /// <returns>A geometric error indicator
         /// or <value>null</value>, if no error was found</returns>
-        public IGeometry ErrorIndicator
-        {
-            get { return _errorIndicator; }
-        }
-
+        public IGeometry ErrorIndicator { get; private set; }
         private void CheckPositiveValid()
         {
-            IGeometry bufCurve = _result.Boundary;
+            var bufCurve = _result.Boundary;
             CheckMinimumDistance(_input, bufCurve, _minValidDistance);
             if (!_isValid) return;
-
             CheckMaximumDistance(_input, bufCurve, _maxValidDistance);
         }
-
         private void CheckNegativeValid()
         {
             // Assert: only polygonal inputs can be checked for negative buffers
-
             // MD - could generalize this to handle GCs too
             if (!(_input is IPolygon
                     || _input is IMultiPolygon
@@ -133,13 +105,11 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             {
                 return;
             }
-            IGeometry inputCurve = GetPolygonLines(_input);
+            var inputCurve = GetPolygonLines(_input);
             CheckMinimumDistance(inputCurve, _result, _minValidDistance);
             if (!_isValid) return;
-
             CheckMaximumDistance(inputCurve, _result, _maxValidDistance);
         }
-
         private static IGeometry GetPolygonLines(IGeometry g)
         {
             var lines = new List<IGeometry>();
@@ -155,7 +125,6 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                 GeoAPI.DataStructures.Caster.Cast<IGeometry>(polys)));
              */
         }
-
         ///<summary>
         /// Checks that two geometries are at least a minimum distance apart.
         /// </summary>
@@ -166,19 +135,17 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         {
             var distOp = new DistanceOp(g1, g2, minDist);
             _minDistanceFound = distOp.Distance();
-
             if (_minDistanceFound < minDist)
             {
                 _isValid = false;
                 var pts = distOp.NearestPoints();
-                _errorLocation = pts[1];
-                _errorIndicator = g1.Factory.CreateLineString(pts);
-                _errMsg = "Distance between buffer curve and input is too small "
+                ErrorLocation = pts[1];
+                ErrorIndicator = g1.Factory.CreateLineString(pts);
+                ErrorMessage = "Distance between buffer curve and input is too small "
                     + "(" + _minDistanceFound
                     + " at " + WKTWriter.ToLineString(pts[0], pts[1]) + " )";
             }
         }
-
         ///<summary>
         /// Checks that the furthest distance from the buffer curve to the input
         /// is less than the given maximum distance.
@@ -194,29 +161,25 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         {
             //    BufferCurveMaximumDistanceFinder maxDistFinder = new BufferCurveMaximumDistanceFinder(input);
             //    maxDistanceFound = maxDistFinder.findDistance(bufCurve);
-
             var haus = new DiscreteHausdorffDistance(bufCurve, input);
             haus.DensifyFraction = 0.25;
             _maxDistanceFound = haus.OrientedDistance();
-
             if (_maxDistanceFound > maxDist)
             {
                 _isValid = false;
                 var pts = haus.Coordinates;
-                _errorLocation = pts[1];
-                _errorIndicator = input.Factory.CreateLineString(pts);
-                _errMsg = "Distance between buffer curve and input is too large "
+                ErrorLocation = pts[1];
+                ErrorIndicator = input.Factory.CreateLineString(pts);
+                ErrorMessage = "Distance between buffer curve and input is too large "
                   + "(" + _maxDistanceFound
                   + " at " + WKTWriter.ToLineString(pts[0], pts[1]) + ")";
             }
         }
-
         /*
         private void OLDcheckMaximumDistance(Geometry input, Geometry bufCurve, double maxDist)
         {
           BufferCurveMaximumDistanceFinder maxDistFinder = new BufferCurveMaximumDistanceFinder(input);
           maxDistanceFound = maxDistFinder.findDistance(bufCurve);
-
           if (maxDistanceFound > maxDist) {
             isValid = false;
             PointPairDistance ptPairDist = maxDistFinder.getDistancePoints();

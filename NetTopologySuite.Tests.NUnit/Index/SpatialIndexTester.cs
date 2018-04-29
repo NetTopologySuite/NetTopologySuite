@@ -2,28 +2,21 @@
 using System.Collections.Generic;
 using NetTopologySuite.Index;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Tests.NUnit.Index
 {
     /**
      * @version 1.7
      */
-
     public class SpatialIndexTester
     {
         private static readonly bool Verbose = true;
-
         private List<Envelope> _sourceData;
-
         public SpatialIndexTester()
         {
             IsSuccess = true;
         }
-
         public bool IsSuccess { get; private set; }
-
         public ISpatialIndex<object> SpatialIndex { get; set; }
-
         public void Init()
         {
             if (Verbose)
@@ -42,13 +35,11 @@ namespace NetTopologySuite.Tests.NUnit.Index
                 Console.WriteLine("Feature Count: " + _sourceData.Count);
             Insert(_sourceData, SpatialIndex);
         }
-
         public void Run()
         {
             DoTest(SpatialIndex, QueryEnvelopeExtent1, _sourceData);
             DoTest(SpatialIndex, QueryEnvelopeExtent2, _sourceData);
         }
-
         private static void Insert(IEnumerable<Envelope> sourceData, ISpatialIndex<object> index)
         {
             foreach (var envelope in sourceData)
@@ -56,21 +47,19 @@ namespace NetTopologySuite.Tests.NUnit.Index
                 index.Insert(envelope, envelope);
             }
         }
-
         private const double CellExtent = 20.31;
         private const int CellsPerGridSide = 10;
         private const double FeatureExtent = 10.1;
         private const double OFFSET = 5.03;
         private const double QueryEnvelopeExtent1 = 1.009;
         private const double QueryEnvelopeExtent2 = 11.7;
-
         private static void AddSourceData(double offset, List<Envelope> sourceData)
         {
-            for (int i = 0; i < CellsPerGridSide; i++)
+            for (var i = 0; i < CellsPerGridSide; i++)
             {
-                double minx = (i*CellExtent) + offset;
-                double maxx = minx + FeatureExtent;
-                for (int j = 0; j < CellsPerGridSide; j++)
+                var minx = (i*CellExtent) + offset;
+                var maxx = minx + FeatureExtent;
+                for (var j = 0; j < CellsPerGridSide; j++)
                 {
                     var miny = (j*CellExtent) + offset;
                     var maxy = miny + FeatureExtent;
@@ -79,7 +68,6 @@ namespace NetTopologySuite.Tests.NUnit.Index
                 }
             }
         }
-
         private void DoTest(ISpatialIndex<object> index, double queryEnvelopeExtent, List<Envelope> sourceData)
         {
             if (Verbose)
@@ -87,10 +75,10 @@ namespace NetTopologySuite.Tests.NUnit.Index
                 //System.Console.WriteLine("---------------");
                 //System.Console.WriteLine("Envelope Extent: " + queryEnvelopeExtent);
             }
-            int extraMatchCount = 0;
-            int expectedMatchCount = 0;
-            int actualMatchCount = 0;
-            int queryCount = 0;
+            var extraMatchCount = 0;
+            var expectedMatchCount = 0;
+            var actualMatchCount = 0;
+            var queryCount = 0;
             for (var x = 0d; x < CellExtent*CellsPerGridSide; x += queryEnvelopeExtent)
             {
                 for (var y = 0d; y < CellExtent*CellsPerGridSide; y += queryEnvelopeExtent)
@@ -110,7 +98,6 @@ namespace NetTopologySuite.Tests.NUnit.Index
                     queryCount++;
                 }
             }
-
             if (Verbose)
             {
                 //System.Console.WriteLine("Expected Matches: " + expectedMatchCount);
@@ -122,7 +109,6 @@ namespace NetTopologySuite.Tests.NUnit.Index
                 //System.Console.WriteLine("Average Extra Matches: " + (extraMatchCount/(double) queryCount));
             }
         }
-
         private void Compare(IEnumerable<Envelope> expectedEnvelopes, IList<object> actualEnvelopes)
         {
             //Don't use #containsAll because we want to check using
@@ -147,7 +133,6 @@ namespace NetTopologySuite.Tests.NUnit.Index
                     IsSuccess = false;
             }
         }
-
         private static List<Envelope> IntersectingEnvelopes(Envelope queryEnvelope, IEnumerable<Envelope> envelopes)
         {
             var intersectingEnvelopes = new List<Envelope>();

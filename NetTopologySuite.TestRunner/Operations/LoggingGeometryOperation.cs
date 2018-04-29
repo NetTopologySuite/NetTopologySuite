@@ -1,7 +1,6 @@
 ﻿using System;
 using GeoAPI.Geometries;
 using Open.Topology.TestRunner.Result;
-
 namespace Open.Topology.TestRunner.Operations
 {
     /// <summary>
@@ -13,32 +12,27 @@ namespace Open.Topology.TestRunner.Operations
     public class LoggingGeometryOperation : IGeometryOperation
     {
         private readonly IGeometryOperation _geomOp;
-
         public LoggingGeometryOperation()
             :this(new GeometryMethodOperation())
         {
         }
-
         public Type GetReturnType(XmlTestType op)
         {
             return GetReturnType(op.ToString());
         }
-
-        public Type GetReturnType(String opName)
+        public Type GetReturnType(string opName)
         {
             return GeometryMethodOperation.GetGeometryReturnType(opName);
         }
-
         public LoggingGeometryOperation(IGeometryOperation geomOp)
         {
             _geomOp = geomOp;
         }
-
-        public IResult Invoke(XmlTestType opName, IGeometry geometry, Object[] args)
+        public IResult Invoke(XmlTestType opName, IGeometry geometry, object[] args)
         {
             Console.WriteLine("Operation <" + opName + ">");
             Console.WriteLine("Geometry: " + geometry);
-            for (int i = 0; i < args.Length; i++)
+            for (var i = 0; i < args.Length; i++)
             {
                 Console.WriteLine("Arg[" + i + "]: " + args[i]);
             }

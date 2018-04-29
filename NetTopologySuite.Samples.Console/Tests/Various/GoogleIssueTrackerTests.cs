@@ -4,7 +4,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
 using NetTopologySuite.IO;
-
 namespace NetTopologySuite.Tests.Various
 {
     public class GoogleIssueTrackerTests
@@ -14,7 +13,6 @@ namespace NetTopologySuite.Tests.Various
             if (GeoAPI.GeometryServiceProvider.Instance == null)
                 GeoAPI.GeometryServiceProvider.Instance = NtsGeometryServices.Instance;
         }
-
         [Test(Description = "WKBWriter added 4 extra bytes which caused picky SqlServer to reject polygons")]
         public void TestIssue147()
         {

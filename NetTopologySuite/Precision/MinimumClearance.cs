@@ -4,7 +4,6 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.Strtree;
 using NetTopologySuite.Operation.Distance;
-
 namespace NetTopologySuite.Precision
 {
     /// <summary>
@@ -92,25 +91,22 @@ namespace NetTopologySuite.Precision
             var rp = new MinimumClearance(g);
             return rp.GetDistance();
         }
-
         /// <summary>
         /// Gets a LineString containing two points
         /// which are at the Minimum Clearance distance
         /// for the given Geometry.
         /// </summary>
         /// <param name="g">The input geometry</param>
-        /// <returns>The value of the minimum clearance distance<br/> 
+        /// <returns>The value of the minimum clearance distance<br/>
         /// or <c>LINESTRING EMPTY</c> if no minimum clearance distance exists.</returns>
         public static IGeometry GetLine(IGeometry g)
         {
             var rp = new MinimumClearance(g);
             return rp.GetLine();
         }
-
         private readonly IGeometry _inputGeom;
         private double _minClearance;
         private Coordinate[] _minClearancePts;
-
         /// <summary>
         /// Creates an object to compute the Minimum Clearance for the given Geometry
         /// </summary>
@@ -119,7 +115,6 @@ namespace NetTopologySuite.Precision
         {
             _inputGeom = geom;
         }
-
         /// <summary>
         /// Gets the Minimum Clearance distance.
         /// <para>If no distance exists
@@ -135,7 +130,6 @@ namespace NetTopologySuite.Precision
             Compute();
             return _minClearance;
         }
-
         /// <summary>
         /// Gets a LineString containing two points
         /// which are at the Minimum Clearance distance.<para/>
@@ -153,24 +147,19 @@ namespace NetTopologySuite.Precision
                 return _inputGeom.Factory.CreateLineString();
             return _inputGeom.Factory.CreateLineString(_minClearancePts);
         }
-
         private void Compute()
         {
             // already computed
             if (_minClearancePts != null) return;
-
             // initialize to "No Distance Exists" state
             _minClearancePts = new Coordinate[2];
-            _minClearance = Double.MaxValue;
-
+            _minClearance = double.MaxValue;
             // handle empty geometries
             if (_inputGeom.IsEmpty)
             {
                 return;
             }
-
             var geomTree = FacetSequenceTreeBuilder.BuildSTRtree(_inputGeom);
-
             var nearest = geomTree.NearestNeighbour(new MinClearanceDistance());
             var mcd = new MinClearanceDistance();
             _minClearance = mcd.Distance(
@@ -178,7 +167,6 @@ namespace NetTopologySuite.Precision
                 nearest[1]);
             _minClearancePts = mcd.Coordinates;
         }
-
         /// <summary>
         /// Implements the MinimumClearance distance function:
         /// <code>
@@ -196,22 +184,15 @@ namespace NetTopologySuite.Precision
         /// <author>Martin Davis</author>
         private class MinClearanceDistance : IItemDistance<Envelope, FacetSequence>
         {
-            private double _minDist = Double.MaxValue;
-            private readonly Coordinate[] _minPts = new Coordinate[2];
-
-            public Coordinate[] Coordinates
-            {
-                get { return _minPts; }
-            }
-
+            private double _minDist = double.MaxValue;
+            public Coordinate[] Coordinates { get; } = new Coordinate[2];
             public double Distance(IBoundable<Envelope, FacetSequence> b1, IBoundable<Envelope, FacetSequence> b2)
             {
                 var fs1 = b1.Item;
                 var fs2 = b2.Item;
-                _minDist = Double.MaxValue;
+                _minDist = double.MaxValue;
                 return Distance(fs1, fs2);
             }
-
             public double Distance(FacetSequence fs1, FacetSequence fs2)
             {
                 // compute MinClearance distance metric
@@ -223,12 +204,11 @@ namespace NetTopologySuite.Precision
                 SegmentDistance(fs2, fs1);
                 return _minDist;
             }
-
             private double VertexDistance(FacetSequence fs1, FacetSequence fs2)
             {
-                for (int i1 = 0; i1 < fs1.Count; i1++)
+                for (var i1 = 0; i1 < fs1.Count; i1++)
                 {
-                    for (int i2 = 0; i2 < fs2.Count; i2++)
+                    for (var i2 = 0; i2 < fs2.Count; i2++)
                     {
                         var p1 = fs1.GetCoordinate(i1);
                         var p2 = fs2.GetCoordinate(i2);
@@ -238,8 +218,8 @@ namespace NetTopologySuite.Precision
                             if (d < _minDist)
                             {
                                 _minDist = d;
-                                _minPts[0] = p1;
-                                _minPts[1] = p2;
+                                Coordinates[0] = p1;
+                                Coordinates[1] = p2;
                                 if (d == 0.0)
                                     return d;
                             }
@@ -248,7 +228,6 @@ namespace NetTopologySuite.Precision
                 }
                 return _minDist;
             }
-
             private double SegmentDistance(FacetSequence fs1, FacetSequence fs2)
             {
                 for (var i1 = 0; i1 < fs1.Count; i1++)
@@ -256,10 +235,8 @@ namespace NetTopologySuite.Precision
                     for (var i2 = 1; i2 < fs2.Count; i2++)
                     {
                         var p = fs1.GetCoordinate(i1);
-
                         var seg0 = fs2.GetCoordinate(i2 - 1);
                         var seg1 = fs2.GetCoordinate(i2);
-
                         if (!(p.Equals2D(seg0) || p.Equals2D(seg1)))
                         {
                             var d = DistanceComputer.PointToSegment(p, seg0, seg1);
@@ -275,12 +252,11 @@ namespace NetTopologySuite.Precision
                 }
                 return _minDist;
             }
-
             private void UpdatePts(Coordinate p, Coordinate seg0, Coordinate seg1)
             {
-                _minPts[0] = p;
+                Coordinates[0] = p;
                 var seg = new LineSegment(seg0, seg1);
-                _minPts[1] = new Coordinate(seg.ClosestPoint(p));
+                Coordinates[1] = new Coordinate(seg.ClosestPoint(p));
             }
         }
     }

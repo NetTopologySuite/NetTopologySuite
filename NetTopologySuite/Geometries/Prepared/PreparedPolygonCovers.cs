@@ -1,5 +1,4 @@
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
@@ -22,10 +21,9 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if the polygon covers the geometry</returns>
         public static bool Covers(PreparedPolygon prep, IGeometry geom)
         {
-            PreparedPolygonCovers polyInt = new PreparedPolygonCovers(prep);
+            var polyInt = new PreparedPolygonCovers(prep);
             return polyInt.Covers(geom);
         }
-
         ///<summary>
         /// Creates an instance of this operation.
         ///</summary>
@@ -35,7 +33,6 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             RequireSomePointInInterior = false;
         }
-
         ///<summary>
         /// Tests whether this PreparedPolygon <c>covers</c> a given geometry.
         ///</summary>
@@ -45,7 +42,6 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             return Eval(geom);
         }
-
         ///<summary>
         /// Computes the full topological <c>covers</c> predicate. Used when short-circuit tests are not conclusive.
         ///</summary>
@@ -53,7 +49,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if this prepared polygon covers the test geometry</returns>
         protected override bool FullTopologicalPredicate(IGeometry geom)
         {
-            bool result = prepPoly.Geometry.Covers(geom);
+            var result = prepPoly.Geometry.Covers(geom);
             return result;
         }
     }

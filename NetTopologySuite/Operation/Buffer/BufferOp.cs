@@ -5,7 +5,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
 using NetTopologySuite.Noding;
 using NetTopologySuite.Noding.Snapround;
-
 namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
@@ -30,11 +29,11 @@ namespace NetTopologySuite.Operation.Buffer
     /// computed buffer polygons are only approximations to the true geometry.
     /// The user can control the accuracy of the approximation by specifying
     /// the number of linear segments used to approximate arcs.
-    /// This is specified via <see cref="IBufferParameters.QuadrantSegments"/> 
+    /// This is specified via <see cref="IBufferParameters.QuadrantSegments"/>
     /// or <see cref="QuadrantSegments"/>.
     /// </para>
     /// <para>
-    /// The <see cref="IBufferParameters.EndCapStyle"/> of a linear buffer may be specified. 
+    /// The <see cref="IBufferParameters.EndCapStyle"/> of a linear buffer may be specified.
     /// The following end cap styles are supported:
     /// <ul>
     /// <li><see cref="EndCapStyle.Round" /> - the usual round end caps</li>
@@ -43,7 +42,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// </ul>
     /// </para>
     /// <para>
-    /// The <see cref="IBufferParameters.JoinStyle"/> of the corners in a buffer may be specified. 
+    /// The <see cref="IBufferParameters.JoinStyle"/> of the corners in a buffer may be specified.
     /// The following join styles are supported:
     /// <ul>
     /// <li><see cref="JoinStyle.Round" /> - the usual round join</li>
@@ -53,11 +52,11 @@ namespace NetTopologySuite.Operation.Buffer
     /// </para>
     /// <para>
     /// The buffer algorithm can perform simplification on the input to increase performance.
-    /// The simplification is performed a way that always increases the buffer area 
+    /// The simplification is performed a way that always increases the buffer area
     /// (so that the simplified input covers the original input).
     /// The degree of simplification can be specified with <see cref="IBufferParameters.SimplifyFactor"/>,
     /// with a <see cref="BufferParameters.DefaultSimplifyFactor"/> used otherwise.
-    /// Note that if the buffer distance is zero then so is the computed simplify tolerance, 
+    /// Note that if the buffer distance is zero then so is the computed simplify tolerance,
     /// no matter what the simplify factor.
     /// </para>
     /// </remarks>
@@ -71,11 +70,10 @@ namespace NetTopologySuite.Operation.Buffer
         /// This value should be less than the decimal precision of double-precision values (16).
         /// </remarks>
         private const int MaxPrecisionDigits = 12;
-
         /// <summary>
         /// Compute a scale factor to limit the precision of
         /// a given combination of Geometry and buffer distance.
-        /// The scale factor is determined by 
+        /// The scale factor is determined by
         /// the number of digits of precision in the (geometry + buffer distance),
         /// limited by the supplied <paramref name="maxPrecisionDigits"/> value.
         /// <para/>
@@ -96,18 +94,14 @@ namespace NetTopologySuite.Operation.Buffer
             var envMax = MathUtil.Max(
                 Math.Abs(env.MaxX), Math.Abs(env.MaxY),
                 Math.Abs(env.MinX), Math.Abs(env.MinY));
-
             var expandByDistance = distance > 0.0 ? distance : 0.0;
             var bufEnvMax = envMax + 2 * expandByDistance;
-
             // the smallest power of 10 greater than the buffer envelope
             var bufEnvPrecisionDigits = (int)(Math.Log(bufEnvMax) / Math.Log(10) + 1.0);
             var minUnitLog10 = maxPrecisionDigits - bufEnvPrecisionDigits;
-
-            double scaleFactor = Math.Pow(10.0, minUnitLog10);
+            var scaleFactor = Math.Pow(10.0, minUnitLog10);
             return scaleFactor;
         }
-
         /*
         private static double OldPrecisionScaleFactor(Geometry g,
             double distance,
@@ -117,7 +111,6 @@ namespace NetTopologySuite.Operation.Buffer
             var envSize = Math.Max(env.Height, env.Width);
             var expandByDistance = distance > 0.0 ? distance : 0.0;
             var bufEnvSize = envSize + 2 * expandByDistance;
-
             // the smallest power of 10 greater than the buffer envelope
             var bufEnvLog10 = (int)(Math.Log(bufEnvSize) / Math.Log(10) + 1.0);
             var minUnitLog10 = bufEnvLog10 - maxPrecisionDigits;
@@ -126,7 +119,6 @@ namespace NetTopologySuite.Operation.Buffer
             return scaleFactor;
         }
          */
-
         /// <summary>
         /// Computes the buffer of a geometry for a given buffer distance.
         /// </summary>
@@ -141,7 +133,6 @@ namespace NetTopologySuite.Operation.Buffer
             //BufferDebug.runCount++;
             return geomBuf;
         }
-
         /// <summary>
         /// Computes the buffer for a geometry for a given buffer distance
         /// and accuracy of approximation.
@@ -156,7 +147,6 @@ namespace NetTopologySuite.Operation.Buffer
             var geomBuf = bufOp.GetResultGeometry(distance);
             return geomBuf;
         }
-
         /// <summary>
         /// Computes the buffer for a geometry for a given buffer distance
         /// and accuracy of approximation.
@@ -172,7 +162,6 @@ namespace NetTopologySuite.Operation.Buffer
             var geomBuf = bufOp.GetResultGeometry(distance);
             return geomBuf;
         }
-
         /// <summary>
         /// Computes the buffer for a geometry for a given buffer distance
         /// and accuracy of approximation.
@@ -193,15 +182,11 @@ namespace NetTopologySuite.Operation.Buffer
             var geomBuf = bufOp.GetResultGeometry(distance);
             return geomBuf;
         }
-
         private readonly IGeometry _argGeom;
         private double _distance;
-
         private readonly IBufferParameters _bufParams = new BufferParameters();
-
         private IGeometry _resultGeometry;
         private Exception _saveException;   // debugging only
-
         /// <summary>
         /// Initializes a buffer computation for the given geometry
         /// </summary>
@@ -210,7 +195,6 @@ namespace NetTopologySuite.Operation.Buffer
         {
             _argGeom = g;
         }
-
         /// <summary>
         /// Initializes a buffer computation for the given geometry
         /// with the given set of parameters
@@ -222,7 +206,6 @@ namespace NetTopologySuite.Operation.Buffer
             _argGeom = g;
             _bufParams = bufParams;
         }
-
         /// <summary>
         /// Specifies the end cap style of the generated buffer.
         /// The styles supported are <see cref="GeoAPI.Operations.Buffer.BufferStyle.CapRound" />, <see cref="GeoAPI.Operations.Buffer.BufferStyle.CapButt" />, and <see cref="GeoAPI.Operations.Buffer.BufferStyle.CapSquare" />.
@@ -231,19 +214,17 @@ namespace NetTopologySuite.Operation.Buffer
         [Obsolete]
         public BufferStyle BufferStyle
         {
-            get { return (BufferStyle)_bufParams.EndCapStyle; }
-            set { _bufParams.EndCapStyle = (EndCapStyle)value; }
+            get => (BufferStyle)_bufParams.EndCapStyle;
+            set => _bufParams.EndCapStyle = (EndCapStyle)value;
         }
-
         /// <summary>
         /// Sets the number of segments used to approximate a angle fillet
         /// </summary>
         public int QuadrantSegments
         {
-            get { return _bufParams.QuadrantSegments; }
-            set { _bufParams.QuadrantSegments = value; }
+            get => _bufParams.QuadrantSegments;
+            set => _bufParams.QuadrantSegments = value;
         }
-
         /// <summary>
         /// Returns the buffer computed for a geometry for a given buffer distance.
         ///</summary>
@@ -255,23 +236,20 @@ namespace NetTopologySuite.Operation.Buffer
             ComputeGeometry();
             return _resultGeometry;
         }
-
         private void ComputeGeometry()
         {
             BufferOriginalPrecision();
             if (_resultGeometry != null) return;
-
-            IPrecisionModel argPrecModel = _argGeom.Factory.PrecisionModel;
+            var argPrecModel = _argGeom.Factory.PrecisionModel;
             if (argPrecModel.PrecisionModelType == PrecisionModels.Fixed)
                 BufferFixedPrecision(argPrecModel);
             else
                 BufferReducedPrecision();
         }
-
         private void BufferReducedPrecision()
         {
             // try and compute with decreasing precision
-            for (int precDigits = MaxPrecisionDigits; precDigits >= 0; precDigits--)
+            for (var precDigits = MaxPrecisionDigits; precDigits >= 0; precDigits--)
             {
                 try
                 {
@@ -285,11 +263,9 @@ namespace NetTopologySuite.Operation.Buffer
                 }
                 if (_resultGeometry != null) return;
             }
-
             // tried everything - have to bail
             throw _saveException;
         }
-
         private void BufferOriginalPrecision()
         {
             try
@@ -302,26 +278,21 @@ namespace NetTopologySuite.Operation.Buffer
             {
                 _saveException = ex;
                 // don't propagate the exception - it will be detected by fact that resultGeometry is null
-
                 // testing ONLY - propagate exception
                 //throw ex;
             }
         }
-
         private void BufferReducedPrecision(int precisionDigits)
         {
-            double sizeBasedScaleFactor = PrecisionScaleFactor(_argGeom, _distance, precisionDigits);
+            var sizeBasedScaleFactor = PrecisionScaleFactor(_argGeom, _distance, precisionDigits);
             //    System.out.println("recomputing with precision scale factor = " + sizeBasedScaleFactor);
-
             var fixedPrecModel = new PrecisionModel(sizeBasedScaleFactor);
             BufferFixedPrecision(fixedPrecModel);
         }
-
         private void BufferFixedPrecision(IPrecisionModel fixedPrecModel)
         {
             INoder noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)),
                                           fixedPrecModel.Scale);
-
             var bufBuilder = new BufferBuilder(_bufParams);
             bufBuilder.WorkingPrecisionModel = fixedPrecModel;
             bufBuilder.Noder = noder;

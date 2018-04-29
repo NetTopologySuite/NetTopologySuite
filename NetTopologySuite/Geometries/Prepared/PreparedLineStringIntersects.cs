@@ -3,7 +3,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Noding;
-
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
@@ -25,12 +24,10 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if the linestring intersects the geometry</returns>
         public static bool Intersects(PreparedLineString prep, IGeometry geom)
         {
-            PreparedLineStringIntersects op = new PreparedLineStringIntersects(prep);
+            var op = new PreparedLineStringIntersects(prep);
             return op.Intersects(geom);
         }
-
         protected PreparedLineString prepLine;
-
         ///<summary>
         /// Creates an instance of this operation.
         /// </summary>
@@ -39,7 +36,6 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             this.prepLine = prepLine;
         }
-
         ///<summary>
         /// Tests whether this geometry intersects a given geometry.
         ///</summary>
@@ -60,29 +56,24 @@ namespace NetTopologySuite.Geometries.Prepared
                 if (segsIntersect)
                     return true;
             }
-
             /*
              * For L/L case we are done
              */
             if (geom.Dimension == Dimension.Curve)
                 return false;
-
             /*
              * For L/A case, need to check for proper inclusion of the target in the test
              */
             if (geom.Dimension == Dimension.Surface
                     && prepLine.IsAnyTargetComponentInTest(geom))
                 return true;
-
             /*
              * For L/P case, need to check if any points lie on line(s)
              */
             if (geom.Dimension == Dimension.Point)
                 return IsAnyTestPointInTarget(geom);
-
             return false;
         }
-
         ///<summary>
         /// Tests whether any representative point of the test Geometry intersects
         /// the target geometry.
@@ -98,9 +89,9 @@ namespace NetTopologySuite.Geometries.Prepared
              * This could be optimized by using the segment index on the lineal target.
              * However, it seems like the L/P case would be pretty rare in practice.
              */
-            PointLocator locator = new PointLocator();
+            var locator = new PointLocator();
             IList<Coordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
-            foreach (Coordinate p in coords)
+            foreach (var p in coords)
             {
                 if (locator.Intersects(p, prepLine.Geometry))
                     return true;

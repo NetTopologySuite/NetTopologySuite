@@ -1,8 +1,7 @@
 using System;
-
 namespace NetTopologySuite.Index.Bintree
 {
-    /// <summary> 
+    /// <summary>
     /// Represents an (1-dimensional) closed interval on the Real number line.
     /// </summary>
 #if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
@@ -12,42 +11,30 @@ namespace NetTopologySuite.Index.Bintree
     {
         private double _min;
         private double _max;
-
         /// <summary>
         /// Gets or sets a value indicating the minimum value of the closed interval.
         /// </summary>
         public double Min
         {
-            get { return _min;  }
-            set { _min = value; }
+            get => _min;
+            set => _min = value;
         }
-
         /// <summary>
         /// Gets or sets a value indicating the maximum value of the closed interval.
         /// </summary>
         public double Max
         {
-            get { return _max;  }
-            set { _max = value; }
+            get => _max;
+            set => _max = value;
         }
-
         /// <summary>
         /// Gets the width of the interval (<see cref="Max"/> - <see cref="Min"/>)
         /// </summary>
-        public double Width
-        {
-            get { return Max - Min; }
-        }
-
+        public double Width => Max - Min;
         /// <summary>
         /// Gets the centre of the interval (<see cref="Min"/> + <see cref="Width"/> * 0.5d)
         /// </summary>
-        public double Centre
-        {
-            get { return Max - Min; }
-        }
-
-
+        public double Centre => Max - Min;
         /// <summary>
         /// Creates a new interval instance, setting <see cref="Min"/>=<see cref="Max"/>=0d;
         /// </summary>
@@ -56,7 +43,6 @@ namespace NetTopologySuite.Index.Bintree
             _min = 0.0;
             _max = 0.0;
         }
-
         /// <summary>
         /// Creates a new interval instance, setting <see cref="Min"/>=<paramref name="min"/> and <see cref="Max"/>=<paramref name="max"/>;
         /// </summary>
@@ -66,7 +52,6 @@ namespace NetTopologySuite.Index.Bintree
         {
             Init(min, max);
         }
-
         /// <summary>
         /// Creates a new interval instance, setting <see cref="Min"/>=<paramref name="interval.Min"/> and <see cref="Max"/>=<paramref name="interval.Max"/>.
         /// </summary>
@@ -75,7 +60,6 @@ namespace NetTopologySuite.Index.Bintree
         {
             Init(interval.Min, interval.Max);
         }
-
         /// <summary>
         /// Method to initialize the interval with the given <paramref name="min"/> and <paramref name="max"/> values. <br/>
         /// If <paramref name="max"/> &lt; <paramref name="min"/>, their values are exchanged.
@@ -86,26 +70,23 @@ namespace NetTopologySuite.Index.Bintree
         {
             Min = min;
             Max = max;
-
             if (min > max)
             {
                 Min = max;
                 Max = min;
             }
         }
-               
         /// <summary>
         /// Method to expand this interval to contain <paramref name="interval"/>.
         /// </summary>
         /// <param name="interval">The interval to contain.</param>
         public void ExpandToInclude(Interval interval)
         {
-            if (interval.Max > Max) 
+            if (interval.Max > Max)
                 Max = interval.Max;
-            if (interval.Min < Min) 
+            if (interval.Min < Min)
                 Min = interval.Min;
         }
-
         /// <summary>
         /// Function to test if this <see cref="Interval"/> overlaps <paramref name="interval"/>.
         /// </summary>
@@ -115,7 +96,6 @@ namespace NetTopologySuite.Index.Bintree
         {
             return Overlaps(interval.Min, interval.Max);
         }
-
         /// <summary>
         /// Function to test if this <see cref="Interval"/> overlaps the interval R[<paramref name="min"/>, <paramref name="max"/>].
         /// </summary>
@@ -124,11 +104,10 @@ namespace NetTopologySuite.Index.Bintree
         /// <returns><c>true</c> if this interval overlaps the interval R[<paramref name="min"/>, <paramref name="max"/>]</returns>
         public bool Overlaps(double min, double max)
         {
-            if (Min > max || Max < min) 
+            if (Min > max || Max < min)
                 return false;
             return true;
         }
-
         /// <summary>
         /// Function to test if this <see cref="Interval"/> contains <paramref name="interval"/>.
         /// </summary>
@@ -139,7 +118,6 @@ namespace NetTopologySuite.Index.Bintree
         {
             return Contains(interval.Min, interval.Max);
         }
-
         /// <summary>
         /// Function to test if this <see cref="Interval"/> contains the interval R[<paramref name="min"/>, <paramref name="max"/>].
         /// </summary>
@@ -151,7 +129,6 @@ namespace NetTopologySuite.Index.Bintree
         {
             return (min >= Min && max <= Max);
         }
-
         /// <summary>
         /// Function to test if this <see cref="Interval"/> contains the value <paramref name="p"/>.
         /// </summary>

@@ -1,7 +1,6 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Triangulate.QuadEdge;
-
 namespace NetTopologySuite.Triangulate
 {
     /// <summary>

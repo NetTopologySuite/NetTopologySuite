@@ -1,19 +1,18 @@
 ﻿using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-
 namespace NetTopologySuite.Simplify
 {
     /// <summary>
-    /// Simplifies a <see cref="IGeometry"/> using the Visvalingam-Whyatt area-based algorithm. 
+    /// Simplifies a <see cref="IGeometry"/> using the Visvalingam-Whyatt area-based algorithm.
     /// Ensures that any polygonal geometries returned are valid. Simple lines are not
     /// guaranteed to remain simple after simplification. All geometry types are
     /// handled. Empty and point geometries are returned unchanged. Empty geometry
     /// components are deleted.
-    /// The simplification tolerance is specified as a distance. 
-    /// This is converted to an area tolerance by squaring it.   
+    /// The simplification tolerance is specified as a distance.
+    /// This is converted to an area tolerance by squaring it.
     /// <para>
-    /// <b>Known Bugs</b>    
+    /// <b>Known Bugs</b>
     /// * Not yet optimized for performance.
     /// * Does not simplify the endpoint of rings.
     /// <b>To Do</b>
@@ -36,15 +35,12 @@ namespace NetTopologySuite.Simplify
         /// <returns>A simplified version of the <see cref="IGeometry"/>.</returns>
         public static IGeometry Simplify(IGeometry geom, double distanceTolerance)
         {
-            VWSimplifier simp = new VWSimplifier(geom);
+            var simp = new VWSimplifier(geom);
             simp.DistanceTolerance = distanceTolerance;
             return simp.GetResultGeometry();
         }
-
         private readonly IGeometry _inputGeom;
         private double _distanceTolerance;
-        private bool _isEnsureValidTopology = true;
-
         /// <summary>
         /// Creates a simplifier for a given <see cref="IGeometry"/>.
         /// </summary>
@@ -53,7 +49,6 @@ namespace NetTopologySuite.Simplify
         {
             _inputGeom = inputGeom;
         }
-
         /// <summary>
         /// Sets the distance tolerance for the simplification. All vertices in the
         /// simplified <see cref="IGeometry"/> will be within this distance of the original geometry.
@@ -61,7 +56,7 @@ namespace NetTopologySuite.Simplify
         /// </summary>
         public double DistanceTolerance
         {
-            get { return _distanceTolerance; }
+            get => _distanceTolerance;
             set
             {
                 if (value < 0.0)
@@ -69,22 +64,16 @@ namespace NetTopologySuite.Simplify
                 _distanceTolerance = value;
             }
         }
-
         /// <summary>
         /// Controls whether simplified polygons will be "fixed" to have valid
         /// topology. The caller may choose to disable this because:
         /// * valid topology is not required.
         /// * fixing topology is a relative expensive operation.
         /// * in some pathological cases the topology fixing operation may either
-        /// fail or run for too long.        
+        /// fail or run for too long.
         /// </summary>
         /// <remarks>The default is to fix polygon topology.</remarks>
-        public bool IsEnsureValidTopology
-        {
-            get { return _isEnsureValidTopology; }
-            set { _isEnsureValidTopology = value; }
-        }
-
+        public bool IsEnsureValidTopology { get; set; } = true;
         /// <summary>
         /// Gets the simplified <see cref="IGeometry"/>.
         /// </summary>
@@ -94,32 +83,27 @@ namespace NetTopologySuite.Simplify
             // empty input produces an empty result
             if (_inputGeom.IsEmpty)
                 return (IGeometry)_inputGeom.Copy();
-
-            VWTransformer transformer = new VWTransformer(IsEnsureValidTopology, DistanceTolerance);
+            var transformer = new VWTransformer(IsEnsureValidTopology, DistanceTolerance);
             return transformer.Transform(_inputGeom);
         }
-
         class VWTransformer : GeometryTransformer
         {
             private readonly bool _isEnsureValidTopology = true;
             private readonly double _distanceTolerance;
-
             public VWTransformer(bool isEnsureValidTopology, double distanceTolerance)
             {
                 _isEnsureValidTopology = isEnsureValidTopology;
                 _distanceTolerance = distanceTolerance;
             }
-
             protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
             {
-                Coordinate[] inputPts = coords.ToCoordinateArray();
+                var inputPts = coords.ToCoordinateArray();
                 Coordinate[] newPts;
                 if (inputPts.Length == 0)
                     newPts = new Coordinate[0];
                 else newPts = VWLineSimplifier.Simplify(inputPts, _distanceTolerance);
                 return Factory.CoordinateSequenceFactory.Create(newPts);
             }
-
             /// <summary>
             /// Simplifies a <see cref="IPolygon"/>, fixing it if required.
             /// </summary>
@@ -131,13 +115,12 @@ namespace NetTopologySuite.Simplify
                 // empty geometries are simply removed
                 if (geom.IsEmpty)
                     return null;
-                IGeometry rawGeom = base.TransformPolygon(geom, parent);
+                var rawGeom = base.TransformPolygon(geom, parent);
                 // don't try and correct if the parent is going to do this
                 if (parent is IMultiPolygon)
                     return rawGeom;
                 return CreateValidArea(rawGeom);
             }
-
             /// <summary>
             /// Simplifies a <see cref="ILinearRing"/>. If the simplification results in a degenerate
             /// ring, remove the component.
@@ -147,13 +130,12 @@ namespace NetTopologySuite.Simplify
             /// <returns><c>null</c> if the simplification results in a degenerate ring.</returns>
             protected override IGeometry TransformLinearRing(ILinearRing geom, IGeometry parent)
             {
-                bool removeDegenerateRings = parent is IPolygon;
-                IGeometry simpResult = base.TransformLinearRing(geom, parent);
+                var removeDegenerateRings = parent is IPolygon;
+                var simpResult = base.TransformLinearRing(geom, parent);
                 if (removeDegenerateRings && !(simpResult is ILinearRing))
                     return null;
                 return simpResult;
             }
-
             /// <summary>
             /// Simplifies a <see cref="IMultiPolygon"/>, fixing it if required.
             /// </summary>
@@ -162,10 +144,9 @@ namespace NetTopologySuite.Simplify
             /// <returns></returns>
             protected override IGeometry TransformMultiPolygon(IMultiPolygon geom, IGeometry parent)
             {
-                IGeometry rawGeom = base.TransformMultiPolygon(geom, parent);
+                var rawGeom = base.TransformMultiPolygon(geom, parent);
                 return CreateValidArea(rawGeom);
             }
-
             /// <summary>
             /// Creates a valid area geometry from one that possibly has bad topology
             /// (i.e. self-intersections). Since buffer can handle invalid topology, but

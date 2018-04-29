@@ -9,13 +9,11 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-
 using System.Collections.Generic;
-
 namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
-    /// The Class BoundablePairDistanceComparator. It implements .Net <see cref="IComparer{T}"/> and is used 
+    /// The Class BoundablePairDistanceComparator. It implements .Net <see cref="IComparer{T}"/> and is used
     /// as a parameter to sort the BoundablePair list.
     /// </summary>
 #if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
@@ -23,11 +21,8 @@ namespace NetTopologySuite.Index.Strtree
 #endif
     internal class BoundablePairDistanceComparer<TItem> : IComparer<BoundablePair<TItem>>
     {
-
         /// <summary>The normal order</summary>
         readonly bool _normalOrder;
-
-
         /// <summary>
         /// Instantiates a new boundable pair distance comparator.
         /// </summary>
@@ -39,7 +34,6 @@ namespace NetTopologySuite.Index.Strtree
         {
             this._normalOrder = normalOrder;
         }
-
         /// <inheritdoc cref="IComparer{T}.Compare"/>
         public int Compare(BoundablePair<TItem> p1, BoundablePair<TItem> p2)
         {
@@ -55,7 +49,6 @@ namespace NetTopologySuite.Index.Strtree
                 {
                     return 0;
                 }
-
                 return -1;
             }
             else
@@ -68,10 +61,8 @@ namespace NetTopologySuite.Index.Strtree
                 {
                     return 0;
                 }
-
                 return 1;
             }
-
         }
     }
 }

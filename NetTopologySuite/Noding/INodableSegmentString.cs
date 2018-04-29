@@ -1,6 +1,5 @@
 ﻿using System;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Noding
 {
     ///<summary>
@@ -12,7 +11,6 @@ namespace NetTopologySuite.Noding
         ///</summary>
         ///<param name="intPt">the location of the intersection</param>
         ///<param name="segmentIndex">the index of the segment containing the intersection</param>
-        void AddIntersection(Coordinate intPt, Int32 segmentIndex);
-
+        void AddIntersection(Coordinate intPt, int segmentIndex);
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
@@ -66,28 +65,23 @@ namespace NetTopologySuite.Geometries
                 return pm1;
             return pm2;
         }
-
         private const int FloatingPrecisionDigits = 16;
         private const int FloatingSinglePrecisionDigits = 6;
         private const int FixedPrecisionDigits = 1;
-
         /// <summary>
         /// The maximum precise value representable in a double. Since IEE754
         /// double-precision numbers allow 53 bits of mantissa, the value is equal to
         /// 2^53 - 1.  This provides <i>almost</i> 16 decimal digits of precision.
         /// </summary>
         public const double MaximumPreciseValue = 9007199254740992.0;
-
         /// <summary>
         /// The type of PrecisionModel this represents.
         /// </summary>
         private readonly PrecisionModels _modelType;
-
         /// <summary>
         /// The scale factor which determines the number of decimal places in fixed precision.
         /// </summary>
         private readonly double _scale;
-
         /// <summary>
         /// Creates a <c>PrecisionModel</c> with a default precision
         /// of Floating.
@@ -97,7 +91,6 @@ namespace NetTopologySuite.Geometries
             // default is floating precision
             _modelType = PrecisionModels.Floating;
         }
-
         /// <summary>
         /// Creates a <c>PrecisionModel</c> that specifies
         /// an explicit precision model type.
@@ -109,11 +102,9 @@ namespace NetTopologySuite.Geometries
         public PrecisionModel(PrecisionModels modelType)
         {
             _modelType = modelType;
-
             if (modelType == PrecisionModels.Fixed)
                 _scale = 1.0;
         }
-
         /// <summary>
         /// Creates a <c>PrecisionModel</c> that specifies Fixed precision.
         /// Fixed-precision coordinates are represented as precise internal coordinates,
@@ -133,7 +124,6 @@ namespace NetTopologySuite.Geometries
             _modelType = PrecisionModels.Fixed;
             _scale = scale;
         }
-
         /// <summary>
         /// Creates a <c>PrecisionModel</c> that specifies Fixed precision.
         /// Fixed-precision coordinates are represented as precise internal coordinates,
@@ -148,7 +138,6 @@ namespace NetTopologySuite.Geometries
             _modelType = PrecisionModels.Fixed;
             _scale = scale;
         }
-
         /// <summary>
         /// Copy constructor to create a new <c>PrecisionModel</c>
         /// from an existing one.
@@ -159,7 +148,6 @@ namespace NetTopologySuite.Geometries
             _modelType = pm._modelType;
             _scale = pm._scale;
         }
-
         /// <summary>
         /// Return HashCode.
         /// </summary>
@@ -167,19 +155,11 @@ namespace NetTopologySuite.Geometries
         {
             return _modelType.GetHashCode() ^ _scale.GetHashCode();
         }
-
         /// <summary>
         /// Tests whether the precision model supports floating point.
         /// </summary>
         /// <returns><c>true</c> if the precision model supports floating point.</returns>
-        public bool IsFloating
-        {
-            get
-            {
-                return _modelType == PrecisionModels.Floating || _modelType == PrecisionModels.FloatingSingle;
-            }
-        }
-
+        public bool IsFloating => _modelType == PrecisionModels.Floating || _modelType == PrecisionModels.FloatingSingle;
         /// <summary>
         /// Returns the maximum number of significant digits provided by this
         /// precision model.
@@ -205,7 +185,6 @@ namespace NetTopologySuite.Geometries
                 }
             }
         }
-
         /// <summary>
         /// Returns the scale factor used to specify a fixed precision model.
         /// </summary>
@@ -221,10 +200,9 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public double Scale
         {
-            get { return _scale; }
-            set { throw new NotSupportedException(); }
+            get => _scale;
+            set => throw new NotSupportedException();
         }
-
         ///// <summary>
         ///// Gets the type of this PrecisionModel.
         ///// </summary>
@@ -233,16 +211,11 @@ namespace NetTopologySuite.Geometries
         //{
         //    return _modelType;
         //}
-
         /// <summary>
         /// Gets the type of this PrecisionModel.
         /// </summary>
         /// <returns></returns>
-        public PrecisionModels PrecisionModelType
-        {
-            get { return _modelType; }
-        }
-
+        public PrecisionModels PrecisionModelType => _modelType;
         /// <summary>
         /// Returns the x-offset used to obtain a precise coordinate.
         /// </summary>
@@ -251,11 +224,7 @@ namespace NetTopologySuite.Geometries
         /// multiplying by the scale.
         /// </returns>
         [Obsolete("Offsets are no longer used")]
-        public double OffsetX
-        {
-            get { return 0; }
-        }
-
+        public double OffsetX => 0;
         /// <summary>
         /// Returns the y-offset used to obtain a precise coordinate.
         /// </summary>
@@ -264,11 +233,7 @@ namespace NetTopologySuite.Geometries
         /// multiplying by the scale
         /// </returns>
         [Obsolete("Offsets are no longer used")]
-        public double OffsetY
-        {
-            get { return 0; }
-        }
-
+        public double OffsetY => 0;
         /// <summary>
         /// Sets <c>internal</c> to the precise representation of <c>external</c>.
         /// </summary>
@@ -292,7 +257,6 @@ namespace NetTopologySuite.Geometries
             }
             cinternal.Z = cexternal.Z;
         }
-
         /// <summary>
         /// Returns the precise representation of <c>external</c>.
         /// </summary>
@@ -308,7 +272,6 @@ namespace NetTopologySuite.Geometries
             MakePrecise(cinternal);
             return cinternal;
         }
-
         /// <summary>
         /// Returns the external representation of <c>internal</c>.
         /// </summary>
@@ -323,7 +286,6 @@ namespace NetTopologySuite.Geometries
             var cexternal = new Coordinate(cinternal);
             return cexternal;
         }
-
         /// <summary>
         /// Sets <c>external</c> to the external representation of <c>internal</c>.
         /// </summary>
@@ -338,7 +300,6 @@ namespace NetTopologySuite.Geometries
             cexternal.X = cinternal.X;
             cexternal.Y = cinternal.Y;
         }
-
         /// <summary>
         /// Rounds a numeric value to the PrecisionModel grid.
         /// Symmetric Arithmetic Rounding is used, to provide
@@ -352,27 +313,23 @@ namespace NetTopologySuite.Geometries
         public double MakePrecise(double val)
         {
             // don't change NaN values
-            if (Double.IsNaN(val)) return val;
-
+            if (double.IsNaN(val)) return val;
             if (_modelType == PrecisionModels.FloatingSingle)
             {
                 var floatSingleVal = (float)val;
                 return floatSingleVal;
             }
-
             if (_modelType == PrecisionModels.Fixed)
             {
                 /*.Net's default rounding algorithm is "Bankers Rounding" which turned
                  * out to be no good for JTS/NTS geometry operations */
-                // return Math.Round(val * scale) / scale;          
-
+                // return Math.Round(val * scale) / scale;
                 // This is "Asymmetric Arithmetic Rounding"
                 // http://en.wikipedia.org/wiki/Rounding#Round_half_up
                 return Math.Floor(val * _scale + 0.5d) / _scale;
             }
             return val;     // modelType == FLOATING - no rounding necessary
         }
-
         /// <summary>
         /// Rounds a Coordinate to the PrecisionModel grid.
         /// </summary>
@@ -382,19 +339,17 @@ namespace NetTopologySuite.Geometries
             // optimization for full precision
             if (_modelType == PrecisionModels.Floating)
                 return;
-
             coord.X = MakePrecise(coord.X);
             coord.Y = MakePrecise(coord.Y);
             //MD says it's OK that we're not makePrecise'ing the z [Jon Aquino]
         }
-
         /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            string description = "UNKNOWN";
+            var description = "UNKNOWN";
             if (_modelType == PrecisionModels.Floating)
                 description = "Floating";
             else if (_modelType == PrecisionModels.FloatingSingle)
@@ -403,7 +358,6 @@ namespace NetTopologySuite.Geometries
                 description = "Fixed (Scale=" + Scale + ")";
             return description;
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -413,13 +367,10 @@ namespace NetTopologySuite.Geometries
         {
             if (other == null)
                 return false;
-
             if (!(other is IPrecisionModel))
                 return false;
-
             return Equals((IPrecisionModel)other);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -430,7 +381,6 @@ namespace NetTopologySuite.Geometries
             return _modelType == otherPrecisionModel.PrecisionModelType &&
                     _scale == otherPrecisionModel.Scale;
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -441,7 +391,6 @@ namespace NetTopologySuite.Geometries
         {
             return Equals(obj1, obj2);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -452,7 +401,6 @@ namespace NetTopologySuite.Geometries
         {
             return !(obj1 == obj2);
         }
-
         /// <summary>
         /// Compares this <c>PrecisionModel</c> object with the specified object for order.
         /// A PrecisionModel is greater than another if it provides greater precision.
@@ -473,7 +421,6 @@ namespace NetTopologySuite.Geometries
         {
             return CompareTo((IPrecisionModel)o);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -481,8 +428,8 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public int CompareTo(IPrecisionModel other)
         {
-            int sigDigits = MaximumSignificantDigits;
-            int otherSigDigits = other.MaximumSignificantDigits;
+            var sigDigits = MaximumSignificantDigits;
+            var otherSigDigits = other.MaximumSignificantDigits;
             return (sigDigits).CompareTo(otherSigDigits);
         }
     }

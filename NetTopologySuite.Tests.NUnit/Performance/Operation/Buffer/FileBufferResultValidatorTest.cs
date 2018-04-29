@@ -7,7 +7,6 @@ using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Buffer.Validate;
 using NetTopologySuite.Tests.NUnit.TestData;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 {
     [TestFixtureAttribute]
@@ -16,7 +15,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
     {
         private const int MAX_FEATURE = 1;
         WKTReader rdr = new WKTReader();
-
         [TestAttribute]
         public void TestAfrica()
         {
@@ -26,7 +24,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
                 RunTest(file);
             }
         }
-
         [TestAttribute]
         public void TestPerformanceAfrica()
         {
@@ -36,12 +33,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
                 PerformanceTest(file);
             }
         }
-
         void RunTest(Stream file)
         {
-            WKTFileReader fileRdr = new WKTFileReader(new StreamReader(file), rdr);
+            var fileRdr = new WKTFileReader(new StreamReader(file), rdr);
             var polys = fileRdr.Read();
-
             RunAll(polys, 0.01);
             RunAll(polys, 0.1);
             RunAll(polys, 1.0);
@@ -49,12 +44,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             RunAll(polys, 100.0);
             RunAll(polys, 1000.0);
         }
-
         void PerformanceTest(Stream file)
         {
-            WKTFileReader fileRdr = new WKTFileReader(new StreamReader(file), rdr);
-            IList<IGeometry> polys = fileRdr.Read();
-
+            var fileRdr = new WKTFileReader(new StreamReader(file), rdr);
+            var polys = fileRdr.Read();
             //RunAll(polys, 0.01);
             //RunAll(polys, 0.1);
             RunAll(polys, 1.0);
@@ -62,7 +55,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             //RunAll(polys, 100.0);
             //RunAll(polys, 1000.0);
         }
-
         void RunAll(ICollection<IGeometry> geoms, double dist)
         {
             //var sw = new Stopwatch();
@@ -80,16 +72,13 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             //sw.Stop();
             //System.Console.WriteLine("  " + sw.Elapsed.TotalMilliseconds + " milliseconds");
         }
-
         static void RunBuffer(IGeometry g, double dist)
         {
             var buf = g.Buffer(dist);
             var validator = new BufferResultValidator(g, dist, buf);
-
             if (!validator.IsValid())
             {
-                String msg = validator.ErrorMessage;
-
+                var msg = validator.ErrorMessage;
                 Console.WriteLine(msg);
                 Console.WriteLine(WKTWriter.ToPoint(validator.ErrorLocation));
                 Console.WriteLine(g);

@@ -10,18 +10,15 @@ namespace NetTopologySuite.Triangulate.QuadEdge
     {
         private readonly QuadEdgeSubdivision _subdiv;
         private QuadEdge _lastEdge;
-
         public LastFoundQuadEdgeLocator(QuadEdgeSubdivision subdiv)
         {
             _subdiv = subdiv;
             Init();
         }
-
         private void Init()
         {
             _lastEdge = FindEdge();
         }
-
         private QuadEdge FindEdge()
         {
             var edges = _subdiv.GetEdges();
@@ -36,7 +33,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 throw new System.IndexOutOfRangeException();
             }
         }
-
         /// <summary>
         /// Locates an edge e, such that either v is on e, or e is an edge of a triangle containing v.
         /// The search starts from the last located edge and proceeds on the general direction of v.
@@ -47,8 +43,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             {
                 Init();
             }
-
-            QuadEdge e = _subdiv.LocateFromEdge(v, _lastEdge);
+            var e = _subdiv.LocateFromEdge(v, _lastEdge);
             _lastEdge = e;
             return e;
         }
