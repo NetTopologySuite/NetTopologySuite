@@ -1,7 +1,6 @@
 ﻿using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
@@ -31,7 +30,6 @@ namespace NetTopologySuite.Geometries.Utilities
                     src1, src2, dest0, dest1, dest2);
             return builder.GetTransformation();
         }
-
         /// <summary>
         /// Creates an AffineTransformation defined by a pair of control vectors. A
         /// control vector consists of a source point and a destination point, which is
@@ -50,17 +48,12 @@ namespace NetTopologySuite.Geometries.Utilities
                 Coordinate src1, Coordinate dest0, Coordinate dest1)
         {
             Coordinate rotPt = new Coordinate(dest1.X - dest0.X, dest1.Y - dest0.Y);
-
             double ang = AngleUtility.AngleBetweenOriented(src1, src0, rotPt);
-
             double srcDist = src1.Distance(src0);
             double destDist = dest1.Distance(dest0);
-
             if (srcDist == 0.0)
                 return null;
-
             double scale = destDist / srcDist;
-
             AffineTransformation trans = AffineTransformation.TranslationInstance(
                     -src0.X, -src0.Y);
             trans.Rotate(ang);
@@ -68,7 +61,6 @@ namespace NetTopologySuite.Geometries.Utilities
             trans.Translate(dest0.X, dest0.Y);
             return trans;
         }
-
         /// <summary>
         /// Creates an AffineTransformation defined by a single control vector. A
         /// control vector consists of a source point and a destination point, which is
@@ -85,7 +77,6 @@ namespace NetTopologySuite.Geometries.Utilities
             double dy = dest0.Y - src0.Y;
             return AffineTransformation.TranslationInstance(dx, dy);
         }
-
         /// <summary>
         /// Creates an AffineTransformation defined by a set of control vectors.
         /// Between one and three vectors must be supplied.
@@ -104,16 +95,13 @@ namespace NetTopologySuite.Geometries.Utilities
                 throw new ArgumentException("Too few control points");
             if (src.Length > 3)
                 throw new ArgumentException("Too many control points");
-
             if (src.Length == 1)
                 return CreateFromControlVectors(src[0], dest[0]);
             if (src.Length == 2)
                 return CreateFromControlVectors(src[0], src[1], dest[0], dest[1]);
-
             return CreateFromControlVectors(src[0], src[1], src[2], dest[0], dest[1],
                     dest[2]);
         }
-
         /// <summary>
         /// Creates an AffineTransformation defined by a mapping between two baselines.
         /// The computed transformation consists of:
@@ -134,18 +122,13 @@ namespace NetTopologySuite.Geometries.Utilities
                 Coordinate dest0, Coordinate dest1)
         {
             Coordinate rotPt = new Coordinate(src0.X + dest1.X - dest0.X, src0.Y + dest1.Y - dest0.Y);
-
             double ang = AngleUtility.AngleBetweenOriented(src1, src0, rotPt);
-
             double srcDist = src1.Distance(src0);
             double destDist = dest1.Distance(dest0);
-
             // return identity if transformation would be degenerate
             if (srcDist == 0.0)
                 return new AffineTransformation();
-
             double scale = destDist / srcDist;
-
             AffineTransformation trans = AffineTransformation.TranslationInstance(
                     -src0.X, -src0.Y);
             trans.Rotate(ang);
@@ -153,6 +136,5 @@ namespace NetTopologySuite.Geometries.Utilities
             trans.Translate(dest0.X, dest0.Y);
             return trans;
         }
-
     }
 }

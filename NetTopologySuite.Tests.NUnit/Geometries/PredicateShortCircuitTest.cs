@@ -4,7 +4,6 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     /*
@@ -14,7 +13,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     public class PredicateShortCircuitTest
     {
         WKTReader rdr = new WKTReader();
-
         String[] polyInsidePoly =
         { "POLYGON (( 0 0, 100 0, 100 100, 0 100, 0 0 ))",
           "POLYGON (( 10 10, 90 10, 90 90, 10 90, 10 10 ))" };
@@ -30,7 +28,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         String[] polyInsideHoleInPoly =
         { "POLYGON (( 40 40, 40 60, 60 60, 60 40, 40 40 ))",
           "POLYGON (( 0 0, 100 0, 100 100, 0 100, 0 0), ( 10 10, 90 10, 90 90, 10 90, 10 10))" };
-
         [TestAttribute]
         public void TestAll()
         {
@@ -40,7 +37,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             DoPredicates(polyTouchesPolyAtLine);
             DoPredicates(polyInsideHoleInPoly);
         }
-
         public void DoPredicates(String[] wkt)
         {
             IGeometry a = rdr.Read(wkt[0]);
@@ -48,7 +44,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             DoPredicates(a, b);
             DoPredicates(b, a);
         }
-
         public void DoPredicates(IGeometry a, IGeometry b)
         {
             Assert.IsTrue(a.Contains(b) == a.Relate(b).IsContains());

@@ -1,9 +1,8 @@
 using NetTopologySuite.Index.Quadtree;
 using NetTopologySuite.Utilities;
-
 namespace NetTopologySuite.Index.Bintree
 {
-    /// <summary> 
+    /// <summary>
     /// The root node of a single <c>Bintree</c>.
     /// It is centred at the origin,
     /// and does not have a defined extent.
@@ -12,14 +11,13 @@ namespace NetTopologySuite.Index.Bintree
     {
         // the singleton root node is centred at the origin.
         private const double Origin = 0.0;
-
         /*
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Root() { }
         */
-        /// <summary> 
+        /// <summary>
         /// Insert an item into the tree this is the root of.
         /// </summary>
         /// <param name="itemInterval"></param>
@@ -28,7 +26,7 @@ namespace NetTopologySuite.Index.Bintree
         {
             int index = GetSubnodeIndex(itemInterval, Origin);
             // if index is -1, itemEnv must contain the origin.
-            if (index == -1) 
+            if (index == -1)
             {
                 Add(item);
                 return;
@@ -42,8 +40,7 @@ namespace NetTopologySuite.Index.Bintree
             *  If the subnode doesn't exist or this item is not contained in it,
             *  have to expand the tree upward to contain the item.
             */
-
-            if (node == null || ! node.Interval.Contains(itemInterval)) 
+            if (node == null || ! node.Interval.Contains(itemInterval))
             {
                 Node<T> largerNode = Node<T>.CreateExpanded(node, itemInterval);
                 Subnode[index] = largerNode;
@@ -52,10 +49,9 @@ namespace NetTopologySuite.Index.Bintree
             * At this point we have a subnode which exists and must contain
             * contains the env for the item.  Insert the item into the tree.
             */
-            InsertContained(Subnode[index], itemInterval, item);        
+            InsertContained(Subnode[index], itemInterval, item);
         }
-
-        /// <summary> 
+        /// <summary>
         /// Insert an item which is known to be contained in the tree rooted at
         /// the given Node.  Lower levels of the tree will be created
         /// if necessary to hold the item.
@@ -78,7 +74,6 @@ namespace NetTopologySuite.Index.Bintree
             else node = tree.GetNode(itemInterval);
             node.Add(item);
         }
-
         /// <summary>
         /// The root node matches all searches.
         /// </summary>

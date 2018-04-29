@@ -1,6 +1,5 @@
 ﻿using GeoAPI.Geometries;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 {
     public class CoordinateSequenceReversedTest
@@ -13,7 +12,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             var csr = csf.Reversed();
             DoTest(csf, csr);
         }
-
         [TestAttribute]
         public void TestDotSpatialAffineCoordinateSequence()
         {
@@ -22,7 +20,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             var csr = csf.Reversed();
             DoTest(csf, csr);
         }
-
         [TestAttribute]
         public void TestPackedDoubleCoordinateSequence()
         {
@@ -31,7 +28,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             var csr = csf.Reversed();
             DoTest(csf, csr);
         }
-
         [TestAttribute]
         public void TestPackedFloatCoordinateSequence()
         {
@@ -40,14 +36,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             var csr = csf.Reversed();
             DoTest(csf, csr);
         }
-
         private static void DoTest(ICoordinateSequence forward, ICoordinateSequence reversed)
         {
             const double eps = 1e-12;
-
             Assert.AreEqual(forward.Count, reversed.Count, "Coordinate sequences don't have same size");
             Assert.AreEqual(forward.Ordinates, reversed.Ordinates, "Coordinate sequences don't serve same ordinate values");
-
             var ordinates = OrdinatesUtility.ToOrdinateArray(forward.Ordinates);
             var j = forward.Count;
             for (var i = 0; i < forward.Count; i++)
@@ -57,7 +50,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
                     Assert.AreEqual(forward.GetOrdinate(i, ordinate), reversed.GetOrdinate(j, ordinate), eps, string.Format("{0} values are not within tolerance", ordinate));
                 var cf = forward.GetCoordinate(i);
                 var cr = reversed.GetCoordinate(j);
-
                 Assert.IsFalse(ReferenceEquals(cf, cr), "Coordinate sequences deliver same coordinate instances");
                 Assert.IsTrue(cf.Equals(cr), "Coordinate sequences do not provide equal coordinates");
             }

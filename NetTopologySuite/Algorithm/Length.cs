@@ -1,9 +1,7 @@
 ﻿using System;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Algorithm
 {
-
     /// <summary>
     /// Functions for computing length.
     /// </summary>
@@ -23,14 +21,11 @@ namespace NetTopologySuite.Algorithm
             var n = pts.Count;
             if (n <= 1)
                 return 0.0;
-
             var len = 0.0;
-
             var p = new Coordinate();
             pts.GetCoordinate(0, p);
             var x0 = p.X;
             var y0 = p.Y;
-
             for (var i = 1; i < n; i++)
             {
                 pts.GetCoordinate(i, p);
@@ -38,14 +33,11 @@ namespace NetTopologySuite.Algorithm
                 var y1 = p.Y;
                 var dx = x1 - x0;
                 var dy = y1 - y0;
-
                 len += Math.Sqrt(dx * dx + dy * dy);
-
                 x0 = x1;
                 y0 = y1;
             }
             return len;
         }
-
     }
 }

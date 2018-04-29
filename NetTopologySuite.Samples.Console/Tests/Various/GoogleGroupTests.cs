@@ -10,20 +10,16 @@ using NUnit.Framework;
 using NetTopologySuite.Densify;
 using NetTopologySuite.LinearReferencing;
 using NetTopologySuite.Precision;
-
 namespace NetTopologySuite.Tests.Various
 {
     using Geometries;
     using Samples.SimpleTests;
     using NetTopologySuite.IO;
     using GeoAPI.Geometries;
-
-
     [TestFixture]
     public class GoogleGroupTests : BaseSamples
     {
         public GoogleGroupTests() : base(GeometryFactory.Fixed) { }
-
         /// <summary>
         /// http://groups.google.com/group/nettopologysuite/browse_thread/thread/d423b51267b7a9fb?hl=en
         /// </summary>
@@ -377,14 +373,11 @@ namespace NetTopologySuite.Tests.Various
 7171446.0701923361,515936.03920736536
 7171446.1202004757,515936.019249668
 7171446.175119142,515930.23924972612 7171468.7151191486)))";
-
             var coll = Reader.Read(text);
             Assert.IsNotNull(coll);
-
             var union = coll.Buffer(0.0);
             Assert.IsNotNull(union);
         }
-        
         /// <summary>
         /// Asher 16-04-2012
         /// https://groups.google.com/forum/#!msg/nettopologysuite/6ymt34Ycfk8/dF5wTsEAsaIJ
@@ -396,24 +389,19 @@ namespace NetTopologySuite.Tests.Various
                 .CreateFromCoordinateSystems(
                     ProjNet.CoordinateSystems.GeographicCoordinateSystem.WGS84,
                     ProjNet.CoordinateSystems.GeographicCoordinateSystem.WGS84);
-
             IGeometry original = new Polygon(new LinearRing(new Coordinate[]{
                 new Coordinate(-77.5, 38.5),new Coordinate(-77.1, 38.5),new Coordinate(-77.1, 38.1),new Coordinate(-77.5, 38.5)}));
-
             IGeometry transformed = NetTopologySuite.CoordinateSystems.Transformations.GeometryTransform.TransformGeometry(
                     GeometryFactory.Default, original, transform.MathTransform);
-
             Assert.NotNull(transformed);
             Assert.IsTrue(transformed.IsValid);
             Assert.AreEqual(original, transformed);
         }
-
         [Test]
         public void TestMultipolygonDifference()
         {
             var mp1 = Reader.Read(@"MULTIPOLYGON (((30 20, 10 40, 45 40, 30 20)),((15 5, 40 10, 10 20, 5 10, 15 5)))");
             var mp2 = Reader.Read(@"MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)),((20 35, 45 20, 30 5, 10 10, 10 30, 20 35),(30 20, 20 25, 20 15, 30 20)))");
-
             IGeometry diff = null;
             Assert.DoesNotThrow(() => diff = mp1.Difference(mp2));
             Assert.IsNotNull(diff);
@@ -422,7 +410,6 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsNotNull(diff);
             Console.WriteLine("2-1:\n{0}", diff.AsText());
         }
-
         // see: https://groups.google.com/forum/#!topic/nettopologysuite/VASC03TBrZU
         [Test(Description = "Buffer(0) doesn't fix geometry")]
         public void TestGoogleGroupPostBuffer0()
@@ -432,61 +419,47 @@ namespace NetTopologySuite.Tests.Various
             IGeometry geom = reader.Read(wkt);
             Assert.That(geom, Is.Not.Null);
             Assert.That(geom.IsValid, Is.False);
-            
             IGeometry normalizedGeom = geom.Normalized();
             Assert.That(normalizedGeom, Is.Not.Null);
             Assert.That(normalizedGeom.IsValid, Is.False);
-            
             IGeometry fixedGeom = normalizedGeom.Buffer(0);
             Assert.That(fixedGeom, Is.Not.Null);
-            Assert.That(fixedGeom.IsValid, Is.True);            
+            Assert.That(fixedGeom.IsValid, Is.True);
             Console.WriteLine(fixedGeom);
         }
-
         // see: https://groups.google.com/forum/#!topic/nettopologysuite/zBH57XK5vD0
         [Test(Description = "Non-noded intersection using VoronoiDiagramBuilder")]
         public void TestVoronoiDiagramBuilder()
         {
             const string wkt =
                 @"POLYGON ((561758.3399999999 4815264.26, 561758.2199999997 4815264.24, 561758.0899999999 4815264.25, 561757.9699999997 4815264.279999999, 561757.8499999996 4815264.34, 561757.7599999999 4815264.42, 561757.6799999997 4815264.52, 561757.6299999999 4815264.640000001, 561757.5999999996 4815264.76, 561757.5999999996 4815264.890000001, 561757.6299999999 4815265.02, 561757.6799999997 4815265.130000001, 561757.7599999999 4815265.230000001, 561757.8600000005 4815265.310000001, 561758.6100000005 4815265.724000001, 561759.3600000005 4815266.138000001, 561760.1100000005 4815266.552000001, 561760.8600000005 4815266.966000001, 561761.6100000005 4815267.380000001, 561761.75 4815267.41, 561761.9000000004 4815267.4, 561762.04 4815267.359999999, 561762.1699999999 4815267.289999999, 561762.2699999996 4815267.1899999995, 561762.3600000005 4815267.07, 561762.4100000003 4815266.930000001, 561762.4299999997 4815266.789999999, 561762.4199999999 4815266.65, 561762.3799999999 4815266.51, 561762.2999999998 4815266.380000001, 561761.5319999999 4815265.966000001, 561760.764 4815265.552000001, 561759.9959999999 4815265.138000001, 561759.228 4815264.724000001, 561758.4600000001 4815264.310000001, 561758.3399999999 4815264.26))";
-
             var reader = new WKTReader(GeometryFactory.Default);
             var geom = reader.Read(wkt);
-
             Assert.IsTrue(geom.IsValid);
             Assert.IsTrue(geom.IsSimple);
-
             //var dtb = new DelaunayTriangulationBuilder();
             //dtb.SetSites(geom);
             QuadEdgeSubdivision qes = null;
             //Assert.DoesNotThrow( () => qes = dtb.GetSubdivision());
             //Assert.IsNotNull(qes);
-
             //foreach (var t in qes.GetVoronoiCellPolygons(GeometryFactory.Default))
             //    Console.WriteLine(t.AsText());
-
             //Console.WriteLine();
-
             IGeometryCollection diag = null;
             //Assert.DoesNotThrow(() => diag = qes.GetVoronoiDiagram(GeometryFactory.Default));
             //Assert.IsNotNull(diag);
-
             var vdb = new VoronoiDiagramBuilder();
             vdb.SetSites(geom);
             qes = null;
             Assert.DoesNotThrow(() => qes = vdb.GetSubdivision());
             Assert.IsNotNull(qes);
-
             foreach (var t in qes.GetVoronoiCellPolygons(GeometryFactory.Default))
                 Console.WriteLine(t.AsText());
-
             Console.WriteLine();
-
             diag = null;
             Assert.DoesNotThrow(() => diag = vdb.GetDiagram(GeometryFactory.Default));
             Assert.IsNotNull(diag);
         }
-
         /// <summary>
         /// see: https://groups.google.com/d/msg/nettopologysuite/kwJdvPnwPis/V1y0BZ0Ip9oJ
         /// </summary>
@@ -495,22 +468,19 @@ namespace NetTopologySuite.Tests.Various
         {
             const string wkt =
                 "POLYGON ((14.270341 46.592393, 14.270168 46.592435, 14.269934 46.592458, 14.269978 46.593262, 14.2699883 46.5936283, 14.270001 46.5940778, 14.270014 46.594274, 14.270686 46.594253, 14.270693 46.593642, 14.271359 46.5936565, 14.271692 46.5936637, 14.272025 46.593671, 14.272195 46.594132, 14.272172 46.594195, 14.27209 46.594247, 14.271931 46.594269, 14.270686 46.594253, 14.270014 46.594274, 14.270019 46.594647, 14.270022 46.594839, 14.270025 46.595065, 14.269982 46.595242, 14.269848 46.595395, 14.270026 46.595429, 14.27019 46.595438, 14.270489 46.595431, 14.27098 46.59544, 14.271701 46.595454, 14.272504 46.595469, 14.272457 46.596781, 14.272752 46.59679, 14.273182 46.596802, 14.273244 46.596827, 14.273257 46.59688, 14.272969 46.598265, 14.272862 46.59882, 14.272678 46.599756, 14.274351 46.59994, 14.2751039 46.6001132, 14.2761378 46.5999951, 14.2771781 46.5999539, 14.2777771 46.5997631, 14.2773246 46.5981367, 14.2803556 46.598055, 14.2805422 46.5962748, 14.2797491 46.5950344, 14.2773383 46.5953999, 14.2768883 46.5940448, 14.2768778 46.5940764, 14.2768439 46.5941055, 14.2768337 46.5941175, 14.2767933 46.5941275, 14.276776 46.5941291, 14.2767338 46.5941326, 14.2766636 46.5941396, 14.2765618 46.5941536, 14.2757429 46.5942872, 14.2758657 46.5948156, 14.275941 46.595094, 14.2759673 46.5951778, 14.27606 46.595474, 14.2760834 46.595548, 14.2761099 46.5957387, 14.2761688 46.5959261, 14.2761983 46.5960198, 14.2762278 46.5961136, 14.2763228 46.5964155, 14.276476 46.5969376, 14.2766652 46.5969119, 14.2772167 46.5968929, 14.2777106 46.5968772, 14.2781873 46.596883, 14.2784029 46.5968768, 14.2784204 46.5969934, 14.2784262 46.5971391, 14.2784379 46.5973198, 14.2784495 46.597792, 14.2776009 46.5978119, 14.2767668 46.5978056, 14.277034 46.598467, 14.277006 46.598589, 14.276987 46.598671, 14.277071 46.598974, 14.277177 46.599357, 14.277166 46.599456, 14.277117 46.599514, 14.277015 46.599552, 14.27634 46.599662, 14.2760042 46.5997169, 14.275662 46.599773, 14.2756026 46.5995442, 14.2755891 46.599492, 14.2754907 46.5991126, 14.275412 46.598809, 14.2752905 46.5984064, 14.275211 46.598143, 14.27516 46.597986, 14.2767668 46.5978056, 14.2767276 46.5975411, 14.2766713 46.5973164, 14.2766302 46.5972164, 14.2765891 46.5971314, 14.276476 46.5969376, 14.2763228 46.5964155, 14.2762278 46.5961136, 14.2761983 46.5960198, 14.2761688 46.5959261, 14.2761099 46.5957387, 14.2760834 46.595548, 14.27606 46.595474, 14.2759673 46.5951778, 14.275941 46.595094, 14.2758657 46.5948156, 14.2757429 46.5942872, 14.275628 46.593775, 14.2752901 46.5918595, 14.274801 46.5918166, 14.2745653 46.591794, 14.2741145 46.5917857, 14.273769 46.5917797, 14.2737496 46.5918088, 14.2737285 46.5918274, 14.2737026 46.5918398, 14.2736637 46.5918495, 14.2736339 46.5918502, 14.2736033 46.5918476, 14.2735699 46.5918408, 14.2735275 46.5918264, 14.2734989 46.5918118, 14.2734807 46.5917959, 14.2734682 46.5917778, 14.2726925 46.5918505, 14.2723 46.591896, 14.271899 46.591974, 14.2716247 46.5920462, 14.270867 46.592246, 14.270341 46.592393))";
-
             WKTReader reader = new WKTReader();
             IGeometry geom = reader.Read(wkt);
             Assert.That(geom, Is.Not.Null);
             Assert.That(geom, Is.InstanceOf<IPolygon>());
             Assert.That(geom.IsValid, Is.False);
-
             IGeometry valid = geom.Buffer(0);
             Assert.That(valid.IsValid, Is.True);
             Console.WriteLine(valid);
         }
-
         [Test]
         public void TestDifferenceOfComplexMultipolygons()
         {
-            var pol1String = 
+            var pol1String =
 @"MULTIPOLYGON (((636192.59787309519 6154321.6995911133,
 636182.897398793 6154321.8655825993,
 636173.596086427 6154322.1355276527,
@@ -552,8 +522,7 @@ namespace NetTopologySuite.Tests.Various
 636152.65988775936 6154308.0283991182,
 636158.15162006055 6154303.2493718751,
 636172.16130951955 6154302.44953468)))";
-
-            var pol2String = 
+            var pol2String =
 @"MULTIPOLYGON (((636167.79101204267 6154298.2703853333,
 636168.33523776615 6154298.2803832982,
 636170.65232001338 6154298.4203548077,
@@ -726,31 +695,24 @@ namespace NetTopologySuite.Tests.Various
                 polygon1 = InsertTopologyExceptionPoint(ex.Coordinate, polygon1);
                 polygon2 = InsertTopologyExceptionPoint(ex.Coordinate, polygon2);
             }
-
             Assert.IsNotNull(result);
             double area = 0;
             Assert.DoesNotThrow(() => area = result.Area);
-            Assert.AreEqual(0.01025390625, area, 0.01);            
-
+            Assert.AreEqual(0.01025390625, area, 0.01);
             Console.WriteLine("WKT : {0}", result.AsText());
             Console.WriteLine("Area: {0}", area);
-
             //2nd Attempt
             var gpr = new GeometryPrecisionReducer(new PrecisionModel(10000000000));
             var p1 = gpr.Reduce(polygon1);
             var p2 = gpr.Reduce(polygon2);
-
             result = null;
             Assert.DoesNotThrow(() => result = p1.Difference(p2));
             area = 0;
             Assert.DoesNotThrow(() => area = result.Area);
             Assert.AreEqual(0.01025390625, area, 0.01);
-
             Console.WriteLine("WKT : {0}", result.AsText());
             Console.WriteLine("Area: {0}", area);
-
         }
-
         private static IGeometry InsertTopologyExceptionPoint(Coordinate coordinate, IGeometry polygon1)
         {
             var p1 = (IMultiPolygon) polygon1;
@@ -761,7 +723,6 @@ namespace NetTopologySuite.Tests.Various
             }
             return polygon1.Factory.CreateMultiPolygon(res);
         }
-
         private static IPolygon InsertTopologyExceptionPoint(Coordinate coordinate, IPolygon polygon)
         {
             var shell = InsertTopologyExceptionPoint(coordinate, (ILinearRing)polygon.ExteriorRing);
@@ -770,21 +731,17 @@ namespace NetTopologySuite.Tests.Various
                 holes[i] = InsertTopologyExceptionPoint(coordinate, (ILinearRing) polygon.GetInteriorRingN(i));
             return polygon.Factory.CreatePolygon(shell, holes);
         }
-
         private static ILinearRing InsertTopologyExceptionPoint(Coordinate coordinate, ILinearRing ring)
         {
             if (ring.Distance(ring.Factory.CreatePoint(coordinate)) > 1e-7)
                 return ring;
-
             var seq = InsertTopologyExceptionPoint(coordinate, ring.CoordinateSequence,
                 ring.Factory.CoordinateSequenceFactory);
             return ring.Factory.CreateLinearRing(seq);
         }
-
         private static ICoordinateSequence InsertTopologyExceptionPoint(Coordinate coord, ICoordinateSequence seq, ICoordinateSequenceFactory factory)
         {
             var res = factory.Create(2*seq.Count , seq.Ordinates);
-
             if (Replace(seq.GetCoordinate(0), coord))
             {
                 res.SetOrdinate(0, Ordinate.X, coord.X);
@@ -797,7 +754,6 @@ namespace NetTopologySuite.Tests.Various
                 res.SetOrdinate(0, Ordinate.Y, seq.GetOrdinate(0, Ordinate.Y));
                 res.SetOrdinate(0, Ordinate.Z, seq.GetOrdinate(0, Ordinate.Z));
             }
-
             var last = res.GetCoordinate(0);
             var off = 0;
             for (var i = 1; i < seq.Count; i++)
@@ -818,7 +774,6 @@ namespace NetTopologySuite.Tests.Various
                     res.SetOrdinate(i + off, Ordinate.Z, coord.Z);
                     off += 1;
                 }
-
                 if (add)
                 {
                     res.SetOrdinate(i + off, Ordinate.X, seq.GetOrdinate(i, Ordinate.X));
@@ -827,12 +782,10 @@ namespace NetTopologySuite.Tests.Various
                 }
                 last = curr;
             }
-            
             var tmp = factory.Create(seq.Count + off, seq.Ordinates);
             CoordinateSequences.Copy(res, 0, tmp, 0, tmp.Count);
             return tmp;
         }
-
         private static bool Replace(Coordinate reference, Coordinate coord)
         {
             return coord.Distance(reference) <= 5*double.Epsilon;

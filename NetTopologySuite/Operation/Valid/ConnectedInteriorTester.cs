@@ -4,10 +4,9 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Utilities;
-
 namespace NetTopologySuite.Operation.Valid
 {
-    /// <summary> 
+    /// <summary>
     /// This class tests that the interior of an area <see cref="Geometry" />
     /// (<see cref="Polygon" /> or <see cref="MultiPolygon" />)
     /// is connected.  An area Geometry is invalid if the interior is disconnected.
@@ -20,7 +19,7 @@ namespace NetTopologySuite.Operation.Valid
     public class ConnectedInteriorTester
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coord"></param>
         /// <param name="pt"></param>
@@ -29,33 +28,27 @@ namespace NetTopologySuite.Operation.Valid
         {
             foreach (Coordinate c in coord)
                 if (!c.Equals(pt))
-                    return c;            
+                    return c;
             return null;
         }
-
         private readonly GeometryFactory _geometryFactory = new GeometryFactory();
-
         private readonly GeometryGraph _geomGraph;
-
         // save a coordinate for any disconnected interior found
         // the coordinate will be somewhere on the ring surrounding the disconnected interior
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomGraph"></param>
         public ConnectedInteriorTester(GeometryGraph geomGraph)
         {
             _geomGraph = geomGraph;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate Coordinate { get; private set; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public bool IsInteriorsConnected()
@@ -63,7 +56,6 @@ namespace NetTopologySuite.Operation.Valid
             // node the edges, in case holes touch the shell
             IList<Edge> splitEdges = new List<Edge>();
             _geomGraph.ComputeSplitEdges(splitEdges);
-
             // form the edges into rings
             PlanarGraph graph = new PlanarGraph(new OverlayNodeFactory());
             graph.AddEdges(splitEdges);
@@ -75,7 +67,6 @@ namespace NetTopologySuite.Operation.Valid
              * of the input polygons.  Note only ONE ring gets marked for each shell.
              */
             VisitShellInteriors(this._geomGraph.Geometry, graph);
-
             /*
              * If there are any unvisited shell edges
              * (i.e. a ring which is not a hole and which has the interior
@@ -85,18 +76,16 @@ namespace NetTopologySuite.Operation.Valid
              */
             return !HasUnvisitedShellEdge(edgeRings);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="graph"></param>
         private static void SetInteriorEdgesInResult(PlanarGraph graph)
         {
-            foreach (DirectedEdge de in graph.EdgeEnds)               
+            foreach (DirectedEdge de in graph.EdgeEnds)
                 if (de.Label.GetLocation(0, Positions.Right) == Location.Interior)
                     de.InResult = true;
         }
-        
         /// <summary>
         /// Form <see cref="DirectedEdge" />s in graph into Minimal EdgeRings.
         /// (Minimal Edgerings must be used, because only they are guaranteed to provide
@@ -113,7 +102,6 @@ namespace NetTopologySuite.Operation.Valid
                 if (de.IsInResult && de.EdgeRing == null)
                 {
                     MaximalEdgeRing er = new MaximalEdgeRing(de, _geometryFactory);
-
                     er.LinkDirectedEdgesForMinimalEdgeRings();
                     IList<EdgeRing> minEdgeRings = er.BuildMinimalRings();
                     foreach(EdgeRing o in minEdgeRings)
@@ -122,9 +110,8 @@ namespace NetTopologySuite.Operation.Valid
             }
             return edgeRings;
         }
-
         /// <summary>
-        /// Mark all the edges for the edgeRings corresponding to the shells of the input polygons.  
+        /// Mark all the edges for the edgeRings corresponding to the shells of the input polygons.
         /// Only ONE ring gets marked for each shell - if there are others which remain unmarked
         /// this indicates a disconnected interior.
         /// </summary>
@@ -132,21 +119,20 @@ namespace NetTopologySuite.Operation.Valid
         /// <param name="graph"></param>
         private void VisitShellInteriors(IGeometry g, PlanarGraph graph)
         {
-            if (g is IPolygon) 
+            if (g is IPolygon)
             {
                 IPolygon p = (IPolygon) g;
                 VisitInteriorRing(p.Shell, graph);
             }
-            if (g is IMultiPolygon) 
+            if (g is IMultiPolygon)
             {
                 IMultiPolygon mp = (IMultiPolygon) g;
-                foreach (IPolygon p in mp.Geometries) 
+                foreach (IPolygon p in mp.Geometries)
                     VisitInteriorRing(p.Shell, graph);
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ring"></param>
         /// <param name="graph"></param>
@@ -163,15 +149,14 @@ namespace NetTopologySuite.Operation.Valid
             DirectedEdge de = (DirectedEdge) graph.FindEdgeEnd(e);
             DirectedEdge intDe = null;
             if (de.Label.GetLocation(0, Positions.Right) == Location.Interior)
-                intDe = de;            
-            else if (de.Sym.Label.GetLocation(0, Positions.Right) == Location.Interior)            
-                intDe = de.Sym;            
+                intDe = de;
+            else if (de.Sym.Label.GetLocation(0, Positions.Right) == Location.Interior)
+                intDe = de.Sym;
             Assert.IsTrue(intDe != null, "unable to find dirEdge with Interior on RHS");
             VisitLinkedDirectedEdges(intDe);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="start"></param>
         protected void VisitLinkedDirectedEdges(DirectedEdge start)
@@ -183,10 +168,9 @@ namespace NetTopologySuite.Operation.Valid
                 Assert.IsTrue(de != null, "found null Directed Edge");
                 de.Visited = true;
                 de = de.Next;
-            } 
+            }
             while (de != startDe);
         }
-
         /// <summary>
         /// Check if any shell ring has an unvisited edge.
         /// A shell ring is a ring which is not a hole and which has the interior
@@ -207,7 +191,6 @@ namespace NetTopologySuite.Operation.Valid
                 DirectedEdge de = edges[0];
                 // don't check CW rings which are holes
                 if (de.Label.GetLocation(0, Positions.Right) != Location.Interior) continue;
-
                 // must have a CW ring which surrounds the INT of the area, so check all
                 // edges have been visited
                 for (int j = 0; j < edges.Count; j++)

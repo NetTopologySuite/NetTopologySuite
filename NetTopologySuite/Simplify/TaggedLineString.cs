@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Simplify
 {
     /// <summary>
@@ -12,15 +11,13 @@ namespace NetTopologySuite.Simplify
     public class TaggedLineString
     {
         private readonly IList<LineSegment> _resultSegs = new List<LineSegment>();
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="parentLine"></param>
         public TaggedLineString(ILineString parentLine) : this(parentLine, 2) { }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="parentLine"></param>
         /// <param name="minimumSize"></param>
@@ -30,29 +27,24 @@ namespace NetTopologySuite.Simplify
             MinimumSize = minimumSize;
             Init();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int MinimumSize { get; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public ILineString Parent { get; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate[] ParentCoordinates => Parent.Coordinates;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate[] ResultCoordinates => ExtractCoordinates(_resultSegs);
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int ResultSize
         {
@@ -62,9 +54,8 @@ namespace NetTopologySuite.Simplify
                 return resultSegsSize == 0 ? 0 : resultSegsSize + 1;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -72,9 +63,8 @@ namespace NetTopologySuite.Simplify
         {
             return Segments[i];
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private void Init()
         {
@@ -86,23 +76,20 @@ namespace NetTopologySuite.Simplify
                 Segments[i] = seg;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public TaggedLineSegment[] Segments { get; private set; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="seg"></param>
         public void AddToResult(LineSegment seg)
         {
             _resultSegs.Add(seg);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public ILineString AsLineString()
@@ -110,9 +97,8 @@ namespace NetTopologySuite.Simplify
             Coordinate[] coordinates = ExtractCoordinates(_resultSegs);
             return Parent.Factory.CreateLineString(coordinates);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public ILinearRing AsLinearRing()
@@ -120,9 +106,8 @@ namespace NetTopologySuite.Simplify
             Coordinate[] coordinates = ExtractCoordinates(_resultSegs);
             return Parent.Factory.CreateLinearRing(coordinates);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="segs"></param>
         /// <returns></returns>

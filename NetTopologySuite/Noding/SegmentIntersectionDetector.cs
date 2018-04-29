@@ -1,6 +1,5 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-
 namespace NetTopologySuite.Noding
 {
     ///<summary>
@@ -16,7 +15,6 @@ namespace NetTopologySuite.Noding
     public class SegmentIntersectionDetector : ISegmentIntersector
     {
         private readonly LineIntersector _li;
-
         ///<summary>
         /// Creates an intersection finder using a <see cref="RobustLineIntersector"/>
         ///</summary>
@@ -24,7 +22,6 @@ namespace NetTopologySuite.Noding
             :this(new RobustLineIntersector())
         {
         }
-
         ///<summary>
         /// Creates an intersection finder using a given <see cref="LineIntersector"/>
         ///</summary>
@@ -33,42 +30,34 @@ namespace NetTopologySuite.Noding
         {
             _li = li;
         }
-
         /// <summary>
         /// Gets or sets whether processing must continue until a proper intersection is found
         /// </summary>
         public bool FindProper { get; set; }
-
         /// <summary>
         /// Gets or sets whether processing can terminate once any intersection is found.
         /// </summary>
         public bool FindAllIntersectionTypes { get; set; }
-
         ///<summary>
         /// Tests whether an intersection was found.
         ///</summary>
         public bool HasIntersection { get; private set; }
-
         ///<summary>
         /// Tests whether a proper intersection was found.
         ///</summary>
         public bool HasProperIntersection { get; private set; }
-
         ///<summary>
         /// Tests whether a non-proper intersection was found.
         ///</summary>
         public bool HasNonProperIntersection { get; private set; }
-
         ///<summary>
         /// Gets the computed location of the intersection. Due to round-off, the location may not be exact.
         ///</summary>
         public Coordinate Intersection { get; private set; }
-
         ///<summary>Gets the endpoints of the intersecting segments.
         ///</summary>
         /// <remarks>An array of the segment endpoints (p00, p01, p10, p11)</remarks>
         public Coordinate[] IntersectionSegments { get; private set; }
-
         ///<summary>
         /// This method is called by clients of the <see cref="ISegmentIntersector"/> class to process
         /// intersections for two segments of the <see cref="ISegmentString"/>s being intersected.
@@ -85,27 +74,22 @@ namespace NetTopologySuite.Noding
         {
             // don't bother intersecting a segment with itself
             if (e0 == e1 && segIndex0 == segIndex1) return;
-
             var coords = e0.Coordinates;
             var p00 = coords[segIndex0];
             var p01 = coords[segIndex0 + 1];
-            
             coords = e1.Coordinates;
             var p10 = coords[segIndex1];
             var p11 = coords[segIndex1 + 1];
-
             _li.ComputeIntersection(p00, p01, p10, p11);
             if (_li.HasIntersection)
             {
                 // record intersection info
                 HasIntersection = true;
-
                 var isProper = _li.IsProper;
                 if (isProper)
                     HasProperIntersection = true;
                 if (!isProper)
                     HasNonProperIntersection = true;
-
                 /*
                  * If this is the kind of intersection we are searching for
                  * OR no location has yet been recorded
@@ -116,13 +100,10 @@ namespace NetTopologySuite.Noding
                 bool saveLocation = true;
                 if (_findProper && !isProper) saveLocation = false;
                  */
-
                 if (Intersection == null || saveLocation)
                 {
-
                     // record intersection location (approximate)
                     Intersection = _li.GetIntersection(0);
-
                     // record intersecting segments
                     IntersectionSegments = new Coordinate[4];
                     IntersectionSegments[0] = p00;
@@ -132,7 +113,6 @@ namespace NetTopologySuite.Noding
                 }
             }
         }
-
         /// <summary>
         /// Tests whether processing can terminate,
         /// because all required information has been obtained
@@ -150,7 +130,6 @@ namespace NetTopologySuite.Noding
                 {
                     return HasProperIntersection && HasNonProperIntersection;
                 }
-
                 /*
                  * If searching for a proper intersection, only stop if one is found
                  */

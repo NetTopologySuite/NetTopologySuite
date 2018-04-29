@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Utilities
 {
     /// <summary>
@@ -21,16 +20,13 @@ namespace NetTopologySuite.Utilities
                 filter.Filter(coords[i]);
             return filter.Coordinates;
         }
-
         private readonly List<Coordinate> _list = new List<Coordinate>();
-
         /// <summary>
         /// Returns the gathered <see cref="Coordinate"/>s.
         /// </summary>
         public Coordinate[] Coordinates => _list.ToArray();
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coord"></param>
         public void Filter(Coordinate coord)

@@ -5,7 +5,6 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Noding;
-
 namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
@@ -17,9 +16,7 @@ namespace NetTopologySuite.Operation.Buffer
         private readonly IGeometry _inputGeom;
         private readonly double _distance;
         private readonly OffsetCurveBuilder _curveBuilder;
-
         private readonly IList<ISegmentString> _curveList = new List<ISegmentString>();
-
         /// <summary>
         ///
         /// </summary>
@@ -32,7 +29,6 @@ namespace NetTopologySuite.Operation.Buffer
             _distance = distance;
             _curveBuilder = curveBuilder;
         }
-
         /// <summary>
         /// Computes the set of raw offset curves for the buffer.
         /// Each offset curve has an attached {Label} indicating
@@ -44,7 +40,6 @@ namespace NetTopologySuite.Operation.Buffer
             Add(_inputGeom);
             return _curveList;
         }
-
         /// <summary>
         /// Creates a {SegmentString} for a coordinate list which is a raw offset curve,
         /// and adds it to the list of buffer curves.
@@ -63,7 +58,6 @@ namespace NetTopologySuite.Operation.Buffer
             var e = new NodedSegmentString(coord, new Label(0, Location.Boundary, leftLoc, rightLoc));
             _curveList.Add(e);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -88,7 +82,6 @@ namespace NetTopologySuite.Operation.Buffer
                 AddCollection(g);
             else throw new NotSupportedException(g.GetType().FullName);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -101,7 +94,6 @@ namespace NetTopologySuite.Operation.Buffer
                 Add(g);
             }
         }
-
         /// <summary>
         /// Add a Point to the graph.
         /// </summary>
@@ -115,7 +107,6 @@ namespace NetTopologySuite.Operation.Buffer
             var curve = _curveBuilder.GetLineCurve(coord, _distance);
             AddCurve(curve, Location.Exterior, Location.Interior);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -129,7 +120,6 @@ namespace NetTopologySuite.Operation.Buffer
             var curve = _curveBuilder.GetLineCurve(coord, _distance);
             AddCurve(curve, Location.Exterior, Location.Interior);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -143,7 +133,6 @@ namespace NetTopologySuite.Operation.Buffer
                 offsetDistance = -_distance;
                 offsetSide = Positions.Right;
             }
-
             var shell = p.Shell;
             var shellCoord = CoordinateArrays.RemoveRepeatedPoints(shell.Coordinates);
             // optimization - don't bother computing buffer
@@ -153,20 +142,16 @@ namespace NetTopologySuite.Operation.Buffer
             // don't attemtp to buffer a polygon with too few distinct vertices
             if (_distance <= 0.0 && shellCoord.Length < 3)
                 return;
-
             AddPolygonRing(shellCoord, offsetDistance, offsetSide,
                            Location.Exterior, Location.Interior);
-
             for (var i = 0; i < p.NumInteriorRings; i++)
             {
                 var hole = (ILinearRing)p.GetInteriorRingN(i);
                 var holeCoord = CoordinateArrays.RemoveRepeatedPoints(hole.Coordinates);
-
                 // optimization - don't bother computing buffer for this hole
                 // if the hole would be completely covered
                 if (_distance > 0.0 && IsErodedCompletely(holeCoord, -_distance))
                     continue;
-
                 // Holes are topologically labelled opposite to the shell, since
                 // the interior of the polygon lies on their opposite side
                 // (on the left, if the hole is oriented CCW)
@@ -174,7 +159,6 @@ namespace NetTopologySuite.Operation.Buffer
                                Location.Interior, Location.Exterior);
             }
         }
-
         /// <summary>
         /// Adds an offset curve for a polygon ring.
         /// The side and left and right topological location arguments
@@ -193,7 +177,6 @@ namespace NetTopologySuite.Operation.Buffer
             // don't bother adding ring if it is "flat" and will disappear in the output
             if (offsetDistance == 0.0 && coord.Length < LinearRing.MinimumValidSize)
                 return;
-
             var leftLoc = cwLeftLoc;
             var rightLoc = cwRightLoc;
             if (coord.Length >= LinearRing.MinimumValidSize
@@ -206,7 +189,6 @@ namespace NetTopologySuite.Operation.Buffer
             var curve = _curveBuilder.GetRingCurve(coord, side, offsetDistance);
             AddCurve(curve, leftLoc, rightLoc);
         }
-
         /// <summary>
         /// The ringCoord is assumed to contain no repeated points.
         /// It may be degenerate (i.e. contain only 1, 2, or 3 points).
@@ -220,12 +202,10 @@ namespace NetTopologySuite.Operation.Buffer
             // degenerate ring has no area
             if (ringCoord.Length < 4)
                 return bufferDistance < 0;
-
             // important test to eliminate inverted triangle bug
             // also optimizes erosion test for triangles
             if (ringCoord.Length == 4)
                 return IsTriangleErodedCompletely(ringCoord, bufferDistance);
-
             /*
              * The following is a heuristic test to determine whether an
              * inside buffer will be eroded completely.
@@ -242,7 +222,6 @@ namespace NetTopologySuite.Operation.Buffer
             double minDiam = md.Length;
             return minDiam < 2 * Math.Abs(bufferDistance);
         }
-
         /// <summary>
         /// Tests whether a triangular ring would be eroded completely by the given
         /// buffer distance.

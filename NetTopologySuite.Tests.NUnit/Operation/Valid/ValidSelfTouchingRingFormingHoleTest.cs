@@ -5,7 +5,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Valid;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Operation.Valid
 {
     ///<summary>
@@ -23,7 +22,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
     public class ValidSelfTouchingRingFormingHoleTest
     {
         private static WKTReader rdr = new WKTReader();
-
         ///<summary>
         ///Tests a geometry with both a shell self-touch and a hole self-touch.
         ///This is valid if STR is allowed, but invalid in OGC
@@ -35,7 +33,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             CheckIsValidSTR(wkt, true);
             CheckIsValidDefault(wkt, false);
         }
-
         ///<summary>
         ///Tests a geometry representing the same area as in <see cref="TestShellAndHoleSelfTouch"/>
         ///but using a shell-hole touch and a hole-hole touch.
@@ -48,7 +45,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             CheckIsValidSTR(wkt, true);
             CheckIsValidDefault(wkt, true);
         }
-
         ///<summary>
         ///Tests an overlapping hole condition, where one of the holes is created by a shell self-touch.
         ///This is never valid.
@@ -60,7 +56,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             CheckIsValidSTR(wkt, false);
             CheckIsValidDefault(wkt, false);
         }
-
         ///<summary>
         ///Ensure that the Disconnected Interior condition is not validated
         ///</summary>
@@ -71,7 +66,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             CheckIsValidSTR(wkt, false);
             CheckIsValidDefault(wkt, false);
         }
-
         ///<summary>
         ///Ensure that the Disconnected Interior condition is not validated
         ///</summary>
@@ -82,7 +76,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             CheckIsValidSTR(wkt, false);
             CheckIsValidDefault(wkt, false);
         }
-
         [TestAttribute]
         public void TestShellCross()
         {
@@ -90,7 +83,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             CheckIsValidSTR(wkt, false);
             CheckIsValidDefault(wkt, false);
         }
-
         [TestAttribute]
         public void TestShellCrossAndSTR()
         {
@@ -98,7 +90,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             CheckIsValidSTR(wkt, false);
             CheckIsValidDefault(wkt, false);
         }
-
         private void CheckIsValidDefault(String wkt, bool expected)
         {
             IGeometry geom = FromWKT(wkt);
@@ -106,7 +97,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             bool isValid = validator.IsValid;
             Assert.IsTrue(isValid == expected);
         }
-
         private void CheckIsValidSTR(String wkt, bool expected)
         {
             IGeometry geom = FromWKT(wkt);
@@ -115,7 +105,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             bool isValid = validator.IsValid;
             Assert.IsTrue(isValid == expected);
         }
-
         IGeometry FromWKT(String wkt)
         {
             IGeometry geom = null;
@@ -130,5 +119,4 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             return geom;
         }
     }
-
 }

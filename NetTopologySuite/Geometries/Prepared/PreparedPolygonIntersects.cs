@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Noding;
-
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
@@ -24,14 +23,12 @@ namespace NetTopologySuite.Geometries.Prepared
             var polyInt = new PreparedPolygonIntersects(prep);
             return polyInt.Intersects(geom);
         }
-
         ///<summary>
         /// Creates an instance of this operation.
         ///</summary>
         /// <param name="prepPoly">The prepared polygon</param>
         public PreparedPolygonIntersects(PreparedPolygon prepPoly) :
             base(prepPoly) { }
-
         ///<summary>
         /// Tests whether this PreparedPolygon intersects a given geometry.
         ///</summary>
@@ -65,7 +62,6 @@ namespace NetTopologySuite.Geometries.Prepared
                 if (segsIntersect)
                     return true;
             }
-
             /*
              * If the test has dimension = 2 as well, it is necessary to
              * test for proper inclusion of the target.
@@ -77,7 +73,6 @@ namespace NetTopologySuite.Geometries.Prepared
                 bool isPrepGeomInArea = IsAnyTargetComponentInAreaTest(geom, prepPoly.RepresentativePoints);
                 if (isPrepGeomInArea) return true;
             }
-
             return false;
         }
     }

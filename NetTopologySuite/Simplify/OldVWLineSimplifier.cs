@@ -1,13 +1,12 @@
 ﻿using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Simplify
 {
     /// <summary>
-    /// Simplifies a linestring (sequence of points) using the 
+    /// Simplifies a linestring (sequence of points) using the
     /// Visvalingam-Whyatt algorithm.
-    /// The Visvalingam-Whyatt algorithm simplifies geometry 
+    /// The Visvalingam-Whyatt algorithm simplifies geometry
     /// by removing vertices while trying to minimize the area changed.
     /// </summary>
     /// <version>1.7</version>
@@ -18,16 +17,13 @@ namespace NetTopologySuite.Simplify
             OldVWLineSimplifier simp = new OldVWLineSimplifier(pts, distanceTolerance);
             return simp.Simplify();
         }
-
         private readonly Coordinate[] _pts;
         private readonly double _tolerance;
-
         public OldVWLineSimplifier(Coordinate[] pts, double distanceTolerance)
         {
             _pts = pts;
             _tolerance = distanceTolerance * distanceTolerance;
         }
-
         public Coordinate[] Simplify()
         {
             VWVertex vwLine = VWVertex.BuildLine(_pts);
@@ -43,7 +39,6 @@ namespace NetTopologySuite.Simplify
                 return simp;
             return new[] { simp[0], new Coordinate(simp[0]) };
         }
-
         private double SimplifyVertex(VWVertex vwLine)
         {
             // Scan vertices in line and remove the one with smallest effective area.
@@ -67,7 +62,6 @@ namespace NetTopologySuite.Simplify
                 return -1;
             return minArea;
         }
-
         internal class VWVertex
         {
             public static VWVertex BuildLine(Coordinate[] pts)
@@ -89,21 +83,15 @@ namespace NetTopologySuite.Simplify
                 }
                 return first;
             }
-
             private const double MaxArea = Double.MaxValue;
-
             private readonly Coordinate _pt;
             private double _area = MaxArea;
-
             public VWVertex(Coordinate pt)
             {
                 this._pt = pt;
             }
-
             public VWVertex Prev { get; set; }
-
             public VWVertex Next { get; set; }
-
             public void UpdateArea()
             {
                 if (Prev == null || Next == null)
@@ -114,14 +102,11 @@ namespace NetTopologySuite.Simplify
                 double d = Triangle.Area(Prev._pt, _pt, Next._pt);
                 _area = Math.Abs(d);
             }
-
             public double GetArea()
             {
                 return _area;
             }
-
             public bool IsLive { get; private set; } = true;
-
             public VWVertex Remove()
             {
                 VWVertex tmpPrev = Prev;
@@ -143,7 +128,6 @@ namespace NetTopologySuite.Simplify
                 IsLive = false;
                 return result;
             }
-
             public Coordinate[] GetCoordinates()
             {
                 CoordinateList coords = new CoordinateList();

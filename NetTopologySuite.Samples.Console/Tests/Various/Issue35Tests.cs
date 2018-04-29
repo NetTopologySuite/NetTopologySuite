@@ -5,22 +5,18 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Simplify;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.Various
 {
     [TestFixture]
     public class Issue35Tests
     {
         private readonly IGeometryFactory factory = GeometryFactory.Default;
-
-        private WKTReader reader;        
-
+        private WKTReader reader;
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
             reader = new WKTReader(factory);
         }
-
         [Test, Category("Issue35")]
         public void TestIsValid()
         {
@@ -39,7 +35,6 @@ namespace NetTopologySuite.Tests.Various
 23.77857112312677,719522.38754834363 6176994.3322154824 24.194645633515528))");
             Assert.IsNotNull(geom1);
             Assert.IsTrue(geom1.IsValid);
-
             var geom2 = reader.Read(
                     @"POLYGON((719496.72750000039 6177012.6337
 21.226497462484563,719501.41240093729 6177017.249279663
@@ -49,7 +44,6 @@ namespace NetTopologySuite.Tests.Various
 21.226497462560005,719496.72750000039 6177012.6337 21.226497462484563))");
             Assert.IsNotNull(geom2);
             Assert.IsTrue(geom2.IsValid);
-
             var expected = reader.Read(
                     @"POLYGON ((719522.3875483436 6176994.332215482 24.194645633515528,
 719522.3875483437 6176994.332215482 24.194645633477126, 719526.8258614993
@@ -63,15 +57,12 @@ namespace NetTopologySuite.Tests.Various
 719522.3875483436 6176994.332215482 24.194645633515528))");
             Assert.IsNotNull(expected);
             Assert.IsTrue(expected.IsValid);
-
             var actual = geom1.Union(geom2);
             Assert.IsNotNull(actual);
             Assert.IsTrue(actual.IsValid);
-
             //Assert.IsTrue(expected.EqualsExact(actual));
             Assert.IsTrue(1 - new HausdorffSimilarityMeasure().Measure(expected,actual)< 1E7);
         }
-
         [Test, Category("Issue35")]
         public void TestIsValid2()
         {
@@ -79,10 +70,9 @@ namespace NetTopologySuite.Tests.Various
                 @"POLYGON ((34.6084247111331 31.2600368705728, 34.6032199980889
 31.0998473691012, 34.4841253356165 31.1049514260643, 34.4725915455589
 31.2524625304851, 34.6084247111331 31.2600368705728))");
-            geom1.SRID = 4326;            
+            geom1.SRID = 4326;
             Assert.IsNotNull(geom1);
             Assert.IsTrue(geom1.IsValid);
-
             var geom2 = reader.Read(
                 @"POLYGON ((34.6501882399183 31.4064219592108, 34.5539826799553
 31.4701726314754, 34.3859127258032 31.4180129905316, 34.3963446539919
@@ -92,24 +82,21 @@ namespace NetTopologySuite.Tests.Various
             geom2.SRID = 4326;
             Assert.IsNotNull(geom2);
             Assert.IsTrue(geom2.IsValid);
-
             var result = geom1.Difference(geom2);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.IsValid);
             Assert.AreEqual(result.SRID, 4326);
         }
-
         [Test(Description = "Simplification always returns a geometry of the same type as the input geometry, and by default it attempts to ensure valid topology (by applying  a buffer(0) - which is a bit of a hack, I admit). This is why it returns an empty polygon."), Category("Issue35")]
         [Ignore("The result is the same as in JTS 1.10")]
         public void TestSimplifyBadPoly()
         {
             var geom = new WKTReader().Read("POLYGON ((1 1, 1 1, 1 1, 1 1, 1 1))");
-
-            var geom2 = new Polygon(new LinearRing(new Coordinate[] 
+            var geom2 = new Polygon(new LinearRing(new Coordinate[]
             {
-                new Coordinate(1, 1), 
                 new Coordinate(1, 1),
-                new Coordinate(1, 1), 
+                new Coordinate(1, 1),
+                new Coordinate(1, 1),
                 new Coordinate(1, 1),
                 new Coordinate(1, 1)
             }));
@@ -119,7 +106,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.AreEqual(geom.GetType(), simple.GetType());
             Assert.AreNotEqual(geom, simple, "Simplify didn't do anything to this invalid polygon.");
             // This happens with JTS 1.9.0, 1.8.0 still returns GeometryCollection.Empty
-            Assert.AreEqual(geom.GetType(), Polygon.Empty); 
+            Assert.AreEqual(geom.GetType(), Polygon.Empty);
         }
     }
 }

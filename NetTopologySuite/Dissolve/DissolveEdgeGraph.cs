@@ -1,6 +1,5 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.EdgeGraph;
-
 namespace NetTopologySuite.Dissolve
 {
     /// <summary>

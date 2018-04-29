@@ -2,7 +2,6 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
-
 namespace Open.Topology.TestRunner.Utility
 {
     /// <summary>
@@ -20,7 +19,6 @@ namespace Open.Topology.TestRunner.Utility
             }
             return true;
         }
-
         private static Boolean IsHexDigit(char ch)
         {
             if (char.IsDigit(ch)) return true;
@@ -28,28 +26,23 @@ namespace Open.Topology.TestRunner.Utility
             if (chLow >= 'a' && chLow <= 'f') return true;
             return false;
         }
-
         private const int MaxCharsToCheck = 6;
-
         //private GeometryFactory _geomFactory;
         private readonly WKTReader _wktReader;
         private readonly WKBReader _wkbReader;
         private readonly IGeometryFactory _factory;
-
         public MultiFormatReader()
             : this(new GeometryFactory())
         {
         }
-
         public MultiFormatReader(GeometryFactory geomFactory)
         {
             _wktReader = new WKTReader(geomFactory);
             _wkbReader = new WKBReader(geomFactory);
             _factory = geomFactory;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomStr"></param>
         /// <returns></returns>

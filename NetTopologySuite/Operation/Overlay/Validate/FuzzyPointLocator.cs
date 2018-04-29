@@ -2,13 +2,12 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Operation.Overlay.Validate
 {
     ///<summary>
     /// Finds the most likely <see cref="Location"/> of a point relative to
     /// the polygonal components of a geometry, using a tolerance value.
-    ///</summary> 
+    ///</summary>
     ///<remarks>
     /// If a point is not clearly in the Interior or Exterior,
     /// it is considered to be on the Boundary.
@@ -24,30 +23,25 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         private readonly IMultiLineString _linework;
         private readonly PointLocator _ptLocator = new PointLocator();
         private readonly LineSegment _seg = new LineSegment();
-
         public FuzzyPointLocator(IGeometry g, double boundaryDistanceTolerance)
         {
             _g = g;
             _boundaryDistanceTolerance = boundaryDistanceTolerance;
             _linework = ExtractLinework(g);
         }
-
         public Location GetLocation(Coordinate pt)
         {
             if (IsWithinToleranceOfBoundary(pt))
                 return Location.Boundary;
             /*
             double dist = linework.distance(point);
-
             // if point is close to boundary, it is considered to be on the boundary
             if (dist < tolerance)
               return Location.BOUNDARY;
              */
-
             // now we know point must be clearly inside or outside geometry, so return actual location value
             return _ptLocator.Locate(pt, _g);
         }
-
         ///<summary>
         /// Extracts linework for polygonal components.
         ///</summary>
@@ -60,7 +54,6 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             List<ILineString> linework = extracter.Linework;
             return g.Factory.CreateMultiLineString(linework.ToArray());
         }
-
         private bool IsWithinToleranceOfBoundary(Coordinate pt)
         {
             for (int i = 0; i < _linework.NumGeometries; i++)
@@ -79,7 +72,6 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             return false;
         }
     }
-
     ///<summary>
     /// Extracts the LineStrings in the boundaries of all the polygonal elements in the target <see cref="IGeometry"/>.
     ///</summary>
@@ -90,7 +82,6 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         {
             Linework = new List<ILineString>();
         }
-
         ///<summary>
         /// Filters out all linework for polygonal elements
         /// </summary>
@@ -106,7 +97,6 @@ namespace NetTopologySuite.Operation.Overlay.Validate
                 }
             }
         }
-
         ///<summary>
         /// Gets the list of polygonal linework.
         ///</summary>

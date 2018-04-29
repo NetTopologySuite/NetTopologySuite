@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
 namespace NetTopologySuite.Utilities
 {
     ///<summary>
@@ -13,7 +12,6 @@ namespace NetTopologySuite.Utilities
         where T : IComparable<T>
     {
         private readonly AlternativePriorityQueue<T, T> _queue;
-
         /// <summary>
         /// Creates an instance of this class
         /// </summary>
@@ -21,7 +19,6 @@ namespace NetTopologySuite.Utilities
         {
             _queue = new AlternativePriorityQueue<T, T>();
         }
-
         /// <summary>
         /// Creates an instance of this class
         /// </summary>
@@ -31,7 +28,6 @@ namespace NetTopologySuite.Utilities
         {
             _queue = new AlternativePriorityQueue<T, T>(capacity, comparer);
         }
-
         ///<summary>Insert into the priority queue. Duplicates are allowed.
         ///</summary>
         /// <param name="x">The item to insert.</param>
@@ -40,7 +36,6 @@ namespace NetTopologySuite.Utilities
             var node = new PriorityQueueNode<T, T>(x);
             this._queue.Enqueue(node, x);
         }
-
         ///<summary>
         /// Test if the priority queue is logically empty.
         ///</summary>
@@ -49,12 +44,10 @@ namespace NetTopologySuite.Utilities
         {
             return this._queue.Count == 0;
         }
-
         ///<summary>
         /// Returns size.
         ///</summary>
         public int Size => this._queue.Count;
-
         ///<summary>
         /// Make the priority queue logically empty.
         ///</summary>
@@ -62,7 +55,6 @@ namespace NetTopologySuite.Utilities
         {
             this._queue.Clear();
         }
-
         ///<summary>
         /// Remove the smallest item from the priority queue.
         ///</summary>
@@ -74,7 +66,6 @@ namespace NetTopologySuite.Utilities
                 ? default(T)
                 : node.Data;
         }
-
         public T Peek()
         {
             var node = _queue.Head;
@@ -82,17 +73,14 @@ namespace NetTopologySuite.Utilities
                 ? default(T)
                 : node.Data;
         }
-
         public IEnumerator<T> GetEnumerator()
         {
             return new DataEnumerator<T>(_queue.GetEnumerator());
         }
-
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
-
         private class DataEnumerator<T> : IEnumerator<T>
         {
             private readonly IEnumerator<PriorityQueueNode<T, T>> _pqnEnumerator;
@@ -100,22 +88,18 @@ namespace NetTopologySuite.Utilities
             {
                 _pqnEnumerator = pqnEnumerator;
             }
-
             public void Dispose()
             {
                 _pqnEnumerator.Dispose();
             }
-
             public bool MoveNext()
             {
                 return _pqnEnumerator.MoveNext();
             }
-
             public void Reset()
             {
                 _pqnEnumerator.Reset();
             }
-
             public T Current
             {
                 get
@@ -124,7 +108,6 @@ namespace NetTopologySuite.Utilities
                     return n != null ? n.Data : default(T);
                 }
             }
-
             object IEnumerator.Current => Current;
         }
     }

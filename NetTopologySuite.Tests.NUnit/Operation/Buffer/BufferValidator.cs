@@ -5,44 +5,34 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 using NetTopologySuite.Operation.Buffer.Validate;
-
 namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 {
     public class BufferValidator
     {
         private delegate void TestMethod();
-
         private class TestCase : IComparable<TestCase>
         {
             public TestCase(string name)
                 : this(name, 2)
             {
             }
-
             public TestCase(string name, int priority)
             {
                 Name = name;
                 Priority = priority;
             }
-
             public string Name { get; }
-
             public int Priority { get; }
-
             public TestMethod TestMethod { get; set; }
-
             public override string ToString()
             {
                 return Name;
             }
-
             public int CompareTo(TestCase other)
             {
                 return Priority - other.Priority;
             }
         }
-
-
         private IGeometry _original;
         private readonly double _bufferDistance;
         private readonly Dictionary<string, TestCase> _nameToTestMap = new Dictionary<string, TestCase>();
@@ -52,7 +42,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
         private readonly String _wkt;
         private readonly WKTWriter _wktWriter = new WKTWriter();
         private WKTReader _wktReader;
-
         //public BufferValidator()
         //{
         //    IGeometry g =
@@ -62,12 +51,10 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
         //    Console.WriteLine(g.Buffer(0.01, 100));
         //    Console.WriteLine("END");
         //}
-
         public BufferValidator(double bufferDistance, String wkt)
             : this(bufferDistance, wkt, true)
         {
         }
-
         public BufferValidator(double bufferDistance, String wkt, bool addContainsTest)
         {
             // SRID = 888 is to test that SRID is preserved in computed buffers
@@ -77,7 +64,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             if (addContainsTest) AddTestContains();
             //addBufferResultValidatorTest();
         }
-
         private String Supplement(String message)
         {
             String newMessage = "\n" + message + "\n";
@@ -86,13 +72,11 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             newMessage += "Buffer: " + _wktWriter.WriteFormatted(GetBuffer()) + "\n";
             return newMessage.Substring(0, newMessage.Length - 1);
         }
-
         private BufferValidator AddTest(TestCase test)
         {
             _nameToTestMap.Add(test.Name, test);
             return this;
         }
-
         public BufferValidator TestExpectedArea(double expectedArea)
         {
             try
@@ -105,7 +89,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                                   _bufferDistance,
                                   QuadrantSegments1 - QuadrantSegments2)
                               .Area);
-
                 Assert.AreEqual(expectedArea, GetBuffer().Area, tolerance, "Area Test");
             }
             catch (Exception e)
@@ -113,10 +96,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                 throw new Exception(
                     Supplement(e.ToString()) + e.StackTrace);
             }
-
             return this;
         }
-
         public BufferValidator TestEmptyBufferExpected(bool emptyBufferExpected)
         {
             Assert.IsTrue(
@@ -126,10 +107,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                     + (emptyBufferExpected ? "" : "not ")
                     + "to be empty")
                 );
-
             return this;
         }
-
         public BufferValidator TestBufferHolesExpected(bool bufferHolesExpected)
         {
             Assert.IsTrue(
@@ -139,10 +118,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                     + (bufferHolesExpected ? "" : "not ")
                     + "to have holes")
                 );
-
             return this;
         }
-
         private static bool HasHoles(IGeometry buffer)
         {
             if (buffer.IsEmpty)
@@ -152,7 +129,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             var polygon = buffer as IPolygon;
             if (polygon != null)
                 return polygon.NumInteriorRings > 0;
-
             var multiPolygon = (IMultiPolygon) buffer;
             for (int i = 0; i < multiPolygon.NumGeometries; i++)
             {
@@ -163,25 +139,20 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             }
             return false;
         }
-
         private IGeometry GetOriginal()
         {
             return _original ?? (_original = _wktReader.Read(_wkt));
         }
-
-
         public BufferValidator SetPrecisionModel(PrecisionModel precisionModel)
         {
             _wktReader = new WKTReader(new GeometryFactory(precisionModel));
             return this;
         }
-
         public BufferValidator SetFactory(PrecisionModel precisionModel, int srid)
         {
             _wktReader = new WKTReader(new GeometryFactory(precisionModel, srid));
             return this;
         }
-
         private IGeometry GetBuffer()
         {
             if (_buffer == null)
@@ -203,7 +174,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             }
             return _buffer;
         }
-
         private void AddTestContains()
         {
             AddTest(
@@ -213,7 +183,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                             {
                                 if (GetOriginal() is GeometryCollection)
                                     return;
-
                                 Assert.IsTrue(GetOriginal().IsValid);
                                 if (_bufferDistance > 0)
                                 {
@@ -229,9 +198,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                                 }
                             }
                     });
-
         }
-
         public BufferValidator TestContains()
         {
             if (GetOriginal() is GeometryCollection)
@@ -253,7 +220,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             }
             return this;
         }
-
         private static bool Contains(IGeometry a, IGeometry b)
         {
             //JTS doesn't currently handle empty geometries correctly [Jon Aquino
@@ -265,7 +231,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             bool isContained = a.Contains(b);
             return isContained;
         }
-
         private void AddBufferResultValidatorTest()
         {
             AddTest(new TestCase("Buffer result validator", 20)
@@ -282,7 +247,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                         }
                 });
         }
-
         /// <summary>
         /// Method to perform all registered Tests
         /// </summary>

@@ -1,25 +1,21 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-
 namespace NetTopologySuite.Precision
 {
     public class PrecisionReducerCoordinateOperation : GeometryEditor.CoordinateOperation
     {
         private readonly IPrecisionModel _targetPrecModel;
         private readonly bool _removeCollapsed = true;
-
         public PrecisionReducerCoordinateOperation(IPrecisionModel targetPrecModel, bool removeCollapsed)
         {
             _targetPrecModel = targetPrecModel;
             _removeCollapsed = removeCollapsed;
         }
-
         public override Coordinate[] Edit(Coordinate[] coordinates, IGeometry geom)
         {
             if (coordinates.Length == 0)
                 return null;
-
             var reducedCoords = new Coordinate[coordinates.Length];
             // copy coordinates and reduce
             for (int i = 0; i < coordinates.Length; i++)
@@ -32,7 +28,6 @@ namespace NetTopologySuite.Precision
             var noRepeatedCoordList = new CoordinateList(reducedCoords,
                     false);
             var noRepeatedCoords = noRepeatedCoordList.ToCoordinateArray();
-
             /**
              * Check to see if the removal of repeated points collapsed the coordinate
              * List to an invalid length for the type of the parent geometry. It is not
@@ -47,17 +42,14 @@ namespace NetTopologySuite.Precision
                 minLength = 2;
             if (geom is ILinearRing)
                 minLength = LinearRing.MinimumValidSize;
-
             Coordinate[] collapsedCoords = reducedCoords;
             if (_removeCollapsed)
                 collapsedCoords = null;
-
             // return null or orginal length coordinate array
             if (noRepeatedCoords.Length < minLength)
             {
                 return collapsedCoords;
             }
-
             // ok to return shorter coordinate array
             return noRepeatedCoords;
         }

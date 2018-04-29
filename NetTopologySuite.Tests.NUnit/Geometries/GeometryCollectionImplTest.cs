@@ -4,7 +4,6 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     [TestFixtureAttribute]
@@ -13,21 +12,18 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         private IPrecisionModel precisionModel;
         private IGeometryFactory geometryFactory;
         WKTReader reader;
-
         public GeometryCollectionImplTest()
         {
             precisionModel = new PrecisionModel(1000);
             geometryFactory = new GeometryFactory(precisionModel, 0);
             reader = new WKTReader(geometryFactory);
         }
-
         [TestAttribute]
         public void TestGetDimension()
         {
             GeometryCollection g = (GeometryCollection)reader.Read("GEOMETRYCOLLECTION (POINT (10 10), POINT (30 30), LINESTRING (15 15, 20 20))");
             Assert.AreEqual(1, (int)g.Dimension);
         }
-
         [TestAttribute]
         public void TestGetCoordinates()
         {
@@ -38,7 +34,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(new Coordinate(10, 10), coordinates[0]);
             Assert.AreEqual(new Coordinate(20, 20), coordinates[3]);
         }
-
         [TestAttribute]
         public void TestGeometryCollectionIterator()
         {
@@ -57,7 +52,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(i.MoveNext());
             Assert.IsTrue(i.Current is Point);
         }
-
         [TestAttribute]
         public void TestGetLength()
         {

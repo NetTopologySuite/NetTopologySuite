@@ -3,7 +3,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 {
     [TestFixture]
@@ -11,7 +10,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
     {
         private readonly GeometryFactory _geomFact = new GeometryFactory();
         private readonly Random random = new Random();
-
         [TestAttribute]
         [CategoryAttribute("Stress")]
         public void TestStressRun()
@@ -23,7 +21,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                 Run(n);
             }
         }
-
         private void Run(int nPts)
         {
             Coordinate[] randPts = CreateRandomPoints(nPts);
@@ -32,10 +29,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             Coordinate centre = mbc.GetCentre();
             double radius = mbc.GetRadius();
             Console.WriteLine("Testing " + nPts + " random points.  Radius = " + radius);
-
             checkWithinCircle(randPts, centre, radius, 0.0001);
         }
-
         private void checkWithinCircle(Coordinate[] pts, Coordinate centre, double radius, double tolerance)
         {
             for (int i = 0; i < pts.Length; i++)
@@ -46,7 +41,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                 Assert.LessOrEqual(error, tolerance);
             }
         }
-
         private Coordinate[] CreateRandomPoints(int n)
         {
             Coordinate[] pts = new Coordinate[n];
@@ -58,6 +52,5 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             }
             return pts;
         }
-
     }
 }

@@ -5,7 +5,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Index.Sweepline;
 using NetTopologySuite.Utilities;
-
 namespace NetTopologySuite.Operation.Valid
 {
     /// <summary>
@@ -19,32 +18,28 @@ namespace NetTopologySuite.Operation.Valid
         private readonly List<ILinearRing> rings = new List<ILinearRing>();
         private Envelope totalEnv = new Envelope();
         private SweepLineIndex sweepLine;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="graph"></param>
         public SweeplineNestedRingTester(GeometryGraph graph)
         {
             this.graph = graph;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate NestedPoint { get; private set; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ring"></param>
         public void Add(ILinearRing ring)
         {
             rings.Add(ring);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public bool IsNonNested()
@@ -54,9 +49,8 @@ namespace NetTopologySuite.Operation.Valid
             sweepLine.ComputeOverlaps(action);
             return action.IsNonNested;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private void BuildIndex()
         {
@@ -68,9 +62,8 @@ namespace NetTopologySuite.Operation.Valid
                 sweepLine.Add(sweepInt);
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="innerRing"></param>
         /// <param name="searchRing"></param>
@@ -84,37 +77,33 @@ namespace NetTopologySuite.Operation.Valid
             Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
             Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
             bool isInside = PointLocation.IsInRing(innerRingPt, searchRingPts);
-            if (isInside) 
+            if (isInside)
             {
                 NestedPoint = innerRingPt;
                 return true;
             }
             return false;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public class OverlapAction : ISweepLineOverlapAction
         {
             private readonly SweeplineNestedRingTester container;
-
             /// <summary>
-            /// 
+            ///
             /// </summary>
             public bool IsNonNested { get; private set; } = true;
-
             /// <summary>
-            /// 
+            ///
             /// </summary>
             /// <param name="container"></param>
             public OverlapAction(SweeplineNestedRingTester container)
             {
                 this.container = container;
             }
-
             /// <summary>
-            /// 
+            ///
             /// </summary>
             /// <param name="s0"></param>
             /// <param name="s1"></param>
@@ -122,7 +111,7 @@ namespace NetTopologySuite.Operation.Valid
             {
                 ILinearRing innerRing = (ILinearRing) s0.Item;
                 ILinearRing searchRing = (ILinearRing) s1.Item;
-                if (innerRing == searchRing) 
+                if (innerRing == searchRing)
                     return;
                 if (container.IsInside(innerRing, searchRing))
                     IsNonNested = false;

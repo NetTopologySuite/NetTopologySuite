@@ -4,7 +4,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
-
 namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
@@ -17,7 +16,6 @@ namespace NetTopologySuite.Operation.Buffer
     {
         private readonly IList<BufferSubgraph> _subgraphs;
         private readonly LineSegment _seg = new LineSegment();
-
         /// <summary>
         ///
         /// </summary>
@@ -26,7 +24,6 @@ namespace NetTopologySuite.Operation.Buffer
         {
             _subgraphs = subgraphs;
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -43,7 +40,6 @@ namespace NetTopologySuite.Operation.Buffer
             var ds = stabbedSegments[0];
             return ds.LeftDepth;
         }
-
         /// <summary>
         /// Finds all non-horizontal segments intersecting the stabbing line.
         /// The stabbing line is the ray to the right of stabbingRayLeftPt.
@@ -59,7 +55,6 @@ namespace NetTopologySuite.Operation.Buffer
             }
             return stabbedSegments;
         }
-
         /// <summary>
         /// Finds all non-horizontal segments intersecting the stabbing line
         /// in the list of dirEdges.
@@ -81,7 +76,6 @@ namespace NetTopologySuite.Operation.Buffer
                 FindStabbedSegments(stabbingRayLeftPt, de, stabbedSegments);
             }
         }
-
         /// <summary>
         /// Finds all non-horizontal segments intersecting the stabbing line
         /// in the input dirEdge.
@@ -100,20 +94,15 @@ namespace NetTopologySuite.Operation.Buffer
                 // ensure segment always points upwards
                 if (_seg.P0.Y > _seg.P1.Y)
                     _seg.Reverse();
-
                 // skip segment if it is left of the stabbing line
                 var maxx = Math.Max(_seg.P0.X, _seg.P1.X);
                 if (maxx < stabbingRayLeftPt.X) continue;
-
                 // skip horizontal segments (there will be a non-horizontal one carrying the same depth info
                 if (_seg.IsHorizontal) continue;
-
                 // skip if segment is above or below stabbing line
                 if (stabbingRayLeftPt.Y < _seg.P0.Y || stabbingRayLeftPt.Y > _seg.P1.Y) continue;
-
                 // skip if stabbing ray is right of the segment
                 if (Orientation.Index(_seg.P0, _seg.P1, stabbingRayLeftPt) == OrientationIndex.Right) continue;
-
                 // stabbing line cuts this segment, so record it
                 int depth = dirEdge.GetDepth(Positions.Left);
                 // if segment direction was flipped, use RHS depth instead
@@ -123,7 +112,6 @@ namespace NetTopologySuite.Operation.Buffer
                 stabbedSegments.Add(ds);
             }
         }
-
         /// <summary>
         /// A segment from a directed edge which has been assigned a depth value
         /// for its sides.
@@ -131,12 +119,10 @@ namespace NetTopologySuite.Operation.Buffer
         internal class DepthSegment : IComparable<DepthSegment>
         {
             private readonly LineSegment _upwardSeg;
-
             /// <summary>
             ///
             /// </summary>
             public int LeftDepth { get; set; }
-
             /// <summary>
             ///
             /// </summary>
@@ -148,7 +134,6 @@ namespace NetTopologySuite.Operation.Buffer
                 _upwardSeg = new LineSegment(seg);
                 this.LeftDepth = depth;
             }
-
             /// <summary>
             /// Defines a comparison operation on DepthSegments
             /// which orders them left to right.
@@ -164,7 +149,7 @@ namespace NetTopologySuite.Operation.Buffer
             /// <remarks>
             /// Known Bugs:
             /// <list type="Bullet">
-            /// <item>The logic does not obey the <see cref="IComparable.CompareTo"/> contract. 
+            /// <item>The logic does not obey the <see cref="IComparable.CompareTo"/> contract.
             /// This is acceptable for the intended usage, but may cause problems if used with some
             /// utilities in the .Net standard library (e.g. <see cref="T:System.Collections.List.Sort()"/>.</item>
             /// </list>
@@ -176,14 +161,12 @@ namespace NetTopologySuite.Operation.Buffer
                 // fast check if segments are trivially ordered along X
                 if (_upwardSeg.MinX >= other._upwardSeg.MaxX) return 1;
                 if (_upwardSeg.MaxX <= other._upwardSeg.MinX) return -1;
-
                 /*
                 * try and compute a determinate orientation for the segments.
                 * Test returns 1 if other is left of this (i.e. this > other)
                 */
                 var orientIndex = _upwardSeg.OrientationIndex(other._upwardSeg);
                 if (orientIndex != 0) return orientIndex;
-
                 /*
                 * If comparison between this and other is indeterminate,
                 * try the opposite call order.
@@ -191,11 +174,9 @@ namespace NetTopologySuite.Operation.Buffer
                 */
                 orientIndex = -1 * other._upwardSeg.OrientationIndex(_upwardSeg);
                 if (orientIndex != 0) return orientIndex;
-
                 // otherwise, use standard lexicographic segment ordering
                 return _upwardSeg.CompareTo(other._upwardSeg);
             }
-
             /// <summary>
             /// Compare two collinear segments for left-most ordering.
             /// If segs are vertical, use vertical ordering for comparison.
@@ -212,7 +193,6 @@ namespace NetTopologySuite.Operation.Buffer
                 if (compare0 != 0) return compare0;
                 return seg0.P1.CompareTo(seg1.P1);
             }
-
             public override string ToString()
             {
                 return _upwardSeg.ToString();

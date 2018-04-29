@@ -4,7 +4,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Operation;
 using NetTopologySuite.Utilities;
-
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
@@ -28,18 +27,14 @@ namespace NetTopologySuite.Geometries
 #endif
     public class LineString : Geometry, ILineString
     {
-
         /// <summary>
         /// Represents an empty <c>LineString</c>.
         /// </summary>
         public static readonly ILineString Empty = new GeometryFactory().CreateLineString(new Coordinate[] { });
-
         /// <summary>
         /// The points of this <c>LineString</c>.
         /// </summary>
         private ICoordinateSequence _points;
-
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LineString"/> class.
         /// </summary>
@@ -53,7 +48,6 @@ namespace NetTopologySuite.Geometries
         public LineString(Coordinate[] points) :
             this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory)
         { }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LineString"/> class.
         /// </summary>
@@ -73,35 +67,27 @@ namespace NetTopologySuite.Geometries
                                             + points.Count + " - must be 0 or >= 2)");
             _points = points;
         }
-
         /// <summary>
         /// Gets a value to sort the geometry
         /// </summary>
         protected override SortIndexValue SortIndex => SortIndexValue.LineString;
-
-
         /// <summary>
         ///
         /// </summary>
         public override Coordinate[] Coordinates => _points.ToCoordinateArray();
-
         public override double[] GetOrdinates(Ordinate ordinate)
         {
             if (IsEmpty)
                 return new double[0];
-
             var ordinateFlag = OrdinatesUtility.ToOrdinatesFlag(ordinate);
             if ((_points.Ordinates & ordinateFlag) != ordinateFlag)
                 return CreateArray(_points.Count, Coordinate.NullOrdinate);
-
             return CreateArray(_points, ordinate);
         }
-
         /// <summary>
         ///
         /// </summary>
         public ICoordinateSequence CoordinateSequence => _points;
-
         /// <summary>
         ///
         /// </summary>
@@ -111,7 +97,6 @@ namespace NetTopologySuite.Geometries
         {
             return _points.GetCoordinate(n);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -123,12 +108,10 @@ namespace NetTopologySuite.Geometries
                 return _points.GetCoordinate(0);
             }
         }
-
         /// <summary>
         ///
         /// </summary>
         public override Dimension Dimension => Dimension.Curve;
-
         /// <summary>
         ///
         /// </summary>
@@ -143,17 +126,14 @@ namespace NetTopologySuite.Geometries
                 return Dimension.Point;
             }
         }
-
         /// <summary>
         ///
         /// </summary>
         public override bool IsEmpty => _points.Count == 0;
-
         /// <summary>
         ///
         /// </summary>
         public override int NumPoints => _points.Count;
-
         /// <summary>
         ///
         /// </summary>
@@ -163,7 +143,6 @@ namespace NetTopologySuite.Geometries
         {
             return Factory.CreatePoint(_points.GetCoordinate(n));
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -176,7 +155,6 @@ namespace NetTopologySuite.Geometries
                 return GetPointN(0);
             }
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -189,7 +167,6 @@ namespace NetTopologySuite.Geometries
                 return GetPointN(NumPoints - 1);
             }
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -202,26 +179,21 @@ namespace NetTopologySuite.Geometries
                 return GetCoordinateN(0).Equals2D(GetCoordinateN(NumPoints - 1));
             }
         }
-
         /// <summary>
         ///
         /// </summary>
         public bool IsRing => IsClosed && IsSimple;
-
         /// <summary>
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"LineString"</returns>
         public override string GeometryType => "LineString";
-
         public override OgcGeometryType OgcGeometryType => OgcGeometryType.LineString;
-
         /// <summary>
         /// Returns the length of this <c>LineString</c>
         /// </summary>
         /// <returns>The length of the polygon.</returns>
         public override double Length => Algorithm.Length.OfLine(_points);
-
         ///// <summary>
         /////
         ///// </summary>
@@ -232,9 +204,7 @@ namespace NetTopologySuite.Geometries
         //        return (new IsSimpleOp()).IsSimple(this);
         //    }
         //}
-
         public override IGeometry Boundary => (new BoundaryOp(this)).GetBoundary();
-
         /// <summary>
         /// Creates a <see cref="LineString" /> whose coordinates are in the reverse order of this objects.
         /// </summary>
@@ -248,12 +218,10 @@ namespace NetTopologySuite.Geometries
             var seq = _points.Reversed();
             return Factory.CreateLineString(seq);
         }
-
         //ILineString ILineString.Reverse()
         //{
         //    return (ILineString)Reverse();
         //}
-
         /// <summary>
         /// Returns true if the given point is a vertex of this <c>LineString</c>.
         /// </summary>
@@ -266,7 +234,6 @@ namespace NetTopologySuite.Geometries
                     return true;
             return false;
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -275,7 +242,6 @@ namespace NetTopologySuite.Geometries
         {
             if (IsEmpty)
                 return new Envelope();
-
             //Convert to array, then access array directly, to avoid the function-call overhead
             //of calling Getter millions of times. ToArray may be inefficient for
             //non-BasicCoordinateSequence CoordinateSequences. [Jon Aquino]
@@ -293,7 +259,6 @@ namespace NetTopologySuite.Geometries
             }
             return new Envelope(minx, maxx, miny, maxy);
         }
-
         //[Obsolete]
         //internal override int GetHashCodeInternal(int baseValue, Func<int, int> operation)
         //{
@@ -301,7 +266,6 @@ namespace NetTopologySuite.Geometries
         //        baseValue = _points.GetHashCode(baseValue, operation);
         //    return baseValue;
         //}
-
         /// <summary>
         ///
         /// </summary>
@@ -312,17 +276,14 @@ namespace NetTopologySuite.Geometries
         {
             if (!IsEquivalentClass(other))
                 return false;
-
             ILineString otherLineString = (ILineString)other;
             if (_points.Count != otherLineString.NumPoints)
                 return false;
-
             for (int i = 0; i < _points.Count; i++)
                 if (!Equal(_points.GetCoordinate(i), otherLineString.GetCoordinateN(i), tolerance))
                     return false;
             return true;
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -332,7 +293,6 @@ namespace NetTopologySuite.Geometries
             for (int i = 0; i < _points.Count; i++)
                 filter.Filter(_points.GetCoordinate(i));
         }
-
         public override void Apply(ICoordinateSequenceFilter filter)
         {
             if (_points.Count == 0)
@@ -346,7 +306,6 @@ namespace NetTopologySuite.Geometries
             if (filter.GeometryChanged)
                 GeometryChanged();
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -355,7 +314,6 @@ namespace NetTopologySuite.Geometries
         {
             filter.Filter(this);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -364,7 +322,6 @@ namespace NetTopologySuite.Geometries
         {
             filter.Filter(this);
         }
-
         /// <summary>
         /// Creates and returns a full copy of this object.
         /// (including all coordinates contained by it).
@@ -375,18 +332,16 @@ namespace NetTopologySuite.Geometries
         {
             return Copy();
         }
-
         /// <summary>
         /// Creates and returns a full copy of this <see cref="ILineString"/> object.
         /// (including all coordinates contained by it).
         /// </summary>
         /// <returns>A copy of this instance</returns>
         public override IGeometry Copy()
-        { 
+        {
             var points = _points.Copy();
             return new LineString(points, Factory);
         }
-
         /// <summary>
         /// Normalizes a <c>LineString</c>.  A normalized <c>LineString</c>
         /// has the first point which is not equal to it's reflected point
@@ -410,12 +365,10 @@ namespace NetTopologySuite.Geometries
                 }
             }
         }
-
         protected override bool IsEquivalentClass(IGeometry other)
         {
             return other is ILineString;
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -424,7 +377,6 @@ namespace NetTopologySuite.Geometries
         protected internal override int CompareToSameClass(object o)
         {
             Assert.IsTrue(o is ILineString);
-
             ILineString line = (ILineString)o;
             // MD - optimized implementation
             int i = 0;
@@ -443,14 +395,12 @@ namespace NetTopologySuite.Geometries
                 return -1;
             return 0;
         }
-
         protected internal override int CompareToSameClass(Object o, IComparer<ICoordinateSequence> comp)
         {
             Assert.IsTrue(o is ILineString);
             ILineString line = (LineString)o;
             return comp.Compare(_points, line.CoordinateSequence);
         }
-
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
         /// <summary>
         ///
@@ -467,13 +417,11 @@ namespace NetTopologySuite.Geometries
                 _points.SetOrdinate(n, Ordinate.Z, value.Z);
             }
         }
-
         /// <summary>
         ///
         /// </summary>
         /// <value></value>
         public int Count => _points.Count;
-
         /// <summary>
         /// Returns the value of the angle between the <see cref="StartPoint" />
         /// and the <see cref="EndPoint" />.
@@ -491,14 +439,12 @@ namespace NetTopologySuite.Geometries
                 double length = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
                 double angleRAD = Math.Asin(Math.Abs(EndPoint.Y - StartPoint.Y) / length);
                 double angle = (angleRAD * 180) / Math.PI;
-
                 if (((StartPoint.X < EndPoint.X) && (StartPoint.Y > EndPoint.Y)) ||
                      ((StartPoint.X > EndPoint.X) && (StartPoint.Y < EndPoint.Y)))
                     angle = 360 - angle;
                 return angle;
             }
         }
-
         /* END ADDED BY MPAUL42: monoGIS team */
     }
 }

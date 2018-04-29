@@ -1,7 +1,6 @@
 using System;
 using NUnit.Framework;
 using NetTopologySuite.Mathematics;
-
 namespace NetTopologySuite.Tests.NUnit.Mathematics
 {
     /// <summary>
@@ -21,7 +20,6 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             //System.Console.WriteLine("Difference from DoubleDouble.E = " + err);
             Assert.IsTrue(err < 64*DD.Epsilon);
         }
-        
         /// <summary>
         /// Uses Taylor series to compute e
         /// <para/>
@@ -34,7 +32,6 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             var t = DD.ValueOf(1.0);
             var n = 1.0;
             var i = 0;
-
             while (t.ToDoubleValue() > DD.Epsilon)
             {
                 i++;
@@ -45,7 +42,6 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             }
             return s;
         }
-
         [TestAttribute]
         public void TestPiByMachin()
         {
@@ -56,7 +52,6 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             //System.Console.WriteLine("Difference from DoubleDouble.PI = " + err);
             Assert.IsTrue(err < 8*DD.Epsilon);
         }
-
         /// <summary>
         /// Uses Machin's arctangent formula to compute Pi:
         /// <para/>
@@ -67,7 +62,6 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         {
             var t1 = DD.ValueOf(1.0).Divide(DD.ValueOf(5.0));
             var t2 = DD.ValueOf(1.0).Divide(DD.ValueOf(239.0));
-
             var pi4 = (DD.ValueOf(4.0)
                 .Multiply(ArcTan(t1)))
                 .Subtract(ArcTan(t2));
@@ -75,7 +69,6 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             Console.WriteLine("Computed value = " + pi);
             return pi;
         }
-
         /// <summary>
         /// Computes the arctangent based on the Taylor series expansion
         /// <para/>
@@ -96,7 +89,6 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             {
                 k++;
                 at = sign < 0 ? at.Subtract(t.Divide(d)) : at.Add(t.Divide(d));
-
                 d = d.Add(two);
                 t = t.Multiply(t2);
                 sign = -sign;

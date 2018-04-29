@@ -1,6 +1,5 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Planargraph;
-
 namespace NetTopologySuite.Operation.Polygonize
 {
     /// <summary>
@@ -9,16 +8,15 @@ namespace NetTopologySuite.Operation.Polygonize
     public class PolygonizeEdge : Edge
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="line"></param>
         public PolygonizeEdge(ILineString line)
         {
             this.Line = line;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public ILineString Line { get; }
     }

@@ -3,10 +3,8 @@ using GeoAPI.Geometries;
 using GeoAPI.Geometries.Prepared;
 using NetTopologySuite.Geometries.Prepared;
 using Open.Topology.TestRunner.Result;
-
 namespace Open.Topology.TestRunner.Operations
 {
-
     /// <summary>
     /// A <see cref="IGeometryOperation"/> which uses <see cref="IPreparedGeometry"/>s
     /// for applicable operations.
@@ -18,25 +16,20 @@ namespace Open.Topology.TestRunner.Operations
     public class PreparedGeometryOperation : IGeometryOperation
     {
         private readonly GeometryMethodOperation _chainOp;
-
-        
         public PreparedGeometryOperation()
             :this(new GeometryMethodOperation())
         {
         }
-
         public Type GetReturnType(XmlTestType op)
         {
             return GetReturnType(op.ToString());
         }
-
         public Type GetReturnType(String opName)
         {
             if (IsPreparedOp(opName))
                 return typeof (bool);
             return _chainOp.GetReturnType(opName);
         }
-
         /// <summary>
         /// Creates a new operation which chains to the given {@link GeometryMethodOperation}
         /// for non-intercepted methods.
@@ -46,7 +39,6 @@ namespace Open.Topology.TestRunner.Operations
         {
             _chainOp = chainOp;
         }
-
         private static bool IsPreparedOp(String opName)
         {
             if (opName.Equals("intersects", StringComparison.InvariantCultureIgnoreCase)) return true;
@@ -55,7 +47,6 @@ namespace Open.Topology.TestRunner.Operations
             if (opName.Equals("covers", StringComparison.InvariantCultureIgnoreCase)) return true;
             return false;
         }
-
         /// <summary>
         /// Invokes the named operation
         /// </summary>
@@ -69,7 +60,6 @@ namespace Open.Topology.TestRunner.Operations
         {
             return Invoke(opName.ToString(), geometry, args);
         }
-
         public IResult Invoke(String opName, IGeometry geometry, Object[] args)
         {
             if (! IsPreparedOp(opName))
@@ -78,7 +68,6 @@ namespace Open.Topology.TestRunner.Operations
             }
             return InvokePreparedOp(opName, geometry, args);
         }
-
         private static IResult InvokePreparedOp(String opName, IGeometry geometry, Object[] args)
         {
             var g2 = (IGeometry) args[0];
@@ -100,7 +89,6 @@ namespace Open.Topology.TestRunner.Operations
             }
             return null;
         }
-
         internal static class PreparedGeometryOp
         {
             public static bool Intersects(IGeometry g1, IGeometry g2)
@@ -108,19 +96,16 @@ namespace Open.Topology.TestRunner.Operations
                 var prepGeom = PreparedGeometryFactory.Prepare(g1);
                 return prepGeom.Intersects(g2);
             }
-
             public static bool Contains(IGeometry g1, IGeometry g2)
             {
                 var prepGeom = PreparedGeometryFactory.Prepare(g1);
                 return prepGeom.Contains(g2);
             }
-
             public static bool ContainsProperly(IGeometry g1, IGeometry g2)
             {
                 var prepGeom = PreparedGeometryFactory.Prepare(g1);
                 return prepGeom.ContainsProperly(g2);
             }
-
             public static bool Covers(IGeometry g1, IGeometry g2)
             {
                 var prepGeom = PreparedGeometryFactory.Prepare(g1);

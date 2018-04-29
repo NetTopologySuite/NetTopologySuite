@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-
 namespace NetTopologySuite.Utilities
 {
     /// <summary>
@@ -23,7 +22,6 @@ namespace NetTopologySuite.Utilities
             foreach (var input in inputs)
                 yield return (T) input;
         }
-
         /// <summary>
         /// Cast function from sub-type to super-type
         /// </summary>
@@ -38,7 +36,6 @@ namespace NetTopologySuite.Utilities
             foreach (var input in inputs)
                 yield return input;
         }
-
         /// <summary>
         /// Cast function from super-type to sub-type
         /// </summary>

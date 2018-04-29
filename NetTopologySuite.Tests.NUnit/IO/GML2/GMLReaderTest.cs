@@ -8,7 +8,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.IO.GML2;
 using NetTopologySuite.Tests.NUnit.TestData;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.IO.GML2
 {
     [TestFixtureAttribute]
@@ -19,46 +18,38 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML2
         {
             DoTest(typeof(IPoint));
         }
-
         [TestAttribute]
         public void TestLineStringRead()
         {
             DoTest(typeof(ILineString));
         }
-
         [TestAttribute]
         public void TestPolygonRead()
         {
             DoTest(typeof(IPolygon));
         }
-
         [TestAttribute]
         public void TestMultiPointRead()
         {
             DoTest(typeof(IMultiPoint));
         }
-
         [TestAttribute]
         public void TestMultiLineStringRead()
         {
             DoTest(typeof(IMultiLineString));
         }
-
         [TestAttribute]
         public void TestMultiPolygonRead()
         {
             DoTest(typeof(IMultiPolygon));
         }
-
         private static void DoTest(Type expectedType)
         {
             string name = expectedType.Name;
             string file = String.Format("{0}s", name.ToLowerInvariant().Substring(1));
             string resname = String.Format("NetTopologySuite.Tests.NUnit.TestData.{0}.xml", file);
             string xml = new StreamReader(EmbeddedResourceManager.GetResourceStream(resname)).ReadToEnd();
-
             GMLReader gr = new GMLReader();
-
             // different target frameworks have different overload sets...
             foreach (var readMethod in GetReadMethods())
             {
@@ -72,7 +63,6 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML2
                 }
             }
         }
-
         private static List<Func<GMLReader, string, IGeometry>> GetReadMethods()
         {
             var result = new List<Func<GMLReader, string, IGeometry>>(5)
@@ -81,7 +71,6 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML2
                 (reader, xml) => reader.Read(new StringReader(xml)),
                 (reader, xml) => reader.Read(XmlReader.Create(new StringReader(xml)))
             };
-
             MethodInfo xmlDocMethod = typeof(GMLReader).GetMethod("Read", new Type[] { typeof(XmlDocument) });
             if (xmlDocMethod != null)
             {
@@ -92,13 +81,11 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML2
                     return (IGeometry)xmlDocMethod.Invoke(reader, new object[] { doc });
                 });
             }
-
             MethodInfo xDocMethod = typeof(GMLReader).GetMethod("Read", new Type[] { typeof(XDocument) });
             if (xDocMethod != null)
             {
                 result.Add((reader, xml) => (IGeometry)xDocMethod.Invoke(reader, new object[] { XDocument.Parse(xml) }));
             }
-
             return result;
         }
     }

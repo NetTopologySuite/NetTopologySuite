@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-
 namespace Open.Topology.TestRunner.Result
 {
     /// <summary>
@@ -18,7 +17,6 @@ namespace Open.Topology.TestRunner.Result
         {
             return true;
         }
-
         public bool IsMatch(IGeometry geom, string opName, object[] args, IResult actualResult, IResult expectedResult, double tolerance)
         {
             return true;

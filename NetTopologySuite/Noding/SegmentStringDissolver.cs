@@ -1,30 +1,28 @@
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Noding
 {
-
     /// <summary>
     /// Dissolves a noded collection of <see cref="ISegmentString" />s to produce
     /// a set of merged linework with unique segments.
     /// </summary>
     /// <remarks>
     /// A custom <see cref="ISegmentStringMerger"/> merging strategy
-    /// can be supplied.  
+    /// can be supplied.
     /// This strategy will be called when two identical (up to orientation)
     /// strings are dissolved together.
     /// The default merging strategy is simply to discard one of the merged strings.
     ///<para>
     /// A common use for this class is to merge noded edges
     /// while preserving topological labelling.
-    /// This requires a custom merging strategy to be supplied 
+    /// This requires a custom merging strategy to be supplied
     /// to merge the topology labels appropriately.
     /// </para>
     ///</remarks>
     public class SegmentStringDissolver
     {
         /// <summary>
-        /// A merging strategy which can be used to update the context data of <see cref="ISegmentString"/>s 
+        /// A merging strategy which can be used to update the context data of <see cref="ISegmentString"/>s
         /// which are merged during the dissolve process.
         /// </summary>
         /// <author>mbdavis</author>
@@ -42,11 +40,9 @@ namespace NetTopologySuite.Noding
             /// </param>
             void Merge(ISegmentString mergeTarget, ISegmentString ssToMerge, bool isSameOrientation);
         }
-
         private readonly ISegmentStringMerger _merger;
         private readonly IDictionary<OrientedCoordinateArray, ISegmentString> _ocaMap =
             new SortedDictionary<OrientedCoordinateArray, ISegmentString>();
-
         /// <summary>
         /// Creates a dissolver with a user-defined merge strategy.
         /// </summary>
@@ -55,13 +51,11 @@ namespace NetTopologySuite.Noding
         {
             _merger = merger;
         }
-
         /// <summary>
         /// Creates a dissolver with the default merging strategy.
         /// </summary>
         public SegmentStringDissolver()
             : this(null) { }
-
         /// <summary>
         /// Dissolve all <see cref="ISegmentString" />s in the input <see cref="IEnumerable{ISegmentString}"/>.
         /// </summary>
@@ -71,9 +65,8 @@ namespace NetTopologySuite.Noding
             foreach(var obj in segStrings)
                 Dissolve(obj);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="oca"></param>
         /// <param name="segString"></param>
@@ -81,7 +74,6 @@ namespace NetTopologySuite.Noding
         {
             _ocaMap.Add(oca, segString);
         }
-
         /// <summary>
         /// Dissolve the given <see cref="ISegmentString" />.
         /// </summary>
@@ -91,7 +83,7 @@ namespace NetTopologySuite.Noding
             OrientedCoordinateArray oca = new OrientedCoordinateArray(segString.Coordinates);
             ISegmentString existing = FindMatching(oca /*, segString*/);
             if (existing == null)
-                Add(oca, segString);            
+                Add(oca, segString);
             else
             {
                 if (_merger != null)
@@ -101,9 +93,8 @@ namespace NetTopologySuite.Noding
                 }
             }
         }
-
         ///// <summary>
-        ///// 
+        /////
         ///// </summary>
         ///// <param name="oca"></param>
         /*/// <param name="segString"></param>*/
@@ -114,8 +105,7 @@ namespace NetTopologySuite.Noding
             if (_ocaMap.TryGetValue(oca, out ret))
                 return ret;
             return null;
-        }        
-
+        }
         /// <summary>
         /// Gets the collection of dissolved (i.e. unique) <see cref="ISegmentString" />s
         /// </summary>

@@ -1,17 +1,14 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-
 namespace NetTopologySuite.SnapRound
 {
     internal class PolygonCleaner
     {
         private static readonly PolygonCleanerTransformer Transformer = new PolygonCleanerTransformer();
-
         public static IGeometry Clean(IGeometry geom)
         {
             return Transformer.Transform(geom);
         }
-
         public class PolygonCleanerTransformer : GeometryTransformer
         {
             /// <inheritdoc cref="GeometryTransformer.TransformPolygon"/>
@@ -23,17 +20,15 @@ namespace NetTopologySuite.SnapRound
                 }
                 return CreateValidArea(geom);
             }
-
             /// <inheritdoc cref="GeometryTransformer.TransformMultiPolygon"/>
             protected override IGeometry TransformMultiPolygon(IMultiPolygon geom, IGeometry parent)
             {
                 var roughGeom = base.TransformMultiPolygon(geom, parent);
                 return CreateValidArea(roughGeom);
             }
-
             /// <summary>
             /// Creates a valid area geometry from one that possibly has bad topology (i.e.
-            /// self-intersections). 
+            /// self-intersections).
             /// </summary>
             /// <param name="area">An area geometry possibly containing self-intersections</param>
             /// <returns>

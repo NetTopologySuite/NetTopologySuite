@@ -6,7 +6,6 @@ using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph.Index;
 using NetTopologySuite.Utilities;
-
 namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
@@ -30,33 +29,27 @@ namespace NetTopologySuite.GeometriesGraph
             // the "Mod-2 Rule"
             return boundaryCount % 2 == 1;
         }*/
-
         public static Location DetermineBoundary(IBoundaryNodeRule boundaryNodeRule, int boundaryCount)
         {
             return boundaryNodeRule.IsInBoundary(boundaryCount)
                 ? Location.Boundary : Location.Interior;
         }
-
         /// <summary>
         /// The lineEdgeMap is a map of the linestring components of the
         /// parentGeometry to the edges which are derived from them.
         /// This is used to efficiently perform findEdge queries
         /// </summary>
         private readonly IDictionary<ILineString, Edge> _lineEdgeMap = new Dictionary<ILineString, Edge>();
-
         /// <summary>
         /// If this flag is true, the Boundary Determination Rule will used when deciding
         /// whether nodes are in the boundary or not
         /// </summary>
         private bool _useBoundaryDeterminationRule = true;
-
         private readonly int _argIndex;  // the index of this point as an argument to a spatial function (used for labelling)
         private IList<Node> _boundaryNodes;
-
         private IPointOnGeometryLocator _areaPtLocator;
         // for use if geometry is not Polygonal
         private readonly PointLocator _ptLocator = new PointLocator();
-
         /// <summary>
         ///
         /// </summary>
@@ -66,7 +59,6 @@ namespace NetTopologySuite.GeometriesGraph
             // various options for computing intersections, from slowest to fastest
             return new SimpleMCSweepLineIntersector();
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -76,7 +68,6 @@ namespace NetTopologySuite.GeometriesGraph
             : this(argIndex, parentGeom, BoundaryNodeRules.OgcSfsBoundaryRule)
         {
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -91,27 +82,22 @@ namespace NetTopologySuite.GeometriesGraph
             if (parentGeom != null)
                 Add(parentGeom);
         }
-
         /// <summary>
         ///
         /// </summary>
         public bool HasTooFewPoints { get; private set; }
-
         /// <summary>
         ///
         /// </summary>
         public Coordinate InvalidPoint { get; private set; }
-
         /// <summary>
         ///
         /// </summary>
         public IGeometry Geometry { get; }
-
         /// <summary>
         /// Gets the <see cref="IBoundaryNodeRule"/> used with this geometry graph.
         /// </summary>
         public IBoundaryNodeRule BoundaryNodeRule { get; }
-
         /// <summary>
         ///
         /// </summary>
@@ -124,7 +110,6 @@ namespace NetTopologySuite.GeometriesGraph
                 return _boundaryNodes;
             }
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -140,7 +125,6 @@ namespace NetTopologySuite.GeometriesGraph
             }
             return pts;
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -150,7 +134,6 @@ namespace NetTopologySuite.GeometriesGraph
         {
             return _lineEdgeMap[line];
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -162,7 +145,6 @@ namespace NetTopologySuite.GeometriesGraph
                 e.EdgeIntersectionList.AddSplitEdges(edgelist);
             }
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -171,12 +153,10 @@ namespace NetTopologySuite.GeometriesGraph
         {
             if (g.IsEmpty)
                 return;
-
             // check if this Geometry should obey the Boundary Determination Rule
             // all collections except MultiPolygons obey the rule
             if (g is IMultiPolygon)
                 _useBoundaryDeterminationRule = false;
-
             if (g is IPolygon)
                 AddPolygon((IPolygon)g);
             // LineString also handles LinearRings
@@ -195,7 +175,6 @@ namespace NetTopologySuite.GeometriesGraph
             else
                 throw new NotSupportedException(g.GetType().FullName);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -208,7 +187,6 @@ namespace NetTopologySuite.GeometriesGraph
                 Add(g);
             }
         }
-
         /// <summary>
         /// Add a Point to the graph.
         /// </summary>
@@ -218,7 +196,6 @@ namespace NetTopologySuite.GeometriesGraph
             Coordinate coord = p.Coordinate;
             InsertPoint(_argIndex, coord, Location.Interior);
         }
-
         /// <summary>
         /// Adds a polygon ring to the graph. Empty rings are ignored.
         /// The left and right topological location arguments assume that the ring is oriented CW.
@@ -233,7 +210,6 @@ namespace NetTopologySuite.GeometriesGraph
             // don't bother adding empty holes
             if (lr.IsEmpty)
                 return;
-
             Coordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(lr.Coordinates);
             if (coord.Length < 4)
             {
@@ -254,7 +230,6 @@ namespace NetTopologySuite.GeometriesGraph
             // insert the endpoint as a node, to mark that it is on the boundary
             InsertPoint(_argIndex, coord[0], Location.Boundary);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -262,7 +237,6 @@ namespace NetTopologySuite.GeometriesGraph
         private void AddPolygon(IPolygon p)
         {
             AddPolygonRing(p.Shell, Location.Exterior, Location.Interior);
-
             for (int i = 0; i < p.NumInteriorRings; i++)
             {
                 var hole = p.Holes[i];
@@ -272,7 +246,6 @@ namespace NetTopologySuite.GeometriesGraph
                 AddPolygonRing(hole, Location.Interior, Location.Exterior);
             }
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -286,13 +259,11 @@ namespace NetTopologySuite.GeometriesGraph
                 InvalidPoint = coord[0];
                 return;
             }
-
             // add the edge for the LineString
             // line edges do not have locations for their left and right sides
             Edge e = new Edge(coord, new Label(_argIndex, Location.Interior));
             _lineEdgeMap[line] = e;
             InsertEdge(e);
-
             /*
             * Add the boundary points of the LineString, if any.
             * Even if the LineString is closed, add both points as if they were endpoints.
@@ -302,7 +273,6 @@ namespace NetTopologySuite.GeometriesGraph
             InsertBoundaryPoint(_argIndex, coord[0]);
             InsertBoundaryPoint(_argIndex, coord[coord.Length - 1]);
         }
-
         /// <summary>
         /// Add an Edge computed externally.  The label on the Edge is assumed
         /// to be correct.
@@ -316,7 +286,6 @@ namespace NetTopologySuite.GeometriesGraph
             InsertPoint(_argIndex, coord[0], Location.Boundary);
             InsertPoint(_argIndex, coord[coord.Length - 1], Location.Boundary);
         }
-
         /// <summary>
         /// Add a point computed externally.  The point is assumed to be a
         /// Point Geometry part, which has a location of INTERIOR.
@@ -326,7 +295,6 @@ namespace NetTopologySuite.GeometriesGraph
         {
             InsertPoint(_argIndex, pt, Location.Interior);
         }
-
         /// <summary>
         /// Compute self-nodes, taking advantage of the Geometry type to
         /// minimize the number of intersection tests.  (E.g. rings are
@@ -339,7 +307,6 @@ namespace NetTopologySuite.GeometriesGraph
         {
             return ComputeSelfNodes(li, computeRingSelfNodes, false);
         }
-
         /// <summary>
         /// Compute self-nodes, taking advantage of the Geometry type to
         /// minimize the number of intersection tests.  (E.g.rings are
@@ -359,12 +326,10 @@ namespace NetTopologySuite.GeometriesGraph
                           || Geometry is IMultiPolygon;
             var computeAllSegments = computeRingSelfNodes || !isRings;
             esi.ComputeIntersections(Edges, si, computeAllSegments);
-            
             //System.out.println("SegmentIntersector # tests = " + si.numTests);
             AddSelfIntersectionNodes(_argIndex);
             return si;
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -381,7 +346,6 @@ namespace NetTopologySuite.GeometriesGraph
             esi.ComputeIntersections(Edges, g.Edges, si);
             return si;
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -396,7 +360,6 @@ namespace NetTopologySuite.GeometriesGraph
                 n.Label = new Label(argIndex, onLocation);
             else lbl.SetLocation(argIndex, onLocation);
         }
-
         /// <summary>
         /// Adds candidate boundary points using the current <see cref="IBoundaryNodeRule"/>.
         /// This is used to add the boundary
@@ -416,12 +379,10 @@ namespace NetTopologySuite.GeometriesGraph
             var loc = lbl.GetLocation(argIndex, Positions.On);
             if (loc == Location.Boundary)
                 boundaryCount++;
-
             // determine the boundary status of the point according to the Boundary Determination Rule
             Location newLoc = DetermineBoundary(BoundaryNodeRule, boundaryCount);
             lbl.SetLocation(argIndex, newLoc);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -437,7 +398,6 @@ namespace NetTopologySuite.GeometriesGraph
                 }
             }
         }
-
         /// <summary>
         /// Add a node for a self-intersection.
         /// If the node is a potential boundary node (e.g. came from an edge which
@@ -456,7 +416,6 @@ namespace NetTopologySuite.GeometriesGraph
                 InsertBoundaryPoint(argIndex, coord);
             else InsertPoint(argIndex, coord, loc);
         }
-
         // MD - experimental for now
         ///<summary>
         /// Determines the <see cref="Location"/> of the given <see cref="Coordinate"/> in this geometry.

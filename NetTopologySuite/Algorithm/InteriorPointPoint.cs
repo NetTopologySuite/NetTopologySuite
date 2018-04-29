@@ -1,10 +1,9 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Algorithm
 {
-    /// <summary> 
+    /// <summary>
     /// Computes a point in the interior of an point point.
     /// Algorithm:
     /// Find a point which is closest to the centroid of the point.
@@ -13,9 +12,8 @@ namespace NetTopologySuite.Algorithm
     {
         private readonly Coordinate _centroid;
         private double _minDistance = Double.MaxValue;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="g"></param>
         public InteriorPointPoint(IGeometry g)
@@ -23,8 +21,7 @@ namespace NetTopologySuite.Algorithm
             _centroid = g.Centroid.Coordinate;
             Add(g);
         }
-
-        /// <summary> 
+        /// <summary>
         /// Tests the point(s) defined by a Geometry for the best inside point.
         /// If a Geometry is not of dimension 0 it is not tested.
         /// </summary>
@@ -32,17 +29,16 @@ namespace NetTopologySuite.Algorithm
         private void Add(IGeometry geom)
         {
             if (geom is IPoint)
-                Add(geom.Coordinate);    
-            else if (geom is IGeometryCollection) 
+                Add(geom.Coordinate);
+            else if (geom is IGeometryCollection)
             {
                 IGeometryCollection gc = (IGeometryCollection) geom;
                 foreach (IGeometry geometry in gc.Geometries)
                     Add(geometry);
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="point"></param>
         private void Add(Coordinate point)
@@ -54,10 +50,9 @@ namespace NetTopologySuite.Algorithm
                 _minDistance = dist;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate InteriorPoint { get; private set; }
-    }   
+    }
 }

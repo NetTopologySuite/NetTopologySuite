@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.Strtree;
-
 namespace NetTopologySuite.Tests.NUnit.Index.Strtree
 {
     public class STRtreeDemo
@@ -14,7 +13,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         private static int ITEM_COUNT = 20;
         private static int NODE_CAPACITY = 4;
         private static GeometryFactory factory = new GeometryFactory();
-
         public STRtreeDemo()
         {
             var envelopes = SourceData();
@@ -23,18 +21,14 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             PrintSourceData(envelopes);
             PrintLevels(t);
         }
-
         public class TestTree : STRtree<object>
         {
             public TestTree(int nodeCapacity)
                 : base(nodeCapacity)
             {
             }
-
             public new IList<IBoundable<Envelope, object>> BoundablesAtLevel(int level) { return base.BoundablesAtLevel(level); }
-
             public new AbstractNode<Envelope, object> Root => base.Root;
-
             public new IList<IBoundable<Envelope, object>> CreateParentBoundables(IList<IBoundable<Envelope, object>> verticalSlice, int newLevel)
             {
                 return base.CreateParentBoundables(verticalSlice, newLevel);
@@ -48,7 +42,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
                 return base.CreateParentBoundablesFromVerticalSlice(childBoundables, newLevel);
             }
         }
-
         private static void InitTree(TestTree t, IList<Envelope> sourceEnvelopes)
         {
             foreach (var sourceEnvelope in sourceEnvelopes)
@@ -57,7 +50,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             }
             t.Build();
         }
-
         public static void PrintSourceData(IList<Envelope> sourceEnvelopes)
         {
             Console.WriteLine("============ Source Data ============\n");
@@ -81,7 +73,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             }
             Console.WriteLine(")\n");
         }
-
         private static IList<Envelope> SourceData()
         {
             var envelopes = new List<Envelope>();
@@ -91,11 +82,9 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             }
             return envelopes;
         }
-
         private static IPolygon RandomRectangle()
         {
             var random = new Random();
-
             double width = MIN_ITEM_EXTENT + ((MAX_ITEM_EXTENT - MIN_ITEM_EXTENT) * random.NextDouble());
             double height = MIN_ITEM_EXTENT + ((MAX_ITEM_EXTENT - MIN_ITEM_EXTENT) * random.NextDouble());
             double bottom = EXTENT * random.NextDouble();
@@ -107,7 +96,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
                 new Coordinate(right, top), new Coordinate(left, top),
                 new Coordinate(left, bottom) }), null);
         }
-
         public static void PrintLevels(TestTree t)
         {
             for (int i = 0; i <= t.Root.Level; i++)
@@ -115,7 +103,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
                 PrintBoundables(t.BoundablesAtLevel(i), "Level " + i);
             }
         }
-
         public static void PrintBoundables(IList<IBoundable<Envelope, object>> boundables, string title)
         {
             Console.WriteLine("============ " + title + " ============\n");
@@ -135,7 +122,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             }
             Console.WriteLine(")\n");
         }
-
         private static String ToString(IBoundable<Envelope, object> b)
         {
             return "POLYGON(("
@@ -150,7 +136,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
                     + Envelope(b).MinX + " "
                     + Envelope(b).MinY + "))";
         }
-
         private static Envelope Envelope(IBoundable<Envelope, object> b)
         {
             return (Envelope)b.Bounds;

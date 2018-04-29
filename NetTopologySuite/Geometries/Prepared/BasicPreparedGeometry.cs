@@ -4,7 +4,6 @@ using GeoAPI.Geometries;
 using GeoAPI.Geometries.Prepared;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries.Utilities;
-
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
@@ -18,24 +17,20 @@ namespace NetTopologySuite.Geometries.Prepared
     public class BasicPreparedGeometry : IPreparedGeometry
     {
         private readonly List<Coordinate> _representativePts;  // List<Coordinate>
-
         public BasicPreparedGeometry(IGeometry geom)
         {
             Geometry = geom;
             _representativePts = ComponentCoordinateExtracter.GetCoordinates(geom);
         }
-
         public IGeometry Geometry { get; }
-
         ///<summary>
-        /// Gets the list of representative points for this geometry. 
+        /// Gets the list of representative points for this geometry.
         /// One vertex is included for every component of the geometry
         /// (i.e. including one for every ring of polygonal geometries).
         /// <para/>
         /// Do not modify the returned list!
         /// </summary>
         public IList<Coordinate> RepresentativePoints => new ReadOnlyCollection<Coordinate>(_representativePts);
-
         ///<summary>
         /// Tests whether any representative of the target geometry intersects the test geometry.
         /// This is useful in A/A, A/L, A/P, L/P, and P/P cases.
@@ -52,7 +47,6 @@ namespace NetTopologySuite.Geometries.Prepared
             }
             return false;
         }
-
         ///<summary>
         /// Determines whether a Geometry g interacts with this geometry by testing the geometry envelopes.
         ///</summary>
@@ -64,7 +58,6 @@ namespace NetTopologySuite.Geometries.Prepared
                 return false;
             return true;
         }
-
         ///<summary>
         /// Determines whether the envelope of this geometry covers the Geometry g.
         ///</summary>
@@ -76,7 +69,6 @@ namespace NetTopologySuite.Geometries.Prepared
                 return false;
             return true;
         }
-
         ///<summary>
         /// Tests whether the base <see cref="IGeometry"/> contains a given geometry.
         ///</summary>
@@ -88,7 +80,6 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             return Geometry.Contains(g);
         }
-
         /// <summary>
         /// Tests whether the base <see cref="IGeometry"/> properly contains a given geometry.
         /// <para/>
@@ -98,7 +89,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <item>The DE-9IM Intersection Matrix for the two geometries matches <c>>[T**FF*FF*]</c></item>
         /// </list>
 	    /// In other words, if the test geometry has any interaction with the boundary of the target
-	    /// geometry the result of <c>ContainsProperly</c> is <c>false</c>. 
+	    /// geometry the result of <c>ContainsProperly</c> is <c>false</c>.
 	    /// This is different semantics to the {@link Geometry#contains} predicate,
 	    /// in which test geometries can intersect the target's boundary and still be contained.
 	    /// <para/>
@@ -107,11 +98,11 @@ namespace NetTopologySuite.Geometries.Prepared
 	    /// of the input boundaries in cases where they intersect.
         /// <para/>
         /// An example use case is computing the intersections
-        /// of a set of geometries with a large polygonal geometry.  
+        /// of a set of geometries with a large polygonal geometry.
         /// Since <i>intersection</i> is a fairly slow operation, it can be more efficient
         /// to use <see cref="ContainsProperly" /> to filter out test geometries which lie
         /// wholly inside the area.  In these cases the intersection is
-        /// known <c>a priori</c> to be simply the original test geometry. 
+        /// known <c>a priori</c> to be simply the original test geometry.
         /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry properly contains the given geometry</returns>
@@ -121,15 +112,12 @@ namespace NetTopologySuite.Geometries.Prepared
         public virtual bool ContainsProperly(IGeometry g)
         {
             // since raw relate is used, provide some optimizations
-
             // short-circuit test
             if (!Geometry.EnvelopeInternal.Contains(g.EnvelopeInternal))
                 return false;
-
             // otherwise, compute using relate mask
             return Geometry.Relate(g, "T**FF*FF*");
         }
-
         ///<summary>
         /// Tests whether the base <see cref="IGeometry"/> is covered by a given geometry.
         ///</summary>
@@ -141,7 +129,6 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             return Geometry.CoveredBy(g);
         }
-
         ///<summary>
         /// Tests whether the base <see cref="IGeometry"/> covers a given geometry.
         ///</summary>
@@ -153,7 +140,6 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             return Geometry.Covers(g);
         }
-
         ///<summary>
         /// Tests whether the base <see cref="IGeometry"/> crosses a given geometry.
         ///</summary>
@@ -165,7 +151,6 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             return Geometry.Crosses(g);
         }
-
         ///<summary>
         /// Tests whether the base <see cref="IGeometry"/> is disjoint from given geometry.
         ///</summary>
@@ -177,7 +162,6 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             return !Intersects(g);
         }
-
         ///<summary>
         /// Tests whether the base <see cref="IGeometry"/> intersects a given geometry.
         ///</summary>
@@ -189,7 +173,6 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             return Geometry.Intersects(g);
         }
-
         ///<summary>
         /// Tests whether the base <see cref="IGeometry"/> overlaps a given geometry.
         ///</summary>
@@ -201,7 +184,6 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             return Geometry.Overlaps(g);
         }
-
         ///<summary>
         /// Tests whether the base <see cref="IGeometry"/> touches a given geometry.
         ///</summary>
@@ -213,7 +195,6 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             return Geometry.Touches(g);
         }
-
         ///<summary>
         /// Tests whether the base <see cref="IGeometry"/> is within a given geometry.
         ///</summary>
@@ -225,7 +206,6 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             return Geometry.Within(g);
         }
-
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {

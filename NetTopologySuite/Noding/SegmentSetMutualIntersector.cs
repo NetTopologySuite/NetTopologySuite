@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-
 namespace NetTopologySuite.Noding
 {
     ///<summary>
@@ -8,11 +7,11 @@ namespace NetTopologySuite.Noding
     /// two disjoint sets of linestrings are intersected.
     /// <para/>
     /// Implementing classes must provide a way
-    /// of supplying the base set of segment strings to 
-    /// test against (e.g. in the constructor, 
+    /// of supplying the base set of segment strings to
+    /// test against (e.g. in the constructor,
     /// for straightforward thread-safety).
     /// <para/>
-    /// In order to allow optimizing processing, 
+    /// In order to allow optimizing processing,
     /// the following condition is assumed to hold for each set:
     /// <list Type="Bullet">
     /// <item>the only intersection between any two linestrings occurs at their endpoints.</item>

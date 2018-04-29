@@ -3,7 +3,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
-
 namespace NetTopologySuite.Noding
 {
     ///<summary>
@@ -28,17 +27,12 @@ namespace NetTopologySuite.Noding
             Coordinates = pts;
             this.Context = data;
         }
-
         ///<summary>Gets the user-defined data for this segment string.
         ///</summary>
         public Object Context { get; set; }
-
         public Coordinate[] Coordinates { get; }
-
         public Boolean IsClosed => Coordinates[0].Equals2D(Coordinates[Coordinates.Length - 1]);
-
         public Int32 Count => Coordinates.Length;
-
         ///<summary>
         /// Gets the octant of the segment starting at vertex <code>index</code>
         ///</summary>
@@ -50,7 +44,6 @@ namespace NetTopologySuite.Noding
                 ? Octants.Null :
                 Octant.GetOctant(Coordinates[index], Coordinates[index + 1]);
         }
-
         public LineSegment this[Int32 index]
         {
             get
@@ -60,13 +53,11 @@ namespace NetTopologySuite.Noding
                     throw new ArgumentOutOfRangeException("index", index,
                                                           "Parameter must be greater than or equal to 0 and less than TotalItemCount.");
                 }
-
                 return new LineSegment(Coordinates[index], Coordinates[index + 1]);
             }
             set => throw new NotSupportedException(
                 "Setting line segments in a ISegmentString not supported.");
         }
-
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {

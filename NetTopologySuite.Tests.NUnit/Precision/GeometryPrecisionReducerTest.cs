@@ -3,7 +3,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Precision;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Precision
 {
     [TestFixtureAttribute]
@@ -13,23 +12,18 @@ namespace NetTopologySuite.Tests.NUnit.Precision
         private PrecisionModel pmFixed1;
         private GeometryPrecisionReducer reducer;
         private GeometryPrecisionReducer reducerKeepCollapse;
-
         private GeometryFactory gfFloat;
         WKTReader reader;
-
         public GeometryPrecisionReducerTest()
         {
             pmFloat = new PrecisionModel();
             pmFixed1 = new PrecisionModel(1);
             reducer = new GeometryPrecisionReducer(pmFixed1);
             reducerKeepCollapse = new GeometryPrecisionReducer(pmFixed1);
-
             gfFloat = new GeometryFactory(pmFloat, 0);
             reader = new WKTReader(gfFloat);
-
             reducerKeepCollapse.RemoveCollapsedComponents = false;
         }
-
         [TestAttribute]
         public void TestSquare()
         {
@@ -38,7 +32,6 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry gReduce = reducer.Reduce(g);
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
-
         [TestAttribute]
         public void TestTinySquareCollapse()
         {
@@ -47,7 +40,6 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry gReduce = reducer.Reduce(g);
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
-
         [TestAttribute]
         public void TestSquareCollapse()
         {
@@ -56,7 +48,6 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry gReduce = reducer.Reduce(g);
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
-
         [TestAttribute]
         public void TestSquareKeepCollapse()
         {
@@ -65,7 +56,6 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry gReduce = reducerKeepCollapse.Reduce(g);
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
-
         [TestAttribute]
         public void TestLine()
         {
@@ -74,7 +64,6 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry gReduce = reducer.Reduce(g);
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
-
         [TestAttribute]
         public void TestLineRemoveCollapse()
         {
@@ -83,7 +72,6 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry gReduce = reducer.Reduce(g);
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
-
         [TestAttribute]
         public void TestLineKeepCollapse()
         {
@@ -92,7 +80,6 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry gReduce = reducerKeepCollapse.Reduce(g);
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
-
         [TestAttribute]
         public void TestPolgonWithCollapsedLine()
         {
@@ -101,7 +88,6 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry gReduce = reducer.Reduce(g);
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
-
         [TestAttribute]
         public void TestPolgonWithCollapsedLinePointwise()
         {
@@ -110,7 +96,6 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry gReduce = GeometryPrecisionReducer.ReducePointwise(g, pmFixed1);
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
-
         [TestAttribute]
         public void TestPolgonWithCollapsedPoint()
         {
@@ -119,7 +104,6 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry gReduce = reducer.Reduce(g);
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
-
         [TestAttribute]
         public void TestPolgonWithCollapsedPointPointwise()
         {
@@ -128,12 +112,10 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             IGeometry gReduce = GeometryPrecisionReducer.ReducePointwise(g, pmFixed1);
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
-
         private static void AssertEqualsExactAndHasSameFactory(IGeometry a, IGeometry b)
         {
             Assert.IsTrue(a.EqualsExact(b));
             Assert.IsTrue(a.Factory == b.Factory);
         }
-
     }
 }

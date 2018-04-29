@@ -6,7 +6,6 @@ using GeoAPI.IO;
 using NetTopologySuite.IO;
 using NetTopologySuite.Samples.SimpleTests;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Samples.Tests.Various
 {
     /// <summary>
@@ -16,12 +15,10 @@ namespace NetTopologySuite.Samples.Tests.Various
     public class OracleWKBTest : BaseSamples
     {
         private string blobFile = String.Empty;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="OracleWKBTest"/> class.
         /// </summary>
         public OracleWKBTest() : base() { }
-
         /// <summary>
         ///
         /// </summary>
@@ -33,7 +30,6 @@ namespace NetTopologySuite.Samples.Tests.Various
             if (!File.Exists(blobFile))
                 throw new FileNotFoundException("blob file not found at " + blobDir);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -49,7 +45,6 @@ namespace NetTopologySuite.Samples.Tests.Various
             Debug.WriteLine(result.ToString());
             Assert.IsNotNull(result);
         }
-
         /// <summary>
         ///
         /// </summary>

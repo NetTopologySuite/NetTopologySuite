@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Algorithm.Locate
 {
     ///<summary>
@@ -17,13 +16,12 @@ namespace NetTopologySuite.Algorithm.Locate
         ///<returns>The location of the point in the geometry</returns>
         Location Locate(Coordinate p);
     }
-
     /// <summary>
     /// Static methods for <see cref="IPointOnGeometryLocator"/> classes
     /// </summary>
     public static class PointOnGeometryLocatorExtensions
     {
-        /// <summary> 
+        /// <summary>
         /// Convenience method to test a point for intersection with a geometry
         /// <para/>
         /// The geometry is wrapped in a <see cref="IPointOnGeometryLocator"/> class.
@@ -37,16 +35,13 @@ namespace NetTopologySuite.Algorithm.Locate
                 throw new ArgumentNullException("locator");
             if (coordinate == null)
                 throw new ArgumentNullException("coordinate");
-
             switch (locator.Locate(coordinate))
             {
                 case Location.Boundary:
                 case Location.Interior:
                     return true;
-
                 case Location.Exterior:
                     return false;
-
                 default:
                     throw new InvalidOperationException("IPointOnGeometryLocator.Locate should never return anything other than Boundary, Interior, or Exterior.");
             }

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using NetTopologySuite.Algorithm;
-
 namespace NetTopologySuite.Noding
 {
     ///<summary>
@@ -10,14 +9,13 @@ namespace NetTopologySuite.Noding
     /// Uses indexing for fast performance and to optimize repeated tests
     /// against a target set of lines.
     /// Short-circuited to return as soon an intersection is found.
-    /// <para/> 
+    /// <para/>
     /// Immutable and thread-safe.
     /// </remarks>
     public class FastSegmentSetIntersectionFinder
     {
         //for testing purposes
-        //private SimpleSegmentSetMutualIntersector mci;  
-
+        //private SimpleSegmentSetMutualIntersector mci;
         /// <summary>
         /// Creates an intersection finder against a given set of segment strings.
         /// </summary>
@@ -26,22 +24,19 @@ namespace NetTopologySuite.Noding
         {
             SegmentSetIntersector = new MCIndexSegmentSetMutualIntersector(baseSegStrings);
         }
-
         ///<summary>Gets the segment set intersector used by this class.</summary>
         /// <remarks>This allows other uses of the same underlying indexed structure.</remarks>
         public ISegmentSetMutualIntersector SegmentSetIntersector { get; }
-
         /// <summary>
         /// Tests for intersections with a given set of target {@link SegmentString}s.
         /// </summary>
         /// <param name="segStrings">The SegmentStrings to test</param>
         /// <returns><c>true</c> if an intersection was found</returns>
         public bool Intersects(IList<ISegmentString> segStrings)
-        {            
+        {
             var intFinder = new SegmentIntersectionDetector();
             return Intersects(segStrings, intFinder);
         }
-
         /// <summary>
         /// Tests for intersections with a given set of target <see cref="ISegmentString"/>s.
         /// using a given SegmentIntersectionDetector.

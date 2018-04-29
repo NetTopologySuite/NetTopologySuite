@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Algorithm
 {
     /// <summary>
@@ -22,7 +21,7 @@ namespace NetTopologySuite.Algorithm
     /// avoid this computation.
     /// </para>
     /// <para>
-    /// This class can also be used to compute a line segment representing 
+    /// This class can also be used to compute a line segment representing
     /// the minimum diameter, the supporting line segment of the minimum diameter,
     /// and a minimum rectangle enclosing the input geometry.
     /// This rectangle will
@@ -42,7 +41,6 @@ namespace NetTopologySuite.Algorithm
         {
             return (new MinimumDiameter(geom)).GetMinimumRectangle();
         }
-
         ///<summary>
         /// Gets the minimum diameter enclosing a geometry.
         /// </summary>
@@ -52,25 +50,20 @@ namespace NetTopologySuite.Algorithm
         {
             return (new MinimumDiameter(geom)).Diameter;
         }
-
-        
         private readonly IGeometry _inputGeom;
         private readonly bool _isConvex;
-
         private Coordinate[] _convexHullPts;
         private LineSegment _minBaseSeg = new LineSegment();
         private Coordinate _minWidthPt;
         private int _minPtIndex;
         private double _minWidth;
-
-        /// <summary> 
+        /// <summary>
         /// Compute a minimum diameter for a given <see cref="IGeometry"/>.
         /// </summary>
         /// <param name="inputGeom">a Geometry.</param>
-        public MinimumDiameter(IGeometry inputGeom) 
+        public MinimumDiameter(IGeometry inputGeom)
             : this(inputGeom, false) { }
-
-        /// <summary> 
+        /// <summary>
         /// Compute a minimum diameter for a giver <c>Geometry</c>,
         /// with a hint if
         /// the Geometry is convex
@@ -84,8 +77,7 @@ namespace NetTopologySuite.Algorithm
             _inputGeom = inputGeom;
             _isConvex = isConvex;
         }
-
-        /// <summary> 
+        /// <summary>
         /// Gets the length of the minimum diameter of the input Geometry.
         /// </summary>
         /// <returns>The length of the minimum diameter.</returns>
@@ -97,7 +89,6 @@ namespace NetTopologySuite.Algorithm
                 return _minWidth;
             }
         }
-
         /// <summary>
         /// Gets the <c>Coordinate</c> forming one end of the minimum diameter.
         /// </summary>
@@ -110,7 +101,6 @@ namespace NetTopologySuite.Algorithm
                 return _minWidthPt;
             }
         }
-
         /// <summary>
         /// Gets the segment forming the base of the minimum diameter.
         /// </summary>
@@ -123,7 +113,6 @@ namespace NetTopologySuite.Algorithm
                 return _inputGeom.Factory.CreateLineString(new[] { _minBaseSeg.P0, _minBaseSeg.P1 });
             }
         }
-
         /// <summary>
         /// Gets a <c>LineString</c> which is a minimum diameter.
         /// </summary>
@@ -133,28 +122,24 @@ namespace NetTopologySuite.Algorithm
             get
             {
                 ComputeMinimumDiameter();
-
                 // return empty linearRing if no minimum width calculated
                 if (_minWidthPt == null)
                 {
                     //Coordinate[] nullCoords = null;
                     return _inputGeom.Factory.CreateLineString();
                 }
-
                 Coordinate basePt = _minBaseSeg.Project(_minWidthPt);
                 return _inputGeom.Factory.CreateLineString(new[] { basePt, _minWidthPt });
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private void ComputeMinimumDiameter()
         {
             // check if computation is cached
             if (_minWidthPt != null)
                 return;
-
             if (_isConvex) ComputeWidthConvex(_inputGeom);
             else
             {
@@ -162,44 +147,41 @@ namespace NetTopologySuite.Algorithm
                 ComputeWidthConvex(convexGeom);
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="convexGeom"></param>
         private void ComputeWidthConvex(IGeometry convexGeom)
         {
             if (convexGeom is IPolygon)
                 _convexHullPts = ((IPolygon) convexGeom).ExteriorRing.Coordinates;
-            else 
+            else
                 _convexHullPts = convexGeom.Coordinates;
-
             // special cases for lines or points or degenerate rings
-            if (_convexHullPts.Length == 0) 
+            if (_convexHullPts.Length == 0)
             {
                 _minWidth = 0.0;
                 _minWidthPt = null;
                 _minBaseSeg = null;
             }
-            else if (_convexHullPts.Length == 1) 
+            else if (_convexHullPts.Length == 1)
             {
                 _minWidth = 0.0;
                 _minWidthPt = _convexHullPts[0];
                 _minBaseSeg.P0 = _convexHullPts[0];
                 _minBaseSeg.P1 = _convexHullPts[0];
             }
-            else if (_convexHullPts.Length == 2 || _convexHullPts.Length == 3) 
+            else if (_convexHullPts.Length == 2 || _convexHullPts.Length == 3)
             {
                 _minWidth = 0.0;
                 _minWidthPt = _convexHullPts[0];
                 _minBaseSeg.P0 = _convexHullPts[0];
                 _minBaseSeg.P1 = _convexHullPts[1];
             }
-            else 
+            else
                 ComputeConvexRingMinDiameter(_convexHullPts);
         }
-
-        /// <summary> 
+        /// <summary>
         /// Compute the width information for a ring of <c>Coordinate</c>s.
         /// Leaves the width information in the instance variables.
         /// </summary>
@@ -209,19 +191,17 @@ namespace NetTopologySuite.Algorithm
             // for each segment in the ring
             _minWidth = Double.MaxValue;
             int currMaxIndex = 1;
-
             LineSegment seg = new LineSegment();
             // compute the max distance for all segments in the ring, and pick the minimum
-            for (int i = 0; i < pts.Length - 1; i++) 
+            for (int i = 0; i < pts.Length - 1; i++)
             {
                 seg.P0 = pts[i];
                 seg.P1 = pts[i + 1];
                 currMaxIndex = FindMaxPerpDistance(pts, seg, currMaxIndex);
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pts"></param>
         /// <param name="seg"></param>
@@ -233,28 +213,25 @@ namespace NetTopologySuite.Algorithm
             double nextPerpDistance = maxPerpDistance;
             int maxIndex = startIndex;
             int nextIndex = maxIndex;
-            while (nextPerpDistance >= maxPerpDistance) 
+            while (nextPerpDistance >= maxPerpDistance)
             {
                 maxPerpDistance = nextPerpDistance;
                 maxIndex = nextIndex;
-
                 nextIndex = NextIndex(pts, maxIndex);
                 nextPerpDistance = seg.DistancePerpendicular(pts[nextIndex]);
             }
-
             // found maximum width for this segment - update global min dist if appropriate
-            if (maxPerpDistance < _minWidth) 
+            if (maxPerpDistance < _minWidth)
             {
                 _minPtIndex = maxIndex;
                 _minWidth = maxPerpDistance;
                 _minWidthPt = pts[_minPtIndex];
-                _minBaseSeg = new LineSegment(seg);        
+                _minBaseSeg = new LineSegment(seg);
             }
             return maxIndex;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pts"></param>
         /// <param name="index"></param>
@@ -265,7 +242,6 @@ namespace NetTopologySuite.Algorithm
             if (index >= pts.Length) index = 0;
             return index;
         }
-
         /// <summary>
         /// Gets the minimum rectangular <see cref="IPolygon"/> which encloses the input geometry.
         /// </summary>
@@ -282,7 +258,6 @@ namespace NetTopologySuite.Algorithm
         public IGeometry GetMinimumRectangle()
         {
             ComputeMinimumDiameter();
-
             // check if minimum rectangle is degenerate (a point or line segment)
             if (_minWidth == 0.0)
             {
@@ -292,57 +267,45 @@ namespace NetTopologySuite.Algorithm
                 }
                 return _minBaseSeg.ToGeometry(_inputGeom.Factory);
             }
-
             // deltas for the base segment of the minimum diameter
             double dx = _minBaseSeg.P1.X - _minBaseSeg.P0.X;
             double dy = _minBaseSeg.P1.Y - _minBaseSeg.P0.Y;
-
             /*
             double c0 = computeC(dx, dy, minBaseSeg.p0);
             double c1 = computeC(dx, dy, minBaseSeg.p1);
             */
-
             double minPara = Double.MaxValue;
             double maxPara = -Double.MaxValue;
             double minPerp = Double.MaxValue;
             double maxPerp = -Double.MaxValue;
-
             // compute maxima and minima of lines parallel and perpendicular to base segment
             for (int i = 0; i < _convexHullPts.Length; i++)
             {
-
                 double paraC = ComputeC(dx, dy, _convexHullPts[i]);
                 if (paraC > maxPara) maxPara = paraC;
                 if (paraC < minPara) minPara = paraC;
-
                 double perpC = ComputeC(-dy, dx, _convexHullPts[i]);
                 if (perpC > maxPerp) maxPerp = perpC;
                 if (perpC < minPerp) minPerp = perpC;
             }
-
             // compute lines along edges of minimum rectangle
             LineSegment maxPerpLine = ComputeSegmentForLine(-dx, -dy, maxPerp);
             LineSegment minPerpLine = ComputeSegmentForLine(-dx, -dy, minPerp);
             LineSegment maxParaLine = ComputeSegmentForLine(-dy, dx, maxPara);
             LineSegment minParaLine = ComputeSegmentForLine(-dy, dx, minPara);
-
             // compute vertices of rectangle (where the para/perp max & min lines intersect)
             Coordinate p0 = maxParaLine.LineIntersection(maxPerpLine);
             Coordinate p1 = minParaLine.LineIntersection(maxPerpLine);
             Coordinate p2 = minParaLine.LineIntersection(minPerpLine);
             Coordinate p3 = maxParaLine.LineIntersection(minPerpLine);
-
             ILinearRing shell = _inputGeom.Factory.CreateLinearRing(
                 new[] { p0, p1, p2, p3, p0 });
             return _inputGeom.Factory.CreatePolygon(shell);
-
         }
-
         private static double ComputeC(double a, double b, Coordinate p)
         {
             return a * p.Y - b * p.X;
         }
-
         private static LineSegment ComputeSegmentForLine(double a, double b, double c)
         {
             Coordinate p0;
@@ -364,6 +327,5 @@ namespace NetTopologySuite.Algorithm
             }
             return new LineSegment(p0, p1);
         }
-
     }
 }

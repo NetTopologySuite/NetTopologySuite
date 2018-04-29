@@ -1,7 +1,6 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-
 namespace NetTopologySuite.Precision
 {
     /// <summary>
@@ -26,7 +25,6 @@ namespace NetTopologySuite.Precision
             var reducer = new GeometryPrecisionReducer(precModel);
             return reducer.Reduce(g);
         }
-
         /// <summary>
         /// Convenience method for doing pointwise precision reduction
         /// on a single geometry,
@@ -43,21 +41,17 @@ namespace NetTopologySuite.Precision
             reducer.Pointwise = true;
             return reducer.Reduce(g);
         }
-
         private readonly IPrecisionModel _targetPrecModel;
-
         public GeometryPrecisionReducer(IPrecisionModel pm)
         {
             _targetPrecModel = pm;
         }
-
         /// <summary>Gets or sets whether the reduction will result in collapsed components
         /// being removed completely, or simply being collapsed to an (invalid)
         /// Geometry of the same type.
         /// The default is to remove collapsed components.
         /// </summary>
         public bool RemoveCollapsedComponents { get; set; } = true;
-
         /// <summary>
         /// Gets or sets whether the <see cref = "IPrecisionModel"/> of the new reduced Geometry
         /// will be changed to be the <see cref="IPrecisionModel"/> supplied to
@@ -66,7 +60,6 @@ namespace NetTopologySuite.Precision
         /// The default is to <b>not</b> change the precision model
         /// </summary>
         public bool ChangePrecisionModel { get; set; }
-
         /// <summary>
         /// Gets or sets whether the precision reduction will be done
         /// in pointwise fashion only.
@@ -76,25 +69,20 @@ namespace NetTopologySuite.Precision
         /// This is only relevant for geometries containing polygonal components.
         /// </summary>
         public bool Pointwise { get; set; }
-
         public IGeometry Reduce(IGeometry geom)
         {
             var reducePointwise = ReducePointwise(geom);
             if (Pointwise)
                 return reducePointwise;
-
             //TODO: handle GeometryCollections containing polys
             if (!(reducePointwise is IPolygonal))
                 return reducePointwise;
-
             // Geometry is polygonal - test if topology needs to be fixed
             if (reducePointwise.IsValid) return reducePointwise;
-
             // hack to fix topology.
             // TODO: implement snap-rounding and use that.
             return FixPolygonalTopology(reducePointwise);
         }
-
         private IGeometry ReducePointwise(IGeometry geom)
         {
             GeometryEditor geomEdit;
@@ -106,7 +94,6 @@ namespace NetTopologySuite.Precision
             else
                 // don't change geometry factory
                 geomEdit = new GeometryEditor();
-
             /**
              * For polygonal geometries, collapses are always removed, in order
              * to produce correct topology
@@ -114,13 +101,10 @@ namespace NetTopologySuite.Precision
             bool finalRemoveCollapsed = RemoveCollapsedComponents;
             if (geom.Dimension >= Dimension.Surface)
                 finalRemoveCollapsed = true;
-
             var reduceGeom = geomEdit.Edit(geom,
                     new PrecisionReducerCoordinateOperation(_targetPrecModel, finalRemoveCollapsed));
-
             return reduceGeom;
         }
-
         private IGeometry FixPolygonalTopology(IGeometry geom)
         {
             /**
@@ -132,9 +116,7 @@ namespace NetTopologySuite.Precision
             {
                 geomToBuffer = ChangePrecModel(geom, _targetPrecModel);
             }
-
             var bufGeom = geomToBuffer.Buffer(0);
-
             var finalGeom = bufGeom;
             if (!ChangePrecisionModel)
             {
@@ -143,7 +125,6 @@ namespace NetTopologySuite.Precision
             }
             return finalGeom;
         }
-
         /// <summary>
         /// Duplicates a geometry to one that uses a different PrecisionModel,
         /// without changing any coordinate values.
@@ -157,19 +138,16 @@ namespace NetTopologySuite.Precision
             // this operation changes the PM for the entire geometry tree
             return geomEditor.Edit(geom, new GeometryEditor.NoOpGeometryOperation());
         }
-
         private static GeometryEditor CreateEditor(IGeometryFactory geomFactory, IPrecisionModel newPrecModel)
         {
             // no need to change if precision model is the same
             if (geomFactory.PrecisionModel == newPrecModel)
                 return new GeometryEditor();
-            
             // otherwise create a geometry editor which changes PrecisionModel
             var newFactory = CreateFactory(geomFactory, newPrecModel);
             var geomEdit = new GeometryEditor(newFactory);
             return geomEdit;
         }
-
         private static IGeometryFactory CreateFactory(IGeometryFactory inputFactory, IPrecisionModel pm)
         {
             var newFactory

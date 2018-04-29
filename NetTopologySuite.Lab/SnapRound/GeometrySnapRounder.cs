@@ -4,7 +4,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Noding;
 using NetTopologySuite.Noding.Snapround;
-
 namespace NetTopologySuite.SnapRound
 {
     /// <summary>
@@ -25,7 +24,6 @@ namespace NetTopologySuite.SnapRound
     public class GeometrySnapRounder
     {
         private readonly IPrecisionModel _pm;
-
         /// <summary>
         /// Creates a new snap-rounder which snap-rounds to a grid specified
         /// by the given <see cref="IPrecisionModel"/>.
@@ -35,13 +33,10 @@ namespace NetTopologySuite.SnapRound
         {
             _pm = pm;
         }
-
         /// <summary>
         /// Gets or sets a value indicating if only the linework should be treated.
         /// </summary>
         public bool LineworkOnly { get; set; }
-
-
         /// <summary>
         /// Snap-rounds the given geometry.
         /// </summary>
@@ -49,24 +44,19 @@ namespace NetTopologySuite.SnapRound
         /// <returns>The snap-rounded geometry</returns>
         public IGeometry Execute(IGeometry geom)
         {
-
             // TODO: reduce precision of input automatically
             // TODO: add switch to GeometryPrecisionReducer to NOT check & clean invalid polygonal geometry (not needed here)
-            // TODO: OR just do precision reduction with custom code here 
-
+            // TODO: OR just do precision reduction with custom code here
             var segStrings = ExtractTaggedSegmentStrings(geom, _pm);
             SnapRound(segStrings);
-
             if (LineworkOnly)
             {
                 return ToNodedLines(segStrings, geom.Factory);
             }
-
             var geomSnapped = ReplaceLines(geom, segStrings);
             var geomClean = EnsureValid(geomSnapped);
             return geomClean;
         }
-
         private IGeometry ToNodedLines(ICollection<ISegmentString> segStrings, IGeometryFactory geomFact)
         {
             var lines = new List<IGeometry>();
@@ -77,13 +67,10 @@ namespace NetTopologySuite.SnapRound
                     continue;
                 //Coordinate[] pts = getCoords(nss);
                 var pts = nss.NodeList.GetSplitCoordinates();
-
                 lines.Add(geomFact.CreateLineString(pts));
             }
             return geomFact.BuildGeometry(lines);
         }
-
-
         private IGeometry ReplaceLines(IGeometry geom, IList<ISegmentString> segStrings)
         {
             var nodedLinesMap = NodedLinesMap(segStrings);
@@ -92,14 +79,12 @@ namespace NetTopologySuite.SnapRound
             var snapped = geomEditor.Edit(geom);
             return snapped;
         }
-
         private void SnapRound(IList<ISegmentString> segStrings)
         {
             //Noder sr = new SimpleSnapRounder(pm);
             var sr = new MCIndexSnapRounder(_pm);
             sr.ComputeNodes(segStrings);
         }
-
         private Dictionary<IGeometry, Coordinate[]> NodedLinesMap(ICollection<ISegmentString> segStrings)
         {
             var ptsMap = new Dictionary<IGeometry, Coordinate[]>();
@@ -110,12 +95,10 @@ namespace NetTopologySuite.SnapRound
                     continue;
                 //Coordinate[] pts = getCoords(nss);
                 Coordinate[] pts = nss.NodeList.GetSplitCoordinates();
-
                 ptsMap.Add((IGeometry)nss.Context, pts);
             }
             return ptsMap;
         }
-
         private static IList<ISegmentString> ExtractTaggedSegmentStrings(IGeometry geom, IPrecisionModel pm)
         {
             var segStrings = new List<ISegmentString>();
@@ -131,15 +114,12 @@ namespace NetTopologySuite.SnapRound
                     var roundPts = Round(((ILineString)fgeom).CoordinateSequence, pm);
                     segStrings.Add(new NodedSegmentString(roundPts, fgeom));
                 });
-
             geom.Apply(filter);
             return segStrings;
         }
-
         private static Coordinate[] Round(ICoordinateSequence seq, IPrecisionModel pm)
         {
             if (seq.Count == 0) return new Coordinate[0];
-
             CoordinateList coordList = new CoordinateList();
             // copy coordinates and reduce
             for (int i = 0; i < seq.Count; i++)
@@ -151,18 +131,15 @@ namespace NetTopologySuite.SnapRound
                 coordList.Add(coord, false);
             }
             Coordinate[] coords = coordList.ToCoordinateArray();
-
             //TODO: what if seq is too short?
             return coords;
         }
-
         private static IGeometry EnsureValid(IGeometry geom)
         {
             if (geom.IsValid)
                 return geom;
             return CleanPolygonal(geom);
         }
-
         private static IGeometry CleanPolygonal(IGeometry geom)
         {
             return PolygonCleaner.Clean(geom);

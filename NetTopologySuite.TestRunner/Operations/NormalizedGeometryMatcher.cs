@@ -1,5 +1,4 @@
 ﻿using GeoAPI.Geometries;
-
 namespace Open.Topology.TestRunner.Operations
 {
     public class NormalizedGeometryMatcher : IGeometryMatcher
@@ -7,12 +6,9 @@ namespace Open.Topology.TestRunner.Operations
         /*
         public NormalizedGeometryMatcher()
         {
-
         }
          */
-
         public double Tolerance { get; set; }
-
         public bool Match(IGeometry a, IGeometry b)
         {
             var aClone = (IGeometry) a.Copy();
@@ -21,6 +17,5 @@ namespace Open.Topology.TestRunner.Operations
             bClone.Normalize();
             return aClone.EqualsExact(bClone, Tolerance);
         }
-
     }
 }

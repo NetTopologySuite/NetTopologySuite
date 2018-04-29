@@ -3,7 +3,6 @@ using GeoAPI.Geometries;
 using GeoAPI.Geometries.Prepared;
 using NetTopologySuite.Geometries.Prepared;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 {
     /// <summary>
@@ -14,7 +13,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
     public class PreparedPolygonPredicateStressTest
     {
         bool testFailed = false;
-
         [TestAttribute]
         [CategoryAttribute("Stress")]
         public void Test()
@@ -22,7 +20,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             PredicateStressTester tester = new PredicateStressTester();
             tester.Run(1000);
         }
-
         class PredicateStressTester : StressTestHarness
         {
             public override bool CheckResult(IGeometry target, IGeometry test)
@@ -31,39 +28,30 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
                 if (!CheckContains(target, test)) return false;
                 return true;
             }
-
             private static bool CheckContains(IGeometry target, IGeometry test)
             {
                 bool expectedResult = target.Contains(test);
-
                 PreparedGeometryFactory pgFact = new PreparedGeometryFactory();
                 IPreparedGeometry prepGeom = pgFact.Create(target);
-
                 bool prepResult = prepGeom.Contains(test);
-
                 if (prepResult != expectedResult)
                 {
                     return false;
                 }
                 return true;
             }
-
             private static Boolean CheckIntersects(IGeometry target, IGeometry test)
             {
                 bool expectedResult = target.Intersects(test);
-
                 PreparedGeometryFactory pgFact = new PreparedGeometryFactory();
                 IPreparedGeometry prepGeom = pgFact.Create(target);
-
                 bool prepResult = prepGeom.Intersects(test);
-
                 if (prepResult != expectedResult)
                 {
                     return false;
                 }
                 return true;
             }
-
         }
     }
 }

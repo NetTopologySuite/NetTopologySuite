@@ -15,7 +15,6 @@ namespace NetTopologySuite.Precision
         /// Only static methods!
         /// </summary>
         private EnhancedPrecisionOp() { }
-
         /// <summary>
         /// Computes the set-theoretic intersection of two <c>Geometry</c>s, using enhanced precision.
         /// </summary>
@@ -53,7 +52,6 @@ namespace NetTopologySuite.Precision
                 throw originalEx;
             }
         }
-
         /// <summary>
         /// Computes the set-theoretic union of two <c>Geometry</c>s, using enhanced precision.
         /// </summary>
@@ -91,7 +89,6 @@ namespace NetTopologySuite.Precision
                 throw originalEx;
             }
         }
-
         /// <summary>
         /// Computes the set-theoretic difference of two <c>Geometry</c>s, using enhanced precision.
         /// </summary>
@@ -129,7 +126,6 @@ namespace NetTopologySuite.Precision
                 throw originalEx;
             }
         }
-
         /// <summary>
         /// Computes the set-theoretic symmetric difference of two <c>Geometry</c>s, using enhanced precision.
         /// </summary>
@@ -167,7 +163,6 @@ namespace NetTopologySuite.Precision
                 throw originalEx;
             }
         }
-
         /// <summary>
         /// Computes the buffer of a <c>Geometry</c>, using enhanced precision.
         /// This method should no longer be necessary, since the buffer algorithm

@@ -2,16 +2,12 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-
 using GeoAPI.Geometries;
-
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
 using NetTopologySuite.Simplify;
 using NetTopologySuite.Tests.NUnit.TestData;
-
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Simplify
 {
     // Taken some tests from DPSimplifierTest class.
@@ -30,7 +26,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .SetExpectedResult(geomStr)
                 .Test();
         }
-
         [Test]
         public void TestPolygonNoReduction()
         {
@@ -42,7 +37,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                         10.0))
                 .Test();
         }
-        
         [Test]
         public void TestPolygonSpikeInShell()
         {
@@ -55,7 +49,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .SetExpectedResult(result)
                 .Test();
         }
-
         [Test]
         public void TestPolygonSpikeInHole()
         {
@@ -68,7 +61,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .SetExpectedResult(result)
                 .Test();
         }
-
         [Test]
         public void TestPolygonReductionWithSplit()
         {
@@ -79,7 +71,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                         10.0))
                 .Test();
         }
-
         [Test]
         public void TestPolygonReduction()
         {
@@ -90,7 +81,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                         10.0))
                 .Test();
         }
-
         [Test]
         public void TestFlattishPolygon()
         {
@@ -101,7 +91,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     10.0))
                 .Test();
         }
-
         [Test]
         public void TestTinySquare()
         {
@@ -112,7 +101,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     10.0))
             .Test();
         }
-
         [Test]
         public void TestTinyHole()
         {
@@ -124,7 +112,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     30.0))
             .TestEmpty(false);
         }
-
         [Test]
         public void TestTinyLineString()
         {
@@ -135,7 +122,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                         10.0))
                 .Test();
         }
-
         [Test]
         public void TestMultiLineString()
         {
@@ -146,7 +132,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                         10.0))
                 .Test();
         }
-
         [Test]
         public void TestMultiLineStringWithEmpty()
         {
@@ -156,7 +141,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     10.0))
                 .Test();
         }
-
         [Test]
         public void TestMultiPolygonWithEmpty()
         {
@@ -166,54 +150,41 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     10.0))
                 .Test();
         }
-
         [Test]
         public void TestNewResultsIdenticalToOldResults()
         {
             // at 0.02, Simplify deletes about 50% of world.wkt points
             const double DistanceTolerance = 0.02;
-
             int pointsRemoved = 0;
             int totalPointCount = 0;
-
             // track how long the new takes compared to the old
             long oldTicks = 0;
             long newTicks = 0;
-
             using (Stream file = EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.world.wkt"))
             {
                 foreach (ILineString line in GeometryUtils.ReadWKTFile(file).SelectMany(LinearComponentExtracter.GetLines))
                 {
                     Coordinate[] coordinates = line.Coordinates;
-
                     Stopwatch sw = Stopwatch.StartNew();
                     Coordinate[] oldResults = OldVWLineSimplifier.Simplify(coordinates, DistanceTolerance);
                     sw.Stop();
-
                     oldTicks += sw.ElapsedTicks;
-
                     sw.Restart();
                     Coordinate[] newResults = VWLineSimplifier.Simplify(coordinates, DistanceTolerance);
                     sw.Stop();
-
                     newTicks += sw.ElapsedTicks;
-
                     CollectionAssert.AreEqual(oldResults, newResults);
-
                     pointsRemoved += coordinates.Length - newResults.Length;
                     totalPointCount += coordinates.Length;
                 }
             }
-
             Console.WriteLine("Total: Removed {0} of {1} points (reduction: {2:P0}).", pointsRemoved, totalPointCount, pointsRemoved / (double)totalPointCount);
             Console.WriteLine("Old: {0:N3} seconds.  New: {1:N3} seconds (reduction: {2:P0}).", oldTicks / (double)Stopwatch.Frequency, newTicks / (double)Stopwatch.Frequency, (oldTicks - newTicks) / (double)oldTicks);
         }
     }
-
     static class VWSimplifierResult
     {
         private static readonly WKTReader Rdr = new WKTReader();
-
         public static IGeometry[] GetResult(String wkt, double tolerance)
         {
             IGeometry[] ioGeom = new IGeometry[2];

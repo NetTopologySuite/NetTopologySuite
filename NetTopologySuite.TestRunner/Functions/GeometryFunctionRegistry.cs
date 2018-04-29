@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using GeoAPI.Geometries;
 using Open.Topology.TestRunner.Utility;
-
 namespace Open.Topology.TestRunner.Functions
 {
     /// <summary>
@@ -14,19 +13,14 @@ namespace Open.Topology.TestRunner.Functions
     {
         private readonly SortedDictionary<string, IGeometryFunction> _sortedFunctions =
             new SortedDictionary<string, IGeometryFunction>();
-
         private readonly DoubleKeyMap<string, string, IGeometryFunction> _categorizedFunctions =
             new DoubleKeyMap<string, string, IGeometryFunction>();
-
         public GeometryFunctionRegistry() { }
-
         public GeometryFunctionRegistry(Type clz)
         {
             Add(clz);
         }
-
         public List<IGeometryFunction> Functions { get; } = new List<IGeometryFunction>();
-
         public IList<IGeometryFunction> GetGeometryFunctions()
         {
             List<IGeometryFunction> funList = new List<IGeometryFunction>();
@@ -35,12 +29,10 @@ namespace Open.Topology.TestRunner.Functions
                     funList.Add(fun);
             return funList;
         }
-
         public static bool HasGeometryResult(IGeometryFunction func)
         {
             return typeof(IGeometry).IsAssignableFrom(func.ReturnType);
         }
-
         public IList<IGeometryFunction> GetScalarFunctions()
         {
             List<IGeometryFunction> scalarFun = new List<IGeometryFunction>();
@@ -49,7 +41,6 @@ namespace Open.Topology.TestRunner.Functions
                     scalarFun.Add(fun);
             return scalarFun;
         }
-
         /// <summary>
         /// Adds functions for all the static methods in the given class.
         /// </summary>
@@ -61,14 +52,12 @@ namespace Open.Topology.TestRunner.Functions
             funcs.Sort();
             Add(funcs);
         }
-
         public void Add(IEnumerable<IGeometryFunction> funcs)
         {
             foreach (IGeometryFunction f in funcs) Add(f);
         }
-
         /// <summary>
-        /// Create <see cref="IGeometryFunction"/>s for all the static 
+        /// Create <see cref="IGeometryFunction"/>s for all the static
         /// methods in the given class
         /// </summary>
         /// <param name="functionClass"></param>
@@ -86,7 +75,6 @@ namespace Open.Topology.TestRunner.Functions
             }
             return funcs;
         }
-
         /// <summary>
         /// Adds a function if it does not currently
         /// exist in the registry, or replaces the existing one
@@ -101,16 +89,12 @@ namespace Open.Topology.TestRunner.Functions
             if (HasGeometryResult(func))
                 CategorizedGeometryFunctions.Put(func.Category, func.Name, func);
         }
-
         public DoubleKeyMap<string, string, IGeometryFunction> CategorizedGeometryFunctions { get; } = new DoubleKeyMap<string, string, IGeometryFunction>();
-
         public ICollection<string> Categories => _categorizedFunctions.KeySet();
-
         public ICollection<IGeometryFunction> GetFunctions(String category)
         {
             return _categorizedFunctions.Values(category);
         }
-
         /// <summary>
         /// Finds the first function which matches the given signature.
         /// </summary>
@@ -121,7 +105,6 @@ namespace Open.Topology.TestRunner.Functions
         {
             return null;
         }
-
         /// <summary>
         /// Finds the first function which matches the given signature.
         /// </summary>
@@ -139,7 +122,6 @@ namespace Open.Topology.TestRunner.Functions
             }
             return null;
         }
-
         /// <summary>
         /// Finds the first function which matches the given name.
         /// </summary>

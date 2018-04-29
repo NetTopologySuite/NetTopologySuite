@@ -4,7 +4,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     [TestFixtureAttribute]
@@ -19,7 +18,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             CoordinateSequences.Copy(cs2D, 0, cs3D, 0, cs3D.Count);
             Assert.IsTrue(CoordinateSequences.IsEqual(cs2D, cs3D));
         }
-
         [TestAttribute]
         public void TestCopyToSmallerDim()
         {
@@ -29,7 +27,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             CoordinateSequences.Copy(cs3D, 0, cs2D, 0, cs2D.Count);
             Assert.IsTrue(CoordinateSequences.IsEqual(cs2D, cs3D));
         }
-
         private static ICoordinateSequence CreateTestSequence(ICoordinateSequenceFactory csFactory, int size, int dim)
         {
             ICoordinateSequence cs = csFactory.Create(size, dim);

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Simplify
 {
     /// <summary>
@@ -17,20 +16,17 @@ namespace NetTopologySuite.Simplify
         private readonly LineSegmentIndex _outputIndex = new LineSegmentIndex();
         private TaggedLineString _line;
         private Coordinate[] _linePts;
-
         public TaggedLineStringSimplifier(LineSegmentIndex inputIndex, LineSegmentIndex outputIndex)
         {
             _inputIndex = inputIndex;
             _outputIndex = outputIndex;
         }
-
         /// <summary>
         /// Sets the distance tolerance for the simplification.
         /// All vertices in the simplified geometry will be within this
         /// distance of the original geometry.
         /// </summary>
         public double DistanceTolerance { get; set; }
-
         /// <summary>
         /// Simplifies the given <see cref="TaggedLineString"/>
         /// using the distance tolerance specified.
@@ -42,7 +38,6 @@ namespace NetTopologySuite.Simplify
             _linePts = line.ParentCoordinates;
             SimplifySection(0, _linePts.Length - 1, 0);
         }
-
         private void SimplifySection(int i, int j, int depth)
         {
             depth += 1;
@@ -54,9 +49,7 @@ namespace NetTopologySuite.Simplify
                 // leave this segment in the input index, for efficiency
                 return;
             }
-
             bool isValidToSimplify = true;
-
             /**
              * Following logic ensures that there is enough points in the output line.
              * If there is already more points than the minimum, there's nothing to check.
@@ -69,7 +62,6 @@ namespace NetTopologySuite.Simplify
                 if (worstCaseSize < _line.MinimumSize)
                     isValidToSimplify = false;
             }
-
             double[] distance = new double[1];
             int furthestPtIndex = FindFurthestPoint(_linePts, i, j, distance);
             // flattening must be less than distanceTolerance
@@ -83,7 +75,6 @@ namespace NetTopologySuite.Simplify
             sectionIndex[1] = j;
             if (HasBadIntersection(_line, sectionIndex, candidateSeg))
                 isValidToSimplify = false;
-
             if (isValidToSimplify)
             {
                 LineSegment newSeg = Flatten(i, j);
@@ -93,7 +84,6 @@ namespace NetTopologySuite.Simplify
             SimplifySection(i, furthestPtIndex, depth);
             SimplifySection(furthestPtIndex, j, depth);
         }
-
         private int FindFurthestPoint(Coordinate[] pts, int i, int j, double[] maxDistance)
         {
             LineSegment seg = new LineSegment();
@@ -114,7 +104,6 @@ namespace NetTopologySuite.Simplify
             maxDistance[0] = maxDist;
             return maxIndex;
         }
-
         /// <summary>
         /// Flattens a section of the line between
         /// indexes <paramref name="start"/> and <paramref name="end"/>,
@@ -136,7 +125,6 @@ namespace NetTopologySuite.Simplify
             _outputIndex.Add(newSeg);
             return newSeg;
         }
-
         private bool HasBadIntersection(TaggedLineString parentLine,
             int[] sectionIndex, LineSegment candidateSeg)
         {
@@ -148,7 +136,6 @@ namespace NetTopologySuite.Simplify
                 return true;
             return false;
         }
-
         private bool HasBadOutputIntersection(LineSegment candidateSeg)
         {
             IList<LineSegment> querySegs = _outputIndex.Query(candidateSeg);
@@ -160,7 +147,6 @@ namespace NetTopologySuite.Simplify
             }
             return false;
         }
-
         private bool HasBadInputIntersection(TaggedLineString parentLine,
             int[] sectionIndex, LineSegment candidateSeg)
         {
@@ -178,7 +164,6 @@ namespace NetTopologySuite.Simplify
             }
             return false;
         }
-
         /// <summary>
         /// Tests whether a segment is in a section of a <see cref="TaggedLineString"/>.
         /// </summary>
@@ -198,13 +183,11 @@ namespace NetTopologySuite.Simplify
                 return true;
             return false;
         }
-
         private bool HasInteriorIntersection(LineSegment seg0, LineSegment seg1)
         {
             _li.ComputeIntersection(seg0.P0, seg0.P1, seg1.P0, seg1.P1);
             return _li.IsInteriorIntersection();
         }
-
         /// <summary>
         /// Remove the segs in the section of the line.
         /// </summary>

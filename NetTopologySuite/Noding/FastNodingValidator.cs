@@ -4,7 +4,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
-
 namespace NetTopologySuite.Noding
 {
     ///<summary>
@@ -19,7 +18,7 @@ namespace NetTopologySuite.Noding
     /// by using the <see cref="FindAllIntersections"/> property.
     /// <para/>
     /// The validator does not check for a-b-a topology collapse situations.
-    /// <para/> 
+    /// <para/>
     /// The validator does not check for endpoint-interior vertex intersections.
     /// This should not be a problem, since the JTS noders should be
     /// able to compute intersections between vertices correctly.
@@ -38,13 +37,10 @@ namespace NetTopologySuite.Noding
             bool temp = nv.IsValid;
             return nv.Intersections;
         }
-
         private readonly LineIntersector _li = new RobustLineIntersector();
-
         private readonly List<ISegmentString> _segStrings = new List<ISegmentString>();
         private InteriorIntersectionFinder _segInt;
         private Boolean _isValid = true;
-
         /// <summary>
         /// Creates a new noding validator for a given set of linework.
         /// </summary>
@@ -53,13 +49,10 @@ namespace NetTopologySuite.Noding
         {
             _segStrings.AddRange(segStrings);
         }
-
         /// <summary>
         /// Gets or sets whether all intersections should be found.
         /// </summary>
         public bool FindAllIntersections { get; set; }
-
-
         /// <summary>
         /// Gets a list of all intersections found.
         /// <remarks>
@@ -68,7 +61,6 @@ namespace NetTopologySuite.Noding
         /// </remarks>
         /// </summary>
         public IList<Coordinate> Intersections => _segInt.Intersections;
-
         ///<summary>
         /// Checks for an intersection and reports if one is found.
         ///</summary>
@@ -80,7 +72,6 @@ namespace NetTopologySuite.Noding
                 return _isValid;
             }
         }
-
         ///<summary>
         /// Returns an error message indicating the segments containing the intersection.
         ///</summary>
@@ -89,14 +80,12 @@ namespace NetTopologySuite.Noding
         {
             if (IsValid)
                 return "no intersections found";
-
             Coordinate[] intSegs = _segInt.IntersectionSegments;
             return "found non-noded intersection between "
                 + WKTWriter.ToLineString(intSegs[0], intSegs[1])
                 + " and "
                 + WKTWriter.ToLineString(intSegs[2], intSegs[3]);
         }
-
         ///<summary>
         /// Checks for an intersection and throws
         /// a TopologyException if one is found.
@@ -107,14 +96,12 @@ namespace NetTopologySuite.Noding
             if (!IsValid)
                 throw new TopologyException(GetErrorMessage(), _segInt.InteriorIntersection);
         }
-
         private void Execute()
         {
             if (_segInt != null)
                 return;
             CheckInteriorIntersections();
         }
-
         private void CheckInteriorIntersections()
         {
             /*

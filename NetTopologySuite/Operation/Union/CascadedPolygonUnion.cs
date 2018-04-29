@@ -1,5 +1,4 @@
 //#define UseWorker
-
 using System;
 using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
@@ -10,13 +9,12 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Index.Strtree;
-
 namespace NetTopologySuite.Operation.Union
 {
     /// <summary>
-    /// Provides an efficient method of unioning a collection of 
+    /// Provides an efficient method of unioning a collection of
     /// <see cref="IPolygonal"/> geometries.
-    /// The geometries are indexed using a spatial index, 
+    /// The geometries are indexed using a spatial index,
     /// and unioned recursively in index order.
     /// For geometries with a high degree of overlap,
     /// this has the effect of reducing the number of vertices
@@ -24,18 +22,18 @@ namespace NetTopologySuite.Operation.Union
     /// and robustness.
     /// <para/>
     /// This algorithm is faster and more robust than
-    /// the simple iterated approach of 
+    /// the simple iterated approach of
     /// repeatedly unioning each polygon to a result geometry.
     /// <para/>
-    /// The <tt>buffer(0)</tt> trick is sometimes faster, but can be less robust and 
+    /// The <tt>buffer(0)</tt> trick is sometimes faster, but can be less robust and
     /// can sometimes take a long time to complete.
     /// This is particularly the case where there is a high degree of overlap
     /// between the polygons.  In this case, <tt>buffer(0)</tt> is forced to compute
-    /// with <i>all</i> line segments from the outset, 
+    /// with <i>all</i> line segments from the outset,
     /// whereas cascading can eliminate many segments
     /// at each stage of processing.
     /// The best situation for using <tt>buffer(0)</tt> is the trivial case
-    /// where there is <i>no</i> overlap between the input geometries. 
+    /// where there is <i>no</i> overlap between the input geometries.
     /// However, this case is likely rare in practice.
     /// </summary>
     /// <author>Martin Davis</author>
@@ -58,7 +56,6 @@ namespace NetTopologySuite.Operation.Union
             var op = new CascadedPolygonUnion(polys);
             return op.Union();
         }
-
         /// <summary>
         /// Creates a new instance to union
         /// the given collection of <see cref="IGeometry"/>s.
@@ -69,23 +66,20 @@ namespace NetTopologySuite.Operation.Union
             // guard against null input
             _inputPolys = polys ?? new List<IGeometry>();
         }
-
         /**
          * The effectiveness of the index is somewhat sensitive
-         * to the node capacity.  
+         * to the node capacity.
          * Testing indicates that a smaller capacity is better.
          * For an STRtree, 4 is probably a good number (since
          * this produces 2x2 "squares").
          */
         private const int StrtreeNodeCapacity = 4;
-
         private IGeometryFactory Factory()
         {
             var geomenumerator = _inputPolys.GetEnumerator();
             geomenumerator.MoveNext();
             return geomenumerator.Current.Factory;
         }
-
         /// <summary>
         /// Computes the union of the input geometries.
         /// </summary>
@@ -93,9 +87,9 @@ namespace NetTopologySuite.Operation.Union
         /// <remarks>
         /// This method discards the input geometries as they are processed.
         /// In many input cases this reduces the memory retained
-        /// as the operation proceeds. 
-        /// Optimal memory usage is achieved 
-        /// by disposing of the original input collection 
+        /// as the operation proceeds.
+        /// Optimal memory usage is achieved
+        /// by disposing of the original input collection
         /// before calling this method.
         /// </remarks>
         /// The union of the input geometries,
@@ -109,25 +103,21 @@ namespace NetTopologySuite.Operation.Union
             if (_inputPolys.Count == 0)
                 return null;
             _geomFactory = Factory();
-
             /*
              * A spatial index to organize the collection
              * into groups of close geometries.
-             * This makes unioning more efficient, since vertices are more likely 
+             * This makes unioning more efficient, since vertices are more likely
              * to be eliminated on each round.
              */
             var index = new STRtree<object>(StrtreeNodeCapacity);
             foreach (IGeometry item in _inputPolys)
                 index.Insert(item.EnvelopeInternal, item);
-
             // To avoiding holding memory remove references to the input geometries,
             _inputPolys = null;
-
             var itemTree = index.ItemsTree();
             var unionAll = UnionTree(itemTree);
             return unionAll;
         }
-
         private IGeometry UnionTree(IList geomTree)
         {
             /*
@@ -138,10 +128,8 @@ namespace NetTopologySuite.Operation.Union
             var union = BinaryUnion(geoms);
             return union;
         }
-
         //========================================================
         // The following methods are for experimentation only
-
         private IGeometry RepeatedUnion(IEnumerable<IGeometry> geoms)
         {
             IGeometry union = null;
@@ -153,7 +141,6 @@ namespace NetTopologySuite.Operation.Union
             }
             return union;
         }
-
         private IGeometry BufferUnion(ICollection<IGeometry> geoms)
         {
             var factory = Factory();
@@ -161,7 +148,6 @@ namespace NetTopologySuite.Operation.Union
             var unionAll = gColl.Buffer(0.0);
             return unionAll;
         }
-
         private IGeometry BufferUnion(IGeometry g0, IGeometry g1)
         {
             var factory = g0.Factory;
@@ -169,11 +155,9 @@ namespace NetTopologySuite.Operation.Union
             var unionAll = gColl.Buffer(0.0);
             return unionAll;
         }
-
         //=======================================
-
         /// <summary>
-        /// Unions a list of geometries 
+        /// Unions a list of geometries
         /// by treating the list as a flattened binary tree,
         /// and performing a cascaded union on the tree.
         /// </summary>
@@ -183,7 +167,6 @@ namespace NetTopologySuite.Operation.Union
         {
             return BinaryUnion(geoms, 0, geoms.Count);
         }
-
         /// <summary>
         /// Unions a section of a list using a recursive binary union on each half
         /// of the section.
@@ -202,10 +185,8 @@ namespace NetTopologySuite.Operation.Union
             }
             if (end - start == 2)
                 return UnionSafe(GetGeometry(geoms, start), GetGeometry(geoms, start + 1));
-
             // recurse on both halves of the list
             var mid = (end + start) / 2;
-
 #if !UseWorker
             g0 = BinaryUnion(geoms, start, mid);
             g1 = BinaryUnion(geoms, mid, end);
@@ -219,17 +200,14 @@ namespace NetTopologySuite.Operation.Union
             var worker1 = new Worker(this, geoms, mid, end);
             var t1 = new Thread(worker1.Execute);
             _numThreadsStarted++;
-
             t0.Start();
             t1.Start();
             t0.Join();
             t1.Join();
-
             //return UnionSafe(g0, g1);
             return UnionSafe(worker0.Geometry, worker1.Geometry);
 #endif
         }
-
 #if UseWorker
         class Worker
         {
@@ -237,9 +215,7 @@ namespace NetTopologySuite.Operation.Union
             private readonly IList<IGeometry> _geoms;
             private readonly int _start;
             private readonly int _end;
-
             private IGeometry _ret;
-
             protected internal Worker(CascadedPolygonUnion tool, IList<IGeometry> geoms, int start, int end)
             {
                 _tool = tool;
@@ -247,19 +223,16 @@ namespace NetTopologySuite.Operation.Union
                 _start = start;
                 _end = end;
             }
-
             internal void Execute()
             {
                 _ret = _tool.BinaryUnion(_geoms, _start, _end);
             }
-
             public IGeometry Geometry
             {
                 get { return _ret; }
             }
         }
 #endif
-
         /// <summary>
         /// Gets the element at a given list index, or
         /// null if the index is out of range.
@@ -274,7 +247,6 @@ namespace NetTopologySuite.Operation.Union
                 return null;
             return list[index];
         }
-
         /// <summary>
         /// Reduces a tree of geometries to a list of geometries
         /// by recursively unioning the subtrees in the list.
@@ -295,9 +267,8 @@ namespace NetTopologySuite.Operation.Union
             }
             return geoms;
         }
-
         /// <summary>
-        /// Computes the union of two geometries, 
+        /// Computes the union of two geometries,
         /// either or both of which may be null.
         /// </summary>
         /// <param name="g0">A Geometry</param>
@@ -314,7 +285,6 @@ namespace NetTopologySuite.Operation.Union
                 return (IGeometry)g0.Copy();
             return UnionOptimized(g0, g1);
         }
-
         private IGeometry UnionOptimized(IGeometry g0, IGeometry g1)
         {
             var g0Env = g0.EnvelopeInternal;
@@ -326,15 +296,13 @@ namespace NetTopologySuite.Operation.Union
             }
             if (g0.NumGeometries <= 1 && g1.NumGeometries <= 1)
                 return UnionActual(g0, g1);
-
             var commonEnv = g0Env.Intersection(g1Env);
             return UnionUsingEnvelopeIntersection(g0, g1, commonEnv);
         }
-
         /// <summary>
-        /// Unions two polygonal geometries, restricting computation 
+        /// Unions two polygonal geometries, restricting computation
         /// to the envelope intersection where possible.
-        /// The case of MultiPolygons is optimized to union only 
+        /// The case of MultiPolygons is optimized to union only
         /// the polygons which lie in the intersection of the two geometry's envelopes.
         /// Polygons outside this region can simply be combined with the union result,
         /// which is potentially much faster.
@@ -355,7 +323,6 @@ namespace NetTopologySuite.Operation.Union
             var overallUnion = GeometryCombiner.Combine(disjointPolys);
             return overallUnion;
         }
-
         private IGeometry ExtractByEnvelope(Envelope env, IGeometry geom, IList<IGeometry> disjointGeoms)
         {
             var intersectingGeoms = new List<IGeometry>();
@@ -368,7 +335,6 @@ namespace NetTopologySuite.Operation.Union
             }
             return _geomFactory.BuildGeometry(intersectingGeoms);
         }
-
         /// <summary>
         /// Encapsulates the actual unioning of two polygonal geometries.
         /// </summary>
@@ -376,15 +342,14 @@ namespace NetTopologySuite.Operation.Union
         {
             return RestrictToPolygons(g0.Union(g1));
         }
-
         /// <summary> Computes a <see cref="IGeometry"/> containing only <see cref="IPolygonal"/> components.
-        /// Extracts the <see cref="IPolygon"/>s from the input 
+        /// Extracts the <see cref="IPolygon"/>s from the input
         /// and returns them as an appropriate <see cref="IPolygonal"/> geometry.
         /// <para/>
         /// If the input is already <tt>Polygonal</tt>, it is returned unchanged.
         /// <para/>
         /// A particular use case is to filter out non-polygonal components
-        /// returned from an overlay operation.  
+        /// returned from an overlay operation.
         /// </summary>
         /// <param name="g">The geometry to filter</param>
         /// <returns>A polygonal geometry</returns>
@@ -392,7 +357,6 @@ namespace NetTopologySuite.Operation.Union
         {
             if (g is IPolygonal)
                 return g;
-
             var polygons = PolygonExtracter.GetPolygons(g);
             if (polygons.Count == 1)
                 return polygons[0];

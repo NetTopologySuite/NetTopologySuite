@@ -1,10 +1,8 @@
 using GeoAPI.Geometries;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.Various
 {
     using Geometries;
-
     [TestFixture]
     internal class Issue75Tests
     {

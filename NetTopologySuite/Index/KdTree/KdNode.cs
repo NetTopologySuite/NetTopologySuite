@@ -1,6 +1,5 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Index.KdTree
 {
     /// <summary>
@@ -25,7 +24,6 @@ namespace NetTopologySuite.Index.KdTree
             Count = 1;
             Data = data;
         }
-
         /// <summary>
         /// Creates a new KdNode.
         /// </summary>
@@ -39,48 +37,39 @@ namespace NetTopologySuite.Index.KdTree
             Count = 1;
             Data = data;
         }
-
         /// <summary>
         /// Gets x-ordinate of this node
         /// </summary>
         public double X => Coordinate.X;
-
         /// <summary>
         /// Gets y-ordinate of this node
         /// </summary>
         public double Y => Coordinate.Y;
-
         /// <summary>
         /// Gets the location of this node
         /// </summary>
         public Coordinate Coordinate { get; }
-
         /// <summary>
         /// Gets the user data object associated with this node.
         /// </summary>
         public T Data { get; }
-
         /// <summary>
         /// Gets or sets the left node of the tree
         /// </summary>
         public KdNode<T> Left { get; set; }
-
         /// <summary>
         /// Gets or sets the right node of the tree
         /// </summary>
         public KdNode<T> Right { get; set; }
-
         // Increments counts of points at this location
         internal void Increment()
         {
             Count = Count + 1;
         }
-
         /// <summary>
         /// Gets the number of inserted points that are coincident at this location.
         /// </summary>
         public int Count { get; private set; }
-
         /// <summary>
         /// Gets whether more than one point with this value have been inserted (up to the tolerance)
         /// </summary>

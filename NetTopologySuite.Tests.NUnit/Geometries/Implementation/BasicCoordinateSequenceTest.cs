@@ -1,7 +1,6 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 {
     [TestFixtureAttribute]
@@ -16,7 +15,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.IsTrue(s1.GetCoordinate(0).Equals(s2.GetCoordinate(0)));
             Assert.IsTrue(s1.GetCoordinate(0) != s2.GetCoordinate(0));
         }
-
         [TestAttribute]
         public void TestCloneDimension2()
         {
@@ -25,13 +23,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             s1.SetOrdinate(0, Ordinate.Y, 2);
             s1.SetOrdinate(1, Ordinate.X, 3);
             s1.SetOrdinate(1, Ordinate.Y, 4);
-
             ICoordinateSequence s2 = (ICoordinateSequence)s1.Copy();
             Assert.IsTrue(s1.Dimension == s2.Dimension);
             Assert.IsTrue(s1.GetCoordinate(0).Equals(s2.GetCoordinate(0)));
             Assert.IsTrue(s1.GetCoordinate(0) != s2.GetCoordinate(0));
         }
-
         [TestAttribute]
         public void TestCloneDimension3()
         {
@@ -42,13 +38,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             s1.SetOrdinate(1, Ordinate.X, 3);
             s1.SetOrdinate(1, Ordinate.Y, 4);
             s1.SetOrdinate(1, Ordinate.Z, 20);
-
             ICoordinateSequence s2 = (ICoordinateSequence)s1.Copy();
             Assert.IsTrue(s1.Dimension == s2.Dimension);
             Assert.IsTrue(s1.GetCoordinate(0).Equals(s2.GetCoordinate(0)));
             Assert.IsTrue(s1.GetCoordinate(0) != s2.GetCoordinate(0));
         }
-
         [TestAttribute]
         public void TestCloneDimension4()
         {
@@ -61,7 +55,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             s1.SetOrdinate(1, Ordinate.Y, 4);
             s1.SetOrdinate(1, Ordinate.Z, 20);
             s1.SetOrdinate(1, Ordinate.M, 200);
-
             ICoordinateSequence s2 = (ICoordinateSequence)s1.Copy();
             Assert.IsTrue(s1.Dimension == s2.Dimension);
             Assert.IsTrue(s1.GetCoordinate(0).Equals(s2.GetCoordinate(0)));

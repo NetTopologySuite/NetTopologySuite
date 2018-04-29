@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Precision;
-
 namespace NetTopologySuite.Operation.Overlay.Snap
 {
     /// <summary>
@@ -27,7 +26,6 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             SnapOverlayOp op = new SnapOverlayOp(g0, g1);
             return op.GetResultGeometry(opCode);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -38,7 +36,6 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         {
             return Overlay(g0, g1, SpatialFunction.Intersection);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -49,7 +46,6 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         {
             return Overlay(g0, g1, SpatialFunction.Union);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -60,7 +56,6 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         {
             return Overlay(g0, g1, SpatialFunction.Difference);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -71,10 +66,8 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         {
             return Overlay(g0, g1, SpatialFunction.SymDifference);
         }
-
         private readonly IGeometry[] _geom = new IGeometry[2];
         private double _snapTolerance;
-
         /// <summary>
         ///
         /// </summary>
@@ -86,7 +79,6 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             _geom[1] = g2;
             ComputeSnapTolerance();
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -94,7 +86,6 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         {
             _snapTolerance = GeometrySnapper.ComputeOverlaySnapTolerance(_geom[0], _geom[1]);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -106,7 +97,6 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             var result = OverlayOp.Overlay(prepGeom[0], prepGeom[1], opCode);
             return PrepareResult(result);
         }
-
         private IGeometry SelfSnap(IGeometry geom)
         {
             var snapper0 = new GeometrySnapper(geom);
@@ -115,7 +105,6 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             //System.out.println();
             return snapGeom;
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -123,17 +112,14 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         private IGeometry[] Snap(IGeometry[] geom)
         {
             var remGeom = RemoveCommonBits(geom);
-
             // MD - testing only
             // IGeometry[] remGeom = geom;
-
             var snapGeom = GeometrySnapper.Snap(remGeom[0], remGeom[1], _snapTolerance);
             // MD - may want to do this at some point, but it adds cycles
             // CheckValid(snapGeom[0]);
             // CheckValid(snapGeom[1]);
             return snapGeom;
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -144,9 +130,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             cbr.AddCommonBits(geom);
             return geom;
         }
-
         private CommonBitsRemover cbr;
-
         /// <summary>
         ///
         /// </summary>
@@ -162,7 +146,6 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             remGeom[1] = cbr.RemoveCommonBits((IGeometry)geom[1].Copy());
             return remGeom;
         }
-
         /// <summary>
         ///
         /// </summary>

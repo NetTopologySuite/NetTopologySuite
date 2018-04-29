@@ -3,7 +3,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 using ParseException = GeoAPI.IO.ParseException;
-
 namespace NetTopologySuite.Tests.NUnit.Utilities
 {
     public class IOUtil

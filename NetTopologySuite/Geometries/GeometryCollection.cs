@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Utilities;
-
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
@@ -17,14 +16,12 @@ namespace NetTopologySuite.Geometries
         /// Represents an empty <c>GeometryCollection</c>.
         /// </summary>
         public static readonly IGeometryCollection Empty = DefaultFactory.CreateGeometryCollection(null);
-
         /// <summary>
-        /// Internal representation of this <c>GeometryCollection</c>.        
+        /// Internal representation of this <c>GeometryCollection</c>.
         /// </summary>
         private IGeometry[] _geometries;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometries">
         /// The <c>Geometry</c>s for this <c>GeometryCollection</c>,
@@ -33,13 +30,12 @@ namespace NetTopologySuite.Geometries
         /// but not <c>null</c>s.
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public GeometryCollection(IGeometry[] geometries) : this(geometries, DefaultFactory) { }
-              
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometries">
         /// The <c>Geometry</c>s for this <c>GeometryCollection</c>,
@@ -49,37 +45,33 @@ namespace NetTopologySuite.Geometries
         /// </param>
         /// <param name="factory"></param>
         public GeometryCollection(IGeometry[] geometries, IGeometryFactory factory) : base(factory)
-        {            
-            if (geometries == null)             
-                geometries = new IGeometry[] { };            
-            if (HasNullElements(CollectionUtil.Cast<IGeometry, object>(geometries)))             
-                throw new ArgumentException("geometries must not contain null elements");            
+        {
+            if (geometries == null)
+                geometries = new IGeometry[] { };
+            if (HasNullElements(CollectionUtil.Cast<IGeometry, object>(geometries)))
+                throw new ArgumentException("geometries must not contain null elements");
             _geometries = geometries;
         }
-
-
         /// <summary>
         /// Gets a value to sort the geometry
         /// </summary>
         protected override SortIndexValue SortIndex => SortIndexValue.GeometryCollection;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public override Coordinate Coordinate 
+        public override Coordinate Coordinate
         {
             get
             {
-                if (IsEmpty) 
+                if (IsEmpty)
                     return null;
                 return _geometries[0].Coordinate;
             }
         }
-
         /// <summary>
         /// Collects all coordinates of all subgeometries into an Array.
         /// Note that while changes to the coordinate objects themselves
-        /// may modify the Geometries in place, the returned Array as such 
+        /// may modify the Geometries in place, the returned Array as such
         /// is only a temporary container which is not synchronized back.
         /// </summary>
         /// <returns>The collected coordinates.</returns>
@@ -101,12 +93,10 @@ namespace NetTopologySuite.Geometries
                 return coordinates;
             }
         }
-
         public override double[] GetOrdinates(Ordinate ordinate)
         {
             if (IsEmpty)
                 return new double[0];
-
             var result = new double[NumPoints];
             var offset = 0;
             for (var i = 0; i < NumGeometries; i++)
@@ -118,26 +108,23 @@ namespace NetTopologySuite.Geometries
             }
             return result;
         }
-
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override bool IsEmpty
         {
             get
             {
                 for (int i = 0; i < _geometries.Length; i++)
-                    if (!_geometries[i].IsEmpty) 
+                    if (!_geometries[i].IsEmpty)
                         return false;
                 return true;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public override Dimension Dimension 
+        public override Dimension Dimension
         {
             get
             {
@@ -147,9 +134,8 @@ namespace NetTopologySuite.Geometries
                 return dimension;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override Dimension BoundaryDimension
         {
@@ -161,35 +147,31 @@ namespace NetTopologySuite.Geometries
                 return dimension;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override int NumGeometries => _geometries.Length;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public override IGeometry GetGeometryN(int n) 
+        public override IGeometry GetGeometryN(int n)
         {
             return _geometries[n];
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IGeometry[] Geometries
         {
             get => _geometries;
             protected set => _geometries = value;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public override int NumPoints 
+        public override int NumPoints
         {
             get
             {
@@ -199,20 +181,17 @@ namespace NetTopologySuite.Geometries
                 return numPoints;
             }
         }
-
-        /// <summary>  
+        /// <summary>
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"GeometryCollection"</returns>
         public override string GeometryType => "GeometryCollection";
-
         /// <summary>
         /// Gets the OGC geometry type
         /// </summary>
         public override OgcGeometryType OgcGeometryType => OgcGeometryType.GeometryCollection;
-
         ///// <summary>
-        ///// 
+        /////
         ///// </summary>
         //public override bool IsSimple
         //{
@@ -223,9 +202,8 @@ namespace NetTopologySuite.Geometries
         //        return false;
         //    }
         //}
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override IGeometry Boundary
         {
@@ -236,10 +214,9 @@ namespace NetTopologySuite.Geometries
                 return null;
             }
         }
-
-        /// <summary>  
+        /// <summary>
         /// Returns the area of this <c>GeometryCollection</c>.
-        /// </summary>        
+        /// </summary>
         public override double Area
         {
             get
@@ -250,10 +227,9 @@ namespace NetTopologySuite.Geometries
                 return area;
             }
         }
-
-        /// <summary>  
+        /// <summary>
         /// Returns the length of this <c>GeometryCollection</c>.
-        /// </summary>        
+        /// </summary>
         public override double Length
         {
             get
@@ -264,7 +240,6 @@ namespace NetTopologySuite.Geometries
                 return sum;
             }
         }
-
         //internal override int GetHashCodeInternal(int baseValue, Func<int, int> operation)
         //{
         //    if (!IsEmpty)
@@ -287,38 +262,32 @@ namespace NetTopologySuite.Geometries
         //                baseValue = ((Polygon)g).GetHashCodeInternal(baseValue, operation);
         //                continue;
         //            }
-
         //            baseValue = ((GeometryCollection) g).GetHashCodeInternal(baseValue, operation);
-
         //        }
         //    }
         //    return baseValue;
         //}
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance) 
+        public override bool EqualsExact(IGeometry other, double tolerance)
         {
-            if (!IsEquivalentClass(other)) 
-                return false;            
-
+            if (!IsEquivalentClass(other))
+                return false;
             IGeometryCollection otherCollection = (IGeometryCollection) other;
             if (_geometries.Length != otherCollection.Geometries.Length)
                 return false;
-
-            for (int i = 0; i < _geometries.Length; i++) 
+            for (int i = 0; i < _geometries.Length; i++)
                 if (!_geometries[i].EqualsExact(
-                     otherCollection.Geometries[i], tolerance)) 
+                     otherCollection.Geometries[i], tolerance))
                         return false;
             return true;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="filter"></param>
         public override void Apply(ICoordinateFilter filter)
@@ -326,7 +295,6 @@ namespace NetTopologySuite.Geometries
             for (int i = 0; i < _geometries.Length; i++)
                  _geometries[i].Apply(filter);
         }
-
         public override void Apply(ICoordinateSequenceFilter filter)
         {
             if (_geometries.Length == 0)
@@ -342,9 +310,8 @@ namespace NetTopologySuite.Geometries
             if (filter.GeometryChanged)
                 GeometryChanged();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="filter"></param>
         public override void Apply(IGeometryFilter filter)
@@ -353,18 +320,16 @@ namespace NetTopologySuite.Geometries
             for (int i = 0; i < _geometries.Length; i++)
                  _geometries[i].Apply(filter);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="filter"></param>
-        public override void Apply(IGeometryComponentFilter filter) 
+        public override void Apply(IGeometryComponentFilter filter)
         {
             filter.Filter(this);
             for (int i = 0; i < _geometries.Length; i++)
                  _geometries[i].Apply(filter);
         }
-
         /// <summary>
         /// Creates and returns a full copy of this <see cref="IGeometryCollection"/> object.
         /// (including all coordinates contained by it).
@@ -375,58 +340,52 @@ namespace NetTopologySuite.Geometries
         {
             return Copy();
         }
-
         /// <summary>
         /// Creates and returns a full copy of this <see cref="IGeometryCollection"/> object.
         /// (including all coordinates contained by it).
         /// </summary>
         /// <returns>A copy of this instance</returns>
         public override IGeometry Copy()
-        { 
-            var geometries = new IGeometry[_geometries.Length];
-            for (int i = 0; i < _geometries.Length; i++) 
-                geometries[i] = _geometries[i].Copy();
-            return new GeometryCollection(geometries, Factory); 
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public override void Normalize() 
         {
-            for (int i = 0; i < _geometries.Length; i++) 
+            var geometries = new IGeometry[_geometries.Length];
+            for (int i = 0; i < _geometries.Length; i++)
+                geometries[i] = _geometries[i].Copy();
+            return new GeometryCollection(geometries, Factory);
+        }
+        /// <summary>
+        ///
+        /// </summary>
+        public override void Normalize()
+        {
+            for (int i = 0; i < _geometries.Length; i++)
                 _geometries[i].Normalize();
             Array.Sort(_geometries);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         protected override Envelope ComputeEnvelopeInternal()
         {
             Envelope envelope = new Envelope();
-            for (int i = 0; i < _geometries.Length; i++) 
+            for (int i = 0; i < _geometries.Length; i++)
                 envelope.ExpandToInclude(_geometries[i].EnvelopeInternal);
             return envelope;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="o"></param>
         /// <returns></returns>
-        protected internal override int CompareToSameClass(object o) 
+        protected internal override int CompareToSameClass(object o)
         {
             var theseElements = new List<IGeometry>(_geometries);
             var otherElements = new List<IGeometry>(((GeometryCollection) o)._geometries);
             return Compare(theseElements, otherElements);
         }
-
         protected internal override int CompareToSameClass(object o, IComparer<ICoordinateSequence> comp)
         {
             IGeometryCollection gc = (IGeometryCollection) o;
-
             int n1 = NumGeometries;
             int n2 = gc.NumGeometries;
             int i = 0;
@@ -443,7 +402,6 @@ namespace NetTopologySuite.Geometries
             if (i < n2) return -1;
             return 0;
         }
-
         /// <summary>
         /// Return <c>true</c> if all features in collection are of the same type.
         /// </summary>
@@ -458,12 +416,11 @@ namespace NetTopologySuite.Geometries
                 return true;
             }
         }
-
         /// <summary>
         /// Returns a <c>GeometryCollectionEnumerator</c>:
         /// this IEnumerator returns the parent geometry as first element.
         /// In most cases is more useful the code
-        /// <c>geometryCollectionInstance.Geometries.GetEnumerator()</c>: 
+        /// <c>geometryCollectionInstance.Geometries.GetEnumerator()</c>:
         /// this returns an IEnumerator over geometries composing GeometryCollection.
         /// </summary>
         /// <returns></returns>
@@ -471,19 +428,16 @@ namespace NetTopologySuite.Geometries
         {
             return new GeometryCollectionEnumerator(this);
         }
-
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
-
         /// <summary>
         /// Returns the iTh element in the collection.
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
         public IGeometry this[int i] => _geometries[i];
-
         ///<summary>
         /// Creates a <see cref="IGeometryCollection"/> with
         /// every component reversed.
@@ -500,14 +454,11 @@ namespace NetTopologySuite.Geometries
             }
             return Factory.CreateGeometryCollection(revGeoms);
         }
-
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
-
         /// <summary>
         /// Returns the number of geometries contained by this <see cref="GeometryCollection" />.
         /// </summary>
         public int Count => _geometries.Length;
-
         /* END ADDED BY MPAUL42: monoGIS team */
     }
 }

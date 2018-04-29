@@ -8,7 +8,6 @@ using NetTopologySuite.Operation.Linemerge;
 using NetTopologySuite.Tests.NUnit.TestData;
 using NetTopologySuite.Utilities;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
 {
     [TestFixtureAttribute, CategoryAttribute("Stress")]
@@ -20,7 +19,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
             Trace.WriteLine("Loading data...");
             IList<IGeometry> data = GeometryUtils.ReadWKTFile(EmbeddedResourceManager.GetResourceStream(
                 "NetTopologySuite.Tests.NUnit.TestData.world.wkt"));
-
             const int maxTimes = 5;
             for (int i = 1; i <= maxTimes; i++)
             {
@@ -30,10 +28,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
                 Trace.WriteLine(String.Format("Iteration {0} of {1} terminated", i, maxTimes));
                 Trace.WriteLine(Environment.NewLine);
             }
-
             Trace.WriteLine("Test terminated");
         }
-
         private void RunDissolverWorld(IList<IGeometry> data)
         {
             LineDissolver dis = new LineDissolver();
@@ -43,7 +39,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
             Trace.WriteLine(Memory.TotalString);
             // Trace.WriteLine(String.Format("Result: {0}", result));
         }
-
         private void RunBruteForceWorld(IList<IGeometry> data)
         {
             IGeometry result = DissolveLines(data);
@@ -51,13 +46,11 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
             Trace.WriteLine(Memory.TotalString);
             // Trace.WriteLine(String.Format("Result: {0}", result));
         }
-
         private IGeometry DissolveLines(IList<IGeometry> lines)
         {
             IGeometry linesGeom = ExtractLines(lines);
             return DissolveLines(linesGeom);
         }
-
         private static IGeometry DissolveLines(IGeometry lines)
         {
             IGeometry dissolved = lines.Union();
@@ -67,7 +60,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
             IGeometry merged = lines.Factory.BuildGeometry(mergedColl);
             return merged;
         }
-
         private static IGeometry ExtractLines(ICollection<IGeometry> geoms)
         {
             IGeometryFactory factory = null;
@@ -79,7 +71,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
                 ICollection<IGeometry> coll = LinearComponentExtracter.GetLines(g);
                 lines.AddRange(coll);
             }
-
             if (factory == null)
                 return null;
             return factory.BuildGeometry(geoms);

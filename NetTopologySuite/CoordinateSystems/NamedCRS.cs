@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-
     /// <summary>
     /// Defines the <see href="http://geojson.org/geojson-spec.html#named-crs">Named CRS type</see>.
     /// </summary>
@@ -20,10 +19,8 @@
         {
             if (name == null)
                 throw new ArgumentNullException("name");
-
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentOutOfRangeException("name", "May not be empty");
-
             this.Properties = new Dictionary<string, object> { { "name", name } };
             this.Type = CRSTypes.Name;
         }

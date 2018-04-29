@@ -2,29 +2,28 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
-
 namespace NetTopologySuite.Algorithm
 {
     /// <summary>
     /// Computes the <b>Minimum Bounding Circle</b> (MBC) for the points in a <see cref="IGeometry"/>.
-    /// The MBC is the smallest circle which <tt>cover</tt>s all the input points 
+    /// The MBC is the smallest circle which <tt>cover</tt>s all the input points
     /// (this is also sometimes known as the <b>Smallest Enclosing Circle</b>).
     /// This is equivalent to computing the Maximum Diameter of the input point set.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The computed circle can be specified in two equivalent ways, 
+    /// The computed circle can be specified in two equivalent ways,
     /// both of which are provide as output by this class:
     /// <list type="Bullet">
     /// <item>As a centre point and a radius</item>
     /// <item>By the set of points defining the circle.</item>
-    /// 
+    ///
     /// Depending on the number of points in the input
     /// and their relative positions, this
-    /// will be specified by anywhere from 0 to 3 points. 
+    /// will be specified by anywhere from 0 to 3 points.
     /// <list type="Bullet">
     /// <item>0 or 1 points indicate an empty or trivial input point arrangement.</item>
-    /// <item>2 or 3 points define a circle which contains 
+    /// <item>2 or 3 points define a circle which contains
     /// all the input points.</item>
     /// </list>
     /// </list>
@@ -38,15 +37,13 @@ namespace NetTopologySuite.Algorithm
     public class MinimumBoundingCircle
     {
         /**
-         * The algorithm used is based on the one by Jon Rokne in 
+         * The algorithm used is based on the one by Jon Rokne in
          * the article "An Easy Bounding Circle" in <i>Graphic Gems II</i>.
          */
-
         private readonly IGeometry _input;
         private Coordinate[] _extremalPts;
         private Coordinate _centre;
         private double _radius;
-
         /// <summary>
         /// Creates a new object for computing the minimum bounding circle for the
         /// point set defined by the vertices of the given geometry.
@@ -56,7 +53,6 @@ namespace NetTopologySuite.Algorithm
         {
             _input = geom;
         }
-
         /// <summary>
         /// Gets a geometry which represents the Minimum Bounding Circle.
         /// </summary>
@@ -64,7 +60,7 @@ namespace NetTopologySuite.Algorithm
         /// <para>
         /// If the input is degenerate (empty or a single unique point),
         /// this method will return an empty geometry or a single Point geometry.
-        /// Otherwise, a Polygon will be returned which approximates the 
+        /// Otherwise, a Polygon will be returned which approximates the
         /// Minimum Bounding Circle. (Note that because the computed polygon is only an approximation, it may not precisely contain all the input points.)
         /// </para>
         /// </remarks>
@@ -73,7 +69,6 @@ namespace NetTopologySuite.Algorithm
         {
             //TODO: ensure the output circle contains the external points.
             //TODO: or maybe even ensure that the returned geometry contains ALL the input points?
-
             Compute();
             if (_centre == null)
                 return _input.Factory.CreatePolygon();
@@ -82,7 +77,6 @@ namespace NetTopologySuite.Algorithm
                 return centrePoint;
             return centrePoint.Buffer(_radius);
         }
-
         ///<summary>
         /// Gets a geometry representing a line between the two farthest points
         /// in the input.
@@ -131,7 +125,6 @@ namespace NetTopologySuite.Algorithm
             Coordinate p1 = _extremalPts[1];
             return _input.Factory.CreateLineString(new Coordinate[] { p0, p1 });
         }
-
         /// <summary>
         /// Gets the extremal points which define the computed Minimum Bounding Circle.
         /// </summary>
@@ -146,7 +139,6 @@ namespace NetTopologySuite.Algorithm
             Compute();
             return _extremalPts;
         }
-
         /// <summary>
         /// Gets the centre point of the computed Minimum Bounding Circle.
         /// </summary>
@@ -156,7 +148,6 @@ namespace NetTopologySuite.Algorithm
             Compute();
             return _centre;
         }
-
         /// <summary>
         /// Gets the radius of the computed Minimum Bounding Circle.
         /// </summary>
@@ -166,7 +157,6 @@ namespace NetTopologySuite.Algorithm
             Compute();
             return _radius;
         }
-
         private void ComputeCentre()
         {
             switch (_extremalPts.Length)
@@ -188,18 +178,15 @@ namespace NetTopologySuite.Algorithm
                     break;
             }
         }
-
         private void Compute()
         {
             if (_extremalPts != null)
                 return;
-
             ComputeCirclePoints();
             ComputeCentre();
             if (_centre != null)
                 _radius = _centre.Distance(_extremalPts[0]);
         }
-
         private void ComputeCirclePoints()
         {
             Coordinate[] pts;
@@ -215,16 +202,13 @@ namespace NetTopologySuite.Algorithm
                 _extremalPts = new[] { new Coordinate(pts[0]) };
                 return;
             }
-
             /**
 		     * The problem is simplified by reducing to the convex hull.
 		     * Computing the convex hull also has the useful effect of eliminating duplicate points
              */
             var convexHull = _input.ConvexHull();
-
             // check for degenerate or trivial cases
             var hullPts = convexHull.Coordinates;
-
             // strip duplicate final point, if any
             pts = hullPts;
             if (hullPts[0].Equals2D(hullPts[hullPts.Length - 1]))
@@ -232,7 +216,6 @@ namespace NetTopologySuite.Algorithm
                 pts = new Coordinate[hullPts.Length - 1];
                 CoordinateArrays.CopyDeep(hullPts, 0, pts, 0, hullPts.Length - 1);
             }
-
             /**
 		     * Optimization for the trivial case where the CH has fewer than 3 points
 		     */
@@ -241,24 +224,20 @@ namespace NetTopologySuite.Algorithm
                 _extremalPts = CoordinateArrays.CopyDeep(pts);
                 return;
             }
-
             // find a point P with minimum Y ordinate
             var P = LowestPoint(pts);
-
             // find a point Q such that the angle that PQ makes with the x-axis is minimal
             var Q = PointWitMinAngleWithX(pts, P);
-
             /**
-             * Iterate over the remaining points to find 
+             * Iterate over the remaining points to find
              * a pair or triplet of points which determine the minimal circle.
-             * By the design of the algorithm, 
-             * at most <tt>pts.length</tt> iterations are required to terminate 
+             * By the design of the algorithm,
+             * at most <tt>pts.length</tt> iterations are required to terminate
              * with a correct result.
              */
             for (int i = 0; i < pts.Length; i++)
             {
                 var R = PointWithMinAngleWithSegment(pts, P, Q);
-
                 // if PRQ is obtuse, then MBC is determined by P and Q
                 if (AngleUtility.IsObtuse(P, R, Q))
                 {
@@ -283,7 +262,6 @@ namespace NetTopologySuite.Algorithm
             }
             Assert.ShouldNeverReachHere("Logic failure in Minimum Bounding Circle algorithm!");
         }
-
         private static Coordinate LowestPoint(Coordinate[] pts)
         {
             Coordinate min = pts[0];
@@ -294,17 +272,14 @@ namespace NetTopologySuite.Algorithm
             }
             return min;
         }
-
         private static Coordinate PointWitMinAngleWithX(Coordinate[] pts, Coordinate P)
         {
             double minSin = Double.MaxValue;
             Coordinate minAngPt = null;
             for (int i = 0; i < pts.Length; i++)
             {
-
                 Coordinate p = pts[i];
                 if (p == P) continue;
-
                 /**
                  * The sin of the angle is a simpler proxy for the angle itself
                  */
@@ -313,7 +288,6 @@ namespace NetTopologySuite.Algorithm
                 if (dy < 0) dy = -dy;
                 double len = Math.Sqrt(dx * dx + dy * dy);
                 double sin = dy / len;
-
                 if (sin < minSin)
                 {
                     minSin = sin;
@@ -322,7 +296,6 @@ namespace NetTopologySuite.Algorithm
             }
             return minAngPt;
         }
-
         private static Coordinate PointWithMinAngleWithSegment(Coordinate[] pts, Coordinate P, Coordinate Q)
         {
             double minAng = Double.MaxValue;
@@ -332,7 +305,6 @@ namespace NetTopologySuite.Algorithm
                 Coordinate p = pts[i];
                 if (p == P) continue;
                 if (p == Q) continue;
-
                 double ang = AngleUtility.AngleBetween(P, p, Q);
                 if (ang < minAng)
                 {
@@ -341,7 +313,6 @@ namespace NetTopologySuite.Algorithm
                 }
             }
             return minAngPt;
-
         }
     }
 }

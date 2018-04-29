@@ -1,6 +1,5 @@
 using System;
 using NetTopologySuite.Utilities;
-
 namespace NetTopologySuite.Index.Bintree
 {
     /// <summary>
@@ -22,7 +21,6 @@ namespace NetTopologySuite.Index.Bintree
             var node = new Node<T>(key.Interval, key.Level);
             return node;
         }
-
         /// <summary>
         /// Creates a larger node, that contains both <paramref name="node.Interval"/> and <paramref name="addInterval"/>
         /// If <paramref name="node"/> is <c>null</c>, a node for <paramref name="addInterval"/> is created.
@@ -41,13 +39,10 @@ namespace NetTopologySuite.Index.Bintree
              */
             var largerNode = CreateNode(expandInt);
             if (node != null) largerNode.Insert(node);
-            
             return largerNode;
         }
-
         private readonly double _centre;
         private readonly int _level;
-
         /// <summary>
         /// Creates a new node instance
         /// </summary>
@@ -59,14 +54,12 @@ namespace NetTopologySuite.Index.Bintree
             _level = level;
             _centre = (interval.Min + interval.Max) / 2;
         }
-
         /// <summary>
         /// Gets the node's <see cref="Interval"/>
         /// </summary>
         public  Interval Interval { get; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="itemInterval"></param>
         /// <returns></returns>
@@ -74,7 +67,6 @@ namespace NetTopologySuite.Index.Bintree
         {
             return itemInterval.Overlaps(Interval);
         }
-
         /// <summary>
         /// Returns the subnode containing the envelope.
         /// Creates the node if
@@ -85,7 +77,7 @@ namespace NetTopologySuite.Index.Bintree
         {
             int subnodeIndex = GetSubnodeIndex(searchInterval, _centre);
             // if index is -1 searchEnv is not contained in a subnode
-            if (subnodeIndex != -1) 
+            if (subnodeIndex != -1)
             {
                 // create the node if it does not exist
                 Node<T> node = GetSubnode(subnodeIndex);
@@ -94,7 +86,6 @@ namespace NetTopologySuite.Index.Bintree
             }
             return this;
         }
-
         /// <summary>
         /// Returns the smallest existing
         /// node containing the envelope.
@@ -105,7 +96,7 @@ namespace NetTopologySuite.Index.Bintree
             int subnodeIndex = GetSubnodeIndex(searchInterval, _centre);
             if (subnodeIndex == -1)
                 return this;
-            if (Subnode[subnodeIndex] != null) 
+            if (Subnode[subnodeIndex] != null)
             {
                 // query lies in subnode, so search it
                 Node<T> node = Subnode[subnodeIndex];
@@ -114,18 +105,17 @@ namespace NetTopologySuite.Index.Bintree
             // no existing subnode, so return this one anyway
             return this;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="node"></param>
         public  void Insert(Node<T> node)
         {
             Assert.IsTrue(Interval == null || Interval.Contains(node.Interval));
             int index = GetSubnodeIndex(node.Interval, _centre);
-            if (node._level == _level - 1) 
-                Subnode[index] = node;            
-            else 
+            if (node._level == _level - 1)
+                Subnode[index] = node;
+            else
             {
                 // the node is not a direct child, so make a new child node to contain it
                 // and recursively insert the node
@@ -134,30 +124,27 @@ namespace NetTopologySuite.Index.Bintree
                 Subnode[index] = childNode;
             }
         }
-
         /// <summary>
         /// Get the subnode for the index.
         /// If it doesn't exist, create it.
         /// </summary>
         private Node<T> GetSubnode(int index)
         {
-            if (Subnode[index] == null)             
-                Subnode[index] = CreateSubnode(index);            
+            if (Subnode[index] == null)
+                Subnode[index] = CreateSubnode(index);
             return Subnode[index];
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
         private Node<T> CreateSubnode(int index)
-        {   
+        {
             // create a new subnode in the appropriate interval
             double min = 0.0;
             double max = 0.0;
-
-            switch (index) 
+            switch (index)
             {
                 case 0:
                     min = Interval.Min;

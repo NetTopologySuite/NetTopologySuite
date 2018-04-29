@@ -9,25 +9,19 @@
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
-
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Tests.NUnit.Index.Strtree
 {
-
     /// <summary>
     /// The Class GeometryDistanceComparer.
     /// </summary>
     public class GeometryDistanceComparer : IComparer<IGeometry>
     {
-
         /// <summary>The normal order.</summary>
         private readonly bool _normalOrder;
-
         /// <summary>The query center.</summary>
         private readonly IPoint _queryCenter;
-
         /// <summary>
         /// Instantiates a new Geometry distance comparator.
         /// </summary>
@@ -38,7 +32,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             _queryCenter = queryCenter;
             _normalOrder = normalOrder;
         }
-
          /// <inheritdoc cref="IComparer{T}.Compare"/>
         public int Compare(IGeometry g1, IGeometry g2)
         {
@@ -54,7 +47,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
                 {
                     return 0;
                 }
-
                 return -1;
             }
             else
@@ -67,10 +59,8 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
                 {
                     return 0;
                 }
-
                 return 1;
             }
-
         }
     }
 }

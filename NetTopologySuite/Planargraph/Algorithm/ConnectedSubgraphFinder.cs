@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-
 namespace NetTopologySuite.Planargraph.Algorithm
 {
     /// <summary>
@@ -8,7 +7,6 @@ namespace NetTopologySuite.Planargraph.Algorithm
     public class ConnectedSubgraphFinder
     {
         private readonly PlanarGraph graph;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ConnectedSubgraphFinder"/> class.
         /// </summary>
@@ -17,7 +15,6 @@ namespace NetTopologySuite.Planargraph.Algorithm
         {
             this.graph = graph;
         }
-
         public IList<Subgraph> GetConnectedSubgraphs()
         {
             IList<Subgraph> subgraphs = new List<Subgraph>();
@@ -28,18 +25,16 @@ namespace NetTopologySuite.Planargraph.Algorithm
                 Edge e = ienum.Current;
                 Node node = e.GetDirEdge(0).FromNode;
                 if (!node.IsVisited)
-                    subgraphs.Add(FindSubgraph(node));                
+                    subgraphs.Add(FindSubgraph(node));
             }
             return subgraphs;
         }
-
         private Subgraph FindSubgraph(Node node)
         {
             Subgraph subgraph = new Subgraph(graph);
             AddReachable(node, subgraph);
             return subgraph;
         }
-
         /// <summary>
         /// Adds all nodes and edges reachable from this node to the subgraph.
         /// Uses an explicit stack to avoid a large depth of recursion.
@@ -56,7 +51,6 @@ namespace NetTopologySuite.Planargraph.Algorithm
                 AddEdges(node, nodeStack, subgraph);
             }
         }
-
         /// <summary>
         /// Adds the argument node and all its out edges to the subgraph.
         /// </summary>
@@ -70,7 +64,7 @@ namespace NetTopologySuite.Planargraph.Algorithm
             {
                 subgraph.Add(de.Edge);
                 Node toNode = de.ToNode;
-                if (!toNode.IsVisited) 
+                if (!toNode.IsVisited)
                     nodeStack.Push(toNode);
             }
         }

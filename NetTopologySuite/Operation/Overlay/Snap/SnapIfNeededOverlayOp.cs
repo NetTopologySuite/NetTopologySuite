@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Operation.Overlay.Snap
 {
     /// <summary>
@@ -20,35 +19,28 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             var op = new SnapIfNeededOverlayOp(g0, g1);
             return op.GetResultGeometry(opCode);
         }
-
         public static IGeometry Intersection(IGeometry g0, IGeometry g1)
         {
             return Overlay(g0, g1, SpatialFunction.Intersection);
         }
-
         public static IGeometry Union(IGeometry g0, IGeometry g1)
         {
             return Overlay(g0, g1, SpatialFunction.Union);
         }
-
         public static IGeometry Difference(IGeometry g0, IGeometry g1)
         {
             return Overlay(g0, g1, SpatialFunction.Difference);
         }
-
         public static IGeometry SymDifference(IGeometry g0, IGeometry g1)
         {
             return Overlay(g0, g1, SpatialFunction.SymDifference);
         }
-
         private readonly IGeometry[] _geom = new IGeometry[2];
-
         public SnapIfNeededOverlayOp(IGeometry g1, IGeometry g2)
         {
             _geom[0] = g1;
             _geom[1] = g2;
         }
-
         public IGeometry GetResultGeometry(SpatialFunction opCode)
         {
             IGeometry result = null;
@@ -67,7 +59,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             catch (Exception ex)
             {
                 savedException = ex;
-                // Ignore this exception, since the operation will be rerun                                
+                // Ignore this exception, since the operation will be rerun
             }
             if (!isSuccess)
             {

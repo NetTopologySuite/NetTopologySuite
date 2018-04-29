@@ -1,5 +1,4 @@
 ﻿using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
 /**
@@ -52,7 +51,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
  * Some relevant comments in the original code has been kept untouched in its entirety. For more in-depth information
  * refer to the original source.
  */
-
 /*****************************************************************************/
 /*                                                                           */
 /*  Routines for Arbitrary Precision Floating-point Arithmetic               */
@@ -83,7 +81,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 /*    from the Web page http://www.cs.cmu.edu/~quake/robust.html .           */
 /*                                                                           */
 /*****************************************************************************/
-
 /*****************************************************************************/
 /*                                                                           */
 /*  Using this code:                                                         */
@@ -167,19 +164,17 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 /*    have questions.                                                        */
 /*                                                                           */
 /*****************************************************************************/
-
 public class ShewchuksDeterminant
 {
-
   /**
    * Implements a filter for computing the orientation index of three coordinates.
    * <p>
    * If the orientation can be computed safely using standard DP
    * arithmetic, this routine returns the orientation index.
    * Otherwise, a value i > 1 is returned.
-   * In this case the orientation index must 
+   * In this case the orientation index must
    * be computed using some other method.
-   * 
+   *
    * @param pa a coordinate
    * @param pb a coordinate
    * @param pc a coordinate
@@ -189,11 +184,9 @@ public class ShewchuksDeterminant
   public static int orientationIndexFilter(Coordinate pa, Coordinate pb, Coordinate pc)
   {
     double detsum;
-
     double detleft = (pa.X - pc.X) * (pb.Y - pc.Y);
     double detright = (pa.Y - pc.Y) * (pb.X - pc.X);
     double det = detleft - detright;
-
     if (detleft > 0.0) {
       if (detright <= 0.0) {
         return signum(det);
@@ -213,35 +206,31 @@ public class ShewchuksDeterminant
     else {
       return signum(det);
     }
-
     double ERR_BOUND = 1e-15;
     double errbound = ERR_BOUND * detsum;
     //double errbound = ccwerrboundA * detsum;
     if ((det >= errbound) || (-det >= errbound)) {
       return signum(det);
     }
-
     return 2;
   }
-
   private static int signum(double x)
   {
     if (x > 0) return 1;
     if (x < 0) return -1;
     return 0;
   }
-  
   /**
    * Returns the index of the direction of the point <code>q</code> relative to
    * a vector specified by <code>p1-p2</code>.
-   * 
+   *
    * @param p1
    *          the origin point of the vector
    * @param p2
    *          the final point of the vector
    * @param q
    *          the point to compute the direction to
-   * 
+   *
    * @return 1 if q is counter-clockwise (left) from p1-p2
    * @return -1 if q is clockwise (right) from p1-p2
    * @return 0 if q is collinear with p1-p2
@@ -253,15 +242,12 @@ public class ShewchuksDeterminant
     if (orientation < 0.0) return -1;
     return 0;
   }
-
   private static double orient2d(Coordinate pa, Coordinate pb, Coordinate pc)
   {
     double detsum;
-
     double detleft = (pa.X - pc.X) * (pb.Y - pc.Y);
     double detright = (pa.Y - pc.Y) * (pb.X - pc.X);
     double det = detleft - detright;
-
     if (detleft > 0.0) {
       if (detright <= 0.0) {
         return det;
@@ -281,15 +267,12 @@ public class ShewchuksDeterminant
     else {
       return det;
     }
-
     double errbound = ccwerrboundA * detsum;
     if ((det >= errbound) || (-det >= errbound)) {
       return det;
     }
-
     return orient2dadapt(pa, pb, pc, detsum);
   }
-  
   /*****************************************************************************/
   /*                                                                           */
   /* orient2d() Adaptive exact 2D orientation test. Robust. */
@@ -309,131 +292,92 @@ public class ShewchuksDeterminant
   /* nearly so. */
   /*                                                                           */
   /*****************************************************************************/
-
   private static double orient2dadapt(Coordinate pa, Coordinate pb,
       Coordinate pc, double detsum)
   {
-
     double acx = pa.X - pc.X;
     double bcx = pb.X - pc.X;
     double acy = pa.Y - pc.Y;
     double bcy = pb.Y - pc.Y;
-
     double detleft = Two_Product_Head(acx, bcy);
     double detlefttail = Two_Product_Tail(acx, bcy, detleft);
-
     double detright = Two_Product_Head(acy, bcx);
     double detrighttail = Two_Product_Tail(acy, bcx, detright);
-
     double[] B = new double[4];
     B[2] = Two_Two_Diff__x2(detleft, detlefttail, detright, detrighttail);
     B[1] = Two_Two_Diff__x1(detleft, detlefttail, detright, detrighttail);
     B[0] = Two_Two_Diff__x0(detleft, detlefttail, detright, detrighttail);
     B[3] = Two_Two_Diff__x3(detleft, detlefttail, detright, detrighttail);
-
     double det = B[0] + B[1] + B[2] + B[3];
     //det = estimate(4, B);
     double errbound = ccwerrboundB * detsum;
     if ((det >= errbound) || (-det >= errbound)) {
       return det;
     }
-
     double acxtail = Two_Diff_Tail(pa.X, pc.X, acx);
     double bcxtail = Two_Diff_Tail(pb.X, pc.X, bcx);
     double acytail = Two_Diff_Tail(pa.Y, pc.Y, acy);
     double bcytail = Two_Diff_Tail(pb.Y, pc.Y, bcy);
-
     if ((acxtail == 0.0) && (acytail == 0.0) && (bcxtail == 0.0)
         && (bcytail == 0.0)) {
       return det;
     }
-
     errbound = ccwerrboundC * detsum + resulterrbound * Absolute(det);
     det += (acx * bcytail + bcy * acxtail) - (acy * bcxtail + bcx * acytail);
     if ((det >= errbound) || (-det >= errbound)) {
       return det;
     }
-
     double s1 = Two_Product_Head(acxtail, bcy);
     double s0 = Two_Product_Tail(acxtail, bcy, s1);
-
     double t1 = Two_Product_Head(acytail, bcx);
     double t0 = Two_Product_Tail(acytail, bcx, t1);
-
     double u3 = Two_Two_Diff__x3(s1, s0, t1, t0);
     double[] u = new double[4];
     u[2] = Two_Two_Diff__x2(s1, s0, t1, t0);
     u[1] = Two_Two_Diff__x1(s1, s0, t1, t0);
     u[0] = Two_Two_Diff__x0(s1, s0, t1, t0);
-
     u[3] = u3;
     double[] C1 = new double[8];
     int C1length = fast_expansion_sum_zeroelim(4, B, 4, u, C1);
-
     s1 = Two_Product_Head(acx, bcytail);
     s0 = Two_Product_Tail(acx, bcytail, s1);
-
     t1 = Two_Product_Head(acy, bcxtail);
     t0 = Two_Product_Tail(acy, bcxtail, t1);
-
     u3 = Two_Two_Diff__x3(s1, s0, t1, t0);
     u[2] = Two_Two_Diff__x2(s1, s0, t1, t0);
     u[1] = Two_Two_Diff__x1(s1, s0, t1, t0);
     u[0] = Two_Two_Diff__x0(s1, s0, t1, t0);
-
     u[3] = u3;
     double[] C2 = new double[12];
     int C2length = fast_expansion_sum_zeroelim(C1length, C1, 4, u, C2);
-
     s1 = Two_Product_Head(acxtail, bcytail);
     s0 = Two_Product_Tail(acxtail, bcytail, s1);
-
     t1 = Two_Product_Head(acytail, bcxtail);
     t0 = Two_Product_Tail(acytail, bcxtail, t1);
-
     u3 = Two_Two_Diff__x3(s1, s0, t1, t0);
     u[2] = Two_Two_Diff__x2(s1, s0, t1, t0);
     u[1] = Two_Two_Diff__x1(s1, s0, t1, t0);
     u[0] = Two_Two_Diff__x0(s1, s0, t1, t0);
-
     u[3] = u3;
     double[] D = new double[16];
     int Dlength = fast_expansion_sum_zeroelim(C2length, C2, 4, u, D);
-
     return (D[Dlength - 1]);
   }
-
-
   private static readonly double epsilon;
-
   private static readonly  double splitter;
-
   private static readonly  double resulterrbound;
-
   private static readonly  double ccwerrboundA;
-
   private static readonly  double ccwerrboundB;
-
   private static readonly  double ccwerrboundC;
-
   private static readonly  double o3derrboundA;
-
   private static readonly  double o3derrboundB;
-
   private static readonly  double o3derrboundC;
-
   private static readonly  double iccerrboundA;
-
   private static readonly  double iccerrboundB;
-
   private static readonly  double iccerrboundC;
-
   private static readonly  double isperrboundA;
-
   private static readonly  double isperrboundB;
-
   private static readonly  double isperrboundC;
-
   /*****************************************************************************/
   /*                                                                           */
   /* exactinit() Initialize the variables used for exact arithmetic. */
@@ -452,13 +396,10 @@ public class ShewchuksDeterminant
   /* Don't change this routine unless you fully understand it. */
   /*                                                                           */
   /*****************************************************************************/
-
-
     /* Repeatedly divide `epsilon' by two until it is too small to add to */
     /* one without causing roundoff. (Also check if the sum is equal to */
     /* the previous sum, for machines that round up instead of using exact */
     /* rounding. Not that this library will work on such machines anyway. */
-
     static ShewchuksDeterminant()
     {
     double epsilon_temp = 1.0d;
@@ -476,7 +417,6 @@ public class ShewchuksDeterminant
       check = 1.0 + epsilon_temp;
     } while ((check != 1.0) && (check != lastcheck));
     splitter_temp += 1.0;
-
     /* Error bounds for orientation and incircle tests. */
     resulterrbound = (3.0 + 8.0 * epsilon_temp) * epsilon_temp;
     ccwerrboundA = (3.0 + 16.0 * epsilon_temp) * epsilon_temp;
@@ -494,46 +434,35 @@ public class ShewchuksDeterminant
     epsilon = epsilon_temp;
     splitter = splitter_temp;
   }
-
   private static double Absolute(double a)
   {
     return ((a) >= 0.0 ? (a) : -(a));
   }
-
   private static double Fast_Two_Sum_Tail(double a, double b, double x)
   {
     double bvirt = x - a;
     double y = b - bvirt;
-
     return y;
   }
-
   private static double Fast_Two_Sum_Head(double a, double b)
   {
     double x = (double) (a + b);
-
     return x;
   }
-
   private static double Two_Sum_Tail(double a, double b, double x)
   {
     double bvirt = (double) (x - a);
     double avirt = x - bvirt;
     double bround = b - bvirt;
     double around = a - avirt;
-
     double y = around + bround;
-
     return y;
   }
-
   private static double Two_Sum_Head(double a, double b)
   {
     double x = (double) (a + b);
-
     return x;
   }
-
   private static double Two_Diff_Tail(double a, double b, double x)
   {
     double bvirt = (double) (a - x); // porting issue: why this cast?
@@ -541,131 +470,101 @@ public class ShewchuksDeterminant
     double bround = bvirt - b;
     double around = a - avirt;
     double y = around + bround;
-
     return y;
   }
-
   private static double Two_Diff_Head(double a, double b)
   {
     double x = (double) (a - b);
-
     return x;
   }
-
   private static double SplitLo(double a)
   {
     double c = (double) (splitter * a); // porting issue: why this cast?
     double abig = (double) (c - a); // porting issue: why this cast?
     double ahi = c - abig;
     double alo = a - ahi;
-
     return alo;
   }
-
   private static double SplitHi(double a)
   {
     double c = (double) (splitter * a); // porting issue: why this cast?
     double abig = (double) (c - a); // porting issue: why this cast?
     double ahi = c - abig;
-
     return ahi;
   }
-
   private static double Two_Product_Tail(double a, double b, double x)
   {
     double ahi = SplitHi(a);
     double alo = SplitLo(a);
     double bhi = SplitHi(b);
     double blo = SplitLo(b);
-
     double err1 = x - (ahi * bhi);
     double err2 = err1 - (alo * bhi);
     double err3 = err2 - (ahi * blo);
     double y = (alo * blo) - err3;
-
     return y;
   }
-
   private static double Two_Product_Head(double a, double b)
   {
     double x = (double) (a * b);
-
     return x;
   }
-
   // #define Two_One_Diff(a1, a0, b, x2, x1, x0)
   private static double Two_One_Diff__x0(double a1, double a0, double b)
   {
     double _i = Two_Diff_Head(a0, b);
     double x0 = Two_Diff_Tail(a0, b, _i);
-
     return x0;
   }
-
   // #define Two_One_Diff(a1, a0, b, x2, x1, x0)
   private static double Two_One_Diff__x1(double a1, double a0, double b)
   {
     double _i = Two_Diff_Head(a0, b);
     double x2 = Two_Sum_Head(a1, _i);
     double x1 = Two_Sum_Tail(a1, _i, x2);
-
     return x1;
   }
-
   // #define Two_One_Diff(a1, a0, b, x2, x1, x0)
   private static double Two_One_Diff__x2(double a1, double a0, double b)
   {
     double _i = Two_Diff_Head(a0, b);
     double x2 = Two_Sum_Head(a1, _i);
-
     return x2;
   }
-
   // #define Two_Two_Diff(a1, a0, b1, b0, x3, x2, x1, x0)
   private static double Two_Two_Diff__x0(double a1, double a0, double b1,
       double b0)
   {
     double x0 = Two_One_Diff__x0(a1, a0, b0);
-
     return x0;
   }
-
   // #define Two_Two_Diff(a1, a0, b1, b0, x3, x2, x1, x0)
   private static double Two_Two_Diff__x1(double a1, double a0, double b1,
       double b0)
   {
     double _j = Two_One_Diff__x2(a1, a0, b0);
     double _0 = Two_One_Diff__x1(a1, a0, b0);
-
     double x1 = Two_One_Diff__x0(_j, _0, b1);
-
     return x1;
   }
-
   // #define Two_Two_Diff(a1, a0, b1, b0, x3, x2, x1, x0)
   private static double Two_Two_Diff__x2(double a1, double a0, double b1,
       double b0)
   {
     double _j = Two_One_Diff__x2(a1, a0, b0);
     double _0 = Two_One_Diff__x1(a1, a0, b0);
-
     double x2 = Two_One_Diff__x1(_j, _0, b1);
-
     return x2;
   }
-
   // #define Two_Two_Diff(a1, a0, b1, b0, x3, x2, x1, x0)
   private static double Two_Two_Diff__x3(double a1, double a0, double b1,
       double b0)
   {
     double _j = Two_One_Diff__x2(a1, a0, b0);
     double _0 = Two_One_Diff__x1(a1, a0, b0);
-
     double x3 = Two_One_Diff__x2(_j, _0, b1);
-
     return x3;
   }
-
   /*****************************************************************************/
   /*                                                                           */
   /* fast_expansion_sum_zeroelim() Sum two expansions, eliminating zero */
@@ -679,17 +578,14 @@ public class ShewchuksDeterminant
   /* properties. */
   /*                                                                           */
   /*****************************************************************************/
-
   private static int fast_expansion_sum_zeroelim(int elen, double[] e,
       int flen, double[] f, double[] h) /* h cannot be e or f. */
   {
     double Q;
     double Qnew;
     double hh;
-
     int eindex, findex, hindex;
     double enow, fnow;
-
     enow = e[0];
     fnow = f[0];
     eindex = findex = 0;
@@ -757,7 +653,6 @@ public class ShewchuksDeterminant
     }
     return hindex;
   }
-
   /*****************************************************************************/
   /*                                                                           */
   /* estimate() Produce a one-word estimate of an expansion's value. */
@@ -765,19 +660,14 @@ public class ShewchuksDeterminant
   /* See either version of my paper for details. */
   /*                                                                           */
   /*****************************************************************************/
-
   private static double estimate(int elen, double[] e)
   {
     double Q;
     int eindex;
-
     Q = e[0];
     for (eindex = 1; eindex < elen; eindex++) {
       Q += e[eindex];
     }
     return Q;
   }
-
-
-
 }}

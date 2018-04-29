@@ -3,7 +3,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Noding;
-
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
@@ -28,9 +27,7 @@ namespace NetTopologySuite.Geometries.Prepared
             PreparedLineStringIntersects op = new PreparedLineStringIntersects(prep);
             return op.Intersects(geom);
         }
-
         protected PreparedLineString prepLine;
-
         ///<summary>
         /// Creates an instance of this operation.
         /// </summary>
@@ -39,7 +36,6 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             this.prepLine = prepLine;
         }
-
         ///<summary>
         /// Tests whether this geometry intersects a given geometry.
         ///</summary>
@@ -60,29 +56,24 @@ namespace NetTopologySuite.Geometries.Prepared
                 if (segsIntersect)
                     return true;
             }
-
             /*
              * For L/L case we are done
              */
             if (geom.Dimension == Dimension.Curve)
                 return false;
-
             /*
              * For L/A case, need to check for proper inclusion of the target in the test
              */
             if (geom.Dimension == Dimension.Surface
                     && prepLine.IsAnyTargetComponentInTest(geom))
                 return true;
-
             /*
              * For L/P case, need to check if any points lie on line(s)
              */
             if (geom.Dimension == Dimension.Point)
                 return IsAnyTestPointInTarget(geom);
-
             return false;
         }
-
         ///<summary>
         /// Tests whether any representative point of the test Geometry intersects
         /// the target geometry.

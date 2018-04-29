@@ -8,16 +8,13 @@ using NetTopologySuite.IO;
 using NetTopologySuite.Planargraph;
 using NetTopologySuite.Utilities;
 using Assert = NUnit.Framework.Assert;
-
 namespace NetTopologySuite.Tests.NUnit
 {
-    public class MiscellaneousTest2 
+    public class MiscellaneousTest2
     {
-
         private static readonly IPrecisionModel precisionModel = new PrecisionModel(1);
         private static readonly IGeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
         private static readonly WKTReader reader = new WKTReader(geometryFactory);
-
         [TestAttribute]
         public void testCoordinateHash() {
             doTestCoordinateHash(true, new Coordinate(1, 2), new Coordinate(1, 2));
@@ -26,12 +23,10 @@ namespace NetTopologySuite.Tests.NUnit
             doTestCoordinateHash(false, new Coordinate(1, 2), new Coordinate(3, 2));
             doTestCoordinateHash(false, new Coordinate(1, 2), new Coordinate(2, 1));
         }
-
         private void doTestCoordinateHash(bool equal, Coordinate a, Coordinate b) {
             Assert.AreEqual(equal, a.Equals(b));
             Assert.AreEqual(equal, a.GetHashCode() == b.GetHashCode());
         }
-
         [TestAttribute]
         public void testZeroAreaPolygon()
         {
@@ -40,7 +35,6 @@ namespace NetTopologySuite.Tests.NUnit
             var valid = g.IsValid;
             Assert.IsTrue(true); //No exception thrown [Jon Aquino]
         }
-
         [TestAttribute]
         public void testLineStringIsValid()
         {
@@ -49,7 +43,6 @@ namespace NetTopologySuite.Tests.NUnit
             var valid = g.IsValid;
             Assert.IsTrue(true); //No exception thrown [Jon Aquino]
         }
-
         [TestAttribute]
         public void testUniqueCoordinateArrayFilter()
         {
@@ -62,7 +55,6 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.AreEqual(new Coordinate(20, 20), f.Coordinates[1]);
             Assert.AreEqual(new Coordinate(30, 30), f.Coordinates[2]);
         }
-
         [TestAttribute]
         public void testPointLocatorLinearRingLineString()
         {
@@ -86,7 +78,6 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(!PointLocation.IsOnLine(new Coordinate(30, 10),
                                                  new Coordinate[] {new Coordinate(0,10), new Coordinate(20,10)}));
         }
-
         [TestAttribute]
         public void testDirectedEdgeComparator() {
             var d1 = new DirectedEdge(new Node(new Coordinate(0, 0)),
@@ -95,7 +86,6 @@ namespace NetTopologySuite.Tests.NUnit
                                       new Node(new Coordinate(20, 20)), new Coordinate(20, 20), false);
             Assert.AreEqual(0, d2.CompareTo(d1));
         }
-
         [TestAttribute]
         public void testDirectedEdgeToEdges() {
             var d1 = new DirectedEdge(new Node(new Coordinate(0, 0)),
@@ -138,6 +128,5 @@ namespace NetTopologySuite.Tests.NUnit
             a.Difference(b);
             b.Difference(a);
         }
-
     }
 }

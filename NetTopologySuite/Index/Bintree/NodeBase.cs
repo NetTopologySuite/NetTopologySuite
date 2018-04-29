@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-
 namespace NetTopologySuite.Index.Bintree
 {
-    /// <summary> 
+    /// <summary>
     /// The base class for nodes in a <c>Bintree</c>.
     /// </summary>
 #if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
@@ -11,7 +10,7 @@ namespace NetTopologySuite.Index.Bintree
 #endif
     public abstract class NodeBase<T>
     {
-        /// <summary> 
+        /// <summary>
         /// Returns the index of the subnode that wholely contains the given interval.
         /// If none does, returns -1.
         /// </summary>
@@ -20,52 +19,46 @@ namespace NetTopologySuite.Index.Bintree
         public static int GetSubnodeIndex(Interval interval, double centre)
         {
             int subnodeIndex = -1;
-            if (interval.Min >= centre) 
+            if (interval.Min >= centre)
                 subnodeIndex = 1;
-            if (interval.Max <= centre) 
+            if (interval.Max <= centre)
                 subnodeIndex = 0;
             return subnodeIndex;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private IList<T> _items = new List<T>();
-
         /// <summary>
         /// Subnodes are numbered as follows:
-        /// 0 | 1        
+        /// 0 | 1
         /// .
         /// </summary>
         protected Node<T>[] Subnode = new Node<T>[2];
-
         /*
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected NodeBase() { }
         */
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public  IList<T> Items
         {
             get => _items;
             protected set => _items = value;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="item"></param>
         public  void Add(T item)
         {
             _items.Add(item);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
@@ -76,17 +69,15 @@ namespace NetTopologySuite.Index.Bintree
                 items.Add(o);
             for (int i = 0; i < 2; i++)
                 if (Subnode[i] != null)
-                    Subnode[i].AddAllItems(items);                            
+                    Subnode[i].AddAllItems(items);
             return items;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="interval"></param>
         /// <returns></returns>
         protected abstract bool IsSearchMatch(Interval interval);
-
         /// <summary>
         /// Adds items in the tree which potentially overlap the query interval
         /// to the given collection.
@@ -102,16 +93,13 @@ namespace NetTopologySuite.Index.Bintree
             if (interval == default(Interval) && !IsSearchMatch(interval))
                 return;
              */
-
             // some of these may not actually overlap - this is allowed by the bintree contract
             //resultItems.AddAll(items);
             foreach (T o in _items)
                 resultItems.Add(o);
-
             if (Subnode[0] != null) Subnode[0].AddAllItemsFromOverlapping(interval, resultItems);
             if (Subnode[1] != null) Subnode[1].AddAllItemsFromOverlapping(interval, resultItems);
         }
-
         /// <summary>
         /// Removes a single item from this subtree.
         /// </summary>
@@ -123,7 +111,6 @@ namespace NetTopologySuite.Index.Bintree
             // use interval to restrict nodes scanned
             if (!IsSearchMatch(itemInterval))
                 return false;
-
             bool found = false;
             for (int i = 0; i < 2; i++)
             {
@@ -141,17 +128,14 @@ namespace NetTopologySuite.Index.Bintree
             }
             // if item was found lower down, don't need to search for it here
             if (found) return true;
-
             // otherwise, try and remove the item from the list of items in this node
             found = _items.Remove(item);
             return found;
         }
-
         /// <summary>
         /// Gets whether this node is prunable
         /// </summary>
         public bool IsPrunable => !(HasChildren || HasItems);
-
         /// <summary>
         /// Gets whether this node has any children
         /// </summary>
@@ -167,12 +151,10 @@ namespace NetTopologySuite.Index.Bintree
                 return false;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool HasItems => _items.Count != 0;
-
         /// <summary>
         /// Gets whether this node has any subnodes
         /// </summary>
@@ -193,9 +175,8 @@ namespace NetTopologySuite.Index.Bintree
                 return maxSubDepth + 1;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public  int Count
         {
@@ -208,9 +189,8 @@ namespace NetTopologySuite.Index.Bintree
                 return subSize + _items.Count;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public  int NodeCount
         {

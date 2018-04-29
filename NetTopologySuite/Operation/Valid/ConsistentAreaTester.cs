@@ -4,10 +4,9 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.GeometriesGraph.Index;
 using NetTopologySuite.Operation.Relate;
-
 namespace NetTopologySuite.Operation.Valid
 {
-    /// <summary> 
+    /// <summary>
     /// Checks that a {GeometryGraph} representing an area
     /// (a <c>Polygon</c> or <c>MultiPolygon</c> )
     /// is consistent with the SFS semantics for area geometries.
@@ -16,30 +15,26 @@ namespace NetTopologySuite.Operation.Valid
     /// Testing for duplicate rings.
     /// If an inconsistency if found the location of the problem is recorded.
     /// </summary>
-    public class ConsistentAreaTester 
+    public class ConsistentAreaTester
     {
         private readonly LineIntersector li = new RobustLineIntersector();
         private readonly GeometryGraph geomGraph;
         private readonly RelateNodeGraph nodeGraph = new RelateNodeGraph();
-
         // the intersection point found (if any)
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomGraph"></param>
         public ConsistentAreaTester(GeometryGraph geomGraph)
         {
             this.geomGraph = geomGraph;
         }
-
         /// <summary>
         /// Returns the intersection point, or <c>null</c> if none was found.
-        /// </summary>        
+        /// </summary>
         public Coordinate InvalidPoint { get; private set; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsNodeConsistentArea
         {
@@ -59,7 +54,6 @@ namespace NetTopologySuite.Operation.Valid
                 return IsNodeEdgeAreaLabelsConsistent;
             }
         }
-
         /// <summary>
         /// Check all nodes to see if their labels are consistent.
         /// If any are not, return false.
@@ -80,7 +74,6 @@ namespace NetTopologySuite.Operation.Valid
                 return true;
             }
         }
-
         /// <summary>
         /// Checks for two duplicate rings in an area.
         /// Duplicate rings are rings that are topologically equal

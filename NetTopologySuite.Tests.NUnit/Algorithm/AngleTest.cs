@@ -3,14 +3,12 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     [TestFixtureAttribute]
     public class AngleTest
     {
         private const double Tolerance = 1E-5;
-
         [TestAttribute]
         public void TestAngle()
         {
@@ -29,17 +27,13 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.AreEqual(AngleUtility.IsAcute(new Coordinate(10, 0), new Coordinate(0, 0), new Coordinate(5, -10)), true);
             // angle of 0
             Assert.AreEqual(AngleUtility.IsAcute(new Coordinate(10, 0), new Coordinate(0, 0), new Coordinate(10, 0)), true);
-
             Assert.AreEqual(AngleUtility.IsAcute(new Coordinate(10, 0), new Coordinate(0, 0), new Coordinate(-5, 10)), false);
             Assert.AreEqual(AngleUtility.IsAcute(new Coordinate(10, 0), new Coordinate(0, 0), new Coordinate(-5, -10)), false);
-
-
         }
         [TestAttribute]
         public void TestNormalizePositive()
         {
             Assert.AreEqual(AngleUtility.NormalizePositive(0.0), 0.0, Tolerance);
-
             Assert.AreEqual(AngleUtility.NormalizePositive(-0.5 * Math.PI), 1.5 * Math.PI, Tolerance);
             Assert.AreEqual(AngleUtility.NormalizePositive(-Math.PI), Math.PI, Tolerance);
             Assert.AreEqual(AngleUtility.NormalizePositive(-1.5 * Math.PI), .5 * Math.PI, Tolerance);
@@ -47,7 +41,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.AreEqual(AngleUtility.NormalizePositive(-2.5 * Math.PI), 1.5 * Math.PI, Tolerance);
             Assert.AreEqual(AngleUtility.NormalizePositive(-3 * Math.PI), Math.PI, Tolerance);
             Assert.AreEqual(AngleUtility.NormalizePositive(-4 * Math.PI), 0.0, Tolerance);
-
             Assert.AreEqual(AngleUtility.NormalizePositive(0.5 * Math.PI), 0.5 * Math.PI, Tolerance);
             Assert.AreEqual(AngleUtility.NormalizePositive(Math.PI), Math.PI, Tolerance);
             Assert.AreEqual(AngleUtility.NormalizePositive(1.5 * Math.PI), 1.5 * Math.PI, Tolerance);
@@ -55,14 +48,11 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.AreEqual(AngleUtility.NormalizePositive(2.5 * Math.PI), 0.5 * Math.PI, Tolerance);
             Assert.AreEqual(AngleUtility.NormalizePositive(3 * Math.PI), Math.PI, Tolerance);
             Assert.AreEqual(AngleUtility.NormalizePositive(4 * Math.PI), 0.0, Tolerance);
-
         }
-
         [TestAttribute]
         public void TestNormalize()
         {
             Assert.AreEqual(AngleUtility.Normalize(0.0), 0.0, Tolerance);
-
             Assert.AreEqual(AngleUtility.Normalize(-0.5 * Math.PI), -0.5 * Math.PI, Tolerance);
             Assert.AreEqual(AngleUtility.Normalize(-Math.PI), Math.PI, Tolerance);
             Assert.AreEqual(AngleUtility.Normalize(-1.5 * Math.PI), .5 * Math.PI, Tolerance);
@@ -70,7 +60,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.AreEqual(AngleUtility.Normalize(-2.5 * Math.PI), -0.5 * Math.PI, Tolerance);
             Assert.AreEqual(AngleUtility.Normalize(-3 * Math.PI), Math.PI, Tolerance);
             Assert.AreEqual(AngleUtility.Normalize(-4 * Math.PI), 0.0, Tolerance);
-
             Assert.AreEqual(AngleUtility.Normalize(0.5 * Math.PI), 0.5 * Math.PI, Tolerance);
             Assert.AreEqual(AngleUtility.Normalize(Math.PI), Math.PI, Tolerance);
             Assert.AreEqual(AngleUtility.Normalize(1.5 * Math.PI), -0.5 * Math.PI, Tolerance);
@@ -78,8 +67,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.AreEqual(AngleUtility.Normalize(2.5 * Math.PI), 0.5 * Math.PI, Tolerance);
             Assert.AreEqual(AngleUtility.Normalize(3 * Math.PI), Math.PI, Tolerance);
             Assert.AreEqual(AngleUtility.Normalize(4 * Math.PI), 0.0, Tolerance);
-
-
         }
     }
 }

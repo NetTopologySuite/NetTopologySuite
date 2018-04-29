@@ -1,5 +1,4 @@
 using System;
-
 namespace Open.Topology.TestRunner
 {
     public class XmlTestErrorEventArgs : EventArgs
@@ -8,12 +7,9 @@ namespace Open.Topology.TestRunner
         {
             Thrown = ex;
         }
-
         public Exception Thrown { get; } = null;
     }
-
     public delegate void XmlTestErrorEventHandler(object sender, XmlTestErrorEventArgs args);
-
 	/// <summary>
 	/// Summary description for XmlTestExceptionManager.
 	/// </summary>
@@ -25,9 +21,7 @@ namespace Open.Topology.TestRunner
 			// TODO: Add constructor logic here
 			//
 		}
-
         public static event XmlTestErrorEventHandler ErrorEvent;
-
         public static void Publish(Exception ex)
         {
             if (ErrorEvent != null)

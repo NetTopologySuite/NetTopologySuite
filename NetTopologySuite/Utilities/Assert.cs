@@ -1,5 +1,4 @@
 using System;
-
 namespace NetTopologySuite.Utilities
 {
     /// <summary>
@@ -11,7 +10,6 @@ namespace NetTopologySuite.Utilities
         {
             IsTrue(assertion, null);
         }
-
         public static void IsTrue(bool assertion, string message)
         {
             if (assertion) return;
@@ -19,12 +17,10 @@ namespace NetTopologySuite.Utilities
                 throw new AssertionFailedException();
             throw new AssertionFailedException(message);
         }
-
         public static void IsEquals(Object expectedValue, Object actualValue)
         {
             IsEquals(expectedValue, actualValue, null);
         }
-
         public static void IsEquals(Object expectedValue, Object actualValue, string message)
         {
             if (actualValue.Equals(expectedValue))
@@ -33,12 +29,10 @@ namespace NetTopologySuite.Utilities
             string format = String.Format("Expected {0} but encountered {1}{2}", expectedValue, actualValue, s);
             throw new AssertionFailedException(format);
         }
-
         public static void ShouldNeverReachHere()
         {
             ShouldNeverReachHere(null);
         }
-
         public static void ShouldNeverReachHere(string message)
         {
             string s = (message != null ? ": " + message : String.Empty);

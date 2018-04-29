@@ -1,5 +1,4 @@
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Precision
 {
     ///<summary>
@@ -16,7 +15,6 @@ namespace NetTopologySuite.Precision
     public class CoordinatePrecisionReducerFilter : ICoordinateSequenceFilter
     {
         private readonly IPrecisionModel _precModel;
-
         ///<summary>
         /// Creates a new precision reducer filter.
         ///</summary>
@@ -25,7 +23,6 @@ namespace NetTopologySuite.Precision
         {
             _precModel = precModel;
         }
-
         ///<summary>
         /// Rounds the Coordinates in the sequence to match the PrecisionModel
         ///</summary>
@@ -34,12 +31,10 @@ namespace NetTopologySuite.Precision
             seq.SetOrdinate(i, Ordinate.X, _precModel.MakePrecise(seq.GetOrdinate(i, Ordinate.X)));
             seq.SetOrdinate(i, Ordinate.Y, _precModel.MakePrecise(seq.GetOrdinate(i, Ordinate.Y)));
         }
-
         ///<summary>
         /// Always runs over all geometry components.
         ///</summary>
         public bool Done => false;
-
         ///<summary>
         /// Always reports that the geometry has changed
         ///</summary>

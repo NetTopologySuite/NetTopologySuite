@@ -3,7 +3,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Samples.Tests.Github
 {
     [TestFixture]
@@ -20,7 +19,6 @@ namespace NetTopologySuite.Samples.Tests.Github
             Assert.IsTrue(Math.Abs(angle1 - 45d) < 0.001);
             Assert.IsTrue(Math.Abs(angle2 - 45d) < 0.001);
         }
-
         [Test]
         public void angle_utility_handles_orientation()
         {
@@ -33,7 +31,6 @@ namespace NetTopologySuite.Samples.Tests.Github
             Assert.AreEqual(45d, angle1);
             Assert.AreEqual(-135d, angle2);
         }
-
         [Test]
         public void linesegment_handles_orientation()
         {

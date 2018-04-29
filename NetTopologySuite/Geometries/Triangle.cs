@@ -1,10 +1,9 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-
 namespace NetTopologySuite.Geometries
 {
-    /// <summary> 
+    /// <summary>
     /// Represents a planar triangle, and provides methods for calculating various
     /// properties of triangles.
     /// </summary>
@@ -13,22 +12,18 @@ namespace NetTopologySuite.Geometries
         /**
          * The coordinates of the vertices of the triangle
          */
-
         /// <summary>
         /// A corner point of the triangle
         /// </summary>
         public Coordinate P0 { get; set; }
-
         /// <summary>
         /// A corner point of the triangle
         /// </summary>
         public Coordinate P1 { get; set; }
-
         /// <summary>
         /// A corner point of the triangle
         /// </summary>
         public Coordinate P2 { get; set; }
-
         /// <summary>
         /// Tests whether a triangle is acute. A triangle is acute iff all interior
         /// angles are acute. This is a strict test - right triangles will return
@@ -47,7 +42,6 @@ namespace NetTopologySuite.Geometries
             if (!AngleUtility.IsAcute(c, a, b)) return false;
             return true;
         }
-
         ///<summary>
         /// Computes the line which is the perpendicular bisector of the
         ///</summary>
@@ -63,10 +57,9 @@ namespace NetTopologySuite.Geometries
             HCoordinate l2 = new HCoordinate(a.X - dy + dx / 2.0, a.Y + dx + dy / 2.0, 1.0);
             return new HCoordinate(l1, l2);
         }
-
         ///<summary>Computes the circumcentre of a triangle.</summary>
         /// <remarks>
-        /// The circumcentre is the centre of the circumcircle, 
+        /// The circumcentre is the centre of the circumcircle,
         /// the smallest circle which encloses the triangle.
         /// It is also the common intersection point of the
         /// perpendicular bisectors of the sides of the triangle,
@@ -93,17 +86,13 @@ namespace NetTopologySuite.Geometries
             double ay = a.Y - cy;
             double bx = b.X - cx;
             double by = b.Y - cy;
-
             double denom = 2 * Det(ax, ay, bx, by);
             double numx = Det(ay, ax * ax + ay * ay, by, bx * bx + by * by);
             double numy = Det(ax, ax * ax + ay * ay, bx, bx * bx + by * by);
-
             double ccx = cx - numx / denom;
             double ccy = cy + numy / denom;
-
             return new Coordinate(ccx, ccy);
         }
-
         /// <summary>
         /// Computes the determinant of a 2x2 matrix. Uses standard double-precision
         /// arithmetic, so is susceptible to round-off error.
@@ -117,7 +106,6 @@ namespace NetTopologySuite.Geometries
         {
             return m00 * m11 - m01 * m10;
         }
-
         ///<summary>
         /// Computes the incentre of a triangle.
         ///</summary>
@@ -125,7 +113,7 @@ namespace NetTopologySuite.Geometries
         /// The <c>InCentre</c> of a triangle is the point which is equidistant
         /// from the sides of the triangle.
         /// It is also the point at which the bisectors of the triangle's angles meet.
-        /// It is the centre of the triangle's <c>InCircle</c>, which is the unique circle 
+        /// It is the centre of the triangle's <c>InCircle</c>, which is the unique circle
         /// that is tangent to each of the triangle's three sides.
         /// </remarks>
         /// <param name="a">A vertex of the triangle</param>
@@ -139,12 +127,10 @@ namespace NetTopologySuite.Geometries
             double len1 = a.Distance(c);
             double len2 = a.Distance(b);
             double circum = len0 + len1 + len2;
-
             double inCentreX = (len0 * a.X + len1 * b.X + len2 * c.X) / circum;
             double inCentreY = (len0 * a.Y + len1 * b.Y + len2 * c.Y) / circum;
             return new Coordinate(inCentreX, inCentreY);
         }
-
         ///<summary>Computes the centroid (centre of mass) of a triangle.</summary>
         /// <remarks>
         /// This is also the point at which the triangle's three
@@ -163,7 +149,6 @@ namespace NetTopologySuite.Geometries
             double y = (a.Y + b.Y + c.Y) / 3;
             return new Coordinate(x, y);
         }
-
         ///<summary>Computes the length of the longest side of a triangle</summary>
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
@@ -183,7 +168,6 @@ namespace NetTopologySuite.Geometries
                 maxLen = lenCA;
             return maxLen;
         }
-
         ///<summary>Computes the point at which the bisector of the angle ABC cuts the segment AC.</summary>
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
@@ -200,12 +184,10 @@ namespace NetTopologySuite.Geometries
             double frac = len0 / (len0 + len2);
             double dx = c.X - a.X;
             double dy = c.Y - a.Y;
-
             Coordinate splitPt = new Coordinate(a.X + frac * dx,
                                                 a.Y + frac * dy);
             return splitPt;
         }
-
         ///<summary>
         /// Computes the 2D area of a triangle.
         /// The area value is always non-negative.
@@ -223,7 +205,6 @@ namespace NetTopologySuite.Geometries
                 + c.X * (b.Y - a.Y))
                 / 2.0;
         }
-
         ///<summary>
         /// Computes the signed 2D area of a triangle.
         ///</summary>
@@ -233,8 +214,8 @@ namespace NetTopologySuite.Geometries
         /// and negative if it is oriented CCW.
         /// </para>
         /// <para>
-        /// The signed area value can be used to determine point orientation, but 
-        /// the implementation in this method is susceptible to round-off errors.  
+        /// The signed area value can be used to determine point orientation, but
+        /// the implementation in this method is susceptible to round-off errors.
         /// Use <see cref="Orientation.Index"/> for robust orientation
         /// calculation.
         /// </para>
@@ -245,7 +226,6 @@ namespace NetTopologySuite.Geometries
         /// <returns>The area of the triangle</returns>
         /// <seealso cref="Area(Coordinate, Coordinate, Coordinate)"/>
         /// <seealso cref="Orientation.Index"/>
-
         public static double SignedArea(Coordinate a, Coordinate b, Coordinate c)
         {
             /*
@@ -257,9 +237,8 @@ namespace NetTopologySuite.Geometries
              */
             return ((c.X - a.X) * (b.Y - a.Y) - (b.X - a.X) * (c.Y - a.Y)) / 2;
         }
-
         ///<summary>
-        /// Computes the 3D area of a triangle. 
+        /// Computes the 3D area of a triangle.
         /// The value computed is always non-negative.
         ///</summary>
         /// <param name="a">A vertex of the triangle</param>
@@ -278,29 +257,24 @@ namespace NetTopologySuite.Geometries
             double ux = b.X - a.X;
             double uy = b.Y - a.Y;
             double uz = b.Z - a.Z;
-
             double vx = c.X - a.X;
             double vy = c.Y - a.Y;
             double vz = c.Z - a.Z;
-
-            // cross-product = u x v 
+            // cross-product = u x v
             double crossx = uy * vz - uz * vy;
             double crossy = uz * vx - ux * vz;
             double crossz = ux * vy - uy * vx;
-
             // tri area = 1/2 * | u x v |
             double absSq = crossx * crossx + crossy * crossy + crossz * crossz;
             double area3D = Math.Sqrt(absSq) / 2;
-
             return area3D;
         }
-
         /// <summary>
-        /// Computes the Z-value (elevation) of an XY point 
+        /// Computes the Z-value (elevation) of an XY point
         /// on a three-dimensional plane defined by a triangle
         /// whose vertices have Z-values.
         /// The defining triangle must not be degenerate
-        /// (in other words, the triangle must enclose a 
+        /// (in other words, the triangle must enclose a
         /// non-zero area),
         /// and must not be parallel to the Z-axis.
         /// <para/>
@@ -329,7 +303,6 @@ namespace NetTopologySuite.Geometries
             double z = v0.Z + t * (v1.Z - v0.Z) + u * (v2.Z - v0.Z);
             return z;
         }
-
         /// <summary>
         /// Creates a new triangle with the given vertices.
         /// </summary>
@@ -342,7 +315,6 @@ namespace NetTopologySuite.Geometries
             P1 = p1;
             P2 = p2;
         }
-
         /// <summary>
         /// Computes the <c>InCentre</c> of this triangle
         /// </summary>
@@ -359,7 +331,6 @@ namespace NetTopologySuite.Geometries
         {
             return InCentre(P0, P1, P2);
         }
-
         /// <summary>
         /// Tests whether this triangle is acute. A triangle is acute iff all interior
         /// angles are acute. This is a strict test - right triangles will return
@@ -373,7 +344,6 @@ namespace NetTopologySuite.Geometries
         {
             return IsAcute(P0, P1, P2);
         }
-
         /// <summary>
         /// Computes the circumcentre of this triangle. The circumcentre is the centre
         /// of the circumcircle, the smallest circle which encloses the triangle. It is
@@ -392,7 +362,6 @@ namespace NetTopologySuite.Geometries
         {
             return Circumcentre(P0, P1, P2);
         }
-
         /// <summary>
         /// Computes the centroid (centre of mass) of this triangle. This is also the
         /// point at which the triangle's three medians intersect (a triangle median is
@@ -406,7 +375,6 @@ namespace NetTopologySuite.Geometries
         {
             return Centroid(P0, P1, P2);
         }
-
         /// <summary>
         /// Computes the length of the longest side of this triangle
         /// </summary>
@@ -415,7 +383,6 @@ namespace NetTopologySuite.Geometries
         {
             return LongestSideLength(P0, P1, P2);
         }
-
         /// <summary>
         /// Computes the 2D area of this triangle. The area value is always
         /// non-negative.
@@ -426,7 +393,6 @@ namespace NetTopologySuite.Geometries
         {
             return Area(P0, P1, P2);
         }
-
         /// <summary>
         /// Computes the signed 2D area of this triangle. The area value is positive if
         /// the triangle is oriented CW, and negative if it is oriented CCW.
@@ -442,7 +408,6 @@ namespace NetTopologySuite.Geometries
         {
             return SignedArea(P0, P1, P2);
         }
-
         /// <summary>
         /// Computes the 3D area of this triangle. The value computed is always
         /// non-negative.
@@ -452,7 +417,6 @@ namespace NetTopologySuite.Geometries
         {
             return Area3D(P0, P1, P2);
         }
-
         /// <summary>
         /// Computes the Z-value (elevation) of an XY point on a three-dimensional
         /// plane defined by this triangle (whose vertices must have Z-values). This
@@ -470,7 +434,5 @@ namespace NetTopologySuite.Geometries
                 throw new ArgumentNullException("p", "Supplied point is null.");
             return InterpolateZ(p, P0, P1, P2);
         }
-
-
     }
 }

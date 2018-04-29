@@ -6,17 +6,14 @@ using NUnit.Framework;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Precision;
-
 namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
 {
     [TestFixtureAttribute]
     public class RectangleIntersectsPerformanceTest
     {
         private const int MaxIter = 10;
-
         private static readonly PrecisionModel Pm = new PrecisionModel();
         private static readonly IGeometryFactory Fact = new GeometryFactory(Pm, 0);
-
         [TestAttribute]
         public void Test()
         {
@@ -25,7 +22,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
             Test(2000);
             Test(100000);
         }
-
         private static void Test(int nPts)
         {
             const double size = 100;
@@ -39,22 +35,18 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
             var sinePolyCrinkly = GeometryPrecisionReducer.Reduce(sinePoly,
                                                                   new PrecisionModel(size/10));
             var target = sinePolyCrinkly;
-
             TestRectangles(target, 100);
         }
-
         private static void TestRectangles(IGeometry target, int nRect)
         {
             var rects = CreateRectangles(target.EnvelopeInternal, nRect);
             Test(rects, target);
         }
-
         private static void Test(ICollection<IGeometry> rect, IGeometry g)
         {
             Console.WriteLine("Target # pts: " + g.NumPoints
                               + "  -- # Rectangles: " + rect.Count
                 );
-
             var sw = new Stopwatch();
             sw.Start();
             for (var i = 0; i < MaxIter; i++)
@@ -68,11 +60,10 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
             Console.WriteLine("Finished in " + sw.Elapsed);
             Console.WriteLine();
         }
-
         /// <summary>
-        /// Creates a set of rectangular Polygons which 
+        /// Creates a set of rectangular Polygons which
         /// cover the given envelope.
-        /// The rectangles   
+        /// The rectangles
         /// At least nRect rectangles are created.
         /// </summary>
         private static IGeometry[] CreateRectangles(Envelope env, int nRect)
@@ -80,7 +71,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
             var nSide = 1 + (int) Math.Sqrt(nRect);
             var dx = env.Width/nSide;
             var dy = env.Height/nSide;
-
             var rectList = new List<IGeometry>();
             for (var i = 0; i < nSide; i++)
             {
@@ -97,7 +87,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
             }
             return GeometryFactory.ToGeometryArray(rectList);
         }
-
         private static IGeometry CreateSineStar(Coordinate origin, double size, int nPts)
         {
             var gsf = new SineStarFactory
@@ -105,7 +94,5 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
             var poly = gsf.CreateSineStar();
             return poly;
         }
-
-
     }
 }

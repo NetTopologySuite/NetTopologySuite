@@ -1,5 +1,4 @@
 ﻿using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Features
 {
     /// <summary>
@@ -11,12 +10,10 @@ namespace NetTopologySuite.Features
         /// Gets or sets the attributes for the feature
         /// </summary>
         IAttributesTable Attributes { get; set; }
-
         /// <summary>
         /// Gets or sets the feature's geometry
         /// </summary>
         IGeometry Geometry { get; set; }
-
         /// <summary>
         /// Gets or sets the feature's geometry
         /// </summary>

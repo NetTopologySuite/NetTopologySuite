@@ -3,13 +3,12 @@ using GeoAPI.Geometries;
 using System;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
     /// Creates a buffer polygon with variable width along a line.
     /// <para/>
-    /// Only single lines are supported as input, since buffer widths 
+    /// Only single lines are supported as input, since buffer widths
     /// generally need to be specified specifically for each line.
     /// </summary>
     /// <author>Marting Davis</author>
@@ -28,7 +27,6 @@ namespace NetTopologySuite.Operation.Buffer
             var vb = new VariableWidthBuffer(line, width);
             return vb.GetResult();
         }
-
         /// <summary>
         /// Computes a list of values for the points along a line by
         /// interpolating between values for the start and end point.
@@ -48,7 +46,6 @@ namespace NetTopologySuite.Operation.Buffer
             var widths = new double[line.NumPoints];
             widths[0] = start;
             widths[widths.Length - 1] = end;
-
             var totalLen = line.Length;
             var pts = line.Coordinates;
             var currLen = 0.0;
@@ -62,7 +59,6 @@ namespace NetTopologySuite.Operation.Buffer
             }
             return widths;
         }
-
         private static double[] Abs(double[] v)
         {
             var a = new double[v.Length];
@@ -72,11 +68,9 @@ namespace NetTopologySuite.Operation.Buffer
             }
             return a;
         }
-
         private readonly ILineString _line;
         private readonly double[] _width;
         private readonly IGeometryFactory _geomFactory;
-
         /// <summary>
         /// Creates a generator for a variable-width line buffer.
         /// </summary>
@@ -88,7 +82,6 @@ namespace NetTopologySuite.Operation.Buffer
             _width = Abs(width);
             _geomFactory = line.Factory;
         }
-
         /// <summary>
         /// Gets the computed variable-width line buffer.
         /// </summary>
@@ -96,16 +89,13 @@ namespace NetTopologySuite.Operation.Buffer
         public IGeometry GetResult()
         {
             Utilities.Assert.IsTrue(_line.NumPoints == _width.Length);
-
             var parts = new List<IGeometry>();
-
             var pts = _line.Coordinates;
             for (var i = 0; i < _line.NumPoints; i++)
             {
                 var dist = _width[i] / 2;
                 var ptBuf = _line.GetPointN(i).Buffer(dist);
                 parts.Add(ptBuf);
-
                 if (i >= 1)
                 {
                     var curvePts = GenerateSegmentCurve(pts[i - 1], pts[i],
@@ -114,28 +104,22 @@ namespace NetTopologySuite.Operation.Buffer
                     parts.Add(segBuf);
                 }
             }
-
             var partsGeom = _geomFactory.CreateGeometryCollection(GeometryFactory.ToGeometryArray(parts));
             var buffer = partsGeom.Union();
             return buffer;
         }
-
         private static Coordinate[] GenerateSegmentCurve(Coordinate p0, Coordinate p1,
             double width0, double width1)
         {
             var seg = new LineSegment(p0, p1);
-
             var dist0 = width0 / 2;
             var dist1 = width1 / 2;
             var s0 = seg.PointAlongOffset(0, dist0);
             var s1 = seg.PointAlongOffset(1, dist1);
             var s2 = seg.PointAlongOffset(1, -dist1);
             var s3 = seg.PointAlongOffset(0, -dist0);
-
             Coordinate[] pts = { s0, s1, s2, s3, s0 };
-
             return pts;
         }
-
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.EdgeGraph
 {
     /// <summary>
@@ -15,18 +14,14 @@ namespace NetTopologySuite.EdgeGraph
             builder.Add(geoms);
             return builder.GetGraph();
         }
-
         private readonly EdgeGraph graph = new EdgeGraph();
-
         public EdgeGraphBuilder() { }
-
         public EdgeGraph GetGraph()
         {
             return graph;
         }
-
         /// <summary>
-        /// Adds the edges of a Geometry to the graph. 
+        /// Adds the edges of a Geometry to the graph.
         /// May be called multiple times.
         /// Any dimension of Geometry may be added; the constituent edges are extracted.
         /// </summary>
@@ -39,9 +34,8 @@ namespace NetTopologySuite.EdgeGraph
                     Add(c as ILineString);
             }));
         }
-
         /// <summary>
-        ///  Adds the edges in a collection of <see cref="IGeometry"/>s to the graph. 
+        ///  Adds the edges in a collection of <see cref="IGeometry"/>s to the graph.
         /// May be called multiple times.
         /// Any dimension of <see cref="IGeometry"/> may be added.
         /// </summary>
@@ -51,7 +45,6 @@ namespace NetTopologySuite.EdgeGraph
             foreach (IGeometry geometry in geometries)
                 Add(geometry);
         }
-
         private void Add(ILineString lineString)
         {
             ICoordinateSequence seq = lineString.CoordinateSequence;

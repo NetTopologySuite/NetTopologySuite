@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Operation.Polygonize
 {
     /// <summary>
@@ -12,7 +11,7 @@ namespace NetTopologySuite.Operation.Polygonize
     /// the constituent linework is extracted as the edges to be polygonized.
     /// The processed edges must be correctly noded; that is, they must only meet
     /// at their endpoints. Polygonization will accept incorrectly noded input
-    /// but will not form polygons from non-noded edges, 
+    /// but will not form polygons from non-noded edges,
     /// and reports them as errors.
     /// </para><para>
     /// The Polygonizer reports the follow kinds of errors:
@@ -26,26 +25,23 @@ namespace NetTopologySuite.Operation.Polygonize
     /// This is useful for situations where it is known that the input lines form a
     /// valid polygonal geometry.</para>
     /// </remarks>
-    /// 
+    ///
     public class Polygonizer
     {
         /// <summary>
         /// The default polygonizer output behavior
         /// </summary>
         public const bool AllPolys = false;
-        
         /// <summary>
         /// Adds every linear element in a <see cref="IGeometry"/> into the polygonizer graph.
         /// </summary>
         private class LineStringAdder : IGeometryComponentFilter
         {
             private readonly Polygonizer _container;
-
             public LineStringAdder(Polygonizer container)
             {
                 _container = container;
             }
-
             /// <summary>
             /// Filters all <see cref="ILineString"/> geometry instances
             /// </summary>
@@ -57,14 +53,11 @@ namespace NetTopologySuite.Operation.Polygonize
                     _container.Add(lineString);
             }
         }
-
         /// <summary>
         /// Default linestring adder.
         /// </summary>
         private readonly LineStringAdder _lineStringAdder;
-
         private PolygonizeGraph _graph;
-
         // Initialized with empty collections, in case nothing is computed
         private ICollection<ILineString> _dangles = new List<ILineString>();
         private ICollection<ILineString> _cutEdges = new List<ILineString>();
@@ -72,31 +65,25 @@ namespace NetTopologySuite.Operation.Polygonize
         private List<EdgeRing> _holeList;
         private List<EdgeRing> _shellList;
         private ICollection<IGeometry> _polyList;
-
         private readonly bool _extractOnlyPolygonal;
-
         private IGeometryFactory _geomFactory;
-
         /// <summary>
-        /// Allows disabling the valid ring checking, 
+        /// Allows disabling the valid ring checking,
         /// to optimize situations where invalid rings are not expected.
         /// </summary>
         /// <remarks>The default is <c>true</c></remarks>
         public bool IsCheckingRingsValid { get; set; } = true;
-
         /// <summary>
         /// Creates a polygonizer with the same <see cref="IGeometryFactory"/>
         /// as the input <c>Geometry</c>s.
         /// The output mask is <see cref="AllPolys"/>
         /// </summary>
-        /// 
-        public Polygonizer() 
+        ///
+        public Polygonizer()
             :this(AllPolys)
         {
-            
             _lineStringAdder = new LineStringAdder(this);
         }
-
         /// <summary>
         /// Creates a polygonizer and allow specifying if only polygons which form a valid polygonal geometry are to be extracted.
         /// </summary>
@@ -106,7 +93,6 @@ namespace NetTopologySuite.Operation.Polygonize
             _extractOnlyPolygonal = extractOnlyPolygonal;
             _lineStringAdder = new LineStringAdder(this);
         }
-
         /// <summary>
         /// Adds a collection of <see cref="IGeometry"/>s to be polygonized.
         /// May be called multiple times.
@@ -119,7 +105,6 @@ namespace NetTopologySuite.Operation.Polygonize
             foreach (var geometry in geomList)
                 Add(geometry);
         }
-
         /// <summary>
         /// Adds a <see cref="IGeometry"/> to the linework to be polygonized.
         /// May be called multiple times.
@@ -131,7 +116,6 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             g.Apply(_lineStringAdder);
         }
-
         /// <summary>
         /// Adds a  to the graph of polygon edges.
         /// </summary>
@@ -145,19 +129,17 @@ namespace NetTopologySuite.Operation.Polygonize
 				_graph = new PolygonizeGraph(line.Factory);
             _graph.AddEdge(line);
         }
-
         /// <summary>
         /// Gets the list of polygons formed by the polygonization.
-        /// </summary>        
+        /// </summary>
         public ICollection<IGeometry> GetPolygons()
         {
             Polygonize();
             return _polyList;
         }
-
         /// <summary>
         /// Gets a geometry representing the polygons formed by the polygonization.
-        /// If a valid polygonal geometry was extracted the result is a <see cref="IPolygonal"/> geometry. 
+        /// If a valid polygonal geometry was extracted the result is a <see cref="IPolygonal"/> geometry.
         /// </summary>
         /// <returns>A geometry containing the polygons</returns>
         public IGeometry GetGeometry()
@@ -171,8 +153,7 @@ namespace NetTopologySuite.Operation.Polygonize
             // result may not be valid Polygonal, so return as a GeometryCollection
             return _geomFactory.CreateGeometryCollection(Geometries.GeometryFactory.ToGeometryArray(_polyList));
         }
-
-        /// <summary> 
+        /// <summary>
         /// Gets the list of dangling lines found during polygonization.
         /// </summary>
         public ICollection<ILineString> GetDangles()
@@ -180,7 +161,6 @@ namespace NetTopologySuite.Operation.Polygonize
             Polygonize();
             return _dangles;
         }
-
         /// <summary>
         /// Gets the list of cut edges found during polygonization.
         /// </summary>
@@ -189,7 +169,6 @@ namespace NetTopologySuite.Operation.Polygonize
             Polygonize();
             return _cutEdges;
         }
-
         /// <summary>
         /// Gets the list of lines forming invalid rings found during polygonization.
         /// </summary>
@@ -198,37 +177,30 @@ namespace NetTopologySuite.Operation.Polygonize
             Polygonize();
             return _invalidRingLines;
         }
-
         /// <summary>
         /// Performs the polygonization, if it has not already been carried out.
         /// </summary>
         private void Polygonize()
         {
             // check if already computed
-            if (_polyList != null) 
+            if (_polyList != null)
                 return;
-
             _polyList = new List<IGeometry>();
-
             // if no geometries were supplied it's possible that graph is null
-            if (_graph == null) 
+            if (_graph == null)
                 return;
-
             _dangles = _graph.DeleteDangles();
             _cutEdges = _graph.DeleteCutEdges();
             var edgeRingList = _graph.GetEdgeRings();
-
             var validEdgeRingList = new List<EdgeRing>();
             _invalidRingLines = new List<IGeometry>();
             if (IsCheckingRingsValid)
                  FindValidRings(edgeRingList, validEdgeRingList, _invalidRingLines);
             else validEdgeRingList = (List<EdgeRing>)edgeRingList;
-
             FindShellsAndHoles(validEdgeRingList);
             AssignHolesToShells(_holeList, _shellList);
             // order the shells to make any subsequent processing deterministic
             _shellList.Sort(new EdgeRing.EnvelopeComparator());
-
             var includeAll = true;
             if (_extractOnlyPolygonal)
             {
@@ -236,9 +208,7 @@ namespace NetTopologySuite.Operation.Polygonize
                 includeAll = false;
             }
             _polyList = ExtractPolygons(_shellList, includeAll);
-
         }
-
         private static void FindValidRings(IEnumerable<EdgeRing> edgeRingList, ICollection<EdgeRing> validEdgeRingList, ICollection<IGeometry> invalidRingList)
         {
             foreach (var er in edgeRingList)
@@ -248,7 +218,6 @@ namespace NetTopologySuite.Operation.Polygonize
                 else invalidRingList.Add(er.LineString);
             }
         }
-
         private void FindShellsAndHoles(IEnumerable<EdgeRing> edgeRingList)
         {
             _holeList = new List<EdgeRing>();
@@ -259,10 +228,8 @@ namespace NetTopologySuite.Operation.Polygonize
                 if (er.IsHole)
                      _holeList.Add(er);
                 else _shellList.Add(er);
-
             }
         }
-
         private static void AssignHolesToShells(IEnumerable<EdgeRing> holeList, List<EdgeRing> shellList)
         {
             foreach (EdgeRing holeEdgeRing in holeList)
@@ -275,7 +242,6 @@ namespace NetTopologySuite.Operation.Polygonize
                 */
             }
         }
-
         private static void AssignHoleToShell(EdgeRing holeEdgeRing, IList<EdgeRing> shellList)
         {
             var shell = EdgeRing.FindEdgeRingContaining(holeEdgeRing, shellList);
@@ -283,11 +249,9 @@ namespace NetTopologySuite.Operation.Polygonize
                 shell.AddHole(holeEdgeRing);
             }
         }
-
         private static void FindDisjointShells(List<EdgeRing> shellList)
         {
             FindOuterShells(shellList);
-
             bool isMoreToScan;
             do
             {
@@ -304,8 +268,6 @@ namespace NetTopologySuite.Operation.Polygonize
                 }
             } while (isMoreToScan);
         }
-
-
         /// <summary>
         /// For each outer hole finds and includes a single outer shell.
         /// This seeds the traversal algorithm for finding only polygonal shells.
@@ -313,7 +275,6 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="shellList">The list of shell EdgeRings</param>
         private static void FindOuterShells(List<EdgeRing> shellList)
         {
-
             foreach (var er in shellList)
             {
                 var outerHoleER = er.OuterHole;
@@ -324,7 +285,6 @@ namespace NetTopologySuite.Operation.Polygonize
                 }
             }
         }
-
         private static List<IGeometry> ExtractPolygons(List<EdgeRing> shellList, bool includeAll)
         {
             var polyList = new List<IGeometry>();
@@ -337,6 +297,5 @@ namespace NetTopologySuite.Operation.Polygonize
             }
             return polyList;
         }
-
     }
 }

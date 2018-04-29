@@ -1,10 +1,9 @@
 using System;
 using GeoAPI.Geometries;
-
 namespace Open.Topology.TestRunner.Result
 {
     /// <summary>
-    /// A <seealso cref="IResultMatcher{TResult}"/>  which compares result for equality, 
+    /// A <seealso cref="IResultMatcher{TResult}"/>  which compares result for equality,
     /// up to the given tolerance.
     /// </summary>
     public class EqualityResultMatcher<TResult> : IResultMatcher<TResult>
@@ -20,7 +19,6 @@ namespace Open.Topology.TestRunner.Result
         {
             return actualResult.Equals(expectedResult, tolerance);
         }
-
         public bool IsMatch(IGeometry geom, string opName, object[] args, IResult actualResult, IResult expectedResult, double tolerance)
         {
             return IsMatch(geom, opName, args, actualResult as TResult, expectedResult as TResult, tolerance);

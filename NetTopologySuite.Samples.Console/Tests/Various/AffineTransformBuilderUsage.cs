@@ -5,7 +5,6 @@ using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Samples.Tests.Various
 {
     [TestFixture, Explicit("missing input files in folder 'VAM\\VAM_ikk'")]
@@ -18,7 +17,6 @@ namespace NetTopologySuite.Samples.Tests.Various
         {
             private readonly List<Coordinate> _inputs;
             private readonly List<Coordinate> _outputs;
-
             /// <summary>
             /// Initialize Least Squares transformations
             /// </summary>
@@ -27,7 +25,6 @@ namespace NetTopologySuite.Samples.Tests.Various
                 _inputs = new List<Coordinate>();
                 _outputs = new List<Coordinate>();
             }
-
             /// <summary>
             /// Adds an input and output value pair to the collection
             /// </summary>
@@ -38,7 +35,6 @@ namespace NetTopologySuite.Samples.Tests.Various
                 _inputs.Add(input);
                 _outputs.Add(output);
             }
-
             /// <summary>
             /// Removes input and output value pair at the specified index
             /// </summary>
@@ -48,7 +44,6 @@ namespace NetTopologySuite.Samples.Tests.Various
                 _inputs.RemoveAt(i);
                 _outputs.RemoveAt(i);
             }
-
             /// <summary>
             /// Gets the input point value at the specified index
             /// </summary>
@@ -58,7 +53,6 @@ namespace NetTopologySuite.Samples.Tests.Various
             {
                 return _inputs[i];
             }
-
             /// <summary>
             /// Sets the input point value at the specified index
             /// </summary>
@@ -68,7 +62,6 @@ namespace NetTopologySuite.Samples.Tests.Various
             {
                 _inputs[i] = p;
             }
-
             /// <summary>
             /// Gets the output point value at the specified index
             /// </summary>
@@ -78,7 +71,6 @@ namespace NetTopologySuite.Samples.Tests.Various
             {
                 return _outputs[i];
             }
-
             /// <summary>
             /// Sets the output point value at the specified index
             /// </summary>
@@ -88,25 +80,20 @@ namespace NetTopologySuite.Samples.Tests.Various
             {
                 _outputs[i] = p;
             }
-
             private static Coordinate MeanCoordinate(IEnumerable<Coordinate> coordinates)
             {
                 Coordinate mean = new Coordinate(0, 0);
                 int count = 0;
-
                 foreach (Coordinate coordinate in coordinates)
                 {
                     mean.X += coordinate.X;
                     mean.Y += coordinate.Y;
                     count++;
                 }
-
                 mean.X = Math.Round(mean.X/count, MidpointRounding.AwayFromZero);
                 mean.Y = Math.Round(mean.Y/count, MidpointRounding.AwayFromZero);
-                
                 return mean;
             }
-
             /// <summary>
             /// Return an array with the six affine transformation parameters {a,b,c,d,e,f} and the sum of the squares of the residuals (s0)
             /// </summary>
@@ -126,7 +113,6 @@ namespace NetTopologySuite.Samples.Tests.Various
             {
                 if (_inputs.Count < 3)
                     throw (new Exception("At least 3 measurements required to calculate affine transformation"));
-
                 //double precision isn't always enough when transforming large numbers.
                 //Lets subtract some mean values and add them later again:
                 //Find approximate center values:
@@ -134,7 +120,6 @@ namespace NetTopologySuite.Samples.Tests.Various
                 Coordinate[] inputs = ToMeanArray(_inputs, meanInput);
                 Coordinate meanOutput = MeanCoordinate(_outputs);
                 Coordinate[] outputs = ToMeanArray(_outputs, meanOutput);
-
                 double[][] matrix = CreateMatrix(3, 3);
                 //Create normal equation: transpose(B)*B
                 //B: matrix of calibrated values. Example of row in B: [x , y , -1]
@@ -148,16 +133,13 @@ namespace NetTopologySuite.Samples.Tests.Various
                     matrix[1][2] += -inputs[i].Y;
                 }
                 matrix[2][2] = inputs.Length;
-
                 double[] t1 = new double[3];
                 double[] t2 = new double[3];
-
                 for (int i = 0; i < _inputs.Count; i++)
                 {
                     t1[0] += inputs[i].X * outputs[i].X;
                     t1[1] += inputs[i].Y * outputs[i].X;
                     t1[2] += -outputs[i].X;
-
                     t2[0] += inputs[i].X * outputs[i].Y;
                     t2[1] += inputs[i].Y * outputs[i].Y;
                     t2[2] += -outputs[i].Y;
@@ -184,9 +166,6 @@ namespace NetTopologySuite.Samples.Tests.Various
                     -(-matrix[1][2] * matrix[0][1] * t2[0] + Math.Pow(matrix[0][1], 2) * t2[2] + matrix[0][0] * matrix[1][2] * t2[1] - matrix[0][0] * matrix[1][1] * t2[2] -
                       matrix[0][2] * matrix[0][1] * t2[1] + matrix[1][1] * matrix[0][2] * t2[0]) * frac;
                 trans[5] += -meanOutput.Y + meanInput.Y;
-
-
-
                 //Calculate s0
                 double s0 = 0;
                 for (int i = 0; i < _inputs.Count; i++)
@@ -198,7 +177,6 @@ namespace NetTopologySuite.Samples.Tests.Various
                 trans[6] = Math.Sqrt(s0) / (_inputs.Count);
                 return trans;
             }
-
             /// <summary>
             /// Calculates the four helmert transformation parameters {a,b,c,d} and the sum of the squares of the residuals (s0)
             /// </summary>
@@ -218,14 +196,12 @@ namespace NetTopologySuite.Samples.Tests.Various
             {
                 if (_inputs.Count < 2)
                     throw (new Exception("At least 2 measurements required to calculate helmert transformation"));
-
                 //double precision isn't always enough. Lets subtract some mean values and add them later again:
                 //Find approximate center values:
                 Coordinate meanInput = MeanCoordinate(_inputs);
                 Coordinate[] inputs = ToMeanArray(_inputs, meanInput);
                 Coordinate meanOutput = MeanCoordinate(_outputs);
                 Coordinate[] outputs = ToMeanArray(_outputs, meanOutput);
-
                 double b00 = 0d;
                 double b02 = 0d;
                 double b03 = 0d;
@@ -247,7 +223,6 @@ namespace NetTopologySuite.Samples.Tests.Various
                 result[1] = (-inputs.Length * t[1] + b03 * t[2] - b02 * t[3]) * frac;
                 result[2] = (b02 * t[0] + b03 * t[1] - t[2] * b00) * frac + meanOutput.X;
                 result[3] = (b03 * t[0] - b02 * t[1] - t[3] * b00) * frac + meanOutput.Y;
-
                 //Calculate s0
                 double s0 = 0d;
                 for (int i = 0; i < inputs.Length; i++)
@@ -259,7 +234,6 @@ namespace NetTopologySuite.Samples.Tests.Various
                 result[4] = Math.Sqrt(s0) / (_inputs.Count);
                 return result;
             }
-
             private static Coordinate[] ToMeanArray(List<Coordinate> coordinates, Coordinate mean)
             {
                 Coordinate[] res = new Coordinate[coordinates.Count];
@@ -270,7 +244,6 @@ namespace NetTopologySuite.Samples.Tests.Various
                 }
                 return res;
             }
-
             /// <summary>
             /// Creates an n x m matrix of doubles
             /// </summary>
@@ -287,31 +260,25 @@ namespace NetTopologySuite.Samples.Tests.Various
                 return matrix;
             }
         }
-
-        
         private string _currentDirectory;
-
         [TestFixtureSetUp]
         public void FixtureSetUp()
         {
-            _currentDirectory = Environment.CurrentDirectory; 
+            _currentDirectory = Environment.CurrentDirectory;
             Environment.CurrentDirectory = @"D:\temp\VAM\VAM_ikk";
         }
-
         [Test]
         public void Test()
         {
             AffineTransformation at = ReadKnotenListe("Knoten_ikk.liste");
             ApplyTransform("VAM_IVA0_ikk.csv", at);
         }
-
         [Test]
         public void TestLsq()
         {
             AffineTransformation at = ReadKnotenListeLsq("Knoten_ikk.liste");
             ApplyTransform("VAM_IVA0_ikk.csv", at, "_neu_lsq");
         }
-
         private static AffineTransformation ReadKnotenListe(string file)
         {
             int index = 0;
@@ -324,7 +291,6 @@ namespace NetTopologySuite.Samples.Tests.Various
                     string line = sr.ReadLine();
                     if (string.IsNullOrEmpty(line)) continue;
                     if (line.StartsWith("#")) continue;
-
                     src[index] = new Coordinate(double.Parse(line.Substring(15, 11), NumberFormatInfo.InvariantInfo),
                                                 double.Parse(line.Substring(26, 11), NumberFormatInfo.InvariantInfo));
                     dst[index] = new Coordinate(double.Parse(line.Substring(37, 11), NumberFormatInfo.InvariantInfo),
@@ -336,11 +302,9 @@ namespace NetTopologySuite.Samples.Tests.Various
             AffineTransformationBuilder atb = new AffineTransformationBuilder(src[0], src[1], src[2], dst[0], dst[1], dst[2]);
             return atb.GetTransformation();
         }
-
         private static AffineTransformation ReadKnotenListeLsq(string file)
         {
             LeastSquaresTransform lsq = new LeastSquaresTransform();
-
             using (StreamReader sr = new StreamReader(File.OpenRead(file)))
             {
                 while (!sr.EndOfStream)
@@ -348,23 +312,19 @@ namespace NetTopologySuite.Samples.Tests.Various
                     string line = sr.ReadLine();
                     if (string.IsNullOrEmpty(line)) continue;
                     if (line.StartsWith("#")) continue;
-
                     lsq.AddInputOutputPoint(new Coordinate(double.Parse(line.Substring(15, 11), NumberFormatInfo.InvariantInfo),
                                                            double.Parse(line.Substring(26, 11), NumberFormatInfo.InvariantInfo)),
                                             new Coordinate(double.Parse(line.Substring(37, 11), NumberFormatInfo.InvariantInfo),
                                                            double.Parse(line.Substring(48, 11), NumberFormatInfo.InvariantInfo)));
                 }
             }
-
             return new AffineTransformation(lsq.GetAffineTransformation());
         }
-
         private static void ApplyTransform(string file, AffineTransformation at, string suffix = null)
         {
             if (string.IsNullOrEmpty(suffix)) suffix = "_neu";
             string outFile = Path.GetFileName(file) + suffix + Path.GetExtension(file);
             if (File.Exists(outFile)) File.Delete(outFile);
-
             Console.WriteLine("Performing transformation using \n{0}", at);
             using (StreamWriter sw = new StreamWriter(File.OpenWrite(outFile)))
             {
@@ -380,7 +340,6 @@ namespace NetTopologySuite.Samples.Tests.Various
                                 string[] parts = line.Split(',');
                                 Coordinate src = new Coordinate(double.Parse(parts[2], NumberFormatInfo.InvariantInfo),
                                                          double.Parse(parts[3], NumberFormatInfo.InvariantInfo));
-
                                 Coordinate dst = new Coordinate();
                                 dst = at.Transform(src, dst);
                                 parts[2] = dst.X.ToString(NumberFormatInfo.InvariantInfo);
@@ -392,9 +351,7 @@ namespace NetTopologySuite.Samples.Tests.Various
                     }
                 }
             }
-
         }
-
         [TestFixtureTearDown]
         public void FixtureTearDown()
         {

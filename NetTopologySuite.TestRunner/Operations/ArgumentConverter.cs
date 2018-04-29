@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-
 namespace Open.Topology.TestRunner.Operations
 {
     public class ArgumentConverter
@@ -10,7 +9,6 @@ namespace Open.Topology.TestRunner.Operations
 	    {
 	    }
          */
-
         public Object[] Convert(Type[] parameterTypes, Object[] args)
         {
             Object[] actualArgs = new Object[args.Length];
@@ -20,7 +18,6 @@ namespace Open.Topology.TestRunner.Operations
             }
             return actualArgs;
         }
-
         public Object Convert(Type destClass, Object srcValue)
         {
             if (srcValue is String)
@@ -34,7 +31,6 @@ namespace Open.Topology.TestRunner.Operations
             ThrowInvalidConversion(destClass, srcValue);
             return null;
         }
-
         private static Object ConvertFromString(Type destClass, String src)
         {
             if (destClass == typeof (Boolean) || destClass == typeof (bool))
@@ -56,7 +52,6 @@ namespace Open.Topology.TestRunner.Operations
                 int val;
                 if (int.TryParse(src, out val))
                     return val;
-
                 ThrowInvalidConversion(destClass, src);
                 /*
                 try
@@ -96,7 +91,6 @@ namespace Open.Topology.TestRunner.Operations
             ThrowInvalidConversion(destClass, src);
             return null;
         }
-
         private static void ThrowInvalidConversion(Type destClass, Object srcValue)
         {
             throw new ArgumentException("Cannot convert " + srcValue + " to " + destClass);

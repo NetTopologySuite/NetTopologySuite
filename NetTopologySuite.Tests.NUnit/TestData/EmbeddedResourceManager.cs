@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Reflection;
-
 namespace NetTopologySuite.Tests.NUnit.TestData
 {
     internal class EmbeddedResourceManager

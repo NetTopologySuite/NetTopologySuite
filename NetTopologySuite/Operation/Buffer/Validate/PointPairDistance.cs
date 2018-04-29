@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Operation.Buffer.Validate
 {
     /// <summary>
@@ -11,9 +10,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
     public class PointPairDistance
     {
         private bool _isNull = true;
-
         public void Initialize() { _isNull = true; }
-
         public void Initialize(Coordinate p0, Coordinate p1)
         {
             Coordinates[0].CoordinateValue = p0;
@@ -21,7 +18,6 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             Distance = p0.Distance(p1);
             _isNull = false;
         }
-
         /// <summary>
         /// Initializes the points, avoiding recomputing the distance.
         /// </summary>
@@ -35,18 +31,13 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             Distance = distance;
             _isNull = false;
         }
-
         public double Distance { get; private set; } = Double.NaN;
-
         public Coordinate[] Coordinates { get; } = { new Coordinate(), new Coordinate() };
-
         public Coordinate GetCoordinate(int i) { return Coordinates[i]; }
-
         public void SetMaximum(PointPairDistance ptDist)
         {
             SetMaximum(ptDist.Coordinates[0], ptDist.Coordinates[1]);
         }
-
         public void SetMaximum(Coordinate p0, Coordinate p1)
         {
             if (_isNull)
@@ -58,12 +49,10 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             if (dist > Distance)
                 Initialize(p0, p1, dist);
         }
-
         public void SetMinimum(PointPairDistance ptDist)
         {
             SetMinimum(ptDist.Coordinates[0], ptDist.Coordinates[1]);
         }
-
         public void SetMinimum(Coordinate p0, Coordinate p1)
         {
             if (_isNull)

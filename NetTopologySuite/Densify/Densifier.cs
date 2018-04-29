@@ -2,12 +2,11 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-
 namespace NetTopologySuite.Densify
 {
     /// <summary>
     /// Densifies a geometry by inserting extra vertices along the line segments
-    /// contained in the geometry. 
+    /// contained in the geometry.
     /// All segments in the created densified geometry will be no longer than
     /// than the given distance tolerance.
     /// </summary>
@@ -30,7 +29,6 @@ namespace NetTopologySuite.Densify
             var densifier = new Densifier(geom) {DistanceTolerance = distanceTolerance};
             return densifier.GetResultGeometry();
         }
-
         /// <summary>
         /// Densifies a coordinate sequence.
         /// </summary>
@@ -65,17 +63,14 @@ namespace NetTopologySuite.Densify
             coordList.Add(pts[pts.Length - 1], false);
             return coordList.ToCoordinateArray();
         }
-
         private readonly IGeometry _inputGeom;
         private double _distanceTolerance;
-
         ///<summary>Creates a new densifier instance</summary>
         /// <param name="inputGeom">The geometry to densify</param>
         public Densifier(IGeometry inputGeom)
         {
             _inputGeom = inputGeom;
         }
-
         /// <summary>
         /// Gets or sets the distance tolerance for the densification. All line segments
         /// in the densified geometry will be no longer than the distance tolerance.
@@ -85,7 +80,6 @@ namespace NetTopologySuite.Densify
         public double DistanceTolerance
         {
             get => _distanceTolerance;
-
             set
             {
                 if (value <= 0.0)
@@ -93,7 +87,6 @@ namespace NetTopologySuite.Densify
                 _distanceTolerance = value;
             }
         }
-
         /// <summary>
         /// Gets the densified geometry.
         /// </summary>
@@ -102,16 +95,13 @@ namespace NetTopologySuite.Densify
         {
             return (new DensifyTransformer(_distanceTolerance)).Transform(_inputGeom);
         }
-
         private class DensifyTransformer : GeometryTransformer
         {
             private readonly double _distanceTolerance;
-
             public DensifyTransformer(double distanceTolerance)
             {
                 _distanceTolerance = distanceTolerance;
             }
-
             protected override ICoordinateSequence TransformCoordinates(
                 ICoordinateSequence coords, IGeometry parent)
             {
@@ -125,7 +115,6 @@ namespace NetTopologySuite.Densify
                 }
                 return Factory.CoordinateSequenceFactory.Create(newPts);
             }
-
             protected override IGeometry TransformPolygon(IPolygon geom, IGeometry parent)
             {
                 var roughGeom = base.TransformPolygon(geom, parent);
@@ -136,13 +125,11 @@ namespace NetTopologySuite.Densify
                 }
                 return CreateValidArea(roughGeom);
             }
-
             protected override IGeometry TransformMultiPolygon(IMultiPolygon geom, IGeometry parent)
             {
                 var roughGeom = base.TransformMultiPolygon(geom, parent);
                 return CreateValidArea(roughGeom);
             }
-
             ///<summary>
             /// Creates a valid area geometry from one that possibly has bad topology
             /// (i.e. self-intersections). Since buffer can handle invalid topology, but
@@ -158,6 +145,5 @@ namespace NetTopologySuite.Densify
                 return roughAreaGeom.Buffer(0.0);
             }
         }
-
     }
 }

@@ -1,18 +1,16 @@
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class SweepLineSegment
     {
         private readonly Edge edge;
         private readonly Coordinate[] pts;
         readonly int ptIndex;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edge"></param>
         /// <param name="ptIndex"></param>
@@ -22,9 +20,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
             this.ptIndex = ptIndex;
             pts = edge.Coordinates;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public double MinX
         {
@@ -35,9 +32,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
                 return x1 < x2 ? x1 : x2;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public double MaxX
         {
@@ -48,9 +44,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
                 return x1 > x2 ? x1 : x2;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ss"></param>
         /// <param name="si"></param>

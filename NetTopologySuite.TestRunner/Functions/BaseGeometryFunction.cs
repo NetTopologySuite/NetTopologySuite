@@ -2,14 +2,13 @@
 using System.Text;
 using GeoAPI.Geometries;
 using Open.Topology.TestRunner.Utility;
-
 namespace Open.Topology.TestRunner.Functions
 {
     /// <summary>
     /// A base for implementations of
-    /// <see cref="IGeometryFunction"/> which provides most 
+    /// <see cref="IGeometryFunction"/> which provides most
     /// of the required structure.
-    /// Extenders must supply the behaviour for the 
+    /// Extenders must supply the behaviour for the
     /// actual function invocation.
     /// </summary>
     /// <author>Martin Davis</author>
@@ -20,13 +19,11 @@ namespace Open.Topology.TestRunner.Functions
             return func.ParameterTypes.Length >= 1
                    && func.ParameterTypes[0] == typeof(IGeometry);
         }
-
         protected String category;
         protected String name;
         protected String[] parameterNames;
         protected Type[] parameterTypes;
         protected Type returnType;
-
         protected BaseGeometryFunction(
             String category,
             String name,
@@ -40,22 +37,15 @@ namespace Open.Topology.TestRunner.Functions
             this.parameterTypes = parameterTypes;
             this.returnType = returnType;
         }
-
         public String Category => category;
-
         public String Name => name;
-
         public String[] ParameterNames => parameterNames;
-
         /// <summary>
         /// Gets the types of the other function arguments
         /// </summary>
         public Type[] ParameterTypes => parameterTypes;
-
         public Type ReturnType => returnType;
-
         public bool IsBinary => parameterTypes.Length > 0 && parameterTypes[0] is IGeometry;
-
         public String Signature
         {
             get
@@ -72,25 +62,21 @@ namespace Open.Topology.TestRunner.Functions
                        + ClassUtility.GetClassname(returnType);
             }
         }
-
         protected static Double? GetDoubleOrNull(Object[] args, int index)
         {
             if (args.Length <= index) return null;
             if (args[index] == null) return null;
             return (Double)args[index];
         }
-
         protected static int? GetIntegerOrNull(Object[] args, int index)
         {
             if (args.Length <= index) return null;
             if (args[index] == null) return null;
             return (int)args[index];
         }
-
         public abstract Object Invoke(IGeometry geom, Object[] args);
-
         /// <summary>
-        /// Two functions are the same if they have the 
+        /// Two functions are the same if they have the
         /// same signature (name, parameter types and return type).
         /// </summary>
         /// <returns>true if this object is the same as the <tt>obj</tt> argument</returns>
@@ -102,14 +88,12 @@ namespace Open.Topology.TestRunner.Functions
             return CompareTo(returnType, o.ReturnType);
             //TODO: compare parameter lists as well
         }
-
         public override bool Equals(Object obj)
         {
             if (!(obj is IGeometryFunction)) return false;
             var func = (IGeometryFunction)obj;
             if (!name.Equals(func.Name)) return false;
             if (!returnType.Equals(func.ReturnType)) return false;
-
             Type[] funcParamTypes = func.ParameterTypes;
             if (parameterTypes.Length != funcParamTypes.Length) return false;
             for (int i = 0; i < parameterTypes.Length; i++)
@@ -119,7 +103,6 @@ namespace Open.Topology.TestRunner.Functions
             }
             return true;
         }
-
         private static int CompareTo(Type c1, Type c2)
         {
             return c1.Name.CompareTo(c2.Name);

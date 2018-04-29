@@ -1,6 +1,5 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.GeometriesGraph;
-
 namespace NetTopologySuite.Operation.Relate
 {
     /// <summary>
@@ -10,13 +9,12 @@ namespace NetTopologySuite.Operation.Relate
     public class RelateNode : Node
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coord"></param>
         /// <param name="edges"></param>
         public RelateNode(Coordinate coord, EdgeEndStar edges) :
             base(coord, edges) { }
-
         /// <summary>
         /// Update the IM with the contribution for this component.
         /// A component only contributes if it has a labelling for both parent geometries.
@@ -25,7 +23,6 @@ namespace NetTopologySuite.Operation.Relate
         {
             im.SetAtLeastIfValid(Label.GetLocation(0), Label.GetLocation(1), Dimension.Point);
         }
-
         /// <summary>
         /// Update the IM with the contribution for the EdgeEnds incident on this node.
         /// </summary>

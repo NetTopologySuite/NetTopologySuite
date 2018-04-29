@@ -3,7 +3,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Utilities;
-
 namespace NetTopologySuite.EdgeGraph
 {
     /// <summary>
@@ -25,7 +24,7 @@ namespace NetTopologySuite.EdgeGraph
     /// <remarks>
     /// HalfEdges form a complete and consistent data structure by themselves,
     /// but an <see cref="EdgeGraph"/> is useful to allow retrieving edges
-    /// by vertex and edge location, as well as ensuring 
+    /// by vertex and edge location, as well as ensuring
     /// edges are created and linked appropriately.
     /// </remarks>
     public class HalfEdge : IComparable<HalfEdge>
@@ -44,11 +43,10 @@ namespace NetTopologySuite.EdgeGraph
             e0.Init(e1);
             return e0;
         }
-
         /// <summary>
         /// Initialize a symmetric pair of HalfEdges.
         /// Intended for use by <see cref="EdgeGraph"/> subclasses.
-        /// The edges are initialized to have each other 
+        /// The edges are initialized to have each other
         /// as the <see cref="Sym"/> edge, and to have <see cref="Next"/> pointers
         /// which point to edge other.
         /// This effectively creates a graph containing a single edge.
@@ -65,7 +63,6 @@ namespace NetTopologySuite.EdgeGraph
             e0.Init(e1);
             return e0;
         }
-
         /// <summary>
         /// Creates an edge originating from a given coordinate.
         /// </summary>
@@ -74,7 +71,6 @@ namespace NetTopologySuite.EdgeGraph
         {
             Orig = orig;
         }
-
         protected virtual void Init(HalfEdge e)
         {
             Sym = e;
@@ -83,44 +79,37 @@ namespace NetTopologySuite.EdgeGraph
             Next = e;
             e.Next = this;
         }
-
         /// <summary>
         /// Gets the origin coordinate of this edge.
         /// </summary>
         public Coordinate Orig { get; }
-
         /// <summary>
         /// Gets the destination coordinate of this edge.
         /// </summary>
         public Coordinate Dest => Sym.Orig;
-
         /// <summary>
         /// Gets the symmetric pair edge of this edge.
         /// </summary>
         public HalfEdge Sym { get; private set; }
-
         /// <summary>
-        /// Gets the next edge CCW around the 
+        /// Gets the next edge CCW around the
         /// destination vertex of this edge.
         /// If the vertex has degree 1 then this is the <b>sym</b> edge.
         /// </summary>
         public HalfEdge Next { get; private set; }
-
         /// <summary>
         /// Returns the edge previous to this one
         /// (with dest being the same as this orig).
         /// </summary>
         public HalfEdge Prev => Sym.Next.Sym;
-
         public HalfEdge ONext => Sym.Next;
-
         /// <summary>
         /// Finds the edge starting at the origin of this edge
         /// with the given dest vertex, if any.
         /// </summary>
         /// <param name="dest">the dest vertex to search for</param>
         /// <returns>
-        /// the edge with the required dest vertex, 
+        /// the edge with the required dest vertex,
         /// if it exists, or null
         /// </returns>
         public HalfEdge Find(Coordinate dest)
@@ -137,7 +126,6 @@ namespace NetTopologySuite.EdgeGraph
             while (oNext != this);
             return null;
         }
-
         /// <summary>
         /// Tests whether this edge has the given orig and dest vertices.
         /// </summary>
@@ -148,7 +136,6 @@ namespace NetTopologySuite.EdgeGraph
         {
             return Orig.Equals2D(p0) && Sym.Orig.Equals(p1);
         }
-
         /// <summary>
         /// Inserts an edge
         /// into the ring of edges around the origin vertex of this edge.
@@ -164,7 +151,6 @@ namespace NetTopologySuite.EdgeGraph
                 InsertAfter(e);
                 return;
             }
-
             // otherwise, find edge to insert after
             int ecmp = CompareTo(e);
             HalfEdge ePrev = this;
@@ -181,7 +167,6 @@ namespace NetTopologySuite.EdgeGraph
             } while (ePrev != this);
             Assert.ShouldNeverReachHere();
         }
-
         /// <summary>
         /// Insert an edge with the same origin after this one.
         /// Assumes that the inserted edge is in the correct
@@ -195,7 +180,6 @@ namespace NetTopologySuite.EdgeGraph
             Sym.Next = e;
             e.Sym.Next = save;
         }
-
         /// <summary>
         /// Compares edges which originate at the same vertex
         /// based on the angle they make at their origin vertex with the positive X-axis.
@@ -205,24 +189,23 @@ namespace NetTopologySuite.EdgeGraph
         {
             return CompareAngularDirection(e);
         }
-
         /// <summary>
         /// Implements the total order relation.
         /// The angle of edge a is greater than the angle of edge b,
-        /// where the angle of an edge is the angle made by 
-        /// the first segment of the edge with the positive x-axis.       
+        /// where the angle of an edge is the angle made by
+        /// the first segment of the edge with the positive x-axis.
         /// When applied to a list of edges originating at the same point,
-        /// this produces a CCW ordering of the edges around the point.        
+        /// this produces a CCW ordering of the edges around the point.
         /// Using the obvious algorithm of computing the angle is not robust,
         /// since the angle calculation is susceptible to roundoff error.
-        /// </summary> 
+        /// </summary>
         /// <remarks>
-        /// A robust algorithm is:        
-        /// 1. compare the quadrants the edge vectors lie in.  
-        /// If the quadrants are different, 
+        /// A robust algorithm is:
+        /// 1. compare the quadrants the edge vectors lie in.
+        /// If the quadrants are different,
         /// it is trivial to determine which edge has a greater angle.
-        /// 2. If the vectors lie in the same quadrant, the 
-        /// <see cref="Orientation.Index"/> function        
+        /// 2. If the vectors lie in the same quadrant, the
+        /// <see cref="Orientation.Index"/> function
         /// can be used to determine the relative orientation of the vectors.
         /// </remarks>
         public int CompareAngularDirection(HalfEdge e)
@@ -231,14 +214,11 @@ namespace NetTopologySuite.EdgeGraph
             double dy = DeltaY;
             double dx2 = e.DeltaX;
             double dy2 = e.DeltaY;
-
             // same vector
             if (dx == dx2 && dy == dy2)
                 return 0;
-
             double quadrant = QuadrantOp.Quadrant(dx, dy);
             double quadrant2 = QuadrantOp.Quadrant(dx2, dy2);
-
             // if the vectors are in different quadrants, determining the ordering is trivial
             if (quadrant > quadrant2)
                 return 1;
@@ -249,25 +229,21 @@ namespace NetTopologySuite.EdgeGraph
             // this is > e if it is CCW of e
             return (int)Orientation.Index(e.Orig, e.Dest, Dest);
         }
-
         /// <summary>
         /// The X component of the distance between the orig and dest vertices.
         /// </summary>
         public double DeltaX => Sym.Orig.X - Orig.X;
-
         /// <summary>
         /// The Y component of the distance between the orig and dest vertices.
         /// </summary>
         public double DeltaY => Sym.Orig.Y - Orig.Y;
-
         /// <summary>
         /// Computes a string representation of a HalfEdge.
-        /// </summary>        
+        /// </summary>
         public override string ToString()
         {
             return String.Format("HE({0} {1}, {2} {3})", Orig.X, Orig.Y, Sym.Orig.X, Sym.Orig.Y);
         }
-
         /// <summary>
         /// Computes the degree of the origin vertex.
         /// The degree is the number of edges
@@ -286,7 +262,6 @@ namespace NetTopologySuite.EdgeGraph
             while (e != this);
             return degree;
         }
-
         /// <summary>
         /// Finds the first node previous to this edge, if any.
         /// If no such node exists (i.e. the edge is part of a ring)

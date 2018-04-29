@@ -2,11 +2,10 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.EdgeGraph;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Dissolve
 {
     /// <summary>
-    /// Dissolves the linear components 
+    /// Dissolves the linear components
     /// from a collection of <see cref="IGeometry"/>s.
     /// into a set of maximal-length <see cref="ILineString"/>s
     /// in which every unique segment appears once only.
@@ -16,15 +15,15 @@ namespace NetTopologySuite.Dissolve
     /// </summary>
     /// <remarks>
     /// Use cases for dissolving linear components
-    /// include generalization 
-    /// (in particular, simplifying polygonal coverages), 
-    /// and visualization 
+    /// include generalization
+    /// (in particular, simplifying polygonal coverages),
+    /// and visualization
     /// (in particular, avoiding symbology conflicts when
     /// depicting shared polygon boundaries).
     /// </remarks>
     /// <remarks>
     /// This class does NOT node the input lines.
-    /// If there are line segments crossing in the input, 
+    /// If there are line segments crossing in the input,
     /// they will still cross in the output.
     ///</remarks>
     public class LineDissolver
@@ -40,19 +39,16 @@ namespace NetTopologySuite.Dissolve
             d.Add(g);
             return d.GetResult();
         }
-
         private IGeometry _result;
         private IGeometryFactory _factory;
         private readonly DissolveEdgeGraph _graph;
         private readonly IList<IGeometry> _lines = new List<IGeometry>();
-
         public LineDissolver()
         {
             _graph = new DissolveEdgeGraph();
         }
-
         /// <summary>
-        /// Adds a <see cref="IGeometry"/> to be dissolved. 
+        /// Adds a <see cref="IGeometry"/> to be dissolved.
         /// Any number of geometries may be added by calling this method multiple times.
         /// Any type of Geometry may be added.  The constituent linework will be
         /// extracted to be dissolved.
@@ -66,7 +62,6 @@ namespace NetTopologySuite.Dissolve
                     Add(c as ILineString);
             }));
         }
-
         /// <summary>
         /// Adds a collection of Geometries to be processed. May be called multiple times.
         /// Any dimension of Geometry may be added; the constituent linework will be
@@ -78,7 +73,6 @@ namespace NetTopologySuite.Dissolve
             foreach (IGeometry geometry in geometries)
                 Add(geometry);
         }
-
         private void Add(ILineString lineString)
         {
             if (_factory == null)
@@ -101,7 +95,6 @@ namespace NetTopologySuite.Dissolve
                 }
             }
         }
-
         /// <summary>
         /// Gets the dissolved result as a <see cref="IMultiLineString"/>.
         /// </summary>
@@ -112,7 +105,6 @@ namespace NetTopologySuite.Dissolve
                 ComputeResult();
             return _result;
         }
-
         private void ComputeResult()
         {
             IEnumerable<HalfEdge> edges = _graph.GetVertexEdges();
@@ -124,9 +116,7 @@ namespace NetTopologySuite.Dissolve
             }
             _result = _factory.BuildGeometry(_lines);
         }
-
         private readonly Stack<HalfEdge> _nodeEdgeStack = new Stack<HalfEdge>();
-
         private void Process(HalfEdge e)
         {
             HalfEdge eNode = e.PrevNode();
@@ -137,7 +127,6 @@ namespace NetTopologySuite.Dissolve
             // extract lines from node edges in stack
             BuildLines();
         }
-
         /// <summary>
         /// For each edge in stack
         /// (which must originate at a node)
@@ -153,9 +142,7 @@ namespace NetTopologySuite.Dissolve
                 BuildLine(e);
             }
         }
-
         private DissolveHalfEdge _ringStartEdge;
-
         /// <summary>
         /// Updates the tracked ringStartEdge
         /// if the given edge has a lower origin
@@ -164,7 +151,7 @@ namespace NetTopologySuite.Dissolve
         /// <remarks>
         /// Identifying the lowest starting node meets two goals:
         /// * It ensures that isolated input rings are created using the original node and orientation.
-        /// * For isolated rings formed from multiple input linestrings, 
+        /// * For isolated rings formed from multiple input linestrings,
         /// it provides a canonical node and orientation for the output
         /// (rather than essentially random, and thus hard to test).
         /// </remarks>
@@ -183,17 +170,15 @@ namespace NetTopologySuite.Dissolve
                 _ringStartEdge = e;
                 return;
             }
-
             Coordinate eOrig = e.Orig;
             Coordinate rseOrig = _ringStartEdge.Orig;
             int compareTo = eOrig.CompareTo(rseOrig);
             if (compareTo < 0)
                 _ringStartEdge = e;
         }
-
         /// <summary>
         /// Builds a line starting from the given edge.
-        /// The start edge origin is a node (valence = 1 or >= 3), 
+        /// The start edge origin is a node (valence = 1 or >= 3),
         /// unless it is part of a pure ring.
         /// </summary>
         /// <remarks>
@@ -211,7 +196,6 @@ namespace NetTopologySuite.Dissolve
             CoordinateList line = new CoordinateList();
             DissolveHalfEdge e = (DissolveHalfEdge)eStart;
             _ringStartEdge = null;
-
             MarkHalfEdge.MarkBoth(e);
             Coordinate orig = e.Orig;
             line.Add(orig.Copy(), false);
@@ -235,18 +219,15 @@ namespace NetTopologySuite.Dissolve
             // add final node
             Coordinate dest = e.Dest;
             line.Add(dest.Copy(), false);
-
             // queue up the final node edges
             StackEdges(e.Sym);
             // store the scanned line
             AddLine(line);
         }
-
         private void BuildRing(HalfEdge eStartRing)
         {
             CoordinateList line = new CoordinateList();
             HalfEdge e = eStartRing;
-
             Coordinate orig = e.Orig;
             line.Add(orig.Copy(), false);
             // scan along the path until a node is found (if one exists)
@@ -256,7 +237,6 @@ namespace NetTopologySuite.Dissolve
                 // check if edges form a ring - if so, we're done
                 if (eNext == eStartRing)
                     break;
-
                 // add point to line, and move to next edge
                 orig = eNext.Orig;
                 line.Add(orig.Copy(), false);
@@ -265,18 +245,15 @@ namespace NetTopologySuite.Dissolve
             // add final node
             Coordinate dest = e.Dest;
             line.Add(dest.Copy(), false);
-
             // store the scanned line
             AddLine(line);
         }
-
         private void AddLine(CoordinateList line)
         {
             Coordinate[] array = line.ToCoordinateArray();
             ILineString ls = _factory.CreateLineString(array);
             _lines.Add(ls);
         }
-
         /// <summary>
         /// Adds edges around this node to the stack.
         /// </summary>

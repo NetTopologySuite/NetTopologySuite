@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary>
@@ -43,14 +42,12 @@ namespace NetTopologySuite.GeometriesGraph.Index
                 array[i] = Convert.ToInt32(list[i]);
             return array;
         }
-
         /*
         /// <summary>
         /// Default empty constructor.
         /// </summary>
         public MonotoneChainIndexer() { }
         */
-
         /// <summary>
         ///
         /// </summary>
@@ -73,7 +70,6 @@ namespace NetTopologySuite.GeometriesGraph.Index
             int[] startIndex = startIndexList.ToArray(); /*ToIntArray(startIndexList);*/
             return startIndex;
         }
-
         /// <returns>
         /// The index of the last point in the monotone chain.
         ///

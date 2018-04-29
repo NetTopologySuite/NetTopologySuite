@@ -1,6 +1,5 @@
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.Various
 {
     [TestFixture]

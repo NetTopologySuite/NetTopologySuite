@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Noding
 {
     ///<summary>
@@ -27,7 +26,6 @@ namespace NetTopologySuite.Noding
         /// States whether ISegmentString is closed
         /// </summary>
         Boolean IsClosed { get; }
-
         LineSegment this[Int32 index] { get; set; }
     }
 }

@@ -2,7 +2,6 @@
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.Precision;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Precision
 {
     public class CommonBitsOpTest : GeometryTestCase

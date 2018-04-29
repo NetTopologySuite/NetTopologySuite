@@ -3,7 +3,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Dissolve;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Operation.Linemerge;
-
 namespace Open.Topology.TestRunner.Functions
 {
     public static class LineHandlingFunctions
@@ -15,20 +14,17 @@ namespace Open.Topology.TestRunner.Functions
             IList<IGeometry> lines = merger.GetMergedLineStrings();
             return g.Factory.BuildGeometry(lines);
         }
-
         public static IGeometry SequenceLines(IGeometry g)
         {
             LineSequencer ls = new LineSequencer();
             ls.Add(g);
             return ls.GetSequencedLineStrings();
         }
-
         public static IGeometry ExtractLines(IGeometry g)
         {
             ICollection<IGeometry> lines = LinearComponentExtracter.GetLines(g);
             return g.Factory.BuildGeometry(lines);
         }
-
         public static IGeometry ExtractSegments(IGeometry g)
         {
             ICollection<IGeometry> lines = LinearComponentExtracter.GetLines(g);
@@ -59,7 +55,6 @@ namespace Open.Topology.TestRunner.Functions
             }
             return g.Factory.BuildGeometry(chains);
         }
-
         private static ILineString ExtractChain(ILineString line, int index, int maxChainSize)
         {
             int size = maxChainSize + 1;
@@ -72,7 +67,6 @@ namespace Open.Topology.TestRunner.Functions
             }
             return line.Factory.CreateLineString(pts);
         }
-
         public static IGeometry Dissolve(IGeometry geom)
         {
             return LineDissolver.Dissolve(geom);

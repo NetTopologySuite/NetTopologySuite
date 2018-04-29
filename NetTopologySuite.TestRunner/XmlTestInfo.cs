@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Specialized;
-
 namespace Open.Topology.TestRunner
 {
 	/// <summary>
@@ -11,19 +10,15 @@ namespace Open.Topology.TestRunner
 	    public XmlTestInfo(bool bReset)
 		{
             Parameters = new StringDictionary();
-
             if (bReset)
                 Reset();
 		}
-
         public StringDictionary Parameters { get; }
-
 	    public void Reset()
         {
             if (Parameters != null)
             {
                 Parameters.Clear();
-
                 Parameters.Add("desc",   String.Empty);
                 Parameters.Add("a",      String.Empty);
                 Parameters.Add("b",      String.Empty);
@@ -34,7 +29,6 @@ namespace Open.Topology.TestRunner
                 Parameters.Add("arg3",   String.Empty);
             }
         }
-
         public void SetValue(string key, string value)
         {
             if (Parameters != null)
@@ -42,17 +36,14 @@ namespace Open.Topology.TestRunner
                 Parameters[key] = value;
             }
         }
-
         public string GetValue(string key)
         {
             if (Parameters != null)
             {
                 return Parameters[key];
             }
-
             return String.Empty;
         }
-
         public void Clear()
         {
             if (Parameters != null)
@@ -60,16 +51,13 @@ namespace Open.Topology.TestRunner
                 Parameters.Clear();
             }
         }
-
         public bool IsDefaultTarget()
         {
             string arg1 = GetValue("arg1");
-
             if (!string.IsNullOrEmpty(arg1))
             {
                 return (arg1 == "a") || (arg1 == "A");
             }
-
             return true;
         }
 	}

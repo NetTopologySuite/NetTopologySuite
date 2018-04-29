@@ -1,5 +1,4 @@
 using System;
-
 namespace RTools_NTS.Util
 {
 	/// <summary>
@@ -12,21 +11,17 @@ namespace RTools_NTS.Util
 	/// <remarks>
 	/// <para>To make Remove from the head fast, this is implemented
 	/// as a ring buffer.</para>
-	/// <para>This uses head and tail indices into a fixed-size 
+	/// <para>This uses head and tail indices into a fixed-size
 	/// array. This will grow the array as necessary.</para>
 	/// </remarks>
 	public class CharBuffer
 	{
 		#region Fields
-
 	    char[] buffer;
 		int headIndex;  // index of first char
 		int tailIndex;  // index 1 past last char
-
 		#endregion
-
 		#region Properties
-
 		/// <summary>
 		/// Gets/Sets the number of characters in the character buffer.
 		/// Increasing the length this way provides indeterminate results.
@@ -34,23 +29,19 @@ namespace RTools_NTS.Util
 		public int Length
 		{
 			get => (tailIndex - headIndex);
-		    set 
-			{ 
+		    set
+			{
 				tailIndex = headIndex + value;
-				if (tailIndex >= Capacity) throw new 
+				if (tailIndex >= Capacity) throw new
 					IndexOutOfRangeException("Tail index greater than capacity");
 			}
 		}
-
 		/// <summary>
 		/// Returns the capacity of this character buffer.
 		/// </summary>
 		public int Capacity { get; private set; } = 128;
-
 	    #endregion
-
 		#region Constructors
-
 		/// <summary>
 		/// Default constructor.
 		/// </summary>
@@ -58,7 +49,6 @@ namespace RTools_NTS.Util
 		{
 			buffer = new char[Capacity];
 		}
-
 		/// <summary>
 		/// Construct with a specific capacity.
 		/// </summary>
@@ -68,11 +58,8 @@ namespace RTools_NTS.Util
 			this.Capacity = capacity;
 			buffer = new char[capacity];
 		}
-
 		#endregion
-
 		#region Non-Public Methods
-
 		/// <summary>
 		/// Reallocate the buffer to be larger. For the new size, this
 		/// uses the max of the requested length and double the current
@@ -90,9 +77,8 @@ namespace RTools_NTS.Util
 			buffer = newBuffer;
 			Capacity = newLen;
 		}
-
 		/// <summary>
-		/// Ensure that we're set for the requested length by 
+		/// Ensure that we're set for the requested length by
 		/// potentially growing or shifting contents.
 		/// </summary>
 		/// <param name="requestedLength"></param>
@@ -115,7 +101,6 @@ namespace RTools_NTS.Util
 				}
 			}
 		}
-
 		/// <summary>
 		/// Move the buffer contents such that headIndex becomes 0.
 		/// </summary>
@@ -129,11 +114,8 @@ namespace RTools_NTS.Util
 			headIndex = 0;
 			tailIndex = len;
 		}
-
 		#endregion
-
 		#region Public Methods and Indexer
-
 		/// <summary>
 		/// Overwrite this object's underlying buffer with the specified
 		/// buffer.
@@ -148,7 +130,6 @@ namespace RTools_NTS.Util
 			headIndex = 0;
 			tailIndex = len;
 		}
-
 		/// <summary>
 		/// Append a character to this buffer.
 		/// </summary>
@@ -158,7 +139,6 @@ namespace RTools_NTS.Util
 			if (tailIndex >= Capacity) CheckCapacity(Length + 1);
 			buffer[tailIndex++] = c;
 		}
-
 		/// <summary>
 		/// Append a string to this buffer.
 		/// </summary>
@@ -169,7 +149,6 @@ namespace RTools_NTS.Util
 			for(int i = 0; i < s.Length; i++)
 				buffer[tailIndex++] = s[i];
 		}
-
 		/// <summary>
 		/// Append a string to this buffer.
 		/// </summary>
@@ -180,7 +159,6 @@ namespace RTools_NTS.Util
 			for(int i = 0; i < s.Length; i++)
 				buffer[tailIndex++] = s[i];
 		}
-
 		/// <summary>
 		/// Remove a character at the specified index.
 		/// </summary>
@@ -190,7 +168,6 @@ namespace RTools_NTS.Util
 		{
 			Remove(i, 1);
 		}
-
 		/// <summary>
 		/// Remove a specified number of characters at the specified index.
 		/// </summary>
@@ -205,11 +182,10 @@ namespace RTools_NTS.Util
 			}
 			else
 			{
-				Array.Copy(buffer, i + headIndex + n, buffer, i + headIndex, 
+				Array.Copy(buffer, i + headIndex + n, buffer, i + headIndex,
 					tailIndex - (i + headIndex + n));
 			}
 		}
-
 		/// <summary>
 		/// Find the first instance of a character in the buffer, and
 		/// return its index.  This returns -1 if the character is
@@ -226,7 +202,6 @@ namespace RTools_NTS.Util
 			}
 			return(-1);
 		}
-
 		/// <summary>
 		/// Empty the buffer.
 		/// </summary>
@@ -235,7 +210,6 @@ namespace RTools_NTS.Util
 			headIndex = 0;
 			tailIndex = 0;
 		}
-
 		/// <summary>
 		/// Indexer.
 		/// </summary>
@@ -244,7 +218,6 @@ namespace RTools_NTS.Util
 			get => (buffer[index + headIndex]);
 		    set => buffer[index + headIndex] = value;
 		}
-
 		/// <summary>
 		/// Return the current contents as a string.
 		/// </summary>
@@ -253,7 +226,6 @@ namespace RTools_NTS.Util
 		{
 			return(new String(buffer, headIndex, tailIndex - headIndex));
 		}
-
-		#endregion		
+		#endregion
 	}
 }

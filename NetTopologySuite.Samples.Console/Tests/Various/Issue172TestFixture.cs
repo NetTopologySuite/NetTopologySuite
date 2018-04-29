@@ -1,7 +1,6 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Samples.Tests.Various
 {
     // see https://code.google.com/p/nettopologysuite/issues/detail?id=172

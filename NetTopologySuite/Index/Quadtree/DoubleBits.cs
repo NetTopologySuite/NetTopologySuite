@@ -1,7 +1,6 @@
 using System;
 using NetTopologySuite.Utilities;
 using BitConverter = System.BitConverter;
-
 namespace NetTopologySuite.Index.Quadtree
 {
     /// <summary>
@@ -19,7 +18,6 @@ namespace NetTopologySuite.Index.Quadtree
         ///
         /// </summary>
         public const int ExponentBias = 1023;
-
         /// <summary>
         ///
         /// </summary>
@@ -33,7 +31,6 @@ namespace NetTopologySuite.Index.Quadtree
             long bits = expBias << 52;
             return BitConverter.Int64BitsToDouble(bits);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -44,7 +41,6 @@ namespace NetTopologySuite.Index.Quadtree
             DoubleBits db = new DoubleBits(d);
             return db.Exponent;
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -56,7 +52,6 @@ namespace NetTopologySuite.Index.Quadtree
             db.ZeroLowerBits(52);
             return db.Double;
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -67,7 +62,6 @@ namespace NetTopologySuite.Index.Quadtree
             DoubleBits db = new DoubleBits(d);
             return db.ToString();
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -78,21 +72,16 @@ namespace NetTopologySuite.Index.Quadtree
         {
             if (d1 == 0.0 || d2 == 0.0)
                 return 0.0;
-
             DoubleBits db1 = new DoubleBits(d1);
             DoubleBits db2 = new DoubleBits(d2);
-
             if (db1.Exponent != db2.Exponent)
                 return 0.0;
-
             int maxCommon = db1.NumCommonMantissaBits(db2);
             db1.ZeroLowerBits(64 - (12 + maxCommon));
             return db1.Double;
         }
-
         private readonly double x;
         private long _xBits;
-
         /// <summary>
         ///
         /// </summary>
@@ -102,12 +91,10 @@ namespace NetTopologySuite.Index.Quadtree
             this.x = x;
             _xBits = BitConverter.DoubleToInt64Bits(x);
         }
-
         /// <summary>
         ///
         /// </summary>
         public double Double => BitConverter.Int64BitsToDouble(_xBits);
-
         /// <summary>
         /// Determines the exponent for the number.
         /// </summary>
@@ -120,12 +107,10 @@ namespace NetTopologySuite.Index.Quadtree
                 return exp;
             }
         }
-
         /// <summary>
         /// Determines the exponent for the number.
         /// </summary>
         public int Exponent => BiasedExponent - ExponentBias;
-
         /// <summary>
         ///
         /// </summary>
@@ -136,7 +121,6 @@ namespace NetTopologySuite.Index.Quadtree
             long mask = ~invMask;
             _xBits &= mask;
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -147,7 +131,6 @@ namespace NetTopologySuite.Index.Quadtree
             long mask = (1L << i);
             return (_xBits & mask) != 0 ? 1 : 0;
         }
-
         /// <summary>
         /// This computes the number of common most-significant bits in the mantissa.
         /// It does not count the hidden bit, which is always 1.
@@ -165,14 +148,12 @@ namespace NetTopologySuite.Index.Quadtree
             }
             return 52;
         }
-
         /// <summary>
         /// A representation of the Double bits formatted for easy readability.
         /// </summary>
         public override string ToString()
         {
             string numStr = HexConverter.ConvertAny2Any(_xBits.ToString(), 10, 2);
-
             // 64 zeroes!
             string zero64 = "0000000000000000000000000000000000000000000000000000000000000000";
             string padStr = zero64 + numStr;

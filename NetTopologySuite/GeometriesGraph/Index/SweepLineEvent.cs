@@ -1,19 +1,16 @@
 using System;
-
 namespace NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class SweepLineEvent : IComparable
     {
         private const int Insert = 1;
         private const int Delete = 2;
-
         private readonly object _label; // used for red-blue intersection detection
         private readonly double _xValue;
         private readonly int _eventType;
-
         /// <summary>
         /// Creates an INSERT event.
         /// </summary>
@@ -27,7 +24,6 @@ namespace NetTopologySuite.GeometriesGraph.Index
             _xValue = x;
             Object = obj;
         }
-
         /// <summary>
         /// Creates a DELETE event.
         /// </summary>
@@ -39,32 +35,26 @@ namespace NetTopologySuite.GeometriesGraph.Index
             _xValue = x;
             InsertEvent = insertEvent;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsInsert => _eventType == Insert;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsDelete => _eventType == Delete;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public SweepLineEvent InsertEvent { get; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int DeleteEventIndex { get; set; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public object Object { get; }
-
         public bool IsSameLabel(SweepLineEvent ev)
         {
             // no label set indicates single group
@@ -72,7 +62,6 @@ namespace NetTopologySuite.GeometriesGraph.Index
                 return false;
             return _label == ev._label;
         }
-
         /// <summary>
         /// Events are ordered first by their x-value, and then by their eventType.
         /// Insert events are sorted before Delete events, so that

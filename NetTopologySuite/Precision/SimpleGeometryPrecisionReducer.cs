@@ -2,7 +2,6 @@ using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-
 namespace NetTopologySuite.Precision
 {
     /// <summary>
@@ -32,9 +31,7 @@ namespace NetTopologySuite.Precision
             var reducer = new SimpleGeometryPrecisionReducer(precModel);
             return reducer.Reduce(g);
         }
-
         private readonly PrecisionModel _newPrecisionModel;
-
         /// <summary>
         ///
         /// </summary>
@@ -43,14 +40,12 @@ namespace NetTopologySuite.Precision
         {
             _newPrecisionModel = pm;
         }
-
         /// <summary>
         /// Sets whether the reduction will result in collapsed components
         /// being removed completely, or simply being collapsed to an (invalid)
         /// Geometry of the same type.
         /// </summary>
         public bool RemoveCollapsedComponents { get; set; } = true;
-
         /// <summary>
         /// Gets/Sets whether the PrecisionModel of the new reduced Geometry
         /// will be changed to be the PrecisionModel supplied to
@@ -58,7 +53,6 @@ namespace NetTopologySuite.Precision
         /// The default is to not change the precision model.
         /// </summary>
         public bool ChangePrecisionModel { get; set; }
-
         /// <summary>
         ///
         /// </summary>
@@ -77,14 +71,12 @@ namespace NetTopologySuite.Precision
                 geomEdit = new GeometryEditor();
             return geomEdit.Edit(geom, new PrecisionReducerCoordinateOperation(this));
         }
-
         /// <summary>
         ///
         /// </summary>
         private class PrecisionReducerCoordinateOperation : GeometryEditor.CoordinateOperation
         {
             private readonly SimpleGeometryPrecisionReducer _container;
-
             /// <summary>
             ///
             /// </summary>
@@ -93,7 +85,6 @@ namespace NetTopologySuite.Precision
             {
                 _container = container;
             }
-
             /// <summary>
             ///
             /// </summary>
@@ -104,7 +95,6 @@ namespace NetTopologySuite.Precision
             {
                 if (coordinates.Length == 0)
                     return null;
-
                 Coordinate[] reducedCoords = new Coordinate[coordinates.Length];
                 // copy coordinates and reduce
                 for (int i = 0; i < coordinates.Length; i++)
@@ -113,11 +103,9 @@ namespace NetTopologySuite.Precision
                     _container._newPrecisionModel.MakePrecise(coord);
                     reducedCoords[i] = coord;
                 }
-
                 // remove repeated points, to simplify returned point as much as possible
                 CoordinateList noRepeatedCoordList = new CoordinateList(reducedCoords, false);
                 Coordinate[] noRepeatedCoords = noRepeatedCoordList.ToCoordinateArray();
-
                 /*
                 * Check to see if the removal of repeated points
                 * collapsed the coordinate List to an invalid length
@@ -133,15 +121,12 @@ namespace NetTopologySuite.Precision
                     minLength = 2;
                 if (geom is ILinearRing)
                     minLength = 4;
-
                 Coordinate[] collapsedCoords = reducedCoords;
                 if (_container.RemoveCollapsedComponents)
                     collapsedCoords = null;
-
                 // return null or orginal length coordinate array
                 if (noRepeatedCoords.Length < minLength)
                     return collapsedCoords;
-
                 // ok to return shorter coordinate array
                 return noRepeatedCoords;
             }

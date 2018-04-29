@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries.Utilities
 {
-    /// <summary> 
+    /// <summary>
     /// Extracts all the <see cref="IPolygon"/> elements from a <see cref="IGeometry"/>.
     /// </summary>
     /// <see cref="GeometryExtracter"/>
@@ -26,10 +25,8 @@ namespace NetTopologySuite.Geometries.Utilities
                 geom.Apply(new PolygonExtracter(list));
             }
             // skip non-Polygonal elemental geometries
-
             return list;
         }
-
         /// <summary>
         /// Extracts the <see cref="IPolygon"/> elements from a single <see cref="IGeometry"/> and returns them in a <see cref="IList{IPolygon}"/>.
         /// </summary>
@@ -38,10 +35,8 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             return GetPolygons(geom, new List<IGeometry>());
         }
-
         private readonly IList<IGeometry> _comps;
-
-        /// <summary> 
+        /// <summary>
         /// Constructs a PolygonExtracterFilter with a list in which to store Polygons found.
         /// </summary>
         /// <param name="comps"></param>
@@ -49,9 +44,8 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             _comps = comps;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geom"></param>
         public void Filter(IGeometry geom)

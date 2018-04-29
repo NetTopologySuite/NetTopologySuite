@@ -15,20 +15,16 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         private class TestTree : STRtree
         {
             public TestTree(int nodeCapacity) : base(nodeCapacity) { }
-
             public new AbstractNode Root()
             {
                 return base.Root;
             }
-
             public new IList<IBoundable<Envelope, object>> BoundablesAtLevel(int level)
             {
                 return base.BoundablesAtLevel(level);
             }
         }
-
         private readonly GeometryFactory _factory = new GeometryFactory();
-
         [Test]
         public void TestSpatialIndex()
         {
@@ -37,13 +33,11 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             tester.Run();
             Assert.IsTrue(tester.IsSuccess);
         }
-
         [Test]
         public void TestSerialization()
         {
             var tester = new SpatialIndexTester { SpatialIndex = new STRtree(4) };
             tester.Init();
-
             Console.WriteLine("\n\nTest with original data\n");
             tester.Run();
             var tree1 = (STRtree)tester.SpatialIndex;
@@ -52,13 +46,11 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             var data = SerializationUtility.Serialize(tree1);
             var tree2 = SerializationUtility.Deserialize<STRtree>(data);
             tester.SpatialIndex = tree2;
-
             Console.WriteLine("\n\nTest with deserialized data\n");
             tester.Run();
             tester.Run();
             Assert.IsTrue(tester.IsSuccess);
         }
-
         [Test]
         public void TestEmptyTreeUsingListQuery()
         {
@@ -66,20 +58,16 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             var list = tree.Query(new Envelope(0, 0, 1, 1));
             Assert.IsTrue(list.Count == 0);
         }
-
         private class ItemVisitor : IItemVisitor<object>
         {
             public void VisitItem(object item) { Assert.IsTrue(true, "Should never reach here"); }
         }
-
         [Test]
         public void TestEmptyTreeUsingItemVisitorQuery()
         {
             var tree = new STRtree();
             tree.Query(new Envelope(0, 0, 1, 1), new ItemVisitor());
         }
-
-
         [Test]
         public void TestCreateParentsFromVerticalSlice()
         {
@@ -87,7 +75,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             DoTestCreateParentsFromVerticalSlice(4, 2, 2, 2);
             DoTestCreateParentsFromVerticalSlice(5, 2, 2, 1);
         }
-
         [Test]
         public void TestDisallowedInserts()
         {
@@ -105,7 +92,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
                 Assert.IsTrue(true);
             }
         }
-
         [Test]
         public void TestQuery()
         {
@@ -141,8 +127,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
                 throw x;
             }
         }
-
-
         [Test]
         public void TestVerticalSlices()
         {
@@ -150,7 +134,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             DoTestVerticalSlices(4, 2, 2, 2);
             DoTestVerticalSlices(5, 3, 2, 1);
         }
-
         [Test]
         public void TestRemove()
         {
@@ -162,7 +145,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             tree.Remove(new Envelope(10, 20, 10, 20), "4");
             Assert.AreEqual(3, tree.Count);
         }
-
         [Test]
         public void TestKNearestNeighbors()
         {
@@ -196,7 +178,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             {
                 correctData.Add(testDataset[i]);
             }
-
             var strtree = new STRtree<IGeometry>();
             for (int i = 0; i < totalRecords; i++)
             {
@@ -225,8 +206,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             }
             Assert.That(difference, Is.EqualTo(0));
         }
-
-
         private static void DoTestCreateParentsFromVerticalSlice(int childCount,
                                                           int nodeCapacity, int expectedChildrenPerParentBoundable,
                                                           int expectedChildrenOfLastParent)
@@ -243,7 +222,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             var lastParent = (AbstractNode)parentBoundables[parentBoundables.Count - 1];
             Assert.AreEqual(expectedChildrenOfLastParent, lastParent.ChildBoundables.Count);
         }
-
         private static void DoTestVerticalSlices(int itemCount, int sliceCount,
                                           int expectedBoundablesPerSlice, int expectedBoundablesOnLastSlice)
         {
@@ -257,7 +235,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             }
             Assert.AreEqual(expectedBoundablesOnLastSlice, slices[sliceCount - 1].Count);
         }
-
         private static IList<IBoundable<Envelope, object>> ItemWrappers(int size)
         {
             var itemWrappers = new List<IBoundable<Envelope, object>>();

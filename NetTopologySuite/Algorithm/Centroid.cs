@@ -1,19 +1,17 @@
 ﻿using System;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Algorithm
 {
-
     /// <summary>
     /// Computes the centroid of a <see cref="IGeometry"/> of any dimension.
-    /// If the geometry is nominally of higher dimension, 
-    /// but has lower <i>effective</i> dimension 
+    /// If the geometry is nominally of higher dimension,
+    /// but has lower <i>effective</i> dimension
     /// (i.e. contains only components
-    /// having zero length or area), 
+    /// having zero length or area),
     /// the centroid will be computed as for the equivalent lower-dimension geometry.
     /// If the input geometry is empty, a
     /// <c>null</c> Coordinate is returned.
-    /// 
+    ///
     /// <h2>Algorithm</h2>
     /// <list type="Bullet">
     /// <item><b>Dimension 2</b> - the centroid ic computed
@@ -47,17 +45,14 @@ namespace NetTopologySuite.Algorithm
             Centroid cent = new Centroid(geom);
             return cent.GetCentroid();
         }
-
         /// <summary>
         /// the point all triangles are based at
         /// </summary>
         private Coordinate _areaBasePt;
-
         /// <summary>
         /// temporary variable to hold centroid of triangle
         /// </summary>
         private readonly Coordinate _triangleCent3 = new Coordinate();
-
         /// <summary>
         /// Partial area sum
         /// </summary>
@@ -66,14 +61,11 @@ namespace NetTopologySuite.Algorithm
         /// partial centroid sum
         /// </summary>
         private readonly Coordinate _cg3 = new Coordinate();
-
         // data for linear centroid computation, if needed
         private readonly Coordinate _lineCentSum = new Coordinate();
         private double _totalLength;
-
         private int _ptCount;
         private readonly Coordinate _ptCentSum = new Coordinate();
-
         /// <summary>
         /// Creates a new instance for computing the centroid of a geometry
         /// </summary>
@@ -82,7 +74,6 @@ namespace NetTopologySuite.Algorithm
             _areaBasePt = null;
             Add(geom);
         }
-
         /// <summary>
         /// Adds a <see cref="IGeometry"/> to the centroid total.
         /// </summary>
@@ -113,7 +104,6 @@ namespace NetTopologySuite.Algorithm
                 }
             }
         }
-
         /// <summary>
         /// Gets the computed centroid.
         /// </summary>
@@ -151,12 +141,10 @@ namespace NetTopologySuite.Algorithm
             }
             return cent;
         }
-
         private void SetAreaBasePoint(Coordinate basePt)
         {
             _areaBasePt = basePt;
         }
-
         private void Add(IPolygon poly)
         {
             AddShell(poly.ExteriorRing.Coordinates);
@@ -165,7 +153,6 @@ namespace NetTopologySuite.Algorithm
                 AddHole(poly.GetInteriorRingN(i).Coordinates);
             }
         }
-
         private void AddShell(Coordinate[] pts)
         {
             if (pts.Length > 0)
@@ -177,7 +164,6 @@ namespace NetTopologySuite.Algorithm
             }
             AddLineSegments(pts);
         }
-
         private void AddHole(Coordinate[] pts)
         {
             bool isPositiveArea = Orientation.IsCCW(pts);
@@ -187,7 +173,6 @@ namespace NetTopologySuite.Algorithm
             }
             AddLineSegments(pts);
         }
-
         private void AddTriangle(Coordinate p0, Coordinate p1, Coordinate p2, bool isPositiveArea)
         {
             double sign = (isPositiveArea) ? 1.0 : -1.0;
@@ -197,7 +182,6 @@ namespace NetTopologySuite.Algorithm
             _cg3.Y += sign * area2 * _triangleCent3.Y;
             _areasum2 += sign * area2;
         }
-
         /// <summary>
         /// Computes three times the centroid of the triangle p1-p2-p3.
         /// The factor of 3 is
@@ -208,7 +192,6 @@ namespace NetTopologySuite.Algorithm
             c.X = p1.X + p2.X + p3.X;
             c.Y = p1.Y + p2.Y + p3.Y;
         }
-
         /// <summary>
         /// Returns twice the signed area of the triangle p1-p2-p3.
         /// The area is positive if the triangle is oriented CCW, and negative if CW.
@@ -219,7 +202,6 @@ namespace NetTopologySuite.Algorithm
                 (p2.X - p1.X) * (p3.Y - p1.Y) -
                 (p3.X - p1.X) * (p2.Y - p1.Y);
         }
-
         /// <summary>
         /// Adds the line segments defined by an array of coordinates
         /// to the linear centroid accumulators.
@@ -233,9 +215,7 @@ namespace NetTopologySuite.Algorithm
                 double segmentLen = pts[i].Distance(pts[i + 1]);
                 if (segmentLen == 0.0)
                     continue;
-
                 lineLen += segmentLen;
-
                 double midx = (pts[i].X + pts[i + 1].X) / 2;
                 _lineCentSum.X += segmentLen * midx;
                 double midy = (pts[i].Y + pts[i + 1].Y) / 2;
@@ -247,7 +227,6 @@ namespace NetTopologySuite.Algorithm
                 AddPoint(pts[0]);
             }
         }
-
         /// <summary>
         /// Adds a point to the point centroid accumulator.
         /// </summary>

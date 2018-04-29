@@ -1,5 +1,4 @@
 using GeoAPI.Geometries;
-
 namespace Open.Topology.TestRunner.Utility
 {
     public static class GeometryDataUtil

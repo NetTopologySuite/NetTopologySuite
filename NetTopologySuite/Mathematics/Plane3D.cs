@@ -1,6 +1,5 @@
 ﻿using System;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Mathematics
 {
     // ReSharper disable InconsistentNaming
@@ -15,7 +14,6 @@ namespace NetTopologySuite.Mathematics
         XZ = 3
     }
     // ReSharper restore InconsistentNaming
-
     /// <summary>
     /// Models a plane in 3-dimensional Cartesian space.
     /// </summary>
@@ -24,13 +22,11 @@ namespace NetTopologySuite.Mathematics
     {
         private readonly Vector3D _normal;
         private readonly Coordinate _basePt;
-
         public Plane3D(Vector3D normal, Coordinate basePt)
         {
             _normal = normal;
             _basePt = basePt;
         }
-
         /// <summary>
         /// Computes the oriented distance from a point to the plane.<br/>
         /// The distance is:
@@ -38,7 +34,7 @@ namespace NetTopologySuite.Mathematics
         /// <item><b>positive</b> if the point lies above the plane (relative to the plane normal)</item>
         /// <item><b>zero</b> if the point is on the plane</item>
         /// <item><b>negative</b> if the point lies below the plane (relative to the plane normal)</item>
-        /// </list> 
+        /// </list>
         /// </summary>
         /// <param name="p">The point to compute the distance for</param>
         /// <returns>The oriented distance to the plane</returns>
@@ -51,7 +47,6 @@ namespace NetTopologySuite.Mathematics
             var d = pbdDotNormal/_normal.Length();
             return d;
         }
-
         /// <summary>
         /// Computes the axis plane that this plane lies closest to.
         /// <para/>
@@ -81,6 +76,5 @@ namespace NetTopologySuite.Mathematics
             // y >= z
             return Plane.XZ;
         }
-
     }
 }

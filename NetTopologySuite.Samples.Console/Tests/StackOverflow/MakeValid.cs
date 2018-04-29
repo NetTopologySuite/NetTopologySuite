@@ -10,7 +10,6 @@ using NetTopologySuite.Noding;
 using NetTopologySuite.Operation.Buffer;
 using NetTopologySuite.Operation.Polygonize;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Samples.Tests.StackOverflow
 {
     [System.ComponentModel.Category("Technique")]
@@ -26,7 +25,6 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
                            "6.8019712703624577 52.71358956783984, 6.8019625919554079 52.713687641028628, "+
                            "6.801900320844819 52.714051499553385, 6.8018106242715941 52.714620612080388, "+
                            "6.801752965346215 52.714943969273726, 6.8016626382085361 52.715309958659567)))";
-
         [Test, Ignore("Known to fail")]
         public void TestBuffer0()
         {
@@ -34,13 +32,11 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
             var geom = rdr.Read(Wkt);
             Assert.That(geom, Is.Not.Null);
             Assert.That(geom.IsValid, Is.False);
-
             var fixedGeom = geom.Normalized().Buffer(0);
             Assert.That(fixedGeom, Is.Not.Null);
             var hsm = new HausdorffSimilarityMeasure();
             Assert.That(hsm.Measure(fixedGeom, geom), Is.GreaterThan(0.9));
         }
-
         [Test]
         public void TestValidate()
         {
@@ -48,7 +44,6 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
             var geom = rdr.Read(Wkt);
             Assert.That(geom, Is.Not.Null);
             Assert.That(geom.IsValid, Is.False);
-
             var fixedGeom = geom.Validate();
             Assert.That(fixedGeom, Is.Not.Null);
             var hsm = new HausdorffSimilarityMeasure();
@@ -57,15 +52,14 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
             Assert.That(m1, Is.GreaterThan(0.9));
         }
     }
-
     /// <summary>
     /// Extension method to validate polygons
     /// </summary>
     internal static class ValidateGeometryExtension
     {
         /// <summary>
-        /// Get or create a valid version of the geometry given. If the geometry is a 
-        /// polygon or multi polygon, self intersections or inconsistencies are fixed. 
+        /// Get or create a valid version of the geometry given. If the geometry is a
+        /// polygon or multi polygon, self intersections or inconsistencies are fixed.
         /// Otherwise the geometry is returned.
         /// </summary>
         /// <param name="geom">The geometry to be fixed</param>
@@ -83,7 +77,6 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
                 AddPolygon((IPolygon)geom, polygonizer);
                 return ToPolygonGeometry(polygonizer.GetPolygons(), geom.Factory);
             }
-
             if (geom is IMultiPolygon)
             {
                 if (geom.IsValid)
@@ -98,13 +91,10 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
                 }
                 return ToPolygonGeometry(polygonizer.GetPolygons(), geom.Factory);
             }
-
             // ToDo other validations
-
             // Only care about polygons
-            return geom; 
+            return geom;
         }
-
         /// <summary>
         /// Add all line strings from the polygon given to the polygonizer given
         /// </summary>
@@ -118,7 +108,6 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
                 AddLineString(polygon.GetInteriorRingN(n), polygonizer);
             }
         }
-
         /// <summary>
         /// Add the linestring given to the polygonizer
         /// </summary>
@@ -130,16 +119,12 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
             { // LinearRings are treated differently to line strings : we need a LineString NOT a LinearRing
                 lineString = lineString.Factory.CreateLineString(lineString.CoordinateSequence);
             }
-
             // unioning the linestring with the point makes any self intersections explicit.
             var point = lineString.Factory.CreatePoint(lineString.GetCoordinateN(0));
             var toAdd = lineString.Union(point);
-
             //Add result to polygonizer
             polygonizer.Add(toAdd);
         }
-
-
         /// <summary>
         /// Get a geometry from a collection of polygons.
         /// </summary>

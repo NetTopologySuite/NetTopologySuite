@@ -4,14 +4,12 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     [TestFixtureAttribute]
     public class BidirectionalComparatorTest
     {
         WKTReader rdr = new WKTReader();
-
         [TestAttribute]
         public void TestLineString1()
         {
@@ -20,7 +18,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                                             )
                          );
         }
-
         [TestAttribute]
         public void TestLineString2()
         {
@@ -29,7 +26,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                                             )
                          );
         }
-
         public int compareBiDir(String wkt0, String wkt1)
         {
             LineString g0 = (LineString)rdr.Read(wkt0);

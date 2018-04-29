@@ -3,7 +3,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Samples.Tests.Github
 {
     [TestFixture]
@@ -17,7 +16,6 @@ namespace NetTopologySuite.Samples.Tests.Github
             IGeometry read = new WKTReader().Read(wkt);
             Assert.IsNotNull(read);
             Assert.IsInstanceOf<IMultiPolygon>(read);
-
             IGeometry built = factory.BuildGeometry(new[] { read });
             Assert.IsNotNull(built);
             Assert.IsInstanceOf<IGeometryCollection>(built);

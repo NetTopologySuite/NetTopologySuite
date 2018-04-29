@@ -1,7 +1,6 @@
 ﻿using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Distance;
-
 namespace NetTopologySuite.Algorithm.Match
 {
     /// <summary>
@@ -26,35 +25,29 @@ namespace NetTopologySuite.Algorithm.Match
 		    return gv.measure();
 	    }
 	    */
-
         /*
 	     * Densify a small amount to increase accuracy of Hausdorff distance
 	     */
         private static readonly double DensifyFraction = 0.25;
-
         public double Measure(IGeometry g1, IGeometry g2)
         {
             double distance = DiscreteHausdorffDistance.Distance(g1, g2, DensifyFraction);
-
             Envelope env = new Envelope(g1.EnvelopeInternal);
             env.ExpandToInclude(g2.EnvelopeInternal);
             double envSize = DiagonalSize(env);
             // normalize so that more similarity produces a measure closer to 1
             double measure = 1 - distance/envSize;
-
             //System.out.println("Hausdorff distance = " + distance + ", measure = " + measure);
             return measure;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="env"></param>
         /// <returns></returns>
         public static double DiagonalSize(Envelope env)
         {
             if (env.IsNull) return 0.0;
-
             double width = env.Width;
             double hgt = env.Height;
             return Math.Sqrt(width*width + hgt*hgt);

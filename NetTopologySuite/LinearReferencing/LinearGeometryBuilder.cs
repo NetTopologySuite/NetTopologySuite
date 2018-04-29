@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>
@@ -14,7 +13,6 @@ namespace NetTopologySuite.LinearReferencing
         private readonly IGeometryFactory _geomFact;
         private readonly List<IGeometry> _lines = new List<IGeometry>();
         private CoordinateList _coordList;
-
         /// <summary>
         /// Creates an instance of this class.
         /// </summary>
@@ -23,19 +21,16 @@ namespace NetTopologySuite.LinearReferencing
         {
             _geomFact = geomFact;
         }
-
         /// <summary>
         /// Allows invalid lines to be fixed rather than causing Exceptions.
         /// An invalid line is one which has only one unique point.
         /// </summary>
         public bool FixInvalidLines { get; set; }
-
         /// <summary>
         /// Allows invalid lines to be ignored rather than causing Exceptions.
         /// An invalid line is one which has only one unique point.
         /// </summary>
         public bool IgnoreInvalidLines { get; set; }
-
         /// <summary>
         /// Adds a point to the current line.
         /// </summary>
@@ -44,7 +39,6 @@ namespace NetTopologySuite.LinearReferencing
         {
             Add(pt, true);
         }
-
         /// <summary>
         /// Adds a point to the current line.
         /// </summary>
@@ -57,12 +51,10 @@ namespace NetTopologySuite.LinearReferencing
             _coordList.Add(pt, allowRepeatedPoints);
             LastCoordinate = pt;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate LastCoordinate { get; private set; }
-
         /// <summary>
         /// Terminate the current <see cref="LineString" />.
         /// </summary>
@@ -70,18 +62,15 @@ namespace NetTopologySuite.LinearReferencing
         {
             if (_coordList == null)
                 return;
-            
             if (IgnoreInvalidLines && _coordList.Count < 2)
             {
                 _coordList = null;
                 return;
             }
-
             Coordinate[] rawPts = _coordList.ToCoordinateArray();
             Coordinate[] pts = rawPts;
             if (FixInvalidLines)
                 pts = ValidCoordinateSequence(rawPts);
-
             _coordList = null;
             ILineString line = null;
             try
@@ -95,24 +84,21 @@ namespace NetTopologySuite.LinearReferencing
                 if (!IgnoreInvalidLines)
                     throw ex;
             }
-
-            if (line != null) 
+            if (line != null)
                 _lines.Add(line);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
         private static Coordinate[] ValidCoordinateSequence(Coordinate[] pts)
         {
-            if (pts.Length >= 2) 
+            if (pts.Length >= 2)
                 return pts;
             var validPts = new[] { pts[0], pts[0] };
             return validPts;
         }
-
         /// <summary>
         /// Builds and returns the <see cref="Geometry" />.
         /// </summary>
@@ -123,6 +109,5 @@ namespace NetTopologySuite.LinearReferencing
             EndLine();
             return _geomFact.BuildGeometry(_lines);
         }
-
     }
 }

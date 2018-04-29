@@ -5,7 +5,6 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.GeometriesGraph.Index;
 using NetTopologySuite.Utilities;
-
 namespace NetTopologySuite.Operation.Relate
 {
     /// <summary>
@@ -24,20 +23,18 @@ namespace NetTopologySuite.Operation.Relate
         private readonly LineIntersector _li = new RobustLineIntersector();
         private readonly PointLocator _ptLocator = new PointLocator();
         private readonly GeometryGraph[] _arg;     // the arg(s) of the operation
-        private readonly NodeMap _nodes = new NodeMap(new RelateNodeFactory());                
-        private readonly List<Edge> _isolatedEdges = new List<Edge>();        
-
+        private readonly NodeMap _nodes = new NodeMap(new RelateNodeFactory());
+        private readonly List<Edge> _isolatedEdges = new List<Edge>();
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="arg"></param>
         public RelateComputer(GeometryGraph[] arg)
         {
             _arg = arg;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public IntersectionMatrix ComputeIM()
@@ -45,7 +42,6 @@ namespace NetTopologySuite.Operation.Relate
             IntersectionMatrix im = new IntersectionMatrix();
             // since Geometries are finite and embedded in a 2-D space, the EE element must always be 2
             im.Set(Location.Exterior, Location.Exterior, Dimension.Surface);
-
             // if the Geometries don't overlap there is nothing to do
             if (!_arg[0].Geometry.EnvelopeInternal.Intersects(_arg[1].Geometry.EnvelopeInternal))
             {
@@ -54,40 +50,32 @@ namespace NetTopologySuite.Operation.Relate
             }
             _arg[0].ComputeSelfNodes(_li, false);
             _arg[1].ComputeSelfNodes(_li, false);
-
             // compute intersections between edges of the two input geometries
-            SegmentIntersector intersector = _arg[0].ComputeEdgeIntersections(_arg[1], _li, false);           
+            SegmentIntersector intersector = _arg[0].ComputeEdgeIntersections(_arg[1], _li, false);
             ComputeIntersectionNodes(0);
             ComputeIntersectionNodes(1);
-
             /*
              * Copy the labelling for the nodes in the parent Geometries.  These override
              * any labels determined by intersections between the geometries.
              */
             CopyNodesAndLabels(0);
             CopyNodesAndLabels(1);
-
             // complete the labelling for any nodes which only have a label for a single point
             LabelIsolatedNodes();
-
             // If a proper intersection was found, we can set a lower bound on the IM.
             ComputeProperIntersectionIM(intersector, im);
-
             /*
              * Now process improper intersections
              * (eg where one or other of the geometries has a vertex at the intersection point)
              * We need to compute the edge graph at all nodes to determine the IM.
              */
-
             // build EdgeEnds for all intersections
             EdgeEndBuilder eeBuilder = new EdgeEndBuilder();
             IList<EdgeEnd> ee0 = eeBuilder.ComputeEdgeEnds(_arg[0].Edges);
             InsertEdgeEnds(ee0);
             IList<EdgeEnd> ee1 = eeBuilder.ComputeEdgeEnds(_arg[1].Edges);
             InsertEdgeEnds(ee1);
-
             LabelNodeEdges();
-
             /*
              * Compute the labeling for isolated components
              * <br>
@@ -96,17 +84,15 @@ namespace NetTopologySuite.Operation.Relate
              * contain labels containing ONLY a single element, the one for their parent point.
              * We only need to check components contained in the input graphs, since
              * isolated components will not have been replaced by new components formed by intersections.
-             */           
-            LabelIsolatedEdges(0, 1);            
+             */
+            LabelIsolatedEdges(0, 1);
             LabelIsolatedEdges(1, 0);
-
             // update the IM from all components
             UpdateIM(im);
             return im;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ee"></param>
         private void InsertEdgeEnds(IEnumerable<EdgeEnd> ee)
@@ -114,9 +100,8 @@ namespace NetTopologySuite.Operation.Relate
             foreach (EdgeEnd e in ee)
                 _nodes.Add(e);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="intersector"></param>
         /// <param name="im"></param>
@@ -127,17 +112,15 @@ namespace NetTopologySuite.Operation.Relate
             Dimension dimB = _arg[1].Geometry.Dimension;
             bool hasProper = intersector.HasProperIntersection;
             bool hasProperInterior = intersector.HasProperInteriorIntersection;
-
             // For Geometry's of dim 0 there can never be proper intersections.
             /*
              * If edge segments of Areas properly intersect, the areas must properly overlap.
              */
             if (dimA == Dimension.Surface && dimB == Dimension.Surface)
             {
-                if (hasProper) 
+                if (hasProper)
                     im.SetAtLeast("212101212");
             }
-
             /*
              * If an Line segment properly intersects an edge segment of an Area,
              * it follows that the Interior of the Line intersects the Boundary of the Area.
@@ -148,20 +131,18 @@ namespace NetTopologySuite.Operation.Relate
              */
             else if (dimA == Dimension.Surface && dimB == Dimension.Curve)
             {
-                if (hasProper) 
+                if (hasProper)
                     im.SetAtLeast("FFF0FFFF2");
-                if (hasProperInterior) 
+                if (hasProperInterior)
                     im.SetAtLeast("1FFFFF1FF");
             }
-
             else if (dimA == Dimension.Curve && dimB == Dimension.Surface)
             {
-                if (hasProper) 
+                if (hasProper)
                     im.SetAtLeast("F0FFFFFF2");
                 if (hasProperInterior)
                     im.SetAtLeast("1F1FFFFFF");
             }
-
             /* If edges of LineStrings properly intersect *in an interior point*, all
                we can deduce is that
                the interiors intersect.  (We can NOT deduce that the exteriors intersect,
@@ -177,7 +158,6 @@ namespace NetTopologySuite.Operation.Relate
                     im.SetAtLeast("0FFFFFFFF");
             }
         }
-
         /// <summary>
         /// Copy all nodes from an arg point into this graph.
         /// The node label in the arg point overrides any previously computed
@@ -193,10 +173,9 @@ namespace NetTopologySuite.Operation.Relate
             foreach (Node graphNode in _arg[argIndex].Nodes)
             {
                 Node newNode = _nodes.AddNode(graphNode.Coordinate);
-                newNode.SetLabel(argIndex, graphNode.Label.GetLocation(argIndex));                
+                newNode.SetLabel(argIndex, graphNode.Label.GetLocation(argIndex));
             }
         }
-
         /// <summary>
         /// Insert nodes for all intersections on the edges of a Geometry.
         /// Label the created nodes the same as the edge label if they do not already have a label.
@@ -223,7 +202,6 @@ namespace NetTopologySuite.Operation.Relate
                 }
             }
         }
-
         /// <summary>
         /// For all intersections on the edges of a Geometry,
         /// label the corresponding node IF it doesn't already have a label.
@@ -249,7 +227,6 @@ namespace NetTopologySuite.Operation.Relate
                 }
             }
         }
-
         /// <summary>
         /// If the Geometries are disjoint, we need to enter their dimension and
         /// boundary dimension in the Ext rows in the IM
@@ -267,19 +244,17 @@ namespace NetTopologySuite.Operation.Relate
             if (!gb.IsEmpty)
             {
                 im.Set(Location.Exterior, Location.Interior, gb.Dimension);
-                im.Set(Location.Exterior, Location.Boundary, gb.BoundaryDimension);    
+                im.Set(Location.Exterior, Location.Boundary, gb.BoundaryDimension);
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private void LabelNodeEdges()
         {
             foreach (RelateNode node in _nodes)
-                node.Edges.ComputeLabelling(_arg);                
+                node.Edges.ComputeLabelling(_arg);
         }
-
         /// <summary>
         /// Update the IM with the sum of the IMs for each component.
         /// </summary>
@@ -296,8 +271,7 @@ namespace NetTopologySuite.Operation.Relate
                 node.UpdateIMFromEdges(im);
             }
         }
-
-        /// <summary> 
+        /// <summary>
         /// Processes isolated edges by computing their labelling and adding them
         /// to the isolated edges list.
         /// Isolated edges are guaranteed not to touch the boundary of the target (since if they
@@ -327,7 +301,6 @@ namespace NetTopologySuite.Operation.Relate
                 }
             }*/
         }
-
         /// <summary>
         /// Label an isolated edge of a graph with its relationship to the target point.
         /// If the target has dim 2 or 1, the edge can either be in the interior or the exterior.
@@ -347,9 +320,8 @@ namespace NetTopologySuite.Operation.Relate
                 Location loc = _ptLocator.Locate(e.Coordinate, target);
                 e.Label.SetAllLocations(targetIndex, loc);
             }
-            else e.Label.SetAllLocations(targetIndex, Location.Exterior);            
+            else e.Label.SetAllLocations(targetIndex, Location.Exterior);
         }
-
         /// <summary>
         /// Isolated nodes are nodes whose labels are incomplete
         /// (e.g. the location for one Geometry is null).
@@ -374,7 +346,6 @@ namespace NetTopologySuite.Operation.Relate
                 }
             }
         }
-
         /// <summary>
         /// Label an isolated node with its relationship to the target point.
         /// </summary>
@@ -383,7 +354,7 @@ namespace NetTopologySuite.Operation.Relate
         private void LabelIsolatedNode(Node n, int targetIndex)
         {
             Location loc = _ptLocator.Locate(n.Coordinate, _arg[targetIndex].Geometry);
-            n.Label.SetAllLocations(targetIndex, loc);        
+            n.Label.SetAllLocations(targetIndex, loc);
         }
     }
 }

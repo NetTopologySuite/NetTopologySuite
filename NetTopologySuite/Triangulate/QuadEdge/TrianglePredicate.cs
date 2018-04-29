@@ -5,29 +5,26 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
 using NetTopologySuite.Mathematics;
-
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
-
     /// <summary>
     /// Algorithms for computing values and predicates
     /// associated with triangles.
     /// </summary>
     /// <remarks>
-    /// For some algorithms extended-precision 
-    /// implementations are provided, which are more robust 
+    /// For some algorithms extended-precision
+    /// implementations are provided, which are more robust
     /// (i.e. they produce correct answers in more cases).
     /// Also, some more robust formulations of
-    /// some algorithms are provided, which utilize 
+    /// some algorithms are provided, which utilize
     /// normalization to the origin.
     /// </remarks>
     /// <author>Martin Davis</author>
     public static class TrianglePredicate
     {
-
         /// <summary>
-        /// Tests if a point is inside the circle defined by 
-        /// the triangle with vertices a, b, c (oriented counter-clockwise). 
+        /// Tests if a point is inside the circle defined by
+        /// the triangle with vertices a, b, c (oriented counter-clockwise).
         /// This test uses simple
         /// double-precision arithmetic, and thus is not 100% robust.
         /// </summary>
@@ -48,9 +45,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 > 0;
             return isInCircle;
         }
-
         /// <summary>
-        /// Tests if a point is inside the circle defined by 
+        /// Tests if a point is inside the circle defined by
         /// the triangle with vertices a, b, c (oriented counter-clockwise).
         /// </summary>
         /// <remarks>
@@ -75,18 +71,15 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             double bdy = b.Y - p.Y;
             double cdx = c.X - p.X;
             double cdy = c.Y - p.Y;
-
             double abdet = adx*bdy - bdx*ady;
             double bcdet = bdx*cdy - cdx*bdy;
             double cadet = cdx*ady - adx*cdy;
             double alift = adx*adx + ady*ady;
             double blift = bdx*bdx + bdy*bdy;
             double clift = cdx*cdx + cdy*cdy;
-
             double disc = alift*bcdet + blift*cadet + clift*abdet;
             return disc > 0;
         }
-
         /// <summary>
         /// Computes twice the area of the oriented triangle (a, b, c), i.e., the area is positive if the
         /// triangle is oriented counterclockwise.
@@ -100,10 +93,9 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return (b.X - a.X)*(c.Y - a.Y)
                  - (b.Y - a.Y)*(c.X - a.X);
         }
-
         /// <summary>
-        /// Tests if a point is inside the circle defined by 
-        /// the triangle with vertices a, b, c (oriented counter-clockwise). 
+        /// Tests if a point is inside the circle defined by
+        /// the triangle with vertices a, b, c (oriented counter-clockwise).
         /// </summary>
         /// <remarks>
         /// This method uses more robust computation.
@@ -118,14 +110,12 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             Coordinate p)
         {
             //checkRobustInCircle(a, b, c, p);
-            //    return isInCircleNonRobust(a, b, c, p);       
+            //    return isInCircleNonRobust(a, b, c, p);
             return IsInCircleNormalized(a, b, c, p);
         }
-
-
         /// <summary>
-        /// Tests if a point is inside the circle defined by 
-        /// the triangle with vertices a, b, c (oriented counter-clockwise). 
+        /// Tests if a point is inside the circle defined by
+        /// the triangle with vertices a, b, c (oriented counter-clockwise).
         /// </summary>
         /// <remarks>
         /// The computation uses <see cref="DD"/> arithmetic for robustness.
@@ -148,7 +138,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             DD by = DD.ValueOf(b.Y);
             DD cx = DD.ValueOf(c.X);
             DD cy = DD.ValueOf(c.Y);
-
             DD aTerm = (ax.Multiply(ax).Add(ay.Multiply(ay)))
                 .Multiply(TriAreaDDSlow(bx, by, cx, cy, px, py));
             DD bTerm = (bx.Multiply(bx).Add(by.Multiply(by)))
@@ -157,14 +146,10 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 .Multiply(TriAreaDDSlow(ax, ay, bx, by, px, py));
             DD pTerm = (px.Multiply(px).Add(py.Multiply(py)))
                 .Multiply(TriAreaDDSlow(ax, ay, bx, by, cx, cy));
-
             DD sum = aTerm.Subtract(bTerm).Add(cTerm).Subtract(pTerm);
             bool isInCircle = sum.ToDoubleValue() > 0;
-
             return isInCircle;
         }
-
-
         /// <summary>
         /// Computes twice the area of the oriented triangle (a, b, c), i.e., the area
         /// is positive if the triangle is oriented counterclockwise.
@@ -186,10 +171,9 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return (bx.Subtract(ax).Multiply(cy.Subtract(ay)).Subtract(by.Subtract(ay)
                                                                            .Multiply(cx.Subtract(ax))));
         }
-
         /// <summary>
-        /// Tests if a point is inside the circle defined by 
-        /// the triangle with vertices a, b, c (oriented counter-clockwise). 
+        /// Tests if a point is inside the circle defined by
+        /// the triangle with vertices a, b, c (oriented counter-clockwise).
         /// </summary>
         /// <remarks>
         /// The computation uses <see cref="DD"/> arithmetic for robustness, but a faster approach.
@@ -207,14 +191,10 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             DD bTerm = (DD.Sqr(b.X) + DD.Sqr(b.Y)) * TriAreaDDFast(a, c, p);
             DD cTerm = (DD.Sqr(c.X) + DD.Sqr(c.Y)) * TriAreaDDFast(a, b, p);
             DD pTerm = (DD.Sqr(p.X) + DD.Sqr(p.Y)) * TriAreaDDFast(a, b, c);
-
             DD sum = aTerm - bTerm + cTerm - pTerm;
             bool isInCircle = sum.ToDoubleValue() > 0;
-
             return isInCircle;
         }
-
-
         /// <summary>
         /// Computes twice the area of the oriented triangle (a, b, c), i.e., the area
         /// is positive if the triangle is oriented counterclockwise.
@@ -229,15 +209,12 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         private static DD TriAreaDDFast(
             Coordinate a, Coordinate b, Coordinate c)
         {
-
             DD t1 = (DD.ValueOf(b.X)-a.X) * (DD.ValueOf(c.Y)- a.Y);
             DD t2 = (DD.ValueOf(b.Y)-a.Y) * (DD.ValueOf(c.X) -a.X);
-
             return t1 - t2;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -254,30 +231,25 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             DD bdy = DD.ValueOf(b.Y)-p.Y;
             DD cdx = DD.ValueOf(c.X)-p.X;
             DD cdy = DD.ValueOf(c.Y)-p.Y;
-
             DD abdet = adx*bdy - bdx*ady;
             DD bcdet = bdx*cdy - cdx*bdy;
             DD cadet = cdx*ady - adx*cdy;
             DD alift = adx*adx + ady*ady;
             DD blift = bdx*bdx + bdy*bdy;
             DD clift = cdx*cdx + cdy*cdy;
-
             DD sum = alift * bcdet + blift* cadet + clift * abdet;
-
             bool isInCircle = sum.ToDoubleValue() > 0;
-
             return isInCircle;
         }
-
         /// <summary>
-        /// Computes the inCircle test using distance from the circumcentre. 
+        /// Computes the inCircle test using distance from the circumcentre.
         /// Uses standard double-precision arithmetic.
         /// </summary>
         /// <remarks>
         /// In general this doesn't
         /// appear to be any more robust than the standard calculation. However, there
         /// is at least one case where the test point is far enough from the
-        /// circumcircle that this test gives the correct answer. 
+        /// circumcircle that this test gives the correct answer.
         /// <pre>
         /// LINESTRING (1507029.9878 518325.7547, 1507022.1120341457 518332.8225183258,
         /// 1507029.9833 518325.7458, 1507029.9896965567 518325.744909031)
@@ -296,7 +268,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             double pRadiusDiff = p.Distance(cc) - ccRadius;
             return pRadiusDiff <= 0;
         }
-
         /// <summary>
         /// Checks if the computed value for isInCircle is correct, using
         /// double-double precision arithmetic.
@@ -312,7 +283,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             bool nonRobustInCircle = IsInCircleNonRobust(a, b, c, p);
             bool isInCircleDD = IsInCircleDDSlow(a, b, c, p);
             bool isInCircleCC = IsInCircleCC(a, b, c, p);
-
             Coordinate circumCentre = Triangle.Circumcentre(a, b, c);
 // ReSharper disable RedundantStringFormatCall
             // String.Format needed to build 2.0 release!
@@ -329,7 +299,5 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             }
 // ReSharper restore RedundantStringFormatCall
         }
-
-
     }
 }

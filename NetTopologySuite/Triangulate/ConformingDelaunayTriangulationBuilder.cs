@@ -3,13 +3,12 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Triangulate.QuadEdge;
-
 namespace NetTopologySuite.Triangulate
 {
     /// <summary>
     /// A utility class which creates Conforming Delaunay Triangulations
-    /// from collections of points and linear constraints, and extract the resulting 
-    /// triangulation edges or triangles as geometries. 
+    /// from collections of points and linear constraints, and extract the resulting
+    /// triangulation edges or triangles as geometries.
     /// </summary>
     /// <author>Martin Davis</author>
     public class ConformingDelaunayTriangulationBuilder
@@ -17,14 +16,12 @@ namespace NetTopologySuite.Triangulate
         private ICollection<Coordinate> _siteCoords;
         private IGeometry _constraintLines;
         private QuadEdgeSubdivision _subdiv;
-
         private readonly IDictionary<Coordinate, Vertex> _constraintVertexMap = new SortedDictionary<Coordinate, Vertex>();
-
         /// <summary>
         /// Sets the sites (point or vertices) which will be triangulated.
         /// All vertices of the given geometry will be used as sites.
         /// The site vertices do not have to contain the constraint
-        /// vertices as well; any site vertices which are 
+        /// vertices as well; any site vertices which are
         /// identical to a constraint vertex will be removed
         /// from the site vertex set.
         /// </summary>
@@ -33,31 +30,27 @@ namespace NetTopologySuite.Triangulate
         {
             _siteCoords = DelaunayTriangulationBuilder.ExtractUniqueCoordinates(sites);
         }
-
         /// <summary>
         /// Sets the linear constraints to be conformed to.
         /// All linear components in the input will be used as constraints.
-        /// The constraint vertices do not have to be disjoint from 
+        /// The constraint vertices do not have to be disjoint from
         /// the site vertices.
         /// The constraints must not contain duplicate segments (up to orientation).
-        /// </summary>        
+        /// </summary>
         public IGeometry Constraints
         {
             set => _constraintLines = value;
         }
-
         /// <summary>
         /// Sets the snapping tolerance which will be used
         /// to improved the robustness of the triangulation computation.
         /// A tolerance of 0.0 specifies that no snapping will take place.
         /// </summary>
         public double Tolerance { get; set; }
-
         private void Create()
         {
             if (_subdiv != null)
                 return;
-
             Envelope siteEnv = DelaunayTriangulationBuilder.Envelope(_siteCoords);
             IList<Segment> segments = new List<Segment>();
             if (_constraintLines != null)
@@ -66,16 +59,13 @@ namespace NetTopologySuite.Triangulate
                 CreateVertices(_constraintLines);
                 segments = CreateConstraintSegments(_constraintLines);
             }
-
             IEnumerable<Vertex> sites = CreateSiteVertices(_siteCoords);
-
             ConformingDelaunayTriangulator cdt = new ConformingDelaunayTriangulator(sites, Tolerance);
             cdt.SetConstraints(segments, new List<Vertex>(_constraintVertexMap.Values));
             cdt.FormInitialDelaunay();
             cdt.EnforceConstraints();
             _subdiv = cdt.Subdivision;
         }
-
         private IEnumerable<Vertex> CreateSiteVertices(IEnumerable<Coordinate> coords)
         {
             List<Vertex> verts = new List<Vertex>();
@@ -87,7 +77,6 @@ namespace NetTopologySuite.Triangulate
             }
             return verts;
         }
-
         private void CreateVertices(IGeometry geom)
         {
             Coordinate[] coords = geom.Coordinates;
@@ -97,7 +86,6 @@ namespace NetTopologySuite.Triangulate
                 _constraintVertexMap.Add(coords[i], v);
             }
         }
-
         private static IList<Segment> CreateConstraintSegments(IGeometry geom)
         {
             ICollection<IGeometry> lines = LinearComponentExtracter.GetLines(geom);
@@ -106,14 +94,12 @@ namespace NetTopologySuite.Triangulate
                 CreateConstraintSegments((ILineString) line, constraintSegs);
             return constraintSegs;
         }
-
         private static void CreateConstraintSegments(ILineString line, IList<Segment> constraintSegs)
         {
             Coordinate[] coords = line.Coordinates;
             for (int i = 1; i < coords.Length; i++)
                 constraintSegs.Add(new Segment(coords[i - 1], coords[i]));
         }
-
         /// <summary>
         /// Gets the QuadEdgeSubdivision which models the computed triangulation.
         /// </summary>
@@ -123,7 +109,6 @@ namespace NetTopologySuite.Triangulate
             Create();
             return _subdiv;
         }
-
         /// <summary>
         /// Gets the edges of the computed triangulation as a <see cref="IMultiLineString"/>.
         /// </summary>
@@ -134,9 +119,8 @@ namespace NetTopologySuite.Triangulate
             Create();
             return _subdiv.GetEdges(geomFact);
         }
-
         /// <summary>
-        /// Gets the faces of the computed triangulation as a <see cref="IGeometryCollection"/> 
+        /// Gets the faces of the computed triangulation as a <see cref="IGeometryCollection"/>
         /// of <see cref="Polygon"/>.
         /// </summary>
         /// <param name="geomFact">the geometry factory to use to create the output</param>
@@ -148,4 +132,3 @@ namespace NetTopologySuite.Triangulate
         }
     }
 }
-

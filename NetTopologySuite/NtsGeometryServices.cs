@@ -5,7 +5,6 @@ using GeoAPI;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
-
 namespace NetTopologySuite
 {
     /// <summary>
@@ -14,10 +13,8 @@ namespace NetTopologySuite
     public class NtsGeometryServices : IGeometryServices
     {
         private static volatile IGeometryServices _instance;
-
         private static readonly object LockObject1 = new object();
         private static readonly object LockObject2 = new object();
-
         /// <summary>
         /// Gets or sets the current instance
         /// </summary>
@@ -29,7 +26,6 @@ namespace NetTopologySuite
                 {
                     if (_instance != null)
                         return _instance;
-
                     lock (LockObject2)
                     {
                         _instance = new NtsGeometryServices();
@@ -37,7 +33,6 @@ namespace NetTopologySuite
                     return _instance;
                 }
             }
-
             set
             {
                 //Never
@@ -49,51 +44,43 @@ namespace NetTopologySuite
                 }
             }
         }
-
         #region Key
         private struct GeometryFactoryKey
         {
             private readonly IPrecisionModel _precisionModel;
             private readonly ICoordinateSequenceFactory _factory;
             private readonly int _srid;
-
             public GeometryFactoryKey(IPrecisionModel precisionModel, ICoordinateSequenceFactory factory, int srid)
             {
                 _precisionModel = precisionModel;
                 _factory = factory;
                 _srid = srid;
             }
-
             public override int GetHashCode()
             {
                 return 889377 ^ _srid ^ _precisionModel.GetHashCode() ^ _factory.GetHashCode();
             }
-
             public override bool Equals(object obj)
             {
                 if (!(obj is GeometryFactoryKey))
                     return false;
                 var other = (GeometryFactoryKey) obj;
-
                 if (_srid != other._srid)
                     return false;
                 if (!_precisionModel.Equals(other._precisionModel))
                     return false;
-
                 return _factory.Equals(other._factory);
             }
         }
         #endregion
-
         #region SaveDictionary
 #if ReaderWriterLockSlim
         private class SaveDictionary<TKey, TValue>
         {
             //private readonly object _lock = new object();
             private readonly Dictionary<TKey, TValue> _dictionary = new Dictionary<TKey, TValue>();
-            private readonly System.Threading.ReaderWriterLockSlim _rwLockSlim = 
+            private readonly System.Threading.ReaderWriterLockSlim _rwLockSlim =
                 new System.Threading.ReaderWriterLockSlim(System.Threading.LockRecursionPolicy.NoRecursion);
-
             public void Add(TKey key, ref TValue value)
             {
                 _rwLockSlim.EnterUpgradeableReadLock();
@@ -105,20 +92,18 @@ namespace NetTopologySuite
                         value = tmp;
                         return;
                     }
-
                     _rwLockSlim.EnterWriteLock();
                     try
                     {
                         _dictionary.Add(key, value);
                     }
-                    finally 
+                    finally
                     {
                         _rwLockSlim.ExitWriteLock();
                     }
                 }
                 finally { _rwLockSlim.ExitUpgradeableReadLock();}
             }
-
             public bool TryGetValue(TKey key, out TValue value)
             {
                 var res = false;
@@ -137,7 +122,6 @@ namespace NetTopologySuite
                 }
                 return res;
             }
-
             public int Count
             {
                 get
@@ -161,7 +145,6 @@ namespace NetTopologySuite
         {
             private readonly object _lock = new object();
             private readonly Dictionary<TKey, TValue> _dictionary = new Dictionary<TKey, TValue>();
-
             public void Add(TKey key, ref TValue value)
             {
                 lock (_lock)
@@ -170,13 +153,11 @@ namespace NetTopologySuite
                         _dictionary.Add(key, value);
                 }
             }
-
             public bool TryGetValue(TKey key, out TValue value)
             {
                 lock (_lock)
                     return _dictionary.TryGetValue(key, out value);
             }
-
             public int Count
             {
                 get
@@ -188,10 +169,8 @@ namespace NetTopologySuite
         }
 #endif
         #endregion
-
         private readonly object _factoriesLock = new object();
         private readonly SaveDictionary<GeometryFactoryKey, IGeometryFactory> _factories = new SaveDictionary<GeometryFactoryKey, IGeometryFactory>();
-
         /// <summary>
         /// Creates an instance of this class, using the <see cref="CoordinateArraySequenceFactory"/> as default and a <see cref="PrecisionModels.Floating"/> precision model. No <see cref="DefaultSRID"/> is specified
         /// </summary>
@@ -200,7 +179,6 @@ namespace NetTopologySuite
             new PrecisionModel(PrecisionModels.Floating), -1)
         {
         }
-
         /// <summary>
         /// Creates an instance of this class, using the provided <see cref="ICoordinateSequenceFactory"/>, <see cref="IPrecisionModel"/> and spatial reference Id (<paramref name="srid"/>.
         /// </summary>
@@ -214,24 +192,19 @@ namespace NetTopologySuite
             DefaultPrecisionModel = precisionModel;
             DefaultSRID = srid;
         }
-
         #region Implementation of IGeometryServices
-
         /// <summary>
         /// Gets the default spatial reference id
         /// </summary>
         public int DefaultSRID { get; set; }
-
         /// <summary>
         /// Gets or sets the coordiate sequence factory to use
         /// </summary>
         public ICoordinateSequenceFactory DefaultCoordinateSequenceFactory { get; private set; }
-
         /// <summary>
         /// Gets or sets the default precision model
         /// </summary>
         public IPrecisionModel DefaultPrecisionModel { get; private set; }
-
         /// <summary>
         /// Creates a precision model based on given precision model type
         /// </summary>
@@ -240,7 +213,6 @@ namespace NetTopologySuite
         {
             return new PrecisionModel(modelType);
         }
-
         /// <summary>
         /// Creates a precision model based on given precision model.
         /// </summary>
@@ -249,12 +221,10 @@ namespace NetTopologySuite
         {
             if (precisionModel is PrecisionModel)
                 return new PrecisionModel((PrecisionModel)precisionModel);
-
             if (!precisionModel.IsFloating)
                 return new PrecisionModel(precisionModel.Scale);
             return new PrecisionModel(precisionModel.PrecisionModelType);
         }
-
         /// <summary>
         /// Creates a precision model based on the given scale factor.
         /// </summary>
@@ -264,53 +234,44 @@ namespace NetTopologySuite
         {
             return new PrecisionModel(scale);
         }
-
         public IGeometryFactory CreateGeometryFactory()
         {
             return CreateGeometryFactory(DefaultSRID);
         }
-
         public IGeometryFactory CreateGeometryFactory(int srid)
         {
             return CreateGeometryFactory(DefaultPrecisionModel, srid, DefaultCoordinateSequenceFactory);
         }
-
         public void ReadConfiguration()
         {
             lock (LockObject1)
             {
             }
         }
-
         public void WriteConfiguration()
         {
             lock (LockObject2)
             {
             }
         }
-
         public IGeometryFactory CreateGeometryFactory(ICoordinateSequenceFactory coordinateSequenceFactory)
         {
             return CreateGeometryFactory(DefaultPrecisionModel, DefaultSRID, coordinateSequenceFactory);
         }
-
         public IGeometryFactory CreateGeometryFactory(IPrecisionModel precisionModel)
         {
             return CreateGeometryFactory(precisionModel, DefaultSRID, DefaultCoordinateSequenceFactory);
         }
-
         public IGeometryFactory CreateGeometryFactory(IPrecisionModel precisionModel, int srid)
         {
             return CreateGeometryFactory(precisionModel, srid, DefaultCoordinateSequenceFactory);
         }
-
         public IGeometryFactory CreateGeometryFactory(IPrecisionModel precisionModel, int srid, ICoordinateSequenceFactory coordinateSequenceFactory)
         {
             if (precisionModel == null)
                 throw new ArgumentNullException("precisionModel");
             if (coordinateSequenceFactory == null)
                 throw new ArgumentNullException("coordinateSequenceFactory");
-
             var gfkey = new GeometryFactoryKey(precisionModel, coordinateSequenceFactory, srid);
             IGeometryFactory factory;
             if (!_factories.TryGetValue(gfkey, out factory))
@@ -323,11 +284,8 @@ namespace NetTopologySuite
             }
             return factory;
         }
-
         #endregion Implementation of IGeometryServices
-
         //    #region Implementation of ISerializable
-
         //    public GeometryServices(SerializationInfo info, StreamingContext context)
         //    {
         //        var pmType = (PrecisionModels) info.GetInt32("type");
@@ -353,7 +311,6 @@ namespace NetTopologySuite
         //        }
         //        /*_instance = this;*/
         //    }
-
         //    private ICoordinateSequenceFactory Find(string csfAssembly, string csfName)
         //    {
         //        switch (csfName)
@@ -370,13 +327,11 @@ namespace NetTopologySuite
         //        Assert.ShouldNeverReachHere("CoordinateSequenceFactory instance not found!");
         //        return null;
         //    }
-
         //    public void GetObjectData(SerializationInfo info, StreamingContext context)
         //    {
         //        info.AddValue("type", (int)DefaultPrecisionModel.PrecisionModelType);
         //        if (DefaultPrecisionModel.PrecisionModelType == PrecisionModels.Fixed)
         //            info.AddValue("scale", (int)DefaultPrecisionModel.Scale);
-
         //        if (DefaultCoordinateSequenceFactory is CoordinateArraySequenceFactory ||
         //            DefaultCoordinateSequenceFactory is PackedCoordinateSequenceFactory ||
         //            DefaultCoordinateSequenceFactory is DotSpatialAffineCoordinateSequenceFactory)
@@ -403,9 +358,7 @@ namespace NetTopologySuite
         //            info.AddValue("csf", DefaultCoordinateSequenceFactory, typeof(ICoordinateSequenceFactory));
         //        }
         //    }
-
         //    #endregion
-
         /// <summary>
         /// Gets a value representing the number of geometry factories that have been stored in the cache
         /// </summary>

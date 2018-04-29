@@ -5,7 +5,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Valid;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Operation.Valid
 {
     /// <summary>
@@ -15,10 +14,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
     /// <author>Martin Davis</author>
     /// <version>1.7</version
     [TestFixtureAttribute]
-    public class ValidClosedRingTest   
+    public class ValidClosedRingTest
     {
         private static WKTReader rdr = new WKTReader();
-
         [TestAttribute]
         public void TestBadLinearRing()
         {
@@ -26,14 +24,12 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             UpdateNonClosedRing(ring);
             CheckIsValid(ring, false);
         }
-
         [TestAttribute]
         public void TestGoodLinearRing()
         {
             LinearRing ring = (LinearRing) FromWKT("LINEARRING (0 0, 0 10, 10 10, 10 0, 0 0)");
             CheckIsValid(ring, true);
         }
-
         [TestAttribute]
         public void TestBadPolygonShell()
         {
@@ -41,7 +37,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             UpdateNonClosedRing((LinearRing) poly.ExteriorRing);
             CheckIsValid(poly, false);
         }
-
         [TestAttribute]
         public void TestBadPolygonHole()
         {
@@ -49,14 +44,12 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             UpdateNonClosedRing((LinearRing) poly.GetInteriorRingN(0));
             CheckIsValid(poly, false);
         }
-
         [TestAttribute]
         public void TestGoodPolygon()
         {
             Polygon poly = (Polygon) FromWKT("POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))");
             CheckIsValid(poly, true);
         }
-
         [TestAttribute]
         public void TestBadGeometryCollection()
         {
@@ -65,15 +58,12 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             UpdateNonClosedRing((LinearRing) poly.GetInteriorRingN(0));
             CheckIsValid(poly, false);
         }
-
-
         private void CheckIsValid(Geometry geom, bool expected)
         {
             IsValidOp validator = new IsValidOp(geom);
             bool isValid = validator.IsValid;
             Assert.IsTrue(isValid == expected);
         }
-
         IGeometry FromWKT(String wkt)
         {
             IGeometry geom = null;
@@ -87,7 +77,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             }
             return geom;
         }
-
         private void UpdateNonClosedRing(LinearRing ring)
         {
             Coordinate[] pts = ring.Coordinates;

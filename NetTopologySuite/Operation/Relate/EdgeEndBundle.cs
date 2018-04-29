@@ -3,7 +3,6 @@ using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.GeometriesGraph;
-
 namespace NetTopologySuite.Operation.Relate
 {
     /// <summary>
@@ -14,13 +13,12 @@ namespace NetTopologySuite.Operation.Relate
     public class EdgeEndBundle : EdgeEnd
     {
         //private readonly IBoundaryNodeRule _boundaryNodeRule;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="boundaryNodeRule"></param>
         /// <param name="e"></param>
-        public EdgeEndBundle(IBoundaryNodeRule boundaryNodeRule, EdgeEnd e) 
+        public EdgeEndBundle(IBoundaryNodeRule boundaryNodeRule, EdgeEnd e)
             : base(e.Edge, e.Coordinate, e.DirectedCoordinate, new Label(e.Label))
         {
             /*
@@ -31,25 +29,21 @@ namespace NetTopologySuite.Operation.Relate
             */
             Insert(e);
         }
-       
         public EdgeEndBundle(EdgeEnd e) : this (null, e){}
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
-        public IEnumerator<EdgeEnd> GetEnumerator() 
-        { 
-            return EdgeEnds.GetEnumerator(); 
+        public IEnumerator<EdgeEnd> GetEnumerator()
+        {
+            return EdgeEnds.GetEnumerator();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IList<EdgeEnd> EdgeEnds { get; } = new List<EdgeEnd>();
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="e"></param>
         public void Insert(EdgeEnd e)
@@ -58,11 +52,10 @@ namespace NetTopologySuite.Operation.Relate
             // Assert: direction is the same
             EdgeEnds.Add(e);
         }
-
         /// <summary>
         /// This computes the overall edge label for the set of
         /// edges in this EdgeStubBundle.  It essentially merges
-        /// the ON and side labels for each edge. 
+        /// the ON and side labels for each edge.
         /// These labels must be compatible
         /// </summary>
         /// <param name="boundaryNodeRule"></param>
@@ -79,7 +72,6 @@ namespace NetTopologySuite.Operation.Relate
             if (isArea)
                  Label = new Label(Location.Null, Location.Null, Location.Null);
             else Label = new Label(Location.Null);
-
             // compute the On label, and the side labels if present
             for (int i = 0; i < 2; i++)
             {
@@ -87,9 +79,7 @@ namespace NetTopologySuite.Operation.Relate
                 if (isArea)
                     ComputeLabelSides(i);
             }
-
         }
-
         /// <summary>
         /// Compute the overall ON location for the list of EdgeStubs.
         /// (This is essentially equivalent to computing the self-overlay of a single Geometry)
@@ -115,24 +105,21 @@ namespace NetTopologySuite.Operation.Relate
             int boundaryCount = 0;
             bool foundInterior = false;
             Location loc;
-
             foreach (EdgeEnd e in EdgeEnds)
             {
                 loc = e.Label.GetLocation(geomIndex);
-                if (loc == Location.Boundary) 
+                if (loc == Location.Boundary)
                     boundaryCount++;
-                if (loc == Location.Interior) 
+                if (loc == Location.Interior)
                     foundInterior = true;
             }
-
             loc = Location.Null;
-            if (foundInterior) 
+            if (foundInterior)
                 loc = Location.Interior;
-            if (boundaryCount > 0) 
-                loc = GeometryGraph.DetermineBoundary(boundaryNodeRule, boundaryCount);            
+            if (boundaryCount > 0)
+                loc = GeometryGraph.DetermineBoundary(boundaryNodeRule, boundaryCount);
             Label.SetLocation(geomIndex, loc);
         }
-
         /// <summary>
         /// Compute the labelling for each side
         /// </summary>
@@ -142,7 +129,6 @@ namespace NetTopologySuite.Operation.Relate
             ComputeLabelSide(geomIndex, Positions.Left);
             ComputeLabelSide(geomIndex, Positions.Right);
         }
-
         /// <summary>
         /// To compute the summary label for a side, the algorithm is:
         /// FOR all edges
@@ -162,7 +148,7 @@ namespace NetTopologySuite.Operation.Relate
         {
             foreach (EdgeEnd e in EdgeEnds)
             {
-                if (e.Label.IsArea()) 
+                if (e.Label.IsArea())
                 {
                     Location loc = e.Label.GetLocation(geomIndex, side);
                     if (loc == Location.Interior)
@@ -175,7 +161,6 @@ namespace NetTopologySuite.Operation.Relate
                 }
             }
         }
-
         /// <summary>
         /// Update the IM with the contribution for the computed label for the EdgeStubs.
         /// </summary>
@@ -184,9 +169,8 @@ namespace NetTopologySuite.Operation.Relate
         {
             Edge.UpdateIM(Label, im);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="outstream"></param>
         public override void Write(StreamWriter outstream)

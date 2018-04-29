@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Utilities;
-
 namespace NetTopologySuite.Operation.Union
 {
     ///<summary>
@@ -18,16 +17,11 @@ namespace NetTopologySuite.Operation.Union
             UnionInteracting uue = new UnionInteracting(g0, g1);
             return uue.Union();
         }
-
-
         private readonly IGeometryFactory _geomFactory;
-
         private readonly IGeometry _g0;
         private readonly IGeometry _g1;
-
         private readonly bool[] _interacts0;
         private readonly bool[] _interacts1;
-
         public UnionInteracting(IGeometry g0, IGeometry g1)
         {
             _g0 = g0;
@@ -36,26 +30,20 @@ namespace NetTopologySuite.Operation.Union
             _interacts0 = new bool[g0.NumGeometries];
             _interacts1 = new bool[g1.NumGeometries];
         }
-
         public IGeometry Union()
         {
             ComputeInteracting();
-
             // check for all interacting or none interacting!
             IGeometry int0 = ExtractElements(_g0, _interacts0, true);
             IGeometry int1 = ExtractElements(_g1, _interacts1, true);
-
             if (int0.IsEmpty || int1.IsEmpty)
                 Debug.WriteLine("found empty!");
-
             IGeometry union = int0.Union(int1);
             IGeometry disjoint0 = ExtractElements(_g0, _interacts0, false);
             IGeometry disjoint1 = ExtractElements(_g1, _interacts1, false);
             IGeometry overallUnion = GeometryCombiner.Combine(union, disjoint0, disjoint1);
             return overallUnion;
-
         }
-
         private IGeometry BufferUnion(IGeometry g0, IGeometry g1)
         {
             IGeometryFactory factory = g0.Factory;
@@ -63,7 +51,6 @@ namespace NetTopologySuite.Operation.Union
             IGeometry unionAll = gColl.Buffer(0.0);
             return unionAll;
         }
-
         private void ComputeInteracting()
         {
             for (int i = 0; i < _g0.NumGeometries; i++)
@@ -72,7 +59,6 @@ namespace NetTopologySuite.Operation.Union
                 _interacts0[i] = ComputeInteracting(elem);
             }
         }
-
         private bool ComputeInteracting(IGeometry elem0)
         {
             bool interactsWithAny = false;
@@ -86,7 +72,6 @@ namespace NetTopologySuite.Operation.Union
             }
             return interactsWithAny;
         }
-
         private IGeometry ExtractElements(IGeometry geom,
               bool[] interacts, bool isInteracting)
         {
@@ -99,7 +84,5 @@ namespace NetTopologySuite.Operation.Union
             }
             return _geomFactory.BuildGeometry(extractedGeoms);
         }
-
-
     }
 }

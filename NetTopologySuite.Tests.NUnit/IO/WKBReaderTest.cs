@@ -5,7 +5,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Tests.NUnit.TestData;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.IO
 {
     /// <summary>
@@ -22,7 +21,6 @@ namespace NetTopologySuite.Tests.NUnit.IO
             IGeometry geom = reader.Read("POLYGON EMPTY");
             CheckWkbGeometry(geom.AsBinary(), "POLYGON EMPTY");
         }
-
         [TestAttribute]
         public void TestShortPolygons()
         {
@@ -34,14 +32,12 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 "000000000300000001000000024059000000000000406900000000000040590000000000004069000000000000",
                 "POLYGON ((100 200, 100 200, 100 200, 100 200))");
         }
-
         [TestAttribute]
         public void TestSinglePointLineString()
         {
             CheckWkbGeometry("00000000020000000140590000000000004069000000000000",
                              "LINESTRING (100 200, 100 200)");
         }
-
         /// <summary>
         /// After removing the 39 bytes of MBR info at the front, and the
         /// end-of-geometry byte, * Spatialite native BLOB is very similar
@@ -56,23 +52,19 @@ namespace NetTopologySuite.Tests.NUnit.IO
             CheckWkbGeometry(
                 "01060000000200000069030000000100000004000000000000000000444000000000000044400000000000003440000000000080464000000000008046400000000000003E4000000000000044400000000000004440690300000001000000040000000000000000003E40000000000000344000000000000034400000000000002E40000000000000344000000000000039400000000000003E400000000000003440",
                 "MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)), ((30 20, 20 15, 20 25, 30 20)))");
-
             //multipoint
             CheckWkbGeometry(
                 "0104000000020000006901000000000000000000F03F000000000000F03F690100000000000000000000400000000000000040",
                 "MULTIPOINT(1 1, 2 2)");
-
             //multiline
             CheckWkbGeometry(
                 "010500000002000000690200000003000000000000000000244000000000000024400000000000003440000000000000344000000000000024400000000000004440690200000004000000000000000000444000000000000044400000000000003E400000000000003E40000000000000444000000000000034400000000000003E400000000000002440",
                 "MULTILINESTRING ((10 10, 20 20, 10 40), (40 40, 30 30, 40 20, 30 10))");
-
             //geometrycollection
             CheckWkbGeometry(
                 "010700000002000000690100000000000000000010400000000000001840690200000002000000000000000000104000000000000018400000000000001C400000000000002440",
                 "GEOMETRYCOLLECTION(POINT(4 6),LINESTRING(4 6,7 10))");
         }
-
         [TestAttribute, Ignore("Not yet implemented satisfactorily.")]
         public void TestIllFormedWKB()
         {
@@ -80,32 +72,25 @@ namespace NetTopologySuite.Tests.NUnit.IO
             CheckWkbGeometry("00000000030000000140590000000000004069000000000000",
                              "POLYGON ((100 200, 100 200, 100 200, 100 200)");
         }
-
         private static void CheckWkbGeometry(String wkbHex, String expectedWKT)
         {
             CheckWkbGeometry(WKBReader.HexToBytes(wkbHex), expectedWKT);
         }
-
         private static void CheckWkbGeometry(byte[] wkb, String expectedWKT)
         {
             WKBReader wkbReader = new WKBReader();
             IGeometry g2 = wkbReader.Read(wkb);
-
             WKTReader reader = new WKTReader();
             IGeometry expected = reader.Read(expectedWKT);
-
             bool isEqual = (expected.CompareTo(g2 /*, Comp2*/) == 0);
             Assert.IsTrue(isEqual);
-
         }
-
         [TestAttribute]
         public void TestBase64TextFiles()
         {
             // taken from: https://raw.githubusercontent.com/SharpMap/SharpMap/5289522c26e77584eaa95428c1bd2202ff18a340/UnitTests/TestData/Base%2064.txt
             TestBase64TextFile(EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.Base 64.txt"));
         }
-
         private static void TestBase64TextFile(Stream file)
         {
             byte[] wkb = ConvertBase64(file);
@@ -113,7 +98,6 @@ namespace NetTopologySuite.Tests.NUnit.IO
             IGeometry geom = null;
             Assert.DoesNotThrow(() => geom = wkbReader.Read(wkb));
         }
-
         private static byte[] ConvertBase64(Stream file)
         {
             using (StreamReader sr = new StreamReader(file))

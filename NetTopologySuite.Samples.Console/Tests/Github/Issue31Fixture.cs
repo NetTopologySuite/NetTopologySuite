@@ -1,7 +1,6 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.Index.Strtree;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Samples.Tests.Github
 {
     public class Issue31Fixture
@@ -17,7 +16,6 @@ namespace NetTopologySuite.Samples.Tests.Github
             Assert.DoesNotThrow(() => tree.Remove(new Envelope(10, 20, 10, 20), "4"));
             Assert.AreEqual(3, tree.Count);
         }
-
         //Not necessary since AbstractSTRtree<>.Remove is not exposed with SIRtree
         /*
         public void TestRemoveSIRtree()

@@ -4,7 +4,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Quadtree;
-
 namespace NetTopologySuite.Simplify
 {
     /// <summary>
@@ -13,62 +12,55 @@ namespace NetTopologySuite.Simplify
     public class LineSegmentIndex
     {
         private readonly ISpatialIndex<LineSegment>_index = new Quadtree<LineSegment>();
-
         /*
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public LineSegmentIndex() { }
         */
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="line"></param>
-        public void Add(TaggedLineString line) 
+        public void Add(TaggedLineString line)
         {
             TaggedLineSegment[] segs = line.Segments;
-            for (int i = 0; i < segs.Length; i++) 
+            for (int i = 0; i < segs.Length; i++)
             {
                 TaggedLineSegment seg = segs[i];
                 Add(seg);
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="seg"></param>
         public void Add(LineSegment seg)
         {
             _index.Insert(new Envelope(seg.P0, seg.P1), seg);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="seg"></param>
         public void Remove(LineSegment seg)
         {
             _index.Remove(new Envelope(seg.P0, seg.P1), seg);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="querySeg"></param>
         /// <returns></returns>
         public IList<LineSegment> Query(LineSegment querySeg)
         {
             Envelope env = new Envelope(querySeg.P0, querySeg.P1);
-
             LineSegmentVisitor visitor = new LineSegmentVisitor(querySeg);
             _index.Query(env, visitor);
-            IList<LineSegment> itemsFound = visitor.Items;        
-
+            IList<LineSegment> itemsFound = visitor.Items;
             return itemsFound;
         }
     }
-
     /// <summary>
     /// ItemVisitor subclass to reduce volume of query results.
     /// </summary>
@@ -76,18 +68,16 @@ namespace NetTopologySuite.Simplify
     {
         // MD - only seems to make about a 10% difference in overall time.
         private readonly LineSegment _querySeg;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="querySeg"></param>
-        public LineSegmentVisitor(LineSegment querySeg) 
+        public LineSegmentVisitor(LineSegment querySeg)
         {
             _querySeg = querySeg;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="item"></param>
         public void VisitItem(LineSegment item)
@@ -96,9 +86,8 @@ namespace NetTopologySuite.Simplify
             if (Envelope.Intersects(seg.P0, seg.P1, _querySeg.P0, _querySeg.P1))
                 Items.Add(seg);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IList<LineSegment> Items { get; } = new List<LineSegment>();
     }

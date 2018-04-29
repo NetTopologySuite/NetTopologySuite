@@ -2,7 +2,6 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Shape.Random
 {
     /// <summary>
@@ -13,10 +12,8 @@ namespace NetTopologySuite.Shape.Random
     public class RandomPointsBuilder : GeometricShapeBuilder
     {
         protected static readonly System.Random Rnd = new System.Random();
-
         private IGeometry _maskPoly;
         private IPointOnGeometryLocator _extentLocator;
-
         /// <summary>
         /// Create a shape factory which will create shapes using the default
         /// <see cref="IGeometryFactory"/>.
@@ -25,7 +22,6 @@ namespace NetTopologySuite.Shape.Random
             : this(new GeometryFactory())
         {
         }
-
         /// <summary>
         /// Create a shape factory which will create shapes using the given
         /// <see cref="IGeometryFactory"/>
@@ -35,7 +31,6 @@ namespace NetTopologySuite.Shape.Random
             : base(geomFact)
         {
         }
-
         /// <summary>
         /// Sets a polygonal mask.
         /// </summary>
@@ -44,12 +39,10 @@ namespace NetTopologySuite.Shape.Random
         {
             if (!(mask is IPolygonal))
                 throw new ArgumentException("Only polygonal extents are supported");
-
             _maskPoly = mask;
             Extent = mask.EnvelopeInternal;
             _extentLocator = new IndexedPointInAreaLocator(mask);
         }
-
         public override IGeometry GetGeometry()
         {
             var pts = new Coordinate[NumPoints];
@@ -63,14 +56,12 @@ namespace NetTopologySuite.Shape.Random
             }
             return GeomFactory.CreateMultiPointFromCoords(pts);
         }
-
         protected bool IsInExtent(Coordinate p)
         {
             if (_extentLocator != null)
                 return _extentLocator.Locate(p) != Location.Exterior;
             return Extent.Contains(p);
         }
-
         /*
          * Same functionality in base class
          *
@@ -81,12 +72,10 @@ namespace NetTopologySuite.Shape.Random
             return pt;
         }
         */
-
         protected Coordinate CreateRandomCoord(Envelope env)
         {
             var x = env.MinX + env.Width * Rnd.NextDouble();
             var y = env.MinY + env.Height * Rnd.NextDouble();
-
             return CreateCoord(x, y);
         }
     }

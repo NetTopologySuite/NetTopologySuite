@@ -3,7 +3,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Operation.Linemerge;
 using NetTopologySuite.Operation.Overlay;
-
 namespace NetTopologySuite.Operation.Union
 {
     ///<summary>
@@ -21,14 +20,14 @@ namespace NetTopologySuite.Operation.Union
     /// The result obeys the following contract:
     /// <list type="Bullet">
     /// <item>Unioning a set of <see cref="IPolygon"/>s has the effect of merging the areas (i.e. the same effect as iteratively unioning all individual polygons together).</item>
-    /// <item>Unioning a set of <see cref="ILineString"/>s has the effect of <b>fully noding</b> 
+    /// <item>Unioning a set of <see cref="ILineString"/>s has the effect of <b>fully noding</b>
     /// and <b>dissolving</b> the input linework.
-    /// In this context "fully noded" means that there will be 
-    /// an endpoint or node in the result  
+    /// In this context "fully noded" means that there will be
+    /// an endpoint or node in the result
     /// for every endpoint or line segment crossing in the input.
     /// "Dissolved" means that any duplicate (e.g. coincident) line segments or portions
-    /// of line segments will be reduced to a single line segment in the output.  
-    /// This is consistent with the semantics of the 
+    /// of line segments will be reduced to a single line segment in the output.
+    /// This is consistent with the semantics of the
     /// <see cref="IGeometry.Union(IGeometry)"/> operation.
     /// If <b>merged</b> linework is required, the <see cref="LineMerger"/> class can be used.</item>
     /// <item>Unioning a set of <see cref="IPoint"/>s has the effect of merging all identical points (producing a set with no duplicates).</item> </list>
@@ -48,17 +47,16 @@ namespace NetTopologySuite.Operation.Union
         /// Computes the geometric union of a <see cref="IList{IGeometry}"/>
         /// </summary>
         /// <param name="geoms">A collection of geometries</param>
-        /// <returns>The union of the geometries, 
+        /// <returns>The union of the geometries,
         /// or <c>null</c> if the input is empty</returns>
         public static IGeometry Union(IList<IGeometry> geoms)
         {
             var op = new UnaryUnionOp(geoms);
             return op.Union();
         }
-
         /// <summary>
         /// Computes the geometric union of a <see cref="IList{IGeometry}"/><para/>
-        /// If no input geometries were provided but a <see cref="IGeometryFactory"/> was provided, 
+        /// If no input geometries were provided but a <see cref="IGeometryFactory"/> was provided,
         /// an empty <see cref="IGeometryCollection"/> is returned.
         /// </summary>
         /// <param name="geoms">A collection of geometries</param>
@@ -70,7 +68,6 @@ namespace NetTopologySuite.Operation.Union
             var op = new UnaryUnionOp(geoms, geomFact);
             return op.Union();
         }
-	
         /// <summary>Constructs a unary union operation for a <see cref="IGeometry"/>
         /// (which may be a <see cref="IGeometryCollection"/>).
         /// </summary>
@@ -82,15 +79,12 @@ namespace NetTopologySuite.Operation.Union
             var op = new UnaryUnionOp(geom);
             return op.Union();
         }
-
         private readonly List<IGeometry> _polygons = new List<IGeometry>();
         private readonly List<IGeometry> _lines = new List<IGeometry>();
         private readonly List<IGeometry> _points = new List<IGeometry>();
-
         private IGeometryFactory _geomFact;
-
         /// <summary>
-        /// Constructs a unary union operation for an enumeration  
+        /// Constructs a unary union operation for an enumeration
         /// of <see cref="IGeometry"/>s, using the <see cref="IGeometryFactory"/>
         /// of the input geometries.
         /// </summary>
@@ -99,11 +93,10 @@ namespace NetTopologySuite.Operation.Union
         {
             Extract(geoms);
         }
-
         /// <summary>
-        /// Constructs a unary union operation for an enumeration  
+        /// Constructs a unary union operation for an enumeration
         /// of <see cref="IGeometry"/>s. <para/>
-        /// If no input geometries were provided but a <see cref="IGeometryFactory"/> was provided, 
+        /// If no input geometries were provided but a <see cref="IGeometryFactory"/> was provided,
         /// </summary>
         /// <param name="geoms">An enumeration of geometries</param>
         /// <param name="geomFact">The geometry factory to use if the enumeration is empty</param>
@@ -112,7 +105,6 @@ namespace NetTopologySuite.Operation.Union
             _geomFact = geomFact;
             Extract(geoms);
         }
-
         /// <summary>
         /// Constructs a unary union operation for a <see cref="IGeometry"/>
         /// (which may be a <see cref="IGeometryCollection"/>).
@@ -122,18 +114,15 @@ namespace NetTopologySuite.Operation.Union
         {
             Extract(geom);
         }
-
         private void Extract(IEnumerable<IGeometry> geoms)
         {
             foreach (IGeometry geom in geoms)
                 Extract(geom);
         }
-
         private void Extract(IGeometry geom)
         {
             if (_geomFact == null)
                 _geomFact = geom.Factory;
-
             /*
             PolygonExtracter.getPolygons(geom, polygons);
             LineStringExtracter.getLines(geom, lines);
@@ -143,16 +132,15 @@ namespace NetTopologySuite.Operation.Union
             GeometryExtracter.Extract<ILineString>(geom, _lines);
             GeometryExtracter.Extract<IPoint>(geom, _points);
         }
-
         ///<summary>
         /// Gets the union of the input geometries.
-	    /// If no input geometries were provided but a <see cref="IGeometryFactory"/> was provided, 
+	    /// If no input geometries were provided but a <see cref="IGeometryFactory"/> was provided,
 	    /// an empty <see cref="IGeometryCollection"/> is returned.
 	    /// <para/>Otherwise, the return value is <c>null</c>
         ///</summary>
         /// <returns>
-        /// A Geometry containing the union 
-        /// or an empty <see cref="IGeometryCollection"/> if no geometries were provided in the input, 
+        /// A Geometry containing the union
+        /// or an empty <see cref="IGeometryCollection"/> if no geometries were provided in the input,
         /// or <c>null</c> if not GeometryFactory was provided
         /// </returns>
         public IGeometry Union()
@@ -161,10 +149,9 @@ namespace NetTopologySuite.Operation.Union
             {
                 return null;
             }
-
             /**
-             * For points and lines, only a single union operation is 
-             * required, since the OGC model allows self-intersecting 
+             * For points and lines, only a single union operation is
+             * required, since the OGC model allows self-intersecting
              * MultiPoint and MultiLineStrings.
              * This is not the case for polygons, so Cascaded Union is required.
              */
@@ -174,20 +161,17 @@ namespace NetTopologySuite.Operation.Union
                 IGeometry ptGeom = _geomFact.BuildGeometry(_points);
                 unionPoints = UnionNoOpt(ptGeom);
             }
-
             IGeometry unionLines = null;
             if (_lines.Count > 0)
             {
                 IGeometry lineGeom = _geomFact.BuildGeometry(_lines);
                 unionLines = UnionNoOpt(lineGeom);
             }
-
             IGeometry unionPolygons = null;
             if (_polygons.Count > 0)
             {
                 unionPolygons = CascadedPolygonUnion.Union(_polygons);
             }
-
             /*
              * Performing two unions is somewhat inefficient,
              * but is mitigated by unioning lines and points first
@@ -200,14 +184,10 @@ namespace NetTopologySuite.Operation.Union
                 union = unionPoints;
             else
                 union = PointGeometryUnion.Union((IPuntal)unionPoints, unionLA);
-
             if (union == null)
                 return _geomFact.CreateGeometryCollection();
-
             return union;
         }
-
-
         //private static ICollection<IGeometry> ToCollection<T>(IEnumerable<T> items) where T : IGeometry
         //{
         //    var ret = new List<IGeometry>();
@@ -215,7 +195,6 @@ namespace NetTopologySuite.Operation.Union
         //        ret.Add(geometry);
         //    return ret;
         //}
-
         ///<summary>
         /// Computes the union of two geometries, either of both of which may be null.
         ///</summary>
@@ -229,15 +208,12 @@ namespace NetTopologySuite.Operation.Union
         {
             if (g0 == null && g1 == null)
                 return null;
-
             if (g1 == null)
                 return g0;
             if (g0 == null)
                 return g1;
-
             return g0.Union(g1);
         }
-
         ///<summary>
         /// Computes a unary union with no extra optimization, and no short-circuiting.
         ///</summary>
@@ -248,10 +224,8 @@ namespace NetTopologySuite.Operation.Union
         /// <returns>The union of the input geometry</returns>
         private IGeometry UnionNoOpt(IGeometry g0)
         {
-            
             IGeometry empty = _geomFact.CreatePoint();
             return OverlayOp.Overlay(g0, empty, SpatialFunction.Union);
         }
-
     }
 }

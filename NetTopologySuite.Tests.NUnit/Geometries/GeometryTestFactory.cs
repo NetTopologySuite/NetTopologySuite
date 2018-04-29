@@ -1,11 +1,9 @@
 ﻿using System;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     public class GeometryTestFactory
     {
-
         public static Coordinate[] CreateBox(
                               double minx, double miny,
                               int nSide,
@@ -14,10 +12,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             int i;
             int ipt = 0;
             Coordinate[] pts = new Coordinate[4 * nSide + 1];
-
             double maxx = minx + nSide * segLen;
             double maxy = miny + nSide * segLen;
-
             for (i = 0; i < nSide; i++)
             {
                 double x = minx + i * segLen;
@@ -43,7 +39,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 pts[ipt++] = new Coordinate(x, y);
             }
             pts[ipt++] = new Coordinate(pts[0]);
-
             return pts;
         }
         public static IPolygon CreateCircle(
@@ -58,7 +53,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var poly = fact.CreatePolygon(ring, null);
             return poly;
         }
-
         /// <summary>
         /// Creates a circle
         /// </summary>
@@ -73,10 +67,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                               int nPts)
         {
             Coordinate[] pts = new Coordinate[nPts + 1];
-
             int iPt = 0;
             double len = size / 2.0;
-
             for (int i = 0; i < nPts; i++)
             {
                 double ang = i * (2 * Math.PI / nPts);
@@ -88,7 +80,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             pts[iPt] = pts[0];
             return pts;
         }
-
         public static IPolygon CreateBox(
             IGeometryFactory fact,
                               double minx, double miny,
@@ -100,9 +91,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var poly = fact.CreatePolygon(ring, null);
             return poly;
         }
-
-
-
         /// <summary>
         /// Creates a star from a "circular" sine wave
         /// </summary>
@@ -122,17 +110,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             double armBaseLen = size / 2 - armLen;
             if (armBaseLen < 0) armBaseLen = 0.5;
-
             double angInc = 2 * Math.PI / nArms;
             int nArmPt = nPts / nArms;
             if (nArmPt < 5) nArmPt = 5;
-
             int nPts2 = nArmPt * nArms;
             Coordinate[] pts = new Coordinate[nPts2 + 1];
-
             int iPt = 0;
             double starAng = 0.0;
-
             for (int iArm = 0; iArm < nArms; iArm++)
             {
                 for (int iArmPt = 0; iArmPt < nArmPt; iArmPt++)
@@ -149,7 +133,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             pts[iPt] = pts[0];
             return pts;
         }
-
         public static IPolygon CreateSineStar(
                               IGeometryFactory fact,
                               double basex,
@@ -164,6 +147,5 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var poly = fact.CreatePolygon(ring, null);
             return poly;
         }
-
     }
 }

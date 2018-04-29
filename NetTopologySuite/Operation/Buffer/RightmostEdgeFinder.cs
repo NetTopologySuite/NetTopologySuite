@@ -3,7 +3,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Utilities;
-
 namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
@@ -11,22 +10,19 @@ namespace NetTopologySuite.Operation.Buffer
     /// and which is oriented L to R at that point. (I.e. the right side is on the RHS of the edge.)
     /// </summary>
     internal class RightmostEdgeFinder
-    {        
+    {
         private int minIndex = -1;
         private DirectedEdge minDe;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public DirectedEdge Edge { get; private set; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate Coordinate { get; private set; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dirEdgeList"></param>
         public void FindEdge(IList dirEdgeList)
@@ -41,28 +37,25 @@ namespace NetTopologySuite.Operation.Buffer
                 if (!de.IsForward) continue;
                 CheckForRightmostCoordinate(de);
             }
-
             /*
              * If the rightmost point is a node, we need to identify which of
              * the incident edges is rightmost.
              */
             Assert.IsTrue(minIndex != 0 || Coordinate.Equals(minDe.Coordinate), "inconsistency in rightmost processing");
-            if (minIndex == 0)            
-                 FindRightmostEdgeAtNode();            
-            else FindRightmostEdgeAtVertex();            
-
+            if (minIndex == 0)
+                 FindRightmostEdgeAtNode();
+            else FindRightmostEdgeAtVertex();
             /*
              * now check that the extreme side is the R side.
              * If not, use the sym instead.
              */
             Edge = minDe;
             Positions rightmostSide = GetRightmostSide(minDe, minIndex);
-            if (rightmostSide == Positions.Left)            
+            if (rightmostSide == Positions.Left)
                 Edge = minDe.Sym;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private void FindRightmostEdgeAtNode()
         {
@@ -77,9 +70,8 @@ namespace NetTopologySuite.Operation.Buffer
                 minIndex = minDe.Edge.Coordinates.Length - 1;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private void FindRightmostEdgeAtVertex()
         {
@@ -95,17 +87,16 @@ namespace NetTopologySuite.Operation.Buffer
             var orientation = Orientation.Index(Coordinate, pNext, pPrev);
             bool usePrev = false;
             // both segments are below min point
-            if (pPrev.Y < Coordinate.Y && pNext.Y < Coordinate.Y && orientation == OrientationIndex.CounterClockwise)            
-                usePrev = true;            
-            else if (pPrev.Y > Coordinate.Y && pNext.Y > Coordinate.Y && orientation == OrientationIndex.Clockwise)            
-                usePrev = true;            
+            if (pPrev.Y < Coordinate.Y && pNext.Y < Coordinate.Y && orientation == OrientationIndex.CounterClockwise)
+                usePrev = true;
+            else if (pPrev.Y > Coordinate.Y && pNext.Y > Coordinate.Y && orientation == OrientationIndex.Clockwise)
+                usePrev = true;
             // if both segments are on the same side, do nothing - either is safe
             // to select as a rightmost segment
-            if (usePrev) minIndex = minIndex - 1;            
+            if (usePrev) minIndex = minIndex - 1;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="de"></param>
         private void CheckForRightmostCoordinate(DirectedEdge de)
@@ -123,9 +114,8 @@ namespace NetTopologySuite.Operation.Buffer
                 }
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="de"></param>
         /// <param name="index"></param>
@@ -137,15 +127,14 @@ namespace NetTopologySuite.Operation.Buffer
                 side = GetRightmostSideOfSegment(de, index - 1);
             if (side < 0)
             {
-                // reaching here can indicate that segment is horizontal                
+                // reaching here can indicate that segment is horizontal
                 Coordinate = null;
                 CheckForRightmostCoordinate(de);
             }
             return side;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="de"></param>
         /// <param name="i"></param>
@@ -154,16 +143,13 @@ namespace NetTopologySuite.Operation.Buffer
         {
             Edge e = de.Edge;
             Coordinate[] coord = e.Coordinates;
-
-            if (i < 0 || i + 1 >= coord.Length) 
+            if (i < 0 || i + 1 >= coord.Length)
                 return Positions.Parallel;
             if (coord[i].Y == coord[i + 1].Y)
-                return Positions.Parallel;    
-
+                return Positions.Parallel;
             Positions pos = Positions.Left;
-            if (coord[i].Y < coord[i + 1].Y) 
+            if (coord[i].Y < coord[i + 1].Y)
                 pos = Positions.Right;
-
             return pos;
         }
     }

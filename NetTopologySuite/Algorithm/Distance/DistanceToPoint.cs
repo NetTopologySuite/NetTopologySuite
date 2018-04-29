@@ -1,6 +1,5 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Algorithm.Distance
 {
     ///<summary>
@@ -42,7 +41,6 @@ namespace NetTopologySuite.Algorithm.Distance
                 ptDist.SetMinimum(geom.Coordinate, pt);
             }
         }
-
         ///<summary>
         /// Computes the Euclidean distance (L2 metric) from a <see cref="Coordinate"/> to a <see cref="ILineString"/>.
         ///</summary>
@@ -61,7 +59,6 @@ namespace NetTopologySuite.Algorithm.Distance
                 ptDist.SetMinimum(closestPt, pt);
             }
         }
-
         ///<summary>
         /// Computes the Euclidean distance (L2 metric) from a <see cref="Coordinate"/> to a <see cref="LineSegment"/>.
         ///</summary>
@@ -73,7 +70,6 @@ namespace NetTopologySuite.Algorithm.Distance
             var closestPt = segment.ClosestPoint(pt);
             ptDist.SetMinimum(closestPt, pt);
         }
-
         ///<summary>
         /// Computes the Euclidean distance (L2 metric) from a <see cref="Coordinate"/> to a <see cref="Polygon"/>.
         ///</summary>

@@ -2,7 +2,6 @@
 using GeoAPI.Geometries;
 using NUnit.Framework;
 using NetTopologySuite.Algorithm;
-
 namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 {
     public class DistanceLineLineStressTest
@@ -29,15 +28,12 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             }
             Console.WriteLine("# failed = " + failCount + " out of " + n);
         }
-
         // make results reproducible
         private static readonly Random Rnd = new Random(123456);
-
         private static Coordinate[] RandomDisjointCollinearSegments()
         {
             var slope = Rnd.NextDouble();
             var seg = new Coordinate[4];
-
             double gap = 1;
             double x1 = 10;
             double x2 = x1 + gap;
@@ -46,9 +42,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             seg[1] = new Coordinate(x1, slope*x1);
             seg[2] = new Coordinate(x2, slope*x2);
             seg[3] = new Coordinate(x3, slope*x3);
-
             return seg;
         }
-
     }
 }

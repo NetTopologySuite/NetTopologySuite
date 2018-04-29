@@ -2,11 +2,9 @@ using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
-
 #if !HAS_SYSTEM_ICLONEABLE
 using ICloneable = GeoAPI.ICloneable;
 #endif
-
 namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>
@@ -35,7 +33,6 @@ namespace NetTopologySuite.LinearReferencing
             loc.SetToEnd(linear);
             return loc;
         }
-
         /// <summary>
         /// Computes the <see cref="Coordinate" /> of a point a given fraction
         /// along the line segment <c>(p0, p1)</c>.
@@ -58,20 +55,17 @@ namespace NetTopologySuite.LinearReferencing
         {
             if (fraction <= 0.0) return p0;
             if (fraction >= 1.0) return p1;
-
             double x = (p1.X - p0.X) * fraction + p0.X;
             double y = (p1.Y - p0.Y) * fraction + p0.Y;
             // interpolate Z value. If either input Z is NaN, result z will be NaN as well.
             double z = (p1.Z - p0.Z) * fraction + p0.Z;
             return new Coordinate(x, y, z);
         }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearLocation"/> class:
         /// creates a location referring to the start of a linear geometry.
         /// </summary>
         public LinearLocation() { }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearLocation"/> class:
         /// creates a location referring to the start of a linear geometry.
@@ -80,7 +74,6 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="segmentFraction">The segment fraction.</param>
         public LinearLocation(int segmentIndex, double segmentFraction) :
             this(0, segmentIndex, segmentFraction) { }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearLocation"/> class:
         /// creates a location referring to the start of a linear geometry.
@@ -90,7 +83,6 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="segmentFraction">The segment fraction.</param>
         public LinearLocation(int componentIndex, int segmentIndex, double segmentFraction) :
             this(componentIndex, segmentIndex, segmentFraction, true) { }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearLocation"/> class:
         /// creates a location referring to the start of a linear geometry.
@@ -107,7 +99,6 @@ namespace NetTopologySuite.LinearReferencing
             if (normalize)
                 Normalize();
         }
-
         /// <summary>
         /// Creates a new location equal to a given one.
         /// </summary>
@@ -118,7 +109,6 @@ namespace NetTopologySuite.LinearReferencing
             SegmentIndex = loc.SegmentIndex;
             SegmentFraction = loc.SegmentFraction;
         }
-
         /// <summary>
         /// Ensures the individual values are locally valid.
         /// Does not ensure that the indexes are valid for
@@ -128,30 +118,25 @@ namespace NetTopologySuite.LinearReferencing
         {
             if (SegmentFraction < 0.0)
                 SegmentFraction = 0.0;
-
             if (SegmentFraction > 1.0)
                 SegmentFraction = 1.0;
-
             if (ComponentIndex < 0)
             {
                 ComponentIndex = 0;
                 SegmentIndex = 0;
                 SegmentFraction = 0.0;
             }
-
             if (SegmentIndex < 0)
             {
                 SegmentIndex = 0;
                 SegmentFraction = 0.0;
             }
-
             if (SegmentFraction == 1.0)
             {
                 SegmentFraction = 0.0;
                 SegmentIndex += 1;
             }
         }
-
         /// <summary>
         /// Ensures the indexes are valid for a given linear <see cref="Geometry" />.
         /// </summary>
@@ -163,7 +148,6 @@ namespace NetTopologySuite.LinearReferencing
                 SetToEnd(linear);
                 return;
             }
-
             if (SegmentIndex >= linear.NumPoints)
             {
                 ILineString line = (ILineString)linear.GetGeometryN(ComponentIndex);
@@ -171,7 +155,6 @@ namespace NetTopologySuite.LinearReferencing
                 SegmentFraction = 1.0;
             }
         }
-
         /// <summary>
         /// Snaps the value of this location to
         /// the nearest vertex on the given linear <see cref="Geometry" />,
@@ -183,17 +166,14 @@ namespace NetTopologySuite.LinearReferencing
         {
             if (SegmentFraction <= 0.0 || SegmentFraction >= 1.0)
                 return;
-
             double segLen = GetSegmentLength(linearGeom);
             double lenToStart = SegmentFraction * segLen;
             double lenToEnd = segLen - lenToStart;
-
             if (lenToStart <= lenToEnd && lenToStart < minDistance)
                 SegmentFraction = 0.0;
             else if (lenToEnd <= lenToStart && lenToEnd < minDistance)
                 SegmentFraction = 1.0;
         }
-
         /// <summary>
         /// Gets the length of the segment in the given
         /// Geometry containing this location.
@@ -203,17 +183,14 @@ namespace NetTopologySuite.LinearReferencing
         public double GetSegmentLength(IGeometry linearGeom)
         {
             ILineString lineComp = (ILineString)linearGeom.GetGeometryN(ComponentIndex);
-
             // ensure segment index is valid
             int segIndex = SegmentIndex;
             if (SegmentIndex >= lineComp.NumPoints - 1)
                 segIndex = lineComp.NumPoints - 2;
-
             Coordinate p0 = lineComp.GetCoordinateN(segIndex);
             Coordinate p1 = lineComp.GetCoordinateN(segIndex + 1);
             return p0.Distance(p1);
         }
-
         /// <summary>
         /// Sets the value of this location to
         /// refer to the end of a linear geometry.
@@ -226,28 +203,23 @@ namespace NetTopologySuite.LinearReferencing
             SegmentIndex = lastLine.NumPoints - 1;
             SegmentFraction = 1.0;
         }
-
         /// <summary>
         /// Gets the component index for this location.
         /// </summary>
         public int ComponentIndex { get; private set; }
-
         /// <summary>
         /// Gets the segment index for this location.
         /// </summary>
         public int SegmentIndex { get; private set; }
-
         /// <summary>
         /// Gets the segment fraction for this location.
         /// </summary>
         public double SegmentFraction { get; private set; }
-
         /// <summary>
         /// Tests whether this location refers to a vertex:
         /// returns <c>true</c> if the location is a vertex.
         /// </summary>
         public bool IsVertex => SegmentFraction <= 0.0 || SegmentFraction >= 1.0;
-
         /// <summary>
         /// Gets the <see cref="Coordinate" /> along the
         /// given linear <see cref="Geometry" /> which is
@@ -264,7 +236,6 @@ namespace NetTopologySuite.LinearReferencing
             Coordinate p1 = lineComp.GetCoordinateN(SegmentIndex + 1);
             return PointAlongSegmentByFraction(p0, p1, SegmentFraction);
         }
-
         ///<summary>
         /// Gets a <see cref="LineSegment"/> representing the segment of the given linear <see cref="IGeometry"/> which contains this location.
         ///</summary>
@@ -283,7 +254,6 @@ namespace NetTopologySuite.LinearReferencing
             Coordinate p1 = lineComp.GetCoordinateN(SegmentIndex + 1);
             return new LineSegment(p0, p1);
         }
-
         /// <summary>
         /// Tests whether this location refers to a valid
         /// location on the given linear <see cref="Geometry" />.
@@ -303,7 +273,6 @@ namespace NetTopologySuite.LinearReferencing
                 return false;
             return true;
         }
-
         /// <summary>
         /// Compares the current instance with another object of the same type.
         /// </summary>
@@ -324,7 +293,6 @@ namespace NetTopologySuite.LinearReferencing
             LinearLocation other = (LinearLocation)obj;
             return CompareTo(other);
         }
-
         /// <summary>
         /// Compares the current instance with another object of the same type.
         /// </summary>
@@ -344,13 +312,11 @@ namespace NetTopologySuite.LinearReferencing
                 return -1;
             if (ComponentIndex > other.ComponentIndex)
                 return 1;
-
             // compare segments
             if (SegmentIndex < other.SegmentIndex)
                 return -1;
             if (SegmentIndex > other.SegmentIndex)
                 return 1;
-
             // same segment, so compare segment fraction
             if (double.IsNaN(SegmentFraction) && double.IsNaN(other.SegmentFraction))
                 return 0;
@@ -358,11 +324,9 @@ namespace NetTopologySuite.LinearReferencing
                 return -1;
             if (SegmentFraction > other.SegmentFraction)
                 return 1;
-
             // same location
             return 0;
         }
-
         /// <summary>
         /// Compares this object with the specified index values for order.
         /// </summary>
@@ -393,7 +357,6 @@ namespace NetTopologySuite.LinearReferencing
             // same location
             return 0;
         }
-
         /// <summary>
         /// Compares two sets of location values for order.
         /// </summary>
@@ -430,7 +393,6 @@ namespace NetTopologySuite.LinearReferencing
             // same location
             return 0;
         }
-
         ///<summary>
         /// Tests whether two locations are on the same segment in the parent <see cref="IGeometry"/>.
         /// </summary>
@@ -450,7 +412,6 @@ namespace NetTopologySuite.LinearReferencing
                 return true;
             return false;
         }
-
         /// <summary>
         /// Tests whether this location is an endpoint of
         /// the linear component it refers to.
@@ -465,7 +426,6 @@ namespace NetTopologySuite.LinearReferencing
             return SegmentIndex >= nseg ||
                 (SegmentIndex == nseg && SegmentFraction >= 1.0);
         }
-
         /// <summary>
         /// Converts a linear location to the lowest equivalent location index.
         /// The lowest index has the lowest possible component and segment indices.
@@ -486,7 +446,6 @@ namespace NetTopologySuite.LinearReferencing
                 return this;
             return new LinearLocation(ComponentIndex, nseg, 1.0, false);
         }
-
         /// <summary>
         /// Copies this location.
         /// </summary>
@@ -496,7 +455,6 @@ namespace NetTopologySuite.LinearReferencing
         {
             return Copy();
         }
-
         public LinearLocation Copy()
         {
             return new LinearLocation(SegmentIndex, SegmentFraction);

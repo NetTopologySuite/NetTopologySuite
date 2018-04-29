@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
@@ -50,40 +49,33 @@ namespace NetTopologySuite.Geometries.Utilities
         * Possible extensions:
         * GetParent() method to return immediate parent e.g. of LinearRings in Polygons
         */
-
         /// <summary>
         /// The geometry factory
         /// </summary>
         protected IGeometryFactory Factory;
-
         // these could eventually be exposed to clients
         /// <summary>
         /// <c>true</c> if empty geometries should not be included in the result.
         /// </summary>
         private bool pruneEmptyGeometry = true;
-
         /// <summary>
         /// <c>true</c> if a homogenous collection result
         /// from a <c>GeometryCollection</c> should still
         /// be a general GeometryCollection.
         /// </summary>
         private bool preserveGeometryCollectionType = true;
-
         /// <summary>
         /// <c>true</c> if the type of the input should be preserved.
         /// </summary>
         private bool _preserveType;
-
         ///// <summary>
         /////
         ///// </summary>
         /*public GeometryTransformer() { }*/
-
         /// <summary>
         /// Makes the input geometry available
         /// </summary>
         public IGeometry InputGeometry { get; private set; }
-
         /// <summary>
         ///
         /// </summary>
@@ -111,7 +103,6 @@ namespace NetTopologySuite.Geometries.Utilities
                 return TransformGeometryCollection((IGeometryCollection)inputGeom, null);
             throw new ArgumentException("Unknown Geometry subtype: " + inputGeom.GetType().FullName);
         }
-
         /// <summary>
         /// Convenience method which provides standard way of
         /// creating a <c>CoordinateSequence</c>.
@@ -122,7 +113,6 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             return Factory.CoordinateSequenceFactory.Create(coords);
         }
-
         /// <summary>
         /// Convenience method which provides a standard way of copying <see cref="ICoordinateSequence"/>s.
         /// </summary>
@@ -132,7 +122,6 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             return seq.Copy();
         }
-
         /// <summary>
         /// Transforms a <see cref="ICoordinateSequence"/>.
         /// This method should always return a valid coordinate list for
@@ -148,7 +137,6 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             return Copy(coords);
         }
-
         /// <summary>
         /// Transforms a <see cref="IPoint"/> geometry.
         /// </summary>
@@ -159,7 +147,6 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             return Factory.CreatePoint(TransformCoordinates(geom.CoordinateSequence, geom));
         }
-
         /// <summary>
         /// Transforms a <see cref="IMultiPoint"/> geometry.
         /// </summary>
@@ -178,7 +165,6 @@ namespace NetTopologySuite.Geometries.Utilities
             }
             return Factory.BuildGeometry(transGeomList);
         }
-
         /// <summary>
         /// Transforms a <see cref="ILinearRing"/>.
         /// <para/>
@@ -191,22 +177,20 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="geom">The <c>LinearRing</c> to transform</param>
         /// <param name="parent">The parent geometry</param>
         /// <returns>
-        /// A <c>LinearRing</c> if the transformation resulted in a structurally valid ring, otherwise, 
+        /// A <c>LinearRing</c> if the transformation resulted in a structurally valid ring, otherwise,
         /// if the transformation caused the LinearRing to collapse to 3 or fewer points, a <c>LineString</c>
         /// </returns>
         protected virtual IGeometry TransformLinearRing(ILinearRing geom, IGeometry parent)
         {
             var seq = TransformCoordinates(geom.CoordinateSequence, geom);
-            if (seq == null) 
+            if (seq == null)
                 return Factory.CreateLinearRing((ICoordinateSequence) null);
-            
             var seqSize = seq.Count;
             // ensure a valid LinearRing
             if (seqSize > 0 && seqSize < 4 && !_preserveType)
                 return Factory.CreateLineString(seq);
             return Factory.CreateLinearRing(seq);
         }
-
         /// <summary>
         /// Transforms a <see cref="ILineString"/> geometry.
         /// </summary>
@@ -218,7 +202,6 @@ namespace NetTopologySuite.Geometries.Utilities
             // should check for 1-point sequences and downgrade them to points
             return Factory.CreateLineString(TransformCoordinates(geom.CoordinateSequence, geom));
         }
-
         /// <summary>
         /// Transforms a <see cref="IMultiLineString"/> geometry.
         /// </summary>
@@ -237,7 +220,6 @@ namespace NetTopologySuite.Geometries.Utilities
             }
             return Factory.BuildGeometry(transGeomList);
         }
-
         /// <summary>
         /// Transforms a <see cref="IPolygon"/> geometry.
         /// </summary>
@@ -248,10 +230,8 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             bool isAllValidLinearRings = true;
             IGeometry shell = TransformLinearRing(geom.Shell, geom);
-
             if (shell == null || !(shell is ILinearRing) || shell.IsEmpty)
                 isAllValidLinearRings = false;
-
             var holes = new List<ILineString>();
             for (int i = 0; i < geom.NumInteriorRings; i++)
             {
@@ -261,11 +241,9 @@ namespace NetTopologySuite.Geometries.Utilities
                     isAllValidLinearRings = false;
                 holes.Add((ILineString)hole);
             }
-
             if (isAllValidLinearRings)
             {
                 ILinearRing[] holesAsLinearRing = new ILinearRing[holes.Count];
-
                 // in case your IDE whines about array covariance on this line,
                 // don't worry, it's safe -- we proved above that it will work.
                 holes.CopyTo(holesAsLinearRing);
@@ -281,7 +259,6 @@ namespace NetTopologySuite.Geometries.Utilities
                 return Factory.BuildGeometry(components);
             }
         }
-
         /// <summary>
         /// Transforms a <see cref="IMultiPolygon"/> geometry.
         /// </summary>
@@ -300,7 +277,6 @@ namespace NetTopologySuite.Geometries.Utilities
             }
             return Factory.BuildGeometry(transGeomList);
         }
-
         /// <summary>
         /// Transforms a <see cref="IGeometryCollection"/> geometry.
         /// </summary>

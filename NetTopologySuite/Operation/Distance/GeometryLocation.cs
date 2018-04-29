@@ -1,11 +1,10 @@
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Operation.Distance
 {
     /// <summary>
     /// Represents the location of a point on a Geometry.
-    /// Maintains both the actual point location 
-    /// (which may not be exact, if the point is not a vertex) 
+    /// Maintains both the actual point location
+    /// (which may not be exact, if the point is not a vertex)
     /// as well as information about the component
     /// and segment index where the point occurs.
     /// Locations inside area Geometrys will not have an associated segment index,
@@ -14,14 +13,13 @@ namespace NetTopologySuite.Operation.Distance
     public class GeometryLocation
     {
         /// <summary>
-        /// A special value of segmentIndex used for locations inside area geometries. 
-        /// These locations are not located on a segment, 
+        /// A special value of segmentIndex used for locations inside area geometries.
+        /// These locations are not located on a segment,
         /// and thus do not have an associated segment index.
         /// </summary>
         public const int InsideArea = -1;
-
         /// <summary>
-        /// Constructs a GeometryLocation specifying a point on a point, as well as the 
+        /// Constructs a GeometryLocation specifying a point on a point, as well as the
         /// segment that the point is on (or <see cref="InsideArea"/> if the point is not on a segment).
         /// </summary>
         /// <param name="component">The component of the geometry containing the point</param>
@@ -33,30 +31,25 @@ namespace NetTopologySuite.Operation.Distance
             SegmentIndex = segIndex;
             Coordinate = pt;
         }
-
-        /// <summary> 
+        /// <summary>
         /// Constructs a GeometryLocation specifying a point inside an area point.
         /// </summary>
         /// <param name="component">The component of the geometry containing the point</param>
         /// <param name="pt">The coordinate of the location</param>
         public GeometryLocation(IGeometry component, Coordinate pt) : this(component, InsideArea, pt) { }
-
         /// <summary>
         /// Returns the geometry component on (or in) which this location occurs.
         /// </summary>
         public IGeometry GeometryComponent { get; }
-
         /// <summary>
         /// Returns the segment index for this location. If the location is inside an
         /// area, the index will have the value <see cref="InsideArea"/>.
         /// </summary>
         public int SegmentIndex { get; }
-
         /// <summary>
         /// Returns the <see cref="Coordinate"/> of this location.
         /// </summary>
         public Coordinate Coordinate { get; }
-
         /// <summary>
         /// Tests whether this location represents a point inside an area geometry.
         /// </summary>

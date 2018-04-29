@@ -1,7 +1,6 @@
 using System;
 using System.Text;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
@@ -20,7 +19,6 @@ namespace NetTopologySuite.Geometries
             for (int i = 0; i <= mid; i++)
                 Swap(seq, i, last - i);
         }
-
         /// <summary>
         /// Swaps two coordinates in a sequence.
         /// </summary>
@@ -31,7 +29,6 @@ namespace NetTopologySuite.Geometries
         {
             if (i == j)
                 return;
-
             for (int dim = 0; dim < seq.Dimension; dim++)
             {
                 double tmp = seq.GetOrdinate(i, (Ordinate)dim);
@@ -39,7 +36,6 @@ namespace NetTopologySuite.Geometries
                 seq.SetOrdinate(j, (Ordinate)dim, tmp);
             }
         }
-
         ///<summary>
         /// Copies a section of a <see cref="ICoordinateSequence"/> to another <see cref="ICoordinateSequence"/>.
         /// The sequences may have different dimensions;
@@ -55,7 +51,6 @@ namespace NetTopologySuite.Geometries
             for (int i = 0; i < length; i++)
                 CopyCoord(src, srcPos + i, dest, destPos + i);
         }
-
         ///<summary>
         /// Copies a coordinate of a <see cref="ICoordinateSequence"/> to another <see cref="ICoordinateSequence"/>.
         /// The sequences may have different dimensions;
@@ -75,11 +70,10 @@ namespace NetTopologySuite.Geometries
                 dest.SetOrdinate(destPos, ordinate, value);
             }
         }
-
         /// <summary>
         /// Tests whether a <see cref="ICoordinateSequence"/> forms a valid <see cref="ILinearRing"/>,
         /// by checking the sequence length and closure
-        /// (whether the first and last points are identical in 2D). 
+        /// (whether the first and last points are identical in 2D).
         /// Self-intersection is not checked.
         /// </summary>
         /// <param name="seq">The sequence to test</param>
@@ -96,13 +90,12 @@ namespace NetTopologySuite.Geometries
             return seq.GetOrdinate(0, Ordinate.X) == seq.GetOrdinate(n - 1, Ordinate.X)
                 && seq.GetOrdinate(0, Ordinate.Y) == seq.GetOrdinate(n - 1, Ordinate.Y);
         }
-
         /// <summary>
-        /// Ensures that a CoordinateSequence forms a valid ring, 
+        /// Ensures that a CoordinateSequence forms a valid ring,
         /// returning a new closed sequence of the correct length if required.
-        /// If the input sequence is already a valid ring, it is returned 
+        /// If the input sequence is already a valid ring, it is returned
         /// without modification.
-        /// If the input sequence is too short or is not closed, 
+        /// If the input sequence is too short or is not closed,
         /// it is extended with one or more copies of the start point.
         /// </summary>
         /// <param name="fact">The CoordinateSequenceFactory to use to create the new sequence</param>
@@ -116,14 +109,12 @@ namespace NetTopologySuite.Geometries
             // too short - make a new one
             if (n <= 3)
                 return CreateClosedRing(fact, seq, 4);
-
             var isClosed = seq.GetOrdinate(0, Ordinate.X) == seq.GetOrdinate(n - 1, Ordinate.X) &&
                            seq.GetOrdinate(0, Ordinate.Y) == seq.GetOrdinate(n - 1, Ordinate.Y);
             if (isClosed) return seq;
             // make a new closed ring
             return CreateClosedRing(fact, seq, n + 1);
         }
-
         private static ICoordinateSequence CreateClosedRing(ICoordinateSequenceFactory fact, ICoordinateSequence seq, int size)
         {
             var newseq = fact.Create(size, seq.Dimension);
@@ -134,7 +125,6 @@ namespace NetTopologySuite.Geometries
                 Copy(seq, 0, newseq, i, 1);
             return newseq;
         }
-
         public static ICoordinateSequence Extend(ICoordinateSequenceFactory fact, ICoordinateSequence seq, int size)
         {
             var newseq = fact.Create(size, seq.Ordinates);
@@ -148,14 +138,13 @@ namespace NetTopologySuite.Geometries
             }
             return newseq;
         }
-
         /// <summary>
         /// Tests whether two <see cref="ICoordinateSequence"/>s are equal.
         /// To be equal, the sequences must be the same length.
-        /// They do not need to be of the same dimension, 
+        /// They do not need to be of the same dimension,
         /// but the ordinate values for the smallest dimension of the two
         /// must be equal.
-        /// Two <c>NaN</c> ordinates values are considered to be equal. 
+        /// Two <c>NaN</c> ordinates values are considered to be equal.
         /// </summary>
         /// <param name="cs1">a CoordinateSequence</param>
         /// <param name="cs2">a CoordinateSequence</param>
@@ -184,7 +173,6 @@ namespace NetTopologySuite.Geometries
             }
             return true;
         }
-
         /// <summary>
         /// Creates a string representation of a <see cref="ICoordinateSequence"/>.
         /// The format is:

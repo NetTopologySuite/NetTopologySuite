@@ -9,7 +9,6 @@ using NetTopologySuite.IO;
 using NetTopologySuite.Noding;
 using NetTopologySuite.Noding.Snapround;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
 {
     /// <summary>
@@ -18,7 +17,6 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
     public class SnapRoundingTest
     {
         WKTReader rdr = new WKTReader();
-
         [TestAttribute]
         public void TestPolyWithCloseNode()
         {
@@ -27,7 +25,6 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 };
             RunRounding(polyWithCloseNode);
         }
-
         [TestAttribute]
         public void TestLineStringLongShort()
         {
@@ -37,8 +34,6 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                              };
             RunRounding(geoms);
         }
-
-
         [TestAttribute]
         public void TestBadLines1() {
             string[] badLines1 = {
@@ -46,7 +41,6 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 };
             RunRounding(badLines1);
         }
-
         [TestAttribute]
         public void TestBadLines2() {
             string[] badLines2 = {
@@ -54,7 +48,6 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 };
             RunRounding(badLines2);
         }
-
         [TestAttribute]
         public void TestCollapse1() {
             string[] collapse1 = {
@@ -62,7 +55,6 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 };
             RunRounding(collapse1);
         }
-
         [TestAttribute]
         public void TestCollapse2()
         {
@@ -71,8 +63,6 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 };
             RunRounding(collapse2);
         }
-  
-
         [TestAttribute]
         public void TestBadNoding1() {
             string[] badNoding1 = {
@@ -80,7 +70,6 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 };
             RunRounding(badNoding1);
         }
-
         [TestAttribute]
         public void TestBadNoding1Extract() {
             string[] badNoding1Extract = {
@@ -99,7 +88,6 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 };
             RunRounding(badNoding1ExtractShift);
         }
-
         [TestAttribute, Description("Test from JTS-MailingList")]
         public void TestML()
         {
@@ -107,7 +95,6 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 const double scale = 2.0E10;
                 IPrecisionModel precisionModel = new PrecisionModel(scale);
                 IGeometryFactory geometryFactory = new GeometryFactory(precisionModel);
-
                 var reader = new WKTReader(geometryFactory);
                 var lineStringA = (ILineString)
                     reader.Read("LINESTRING (-93.40178610435 -235.5437531975, -401.24229900825 403.69365857925)");
@@ -115,49 +102,35 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                     reader.Read("LINESTRING (-50.0134121926 -145.44686640725, -357.8539250965 493.7905453695)");
                 var lineStringC = (ILineString)
                     reader.Read("LINESTRING (-193.8964147753 -30.64653554935, -186.68866383205 -34.1176054623)");
-
                 var middlePoint = (IPoint) reader.Read("POINT (-203.93366864454998 174.171839481125)");
-
                 var lineStrings = new List<ILineString>();
                 lineStrings.Add(lineStringA);
                 lineStrings.Add(lineStringB);
                 lineStrings.Add(lineStringC);
-
                 var noder = new GeometryNoder(geometryFactory.PrecisionModel);
                 var nodedLineStrings = noder.Node(lineStrings.ToArray());
-
                 var shortestDistanceToPointBeforeNoding = double.MaxValue;
-
                 foreach (var lineString in lineStrings)
                 {
                     shortestDistanceToPointBeforeNoding = Math.Min(lineString.Distance(middlePoint),
                                                                    shortestDistanceToPointBeforeNoding);
                 }
-
                 var shortestDistanceToPointAfterNoding = Double.MaxValue;
-
                 foreach (var lineString in nodedLineStrings)
                 {
                     shortestDistanceToPointAfterNoding = Math.Min(lineString.Distance(middlePoint),
                                                                   shortestDistanceToPointAfterNoding);
                 }
-
                 var difference = Math.Abs(shortestDistanceToPointAfterNoding - shortestDistanceToPointBeforeNoding);
-
-
                 Console.WriteLine("Scale: {0}", scale);
                 Console.WriteLine("Distance to point before noding: {0}", shortestDistanceToPointBeforeNoding);
                 Console.WriteLine("Distance to point after noding:  {0}", shortestDistanceToPointAfterNoding);
                 Console.WriteLine("Difference is {0} and should be lesser than {1}", difference, 1.0/scale);
-
                 const double roughTolerance = 10.0;
                 Assert.IsTrue(difference < roughTolerance, "this difference should should be lesser than " + 1.0/scale);
-
             }
         }
-
         private const double SnapTolerance = 1.0;
-
         void RunRounding(string[] wkt)
         {
             var geoms = FromWKT(wkt);
@@ -165,14 +138,10 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             GeometryNoder noder = new GeometryNoder(pm);
             noder.IsValidityChecked = true;
             var nodedLines = noder.Node(geoms);
-            
             foreach ( var ls in nodedLines)
                 Console.WriteLine(ls);
-
             Assert.IsTrue(IsSnapped(nodedLines, SnapTolerance));
-            
         }
-
         ICollection<IGeometry> FromWKT(string[] wkts)
         {
             ICollection<IGeometry> geomList = new List<IGeometry>();
@@ -187,7 +156,6 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             }
             return geomList;
         }
-
         private static bool IsSnapped(IList<ILineString> lines, double tol)
         {
             for (int i = 0; i < lines.Count; i++)
@@ -197,12 +165,10 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 {
                     var v = line.GetCoordinateN(j);
                     if (!IsSnapped(v, lines)) return false;
-
                 }
             }
             return true;
         }
-
         private static bool IsSnapped(Coordinate v, IList<ILineString> lines)
         {
             for (var i = 0; i < lines.Count ; i++)
@@ -217,7 +183,6 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             }
             return true;
         }
-
         private static bool IsSnapped(Coordinate v, Coordinate p0, Coordinate p1)
         {
             if (v.Equals2D(p0)) return true;

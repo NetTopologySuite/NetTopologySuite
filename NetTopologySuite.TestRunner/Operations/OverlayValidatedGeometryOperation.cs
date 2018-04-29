@@ -4,7 +4,6 @@ using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Operation.Overlay.Validate;
 using Open.Topology.TestRunner.Result;
-
 namespace Open.Topology.TestRunner.Operations
 {
     /// <summary>
@@ -13,7 +12,7 @@ namespace Open.Topology.TestRunner.Operations
     /// convenient and noticeable way of flagging the problem when using the TestRunner).
     /// All other Geometry methods are executed normally.
     /// <para/>
-    /// In order to eliminate the need to specify the precise result of an overlay, 
+    /// In order to eliminate the need to specify the precise result of an overlay,
     /// this class forces the final return value to be <tt>GEOMETRYCOLLECTION EMPTY</tt>.
     /// <para/>
     /// This class can be used via the <tt>-geomop</tt> command-line option
@@ -30,26 +29,19 @@ namespace Open.Topology.TestRunner.Operations
             if (methodName.Equals("symDifference", StringComparison.InvariantCultureIgnoreCase)) return SpatialFunction.SymDifference;
             throw new ArgumentOutOfRangeException("methodName");
         }
-
         private const bool ReturnEmptyGeometryCollection = true;
-
         private readonly GeometryMethodOperation _chainOp = new GeometryMethodOperation();
-
         public OverlayValidatedGeometryOperation()
         {
-
         }
-
         public Type GetReturnType(XmlTestType op)
         {
             return GetReturnType(op.ToString());
         }
-
         public Type GetReturnType(String opName)
         {
             return _chainOp.GetReturnType(opName);
         }
-
         /// <summary>
         /// Creates a new operation which chains to the given {@link GeometryMethodOperation}
         /// for non-intercepted methods.
@@ -59,7 +51,6 @@ namespace Open.Topology.TestRunner.Operations
         {
             _chainOp = chainOp;
         }
-
         /// <summary>
         /// Invokes the named operation.
         /// </summary>
@@ -72,11 +63,9 @@ namespace Open.Topology.TestRunner.Operations
         {
             return Invoke(opName.ToString(), geometry, args);
         }
-
         public IResult Invoke(String opName, IGeometry geometry, Object[] args)
         {
             var opCode = OverlayOpCode(opName);
-
             // if not an overlay op, do the default
             if (opCode < 0)
             {
@@ -84,11 +73,10 @@ namespace Open.Topology.TestRunner.Operations
             }
             return InvokeValidatedOverlayOp(opCode, geometry, args);
         }
-
         /**
-         * 
+         *
          * and optionally validating the result.
-         * 
+         *
          * @param opCode
          * @param g0
          * @param args
@@ -102,25 +90,20 @@ namespace Open.Topology.TestRunner.Operations
         public IResult InvokeValidatedOverlayOp(SpatialFunction opCode, IGeometry g0, Object[] args)
         {
             var g1 = (IGeometry) args[0];
-
             var result = InvokeGeometryOverlayMethod(opCode, g0, g1);
-
             // validate
             Validate(opCode, g0, g1, result);
             AreaValidate(g0, g1);
-
             /**
-             * Return an empty GeometryCollection as the result.  
+             * Return an empty GeometryCollection as the result.
              * This allows the test case to avoid specifying an exact result
              */
             if (ReturnEmptyGeometryCollection)
             {
                 result = result.Factory.CreateGeometryCollection(null);
             }
-
             return new GeometryResult(result);
         }
-
         private static void Validate(SpatialFunction opCode, IGeometry g0, IGeometry g1, IGeometry result)
         {
             var validator = new OverlayResultValidator(g0, g1, result);
@@ -132,9 +115,7 @@ namespace Open.Topology.TestRunner.Operations
                 ReportError(msg);
             }
         }
-
         private const double AreaDiffTol = 5.0;
-
         private static void AreaValidate(IGeometry g0, IGeometry g1)
         {
             double areaDiff = AreaDiff(g0, g1);
@@ -145,7 +126,6 @@ namespace Open.Topology.TestRunner.Operations
                 ReportError(msg);
             }
         }
-
         public static double AreaDiff(IGeometry g0, IGeometry g1)
         {
             double areaA = g0.Area;
@@ -153,13 +133,11 @@ namespace Open.Topology.TestRunner.Operations
             double areaAintB = g0.Intersection(g1).Area;
             return areaA - areaAdiffB - areaAintB;
         }
-
         private static void ReportError(String msg)
         {
             //Console.WriteLine(msg);
             throw new Exception(msg);
         }
-
         public static IGeometry InvokeGeometryOverlayMethod(SpatialFunction opCode, IGeometry g0, IGeometry g1)
         {
             switch (opCode)

@@ -3,14 +3,12 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 {
     //Tests are exposed by CoordinateSequenceTestBase type
     public class PackedCoordinateSequenceTest : CoordinateSequenceTestBase
     {
         protected override ICoordinateSequenceFactory CsFactory => new PackedCoordinateSequenceFactory();
-
         [TestAttribute]
         public void TestMultiPointDim4()
         {
@@ -20,7 +18,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             mpSeq.SetOrdinate(0, Ordinate.Y, -2);
             mpSeq.SetOrdinate(0, Ordinate.Z, 10);
             mpSeq.SetOrdinate(0, Ordinate.M, 20);
-
             IMultiPoint mp = gf.CreateMultiPoint(mpSeq);
             ICoordinateSequence pSeq = ((Point)mp.GetGeometryN(0)).CoordinateSequence;
             Assert.AreEqual(4, pSeq.Dimension);

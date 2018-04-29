@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Specialized;
 using System.IO;
-
 namespace Open.Topology.TestRunner
 {
 	/// <summary>
@@ -10,29 +9,23 @@ namespace Open.Topology.TestRunner
 	public class XmlTestController
 	{
 	    private XmlTestDocument  m_objCurrentDoc = null;
-
 		public XmlTestController()
 		{
             FileNames = new StringCollection();
             m_objCurrentDoc = new XmlTestDocument();
 		}
-
         public StringCollection FileNames { get; private set; } = null;
-
 	    public void ResetFiles()
         {
             if (FileNames != null)
-                FileNames.Clear();            
+                FileNames.Clear();
        }
-
         public void Reset()
         {
             if (m_objCurrentDoc != null)
                 m_objCurrentDoc.ResetTests();
-            
             ResetFiles();
         }
-
         public bool RunFile(int index)
         {
             if (FileNames != null && FileNames.Count > 0)
@@ -44,33 +37,29 @@ namespace Open.Topology.TestRunner
                     {
                         XmlTestCollection listTests = m_objCurrentDoc.CurrentTests;
                         if (listTests != null && listTests.Count > 0)
-                            return listTests.RunTests();                        
+                            return listTests.RunTests();
                     }
                 }
-            }    
+            }
             return false;
         }
-
         public bool GetFiles(string directory)
         {
             if (FileNames == null)
                 FileNames = new StringCollection();
-            
             try
             {
                 string[] dirs = Directory.GetFiles(directory, "*.xml");
-                foreach (string dir in dirs) 
-                    FileNames.Add(dir);                
+                foreach (string dir in dirs)
+                    FileNames.Add(dir);
                 return true;
             }
             catch (Exception ex)
             {
                 XmlTestExceptionManager.Publish(ex);
             }
-
             return false;
         }
-
         public XmlTestCollection Load(string filePath)
         {
             if (m_objCurrentDoc != null)

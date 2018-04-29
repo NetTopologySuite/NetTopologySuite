@@ -1,25 +1,21 @@
 using System;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Operation.Valid
 {
-    /// <summary> 
+    /// <summary>
     /// Implements the appropriate checks for repeated points
     /// (consecutive identical coordinates) as defined in the
     /// NTS spec.
     /// </summary>
     public class RepeatedPointTester
     {
-
         // save the repeated coord found (if any)
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate Coordinate { get; private set; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="g"></param>
         /// <returns></returns>
@@ -29,17 +25,16 @@ namespace NetTopologySuite.Operation.Valid
             if (g is IPoint) return false;
             else if (g is IMultiPoint) return false;
             // LineString also handles LinearRings
-            else if (g is ILineString) 
+            else if (g is ILineString)
                 return HasRepeatedPoint((g).Coordinates);
             else if (g is IPolygon)
                 return HasRepeatedPoint((IPolygon) g);
-            else if (g is IGeometryCollection) 
+            else if (g is IGeometryCollection)
                 return HasRepeatedPoint((IGeometryCollection) g);
             else  throw new NotSupportedException(g.GetType().FullName);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>
@@ -55,9 +50,8 @@ namespace NetTopologySuite.Operation.Valid
             }
             return false;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
@@ -66,13 +60,12 @@ namespace NetTopologySuite.Operation.Valid
             if (HasRepeatedPoint(p.ExteriorRing.Coordinates))
                 return true;
             for (int i = 0; i < p.NumInteriorRings; i++)
-                if (HasRepeatedPoint(p.GetInteriorRingN(i).Coordinates)) 
-                    return true;            
+                if (HasRepeatedPoint(p.GetInteriorRingN(i).Coordinates))
+                    return true;
             return false;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="gc"></param>
         /// <returns></returns>
@@ -81,7 +74,7 @@ namespace NetTopologySuite.Operation.Valid
             for (int i = 0; i < gc.NumGeometries; i++)
             {
                 IGeometry g = gc.GetGeometryN(i);
-                if (HasRepeatedPoint(g)) 
+                if (HasRepeatedPoint(g))
                     return true;
             }
             return false;

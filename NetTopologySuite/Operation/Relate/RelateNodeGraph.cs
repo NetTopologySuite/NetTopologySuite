@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.GeometriesGraph;
-
 namespace NetTopologySuite.Operation.Relate
 {
     /// <summary>
     /// Implements the simple graph of Nodes and EdgeEnd which is all that is
     /// required to determine topological relationships between Geometries.
     /// Also supports building a topological graph of a single Geometry, to
-    /// allow verification of valid topology.    
+    /// allow verification of valid topology.
     /// It is not necessary to create a fully linked
     /// PlanarGraph to determine relationships, since it is sufficient
     /// to know how the Geometries interact locally around the nodes.
@@ -21,27 +20,25 @@ namespace NetTopologySuite.Operation.Relate
     /// have their topology determined implicitly, without creating a Node object
     /// to represent them.
     /// </summary>
-    public class RelateNodeGraph 
+    public class RelateNodeGraph
     {
         private readonly NodeMap _nodes = new NodeMap(new RelateNodeFactory());
-
         /*
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public RelateNodeGraph() { }
         */
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
-        public IEnumerator<Node> GetNodeEnumerator() 
+        public IEnumerator<Node> GetNodeEnumerator()
         {
-            return _nodes.GetEnumerator(); 
+            return _nodes.GetEnumerator();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomGraph"></param>
         public void Build(GeometryGraph geomGraph)
@@ -53,15 +50,13 @@ namespace NetTopologySuite.Operation.Relate
             * any labels determined by intersections.
             */
             CopyNodesAndLabels(geomGraph, 0);
-
             /*
             * Build EdgeEnds for all intersections.
             */
             EdgeEndBuilder eeBuilder = new EdgeEndBuilder();
             IList<EdgeEnd> eeList = eeBuilder.ComputeEdgeEnds(geomGraph.Edges);
-            InsertEdgeEnds(eeList);        
+            InsertEdgeEnds(eeList);
         }
-
         /// <summary>
         /// Insert nodes for all intersections on the edges of a Geometry.
         /// Label the created nodes the same as the edge label if they do not already have a label.
@@ -83,11 +78,10 @@ namespace NetTopologySuite.Operation.Relate
                     if (eLoc == Location.Boundary)
                         n.SetLabelBoundary(argIndex);
                     else if (n.Label.IsNull(argIndex))
-                        n.SetLabel(argIndex, Location.Interior);                            
+                        n.SetLabel(argIndex, Location.Interior);
                 }
             }
         }
-
         /// <summary>
         /// Copy all nodes from an arg point into this graph.
         /// The node label in the arg point overrides any previously computed
@@ -104,12 +98,11 @@ namespace NetTopologySuite.Operation.Relate
             foreach (Node graphNode in geomGraph.Nodes)
             {
                 Node newNode = _nodes.AddNode(graphNode.Coordinate);
-                newNode.SetLabel(argIndex, graphNode.Label.GetLocation(argIndex));            
+                newNode.SetLabel(argIndex, graphNode.Label.GetLocation(argIndex));
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ee"></param>
         public void InsertEdgeEnds(IList<EdgeEnd> ee)

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries
 {
     ///<summary>
@@ -14,10 +13,10 @@ namespace NetTopologySuite.Geometries
     /// ordinate dimensions above the limit will not be compared.
     /// </para>
     /// <para>
-    /// If different behaviour is required for comparing size, dimension, 
+    /// If different behaviour is required for comparing size, dimension,
     /// or coordinate values, any or all methods can be overridden.</para>
     /// </remarks>
-    public class CoordinateSequenceComparator : IComparer<ICoordinateSequence> 
+    public class CoordinateSequenceComparator : IComparer<ICoordinateSequence>
     {
         ///<summary>
         /// Compare two <code>double</code>s, allowing for NaN values.
@@ -30,22 +29,18 @@ namespace NetTopologySuite.Geometries
         {
             if (a < b) return -1;
             if (a > b) return 1;
-
             if (Double.IsNaN(a))
             {
                 if (Double.IsNaN(b)) return 0;
                 return -1;
             }
-
             if (Double.IsNaN(b)) return 1;
             return 0;
         }
-
         /// <summary>
         /// The number of dimensions to test
         /// </summary>
         protected int DimensionLimit;
-
         /// <summary>
         /// Creates a comparator which will test all dimensions.
         /// </summary>
@@ -53,7 +48,6 @@ namespace NetTopologySuite.Geometries
         {
             DimensionLimit = int.MaxValue;
         }
-
         /// <summary>
         /// Creates a comparator which will test only the specified number of dimensions.
         /// </summary>
@@ -62,7 +56,6 @@ namespace NetTopologySuite.Geometries
         {
             DimensionLimit = dimensionLimit;
         }
-
         ///<summary>
         /// Compares two <see cref="ICoordinateSequence" />s for relative order.
         ///</summary>
@@ -75,7 +68,6 @@ namespace NetTopologySuite.Geometries
             ICoordinateSequence s2 = (ICoordinateSequence)o2;
             return Compare(s1, s2);
         }
-
         ///<summary>
         /// Compares the same coordinate of two <see cref="ICoordinateSequence"/>s
         ///</summary>
@@ -94,7 +86,6 @@ namespace NetTopologySuite.Geometries
             }
             return 0;
         }
-
         /// <summary>
         /// Compares two <see cref="ICoordinateSequence"/>s for relative order.
         /// </summary>
@@ -105,10 +96,8 @@ namespace NetTopologySuite.Geometries
         {
             int size1 = s1.Count;
             int size2 = s2.Count;
-
             int dim1 = s1.Dimension;
             int dim2 = s2.Dimension;
-
             int minDim = dim1;
             if (dim2 < minDim)
                 minDim = dim2;
@@ -118,14 +107,12 @@ namespace NetTopologySuite.Geometries
                 minDim = DimensionLimit;
                 dimLimited = true;
             }
-
             // lower dimension is less than higher
             if (!dimLimited)
             {
                 if (dim1 < dim2) return -1;
                 if (dim1 > dim2) return 1;
             }
-
             // lexicographic ordering of point sequences
             int i = 0;
             while (i < size1 && i < size2)
@@ -136,7 +123,6 @@ namespace NetTopologySuite.Geometries
             }
             if (i < size1) return 1;
             if (i < size2) return -1;
-
             return 0;
         }
     }

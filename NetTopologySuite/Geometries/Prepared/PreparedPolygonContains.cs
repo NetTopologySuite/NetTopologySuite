@@ -1,5 +1,4 @@
 ﻿using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
@@ -27,7 +26,6 @@ namespace NetTopologySuite.Geometries.Prepared
             PreparedPolygonContains polyInt = new PreparedPolygonContains(prep);
             return polyInt.Contains(geom);
         }
-
         ///<summary>
         /// Creates an instance of this operation.
         ///</summary>
@@ -36,7 +34,6 @@ namespace NetTopologySuite.Geometries.Prepared
             : base(prepPoly)
         {
         }
-
         ///<summary>
         /// Tests whether this PreparedPolygon <c>contains</c> a given geometry.
         ///</summary>
@@ -46,7 +43,6 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             return Eval(geom);
         }
-
         ///<summary>
         /// Computes the full topological <c>contains</c> predicate.<br/>
         /// Used when short-circuit tests are not conclusive.

@@ -3,13 +3,12 @@ using System.Globalization;
 using System.Reflection;
 using GeoAPI.Geometries;
 using Open.Topology.TestRunner.Result;
-
 namespace Open.Topology.TestRunner.Operations
 {
     /**
      * Invokes a named operation on a set of arguments,
      * the first of which is a {@link Geometry}.
-     * This class provides operations which are the methods 
+     * This class provides operations which are the methods
      * defined on the Geometry class.
      * Other {@link GeometryOperation} classes can delegate to
      * instances of this class to run standard Geometry methods.
@@ -17,33 +16,26 @@ namespace Open.Topology.TestRunner.Operations
      * @author Martin Davis
      * @version 1.7
      */
-
     public class GeometryMethodOperation : IGeometryOperation
     {
         public static bool IsBooleanFunction(String name)
         {
             return GetGeometryReturnType(name) == typeof (bool);
         }
-
         public static bool IsIntegerFunction(String name)
         {
             return GetGeometryReturnType(name) == typeof (int);
         }
-
         public static bool IsDoubleFunction(String name)
         {
             return GetGeometryReturnType(name) == typeof (double);
         }
-
         public static bool IsGeometryFunction(String name)
         {
             return typeof (IGeometry).IsAssignableFrom(GetGeometryReturnType(name));
         }
-
-
         public static Type GetGeometryReturnType(String functionName)
         {
-
             //MethodInfo[] methods = typeof(IGeometry).GetMethods();
             for (int i = 0; i < GeometryMethods.Length; i++)
             {
@@ -64,24 +56,19 @@ namespace Open.Topology.TestRunner.Operations
             }
             return null;
         }
-
         private static readonly MethodInfo[] GeometryMethods = typeof (IGeometry).GetMethods();
-
         public Type GetReturnType(XmlTestType op)
         {
             return GetReturnType(op.ToString());
         }
-
         public Type GetReturnType(String opName)
         {
             return GetGeometryReturnType(opName);
         }
-
         public IResult Invoke(XmlTestType opName, IGeometry geometry, Object[] args)
         {
             return Invoke(opName.ToString(), geometry, args);
         }
-
         public IResult Invoke(String opName, IGeometry geometry, Object[] args)
         {
             Object[] actualArgs = new Object[args.Length];
@@ -90,7 +77,6 @@ namespace Open.Topology.TestRunner.Operations
                 throw new NTSTestReflectionException(opName, args);
             return InvokeMethod(geomMethod, geometry, actualArgs);
         }
-
         private MethodInfo GetGeometryMethod(String opName, Object[] args, Object[] actualArgs)
         {
             // could index methods by name for efficiency...
@@ -107,7 +93,6 @@ namespace Open.Topology.TestRunner.Operations
             }
             return null;
         }
-
         private static int NonNullItemCount(Object[] obj)
         {
             int count = 0;
@@ -118,14 +103,11 @@ namespace Open.Topology.TestRunner.Operations
             }
             return count;
         }
-
         private readonly Object[] _convArg = new Object[1];
-
         private bool ConvertArgs(ParameterInfo[] parameterTypes, Object[] args, Object[] actualArgs)
         {
             if (parameterTypes.Length != NonNullItemCount(args))
                 return false;
-
             for (int i = 0; i < args.Length; i++)
             {
                 bool isCompatible = ConvertArg(parameterTypes[i].ParameterType, args[i], _convArg);
@@ -135,7 +117,6 @@ namespace Open.Topology.TestRunner.Operations
             }
             return true;
         }
-
         private bool ConvertArg(Type destClass, Object srcValue, Object[] convArg)
         {
             convArg[0] = null;
@@ -150,7 +131,6 @@ namespace Open.Topology.TestRunner.Operations
             }
             return false;
         }
-
         private bool convertArgFromString(Type destClass, String srcStr, Object[] convArg)
         {
             convArg[0] = null;
@@ -168,7 +148,6 @@ namespace Open.Topology.TestRunner.Operations
                 }
                 return false;
             }
-
             if (destClass == typeof (Int32) || destClass == typeof (int))
             {
                 // try as an int
@@ -183,7 +162,6 @@ namespace Open.Topology.TestRunner.Operations
                 }
                 return false;
             }
-
             if (destClass == typeof (Double) || destClass == typeof (double))
             {
                 // try as an int
@@ -205,8 +183,6 @@ namespace Open.Topology.TestRunner.Operations
             }
             return false;
         }
-
-
         private IResult InvokeMethod(MethodInfo method, IGeometry geometry, Object[] args)
         {
             try
@@ -235,6 +211,5 @@ namespace Open.Topology.TestRunner.Operations
             }
             throw new NTSTestReflectionException("Unsupported result type: " + method.ReturnType);
         }
-
     }
 }

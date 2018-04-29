@@ -1,8 +1,5 @@
 using NetTopologySuite.Utilities;
-
 using BitConverter = System.BitConverter;
-
-
 namespace NetTopologySuite.Precision
 {
     /// <summary>
@@ -24,7 +21,6 @@ namespace NetTopologySuite.Precision
         {
             return num >> 52;
         }
-
         /// <summary>
         /// This computes the number of common most-significant bits in the mantissas
         /// of two double-precision numbers.
@@ -46,7 +42,6 @@ namespace NetTopologySuite.Precision
             }
             return 52;
         }
-
         /// <summary>
         /// Zeroes the lower n bits of a bitstring.
         /// </summary>
@@ -60,7 +55,6 @@ namespace NetTopologySuite.Precision
             long zeroed = bits & mask;
             return zeroed;
         }
-
         /// <summary>
         /// Extracts the i'th bit of a bitstring.
         /// </summary>
@@ -72,19 +66,16 @@ namespace NetTopologySuite.Precision
             long mask = (1L << i);
             return (bits & mask) != 0 ? 1 : 0;
         }
-
         private bool _isFirst = true;
         private int _commonMantissaBitsCount = 53;
         private long _commonBits;
         private long _commonSignExp;
-
         /*
         /// <summary>
         ///
         /// </summary>
         public CommonBits() { }
         */
-
         /// <summary>
         ///
         /// </summary>
@@ -99,7 +90,6 @@ namespace NetTopologySuite.Precision
                 _isFirst = false;
                 return;
             }
-
             long numSignExp = SignExpBits(numBits);
             if (numSignExp != _commonSignExp)
             {
@@ -109,12 +99,10 @@ namespace NetTopologySuite.Precision
             _commonMantissaBitsCount = NumCommonMostSigMantissaBits(_commonBits, numBits);
             _commonBits = ZeroLowerBits(_commonBits, 64 - (12 + _commonMantissaBitsCount));
         }
-
         /// <summary>
         ///
         /// </summary>
         public double Common => BitConverter.Int64BitsToDouble(_commonBits);
-
         /// <summary>
         /// A representation of the Double bits formatted for easy readability
         /// </summary>

@@ -21,7 +21,6 @@ using NetTopologySuite.Precision;
 using NetTopologySuite.SnapRound;
 using Newtonsoft.Json;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Samples.Tests.Github
 {
     [TestFixture, Category("GitHub Issue")]
@@ -32,7 +31,6 @@ namespace NetTopologySuite.Samples.Tests.Github
         {
             var kd = new KdTree<string>();
             const int Count = 8;
-
             for (var row = 0; row < Count; ++row)
             {
                 for (var column = 0; column < Count; ++column)
@@ -40,39 +38,30 @@ namespace NetTopologySuite.Samples.Tests.Github
                     kd.Insert(new Coordinate(column, row), (column * 100 + row).ToString());
                 }
             }
-
             var testCoordinate = new Coordinate(Count / 2, Count / 2);
             var res = kd.NearestNeighbor(testCoordinate);
-
             Assert.AreEqual(testCoordinate, res.Coordinate);
         }
-
         [Test(Description = "GitHub issue request #114")]
         public void Should_Find_Correct_Number_Of_Polygons_From_Lines()
         {
             var paths = new List<IGeometry>();
             var factory = GeometryFactory.Default;
-
             for (int x = 1; x < 10; x++)
             {
                 var startPoint = new Coordinate(x * 40, 30);
                 var endPoint = new Coordinate(x * 40, 440);
                 paths.Add(factory.CreateLineString(new[] { startPoint, endPoint }));
             }
-
             for (int y = 1; y < 10; y++)
             {
                 var startPoint = new Coordinate(30, y * 40);
                 var endPoint = new Coordinate(450, y * 40);
-
                 paths.Add(factory.CreateLineString(new[] { startPoint, endPoint }));
             }
-
             var noder = new Noding.Snapround.GeometryNoder(new PrecisionModel(1.0d));
-
             var geomFactory = GeometryFactory.Default;
             var nodedLines = noder.Node(paths);
-
             var nodedDedupedLinework = geomFactory.BuildGeometry(nodedLines.ToArray()).Union();
             // WKT committed by FObermaier in 01/31/2017 => test fail
             string expected = @"MULTILINESTRING ((40 30,  40 40),  (40 40,  40 80),  (40 80,  40 120),  (40 120,  40 160),  (40 160,  40 200),  (40 200,  40 240),  (40 240,  40 280),  (40 280,  40 320),  (40 320,  40 360),  (40 360,  40 440),  (80 30,  80 40),  (80 40,  80 80),  (80 80,  80 120),  (80 120,  80 160),  (80 160,  80 200),  (80 200,  80 240),  (80 240,  80 280),  (80 280,  80 320),  (80 320,  80 360),  (80 360,  80 440),  (120 30,  120 40),  (120 40,  120 80),  (120 80,  120 120),  (120 120,  120 160),  (120 160,  120 200),  (120 200,  120 240),  (120 240,  120 280),  (120 280,  120 320),  (120 320,  120 360),  (120 360,  120 440),  (160 30,  160 40),  (160 40,  160 80),  (160 80,  160 120),  (160 120,  160 160),  (160 160,  160 200),  (160 200,  160 240),  (160 240,  160 280),  (160 280,  160 320),  (160 320,  160 360),  (160 360,  160 440),  (200 30,  200 40),  (200 40,  200 80),  (200 80,  200 120),  (200 120,  200 160),  (200 160,  200 200),  (200 200,  200 240),  (200 240,  200 280),  (200 280,  200 320),  (200 320,  200 360),  (200 360,  200 440),  (240 30,  240 40),  (240 40,  240 80),  (240 80,  240 120),  (240 120,  240 160),  (240 160,  240 200),  (240 200,  240 240),  (240 240,  240 280),  (240 280,  240 320),  (240 320,  240 360),  (240 360,  240 440),  (280 30,  280 40),  (280 40,  280 80),  (280 80,  280 120),  (280 120,  280 160),  (280 160,  280 200),  (280 200,  280 240),  (280 240,  280 280),  (280 280,  280 320),  (280 320,  280 360),  (280 360,  280 440),  (320 30,  320 40),  (320 40,  320 80),  (320 80,  320 120),  (320 120,  320 160),  (320 160,  320 200),  (320 200,  320 240),  (320 240,  320 280),  (320 280,  320 320),  (320 320,  320 360),  (320 360,  320 440),  (360 30,  360 40),  (360 40,  360 80),  (360 80,  360 120),  (360 120,  360 160),  (360 160,  360 200),  (360 200,  360 240),  (360 240,  360 280),  (360 280,  360 320),  (360 320,  360 360),  (360 360,  360 440),  (30 40,  40 40),  (40 40,  80 40),  (80 40,  120 40),  (120 40,  160 40),  (160 40,  200 40),  (200 40,  240 40),  (240 40,  280 40),  (280 40,  320 40),  (320 40,  360 40),  (360 40,  450 40),  (30 80,  40 80),  (40 80,  80 80),  (80 80,  120 80),  (120 80,  160 80),  (160 80,  200 80),  (200 80,  240 80),  (240 80,  280 80),  (280 80,  320 80),  (320 80,  360 80),  (360 80,  450 80),  (30 120,  40 120),  (40 120,  80 120),  (80 120,  120 120),  (120 120,  160 120),  (160 120,  200 120),  (200 120,  240 120),  (240 120,  280 120),  (280 120,  320 120),  (320 120,  360 120),  (360 120,  450 120),  (30 160,  40 160),  (40 160,  80 160),  (80 160,  120 160),  (120 160,  160 160),  (160 160,  200 160),  (200 160,  240 160),  (240 160,  280 160),  (280 160,  320 160),  (320 160,  360 160),  (360 160,  450 160),  (30 200,  40 200),  (40 200,  80 200),  (80 200,  120 200),  (120 200,  160 200),  (160 200,  200 200),  (200 200,  240 200),  (240 200,  280 200),  (280 200,  320 200),  (320 200,  360 200),  (360 200,  450 200),  (30 240,  40 240),  (40 240,  80 240),  (80 240,  120 240),  (120 240,  160 240),  (160 240,  200 240),  (200 240,  240 240),  (240 240,  280 240),  (280 240,  320 240),  (320 240,  360 240),  (360 240,  450 240),  (30 280,  40 280),  (40 280,  80 280),  (80 280,  120 280),  (120 280,  160 280),  (160 280,  200 280),  (200 280,  240 280),  (240 280,  280 280),  (280 280,  320 280),  (320 280,  360 280),  (360 280,  450 280),  (30 320,  40 320),  (40 320,  80 320),  (80 320,  120 320),  (120 320,  160 320),  (160 320,  200 320),  (200 320,  240 320),  (240 320,  280 320),  (280 320,  320 320),  (320 320,  360 320),  (360 320,  450 320),  (30 360,  40 360),  (40 360,  80 360),  (80 360,  120 360),  (120 360,  160 360),  (160 360,  200 360),  (200 360,  240 360),  (240 360,  280 360),  (280 360,  320 360),  (320 360,  360 360),  (360 360,  450 360))";
@@ -81,100 +70,93 @@ namespace NetTopologySuite.Samples.Tests.Github
             Assert.AreEqual(expected, nodedDedupedLinework.ToString());
             Polygonizer polygonizer = new Polygonizer();
             polygonizer.Add(nodedDedupedLinework);
-
             var polygons = polygonizer.GetPolygons();
             Assert.AreEqual(64, polygons.Count);
         }
-
         [Test(Description = "GitHub Issue #122/1")]
         public void Polygon_intersection_Error1()
         {
             //Arrange
             var reader = new WKTReader();
             var g1 = reader.Read(
-@"LINEARRING (0.0000000000000000 -6.1026585365860800,  3.8000000000000000 -5.7690000000000000,  
-7.9000000000000000 -5.4090000000000000,  12.0000000000000000 -5.3690000000000000,  
-16.1000000000000000 -5.0990000000000000,  20.3000000000000000 -5.1390000000000000,  
-24.5000000000000000 -4.9090000000000000,  28.5000000000000000 -4.6390000000000000,  
-32.6000000000000000 -4.1890000000000000,  36.6000000000000000 -3.2890000000000000,  
-40.8000000000000000 -3.1890000000000000,  44.8000000000000000 -2.9490000000000000,  
-49.0000000000000000 -2.8200000000000000,  53.3000000000000000 -2.3600000000000000, 
-57.3000000000000000 -2.1400000000000000,  61.3000000000000000 -1.5200000000000000, 
-65.5000000000000000 -1.3900000000000000,  69.6000000000000000 -1.1700000000000000, 
-73.6000000000000000 -1.0100000000000000,  77.9000000000000000 -0.9700000000000000, 
-82.0000000000000000 -0.8000000000000000,  86.2000000000000000 -0.7400000000000000, 
-90.2000000000000000 -0.6700000000000000,  94.5000000000000000 -0.6000000000000000, 
-98.6000000000000000 -0.5000000000000000,  102.6000000000000000 -0.3900000000000000, 
-106.9000000000000000 -0.2400000000000000,  111.1000000000000000 -0.1500000000000000,  
-115.1000000000000000 -0.1510000000000000,  119.2000000000000000 -0.1510000000000000,  
-123.1000000000000000 -0.0510000000000000,  127.2000000000000000 0.0590000000000000, 
-131.2000000000000000 0.2090000000000000,  132.2000000000000000 1.0250000000000000, 
-132.6000000000000000 2.6400000000000000,  132.6000000000000000 2.6400000000000000, 
-132.6000000000000000 0.5000000000000000,  128.6000000000000000 0.5000000000000000, 
-106.2000000000000000 -2.3000000000000000,  49.9000000000000000 -2.3000000000000000, 
-31.0000000000000000 -5.4500000000000000,  0.0000000000000000 -5.4500000000000000,  
+@"LINEARRING (0.0000000000000000 -6.1026585365860800,  3.8000000000000000 -5.7690000000000000,
+7.9000000000000000 -5.4090000000000000,  12.0000000000000000 -5.3690000000000000,
+16.1000000000000000 -5.0990000000000000,  20.3000000000000000 -5.1390000000000000,
+24.5000000000000000 -4.9090000000000000,  28.5000000000000000 -4.6390000000000000,
+32.6000000000000000 -4.1890000000000000,  36.6000000000000000 -3.2890000000000000,
+40.8000000000000000 -3.1890000000000000,  44.8000000000000000 -2.9490000000000000,
+49.0000000000000000 -2.8200000000000000,  53.3000000000000000 -2.3600000000000000,
+57.3000000000000000 -2.1400000000000000,  61.3000000000000000 -1.5200000000000000,
+65.5000000000000000 -1.3900000000000000,  69.6000000000000000 -1.1700000000000000,
+73.6000000000000000 -1.0100000000000000,  77.9000000000000000 -0.9700000000000000,
+82.0000000000000000 -0.8000000000000000,  86.2000000000000000 -0.7400000000000000,
+90.2000000000000000 -0.6700000000000000,  94.5000000000000000 -0.6000000000000000,
+98.6000000000000000 -0.5000000000000000,  102.6000000000000000 -0.3900000000000000,
+106.9000000000000000 -0.2400000000000000,  111.1000000000000000 -0.1500000000000000,
+115.1000000000000000 -0.1510000000000000,  119.2000000000000000 -0.1510000000000000,
+123.1000000000000000 -0.0510000000000000,  127.2000000000000000 0.0590000000000000,
+131.2000000000000000 0.2090000000000000,  132.2000000000000000 1.0250000000000000,
+132.6000000000000000 2.6400000000000000,  132.6000000000000000 2.6400000000000000,
+132.6000000000000000 0.5000000000000000,  128.6000000000000000 0.5000000000000000,
+106.2000000000000000 -2.3000000000000000,  49.9000000000000000 -2.3000000000000000,
+31.0000000000000000 -5.4500000000000000,  0.0000000000000000 -5.4500000000000000,
 0.0000000000000000 -6.1026585365860800)");
             var g2 = reader.Read(
-@"LINEARRING (0.0000000000000000 2.6400000000000000,  0.0000000000000000 -6.0030697674418800,  
-0.3200000000000000 -5.9800000000000000,  4.6200000000000000 -5.6700000000000000,  
-8.8100000000000000 -5.1600000000000000,  13.1000000000000000 -5.2100000000000000,  
-17.1200000000000000 -4.8400000000000000,  21.2800000000000000 -5.1700000000000000,  
-25.5000000000000000 -5.1600000000000000,  29.7100000000000000 -4.6700000000000000,  
-34.1300000000000000 -3.9000000000000000,  38.2800000000000000 -3.4800000000000000, 
-42.6400000000000000 -3.3000000000000000,  46.9800000000000000 -3.2600000000000000,  
-51.1600000000000000 -2.8900000000000000,  55.3200000000000000 -2.8300000000000000, 
-59.3000000000000000 -2.9200000000000000,  63.6800000000000000 -2.3600000000000000,  
-67.4800000000000000 -2.5700000000000000,  70.8900000000000000 -2.4800000000000000,  
-74.8900000000000000 -2.5500000000000000,  78.8800000000000000 -2.6900000000000000,  
-82.4400000000000000 -2.4600000000000000,  87.5300000000000000 -2.8100000000000000,  
-91.6200000000000000 -2.7500000000000000,  95.9000000000000000 -2.1000000000000000,  
-100.2200000000000000 -2.2100000000000000,  104.4400000000000000 -2.3000000000000000, 
-109.1500000000000000 -1.9500000000000000,  113.2400000000000000 -2.8200000000000000, 
-117.2400000000000000 -1.9600000000000000,  120.9400000000000000 -1.3000000000000000, 
-125.0300000000000000 -0.8200000000000000,  126.6800000000000000 0.1300000000000000,  
-132.5500000000000000 1.5400000000000000,  132.6000000000000000 2.6400000000000000,  
-132.6000000000000000 2.6400000000000000,  132.6000000000000000 2.6400000000000000,  
+@"LINEARRING (0.0000000000000000 2.6400000000000000,  0.0000000000000000 -6.0030697674418800,
+0.3200000000000000 -5.9800000000000000,  4.6200000000000000 -5.6700000000000000,
+8.8100000000000000 -5.1600000000000000,  13.1000000000000000 -5.2100000000000000,
+17.1200000000000000 -4.8400000000000000,  21.2800000000000000 -5.1700000000000000,
+25.5000000000000000 -5.1600000000000000,  29.7100000000000000 -4.6700000000000000,
+34.1300000000000000 -3.9000000000000000,  38.2800000000000000 -3.4800000000000000,
+42.6400000000000000 -3.3000000000000000,  46.9800000000000000 -3.2600000000000000,
+51.1600000000000000 -2.8900000000000000,  55.3200000000000000 -2.8300000000000000,
+59.3000000000000000 -2.9200000000000000,  63.6800000000000000 -2.3600000000000000,
+67.4800000000000000 -2.5700000000000000,  70.8900000000000000 -2.4800000000000000,
+74.8900000000000000 -2.5500000000000000,  78.8800000000000000 -2.6900000000000000,
+82.4400000000000000 -2.4600000000000000,  87.5300000000000000 -2.8100000000000000,
+91.6200000000000000 -2.7500000000000000,  95.9000000000000000 -2.1000000000000000,
+100.2200000000000000 -2.2100000000000000,  104.4400000000000000 -2.3000000000000000,
+109.1500000000000000 -1.9500000000000000,  113.2400000000000000 -2.8200000000000000,
+117.2400000000000000 -1.9600000000000000,  120.9400000000000000 -1.3000000000000000,
+125.0300000000000000 -0.8200000000000000,  126.6800000000000000 0.1300000000000000,
+132.5500000000000000 1.5400000000000000,  132.6000000000000000 2.6400000000000000,
+132.6000000000000000 2.6400000000000000,  132.6000000000000000 2.6400000000000000,
 0.0000000000000000 2.6400000000000000)");
-
             //Act
             var res = g1.Intersection(g2);
-
             //
             ToImage(1, g1, g2, res);
-
             // Assert
             Assert.That(res, Is.Not.Null);
             Debug.WriteLine(res.AsText());
-
         }
-
         [Test(Description = "GitHub Issue #122/2")]
         public void Polygon_intersection_Error2()
         {
             //Arrange
             var reader = new WKTReader();
             var g1 = reader.Read(
-@"POLYGON ((0.0000000000000000 -6.1026585365860800,  3.8000000000000000 -5.7690000000000000,  
-7.9000000000000000 -5.4090000000000000,  12.0000000000000000 -5.3690000000000000,  
-16.1000000000000000 -5.0990000000000000,  20.3000000000000000 -5.1390000000000000,  
-24.5000000000000000 -4.9090000000000000,  28.5000000000000000 -4.6390000000000000,  
-32.6000000000000000 -4.1890000000000000,  36.6000000000000000 -3.2890000000000000,  
-40.8000000000000000 -3.1890000000000000,  44.8000000000000000 -2.9490000000000000,  
-49.0000000000000000 -2.8200000000000000,  53.3000000000000000 -2.3600000000000000, 
-57.3000000000000000 -2.1400000000000000,  61.3000000000000000 -1.5200000000000000, 
-65.5000000000000000 -1.3900000000000000,  69.6000000000000000 -1.1700000000000000, 
-73.6000000000000000 -1.0100000000000000,  77.9000000000000000 -0.9700000000000000, 
-82.0000000000000000 -0.8000000000000000,  86.2000000000000000 -0.7400000000000000, 
-90.2000000000000000 -0.6700000000000000,  94.5000000000000000 -0.6000000000000000, 
-98.6000000000000000 -0.5000000000000000,  102.6000000000000000 -0.3900000000000000, 
-106.9000000000000000 -0.2400000000000000,  111.1000000000000000 -0.1500000000000000,  
-115.1000000000000000 -0.1510000000000000,  119.2000000000000000 -0.1510000000000000,  
-123.1000000000000000 -0.0510000000000000,  127.2000000000000000 0.0590000000000000, 
-131.2000000000000000 0.2090000000000000,  132.2000000000000000 1.0250000000000000, 
-132.6000000000000000 2.6400000000000000,  132.6000000000000000 2.6400000000000000, 
-132.6000000000000000 0.5000000000000000,  128.6000000000000000 0.5000000000000000, 
-106.2000000000000000 -2.3000000000000000,  49.9000000000000000 -2.3000000000000000, 
-31.0000000000000000 -5.4500000000000000,  0.0000000000000000 -5.4500000000000000,  
+@"POLYGON ((0.0000000000000000 -6.1026585365860800,  3.8000000000000000 -5.7690000000000000,
+7.9000000000000000 -5.4090000000000000,  12.0000000000000000 -5.3690000000000000,
+16.1000000000000000 -5.0990000000000000,  20.3000000000000000 -5.1390000000000000,
+24.5000000000000000 -4.9090000000000000,  28.5000000000000000 -4.6390000000000000,
+32.6000000000000000 -4.1890000000000000,  36.6000000000000000 -3.2890000000000000,
+40.8000000000000000 -3.1890000000000000,  44.8000000000000000 -2.9490000000000000,
+49.0000000000000000 -2.8200000000000000,  53.3000000000000000 -2.3600000000000000,
+57.3000000000000000 -2.1400000000000000,  61.3000000000000000 -1.5200000000000000,
+65.5000000000000000 -1.3900000000000000,  69.6000000000000000 -1.1700000000000000,
+73.6000000000000000 -1.0100000000000000,  77.9000000000000000 -0.9700000000000000,
+82.0000000000000000 -0.8000000000000000,  86.2000000000000000 -0.7400000000000000,
+90.2000000000000000 -0.6700000000000000,  94.5000000000000000 -0.6000000000000000,
+98.6000000000000000 -0.5000000000000000,  102.6000000000000000 -0.3900000000000000,
+106.9000000000000000 -0.2400000000000000,  111.1000000000000000 -0.1500000000000000,
+115.1000000000000000 -0.1510000000000000,  119.2000000000000000 -0.1510000000000000,
+123.1000000000000000 -0.0510000000000000,  127.2000000000000000 0.0590000000000000,
+131.2000000000000000 0.2090000000000000,  132.2000000000000000 1.0250000000000000,
+132.6000000000000000 2.6400000000000000,  132.6000000000000000 2.6400000000000000,
+132.6000000000000000 0.5000000000000000,  128.6000000000000000 0.5000000000000000,
+106.2000000000000000 -2.3000000000000000,  49.9000000000000000 -2.3000000000000000,
+31.0000000000000000 -5.4500000000000000,  0.0000000000000000 -5.4500000000000000,
 0.0000000000000000 -6.1026585365860800))");
             var isValidOp = new IsValidOp(g1);
             if (!isValidOp.IsValid)
@@ -184,25 +166,25 @@ namespace NetTopologySuite.Samples.Tests.Github
                 Debug.WriteLine(g1.AsText());
             }
             var g2 = reader.Read(
-@"POLYGON ((0.0000000000000000 2.6400000000000000,  0.0000000000000000 -6.0030697674418800,  
-0.3200000000000000 -5.9800000000000000,  4.6200000000000000 -5.6700000000000000,  
-8.8100000000000000 -5.1600000000000000,  13.1000000000000000 -5.2100000000000000,  
-17.1200000000000000 -4.8400000000000000,  21.2800000000000000 -5.1700000000000000,  
-25.5000000000000000 -5.1600000000000000,  29.7100000000000000 -4.6700000000000000,  
-34.1300000000000000 -3.9000000000000000,  38.2800000000000000 -3.4800000000000000, 
-42.6400000000000000 -3.3000000000000000,  46.9800000000000000 -3.2600000000000000,  
-51.1600000000000000 -2.8900000000000000,  55.3200000000000000 -2.8300000000000000, 
-59.3000000000000000 -2.9200000000000000,  63.6800000000000000 -2.3600000000000000,  
-67.4800000000000000 -2.5700000000000000,  70.8900000000000000 -2.4800000000000000,  
-74.8900000000000000 -2.5500000000000000,  78.8800000000000000 -2.6900000000000000,  
-82.4400000000000000 -2.4600000000000000,  87.5300000000000000 -2.8100000000000000,  
-91.6200000000000000 -2.7500000000000000,  95.9000000000000000 -2.1000000000000000,  
-100.2200000000000000 -2.2100000000000000,  104.4400000000000000 -2.3000000000000000, 
-109.1500000000000000 -1.9500000000000000,  113.2400000000000000 -2.8200000000000000, 
-117.2400000000000000 -1.9600000000000000,  120.9400000000000000 -1.3000000000000000, 
-125.0300000000000000 -0.8200000000000000,  126.6800000000000000 0.1300000000000000,  
-132.5500000000000000 1.5400000000000000,  132.6000000000000000 2.6400000000000000,  
-132.6000000000000000 2.6400000000000000,  132.6000000000000000 2.6400000000000000,  
+@"POLYGON ((0.0000000000000000 2.6400000000000000,  0.0000000000000000 -6.0030697674418800,
+0.3200000000000000 -5.9800000000000000,  4.6200000000000000 -5.6700000000000000,
+8.8100000000000000 -5.1600000000000000,  13.1000000000000000 -5.2100000000000000,
+17.1200000000000000 -4.8400000000000000,  21.2800000000000000 -5.1700000000000000,
+25.5000000000000000 -5.1600000000000000,  29.7100000000000000 -4.6700000000000000,
+34.1300000000000000 -3.9000000000000000,  38.2800000000000000 -3.4800000000000000,
+42.6400000000000000 -3.3000000000000000,  46.9800000000000000 -3.2600000000000000,
+51.1600000000000000 -2.8900000000000000,  55.3200000000000000 -2.8300000000000000,
+59.3000000000000000 -2.9200000000000000,  63.6800000000000000 -2.3600000000000000,
+67.4800000000000000 -2.5700000000000000,  70.8900000000000000 -2.4800000000000000,
+74.8900000000000000 -2.5500000000000000,  78.8800000000000000 -2.6900000000000000,
+82.4400000000000000 -2.4600000000000000,  87.5300000000000000 -2.8100000000000000,
+91.6200000000000000 -2.7500000000000000,  95.9000000000000000 -2.1000000000000000,
+100.2200000000000000 -2.2100000000000000,  104.4400000000000000 -2.3000000000000000,
+109.1500000000000000 -1.9500000000000000,  113.2400000000000000 -2.8200000000000000,
+117.2400000000000000 -1.9600000000000000,  120.9400000000000000 -1.3000000000000000,
+125.0300000000000000 -0.8200000000000000,  126.6800000000000000 0.1300000000000000,
+132.5500000000000000 1.5400000000000000,  132.6000000000000000 2.6400000000000000,
+132.6000000000000000 2.6400000000000000,  132.6000000000000000 2.6400000000000000,
 0.0000000000000000 2.6400000000000000))");
             isValidOp = new IsValidOp(g1);
             if (!isValidOp.IsValid)
@@ -213,16 +195,12 @@ namespace NetTopologySuite.Samples.Tests.Github
             }
             //Act
             var res = g1.Intersection(g2);
-
             //
             ToImage(1, g1, g2, res);
-
             // Assert
             Assert.That(res, Is.Not.Null);
             Debug.WriteLine(res.AsText());
-
         }
-
         [Test(Description = "GitHub Issue #123")]
         public void LineString_Intersection_with_Polygon_return_null1()
         {
@@ -230,18 +208,14 @@ namespace NetTopologySuite.Samples.Tests.Github
             var reader = new WKTReader();
             var g1 = reader.Read(@"LINESTRING (0 -5.15,  30 -5.15,  48.9 -2,  105.2 -2,  127.6 0.8,  132.6 0.8)");
             var g2 = reader.Read(@"LINEARRING (15.325555555555553 0.8,  42.309375 0.8,  42.309375 -5.15,  15.325555555555553 -5.15,  15.325555555555553 0.8)");
-
             //Act
             var res = g1.Intersection(g2);
-
             //
             ToImage(1, g1, g2, res);
-
             // Assert
             Assert.That(res, Is.Not.Null);
             Debug.WriteLine(res.AsText());
         }
-
         [Test(Description = "GitHub Issue #125")]
         public void Fixing_invalid_polygon_with_Buffer_0_returns_empty_polygon()
         {
@@ -249,43 +223,36 @@ namespace NetTopologySuite.Samples.Tests.Github
             var rdr = new WKTReader();
             rdr.RepairRings = true;
             var poly = rdr.Read(
-@"POLYGON ((1.4749999999994841 -5.15,  30 -5.15,  48.9 -2, 
-108.1997 -2,  130.25148787313435 0.75647348414179227,  
-130.25148787313435 0.75647348414179161,  130 0.75,  
-126.3 0.72,  122.9 0.7,  119.2 0.42,  115.2 0.45,  
-111 0.29,  106.9 0.23,  102.8 0.2,  98.8 0.12,  94.8 0.04,  
-90.7 -0.08,  86.5 -0.2,  82.4 -0.42,  78.3 -0.57,  74.1 -0.69, 
-69.9 -0.78,  65.8 -0.87,  61.7 -1.07,  57.7 -1.09,  53.7 -1.229, 
-49.5 -1.289,  45.3 -1.369,  41.2 -1.719,  37 -2.409,  32.8 -3.219, 
-28.6 -3.769,  24.5 -4.089,  20.4 -4.429,  16.3 -4.599,  12.1 -4.759, 
+@"POLYGON ((1.4749999999994841 -5.15,  30 -5.15,  48.9 -2,
+108.1997 -2,  130.25148787313435 0.75647348414179227,
+130.25148787313435 0.75647348414179161,  130 0.75,
+126.3 0.72,  122.9 0.7,  119.2 0.42,  115.2 0.45,
+111 0.29,  106.9 0.23,  102.8 0.2,  98.8 0.12,  94.8 0.04,
+90.7 -0.08,  86.5 -0.2,  82.4 -0.42,  78.3 -0.57,  74.1 -0.69,
+69.9 -0.78,  65.8 -0.87,  61.7 -1.07,  57.7 -1.09,  53.7 -1.229,
+49.5 -1.289,  45.3 -1.369,  41.2 -1.719,  37 -2.409,  32.8 -3.219,
+28.6 -3.769,  24.5 -4.089,  20.4 -4.429,  16.3 -4.599,  12.1 -4.759,
 8 -4.889,  4 -5.049,  1.4749999999994841 -5.15))");
-
             //act
             var gpr = new NetTopologySuite.Precision.GeometryPrecisionReducer(new PrecisionModel(1e10));
             var poly1 = gpr.Reduce(poly);
             var poly2 = poly.Buffer(0);
             var shell = poly.Factory.CreatePolygon(((IPolygon)poly).Shell.CoordinateSequence.Reversed()).Buffer(0);
-
             ToImage(0, poly, poly1, poly2);
-
             var isValidOp = new IsValidOp(poly);
             if (!isValidOp.IsValid)
             {
                 Debug.WriteLine(isValidOp.ValidationError);
-
             }
             Debug.WriteLine(poly1.AsText());
             // assert
             //Assert.That(poly.IsValid,  Is.True,  "poly.IsValid");
             Assert.That(poly1.IsValid, Is.True, "poly1.IsValid");
             Assert.That(poly2, Is.Not.Null, "poly2 != null");
-
             //Known to fail
             //Assert.That(poly2.IsEmpty,  Is.False,  "poly2.IsEmpty");
         }
-
         [Test(Description = "GitHub Issue #126")]
-
         [TestCase(Ordinates.XY)]
         [TestCase(Ordinates.XYZ)]
         [TestCase(Ordinates.XYM)]
@@ -296,25 +263,19 @@ namespace NetTopologySuite.Samples.Tests.Github
             var gf = new GeometryFactory(DotSpatialAffineCoordinateSequenceFactory.Instance);
             var cs1 = csf.Create(1, Ordinates.XYZM);
             Assert.That(cs1.Ordinates == ordinates);
-
             cs1.SetOrdinate(0, Ordinate.X, 1);
             cs1.SetOrdinate(0, Ordinate.Y, 2);
             cs1.SetOrdinate(0, Ordinate.Z, 3);
             cs1.SetOrdinate(0, Ordinate.M, 4);
-
             var cs2 = csf.Create(new[] { new Coordinate(1, 2) });
             Assert.That(cs1.Ordinates == ordinates);
-
             var pt1 = gf.CreatePoint(cs1);
             var pt2 = gf.CreatePoint(cs2);
             var pt3 = gf.CreatePoint(new Coordinate(1, 2));
-
             Assert.That(pt1, Is.EqualTo(pt2));
             Assert.That(pt2, Is.EqualTo(pt3));
             Assert.That(pt1, Is.EqualTo(pt3));
         }
-
-
         [Test, Category("GitHub Issue"), Description("Polygon / rectangle intersection returns empty polygon"), Ignore("Claim not valid")]
         public void TestIssue149()
         {
@@ -328,30 +289,23 @@ namespace NetTopologySuite.Samples.Tests.Github
  29.724407935551895 56.755281980420541,
  10.963366463822565 52.502595315049426,
  -62.327500000000008 77.777166176470587))");
-
             Assert.IsTrue(polygon.IsValid);
             Assert.IsFalse(polygon.IsEmpty);
-
             var boundingbox = wktreader.Read(@"POLYGON ((-52.5 -34, -52.5 34, 52.5 34, 52.5 -34, -52.5 -34))");
             Assert.IsTrue(boundingbox.IsValid);
             Assert.IsFalse(boundingbox.IsEmpty);
-
             //ToImage(1, polygon, boundingbox, boundingbox.Intersection(polygon));
             //Assert.IsTrue(polygon.Intersects(boundingbox));
-
-
             var result = boundingbox.Intersection(polygon); // =>{ POLYGON EMPTY }
             //Assert.IsFalse(result.IsEmpty, "result.IsEmpty");
             var resultInverted = polygon.Intersection(boundingbox); // => { POLYGON EMPTY }
             //Assert.IsFalse(resultInverted.IsEmpty, "result.IsEmpty");
         }
-
         [Test, Description("TopologyException when generating a VoronoiDiagram"), Ignore("Known to fail, waiting for fix from JTS.")]
         public void TestIssue151()
         {
             var wktreader = new WKTReader();
             var polygon = wktreader.Read("POLYGON((14.7119 201.6703, 74.2154 201.6703, 74.2154 166.6391, 14.7119 166.6391, 14.7119 201.6703))");
-
             Assert.IsTrue(polygon.IsValid);
             var vdb = new NetTopologySuite.Triangulate.VoronoiDiagramBuilder();
             vdb.SetSites(polygon);
@@ -359,35 +313,29 @@ namespace NetTopologySuite.Samples.Tests.Github
             Assert.DoesNotThrow(() => result= vdb.GetDiagram(polygon.Factory));
             Assert.IsNotNull(result);
         }
-
         [Test, Description("SnapRoundOverlayFunctions, Casting error in GeometryEditorEx.EditGeometryCollection")]
         public void TestIssue177()
         {
             var reader = new WKTReader();
             var g1 = reader.Read("MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)),((15 5, 40 10, 10 20, 5 10, 15 5)))");
             var g2 = reader.Read("MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)),((20 35, 10 30, 10 10, 30 5, 45 20, 20 35),(30 20, 20 15, 20 25, 30 20)))");
-
-
             IGeometry res = null;
             //                                                                                     |
             //                                                             Some cruel scale factor V
             Assert.DoesNotThrow(() => res = SnapRoundOverlayFunctions.SnappedIntersection(g1, g2, 0.1));
             Assert.That(res, Is.Not.Null);
             Assert.That(res.IsValid, Is.True);
-
             ToImage(0, g1, g2, res);
-
             // To show that the result is correct:
             var r1 = new GeometryPrecisionReducer(new PrecisionModel(0.1)).Reduce(g1);
             var r2 = new GeometryPrecisionReducer(new PrecisionModel(0.1)).Reduce(g2);
             ToImage(0, r1, r2, res);
         }
-
         [Test(Description = "Bug in difference method #141"), Category("GitHub Issue")]
         public void TestDifference()
         {
             var buffer1 = WKBReader.HexToBytes(
-               //         1         2         3         4         5         6         7         8      
+               //         1         2         3         4         5         6         7         8
                 "010300000001000000050000000793adf1033458c0a8a08e06b1b34740f6df183c0b3458c0b9d84f"+
                 "27e2b247403559f264963458c0f0eeec1ee5b24740fd9c0635913458c067f1cffdb6b347400793ad"+
                 "f1033458c0a8a08e06b1b34740");
@@ -465,21 +413,17 @@ namespace NetTopologySuite.Samples.Tests.Github
                 "b1a23458c09c28c56b37b34740b827f925a33458c029074b263bb34740abd0b281a33458c0e3c3c1"+
                 "e53eb34740fdfcb5c4a33458c03793faa842b347401f33edeea33458c017f5ca6e46b34740a87d4a"+
                 "00a43458c0f21d04364ab34740f5a3caf8a33458c0f66779fd4db34740");
-
             NtsGeometryServices.Instance = new NtsGeometryServices();
             var reader = new WKBReader();
             var geom1 = reader.Read(buffer1);
             var geom2 = reader.Read(buffer2);
-
             var gu = geom1.Difference(geom2);
             Assert.IsNotNull(gu);
             Assert.IsTrue(gu is IPolygonal);
-
             ToImage(141, geom1, geom2, gu);
             ToImage(141, geom1, geom2, null);
             ToImage(141, null, null, gu);
             ToImage(141, null, null, geom2.Difference(geom1));
-
             bool isCCW = Orientation.IsCCW(((IPolygon) gu.GetGeometryN(0)).ExteriorRing.CoordinateSequence);
             for (var i = 1; i < gu.NumGeometries; i++)
             {
@@ -488,14 +432,11 @@ namespace NetTopologySuite.Samples.Tests.Github
             }
             Console.WriteLine("Orientation CCW = {0}", isCCW);
         }
-
-
         [Test]
         public void CrossAndIntersectionTest()
         {
             // Arrange
             var gf = new GeometryFactory(new PrecisionModel(100000000));
-
             var closestCoordinate = new Coordinate(152608, 594957);
             var closestLine = gf.CreateLineString(new[]
             {
@@ -515,18 +456,13 @@ namespace NetTopologySuite.Samples.Tests.Github
             var projectedIndex = indexedLine.Project(closestCoordinate);
             var coordinateToAdd = indexedLine.ExtractPoint(projectedIndex);
             gf.PrecisionModel.MakePrecise(coordinateToAdd);
-
             var line = gf.CreateLineString(new[] { new Coordinate(152503, 594904), coordinateToAdd });
-
             ToImage(0, closestLine, line, GeometryFactory.Default.CreatePoint(coordinateToAdd));
-
             // act
             var intersectionPt = line.Intersection(closestLine).Coordinate;
             gf.PrecisionModel.MakePrecise(intersectionPt);
-
             // assert intersection point is equal to coordinate to add
             Assert.AreEqual(coordinateToAdd, intersectionPt);
-
             // act insertion of coordinate to add
             var lip = new NetTopologySuite.LinearReferencing.LocationIndexOfPoint(closestLine);
             var ll = lip.IndexOf(coordinateToAdd);
@@ -540,21 +476,14 @@ namespace NetTopologySuite.Samples.Tests.Github
                 CoordinateSequences.Copy(cl.CoordinateSequence, ll.SegmentIndex+1, cls, ll.SegmentIndex + 2, cl.CoordinateSequence.Count-ll.SegmentIndex-1);
                 closestLine = gf.CreateLineString(cls);
             }
-
             ToImage(1, closestLine, line, GeometryFactory.Default.CreatePoint(coordinateToAdd));
-
             Assert.IsTrue(line.Touches(closestLine));
             Assert.IsFalse(line.Crosses(closestLine));
         }
-
         #region utility
-
-
         static void ToImage(int nr, IGeometry geom1, IGeometry geom2, IGeometry geom3)
         {
-
             //var gpw = new Windows.Forms.GraphicsPathWriter();
-
             //var extent = new Envelope();
             //if (geom1 != null)
             //    extent.ExpandToInclude(geom1.EnvelopeInternal);
@@ -562,9 +491,7 @@ namespace NetTopologySuite.Samples.Tests.Github
             //    extent.ExpandToInclude(geom2.EnvelopeInternal);
             //if (geom3 != null)
             //    extent.ExpandToInclude(geom3.EnvelopeInternal);
-
             //extent.ExpandBy(0.05 * extent.Width);
-
             //using (var img = new Bitmap(ImageWidth, ImageHeight))
             //{
             //    using (var gr = Graphics.FromImage(img))
@@ -573,7 +500,6 @@ namespace NetTopologySuite.Samples.Tests.Github
             //        gr.Clear(Color.WhiteSmoke);
             //        gr.SmoothingMode = SmoothingMode.AntiAlias;
             //        //gr.Transform = CreateTransform(extent);
-
             //        if (geom1 != null)
             //        {
             //            var gp1 = gpw.ToShape(at.Transform(geom1));
@@ -581,7 +507,6 @@ namespace NetTopologySuite.Samples.Tests.Github
             //                gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.Blue)), gp1);
             //            gr.DrawPath(Pens.Blue, gp1);
             //        }
-
             //        if (geom2 != null)
             //        {
             //            var gp2 = gpw.ToShape(at.Transform(geom2));
@@ -589,7 +514,6 @@ namespace NetTopologySuite.Samples.Tests.Github
             //                gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.OrangeRed)), gp2);
             //            gr.DrawPath(Pens.OrangeRed, gp2);
             //        }
-
             //        if (geom3 != null)
             //        {
             //            var gp3 = gpw.ToShape(at.Transform(geom3));
@@ -597,17 +521,14 @@ namespace NetTopologySuite.Samples.Tests.Github
             //                gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.Gold)), gp3);
             //            gr.DrawPath(Pens.Gold, gp3);
             //        }
-
             //    }
             //    var path = System.IO.Path.ChangeExtension(System.IO.Path.GetTempFileName(), "png");
             //    img.Save(path, ImageFormat.Png);
             //    Console.WriteLine("Image for Test {0} written to {1}", nr, new Uri(path).AbsoluteUri);
             //}
         }
-
         private const int ImageWidth = 640;
         private const int ImageHeight = 480;
-
         private static AffineTransformation CreateAffineTransformation(Envelope env, int offsetX = 0)
         {
             var imageRatio = ImageWidth / ImageHeight;
@@ -622,18 +543,15 @@ namespace NetTopologySuite.Samples.Tests.Github
                 var growWidth = (env.Height * imageRatio - env.Width) / 2;
                 env.ExpandBy(growWidth, 0);
             }
-
             var s1 = new Coordinate(env.MinX, env.MaxY);
             var t1 = new Coordinate(offsetX, 0);
             var s2 = new Coordinate(env.MaxX, env.MaxY);
             var t2 = new Coordinate(offsetX + ImageWidth, 0);
             var s3 = new Coordinate(env.MaxX, env.MinY);
             var t3 = new Coordinate(offsetX + ImageWidth, ImageHeight);
-
             var atb = new AffineTransformationBuilder(s1, s2, s3, t1, t2, t3);
             return atb.GetTransformation();
         }
-
         #endregion
     }
 }

@@ -1,6 +1,5 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Operation.Buffer.Validate
 {
     ///<summary>
@@ -29,12 +28,11 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                 }
             }
             else
-            { 
+            {
                 // assume geom is Point
                 ptDist.SetMinimum(geom.Coordinate, pt);
             }
         }
-
         public static void ComputeDistance(ILineString line, Coordinate pt, PointPairDistance ptDist)
         {
             var coords = line.Coordinates;
@@ -47,13 +45,11 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                 ptDist.SetMinimum(closestPt, pt);
             }
         }
-
         public static void ComputeDistance(LineSegment segment, Coordinate pt, PointPairDistance ptDist)
         {
             var closestPt = segment.ClosestPoint(pt);
             ptDist.SetMinimum(closestPt, pt);
         }
-
         public static void ComputeDistance(IPolygon poly, Coordinate pt, PointPairDistance ptDist)
         {
             ComputeDistance(poly.ExteriorRing, pt, ptDist);

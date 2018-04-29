@@ -1,9 +1,8 @@
 using System;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Algorithm
 {
-    /// <summary> 
+    /// <summary>
     /// Computes the centroid of a linear point.
     /// Algorithm:
     /// Compute the average of the midpoints
@@ -14,17 +13,15 @@ namespace NetTopologySuite.Algorithm
     {
         private readonly Coordinate _centSum = new Coordinate();
         private double _totalLength;
-
-        /// <summary> 
+        /// <summary>
         /// Adds the linear components of by a Geometry to the centroid total.
         /// If the geometry has no linear components it does not contribute to the centroid.
         /// </summary>
         /// <param name="geom">The point to add.</param>
         public void Add(IGeometry geom)
         {
-            if (geom is ILineString)             
+            if (geom is ILineString)
                 Add(geom.Coordinates);
-
             else if (geom is IPolygon)
             {
                 var poly = (IPolygon) geom;
@@ -35,7 +32,6 @@ namespace NetTopologySuite.Algorithm
                     Add(poly.GetInteriorRingN(i).Coordinates);
                 }
             }
-
             else if (geom is IGeometryCollection)
             {
                 var gc = (IGeometryCollection)geom;
@@ -43,9 +39,8 @@ namespace NetTopologySuite.Algorithm
                     Add(geometry);
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate Centroid
         {
@@ -57,8 +52,7 @@ namespace NetTopologySuite.Algorithm
                 return cent;
             }
         }
-
-        /// <summary> 
+        /// <summary>
         /// Adds the length defined by an array of coordinates.
         /// </summary>
         /// <param name="pts">An array of <c>Coordinate</c>s.</param>
@@ -68,7 +62,6 @@ namespace NetTopologySuite.Algorithm
             {
                 double segmentLen = pts[i].Distance(pts[i + 1]);
                 _totalLength += segmentLen;
-
                 double midx = (pts[i].X + pts[i + 1].X) / 2;
                 _centSum.X += segmentLen * midx;
                 double midy = (pts[i].Y + pts[i + 1].Y) / 2;

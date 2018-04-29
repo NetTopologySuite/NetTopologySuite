@@ -1,6 +1,5 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Planargraph;
-
 namespace NetTopologySuite.Operation.Linemerge
 {
     /// <summary>
@@ -17,7 +16,6 @@ namespace NetTopologySuite.Operation.Linemerge
         {
             this.Line = line;
         }
-
         /// <summary>
         /// Returns the LineString specifying the vertices of this edge.
         /// </summary>

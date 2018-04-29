@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-
 #if !HAS_SYSTEM_ICLONEABLE
 using ICloneable = GeoAPI.ICloneable;
 #endif
-
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
@@ -18,7 +16,6 @@ namespace NetTopologySuite.Geometries
         /// Constructs a new list without any coordinates
         /// </summary>
         public CoordinateList() { }
-
         /// <summary>
         /// Constructs a new list from an array of Coordinates, allowing repeated points.
         /// (I.e. this constructor produces a <see cref="CoordinateList"/> with exactly the same set of points
@@ -31,7 +28,6 @@ namespace NetTopologySuite.Geometries
             //EnsureCapacity(coord.Length);
             Add(coord, true);
         }
-
         /// <summary>
         /// Constructs a new list from a collection of Coordinates,
         /// allows repeated points.
@@ -43,7 +39,6 @@ namespace NetTopologySuite.Geometries
             //EnsureCapacity(coordList.Count);
             AddAll(coordList, true);
         }
-
         /// <summary>
         /// Constructs a new list from a collection of Coordinates,
         /// allowing caller to specify if repeated points are to be removed.
@@ -54,7 +49,6 @@ namespace NetTopologySuite.Geometries
         {
             AddAll(coordList, allowRepeated);
         }
-
         /// <summary>
         /// Constructs a new list from an array of Coordinates,
         /// allowing caller to specify if repeated points are to be removed.
@@ -65,7 +59,6 @@ namespace NetTopologySuite.Geometries
         {
             Add(coord, allowRepeated);
         }
-
         /// <summary>
         /// Returns the coordinate at specified index.
         /// </summary>
@@ -75,7 +68,6 @@ namespace NetTopologySuite.Geometries
         {
             return base[i];
         }
-
         /// <summary>
         /// Adds a section of an array of coordinates to the list.
         /// </summary>
@@ -88,15 +80,12 @@ namespace NetTopologySuite.Geometries
         {
             int inc = 1;
             if (start > end) inc = -1;
-
             for (int i = start; i != end; i += inc)
             {
                 Add(coord[i], allowRepeated);
             }
             return true;
         }
-
-
         /// <summary>
         /// Adds an array of coordinates to the list.
         /// </summary>
@@ -114,7 +103,6 @@ namespace NetTopologySuite.Geometries
                     Add(coord[i], allowRepeated);
             return true;
         }
-
         /// <summary>
         /// Adds an array of coordinates to the list.
         /// </summary>
@@ -125,7 +113,6 @@ namespace NetTopologySuite.Geometries
         {
             return Add(coord, allowRepeated, true);
         }
-
         /// <summary>
         /// Adds a coordinate to the list.
         /// </summary>
@@ -136,7 +123,6 @@ namespace NetTopologySuite.Geometries
         {
             return Add((Coordinate)obj, allowRepeated);
         }
-
         /// <summary>
         /// Adds a coordinate to the end of this list.
         /// </summary>
@@ -158,7 +144,6 @@ namespace NetTopologySuite.Geometries
             Add(coord);
             return true;
         }
-
         /// <summary>
         /// Inserts the specified coordinate at the specified position in this list.
         /// </summary>
@@ -187,7 +172,6 @@ namespace NetTopologySuite.Geometries
             }
             Insert(i, coord);
         }
-
         /// <summary>
         /// Add an array of coordinates.
         /// </summary>
@@ -204,7 +188,6 @@ namespace NetTopologySuite.Geometries
             }
             return isChanged;
         }
-
         /// <summary>
         /// Ensure this coordList is a ring, by adding the start point if necessary.
         /// </summary>
@@ -213,7 +196,6 @@ namespace NetTopologySuite.Geometries
             if (Count > 0)
                 Add(new Coordinate(this[0]), false);
         }
-
         /// <summary>
         /// Returns the Coordinates in this collection.
         /// </summary>
@@ -222,7 +204,6 @@ namespace NetTopologySuite.Geometries
         {
             return ToArray();
         }
-
         /// <summary>
         /// Returns a deep copy of this collection.
         /// </summary>

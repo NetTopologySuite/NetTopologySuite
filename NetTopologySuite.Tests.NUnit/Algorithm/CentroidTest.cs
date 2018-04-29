@@ -1,14 +1,11 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     public class CentroidTest
     {
-
         private const double Tolerance = 1e-10;
-
         /// <summary>
         /// Compute the centroid of a geometry as an area-weighted average of the centroids
         /// of its components.
@@ -20,21 +17,16 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             var totalArea = g.Area;
             var cx = 0d;
             var cy = 0d;
-
             for (var i = 0; i < g.NumGeometries; i++)
             {
                 var component = g.GetGeometryN(i);
                 var areaFraction = component.Area / totalArea;
-
                 var componentCentroid = component.Centroid.Coordinate;
-
                 cx += areaFraction * componentCentroid.X;
                 cy += areaFraction * componentCentroid.Y;
             }
-
             return new Coordinate(cx, cy);
         }
-
         [Test]
         public void TestCentroidMultiPolygon()
         {
@@ -47,9 +39,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 "-92.65560499998745 36.587087999992576, -92.655605 36.587088, -92.65560500000008 36.58708800000005 )), " +
                 "(( -92.65512450000065 36.586800000000466, -92.65512449999994 36.58680000000004, " +
                 "-92.65512449998666 36.5867999999905, -92.65512450000065 36.586800000000466 )))");
-
             Assert.IsTrue(AreaWeightedCentroid(g).Equals2D(g.Centroid.Coordinate, Tolerance));
         }
-
     }
 }

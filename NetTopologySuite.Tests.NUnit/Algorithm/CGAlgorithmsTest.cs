@@ -1,7 +1,6 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     [TestFixture]

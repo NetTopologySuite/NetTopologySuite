@@ -4,17 +4,16 @@ using GeoAPI;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Utilities;
-
 namespace NetTopologySuite.Geometries
 {
-    /// <summary> 
+    /// <summary>
     /// Represents a polygon with linear edges, which may include holes.
-    /// The outer boundary (shell) 
+    /// The outer boundary (shell)
     /// and inner boundaries (holes) of the polygon are represented by {@link LinearRing}s.
     /// The boundary rings of the polygon may have any orientation.
     /// Polygons are closed, simple geometries by definition.
     /// <para/>
-    /// The polygon model conforms to the assertions specified in the 
+    /// The polygon model conforms to the assertions specified in the
     /// <a href="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features
     /// Specification for SQL</a>.
     /// <para/>
@@ -25,8 +24,8 @@ namespace NetTopologySuite.Geometries
     /// (i.e. are closed and do not self-intersect)</item>
     /// <item>holes touch the shell or another hole at at most one point
     /// (which implies that the rings of the shell and holes must not cross)</item>
-    /// <item>the interior of the polygon is connected,  
-    /// or equivalently no sequence of touching holes 
+    /// <item>the interior of the polygon is connected,
+    /// or equivalently no sequence of touching holes
     /// makes the interior of the polygon disconnected
     /// (i.e. effectively split the polygon into two pieces).</item>
     /// </list>
@@ -40,18 +39,15 @@ namespace NetTopologySuite.Geometries
         /// Represents an empty <c>Polygon</c>.
         /// </summary>
         public static readonly IPolygon Empty = new GeometryFactory().CreatePolygon();
-
         /// <summary>
         /// The exterior boundary, or <c>null</c> if this <c>Polygon</c>
         /// is the empty point.
         /// </summary>
         private ILinearRing _shell;
-
         /// <summary>
         /// The interior boundaries, if any.
         /// </summary>
         private ILinearRing[] _holes;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Polygon"/> class.
         /// </summary>
@@ -66,15 +62,14 @@ namespace NetTopologySuite.Geometries
         /// point is to be created.
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Polygon(ILinearRing shell, ILinearRing[] holes) : this(shell, holes, DefaultFactory) { }
-
         /// <summary>
         /// Constructs a <c>Polygon</c> with the given exterior boundary and
         /// interior boundaries.
-        /// </summary>       
+        /// </summary>
         /// <param name="shell">
         /// The outer boundary of the new <c>Polygon</c>,
         /// or <c>null</c> or an empty <c>LinearRing</c> if the empty
@@ -87,54 +82,49 @@ namespace NetTopologySuite.Geometries
         /// </param>
         /// <param name="factory"></param>
         public Polygon(ILinearRing shell, ILinearRing[] holes, IGeometryFactory factory) : base(factory)
-        {        
-            if (shell == null) 
-                shell = Factory.CreateLinearRing();            
-            if (holes == null) 
+        {
+            if (shell == null)
+                shell = Factory.CreateLinearRing();
+            if (holes == null)
                 holes = new ILinearRing[] { };
             if (HasNullElements(CollectionUtil.Cast<ILinearRing, object>(holes)))
                 throw new ArgumentException("holes must not contain null elements");
-            if (shell.IsEmpty && HasNonEmptyElements(CollectionUtil.Cast<ILinearRing, IGeometry>(holes))) 
+            if (shell.IsEmpty && HasNonEmptyElements(CollectionUtil.Cast<ILinearRing, IGeometry>(holes)))
                 throw new ArgumentException("shell is empty but holes are not");
-
             _shell = shell;
             _holes = holes;
         }
-
         /// <summary>
         /// Gets a value to sort the geometry
         /// </summary>
         protected override SortIndexValue SortIndex => SortIndexValue.Polygon;
-
-
-        /// <summary>  
+        /// <summary>
         /// Returns a vertex of this <c>Geometry</c>
         /// (usually, but not necessarily, the first one).
         /// </summary>
         /// <remarks>
-        /// The returned coordinate should not be assumed to be an actual Coordinate object used in the internal representation. 
+        /// The returned coordinate should not be assumed to be an actual Coordinate object used in the internal representation.
         /// </remarks>
         /// <returns>a Coordinate which is a vertex of this <c>Geometry</c>.</returns>
         /// <returns><c>null</c> if this Geometry is empty.
         /// </returns>
         public override Coordinate Coordinate => _shell.Coordinate;
-
         /// <summary>
-        /// Returns an array containing the values of all the vertices for 
+        /// Returns an array containing the values of all the vertices for
         /// this geometry.
         /// </summary>
         /// <remarks>
         /// If the geometry is a composite, the array will contain all the vertices
         /// for the components, in the order in which the components occur in the geometry.
         /// <para>
-        /// In general, the array cannot be assumed to be the actual internal 
+        /// In general, the array cannot be assumed to be the actual internal
         /// storage for the vertices.  Thus modifying the array
-        /// may not modify the geometry itself. 
+        /// may not modify the geometry itself.
         /// Use the <see cref="ICoordinateSequence.SetOrdinate"/> method
         /// (possibly on the components) to modify the underlying data.
-        /// If the coordinates are modified, 
+        /// If the coordinates are modified,
         /// <see cref="IGeometry.GeometryChanged"/> must be called afterwards.
-        /// </para> 
+        /// </para>
         /// </remarks>
         /// <returns>The vertices of this <c>Geometry</c>.</returns>
         /// <seealso cref="IGeometry.GeometryChanged"/>
@@ -165,7 +155,6 @@ namespace NetTopologySuite.Geometries
                 return coordinates;
             }
         }
-
         /// <summary>
         /// Gets an array of <see cref="System.Double"/> ordinate values
         /// </summary>
@@ -175,11 +164,9 @@ namespace NetTopologySuite.Geometries
         {
             if (IsEmpty)
                 return new double[0];
-
             var ordinateFlag = OrdinatesUtility.ToOrdinatesFlag(ordinate);
             if ((_shell.CoordinateSequence.Ordinates & ordinateFlag) != ordinateFlag)
                 return CreateArray(NumPoints, Coordinate.NullOrdinate);
-
             var result = new double[NumPoints];
             var ordinates = _shell.GetOrdinates(ordinate);
             Array.Copy(ordinates, 0, result, 0, ordinates.Length);
@@ -190,11 +177,9 @@ namespace NetTopologySuite.Geometries
                 Array.Copy(ordinates, 0, result, offset, ordinates.Length);
                 offset += ordinates.Length;
             }
-
             return result;
         }
-
-        /// <summary>  
+        /// <summary>
         /// Returns the count of this <c>Geometry</c>s vertices. The <c>Geometry</c>
         /// s contained by composite <c>Geometry</c>s must be
         /// Geometry's; that is, they must implement <c>NumPoints</c>.
@@ -210,45 +195,41 @@ namespace NetTopologySuite.Geometries
                 return numPoints;
             }
         }
-
-        /// <summary> 
+        /// <summary>
         /// Returns the dimension of this geometry.
         /// </summary>
         /// <remarks>
-        /// The dimension of a geometry is is the topological 
+        /// The dimension of a geometry is is the topological
         /// dimension of its embedding in the 2-D Euclidean plane.
         /// In the NTS spatial model, dimension values are in the set {0,1,2}.
         /// <para>
-        /// Note that this is a different concept to the dimension of 
+        /// Note that this is a different concept to the dimension of
         /// the vertex <see cref="Coordinate"/>s.
         /// The geometry dimension can never be greater than the coordinate dimension.
-        /// For example, a 0-dimensional geometry (e.g. a Point) 
-        /// may have a coordinate dimension of 3 (X,Y,Z). 
+        /// For example, a 0-dimensional geometry (e.g. a Point)
+        /// may have a coordinate dimension of 3 (X,Y,Z).
         /// </para>
         /// </remarks>
-        /// <returns>  
+        /// <returns>
         /// The topological dimensions of this geometry
         /// </returns>
         public override Dimension Dimension => Dimension.Surface;
-
-        /// <summary> 
+        /// <summary>
         /// Returns the dimension of this <c>Geometry</c>s inherent boundary.
         /// </summary>
-        /// <returns>    
+        /// <returns>
         /// The dimension of the boundary of the class implementing this
         /// interface, whether or not this object is the empty point. Returns
         /// <c>Dimension.False</c> if the boundary is the empty point.
         /// </returns>
         /// NOTE: make abstract, remove setter and change geoapi
         public override Dimension BoundaryDimension => Dimension.Curve;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override bool IsEmpty => _shell.IsEmpty;
-
         ///// <summary>
-        ///// 
+        /////
         ///// </summary>
         //public override bool IsSimple
         //{
@@ -257,41 +238,34 @@ namespace NetTopologySuite.Geometries
         //        return true;
         //    }
         //}
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public ILineString ExteriorRing => _shell;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int NumInteriorRings => _holes.Length;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public ILineString[] InteriorRings => CollectionUtil.Cast<ILinearRing, ILineString>(_holes);
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public ILineString GetInteriorRingN(int n) 
+        public ILineString GetInteriorRingN(int n)
         {
             return _holes[n];
         }
-
-        /// <summary>  
+        /// <summary>
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"Polygon"</returns>
         public override string GeometryType => "Polygon";
-
         public override OgcGeometryType OgcGeometryType => OgcGeometryType.Polygon;
-
-        /// <summary> 
+        /// <summary>
         /// Returns the area of this <c>Polygon</c>
 		/// </summary>
 		/// <returns></returns>
@@ -306,7 +280,6 @@ namespace NetTopologySuite.Geometries
                 return area;
             }
         }
-
         /// <summary>
         /// Returns the perimeter of this <c>Polygon</c>.
 		/// </summary>
@@ -322,9 +295,8 @@ namespace NetTopologySuite.Geometries
                 return len;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override IGeometry Boundary
         {
@@ -332,7 +304,6 @@ namespace NetTopologySuite.Geometries
             {
                 if (IsEmpty)
                     return Factory.CreateMultiLineString();
-
                 var rings = new ILinearRing[_holes.Length + 1];
                 rings[0] = _shell;
                 for (var i = 0; i < _holes.Length; i++)
@@ -343,51 +314,46 @@ namespace NetTopologySuite.Geometries
                 return Factory.CreateMultiLineString(CollectionUtil.Cast<ILinearRing, ILineString>(rings));
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
-        protected override Envelope ComputeEnvelopeInternal() 
+        protected override Envelope ComputeEnvelopeInternal()
         {
             return _shell.EnvelopeInternal;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance) 
+        public override bool EqualsExact(IGeometry other, double tolerance)
         {
-            if (!IsEquivalentClass(other)) 
+            if (!IsEquivalentClass(other))
                 return false;
-
             var otherPolygon = (IPolygon) other;
             IGeometry thisShell = _shell;
             IGeometry otherPolygonShell = otherPolygon.Shell;
-            if (!thisShell.EqualsExact(otherPolygonShell, tolerance)) 
+            if (!thisShell.EqualsExact(otherPolygonShell, tolerance))
                 return false;
-            if (_holes.Length != otherPolygon.Holes.Length) 
+            if (_holes.Length != otherPolygon.Holes.Length)
                 return false;
-            for (int i = 0; i < _holes.Length; i++) 
-                if (!(_holes[i]).EqualsExact(otherPolygon.Holes[i], tolerance)) 
+            for (int i = 0; i < _holes.Length; i++)
+                if (!(_holes[i]).EqualsExact(otherPolygon.Holes[i], tolerance))
                     return false;
             return true;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="filter"></param>
         public override void Apply(ICoordinateFilter filter)
         {
             _shell.Apply(filter);
-            for (int i = 0; i < _holes.Length; i++) 
-                _holes[i].Apply(filter);            
+            for (int i = 0; i < _holes.Length; i++)
+                _holes[i].Apply(filter);
         }
-
         public override void Apply(ICoordinateSequenceFilter filter)
         {
             ((LinearRing)_shell).Apply(filter);
@@ -403,28 +369,25 @@ namespace NetTopologySuite.Geometries
             if (filter.GeometryChanged)
                 GeometryChanged();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="filter"></param>
-        public override void Apply(IGeometryFilter filter) 
+        public override void Apply(IGeometryFilter filter)
         {
             filter.Filter(this);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="filter"></param>
-        public override void Apply(IGeometryComponentFilter filter) 
+        public override void Apply(IGeometryComponentFilter filter)
         {
             filter.Filter(this);
             _shell.Apply(filter);
-            for (int i = 0; i < _holes.Length; i++) 
-                _holes[i].Apply(filter);            
+            for (int i = 0; i < _holes.Length; i++)
+                _holes[i].Apply(filter);
         }
-
         /// <summary>
         /// Creates and returns a full copy of this object.
         /// (including all coordinates contained by it).
@@ -435,21 +398,19 @@ namespace NetTopologySuite.Geometries
         {
             return Copy();
         }
-
         /// <summary>
         /// Creates and returns a full copy of this <see cref="IPolygon"/> object.
         /// (including all coordinates contained by it).
         /// </summary>
         /// <returns>A copy of this instance</returns>
-        public override IGeometry Copy() 
+        public override IGeometry Copy()
         {
             var shell = (LinearRing) _shell.Copy();
             var holes = new ILinearRing[_holes.Length];
-            for (var i = 0; i < _holes.Length; i++) 
-                holes[i] = (LinearRing) _holes[i].Copy();            
-            return new Polygon(shell, holes, Factory); 
+            for (var i = 0; i < _holes.Length; i++)
+                holes[i] = (LinearRing) _holes[i].Copy();
+            return new Polygon(shell, holes, Factory);
         }
-
         //[Obsolete]
         //internal override int GetHashCodeInternal(int baseValue, Func<int, int> operation)
         //{
@@ -461,41 +422,37 @@ namespace NetTopologySuite.Geometries
         //    }
         //    return baseValue;
         //}
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public override IGeometry ConvexHull()
-        {            
-            return ExteriorRing.ConvexHull();         
+        {
+            return ExteriorRing.ConvexHull();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public override void Normalize() 
+        public override void Normalize()
         {
             Normalize(_shell, true);
             foreach(ILinearRing hole in Holes)
                 Normalize(hole, false);
             Array.Sort(_holes);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="o"></param>
         /// <returns></returns>
-        protected internal override int CompareToSameClass(object o) 
-        {   
+        protected internal override int CompareToSameClass(object o)
+        {
             LinearRing thisShell = (LinearRing) _shell;
             ILinearRing otherShell = ((IPolygon) o).Shell;
             return thisShell.CompareToSameClass(otherShell);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="other"></param>
         /// <param name="comparer"></param>
@@ -503,12 +460,10 @@ namespace NetTopologySuite.Geometries
         protected internal override int CompareToSameClass(object other, IComparer<ICoordinateSequence> comparer)
         {
             var poly = (IPolygon)other;
-
             var thisShell = (LinearRing)_shell;
             var otherShell = (LinearRing)poly.Shell;
             int shellComp = thisShell.CompareToSameClass(otherShell, comparer);
             if (shellComp != 0) return shellComp;
-
             int nHole1 = NumInteriorRings;
             int nHole2 = poly.NumInteriorRings;
             int i = 0;
@@ -524,28 +479,26 @@ namespace NetTopologySuite.Geometries
             if (i < nHole2) return -1;
             return 0;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ring"></param>
-        /// <param name="clockwise"></param>        
-        private static void Normalize(ILinearRing ring, bool clockwise) 
+        /// <param name="clockwise"></param>
+        private static void Normalize(ILinearRing ring, bool clockwise)
         {
-            if (ring.IsEmpty) 
-                return;            
+            if (ring.IsEmpty)
+                return;
             var uniqueCoordinates = new Coordinate[ring.Coordinates.Length - 1];
             Array.Copy(ring.Coordinates, 0, uniqueCoordinates, 0, uniqueCoordinates.Length);
             var minCoordinate = CoordinateArrays.MinCoordinate(ring.Coordinates);
             CoordinateArrays.Scroll(uniqueCoordinates, minCoordinate);
             Array.Copy(uniqueCoordinates, 0, ring.Coordinates, 0, uniqueCoordinates.Length);
             ring.Coordinates[uniqueCoordinates.Length] = uniqueCoordinates[0];
-            if (Orientation.IsCCW(ring.Coordinates) == clockwise) 
-                CoordinateArrays.Reverse(ring.Coordinates);            
+            if (Orientation.IsCCW(ring.Coordinates) == clockwise)
+                CoordinateArrays.Reverse(ring.Coordinates);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public override bool IsRectangle
@@ -555,21 +508,18 @@ namespace NetTopologySuite.Geometries
                 if (NumInteriorRings != 0) return false;
                 if (Shell == null) return false;
                 if (Shell.NumPoints != 5) return false;
-
                 // check vertices have correct values
-                var seq = Shell.CoordinateSequence;                
+                var seq = Shell.CoordinateSequence;
                 var env = EnvelopeInternal;
                 for (var i = 0; i < 5; i++)
                 {
                     double x = seq.GetX(i);
-                    if (!(x == env.MinX || x == env.MaxX)) 
+                    if (!(x == env.MinX || x == env.MaxX))
                         return false;
-                    
                     double y = seq.GetY(i);
                     if (!(y == env.MinY || y == env.MaxY))
                         return false;
                 }
-
                 // check vertices are in right order
                 var prevX = seq.GetX(0);
                 var prevY = seq.GetY(0);
@@ -577,20 +527,16 @@ namespace NetTopologySuite.Geometries
                 {
                     var x = seq.GetX(i);
                     var y = seq.GetY(i);
-
                     var xChanged = x != prevX;
                     var yChanged = y != prevY;
-                    
                     if (xChanged == yChanged)
                         return false;
-                    
                     prevX = x;
                     prevY = y;
                 }
                 return true;
             }
         }
-
         public override IGeometry Reverse()
         {
             var shell = (ILinearRing)_shell.Reverse();
@@ -599,10 +545,7 @@ namespace NetTopologySuite.Geometries
                 holes[i] = (ILinearRing)_holes[i].Reverse();
             return new Polygon(shell, holes, Factory);
         }
-
-
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
-
         /// <summary>
         /// Constructs a <c>Polygon</c> with the given exterior boundary.
         /// </summary>
@@ -613,7 +556,6 @@ namespace NetTopologySuite.Geometries
         /// </param>
         /// <param name="factory"></param>
         public Polygon(ILinearRing shell, IGeometryFactory factory) : this(shell, null, factory) { }
-
         /// <summary>
         /// Constructs a <c>Polygon</c> with the given exterior boundary.
         /// </summary>
@@ -623,29 +565,24 @@ namespace NetTopologySuite.Geometries
         /// polygon is to be created.
         /// </param>
         public Polygon(ILinearRing shell) : this(shell, null, DefaultFactory) { }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public ILinearRing Shell
         {
             get => _shell;
             private set => _shell = value;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public ILinearRing[] Holes
         {
             get => _holes;
             private set => _holes = value;
         }
-
         /*END ADDED BY MPAUL42 */
-
     }
-
     public static class CoordinateSequenceEx
     {
         public static int GetHashCode(this ICoordinateSequence sequence, int baseValue, Func<int, int> operation)
@@ -657,6 +594,5 @@ namespace NetTopologySuite.Geometries
             }
             return baseValue;
         }
-        
     }
 }

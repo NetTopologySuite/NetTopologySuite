@@ -1,5 +1,4 @@
 using System;
-
 namespace NetTopologySuite.Utilities
 {
     /// <summary>
@@ -9,7 +8,7 @@ namespace NetTopologySuite.Utilities
     public class BitConverter
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>
@@ -20,9 +19,8 @@ namespace NetTopologySuite.Utilities
             long value = System.BitConverter.ToInt64(bytes, 0);
             return value;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>

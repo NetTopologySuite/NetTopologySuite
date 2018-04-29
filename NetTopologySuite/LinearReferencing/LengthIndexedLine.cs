@@ -1,6 +1,5 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>
@@ -16,7 +15,6 @@ namespace NetTopologySuite.LinearReferencing
     public class LengthIndexedLine
     {
         private readonly IGeometry _linearGeom;
-
         /// <summary>
         /// Constructs an object which allows a linear <see cref="IGeometry" />
         /// to be linearly referenced using length as an index.
@@ -26,7 +24,6 @@ namespace NetTopologySuite.LinearReferencing
         {
             _linearGeom = linearGeom;
         }
-
         /// <summary>
         /// Computes the <see cref="Coordinate" /> for the point
         /// on the line at the given index.
@@ -44,7 +41,6 @@ namespace NetTopologySuite.LinearReferencing
             LinearLocation loc = LengthLocationMap.GetLocation(_linearGeom, index);
             return loc.GetCoordinate(_linearGeom);
         }
-
         ///<summary>
         /// Computes the <see cref="Coordinate"/> for the point on the line at the given index, offset by the given distance.
         ///</summary>
@@ -63,7 +59,6 @@ namespace NetTopologySuite.LinearReferencing
             LinearLocation locLow = loc.ToLowest(_linearGeom);
             return locLow.GetSegment(_linearGeom).PointAlongOffset(locLow.SegmentFraction, offsetDistance);
         }
-
         /// <summary>
         /// Computes the <see cref="LineString" /> for the interval
         /// on the line between the given indices.
@@ -86,7 +81,6 @@ namespace NetTopologySuite.LinearReferencing
             LinearLocation endLoc = LocationOf(endIndex2);
             return ExtractLineByLocation.Extract(_linearGeom, startLoc, endLoc);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -96,12 +90,10 @@ namespace NetTopologySuite.LinearReferencing
         {
             return LengthLocationMap.GetLocation(_linearGeom, index);
         }
-
         private LinearLocation LocationOf(double index, bool resolveLower)
         {
             return LengthLocationMap.GetLocation(_linearGeom, index, resolveLower);
         }
-
         /// <summary>
         /// Computes the minimum index for a point on the line.
         /// If the line is not simple (i.e. loops back on itself)
@@ -120,7 +112,6 @@ namespace NetTopologySuite.LinearReferencing
         {
             return LengthIndexOfPoint.IndexOf(_linearGeom, pt);
         }
-
         /// <summary>
         /// Finds the index for a point on the line
         /// which is greater than the given index.
@@ -144,7 +135,6 @@ namespace NetTopologySuite.LinearReferencing
         {
             return LengthIndexOfPoint.IndexOfAfter(_linearGeom, pt, minIndex);
         }
-
         /// <summary>
         /// Computes the indices for a subline of the line.
         /// (The subline must conform to the line; that is,
@@ -163,7 +153,6 @@ namespace NetTopologySuite.LinearReferencing
             };
             return index;
         }
-
         /// <summary>
         /// Computes the index for the closest point on the line to the given point.
         /// If more than one point has the closest distance the first one along the line is returned.
@@ -175,17 +164,14 @@ namespace NetTopologySuite.LinearReferencing
         {
             return LengthIndexOfPoint.IndexOf(_linearGeom, pt);
         }
-
         /// <summary>
         /// Returns the index of the start of the line.
         /// </summary>
         public double StartIndex => 0;
-
         /// <summary>
         /// Returns the index of the end of the line.
         /// </summary>
         public double EndIndex => _linearGeom.Length;
-
         /// <summary>
         /// Tests whether an index is in the valid index range for the line.
         /// </summary>
@@ -195,7 +181,6 @@ namespace NetTopologySuite.LinearReferencing
         {
             return (index >= StartIndex && index <= EndIndex);
         }
-
         /// <summary>
         /// Computes a valid index for this line
         /// by clamping the given index to the valid range of index values
@@ -206,13 +191,10 @@ namespace NetTopologySuite.LinearReferencing
             double posIndex = PositiveIndex(index);
             double startIndex = StartIndex;
             if (posIndex < startIndex) return startIndex;
-
             double endIndex = EndIndex;
             if (posIndex > endIndex) return endIndex;
-
             return posIndex;
         }
-
         private double PositiveIndex(double index)
         {
             if (index >= 0.0) return index;

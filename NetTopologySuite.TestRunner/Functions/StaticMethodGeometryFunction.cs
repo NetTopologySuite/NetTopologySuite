@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Reflection;
 using GeoAPI.Geometries;
 using Open.Topology.TestRunner.Utility;
-
 namespace Open.Topology.TestRunner.Functions
 {
     ///<summary>
@@ -16,9 +15,7 @@ namespace Open.Topology.TestRunner.Functions
         {
             var pi = method.GetParameters();
             Debug.Assert(typeof(IGeometry).IsAssignableFrom(pi[0].GetType()));
-
             Type clz = method.DeclaringType;
-
             String category = ExtractCategory(ClassUtility.GetClassname(clz));
             String funcName = method.Name;
             String[] paramNames = ExtractParamNames(method);
@@ -27,13 +24,11 @@ namespace Open.Topology.TestRunner.Functions
             return new StaticMethodGeometryFunction(category, funcName, paramNames, paramTypes,
                                                     returnType, method);
         }
-
         private static String ExtractCategory(String className)
         {
             String trim = StringUtil.RemoveFromEnd(className, "Functions");
             return trim;
         }
-
         private static String[] ExtractParamNames(MethodInfo method)
         {
             var pi = method.GetParameters();
@@ -42,7 +37,6 @@ namespace Open.Topology.TestRunner.Functions
                 name[i] = "arg" + i;
             return name;
         }
-
         private static Type[] ExtractParamTypes(MethodInfo method)
         {
             var methodParamTypes = method.GetParameters();
@@ -51,9 +45,7 @@ namespace Open.Topology.TestRunner.Functions
                 types[i - 1] = methodParamTypes[i].ParameterType;
             return types;
         }
-
         private MethodInfo method;
-
         public StaticMethodGeometryFunction(
             String category,
             String name,
@@ -65,12 +57,10 @@ namespace Open.Topology.TestRunner.Functions
         {
             this.method = method;
         }
-
         public override object Invoke(IGeometry g, Object[] arg)
         {
             return Invoke(method, null, CreateFullArgs(g, arg));
         }
-
         /// <summary>
         /// Creates an arg array which includes the target geometry as the first argument
         /// </summary>
@@ -90,7 +80,6 @@ namespace Open.Topology.TestRunner.Functions
             }
             return fullArg;
         }
-
         public static Object Invoke(MethodInfo method, Object target, Object[] args)
         {
             Object result;
@@ -110,7 +99,6 @@ namespace Open.Topology.TestRunner.Functions
             }
             return result;
         }
-
         public static String GetClassName(Type javaClass)
         {
             String jClassName = javaClass.Name;

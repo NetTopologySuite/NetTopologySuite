@@ -4,7 +4,7 @@ namespace NetTopologySuite.Utilities
 	/// Converts radians to degress.
 	/// </summary>
 	public class Radians
-	{		
+	{
 		/// <summary>
 		/// Converts radians to degress.
 		/// </summary>

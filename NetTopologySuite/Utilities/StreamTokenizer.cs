@@ -1,10 +1,8 @@
 ﻿#if tuPrologStreamTokenizer
 using System;
 using System.IO;
-
 namespace NetTopologySuite.Utilities
 {
-
     /**
     * <summary>
     * The <code>StreamTokenizer</code> class takes an input stream and
@@ -40,9 +38,7 @@ namespace NetTopologySuite.Utilities
     {
         /** <summary> Legge da uno stream di caratteri </summary> */
         private TextReader _reader = null;
-
         private char[] _buf = new char[20];
-
         /**<summary>
          * The next character to be considered by the nextToken method.  May also
          * be NEED_CHAR to indicate that a new character should be read, or SKIP_LF
@@ -52,26 +48,21 @@ namespace NetTopologySuite.Utilities
          * </summary>
          */
         private int _peekc = NEED_CHAR;
-
         private const int NEED_CHAR = Int32.MaxValue;
         private const int SKIP_LF = Int32.MaxValue - 1;
-
         private bool _pushedBack;
         private bool _forceLower;
         /** <summary>The line number of the last token read </summary>*/
         private int LINENO = 1;
-
         private bool _eolIsSignificantP = false;
         private bool _slashSlashCommentsP = false;
         private bool _slashStarCommentsP = false;
-
         private byte[] _ctype = new byte[256];
         private const byte CT_WHITESPACE = 1;
         private const byte CT_DIGIT = 2;
         private const byte CT_ALPHA = 4;
         private const byte CT_QUOTE = 8;
         private const byte CT_COMMENT = 16;
-
         /**
          * <summary>
          * After a call to the <code>nextToken</code> method, this field
@@ -92,31 +83,26 @@ namespace NetTopologySuite.Utilities
          * </summary>
          */
         public int _ttype = TT_NOTHING;
-
         /**<summary>
          * A constant indicating that the end of the stream has been read.
          * </summary>
          */
         public const int TT_EOF = -1;
-
         /**<summary>
          * A constant indicating that the end of the line has been read.
          * </summary>
          */
         public const int TT_EOL = '\n';
-
         /**<summary>
          * A constant indicating that a number token has been read.
          * </summary>
          */
         public const int TT_NUMBER = -2;
-
         /**<summary>
          * A constant indicating that a word token has been read.
          * </summary>
          */
         public const int TT_WORD = -3;
-
         /** <summary>
          * A constant indicating that no token has been read, used for
          * initializing ttype.  FIXME This could be made public and
@@ -124,7 +110,6 @@ namespace NetTopologySuite.Utilities
          * </summary>
          */
         private const int TT_NOTHING = -4;
-
         /**<summary>
          * If the current token is a word token, this field contains a
          * string giving the characters of the word token. When the current
@@ -140,17 +125,15 @@ namespace NetTopologySuite.Utilities
          * </summary>
          */
         public string _sval;
-
         /**<summary>
          * If the current token is a number, this field contains the value
          * of that number. The current token is a number when the value of
          * the <code>ttype</code> field is <code>TT_NUMBER</code>.
-         * 
+         *
          * The initial value of this field is 0.0.
          *</summary>
          */
         public double _nval;
-
         /**<summary> Private constructor that initializes everything except the streams. </summary>*/
         protected StreamTokenizer()
         {
@@ -163,7 +146,6 @@ namespace NetTopologySuite.Utilities
             QuoteChar('\'');
             ParseNumbers();
         }
-
         /**<summary>
          * Create a tokenizer that parses the given character stream.
          *
@@ -179,7 +161,6 @@ namespace NetTopologySuite.Utilities
             }
             _reader = r;
         }
-
         /**<summary>
          * Resets this tokenizer's syntax table so that all characters are
          * "ordinary." See the <code>ordinaryChar</code> method
@@ -191,7 +172,6 @@ namespace NetTopologySuite.Utilities
             for (int i = _ctype.Length; --i >= 0; )
                 _ctype[i] = 0;
         }
-
         /**<summary>
          * Specifies that all characters <i>c</i> in the range
          * <code>low&nbsp;&lt;=&nbsp;<i>c</i>&nbsp;&lt;=&nbsp;high</code>
@@ -211,7 +191,6 @@ namespace NetTopologySuite.Utilities
             while (low <= hi)
                 _ctype[low++] |= CT_ALPHA;
         }
-
         /**<summary>
          * Specifies that all characters <i>c</i> in the range
          * <code>low&nbsp;&lt;=&nbsp;<i>c</i>&nbsp;&lt;=&nbsp;high</code>
@@ -234,7 +213,6 @@ namespace NetTopologySuite.Utilities
             while (low <= hi)
                 _ctype[low++] = CT_WHITESPACE;
         }
-
         /**<summary>
          * Specifies that all characters <i>c</i> in the range
          * <code>low&nbsp;&lt;=&nbsp;<i>c</i>&nbsp;&lt;=&nbsp;high</code>
@@ -255,7 +233,6 @@ namespace NetTopologySuite.Utilities
             while (low <= hi)
                 _ctype[low++] = 0;
         }
-
         /**<summary>
          * Specifies that the character argument is "ordinary"
          * in this tokenizer. It removes any special significance the
@@ -278,7 +255,6 @@ namespace NetTopologySuite.Utilities
             if (ch >= 0 && ch < _ctype.Length)
                 _ctype[ch] = 0;
         }
-
         /**<summary>
          * Specified that the character argument starts a single-line
          * comment. All characters from the comment character to the end of
@@ -294,7 +270,6 @@ namespace NetTopologySuite.Utilities
             if (ch >= 0 && ch < _ctype.Length)
                 _ctype[ch] = CT_COMMENT;
         }
-
         /**
          * <summary>
          * Specifies that matching pairs of this character delimit string
@@ -323,7 +298,6 @@ namespace NetTopologySuite.Utilities
             if (ch >= 0 && ch < _ctype.Length)
                 _ctype[ch] = CT_QUOTE;
         }
-
         /**<summary>
          * Specifies that numbers should be parsed by this tokenizer. The
          * syntax table of this tokenizer is modified so that each of the twelve
@@ -348,7 +322,6 @@ namespace NetTopologySuite.Utilities
             _ctype['.'] |= CT_DIGIT;
             _ctype['-'] |= CT_DIGIT;
         }
-
         /**<summary>
          * Determines whether or not ends of line are treated as tokens.
          * If the flag argument is true, this tokenizer treats end of lines
@@ -374,7 +347,6 @@ namespace NetTopologySuite.Utilities
         {
             _eolIsSignificantP = flag;
         }
-
         /**<summary>
          * Determines whether or not the tokenizer recognizes C-style comments.
          * If the flag argument is <code>true</code>, this stream tokenizer
@@ -392,7 +364,6 @@ namespace NetTopologySuite.Utilities
         {
             _slashStarCommentsP = flag;
         }
-
         /**<summary>
          * Determines whether or not the tokenizer recognizes C++-style comments.
          * If the flag argument is <code>true</code>, this stream tokenizer
@@ -411,7 +382,6 @@ namespace NetTopologySuite.Utilities
         {
             _slashSlashCommentsP = flag;
         }
-
         /**<summary>
          * Determines whether or not word token are automatically lowercased.
          * If the flag argument is <code>true</code>, then the value in the
@@ -431,7 +401,6 @@ namespace NetTopologySuite.Utilities
         {
             _forceLower = fl;
         }
-
         /**<summary> Read the next character </summary>*/
         private int Read()
         {
@@ -440,7 +409,6 @@ namespace NetTopologySuite.Utilities
             else
                 throw new NotSupportedException();
         }
-
         /**<summary>
          * Parses the next token from the input stream of this tokenizer.
          * The type of the next token is returned in the <code>ttype</code>
@@ -466,7 +434,6 @@ namespace NetTopologySuite.Utilities
             }
             byte[] ct = _ctype;
             _sval = null;
-
             int c = _peekc;
             if (c < 0)
                 c = NEED_CHAR;
@@ -485,12 +452,10 @@ namespace NetTopologySuite.Utilities
                     return _ttype = TT_EOF;
             }
             _ttype = c;		/* Just to be safe */
-
             /* Set peekc so that the next invocation of nextToken will read
 	         * another character unless peekc is reset in this invocation
 	         */
             _peekc = NEED_CHAR;
-
             int ctype = c < 256 ? ct[c] : CT_ALPHA;
             while ((ctype & CT_WHITESPACE) != 0)
             {
@@ -522,7 +487,6 @@ namespace NetTopologySuite.Utilities
                     return _ttype = TT_EOF;
                 ctype = c < 256 ? ct[c] : CT_ALPHA;
             }
-
             if ((ctype & CT_DIGIT) != 0)
             {
                 bool neg = false;
@@ -568,7 +532,6 @@ namespace NetTopologySuite.Utilities
                 _nval = neg ? -v : v;
                 return _ttype = TT_NUMBER;
             }
-
             if ((ctype & CT_ALPHA) != 0)
             {
                 int i = 0;
@@ -590,7 +553,6 @@ namespace NetTopologySuite.Utilities
                     _sval = _sval.ToLower();
                 return _ttype = TT_WORD;
             }
-
             if ((ctype & CT_QUOTE) != 0)
             {
                 _ttype = c;
@@ -667,17 +629,14 @@ namespace NetTopologySuite.Utilities
                     }
                     _buf[i++] = (char)c;
                 }
-
                 /* If we broke out of the loop because we found a matching quote
                  * character then arrange to read a new character next time
                  * around; otherwise, save the character.
                  */
                 _peekc = (d == _ttype) ? NEED_CHAR : d;
-
                 _sval = CopyValueOf(_buf, 0, i);
                 return _ttype;
             }
-
             if (c == '/' && (_slashSlashCommentsP || _slashStarCommentsP))
             {
                 c = Read();
@@ -731,17 +690,14 @@ namespace NetTopologySuite.Utilities
                     }
                 }
             }
-
             if ((ctype & CT_COMMENT) != 0)
             {
                 while ((c = Read()) != '\n' && c != '\r' && c >= 0) ;
                 _peekc = c;
                 return NextToken();
             }
-
             return _ttype = c;
         }
-
         /**<summary>
          * Causes the next call to the <code>nextToken</code> method of this
          * tokenizer to return the current value in the <code>ttype</code>
@@ -754,7 +710,6 @@ namespace NetTopologySuite.Utilities
             if (_ttype != TT_NOTHING)   /* No-op if nextToken() not called */
                 _pushedBack = true;
         }
-
         /**<summary>
          * Return the current line number.
          *
@@ -765,7 +720,6 @@ namespace NetTopologySuite.Utilities
         {
             get { return LINENO; }
         }
-
         /**<summary>
          * Returns the string representation of the current stream token and
          * the line number it occurs on.
@@ -775,7 +729,7 @@ namespace NetTopologySuite.Utilities
          * </p>
          * <blockquote><pre>Token['a'], line 10</pre></blockquote>
          *
-         * <returns>  a string representation of the token </returns> 
+         * <returns>  a string representation of the token </returns>
          * </summary>
          */
         public override string ToString()
@@ -800,7 +754,7 @@ namespace NetTopologySuite.Utilities
                     break;
                 default:
                     {
-                        /* 
+                        /*
                          * ttype is the first character of either a quoted string or
                          * is an ordinary character. ttype can definitely not be less
                          * than 0, since those are reserved values used in the previous
@@ -811,7 +765,6 @@ namespace NetTopologySuite.Utilities
                             ret = _sval;
                             break;
                         }
-
                         char[] s = new char[3];
                         s[0] = s[2] = '\'';
                         s[1] = (char)_ttype;
@@ -821,7 +774,6 @@ namespace NetTopologySuite.Utilities
             }
             return "Token[" + ret + "], line " + LINENO;
         }
-
         /**<summary>
          * Returns a String that represents the character sequence in the
          * array specified.

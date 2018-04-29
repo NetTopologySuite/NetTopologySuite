@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
-
 namespace NetTopologySuite.Samples.Tests.Various
 {
     [TestFixture]
@@ -17,11 +16,10 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.That(empty, Is.Not.Null);
             Assert.That(empty.IsValid, Is.True);
             Assert.That(empty.IsEmpty, Is.True);
-
             IPoint interior = empty.InteriorPoint;
             Assert.That(interior, Is.Not.Null);
             Assert.That(interior.IsValid, Is.True);
-            Assert.That(interior.IsEmpty, Is.True);            
+            Assert.That(interior.IsEmpty, Is.True);
         }
     }
 }

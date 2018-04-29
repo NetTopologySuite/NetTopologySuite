@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.IO;
-
 namespace NetTopologySuite.Triangulate
 {
     /// <summary>
@@ -16,7 +15,6 @@ namespace NetTopologySuite.Triangulate
                 return msg + " [ " + WKTWriter.ToPoint(pt) + " ]";
             return msg;
         }
-
         /// <summary>
         /// Creates a new instance with a given message.
         /// </summary>
@@ -25,7 +23,6 @@ namespace NetTopologySuite.Triangulate
             : base(msg)
         {
         }
-
         /// <summary>
         /// Creates a new instance with a given message and approximate location.
         /// </summary>
@@ -36,7 +33,6 @@ namespace NetTopologySuite.Triangulate
         {
             Coordinate = new Coordinate(pt);
         }
-
         /// <summary>
         /// Gets the approximate location of this error.
         /// </summary>

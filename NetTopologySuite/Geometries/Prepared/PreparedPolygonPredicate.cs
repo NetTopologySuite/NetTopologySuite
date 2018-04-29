@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries.Utilities;
-
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
@@ -13,7 +12,6 @@ namespace NetTopologySuite.Geometries.Prepared
     {
         protected PreparedPolygon prepPoly;
         private readonly IPointOnGeometryLocator _targetPointLocator;
-
         ///<summary>
         /// Creates an instance of this operation.
         ///</summary>
@@ -23,7 +21,6 @@ namespace NetTopologySuite.Geometries.Prepared
             this.prepPoly = prepPoly;
             _targetPointLocator = prepPoly.PointLocator;
         }
-
         ///<summary>
         /// Tests whether all components of the test Geometry are contained in the target geometry.
         ///</summary>
@@ -43,7 +40,6 @@ namespace NetTopologySuite.Geometries.Prepared
             }
             return true;
         }
-
         ///<summary>
         /// Tests whether all components of the test Geometry are contained in the interior of the target geometry.
         ///</summary>
@@ -61,7 +57,6 @@ namespace NetTopologySuite.Geometries.Prepared
             }
             return true;
         }
-
         ///<summary>
         /// Tests whether any component of the test Geometry intersects the area of the target geometry.
         ///</summary>
@@ -79,7 +74,6 @@ namespace NetTopologySuite.Geometries.Prepared
             }
             return false;
         }
-
         ///<summary>
         /// Tests whether any component of the test Geometry intersects the interior of the target geometry.
         ///</summary>
@@ -97,7 +91,6 @@ namespace NetTopologySuite.Geometries.Prepared
             }
             return false;
         }
-
         ///<summary>
         /// Tests whether any component of the target geometry intersects the test geometry (which must be an areal geometry)
         ///</summary>

@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Mathematics;
-
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
@@ -25,15 +24,14 @@ namespace NetTopologySuite.Geometries
                 return false;
             return true;
         }
-
         /// <summary>
-        /// Finds a <see cref="Coordinate "/> in a list of <see cref="Coordinate "/>s 
+        /// Finds a <see cref="Coordinate "/> in a list of <see cref="Coordinate "/>s
         /// which is not contained in another list of <see cref="Coordinate "/>s.
         /// </summary>
         /// <param name="testPts">The <see cref="Coordinate" />s to test.</param>
         /// <param name="pts">An array of <see cref="Coordinate" />s to test the input points against.</param>
         /// <returns>
-        /// A <see cref="Coordinate" /> from <paramref name="testPts" /> 
+        /// A <see cref="Coordinate" /> from <paramref name="testPts" />
         /// which is not in <paramref name="pts" />, or <c>null</c>.
         /// </returns>
         public static Coordinate PointNotInList(Coordinate[] testPts, Coordinate[] pts)
@@ -46,7 +44,6 @@ namespace NetTopologySuite.Geometries
             }
             return null;
         }
-
         /// <summary>
         /// Compares two <see cref="Coordinate" /> arrays
         /// in the forward direction of their coordinates,
@@ -65,16 +62,13 @@ namespace NetTopologySuite.Geometries
                     return compare;
                 i++;
             }
-
             // handle situation when arrays are of different length
             if (i < pts2.Length)
                 return -1;
             if (i < pts1.Length)
                 return 1;
-
             return 0;
         }
-
         /// <summary>
         /// Determines which orientation of the <see cref="Coordinate" /> array is (overall) increasing.
         /// In other words, determines which end of the array is "smaller"
@@ -101,7 +95,6 @@ namespace NetTopologySuite.Geometries
             // array must be a palindrome - defined to be in positive direction
             return 1;
         }
-
         /// <summary>
         /// Determines whether two <see cref="Coordinate" /> arrays of equal length
         /// are equal in opposite directions.
@@ -120,7 +113,6 @@ namespace NetTopologySuite.Geometries
             }
             return true;
         }
-
         /// <summary>
         /// Creates a deep copy of the argument <c>Coordinate</c> array.
         /// </summary>
@@ -136,7 +128,6 @@ namespace NetTopologySuite.Geometries
             }
             return copy;
         }
-
         /// <summary>
         /// Creates a deep copy of a given section of a source <see cref="Coordinate"/> array into a destination Coordinate array.
         /// The destination array must be an appropriate size to receive the copied coordinates.
@@ -154,9 +145,8 @@ namespace NetTopologySuite.Geometries
                 dest[destStart + i] = c;
             }
         }
-
         /// <summary>
-        /// Converts the given <see cref="System.Collections.ICollection" /> of 
+        /// Converts the given <see cref="System.Collections.ICollection" /> of
         /// <see cref="Coordinate" />s into a <see cref="Coordinate" /> array.
         /// </summary>
         /// <param name="coordList"><see cref="System.Collections.ICollection" /> of coordinates.</param>
@@ -172,9 +162,8 @@ namespace NetTopologySuite.Geometries
                 tempList.Add(coord);
             return tempList.ToArray();
         }
-
         /// <summary>
-        /// Converts the given <see cref="ICollection{T}" /> of 
+        /// Converts the given <see cref="ICollection{T}" /> of
         /// <see cref="Coordinate" />s into a <see cref="Coordinate" /> array.
         /// </summary>
         /// <param name="coordList"><see cref="ICollection{T}"/> of coordinates.</param>
@@ -186,7 +175,6 @@ namespace NetTopologySuite.Geometries
                 tempList.Add(coord);
             return tempList.ToArray();
         }
-
         /// <summary>
         /// Returns whether Equals returns true for any two consecutive
         /// coordinates in the given array.
@@ -204,7 +192,6 @@ namespace NetTopologySuite.Geometries
             }
             return false;
         }
-
         /// <summary>
         /// Returns either the given coordinate array if its length is greater than
         /// the given amount, or an empty coordinate array.
@@ -216,14 +203,13 @@ namespace NetTopologySuite.Geometries
         {
             return c.Length >= n ? c : new Coordinate[] { };
         }
-
         /// <summary>
         /// If the coordinate array argument has repeated points,
         /// constructs a new array containing no repeated points.
         /// Otherwise, returns the argument.
         /// </summary>
         /// <param name="coord"></param>
-        /// <returns></returns>        
+        /// <returns></returns>
         public static Coordinate[] RemoveRepeatedPoints(Coordinate[] coord)
         {
             if (!HasRepeatedPoints(coord))
@@ -231,7 +217,6 @@ namespace NetTopologySuite.Geometries
             CoordinateList coordList = new CoordinateList(coord, false);
             return coordList.ToCoordinateArray();
         }
-
         /// <summary>
         /// Collapses a coordinate array to remove all null elements.
         /// </summary>
@@ -247,7 +232,6 @@ namespace NetTopologySuite.Geometries
             }
             return coordinateList.ToArray();
         }
-
         /// <summary>
         /// Reverses the coordinates in an array in-place.
         /// </summary>
@@ -256,7 +240,6 @@ namespace NetTopologySuite.Geometries
         {
             Array.Reverse(coord);
         }
-
         /// <summary>
         /// Returns <c>true</c> if the two arrays are identical, both <c>null</c>, or pointwise
         /// equal (as compared using Coordinate.Equals).
@@ -277,12 +260,11 @@ namespace NetTopologySuite.Geometries
                     return false;
             return true;
         }
-
         /// <summary>
         /// Compares two <see cref="Coordinate" /> arrays
         /// in the forward direction of their coordinates,
         /// using lexicographic ordering.
-        /// </summary>        
+        /// </summary>
         public class ForwardComparator : IComparer<Coordinate[]>
         {
             /// <summary>
@@ -296,14 +278,13 @@ namespace NetTopologySuite.Geometries
                 return CoordinateArrays.Compare(pts1, pts2);
             }
         }
-
         /// <summary>
         /// A comparator for <see cref="Coordinate" /> arrays modulo their directionality.
         /// E.g. if two coordinate arrays are identical but reversed
         /// they will compare as equal under this ordering.
         /// If the arrays are not equal, the ordering returned
         /// is the ordering in the forward direction.
-        /// </summary>        
+        /// </summary>
         public class BidirectionalComparator : IComparer<Coordinate[]>
         {
             public int Compare(Coordinate[] pts1, Coordinate[] pts2)
@@ -312,34 +293,26 @@ namespace NetTopologySuite.Geometries
                     return -1;
                 if (pts1.Length > pts2.Length)
                     return 1;
-
                 if (pts1.Length == 0)
                     return 0;
-
                 int forwardComp = CoordinateArrays.Compare(pts1, pts2);
                 bool isEqualRev = IsEqualReversed(pts1, pts2);
                 if (isEqualRev)
                     return 0;
-
                 return forwardComp;
             }
-
             public int OldCompare(Coordinate[] pts1, Coordinate[] pts2)
             {
                 if (pts1.Length < pts2.Length)
                     return -1;
                 if (pts1.Length > pts2.Length)
                     return 1;
-
                 if (pts1.Length == 0)
                     return 0;
-
                 int dir1 = IncreasingDirection(pts1);
                 int dir2 = IncreasingDirection(pts2);
-
                 int i1 = dir1 > 0 ? 0 : pts1.Length - 1;
                 int i2 = dir2 > 0 ? 0 : pts1.Length - 1;
-
                 for (int i = 0; i < pts1.Length; i++)
                 {
                     int comparePt = pts1[i1].CompareTo(pts2[i2]);
@@ -351,10 +324,9 @@ namespace NetTopologySuite.Geometries
                 return 0;
             }
         }
-
         /// <summary>
         /// Returns <c>true</c> if the two arrays are identical, both <c>null</c>, or pointwise
-        /// equal, using a user-defined <see cref="System.Collections.IComparer" /> 
+        /// equal, using a user-defined <see cref="System.Collections.IComparer" />
         /// for <see cref="Coordinate" />s.
         /// </summary>
         /// <param name="coord1">An array of <see cref="Coordinate" />s.</param>
@@ -376,7 +348,6 @@ namespace NetTopologySuite.Geometries
                 return false;
             return true;
         }
-
         /// <summary>
         /// Returns the minimum coordinate, using the usual lexicographic comparison.
         /// </summary>
@@ -390,7 +361,6 @@ namespace NetTopologySuite.Geometries
                     minCoord = coordinates[i];
             return minCoord;
         }
-
         /// <summary>
         /// Shifts the positions of the coordinates until <c>firstCoordinate</c> is first.
         /// </summary>
@@ -406,7 +376,6 @@ namespace NetTopologySuite.Geometries
             Array.Copy(coordinates, 0, newCoordinates, coordinates.Length - i, i);
             Array.Copy(newCoordinates, 0, coordinates, 0, coordinates.Length);
         }
-
         /// <summary>
         /// Returns the index of <paramref name="coordinate" /> in <paramref name="coordinates" />.
         /// The first position is 0; the second is 1; etc.
@@ -424,7 +393,6 @@ namespace NetTopologySuite.Geometries
             }
             return -1;
         }
-
         /// <summary>
         /// Extracts a subsequence of the input <see cref="Coordinate" /> array
         /// from indices <paramref name="start" /> to <paramref name="end"/> (inclusive).
@@ -440,7 +408,6 @@ namespace NetTopologySuite.Geometries
         {
             start = MathUtil.Clamp(start, 0, pts.Length);
             end = MathUtil.Clamp(end, -1, pts.Length);
-
             int npts = end - start + 1;
             if (end < 0)
                 npts = 0;
@@ -448,15 +415,12 @@ namespace NetTopologySuite.Geometries
                 npts = 0;
             if (end < start)
                 npts = 0;
-
             Coordinate[] extractPts = new Coordinate[npts];
             if (npts == 0)
                 return extractPts;
-
             Array.Copy(pts, start, extractPts, 0, npts);
             return extractPts;
         }
-
         /// <summary>
         /// Computes the <see cref="Envelope"/> of the coordinates.
         /// </summary>
@@ -472,10 +436,9 @@ namespace NetTopologySuite.Geometries
             }
             return env;
         }
-
         /**
          * Extracts the coordinates which intersect an {@link Envelope}.
-         * 
+         *
          * @param coordinates the coordinates to scan
          * @param env the envelope to intersect with
          * @return an array of the coordinates which intersect the envelope

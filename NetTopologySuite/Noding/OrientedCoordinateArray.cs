@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Noding
 {
     /// <summary>
@@ -11,7 +10,6 @@ namespace NetTopologySuite.Noding
     {
         private readonly Coordinate[] _pts;
         private readonly bool _orientation;
-
         /// <summary>
         /// Creates a new <see cref="OrientedCoordinateArray" />}
         /// for the given <see cref="Coordinate" /> array.
@@ -22,7 +20,6 @@ namespace NetTopologySuite.Noding
             _pts = pts;
             _orientation = Orientation(pts);
         }
-
         /// <summary>
         /// Computes the canonical orientation for a coordinate array.
         /// </summary>
@@ -35,7 +32,6 @@ namespace NetTopologySuite.Noding
         {
             return CoordinateArrays.IncreasingDirection(pts) == 1;
         }
-
         /// <summary>
         /// Compares two <see cref="OrientedCoordinateArray" />s for their relative order.
         /// </summary>
@@ -48,11 +44,10 @@ namespace NetTopologySuite.Noding
         public int CompareTo(object o1)
         {
             OrientedCoordinateArray oca = (OrientedCoordinateArray) o1;
-            return CompareOriented(_pts, _orientation, oca._pts, oca._orientation);            
+            return CompareOriented(_pts, _orientation, oca._pts, oca._orientation);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pts1"></param>
         /// <param name="orientation1"></param>
@@ -65,24 +60,22 @@ namespace NetTopologySuite.Noding
             int dir2 = orientation2 ? 1 : -1;
             int limit1 = orientation1 ? pts1.Length : -1;
             int limit2 = orientation2 ? pts2.Length : -1;
-
             int i1 = orientation1 ? 0 : pts1.Length - 1;
-            int i2 = orientation2 ? 0 : pts2.Length - 1;            
+            int i2 = orientation2 ? 0 : pts2.Length - 1;
             while (true)
             {
                 int compPt = pts1[i1].CompareTo(pts2[i2]);
                 if (compPt != 0)
                     return compPt;
-
                 i1 += dir1;
                 i2 += dir2;
                 bool done1 = i1 == limit1;
                 bool done2 = i2 == limit2;
-                if(done1 && !done2) 
+                if(done1 && !done2)
                     return -1;
-                if(!done1 && done2) 
+                if(!done1 && done2)
                     return 1;
-                if(done1 && done2) 
+                if(done1 && done2)
                     return 0;
             }
         }

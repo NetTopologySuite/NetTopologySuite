@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Utilities;
-
 namespace NetTopologySuite.Index.Quadtree
 {
     /// <summary>
@@ -15,7 +14,7 @@ namespace NetTopologySuite.Index.Quadtree
     public class Node<T> : NodeBase<T>
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="env"></param>
         /// <returns></returns>
@@ -25,9 +24,8 @@ namespace NetTopologySuite.Index.Quadtree
             var node = new Node<T>(key.Envelope, key.Level);
             return node;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="node"></param>
         /// <param name="addEnv"></param>
@@ -35,21 +33,18 @@ namespace NetTopologySuite.Index.Quadtree
         public static Node<T> CreateExpanded(Node<T> node, Envelope addEnv)
         {
             Envelope expandEnv = new Envelope(addEnv);
-            if (node != null) 
+            if (node != null)
                 expandEnv.ExpandToInclude(node.Envelope);
-
             var largerNode = CreateNode(expandEnv);
-            if (node != null) 
+            if (node != null)
                 largerNode.InsertNode(node);
             return largerNode;
         }
-
         //private readonly Coordinate _centre;
         private readonly double _centreX, _centreY;
         private readonly int _level;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="env"></param>
         /// <param name="level"></param>
@@ -60,14 +55,12 @@ namespace NetTopologySuite.Index.Quadtree
             _centreX = (env.MinX + env.MaxX) / 2;
             _centreY = (env.MinY + env.MaxY) / 2;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Envelope Envelope { get; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <returns></returns>
@@ -76,8 +69,7 @@ namespace NetTopologySuite.Index.Quadtree
             if (searchEnv == null) return false;
             return Envelope.Intersects(searchEnv);
         }
-
-        /// <summary> 
+        /// <summary>
         /// Returns the subquad containing the envelope <paramref name="searchEnv"/>.
         /// Creates the subquad if
         /// it does not already exist.
@@ -86,9 +78,9 @@ namespace NetTopologySuite.Index.Quadtree
         /// <returns>The subquad containing the search envelope.</returns>
         public Node<T> GetNode(Envelope searchEnv)
         {
-            int subnodeIndex = GetSubnodeIndex(searchEnv, _centreX, _centreY);            
+            int subnodeIndex = GetSubnodeIndex(searchEnv, _centreX, _centreY);
             // if subquadIndex is -1 searchEnv is not contained in a subquad
-            if (subnodeIndex != -1) 
+            if (subnodeIndex != -1)
             {
                 // create the quad if it does not exist
                 var node = GetSubnode(subnodeIndex);
@@ -97,7 +89,6 @@ namespace NetTopologySuite.Index.Quadtree
             }
             return this;
         }
-
         /// <summary>
         /// Returns the smallest <i>existing</i>
         /// node containing the envelope.
@@ -108,7 +99,7 @@ namespace NetTopologySuite.Index.Quadtree
             int subnodeIndex = GetSubnodeIndex(searchEnv, _centreX, _centreY);
             if (subnodeIndex == -1)
                 return this;
-            if (Subnode[subnodeIndex] != null) 
+            if (Subnode[subnodeIndex] != null)
             {
                 // query lies in subquad, so search it
                 var node = Subnode[subnodeIndex];
@@ -117,18 +108,17 @@ namespace NetTopologySuite.Index.Quadtree
             // no existing subquad, so return this one anyway
             return this;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="node"></param>
         public void InsertNode(Node<T> node)
         {
-            Assert.IsTrue(Envelope == null || Envelope.Contains(node.Envelope));        
-            int index = GetSubnodeIndex(node.Envelope, _centreX, _centreY);        
-            if (node._level == _level - 1)             
-                Subnode[index] = node;                    
-            else 
+            Assert.IsTrue(Envelope == null || Envelope.Contains(node.Envelope));
+            int index = GetSubnodeIndex(node.Envelope, _centreX, _centreY);
+            if (node._level == _level - 1)
+                Subnode[index] = node;
+            else
             {
                 // the quad is not a direct child, so make a new child quad to contain it
                 // and recursively insert the quad
@@ -137,7 +127,6 @@ namespace NetTopologySuite.Index.Quadtree
                 Subnode[index] = childNode;
             }
         }
-
         /// <summary>
         /// Get the subquad for the index.
         /// If it doesn't exist, create it.
@@ -145,13 +134,12 @@ namespace NetTopologySuite.Index.Quadtree
         /// <param name="index"></param>
         private Node<T> GetSubnode(int index)
         {
-            if (Subnode[index] == null) 
-                Subnode[index] = CreateSubnode(index);            
+            if (Subnode[index] == null)
+                Subnode[index] = CreateSubnode(index);
             return Subnode[index];
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
@@ -162,8 +150,7 @@ namespace NetTopologySuite.Index.Quadtree
             double maxx = 0.0;
             double miny = 0.0;
             double maxy = 0.0;
-
-            switch (index) 
+            switch (index)
             {
                 case 0:
                     minx = Envelope.MinX;
@@ -171,28 +158,24 @@ namespace NetTopologySuite.Index.Quadtree
                     miny = Envelope.MinY;
                     maxy = _centreY;
                     break;
-
                 case 1:
                     minx = _centreX;
                     maxx = Envelope.MaxX;
                     miny = Envelope.MinY;
                     maxy = _centreY;
                     break;
-
                 case 2:
                     minx = Envelope.MinX;
                     maxx = _centreX;
                     miny = _centreY;
                     maxy = Envelope.MaxY;
                     break;
-
                 case 3:
                     minx = _centreX;
                     maxx = Envelope.MaxX;
                     miny = _centreY;
                     maxy = Envelope.MaxY;
                     break;
-
 	            default:
 		            break;
             }

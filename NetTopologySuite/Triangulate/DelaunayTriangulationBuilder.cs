@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Triangulate.QuadEdge;
-
 namespace NetTopologySuite.Triangulate
 {
     /// <summary>
     /// A utility class which creates Delaunay Triangulations
-    /// from collections of points and extract the resulting 
-    /// triangulation edges or triangles as geometries. 
+    /// from collections of points and extract the resulting
+    /// triangulation edges or triangles as geometries.
     /// </summary>
     /// <author>Martin Davis</author>
     public class DelaunayTriangulationBuilder
@@ -23,11 +22,9 @@ namespace NetTopologySuite.Triangulate
         {
             if (geom == null)
                 return new CoordinateList();
-
             Coordinate[] coords = geom.Coordinates;
             return Unique(coords);
         }
-
         public static CoordinateList Unique(Coordinate[] coords)
         {
             var coordsCopy = CoordinateArrays.CopyDeep(coords);
@@ -35,7 +32,6 @@ namespace NetTopologySuite.Triangulate
             var coordList = new CoordinateList(coordsCopy, false);
             return coordList;
         }
-
         /// <summary>
         /// Converts all <see cref="Coordinate"/>s in a collection to <see cref="Vertex"/>es.
         /// </summary>
@@ -50,7 +46,6 @@ namespace NetTopologySuite.Triangulate
             }
             return verts;
         }
-
         /// <summary>
         /// Computes the <see cref="Envelope"/> of a collection of <see cref="Coordinate"/>s.
         /// </summary>
@@ -65,11 +60,9 @@ namespace NetTopologySuite.Triangulate
             }
             return env;
         }
-
         private ICollection<Coordinate> _siteCoords;
         private double _tolerance;
         private QuadEdgeSubdivision _subdiv;
-
         /// <summary>
         /// Sets the sites (vertices) which will be triangulated.
         /// All vertices of the given geometry will be used as sites.
@@ -80,7 +73,6 @@ namespace NetTopologySuite.Triangulate
             // remove any duplicate points (they will cause the triangulation to fail)
             _siteCoords = ExtractUniqueCoordinates(geom);
         }
-
         /// <summary>
         /// Sets the sites (vertices) which will be triangulated
         /// from a collection of <see cref="Coordinate"/>s.
@@ -91,7 +83,6 @@ namespace NetTopologySuite.Triangulate
             // remove any duplicate points (they will cause the triangulation to fail)
             _siteCoords = Unique(CoordinateArrays.ToCoordinateArray(coords));
         }
-
         /// <summary>
         /// Sets the snapping tolerance which will be used
         /// to improved the robustness of the triangulation computation.
@@ -102,18 +93,15 @@ namespace NetTopologySuite.Triangulate
         {
             set => _tolerance = value;
         }
-
         private void Create()
         {
             if (_subdiv != null) return;
-
             var siteEnv = Envelope(_siteCoords);
             var vertices = ToVertices(_siteCoords);
             _subdiv = new QuadEdgeSubdivision(siteEnv, _tolerance);
             IncrementalDelaunayTriangulator triangulator = new IncrementalDelaunayTriangulator(_subdiv);
             triangulator.InsertSites(vertices);
         }
-
         /// <summary>
         /// Gets the <see cref="QuadEdgeSubdivision"/> which models the computed triangulation.
         /// </summary>
@@ -123,7 +111,6 @@ namespace NetTopologySuite.Triangulate
             Create();
             return _subdiv;
         }
-
         /// <summary>
         /// Gets the edges of the computed triangulation as a <see cref="IMultiLineString"/>.
         /// </summary>
@@ -134,9 +121,8 @@ namespace NetTopologySuite.Triangulate
             Create();
             return _subdiv.GetEdges(geomFact);
         }
-
         /// <summary>
-        /// Gets the faces of the computed triangulation as a <see cref="IGeometryCollection"/> 
+        /// Gets the faces of the computed triangulation as a <see cref="IGeometryCollection"/>
         /// of <see cref="Polygon"/>.
         /// </summary>
         /// <param name="geomFact">the geometry factory to use to create the output</param>

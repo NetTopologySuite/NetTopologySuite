@@ -4,15 +4,14 @@ using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.GeometriesGraph.Index;
-
 namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class Edge : GraphComponent
     {
-        /// <summary> 
+        /// <summary>
         /// Updates an IM from the label for an edge.
         /// Handles edges from both L and A geometries.
         /// </summary>
@@ -27,52 +26,42 @@ namespace NetTopologySuite.GeometriesGraph
                 im.SetAtLeastIfValid(label.GetLocation(0, Positions.Right), label.GetLocation(1, Positions.Right), Dimension.Surface);
             }
         }
-
         private Envelope _env;
-
         private MonotoneChainEdge _mce;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pts"></param>
         /// <param name="label"></param>
         public Edge(Coordinate[] pts, Label label)
         {
             EdgeIntersectionList = new EdgeIntersectionList(this);
-
             Points = pts;
             Label = label;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pts"></param>
         public Edge(Coordinate[] pts) : this(pts, null) { }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate[] Points { get; set; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int NumPoints => Points.Length;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string Name { get; set; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate[] Coordinates => Points;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -87,74 +76,65 @@ namespace NetTopologySuite.GeometriesGraph
                 throw ex;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override Coordinate Coordinate
         {
             get => Points.Length > 0 ? Points[0] : null;
             protected set => throw new NotSupportedException();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Envelope Envelope
         {
             get
             {
                 // compute envelope lazily
-                if (_env == null) 
+                if (_env == null)
                 {
                     _env = new Envelope();
-                    for (var i = 0; i < Points.Length; i++) 
-                        _env.ExpandToInclude(Points[i]);                
+                    for (var i = 0; i < Points.Length; i++)
+                        _env.ExpandToInclude(Points[i]);
                 }
                 return _env;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Depth Depth { get; } = new Depth();
-
         /// <summary>
         /// The depthDelta is the change in depth as an edge is crossed from R to L.
         /// </summary>
         /// <returns>The change in depth as the edge is crossed from R to L.</returns>
         public int DepthDelta { get; set; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int MaximumSegmentIndex => Points.Length - 1;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public EdgeIntersectionList EdgeIntersectionList { get; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public MonotoneChainEdge MonotoneChainEdge
         {
             get
             {
-                if (_mce == null) 
+                if (_mce == null)
                     _mce = new MonotoneChainEdge(this);
                 return _mce;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsClosed => Points[0].Equals(Points[Points.Length - 1]);
-
-        /// <summary> 
+        /// <summary>
         /// An Edge is collapsed if it is an Area edge and it consists of
         /// two segments which are equal and opposite (eg a zero-width V).
         /// </summary>
@@ -162,18 +142,17 @@ namespace NetTopologySuite.GeometriesGraph
         {
             get
             {
-                if (!Label.IsArea()) 
+                if (!Label.IsArea())
                     return false;
-                if (Points.Length != 3) 
+                if (Points.Length != 3)
                     return false;
                 if (Points[0].Equals(Points[2]) )
                     return true;
                 return false;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Edge CollapsedEdge
         {
@@ -186,17 +165,14 @@ namespace NetTopologySuite.GeometriesGraph
                 return newe;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool Isolated { get; set; } = true;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override bool IsIsolated => Isolated;
-
         /// <summary>
         /// Adds EdgeIntersections for one or both
         /// intersections found for a segment of an edge to the edge intersection list.
@@ -206,10 +182,9 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         public void AddIntersections(LineIntersector li, int segmentIndex, int geomIndex)
         {
-            for (var i = 0; i < li.IntersectionNum; i++) 
-                AddIntersection(li, segmentIndex, geomIndex, i);            
+            for (var i = 0; i < li.IntersectionNum; i++)
+                AddIntersection(li, segmentIndex, geomIndex, i);
         }
-
         /// <summary>
         /// Add an EdgeIntersection for intersection intIndex.
         /// An intersection that falls exactly on a vertex of the edge is normalized
@@ -223,26 +198,23 @@ namespace NetTopologySuite.GeometriesGraph
         {
             Coordinate intPt = new Coordinate(li.GetIntersection(intIndex));
             var normalizedSegmentIndex = segmentIndex;
-            var dist = li.GetEdgeDistance(geomIndex, intIndex);        
-            
+            var dist = li.GetEdgeDistance(geomIndex, intIndex);
             // normalize the intersection point location
             var nextSegIndex = normalizedSegmentIndex + 1;
-            if (nextSegIndex < Points.Length) 
+            if (nextSegIndex < Points.Length)
             {
-                var nextPt = Points[nextSegIndex];        
-
+                var nextPt = Points[nextSegIndex];
                 // Normalize segment index if intPt falls on vertex
                 // The check for point equality is 2D only - Z values are ignored
-                if (intPt.Equals2D(nextPt)) 
-                {       
+                if (intPt.Equals2D(nextPt))
+                {
                     normalizedSegmentIndex = nextSegIndex;
                     dist = 0.0;
                 }
-                // Add the intersection point to edge intersection list.                
+                // Add the intersection point to edge intersection list.
                 EdgeIntersectionList.Add(intPt, normalizedSegmentIndex, dist);
-            }            
+            }
         }
-
         /// <summary>
         /// Update the IM with the contribution for this component.
         /// A component only contributes if it has a labelling for both parent geometries.
@@ -252,7 +224,6 @@ namespace NetTopologySuite.GeometriesGraph
         {
             UpdateIM(Label, im);
         }
-
         /// <summary>
         /// Equals is defined to be:
         /// e1 equals e2
@@ -264,11 +235,10 @@ namespace NetTopologySuite.GeometriesGraph
         {
             if (o == null)
                 return false;
-            if (!(o is Edge)) 
+            if (!(o is Edge))
                 return false;
             return Equals(o as Edge);
         }
-
         /// <summary>
         /// Equals is defined to be:
         /// e1 equals e2
@@ -277,10 +247,9 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="e"></param>
         protected bool Equals(Edge e)
-        {                     
+        {
             if (Points.Length != e.Points.Length)
                 return false;
-
             var isEqualForward = true;
             var isEqualReverse = true;
             var iRev = Points.Length;
@@ -294,10 +263,9 @@ namespace NetTopologySuite.GeometriesGraph
                     return false;
             }
             return true;
-        }   
-        
+        }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="obj1"></param>
         /// <param name="obj2"></param>
@@ -306,9 +274,8 @@ namespace NetTopologySuite.GeometriesGraph
         {
             return Equals(obj1, obj2);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="obj1"></param>
         /// <param name="obj2"></param>
@@ -316,31 +283,28 @@ namespace NetTopologySuite.GeometriesGraph
         public static bool operator !=(Edge obj1, Edge obj2)
         {
             return !(obj1 == obj2);
-        }        
-        
+        }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();
         }
-
-        /// <returns> 
+        /// <returns>
         /// <c>true</c> if the coordinate sequences of the Edges are identical.
         /// </returns>
         /// <param name="e"></param>
         public bool IsPointwiseEqual(Edge e)
         {
-            if (Points.Length != e.Points.Length) 
+            if (Points.Length != e.Points.Length)
                 return false;
-            for (var i = 0; i < Points.Length; i++) 
-                if (! Points[i].Equals2D(e.Points[i])) 
-                    return false;                        
+            for (var i = 0; i < Points.Length; i++)
+                if (! Points[i].Equals2D(e.Points[i]))
+                    return false;
             return true;
         }
-
         /// <inheritdoc cref="object.ToString()"/>>
         public override String ToString()
         {
@@ -355,9 +319,8 @@ namespace NetTopologySuite.GeometriesGraph
             buf.Append(")  " + Label + " " + DepthDelta);
             return buf.ToString();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="outstream"></param>
         public void Write(TextWriter outstream)
@@ -371,16 +334,15 @@ namespace NetTopologySuite.GeometriesGraph
             }
             outstream.Write(")  " + Label + " " + DepthDelta);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="outstream"></param>
         public void WriteReverse(TextWriter outstream)
         {
             outstream.Write("edge " + Name + ": ");
-            for (var i = Points.Length - 1; i >= 0; i--) 
-                outstream.Write(Points[i] + " ");            
+            for (var i = Points.Length - 1; i >= 0; i--)
+                outstream.Write(Points[i] + " ");
             outstream.WriteLine(String.Empty);
         }
     }

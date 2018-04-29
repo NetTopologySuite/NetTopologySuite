@@ -2,7 +2,6 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Operation.Overlay.Snap;
-
 namespace Open.Topology.TestRunner.Functions
 {
     /// <summary>
@@ -13,7 +12,6 @@ namespace Open.Topology.TestRunner.Functions
     {
         public static double Length(IGeometry g) { return g.Length; }
         public static double Area(IGeometry g) { return g.Area; }
-
         public static bool IsCCW(IGeometry g)
         {
             ICoordinateSequence pts = null;
@@ -25,7 +23,6 @@ namespace Open.Topology.TestRunner.Functions
                 return false;
             return Orientation.IsCCW(pts);
         }
-
         public static bool IsSimple(IGeometry g) { return g.IsSimple; }
         public static bool IsValid(IGeometry g) { return g.IsValid; }
         public static bool IsRectangle(IGeometry g) { return g.IsRectangle; }
@@ -38,7 +35,6 @@ namespace Open.Topology.TestRunner.Functions
             // other geometry types are defined to be closed
             return true;
         }
-
         public static IGeometry Envelope(IGeometry g) { return g.Envelope; }
         public static IGeometry Reverse(IGeometry g) { return g.Reverse(); }
         public static IGeometry Normalize(IGeometry g)
@@ -47,18 +43,15 @@ namespace Open.Topology.TestRunner.Functions
             gNorm.Normalize();
             return gNorm;
         }
-
         public static IGeometry Snap(IGeometry g, IGeometry g2, double distance)
         {
             IGeometry[] snapped = GeometrySnapper.Snap(g, g2, distance);
             return snapped[0];
         }
-
         public static IGeometry GetGeometryN(IGeometry g, int i)
         {
             return g.GetGeometryN(i);
         }
-
         public static IGeometry GetPolygonShell(IGeometry g)
         {
             if (g is IPolygon)
@@ -78,16 +71,13 @@ namespace Open.Topology.TestRunner.Functions
             }
             return null;
         }
-
         private class InternalGeometryFilterImpl : IGeometryFilter
         {
             private readonly IList<IGeometry> _holePolys;
-
             public InternalGeometryFilterImpl(IList<IGeometry> holePolys)
             {
                 _holePolys = holePolys;
             }
-
             public void Filter(IGeometry geom)
             {
                 if (!(geom is IPolygon))
@@ -106,7 +96,6 @@ namespace Open.Topology.TestRunner.Functions
             geom.Apply(new InternalGeometryFilterImpl(holePolys));
             return geom.Factory.BuildGeometry(holePolys);
         }
-
         public static IGeometry GetPolygonHoleN(IGeometry g, int i)
         {
             if (g is IPolygon)
@@ -116,7 +105,6 @@ namespace Open.Topology.TestRunner.Functions
             }
             return null;
         }
-
         public static IGeometry ConvertToPolygon(IGeometry g)
         {
             if (g is IPolygon)
@@ -125,7 +113,6 @@ namespace Open.Topology.TestRunner.Functions
             ILinearRing ring = g.Factory.CreateLinearRing(g.Coordinates);
             return g.Factory.CreatePolygon(ring, null);
         }
-
         public static IGeometry GetCoordinates(IGeometry g)
         {
             Coordinate[] pts = g.Coordinates;

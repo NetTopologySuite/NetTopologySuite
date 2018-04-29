@@ -2,10 +2,9 @@ using System;
 using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.GeometriesGraph
 {
-    /// <summary> 
+    /// <summary>
     /// An EdgeIntersection represents a point on an
     /// edge which intersects with another edge.
     /// The intersection may either be a single point, or a line segment
@@ -21,32 +20,28 @@ namespace NetTopologySuite.GeometriesGraph
         /// The point of intersection.
         /// </summary>
         public Coordinate Coordinate { get; }
-
         /// <summary>
         /// The index of the containing line segment in the parent edge.
         /// </summary>
         public int SegmentIndex { get; }
-
         /// <summary>
         /// The edge distance of this point along the containing line segment.
         /// </summary>
         public double Distance { get; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coord"></param>
         /// <param name="segmentIndex"></param>
         /// <param name="dist"></param>
-        public EdgeIntersection(Coordinate coord, int segmentIndex, double dist) 
+        public EdgeIntersection(Coordinate coord, int segmentIndex, double dist)
         {
             Coordinate = new Coordinate(coord);
             SegmentIndex = segmentIndex;
             Distance = dist;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
@@ -55,9 +50,8 @@ namespace NetTopologySuite.GeometriesGraph
             EdgeIntersection other = (EdgeIntersection) obj;
             return Compare(other.SegmentIndex, other.Distance);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="segmentIndex"></param>
         /// <param name="dist"></param>
@@ -68,33 +62,31 @@ namespace NetTopologySuite.GeometriesGraph
         /// </returns>
         public int Compare(int segmentIndex, double dist)
         {
-            if (SegmentIndex < segmentIndex) 
+            if (SegmentIndex < segmentIndex)
                 return -1;
-            if (SegmentIndex > segmentIndex) 
+            if (SegmentIndex > segmentIndex)
                 return 1;
-            if (Distance < dist) 
+            if (Distance < dist)
                 return -1;
-            if (Distance > dist) 
+            if (Distance > dist)
                 return 1;
             return 0;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="maxSegmentIndex"></param>
         /// <returns></returns>
         public bool IsEndPoint(int maxSegmentIndex)
         {
-            if (SegmentIndex == 0 && Distance == 0.0) 
+            if (SegmentIndex == 0 && Distance == 0.0)
                 return true;
-            if (SegmentIndex == maxSegmentIndex) 
+            if (SegmentIndex == maxSegmentIndex)
                 return true;
             return false;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="outstream"></param>
         public void Write(StreamWriter outstream)
@@ -103,12 +95,10 @@ namespace NetTopologySuite.GeometriesGraph
             outstream.Write(" seg # = " + SegmentIndex);
             outstream.WriteLine(" dist = " + Distance);
         }
-
         /// <inheritdoc cref="object.ToString()"/>
         public override String ToString()
         {
             return Coordinate + " seg # = " + SegmentIndex + " dist = " + Distance;
         }
-
     }
 }

@@ -6,7 +6,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.IO
 {
     /// <summary>
@@ -19,14 +18,12 @@ namespace NetTopologySuite.Tests.NUnit.IO
         private readonly IPrecisionModel _precisionModel;
         private readonly IGeometryFactory _geometryFactory;
         readonly WKTReader _reader;
-
         public WKTReaderTest()
         {
             _precisionModel = new PrecisionModel(1);
             _geometryFactory = new GeometryFactory(_precisionModel, 0);
             _reader = new WKTReader(_geometryFactory);
         }
-
         [TestAttribute]
         public void TestReadNaN()
         {
@@ -34,7 +31,6 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual("POINT (10 10)", _writer.Write(_reader.Read("POINT (10 10 nan)")));
             Assert.AreEqual("POINT (10 10)", _writer.Write(_reader.Read("POINT (10 10 NAN)")));
         }
-
         [TestAttribute]
         public void TestReadPointZ()
         {
@@ -48,43 +44,34 @@ namespace NetTopologySuite.Tests.NUnit.IO
             pt = _reader.Read("POINT(10 10)");
             Assert.IsTrue(((IPoint)pt).CoordinateSequence.Ordinates == Ordinates.XY);
         }
-
         [Test]
         public void TestReaderOrdinateSequenceDimension()
         {
             var pt = (IPoint)_reader.Read("POINT(10 10)");
             Assert.IsTrue(pt.CoordinateSequence.Ordinates == Ordinates.XY);
-
             pt = (IPoint)_reader.Read("POINT(10 10 NAN)");
             Assert.IsTrue(pt.CoordinateSequence.Ordinates == Ordinates.XY);
-
             pt = (IPoint)_reader.Read("POINT(10 10 5)");
             Assert.IsTrue(pt.CoordinateSequence.Ordinates == Ordinates.XYZ);
-
             var ls = (ILineString)_reader.Read("LINESTRING(10 10, 10 20)");
             Assert.IsTrue(ls.CoordinateSequence.Ordinates == Ordinates.XY);
-
             ls = (ILineString)_reader.Read("LINESTRING(10 10 NAN, 10 20 NAN)");
             Assert.IsTrue(ls.CoordinateSequence.Ordinates == Ordinates.XY);
-
             ls = (ILineString)_reader.Read("LINESTRING(10 10 1, 10 20 2)");
             Assert.IsTrue(ls.CoordinateSequence.Ordinates == Ordinates.XYZ);
         }
-
         [TestAttribute]
         public void TestReadPoint()
         {
             Assert.AreEqual("POINT (10 10)", _writer.Write(_reader.Read("POINT (10 10)")));
             Assert.AreEqual("POINT EMPTY", _writer.Write(_reader.Read("POINT EMPTY")));
         }
-
         [TestAttribute]
         public void TestReadLineString()
         {
             Assert.AreEqual("LINESTRING (10 10, 20 20, 30 40)", _writer.Write(_reader.Read("LINESTRING (10 10, 20 20, 30 40)")));
             Assert.AreEqual("LINESTRING EMPTY", _writer.Write(_reader.Read("LINESTRING EMPTY")));
         }
-
         [TestAttribute]
         public void TestReadLinearRing()
         {
@@ -99,35 +86,30 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual("LINEARRING (10 10, 20 20, 30 40, 10 10)", _writer.Write(_reader.Read("LINEARRING (10 10, 20 20, 30 40, 10 10)")));
             Assert.AreEqual("LINEARRING EMPTY", _writer.Write(_reader.Read("LINEARRING EMPTY")));
         }
-
         [TestAttribute]
         public void TestReadPolygon()
         {
             Assert.AreEqual("POLYGON ((10 10, 10 20, 20 20, 20 15, 10 10))", _writer.Write(_reader.Read("POLYGON ((10 10, 10 20, 20 20, 20 15, 10 10))")));
             Assert.AreEqual("POLYGON EMPTY", _writer.Write(_reader.Read("POLYGON EMPTY")));
         }
-
         [TestAttribute]
         public void TestReadMultiPoint()
         {
             Assert.AreEqual("MULTIPOINT ((10 10), (20 20))", _writer.Write(_reader.Read("MULTIPOINT ((10 10), (20 20))")));
             Assert.AreEqual("MULTIPOINT EMPTY", _writer.Write(_reader.Read("MULTIPOINT EMPTY")));
         }
-
         [TestAttribute]
         public void TestReadMultiLineString()
         {
             Assert.AreEqual("MULTILINESTRING ((10 10, 20 20), (15 15, 30 15))", _writer.Write(_reader.Read("MULTILINESTRING ((10 10, 20 20), (15 15, 30 15))")));
             Assert.AreEqual("MULTILINESTRING EMPTY", _writer.Write(_reader.Read("MULTILINESTRING EMPTY")));
         }
-
         [TestAttribute]
         public void TestReadMultiPolygon()
         {
             Assert.AreEqual("MULTIPOLYGON (((10 10, 10 20, 20 20, 20 15, 10 10)), ((60 60, 70 70, 80 60, 60 60)))", _writer.Write(_reader.Read("MULTIPOLYGON (((10 10, 10 20, 20 20, 20 15, 10 10)), ((60 60, 70 70, 80 60, 60 60)))")));
             Assert.AreEqual("MULTIPOLYGON EMPTY", _writer.Write(_reader.Read("MULTIPOLYGON EMPTY")));
         }
-
         [TestAttribute]
         public void TestReadGeometryCollection()
         {
@@ -136,13 +118,11 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING (10 10, 20 20, 30 40, 10 10), LINESTRING (15 15, 20 20))", _writer.Write(_reader.Read("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING (10 10, 20 20, 30 40, 10 10), LINESTRING (15 15, 20 20))")));
             Assert.AreEqual("GEOMETRYCOLLECTION EMPTY", _writer.Write(_reader.Read("GEOMETRYCOLLECTION EMPTY")));
         }
-
         [TestAttribute]
         public void TestReadZ()
         {
             Assert.AreEqual(new Coordinate(1, 2, 3), _reader.Read("POINT (1 2 3)").Coordinate);
         }
-
         [TestAttribute]
         public void TestReadLargeNumbers()
         {
@@ -154,7 +134,6 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual(point1.Coordinate.X, point2.Coordinate.X, 1E-7);
             Assert.AreEqual(point1.Coordinate.Y, point2.Coordinate.Y, 1E-7);
         }
-
         [TestAttribute]
         [Explicit("doesn't works on my machine")]
         public void RepeatedTestThreading()
@@ -162,22 +141,18 @@ namespace NetTopologySuite.Tests.NUnit.IO
             for (int i = 0; i < 10; i++)
                 ThreadPool.QueueUserWorkItem(o => DoTestThreading(), i);
         }
-
         [TestAttribute]
         [Explicit("doesn't works on my machine")]
         public void TestThreading()
         {
             DoTestThreading();
         }
-
         public void DoTestThreading()
         {
             IGeometryServices services = GeometryServiceProvider.Instance;
             services.CreateGeometryFactory();
             int before = ((NtsGeometryServices) services).NumFactories;
-
             Debug.WriteLine("{0} factories already created", before);
-
             var wkts = new[]
                 {
                     "POINT ( 10 20 )",
@@ -190,7 +165,6 @@ namespace NetTopologySuite.Tests.NUnit.IO
                     ,
                 };
             int[] srids = {4326, 31467, 3857};
-            
             const int numJobs = 30;
             var waitHandles = new WaitHandle[numJobs];
             for (int i = 0; i < numJobs; i++)
@@ -198,14 +172,11 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 waitHandles[i] = new AutoResetEvent(false);
                 ThreadPool.QueueUserWorkItem(TestReaderInThreadedContext, new object[] {wkts, waitHandles[i], srids, i});
             }
-
             WaitHandle.WaitAll(waitHandles, 10000);
-
-            int after = ((NtsGeometryServices)services).NumFactories; 
+            int after = ((NtsGeometryServices)services).NumFactories;
             Console.WriteLine("Now {0} factories created", after);
-            Assert.LessOrEqual(after, before + srids.Length); 
+            Assert.LessOrEqual(after, before + srids.Length);
         }
-
         private static readonly Random Rnd = new Random();
         private static void TestReaderInThreadedContext(object info)
         {
@@ -214,7 +185,6 @@ namespace NetTopologySuite.Tests.NUnit.IO
             var waitHandle = (AutoResetEvent) parameters[1];
             var srids = (int[]) parameters[2];
             var jobId = (int) parameters[3];
-
             for (var i = 0; i < 1000; i++)
             {
                 var wkt = wkts[Rnd.Next(0, wkts.Length)];
@@ -228,10 +198,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
                     Assert.AreEqual(geom.Factory.SRID, srid);
                 }
             }
-
             Console.WriteLine("ThreadId {0} finished Job {1}", Thread.CurrentThread.ManagedThreadId, jobId);
             waitHandle.Set();
         }
-
     }
 }

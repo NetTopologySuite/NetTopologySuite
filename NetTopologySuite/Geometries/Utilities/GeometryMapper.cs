@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
@@ -34,7 +33,6 @@ namespace NetTopologySuite.Geometries.Utilities
             }
             return geom.Factory.BuildGeometry(mapped);
         }
-
         /// <summary>
         /// Maps the members of a <see cref="IGeometry"/>
         /// (which may be atomic or composite)
@@ -57,7 +55,6 @@ namespace NetTopologySuite.Geometries.Utilities
             }
             return geom.Factory.BuildGeometry(mapped);
         }
-
         public static ICollection<IGeometry> Map(ICollection<IGeometry> geoms, IMapOp op)
         {
             var mapped = new List<IGeometry>();
@@ -69,7 +66,6 @@ namespace NetTopologySuite.Geometries.Utilities
             }
             return mapped;
         }
-
         /// <summary>
         /// An interface for geometry functions used for mapping.
         /// </summary>

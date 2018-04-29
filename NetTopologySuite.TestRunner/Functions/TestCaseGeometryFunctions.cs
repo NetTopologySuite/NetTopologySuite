@@ -7,7 +7,6 @@ using NetTopologySuite.Operation.Buffer;
 using NetTopologySuite.Triangulate;
 using NetTopologySuite.Utilities;
 using Open.Topology.TestRunner.Utility;
-
 namespace Open.Topology.TestRunner.Functions
 {
     public class TestCaseGeometryFunctions
@@ -16,16 +15,13 @@ namespace Open.Topology.TestRunner.Functions
         {
             BufferParameters bufParams = new BufferParameters();
             bufParams.JoinStyle = JoinStyle.Mitre;
-
             return BufferOp.Buffer(g, distance, bufParams);
         }
-
         public static IGeometry Densify(IGeometry g, double distance)
         {
             return Densifier.Densify(g, distance);
         }
     }
-
     public class TriangleFunctions
     {
         public static IGeometry Circumcentre(IGeometry g)
@@ -35,7 +31,6 @@ namespace Open.Topology.TestRunner.Functions
             IGeometryFactory geomFact = FunctionsUtil.GetFactoryOrDefault(g);
             return geomFact.CreatePoint(cc);
         }
-
         public static IGeometry PerpendicularBisectors(IGeometry g)
         {
             Coordinate[] pts = TrianglePts(g);
@@ -50,7 +45,6 @@ namespace Open.Topology.TestRunner.Functions
             line[2] = geomFact.CreateLineString(new[] { p2, cc });
             return geomFact.CreateMultiLineString(line);
         }
-
         public static IGeometry Incentre(IGeometry g)
         {
             Coordinate[] pts = TrianglePts(g);
@@ -59,7 +53,6 @@ namespace Open.Topology.TestRunner.Functions
             IGeometryFactory geomFact = FunctionsUtil.GetFactoryOrDefault(g);
             return geomFact.CreatePoint(cc);
         }
-
         public static IGeometry AngleBisectors(IGeometry g)
         {
             Coordinate[] pts = TrianglePts(g);
@@ -72,7 +65,6 @@ namespace Open.Topology.TestRunner.Functions
             line[2] = geomFact.CreateLineString(new[] { pts[2], cc });
             return geomFact.CreateMultiLineString(line);
         }
-
         private static Coordinate[] TrianglePts(IGeometry g)
         {
             Coordinate[] pts = g.Coordinates;
@@ -81,11 +73,9 @@ namespace Open.Topology.TestRunner.Functions
             return pts;
         }
     }
-
     public class TriangulationFunctions
     {
         private const double TriangulationTolerance = 0.0;
-
         public static IGeometry DelaunayEdges(IGeometry geom)
         {
             DelaunayTriangulationBuilder builder = new DelaunayTriangulationBuilder();
@@ -94,7 +84,6 @@ namespace Open.Topology.TestRunner.Functions
             IMultiLineString edges = builder.GetEdges(geom.Factory);
             return edges;
         }
-
         public static IGeometry DelaunayTriangles(IGeometry geom)
         {
             DelaunayTriangulationBuilder builder = new DelaunayTriangulationBuilder();
@@ -103,7 +92,6 @@ namespace Open.Topology.TestRunner.Functions
             IGeometryCollection tris = builder.GetTriangles(geom.Factory);
             return tris;
         }
-
         public static IGeometry VoronoiDiagram(IGeometry geom, IGeometry g2)
         {
             VoronoiDiagramBuilder builder = new VoronoiDiagramBuilder();
@@ -114,14 +102,11 @@ namespace Open.Topology.TestRunner.Functions
             IGeometry diagram = builder.GetDiagram(geom.Factory);
             return diagram;
         }
-
         public static IGeometry VoronoiDiagramWithData(IGeometry geom, IGeometry g2)
         {
             GeometryDataUtil.SetComponentDataToIndex(geom);
-
             VertexTaggedGeometryDataMapper mapper = new VertexTaggedGeometryDataMapper();
             mapper.LoadSourceGeometries(geom);
-
             VoronoiDiagramBuilder builder = new VoronoiDiagramBuilder();
             builder.SetSites(mapper.Coordinates);
             if (g2 != null)
@@ -131,36 +116,30 @@ namespace Open.Topology.TestRunner.Functions
             mapper.TransferData(diagram);
             return diagram;
         }
-
         public static IGeometry ConformingDelaunayEdges(IGeometry sites, IGeometry constraints)
         {
             return ConformingDelaunayEdgesWithTolerance(sites, constraints, TriangulationTolerance);
         }
-
         public static IGeometry ConformingDelaunayEdgesWithTolerance(IGeometry sites, IGeometry constraints, double tol)
         {
             ConformingDelaunayTriangulationBuilder builder = new ConformingDelaunayTriangulationBuilder();
             builder.SetSites(sites);
             builder.Constraints = constraints;
             builder.Tolerance = tol;
-
             IGeometryFactory geomFact = sites != null ? sites.Factory : constraints.Factory;
             IGeometry tris = builder.GetEdges(geomFact);
             return tris;
         }
-
         public static IGeometry ConformingDelaunayTriangles(IGeometry sites, IGeometry constraints)
         {
             return ConformingDelaunayTrianglesWithTolerance(sites, constraints, TriangulationTolerance);
         }
-
         private static IGeometry ConformingDelaunayTrianglesWithTolerance(IGeometry sites, IGeometry constraints, double tol)
         {
             ConformingDelaunayTriangulationBuilder builder = new ConformingDelaunayTriangulationBuilder();
             builder.SetSites(sites);
             builder.Constraints = constraints;
             builder.Tolerance = tol;
-
             IGeometryFactory geomFact = sites != null ? sites.Factory : constraints.Factory;
             IGeometry tris = builder.GetTriangles(geomFact);
             return tris;

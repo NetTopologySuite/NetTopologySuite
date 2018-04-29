@@ -1,6 +1,5 @@
 using System;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
     public class LocateFailureException : Exception
@@ -11,18 +10,15 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 return msg + " [ " + seg + " ]";
             return msg;
         }
-
         public LocateFailureException(String msg)
             :base(msg)
         {
         }
-
         public LocateFailureException(String msg, LineSegment seg)
             :base(MsgWithSpatial(msg, seg))
         {
             this.Segment = new LineSegment(seg);
         }
-
         public LocateFailureException(LineSegment seg)
             :base("Locate failed to converge (at edge: "
                 + seg
@@ -30,7 +26,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             this.Segment = new LineSegment(seg);
         }
-
         public LineSegment Segment { get; private set; }
     }
 }

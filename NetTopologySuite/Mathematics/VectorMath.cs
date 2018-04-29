@@ -1,7 +1,6 @@
 ﻿using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Mathematics
 {
     /// <summary>
@@ -26,7 +25,6 @@ namespace NetTopologySuite.Mathematics
             Normalize(cp);
             return cp;
         }
-
         /// <summary>
         /// Normalizes the vector <param name="v"></param>
         /// </summary>
@@ -38,7 +36,6 @@ namespace NetTopologySuite.Mathematics
             v.Y /= absVal;
             v.Z /= absVal;
         }
-
         /// <summary>
         /// Computes the cross product of <paramref name="v1"/> and <paramref name="v2"/>
         /// </summary>
@@ -52,7 +49,6 @@ namespace NetTopologySuite.Mathematics
             double z = Det(v1.X, v1.Y, v2.X, v2.Y);
             return new Coordinate(x, y, z);
         }
-
         /// <summary>
         /// Computes the dot product of <paramref name="v1"/> and <paramref name="v2"/>
         /// </summary>
@@ -63,7 +59,6 @@ namespace NetTopologySuite.Mathematics
         {
             return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
         }
-
         /// <summary>
         /// Computes the determinant of a 2x2 matrix
         /// </summary>

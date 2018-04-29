@@ -1,6 +1,5 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Implementation;
-
 namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 {
     //Tests are exposed by CoordinateSequenceTestBase type

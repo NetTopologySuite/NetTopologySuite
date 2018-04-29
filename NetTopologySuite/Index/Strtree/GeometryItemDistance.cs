@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
@@ -11,7 +10,7 @@ namespace NetTopologySuite.Index.Strtree
     public class GeometryItemDistance : IItemDistance<Envelope, IGeometry>
     {
         /// <summary>
-        /// Computes the distance between two <see cref="IGeometry"/> items, 
+        /// Computes the distance between two <see cref="IGeometry"/> items,
         /// using the <see cref="IGeometry.Distance(IGeometry)"/> method.
         /// </summary>
         /// <param name="item1">An item which is a geometry.</param>

@@ -4,7 +4,6 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
 {
     [TestFixtureAttribute]
@@ -13,14 +12,12 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
         PrecisionModel pm;
         GeometryFactory fact;
         WKTReader rdr;
-
         public FixedPrecisionSnappingTest()
         {
             pm = new PrecisionModel(1.0);
             fact = new GeometryFactory(pm);
             rdr = new WKTReader(fact);
         }
-
         [TestAttribute]
         public void TestTriangles()
         {

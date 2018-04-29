@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-
 namespace NetTopologySuite.Simplify
 {
     /// <summary>
@@ -12,14 +11,12 @@ namespace NetTopologySuite.Simplify
     {
         private readonly LineSegmentIndex _inputIndex = new LineSegmentIndex();
         private readonly LineSegmentIndex _outputIndex = new LineSegmentIndex();
-
         /// <summary>
         /// Gets or sets the distance tolerance for the simplification.<br/>
         /// Points closer than this tolerance to a simplified segment may
         /// be removed.
-        /// </summary>        
+        /// </summary>
         public double DistanceTolerance { get; set; }
-
         /// <summary>
         /// Simplifies a collection of <c>TaggedLineString</c>s.
         /// </summary>

@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Operation.Buffer.Validate
 {
     /// <summary>
@@ -19,14 +18,12 @@ namespace NetTopologySuite.Operation.Buffer.Validate
     public class BufferResultValidator
     {
         public static bool Verbose;
-
         /**
          * Maximum allowable fraction of buffer distance the
          * actual distance can differ by.
          * 1% sometimes causes an error - 1.2% should be safe.
          */
         private const double MaxEnvDiffFrac = .012;
-
         public static bool IsValid(IGeometry g, double distance, IGeometry result)
         {
             BufferResultValidator validator = new BufferResultValidator(g, distance, result);
@@ -34,7 +31,6 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                 return true;
             return false;
         }
-
         ///<summary>Checks whether the geometry buffer is valid, and returns an error message if not.
         ///</summary>
         /// <param name="g"></param>
@@ -50,19 +46,16 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                 return validator.ErrorMessage;
             return null;
         }
-
         private readonly IGeometry _input;
         private readonly double _distance;
         private readonly IGeometry _result;
         private bool _isValid = true;
-
         public BufferResultValidator(IGeometry input, double distance, IGeometry result)
         {
             _input = input;
             _distance = distance;
             _result = result;
         }
-
         public bool IsValid()
         {
             CheckPolygonal();
@@ -76,17 +69,14 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             CheckDistance();
             return _isValid;
         }
-
         /// <summary>
         /// Gets the error message
         /// </summary>
         public String ErrorMessage { get; private set; }
-
         /// <summary>
         /// Gets the error location
         /// </summary>
         public Coordinate ErrorLocation { get; private set; }
-
         /// <summary>
         /// Gets a geometry which indicates the location and nature of a validation failure.
         /// <para>
@@ -98,14 +88,12 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// <returns>A geometric error indicator<br/>
         /// or <value>null</value>, if no error was found</returns>
         public IGeometry ErrorIndicator { get; private set; }
-
         private void Report(String checkName)
         {
             if (!Verbose) return;
             Debug.WriteLine("Check " + checkName + ": "
                 + (_isValid ? "passed" : "FAILED"));
         }
-
         private void CheckPolygonal()
         {
             if (!(_result is IPolygon
@@ -115,14 +103,12 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             ErrorIndicator = _result;
             Report("Polygonal");
         }
-
         private void CheckExpectedEmpty()
         {
             // can't check areal features
             if (_input.Dimension >= Dimension.Surface) return;
             // can't check positive distances
             if (_distance > 0.0) return;
-
             // at this point can expect an empty result
             if (!_result.IsEmpty)
             {
@@ -132,20 +118,15 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             }
             Report("ExpectedEmpty");
         }
-
         private void CheckEnvelope()
         {
             if (_distance < 0.0) return;
-
             double padding = _distance * MaxEnvDiffFrac;
             if (padding == 0.0) padding = 0.001;
-
             var expectedEnv = new Envelope(_input.EnvelopeInternal);
             expectedEnv.ExpandBy(_distance);
-
             var bufEnv = new Envelope(_result.EnvelopeInternal);
             bufEnv.ExpandBy(padding);
-
             if (!bufEnv.Contains(expectedEnv))
             {
                 _isValid = false;
@@ -154,12 +135,10 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             }
             Report("Envelope");
         }
-
         private void CheckArea()
         {
             double inputArea = _input.Area;
             double resultArea = _result.Area;
-
             if (_distance > 0.0
                     && inputArea > resultArea)
             {
@@ -176,7 +155,6 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             }
             Report("Area");
         }
-
         private void CheckDistance()
         {
             BufferDistanceValidator distValid = new BufferDistanceValidator(_input, _distance, _result);

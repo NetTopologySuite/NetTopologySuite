@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
@@ -14,22 +13,17 @@ namespace NetTopologySuite.Operation.Buffer
     internal class OffsetSegmentString
     {
         private readonly List<Coordinate> _ptList;
-
         /**
          * The distance below which two adjacent points on the curve
          * are considered to be coincident.
          * This is chosen to be a small fraction of the offset distance.
          */
-
         public OffsetSegmentString()
         {
             _ptList = new List<Coordinate>();
         }
-
         public IPrecisionModel PrecisionModel { get; set; }
-
         public double MinimumVertexDistance { get; set; }
-
         public void AddPt(Coordinate pt)
         {
             var bufPt = new Coordinate(pt);
@@ -40,7 +34,6 @@ namespace NetTopologySuite.Operation.Buffer
             _ptList.Add(bufPt);
             //Console.WriteLine(bufPt);
         }
-
         public void AddPts(Coordinate[] pt, bool isForward)
         {
             if (isForward)
@@ -58,7 +51,6 @@ namespace NetTopologySuite.Operation.Buffer
                 }
             }
         }
-
         /// <summary>
         /// Tests whether the given point is redundant
         /// relative to the previous
@@ -76,12 +68,10 @@ namespace NetTopologySuite.Operation.Buffer
                 return true;
             return false;
         }
-
         public void CloseRing()
         {
             if (_ptList.Count < 1)
                 return;
-
             var startPt = new Coordinate(_ptList[0]);
             var lastPt = _ptList[_ptList.Count - 1];
             /*
@@ -92,11 +82,9 @@ namespace NetTopologySuite.Operation.Buffer
             if (startPt.Equals(lastPt)) return;
             _ptList.Add(startPt);
         }
-
         public void Reverse()
         {
         }
-
         public Coordinate[] GetCoordinates()
         {
             /*
@@ -111,7 +99,6 @@ namespace NetTopologySuite.Operation.Buffer
             var coord = _ptList.ToArray();
             return coord;
         }
-
         public override String ToString()
         {
             var fact = new GeometryFactory();

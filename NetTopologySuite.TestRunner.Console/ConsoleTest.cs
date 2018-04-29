@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Reflection;
 using Open.Topology.TestRunner;
-
 namespace ConsoleTestRunner
 {
 	/// <summary>
@@ -22,19 +21,13 @@ namespace ConsoleTestRunner
             Console.WriteLine();
             Console.Write("Test Runner>>");
         }
-
         static void RunInteractive(XmlTestType filter, bool verbose)
         {
             string fileName = String.Empty;
-
             XmlTestController controller = new XmlTestController();
-
             TestRunner runner = new TestRunner(filter, verbose);
-
             PrintMenu();
-
             fileName = Console.ReadLine().Trim();
-
             while (fileName != "exit")
             {
                 XmlTestCollection listTests = null;
@@ -64,27 +57,21 @@ namespace ConsoleTestRunner
                             }
                             else
                                 listTests = controller.Load(fileName);
-
                             break;
                     }
                 }
                 catch (Exception ex)
                 {
                     XmlTestExceptionManager.Publish(ex);
-                } 
-
+                }
                 if (listTests != null && listTests.Count > 0)
                 {
                     listTests.TestEvent += new XmlTextEventHandler(runner.OnSimpleTest);
-
                     try
                     {
                         Console.WriteLine("Running...{0}", listTests.Name);
-
                         listTests.RunTests();
-
                         runner.PrintSimpleTestResult(listTests.Count);
-
                         runner.SimpleTestReset(XmlTestType.None, verbose);
                     }
                     catch (Exception ex)
@@ -92,17 +79,13 @@ namespace ConsoleTestRunner
                         XmlTestExceptionManager.Publish(ex);
                     }
                 }
-
                 PrintMenu();
-
                 fileName = Console.ReadLine().Trim();
             }
         }
-
         static void OnErrorEvent(object sender, XmlTestErrorEventArgs args)
         {
             Exception ex = args.Thrown;
-
             if (ex != null)
             {
                 Console.WriteLine(ex.Message);
@@ -112,27 +95,11 @@ namespace ConsoleTestRunner
                 Console.WriteLine(ex.StackTrace);
             }
         }
-
         static void RunDefault()
         {
             TestOptionsParser parserOptions = new TestOptionsParser();
             TestInfoCollection listTests =
                 parserOptions.ParseProject(@"..\..\..\NetTopologySuite.TestRunner.Tests\Default.xml");
-            
-            if (listTests != null && listTests.Count > 0)
-            {
-                TestRunner runner = new TestRunner(listTests);
-                runner.Run();
-                runner.PrintResult();
-            }   
-        }
-
-        static void RunOther()
-        {
-            TestOptionsParser parserOptions = new TestOptionsParser();
-            TestInfoCollection listTests =
-                parserOptions.ParseProject(@"..\..\..\NetTopologySuite.TestRunner.Tests\Other.xml");
-
             if (listTests != null && listTests.Count > 0)
             {
                 TestRunner runner = new TestRunner(listTests);
@@ -140,7 +107,18 @@ namespace ConsoleTestRunner
                 runner.PrintResult();
             }
         }
-
+        static void RunOther()
+        {
+            TestOptionsParser parserOptions = new TestOptionsParser();
+            TestInfoCollection listTests =
+                parserOptions.ParseProject(@"..\..\..\NetTopologySuite.TestRunner.Tests\Other.xml");
+            if (listTests != null && listTests.Count > 0)
+            {
+                TestRunner runner = new TestRunner(listTests);
+                runner.Run();
+                runner.PrintResult();
+            }
+        }
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -161,7 +139,6 @@ namespace ConsoleTestRunner
             {
                 TestOptionsParser parser = new TestOptionsParser();
                 TestInfoCollection collection = parser.Parse(args);
-
                 if (parser.IsDefault)
                 {
                     RunDefault();
@@ -194,8 +171,6 @@ namespace ConsoleTestRunner
                     }
                 }
             }
-
         }
     }
-
 }

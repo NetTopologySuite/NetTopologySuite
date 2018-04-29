@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using NetTopologySuite.Noding;
-
 namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
@@ -11,13 +10,10 @@ namespace NetTopologySuite.GeometriesGraph
     public class EdgeList
     {
         private readonly List<Edge> _edges = new List<Edge>();
-
         /// <summary>
         /// An index of the edges, for fast lookup.
         /// </summary>
         private readonly IDictionary<OrientedCoordinateArray, Edge> _ocaMap = new SortedDictionary<OrientedCoordinateArray, Edge>();
-
-
         /// <summary>
         /// Remove the selected Edge element from the list if present.
         /// </summary>
@@ -26,8 +22,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             _edges.Remove(e);
         }
-
-        /// <summary> 
+        /// <summary>
         /// Insert an edge unless it is already in the list.
         /// </summary>
         /// <param name="e"></param>
@@ -38,28 +33,25 @@ namespace NetTopologySuite.GeometriesGraph
             _ocaMap.Add(oca, e);
             //_index.Insert(e.Envelope, e);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edgeColl"></param>
         public void AddAll(IEnumerable<Edge> edgeColl)
         {
-            for (var i = edgeColl.GetEnumerator(); i.MoveNext(); ) 
+            for (var i = edgeColl.GetEnumerator(); i.MoveNext(); )
                 Add(i.Current);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IList<Edge> Edges => _edges;
-
         /// <summary>
         /// If there is an edge equal to e already in the list, return it.
         /// Otherwise return null.
         /// </summary>
         /// <param name="e"></param>
-        /// <returns>  
+        /// <returns>
         /// equal edge, if there is one already in the list,
         /// null otherwise.
         /// </returns>
@@ -69,40 +61,36 @@ namespace NetTopologySuite.GeometriesGraph
             // will return null if no edge matches
             Edge matchEdge;
             _ocaMap.TryGetValue(oca, out matchEdge);
-            return matchEdge; 
+            return matchEdge;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
-        public IEnumerator<Edge> GetEnumerator() 
-        { 
-            return _edges.GetEnumerator(); 
+        public IEnumerator<Edge> GetEnumerator()
+        {
+            return _edges.GetEnumerator();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
         public Edge this[int index] => Get(index);
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public Edge Get(int i) 
+        public Edge Get(int i)
         {
-            return _edges[i]; 
+            return _edges[i];
         }
-
         /// <summary>
         /// If the edge e is already in the list, return its index.
         /// </summary>
         /// <param name="e"></param>
-        /// <returns>  
+        /// <returns>
         /// Index, if e is already in the list,
         /// -1 otherwise.
         /// </returns>
@@ -110,28 +98,26 @@ namespace NetTopologySuite.GeometriesGraph
         {
             for (var i = 0; i < _edges.Count; i++)
                 if ((_edges[i]).Equals(e))
-                    return i;            
+                    return i;
             return -1;
         }
-
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="outstream"></param>
         public void Write(StreamWriter outstream)
         {
             outstream.Write("MULTILINESTRING ( ");
-            for (var j = 0; j < _edges.Count; j++) 
+            for (var j = 0; j < _edges.Count; j++)
             {
                 var e = _edges[j];
-                if (j > 0) 
+                if (j > 0)
                     outstream.Write(",");
                 outstream.Write("(");
                 var pts = e.Coordinates;
                 for (var i = 0; i < pts.Length; i++)
                 {
-                    if (i > 0) 
+                    if (i > 0)
                         outstream.Write(",");
                     outstream.Write(pts[i].X + " " + pts[i].Y);
                 }

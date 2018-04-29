@@ -2,7 +2,6 @@ using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
-
 namespace NetTopologySuite.Algorithm.Distance
 {
     /// <summary>
@@ -14,12 +13,10 @@ namespace NetTopologySuite.Algorithm.Distance
     public class PointPairDistance
     {
         private Boolean _isNull = true;
-
         ///<summary>
         /// Initializes to null.
         ///</summary>
         public void Initialize() { _isNull = true; }
-
         ///<summary>
         /// Initializes the points.
         ///</summary>
@@ -32,7 +29,6 @@ namespace NetTopologySuite.Algorithm.Distance
             Distance = p0.Distance(p1);
             _isNull = false;
         }
-
         ///<summary>
         /// Initializes the points, avoiding recomputing the distance.
         ///</summary>
@@ -46,29 +42,24 @@ namespace NetTopologySuite.Algorithm.Distance
             Distance = distance;
             _isNull = false;
         }
-
         /// <summary>
         /// The distance between the paired coordinates
         /// </summary>
         public double Distance { get; private set; } = Double.NaN;
-
         /// <summary>
         /// Returns an array containing the paired points
         /// </summary>
         public Coordinate[] Coordinates { get; } = { new Coordinate(), new Coordinate() };
-
         /// <summary>
         /// Gets the value of
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
         public Coordinate this[int i] => Coordinates[i];
-
         public void SetMaximum(PointPairDistance ptDist)
         {
             SetMaximum(ptDist.Coordinates[0], ptDist.Coordinates[1]);
         }
-
         public void SetMaximum(Coordinate p0, Coordinate p1)
         {
             if (_isNull)
@@ -80,12 +71,10 @@ namespace NetTopologySuite.Algorithm.Distance
             if (dist > Distance)
                 Initialize(p0, p1, dist);
         }
-
         public void SetMinimum(PointPairDistance ptDist)
         {
             SetMinimum(ptDist.Coordinates[0], ptDist.Coordinates[1]);
         }
-
         public void SetMinimum(Coordinate p0, Coordinate p1)
         {
             if (_isNull)
@@ -97,7 +86,6 @@ namespace NetTopologySuite.Algorithm.Distance
             if (dist < Distance)
                 Initialize(p0, p1, dist);
         }
-
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {

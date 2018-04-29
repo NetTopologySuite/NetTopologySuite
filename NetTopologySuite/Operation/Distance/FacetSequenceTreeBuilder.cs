@@ -2,7 +2,6 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.Strtree;
-
 namespace NetTopologySuite.Operation.Distance
 {
     /// <summary>
@@ -12,14 +11,11 @@ namespace NetTopologySuite.Operation.Distance
     {
         // 6 seems to be a good facet sequence size
         private const int FacetSequenceSize = 6;
-
 // ReSharper disable InconsistentNaming
-
         // Seems to be better to use a minimum node capacity
         private const int STRtreeNodeCapacity = 4;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="g"></param>
         /// <returns></returns>
@@ -35,7 +31,6 @@ namespace NetTopologySuite.Operation.Distance
             tree.Build();
             return tree;
         }
-
         /// <summary>
         /// Creates facet sequences from a given geometry
         /// </summary>
@@ -44,7 +39,6 @@ namespace NetTopologySuite.Operation.Distance
         private static List<FacetSequence> ComputeFacetSequences(IGeometry g)
         {
             var sections = new List<FacetSequence>();
-
             g.Apply(new GeometryComponentFilter(
                         delegate(IGeometry geom)
                             {
@@ -62,7 +56,6 @@ namespace NetTopologySuite.Operation.Distance
                             }));
             return sections;
         }
-
         private static void AddFacetSequences(ICoordinateSequence pts, List<FacetSequence> sections)
         {
             int i = 0;

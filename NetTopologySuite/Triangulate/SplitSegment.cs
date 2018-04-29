@@ -1,10 +1,9 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Triangulate
 {
     /// <summary>
-    /// Models a constraint segment which can be split in two in various ways, 
+    /// Models a constraint segment which can be split in two in various ways,
     /// according to certain geometric constraints.
     /// </summary>
     /// <author>Martin Davis</author>
@@ -25,20 +24,15 @@ namespace NetTopologySuite.Triangulate
             coord.Y = seg.P1.Y - segmentLengthFraction*(seg.P1.Y - seg.P0.Y);
             return coord;
         }
-
         private readonly LineSegment _seg;
         private readonly double _segLen;
-
         public SplitSegment(LineSegment seg)
         {
             _seg = seg;
             _segLen = seg.Length;
         }
-
         public double MinimumLength { get; set; }
-
         public Coordinate SplitPoint { get; private set; }
-
         public void SplitAt(double length, Coordinate endPt)
         {
             double actualLen = GetConstrainedLength(length);
@@ -48,7 +42,6 @@ namespace NetTopologySuite.Triangulate
             else
                 SplitPoint = PointAlongReverse(_seg, frac);
         }
-
         public void SplitAt(Coordinate pt)
         {
             // check that given pt doesn't violate min length
@@ -66,7 +59,6 @@ namespace NetTopologySuite.Triangulate
             // passes minimum distance check - use provided point as split pt
             SplitPoint = pt;
         }
-
         private double GetConstrainedLength(double len)
         {
             if (len < MinimumLength)

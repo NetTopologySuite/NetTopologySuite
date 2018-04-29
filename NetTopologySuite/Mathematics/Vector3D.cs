@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Mathematics
 {
     /// <summary>
@@ -10,7 +9,6 @@ namespace NetTopologySuite.Mathematics
     /// <author>Martin Davis</author>
     public class Vector3D
     {
-
 // ReSharper disable InconsistentNaming
         /// <summary>
         /// Computes the dot product of the 3D vectors AB and CD.
@@ -31,7 +29,6 @@ namespace NetTopologySuite.Mathematics
             return ABx * CDx + ABy * CDy + ABz * CDz;
         }
         // ReSharper restore InconsistentNaming
-
         /// <summary>
         /// Creates a new vector with given <paramref name="x"/>, <paramref name="y"/> and <paramref name="z"/> components.
         /// </summary>
@@ -43,7 +40,6 @@ namespace NetTopologySuite.Mathematics
         {
             return new Vector3D(x, y, z);
         }
-
         /// <summary>
         /// Creates a new vector from a <see cref="Coordinate"/>.
         /// </summary>
@@ -53,14 +49,12 @@ namespace NetTopologySuite.Mathematics
         {
             return new Vector3D(coord);
         }
-
         public Vector3D(Coordinate v)
         {
             X = v.X;
             Y = v.Y;
             Z = v.Z;
         }
-
         /// <summary>
         /// Computes the 3D dot-product of two <see cref="Coordinate"/>s
         /// </summary>
@@ -71,7 +65,6 @@ namespace NetTopologySuite.Mathematics
         {
             return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
         }
-
         /// <summary>
         /// Creates a vector, that is the difference of <paramref name="to"/> and <paramref name="from"/>
         /// </summary>
@@ -83,7 +76,6 @@ namespace NetTopologySuite.Mathematics
             Y = to.Y - from.Y;
             Z = to.Z - from.Z;
         }
-
         /// <summary>
         /// Creates a vector with the ordinates <paramref name="x"/>, <paramref name="y"/> and <paramref name="z"/>
         /// </summary>
@@ -96,22 +88,18 @@ namespace NetTopologySuite.Mathematics
             Y = y;
             Z = z;
         }
-
         /// <summary>
         /// Gets a value indicating the x-ordinate
         /// </summary>
         public double X { get; }
-
         /// <summary>
         /// Gets a value indicating the y-ordinate
         /// </summary>
         public double Y { get; }
-
         /// <summary>
         /// Gets a value indicating the z-ordinate
         /// </summary>
         public double Z { get; }
-
         /// <summary>
         /// Computes the dot-product of this <see cref="Vector3D"/> and <paramref name="v"/>
         /// </summary>
@@ -121,7 +109,6 @@ namespace NetTopologySuite.Mathematics
         {
             return X * v.X + Y * v.Y + Z * v.Z;
         }
-
         /// <summary>
         /// Function to compute the length of this vector
         /// </summary>
@@ -130,7 +117,6 @@ namespace NetTopologySuite.Mathematics
         {
             return Math.Sqrt(X * X + Y * Y + Z * Z);
         }
-
         /// <summary>
         /// Function to compute the length of vector <paramref name="v"/>.
         /// </summary>
@@ -140,7 +126,6 @@ namespace NetTopologySuite.Mathematics
         {
             return Math.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z);
         }
-
         /// <summary>
         /// Function to compute a normalized form of this vector
         /// </summary>
@@ -152,7 +137,6 @@ namespace NetTopologySuite.Mathematics
                 return Divide(Length());
             return Create(0.0, 0.0, 0.0);
         }
-
         /// <summary>
         /// Function to devide all dimensions of this vector by <paramref name="d"/>.
         /// </summary>
@@ -162,7 +146,6 @@ namespace NetTopologySuite.Mathematics
         {
             return Create(X / d, Y / d, Z / d);
         }
-
         /// <summary>
         /// Function to compute a normalized form of vector <paramref name="v"/>.
         /// </summary>
@@ -173,13 +156,10 @@ namespace NetTopologySuite.Mathematics
             var len = Length(v);
             return new Coordinate(v.X / len, v.Y / len, v.Z / len);
         }
-
         /// <inheritdoc cref="object.ToString()"/>
         public override String ToString()
         {
             return string.Format(NumberFormatInfo.InvariantInfo, "[{0}, {1}, {2}]", X, Y, Z);
         }
-
-
     }
 }

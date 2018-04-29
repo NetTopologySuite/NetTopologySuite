@@ -1,7 +1,6 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     [TestFixture]
@@ -21,7 +20,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(i.Current is IPoint);
             Assert.IsTrue(!i.MoveNext());
         }
-
         [TestCase("GEOMETRYCOLLECTION (GEOMETRYCOLLECTION (POINT (10 10)))")]
         [TestCase("MULTILINESTRING ((10 10, 20 20), (10 20, 20 30), (20 10, 30 20))")]
         [TestCase("MULTIPOINT ((10 10), (10 20), (30 30))")]
@@ -32,7 +30,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var geom = Read(wkt);
             if (!(geom is IGeometryCollection gc))
                 return;
-
             using (var it = gc.GetEnumerator())
             {
                 while (it.MoveNext())
@@ -45,7 +42,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 }
             }
         }
-
         [Test]
         public void TestAtomic()
         {
@@ -56,7 +52,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(i.Current is IPolygon);
             Assert.DoesNotThrow(() => current = i.Current);
             Assert.IsTrue(i.Current is IPolygon);
-
             Assert.IsTrue(!i.MoveNext());
         }
     }

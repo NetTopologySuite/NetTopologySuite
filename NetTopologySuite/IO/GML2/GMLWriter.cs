@@ -5,7 +5,6 @@ using System.IO;
 using System.Xml;
 using GeoAPI.Geometries;
 using NetTopologySuite.Utilities;
-
 namespace NetTopologySuite.IO.GML2
 {
     /// <summary>
@@ -19,12 +18,10 @@ namespace NetTopologySuite.IO.GML2
     {
         private const int InitValue = 150;
         private const int CoordSize = 200;
-
         /// <summary>
         /// Formatter for double values of coordinates
         /// </summary>
         protected static NumberFormatInfo NumberFormatter => Global.GetNfi();
-
         /// <summary>
         /// Returns an <c>XmlReader</c> with feature informations.
         /// Use <c>XmlDocument.Load(XmlReader)</c> for obtain a <c>XmlDocument</c> to work.
@@ -39,11 +36,9 @@ namespace NetTopologySuite.IO.GML2
                 Write(geometry, stream);
                 data = stream.ToArray();
             }
-
             Stream outStream = new MemoryStream(data);
             return XmlReader.Create(outStream);
         }
-
         /// <summary>
         /// Writes a GML feature into a generic <c>Stream</c>, such a <c>FileStream</c> or other streams.
         /// </summary>
@@ -60,19 +55,16 @@ namespace NetTopologySuite.IO.GML2
                 OmitXmlDeclaration = true,
             };
             XmlWriter writer = XmlWriter.Create(stream, settings);
-
             //writer.WriteStartElement(GMLElements.gmlPrefix, "GML", GMLElements.gmlNS);
-
             Write(geometry, writer);
             //writer.WriteEndElement();
             ((IDisposable)writer).Dispose();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coordinate"></param>
-        /// <param name="writer"></param>        
+        /// <param name="writer"></param>
         protected void Write(Coordinate coordinate, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, "coord", GMLElements.gmlNS);
@@ -80,36 +72,32 @@ namespace NetTopologySuite.IO.GML2
             writer.WriteElementString(GMLElements.gmlPrefix, "Y", GMLElements.gmlNS, coordinate.Y.ToString("g", NumberFormatter));
             writer.WriteEndElement();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coordinates"></param>
-        /// <param name="writer"></param>        
+        /// <param name="writer"></param>
         protected void Write(Coordinate[] coordinates, XmlWriter writer)
         {
             foreach (Coordinate coord in coordinates)
                 Write(coord, writer);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coordinates"></param>
-        /// <param name="writer"></param>        
+        /// <param name="writer"></param>
         protected void WriteCoordinates(Coordinate[] coordinates, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, "coordinates", GMLElements.gmlNS);
             var elements = new List<string>(coordinates.Length);
             foreach (var coordinate in coordinates)
                 elements.Add(string.Format(NumberFormatter, "{0},{1}", coordinate.X, coordinate.Y));
-
             writer.WriteString(string.Join(" ", elements.ToArray()));
             writer.WriteEndElement();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="writer"></param>
@@ -131,9 +119,8 @@ namespace NetTopologySuite.IO.GML2
                 Write(geometry as IGeometryCollection, writer);
             else throw new ArgumentException("Geometry not recognized: " + geometry);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="point"></param>
         /// <param name="writer"></param>
@@ -143,9 +130,8 @@ namespace NetTopologySuite.IO.GML2
             Write(point.Coordinate, writer);
             writer.WriteEndElement();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="lineString"></param>
         /// <param name="writer"></param>
@@ -155,9 +141,8 @@ namespace NetTopologySuite.IO.GML2
             WriteCoordinates(lineString.Coordinates, writer);
             writer.WriteEndElement();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="linearRing"></param>
         /// <param name="writer"></param>
@@ -167,9 +152,8 @@ namespace NetTopologySuite.IO.GML2
             WriteCoordinates(linearRing.Coordinates, writer);
             writer.WriteEndElement();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="polygon"></param>
         /// <param name="writer"></param>
@@ -187,9 +171,8 @@ namespace NetTopologySuite.IO.GML2
             }
             writer.WriteEndElement();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="multiPoint"></param>
         /// <param name="writer"></param>
@@ -204,9 +187,8 @@ namespace NetTopologySuite.IO.GML2
             }
             writer.WriteEndElement();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="multiLineString"></param>
         /// <param name="writer"></param>
@@ -221,9 +203,8 @@ namespace NetTopologySuite.IO.GML2
             }
             writer.WriteEndElement();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="multiPolygon"></param>
         /// <param name="writer"></param>
@@ -238,9 +219,8 @@ namespace NetTopologySuite.IO.GML2
             }
             writer.WriteEndElement();
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometryCollection"></param>
         /// <param name="writer"></param>
@@ -255,7 +235,6 @@ namespace NetTopologySuite.IO.GML2
             }
             writer.WriteEndElement();
         }
-
         /// <summary>
         /// Sets corrent length for Byte Stream.
         /// </summary>
@@ -279,9 +258,8 @@ namespace NetTopologySuite.IO.GML2
                 return SetByteStreamLength(geometry as IGeometryCollection);
             throw new ArgumentException("ShouldNeverReachHere");
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometryCollection"></param>
         /// <returns></returns>
@@ -292,9 +270,8 @@ namespace NetTopologySuite.IO.GML2
                 count += SetByteStreamLength(g);
             return count;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="multiPolygon"></param>
         /// <returns></returns>
@@ -305,9 +282,8 @@ namespace NetTopologySuite.IO.GML2
                 count += SetByteStreamLength(p);
             return count;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="multiLineString"></param>
         /// <returns></returns>
@@ -318,9 +294,8 @@ namespace NetTopologySuite.IO.GML2
                 count += SetByteStreamLength(ls);
             return count;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="multiPoint"></param>
         /// <returns></returns>
@@ -331,9 +306,8 @@ namespace NetTopologySuite.IO.GML2
                 count += SetByteStreamLength(p);
             return count;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="polygon"></param>
         /// <returns></returns>
@@ -343,9 +317,8 @@ namespace NetTopologySuite.IO.GML2
             count += polygon.NumPoints * CoordSize;
             return count;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="lineString"></param>
         /// <returns></returns>
@@ -355,9 +328,8 @@ namespace NetTopologySuite.IO.GML2
             count += lineString.NumPoints * CoordSize;
             return count;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>

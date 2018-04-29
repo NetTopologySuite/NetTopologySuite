@@ -1,5 +1,4 @@
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
@@ -25,7 +24,6 @@ namespace NetTopologySuite.Geometries.Prepared
             PreparedPolygonCovers polyInt = new PreparedPolygonCovers(prep);
             return polyInt.Covers(geom);
         }
-
         ///<summary>
         /// Creates an instance of this operation.
         ///</summary>
@@ -35,7 +33,6 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             RequireSomePointInInterior = false;
         }
-
         ///<summary>
         /// Tests whether this PreparedPolygon <c>covers</c> a given geometry.
         ///</summary>
@@ -45,7 +42,6 @@ namespace NetTopologySuite.Geometries.Prepared
         {
             return Eval(geom);
         }
-
         ///<summary>
         /// Computes the full topological <c>covers</c> predicate. Used when short-circuit tests are not conclusive.
         ///</summary>

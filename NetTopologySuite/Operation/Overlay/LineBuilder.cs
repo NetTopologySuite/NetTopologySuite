@@ -3,7 +3,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Utilities;
-
 namespace NetTopologySuite.Operation.Overlay
 {
     /// <summary>
@@ -15,12 +14,10 @@ namespace NetTopologySuite.Operation.Overlay
         private readonly OverlayOp _op;
         private readonly IGeometryFactory _geometryFactory;
         private readonly PointLocator _ptLocator;
-
         private readonly List<Edge> _lineEdgesList = new List<Edge>();
         private readonly List<IGeometry> _resultLineList = new List<IGeometry>();
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="op"></param>
         /// <param name="geometryFactory"></param>
@@ -31,9 +28,8 @@ namespace NetTopologySuite.Operation.Overlay
             _geometryFactory = geometryFactory;
             _ptLocator = ptLocator;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="opCode"></param>
         /// <returns>
@@ -46,7 +42,6 @@ namespace NetTopologySuite.Operation.Overlay
             BuildLines(opCode);
             return _resultLineList;
         }
-
         /// <summary>
         /// Find and mark L edges which are "covered" by the result area (if any).
         /// L edges at nodes which also have A edges can be checked by checking
@@ -55,30 +50,28 @@ namespace NetTopologySuite.Operation.Overlay
         /// point-in-polygon test with the previously computed result areas.
         /// </summary>
         private void FindCoveredLineEdges()
-        {            
+        {
             // first set covered for all L edges at nodes which have A edges too
             foreach (Node node in _op.Graph.Nodes)
             {
                 ((DirectedEdgeStar) node.Edges).FindCoveredLineEdges();
             }
-
             /*
              * For all Curve edges which weren't handled by the above,
              * use a point-in-poly test to determine whether they are covered
              */
             foreach (DirectedEdge de in _op.Graph.EdgeEnds)
             {
-                Edge e = de.Edge;                
+                Edge e = de.Edge;
                 if (de.IsLineEdge && !e.IsCoveredSet)
-                {                    
-                    bool isCovered = _op.IsCoveredByA(de.Coordinate);                    
+                {
+                    bool isCovered = _op.IsCoveredByA(de.Coordinate);
                     e.Covered = isCovered;
                 }
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="opCode"></param>
         private void CollectLines(SpatialFunction opCode)
@@ -87,11 +80,10 @@ namespace NetTopologySuite.Operation.Overlay
             {
                 CollectLineEdge(de, opCode, _lineEdgesList);
                 CollectBoundaryTouchEdge(de, opCode, _lineEdgesList);
-            }           
+            }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="de"></param>
         /// <param name="opCode"></param>
@@ -102,15 +94,14 @@ namespace NetTopologySuite.Operation.Overlay
             Edge e = de.Edge;
             // include Curve edges which are in the result
             if (de.IsLineEdge)
-            {                
+            {
                 if (!de.IsVisited && OverlayOp.IsResultOfOp(label, opCode) && !e.IsCovered)
-                {                    
-                    edges.Add(e);                    
+                {
+                    edges.Add(e);
                     de.VisitedEdge = true;
                 }
             }
         }
-
         /// <summary>
         /// Collect edges from Area inputs which should be in the result but
         /// which have not been included in a result area.
@@ -123,19 +114,18 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="opCode"></param>
         /// <param name="edges"></param>
         public void CollectBoundaryTouchEdge(DirectedEdge de, SpatialFunction opCode, IList<Edge> edges)
-        {            
-            Label label = de.Label;            
-            if (de.IsLineEdge)  
-                return;         // only interested in area edges         
-            if (de.IsVisited)   
+        {
+            Label label = de.Label;
+            if (de.IsLineEdge)
+                return;         // only interested in area edges
+            if (de.IsVisited)
                 return;         // already processed
-            if (de.IsInteriorAreaEdge)  
-                return; // added to handle dimensional collapses            
-            if (de.Edge.IsInResult) 
+            if (de.IsInteriorAreaEdge)
+                return; // added to handle dimensional collapses
+            if (de.Edge.IsInResult)
                 return;     // if the edge linework is already included, don't include it again
-
             // sanity check for labelling of result edgerings
-            Assert.IsTrue(!(de.IsInResult || de.Sym.IsInResult) || !de.Edge.IsInResult);            
+            Assert.IsTrue(!(de.IsInResult || de.Sym.IsInResult) || !de.Edge.IsInResult);
             // include the linework if it's in the result of the operation
             if (OverlayOp.IsResultOfOp(label, opCode) && opCode == SpatialFunction.Intersection)
             {
@@ -143,9 +133,8 @@ namespace NetTopologySuite.Operation.Overlay
                 de.VisitedEdge = true;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="opCode"></param>
         private void BuildLines(SpatialFunction opCode)
@@ -157,9 +146,8 @@ namespace NetTopologySuite.Operation.Overlay
                 e.InResult = true;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edgesList"></param>
         private void LabelIsolatedLines(IEnumerable<Edge> edgesList)
@@ -175,7 +163,6 @@ namespace NetTopologySuite.Operation.Overlay
                 }
             }
         }
-
         /// <summary>
         /// Label an isolated node with its relationship to the target point.
         /// </summary>

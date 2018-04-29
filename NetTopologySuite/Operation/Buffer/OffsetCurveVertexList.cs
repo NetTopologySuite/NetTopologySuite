@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Operation.Buffer
 {
     ///<summary>
@@ -13,23 +12,19 @@ namespace NetTopologySuite.Operation.Buffer
     public class OffsetCurveVertexList
     {
         private readonly List<Coordinate> _ptList;
-
         public OffsetCurveVertexList()
         {
             _ptList = new List<Coordinate>();
         }
-
         /// <summary>
         /// Gets/Sets the precision model to use when adding new points.
         /// </summary>
         public IPrecisionModel PrecisionModel { get; set; }
-
         /// <summary>
         /// The distance below which two adjacent points on the curve are considered to be coincident.
         /// </summary>
         /// <remarks>This is chosen to be a small fraction of the offset distance.</remarks>
         public double MinimumVertexDistance { get; set; }
-
         /// <summary>
         /// Function to add a point
         /// </summary>
@@ -47,7 +42,6 @@ namespace NetTopologySuite.Operation.Buffer
             _ptList.Add(bufPt);
             //System.out.println(bufPt);
         }
-
         ///<summary>
         /// Tests whether the given point duplicates the previous point in the list (up to tolerance)
         ///</summary>
@@ -63,7 +57,6 @@ namespace NetTopologySuite.Operation.Buffer
                 return true;
             return false;
         }
-
         /// <summary>
         /// Automatically closes the ring (if it not alread is).
         /// </summary>
@@ -78,7 +71,6 @@ namespace NetTopologySuite.Operation.Buffer
             if (startPt.Equals(lastPt)) return;
             _ptList.Add(startPt);
         }
-
         /// <summary>
         /// Gets the Coordinates for the curve.
         /// </summary>
@@ -97,7 +89,6 @@ namespace NetTopologySuite.Operation.Buffer
                 return coord;
             }
         }
-
         /// <inheritdoc cref="object.ToString()"/>
         public override String ToString()
         {

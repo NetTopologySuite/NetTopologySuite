@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.EdgeGraph
 {
     /// <summary>
     /// A graph comprised of <see cref="HalfEdge"/>s.
     /// It supports tracking the vertices in the graph
-    /// via edges incident on them, 
+    /// via edges incident on them,
     /// to allow efficient lookup of edges and vertices.
     /// </summary>
     /// <remarks>
-    /// This class may be subclassed to use a 
+    /// This class may be subclassed to use a
     /// different subclass of HalfEdge,
     /// by overriding <see cref="CreateEdge"/>.
     /// If additional logic is required to initialize
@@ -21,7 +20,6 @@ namespace NetTopologySuite.EdgeGraph
     public class EdgeGraph
     {
         private readonly IDictionary<Coordinate, HalfEdge> vertexMap = new Dictionary<Coordinate, HalfEdge>();
-
         /// <summary>
         /// Creates a single HalfEdge.
         /// Override to use a different HalfEdge subclass.
@@ -32,7 +30,6 @@ namespace NetTopologySuite.EdgeGraph
         {
             return new HalfEdge(orig);
         }
-
         private HalfEdge Create(Coordinate p0, Coordinate p1)
         {
             HalfEdge e0 = CreateEdge(p0);
@@ -40,7 +37,6 @@ namespace NetTopologySuite.EdgeGraph
             HalfEdge.Init(e0, e1);
             return e0;
         }
-
         /// <summary>
         /// Adds an edge between the coordinates orig and dest
         /// to this graph.
@@ -56,10 +52,9 @@ namespace NetTopologySuite.EdgeGraph
         public virtual HalfEdge AddEdge(Coordinate orig, Coordinate dest)
         {
             if (!IsValidEdge(orig, dest)) return null;
-
             // Attempt to find the edge already in the graph.
             // Return it if found.
-            // Otherwise, use a found edge with same origin (if any) to construct new edge. 
+            // Otherwise, use a found edge with same origin (if any) to construct new edge.
             HalfEdge eAdj;
             bool eAdjFound = vertexMap.TryGetValue(orig, out eAdj);
             HalfEdge eSame = null;
@@ -67,11 +62,9 @@ namespace NetTopologySuite.EdgeGraph
                 eSame = eAdj.Find(dest);
             if (eSame != null)
                 return eSame;
-
             HalfEdge e = Insert(orig, dest, eAdj);
             return e;
         }
-
         /// <summary>
         /// Test if an the coordinates for an edge form a valid edge (with non-zero length)
         /// </summary>
@@ -83,7 +76,6 @@ namespace NetTopologySuite.EdgeGraph
             var cmp = dest.CompareTo(orig);
             return cmp != 0;
         }
-
         /// <summary>
         /// Inserts an edge not already present into the graph.
         /// </summary>
@@ -98,7 +90,6 @@ namespace NetTopologySuite.EdgeGraph
             if (eAdj != null)
                 eAdj.Insert(e);
             else vertexMap.Add(orig, e);
-
             HalfEdge eAdjDest;
             bool eAdjDestFound = vertexMap.TryGetValue(dest, out eAdjDest);
             HalfEdge sym = e.Sym;
@@ -107,12 +98,10 @@ namespace NetTopologySuite.EdgeGraph
             else vertexMap.Add(dest, sym);
             return e;
         }
-
         public IEnumerable<HalfEdge> GetVertexEdges()
         {
             return vertexMap.Values;
         }
-
         /// <summary>
         /// Finds an edge in this graph with the given origin
         /// and destination, if one exists.

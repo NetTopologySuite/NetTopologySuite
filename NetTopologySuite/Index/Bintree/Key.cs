@@ -1,7 +1,6 @@
 using System;
 //using GeoAPI.DataStructures;
 using NetTopologySuite.Index.Quadtree;
-
 namespace NetTopologySuite.Index.Bintree
 {
     /// <summary>
@@ -12,45 +11,38 @@ namespace NetTopologySuite.Index.Bintree
     public class Key
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="interval"></param>
         /// <returns></returns>
         public static int ComputeLevel(Interval interval)
         {
-            double dx = interval.Width;            
+            double dx = interval.Width;
             int level = DoubleBits.GetExponent(dx) + 1;
             return level;
         }
-
         // the fields which make up the key
-
         // auxiliary data which is derived from the key for use in computation
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="interval"></param>
         public Key(Interval interval)
         {
             ComputeKey(interval);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public  double Point { get; private set; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public  int Level { get; private set; }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public  Interval Interval { get; private set; }
-
         /// <summary>
         /// Return a square envelope containing the argument envelope,
         /// whose extent is a power of two and which is based at a power of 2.
@@ -69,15 +61,14 @@ namespace NetTopologySuite.Index.Bintree
                 ComputeInterval(Level, itemInterval);
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="level"></param>
         /// <param name="itemInterval"></param>
         private void ComputeInterval(int level, Interval itemInterval)
         {
-            var size = DoubleBits.PowerOf2(level);            
+            var size = DoubleBits.PowerOf2(level);
             Point = Math.Floor(itemInterval.Min / size) * size;
             Interval.Init(Point, Point + size);
             //_interval = Interval.Create(_pt, _pt + size);

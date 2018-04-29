@@ -1,5 +1,4 @@
 ﻿using System;
-
 namespace NetTopologySuite.Utilities
 {
     public static class Guard

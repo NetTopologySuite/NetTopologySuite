@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Operation.Valid;
-
 namespace Open.Topology.TestRunner.Functions
 {
     public class ValidationFunctions
@@ -27,7 +26,6 @@ namespace Open.Topology.TestRunner.Functions
             }
             return g.Factory.BuildGeometry(invalidLoc.ToArray());
         }
-
         public static IGeometry InvalidGeoms(IGeometry g)
         {
             var invalidGeoms = new List<IGeometry>();

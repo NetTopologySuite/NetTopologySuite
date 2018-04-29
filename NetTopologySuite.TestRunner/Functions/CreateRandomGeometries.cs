@@ -3,25 +3,19 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Utilities;
 using Open.Topology.TestRunner.Utility;
-
 namespace Open.Topology.TestRunner.Functions
 {
     public static class CreateRandomGeometryFunctions
     {
         private static Random RND = new Random();
-
         public static IGeometry RandomPointsInGrid(IGeometry g, int nPts)
         {
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
             var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
-
             int nCell = (int)Math.Sqrt(nPts) + 1;
-
             double xLen = env.Width / nCell;
             double yLen = env.Height / nCell;
-
             var pts = new List<IPoint>();
-
             for (int i = 0; i < nCell; i++)
             {
                 for (int j = 0; j < nCell; j++)
@@ -33,16 +27,13 @@ namespace Open.Topology.TestRunner.Functions
             }
             return geomFact.BuildGeometry(pts.ToArray());
         }
-
         public static IGeometry RandomPoints(IGeometry g, int nPts)
         {
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
             var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
             double xLen = env.Width;
             double yLen = env.Height;
-
             var pts = new List<IPoint>();
-
             for (int i = 0; i < nPts; i++)
             {
                 double x = env.MinX + xLen * RND.NextDouble();
@@ -51,7 +42,6 @@ namespace Open.Topology.TestRunner.Functions
             }
             return geomFact.BuildGeometry(pts.ToArray());
         }
-
         public static IGeometry RandomRadialPoints(IGeometry g, int nPts)
         {
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
@@ -59,12 +49,9 @@ namespace Open.Topology.TestRunner.Functions
             double xLen = env.Width;
             double yLen = env.Height;
             double rMax = Math.Min(xLen, yLen) / 2.0;
-
             double centreX = env.MinX + xLen / 2;
             double centreY = env.MinY + yLen / 2;
-
             var pts = new List<IPoint>();
-
             for (int i = 0; i < nPts; i++)
             {
                 double rand = RND.NextDouble();
@@ -77,24 +64,20 @@ namespace Open.Topology.TestRunner.Functions
             }
             return geomFact.BuildGeometry(pts.ToArray());
         }
-
         public static IGeometry HaltonPoints(IGeometry g, int nPts)
         {
             return HaltonPointsWithBases(g, nPts, 2, 3);
         }
-
         public static IGeometry HaltonPoints57(IGeometry g, int nPts)
         {
             return HaltonPointsWithBases(g, nPts, 5, 7);
         }
-
         public static IGeometry HaltonPointsWithBases(IGeometry g, int nPts, int basei, int basej)
         {
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
             var pts = new Coordinate[nPts];
             var baseX = env.MinX;
             var baseY = env.MinY;
-
             var i = 0;
             while (i < nPts)
             {
@@ -106,7 +89,6 @@ namespace Open.Topology.TestRunner.Functions
             }
             return FunctionsUtil.GetFactoryOrDefault(g).CreateMultiPoint(pts);
         }
-
         private static double HaltonOrdinate(int index, int basis)
         {
             double result = 0;
@@ -120,17 +102,13 @@ namespace Open.Topology.TestRunner.Functions
             }
             return result;
         }
-
-
         public static IGeometry RandomSegments(IGeometry g, int nPts)
         {
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
             var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
             double xLen = env.Width;
             double yLen = env.Height;
-
             var lines = new List<IGeometry>();
-
             for (int i = 0; i < nPts; i++)
             {
                 double x0 = env.MinX + xLen * RND.NextDouble();
@@ -144,19 +122,14 @@ namespace Open.Topology.TestRunner.Functions
             }
             return geomFact.BuildGeometry(lines);
         }
-
         public static IGeometry RandomSegmentsInGrid(IGeometry g, int nPts)
         {
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
             var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
-
             int nCell = (int)Math.Sqrt(nPts) + 1;
-
             double xLen = env.Width / nCell;
             double yLen = env.Height / nCell;
-
             var lines = new List<IGeometry>();
-
             for (int i = 0; i < nCell; i++)
             {
                 for (int j = 0; j < nCell; j++)
@@ -173,16 +146,13 @@ namespace Open.Topology.TestRunner.Functions
             }
             return geomFact.BuildGeometry(lines);
         }
-
         public static IGeometry RandomLineString(IGeometry g, int nPts)
         {
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
             var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
             double width = env.Width;
             double hgt = env.Height;
-
             var pts = new Coordinate[nPts];
-
             for (int i = 0; i < nPts; i++)
             {
                 double xLen = width * RND.NextDouble();
@@ -191,16 +161,13 @@ namespace Open.Topology.TestRunner.Functions
             }
             return geomFact.CreateLineString(pts);
         }
-
         public static IGeometry RandomRectilinearWalk(IGeometry g, int nPts)
         {
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
             var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
             double xLen = env.Width;
             double yLen = env.Height;
-
             var pts = new Coordinate[nPts];
-
             bool xory = true;
             for (int i = 0; i < nPts; i++)
             {
@@ -230,7 +197,6 @@ namespace Open.Topology.TestRunner.Functions
             }
             return geomFact.CreateLineString(pts);
         }
-
         private static int RandomQuadrant(int exclude)
         {
             while (true)
@@ -240,7 +206,6 @@ namespace Open.Topology.TestRunner.Functions
                 if (quad != exclude) return quad;
             }
         }
-
         private static Coordinate RandomPtAround(Coordinate basePt, double xLen, double yLen)
         {
             var x0 = basePt.X + xLen * (RND.NextDouble() - 0.5);

@@ -1,6 +1,5 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>
@@ -14,7 +13,6 @@ namespace NetTopologySuite.LinearReferencing
         // TODO: cache computed cumulative length for each vertex
         // TODO: support user-defined measures
         // TODO: support measure index for fast mapping to a location
-
         /// <summary>
         /// Computes the <see cref="LinearLocation" /> for a
         /// given length along a linear <see cref="Geometry" />.
@@ -27,7 +25,6 @@ namespace NetTopologySuite.LinearReferencing
             var locater = new LengthLocationMap(linearGeom);
             return locater.GetLocation(length);
         }
-
         /// <summary>
         /// Computes the <see cref="LinearLocation"/> for a
         /// given length along a linear <see cref="IGeometry"/>,
@@ -42,7 +39,6 @@ namespace NetTopologySuite.LinearReferencing
             var locater = new LengthLocationMap(linearGeom);
             return locater.GetLocation(length, resolveLower);
         }
-
         /// <summary>
         /// Computes the length for a given <see cref="LinearLocation" />
         /// on a linear <see cref="Geometry" />.
@@ -55,9 +51,7 @@ namespace NetTopologySuite.LinearReferencing
             var locater = new LengthLocationMap(linearGeom);
             return locater.GetLength(loc);
         }
-
         private readonly IGeometry _linearGeom;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LengthLocationMap"/> class.
         /// </summary>
@@ -66,7 +60,6 @@ namespace NetTopologySuite.LinearReferencing
         {
             _linearGeom = linearGeom;
         }
-
         /// <summary>
         /// Compute the <see cref="LinearLocation" /> corresponding to a length.
         /// Negative lengths are measured in reverse from end of the linear geometry.
@@ -79,7 +72,6 @@ namespace NetTopologySuite.LinearReferencing
         {
             return GetLocation(length, true);
         }
-
         /// <summary>
         /// Compute the <see cref="LinearLocation"/> corresponding to a length.
         /// Negative lengths are measured in reverse from end of the linear geometry.
@@ -93,7 +85,6 @@ namespace NetTopologySuite.LinearReferencing
         public LinearLocation GetLocation(double length, bool resolveLower)
         {
             var forwardLength = length;
-
             // negative values are measured from end of geometry
             if (length < 0.0)
             {
@@ -107,7 +98,6 @@ namespace NetTopologySuite.LinearReferencing
             }
             return ResolveHigher(loc);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -117,9 +107,7 @@ namespace NetTopologySuite.LinearReferencing
         {
             if (length <= 0.0)
                 return new LinearLocation();
-
             var totalLength = 0.0;
-
             var it = new LinearIterator(_linearGeom);
             while (it.HasNext())
             {
@@ -155,13 +143,11 @@ namespace NetTopologySuite.LinearReferencing
                     }
                     totalLength += segLen;
                 }
-
                 it.Next();
             }
             // length is longer than line - return end location
             return LinearLocation.GetEndLocation(_linearGeom);
         }
-
         private LinearLocation ResolveHigher(LinearLocation loc)
         {
             if (!loc.IsEndpoint(_linearGeom))
@@ -169,7 +155,6 @@ namespace NetTopologySuite.LinearReferencing
             int compIndex = loc.ComponentIndex;
             // if last component can't resolve any higher
             if (compIndex >= _linearGeom.NumGeometries - 1) return loc;
-
             do
             {
                 compIndex++;
@@ -178,7 +163,6 @@ namespace NetTopologySuite.LinearReferencing
             // resolve to next higher location
             return new LinearLocation(compIndex, 0, 0.0);
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -187,7 +171,6 @@ namespace NetTopologySuite.LinearReferencing
         public double GetLength(LinearLocation loc)
         {
             var totalLength = 0.0;
-
             var it = new LinearIterator(_linearGeom);
             while (it.HasNext())
             {

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 namespace NetTopologySuite.Utilities
 {
     /// <summary>
@@ -10,24 +9,21 @@ namespace NetTopologySuite.Utilities
     /// </summary>
     public class CollectionUtil
     {
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
         public delegate T FunctionDelegate<T>(T obj);
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TResult"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
         public delegate TResult FunctionDelegate< T,  TResult>(T obj);
-
         /// <summary>
         /// Executes a function on each item in a <see cref="ICollection{TIn}" />
         /// and returns the results in a new <see cref="IList{TOut}" />.
@@ -44,7 +40,6 @@ namespace NetTopologySuite.Utilities
                 result.Add(obj as TOut);
             return result;
         }
-
         /// <summary>
         /// Executes a function on each item in a <see cref="IList{T}" />
         /// and returns the results in a new <see cref="IList{T}" />.
@@ -60,7 +55,6 @@ namespace NetTopologySuite.Utilities
                 result.Add(function(item));
             return result;
         }
-
         /// <summary>
         /// Executes a function on each item in a <see cref="IList{T}" />
         /// and returns the results in a new <see cref="IList{TResult}" />.
@@ -76,9 +70,8 @@ namespace NetTopologySuite.Utilities
                 result.Add(function(item));
             return result;
         }
-
         /// <summary>
-        /// Executes a function on each item in a <see cref="IEnumerable{T}" /> 
+        /// Executes a function on each item in a <see cref="IEnumerable{T}" />
         /// but does not accumulate the result.
         /// </summary>
         /// <param name="coll"></param>
@@ -89,7 +82,6 @@ namespace NetTopologySuite.Utilities
             foreach (var obj in coll)
                 func(obj);
         }
-
         /// <summary>
         /// Executes a function on each item in a <see cref="IEnumerable{T}" />
         /// and collects all the entries for which the result
@@ -106,7 +98,6 @@ namespace NetTopologySuite.Utilities
                 if (func(obj)) result.Add(obj);
             return result;
         }
-
         /// <summary>
         /// Copies <typeparamref name="TIn"/>s in an array to an <typeparamref name="TOut"/> array
         /// </summary>
@@ -120,20 +111,16 @@ namespace NetTopologySuite.Utilities
             Array.Copy(array, res, array.Length);
             return res;
         }
-
         internal static IEnumerable<T> StableSort<T>(IEnumerable<T> items)
         {
             return StableSort(items, Comparer<T>.Default);
         }
-
         internal static IEnumerable<T> StableSort<T>(IEnumerable<T> items, IComparer<T> comparer)
         {
             // LINQ's OrderBy is guaranteed to be a stable sort.
             return items.OrderBy(x => x, comparer);
         }
-
         #region Obsolete Utilities for Non-Generic Collections (Obsolete)
-
         /// <summary>
         /// Executes a function on each item in a <see cref="System.Collections.ICollection" />
         /// and returns the results in a new <see cref="System.Collections.IList" />.
@@ -148,7 +135,6 @@ namespace NetTopologySuite.Utilities
                 result.Add((T)obj);
             return result;
         }
-
         /// <summary>
         /// Executes a function on each item in a <see cref="System.Collections.ICollection" />
         /// and returns the results in a new <see cref="System.Collections.IList" />.
@@ -164,9 +150,8 @@ namespace NetTopologySuite.Utilities
                 result.Add(func(obj));
             return result;
         }
-
         /// <summary>
-        /// Executes a function on each item in a <see cref="System.Collections.ICollection" /> 
+        /// Executes a function on each item in a <see cref="System.Collections.ICollection" />
         /// but does not accumulate the result.
         /// </summary>
         /// <param name="coll"></param>
@@ -177,7 +162,6 @@ namespace NetTopologySuite.Utilities
             foreach (object obj in coll)
                 func(obj);
         }
-
         /// <summary>
         /// Executes a function on each item in a <see cref="System.Collections.ICollection" />
         /// and collects all the entries for which the result
@@ -195,7 +179,6 @@ namespace NetTopologySuite.Utilities
                     result.Add(obj);
             return result;
         }
-
         #endregion
     }
 }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 {
     ///<summary>
@@ -19,21 +18,17 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             RunSize = new int[] {20};
             RunIterations = 100;
         }
-
         public override void TestInternal()
         {
             PerformanceTestRunner.Run(typeof(DepthSegmentStressTest));
         }
-
         public override void StartRun(int size)
         {
             Console.WriteLine("Running with size " + size);
             iter = 0;
         }
-
         private int iter = 0;
         private readonly Random _rnd = new Random(5432);
-
         public void XXrunSort()
         {
             Console.WriteLine("Iter # " + iter++);
@@ -41,7 +36,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             var segs = CreateRandomDepthSegments(100);
             segs.Sort();
         }
-
         public void RunMin()
         {
             Console.WriteLine("Iter # " + iter++);
@@ -49,36 +43,30 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             var segs = CreateRandomDepthSegments(100);
             var min = segs.Min();
         }
-
         public void RunCompare()
         {
             Console.WriteLine("Iter # " + iter++);
             var seg1 = CreateRandomDepthSegment();
             var seg2 = CreateRandomDepthSegment();
             var seg3 = CreateRandomDepthSegment();
-
             // do test work here
             var fails = false;
             if (!IsSymmetric(seg1, seg2))
                 fails = true;
             if (!IsTransitive(seg1, seg2, seg3))
                 fails = true;
-
             if (fails)
             {
                 Console.WriteLine("FAILS!");
                 throw new Exception("FAILS!");
             }
-
         }
-
         private static bool IsSymmetric(DepthSegment seg1, DepthSegment seg2)
         {
             int cmp12 = seg1.CompareTo(seg2);
             int cmp21 = seg2.CompareTo(seg1);
             return cmp12 == -cmp21;
         }
-
         private bool IsTransitive(DepthSegment seg1, DepthSegment seg2, DepthSegment seg3)
         {
             int cmp12 = seg1.CompareTo(seg2);
@@ -94,7 +82,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             }
             return true;
         }
-
         private List<DepthSegment> CreateRandomDepthSegments(int n)
         {
             var segs = new List<DepthSegment>();
@@ -104,12 +91,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             }
             return segs;
         }
-
         private int Randint(int max)
         {
             return _rnd.Next(max);
         }
-
         private DepthSegment CreateRandomDepthSegment()
         {
             double scale = 10;
@@ -123,12 +108,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             seg.Normalize();
             return new DepthSegment(seg, 0);
         }
-
         private double Round(double x, double scale)
         {
             return Math.Round(x*scale)/scale;
         }
-
         /**
          * A segment from a directed edge which has been assigned a depth value
          * for its sides.
@@ -137,7 +120,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
         {
             private LineSegment upwardSeg;
             private int leftDepth;
-
             public DepthSegment(LineSegment seg, int depth)
             {
                 // input seg is assumed to be normalized
@@ -145,7 +127,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
                 //upwardSeg.normalize();
                 this.leftDepth = depth;
             }
-
             /**
              * Defines a comparison operation on DepthSegments
              * which orders them left to right
@@ -158,7 +139,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
              * @param obj
              * @return the comparison value
              */
-
             public int CompareTo(DepthSegment other)
             {
                 if (!envelopesOverlap(upwardSeg, other.upwardSeg))
@@ -170,13 +150,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
                 if (orientIndex != 0) return orientIndex;
                 // segments cross or are collinear.  Use segment ordering
                 return upwardSeg.CompareTo(other.upwardSeg);
-
             }
-
             public int XcompareTo(Object obj)
             {
                 DepthSegment other = (DepthSegment) obj;
-
                 // if segments are collinear and vertical compare endpoints
                 if (isVertical() && other.isVertical()
                     && upwardSeg.P0.X == other.upwardSeg.P0.X)
@@ -192,7 +169,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
                 // if orientation is determinate, return it
                 if (orientIndex != 0)
                     return orientIndex;
-
                 /**
                  * If comparison between this and other is indeterminate,
                  * try the opposite call order.
@@ -202,20 +178,16 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
                  */
                 if (orientIndex == 0)
                     orientIndex = -1*other.upwardSeg.OrientationIndex(upwardSeg);
-
                 // if orientation is determinate, return it
                 if (orientIndex != 0)
                     return orientIndex;
-
                 // otherwise, segs must be collinear - sort based on minimum X value
                 return compareX(this.upwardSeg, other.upwardSeg);
             }
-
             private bool isVertical()
             {
                 return upwardSeg.P0.X == upwardSeg.P1.X;
             }
-
             private bool envelopesOverlap(LineSegment seg1, LineSegment seg2)
             {
                 if (seg1.MaxX <= seg2.MinX) return false;
@@ -224,7 +196,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
                 if (seg2.MaxX <= seg1.MinY) return false;
                 return true;
             }
-
             /**
      * Compare two collinear segments for left-most ordering.
      * If segs are vertical, use vertical ordering for comparison.
@@ -236,22 +207,17 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
      * @param seg1 a segment to compare
      * @return
      */
-
             private int compareX(LineSegment seg0, LineSegment seg1)
             {
                 int compare0 = seg0.P0.CompareTo(seg1.P0);
                 if (compare0 != 0)
                     return compare0;
                 return seg0.P1.CompareTo(seg1.P1);
-
             }
-
             public override string ToString()
             {
                 return upwardSeg.ToString();
             }
-
         }
-
     }
 }

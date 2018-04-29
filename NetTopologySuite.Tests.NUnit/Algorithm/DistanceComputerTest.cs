@@ -1,7 +1,6 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     public class DistanceComputerTest : GeometryTestCase
@@ -16,7 +15,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.AreEqual(0.707106, DistanceComputer.PointToLinePerpendicular(
                 new Coordinate(1, 0), new Coordinate(0, 0), new Coordinate(1, 1)), 0.000001);
         }
-
         public void TestDistancePointLine()
         {
             Assert.AreEqual(0.5, DistanceComputer.PointToSegment(
@@ -24,7 +22,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.AreEqual(1.0, DistanceComputer.PointToSegment(
                 new Coordinate(2, 0), new Coordinate(0, 0), new Coordinate(1, 0)), 0.000001);
         }
-
         public void TestDistanceLineLineDisjointCollinear()
         {
             Assert.AreEqual(1.999699, DistanceComputer.SegmentToSegment(

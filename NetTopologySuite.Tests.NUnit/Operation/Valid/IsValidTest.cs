@@ -5,7 +5,6 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Valid;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Operation.Valid
 {
     [TestFixtureAttribute]
@@ -14,14 +13,12 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         private PrecisionModel precisionModel;
         private GeometryFactory geometryFactory;
         WKTReader reader;
-
         public IsValidTest()
         {
             precisionModel = new PrecisionModel();
             geometryFactory = new GeometryFactory(precisionModel, 0);
             reader = new WKTReader(geometryFactory);
         }
-
         [TestAttribute]
         public void TestInvalidCoordinate()
         {
@@ -32,7 +29,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             bool valid = isValidOp.IsValid;
             TopologyValidationError err = isValidOp.ValidationError;
             Coordinate errCoord = err.Coordinate;
-
             Assert.AreEqual(TopologyValidationErrors.InvalidCoordinate, err.ErrorType);
             Assert.IsTrue(Double.IsNaN(errCoord.Y));
             Assert.AreEqual(false, valid);

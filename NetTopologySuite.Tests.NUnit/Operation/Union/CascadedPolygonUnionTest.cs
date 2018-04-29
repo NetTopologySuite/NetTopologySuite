@@ -4,7 +4,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Union;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Operation.Union
 {
     /// <summary>
@@ -15,7 +14,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
     public class CascadedPolygonUnionTest
     {
         readonly GeometryFactory _geomFact = new GeometryFactory();
-
         [TestAttribute]
         public void TestBoxes()
         {
@@ -27,39 +25,28 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
   		            }),
                     CascadedPolygonUnionTester.MinSimilarityMeaure);
         }
-
         [TestAttribute]
         public void TestDiscs1()
         {
             var geoms = CreateDiscs(5, 0.7);
-
             //System.Console.WriteLine(_geomFact.BuildGeometry(geoms));
-
             RunTest(geoms,
   		            CascadedPolygonUnionTester.MinSimilarityMeaure);
         }
-
         [TestAttribute]
         public void TestDiscs2()
         {
             var geoms = CreateDiscs(5, 0.55);
-
             //System.Console.WriteLine(_geomFact.BuildGeometry(geoms));
-
             RunTest(geoms,
   		            CascadedPolygonUnionTester.MinSimilarityMeaure);
         }
-
-
         // TODO: add some synthetic tests
-
         private static CascadedPolygonUnionTester tester = new CascadedPolygonUnionTester();
-
         private void RunTest(IList<IGeometry> geoms, double minimumMeasure)
         {
             Assert.IsTrue(tester.Test(geoms, minimumMeasure));
         }
-
         private IList<IGeometry> CreateDiscs(int num, double radius)
         {
             var geoms = new List<IGeometry>();

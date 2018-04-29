@@ -1,6 +1,5 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Triangulate
 {
     /// <summary>
@@ -23,7 +22,6 @@ namespace NetTopologySuite.Triangulate
             var segLen = lineSeg.Length;
             var midPtLen = segLen / 2;
             var splitSeg = new SplitSegment(lineSeg);
-
             var projPt = ProjectedSplitPoint(seg, encroachPt);
             /*
              * Compute the largest diameter (length) that will produce a split segment which is not
@@ -36,12 +34,9 @@ namespace NetTopologySuite.Triangulate
                 maxSplitLen = midPtLen;
             }
             splitSeg.MinimumLength = maxSplitLen;
-
             splitSeg.SplitAt(projPt);
-
             return splitSeg.SplitPoint;
         }
-
         /// <summary>
         /// Computes a split point which is the projection of the encroaching point on the segment
         /// </summary>

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Noding;
-
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
@@ -35,7 +34,6 @@ namespace NetTopologySuite.Geometries.Prepared
             PreparedPolygonContainsProperly polyInt = new PreparedPolygonContainsProperly(prep);
             return polyInt.ContainsProperly(geom);
         }
-
         ///<summary>
         /// Creates an instance of this operation.
         ///</summary>
@@ -44,7 +42,6 @@ namespace NetTopologySuite.Geometries.Prepared
             : base(prepPoly)
         {
         }
-
         ///<summary>
         /// Tests whether this PreparedPolygon containsProperly a given geometry.
         ///</summary>
@@ -60,7 +57,6 @@ namespace NetTopologySuite.Geometries.Prepared
              */
             bool isAllInPrepGeomAreaInterior = IsAllTestComponentsInTargetInterior(geom);
             if (!isAllInPrepGeomAreaInterior) return false;
-
             /*
              * If any segments intersect, result is false.
              */
@@ -68,7 +64,6 @@ namespace NetTopologySuite.Geometries.Prepared
             bool segsIntersect = prepPoly.IntersectionFinder.Intersects(lineSegStr);
             if (segsIntersect)
                 return false;
-
             /*
              * Given that no segments intersect, if any vertex of the target
              * is contained in some test component.
@@ -80,7 +75,6 @@ namespace NetTopologySuite.Geometries.Prepared
                 bool isTargetGeomInTestArea = IsAnyTargetComponentInAreaTest(geom, prepPoly.RepresentativePoints);
                 if (isTargetGeomInTestArea) return false;
             }
-
             return true;
         }
     }

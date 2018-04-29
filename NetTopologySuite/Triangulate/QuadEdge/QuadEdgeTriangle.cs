@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
     /// <summary>
-    /// Models a triangle formed from <see cref="QuadEdge"/>s in a <see cref="QuadEdgeSubdivision"/> 
+    /// Models a triangle formed from <see cref="QuadEdge"/>s in a <see cref="QuadEdgeSubdivision"/>
     /// which forms a triangulation. The class provides methods to access the
-    /// topological and geometric properties of the triangle and its neighbours in 
-    /// the triangulation. Triangle vertices are ordered in CCW orientation in the 
+    /// topological and geometric properties of the triangle and its neighbours in
+    /// the triangulation. Triangle vertices are ordered in CCW orientation in the
     /// structure.
     /// </summary>
     /// <remarks>
     /// QuadEdgeTriangles support having an external data attribute attached to them.
-    /// Alternatively, this class can be subclassed and attributes can 
-    /// be defined in the subclass.  Subclasses will need to define 
+    /// Alternatively, this class can be subclassed and attributes can
+    /// be defined in the subclass.  Subclasses will need to define
     /// their own <c>BuilderVisitor</c> class
     /// and <c>CreateOn</c> method.
     /// </remarks>
@@ -39,7 +38,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             subdiv.VisitTriangles(visitor, false);
             return visitor.GetTriangles();
         }
-
         /// <summary>
         /// Tests whether the point pt is contained in the triangle defined by 3 <see cref="Vertex"/>es.
         /// </summary>
@@ -57,7 +55,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                            };
             return PointLocation.IsInRing(pt, ring);
         }
-
         /// <summary>
         /// Tests whether the point pt is contained in the triangle defined by 3 <see cref="QuadEdge"/>es.
         /// </summary>
@@ -75,7 +72,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                            };
             return PointLocation.IsInRing(pt, ring);
         }
-
         public static IGeometry ToPolygon(Vertex[] v)
         {
             var ringPts = new[]
@@ -90,7 +86,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             var tri = fact.CreatePolygon(ring);
             return tri;
         }
-
         public static IGeometry ToPolygon(QuadEdge[] e)
         {
             var ringPts = new[]
@@ -105,7 +100,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             var tri = fact.CreatePolygon(ring);
             return tri;
         }
-
         /*
         /// <summary>
         /// Finds the next index around the triangle. Index may be an edge or vertex index.
@@ -118,7 +112,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
          */
         private QuadEdge[] _edge;
-
         /// <summary>
         /// Creates a new triangle from the given edges.
         /// </summary>
@@ -132,7 +125,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 edge[i].Data = this;
             }
         }
-
         private static QuadEdge[] CopyOf(QuadEdge[] edge)
         {
             var res = new QuadEdge[edge.Length];
@@ -140,37 +132,30 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 res[i] = edge[i];
             return res;
         }
-
         /// <summary>
         /// Gets or sets the external data value for this triangle.
         /// </summary>
         public object Data { get; set; }
-
         public void Kill()
         {
             _edge = null;
         }
-
         public bool IsLive()
         {
             return _edge != null;
         }
-
         public QuadEdge[] GetEdges()
         {
             return _edge;
         }
-
         public QuadEdge GetEdge(int i)
         {
             return _edge[i];
         }
-
         public Vertex GetVertex(int i)
         {
             return _edge[i].Orig;
         }
-
         /// <summary>
         /// Gets the vertices for this triangle.
         /// </summary>
@@ -184,12 +169,10 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             }
             return vert;
         }
-
         public Coordinate GetCoordinate(int i)
         {
             return _edge[i].Orig.Coordinate;
         }
-
         /// <summary>
         /// Gets the index for the given edge of this triangle
         /// </summary>
@@ -206,7 +189,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             }
             return -1;
         }
-
         /// <summary>
         /// Gets the index for the edge that starts at vertex v.
         /// </summary>
@@ -223,14 +205,12 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             }
             return -1;
         }
-
         public void GetEdgeSegment(int i, LineSegment seg)
         {
             seg.P0 = _edge[i].Orig.Coordinate;
             int nexti = (i + 1)%3;
             seg.P1 = _edge[nexti].Orig.Coordinate;
         }
-
         public Coordinate[] GetCoordinates()
         {
             var pts = new Coordinate[4];
@@ -241,26 +221,22 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             pts[3] = new Coordinate(pts[0]);
             return pts;
         }
-
         public bool Contains(Coordinate pt)
         {
             var ring = GetCoordinates();
             return PointLocation.IsInRing(pt, ring);
         }
-
         public IGeometry GetGeometry(GeometryFactory fact)
         {
             var ring = fact.CreateLinearRing(GetCoordinates());
             var tri = fact.CreatePolygon(ring);
             return tri;
         }
-
         /// <inheritdoc cref="object.ToString()"/>
         public override String ToString()
         {
             return GetGeometry(new GeometryFactory()).ToString();
         }
-
         /// <summary>
         /// Tests whether this triangle is adjacent to the outside of the subdivision.
         /// </summary>
@@ -274,24 +250,20 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             }
             return false;
         }
-
         public bool IsBorder(int i)
         {
             return GetAdjacentTriangleAcrossEdge(i) == null;
         }
-
         public QuadEdgeTriangle GetAdjacentTriangleAcrossEdge(int edgeIndex)
         {
             return (QuadEdgeTriangle) GetEdge(edgeIndex).Sym.Data;
         }
-
         public int GetAdjacentTriangleEdgeIndex(int i)
         {
             return GetAdjacentTriangleAcrossEdge(i).GetEdgeIndex(GetEdge(i).Sym);
         }
-
         /// <summary>
-        /// Gets the triangles which are adjacent (include) to a 
+        /// Gets the triangles which are adjacent (include) to a
         /// given vertex of this triangle.
         /// </summary>
         /// <param name="vertexIndex">The vertex to query</param>
@@ -300,7 +272,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             // Assert: isVertex
             var adjTris = new List<QuadEdgeTriangle>();
-
             QuadEdge start = GetEdge(vertexIndex);
             QuadEdge qe = start;
             do
@@ -312,11 +283,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 }
                 qe = qe.ONext;
             } while (qe != start);
-
             return adjTris;
-
         }
-
         /// <summary>
         /// Gets the neighbours of this triangle. If there is no neighbour triangle, the array element is
         /// <code>null</code>
@@ -331,24 +299,18 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             }
             return neigh;
         }
-
         private class QuadEdgeTriangleBuilderVisitor : ITriangleVisitor
         {
-
             private readonly List<QuadEdgeTriangle> _triangles = new List<QuadEdgeTriangle>();
-
             //public QuadEdgeTriangleBuilderVisitor() { }
-
             public void Visit(QuadEdge[] edges)
             {
                 _triangles.Add(new QuadEdgeTriangle(edges));
             }
-
             public List<QuadEdgeTriangle> GetTriangles()
             {
                 return _triangles;
             }
         }
-
     }
 }

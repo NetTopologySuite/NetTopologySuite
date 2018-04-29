@@ -2,7 +2,6 @@ using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Noding
 {
     /// <summary>
@@ -13,7 +12,7 @@ namespace NetTopologySuite.Noding
     public class IntersectionAdder : ISegmentIntersector
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i1"></param>
         /// <param name="i2"></param>
@@ -22,34 +21,27 @@ namespace NetTopologySuite.Noding
         {
             return Math.Abs(i1 - i2) == 1;
         }
-
         /**
          * These variables keep track of what types of intersections were
          * found during ALL edges that have been intersected.
          */
-
         // the proper intersection point found
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int NumIntersections = 0;
-        
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int NumInteriorIntersections = 0;
-        
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int NumProperIntersections = 0;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int NumTests = 0;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="IntersectionAdder"/> class.
         /// </summary>
@@ -58,22 +50,18 @@ namespace NetTopologySuite.Noding
         {
             LineIntersector = li;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public LineIntersector LineIntersector { get; }
-
         /// <summary>
         /// Returns the proper intersection point, or <c>null</c> if none was found.
         /// </summary>
         public Coordinate ProperIntersectionPoint { get; } = null;
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool HasIntersection { get; private set; }
-
         /// <summary>
         /// A proper intersection is an intersection which is interior to at least two
         /// line segments.  Note that a proper intersection is not necessarily
@@ -82,19 +70,16 @@ namespace NetTopologySuite.Noding
         /// can result in the point being on the Boundary of the <see cref="Geometry" />.
         /// </summary>
         public bool HasProperIntersection { get; private set; }
-
         /// <summary>
         /// A proper interior intersection is a proper intersection which is not
         /// contained in the set of boundary nodes set for this <see cref="ISegmentIntersector" />.
         /// </summary>
         public bool HasProperInteriorIntersection { get; private set; }
-
         /// <summary>
         /// An interior intersection is an intersection which is
         /// in the interior of some segment.
         /// </summary>
         public bool HasInteriorIntersection { get; private set; }
-
         /// <summary>
         /// A trivial intersection is an apparent self-intersection which in fact
         /// is simply the point shared by adjacent line segments.
@@ -116,15 +101,14 @@ namespace NetTopologySuite.Noding
                     if (e0.IsClosed)
                     {
                         int maxSegIndex = e0.Count - 1;
-                        if ( (segIndex0 == 0 && segIndex1 == maxSegIndex) || 
-                             (segIndex1 == 0 && segIndex0 == maxSegIndex) )                        
-                                return true;                        
+                        if ( (segIndex0 == 0 && segIndex1 == maxSegIndex) ||
+                             (segIndex1 == 0 && segIndex0 == maxSegIndex) )
+                                return true;
                     }
                 }
             }
             return false;
         }
-
         /// <summary>
         /// This method is called by clients
         /// of the <see cref="ISegmentIntersector" /> class to process
@@ -141,7 +125,6 @@ namespace NetTopologySuite.Noding
         {
             if (e0 == e1 && segIndex0 == segIndex1)
                 return;
-
             NumTests++;
             Coordinate[] coordinates0 = e0.Coordinates;
             Coordinate p00 = coordinates0[segIndex0];
@@ -149,15 +132,14 @@ namespace NetTopologySuite.Noding
             Coordinate[] coordinates1 = e1.Coordinates;
             Coordinate p10 = coordinates1[segIndex1];
             Coordinate p11 = coordinates1[segIndex1 + 1];
-
-            LineIntersector.ComputeIntersection(p00, p01, p10, p11);            
+            LineIntersector.ComputeIntersection(p00, p01, p10, p11);
             if(LineIntersector.HasIntersection)
-            {                
+            {
                 NumIntersections++;
                 if (LineIntersector.IsInteriorIntersection())
                 {
                     NumInteriorIntersections++;
-                    HasInteriorIntersection = true;                    
+                    HasInteriorIntersection = true;
                 }
                 // if the segments are adjacent they have at least one trivial intersection,
                 // the shared endpoint.  Don't bother adding it if it is the
@@ -176,7 +158,6 @@ namespace NetTopologySuite.Noding
                 }
             }
         }
-
         ///<summary>
         /// Always process all intersections
         ///</summary>

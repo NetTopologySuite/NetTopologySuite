@@ -3,22 +3,18 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.Various
 {
     [TestFixture]
     public class Issue56Tests
     {
         private readonly IGeometryFactory factory = GeometryFactory.Default;
-
-        private WKTWriter writer;  
-
+        private WKTWriter writer;
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
             writer = new WKTWriter();
         }
-
         [Test, Category("Issue56")]
         public void IntMinValueTest()
         {
@@ -28,7 +24,6 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsNotNull(text);
             Assert.AreEqual("POINT (300000 -2147483648)", text);
         }
-
         [Test, Category("Issue56")]
         public void DoubleMinValueTest()
         {

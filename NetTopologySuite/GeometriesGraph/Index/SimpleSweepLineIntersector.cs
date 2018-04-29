@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
-
 namespace NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary>
@@ -12,19 +11,16 @@ namespace NetTopologySuite.GeometriesGraph.Index
     public class SimpleSweepLineIntersector : EdgeSetIntersector
     {
         private readonly List<SweepLineEvent> _events = new List<SweepLineEvent>();
-
         // statistics information
         private int _nOverlaps;
-
         /*
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public SimpleSweepLineIntersector() { }
         */
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edges"></param>
         /// <param name="si"></param>
@@ -36,9 +32,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
             else Add(edges);
             ComputeIntersections(si);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edges0"></param>
         /// <param name="edges1"></param>
@@ -49,9 +44,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
             Add(edges1, edges1);
             ComputeIntersections(si);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edges"></param>
         private void Add(IEnumerable<Edge> edges)
@@ -62,9 +56,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
                 Add(edge, edge);
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edges"></param>
         /// <param name="edgeSet"></param>
@@ -75,9 +68,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
                 Add(edge, edgeSet);
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edge"></param>
         /// <param name="edgeSet"></param>
@@ -92,8 +84,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
                 _events.Add(new SweepLineEvent(ss.MaxX, insertEvent));
             }
         }
-
-        /// <summary> 
+        /// <summary>
         /// Because DELETE events have a link to their corresponding INSERT event,
         /// it is possible to compute exactly the range of events which must be
         /// compared to a given INSERT event object.
@@ -109,16 +100,14 @@ namespace NetTopologySuite.GeometriesGraph.Index
                     ev.InsertEvent.DeleteEventIndex = i;
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="si"></param>
         private void ComputeIntersections(SegmentIntersector si)
         {
             _nOverlaps = 0;
             PrepareEvents();
-
             for (int i = 0; i < _events.Count; i++)
             {
                 SweepLineEvent ev = _events[i];
@@ -126,9 +115,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
                     ProcessOverlaps(i, ev.DeleteEventIndex, ev, si);
             }
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>

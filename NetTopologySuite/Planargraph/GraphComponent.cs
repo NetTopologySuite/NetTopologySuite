@@ -1,5 +1,4 @@
 using System.Collections;
-
 namespace NetTopologySuite.Planargraph
 {
     /// <summary>
@@ -16,11 +15,9 @@ namespace NetTopologySuite.Planargraph
     /// </summary>
     public abstract class GraphComponent
     {
-
         #region Static
-
         /// <summary>
-        /// Sets the <see cref="GraphComponent.Visited" /> state 
+        /// Sets the <see cref="GraphComponent.Visited" /> state
         /// for all <see cref="GraphComponent" />s in an <see cref="IEnumerator" />.
         /// </summary>
         /// <param name="i">A <see cref="IEnumerator" /> to scan.</param>
@@ -33,9 +30,8 @@ namespace NetTopologySuite.Planargraph
                 comp.Visited = visited;
             }
         }
-
         /// <summary>
-        /// Sets the <see cref="GraphComponent.Marked" /> state 
+        /// Sets the <see cref="GraphComponent.Marked" /> state
         /// for all <see cref="GraphComponent" />s in an <see cref="IEnumerator" />.
         /// </summary>
         /// <param name="i">A <see cref="IEnumerator" /> to scan.</param>
@@ -48,9 +44,8 @@ namespace NetTopologySuite.Planargraph
                 comp.Marked = marked;
             }
         }
-
         /// <summary>
-        /// Finds the first <see cref="GraphComponent" /> 
+        /// Finds the first <see cref="GraphComponent" />
         /// in a <see cref="IEnumerator" /> set
         /// which has the specified <see cref="GraphComponent.Visited" /> state.
         /// </summary>
@@ -67,35 +62,28 @@ namespace NetTopologySuite.Planargraph
             }
             return null;
         }
-
         #endregion
-
         /// <summary>
         /// Tests if a component has been visited during the course of a graph algorithm.
-        /// </summary>              
+        /// </summary>
         public bool IsVisited => Visited;
-
-        /// <summary> 
+        /// <summary>
         /// Gets/Sets the visited flag for this component.
         /// </summary>
         public bool Visited { get; set; }
-
         /// <summary>
         /// Tests if a component has been marked at some point during the processing
         /// involving this graph.
         /// </summary>
         public bool IsMarked => Marked;
-
         /// <summary>
         /// Gets/Sets the marked flag for this component.
         /// </summary>
         public bool Marked { get; set; }
-
         /// <summary>
         /// Tests whether this component has been removed from its containing graph.
         /// </summary>
         public abstract bool IsRemoved { get; }
-
         /// <summary>
         /// Gets or sets user defined data for this component
         /// </summary>

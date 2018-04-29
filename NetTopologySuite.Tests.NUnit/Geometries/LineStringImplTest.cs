@@ -3,7 +3,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     [TestFixtureAttribute]
@@ -12,14 +11,12 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         private IPrecisionModel precisionModel;
         private IGeometryFactory geometryFactory;
         WKTReader reader;
-
         public LineStringImplTest()
         {
             precisionModel = new PrecisionModel(1000);
             geometryFactory = new GeometryFactory(precisionModel, 0);
             reader = new WKTReader(geometryFactory);
         }
-
         [TestAttribute]
         public void TestIsSimple()
         {
@@ -28,7 +25,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             LineString l2 = (LineString)reader.Read("LINESTRING (0 0, 10 10, 10 0, 0 10)");
             Assert.IsTrue(!l2.IsSimple);
         }
-
         [TestAttribute]
         public void TestIsCoordinate()
         {
@@ -36,7 +32,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(l.IsCoordinate(new Coordinate(0, 0)));
             Assert.IsTrue(!l.IsCoordinate(new Coordinate(5, 0)));
         }
-
         [TestAttribute]
         public void TestUnclosedLinearRing()
         {
@@ -51,7 +46,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 Assert.IsTrue(e is ArgumentException);
             }
         }
-
         [TestAttribute]
         public void TestEquals1()
         {
@@ -59,7 +53,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             LineString l2 = (LineString)reader.Read("LINESTRING(1.111 2.222, 3.333 4.444)");
             Assert.IsTrue(l1.Equals(l2));
         }
-
         [TestAttribute]
         public void TestEquals2()
         {
@@ -67,7 +60,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             LineString l2 = (LineString)reader.Read("LINESTRING(3.333 4.444, 1.111 2.222)");
             Assert.IsTrue(l1.Equals(l2));
         }
-
         [TestAttribute]
         public void TestEquals3()
         {
@@ -75,7 +67,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             LineString l2 = (LineString)reader.Read("LINESTRING(3.333 4.443, 1.111 2.222)");
             Assert.IsTrue(!l1.Equals(l2));
         }
-
         [TestAttribute]
         public void TestEquals4()
         {
@@ -83,7 +74,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             LineString l2 = (LineString)reader.Read("LINESTRING(3.333 4.4445, 1.111 2.222)");
             Assert.IsTrue(!l1.Equals(l2));
         }
-
         [TestAttribute]
         public void TestEquals5()
         {
@@ -91,7 +81,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             LineString l2 = (LineString)reader.Read("LINESTRING(3.333 4.4446, 1.111 2.222)");
             Assert.IsTrue(!l1.Equals(l2));
         }
-
         [TestAttribute]
         public void TestEquals6()
         {
@@ -99,7 +88,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             LineString l2 = (LineString)reader.Read("LINESTRING(1.111 2.222, 3.333 4.444, 5.555 6.666)");
             Assert.IsTrue(l1.Equals(l2));
         }
-
         [TestAttribute]
         public void TestEquals7()
         {
@@ -107,7 +95,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             LineString l2 = (LineString)reader.Read("LINESTRING(1.111 2.222, 3.333 4.444, 5.555 6.666)");
             Assert.IsTrue(!l1.Equals(l2));
         }
-
         [TestAttribute]
         public void TestGetCoordinates()
         {
@@ -115,34 +102,28 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Coordinate[] coordinates = l.Coordinates;
             Assert.AreEqual(new Coordinate(5.555, 6.666), coordinates[1]);
         }
-
         [TestAttribute]
         public void TestIsClosed()
         {
             LineString l = (LineString)reader.Read("LINESTRING EMPTY");
             Assert.IsTrue(l.IsEmpty);
             Assert.IsTrue(!l.IsClosed);
-
             ILinearRing r = geometryFactory.CreateLinearRing((ICoordinateSequence)null);
             Assert.IsTrue(r.IsEmpty);
             Assert.IsTrue(r.IsClosed);
-
             IMultiLineString m = geometryFactory.CreateMultiLineString(
                   new ILineString[] { l, r });
             Assert.IsTrue(!m.IsClosed);
-
             IMultiLineString m2 = geometryFactory.CreateMultiLineString(
                   new ILineString[] { r });
             Assert.IsTrue(!m2.IsClosed);
         }
-
         [TestAttribute]
         public void TestGetGeometryType()
         {
             LineString l = (LineString)reader.Read("LINESTRING EMPTY");
             Assert.AreEqual("LineString", l.GeometryType);
         }
-
         [TestAttribute]
         public void TestEquals8()
         {
@@ -151,7 +132,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             MultiLineString l2 = (MultiLineString)reader.Read("MULTILINESTRING((1731627364 519674014, 1731929984 519276112, 1732328800 519578384, 1732026179 519976285, 1731627364 519674014))");
             Assert.IsTrue(l1.Equals(l2));
         }
-
         [TestAttribute]
         public void TestEquals9()
         {
@@ -160,7 +140,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             MultiLineString l2 = (MultiLineString)reader.Read("MULTILINESTRING((1731627364 519674014, 1731929984 519276112, 1732328800 519578384, 1732026179 519976285, 1731627364 519674014))");
             Assert.IsTrue(l1.Equals(l2));
         }
-
         [TestAttribute]
         public void TestEquals10()
         {
@@ -171,7 +150,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             l2.Normalize();
             Assert.IsTrue(l1.EqualsExact(l2));
         }
-
         [TestAttribute]
         public void TestFiveZeros()
         {
@@ -183,7 +161,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                       new Coordinate(0, 0)});
             Assert.IsTrue(ls.IsClosed);
         }
-
         [TestAttribute]
         public void TestLinearRingConstructor()
         {

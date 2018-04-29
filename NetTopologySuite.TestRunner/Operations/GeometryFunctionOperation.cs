@@ -2,10 +2,9 @@
 using GeoAPI.Geometries;
 using Open.Topology.TestRunner.Functions;
 using Open.Topology.TestRunner.Result;
-
 namespace Open.Topology.TestRunner.Operations
 {/// <summary>
-    /// Invokes a function from registry 
+    /// Invokes a function from registry
     ///  or a Geometry method determined by a named operation with a list of arguments,
     ///  the first of which is a <see cref="IGeometry"/>.
     ///  This class allows overriding Geometry methods
@@ -18,14 +17,11 @@ namespace Open.Topology.TestRunner.Operations
         private readonly GeometryFunctionRegistry registry;
         private readonly IGeometryOperation defaultOp = new GeometryMethodOperation();
         private readonly ArgumentConverter argConverter = new ArgumentConverter();
-
         public GeometryFunctionOperation() { }
-
         public GeometryFunctionOperation(GeometryFunctionRegistry registry)
         {
             this.registry = registry;
         }
-
         /// <summary>
         /// Gets the return type for the operation
         /// </summary>
@@ -39,16 +35,13 @@ namespace Open.Topology.TestRunner.Operations
                 return defaultOp.GetReturnType(op);
             return func.ReturnType;
         }
-
         public IResult Invoke(XmlTestType opName, IGeometry geometry, Object[] args)
         {
             IGeometryFunction func = registry.Find(opName.ToString(), args.Length);
             if (func == null)
                 return defaultOp.Invoke(opName, geometry, args);
-
             return Invoke(func, geometry, args);
         }
-
         private IResult Invoke(IGeometryFunction func, IGeometry geometry, Object[] args)
         {
             Object[] actualArgs = argConverter.Convert(func.ParameterTypes, args);

@@ -2,7 +2,6 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
-
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     ///<summary>
@@ -15,26 +14,18 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         private readonly IGeometryFactory _geomFactory;
         private readonly IPrecisionModel _precisionModel;
         private const double GridWidth = 1000;
-
         private Random _rand;
-
         private IGeometry _grid;
-
         public bool Verbose { get; set; }
-
         public PerturbedGridPolygonBuilder(IGeometryFactory geomFactory)
         {
             _geomFactory = geomFactory;
             _precisionModel = geomFactory.PrecisionModel;
             Seed = DateTime.Now.Millisecond;
         }
-
         public int Seed { get; set; }
-
         public int NumLines { get; set; } = 10;
-
         public double LineWidth { get; set; } = 20;
-
         public IGeometry Geometry
         {
             get
@@ -44,12 +35,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 return _grid;
             }
         }
-
         private IGeometry BuildGrid()
         {
             var lines = new ILineString[NumLines * 2];
             int index = 0;
-
             for (int i = 0; i < NumLines; i++)
             {
                 Coordinate p0 = new Coordinate(GetRandOrdinate(), 0);
@@ -57,7 +46,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 ILineString line = _geomFactory.CreateLineString(new [] { p0, p1 });
                 lines[index++] = line;
             }
-
             for (int i = 0; i < NumLines; i++)
             {
                 Coordinate p0 = new Coordinate(0, GetRandOrdinate());
@@ -65,16 +53,13 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 ILineString line = _geomFactory.CreateLineString(new [] { p0, p1 });
                 lines[index++] = line;
             }
-
             IMultiLineString ml = _geomFactory.CreateMultiLineString(lines);
             _grid = ml.Buffer(LineWidth);
             var wktWriter = new WKTWriter(2) {Formatted = true, MaxCoordinatesPerLine = 6};
             if (Verbose)
                 Console.WriteLine(wktWriter.Write(_grid));
             return _grid;
-
         }
-
         private double GetRand()
         {
             if (_rand == null)
@@ -84,8 +69,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             }
             return _rand.NextDouble();
         }
-
-
         private double GetRandOrdinate()
         {
             double randNum = GetRand();

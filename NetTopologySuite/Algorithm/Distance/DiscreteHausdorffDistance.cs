@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Algorithm.Distance
 {
     ///<summary>
@@ -13,17 +12,17 @@ namespace NetTopologySuite.Algorithm.Distance
     /// <para>
     /// The algorithm computes the Hausdorff distance restricted to discrete points
     /// for one of the geometries.
-    /// The points can be either the vertices of the geometries (the default), 
+    /// The points can be either the vertices of the geometries (the default),
     /// or the geometries with line segments densified by a given fraction.
     /// Also determines two points of the Geometries which are separated by the computed distance.
     /// </para>
     /// <para>
     /// This algorithm is an approximation to the standard Hausdorff distance.
-    /// Specifically, 
+    /// Specifically,
     /// <code>
     /// for all geometries a, b:    DHD(a, b) &lt;= HD(a, b)
     /// </code>
-    /// The approximation can be made as close as needed by densifying the input geometries.  
+    /// The approximation can be made as close as needed by densifying the input geometries.
     /// In the limit, this value will approach the true Hausdorff distance:
     /// <code>
     /// DHD(A, B, densifyFactor) -> HD(A, B) as densifyFactor -> 0.0
@@ -45,7 +44,7 @@ namespace NetTopologySuite.Algorithm.Distance
     /// <code>
     /// A = LINESTRING (0 0, 100 0, 10 100, 10 100)
     /// B = LINESTRING (0 100, 0 10, 80 10)
-    /// 
+    ///
     /// DHD(A, B) = 22.360679774997898
     /// HD(A, B) ~= 47.8
     /// </code>
@@ -64,7 +63,6 @@ namespace NetTopologySuite.Algorithm.Distance
             var dist = new DiscreteHausdorffDistance(g0, g1);
             return dist.Distance();
         }
-
         /// <summary>
         /// Computes the Discrete Hausdorff Distance of two <see cref="IGeometry"/>s.
         /// </summary>
@@ -78,7 +76,6 @@ namespace NetTopologySuite.Algorithm.Distance
             dist.DensifyFraction = densifyFraction;
             return dist.Distance();
         }
-
         private readonly IGeometry _g0;
         private readonly IGeometry _g1;
         private readonly PointPairDistance _ptDist = new PointPairDistance();
@@ -86,7 +83,6 @@ namespace NetTopologySuite.Algorithm.Distance
          * Value of 0.0 indicates that no densification should take place
          */
         private double _densifyFrac;
-
         /// <summary>
         /// Creates an instance of this class using the provided geometries
         /// </summary>
@@ -97,7 +93,6 @@ namespace NetTopologySuite.Algorithm.Distance
             _g0 = g0;
             _g1 = g1;
         }
-
         ///<summary>
         /// Gets/sets the fraction by which to densify each segment.
         ///</summary>
@@ -114,81 +109,66 @@ namespace NetTopologySuite.Algorithm.Distance
                 if (value > 1.0
                     || value <= 0.0)
                     throw new ArgumentOutOfRangeException("value", @"Fraction is not in range (0.0 - 1.0]");
-
                 _densifyFrac = value;
             }
         }
-
         public double Distance()
         {
             Compute(_g0, _g1);
             return _ptDist.Distance;
         }
-
         public double OrientedDistance()
         {
             ComputeOrientedDistance(_g0, _g1, _ptDist);
             return _ptDist.Distance;
         }
-
         public Coordinate[] Coordinates => _ptDist.Coordinates;
-
         private void Compute(IGeometry g0, IGeometry g1)
         {
             ComputeOrientedDistance(g0, g1, _ptDist);
             ComputeOrientedDistance(g1, g0, _ptDist);
         }
-
         private void ComputeOrientedDistance(IGeometry discreteGeom, IGeometry geom, PointPairDistance ptDist)
         {
             var distFilter = new MaxPointDistanceFilter(geom);
             discreteGeom.Apply(distFilter);
             ptDist.SetMaximum(distFilter.MaxPointDistance);
-
             if (_densifyFrac > 0)
             {
                 var fracFilter = new MaxDensifiedByFractionDistanceFilter(geom, _densifyFrac);
                 discreteGeom.Apply(fracFilter);
                 ptDist.SetMaximum(fracFilter.MaxPointDistance);
-
             }
         }
-
         public class MaxPointDistanceFilter
             : ICoordinateFilter
         {
             private readonly PointPairDistance _minPtDist = new PointPairDistance();
             //private EuclideanDistanceToPoint euclideanDist = new EuclideanDistanceToPoint();
             private readonly IGeometry _geom;
-
             public MaxPointDistanceFilter(IGeometry geom)
             {
                 _geom = geom;
             }
-
             public void Filter(Coordinate pt)
             {
                 _minPtDist.Initialize();
                 DistanceToPoint.ComputeDistance(_geom, pt, _minPtDist);
                 MaxPointDistance.SetMaximum(_minPtDist);
             }
-
             public PointPairDistance MaxPointDistance { get; } = new PointPairDistance();
         }
-
         public class MaxDensifiedByFractionDistanceFilter
         : ICoordinateSequenceFilter
         {
             private readonly PointPairDistance _minPtDist = new PointPairDistance();
             private readonly IGeometry _geom;
             private readonly int _numSubSegs;
-
             public MaxDensifiedByFractionDistanceFilter(IGeometry geom, double fraction)
             {
                 _geom = geom;
                 _numSubSegs = (int)Math.Round(1.0 / fraction, MidpointRounding.ToEven); //see Java's Math.rint
             }
-
             public void Filter(ICoordinateSequence seq, int index)
             {
                 /**
@@ -196,13 +176,10 @@ namespace NetTopologySuite.Algorithm.Distance
                  */
                 if (index == 0)
                     return;
-
                 var p0 = seq.GetCoordinate(index - 1);
                 var p1 = seq.GetCoordinate(index);
-
                 var delx = (p1.X - p0.X) / _numSubSegs;
                 var dely = (p1.Y - p0.Y) / _numSubSegs;
-
                 for (var i = 0; i < _numSubSegs; i++)
                 {
                     var x = p0.X + i * delx;
@@ -212,16 +189,10 @@ namespace NetTopologySuite.Algorithm.Distance
                     DistanceToPoint.ComputeDistance(_geom, pt, _minPtDist);
                     MaxPointDistance.SetMaximum(_minPtDist);
                 }
-
-
             }
-
             public Boolean GeometryChanged => false;
-
             public Boolean Done => false;
-
             public PointPairDistance MaxPointDistance { get; } = new PointPairDistance();
         }
-
     }
 }

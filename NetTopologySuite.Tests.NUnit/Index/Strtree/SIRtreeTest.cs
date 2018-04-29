@@ -15,18 +15,15 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
                 : base(nodeCapacity)
             {
             }
-
             public new AbstractNode Root()
             {
                 return base.Root;
             }
-
             public new IList<IBoundable<NetTopologySuite.Index.Strtree.Interval, object>> BoundablesAtLevel(int level)
             {
                 return base.BoundablesAtLevel(level);
             }
         }
-
         [Test]
         public void Test()
         {
@@ -47,7 +44,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             Assert.AreEqual(0, t.Query(1.5, 1.5).Count);
             Assert.AreEqual(2, t.Query(4.5, 5.5).Count);
         }
-
         [Test]
         public void TestEmptyTree()
         {

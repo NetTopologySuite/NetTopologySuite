@@ -1,10 +1,8 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Triangulate.QuadEdge;
-
 namespace NetTopologySuite.Triangulate
 {
-
     /// <summary>
     /// A vertex in a Constrained Delaunay Triangulation.
     /// The vertex may or may not lie on a constraint.
@@ -14,7 +12,6 @@ namespace NetTopologySuite.Triangulate
     public class ConstraintVertex : Vertex
     {
         private object constraint;
-
         /// <summary>
         /// Creates a new constraint vertex
         /// </summary>
@@ -23,13 +20,11 @@ namespace NetTopologySuite.Triangulate
             : base(p)
         {
         }
-
         /// <summary>
         /// Gets or sets whether this vertex lies on a constraint.
         /// </summary>
         /// <remarks>true if the vertex lies on a constraint</remarks>
         public bool IsOnConstraint { get; set; }
-
         /// <summary>
         /// Gets or sets the external constraint object
         /// </summary>
@@ -43,9 +38,8 @@ namespace NetTopologySuite.Triangulate
                 this.constraint = value;
             }
         }
-
         /// <summary>
-        /// Merges the constraint data in the vertex <tt>other</tt> into this vertex. 
+        /// Merges the constraint data in the vertex <tt>other</tt> into this vertex.
         /// This method is called when an inserted vertex is
         /// very close to an existing vertex in the triangulation.
         /// </summary>

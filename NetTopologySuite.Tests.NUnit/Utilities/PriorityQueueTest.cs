@@ -2,7 +2,6 @@ using System;
 using NUnit.Framework;
 using NetTopologySuite.Utilities;
 using Assert = NUnit.Framework.Assert;
-
 namespace NetTopologySuite.Tests.NUnit.Utilities
 {
     [TestFixture]
@@ -19,7 +18,6 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
             q.Add(-1);
             CheckOrder(q);
         }
-
         [Test]
         public void TestOrderRandom1()
         {
@@ -27,11 +25,9 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
             addRandomItems(q, 100);
             CheckOrder(q);
         }
-
         private void addRandomItems(PriorityQueue<int> q, int num)
         {
             var random = new Random();
-
             for (int i = 0; i < num; i++)
             {
                 // This usually inserts lots of duplicate values in an order
@@ -40,13 +36,11 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
                 q.Add((int)(num * random.NextDouble()));
             }
         }
-
         private void CheckOrder<T>(PriorityQueue<T> q)
             where T: struct, IComparable<T>
         {
             T curr = default(T);
             bool first = true;
-
             while (!q.IsEmpty())
             {
                 T next = q.Poll();
@@ -55,7 +49,6 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
                 {
                     Assert.IsTrue(next.CompareTo(curr) >= 0);
                 }
-
                 first = false;
                 curr = next;
             }

@@ -1,6 +1,5 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>
@@ -12,9 +11,9 @@ namespace NetTopologySuite.LinearReferencing
     /// (However, the common case of a ring is always handled correctly).
     /// </summary>
     public class LocationIndexOfLine
-    {      
+    {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="linearGeom"></param>
         /// <param name="subLine"></param>
@@ -29,9 +28,7 @@ namespace NetTopologySuite.LinearReferencing
             var locater = new LocationIndexOfLine(linearGeom);
             return locater.IndicesOf(subLine);
         }
-
         private readonly IGeometry _linearGeom;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LocationIndexOfLine"/> class.
         /// </summary>
@@ -40,9 +37,8 @@ namespace NetTopologySuite.LinearReferencing
         {
             _linearGeom = linearGeom;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="subLine"></param>
         /// <returns></returns>
@@ -51,14 +47,12 @@ namespace NetTopologySuite.LinearReferencing
             var startPt = ((ILineString) subLine.GetGeometryN(0)).GetCoordinateN(0);
             var lastLine = (ILineString) subLine.GetGeometryN(subLine.NumGeometries - 1);
             var endPt = lastLine.GetCoordinateN(lastLine.NumPoints - 1);
-
             var locPt = new LocationIndexOfPoint(_linearGeom);
             var subLineLoc = new LinearLocation[2];
             subLineLoc[0] = locPt.IndexOf(startPt);
-
             // check for case where subline is zero length
             if (subLine.Length == 0)
-                 subLineLoc[1] = (LinearLocation) subLineLoc[0].Copy();            
+                 subLineLoc[1] = (LinearLocation) subLineLoc[0].Copy();
             else subLineLoc[1] = locPt.IndexOfAfter(endPt, subLineLoc[0]);
             return subLineLoc;
         }

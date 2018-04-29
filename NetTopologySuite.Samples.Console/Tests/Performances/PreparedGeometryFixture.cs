@@ -7,7 +7,6 @@ using GeoAPI.Geometries.Prepared;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Prepared;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Samples.Tests.Performances
 {
     /// <summary>
@@ -17,35 +16,29 @@ namespace NetTopologySuite.Samples.Tests.Performances
     public class PreparedGeometryFixture
     {
         private const int NumShellCoords = 10;
-
         private readonly Random _generator;
         private readonly IGeometryFactory _factory;
-
         public PreparedGeometryFixture()
         {
             _generator = new Random();
             _factory = GeometryFactory.Default;
         }
-
         [Test]
         public void test_with_one_million_items()
         {
             TestPerformances(1000000);
         }
-
         [Test]
         public void test_with_ten_millions_items()
         {
             TestPerformances(10000000);
         }
-
         private Coordinate gimme_a_coord()
         {
             int x = _generator.Next();
             int y = _generator.Next();
             return new Coordinate(x, y);
         }
-
         private IEnumerable<IPolygon> create_polygons(int total)
         {
             int count = 0;
@@ -58,11 +51,10 @@ namespace NetTopologySuite.Samples.Tests.Performances
                 yield return _factory.CreatePolygon(coords);
             }
         }
-
         private void TestPerformances(int total)
         {
             IPoint point = _factory.CreatePoint(gimme_a_coord());
-            IEnumerable<IPolygon> polygons = create_polygons(total);            
+            IEnumerable<IPolygon> polygons = create_polygons(total);
             IEnumerable<IPreparedGeometry> prepared = polygons.Select(PreparedGeometryFactory.Prepare);
             Stopwatch sw = Stopwatch.StartNew();
             int match = prepared.Count(pg => pg.Contains(point));

@@ -1,6 +1,5 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.GeometriesGraph;
-
 namespace NetTopologySuite.Operation.Overlay
 {
     /// <summary>
@@ -11,15 +10,14 @@ namespace NetTopologySuite.Operation.Overlay
     public class MinimalEdgeRing : EdgeRing
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="start"></param>
         /// <param name="geometryFactory"></param>
-        public MinimalEdgeRing(DirectedEdge start, IGeometryFactory geometryFactory) 
+        public MinimalEdgeRing(DirectedEdge start, IGeometryFactory geometryFactory)
             : base(start, geometryFactory) { }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="de"></param>
         /// <returns></returns>
@@ -27,9 +25,8 @@ namespace NetTopologySuite.Operation.Overlay
         {
             return de.NextMin;
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="de"></param>
         /// <param name="er"></param>

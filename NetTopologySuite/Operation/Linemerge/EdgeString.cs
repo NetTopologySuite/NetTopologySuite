@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Operation.Linemerge
 {
     /// <summary>
@@ -13,7 +12,6 @@ namespace NetTopologySuite.Operation.Linemerge
         private readonly IGeometryFactory factory;
         private readonly List<LineMergeDirectedEdge> directedEdges = new List<LineMergeDirectedEdge>();
         private Coordinate[] coordinates;
-
         /// <summary>
         /// Constructs an EdgeString with the given factory used to convert this EdgeString
         /// to a LineString.
@@ -23,7 +21,6 @@ namespace NetTopologySuite.Operation.Linemerge
         {
             this.factory = factory;
         }
-
         /// <summary>
         /// Adds a directed edge which is known to form part of this line.
         /// </summary>
@@ -32,9 +29,8 @@ namespace NetTopologySuite.Operation.Linemerge
         {
             directedEdges.Add(directedEdge);
         }
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private Coordinate[] Coordinates
         {
@@ -47,19 +43,18 @@ namespace NetTopologySuite.Operation.Linemerge
                     CoordinateList coordinateList = new CoordinateList();
                     foreach (LineMergeDirectedEdge directedEdge in directedEdges)
                     {
-                        if (directedEdge.EdgeDirection)                        
-                             forwardDirectedEdges++;                        
+                        if (directedEdge.EdgeDirection)
+                             forwardDirectedEdges++;
                         else reverseDirectedEdges++;
                          coordinateList.Add(((LineMergeEdge) directedEdge.Edge).Line.Coordinates, false, directedEdge.EdgeDirection);
                     }
                     coordinates = coordinateList.ToCoordinateArray();
                     if (reverseDirectedEdges > forwardDirectedEdges)
-                        CoordinateArrays.Reverse(coordinates);                    
+                        CoordinateArrays.Reverse(coordinates);
                 }
                 return coordinates;
             }
         }
-
         /// <summary>
         /// Converts this EdgeString into a LineString.
         /// </summary>

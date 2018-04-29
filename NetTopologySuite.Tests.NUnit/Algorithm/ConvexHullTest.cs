@@ -3,7 +3,6 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     [TestFixtureAttribute]
@@ -11,14 +10,12 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     {
         private readonly IGeometryFactory _geometryFactory;
         private readonly WKTReader _reader;
-
         public ConvexHullTest()
         {
             IPrecisionModel precisionModel = new PrecisionModel(1000);
             _geometryFactory = new GeometryFactory(precisionModel, 0);
             _reader = new WKTReader(_geometryFactory);
         }
-
         [TestAttribute]
         public void TestManyIdenticalPoints()
         {
@@ -31,7 +28,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             IGeometry expectedGeometry = _reader.Read("LINESTRING (0 0, 1 1)");
             Assert.IsTrue(actualGeometry.EqualsExact(expectedGeometry));
         }
-
         [TestAttribute]
         public void TestAllIdenticalPoints()
         {
@@ -43,7 +39,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             IGeometry expectedGeometry = _reader.Read("POINT (0 0)");
             Assert.IsTrue(expectedGeometry.EqualsExact(actualGeometry));
         }
-
         [TestAttribute]
         public void Test1()
         {
@@ -52,7 +47,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             LineString convexHull = (LineString)reader.Read("LINESTRING (30 220, 240 220)");
             Assert.IsTrue(convexHull.EqualsExact(lineString.ConvexHull()));
         }
-
         [TestAttribute]
         public void Test2()
         {
@@ -61,7 +55,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             LineString convexHull = (LineString)reader.Read("LINESTRING (130 240, 650 240)");
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));
         }
-
         [TestAttribute]
         public void Test3()
         {
@@ -70,7 +63,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             LineString convexHull = (LineString)reader.Read("LINESTRING (0 0, 10 0)");
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));
         }
-
         [TestAttribute]
         public void Test4()
         {
@@ -79,7 +71,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             LineString convexHull = (LineString)reader.Read("LINESTRING (0 0, 10 0)");
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));
         }
-
         [TestAttribute]
         public void Test5()
         {
@@ -88,7 +79,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             LineString convexHull = (LineString)reader.Read("LINESTRING (0 0, 10 0)");
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));
         }
-
         [TestAttribute]
         public void Test6()
         {
@@ -97,7 +87,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             IGeometry expectedGeometry = reader.Read("POLYGON ((0 0, 5 1, 10 0, 0 0))");
             Assert.IsTrue(actualGeometry.Equals(expectedGeometry));
         }
-
         // TJackson - Not included in NTS because there is no longer a ToCoordinateArray method on ConvexHull
         //public void testToArray() throws Exception {
         //    TestConvexHull convexHull = new TestConvexHull(geometryFactory.createGeometryCollection(null));
@@ -112,7 +101,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         //    assertEquals(new Coordinate(2, 2), array1[2]);
         //    assertTrue(!array1[0].equals(array1[1]));
         //}
-
         //private static class TestConvexHull extends ConvexHull {
         //    protected Coordinate[] toCoordinateArray(Stack stack) {
         //        return super.toCoordinateArray(stack);
@@ -121,7 +109,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         //        super(geometry);
         //    }
         //}
-
         [TestAttribute]
         public void Test7()
         {
@@ -130,6 +117,5 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             LineString convexHull = (LineString)reader.Read("LINESTRING (0 0, 10 0)");
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));
         }
-
     }
 }

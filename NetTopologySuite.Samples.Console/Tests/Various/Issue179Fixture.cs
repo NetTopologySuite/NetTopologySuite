@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Geometries;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.Various
 {
     [TestFixture]
@@ -12,11 +11,10 @@ namespace NetTopologySuite.Tests.Various
         {
             var envelope = new Envelope();
             Assert.That(envelope.IsNull, Is.True);
-
             var clone = envelope.Copy();
             Assert.That(clone, Is.Not.Null);
             Assert.That(clone.IsNull, Is.True);
-            Assert.That(clone, Is.EqualTo(clone));      
+            Assert.That(clone, Is.EqualTo(clone));
             Assert.That(Object.ReferenceEquals(envelope, clone), Is.False);
         }
     }

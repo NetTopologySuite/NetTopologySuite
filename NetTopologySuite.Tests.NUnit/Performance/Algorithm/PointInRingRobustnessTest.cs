@@ -6,13 +6,12 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Tests.NUnit.Algorithm;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 {
     ///<summary>
     /// Stress test of <see cref="RayCrossingCounter"/> Point-In-Ring algorithm.
-    /// The input to each test is a triangle with a slanted side, 
-    /// and a point interpolated along the side. 
+    /// The input to each test is a triangle with a slanted side,
+    /// and a point interpolated along the side.
     /// Almost always the point will not lie exactly on the side.
     /// The test consists of comparing the result of computing Point-In-Ring and the result of
     /// determining the orientation of the point relative to the side.
@@ -24,10 +23,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
     /// The {@link RayCrossingCounterDD} implementation is consistent,
     /// as expected.
     /// <para/>
-    /// Note that the inconsistency does not indicate which algorithm is 
+    /// Note that the inconsistency does not indicate which algorithm is
     /// "more correct" - just that they produce different results.
     /// However, it is highly likely that the original RCC algorithm
-    /// is <b>not</b> as robust as RCCDD, since it involves a series 
+    /// is <b>not</b> as robust as RCCDD, since it involves a series
     /// of double-precision arithmetic operations.
     /// </summary>
     /// <author>Martin Davis</author>
@@ -36,14 +35,12 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         private bool _isAllConsistent = true;
         private int _testCount;
         private int _failureCount;
-
         private void Init()
         {
             _testCount = 0;
             _failureCount = 0;
             _isAllConsistent = true;
         }
-
         [Test, Category("Stress")]
         public void TestRightTriangles()
         {
@@ -52,7 +49,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             Console.WriteLine("Tests: " + _testCount + "   Failures: " + _failureCount);
             Assert.IsTrue(_isAllConsistent);
         }
-
         [Test, Category("Stress"), Ignore]
         public void TestRandomTriangles()
         {
@@ -60,7 +56,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             Console.WriteLine("Tests: " + _testCount + "   Failures: " + _failureCount);
             Assert.IsTrue(_isAllConsistent);
         }
-
         private void CheckRandomTriangles(int sideLen, int numTris, int numEdgePts)
         {
             for (var i = 0; i < numTris; i++)
@@ -75,14 +70,11 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                 CheckTriangleEdgePoints(triPts, numEdgePts);
             }
         }
-
         private static readonly Random Rnd = new Random();
-
         private static int RandomInt(int max)
         {
             return Rnd.Next(max);
         }
-
         private void CheckRightTriangles(double maxHeight, double width, int numEdgePts)
         {
             for (int height = 0; height < maxHeight; height++)
@@ -96,7 +88,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                 CheckTriangleEdgePoints(triPts, numEdgePts);
             }
         }
-
         public void CheckTriangleEdgePoints(Coordinate[] triPts, int numEdgePts)
         {
             for (int i = 0; i < numEdgePts; i++)
@@ -105,8 +96,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                 CheckTriangleConsistent(triPts, lenFrac);
             }
         }
-
-
         public void CheckTriangleEdge(double height, double width, int numPts)
         {
             for (int i = 0; i < numPts; i++)
@@ -115,7 +104,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                 CheckTriangle(height, width, lenFrac);
             }
         }
-
         private bool CheckTriangle(double height, double width, double lenFraction)
         {
             Coordinate[] triPts = new Coordinate[]
@@ -127,33 +115,25 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             };
             LineSegment seg = new LineSegment(0, height, width, 0);
             Coordinate pt = seg.PointAlong(lenFraction);
-
             return CheckTriangleConsistent(triPts, lenFraction);
         }
-
         bool CheckTriangleConsistent(Coordinate[] triPts, double lenFraction)
         {
             _testCount++;
-
             var seg = new LineSegment(triPts[1], triPts[2]);
             var pt = seg.PointAlong(lenFraction);
-
             //var isPointInRing = PointLocation.IsInRing(pt, triPts);
             //var isPointInRing = PointInRingWindingNumber(pt, triPts);
             //var isPointInRing = Location.Interior == RayCrossingCounter.LocatePointInRing(pt, triPts);
             var isPointInRing = Location.Interior == NonRobustRayCrossingCounter.LocatePointInRing(pt, triPts);
-
             var orientation = Orientation.Index(triPts[1], triPts[2], pt);
             if (Orientation.IsCCW(triPts))
                 orientation = Orientation.ReOrient(orientation);
-
             // if collinear can't determine a failure
             if (orientation == OrientationIndex.Collinear) return true;
-
             var bothOutside = !isPointInRing && orientation == OrientationIndex.Left;
             var bothInside = isPointInRing && orientation == OrientationIndex.Right;
             var isConsistent = bothOutside || bothInside;
-
             if (!isConsistent)
             {
                 _isAllConsistent = false;
@@ -164,11 +144,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                                   + "  seg: " + WKTWriter.ToLineString(triPts[1], triPts[2])
                                   + "  tri: " + ToPolygon(triPts));
             }
-
             return isConsistent;
-
         }
-
         public static string ToPolygon(Coordinate[] coord)
         {
             var buf = new StringBuilder();
@@ -184,13 +161,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                         buf.Append(", ");
                     buf.Append(coord[i].X + " " + coord[i].Y);
                 }
-
                 buf.Append("))");
             }
-
             return buf.ToString();
         }
-
         /// <summary>
         /// Winding Number algorithm included for comparison purposes.
         /// This is almost equivalent to the RayCrossing algorithm,
@@ -205,9 +179,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         private static bool PointInRingWindingNumber(Coordinate p, Coordinate[] ring)
         {
             var winding = 0; // the winding number counter
-
             var n = ring.Length;
-
             for (var i = 0; i < n - 1; i++)
             {
                 if (ring[i].Y <= p.Y)

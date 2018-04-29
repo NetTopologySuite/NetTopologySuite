@@ -1,9 +1,8 @@
 ﻿using System;
-
 namespace NetTopologySuite.Mathematics
 {
     /// <summary>
-    /// Implements some 2D matrix operations 
+    /// Implements some 2D matrix operations
     /// (in particular, solving systems of linear equations).
     /// </summary>
     /// <author>Martin Davis</author>
@@ -19,7 +18,6 @@ namespace NetTopologySuite.Mathematics
                 m[j][col] = temp;
             }
         }
-
         private static void SwapRows(double[] m, int i, int j)
         {
             if (i == j) return;
@@ -27,10 +25,9 @@ namespace NetTopologySuite.Mathematics
             m[i] = m[j];
             m[j] = temp;
         }
-
         /// <summary>
         /// Solves a system of equations using Gaussian Elimination.
-        /// In order to avoid overhead the algorithm runs in-place 
+        /// In order to avoid overhead the algorithm runs in-place
         /// on <see paramref="a"/> - if <see paramref="a"/> should not be modified the client must supply a copy.
         /// </summary>
         /// <param name="a">An nxn matrix in row/column order )modified by this method)</param>
@@ -43,7 +40,6 @@ namespace NetTopologySuite.Mathematics
             int n = b.Length;
             if (a.Length != n || a[0].Length != n)
                 throw new ArgumentException("Matrix A is incorrectly sized");
-
             // Use Gaussian Elimination with partial pivoting.
             // Iterate over each row
             for (int i = 0; i < n; i++)
@@ -53,14 +49,11 @@ namespace NetTopologySuite.Mathematics
                 for (int j = i + 1; j < n; j++)
                     if (System.Math.Abs(a[j][i]) > System.Math.Abs(a[maxElementRow][i]))
                         maxElementRow = j;
-
                 if (a[maxElementRow][i] == 0.0)
                     return null;
-
                 // Exchange current row and maxElementRow in A and b.
                 SwapRows(a, i, maxElementRow);
                 SwapRows(b, i, maxElementRow);
-
                 // Eliminate using row i
                 for (int j = i + 1; j < n; j++)
                 {
@@ -70,7 +63,6 @@ namespace NetTopologySuite.Mathematics
                     b[j] -= b[i] * rowFactor;
                 }
             }
-
             /**
              * A is now (virtually) in upper-triangular form.
              * The solution vector is determined by back-substitution.
@@ -85,6 +77,5 @@ namespace NetTopologySuite.Mathematics
             }
             return solution;
         }
-
     }
 }

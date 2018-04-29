@@ -1,5 +1,4 @@
 ﻿using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Algorithm.Match
 {
     /// <summary>
@@ -15,7 +14,6 @@ namespace NetTopologySuite.Algorithm.Match
     /// <author>mbdavis</author>
     public interface ISimilarityMeasure
     {
-
         /// <summary>
         /// Function to measure the similarity between two <see cref="IGeometry"/>s.
         /// </summary>

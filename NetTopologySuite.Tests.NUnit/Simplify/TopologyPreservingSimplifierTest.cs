@@ -3,7 +3,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Simplify;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Simplify
 {
     [TestFixtureAttribute]
@@ -20,7 +19,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     .SetExpectedResult(geomStr)
                 .Test();
         }
-
         [TestAttribute]
         public void TestPoint()
         {
@@ -32,7 +30,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .SetExpectedResult(geomStr)
                 .Test();
         }
-
         /// <summary>
         /// TestMultiPolygonWithSmallComponents
         /// </summary>
@@ -53,7 +50,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
             bool isPassed = validator.IsAllTestsPassed();
             Assert.IsFalse(isPassed);
         }
-
         /// <summary>
         /// TestPolygonWithSpike
         /// </summary>
@@ -70,7 +66,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     2.0))
                 .Test();
         }
-
         [TestAttribute]
         public void TestPolygonNoReduction()
         {
@@ -80,7 +75,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     10.0))
                 .Test();
         }
-
         [TestAttribute]
         public void TestPolygonNoReductionWithConflicts()
         {
@@ -90,7 +84,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     10.0))
                 .Test();
         }
-
         [TestAttribute]
         public void TestPolygonWithTouchingHole()
         {
@@ -101,7 +94,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .SetExpectedResult("POLYGON ((80 200, 240 200, 240 60, 80 60, 80 200), (120 120, 220 120, 180 199, 160 200, 140 199, 120 120))")
                 .Test();
         }
-
         [TestAttribute]
         public void TestFlattishPolygon()
         {
@@ -111,7 +103,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     10.0))
                 .Test();
         }
-
         [Ignore("This test fails because the flat hole simplifies to a linestring, which causes the result to be a geometry collection of a linearring for the polygon boundary, and a linestring representing the hole, and this doesn't match the expectation of a polygon with a hole.  Need to investigate what the result in JTS is because the code looks to be the same between JTS and NTS")]
         public void TestPolygonWithFlattishHole()
         {
@@ -123,7 +114,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .SetExpectedResult(geomStr)
                 .Test();
         }
-
         [TestAttribute]
         public void TestTinySquare()
         {
@@ -133,7 +123,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 10.0))
                 .Test();
         }
-
         [TestAttribute]
         public void TestTinyLineString()
         {
@@ -143,7 +132,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     10.0))
                 .Test();
         }
-
         [TestAttribute]
         public void TestTinyClosedLineString()
         {
@@ -155,8 +143,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .SetExpectedResult(geomStr)
                 .Test();
         }
-
-
         [TestAttribute]
         public void TestMultiPoint()
         {
@@ -168,7 +154,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .SetExpectedResult(geomStr)
                 .Test();
         }
-
         [TestAttribute]
         public void TestMultiLineString()
         {
@@ -178,7 +163,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     10.0))
                 .Test();
         }
-
         [TestAttribute]
         public void TestMultiLineStringWithEmpty()
         {
@@ -188,7 +172,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     10.0))
                 .Test();
         }
-
         [TestAttribute]
         public void TestMultiPolygonWithEmpty()
         {
@@ -198,7 +181,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                     10.0))
                 .Test();
         }
-
         [TestAttribute]
         public void TestGeometryCollection()
         {
@@ -213,11 +195,9 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
     }
-
     static class TPSimplifierResult
     {
         private static readonly WKTReader Rdr = new WKTReader();
-
         public static IGeometry[] GetResult(String wkt, double tolerance)
         {
             IGeometry[] ioGeom = new IGeometry[2];

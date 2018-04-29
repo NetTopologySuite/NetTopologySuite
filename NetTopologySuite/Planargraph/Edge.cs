@@ -10,16 +10,14 @@ namespace NetTopologySuite.Planargraph
     public class Edge : GraphComponent
     {
         /// <summary>
-        /// The two DirectedEdges associated with this Edge. 
+        /// The two DirectedEdges associated with this Edge.
         /// </summary>
         protected DirectedEdge[] dirEdge;
-
         /// <summary>
         /// Constructs an Edge whose DirectedEdges are not yet set. Be sure to call
         /// <c>SetDirectedEdges(DirectedEdge, DirectedEdge)</c>.
         /// </summary>
         public Edge() { }
-
         /// <summary>
         /// Constructs an Edge initialized with the given DirectedEdges, and for each
         /// DirectedEdge: sets the Edge, sets the symmetric DirectedEdge, and adds
@@ -31,7 +29,6 @@ namespace NetTopologySuite.Planargraph
         {
             SetDirectedEdges(de0, de1);
         }
-
         /// <summary>
         /// Initializes this Edge's two DirectedEdges, and for each DirectedEdge: sets the
         /// Edge, sets the symmetric DirectedEdge, and adds this Edge to its from-Node.
@@ -48,8 +45,7 @@ namespace NetTopologySuite.Planargraph
             de0.FromNode.AddOutEdge(de0);
             de1.FromNode.AddOutEdge(de1);
         }
-
-        /// <summary> 
+        /// <summary>
         /// Returns one of the DirectedEdges associated with this Edge.
         /// </summary>
         /// <param name="i">0 or 1.</param>
@@ -58,7 +54,6 @@ namespace NetTopologySuite.Planargraph
         {
             return dirEdge[i];
         }
-
         /// <summary>
         /// Returns the DirectedEdge that starts from the given node, or null if the
         /// node is not one of the two nodes associated with this Edge.
@@ -67,16 +62,15 @@ namespace NetTopologySuite.Planargraph
         /// <returns></returns>
         public DirectedEdge GetDirEdge(Node fromNode)
         {
-            if (dirEdge[0].FromNode == fromNode) 
+            if (dirEdge[0].FromNode == fromNode)
                 return dirEdge[0];
-            if (dirEdge[1].FromNode == fromNode) 
+            if (dirEdge[1].FromNode == fromNode)
                 return dirEdge[1];
             // node not found
             // possibly should throw an exception here?
             return null;
         }
-
-        /// <summary> 
+        /// <summary>
         /// If <c>node</c> is one of the two nodes associated with this Edge,
         /// returns the other node; otherwise returns null.
         /// </summary>
@@ -84,15 +78,14 @@ namespace NetTopologySuite.Planargraph
         /// <returns></returns>
         public Node GetOppositeNode(Node node)
         {
-            if (dirEdge[0].FromNode == node) 
+            if (dirEdge[0].FromNode == node)
                 return dirEdge[0].ToNode;
-            if (dirEdge[1].FromNode == node) 
+            if (dirEdge[1].FromNode == node)
                 return dirEdge[1].ToNode;
             // node not found
             // possibly should throw an exception here?
             return null;
         }
-
         /// <summary>
         /// Removes this edge from its containing graph.
         /// </summary>
@@ -100,7 +93,6 @@ namespace NetTopologySuite.Planargraph
         {
             dirEdge = null;
         }
-
         /// <summary>
         /// Tests whether this component has been removed from its containing graph.
         /// </summary>

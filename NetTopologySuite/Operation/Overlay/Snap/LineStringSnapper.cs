@@ -1,7 +1,6 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-
 namespace NetTopologySuite.Operation.Overlay.Snap
 {
     /// <summary>
@@ -13,11 +12,9 @@ namespace NetTopologySuite.Operation.Overlay.Snap
     public class LineStringSnapper
     {
         private readonly double _snapTolerance;
-
         private readonly Coordinate[] _srcPts;
         private readonly LineSegment _seg = new LineSegment(); // for reuse during snapping
         private readonly bool _isClosed;
-
         /// <summary>
         /// Creates a new snapper using the points in the given <see cref="LineString"/>
         /// as target snap points.
@@ -26,7 +23,6 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <param name="snapTolerance">the snap tolerance to use</param>
         public LineStringSnapper(ILineString srcLine, double snapTolerance) :
             this(srcLine.Coordinates, snapTolerance) { }
-
         /// <summary>
         /// Creates a new snapper using the given points
         /// as source points to be snapped.
@@ -39,15 +35,12 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             _isClosed = IsClosed(_srcPts);// srcPts[0].Equals2D(srcPts[srcPts.Length - 1]);
             _snapTolerance = snapTolerance;
         }
-
         public bool AllowSnappingToSourceVertices { get; set; }
-
         private static bool IsClosed(Coordinate[] pts)
         {
             if (pts.Length <= 1) return false;
             return pts[0].Equals2D(pts[pts.Length - 1]);
         }
-
         /// <summary>
         /// Snaps the vertices and segments of the source LineString
         /// to the given set of snap points.
@@ -62,7 +55,6 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             Coordinate[] newPts = coordList.ToCoordinateArray();
             return newPts;
         }
-
         /// <summary>
         /// Snap source vertices to vertices in the target.
         /// </summary>
@@ -87,7 +79,6 @@ namespace NetTopologySuite.Operation.Overlay.Snap
                 }
             }
         }
-
         /// <summary>
         ///
         /// </summary>
@@ -106,7 +97,6 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             }
             return null;
         }
-
         /// <summary>
         /// Snap segments of the source to nearby snap vertices.<para/>
         /// Source segments are "cracked" at a snap vertex.
@@ -123,14 +113,11 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         {
             // guard against empty input
             if (snapPts.Length == 0) return;
-
             var distinctPtCount = snapPts.Length;
-
             // check for duplicate snap pts when they are sourced from a linear ring.
             // TODO: Need to do this better - need to check *all* points for dups (using a Set?)
             if (snapPts[0].Equals2D(snapPts[snapPts.Length - 1]))
                 distinctPtCount = snapPts.Length - 1;
-
             for (var i = 0; i < distinctPtCount; i++)
             {
                 var snapPt = snapPts[i];
@@ -145,7 +132,6 @@ namespace NetTopologySuite.Operation.Overlay.Snap
                     srcCoords.Add(index + 1, new Coordinate(snapPt), false);
             }
         }
-
         /// <summary>
         /// Finds a src segment which snaps to (is close to) the given snap point<para/>
         /// Only a single segment is selected for snapping.
@@ -170,7 +156,6 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             {
                 _seg.P0 = srcCoords[i];
                 _seg.P1 = srcCoords[i + 1];
-
                 /*
                  * Check if the snap pt is equal to one of the segment endpoints.
                  *
@@ -182,7 +167,6 @@ namespace NetTopologySuite.Operation.Overlay.Snap
                         continue;
                     return -1;
                 }
-
                 var dist = _seg.Distance(snapPt);
                 if (dist < _snapTolerance && dist < minDist)
                 {

@@ -1,6 +1,5 @@
 ﻿using GeoAPI.Geometries;
 using NetTopologySuite.Samples.Lab.Clean;
-
 namespace Open.Topology.TestRunner.Functions
 {
     // NOTE: should be moved to 'NetTopologySuite.TestRunner' project, 'Functions' folder...

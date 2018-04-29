@@ -1,6 +1,5 @@
 using GeoAPI.Geometries;
 using NetTopologySuite.Noding;
-
 namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
@@ -12,12 +11,10 @@ namespace NetTopologySuite.Geometries.Prepared
     {
         private readonly object _lock = new object();
         private volatile FastSegmentSetIntersectionFinder _segIntFinder;
-
         public PreparedLineString(ILineal line)
             : base((IGeometry)line)
         {
         }
-
         public FastSegmentSetIntersectionFinder IntersectionFinder
         {
             get
@@ -36,20 +33,17 @@ namespace NetTopologySuite.Geometries.Prepared
                             _segIntFinder = new FastSegmentSetIntersectionFinder(SegmentStringUtil.ExtractSegmentStrings(Geometry));
                     }
                 }
-
                 return _segIntFinder;
             }
         }
-
         public override bool Intersects(IGeometry g)
         {
             if (!EnvelopesIntersect(g)) return false;
             return PreparedLineStringIntersects.Intersects(this, g);
         }
-
         /*
-         * There's not much point in trying to optimize contains, since 
-         * contains for linear targets requires the entire test geometry 
+         * There's not much point in trying to optimize contains, since
+         * contains for linear targets requires the entire test geometry
          * to exactly match the target linework.
          */
     }

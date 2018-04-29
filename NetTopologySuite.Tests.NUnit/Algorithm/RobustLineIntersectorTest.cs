@@ -4,14 +4,12 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     [TestFixtureAttribute]
     public class RobustLineIntersectorTest
     {
         RobustLineIntersector i = new RobustLineIntersector();
-
         [TestAttribute]
         public void Test2Lines() {
             RobustLineIntersector i = new RobustLineIntersector();
@@ -27,7 +25,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(i.IsProper);
             Assert.IsTrue(i.HasIntersection);
         }
-
         [TestAttribute]
         public void TestCollinear1() {
             RobustLineIntersector i = new RobustLineIntersector();
@@ -40,7 +37,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(!i.IsProper);
             Assert.IsTrue(!i.HasIntersection);
         }
-
         [TestAttribute]
         public void TestCollinear2() {
             RobustLineIntersector i = new RobustLineIntersector();
@@ -53,7 +49,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(!i.IsProper);
             Assert.IsTrue(i.HasIntersection);
         }
-
         [TestAttribute]
         public void TestCollinear3() {
             RobustLineIntersector i = new RobustLineIntersector();
@@ -66,7 +61,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(!i.IsProper);
             Assert.IsTrue(i.HasIntersection);
         }
-
         [TestAttribute]
         public void TestCollinear4() {
             RobustLineIntersector i = new RobustLineIntersector();
@@ -78,7 +72,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.AreEqual(RobustLineIntersector.CollinearIntersection, i.IntersectionNum);
             Assert.IsTrue(i.HasIntersection);
         }
-
         [TestAttribute]
         public void TestEndpointIntersection() {
             i.ComputeIntersection(new Coordinate(100, 100), new Coordinate(10, 100),
@@ -86,7 +79,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(i.HasIntersection);
             Assert.AreEqual(1, i.IntersectionNum);
         }
-
         [TestAttribute]
         public void TestEndpointIntersection2() {
             i.ComputeIntersection(new Coordinate(190, 50), new Coordinate(120, 100),
@@ -95,7 +87,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.AreEqual(1, i.IntersectionNum);
             Assert.AreEqual(new Coordinate(120, 100), i.GetIntersection(1));
         }
-
         [TestAttribute]
         public void TestOverlap() {
             i.ComputeIntersection(new Coordinate(180, 200), new Coordinate(160, 180),
@@ -103,7 +94,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(i.HasIntersection);
             Assert.AreEqual(2, i.IntersectionNum);
         }
-
         [TestAttribute]
         public void TestIsProper1() {
             i.ComputeIntersection(new Coordinate(30, 10), new Coordinate(30, 30),
@@ -112,7 +102,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.AreEqual(1, i.IntersectionNum);
             Assert.IsTrue(i.IsProper);
         }
-
         [TestAttribute]
         public void TestIsProper2() {
             i.ComputeIntersection(new Coordinate(10, 30), new Coordinate(10, 0),
@@ -121,7 +110,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.AreEqual(1, i.IntersectionNum);
             Assert.IsTrue(!i.IsProper);
         }
-
         [TestAttribute]
         public void TestIsCCW() {
             Assert.AreEqual(OrientationIndex.CounterClockwise, Orientation.Index(
@@ -129,7 +117,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             new Coordinate(0, 0),
             new Coordinate(381039468754763d, 123456789)));
         }
-
         [TestAttribute]
         public void TestIsCCW2() {
             Assert.AreEqual(OrientationIndex.Collinear, Orientation.Index(
@@ -137,7 +124,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             new Coordinate(20, 20),
             new Coordinate(0, 0)));
         }
-
         [TestAttribute]
         public void TestA() {
             Coordinate p1 = new Coordinate(-123456789, -40);
@@ -149,6 +135,5 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.AreEqual(false, PointLocation.IsOnLine(q, new Coordinate[] { p1, p2 }));
             Assert.AreEqual(OrientationIndex.Clockwise, Orientation.Index(p1, p2, q));
         }
-
     }
 }

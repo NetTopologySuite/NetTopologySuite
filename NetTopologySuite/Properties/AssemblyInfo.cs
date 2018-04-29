@@ -2,7 +2,6 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
 [assembly: AssemblyTitle("NetTopologySuite")]
 [assembly: AssemblyDescription("A .NET library for GIS operations, direct porting of JTS Topology Suite 1.13 library")]
 #if DEBUG
@@ -24,5 +23,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("6B7EB658-792E-4178-B853-8AEB851513A9")]
 #endif
 //[assembly: InternalsVisibleTo("NetTopologySuite.Silverlight.Test", AllInternalsVisible = true)]
-
 [assembly: InternalsVisibleTo("NetTopologySuite.Tests.NUnit, PublicKey=" + Consts.PublicKeyToken)]
