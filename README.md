@@ -13,12 +13,22 @@ _"The JTS Topology Suite is an API for modelling and manipulating 2-dimensional 
 
 Enjoy using them!
 
-## Install with NuGet package manager [![NuGet Status](http://img.shields.io/nuget/v/NetTopologySuite.svg?style=flat)](http://www.nuget.org/packages/NetTopologySuite/) [![NuGet PreRelease Status](http://img.shields.io/nuget/vpre/NetTopologySuite.svg?style=flat)](http://www.nuget.org/packages/NetTopologySuite/)
+## Install with NuGet package manager  
+### Stable [![NuGet Status](http://img.shields.io/nuget/v/NetTopologySuite.svg?style=flat)](http://www.nuget.org/packages/NetTopologySuite/)
+Stable releases are hosted on the default NuGet feed. You can install them using the following command on the package manager command line
+```
+PM> Install-Package NetTopologySuite
+```
 
-`PM> Install-Package NetTopologySuite`
+### Pre release [MyGet PreRelease Status](http://img.shields.io/myget/nettopologysuite/vpre/NetTopologySuite.svg?style=flat)
+Pre-Release versions of NetTopologySuite are hosted on MyGet. The sources for the NetTopologySuite feed are as follows:
 
-## Clone
+Version | URL
+--- |---
+NuGet v3 | https://www.myget.org/F/nettopologysuite/api/v3/index.json
+NuGet v2 | https://www.myget.org/F/nettopologysuite/api/v2
 
-When cloning make sure you also clone the submodules:
-
-`git clone --recursive https://github.com/NetTopologySuite/NetTopologySuite`
+You can install the latest pre-release package using the following command on the package manager command line
+```
+PM> Install-Package NetTopologySuite -pre -source "<Nuget v3 or NuGet v2 source>"
+```
