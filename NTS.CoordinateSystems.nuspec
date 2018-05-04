@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>NetTopologySuite.CoordinateSystems</id>
+		<version>$version$</version>
+		<title>NTS - Topology Suite</title>
+		<authors>NetTopologySuite - Team</authors>
+		<owners>NetTopologySuite - Team</owners>
+		<licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
+		<projectUrl>https://github.com/NetTopologySuite/NetTopologySuite</projectUrl>
+		<requireLicenseAcceptance>true</requireLicenseAcceptance>
+		<description>
+      The NTS Topology Suite is an API for modelling and manipulating 2-dimensional linear geometry. It provides numerous geometric predicates and functions. NTS conforms to the Simple Features Specification.
+      This package references GeoAPI.
+		</description>
+		<summary>NTS Topology Suite is a direct-port of all the functionalities offered by JTS Topology Suite</summary>
+		<tags>NTS Topology OGC SFS</tags>
+		<copyright>Copyright 2007-2018</copyright>
+		<language>en-US</language>
+		<frameworkAssemblies>
+			<frameworkAssembly assemblyName="System" targetFramework="net35-client,net40-client,net403-client,net45" />
+			<frameworkAssembly assemblyName="System.Xml" targetFramework="net35-client,net40-client,net403-client,net45" />
+
+			<frameworkAssembly assemblyName="System.Core" targetFramework="net35-client,net40-client,net403-client,net45" />
+
+			<frameworkAssembly assemblyName="System.Xml.Linq" targetFramework="net35-client,net40-client,net403-client,net45" />
+		</frameworkAssemblies>
+		<dependencies>
+			<!-- traditional .NET framework targets -->
+			<group targetFramework=".NETFramework3.5-Client">
+				<dependency id="GeoAPI.CoordinateSystems" version="[1.7.5-pre022, )" />
+			</group>
+
+			<group targetFramework=".NETFramework4.0-Client">
+			  <dependency id="GeoAPI.CoordinateSystems" version="[1.7.5-pre022, )" />
+			</group>
+
+			<group targetFramework=".NETFramework4.0.3-Client">
+			  <dependency id="GeoAPI.CoordinateSystems" version="[1.7.5-pre022, )" />
+			</group>
+
+			<group targetFramework=".NETFramework4.5">
+			  <dependency id="GeoAPI.CoordinateSystems" version="[1.7.5-pre022, )" />
+			</group>
+
+			<!-- .NET Standard targets -->
+			<group targetFramework=".NETStandard1.0">
+			  <dependency id="GeoAPI.CoordinateSystems" version="[1.7.5-pre022, )" />
+				<dependency id="System.Diagnostics.Debug" version="[4.3.0, )" />
+				<dependency id="System.Linq" version="[4.3.0, )" />
+				<dependency id="System.Text.RegularExpressions" version="[4.3.0, )" />
+				<dependency id="System.Xml.ReaderWriter" version="[4.3.0, )" />
+				<dependency id="System.Xml.XDocument" version="[4.3.0, )" />
+			</group>
+
+			<group targetFramework=".NETStandard1.3">
+			  <dependency id="GeoAPI.CoordinateSystems" version="[1.7.5-pre022, )" />
+				<dependency id="System.Diagnostics.Debug" version="[4.3.0, )" />
+				<dependency id="System.IO.FileSystem" version="[4.3.0, )" />
+				<dependency id="System.Linq" version="[4.3.0, )" />
+				<dependency id="System.Text.RegularExpressions" version="[4.3.0, )" />
+				<dependency id="System.Xml.ReaderWriter" version="[4.3.0, )" />
+				<dependency id="System.Xml.XDocument" version="[4.3.0, )" />
+			</group>
+
+			<group targetFramework=".NETStandard2.0">
+			  <dependency id="GeoAPI.CoordinateSystems" version="[1.7.5-pre022, )" />
+			</group>
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="NetTopologySuite.Common.props" target="src" />
+		<file src="NetTopologySuite.CoordinateSystems\**" exclude="NetTopologySuite.CoordinateSystems\obj\**" target="src\NetTopologySuite.CoordinateSystems" />
+
+		<file src="Release\AnyCPU\**\NetTopologySuite.CoordinateSystems.deps.json" target="lib" />
+		<file src="Release\AnyCPU\**\NetTopologySuite.CoordinateSystems.dll" target="lib" />
+		<file src="Release\AnyCPU\**\NetTopologySuite.CoordinateSystems.pdb" target="lib" />
+		<file src="Release\AnyCPU\**\NetTopologySuite.CoordinateSystems.xml" target="lib" />
+	</files>
+</package>

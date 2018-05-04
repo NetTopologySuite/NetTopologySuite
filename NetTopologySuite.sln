@@ -7,8 +7,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		.travis.yml = .travis.yml
+		LICENSE.md = LICENSE.md
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 		NetTopologySuite.Common.props = NetTopologySuite.Common.props
+		NTS.CoordinateSystems.nuspec = NTS.CoordinateSystems.nuspec
+		NTS.Core.nuspec = NTS.Core.nuspec
 		NTS.nuspec = NTS.nuspec
 		SharedAssemblyVersion.cs = SharedAssemblyVersion.cs
 		TeamCity.targets = TeamCity.targets
@@ -36,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Tests.NUni
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Lab", "NetTopologySuite.Lab\NetTopologySuite.Lab.csproj", "{D446FBA3-B6EA-4FEB-9615-D5FD5AEB3D23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.CoordinateSystems", "NetTopologySuite.CoordinateSystems\NetTopologySuite.CoordinateSystems.csproj", "{BD1D205F-F49E-4844-9F74-BF716CD45FA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.CoordinateSystems", "NetTopologySuite.CoordinateSystems\NetTopologySuite.CoordinateSystems.csproj", "{BD1D205F-F49E-4844-9F74-BF716CD45FA2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Tests.NUnit.DotNetCore", "NetTopologySuite.Tests.NUnit.DotNetCore\NetTopologySuite.Tests.NUnit.DotNetCore.csproj", "{D52AEC33-FCA4-4E6B-BC58-44D27163253D}"
 EndProject
