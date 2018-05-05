@@ -149,35 +149,8 @@ namespace NetTopologySuite.IO
         /// <exception cref="GeoAPI.IO.ParseException"> if the WKB data is ill-formed.</exception>
         public virtual IGeometry Read(Stream stream)
         {
-            ByteOrder byteOrder = (ByteOrder)stream.ReadByte();
-            BinaryReader reader;
-            if (byteOrder == ByteOrder.LittleEndian)
-            {
-                reader = new BinaryReader(stream);
-            }
-            else if (byteOrder == ByteOrder.BigEndian)
-            {
-                reader = new BEBinaryReader(stream);
-            }
-            else if (_isStrict)
-            {
-                string s = String.Format("Unknown geometry byte order (not LittleEndian or BigEndian): {0}", byteOrder);
-                throw new GeoAPI.IO.ParseException(s);
-            }
-            else
-            {
-                // if not strict and not LittleEndian or BigEndian, then we just use the default reader at the
-                // start of the geometry (if a multi-geometry).  This  allows WBKReader to work
-                // with Spatialite native BLOB WKB, as well as other WKB variants that might just
-                // specify endian-ness at the start of the multigeometry.
-                reader = new BinaryReader(stream);
-            }
-            
-            using (reader)
-            {
-                IGeometry res = Read(reader);
-                return res;
-            }
+            using (var reader = new BiEndianBinaryReader(stream))
+                return Read(reader);
         }
 
         protected enum CoordinateSystem { XY = 1, XYZ = 2, XYM = 3, XYZM = 4 };
@@ -189,9 +162,8 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         protected IGeometry Read(BinaryReader reader)
         {
-            CoordinateSystem cs;
-            int srid;
-            WKBGeometryTypes geometryType = ReadGeometryType(reader, out cs, out srid);
+            ReadByteOrder(reader);
+            var geometryType = ReadGeometryType(reader, out var cs, out var srid);
             switch (geometryType)
             {
                 //Point
@@ -247,7 +219,11 @@ namespace NetTopologySuite.IO
         /// <param name="reader"></param>
         private void ReadByteOrder(BinaryReader reader)
         {
-            reader.ReadByte();
+            var byteOrder = (ByteOrder)reader.ReadByte();
+            if (_isStrict && byteOrder != ByteOrder.BigEndian && byteOrder != ByteOrder.LittleEndian)
+                throw new GeoAPI.IO.ParseException($"Unknown geometry byte order (not LittleEndian or BigEndian): {byteOrder}");
+
+            ((BiEndianBinaryReader)reader).Endianess = byteOrder;
         }
 
         private WKBGeometryTypes ReadGeometryType(BinaryReader reader, out CoordinateSystem coordinateSystem, out int srid)

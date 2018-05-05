@@ -25,6 +25,19 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             RunDelaunay(wkt, lineWKT, true, expectedTri);
         }
 
+        [Test, Category("Issue234")]
+        public void TestPolygonWithHole()
+        {
+            const string SitesWKT = "POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0), (4 4, 6 4, 6 6, 4 6, 4 4))";
+            const string ConstraintsWKT = "LINESTRING (4 4, 6 4, 6 6, 4 6, 4 4)";
+
+            const string ExpectedEdgesWKT = "MULTILINESTRING ((0 10, 10 10), (0 0, 0 10), (0 0, 10 0), (10 0, 10 10), (6 4, 10 0), (6 4, 10 10), (6 4, 6 6), (6 6, 10 10), (4 6, 6 6), (4 6, 10 10), (0 10, 4 6), (4 4, 4 6), (0 10, 4 4), (0 0, 4 4), (4 4, 10 0), (4 4, 6 4), (4 6, 6 4))";
+            RunDelaunay(SitesWKT, ConstraintsWKT, false, ExpectedEdgesWKT);
+
+            const string ExpectedTriWKT = "GEOMETRYCOLLECTION (POLYGON ((0 10, 0 0, 4 4, 0 10)), POLYGON ((0 10, 4 4, 4 6, 0 10)), POLYGON ((0 10, 4 6, 10 10, 0 10)), POLYGON ((10 10, 4 6, 6 6, 10 10)), POLYGON ((10 10, 6 6, 6 4, 10 10)), POLYGON ((10 10, 6 4, 10 0, 10 10)), POLYGON ((0 0, 10 0, 4 4, 0 0)), POLYGON ((4 4, 10 0, 6 4, 4 4)), POLYGON ((4 4, 6 4, 4 6, 4 4)), POLYGON ((4 6, 6 4, 6 6, 4 6)))";
+            RunDelaunay(SitesWKT, ConstraintsWKT, true, ExpectedTriWKT);
+        }
+
         private const double ComparisonTolerance = 1.0e-7;
 
         private static void RunDelaunay(string sitesWKT, string constraintsWKT, bool computeTriangles, string expectedWKT)
