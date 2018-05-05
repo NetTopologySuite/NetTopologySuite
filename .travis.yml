@@ -5,7 +5,7 @@ dist: trusty
 install:
 - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 script:
-- msbuild NetTopologySuite.sln "/t:Restore;Build" /p:Configuration=ReleaseLinux "/p:FrameworkPathOverride=$(dirname $(which mono))/../lib/mono/4.5/" /v:minimal /p:WarningLevel=3
+- msbuild NetTopologySuite.sln /m "/t:Restore;Build" /p:Configuration=ReleaseLinux "/p:FrameworkPathOverride=$(dirname $(which mono))/../lib/mono/4.5/" /v:minimal /p:WarningLevel=3
 - travis_wait mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./NetTopologySuite.Tests.NUnit/bin/Release/net45/NetTopologySuite.Tests.NUnit.dll -exclude:"LongRunning|Stress|FailureCase"
-- msbuild ./NetTopologySuite.Tests.NUnit.DotNetCore/NetTopologySuite.Tests.NUnit.DotNetCore.csproj "/t:Restore;Build" /p:Configuration=Release
-- dotnet test ./NetTopologySuite.Tests.NUnit.DotNetCore/NetTopologySuite.Tests.NUnit.DotNetCore.csproj -c Release --no-build -v diag
+- msbuild ./NetTopologySuite.Tests.NUnit.DotNetCore/NetTopologySuite.Tests.NUnit.DotNetCore.csproj /m "/t:Restore;Build" /p:Configuration=Release  /v:minimal /p:WarningLevel=3
+- dotnet test ./NetTopologySuite.Tests.NUnit.DotNetCore/NetTopologySuite.Tests.NUnit.DotNetCore.csproj -c Release --no-build
