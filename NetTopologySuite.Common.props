@@ -5,6 +5,7 @@
     <DocumentationFile>$(OutputPath)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GeoAPIPackageReferenceVersion>1.7.5-pre024</GeoAPIPackageReferenceVersion>
+    <RestoreSources>$(RestoreSources);https://www.myget.org/F/nettopologysuite/api/v3/index.json</RestoreSources>
   </PropertyGroup>
 
   <!-- Client Profile frameworks don't have built-in shortcuts, so we need to specify these. -->
