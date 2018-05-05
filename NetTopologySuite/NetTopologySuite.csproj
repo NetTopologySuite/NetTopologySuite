@@ -12,8 +12,8 @@
 
   <!-- These versions of the Fody packages HAPPEN to work for these target frameworks, so tell NuGet
        that it's OK to pretend like they're net45. -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net35-client' Or '$(TargetFramework)' == 'net40-client' Or '$(TargetFramework)' == 'net403-client' ">
-    <AssetTargetFallback>net45</AssetTargetFallback>
+  <PropertyGroup>
+    <AssetTargetFallback Condition=" '$(TargetFramework)' == 'net35-client' Or '$(TargetFramework)' == 'net40-client' Or '$(TargetFramework)' == 'net403-client' ">net45</AssetTargetFallback>
     <NoWarn>$(NoWarn),NU1701</NoWarn>
   </PropertyGroup>
 
