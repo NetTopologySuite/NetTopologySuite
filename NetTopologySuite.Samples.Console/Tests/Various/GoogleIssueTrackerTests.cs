@@ -9,12 +9,6 @@ namespace NetTopologySuite.Tests.Various
 {
     public class GoogleIssueTrackerTests
     {
-        static GoogleIssueTrackerTests()
-        {
-            if (GeoAPI.GeometryServiceProvider.Instance == null)
-                GeoAPI.GeometryServiceProvider.Instance = NtsGeometryServices.Instance;
-        }
-
         [Test(Description = "WKBWriter added 4 extra bytes which caused picky SqlServer to reject polygons")]
         public void TestIssue147()
         {

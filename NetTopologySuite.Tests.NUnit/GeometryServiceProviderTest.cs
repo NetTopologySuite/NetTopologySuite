@@ -36,16 +36,12 @@ namespace NetTopologySuite.Tests.NUnit
 
             Assert.Throws<ArgumentNullException>(() => GeometryServiceProvider.Instance = null);
 
-            GeometryServiceProvider.Instance = nts;
             var factory = nts.CreateGeometryFactory();
 
             Assert.IsNotNull(factory);
             Assert.AreEqual(nts.DefaultSRID, factory.SRID);
             Assert.AreEqual(nts.DefaultPrecisionModel, factory.PrecisionModel);
             Assert.AreEqual(nts.DefaultCoordinateSequenceFactory, factory.CoordinateSequenceFactory);
-
-            // restore default!
-            GeometryServiceProvider.Instance = new NtsGeometryServices();
         }
 
         [TestAttribute]
