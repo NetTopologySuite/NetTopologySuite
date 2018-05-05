@@ -99,7 +99,7 @@ namespace NetTopologySuite.Triangulate
             for (int i = 0; i < coords.Length; i++)
             {
                 Vertex v = new ConstraintVertex(coords[i]);
-                _constraintVertexMap.Add(coords[i], v);
+                _constraintVertexMap[coords[i]] = v;
             }
         }
 
