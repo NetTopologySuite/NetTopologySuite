@@ -29,11 +29,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotSpatial.Projections" Version="1.7" />
     <PackageReference Include="GeoAPI" Version="$(GeoAPIPackageReferenceVersion)" />
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="ProjNET4GeoAPI" Version="1.4.0-pre001" />
-    <PackageReference Include="QuickGraph" Version="3.6.61119.7" />
 
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="NUnit" Version="3.10.1" />
