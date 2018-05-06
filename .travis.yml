@@ -1,5 +1,5 @@
 language: csharp
-dotnet: 2.0.0
+dotnet: 2.1.105
 dist: trusty
 script:
 - msbuild NetTopologySuite.sln "/t:Restore;Build" /p:Configuration=Release /v:minimal /p:WarningLevel=3
