@@ -53,7 +53,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             Assert.IsTrue(_isAllConsistent);
         }
 
-        [Test, Category("Stress"), Ignore]
+        [Test, Category("Stress"), Ignore(reason: "FIXME: IgnoreAttribute didn't require a reason when this was written, but now it does.")]
         public void TestRandomTriangles()
         {
             CheckRandomTriangles(1000, 100, 100);

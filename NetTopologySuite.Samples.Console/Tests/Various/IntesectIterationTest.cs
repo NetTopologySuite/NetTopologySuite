@@ -17,7 +17,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         IGeometry geom6 = null;
         IGeometry geom7 = null;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void MyClassInitialize()
         {
             WKTReader reader = new WKTReader();

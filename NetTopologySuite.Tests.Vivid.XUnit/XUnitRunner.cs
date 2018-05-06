@@ -25,7 +25,7 @@
 
         protected string TestFile { get; set; }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void FixtureSetUp()
         {
         }

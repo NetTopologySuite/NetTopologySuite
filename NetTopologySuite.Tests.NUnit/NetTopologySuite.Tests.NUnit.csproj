@@ -3,10 +3,6 @@
   <PropertyGroup>
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <TargetFrameworkToTest>netstandard2.0</TargetFrameworkToTest>
-    <BaseIntermediateOutputPath>obj\$(TargetFrameworkToTest)\</BaseIntermediateOutputPath>
-    <OutDir>bin\$(Configuration)\$(TargetFrameworkToTest)</OutDir>
-    <RootNamespace>NetTopologySuite.Tests.NUnit</RootNamespace>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(SolutionDir)nts.snk</AssemblyOriginatorKeyFile>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
@@ -17,13 +13,6 @@
   </PropertyGroup>
 
   <Import Project="$(SolutionDir)NetTopologySuite.Common.props" />
-
-  <ItemGroup Condition=" '$(RequiresFrameworkAssemblyReferences)' == 'true' ">
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Include="$(SolutionDir)SharedAssemblyVersion.cs" Link="Properties\SharedAssemblyVersion.cs" />
@@ -51,12 +40,15 @@
 
   <ItemGroup>
     <PackageReference Include="GeoAPI" Version="$(GeoAPIPackageReferenceVersion)" />
-    <PackageReference Include="NUnit" Version="2.6.4" />
+
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
+    <PackageReference Include="NUnit" Version="3.10.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" Properties="TargetFramework=$(TargetFrameworkToTest)" />
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite.Lab\NetTopologySuite.Lab.csproj" Properties="TargetFramework=$(TargetFrameworkToTest)" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.Lab\NetTopologySuite.Lab.csproj" />
   </ItemGroup>
 
   <ItemGroup>

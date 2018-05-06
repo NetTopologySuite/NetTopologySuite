@@ -1,9 +1,8 @@
 language: csharp
-mono: latest
 dotnet: 2.0.0
 dist: trusty
-install:
-- nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 script:
-- msbuild NetTopologySuite.sln "/t:Restore;Build" /p:Configuration=ReleaseLinux "/p:FrameworkPathOverride=$(dirname $(which mono))/../lib/mono/4.5/" /v:minimal /p:WarningLevel=3
-- travis_wait mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./NetTopologySuite.Tests.NUnit/bin/Release/net45/NetTopologySuite.Tests.NUnit.dll -exclude:"LongRunning|Stress|FailureCase"
+- msbuild NetTopologySuite.sln "/t:Restore;Build" /p:Configuration=Release /v:minimal /p:WarningLevel=3
+- dotnet test NetTopologySuite.Tests.NUnit --filter "(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)" --no-build -c Release -f netcoreapp2.0
+- dotnet test NetTopologySuite.Samples.Console --filter "(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)" --no-build -c Release -f netcoreapp2.0
+- dotnet test NetTopologySuite.Tests.Vivid.XUnit --filter "(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)" --no-build -c Release -f netcoreapp2.0

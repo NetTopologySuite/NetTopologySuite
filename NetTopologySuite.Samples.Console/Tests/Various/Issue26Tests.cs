@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.Various
 
         private WKTReader reader;        
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void FixtureSetup()
         {
             reader = new WKTReader(factory);
