@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(MonoReferenceAssembliesDir)' != '' ">
-    <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net35-client' ">$(MonoReferenceAssembliesDir)/v3.5/</FrameworkPathOverride>
+    <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net35-client' ">$(MonoReferenceAssembliesDir)/2.0/</FrameworkPathOverride>
     <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net40-client' ">$(MonoReferenceAssembliesDir)/v4.0/</FrameworkPathOverride>
     <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net403-client' ">$(MonoReferenceAssembliesDir)/v4.0/</FrameworkPathOverride>
     <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net45' ">$(MonoReferenceAssembliesDir)/v4.5/</FrameworkPathOverride>
