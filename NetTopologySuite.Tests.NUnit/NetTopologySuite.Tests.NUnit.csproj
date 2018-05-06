@@ -19,23 +19,7 @@
 
     <None Include="$(SolutionDir)nts.snk" Link="nts.snk" />
 
-    <EmbeddedResource Include="TestData\africa.wkt" />
-    <EmbeddedResource Include="TestData\Base 64.txt" />
-    <EmbeddedResource Include="TestData\europe.wkt" />
-    <EmbeddedResource Include="TestData\bc-250k.wkt" />
-    <EmbeddedResource Include="TestData\bc_20K.wkt" />
-    <EmbeddedResource Include="TestData\papua.wkt" />
-    <EmbeddedResource Include="TestData\plane.wkt" />
-    <EmbeddedResource Include="TestData\polygon.wkb" />
-    <EmbeddedResource Include="TestData\uk-arrows.wkt" />
-    <EmbeddedResource Include="TestData\uk.wkt" />
-    <EmbeddedResource Include="TestData\world.wkt" />
-    <EmbeddedResource Include="TestData\linestrings.xml" />
-    <EmbeddedResource Include="TestData\multilinestrings.xml" />
-    <EmbeddedResource Include="TestData\multipoints.xml" />
-    <EmbeddedResource Include="TestData\multipolygons.xml" />
-    <EmbeddedResource Include="TestData\points.xml" />
-    <EmbeddedResource Include="TestData\polygons.xml" />
+    <EmbeddedResource Include="TestData\*" Exclude="*.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,9 +33,5 @@
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.Lab\NetTopologySuite.Lab.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 </Project>
