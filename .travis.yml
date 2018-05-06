@@ -3,7 +3,7 @@ mono: none
 dotnet: 2.1.105
 dist: trusty
 script:
-- msbuild NetTopologySuite.sln "/t:Restore;Build" /p:Configuration=Release /v:minimal /p:WarningLevel=3
-- dotnet test NetTopologySuite.Tests.NUnit --filter "(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)" --no-build -c Release -f netcoreapp2.0
-- dotnet test NetTopologySuite.Samples.Console --filter "(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)" --no-build -c Release -f netcoreapp2.0
-- dotnet test NetTopologySuite.Tests.Vivid.XUnit --filter "(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)" --no-build -c Release -f netcoreapp2.0
+- dotnet msbuild NetTopologySuite.sln "/t:Restore;Build" /p:Configuration=Release /v:minimal /p:WarningLevel=3
+- dotnet test NetTopologySuite.Tests.NUnit --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)' --no-build --no-restore -c Release -f netcoreapp2.0
+- dotnet test NetTopologySuite.Samples.Console --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)' --no-build --no-restore -c Release -f netcoreapp2.0
+- dotnet test NetTopologySuite.Tests.Vivid.XUnit --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)' --no-build --no-restore -c Release -f netcoreapp2.0
