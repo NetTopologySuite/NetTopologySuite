@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
-    <TargetFramework>net40-client</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <RootNamespace>NetTopologySuite.Samples</RootNamespace>
     <OutputType>Exe</OutputType>
     <StartupObject>NetTopologySuite.Samples.SimpleTests.Program</StartupObject>

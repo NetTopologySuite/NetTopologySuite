@@ -2,8 +2,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
-    <TargetFramework>net45</TargetFramework>
-    <TargetFrameworkToTest>net45</TargetFrameworkToTest>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFrameworkToTest>netstandard2.0</TargetFrameworkToTest>
     <BaseIntermediateOutputPath>obj\$(TargetFrameworkToTest)\</BaseIntermediateOutputPath>
     <OutDir>bin\$(Configuration)\$(TargetFrameworkToTest)</OutDir>
     <RootNamespace>NetTopologySuite.Tests.NUnit</RootNamespace>
