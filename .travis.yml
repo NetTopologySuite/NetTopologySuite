@@ -1,9 +1,10 @@
 language: csharp
-mono: latest
+mono: none
 dotnet: 2.1.105
 dist: trusty
 script:
-- dotnet msbuild NetTopologySuite.sln /m "/t:Restore;Build" /p:Configuration=Release "/p:FrameworkPathOverride=$(dirname $(which mono))/../lib/mono/4.5/" /v:minimal /p:WarningLevel=3
-- dotnet test NetTopologySuite.Tests.NUnit --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)' --no-build --no-restore -c Release -f netcoreapp2.0
-- dotnet test NetTopologySuite.Samples.Console --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)' --no-build --no-restore -c Release -f netcoreapp2.0
-- dotnet test NetTopologySuite.Tests.Vivid.XUnit --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)' --no-build --no-restore -c Release -f netcoreapp2.0
+- git clone https://github.com/mono/reference-assemblies.git mono-reference-assemblies
+- dotnet msbuild NetTopologySuite.sln /m "/t:Restore;Build" /p:Configuration=Release "/p:MonoReferenceAssembliesDir=$(pwd)/mono-reference-assemblies/" /v:minimal /p:WarningLevel=3
+- dotnet test NetTopologySuite.Tests.NUnit --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)' --no-build --no-restore -c Release
+- dotnet test NetTopologySuite.Samples.Console --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)' --no-build --no-restore -c Release
+- dotnet test NetTopologySuite.Tests.Vivid.XUnit --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)' --no-build --no-restore -c Release

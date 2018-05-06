@@ -8,6 +8,13 @@
     <RestoreAdditionalProjectSources>$(RestoreAdditionalProjectSources);https://www.myget.org/F/nettopologysuite/api/v3/index.json</RestoreAdditionalProjectSources>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(MonoReferenceAssembliesDir)' != '' ">
+    <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net35-client' ">$(MonoReferenceAssembliesDir)/v3.5/</FrameworkPathOverride>
+    <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net40-client' ">$(MonoReferenceAssembliesDir)/v4.0/</FrameworkPathOverride>
+    <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net403-client' ">$(MonoReferenceAssembliesDir)/v4.0/</FrameworkPathOverride>
+    <FrameworkPathOverride Condition=" '$(TargetFramework)' == 'net45' ">$(MonoReferenceAssembliesDir)/v4.5/</FrameworkPathOverride>
+  </PropertyGroup>
+
   <!-- Client Profile frameworks don't have built-in shortcuts, so we need to specify these. -->
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net35-client' ">
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
