@@ -20,7 +20,7 @@
 
         protected XUnitRunner(string testFile)
         {
-            this.TestFile = testFile;
+            this.TestFile = Path.Combine(testFile.Split('\\'));
         }
 
         protected string TestFile { get; set; }

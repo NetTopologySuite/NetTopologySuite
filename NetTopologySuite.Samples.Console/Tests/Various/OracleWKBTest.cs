@@ -28,8 +28,8 @@ namespace NetTopologySuite.Samples.Tests.Various
         [SetUp]
         public void Init()
         {
-            string blobDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\NetTopologySuite.Samples.Shapefiles\blob\");
-            blobFile = blobDir + @"\blob";
+            string blobDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "NetTopologySuite.Samples.Shapefiles", "blob");
+            blobFile = Path.Combine(blobDir, "blob");
             if (!File.Exists(blobFile))
                 throw new FileNotFoundException("blob file not found at " + blobDir);
         }
