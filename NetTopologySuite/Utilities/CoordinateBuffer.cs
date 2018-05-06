@@ -8,7 +8,7 @@ namespace NetTopologySuite.Utilities
     /// <summary>
     /// A mutable list of coordinates.
     /// </summary>
-    public sealed class CoordinateList
+    public sealed class CoordinateBuffer
     {
         private readonly List<double> _xs;
 
@@ -19,7 +19,7 @@ namespace NetTopologySuite.Utilities
         private readonly List<double> _ms;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CoordinateList"/> class.
+        /// Initializes a new instance of the <see cref="CoordinateBuffer"/> class.
         /// </summary>
         /// <param name="ordinates">
         /// The <see cref="Ordinates"/> to store in the list.
@@ -30,13 +30,13 @@ namespace NetTopologySuite.Utilities
         /// <exception cref="NotSupportedException">
         /// <paramref name="ordinates"/> contains more than <see cref="Ordinates.XYZM"/>.
         /// </exception>
-        public CoordinateList(Ordinates ordinates)
+        public CoordinateBuffer(Ordinates ordinates)
             : this(ordinates, 4)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CoordinateList"/> class.
+        /// Initializes a new instance of the <see cref="CoordinateBuffer"/> class.
         /// </summary>
         /// <param name="ordinates">
         /// The <see cref="Ordinates"/> to store in the list.
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Utilities
         /// <paramref name="ordinates"/> contains ordinates other than <see cref="Ordinates.X"/>,
         /// <see cref="Ordinates.Y"/>, <see cref="Ordinates.Z"/>, and <see cref="Ordinates.M"/>.
         /// </exception>
-        public CoordinateList(Ordinates ordinates, int initialCapacity)
+        public CoordinateBuffer(Ordinates ordinates, int initialCapacity)
         {
             if ((ordinates & Ordinates.XY) != Ordinates.XY)
             {
@@ -286,14 +286,6 @@ namespace NetTopologySuite.Utilities
             Ordinates inputOrdinates = this.StoredOrdinates;
             Ordinates outputOrdinates = coordinateSequence.Ordinates;
 
-            if (inputOrdinates != outputOrdinates)
-            {
-                if ((outputOrdinates & ~inputOrdinates) != Ordinates.None)
-                {
-                    throw new ArgumentException($"Sequence demands values for ordinates not stored in this sequence (stored: {inputOrdinates}, demanded: {outputOrdinates})", nameof(coordinateSequence));
-                }
-            }
-
             List<OrdinateColumn> ordinateColumnList = new List<OrdinateColumn>(4);
 
             if ((outputOrdinates & Ordinates.X) == Ordinates.X)
@@ -321,7 +313,7 @@ namespace NetTopologySuite.Utilities
             {
                 foreach ((Ordinate ordinate, List<double> vals) in ordinateColumns)
                 {
-                    coordinateSequence.SetOrdinate(i, ordinate, vals[i]);
+                    coordinateSequence.SetOrdinate(i, ordinate, vals?[i] ?? Coordinate.NullOrdinate);
                 }
             }
         }
