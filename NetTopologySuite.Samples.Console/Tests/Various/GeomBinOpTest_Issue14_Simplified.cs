@@ -24,7 +24,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         /// <summary>
         /// 
         /// </summary>
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             wkbreader = new WKBReader(factory);

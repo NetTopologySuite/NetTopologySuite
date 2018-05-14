@@ -291,7 +291,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         
         private string _currentDirectory;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void FixtureSetUp()
         {
             _currentDirectory = Environment.CurrentDirectory; 
@@ -395,7 +395,7 @@ namespace NetTopologySuite.Samples.Tests.Various
 
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void FixtureTearDown()
         {
             Environment.CurrentDirectory = _currentDirectory;

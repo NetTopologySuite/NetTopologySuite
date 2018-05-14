@@ -27,6 +27,7 @@ namespace ConsoleTestRunner
 
         public TestInfoCollection ParseProject(string projectFile)
         {
+            projectFile = Path.Combine(projectFile.Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries));
             if (!File.Exists(projectFile))
             {
                 throw new ArgumentException(projectFile, 

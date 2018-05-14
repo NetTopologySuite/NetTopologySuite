@@ -20,12 +20,12 @@
 
         protected XUnitRunner(string testFile)
         {
-            this.TestFile = testFile;
+            this.TestFile = Path.Combine(testFile.Split('\\'));
         }
 
         protected string TestFile { get; set; }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void FixtureSetUp()
         {
         }
@@ -46,7 +46,7 @@
 
         protected XmlTestCollection LoadTests()
         {
-            return this._controller.Load(Path.Combine(this.TestLocation, this.TestFile));
+            return this._controller.Load(Path.Combine(Path.Combine(this.TestLocation.Split('\\', StringSplitOptions.RemoveEmptyEntries)), this.TestFile));
         }
 
         [Test]

@@ -68,7 +68,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
         /// Sets up any fixtures needed for the test runs
         /// </summary>
         /// <exception cref="Exception"></exception>
-        [TestFixtureSetUpAttribute]
+        [OneTimeSetUp]
         public virtual void SetUp()
         {
 
@@ -94,7 +94,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
         /// Tear down any fixtures made fot the testing
         /// </summary>
         /// <exception cref="Exception"></exception>
-        [TestFixtureTearDownAttribute]
+        [OneTimeTearDown]
         public virtual void TearDown()
         {
 

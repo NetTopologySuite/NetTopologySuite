@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Diagnostics;
-using DotSpatial.Projections;
 using GeoAPI.CoordinateSystems.Transformations;
 using NetTopologySuite.Triangulate;
 using NetTopologySuite.Triangulate.QuadEdge;

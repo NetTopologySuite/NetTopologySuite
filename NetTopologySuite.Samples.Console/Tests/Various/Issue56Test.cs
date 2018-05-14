@@ -13,7 +13,7 @@ namespace NetTopologySuite.Tests.Various
 
         private WKTWriter writer;  
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void FixtureSetup()
         {
             writer = new WKTWriter();
