@@ -1,13 +1,8 @@
-﻿using System;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
+﻿using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
-using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Operation.Valid;
 using NetTopologySuite.SnapRound;
 using NUnit.Framework;

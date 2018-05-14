@@ -30,9 +30,6 @@
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net35-client' Or '$(TargetFramework)' == 'net40-client' Or '$(TargetFramework)' == 'net403-client' Or '$(TargetFramework)' == 'net45' ">
     <RequiresFrameworkAssemblyReferences>true</RequiresFrameworkAssemblyReferences>
 
-    <!-- The NUnit 2 test adapter doesn't support portable PDBs. -->
-    <DebugType>full</DebugType>
-
     <!-- There was no compelling reason for this to be here. -->
     <DefineConstants>$(DefineConstants);COMPAT_SHAPEFILE_IMPORT_TO_SQL_SERVER</DefineConstants>
 

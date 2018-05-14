@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
-using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.Geometries.Utilities;
@@ -19,7 +13,6 @@ using NetTopologySuite.Operation.Polygonize;
 using NetTopologySuite.Operation.Valid;
 using NetTopologySuite.Precision;
 using NetTopologySuite.SnapRound;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Tests.Github

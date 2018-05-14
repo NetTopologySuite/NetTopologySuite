@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using GeoAPI.Geometries;
-using GeoAPI.Geometries.Prepared;
-using NetTopologySuite.Densify;
 using NUnit.Framework;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Polygonize;
-using Matrix = System.Drawing.Drawing2D.Matrix;
 
 namespace NetTopologySuite.Samples.Operation.Poligonize
 {

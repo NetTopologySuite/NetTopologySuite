@@ -8,13 +8,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
     public class BufferTest
     {
         [TestAttribute]
-        [Ignore]
-        public void Test0()
-        {
-            TestMultiLineStringSeparateBuffersFloatingSingle();
-        }
-
-        [TestAttribute]
         public void TestMultiLineStringDepthFailure()
         {
             new BufferValidator(

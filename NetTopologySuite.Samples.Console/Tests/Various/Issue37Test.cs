@@ -13,17 +13,20 @@ namespace NetTopologySuite.Tests.Various
 
         private WKTReader reader;        
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void FixtureSetup()
         {
             reader = new WKTReader(factory);
         }
 
-        [Test, ExpectedException(typeof(TopologyException)), Category("Issue37")]
+        [Test, Category("Issue37")]
         [Ignore("What does JTS do with these geometries?")]
         public void Difference()
         {
-            var geom1 = reader.Read(@"POLYGON((-17445.395049241037
+            Assert.Throws<TopologyException>(LegacyTestMethod);
+            void LegacyTestMethod()
+            {
+                var geom1 = reader.Read(@"POLYGON((-17445.395049241037
 7027956.74246328,-17043.826645147976 7129954.0712792575,17589.339716189785
 7130067.1462710546,39761.968883175316 7126950.9864603812,25010.654925657538
 7021989.9337616432,-17445.395049241037
@@ -49,10 +52,10 @@ namespace NetTopologySuite.Tests.Various
 7064352.4200768927,25944.589132975067 7064072.7790706065,27780.9691660335
 7063793.9053480756,29617.586533883361 7063515.7990583824,30821.194551129327
 7063334.0714834519))");
-            Assert.IsNotNull(geom1);
-            Assert.IsTrue(geom1.IsValid);
+                Assert.IsNotNull(geom1);
+                Assert.IsTrue(geom1.IsValid);
 
-            var geom2 = reader.Read(@"POLYGON((14518.078277259594
+                var geom2 = reader.Read(@"POLYGON((14518.078277259594
 7023464.5692419875,11497.562933872843 7025662.3046554783,8431.9481214536681
 7028335.26856397,5617.0474384991358 7031264.45683008,3074.235016295675
 7034427.0837329868,822.64580979566688
@@ -74,32 +77,33 @@ namespace NetTopologySuite.Tests.Various
 7063793.9053480756,29617.586533883361 7063515.7990583824,30821.194551129327
 7063334.0714834519,25010.654925657538 7021989.9337616432,14518.078277259594
 7023464.5692419875))");
-            Assert.IsNotNull(geom2);
-            Assert.IsTrue(geom2.IsValid);
+                Assert.IsNotNull(geom2);
+                Assert.IsTrue(geom2.IsValid);
 
-            Exception exception = null;
-            try
-            {
-                geom1.Difference(geom2);
+                Exception exception = null;
+                try
+                {
+                    geom1.Difference(geom2);
+                }
+                catch (Exception ex)
+                {
+                    exception = ex;
+                }
+                Assert.IsNotNull(exception);
+                Assert.IsInstanceOf(typeof(TopologyException), exception);
+
+                var buf1 = geom1.Buffer(0);
+                Assert.IsNotNull(buf1);
+                Assert.IsTrue(buf1.IsValid);
+
+                var buf2 = geom2.Buffer(0);
+                Assert.IsNotNull(buf2);
+                Assert.IsTrue(buf2.IsValid);
+
+                var result = buf1.Difference(buf2);
+                Assert.IsNotNull(result);
+                Assert.IsTrue(result.IsValid);
             }
-            catch (Exception ex)
-            {
-                exception = ex;
-            }
-            Assert.IsNotNull(exception);
-            Assert.IsInstanceOf(typeof(TopologyException), exception);
-
-            var buf1 = geom1.Buffer(0);
-            Assert.IsNotNull(buf1);
-            Assert.IsTrue(buf1.IsValid);
-
-            var buf2 = geom2.Buffer(0);
-            Assert.IsNotNull(buf2);
-            Assert.IsTrue(buf2.IsValid);
-
-            var result = buf1.Difference(buf2);
-            Assert.IsNotNull(result);
-            Assert.IsTrue(result.IsValid);
         }
     }
 }
