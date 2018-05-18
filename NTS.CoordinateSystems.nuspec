@@ -70,6 +70,7 @@
 	</metadata>
 	<files>
 		<file src="NetTopologySuite.Common.props" target="src" />
+	  <file src="SharedAssemblyVersion.cs" target="src" />
 		<file src="NetTopologySuite.CoordinateSystems\**" exclude="NetTopologySuite.CoordinateSystems\obj\**" target="src\NetTopologySuite.CoordinateSystems" />
 
 		<file src="Release\AnyCPU\**\NetTopologySuite.CoordinateSystems.deps.json" target="lib" />

@@ -70,6 +70,7 @@
   </metadata>
   <files>
     <file src="NetTopologySuite.Common.props" target="src" />
+    <file src="SharedAssemblyVersion.cs" target="src" />
     <file src="NetTopologySuite\**" exclude="NetTopologySuite\obj\**" target="src\NetTopologySuite" />
 
     <file src="Release\AnyCPU\**\NetTopologySuite.deps.json" target="lib" />
