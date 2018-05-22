@@ -40,6 +40,6 @@
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.Lab\NetTopologySuite.Lab.csproj" />
-    <ProjectReference Include="..\NetTopologySuite.CoordinateSystems\NetTopologySuite.CoordinateSystems.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.CoordinateSystems\NetTopologySuite.CoordinateSystems.csproj" />
   </ItemGroup>
 </Project>
