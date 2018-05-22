@@ -39,7 +39,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		}
 
 		/// <summary>
-		/// Transforms a <see cref="Geometry" /> object.
+		/// Transforms a <see cref="IGeometry" /> object.
 		/// </summary>
 		/// <param name="factory"></param>
 		/// <param name="g"></param>
@@ -51,25 +51,25 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		    if (g == null)
                 return null;
 		    if (g is IPoint)
-		        return TransformPoint(factory, g as IPoint, transform);
+		        return TransformPoint(factory, (IPoint) g, transform);
 		    if (g is ILineString)
-                return TransformLineString(factory, g as ILineString, transform);
+                return TransformLineString(factory, (ILineString) g, transform);
 		    if (g is IPolygon)
-                return TransformPolygon(factory, g as IPolygon, transform);
+                return TransformPolygon(factory, (IPolygon) g, transform);
 		    if (g is IMultiPoint)
-                return TransformMultiPoint(factory, g as IMultiPoint, transform);
+                return TransformMultiPoint(factory, (IMultiPoint) g, transform);
 		    if (g is IMultiLineString)
-                return TransformMultiLineString(factory, g as IMultiLineString, transform);
+                return TransformMultiLineString(factory, (IMultiLineString) g, transform);
 		    if (g is IMultiPolygon)
-                return TransformMultiPolygon(factory, g as IMultiPolygon, transform);
+                return TransformMultiPolygon(factory, (IMultiPolygon) g, transform);
 		    if (g is IGeometryCollection)
-                return TransformGeometryCollection(factory, g as IGeometryCollection, transform);
+                return TransformGeometryCollection(factory, (IGeometryCollection) g, transform);
 		    throw new ArgumentException(String.Format(
                 "Could not transform geometry type '{0}'", g.GetType()));
 		}
 
 	    /// <summary>
-		/// Transforms a <see cref="Point" /> object.
+		/// Transforms a <see cref="IPoint" /> object.
 		/// </summary>
 		/// <param name="factory"></param>
 		/// <param name="p"></param>
@@ -87,7 +87,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		}
 
 		/// <summary>
-		/// Transforms a <see cref="LineString" /> object.
+		/// Transforms a <see cref="ILineString" /> object.
 		/// </summary>
 		/// <param name="factory"></param>
 		/// <param name="l"></param>
@@ -105,7 +105,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		}
 
 		/// <summary>
-		/// Transforms a <see cref="LinearRing" /> object.
+		/// Transforms a <see cref="ILinearRing" /> object.
 		/// </summary>
 		/// <param name="factory"></param>
 		/// <param name="r"></param>
@@ -123,7 +123,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		}
 
 	    /// <summary>
-		/// Transforms a <see cref="Polygon" /> object.
+		/// Transforms a <see cref="IPolygon" /> object.
 		/// </summary>
 		/// <param name="factory"></param>
 		/// <param name="p"></param>
@@ -145,7 +145,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		}
 
 		/// <summary>
-		/// Transforms a <see cref="MultiPoint" /> object.
+		/// Transforms a <see cref="IMultiPoint" /> object.
 		/// </summary>
 		/// <param name="factory"></param>
 		/// <param name="points"></param>
@@ -175,7 +175,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		}
 
 		/// <summary>
-		/// Transforms a <see cref="MultiLineString" /> object.
+		/// Transforms a <see cref="IMultiLineString" /> object.
 		/// </summary>
 		/// <param name="factory"></param>
 		/// <param name="lines"></param>
