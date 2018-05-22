@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
@@ -13,17 +12,12 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
     {
         private readonly IGeometryFactory factory = new GeometryFactory(new PrecisionModel(10000));
 
-        [Test, Explicit("missing input file 'd:\\temp\\linestosequence.wkt'")]
-        public void TestFiles()
+        [TestCase("d:\\temp\\linestosequence.wkt")]
+        public void TestWktFile(string file)
         {
-            var allPass = true;
-            allPass &= TestFile("d:\\temp\\linestosequence.wkt");
+            if (!File.Exists(file))
+                throw new IgnoreException($"File '{file}' does not exist");
 
-            Assert.IsTrue(allPass);
-        }
-
-        private bool TestFile(string file)
-        {
             try
             {
                 Assert.DoesNotThrow(() => DoTestFile(file));
@@ -31,13 +25,13 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
             catch (InconclusiveException ice)
             {
                 Console.WriteLine(ice.Message);
-                return true;
+                return;
             }
             catch
             {
-                return false;
+                return;
             }
-            return true;
+            return;
         }
 
         private void DoTestFile(string file)
