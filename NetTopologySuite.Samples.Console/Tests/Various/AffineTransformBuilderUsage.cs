@@ -294,7 +294,10 @@ namespace NetTopologySuite.Samples.Tests.Various
         [OneTimeSetUp]
         public void FixtureSetUp()
         {
-            _currentDirectory = Environment.CurrentDirectory; 
+            _currentDirectory = Environment.CurrentDirectory;
+            if (!Directory.Exists(@"D:\temp\VAM\VAM_ikk"))
+                throw new IgnoreException("Directory not present.");
+
             Environment.CurrentDirectory = @"D:\temp\VAM\VAM_ikk";
         }
 
