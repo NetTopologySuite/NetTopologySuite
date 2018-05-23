@@ -1,12 +1,28 @@
 @echo off
 
-REM we need a better way to detect where MSBuild is located.
+echo Looking for VS 2015/17 Installation folder
+if not exist "packages\vswhere.2.4.1\" (
+	echo ... via env variable
+	set InstallDir="%VSINSTALLDIR%"
+) else (
+	echo ... via Microsoft\vswhere package
+	for /f "usebackq tokens=*" %%i in (`packages\vswhere.2.4.1\tools\vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath`) do (
+		set InstallDir="%%i\"
+	)
+)
 
-set msbuild="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild.exe"
+if "%InstallDir:"=%"=="" (
+	echo "Error trying to determine VS installation"
+	exit /b 1
+)
+
+set msbuild="%InstallDir:"=%MSBuild\15.0\Bin\msbuild.exe"
 if not exist %msbuild% (
 	echo "Error trying to find MSBuild executable"
-	exit 1
+	exit /b 1
 )
+
 set SolutionDir=%~dp0
 
-%msbuild% %SolutionDir%NetTopologySuite.sln /verbosity:minimal /property:Configuration=Release
+echo MsBuild location: %msbuild%
+%msbuild% %SolutionDir%NetTopologySuite.sln /t:"Restore;Build" /v:minimal /p:Configuration=Release
