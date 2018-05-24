@@ -1,14 +1,8 @@
 @echo off
 
-echo Looking for VS 2015/17 Installation folder
-if not exist "packages\vswhere.2.4.1\" (
-	echo ... via env variable
-	set InstallDir="%VSINSTALLDIR%"
-) else (
-	echo ... via Microsoft\vswhere package
-	for /f "usebackq tokens=*" %%i in (`packages\vswhere.2.4.1\tools\vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath`) do (
-		set InstallDir="%%i\"
-	)
+echo Looking for VS 2015/17 Installation folder via vswhere.exe
+for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.Component.MSBuild -property installationPath`) do (
+	set InstallDir="%%i\"
 )
 
 if "%InstallDir:"=%"=="" (
@@ -25,4 +19,4 @@ if not exist %msbuild% (
 set SolutionDir=%~dp0
 
 echo MsBuild location: %msbuild%
-%msbuild% %SolutionDir%NetTopologySuite.sln /t:"Restore;Build" /v:minimal /p:Configuration=Release
+%msbuild% %SolutionDir%NetTopologySuite.sln /t:"Restore;Build" /v:minimal /p:Configuration=Release /m
