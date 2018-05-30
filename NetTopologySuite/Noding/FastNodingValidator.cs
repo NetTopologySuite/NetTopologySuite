@@ -59,7 +59,6 @@ namespace NetTopologySuite.Noding
         /// </summary>
         public bool FindAllIntersections { get; set; }
 
-
         /// <summary>
         /// Gets a list of all intersections found.
         /// <remarks>

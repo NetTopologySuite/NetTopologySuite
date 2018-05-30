@@ -60,7 +60,6 @@ namespace NetTopologySuite.Geometries
             _max = parent.NumGeometries;
         }
 
-
         private Boolean HasNext()
         {
             if (_atStart)
@@ -75,7 +74,6 @@ namespace NetTopologySuite.Geometries
                 return false;
             return true;
         }
-
 
         /// <inheritdoc cref="System.Collections.IEnumerator.MoveNext"/>>
         public bool MoveNext()
@@ -151,7 +149,6 @@ namespace NetTopologySuite.Geometries
         }
 
         #region Implementation of IEnumerable
-
 
         /// <inheritdoc cref="IEnumerable{T}.GetEnumerator"/>
         public IEnumerator<IGeometry> GetEnumerator()

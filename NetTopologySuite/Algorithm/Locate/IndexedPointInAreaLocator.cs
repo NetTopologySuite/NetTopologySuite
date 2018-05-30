@@ -48,7 +48,6 @@ namespace NetTopologySuite.Algorithm.Locate
         {
             var rcc = new RayCrossingCounter(p);
 
-
             var visitor = new SegmentVisitor(rcc);
             _index.Query(p.Y, p.Y, visitor);
 

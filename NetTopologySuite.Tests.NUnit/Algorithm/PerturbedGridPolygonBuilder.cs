@@ -100,7 +100,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             return _rand.NextDouble();
         }
 
-
         private double GetRandOrdinate()
         {
             double randNum = GetRand();

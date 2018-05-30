@@ -112,13 +112,11 @@ namespace NetTopologySuite.Noding
                 SafeOctant(GetCoordinate(index), GetCoordinate(index+1));
         }
 
-
         private static Octants SafeOctant(Coordinate p0, Coordinate p1)
         {
   	        if (p0.Equals2D(p1)) return Octants.Zero;
   	        return Octant.GetOctant(p0, p1);
         }
-
 
         /// <summary>
         /// Adds EdgeIntersections for one or both

@@ -20,7 +20,6 @@ public class TestDataBuilder
 		_geomFact = geomFact;
 	}
 
-
 	public void SetExtent(Coordinate origin, double size)
 	{
 		_origin = origin;
@@ -83,7 +82,6 @@ public class TestDataBuilder
 //    System.out.println(circle);
     return circle.Boundary;
   }
-
 
 }
 }

@@ -60,7 +60,6 @@ namespace NetTopologySuite.Algorithm
         }
          */
 
-
         /// <summary>
         /// Computes the sign of the determinant of the 2x2 matrix with the given entries, in a robust way.
         /// </summary>
@@ -86,7 +85,6 @@ namespace NetTopologySuite.Algorithm
             double swap;
             double k;
             long count = 0;
-
 
             sign = 1;
 

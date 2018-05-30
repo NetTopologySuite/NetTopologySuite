@@ -132,4 +132,3 @@ namespace NetTopologySuite.Samples.Tests.Various
     }
 }
 
-

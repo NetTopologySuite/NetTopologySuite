@@ -151,7 +151,6 @@ namespace NetTopologySuite.Operation.Predicate
             }
         }
 
-
         /// <summary>
         ///
         /// </summary>

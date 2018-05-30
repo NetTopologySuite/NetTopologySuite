@@ -30,7 +30,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
         private static readonly double EXTENT = 1000;
         private static readonly int NUM_PTS_SIDE = 100;
 
-
         private bool verbose = true;
 
         [TestAttribute, CategoryAttribute("Stress")]

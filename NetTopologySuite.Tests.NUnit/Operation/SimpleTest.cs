@@ -74,7 +74,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation
             RunIsSimpleTest(a, BoundaryNodeRules.EndpointBoundaryRule, true);
         }
 
-
         private static void RunIsSimpleTest(String wkt, IBoundaryNodeRule bnRule, bool expectedResult)
         {
             RunIsSimpleTest(wkt, bnRule, expectedResult, null);

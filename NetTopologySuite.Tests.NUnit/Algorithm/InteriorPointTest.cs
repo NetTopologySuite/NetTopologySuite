@@ -22,7 +22,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             CheckInteriorPointFile(stream, name);
         }
 
-
         private static void CheckInteriorPointFile(Stream stream, string name)
         {
             var fileRdr = new WKTFileReader(new StreamReader(stream), new WKTReader());

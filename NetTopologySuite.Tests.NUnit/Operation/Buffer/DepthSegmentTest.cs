@@ -38,7 +38,6 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 {
 
-
     /**
      * @version 1.7
      */

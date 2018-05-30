@@ -106,7 +106,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             }
         }
 
-
         public void CheckTriangleEdge(double height, double width, int numPts)
         {
             for (int i = 0; i < numPts; i++)

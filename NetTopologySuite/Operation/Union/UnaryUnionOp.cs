@@ -207,7 +207,6 @@ namespace NetTopologySuite.Operation.Union
             return union;
         }
 
-
         //private static ICollection<IGeometry> ToCollection<T>(IEnumerable<T> items) where T : IGeometry
         //{
         //    var ret = new List<IGeometry>();

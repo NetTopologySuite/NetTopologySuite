@@ -508,8 +508,6 @@ POLYGON ((60 40, 60 240, 460 240, 460 40, 60 40),
       </test>
    </case>
 
-
-
   <case>
       <desc>mA - adjacent shells (shared vertices) </desc>
       <a>
@@ -665,6 +663,5 @@ MULTIPOLYGON (((0 0, 0 8, 8 8, 8 0, 0 0),
          <op name="isValid" arg1="A">      true      </op>
       </test>
    </case>
-
 
 </run>

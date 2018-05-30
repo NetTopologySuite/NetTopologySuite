@@ -76,7 +76,6 @@ namespace NetTopologySuite.Geometries.Implementation
                 Coordinates[i] = new Coordinate();
         }
 
-
         /// <summary>
         /// Creates a new sequence based on a deep copy of the given <see cref="ICoordinateSequence"/>.
         /// </summary>

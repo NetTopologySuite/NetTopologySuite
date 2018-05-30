@@ -134,7 +134,6 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
         "LINESTRING (0 0, 2 1)");
         }
 
-
         private void CheckDissolve(string wkt, string expectedWkt)
         {
             CheckDissolve(new[] { wkt }, expectedWkt);

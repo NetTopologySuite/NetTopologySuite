@@ -16,7 +16,6 @@ dotnet build ./NetTopologySuite.IO/NetTopologySuite.IO.ShapeFile/NetTopologySuit
 dotnet build ./NetTopologySuite.IO/NetTopologySuite.IO.SpatiaLite/NetTopologySuite.IO.SpatiaLite.csproj -f netstandard1.0 -c release
 dotnet build ./NetTopologySuite.IO/NetTopologySuite.IO.TopoJSON/NetTopologySuite.IO.TopoJSON.csproj -f netstandard1.0 -c release
 
-
 # TODO: replace this with the Mono 5.0 mbuild.
 #
 # Build the project

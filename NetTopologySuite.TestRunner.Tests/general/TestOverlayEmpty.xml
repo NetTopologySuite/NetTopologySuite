@@ -1,7 +1,6 @@
 <run>
   <desc>  Test type of empty results from overlay operations  </desc>
 
-
 <case>
   <a> POINT EMPTY </a>
   <b> POINT EMPTY </b>
@@ -1015,7 +1014,6 @@
 <test> <op name='difference'    arg1='A' arg2='B'>  POLYGON EMPTY   </op> </test>
 <test> <op name='symDifference' arg1='A' arg2='B'>  POLYGON EMPTY   </op> </test>
 </case>
-
 
 </run>
 

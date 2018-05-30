@@ -62,7 +62,6 @@
 <test><op name="getCentroid" arg1="A" >    POINT (100 68.57142857142857)   </op></test>
 </case>
 
-
 <case>
   <desc>mL - two single-segment lines</desc>
   <a>    MULTILINESTRING ((0 0, 0 100), (100 0, 100 100))  </a>

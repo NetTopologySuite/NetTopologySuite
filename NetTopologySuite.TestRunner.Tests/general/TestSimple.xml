@@ -145,7 +145,6 @@
 </test>
 </case>
 
-
 <case>
   <desc>mL - intersection between elements at non-vertex</desc>
   <a>
@@ -284,7 +283,6 @@
   <op name="isSimple" arg1="A"> false </op>
 </test>
 </case>
-
 
 <case>
   <desc>A - empty</desc>

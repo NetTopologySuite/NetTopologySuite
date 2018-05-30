@@ -44,7 +44,6 @@ namespace NetTopologySuite.Algorithm
         // */
         //public const int STRAIGHT = COLLINEAR;
 
-
         /// <summary>
         /// Returns the orientation index of the direction of the point <paramref name="q"/> relative to
         /// a directed infinite line specified by <c>p1-&gt;p2</c>.

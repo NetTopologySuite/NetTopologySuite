@@ -484,6 +484,5 @@ namespace NetTopologySuite.Geometries
             return InterpolateZ(p, _p0, _p1, _p2);
         }
 
-
     }
 }

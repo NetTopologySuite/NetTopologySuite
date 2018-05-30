@@ -98,7 +98,6 @@ namespace NetTopologySuite.Operation.Polygonize
             return true;
         }
 
-
         /**
          * Traverses a ring of DirectedEdges, accumulating them into a list.
          * This assumes that all dangling directed edges have been removed
@@ -121,7 +120,6 @@ namespace NetTopologySuite.Operation.Polygonize
             } while (de != startDE);
             return edges;
         }
-
 
         private readonly IGeometryFactory _factory;
         private readonly List<DirectedEdge> _deList = new List<DirectedEdge>();
@@ -159,7 +157,6 @@ namespace NetTopologySuite.Operation.Polygonize
                 Utilities.Assert.IsTrue(de == startDE || !de.IsInRing, "found DE already in ring");
             } while (de != startDE);
         }
-
 
         /// <summary>
         /// Adds a DirectedEdge which is known to form part of this ring.

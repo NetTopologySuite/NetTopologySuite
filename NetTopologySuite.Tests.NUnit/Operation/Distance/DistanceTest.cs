@@ -29,7 +29,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Distance
             Assert.AreEqual(2.23606, g1.Distance(g2), 0.0001);
         }
 
-
         [TestAttribute]
         public void TestEverything()
         {

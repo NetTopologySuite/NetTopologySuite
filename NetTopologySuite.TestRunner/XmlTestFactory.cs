@@ -81,8 +81,6 @@ namespace Open.Topology.TestRunner
             if (!string.IsNullOrEmpty(arg3))
                 xmlTest.Argument2 = arg3;
 
-
-
             string strResult = testInfo.GetValue("result");
             if (string.IsNullOrEmpty(strResult))
                 return null;

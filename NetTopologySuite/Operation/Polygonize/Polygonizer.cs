@@ -310,7 +310,6 @@ namespace NetTopologySuite.Operation.Polygonize
             } while (isMoreToScan);
         }
 
-
         /// <summary>
         /// For each outer hole finds and includes a single outer shell.
         /// This seeds the traversal algorithm for finding only polygonal shells.

@@ -18,7 +18,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
     public class InCirclePerf
     {
 
-
         private readonly Coordinate _pa = new Coordinate(687958.05, 7460725.97);
         private readonly Coordinate _pb = new Coordinate(687957.43, 7460725.93);
         private readonly Coordinate _pc = new Coordinate(687957.58, 7460721);

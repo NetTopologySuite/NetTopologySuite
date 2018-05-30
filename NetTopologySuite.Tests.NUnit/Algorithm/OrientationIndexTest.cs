@@ -69,5 +69,4 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     return geom.Coordinates;
   }
 
-
 }}

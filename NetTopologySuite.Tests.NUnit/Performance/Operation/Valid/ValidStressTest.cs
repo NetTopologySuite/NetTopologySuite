@@ -86,7 +86,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
         }
     }
 
-
     /// <summary>
     /// Creates comb-like geometries.
     /// Crossed combs provide a geometry with a very high ratio of intersections to edges.

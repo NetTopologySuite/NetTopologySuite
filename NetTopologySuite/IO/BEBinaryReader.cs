@@ -112,7 +112,6 @@ namespace NetTopologySuite.IO
             return BitTweaks.ReverseByteOrder(base.ReadInt64());
         }
 
-
         /// <summary>
         /// Reads an 8-byte unsigned integer from the current stream using big endian encoding
         /// and advances the position of the stream by eight bytes.

@@ -30,7 +30,6 @@ using System.Windows;
 
 //[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)]
 
-
 [assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //Speicherort der designspezifischen Ressourcenwörterbücher
                                      //(wird verwendet, wenn eine Ressource auf der Seite
@@ -39,7 +38,6 @@ using System.Windows;
                                               //(wird verwendet, wenn eine Ressource auf der Seite, in der Anwendung oder einem
                                               // designspezifischen Ressourcenwörterbuch nicht gefunden werden kann.)
 )]
-
 
 // Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
 //

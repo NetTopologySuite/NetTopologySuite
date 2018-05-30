@@ -403,7 +403,6 @@ public class ShewchuksDeterminant
     return (D[Dlength - 1]);
   }
 
-
   private static readonly double epsilon;
 
   private static readonly  double splitter;
@@ -452,7 +451,6 @@ public class ShewchuksDeterminant
   /* Don't change this routine unless you fully understand it. */
   /*                                                                           */
   /*****************************************************************************/
-
 
     /* Repeatedly divide `epsilon' by two until it is too small to add to */
     /* one without causing roundoff. (Also check if the sum is equal to */
@@ -777,7 +775,5 @@ public class ShewchuksDeterminant
     }
     return Q;
   }
-
-
 
 }}

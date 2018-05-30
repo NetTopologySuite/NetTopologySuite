@@ -204,6 +204,5 @@ namespace Open.Topology.TestRunner.Operations
             throw new Exception(msg + locStr);
         }
 
-
     }
 }

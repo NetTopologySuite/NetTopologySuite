@@ -130,7 +130,6 @@ namespace NetTopologySuite.Geometries.Implementation
             return new DotSpatialAffineCoordinateSequence(xy, z, m);
         }
 
-
         /// <summary>
         /// Gets the Ordinate flags that sequences created by this factory can cope with.
         /// </summary>

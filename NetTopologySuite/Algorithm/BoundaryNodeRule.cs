@@ -161,6 +161,5 @@ namespace NetTopologySuite.Algorithm
             }
         }
 
-
     }
 }

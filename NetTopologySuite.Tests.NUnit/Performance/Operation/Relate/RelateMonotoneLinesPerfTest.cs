@@ -26,7 +26,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Relate
     {
         private const int DENSIFY_FACTOR = 1000;
 
-
         public RelateMonotoneLinesPerfTest()
             : base("RelateMonotoneLinesPerfTest")
         {

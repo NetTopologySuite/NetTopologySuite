@@ -79,4 +79,3 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
     }
 }
 
-

@@ -58,7 +58,6 @@ namespace NetTopologySuite.Shape.Random
         /// </summary>
         public double GutterFraction { get; set; }
 
-
         /// <summary>
         /// Gets the <see cref="IMultiPoint"/> containing the generated point
         /// </summary>

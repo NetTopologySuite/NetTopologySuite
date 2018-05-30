@@ -330,7 +330,6 @@ namespace NetTopologySuite.Mathematics
             return this+y;
         }
 
-
         //public DD SelfAdd(DD y)
         //{
         //    return SelfAdd(y._hi, y._lo);
@@ -393,7 +392,6 @@ namespace NetTopologySuite.Mathematics
         {
             return Add(-y);
         }
-
 
         ///**
         // * Subtracts the argument from the value of <tt>this</tt>.
@@ -681,7 +679,6 @@ namespace NetTopologySuite.Mathematics
             double zlo = (C - zhi) + c;
             return new DD(zhi, zlo);
         }
-
 
         #region Ordering Functions
 
@@ -1085,7 +1082,6 @@ namespace NetTopologySuite.Mathematics
             return 0;
         }
 
-
         /*------------------------------------------------------------
          *   Output
          *------------------------------------------------------------
@@ -1193,7 +1189,6 @@ namespace NetTopologySuite.Mathematics
                 return "-" + digitsWithDecimal + expStr;
             return digitsWithDecimal + expStr;
         }
-
 
         /**
          * Extracts the significant digits in the decimal representation of the argument.
@@ -1332,7 +1327,6 @@ namespace NetTopologySuite.Mathematics
 
             return xMag;
         }
-
 
         /*------------------------------------------------------------
          *   Input

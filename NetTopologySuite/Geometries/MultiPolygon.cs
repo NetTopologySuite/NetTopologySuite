@@ -66,7 +66,6 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         protected override SortIndexValue SortIndex => SortIndexValue.MultiPolygon;
 
-
         /// <summary>
         ///
         /// </summary>

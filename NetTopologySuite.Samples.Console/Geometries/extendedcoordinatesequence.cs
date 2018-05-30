@@ -164,7 +164,6 @@ namespace NetTopologySuite.Samples.Geometries
                 exCoord.M = exc.M;
         }
 
-
         /// <summary>
         /// Returns ordinate X (0) of the specified coordinate.
         /// </summary>

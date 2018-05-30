@@ -180,7 +180,6 @@ namespace NetTopologySuite.Geometries
             return 0;
         }
 
-
         ///<summary>
         /// Determines the orientation index of a <see cref="Coordinate"/> relative to this segment.
         /// The orientation index is as defined in <see cref="Orientation.Index"/>.

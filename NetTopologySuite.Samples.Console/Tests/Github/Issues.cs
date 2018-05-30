@@ -307,7 +307,6 @@ namespace NetTopologySuite.Samples.Tests.Github
             Assert.That(pt1, Is.EqualTo(pt3));
         }
 
-
         [Test, Category("GitHub Issue"), Description("Polygon / rectangle intersection returns empty polygon"), Ignore("Claim not valid")]
         public void TestIssue149()
         {
@@ -331,7 +330,6 @@ namespace NetTopologySuite.Samples.Tests.Github
 
             //ToImage(1, polygon, boundingbox, boundingbox.Intersection(polygon));
             //Assert.IsTrue(polygon.Intersects(boundingbox));
-
 
             var result = boundingbox.Intersection(polygon); // =>{ POLYGON EMPTY }
             //Assert.IsFalse(result.IsEmpty, "result.IsEmpty");
@@ -359,7 +357,6 @@ namespace NetTopologySuite.Samples.Tests.Github
             var reader = new WKTReader();
             var g1 = reader.Read("MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)),((15 5, 40 10, 10 20, 5 10, 15 5)))");
             var g2 = reader.Read("MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)),((20 35, 10 30, 10 10, 30 5, 45 20, 20 35),(30 20, 20 15, 20 25, 30 20)))");
-
 
             IGeometry res = null;
             //                                                                                     |
@@ -482,7 +479,6 @@ namespace NetTopologySuite.Samples.Tests.Github
             Console.WriteLine("Orientation CCW = {0}", isCCW);
         }
 
-
         [Test]
         public void CrossAndIntersectionTest()
         {
@@ -541,7 +537,6 @@ namespace NetTopologySuite.Samples.Tests.Github
         }
 
         #region utility
-
 
         static void ToImage(int nr, IGeometry geom1, IGeometry geom2, IGeometry geom3)
         {

@@ -50,7 +50,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
   		            CascadedPolygonUnionTester.MinSimilarityMeaure);
         }
 
-
         // TODO: add some synthetic tests
 
         private static CascadedPolygonUnionTester tester = new CascadedPolygonUnionTester();

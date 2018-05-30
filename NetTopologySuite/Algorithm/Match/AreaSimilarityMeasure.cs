@@ -29,6 +29,5 @@ public class AreaSimilarityMeasure : ISimilarityMeasure
 		return areaInt / areaUnion;
 	}
 
-
 }
 }

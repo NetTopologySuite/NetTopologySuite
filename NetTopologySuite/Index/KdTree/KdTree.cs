@@ -60,7 +60,6 @@ namespace NetTopologySuite.Index.KdTree
             return coord.ToCoordinateArray();
         }
 
-
         private KdNode<T> _root;
         private long _numberOfNodes;
         private readonly double _tolerance;
@@ -316,8 +315,6 @@ namespace NetTopologySuite.Index.KdTree
         {
             QueryNode(_root, queryEnv, true, new KdNodeVisitor<T>(result));
         }
-
-
 
         private class KdNodeVisitor<T> : IKdNodeVisitor<T> where T : class
         {

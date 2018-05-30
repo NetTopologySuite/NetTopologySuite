@@ -57,7 +57,6 @@ namespace NetTopologySuite.Geometries
             _geometries = geometries;
         }
 
-
         /// <summary>
         /// Gets a value to sort the geometry
         /// </summary>
@@ -118,7 +117,6 @@ namespace NetTopologySuite.Geometries
             }
             return result;
         }
-
 
         /// <summary>
         ///

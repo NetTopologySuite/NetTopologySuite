@@ -81,7 +81,6 @@ namespace NetTopologySuite.Algorithm
             return Math.Sqrt(dx * dx + dy * dy + dz * dz);
         }
 
-
         ///<summary>Computes the distance between two 3D segments.</summary>
         ///<param name="A">The start point of the first segment</param>
         ///<param name="B">The end point of the first segment</param>

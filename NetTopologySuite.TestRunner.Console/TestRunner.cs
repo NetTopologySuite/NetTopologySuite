@@ -23,7 +23,6 @@ namespace ConsoleTestRunner
         private int m_nExceptions = 0;
         private int m_nTotalCount = 0;
 
-
         public TestRunner(TestInfoCollection listTestInfo)
         {
             m_listTestInfo = listTestInfo;

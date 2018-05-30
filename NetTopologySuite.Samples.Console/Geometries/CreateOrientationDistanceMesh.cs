@@ -53,7 +53,6 @@ namespace NetTopologySuite.Samples.Geometries
             }
         }
 
-
         public IList<IGeometry> BuildSlices(Coordinate coord)
         {
             const double start = 101.25d;

@@ -106,6 +106,5 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
             return poly;
         }
 
-
     }
 }

@@ -66,11 +66,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             for (int i = 0; i < MaxIter; i++)
             {
 
-
 //    	count = testPrepGeomNotCached(g, lines);
                 count = testPrepGeomCached(g, lines);
 //    	count = testOriginal(g, lines);
-
 
             }
             sw.Stop();

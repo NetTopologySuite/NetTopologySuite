@@ -60,7 +60,6 @@ POLYGON ((-3138.9918179090096 39.99292981815133, -3195.9318721744207 131.7765582
     </test>
   </case>
 
-
 	<case>
 	<desc> https://trac.osgeo.org/geos/ticket/368 </desc>
 	  <a>

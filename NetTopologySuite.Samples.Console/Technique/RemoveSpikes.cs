@@ -104,7 +104,6 @@ namespace NetTopologySuite.Samples.Technique
                     _lastSegment = new LineSegment(seq.GetCoordinate(i), seq.GetCoordinate(i+1));
                 }
 
-
                 private static void FixSpike(ICoordinateSequence seq, int fixIndex, int fixWithIndex)
                 {
                     seq.SetOrdinate(fixIndex, Ordinate.X, seq.GetOrdinate(fixWithIndex, Ordinate.X));
@@ -148,7 +147,6 @@ namespace NetTopologySuite.Samples.Technique
             }
         }
 
-
         public class SpikeRemovingUtility
         {
             public static IGeometry RemoveSpikes(IGeometry geom, double spikeThreshold)
@@ -158,7 +156,6 @@ namespace NetTopologySuite.Samples.Technique
                 res.Apply(filter);
                 return res;
             }
-
 
             [TestCase(
                 "POLYGON ((194908.68715217288 586962.86751464731, 194881.30215215127 586952.0195146437, 194879.05315214754 586952.15151464322, 194877.20115214764 586954.13551464747, 194831.95715210476 587019.88551468146, 194760.91615204382 587122.9405147346, 194857.09315212426 587178.23851475632, 194858.9451521278 587178.63551475492, 194860.26815212792 587177.44451475318, 194873.10015214139 587158.65951475059, 194925.75215218749 587081.797514704, 194953.13715220965 587042.10951468861, 194962.79415221984 587027.42551468522, 194985.68115224215 586994.0885146677, 194986.21015224193 586991.70651466073, 194985.54815224075 586989.32551465672, 194908.68715217288 586962.86751464731))",
@@ -267,7 +264,6 @@ namespace NetTopologySuite.Samples.Technique
                 s1 = s2;
             }
 
-
         }
 
         private void CheckSpike(ICoordinateSequence seq, int si1, int si2)
@@ -279,7 +275,6 @@ namespace NetTopologySuite.Samples.Technique
         {
 
         }*/
-
 
         private enum SpikeFix
         {
@@ -307,7 +302,6 @@ namespace NetTopologySuite.Samples.Technique
 
             return SpikeFix.NoSpike;
         }
-
 
     }
 }

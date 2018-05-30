@@ -140,7 +140,6 @@ namespace NetTopologySuite.GeometriesGraph.Index
             }
         }
 
-
         /// <summary>
         /// Tests whether the envelopes of two chain sections overlap (intersect).
         /// </summary>

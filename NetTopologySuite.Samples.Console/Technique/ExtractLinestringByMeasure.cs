@@ -85,7 +85,6 @@ namespace NetTopologySuite.Samples.Technique
                 tuples.Add(Tuple.Create(sequence.GetCoordinate(0), startMeasure));
             }
 
-
             for (var i = 1; i < sequence.Count; i++)
             {
                 var measure = sequence.GetOrdinate(i, Ordinate.M);

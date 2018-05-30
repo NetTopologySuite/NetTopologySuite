@@ -184,6 +184,5 @@ namespace NetTopologySuite.Mathematics
             return string.Format(NumberFormatInfo.InvariantInfo, "[{0}, {1}, {2}]", _x, _y, _z);
         }
 
-
     }
 }

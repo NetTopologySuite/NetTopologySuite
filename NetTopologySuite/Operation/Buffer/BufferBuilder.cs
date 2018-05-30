@@ -158,7 +158,6 @@ namespace NetTopologySuite.Operation.Buffer
             //saveEdges(edgeList.getEdges(), "run" + runCount + "_collapsedEdges");
         }
 
-
         /// <summary>
         /// Inserted edges are checked to see if an identical edge already exists.
         /// If so, the edge is not inserted, but its label is merged

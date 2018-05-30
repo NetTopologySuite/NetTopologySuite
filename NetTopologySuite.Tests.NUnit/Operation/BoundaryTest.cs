@@ -91,8 +91,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation
                             "POINT (100 100)");
         }
 
-
-
         private static void RunBoundaryTest(String wkt, IBoundaryNodeRule bnRule, String wktExpected)
         {
             IGeometry g = rdr.Read(wkt);

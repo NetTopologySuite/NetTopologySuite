@@ -65,7 +65,6 @@ namespace NetTopologySuite.Samples.Geometries
 			Difference(wktA, wktB, new PrecisionModel(1));
 		}
 
-
 		public virtual void  Intersection(string wktA, string wktB, PrecisionModel pm)
 		{
 			Console.WriteLine("Running example using Precision Model = " + pm);

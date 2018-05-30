@@ -74,7 +74,6 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-
         /// <summary>
         /// Returns the name of this object's interface.
         /// </summary>

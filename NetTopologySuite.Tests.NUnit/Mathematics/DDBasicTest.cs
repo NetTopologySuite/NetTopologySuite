@@ -253,7 +253,6 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             Assert.IsTrue(isDeltaZero);
         }
 
-
         private static void CheckReciprocal(double x, double errBound)
         {
             var xdd = new DD(x);

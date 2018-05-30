@@ -151,7 +151,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
             //            gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.Gold)), gp3);
             //        gr.DrawPath(Pens.Gold, gp3);
 
-
             //    }
             //    var path = System.IO.Path.ChangeExtension(System.IO.Path.GetTempFileName(), "png");
             //    img.Save(path, ImageFormat.Png);

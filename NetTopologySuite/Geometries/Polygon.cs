@@ -106,7 +106,6 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         protected override SortIndexValue SortIndex => SortIndexValue.Polygon;
 
-
         /// <summary>
         /// Returns a vertex of this <c>Geometry</c>
         /// (usually, but not necessarily, the first one).
@@ -599,7 +598,6 @@ namespace NetTopologySuite.Geometries
                 holes[i] = (ILinearRing)_holes[i].Reverse();
             return new Polygon(shell, holes, Factory);
         }
-
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 

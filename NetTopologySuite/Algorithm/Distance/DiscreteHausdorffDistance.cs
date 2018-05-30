@@ -215,7 +215,6 @@ namespace NetTopologySuite.Algorithm.Distance
                     _maxPtDist.SetMaximum(_minPtDist);
                 }
 
-
             }
 
             public Boolean GeometryChanged => false;

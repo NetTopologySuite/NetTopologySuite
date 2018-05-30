@@ -66,7 +66,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             CheckIsValid(poly, false);
         }
 
-
         private void CheckIsValid(Geometry geom, bool expected)
         {
             IsValidOp validator = new IsValidOp(geom);

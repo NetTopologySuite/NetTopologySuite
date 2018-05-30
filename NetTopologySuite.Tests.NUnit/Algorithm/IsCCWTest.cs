@@ -21,7 +21,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 GetCoordinateSequence("POLYGON ((60 180, 140 240, 140 240, 140 240, 200 180, 120 120, 60 180))");
             Assert.IsFalse(Orientation.IsCCW(seq));
 
-
             Coordinate[] pts2 = GetCoordinates("POLYGON ((60 180, 140 120, 100 180, 140 240, 60 180))");
             Assert.IsTrue(Orientation.IsCCW(pts2));
             ICoordinateSequence seq2 =

@@ -201,7 +201,6 @@ namespace NetTopologySuite.Algorithm
             return InputLines[segmentIndex][ptIndex];
         }
 
-
         /// <summary>
         /// Compute the intersection of a point p and the line p1-p2.
         /// This function computes the bool value of the hasIntersection test.

@@ -96,7 +96,6 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             Console.WriteLine(resultTriangles.AsText());
         }
 
-
         [TestAttribute /*, ExpectedException() */]
         public void TestInvertedItalicNTS()
         {
@@ -143,7 +142,6 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             IMultiLineString result = dtb.GetEdges(geom.Factory);
             Console.WriteLine(result.AsText());
 
-
         }
 
         [TestAttribute]
@@ -174,7 +172,6 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             dtb.SetSites(geom);
             IMultiLineString result = dtb.GetEdges(geom.Factory);
             Console.WriteLine(result.AsText());
-
 
         }
     }

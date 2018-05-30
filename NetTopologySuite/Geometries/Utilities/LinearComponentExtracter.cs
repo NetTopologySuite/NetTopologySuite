@@ -77,7 +77,6 @@ namespace NetTopologySuite.Geometries.Utilities
             return lines;
         }
 
-
         /// <summary>
         /// Extracts the linear components from a single point.
         /// If more than one point is to be processed, it is more

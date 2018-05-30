@@ -79,7 +79,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             tree.Query(new Envelope(0, 0, 1, 1), new ItemVisitor());
         }
 
-
         [Test]
         public void TestCreateParentsFromVerticalSlice()
         {
@@ -141,7 +140,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
                 throw x;
             }
         }
-
 
         [Test]
         public void TestVerticalSlices()
@@ -225,7 +223,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             }
             Assert.That(difference, Is.EqualTo(0));
         }
-
 
         private static void DoTestCreateParentsFromVerticalSlice(int childCount,
                                                           int nodeCapacity, int expectedChildrenPerParentBoundable,

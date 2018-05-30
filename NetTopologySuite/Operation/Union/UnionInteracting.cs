@@ -19,7 +19,6 @@ namespace NetTopologySuite.Operation.Union
             return uue.Union();
         }
 
-
         private readonly IGeometryFactory _geomFactory;
 
         private readonly IGeometry _g0;
@@ -99,7 +98,6 @@ namespace NetTopologySuite.Operation.Union
             }
             return _geomFactory.BuildGeometry(extractedGeoms);
         }
-
 
     }
 }

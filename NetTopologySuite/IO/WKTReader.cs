@@ -726,7 +726,6 @@ namespace NetTopologySuite.IO
         /// </summary>
         public bool RepairRings { get; set; }
 
-
         #endregion
     }
 }

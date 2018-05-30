@@ -198,7 +198,6 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns></returns>
         public abstract double GetOrdinate(int index, Ordinate ordinate);
 
-
         /// <summary>
         /// Sets the first ordinate of a coordinate in this sequence.
         /// </summary>

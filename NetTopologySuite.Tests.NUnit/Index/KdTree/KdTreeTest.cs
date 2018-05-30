@@ -43,7 +43,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
             kd.Insert(new Coordinate(493, 87), "F");
             kd.Insert(new Coordinate(502, 290), "G");
 
-
             var res = kd.NearestNeighbor(new Coordinate(297, 133)); //Should be B
             Assert.AreEqual("B", res.Data);
             res = kd.NearestNeighbor(new Coordinate(272, 216)); //Should be E        }
@@ -124,7 +123,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
                 new Envelope(0, 99, 0, 99),
                 "MULTIPOINT ( (10 60), (20 60), (20 60))");
         }
-
 
         private void TestQuery(string wktInput, double tolerance,
             Envelope queryEnv, string wktExpected)

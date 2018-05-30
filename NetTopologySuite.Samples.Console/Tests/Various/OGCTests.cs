@@ -24,7 +24,6 @@ namespace NetTopologySuite.Samples.Tests.Various
             ashton = Reader.Read("POLYGON(( 62 48, 84 48, 84 30, 56 30, 56 34, 62 48))");
         }
 
-
         /// <summary>
         ///
         /// </summary>

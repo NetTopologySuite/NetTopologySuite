@@ -32,7 +32,6 @@ namespace Open.Topology.TestRunner.Functions
 
         public static IGeometry Densify(Geometry g, double distance) { return Densifier.Densify(g, distance); }
 
-
         public static IGeometry MergeLines(Geometry g)
         {
             var merger = new LineMerger();

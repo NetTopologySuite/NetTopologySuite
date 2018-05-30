@@ -45,7 +45,6 @@ namespace NetTopologySuite.Operation.Overlay.Validate
 
         private Coordinate _invalidLocation;
 
-
         public OverlayResultValidator(IGeometry a, IGeometry b, IGeometry result)
         {
             /*

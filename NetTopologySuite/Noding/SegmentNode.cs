@@ -40,12 +40,10 @@ namespace NetTopologySuite.Noding
             _isInterior = !coord.Equals2D(segString.Coordinates[segmentIndex]);
         }
 
-
         /// <summary>
         /// Gets the <see cref="GeoAPI.Geometries.Coordinate"/> giving the location of this node.
         /// </summary>
         public Coordinate Coordinate => Coord;
-
 
         /// <summary>
         ///

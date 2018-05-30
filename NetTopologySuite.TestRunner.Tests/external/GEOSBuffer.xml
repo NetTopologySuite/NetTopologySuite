@@ -23,7 +23,6 @@ MULTIPOLYGON (
 </test>
 </case>
 
-
 <case>
 <desc>GEOS 3.0.0_rc4 bufferReducedPrecision</desc>
 <a>

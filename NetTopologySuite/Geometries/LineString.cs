@@ -39,7 +39,6 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         private ICoordinateSequence _points;
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LineString"/> class.
         /// </summary>
@@ -78,7 +77,6 @@ namespace NetTopologySuite.Geometries
         /// Gets a value to sort the geometry
         /// </summary>
         protected override SortIndexValue SortIndex => SortIndexValue.LineString;
-
 
         /// <summary>
         ///

@@ -106,7 +106,6 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
             return polygon.Factory.BuildGeometry(output);
         }
 
-
         [STAThread]
         public static void Main(string[] args)
         {
@@ -256,7 +255,6 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
             //        if (geom3 is IPolygonal)
             //            gr.FillPath(Brushes.Orange, gp3);
             //        gr.DrawPath(Pens.Peru, gp3);
-
 
             //    }
             //    var path = System.IO.Path.ChangeExtension(System.IO.Path.GetTempFileName(), "png");

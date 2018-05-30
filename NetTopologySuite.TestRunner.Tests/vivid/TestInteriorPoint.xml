@@ -53,5 +53,4 @@
 <test><op name="getInteriorPoint" arg1="A" >    POINT (138 200)  </op></test>
 </case>
 
-
 </run>

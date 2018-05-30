@@ -138,7 +138,6 @@ namespace NetTopologySuite.Algorithm
             if (!l.EnvelopeInternal.Intersects(p))
                 return Location.Exterior;
 
-
             Coordinate[] pt = l.Coordinates;
             if(!l.IsClosed)
                 if(p.Equals(pt[0]) || p.Equals(pt[pt.Length - 1]))

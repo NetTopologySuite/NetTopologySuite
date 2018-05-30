@@ -67,7 +67,6 @@ namespace NetTopologySuite.Index.Strtree
             return _boundable1.Bounds.Distance(_boundable2.Bounds);
         }
 
-
         /*
         public double GetMaximumDistance()
         {

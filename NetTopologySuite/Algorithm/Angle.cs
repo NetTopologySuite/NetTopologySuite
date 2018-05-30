@@ -42,7 +42,6 @@ namespace NetTopologySuite.Algorithm
             return (angleDegrees * System.Math.PI) / 180.0;
         }
 
-
         ///<summary>
         /// Returns the angle of the vector from p0 to p1, relative to the positive X-axis.
         /// </summary>

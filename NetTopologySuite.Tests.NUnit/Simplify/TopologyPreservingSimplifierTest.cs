@@ -156,7 +156,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-
         [TestAttribute]
         public void TestMultiPoint()
         {

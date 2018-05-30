@@ -14,7 +14,6 @@ namespace NetTopologySuite.Utilities
 
         public static String TotalString => Format(Total);
 
-
         public const double KB = 1024;
         public const double MB = 1048576;
         public const double GB = 1073741824;

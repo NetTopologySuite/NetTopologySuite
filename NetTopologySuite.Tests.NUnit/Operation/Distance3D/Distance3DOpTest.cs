@@ -300,7 +300,6 @@ public class Distance3DOpTest
 				10);
 	}
 
-
     [TestAttribute]
 	public void TestMultiPoint()
 	{

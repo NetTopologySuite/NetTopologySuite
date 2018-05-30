@@ -112,7 +112,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     CheckOriginalJTS(pts, true);
   }
 
-
   public void TestBadCCW6()
   {
     // from JTS Convex Hull "Almost collinear" unit test
@@ -148,8 +147,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             Assert.IsTrue(expected == IsAllOrientationsEqualDD(pts), "DD");
         }
-
-
 
         public static bool IsAllOrientationsEqual(
             double p0x, double p0y,

@@ -101,8 +101,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             return poly;
         }
 
-
-
         /// <summary>
         /// Creates a star from a "circular" sine wave
         /// </summary>

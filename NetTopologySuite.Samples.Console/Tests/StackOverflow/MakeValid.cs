@@ -139,7 +139,6 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
             polygonizer.Add(toAdd);
         }
 
-
         /// <summary>
         /// Get a geometry from a collection of polygons.
         /// </summary>

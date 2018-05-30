@@ -60,7 +60,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             if (_pia2 == null)
                 _pia2 = new SimplePointInAreaLocator(_area);
 
-
             int ptGridWidth = (int)Math.Sqrt(_numPts);
 
             Envelope areaEnv = _area.EnvelopeInternal;

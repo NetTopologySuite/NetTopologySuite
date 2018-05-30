@@ -46,7 +46,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
                    - (b.Y - a.Y) * (c.X - a.X);
         }
 
-
         /// <summary>
         /// Tests if a point is inside the circle defined by the points a, b, c.
         /// This test uses robust computation.
@@ -256,7 +255,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
                 Console.WriteLine();
             }
         }
-
 
     }
 }

@@ -251,4 +251,3 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
     }
 }
 
-

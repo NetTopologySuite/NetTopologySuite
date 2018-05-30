@@ -38,7 +38,6 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             RunRounding(geoms);
         }
 
-
         [TestAttribute]
         public void TestBadLines1() {
             string[] badLines1 = {
@@ -71,7 +70,6 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 };
             RunRounding(collapse2);
         }
-
 
         [TestAttribute]
         public void TestBadNoding1() {
@@ -143,7 +141,6 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 }
 
                 var difference = Math.Abs(shortestDistanceToPointAfterNoding - shortestDistanceToPointBeforeNoding);
-
 
                 Console.WriteLine("Scale: {0}", scale);
                 Console.WriteLine("Distance to point before noding: {0}", shortestDistanceToPointBeforeNoding);

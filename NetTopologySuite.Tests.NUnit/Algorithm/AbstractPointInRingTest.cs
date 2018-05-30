@@ -40,13 +40,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             // on angled segment
             RunPtInRing(Location.Boundary, new Coordinate(22, 7), Comb);
 
-
-
             RunPtInRing(Location.Interior, new Coordinate(1, 5), Comb);
             RunPtInRing(Location.Interior, new Coordinate(5, 5), Comb);
             RunPtInRing(Location.Interior, new Coordinate(1, 7), Comb);
-
-
 
             RunPtInRing(Location.Exterior, new Coordinate(12, 10), Comb);
             RunPtInRing(Location.Exterior, new Coordinate(16, 5), Comb);

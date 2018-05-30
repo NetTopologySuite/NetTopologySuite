@@ -76,6 +76,4 @@
 <test>  <op name="intersects"     arg1="A" arg2="B">   true  </op> </test>
 </case>
 
-
-
 </run>

@@ -24,7 +24,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             readerFloat = new WKTReader();
         }
 
-
         [TestAttribute]
         public void TestComparable()
         {
@@ -100,8 +99,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             doTestFromCommcast2003AtYahooDotCa(new WKTReader());
         }
-
-
 
         [TestAttribute]
         public void TestDepthMismatchAssertionFailedException()
@@ -431,13 +428,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             DoTestEqualsExact(sameClassButEmpty, anotherSameClassButEmpty,
                 emptyDifferentClass, x);
 
-
             /**
              * Test comparison of non-empty versus empty.
              */
             DoTestEqualsExact(x, somethingExactlyEqual,
                 sameClassButEmpty, sameClassButEmpty);
-
 
             DoTestEqualsExact(collectionFactory.CreateCollection(
                     new IGeometry[] { x, x }, geometryFactory),

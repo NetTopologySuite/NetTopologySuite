@@ -346,7 +346,6 @@ namespace NetTopologySuite.Index.Strtree
             return valuesTreeForNode.Count <= 0 ? null : valuesTreeForNode;
         }
 
-
         /// <returns>
         /// A test for intersection between two bounds, necessary because subclasses
         /// of AbstractSTRtree have different implementations of bounds.

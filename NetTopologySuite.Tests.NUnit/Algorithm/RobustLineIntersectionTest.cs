@@ -213,7 +213,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             CheckIntersection(pt, 0, null, 0);
         }
 
-
         private void CheckIntersection(String wkt1, String wkt2,
             int expectedIntersectionNum,
             Coordinate[] intPt,

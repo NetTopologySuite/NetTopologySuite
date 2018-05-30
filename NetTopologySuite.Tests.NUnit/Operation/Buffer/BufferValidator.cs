@@ -45,7 +45,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             }
         }
 
-
         private IGeometry _original;
         private readonly double _bufferDistance;
         private readonly Dictionary<string, TestCase> _nameToTestMap = new Dictionary<string, TestCase>();
@@ -171,7 +170,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
         {
             return _original ?? (_original = _wktReader.Read(_wkt));
         }
-
 
         public BufferValidator SetPrecisionModel(PrecisionModel precisionModel)
         {

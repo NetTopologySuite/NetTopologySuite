@@ -98,7 +98,6 @@ namespace NetTopologySuite.Geometries.Utilities
             set => _isUserDataCopied = value;
         }
 
-
         /// <summary>
         /// Edit the input <c>Geometry</c> with the given edit operation.
         /// Clients can create subclasses of GeometryEditorOperation or

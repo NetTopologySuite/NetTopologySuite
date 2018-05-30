@@ -26,7 +26,6 @@ namespace NetTopologySuite.Geometries
             return (new OctagonalEnvelope(geom)).ToGeometry(geom.Factory);
         }
 
-
         private static double ComputeA(double x, double y)
         {
             return x + y;
@@ -38,7 +37,6 @@ namespace NetTopologySuite.Geometries
         }
 
         private static readonly double SQRT2 = Math.Sqrt(2.0);
-
 
         // initialize in the null state
         private double _minX = Double.NaN;
@@ -367,7 +365,6 @@ namespace NetTopologySuite.Geometries
                 && other._minB >= _minB
                 && other._maxB <= _maxB;
         }
-
 
         /// <summary>
         /// Function to convert <c>this</c> octagonal envelope into a geometry

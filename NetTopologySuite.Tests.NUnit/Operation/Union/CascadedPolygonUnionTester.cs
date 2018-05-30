@@ -52,7 +52,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
           System.out.println("Testing similarity with tolerance = " + distanceTolerance);
           bool isSameWithinTolerance =  SimilarityValidator.isSimilar(union1, union2, distanceTolerance);
 
-
           Assert.IsTrue(isSameWithinTolerance);
         }
       */

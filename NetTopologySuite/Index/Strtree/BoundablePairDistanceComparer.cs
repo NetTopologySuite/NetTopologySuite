@@ -27,7 +27,6 @@ namespace NetTopologySuite.Index.Strtree
         /// <summary>The normal order</summary>
         readonly bool _normalOrder;
 
-
         /// <summary>
         /// Instantiates a new boundable pair distance comparator.
         /// </summary>

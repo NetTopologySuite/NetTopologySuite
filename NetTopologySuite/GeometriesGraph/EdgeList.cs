@@ -17,7 +17,6 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         private readonly IDictionary<OrientedCoordinateArray, Edge> _ocaMap = new SortedDictionary<OrientedCoordinateArray, Edge>();
 
-
         /// <summary>
         /// Remove the selected Edge element from the list if present.
         /// </summary>
@@ -113,7 +112,6 @@ namespace NetTopologySuite.GeometriesGraph
                     return i;
             return -1;
         }
-
 
         /// <summary>
         ///

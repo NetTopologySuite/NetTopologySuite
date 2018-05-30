@@ -209,7 +209,6 @@ namespace NetTopologySuite.Algorithm
             return Orientation.IsCCW(ring);
         }
 
-
         /// <summary>
         /// Computes the orientation of a point q to the directed line segment p1-p2.
         /// The orientation of a point relative to a directed line segment indicates
@@ -269,7 +268,6 @@ namespace NetTopologySuite.Algorithm
         {
             return DistanceComputer.PointToSegmentString(p, line);
         }
-
 
         /// <summary>
         /// Computes the distance from a line segment AB to a line segment CD.

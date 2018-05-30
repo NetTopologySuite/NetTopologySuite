@@ -124,7 +124,6 @@ namespace NetTopologySuite.Algorithm
                 return true;
             return false;
 
-
         }
     }
 }

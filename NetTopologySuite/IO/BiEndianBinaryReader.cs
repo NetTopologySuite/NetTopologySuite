@@ -130,7 +130,6 @@ namespace NetTopologySuite.IO
                 : result;
         }
 
-
         /// <summary>
         /// Reads an 8-byte unsigned integer from the current stream using the specified encoding
         /// and advances the position of the stream by eight bytes.

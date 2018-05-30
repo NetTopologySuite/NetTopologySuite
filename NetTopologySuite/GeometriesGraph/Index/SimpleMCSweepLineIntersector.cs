@@ -17,7 +17,6 @@ namespace NetTopologySuite.GeometriesGraph.Index
         // statistics information
         int _nOverlaps;
 
-
         /// <summary>
         ///
         /// </summary>

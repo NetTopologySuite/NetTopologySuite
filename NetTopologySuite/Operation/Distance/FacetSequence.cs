@@ -81,7 +81,6 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         public bool IsPoint => _end - _start == 1;
 
-
         /// <summary>
         /// Computes the distance to another facet sequence
         /// </summary>

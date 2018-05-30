@@ -73,6 +73,5 @@ namespace NetTopologySuite.SnapRound
         //    return geom.Buffer(0);
         //}
 
-
     }
 }

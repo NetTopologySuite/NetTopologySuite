@@ -234,7 +234,6 @@ namespace NetTopologySuite.Algorithm
                 Debug.WriteLine("Distance = " + distance);
         }
 
-
         private Coordinate IntersectionWithNormalization(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
             Coordinate n1 = new Coordinate(p1);

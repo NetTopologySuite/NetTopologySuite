@@ -54,7 +54,6 @@ namespace NetTopologySuite.Operation.Relate
             return im;
         }
 
-
         private readonly RelateComputer _relate;
 
         /// <summary>

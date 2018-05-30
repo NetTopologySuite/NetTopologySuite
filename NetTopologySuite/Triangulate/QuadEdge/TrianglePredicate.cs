@@ -122,7 +122,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return IsInCircleNormalized(a, b, c, p);
         }
 
-
         /// <summary>
         /// Tests if a point is inside the circle defined by
         /// the triangle with vertices a, b, c (oriented counter-clockwise).
@@ -163,7 +162,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
             return isInCircle;
         }
-
 
         /// <summary>
         /// Computes twice the area of the oriented triangle (a, b, c), i.e., the area
@@ -213,7 +211,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
             return isInCircle;
         }
-
 
         /// <summary>
         /// Computes twice the area of the oriented triangle (a, b, c), i.e., the area
@@ -329,7 +326,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             }
 // ReSharper restore RedundantStringFormatCall
         }
-
 
     }
 }

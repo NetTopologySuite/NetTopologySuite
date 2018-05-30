@@ -96,7 +96,6 @@ namespace NetTopologySuite.Geometries
             return true;
         }
 
-
         /// <summary>
         /// Adds an array of coordinates to the list.
         /// </summary>

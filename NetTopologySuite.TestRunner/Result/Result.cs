@@ -117,7 +117,6 @@ namespace Open.Topology.TestRunner.Result
         }
     }
 
-
     public class GeometryResult : IResult<IGeometry>
     {
         public GeometryResult(IGeometry result)

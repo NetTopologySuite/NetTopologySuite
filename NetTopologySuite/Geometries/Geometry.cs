@@ -140,7 +140,6 @@ namespace NetTopologySuite.Geometries
             GeometryCollection = 7
         }
 
-
         //FObermaier: not *readonly* due to SRID property in geometryfactory
         private /*readonly*/ IGeometryFactory _factory;
 
@@ -528,7 +527,6 @@ namespace NetTopologySuite.Geometries
             get => _dimension;
             set => _dimension = value;
         }
-
 
         /*private IGeometry boundary;*/
 
@@ -1184,7 +1182,6 @@ namespace NetTopologySuite.Geometries
         //[Obsolete]
         //internal abstract int GetHashCodeInternal(int baseValue, Func<int, int> operation);
 
-
         /// <summary>
         /// Returns the Well-known Text representation of this <c>Geometry</c>.
         /// For a definition of the Well-known Text format, see the OpenGIS Simple
@@ -1800,7 +1797,6 @@ namespace NetTopologySuite.Geometries
             return Normalized().EqualsExact(g.Normalized());
         }
 
-
         /// <summary>
         /// Performs an operation with or on this <c>Geometry</c>'s coordinates.
         /// </summary>
@@ -1871,7 +1867,6 @@ namespace NetTopologySuite.Geometries
         /// <returns>A deep copy of this geometry</returns>
         public abstract IGeometry Copy();
 
-
         /// <summary>
         /// Converts this <c>Geometry</c> to normal form (or canonical form ).
         /// </summary>
@@ -1895,7 +1890,6 @@ namespace NetTopologySuite.Geometries
         /// </para>
         /// </remarks>
         public abstract void Normalize();
-
 
         /// <summary>
         /// Creates a new Geometry which is a normalized copy of this Geometry.
@@ -2084,7 +2078,6 @@ namespace NetTopologySuite.Geometries
         /// Gets a value indicating if this geometry is a geometry collection
         /// </summary>
         protected bool IsGeometryCollection => OgcGeometryType == OgcGeometryType.GeometryCollection;
-
 
         /// <summary>
         /// Returns the minimum and maximum x and y values in this <c>Geometry</c>,

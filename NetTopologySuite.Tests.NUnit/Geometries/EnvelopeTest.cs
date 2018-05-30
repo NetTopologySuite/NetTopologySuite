@@ -244,7 +244,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(-expected == env2.CompareTo(env1), "-expected == env2.CompareTo(env1)" );
         }
 
-
         [Test]
         public void TestToString()
         {

@@ -17,7 +17,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
     public class DDOrientationIndexAccuracyTest : GeometryTestCase
     {
 
-
         [Test]
         public void TestRightTriangleForDeterminant()
         {
@@ -37,8 +36,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                 CheckPointOnSeg(p1, p2, q);
             }
         }
-
-
 
         private void CheckPointOnSeg(Coordinate p1, Coordinate p2, Coordinate q)
         {

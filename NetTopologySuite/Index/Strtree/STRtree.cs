@@ -362,7 +362,6 @@ namespace NetTopologySuite.Index.Strtree
             return NearestNeighbour(bp);
         }
 
-
         private static TItem[] NearestNeighbour(BoundablePair<TItem> initBndPair)
         {
             return NearestNeighbour(initBndPair, Double.PositiveInfinity);
@@ -459,7 +458,6 @@ namespace NetTopologySuite.Index.Strtree
                 var bndPair = priQ.Poll();
                 var currentDistance = bndPair.Distance;
 
-
                 /**
                  * If the distance for the first node in the queue
                  * is >= the current maximum distance in the k queue , all other nodes
@@ -467,7 +465,6 @@ namespace NetTopologySuite.Index.Strtree
                  * So the current minDistance must be the true minimum,
                  * and we are done.
                  */
-
 
                 if (currentDistance >= distanceLowerBound)
                 {

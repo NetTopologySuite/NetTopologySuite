@@ -144,7 +144,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             Console.WriteLine("Finished in \n\tPG NonCached: {0}\n\tPG Cached   : {1}\n\told JTS Algo: {2}", time1, time2, time3);
         }
 
-
         private static int TestOriginal(IGeometry g, IEnumerable<IGeometry> lines)
         {
             Console.WriteLine("Using orginal JTS algorithm");

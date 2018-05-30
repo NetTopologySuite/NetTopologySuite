@@ -58,14 +58,12 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
             return sw.ElapsedMilliseconds / (double)nIter;
         }
 
-
         public double RunDecimal(int nIter)
         {
             var sw = new Stopwatch();
             sw.Start();
             for (var i = 0; i < nIter; i++)
             {
-
 
                 var a = new decimal(9.0);
                 var factor = new decimal(10.0);
@@ -104,7 +102,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
                               + "   time = " + sw.ElapsedMilliseconds);
             return sw.ElapsedMilliseconds/(double) nIter;
         }
-
 
         //  public double XrunDoubleDoubleSelf(int nIter)
         //  {

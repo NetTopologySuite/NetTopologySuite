@@ -40,8 +40,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
             _polys = polys;
         }
 
-
-
         public void runAll()
         {
             Console.WriteLine("# items: " + _polys.Count);

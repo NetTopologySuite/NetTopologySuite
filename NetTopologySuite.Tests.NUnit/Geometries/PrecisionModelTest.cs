@@ -27,7 +27,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(4, new PrecisionModel(1000).MaximumSignificantDigits);
         }
 
-
         [TestAttribute]
         public void TestMakePrecise()
         {
@@ -36,7 +35,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             PreciseCoordinateTester(pm10, 1200.4, 1240.4, 1200, 1240);
             PreciseCoordinateTester(pm10, 1209.4, 1240.4, 1210, 1240);
         }
-
 
         [TestAttribute]
         public void TestMakePreciseNegative()

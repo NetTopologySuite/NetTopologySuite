@@ -14,7 +14,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Locate
 
         private readonly WKTReader _reader = new WKTReader();
 
-
         protected override void RunPtInRing(Location expectedLoc, Coordinate pt, String wkt)
         {
             var geom = _reader.Read(wkt);

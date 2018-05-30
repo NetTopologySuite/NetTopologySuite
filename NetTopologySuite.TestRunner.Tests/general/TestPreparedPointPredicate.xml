@@ -30,5 +30,4 @@
 <test>  <op name="intersects" arg1="A" arg2="B">   false   </op> </test>
 </case>
 
-
 </run>

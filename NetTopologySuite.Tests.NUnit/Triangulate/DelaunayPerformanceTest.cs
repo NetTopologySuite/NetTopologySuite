@@ -39,7 +39,6 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             Run(3000000);
         }
 
-
         //static readonly IGeometryFactory GeomFact = new GeometryFactory();
 
         private const double SideLen = 10.0;

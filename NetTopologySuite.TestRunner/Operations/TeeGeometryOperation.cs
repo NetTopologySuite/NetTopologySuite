@@ -65,6 +65,5 @@ namespace Open.Topology.TestRunner.Operations
 
         protected abstract void RunTeeOp(String opName, IGeometry geometry, Object[] args);
 
-
     }
 }

@@ -21,7 +21,6 @@ LINESTRING (-10 0, 0 0, 10 0)  </a>
 LINESTRING (-10 10, 0.001 -0.001, 10 10)  </b>
 </case>
 
-
 <case>
   <desc>Displaced in Quadrant 2 </desc>
   <a>
@@ -29,7 +28,6 @@ LINESTRING (0 100, 100 100, 100 0)  </a>
   <b>
 LINESTRING (150 150, 100.0001 100.0001)  </b>
 </case>
-
 
 <case>
   <desc>Displaced in Quadrant 0 </desc>

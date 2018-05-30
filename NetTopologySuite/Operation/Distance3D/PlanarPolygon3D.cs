@@ -158,6 +158,5 @@ namespace NetTopologySuite.Operation.Distance3D
             }
         }
 
-
     }
 }

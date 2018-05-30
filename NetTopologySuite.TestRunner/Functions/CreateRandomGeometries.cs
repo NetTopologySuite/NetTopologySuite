@@ -121,7 +121,6 @@ namespace Open.Topology.TestRunner.Functions
             return result;
         }
 
-
         public static IGeometry RandomSegments(IGeometry g, int nPts)
         {
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);

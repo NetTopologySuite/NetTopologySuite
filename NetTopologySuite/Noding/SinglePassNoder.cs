@@ -32,7 +32,6 @@ namespace NetTopologySuite.Noding
         /// </summary>
         public ISegmentIntersector SegmentIntersector { get; set; }
 
-
         /// <summary>
         /// Computes the noding for a collection of <see cref="ISegmentString"/>s.
         /// Some Noders may add all these nodes to the input <see cref="ISegmentString"/>s;

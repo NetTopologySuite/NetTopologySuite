@@ -37,7 +37,6 @@ namespace NetTopologySuite.Mathematics
             return new Vector2D(v);
         }
 
-
         /// <summary>
         /// Creates a vector from a <see cref="Coordinate"/>.
         /// </summary>
@@ -397,7 +396,6 @@ namespace NetTopologySuite.Mathematics
             return new Coordinate(_x, _y);
         }
 
-
         /// <summary>
         /// Creates a copy of this vector
         /// </summary>
@@ -442,7 +440,6 @@ namespace NetTopologySuite.Mathematics
             result = 37 * result + Coordinate.GetHashCode(_y);
             return result;
         }
-
 
     }
 }

@@ -21,7 +21,6 @@ namespace NetTopologySuite.Utilities
             return g == null ? Factory : g.Factory;
         }
 
-
         public static IGeometryFactory GetFactoryOrDefault(IEnumerable<IGeometry> gs)
         {
             if (gs == null)

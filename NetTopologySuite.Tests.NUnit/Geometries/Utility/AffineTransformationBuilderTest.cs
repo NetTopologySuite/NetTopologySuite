@@ -153,7 +153,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             AssertEqualPoint(pp0, trans.Transform(p0, dest));
         }
 
-
         static void RunSingular(double p0x, double p0y,
             double p1x, double p1y,
             double p2x, double p2y,
@@ -222,7 +221,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             AssertEqualPoint(pp1, atbTrans.Transform(p1, dest));
             AssertEqualPoint(pp2, atbTrans.Transform(p2, dest));
         }
-
 
         private static void AssertEqualPoint(Coordinate p, Coordinate q)
         {

@@ -40,7 +40,6 @@ namespace Open.Topology.TestRunner.Operations
             return typeof (IGeometry).IsAssignableFrom(GetGeometryReturnType(name));
         }
 
-
         public static Type GetGeometryReturnType(String functionName)
         {
 
@@ -205,7 +204,6 @@ namespace Open.Topology.TestRunner.Operations
             }
             return false;
         }
-
 
         private IResult InvokeMethod(MethodInfo method, IGeometry geometry, Object[] args)
         {

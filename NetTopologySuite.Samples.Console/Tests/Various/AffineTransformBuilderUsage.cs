@@ -185,8 +185,6 @@ namespace NetTopologySuite.Samples.Tests.Various
                       matrix[0][2] * matrix[0][1] * t2[1] + matrix[1][1] * matrix[0][2] * t2[0]) * frac;
                 trans[5] += -meanOutput.Y + meanInput.Y;
 
-
-
                 //Calculate s0
                 double s0 = 0;
                 for (int i = 0; i < _inputs.Count; i++)
@@ -287,7 +285,6 @@ namespace NetTopologySuite.Samples.Tests.Various
                 return matrix;
             }
         }
-
 
         private string _currentDirectory;
 

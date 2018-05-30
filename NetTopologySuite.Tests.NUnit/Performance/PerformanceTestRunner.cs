@@ -68,7 +68,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance
             }
         }
 
-
         private static MethodInfo[] FindMethods(Type clz, String methodPrefix)
         {
             var runMeths = new List<MethodInfo>();

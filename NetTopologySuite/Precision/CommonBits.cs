@@ -2,7 +2,6 @@ using NetTopologySuite.Utilities;
 
 using BitConverter = System.BitConverter;
 
-
 namespace NetTopologySuite.Precision
 {
     /// <summary>

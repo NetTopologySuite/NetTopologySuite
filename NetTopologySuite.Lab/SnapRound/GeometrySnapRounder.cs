@@ -46,7 +46,6 @@ namespace NetTopologySuite.SnapRound
             set => _isLineworkOnly = value;
         }
 
-
         /// <summary>
         /// Snap-rounds the given geometry.
         /// </summary>
@@ -87,7 +86,6 @@ namespace NetTopologySuite.SnapRound
             }
             return geomFact.BuildGeometry(lines);
         }
-
 
         private IGeometry ReplaceLines(IGeometry geom, IList<ISegmentString> segStrings)
         {

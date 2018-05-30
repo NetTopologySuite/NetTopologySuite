@@ -42,7 +42,6 @@
 //        public TestFunctionAAPrec() : base("TestFunctionAAPrec.xml") { }
 //    }
 
-
 //    public class TestFunctionLA : VividXUnitRunner
 //    {
 //        public TestFunctionLA() : base("TestFunctionLA.xml") { }
@@ -52,7 +51,6 @@
 //    {
 //        public TestFunctionLAPrec() : base("TestFunctionLAPrec.xml") { }
 //    }
-
 
 //    public class TestFunctionLL : VividXUnitRunner
 //    {

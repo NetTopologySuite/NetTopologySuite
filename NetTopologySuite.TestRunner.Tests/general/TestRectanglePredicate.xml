@@ -298,7 +298,4 @@
 <test>  <op name="coveredBy"  arg1="B" arg2="A">   true   </op> </test>
 </case>
 
-
-
-
 </run>

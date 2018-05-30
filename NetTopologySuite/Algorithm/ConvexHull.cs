@@ -71,7 +71,6 @@ namespace NetTopologySuite.Algorithm
             if (_inputPts.Length == 2)
                 return _geomFactory.CreateLineString(_inputPts);
 
-
             var reducedPts = _inputPts;
             // use heuristic to reduce points, if large
             if (_inputPts.Length > 50)
@@ -154,7 +153,6 @@ namespace NetTopologySuite.Algorithm
             }
             return pad;
         }
-
 
         /// <summary>
         /// Pre sorts the coordinates

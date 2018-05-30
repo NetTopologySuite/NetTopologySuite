@@ -53,7 +53,6 @@ namespace NetTopologySuite.Algorithm
             return (new MinimumDiameter(geom)).Diameter;
         }
 
-
         private readonly IGeometry _inputGeom;
         private readonly bool _isConvex;
 

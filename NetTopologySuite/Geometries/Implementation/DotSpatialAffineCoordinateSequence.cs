@@ -295,7 +295,6 @@ namespace NetTopologySuite.Geometries.Implementation
             return null;
         }
 
-
         public Coordinate[] ToCoordinateArray()
         {
             var ret = GetCachedCoords();

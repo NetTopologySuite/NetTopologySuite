@@ -35,7 +35,6 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             Assert.IsTrue(loc0.CompareTo(new LinearLocation(1, 0.1)) == 0);
         }
 
-
         [TestAttribute]
         public void TestSameSegmentLineString()
         {

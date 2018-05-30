@@ -74,7 +74,6 @@ namespace NetTopologySuite.Samples.Operation.Linemerge
 			    Console.WriteLine(obj);
 		}
 
-
 		internal virtual IGeometry Read(string lineWKT)
 		{
 			try

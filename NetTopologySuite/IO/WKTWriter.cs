@@ -585,7 +585,6 @@ namespace NetTopologySuite.IO
             }
         }
 
-
         /// <summary>
         /// Converts a <c>LineString</c> to &lt;LineString Text format, then
         /// appends it to the writer.

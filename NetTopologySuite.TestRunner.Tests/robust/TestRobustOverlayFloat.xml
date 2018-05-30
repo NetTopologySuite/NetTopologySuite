@@ -78,7 +78,6 @@ POLYGON ((698231.847335025 2388474.57994264, 698440.416211779
 </test>
 </case>
 
-
 <case>
   <desc>AA - OLD robustness failure (works with snapping)</desc>
   <a>
@@ -98,7 +97,5 @@ POLYGON ((698230.86813842 2388473.60074604, 698104.551776442
   </op>
 </test>
 </case>
-
-
 
 </run>

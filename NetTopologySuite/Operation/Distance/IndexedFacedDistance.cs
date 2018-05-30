@@ -114,7 +114,6 @@ namespace NetTopologySuite.Operation.Distance
         }
         */
 
-
         /**
          * Tests whether the base geometry lies within
          * a specified distance of the given geometry.

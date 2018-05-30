@@ -42,6 +42,5 @@ namespace NetTopologySuite.SnapRound
             return snapped;
         }
 
-
     }
 }

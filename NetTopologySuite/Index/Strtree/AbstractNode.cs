@@ -86,7 +86,6 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         public bool IsEmpty => _childBoundables.Count == 0;
 
-
         /// <summary>
         /// Adds either an AbstractNode, or if this is a leaf node, a data object
         /// (wrapped in an ItemBoundable).
