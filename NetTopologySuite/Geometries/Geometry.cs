@@ -2196,6 +2196,7 @@ namespace NetTopologySuite.Geometries
         /// 
         /// </summary>
         /// <returns></returns>
+        /// <remarks>Polygon overrides to check for actual rectangle.</remarks>
         public virtual bool IsRectangle => false;
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */

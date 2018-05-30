@@ -206,6 +206,25 @@ namespace RTools_NTS.Util
 		public bool ParseHexNumbers
 		{
 			get => (parseHexNumbers);
+			//{
+			//	for (int i = 'A'; i <= 'F'; i++)
+			//	{
+			//		if (!IsCharType((char)i, CharTypeBits.Digit))
+			//		{
+			//			return(false);
+			//		}
+			//	}
+			//	for (int i = 'a'; i <= 'f'; i++)
+			//	{
+			//		if (!IsCharType((char)i, CharTypeBits.Digit))
+			//		{
+			//			return(false);
+			//		}
+			//	}
+			//	if (!IsCharType('x', CharTypeBits.Digit)) return(false);
+			//
+			//	return(true);
+			//}
 		    set 
 			{
 				parseHexNumbers = value;

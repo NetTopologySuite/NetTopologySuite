@@ -115,7 +115,17 @@ namespace NetTopologySuite.Geometries
         //    }
         //}
 
-       public override IGeometry Boundary => (new BoundaryOp(this)).GetBoundary();
+        public override IGeometry Boundary => (new BoundaryOp(this)).GetBoundary();
+        //{
+        //    get
+        //    {
+        //        if(IsEmpty)
+        //            return Factory.CreateGeometryCollection(null);
+        //        GeometryGraph g = new GeometryGraph(0, this);
+        //        Coordinate[] pts = g.GetBoundaryPoints();
+        //        return Factory.CreateMultiPoint(pts);
+        //    }
+        //}
 
         /// <summary>
         /// Creates a <see cref="MultiLineString" /> in the reverse order to this object.
