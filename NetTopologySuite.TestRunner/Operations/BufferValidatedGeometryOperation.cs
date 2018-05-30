@@ -45,7 +45,7 @@ namespace Open.Topology.TestRunner.Operations
             return GetReturnType(op.ToString());
         }
 
-        public Type GetReturnType(String opName)
+        public Type GetReturnType(string opName)
         {
             return _chainOp.GetReturnType(opName);
         }
@@ -68,7 +68,7 @@ namespace Open.Topology.TestRunner.Operations
         /// <param name="args">The arguments to the operation (which may be typed as Strings)</param>
         /// <returns>The result</returns>
         /// <exception cref="Exception">If some error was encountered trying to find or process the operation</exception>
-        public IResult Invoke(XmlTestType op, IGeometry geometry, Object[] args)
+        public IResult Invoke(XmlTestType op, IGeometry geometry, object[] args)
         {
             string opName = op.ToString();
             bool isBufferOp = opName.Equals("buffer", StringComparison.InvariantCultureIgnoreCase);
@@ -81,14 +81,14 @@ namespace Open.Topology.TestRunner.Operations
             return InvokeBufferOpValidated(geometry /*, args */);
         }
 
-        private void ParseArgs(Object[] args)
+        private void ParseArgs(object[] args)
         {
             _argCount = args.Length;
-            _distance = Double.Parse((String) args[0]);
+            _distance = double.Parse((string) args[0]);
             if (_argCount >= 2)
-                _quadSegments = Int32.Parse((String) args[1]);
+                _quadSegments = int.Parse((string) args[1]);
             if (_argCount >= 3)
-                _endCapStyle = (EndCapStyle)Int32.Parse((String)args[2]);
+                _endCapStyle = (EndCapStyle)int.Parse((string)args[2]);
         }
 
         private IResult InvokeBufferOpValidated(IGeometry geometry /*, Object[] args*/)
@@ -193,9 +193,9 @@ namespace Open.Topology.TestRunner.Operations
             }
         }
 
-        private static void ReportError(String msg, Coordinate loc)
+        private static void ReportError(string msg, Coordinate loc)
         {
-            String locStr = "";
+            string locStr = "";
             if (loc != null)
             {
                 locStr = " at " + WKTWriter.ToPoint(loc);

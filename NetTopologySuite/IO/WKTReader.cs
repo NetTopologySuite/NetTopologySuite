@@ -180,7 +180,7 @@ namespace NetTopologySuite.IO
 		/// stream, or an empty array if "EMPTY" is the next element returned by
 		/// the stream.
 		/// </returns>
-        private Coordinate[] GetCoordinates(IEnumerator<Token> tokens, Boolean skipExtraParenthesis, ref Boolean hasZ)
+        private Coordinate[] GetCoordinates(IEnumerator<Token> tokens, bool skipExtraParenthesis, ref bool hasZ)
 		{
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY"))
@@ -202,7 +202,7 @@ namespace NetTopologySuite.IO
         /// <param name="tokens"></param>
         /// <param name="skipExtraParenthesis"></param>
         /// <returns></returns>
-        private Coordinate GetPreciseCoordinate(IEnumerator<Token> tokens, Boolean skipExtraParenthesis, ref Boolean hasZ)
+        private Coordinate GetPreciseCoordinate(IEnumerator<Token> tokens, bool skipExtraParenthesis, ref bool hasZ)
         {
             var coord = new Coordinate();
 			var extraParenthesisFound = false;
@@ -220,7 +220,7 @@ namespace NetTopologySuite.IO
             if (IsNumberNext(tokens))
             {
                 coord.Z = GetNextNumber(tokens);
-                if (!Double.IsNaN(coord.Z)) hasZ = true;
+                if (!double.IsNaN(coord.Z)) hasZ = true;
             }
 
 			if (skipExtraParenthesis &&
@@ -235,7 +235,7 @@ namespace NetTopologySuite.IO
             return coord;
         }
 
-        private static Boolean IsStringValueNext(IEnumerator<Token> tokens, String stringValue)
+        private static bool IsStringValueNext(IEnumerator<Token> tokens, string stringValue)
 		{
 			var token = tokens.Current /*as Token*/;
             if (token == null)
@@ -283,7 +283,7 @@ namespace NetTopologySuite.IO
             {
                 if (string.Compare(token.Object.ToString(), NaNString, StringComparison.OrdinalIgnoreCase) == 0)
                 {
-                    return Double.NaN;
+                    return double.NaN;
                 }
                 throw new GeoAPI.IO.ParseException("Expected number but encountered word: " + token.StringValue);
             }

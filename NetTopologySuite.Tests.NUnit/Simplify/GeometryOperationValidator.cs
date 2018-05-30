@@ -13,14 +13,14 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
         private readonly WKTReader _reader = new WKTReader();
         private readonly IGeometry[] _ioGeometry;
         private bool _expectedSameStructure;
-        private String _wktExpected;
+        private string _wktExpected;
 
         public GeometryOperationValidator(IGeometry[] ioGeometry)
         {
             _ioGeometry = ioGeometry;
         }
 
-        public GeometryOperationValidator SetExpectedResult(String wktExpected)
+        public GeometryOperationValidator SetExpectedResult(string wktExpected)
         {
             _wktExpected = wktExpected;
             return this;
@@ -76,9 +76,9 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
 
         public GeometryOperationValidator TestEmpty(bool isEmpty)
         {
-            String failureCondition = isEmpty ? "not empty" : "empty";
+            string failureCondition = isEmpty ? "not empty" : "empty";
             bool test = _ioGeometry[1].IsEmpty == isEmpty;
-            Assert.IsTrue(test, String.Format("simplified geometry is {0}", failureCondition));
+            Assert.IsTrue(test, string.Format("simplified geometry is {0}", failureCondition));
             return this;
         }
 

@@ -12,7 +12,7 @@ namespace NetTopologySuite.Noding
     /// </summary>
     public class SegmentNodeList : IEnumerable<object>
     {
-        private readonly IDictionary<SegmentNode, Object> _nodeMap = new SortedDictionary<SegmentNode, Object>();
+        private readonly IDictionary<SegmentNode, object> _nodeMap = new SortedDictionary<SegmentNode, object>();
         private readonly NodedSegmentString _edge;  // the parent edge
 
         /// <summary>

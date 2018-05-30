@@ -80,7 +80,7 @@ namespace NetTopologySuite.Samples.Tests.Various
 
             Assert.AreEqual(test.X, point.X);
             Assert.AreEqual(test.Y, point.Y);
-            Boolean result = test.Equals(point);   // Geometry not overrides ==...
+            bool result = test.Equals(point);   // Geometry not overrides ==...
             Assert.IsTrue(result);
         }
 
@@ -98,7 +98,7 @@ namespace NetTopologySuite.Samples.Tests.Various
 
             // Assertis correct because WktReader creates test with coordinates == 0
             // point has the double values as coordinates
-            Boolean result = test.Equals(point);   // Remember: Geometry not overrides ==...
+            bool result = test.Equals(point);   // Remember: Geometry not overrides ==...
             Assert.IsFalse(result);
         }
 
@@ -116,7 +116,7 @@ namespace NetTopologySuite.Samples.Tests.Various
 
             // Assertis correct because WktReader creates test with coordinates == 0
             // point has the double values as coordinates
-            Boolean result = test.Equals(point);   // Are you read that Geometry not overrides ==...
+            bool result = test.Equals(point);   // Are you read that Geometry not overrides ==...
             Assert.IsFalse(result);
         }
 

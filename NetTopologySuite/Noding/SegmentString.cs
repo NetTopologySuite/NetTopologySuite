@@ -53,7 +53,7 @@ namespace NetTopologySuite.Noding
         /// </summary>
         /// <param name="pts">The vertices of the segment string.</param>
         /// <param name="data">The user-defined data of this segment string (may be null).</param>
-        public NodedSegmentString(Coordinate[] pts, Object data)
+        public NodedSegmentString(Coordinate[] pts, object data)
         {
             _nodeList = new SegmentNodeList(this);
 
@@ -171,7 +171,7 @@ namespace NetTopologySuite.Noding
             /*var ei = */_nodeList.Add(intPt, normalizedSegmentIndex);
         }
 
-        public LineSegment this[Int32 index]
+        public LineSegment this[int index]
         {
             get
             {
@@ -187,7 +187,7 @@ namespace NetTopologySuite.Noding
                 "Setting line segments in a ISegmentString not supported.");
         }
         /// <inheritdoc cref="object.ToString()"/>
-        public override String ToString()
+        public override string ToString()
         {
             return WKTWriter.ToLineString(new CoordinateArraySequence(_pts));
         }

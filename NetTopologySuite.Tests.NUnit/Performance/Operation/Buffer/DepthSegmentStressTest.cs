@@ -173,7 +173,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 
             }
 
-            public int XcompareTo(Object obj)
+            public int XcompareTo(object obj)
             {
                 DepthSegment other = (DepthSegment) obj;
 

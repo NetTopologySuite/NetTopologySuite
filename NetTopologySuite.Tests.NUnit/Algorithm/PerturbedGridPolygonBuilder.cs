@@ -18,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         private int _numLines = 10;
         private double _lineWidth = 20;
 
-        private Int32 _seed;
+        private int _seed;
         private Random _rand;
 
         private IGeometry _grid;

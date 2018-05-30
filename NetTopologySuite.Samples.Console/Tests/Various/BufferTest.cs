@@ -48,11 +48,11 @@ namespace NetTopologySuite.Samples.Tests.Various
         {
             IGeometry path = new WKTReader(factory).Read(GeomText);
             Assert.IsNotNull(path);
-            Debug.WriteLine(String.Format("Original Points: {0}", path.NumPoints));
+            Debug.WriteLine(string.Format("Original Points: {0}", path.NumPoints));
 
             IGeometry simplified = DouglasPeuckerSimplifier.Simplify(path, 2);
             Assert.IsNotNull(simplified);
-            Debug.WriteLine(String.Format("Simplified Points: {0}", simplified.NumPoints));
+            Debug.WriteLine(string.Format("Simplified Points: {0}", simplified.NumPoints));
 
             IGeometry buffered = simplified.Buffer(1.143);
             Assert.IsNotNull(buffered);

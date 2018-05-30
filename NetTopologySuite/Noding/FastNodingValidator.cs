@@ -43,7 +43,7 @@ namespace NetTopologySuite.Noding
 
         private readonly List<ISegmentString> _segStrings = new List<ISegmentString>();
         private InteriorIntersectionFinder _segInt;
-        private Boolean _isValid = true;
+        private bool _isValid = true;
 
         /// <summary>
         /// Creates a new noding validator for a given set of linework.
@@ -71,7 +71,7 @@ namespace NetTopologySuite.Noding
         ///<summary>
         /// Checks for an intersection and reports if one is found.
         ///</summary>
-        public Boolean IsValid
+        public bool IsValid
         {
             get
             {
@@ -84,7 +84,7 @@ namespace NetTopologySuite.Noding
         /// Returns an error message indicating the segments containing the intersection.
         ///</summary>
         ///<returns>an error message documenting the intersection location</returns>
-        public String GetErrorMessage()
+        public string GetErrorMessage()
         {
             if (IsValid)
                 return "no intersections found";

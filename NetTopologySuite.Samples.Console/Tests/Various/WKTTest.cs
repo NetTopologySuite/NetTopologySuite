@@ -42,25 +42,25 @@ namespace NetTopologySuite.Samples.Tests.Various
         private void TestFormatting(Coordinate c)
         {
             IGeometry point = GeometryFactory.Floating.CreatePoint(c);
-            String result = writer.Write(point);
+            string result = writer.Write(point);
             Debug.WriteLine(result);
             IGeometry geom = new WKTReader(GeometryFactory.Floating).Read(result);
             string tos = geom.ToString();
-            Assert.IsTrue(String.Equals(tos, result));
+            Assert.IsTrue(string.Equals(tos, result));
 
             point = GeometryFactory.FloatingSingle.CreatePoint(c);
             result = writer.Write(point);
             Debug.WriteLine(result);
             geom = new WKTReader(GeometryFactory.Floating).Read(result);
             tos = geom.ToString();
-            Assert.IsTrue(String.Equals(tos, result));
+            Assert.IsTrue(string.Equals(tos, result));
 
             point = GeometryFactory.Fixed.CreatePoint(c);
             result = writer.Write(point);
             Debug.WriteLine(result);
             geom = new WKTReader(GeometryFactory.Floating).Read(result);
             tos = geom.ToString();
-            Assert.IsTrue(String.Equals(tos, result));
+            Assert.IsTrue(string.Equals(tos, result));
         }
 
 		/// <summary>

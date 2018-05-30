@@ -342,7 +342,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// the geometry of this edge.
         /// </summary>
         /// <returns>a String representing this edge's geometry</returns>
-        public override String ToString()
+        public override string ToString()
         {
             var p0 = _vertex.Coordinate;
             var p1 = Dest.Coordinate;

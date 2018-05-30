@@ -44,7 +44,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         private double _maxDistanceFound;
 
         private bool _isValid = true;
-        private String _errMsg;
+        private string _errMsg;
         private Coordinate _errorLocation;
         private IGeometry _errorIndicator;
 
@@ -78,7 +78,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             {
 // ReSharper disable once RedundantStringFormatCall
                 // String.Format needed to build 2.0 release!
-                Debug.WriteLine(String.Format("Min Dist= {0}  err= {1}  Max Dist= {2}  err= {3}",
+                Debug.WriteLine(string.Format("Min Dist= {0}  err= {1}  Max Dist= {2}  err= {3}",
                     _minDistanceFound,
                     1.0 - _minDistanceFound / _bufDistance,
                     _maxDistanceFound,
@@ -88,7 +88,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             return _isValid;
         }
 
-        public String ErrorMessage => _errMsg;
+        public string ErrorMessage => _errMsg;
 
         public Coordinate ErrorLocation => _errorLocation;
 

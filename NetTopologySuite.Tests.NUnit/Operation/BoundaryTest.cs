@@ -25,7 +25,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
         [TestAttribute]
         public void Test1()
         {
-            String a = "MULTILINESTRING ((0 0, 10 10), (10 10, 20 20))";
+            string a = "MULTILINESTRING ((0 0, 10 10), (10 10, 20 20))";
             // under MultiValent, the common point is the only point on the boundary
             RunBoundaryTest(a, BoundaryNodeRules.MultivalentEndpointBoundaryRule,
                             "POINT (10 10)");
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
         [TestAttribute]
         public void Test2LinesTouchAtEndpoint2()
         {
-            String a = "MULTILINESTRING ((0 0, 10 10), (10 10, 20 20))";
+            string a = "MULTILINESTRING ((0 0, 10 10), (10 10, 20 20))";
 
             // under Mod-2, the common point is not on the boundary
             RunBoundaryTest(a, BoundaryNodeRules.Mod2BoundaryRule,
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
         [TestAttribute]
         public void Test3LinesTouchAtEndpoint2()
         {
-            String a = "MULTILINESTRING ((0 0, 10 10), (10 10, 20 20), (10 10, 10 20))";
+            string a = "MULTILINESTRING ((0 0, 10 10), (10 10, 20 20), (10 10, 10 20))";
 
             // under Mod-2, the common point is on the boundary (3 mod 2 = 1)
             RunBoundaryTest(a, BoundaryNodeRules.Mod2BoundaryRule,
@@ -70,7 +70,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
         [TestAttribute]
         public void TestMultiLineStringWithRingTouchAtEndpoint()
         {
-            String a = "MULTILINESTRING ((100 100, 20 20, 200 20, 100 100), (100 200, 100 100))";
+            string a = "MULTILINESTRING ((100 100, 20 20, 200 20, 100 100), (100 200, 100 100))";
 
             // under Mod-2, the ring has no boundary, so the line intersects the interior ==> not simple
             RunBoundaryTest(a, BoundaryNodeRules.Mod2BoundaryRule,
@@ -82,7 +82,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
         [TestAttribute]
         public void TestRing()
         {
-            String a = "LINESTRING (100 100, 20 20, 200 20, 100 100)";
+            string a = "LINESTRING (100 100, 20 20, 200 20, 100 100)";
 
             // rings are simple under all rules
             RunBoundaryTest(a, BoundaryNodeRules.Mod2BoundaryRule,
@@ -91,7 +91,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
                             "POINT (100 100)");
         }
 
-        private static void RunBoundaryTest(String wkt, IBoundaryNodeRule bnRule, String wktExpected)
+        private static void RunBoundaryTest(string wkt, IBoundaryNodeRule bnRule, string wktExpected)
         {
             IGeometry g = rdr.Read(wkt);
             IGeometry expected = rdr.Read(wktExpected);

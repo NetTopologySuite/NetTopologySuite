@@ -6,7 +6,7 @@ namespace NetTopologySuite.Tests.XUnit
     {
         protected ExternalXUnitRunner(string testFile) : base(testFile) { }
 
-        private const String testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\external";
+        private const string testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\external";
 
         protected override string TestLocation => testLocation;
     }

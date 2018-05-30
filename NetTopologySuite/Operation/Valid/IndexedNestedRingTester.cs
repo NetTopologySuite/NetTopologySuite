@@ -75,7 +75,7 @@ namespace NetTopologySuite.Operation.Valid
                     if (innerRingPt == null)
                         continue;
 
-                    Boolean isInside = PointLocation.IsInRing(innerRingPt, searchRingPts);
+                    bool isInside = PointLocation.IsInRing(innerRingPt, searchRingPts);
                     if (isInside)
                     {
                         _nestedPt = innerRingPt;

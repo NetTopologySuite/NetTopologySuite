@@ -124,7 +124,7 @@ namespace Open.Topology.TestRunner
 
         private string    _strDescription;
 
-        private readonly double    _dTolerance     = Double.Epsilon;
+        private readonly double    _dTolerance     = double.Epsilon;
 
 	    private IResultMatcher _resultMatcher;
 	    private readonly IGeometryOperation _geometryOperation;
@@ -411,7 +411,7 @@ namespace Open.Topology.TestRunner
                     return TestEqualsTopo();
 
                 default:
-                    string format = String.Format("Test not implemented: {0}", this._enumTestType);
+                    string format = string.Format("Test not implemented: {0}", this._enumTestType);
                     throw new NotImplementedException(format);
             }
             }
@@ -563,9 +563,9 @@ namespace Open.Topology.TestRunner
             Geometry geoResult = (Geometry)_objResult;
             double dArg;
             if (_objArgument1 is IGeometry)
-                Double.TryParse((string)_objArgument2, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
+                double.TryParse((string)_objArgument2, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
             else
-                Double.TryParse((string)_objArgument1, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
+                double.TryParse((string)_objArgument1, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
 
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
@@ -629,7 +629,7 @@ namespace Open.Topology.TestRunner
         {
             Geometry geoResult = (Geometry)_objResult;
             double dArg;
-            Double.TryParse((string)_objArgument1, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
+            double.TryParse((string)_objArgument1, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
 
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
@@ -815,9 +815,9 @@ namespace Open.Topology.TestRunner
 	    private double GetDoubleArgument()
 	    {
             if (_objArgument1 is IGeometry)
-                return Double.Parse((string) _objArgument2, NumberStyles.Any, GetNumberFormatInfo());
+                return double.Parse((string) _objArgument2, NumberStyles.Any, GetNumberFormatInfo());
 
-            return Double.Parse((string)_objArgument1, NumberStyles.Any, GetNumberFormatInfo());
+            return double.Parse((string)_objArgument1, NumberStyles.Any, GetNumberFormatInfo());
         }
 
 	    protected virtual bool TestDifference()
@@ -1240,7 +1240,7 @@ namespace Open.Topology.TestRunner
         protected virtual bool TestIsWithinDistance()
         {
             bool bResult = (bool)_objResult;
-            double dArg = Double.Parse((string)_objArgument2, GetNumberFormatInfo());
+            double dArg = double.Parse((string)_objArgument2, GetNumberFormatInfo());
 
             if (_bIsDefaultTarget && _objGeometryA != null)
             {

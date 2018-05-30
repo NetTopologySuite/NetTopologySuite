@@ -10,7 +10,7 @@ namespace Open.Topology.TestRunner.Utility
     /// </summary>
     public class MultiFormatReader
     {
-        private static Boolean IsHex(String str, int maxCharsToTest)
+        private static bool IsHex(string str, int maxCharsToTest)
         {
             for (int i = 0; i < maxCharsToTest && i < str.Length; i++)
             {
@@ -21,7 +21,7 @@ namespace Open.Topology.TestRunner.Utility
             return true;
         }
 
-        private static Boolean IsHexDigit(char ch)
+        private static bool IsHexDigit(char ch)
         {
             if (char.IsDigit(ch)) return true;
             char chLow = char.ToLower(ch);
@@ -54,7 +54,7 @@ namespace Open.Topology.TestRunner.Utility
         /// <param name="geomStr"></param>
         /// <returns></returns>
         /// <exception cref="ParseException"></exception>
-        public IGeometry Read(String geomStr)
+        public IGeometry Read(string geomStr)
         {
             var trimStr = geomStr.Trim();
             if (IsHex(trimStr, MaxCharsToCheck))

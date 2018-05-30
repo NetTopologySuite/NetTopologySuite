@@ -365,7 +365,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <inheritdoc cref="object.ToString()"/>>
-        public override String ToString()
+        public override string ToString()
         {
             var buf = new StringBuilder();
             buf.Append("edge " + _name + ": ");
@@ -404,7 +404,7 @@ namespace NetTopologySuite.GeometriesGraph
             outstream.Write("edge " + _name + ": ");
             for (var i = Points.Length - 1; i >= 0; i--)
                 outstream.Write(Points[i] + " ");
-            outstream.WriteLine(String.Empty);
+            outstream.WriteLine(string.Empty);
         }
     }
 }

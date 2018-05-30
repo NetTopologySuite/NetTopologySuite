@@ -12,7 +12,7 @@ namespace NetTopologySuite.Tests.NUnit
 	    //TODO: allow specifying GeometryFactory
 	    public static WKTReader reader = new WKTReader();
 
-        public static IList<IGeometry> ReadWKT(String[] inputWKT)
+        public static IList<IGeometry> ReadWKT(string[] inputWKT)
         {
             var geometries = new List<IGeometry>();
             foreach (var geomWkt in inputWKT)
@@ -22,7 +22,7 @@ namespace NetTopologySuite.Tests.NUnit
             return geometries;
         }
 
-        public static IGeometry ReadWKT(String inputWKT)
+        public static IGeometry ReadWKT(string inputWKT)
         {
             return reader.Read(inputWKT);
         }

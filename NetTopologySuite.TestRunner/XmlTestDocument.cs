@@ -87,7 +87,7 @@ namespace Open.Topology.TestRunner
 
                 // Retrieve the "desc" tag, if any.
                 XmlNode desc = root["desc"];
-                string strTestDescription = String.Empty;
+                string strTestDescription = string.Empty;
                 if (desc != null && desc.InnerText.Length > 0)
                 {
                     strTestDescription = desc.InnerText;
@@ -117,7 +117,7 @@ namespace Open.Topology.TestRunner
                     string strTolerance = tolerance.InnerText;
                     try
                     {
-                        dTolerance = Double.Parse(strTolerance, GetNumberFormatInfo());
+                        dTolerance = double.Parse(strTolerance, GetNumberFormatInfo());
                     }
                     catch (Exception ex)
                     {
@@ -144,11 +144,11 @@ namespace Open.Topology.TestRunner
                                 try
                                 {
                                     double scale   =
-                                        Double.Parse(precisionAttributes["scale"].InnerText, GetNumberFormatInfo());
+                                        double.Parse(precisionAttributes["scale"].InnerText, GetNumberFormatInfo());
                                     double offsetx =
-                                        Double.Parse(precisionAttributes["offsetx"].InnerText, GetNumberFormatInfo());
+                                        double.Parse(precisionAttributes["offsetx"].InnerText, GetNumberFormatInfo());
                                     double offsety =
-                                        Double.Parse(precisionAttributes["offsety"].InnerText, GetNumberFormatInfo());
+                                        double.Parse(precisionAttributes["offsety"].InnerText, GetNumberFormatInfo());
 
                                     pm = new PrecisionModel(scale);
                                 }
@@ -167,11 +167,11 @@ namespace Open.Topology.TestRunner
                             if (precisionAttributes.Count == 3)
                             {
                                 double scale   =
-                                    Double.Parse(precisionAttributes["scale"].InnerText, GetNumberFormatInfo());
+                                    double.Parse(precisionAttributes["scale"].InnerText, GetNumberFormatInfo());
                                 double offsetx =
-                                    Double.Parse(precisionAttributes["offsetx"].InnerText, GetNumberFormatInfo());
+                                    double.Parse(precisionAttributes["offsetx"].InnerText, GetNumberFormatInfo());
                                 double offsety =
-                                    Double.Parse(precisionAttributes["offsety"].InnerText, GetNumberFormatInfo());
+                                    double.Parse(precisionAttributes["offsety"].InnerText, GetNumberFormatInfo());
 
                                 pm = new PrecisionModel(scale);
                             }

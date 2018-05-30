@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             return orient[0] == orient[1] && orient[0] == orient[2];
         }
 
-        private Coordinate[] GetCoordinates(String wkt)
+        private Coordinate[] GetCoordinates(string wkt)
         {
             IGeometry geom = _reader.Read(wkt);
             return geom.Coordinates;

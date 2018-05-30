@@ -51,7 +51,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
         private IGeometry _buffer;
         private const int QuadrantSegments1 = 100;
         private const int QuadrantSegments2 = 50;
-        private readonly String _wkt;
+        private readonly string _wkt;
         private readonly WKTWriter _wktWriter = new WKTWriter();
         private WKTReader _wktReader;
 
@@ -65,12 +65,12 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
         //    Console.WriteLine("END");
         //}
 
-        public BufferValidator(double bufferDistance, String wkt)
+        public BufferValidator(double bufferDistance, string wkt)
             : this(bufferDistance, wkt, true)
         {
         }
 
-        public BufferValidator(double bufferDistance, String wkt, bool addContainsTest)
+        public BufferValidator(double bufferDistance, string wkt, bool addContainsTest)
         {
             // SRID = 888 is to test that SRID is preserved in computed buffers
             SetFactory(new PrecisionModel(), 888);
@@ -80,9 +80,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             //addBufferResultValidatorTest();
         }
 
-        private String Supplement(String message)
+        private string Supplement(string message)
         {
-            String newMessage = "\n" + message + "\n";
+            string newMessage = "\n" + message + "\n";
             newMessage += "Original: " + _wktWriter.WriteFormatted(GetOriginal()) + "\n";
             newMessage += "Buffer Distance: " + _bufferDistance + "\n";
             newMessage += "Buffer: " + _wktWriter.WriteFormatted(GetBuffer()) + "\n";

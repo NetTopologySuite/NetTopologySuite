@@ -48,7 +48,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
                 return true;
             }
 
-            private static Boolean CheckIntersects(IGeometry target, IGeometry test)
+            private static bool CheckIntersects(IGeometry target, IGeometry test)
             {
                 bool expectedResult = target.Intersects(test);
 

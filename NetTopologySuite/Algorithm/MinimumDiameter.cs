@@ -206,7 +206,7 @@ namespace NetTopologySuite.Algorithm
         private void ComputeConvexRingMinDiameter(Coordinate[] pts)
         {
             // for each segment in the ring
-            _minWidth = Double.MaxValue;
+            _minWidth = double.MaxValue;
             int currMaxIndex = 1;
 
             LineSegment seg = new LineSegment();
@@ -301,10 +301,10 @@ namespace NetTopologySuite.Algorithm
             double c1 = computeC(dx, dy, minBaseSeg.p1);
             */
 
-            double minPara = Double.MaxValue;
-            double maxPara = -Double.MaxValue;
-            double minPerp = Double.MaxValue;
-            double maxPerp = -Double.MaxValue;
+            double minPara = double.MaxValue;
+            double maxPara = -double.MaxValue;
+            double minPerp = double.MaxValue;
+            double maxPerp = -double.MaxValue;
 
             // compute maxima and minima of lines parallel and perpendicular to base segment
             for (int i = 0; i < _convexHullPts.Length; i++)

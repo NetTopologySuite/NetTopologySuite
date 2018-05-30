@@ -25,7 +25,7 @@ namespace ConsoleTestRunner
 
         static void RunInteractive(XmlTestType filter, bool verbose)
         {
-            string fileName = String.Empty;
+            string fileName = string.Empty;
 
             XmlTestController controller = new XmlTestController();
 

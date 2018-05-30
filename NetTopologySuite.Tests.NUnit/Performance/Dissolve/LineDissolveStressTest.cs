@@ -24,10 +24,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
             const int maxTimes = 5;
             for (int i = 1; i <= maxTimes; i++)
             {
-                Trace.WriteLine(String.Format("Iteration {0} of {1} started", i, maxTimes));
+                Trace.WriteLine(string.Format("Iteration {0} of {1} started", i, maxTimes));
                 RunDissolverWorld(data);
                 RunBruteForceWorld(data);
-                Trace.WriteLine(String.Format("Iteration {0} of {1} terminated", i, maxTimes));
+                Trace.WriteLine(string.Format("Iteration {0} of {1} terminated", i, maxTimes));
                 Trace.WriteLine(Environment.NewLine);
             }
 

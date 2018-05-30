@@ -78,7 +78,7 @@ namespace NetTopologySuite.Operation.Distance
         private readonly PointLocator _ptLocator = new PointLocator();
         private readonly IGeometry[] _geom;
         private GeometryLocation[] _minDistanceLocation;
-        private double _minDistance = Double.MaxValue;
+        private double _minDistance = double.MaxValue;
         private readonly double _terminateDistance;
 
         /// <summary>

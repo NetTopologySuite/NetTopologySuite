@@ -230,7 +230,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// This relationship is used to sort the BufferSubgraphs so that shells are guaranteed to
         /// be built before holes.
         /// </summary>
-        public int CompareTo(Object o)
+        public int CompareTo(object o)
         {
             BufferSubgraph graph = (BufferSubgraph) o;
             if (RightMostCoordinate.X < graph.RightMostCoordinate.X)

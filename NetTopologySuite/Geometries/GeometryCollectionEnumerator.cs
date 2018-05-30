@@ -60,7 +60,7 @@ namespace NetTopologySuite.Geometries
             _max = parent.NumGeometries;
         }
 
-        private Boolean HasNext()
+        private bool HasNext()
         {
             if (_atStart)
                 return true;

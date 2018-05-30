@@ -24,7 +24,7 @@ namespace Open.Topology.TestRunner
 
         public XmlTestCollection() : base()
 		{
-            m_strCollectionName = String.Empty;
+            m_strCollectionName = string.Empty;
 		}
 
         #endregion

@@ -28,7 +28,7 @@ namespace Open.Topology.TestRunner.Operations
         {
         }
 
-        protected override void RunTeeOp(String opName, IGeometry geometry, Object[] args)
+        protected override void RunTeeOp(string opName, IGeometry geometry, object[] args)
         {
             if (args.Length < 1) return;
             var g2 = args[0] as IGeometry;

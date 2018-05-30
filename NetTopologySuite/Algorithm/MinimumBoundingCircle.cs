@@ -297,7 +297,7 @@ namespace NetTopologySuite.Algorithm
 
         private static Coordinate PointWitMinAngleWithX(Coordinate[] pts, Coordinate P)
         {
-            double minSin = Double.MaxValue;
+            double minSin = double.MaxValue;
             Coordinate minAngPt = null;
             for (int i = 0; i < pts.Length; i++)
             {
@@ -325,7 +325,7 @@ namespace NetTopologySuite.Algorithm
 
         private static Coordinate PointWithMinAngleWithSegment(Coordinate[] pts, Coordinate P, Coordinate Q)
         {
-            double minAng = Double.MaxValue;
+            double minAng = double.MaxValue;
             Coordinate minAngPt = null;
             for (int i = 0; i < pts.Length; i++)
             {

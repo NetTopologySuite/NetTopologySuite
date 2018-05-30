@@ -79,7 +79,7 @@ namespace NetTopologySuite.Utilities
 
                   else
                   {
-                           result = String.Empty;
+                           result = string.Empty;
                            while (valore > 0)
                           {
                                 int resto = (int) (valore % baseOut);

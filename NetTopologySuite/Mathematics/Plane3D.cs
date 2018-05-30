@@ -46,7 +46,7 @@ namespace NetTopologySuite.Mathematics
         {
             var pb = new Vector3D(p, _basePt);
             var pbdDotNormal = pb.Dot(_normal);
-            if (Double.IsNaN(pbdDotNormal))
+            if (double.IsNaN(pbdDotNormal))
                 throw new ArgumentException("3D Coordinate has NaN ordinate");
             var d = pbdDotNormal/_normal.Length();
             return d;

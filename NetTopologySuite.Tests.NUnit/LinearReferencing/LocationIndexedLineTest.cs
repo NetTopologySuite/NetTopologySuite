@@ -40,7 +40,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
                             "MULTILINESTRING ((10 10, 10 10), (20 20, 25 25))");
         }
 
-        private void RunExtractLine(String wkt, LinearLocation start, LinearLocation end, String expected)
+        private void RunExtractLine(string wkt, LinearLocation start, LinearLocation end, string expected)
         {
             IGeometry geom = Read(wkt);
             LocationIndexedLine lil = new LocationIndexedLine(geom);

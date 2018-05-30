@@ -62,19 +62,19 @@ namespace ConsoleTestRunner
                             XmlAttribute attException = attributes["exception"];
                             if (attException != null)
                             {
-                                bDisplayException = Boolean.Parse(attException.InnerText);
+                                bDisplayException = bool.Parse(attException.InnerText);
                             }
 
                             XmlAttribute attVerbose = attributes["verbose"];
                             if (attVerbose != null)
                             {
-                                bVerbose = Boolean.Parse(attVerbose.InnerText);
+                                bVerbose = bool.Parse(attVerbose.InnerText);
                             }
 
                             XmlAttribute attInteractive = attributes["interactive"];
                             if (attInteractive != null)
                             {
-                                bInteractive = Boolean.Parse(attInteractive.InnerText);
+                                bInteractive = bool.Parse(attInteractive.InnerText);
                             }
                         }
 

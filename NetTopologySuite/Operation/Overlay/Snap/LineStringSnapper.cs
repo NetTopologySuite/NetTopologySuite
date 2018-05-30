@@ -169,7 +169,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// or -1 if no segment snaps to the snap point.</returns>
         private int FindSegmentIndexToSnap(Coordinate snapPt, CoordinateList srcCoords)
         {
-            var minDist = Double.MaxValue;
+            var minDist = double.MaxValue;
             var snapIndex = -1;
             for (var i = 0; i < srcCoords.Count - 1; i++)
             {

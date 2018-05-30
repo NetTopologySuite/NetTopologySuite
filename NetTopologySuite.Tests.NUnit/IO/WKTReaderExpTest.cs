@@ -52,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             ReadBad("POINT ( +1e+01 1X02)");
         }
 
-        private void ReadGoodCheckCoordinate(String wkt, double x, double y)
+        private void ReadGoodCheckCoordinate(string wkt, double x, double y)
         {
             IGeometry g = rdr.Read(wkt);
             Coordinate pt = g.Coordinate;
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual(pt.Y, y, 0.0001);
         }
 
-        private void ReadBad(String wkt)
+        private void ReadBad(string wkt)
         {
             bool threwParseEx = false;
             try

@@ -142,7 +142,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             return x.Subtract(y).Abs();
         }
 
-        private static void CheckErrorBound(String tag, DD x, DD y, double errBound)
+        private static void CheckErrorBound(string tag, DD x, DD y, double errBound)
         {
             DD err = x.Subtract(y).Abs();
             Console.WriteLine(tag + " err=" + err);

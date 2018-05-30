@@ -20,7 +20,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         [Test]
         public void Simple()
         {
-            String[] wkt =
+            string[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )" ,
                 "LINESTRING ( 0 20, 0 30 )",
@@ -33,7 +33,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         [Test]
         public void SimpleLoop()
         {
-            String[] wkt =
+            string[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 0 10, 0 0 )",
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         [Test]
         public void SimpleBigLoop()
         {
-            String[] wkt =
+            string[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 0 20, 0 30 )",
@@ -59,7 +59,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         [Test]
         public void SimpleVeryBigLoop()
         {
-            String[] wkt =
+            string[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 0 30, 0 40 )",
@@ -74,7 +74,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         [Test]
         public void SimpleVeryVeryBigLoop()
         {
-            String[] wkt =
+            string[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 0 30, 0 40 )",
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         [Test]
         public void TwoSimpleLoops()
         {
-            String[] wkt =
+            string[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 0 10, 0 0 )",
@@ -104,7 +104,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         [Test]
         public void Wide8WithTail()
         {
-            String[] wkt =
+            string[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 10 0, 10 10 )",
@@ -115,14 +115,14 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
                 "LINESTRING ( 0 20, 10 20 )",
                 "LINESTRING ( 10 20, 30 30 )",
             };
-            String result = null;
+            string result = null;
             RunLineSequencer(wkt, result);
         }
 
        [Test]
         public void SimpleLoopWithTail()
         {
-            String[] wkt =
+            string[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 0 10, 10 10 )",
@@ -135,7 +135,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         [Test]
         public void LineWithRing()
         {
-            String[] wkt =
+            string[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 0 10, 10 10, 10 20, 0 10 )",
@@ -149,7 +149,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         [Test]
         public void MultipleGraphsWithRing()
         {
-            String[] wkt =
+            string[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 0 10, 10 10, 10 20, 0 10 )",
@@ -165,7 +165,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         [Test]
         public void MultipleGraphsWithMultipleRings()
         {
-            String[] wkt =
+            string[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 0 10, 10 10, 10 20, 0 10 )",
@@ -200,7 +200,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
             RunIsSequenced(wkt, false);
         }
 
-        private static void RunLineSequencer(String[] inputWKT, String expectedWKT)
+        private static void RunLineSequencer(string[] inputWKT, string expectedWKT)
         {
             try
             {
@@ -224,7 +224,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
             catch (Exception ex) { Debug.WriteLine(ex.ToString()); throw; }
         }
 
-        private static void RunIsSequenced(String inputWKT, bool expected)
+        private static void RunIsSequenced(string inputWKT, bool expected)
         {
             try
             {
@@ -235,7 +235,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
             catch(Exception ex) { Debug.WriteLine(ex.ToString()); throw ex; }
         }
 
-        private static IEnumerable<IGeometry> FromWKT(String[] wkts)
+        private static IEnumerable<IGeometry> FromWKT(string[] wkts)
         {
             IList<IGeometry> geomList = new List<IGeometry>();
             foreach (string wkt in wkts)

@@ -207,7 +207,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public override string ToString()
         {
-            return String.Format("A: {0},{1} B: {2},{3}", this.depth[0,1], this.depth[0,2], this.depth[1,1], this.depth[1,2]);
+            return string.Format("A: {0},{1} B: {2},{3}", this.depth[0,1], this.depth[0,2], this.depth[1,1], this.depth[1,2]);
         }
     }
 

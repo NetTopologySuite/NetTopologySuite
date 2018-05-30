@@ -179,7 +179,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <inheritdoc cref="object.ToString()"/>
-        public override String ToString()
+        public override string ToString()
         {
             var angle = Math.Atan2(_dy, _dx);
             var className = GetType().Name;

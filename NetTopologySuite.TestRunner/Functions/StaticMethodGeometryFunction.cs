@@ -19,25 +19,25 @@ namespace Open.Topology.TestRunner.Functions
 
             Type clz = method.DeclaringType;
 
-            String category = ExtractCategory(ClassUtility.GetClassname(clz));
-            String funcName = method.Name;
-            String[] paramNames = ExtractParamNames(method);
+            string category = ExtractCategory(ClassUtility.GetClassname(clz));
+            string funcName = method.Name;
+            string[] paramNames = ExtractParamNames(method);
             Type[] paramTypes = ExtractParamTypes(method);
             Type returnType = method.ReturnType;
             return new StaticMethodGeometryFunction(category, funcName, paramNames, paramTypes,
                                                     returnType, method);
         }
 
-        private static String ExtractCategory(String className)
+        private static string ExtractCategory(string className)
         {
-            String trim = StringUtil.RemoveFromEnd(className, "Functions");
+            string trim = StringUtil.RemoveFromEnd(className, "Functions");
             return trim;
         }
 
-        private static String[] ExtractParamNames(MethodInfo method)
+        private static string[] ExtractParamNames(MethodInfo method)
         {
             var pi = method.GetParameters();
-            String[] name = new String[pi.Length - 1];
+            string[] name = new string[pi.Length - 1];
             for (int i = 1; i < name.Length; i++)
                 name[i] = "arg" + i;
             return name;
@@ -55,9 +55,9 @@ namespace Open.Topology.TestRunner.Functions
         private MethodInfo method;
 
         public StaticMethodGeometryFunction(
-            String category,
-            String name,
-            String[] parameterNames,
+            string category,
+            string name,
+            string[] parameterNames,
             Type[] parameterTypes,
             Type returnType,
             MethodInfo method)
@@ -66,7 +66,7 @@ namespace Open.Topology.TestRunner.Functions
             this.method = method;
         }
 
-        public override object Invoke(IGeometry g, Object[] arg)
+        public override object Invoke(IGeometry g, object[] arg)
         {
             return Invoke(method, null, CreateFullArgs(g, arg));
         }
@@ -77,12 +77,12 @@ namespace Open.Topology.TestRunner.Functions
         /// <param name="g"></param>
         /// <param name="arg"></param>
         /// <returns></returns>
-        private static Object[] CreateFullArgs(IGeometry g, Object[] arg)
+        private static object[] CreateFullArgs(IGeometry g, object[] arg)
         {
             var fullArgLen = 1;
             if (arg != null)
                 fullArgLen = arg.Length + 1;
-            var fullArg = new Object[fullArgLen];
+            var fullArg = new object[fullArgLen];
             fullArg[0] = g;
             for (var i = 1; i < fullArgLen; i++)
             {
@@ -91,9 +91,9 @@ namespace Open.Topology.TestRunner.Functions
             return fullArg;
         }
 
-        public static Object Invoke(MethodInfo method, Object target, Object[] args)
+        public static object Invoke(MethodInfo method, object target, object[] args)
         {
-            Object result;
+            object result;
             try
             {
                 result = method.Invoke(target, args);
@@ -111,9 +111,9 @@ namespace Open.Topology.TestRunner.Functions
             return result;
         }
 
-        public static String GetClassName(Type javaClass)
+        public static string GetClassName(Type javaClass)
         {
-            String jClassName = javaClass.Name;
+            string jClassName = javaClass.Name;
             int lastDotPos = jClassName.LastIndexOf(".");
             return jClassName.Substring(lastDotPos + 1, jClassName.Length);
         }

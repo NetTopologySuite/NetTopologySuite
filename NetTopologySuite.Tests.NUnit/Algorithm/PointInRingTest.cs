@@ -12,7 +12,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     {
         private WKTReader reader = new WKTReader();
 
-        protected override void RunPtInRing(Location expectedLoc, Coordinate pt, String wkt)
+        protected override void RunPtInRing(Location expectedLoc, Coordinate pt, string wkt)
         {
             // isPointInRing is not defined for pts on boundary
             if (expectedLoc == Location.Boundary)

@@ -106,7 +106,7 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <inheritdoc cref="object.ToString()"/>
-        public override String ToString()
+        public override string ToString()
         {
             var fact = new GeometryFactory();
             var line = fact.CreateLineString(Coordinates);

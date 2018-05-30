@@ -46,7 +46,7 @@ namespace NetTopologySuite.Noding
         /// all intersections in an arrangement.
         ///</summary>
         ///<returns>if there is no need to continue testing segments</returns>
-        Boolean IsDone { get; }
+        bool IsDone { get; }
 
     }
 }

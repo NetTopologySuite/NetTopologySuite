@@ -43,7 +43,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// <returns>An appropriate error message<br/>
         /// or <c>null</c>if the buffer is valid</returns>
         ///
-        public static String IsValidMessage(IGeometry g, double distance, IGeometry result)
+        public static string IsValidMessage(IGeometry g, double distance, IGeometry result)
         {
             var validator = new BufferResultValidator(g, distance, result);
             if (!validator.IsValid())
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         private readonly double _distance;
         private readonly IGeometry _result;
         private bool _isValid = true;
-        private String _errorMsg;
+        private string _errorMsg;
         private Coordinate _errorLocation;
         private IGeometry _errorIndicator;
 
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// <summary>
         /// Gets the error message
         /// </summary>
-        public String ErrorMessage => _errorMsg;
+        public string ErrorMessage => _errorMsg;
 
         /// <summary>
         /// Gets the error location
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// or <value>null</value>, if no error was found</returns>
         public IGeometry ErrorIndicator => _errorIndicator;
 
-        private void Report(String checkName)
+        private void Report(string checkName)
         {
             if (!Verbose) return;
             Debug.WriteLine("Check " + checkName + ": "

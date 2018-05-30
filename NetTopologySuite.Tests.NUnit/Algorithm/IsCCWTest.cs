@@ -35,7 +35,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(Orientation.IsCCW(seq2x));
         }
 
-        private Coordinate[] GetCoordinates(String wkt)
+        private Coordinate[] GetCoordinates(string wkt)
         {
             IGeometry geom = reader.Read(wkt);
             return geom.Coordinates;

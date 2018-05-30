@@ -354,7 +354,7 @@ namespace NetTopologySuite.Geometries
             var len = dx * dx + dy * dy;
 
             // handle zero-length segments
-            if (len <= 0.0) return Double.NaN;
+            if (len <= 0.0) return double.NaN;
 
             double r = ((p.X - _p0.X) * dx + (p.Y - _p0.Y) * dy)
                       / len;

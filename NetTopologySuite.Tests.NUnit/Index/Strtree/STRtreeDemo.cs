@@ -136,7 +136,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             Console.WriteLine(")\n");
         }
 
-        private static String ToString(IBoundable<Envelope, object> b)
+        private static string ToString(IBoundable<Envelope, object> b)
         {
             return "POLYGON(("
                     + Envelope(b).MinX + " "

@@ -7,9 +7,9 @@ namespace NetTopologySuite.Tests.XUnit
     {
         //protected GeneralXUnitRunner(string testFile) : base(testFile) { }
 
-        private const String testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\general";
+        private const string testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\general";
 
-        public GeneralXUnitRunner() : base(String.Empty)
+        public GeneralXUnitRunner() : base(string.Empty)
         {
         }
 

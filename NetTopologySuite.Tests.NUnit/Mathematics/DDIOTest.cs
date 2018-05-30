@@ -40,12 +40,12 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             CheckStandardNotation(14, "14.0");
         }
 
-        private static void CheckStandardNotation(double x, String expectedStr) {
+        private static void CheckStandardNotation(double x, string expectedStr) {
             CheckStandardNotation(DD.ValueOf(x), expectedStr);
         }
 
-        private static void CheckStandardNotation(DD x, String expectedStr) {
-            String xStr = x.ToStandardNotation();
+        private static void CheckStandardNotation(DD x, string expectedStr) {
+            string xStr = x.ToStandardNotation();
             //System.Console.WriteLine("Standard Notation: " + xStr);
             Assert.AreEqual(expectedStr, xStr);
         }
@@ -60,11 +60,11 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             CheckSciNotation(14, "1.4E1");
         }
 
-        private static void CheckSciNotation(double x, String expectedStr) {
+        private static void CheckSciNotation(double x, string expectedStr) {
             CheckSciNotation(DD.ValueOf(x), expectedStr);
         }
 
-        private static void CheckSciNotation(DD x, String expectedStr) {
+        private static void CheckSciNotation(DD x, string expectedStr) {
             var xStr = x.ToSciNotation();
             //System.Console.WriteLine("Sci Notation: " + xStr);
             Assert.AreEqual(xStr, expectedStr);
@@ -105,12 +105,12 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             CheckParse("-39.5", -39.5, 1e-30);
         }
 
-        private static void CheckParse(String str, double expectedVal, double errBound)
+        private static void CheckParse(string str, double expectedVal, double errBound)
         {
             CheckParse(str, new DD(expectedVal), errBound);
         }
 
-        private static void CheckParse(String str, DD expectedVal,
+        private static void CheckParse(string str, DD expectedVal,
             double relErrBound) {
             DD xdd = DD.Parse(str);
             var err = (xdd - expectedVal).ToDoubleValue();
@@ -131,7 +131,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             CheckParseError("-1.0512345678t");
         }
 
-        private static void CheckParseError(String str) {
+        private static void CheckParseError(string str) {
             var foundParseError = false;
             try {
                 DD.Parse(str);
@@ -161,7 +161,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
                 //    count = count;
                 double x = xdd.ToDoubleValue();
                 DD xSqrt = xdd.Sqrt();
-                String s = xSqrt.ToString();
+                string s = xSqrt.ToString();
                 //System.Console.WriteLine((count + ": " + s);
 
                 DD xSqrt2 = DD.Parse(s);
@@ -198,7 +198,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
                 count++;
                 double x = xdd.ToDoubleValue();
                 DD xSqr = xdd.Sqr();
-                String s = xSqr.ToString();
+                string s = xSqr.ToString();
                 //System.Console.WriteLine(count + ": " + s);
 
                 DD xSqr2 = DD.Parse(s);
@@ -221,12 +221,12 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         static void WriteAndReadSqrt(double x) {
             DD xdd = DD.ValueOf(x);
             DD xSqrt = xdd.Sqrt();
-            String s = xSqrt.ToString();
+            string s = xSqrt.ToString();
             //System.Console.WriteLine(s);
 
             DD xSqrt2 = DD.Parse(s);
             DD xx = xSqrt2 * xSqrt2;
-            String xxStr = xx.ToString();
+            string xxStr = xx.ToString();
             //System.Console.WriteLine("==>  " + xxStr);
 
             DD xx2 = DD.Parse(xxStr);

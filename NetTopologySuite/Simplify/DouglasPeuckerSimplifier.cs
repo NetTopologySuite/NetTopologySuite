@@ -156,7 +156,7 @@ namespace NetTopologySuite.Simplify
             /// <returns>null if the simplification results in a degenerate ring</returns>
             protected override IGeometry TransformLinearRing(ILinearRing geom, IGeometry parent)
             {
-                Boolean removeDegenerateRings = parent is IPolygon;
+                bool removeDegenerateRings = parent is IPolygon;
                 IGeometry simpResult = base.TransformLinearRing(geom, parent);
 
                 if (removeDegenerateRings && !(simpResult is ILinearRing))

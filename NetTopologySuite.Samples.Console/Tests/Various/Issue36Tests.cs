@@ -117,7 +117,7 @@ namespace NetTopologySuite.Tests.Various
             for (var i = 0; i < segmentString.Coordinates.Length; i++)
             {
                 var coord = segmentString.Coordinates[i];
-                Debug.WriteLine(String.Format("{1:R} {2:R}", i, coord.X, coord.Y));
+                Debug.WriteLine(string.Format("{1:R} {2:R}", i, coord.X, coord.Y));
             }
         }
 

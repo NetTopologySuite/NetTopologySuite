@@ -166,7 +166,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Gets an array of <see cref="System.Double"/> ordinate values
+        /// Gets an array of <see cref="double"/> ordinate values
         /// </summary>
         /// <param name="ordinate">The ordinate index</param>
         /// <returns>An array of ordinate values</returns>

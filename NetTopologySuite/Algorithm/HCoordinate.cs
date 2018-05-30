@@ -46,8 +46,8 @@ namespace NetTopologySuite.Algorithm
             double xInt = x/w;
             double yInt = y/w;
 
-            if ((Double.IsNaN(xInt)) || (Double.IsInfinity(xInt)
-                                         || Double.IsNaN(yInt)) || (Double.IsInfinity(yInt)))
+            if ((double.IsNaN(xInt)) || (double.IsInfinity(xInt)
+                                         || double.IsNaN(yInt)) || (double.IsInfinity(yInt)))
             {
                 throw new NotRepresentableException();
             }
@@ -165,7 +165,7 @@ namespace NetTopologySuite.Algorithm
         public double GetX()
         {
             double a = _x/_w;
-            if ((Double.IsNaN(a)) || (Double.IsInfinity(a)))
+            if ((double.IsNaN(a)) || (double.IsInfinity(a)))
                 throw new NotRepresentableException();
             return a;
 
@@ -178,7 +178,7 @@ namespace NetTopologySuite.Algorithm
         public double GetY()
         {
             double a = _y/_w;
-            if ((Double.IsNaN(a)) || (Double.IsInfinity(a)))
+            if ((double.IsNaN(a)) || (double.IsInfinity(a)))
                 throw new NotRepresentableException();
             return a;
         }

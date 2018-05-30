@@ -14,8 +14,8 @@ namespace NetTopologySuite.Algorithm.Distance
     public class PointPairDistance
     {
         private readonly Coordinate[] _pt = { new Coordinate(), new Coordinate() };
-        private double _distance = Double.NaN;
-        private Boolean _isNull = true;
+        private double _distance = double.NaN;
+        private bool _isNull = true;
 
         ///<summary>
         /// Initializes to null.

@@ -85,7 +85,7 @@ namespace NetTopologySuite.LinearReferencing
 
         private LinearLocation IndexOfFromStart(Coordinate inputPt, LinearLocation minIndex)
         {
-            var minDistance = Double.MaxValue;
+            var minDistance = double.MaxValue;
             var minComponentIndex = 0;
             var minSegmentIndex = 0;
             var minFrac = -1.0;
@@ -119,7 +119,7 @@ namespace NetTopologySuite.LinearReferencing
                 }
             }
 
-            if (minDistance == Double.MaxValue)
+            if (minDistance == double.MaxValue)
             {
                 // no minimum was found past minLocation, so return it
                 return new LinearLocation(minIndex);

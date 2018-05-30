@@ -58,7 +58,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 
         private IGeometry GetSampleGeometry()
         {
-            String wkt;
+            string wkt;
             // triangle
             //wkt ="POLYGON (( 233 221, 210 172,  262 181, 233 221  ))";
 

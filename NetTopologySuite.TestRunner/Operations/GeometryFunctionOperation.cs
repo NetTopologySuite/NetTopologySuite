@@ -40,7 +40,7 @@ namespace Open.Topology.TestRunner.Operations
             return func.ReturnType;
         }
 
-        public IResult Invoke(XmlTestType opName, IGeometry geometry, Object[] args)
+        public IResult Invoke(XmlTestType opName, IGeometry geometry, object[] args)
         {
             IGeometryFunction func = registry.Find(opName.ToString(), args.Length);
             if (func == null)
@@ -49,18 +49,18 @@ namespace Open.Topology.TestRunner.Operations
             return Invoke(func, geometry, args);
         }
 
-        private IResult Invoke(IGeometryFunction func, IGeometry geometry, Object[] args)
+        private IResult Invoke(IGeometryFunction func, IGeometry geometry, object[] args)
         {
-            Object[] actualArgs = argConverter.Convert(func.ParameterTypes, args);
+            object[] actualArgs = argConverter.Convert(func.ParameterTypes, args);
             if (func.ReturnType == typeof(bool))
-                return new BooleanResult((Boolean)func.Invoke(geometry, actualArgs));
+                return new BooleanResult((bool)func.Invoke(geometry, actualArgs));
             if (typeof(IGeometry).IsAssignableFrom(func.ReturnType))
                 return new GeometryResult((IGeometry)func.Invoke(geometry, actualArgs));
             if (func.ReturnType == typeof(double))
                 return new DoubleResult((double)func.Invoke(geometry, actualArgs));
             if (func.ReturnType == typeof(int))
                 return new IntegerResult((int)func.Invoke(geometry, actualArgs));
-            string opName = String.Format("Unsupported result type: {0}", func.ReturnType);
+            string opName = string.Format("Unsupported result type: {0}", func.ReturnType);
             throw new NTSTestReflectionException(opName);
         }
     }

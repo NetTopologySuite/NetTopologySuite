@@ -88,7 +88,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 
             if (!validator.IsValid())
             {
-                String msg = validator.ErrorMessage;
+                string msg = validator.ErrorMessage;
 
                 Console.WriteLine(msg);
                 Console.WriteLine(WKTWriter.ToPoint(validator.ErrorLocation));

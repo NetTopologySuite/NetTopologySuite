@@ -277,7 +277,7 @@ namespace NetTopologySuite.Operation.Buffer
             segGen.CloseRing();
         }
 
-        private void ComputeOffsetCurve(Coordinate[] inputPts, Boolean isRightSide, OffsetSegmentGenerator segGen)
+        private void ComputeOffsetCurve(Coordinate[] inputPts, bool isRightSide, OffsetSegmentGenerator segGen)
         {
             var distTol = SimplifyTolerance(_distance);
 

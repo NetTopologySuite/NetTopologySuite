@@ -797,7 +797,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
             private static void CheckTriangleSize(Coordinate[] pts)
             {
-                String loc = "";
+                string loc = "";
                 if (pts.Length >= 2)
                     loc = WKTWriter.ToLineString(pts[0], pts[1]);
                 else

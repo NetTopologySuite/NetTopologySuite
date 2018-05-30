@@ -337,7 +337,7 @@ namespace NetTopologySuite.Geometries
         public double MakePrecise(double val)
         {
             // don't change NaN values
-            if (Double.IsNaN(val)) return val;
+            if (double.IsNaN(val)) return val;
 
             if (_modelType == PrecisionModels.FloatingSingle)
             {

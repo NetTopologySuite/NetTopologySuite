@@ -182,7 +182,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         {
             IGeometryFactory geometryFactory = new GeometryFactory();
             IPoint point = geometryFactory.CreatePoint(new Coordinate(1, 1, 1));
-            String wkt = _writer3D.Write(point);
+            string wkt = _writer3D.Write(point);
             Assert.AreEqual("POINT (1 1 1)", wkt);
         }
         [TestAttribute]
@@ -192,7 +192,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Coordinate[] coordinates = { new Coordinate(1, 1),
                                  new Coordinate(2, 2, 2) };
             ILineString line = geometryFactory.CreateLineString(coordinates);
-            String wkt = _writer3D.Write(line);
+            string wkt = _writer3D.Write(line);
             Assert.AreEqual("LINESTRING (1 1, 2 2 2)", wkt);
         }
     }

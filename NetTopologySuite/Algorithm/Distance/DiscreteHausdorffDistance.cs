@@ -217,9 +217,9 @@ namespace NetTopologySuite.Algorithm.Distance
 
             }
 
-            public Boolean GeometryChanged => false;
+            public bool GeometryChanged => false;
 
-            public Boolean Done => false;
+            public bool Done => false;
 
             public PointPairDistance MaxPointDistance => _maxPtDist;
         }

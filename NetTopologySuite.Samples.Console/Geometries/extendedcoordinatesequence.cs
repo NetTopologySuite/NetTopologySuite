@@ -211,7 +211,7 @@ namespace NetTopologySuite.Samples.Geometries
                 case Ordinate.M:
                     return exc.M;
                 default:
-                    return Double.NaN;
+                    return double.NaN;
             }
         }
 

@@ -21,16 +21,16 @@ namespace Open.Topology.TestRunner.Functions
                    && func.ParameterTypes[0] == typeof(IGeometry);
         }
 
-        protected String category;
-        protected String name;
-        protected String[] parameterNames;
+        protected string category;
+        protected string name;
+        protected string[] parameterNames;
         protected Type[] parameterTypes;
         protected Type returnType;
 
         protected BaseGeometryFunction(
-            String category,
-            String name,
-            String[] parameterNames,
+            string category,
+            string name,
+            string[] parameterNames,
             Type[] parameterTypes,
             Type returnType)
         {
@@ -41,11 +41,11 @@ namespace Open.Topology.TestRunner.Functions
             this.returnType = returnType;
         }
 
-        public String Category => category;
+        public string Category => category;
 
-        public String Name => name;
+        public string Name => name;
 
-        public String[] ParameterNames => parameterNames;
+        public string[] ParameterNames => parameterNames;
 
         /// <summary>
         /// Gets the types of the other function arguments
@@ -56,7 +56,7 @@ namespace Open.Topology.TestRunner.Functions
 
         public bool IsBinary => parameterTypes.Length > 0 && parameterTypes[0] is IGeometry;
 
-        public String Signature
+        public string Signature
         {
             get
             {
@@ -73,21 +73,21 @@ namespace Open.Topology.TestRunner.Functions
             }
         }
 
-        protected static Double? GetDoubleOrNull(Object[] args, int index)
+        protected static double? GetDoubleOrNull(object[] args, int index)
         {
             if (args.Length <= index) return null;
             if (args[index] == null) return null;
-            return (Double)args[index];
+            return (double)args[index];
         }
 
-        protected static int? GetIntegerOrNull(Object[] args, int index)
+        protected static int? GetIntegerOrNull(object[] args, int index)
         {
             if (args.Length <= index) return null;
             if (args[index] == null) return null;
             return (int)args[index];
         }
 
-        public abstract Object Invoke(IGeometry geom, Object[] args);
+        public abstract object Invoke(IGeometry geom, object[] args);
 
         /// <summary>
         /// Two functions are the same if they have the
@@ -103,7 +103,7 @@ namespace Open.Topology.TestRunner.Functions
             //TODO: compare parameter lists as well
         }
 
-        public override bool Equals(Object obj)
+        public override bool Equals(object obj)
         {
             if (!(obj is IGeometryFunction)) return false;
             var func = (IGeometryFunction)obj;

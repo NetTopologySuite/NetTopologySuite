@@ -102,7 +102,7 @@ namespace NetTopologySuite.Noding
         ///<summary>
         /// Tests whether an intersection was found.
         ///</summary>
-        public Boolean HasIntersection => _interiorIntersection != null;
+        public bool HasIntersection => _interiorIntersection != null;
 
         /// <summary>
         /// Gets the intersections found.
@@ -156,7 +156,7 @@ namespace NetTopologySuite.Noding
              */
             if (CheckEndSegmentsOnly)
             {
-                Boolean isEndSegPresent = IsEndSegment(e0, segIndex0) || IsEndSegment(e1, segIndex1);
+                bool isEndSegPresent = IsEndSegment(e0, segIndex0) || IsEndSegment(e1, segIndex1);
                 if (!isEndSegPresent)
                     return;
             }
@@ -192,14 +192,14 @@ namespace NetTopologySuite.Noding
         ///<param name="segStr">a segment string</param>
         ///<param name="index">the index of a segment in the segment string</param>
         ///<returns>true if the segment is an end segment</returns>
-        private static Boolean IsEndSegment(ISegmentString segStr, int index)
+        private static bool IsEndSegment(ISegmentString segStr, int index)
         {
             if (index == 0) return true;
             if (index >= segStr.Count - 2) return true;
             return false;
         }
 
-        public Boolean IsDone
+        public bool IsDone
         {
             get
             {

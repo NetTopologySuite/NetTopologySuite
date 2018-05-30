@@ -464,7 +464,7 @@ namespace NetTopologySuite.Triangulate
             // For each point found, test if it falls strictly in the circle
             // find closest point
             Coordinate closestNonGabriel = null;
-            double minDist = Double.MaxValue;
+            double minDist = double.MaxValue;
             foreach (KdNode<Vertex> nextNode in result)
             {
                 Coordinate testPt = nextNode.Coordinate;

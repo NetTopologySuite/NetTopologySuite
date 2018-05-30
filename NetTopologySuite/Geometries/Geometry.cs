@@ -312,7 +312,7 @@ namespace NetTopologySuite.Geometries
         public abstract Coordinate[] Coordinates { get; }
 
         /// <summary>
-        /// Gets an array of <see cref="System.Double"/> ordinate values
+        /// Gets an array of <see cref="double"/> ordinate values
         /// </summary>
         /// <param name="ordinate">The ordinate index</param>
         /// <returns>An array of ordinate values</returns>
@@ -1032,7 +1032,7 @@ namespace NetTopologySuite.Geometries
         /// which has been named to clearly denote its functionality.
         /// <para/>
         /// This method should <b>NOT</b> be confused with the method
-        /// <seealso cref="Equals(Object)"/>, which implements
+        /// <seealso cref="Equals(object)"/>, which implements
         /// an exact equality comparison.
         /// </summary>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c></param>
@@ -1105,7 +1105,7 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="GetHashCode"/>
         /// <seealso cref="Normalized"/>
         /// <seealso cref="Normalize"/>
-        public override bool Equals(Object o)
+        public override bool Equals(object o)
         {
             var g = o as IGeometry;
             return g != null && EqualsExact(g);
@@ -2007,7 +2007,7 @@ namespace NetTopologySuite.Geometries
         /// defined in "Normal Form For Geometry" in the NTS Technical
         /// Specifications.
         /// </returns>
-        public int CompareTo(Object o, IComparer<ICoordinateSequence> comp)
+        public int CompareTo(object o, IComparer<ICoordinateSequence> comp)
         {
             Geometry other = o as Geometry;
             if (other == null)
@@ -2117,7 +2117,7 @@ namespace NetTopologySuite.Geometries
         ///      defined in "Normal Form For Geometry" in the JTS Technical
         ///      Specifications
         /// </returns>
-        protected internal abstract int CompareToSameClass(Object o, IComparer<ICoordinateSequence> comp);
+        protected internal abstract int CompareToSameClass(object o, IComparer<ICoordinateSequence> comp);
 
         /// <summary>
         /// Returns the first non-zero result of <c>CompareTo</c> encountered as

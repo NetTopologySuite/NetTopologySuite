@@ -154,7 +154,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
             IGeometry rnorm = result.Normalized();
             IGeometry enorm = expected.Normalized();
             bool equal = rnorm.EqualsExact(enorm);
-            Assert.IsTrue(equal, String.Format("Expected = {0} actual = {1}", expected, rnorm));
+            Assert.IsTrue(equal, string.Format("Expected = {0} actual = {1}", expected, rnorm));
         }
     }
 }

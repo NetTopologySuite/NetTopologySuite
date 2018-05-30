@@ -24,7 +24,7 @@ namespace NetTopologySuite.IO
         ///</summary>
         /// <param name="hex">A string containing hex digits</param>
         /// <returns>An array of bytes with the value of the hex string</returns>
-        public static byte[] HexToBytes(String hex)
+        public static byte[] HexToBytes(string hex)
         {
             int byteLen = hex.Length / 2;
             byte[] bytes = new byte[byteLen];
@@ -306,7 +306,7 @@ namespace NetTopologySuite.IO
                             sequence.SetOrdinate(i, Ordinate.M, m);
                         break;
                     default:
-                        throw new ArgumentException(String.Format("Coordinate system not supported: {0}", cs));
+                        throw new ArgumentException(string.Format("Coordinate system not supported: {0}", cs));
                 }
             }
             return sequence;

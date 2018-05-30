@@ -69,12 +69,12 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         static double TOLERANCE = 1.0e-5;
 
-        private void DoMinimumBoundingCircleTest(String wkt, String expectedWKT)
+        private void DoMinimumBoundingCircleTest(string wkt, string expectedWKT)
         {
             DoMinimumBoundingCircleTest(wkt, expectedWKT, null, -1);
         }
 
-        private void DoMinimumBoundingCircleTest(String wkt, String expectedWKT, Coordinate expectedCentre, double expectedRadius)
+        private void DoMinimumBoundingCircleTest(string wkt, string expectedWKT, Coordinate expectedCentre, double expectedRadius)
         {
             MinimumBoundingCircle mbc = new MinimumBoundingCircle(reader.Read(wkt));
             Coordinate[] exPts = mbc.GetExtremalPoints();

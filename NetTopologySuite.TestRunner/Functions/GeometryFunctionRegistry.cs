@@ -111,7 +111,7 @@ namespace Open.Topology.TestRunner.Functions
 
         public ICollection<string> Categories => _categorizedFunctions.KeySet();
 
-        public ICollection<IGeometryFunction> GetFunctions(String category)
+        public ICollection<IGeometryFunction> GetFunctions(string category)
         {
             return _categorizedFunctions.Values(category);
         }
@@ -122,7 +122,7 @@ namespace Open.Topology.TestRunner.Functions
         /// <param name="name"></param>
         /// <param name="paramTypes"></param>
         /// <returns>A matching function<br/>or <value>null</value> if no matching function was found</returns>
-        public IGeometryFunction Find(String name, Type[] paramTypes)
+        public IGeometryFunction Find(string name, Type[] paramTypes)
         {
             return null;
         }
@@ -133,11 +133,11 @@ namespace Open.Topology.TestRunner.Functions
         /// <param name="name"></param>
         /// <param name="argCount"></param>
         /// <returns>A matching function<br/>or <value>null</value> if no matching function was found</returns>
-        public IGeometryFunction Find(String name, int argCount)
+        public IGeometryFunction Find(string name, int argCount)
         {
             foreach (IGeometryFunction func in _functions)
             {
-                String funcName = func.Name;
+                string funcName = func.Name;
                 if (funcName.Equals(name, StringComparison.InvariantCultureIgnoreCase)
                     && func.ParameterTypes.Length == argCount)
                     return func;
@@ -150,7 +150,7 @@ namespace Open.Topology.TestRunner.Functions
         /// </summary>
         /// <param name="name"></param>
         /// <returns>A matching function<br/>or <value>null</value> if no matching function was found</returns>
-        public IGeometryFunction Find(String name)
+        public IGeometryFunction Find(string name)
         {
             foreach (IGeometryFunction func in _functions)
             {

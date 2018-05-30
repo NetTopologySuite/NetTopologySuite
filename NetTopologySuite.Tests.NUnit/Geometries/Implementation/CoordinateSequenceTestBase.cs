@@ -59,7 +59,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             for (int i = 0; i < seq.Count; i++)
             {
                 Coordinate p = seq.GetCoordinate(i);
-                Assert.IsTrue(Double.IsNaN(p.Z));
+                Assert.IsTrue(double.IsNaN(p.Z));
             }
         }
 

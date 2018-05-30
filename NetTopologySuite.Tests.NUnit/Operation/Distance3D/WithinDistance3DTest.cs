@@ -181,7 +181,7 @@ public class WithinDistance3DTest
 				0);
 	}
 
-	String polyHoleFlat = "POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0), (120 180 0, 180 180 0, 180 120 0, 120 120 0, 120 180 0))";
+	string polyHoleFlat = "POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0), (120 180 0, 180 180 0, 180 120 0, 120 120 0, 120 180 0))";
 
     [TestAttribute]
     public void TestLinePolygonHoleFlat()
@@ -239,12 +239,12 @@ public class WithinDistance3DTest
 	// Convenience methods
 	//==========================================================
 
-	private void CheckWithinDistance(String wkt1, String wkt2, double distance)
+	private void CheckWithinDistance(string wkt1, string wkt2, double distance)
 	{
 		CheckWithinDistance(wkt1, wkt2, distance, true);
 	}
 
-	private void CheckWithinDistance(String wkt1, String wkt2, double distance, bool expectedResult)
+	private void CheckWithinDistance(string wkt1, string wkt2, double distance, bool expectedResult)
 	{
 		IGeometry g1;
 		IGeometry g2;

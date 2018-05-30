@@ -95,7 +95,7 @@ namespace NetTopologySuite.IO.KML
 
         private string _linePrefix;
         private int _maxCoordinatesPerLine = 5;
-        private double _z = Double.NaN;
+        private double _z = double.NaN;
         private bool _extrude;
         private bool _tesselate;
         private string _altitudeMode;
@@ -179,7 +179,7 @@ namespace NetTopologySuite.IO.KML
                 : new PrecisionModel(precision);
             _formatter = WKTWriter.CreateFormatter(precisionModel);
             string digits = WKTWriter.StringOfChar('#', _formatter.NumberDecimalDigits);
-            _format = String.Format("0.{0}", digits);
+            _format = string.Format("0.{0}", digits);
         }
 
         /// <summary>
@@ -255,7 +255,7 @@ namespace NetTopologySuite.IO.KML
                 StartLine("<tesselate>1</tesselate>\n", level, sb);
             if (AltitudeMode != null)
             {
-                string s = String.Format("<altitudeMode>{0}</altitudeMode>\n", AltitudeMode);
+                string s = string.Format("<altitudeMode>{0}</altitudeMode>\n", AltitudeMode);
                 StartLine(s, level, sb);
             }
         }
@@ -363,12 +363,12 @@ namespace NetTopologySuite.IO.KML
 
             double z = p.Z;
             // if altitude was specified directly, use it
-            if (!Double.IsNaN(Z))
+            if (!double.IsNaN(Z))
                 z = Z;
 
             // only write if Z present
             // MD - is this right? Or should it always be written?
-            if (!Double.IsNaN(z))
+            if (!double.IsNaN(z))
             {
                 sb.Append(CoordinateSeparator);
                 Write(z, sb);

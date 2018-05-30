@@ -111,7 +111,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <inheritdoc cref="object.ToString()"/>
-        public override String ToString()
+        public override string ToString()
         {
             return _coordinate + " seg # = " + _segmentIndex + " dist = " + _distance;
         }

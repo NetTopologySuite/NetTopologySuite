@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             RunRelateTest(a, b, "101F00FF2");
         }
 
-        private static void RunRelateTest(String wkt1, String wkt2, String expectedIM)
+        private static void RunRelateTest(string wkt1, string wkt2, string expectedIM)
         {
             var g1 = Reader.Read(wkt1);
             var g2 = Reader.Read(wkt2);

@@ -195,7 +195,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         [Obsolete]
-        public Object Clone()
+        public object Clone()
         {
             return Copy();
 

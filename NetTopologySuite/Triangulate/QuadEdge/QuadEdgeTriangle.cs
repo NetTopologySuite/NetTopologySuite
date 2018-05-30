@@ -256,7 +256,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <inheritdoc cref="object.ToString()"/>
-        public override String ToString()
+        public override string ToString()
         {
             return GetGeometry(new GeometryFactory()).ToString();
         }

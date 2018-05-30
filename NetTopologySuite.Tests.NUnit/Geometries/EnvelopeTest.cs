@@ -202,7 +202,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             checkExpectedEnvelopeGeometry("LINESTRING (0 0, 0 10)");
             checkExpectedEnvelopeGeometry("LINESTRING (0 0, 10 0)");
 
-            String poly10 = "POLYGON ((0 10, 10 10, 10 0, 0 0, 0 10))";
+            string poly10 = "POLYGON ((0 10, 10 10, 10 0, 0 0, 0 10))";
             checkExpectedEnvelopeGeometry(poly10);
 
             checkExpectedEnvelopeGeometry("LINESTRING (0 0, 10 10)",
@@ -211,12 +211,12 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                     poly10);
         }
 
-        void checkExpectedEnvelopeGeometry(String wktInput)
+        void checkExpectedEnvelopeGeometry(string wktInput)
         {
             checkExpectedEnvelopeGeometry(wktInput, wktInput);
         }
 
-        void checkExpectedEnvelopeGeometry(String wktInput, String wktEnvGeomExpected)
+        void checkExpectedEnvelopeGeometry(string wktInput, string wktEnvGeomExpected)
         {
             IGeometry input = reader.Read(wktInput);
             IGeometry envGeomExpected = reader.Read(wktEnvGeomExpected);

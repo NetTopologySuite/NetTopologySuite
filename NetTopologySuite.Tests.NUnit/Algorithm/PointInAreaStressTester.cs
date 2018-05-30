@@ -10,7 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     {
         private readonly IGeometryFactory _geomFactory;
         private readonly IGeometry _area;
-        private Boolean _ignoreBoundaryResults = true;
+        private bool _ignoreBoundaryResults = true;
 
         private int _numPts = 10000;
         private IPointOnGeometryLocator _pia1;
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             set => _pia2 = value;
         }
 
-        public Boolean IgnoreBoundaryResults
+        public bool IgnoreBoundaryResults
         {
             get => _ignoreBoundaryResults;
             set => _ignoreBoundaryResults = value;
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// Run
         /// </summary>
         /// <returns> true if all point locations were computed correctly</returns>
-        public Boolean Run()
+        public bool Run()
         {
             var sw = new Stopwatch();
             sw.Start();
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                     var pt = new Coordinate(x, y);
                     _geomFactory.PrecisionModel.MakePrecise(pt);
 
-                    Boolean isEqual = TestPointInArea(pt);
+                    bool isEqual = TestPointInArea(pt);
                     if (!isEqual)
                         return false;
                 }
@@ -91,9 +91,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         public void PrintStats()
         {
             Console.WriteLine("Location counts: "
-                              + "\nBoundary = " + _locationCount[(Int32)Location.Boundary]
-                              + "\nInterior = " + _locationCount[(Int32)Location.Interior]
-                              + "\nExterior = " + _locationCount[(Int32)Location.Exterior]
+                              + "\nBoundary = " + _locationCount[(int)Location.Boundary]
+                              + "\nInterior = " + _locationCount[(int)Location.Interior]
+                              + "\nExterior = " + _locationCount[(int)Location.Exterior]
                 );
         }
 
@@ -102,14 +102,14 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// </summary>
         /// <param name="p"></param>
         /// <returns>true if the point location is determined to be the same by both PIA locators</returns>
-        private Boolean TestPointInArea(Coordinate p)
+        private bool TestPointInArea(Coordinate p)
         {
             //Console.WriteLine(WKTWriter.toPoint(p));
 
             Location loc1 = _pia1.Locate(p);
             Location loc2 = _pia2.Locate(p);
 
-            _locationCount[(Int32)loc1]++;
+            _locationCount[(int)loc1]++;
 
             if ((loc1 == Location.Boundary || loc2 == Location.Boundary)
                 && IgnoreBoundaryResults)

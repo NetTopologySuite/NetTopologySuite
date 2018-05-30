@@ -23,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             CheckInterpolateZ("LINESTRING(1 1 0, 2 1 0, 1 2 10)", new Coordinate(0, 0), -10);
         }
 
-        private static void CheckInterpolateZ(String wkt, Coordinate p, double expectedValue)
+        private static void CheckInterpolateZ(string wkt, Coordinate p, double expectedValue)
         {
             var g = Reader.Read(wkt);
             var pt = g.Coordinates;
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                         7071.067811865475);
         }
 
-        private static void CheckArea3D(String wkt, double expectedValue)
+        private static void CheckArea3D(string wkt, double expectedValue)
         {
             var g = Reader.Read(wkt);
             var pt = g.Coordinates;
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             CheckArea("POLYGON((10 10, 20 10, 15 10, 10 10))", 0);
         }
 
-        private static void CheckArea(String wkt, double expectedValue)
+        private static void CheckArea(string wkt, double expectedValue)
         {
             var g = Reader.Read(wkt);
             var pt = g.Coordinates;
@@ -92,7 +92,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             CheckAcute("POLYGON((10 10, 20 10, 15 20, 10 10))", true);
         }
 
-        private static void CheckAcute(String wkt, bool expectedValue)
+        private static void CheckAcute(string wkt, bool expectedValue)
         {
             var g = Reader.Read(wkt);
             var pt = g.Coordinates;

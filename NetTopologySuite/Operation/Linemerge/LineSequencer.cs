@@ -343,7 +343,7 @@ namespace NetTopologySuite.Operation.Linemerge
 
         private static Node FindLowestDegreeNode(Subgraph graph)
         {
-            int minDegree = Int32.MaxValue;
+            int minDegree = int.MaxValue;
             Node minDegreeNode = null;
             IEnumerator<Node> i = graph.GetNodeEnumerator();
             while (i.MoveNext())

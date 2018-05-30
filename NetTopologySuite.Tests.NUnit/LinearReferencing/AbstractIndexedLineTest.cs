@@ -137,7 +137,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             RunOffsetTest("MULTILINESTRING ((0 0, 10 0), (10 0, 20 0))", "POINT(20 0)", 1.0, "POINT (20 1)");
         }
 
-        protected IGeometry Read(String wkt)
+        protected IGeometry Read(string wkt)
         {
             try
             {
@@ -149,7 +149,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             }
         }
 
-        protected void RunIndicesOfThenExtract(String inputStr, String subLineStr)
+        protected void RunIndicesOfThenExtract(string inputStr, string subLineStr)
         {
             IGeometry input = Read(inputStr);
             IGeometry subLine = Read(subLineStr);
@@ -157,7 +157,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             CheckExpected(result, subLineStr);
         }
 
-        protected void CheckExpected(IGeometry result, String expected)
+        protected void CheckExpected(IGeometry result, string expected)
         {
             IGeometry subLine = Read(expected);
             bool isEqual = result.EqualsExact(subLine, 1.0e-5);
@@ -178,7 +178,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         }
         */
 
-        protected void RunIndexOfAfterTest(String inputStr, String testPtWKT)
+        protected void RunIndexOfAfterTest(string inputStr, string testPtWKT)
         {
             IGeometry input = Read(inputStr);
             IGeometry testPoint = Read(testPtWKT);
@@ -191,7 +191,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
 
         private const double ToleranceDist = 0.001;
 
-        protected void RunOffsetTest(String inputWKT, String testPtWKT, double offsetDistance, String expectedPtWKT)
+        protected void RunOffsetTest(string inputWKT, string testPtWKT, double offsetDistance, string expectedPtWKT)
         {
             IGeometry input = Read(inputWKT);
             IGeometry testPoint = Read(testPtWKT);

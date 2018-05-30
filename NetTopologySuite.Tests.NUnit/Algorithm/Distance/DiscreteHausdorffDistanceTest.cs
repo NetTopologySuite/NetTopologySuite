@@ -44,7 +44,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance
 
         private static double TOLERANCE = 0.00001;
 
-        private void RunTest(String wkt1, String wkt2, double expectedDistance)
+        private void RunTest(string wkt1, string wkt2, double expectedDistance)
         {
             IGeometry g1 = GeometryUtils.ReadWKT(wkt1);
             IGeometry g2 = GeometryUtils.ReadWKT(wkt2);
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance
             Assert.AreEqual(distance, expectedDistance, TOLERANCE);
         }
 
-        private void RunTest(String wkt1, String wkt2, double densifyFrac, double expectedDistance)
+        private void RunTest(string wkt1, string wkt2, double densifyFrac, double expectedDistance)
         {
             IGeometry g1 = GeometryUtils.ReadWKT(wkt1);
             IGeometry g2 = GeometryUtils.ReadWKT(wkt2);

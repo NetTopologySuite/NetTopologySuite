@@ -552,7 +552,7 @@ namespace RTools_NTS.Util
 		/// </summary>
 		public void Display()
 		{
-			Display(String.Empty);
+			Display(string.Empty);
 		}
 
 		/// <summary>
@@ -753,7 +753,7 @@ namespace RTools_NTS.Util
 		/// </summary>
 		public void Display()
 		{
-			Display(String.Empty);
+			Display(string.Empty);
 		}
 
 		/// <summary>

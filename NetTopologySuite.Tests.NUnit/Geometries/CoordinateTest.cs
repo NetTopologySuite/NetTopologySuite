@@ -145,7 +145,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         public void TestToString()
         {
             const string expectedResult = "(100, 200, 50)";
-            String actualResult = new Coordinate(100, 200, 50).ToString();
+            string actualResult = new Coordinate(100, 200, 50).ToString();
             Assert.AreEqual(expectedResult, actualResult);
         }
 

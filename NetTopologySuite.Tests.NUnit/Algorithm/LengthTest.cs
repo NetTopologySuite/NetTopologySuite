@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             CheckLengthOfLine("LINESTRING (100 200, 200 200, 200 100, 100 100, 100 200)", 400.0);
         }
 
-        void CheckLengthOfLine(String wkt, double expectedLen)
+        void CheckLengthOfLine(string wkt, double expectedLen)
         {
             var ring = (ILineString) Read(wkt);
 

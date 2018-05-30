@@ -136,7 +136,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             {
                 NumberDecimalSeparator = ".",
                 NumberDecimalDigits = decimalPlaces,
-                NumberGroupSeparator = String.Empty,
+                NumberGroupSeparator = string.Empty,
                 NumberGroupSizes = new int[] { }
             };
             return nfi;

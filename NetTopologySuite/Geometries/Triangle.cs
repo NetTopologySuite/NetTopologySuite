@@ -53,7 +53,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <returns>True if the triangle is acute.</returns>
-        public static Boolean IsAcute(Coordinate a, Coordinate b, Coordinate c)
+        public static bool IsAcute(Coordinate a, Coordinate b, Coordinate c)
         {
             if (!AngleUtility.IsAcute(a, b, c)) return false;
             if (!AngleUtility.IsAcute(b, c, a)) return false;

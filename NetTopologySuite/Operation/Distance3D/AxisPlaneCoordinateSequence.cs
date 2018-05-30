@@ -125,7 +125,7 @@ namespace NetTopologySuite.Operation.Distance3D
         }
 
         [Obsolete]
-        public Object Clone()
+        public object Clone()
         {
             return Copy();
         }

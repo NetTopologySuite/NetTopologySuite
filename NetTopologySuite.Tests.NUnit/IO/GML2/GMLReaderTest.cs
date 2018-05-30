@@ -53,8 +53,8 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML2
         private static void DoTest(Type expectedType)
         {
             string name = expectedType.Name;
-            string file = String.Format("{0}s", name.ToLowerInvariant().Substring(1));
-            string resname = String.Format("NetTopologySuite.Tests.NUnit.TestData.{0}.xml", file);
+            string file = string.Format("{0}s", name.ToLowerInvariant().Substring(1));
+            string resname = string.Format("NetTopologySuite.Tests.NUnit.TestData.{0}.xml", file);
             string xml = new StreamReader(EmbeddedResourceManager.GetResourceStream(resname)).ReadToEnd();
 
             GMLReader gr = new GMLReader();

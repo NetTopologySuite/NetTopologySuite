@@ -15,19 +15,19 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     {
         WKTReader rdr = new WKTReader();
 
-        String[] polyInsidePoly =
+        string[] polyInsidePoly =
         { "POLYGON (( 0 0, 100 0, 100 100, 0 100, 0 0 ))",
           "POLYGON (( 10 10, 90 10, 90 90, 10 90, 10 10 ))" };
-        String[] polyPartiallyOverlapsPoly =
+        string[] polyPartiallyOverlapsPoly =
         { "POLYGON (( 10 10, 100 10, 100 100, 10 100, 10 10 ))",
           "POLYGON (( 0 0, 90 0, 90 90, 0 90, 0 0 ))" };
-        String[] polyTouchesPolyAtPoint =
+        string[] polyTouchesPolyAtPoint =
         { "POLYGON (( 10 10, 100 10, 100 100, 10 100, 10 10 ))",
           "POLYGON (( 0 0, 10 0, 10 10, 0 10, 0 0 ))" };
-        String[] polyTouchesPolyAtLine =
+        string[] polyTouchesPolyAtLine =
         { "POLYGON (( 10 10, 100 10, 100 100, 10 100, 10 10 ))",
           "POLYGON (( 10 0, 10 10, 20 10, 20 0, 10 0 ))" };
-        String[] polyInsideHoleInPoly =
+        string[] polyInsideHoleInPoly =
         { "POLYGON (( 40 40, 40 60, 60 60, 60 40, 40 40 ))",
           "POLYGON (( 0 0, 100 0, 100 100, 0 100, 0 0), ( 10 10, 90 10, 90 90, 10 90, 10 10))" };
 
@@ -41,7 +41,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             DoPredicates(polyInsideHoleInPoly);
         }
 
-        public void DoPredicates(String[] wkt)
+        public void DoPredicates(string[] wkt)
         {
             IGeometry a = rdr.Read(wkt[0]);
             IGeometry b = rdr.Read(wkt[1]);

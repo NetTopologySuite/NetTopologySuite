@@ -11,7 +11,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
     /// </summary>
     public class SerializationSamples : BaseSamples
     {
-        private readonly string filepath = String.Empty;
+        private readonly string filepath = string.Empty;
         private IFormatter serializer = null;
 
         private Coordinate[] coordinates = null;

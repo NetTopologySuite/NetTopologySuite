@@ -146,7 +146,7 @@ namespace NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public int CompareTo(Object obj)
+        public int CompareTo(object obj)
         {
             DirectedEdge de = (DirectedEdge) obj;
             return CompareDirection(de);

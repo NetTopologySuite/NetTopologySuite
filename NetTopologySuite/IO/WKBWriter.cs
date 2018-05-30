@@ -20,14 +20,14 @@ namespace NetTopologySuite.IO
         ///<summary>Converts a byte array to a hexadecimal string.</summary>
         /// <param name="bytes">A byte array</param>
         [Obsolete("Use ToHex(byte[])")]
-        public static String BytesToHex(byte[] bytes)
+        public static string BytesToHex(byte[] bytes)
         {
             return ToHex(bytes);
         }
 
         ///<summary>Converts a byte array to a hexadecimal string.</summary>
         /// <param name="bytes">A byte array</param>
-        public static String ToHex(byte[] bytes)
+        public static string ToHex(byte[] bytes)
         {
             var buf = new StringBuilder(bytes.Length * 2);
             for (int i = 0; i < bytes.Length; i++)
@@ -328,7 +328,7 @@ namespace NetTopologySuite.IO
                 writer.Write(coordinate.Z);
             if ((HandleOrdinates & Ordinates.M) == Ordinates.M)
                 //NOTE: Implement
-                writer.Write(Double.NaN);
+                writer.Write(double.NaN);
         }
 
         protected void Write(ICoordinateSequence sequence, bool emitSize, BinaryWriter writer)

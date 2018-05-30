@@ -63,7 +63,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
                 return TransformMultiPolygon(factory, (IMultiPolygon) g, transform);
 		    if (g is IGeometryCollection)
                 return TransformGeometryCollection(factory, (IGeometryCollection) g, transform);
-		    throw new ArgumentException(String.Format(
+		    throw new ArgumentException(string.Format(
                 "Could not transform geometry type '{0}'", g.GetType()));
 		}
 

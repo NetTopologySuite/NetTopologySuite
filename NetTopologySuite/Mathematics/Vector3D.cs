@@ -179,7 +179,7 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <inheritdoc cref="object.ToString()"/>
-        public override String ToString()
+        public override string ToString()
         {
             return string.Format(NumberFormatInfo.InvariantInfo, "[{0}, {1}, {2}]", _x, _y, _z);
         }

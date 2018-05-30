@@ -26,7 +26,7 @@ namespace NetTopologySuite.Noding
         ///</summary>
         ///<param name="pts">the vertices of the segment string</param>
         ///<param name="data">the user-defined data of this segment string (may be null)</param>
-        public BasicSegmentString(Coordinate[] pts, Object data)
+        public BasicSegmentString(Coordinate[] pts, object data)
         {
             _pts = pts;
             this.Context = data;
@@ -34,13 +34,13 @@ namespace NetTopologySuite.Noding
 
         ///<summary>Gets the user-defined data for this segment string.
         ///</summary>
-        public Object Context { get; set; }
+        public object Context { get; set; }
 
         public Coordinate[] Coordinates => _pts;
 
-        public Boolean IsClosed => _pts[0].Equals2D(_pts[_pts.Length - 1]);
+        public bool IsClosed => _pts[0].Equals2D(_pts[_pts.Length - 1]);
 
-        public Int32 Count => _pts.Length;
+        public int Count => _pts.Length;
 
         ///<summary>
         /// Gets the octant of the segment starting at vertex <code>index</code>
@@ -54,7 +54,7 @@ namespace NetTopologySuite.Noding
                 Octant.GetOctant(_pts[index], _pts[index + 1]);
         }
 
-        public LineSegment this[Int32 index]
+        public LineSegment this[int index]
         {
             get
             {

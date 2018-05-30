@@ -15,7 +15,7 @@ namespace NetTopologySuite.Samples.Geometries
             Coordinate coord = new Coordinate(3412805, 5320858);
 
             var orientation =
-                new List<String>(new[]
+                new List<string>(new[]
                                      {
                                          "N", "NOzN", "NO", "NOzO",
                                          "O", "SOzO", "SO", "SOzS",

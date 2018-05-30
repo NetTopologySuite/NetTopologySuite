@@ -151,10 +151,10 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);
             double projIndex = indexedLine.Project(new Coordinate(5, 5));
             Coordinate projPt = indexedLine.ExtractPoint(projIndex);
-            Assert.IsTrue(Double.IsNaN(projPt.Z));
+            Assert.IsTrue(double.IsNaN(projPt.Z));
         }
 
-        private void CheckExtractLine(String wkt, double start, double end, String expected)
+        private void CheckExtractLine(string wkt, double start, double end, string expected)
         {
             IGeometry linearGeom = Read(wkt);
             LengthIndexedLine indexedLine = new LengthIndexedLine(linearGeom);

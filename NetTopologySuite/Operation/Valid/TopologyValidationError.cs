@@ -74,7 +74,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// Indicates that the <c>X</c> or <c>Y</c> ordinate of
         /// a <see cref="Coordinate" /> is not a valid
-        /// numeric value (e.g. <see cref="Double.NaN" />).
+        /// numeric value (e.g. <see cref="double.NaN" />).
         /// </summary>
         InvalidCoordinate = 10,
 
@@ -146,7 +146,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         ///
         /// </summary>
-        public String Message => errMsg[(int) errorType];
+        public string Message => errMsg[(int) errorType];
 
         /// <summary>
         ///
