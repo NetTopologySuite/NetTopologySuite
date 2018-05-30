@@ -12,7 +12,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
     public class SegmentIntersector
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i1"></param>
         /// <param name="i2"></param>
@@ -48,7 +48,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         private bool _isDoneWhenProperInt = false;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="li"></param>
         /// <param name="includeProper"></param>
@@ -61,7 +61,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="bdyNodes0"></param>
         /// <param name="bdyNodes1"></param>
@@ -79,13 +79,13 @@ namespace NetTopologySuite.GeometriesGraph.Index
 
         public bool IsDone => _isDone;
 
-        /// <returns> 
+        /// <returns>
         /// The proper intersection point, or <c>null</c> if none was found.
         /// </returns>
         public Coordinate ProperIntersectionPoint => _properIntersectionPoint;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool HasIntersection => _hasIntersection;
 
@@ -98,7 +98,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// </summary>
         public bool HasProperIntersection => _hasProper;
 
-        /// <summary> 
+        /// <summary>
         /// A proper interior intersection is a proper intersection which is not
         /// contained in the set of boundary nodes set for this SegmentIntersector.
         /// </summary>
@@ -126,15 +126,15 @@ namespace NetTopologySuite.GeometriesGraph.Index
                     {
                         int maxSegIndex = e0.NumPoints - 1;
                         if ((segIndex0 == 0 && segIndex1 == maxSegIndex) ||
-                            (segIndex1 == 0 && segIndex0 == maxSegIndex))                        
-                                return true;                        
+                            (segIndex1 == 0 && segIndex0 == maxSegIndex))
+                                return true;
                     }
                 }
             }
             return false;
         }
 
-        /// <summary> 
+        /// <summary>
         /// This method is called by clients of the EdgeIntersector class to test for and add
         /// intersections for two segments of the edges being intersected.
         /// Note that clients (such as MonotoneChainEdges) may choose not to intersect
@@ -145,17 +145,17 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="e1"></param>
         /// <param name="segIndex1"></param>
         public void AddIntersections(Edge e0, int segIndex0, Edge e1, int segIndex1)
-        {            
-            // if (e0 == e1 && segIndex0 == segIndex1) 
+        {
+            // if (e0 == e1 && segIndex0 == segIndex1)
             if (ReferenceEquals(e0, e1) && segIndex0 == segIndex1)
                 return;             // Diego Guidi say's: Avoid overload equality, i use references equality, otherwise TOPOLOGY ERROR!
-                            
+
             NumTests++;
             Coordinate p00 = e0.Coordinates[segIndex0];
             Coordinate p01 = e0.Coordinates[segIndex0 + 1];
             Coordinate p10 = e1.Coordinates[segIndex1];
             Coordinate p11 = e1.Coordinates[segIndex1 + 1];
-            _li.ComputeIntersection(p00, p01, p10, p11);            
+            _li.ComputeIntersection(p00, p01, p10, p11);
             /*
              *  Always record any non-proper intersections.
              *  If includeProper is true, record any proper intersections as well.
@@ -166,7 +166,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
                 {
                     e0.Isolated = false;
                     e1.Isolated = false;
-                }                
+                }
                 _numIntersections++;
                 // if the segments are adjacent they have at least one trivial intersection,
                 // the shared endpoint.  Don't bother adding it if it is the
@@ -175,7 +175,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
                 {
                     _hasIntersection = true;
                     if (_includeProper || !_li.IsProper)
-                    {                     
+                    {
                         e0.AddIntersections(_li, segIndex0, 0);
                         e1.AddIntersections(_li, segIndex1, 1);
                     }
@@ -185,31 +185,31 @@ namespace NetTopologySuite.GeometriesGraph.Index
                         _hasProper = true;
                         if (_isDoneWhenProperInt) _isDone = true;
                         if (!IsBoundaryPoint(_li, _bdyNodes))
-                            _hasProperInterior = true;                        
-                    }                    
+                            _hasProperInterior = true;
+                    }
                 }
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="li"></param>
         /// <param name="bdyNodes"></param>
         /// <returns></returns>
         private static bool IsBoundaryPoint(LineIntersector li, IList<Node>[] bdyNodes)
         {
-            if (bdyNodes == null) 
+            if (bdyNodes == null)
                 return false;
             if (IsBoundaryPointInternal(li, bdyNodes[0]))
                 return true;
-            if (IsBoundaryPointInternal(li, bdyNodes[1])) 
+            if (IsBoundaryPointInternal(li, bdyNodes[1]))
                 return true;
             return false;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="li"></param>
         /// <param name="bdyNodes"></param>
@@ -219,7 +219,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
             foreach (Node node in bdyNodes)
             {
                 Coordinate pt = node.Coordinate;
-                if (li.IsIntersection(pt)) 
+                if (li.IsIntersection(pt))
                     return true;
             }
             return false;

@@ -10,7 +10,7 @@ namespace NetTopologySuite.Geometries.Utilities
     public class LineStringExtracter : IGeometryFilter
     {
         ///<summary>
-        /// Extracts the <see cref="ILineString"/> elements from a single <see cref="IGeometry"/> 
+        /// Extracts the <see cref="ILineString"/> elements from a single <see cref="IGeometry"/>
         /// and adds them to the<see cref="List{ILineString}"/>.
         ///</summary>
         /// <param name="geom">The geometry from which to extract</param>
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         ///<summary>
-        /// Extracts the <see cref="ILineString"/> elements from a single <see cref="IGeometry"/> 
+        /// Extracts the <see cref="ILineString"/> elements from a single <see cref="IGeometry"/>
         /// and returns them in a <see cref="ICollection{ILineString}"/>.
         ///</summary>
         /// <param name="geom">The geometry from which to extract</param>
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// and returns them as either a <see cref="ILineString"/> or <see cref="IMultiLineString"/>.
         /// </summary>
         /// <param name="geom">The geometry from which to extract</param>
-        /// <returns>A linear geometry</returns>         
+        /// <returns>A linear geometry</returns>
         public static IGeometry GetGeometry(IGeometry geom)
         {
             ICollection<IGeometry> list = GetLines(geom);

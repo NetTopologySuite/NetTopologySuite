@@ -16,12 +16,12 @@ namespace NetTopologySuite.Index.Sweepline
 
         /*
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public SweepLineIndex() { }
         */
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="sweepInt"></param>
         public void Add(SweepLineInterval sweepInt)
@@ -38,20 +38,20 @@ namespace NetTopologySuite.Index.Sweepline
         /// </summary>
         private void BuildIndex()
         {
-            if (_indexBuilt) 
+            if (_indexBuilt)
                 return;
             _events.Sort();
             for (int i = 0; i < _events.Count; i++)
             {
                 SweepLineEvent ev = _events[i];
-                if (ev.IsDelete)                
-                    ev.InsertEvent.DeleteEventIndex = i;                
+                if (ev.IsDelete)
+                    ev.InsertEvent.DeleteEventIndex = i;
             }
             _indexBuilt = true;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="action"></param>
         public void ComputeOverlaps(ISweepLineOverlapAction action)
@@ -62,13 +62,13 @@ namespace NetTopologySuite.Index.Sweepline
             for (int i = 0; i < _events.Count; i++)
             {
                 SweepLineEvent ev = _events[i];
-                if (ev.IsInsert)               
-                    ProcessOverlaps(i, ev.DeleteEventIndex, ev.Interval, action);                
+                if (ev.IsInsert)
+                    ProcessOverlaps(i, ev.DeleteEventIndex, ev.Interval, action);
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>

@@ -22,7 +22,7 @@ namespace NetTopologySuite.Algorithm
     /// avoid this computation.
     /// </para>
     /// <para>
-    /// This class can also be used to compute a line segment representing 
+    /// This class can also be used to compute a line segment representing
     /// the minimum diameter, the supporting line segment of the minimum diameter,
     /// and a minimum rectangle enclosing the input geometry.
     /// This rectangle will
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Algorithm
             return (new MinimumDiameter(geom)).Diameter;
         }
 
-        
+
         private readonly IGeometry _inputGeom;
         private readonly bool _isConvex;
 
@@ -63,14 +63,14 @@ namespace NetTopologySuite.Algorithm
         private int _minPtIndex;
         private double _minWidth;
 
-        /// <summary> 
+        /// <summary>
         /// Compute a minimum diameter for a given <see cref="IGeometry"/>.
         /// </summary>
         /// <param name="inputGeom">a Geometry.</param>
-        public MinimumDiameter(IGeometry inputGeom) 
+        public MinimumDiameter(IGeometry inputGeom)
             : this(inputGeom, false) { }
 
-        /// <summary> 
+        /// <summary>
         /// Compute a minimum diameter for a giver <c>Geometry</c>,
         /// with a hint if
         /// the Geometry is convex
@@ -85,7 +85,7 @@ namespace NetTopologySuite.Algorithm
             _isConvex = isConvex;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Gets the length of the minimum diameter of the input Geometry.
         /// </summary>
         /// <returns>The length of the minimum diameter.</returns>
@@ -147,7 +147,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private void ComputeMinimumDiameter()
         {
@@ -164,42 +164,42 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="convexGeom"></param>
         private void ComputeWidthConvex(IGeometry convexGeom)
         {
             if (convexGeom is IPolygon)
                 _convexHullPts = ((IPolygon) convexGeom).ExteriorRing.Coordinates;
-            else 
+            else
                 _convexHullPts = convexGeom.Coordinates;
 
             // special cases for lines or points or degenerate rings
-            if (_convexHullPts.Length == 0) 
+            if (_convexHullPts.Length == 0)
             {
                 _minWidth = 0.0;
                 _minWidthPt = null;
                 _minBaseSeg = null;
             }
-            else if (_convexHullPts.Length == 1) 
+            else if (_convexHullPts.Length == 1)
             {
                 _minWidth = 0.0;
                 _minWidthPt = _convexHullPts[0];
                 _minBaseSeg.P0 = _convexHullPts[0];
                 _minBaseSeg.P1 = _convexHullPts[0];
             }
-            else if (_convexHullPts.Length == 2 || _convexHullPts.Length == 3) 
+            else if (_convexHullPts.Length == 2 || _convexHullPts.Length == 3)
             {
                 _minWidth = 0.0;
                 _minWidthPt = _convexHullPts[0];
                 _minBaseSeg.P0 = _convexHullPts[0];
                 _minBaseSeg.P1 = _convexHullPts[1];
             }
-            else 
+            else
                 ComputeConvexRingMinDiameter(_convexHullPts);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Compute the width information for a ring of <c>Coordinate</c>s.
         /// Leaves the width information in the instance variables.
         /// </summary>
@@ -212,7 +212,7 @@ namespace NetTopologySuite.Algorithm
 
             LineSegment seg = new LineSegment();
             // compute the max distance for all segments in the ring, and pick the minimum
-            for (int i = 0; i < pts.Length - 1; i++) 
+            for (int i = 0; i < pts.Length - 1; i++)
             {
                 seg.P0 = pts[i];
                 seg.P1 = pts[i + 1];
@@ -221,7 +221,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pts"></param>
         /// <param name="seg"></param>
@@ -233,7 +233,7 @@ namespace NetTopologySuite.Algorithm
             double nextPerpDistance = maxPerpDistance;
             int maxIndex = startIndex;
             int nextIndex = maxIndex;
-            while (nextPerpDistance >= maxPerpDistance) 
+            while (nextPerpDistance >= maxPerpDistance)
             {
                 maxPerpDistance = nextPerpDistance;
                 maxIndex = nextIndex;
@@ -243,18 +243,18 @@ namespace NetTopologySuite.Algorithm
             }
 
             // found maximum width for this segment - update global min dist if appropriate
-            if (maxPerpDistance < _minWidth) 
+            if (maxPerpDistance < _minWidth)
             {
                 _minPtIndex = maxIndex;
                 _minWidth = maxPerpDistance;
                 _minWidthPt = pts[_minPtIndex];
-                _minBaseSeg = new LineSegment(seg);        
+                _minBaseSeg = new LineSegment(seg);
             }
             return maxIndex;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pts"></param>
         /// <param name="index"></param>

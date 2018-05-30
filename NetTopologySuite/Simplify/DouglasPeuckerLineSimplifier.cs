@@ -10,7 +10,7 @@ namespace NetTopologySuite.Simplify
     public class DouglasPeuckerLineSimplifier
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pts"></param>
         /// <param name="distanceTolerance"></param>
@@ -40,7 +40,7 @@ namespace NetTopologySuite.Simplify
         public double DistanceTolerance { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public Coordinate[] Simplify()

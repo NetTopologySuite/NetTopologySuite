@@ -45,8 +45,8 @@ namespace RTools_NTS.Util
 		/// when creating this token.  See UntermErrorMessage for
 		/// a message associated with the problem.
 		/// </summary>
-		public bool UntermError 
-		{ 
+		public bool UntermError
+		{
 			get => (untermError);
 		    set => untermError = value;
 		}
@@ -61,10 +61,10 @@ namespace RTools_NTS.Util
 		public string UntermErrorMsg
 		{
 			get => (untermErrorMsg);
-		    set 
-			{ 
+		    set
+			{
 				untermError = true;
-				untermErrorMsg = value; 
+				untermErrorMsg = value;
 			}
 		}
 
@@ -227,8 +227,8 @@ namespace RTools_NTS.Util
 		/// Produce a string which includes the line number.
 		/// </summary>
 		/// <returns></returns>
-		public string ToLineString() 
-		{ 
+		public string ToLineString()
+		{
 			return(String.Format("{0}: line {1}", ToDebugString(), _lineNumber));
 		}
 
@@ -236,8 +236,8 @@ namespace RTools_NTS.Util
 		/// Produce a string which includes the token type.
 		/// </summary>
 		/// <returns></returns>
-		public virtual string ToDebugString() 
-		{ 
+		public virtual string ToDebugString()
+		{
 			return(String.Format("{0}: line {1}", ToString(), _lineNumber));
 		}
 
@@ -249,7 +249,7 @@ namespace RTools_NTS.Util
 		/// <returns>The new object, or null for error.</returns>
 		public Object ConvertToType(Type t)
 		{
-            return Convert.ChangeType(StringValue, t, CultureInfo.InvariantCulture);			
+            return Convert.ChangeType(StringValue, t, CultureInfo.InvariantCulture);
 		}
 
 		#endregion
@@ -335,9 +335,9 @@ namespace RTools_NTS.Util
 		public StringToken(string s, int line) : base(line) { obj = s; }
 
 		/// <summary>Override, see base <see cref="Token"/></summary>
-		public override string ToDebugString() 
-		{ 
-			return(GetType().Name + ":'" + (string)obj + "'"); 
+		public override string ToDebugString()
+		{
+			return(GetType().Name + ":'" + (string)obj + "'");
 		}
 		/// <summary>Override, see base <see cref="Token"/></summary>
 		public override string ToString() { return((string)obj); }
@@ -360,13 +360,13 @@ namespace RTools_NTS.Util
 	/// Token type for words, meaning sequences of word
 	/// characters.
 	/// </summary>
-	public class WordToken : StringToken 
-	{ 
+	public class WordToken : StringToken
+	{
 		/// <summary>Constructor with the specified value.</summary>
-		public WordToken(string s) : base(s) {} 
+		public WordToken(string s) : base(s) {}
 		/// <summary>Constructor with the specified value
 		/// and line number.</summary>
-		public WordToken(string s, int line) : base(s, line) {} 
+		public WordToken(string s, int line) : base(s, line) {}
 	}
 
 	#endregion
@@ -376,13 +376,13 @@ namespace RTools_NTS.Util
 	/// <summary>
 	/// Token type for Quotes such as "this is a quote".
 	/// </summary>
-	public class QuoteToken : StringToken 
-	{ 
+	public class QuoteToken : StringToken
+	{
 		/// <summary>Constructor with the specified value.</summary>
-		public QuoteToken(string s) : base(s) {} 
+		public QuoteToken(string s) : base(s) {}
 		/// <summary>Constructor with the specified value
 		/// and line number.</summary>
-		public QuoteToken(string s, int line) : base(s, line) {} 
+		public QuoteToken(string s, int line) : base(s, line) {}
 	}
 
 	#endregion
@@ -393,13 +393,13 @@ namespace RTools_NTS.Util
 	/// Token type for comments, including line and block
 	/// comments.
 	/// </summary>
-	public class CommentToken : StringToken 
-	{ 
+	public class CommentToken : StringToken
+	{
 		/// <summary>Constructor with the specified value.</summary>
-		public CommentToken(string s) : base(s) {} 
+		public CommentToken(string s) : base(s) {}
 		/// <summary>Constructor with the specified value
 		/// and line number.</summary>
-		public CommentToken(string s, int line) : base(s, line) {} 
+		public CommentToken(string s, int line) : base(s, line) {}
 	}
 
 	#endregion
@@ -409,13 +409,13 @@ namespace RTools_NTS.Util
 	/// <summary>
 	/// Token type for whitespace such as spaces and tabs.
 	/// </summary>
-	public class WhitespaceToken : StringToken 
-	{ 
+	public class WhitespaceToken : StringToken
+	{
 		/// <summary>Constructor with the specified value.</summary>
-		public WhitespaceToken(string s) : base(s) {} 
+		public WhitespaceToken(string s) : base(s) {}
 		/// <summary>Constructor with the specified value
 		/// and line number.</summary>
-		public WhitespaceToken(string s, int line) : base(s, line) {} 
+		public WhitespaceToken(string s, int line) : base(s, line) {}
 	}
 
 	#endregion
@@ -468,7 +468,7 @@ namespace RTools_NTS.Util
 
 	#endregion
 
-	#region FloatToken   
+	#region FloatToken
 
 	/// <summary>
 	/// Token type for floating point numbers, stored internally as a Double.
@@ -494,7 +494,7 @@ namespace RTools_NTS.Util
         /// Constructor with the specified value.
         /// </summary>
 		public FloatToken(string s) : base(0)
-		{                        
+		{
 			try
 			{
 				obj = Double.Parse(s, GetNumberFormatInfo());
@@ -553,21 +553,21 @@ namespace RTools_NTS.Util
 		/// <summary>
         /// Override, see base <see cref="Token"/>
         /// </summary>
-		public override string ToDebugString() 
-		{ 
+		public override string ToDebugString()
+		{
 			if (obj != null)
-				 return(String.Format("FloatToken: {0:R}", (Double) obj)); 
-			else return(String.Format("FloatToken: null")); 
+				 return(String.Format("FloatToken: {0:R}", (Double) obj));
+			else return(String.Format("FloatToken: null"));
 		}
 
 		/// <summary>
         /// Override, see base <see cref="Token"/>
         /// </summary>
-		public override string ToString() 
-		{ 
+		public override string ToString()
+		{
 			if (obj != null)
-				 return(String.Format("{0:R}", (Double) obj)); 
-			else return(String.Format("null")); 
+				 return(String.Format("{0:R}", (Double) obj));
+			else return(String.Format("null"));
 		}
 
 		/// <summary>
@@ -581,12 +581,12 @@ namespace RTools_NTS.Util
 		/// <summary>
         /// Override, see base <see cref="Token"/>
         /// </summary>
-		public override string StringValue 
-		{ 
+		public override string StringValue
+		{
 			get
 			{
 			    if (obj != null)
-					 // return(String.Format("{0:f9}", (Double)obj)); 
+					 // return(String.Format("{0:f9}", (Double)obj));
                      return ( String.Format(GetNumberFormatInfo(), "{0:R}", (Double) obj));
 			    return(String.Format("null"));
 			}
@@ -597,13 +597,13 @@ namespace RTools_NTS.Util
         /// </summary>
 		public override bool Equals(object other)
 		{
-			if (other == null) 
+			if (other == null)
                 return false;
-			if (!GetType().Equals(other.GetType())) 
+			if (!GetType().Equals(other.GetType()))
                 return false;
-			if ((obj == null) || (((FloatToken)other).obj == null)) 
+			if ((obj == null) || (((FloatToken)other).obj == null))
                 return false ;
-			if (((Double) obj).Equals((Double) ((FloatToken) other).Object)) 
+			if (((Double) obj).Equals((Double) ((FloatToken) other).Object))
                 return true;
 			else return false;
 		}
@@ -650,9 +650,9 @@ namespace RTools_NTS.Util
 			obj = i;
 		}
 
-		/// <summary> 
-		/// Constructor for a 64 bit int 
-		/// </summary> 
+		/// <summary>
+		/// Constructor for a 64 bit int
+		/// </summary>
 		public IntToken(long l, int line) : base(line)
 		{
 			obj = l;
@@ -707,7 +707,7 @@ namespace RTools_NTS.Util
             //    obj = Int32.Parse(s);
             //    return;
             //}
-            //catch(Exception) 
+            //catch(Exception)
             //{
             //    // try 64 bit base 10
             //    try
@@ -716,7 +716,7 @@ namespace RTools_NTS.Util
             //        return;
             //    }
             //    catch(Exception)
-            //    { 					
+            //    {
             //    }  // don't give up yet
             //}
 
@@ -745,20 +745,20 @@ namespace RTools_NTS.Util
 		}
 
 		/// <summary>Override, see base <see cref="Token"/></summary>
-		public override string ToDebugString() 
-		{ 
+		public override string ToDebugString()
+		{
 			if (obj != null)
-				return(String.Format("IntToken: {0}", obj)); 
+				return(String.Format("IntToken: {0}", obj));
 			else
-				return(String.Format("IntToken: null")); 
+				return(String.Format("IntToken: null"));
 		}
 		/// <summary>Override, see base <see cref="Token"/></summary>
-		public override string ToString() 
-		{ 
+		public override string ToString()
+		{
 			if (obj != null)
-				return(String.Format("{0}", obj)); 
+				return(String.Format("{0}", obj));
 			else
-				return(String.Format("null")); 
+				return(String.Format("null"));
 		}
 		/// <summary>Override, see base <see cref="Token"/></summary>
 		public override int GetHashCode()
@@ -766,14 +766,14 @@ namespace RTools_NTS.Util
 			return(ToString().GetHashCode());
 		}
 		/// <summary>Override, see base <see cref="Token"/></summary>
-		public override string StringValue 
-		{ 
-			get 
+		public override string StringValue
+		{
+			get
 			{
 				if (obj != null)
-					return(String.Format("{0}", obj)); 
+					return(String.Format("{0}", obj));
 				else
-					return(String.Format("null")); 
+					return(String.Format("null"));
 			}
 		}
 		/// <summary>Override, see base <see cref="Token"/></summary>

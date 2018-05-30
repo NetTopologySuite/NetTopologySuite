@@ -19,7 +19,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
             var sw1 = new Stopwatch();
             var sw2 = new Stopwatch();
             var sw3 = new Stopwatch();
-                                   
+
             //-2,23057128323489E-11
 
             sw.Start();
@@ -55,19 +55,19 @@ namespace NetTopologySuite.Tests.NUnit.Performance
                 var eps1 = exactArea - area;
                 var eps2 = exactArea - area2;
                 var eps3 = exactArea - areaOld;
-                
+
                 //Assert.IsTrue(Math.Abs(eps2) <= Math.Abs(eps3));
 
                 Console.WriteLine(string.Format("{0,10},\tnow err: {1,23},\tacc err: {2,23},\told err: {3,23}", nrVertices ,eps1, eps2 ,eps3));
             }
-            
+
             sw.Stop();
 
             Console.WriteLine("\n\nTime: " + sw.Elapsed);
             Console.WriteLine("Time Now: " + sw1.ElapsedTicks);
             Console.WriteLine("Time Acc: " + sw2.ElapsedTicks);
             Console.WriteLine("Time Old: " + sw3.ElapsedTicks);
-            
+
             Assert.IsTrue(true);
         }
 

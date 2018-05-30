@@ -30,7 +30,7 @@ namespace NetTopologySuite.Utilities
         public Coordinate[] Coordinates => _list.ToArray();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coord"></param>
         public void Filter(Coordinate coord)

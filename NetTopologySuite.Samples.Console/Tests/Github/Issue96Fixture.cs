@@ -30,14 +30,14 @@ namespace NetTopologySuite.Samples.Tests.Github
 
             WKBReader reader = new WKBReader();
             IGeometry actual = reader.Read(bytes);
-            Assert.That(actual, Is.Not.Null);            
-            Assert.That(actual, Is.EqualTo(expected));            
+            Assert.That(actual, Is.Not.Null);
+            Assert.That(actual, Is.EqualTo(expected));
             Assert.That(actual.OgcGeometryType, Is.EqualTo(expected.OgcGeometryType));
 
-            // WKBReader reads "ILinearRing" geometries as ILineString            
+            // WKBReader reads "ILinearRing" geometries as ILineString
             Assert.That(expected, Is.InstanceOf<ILinearRing>());
             Assert.That(actual, Is.InstanceOf<ILineString>());
             Assert.That(actual.GeometryType, Is.Not.EqualTo(expected.GeometryType));
-        }       
+        }
     }
 }

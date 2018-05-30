@@ -71,7 +71,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 double ptArcFrac = (i / (double)NumPoints) * NumArms;
                 double armAngFrac = ptArcFrac - Math.Floor(ptArcFrac);
 
-                // the angle for the current arm - in [0,2Pi]  
+                // the angle for the current arm - in [0,2Pi]
                 // (each arm is a complete sine wave cycle)
                 double armAng = 2 * Math.PI * armAngFrac;
                 // the current length of the arm

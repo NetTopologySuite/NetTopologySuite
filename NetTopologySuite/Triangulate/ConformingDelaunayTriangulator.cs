@@ -28,18 +28,18 @@ namespace NetTopologySuite.Triangulate
     /// </para>
     /// <para>
     /// A Conforming Delaunay triangulation is distinct from a Constrained Delaunay triangulation.
-    /// A Constrained Delaunay triangulation is not necessarily fully Delaunay, 
+    /// A Constrained Delaunay triangulation is not necessarily fully Delaunay,
     /// and it contains the constraint segments exactly as edges of the triangulation.
     /// </para>
     /// <para>
     /// A typical usage pattern for the triangulator is:
     /// <code>
     /// 	 ConformingDelaunayTriangulator cdt = new ConformingDelaunayTriangulator(sites, tolerance);
-    /// 
-    ///   // optional	
+    ///
+    ///   // optional
     ///   cdt.SplitPointFinder = splitPointFinder;
     ///   cdt.VertexFactory = vertexFactory;
-    ///   
+    ///
     ///	 cdt.SetConstraints(segments,  new List&lt;Vertex&gt;(vertexMap.Values));
     ///	 cdt.FormInitialDelaunay();
     ///	 cdt.EnforceConstraints();
@@ -97,7 +97,7 @@ namespace NetTopologySuite.Triangulate
         /// <summary>
         /// Sets the constraints to be conformed to by the computed triangulation.
         /// The constraints must not contain duplicate segments (up to orientation).
-        /// The unique set of vertices (as <see cref="ConstraintVertex"/>es) 
+        /// The unique set of vertices (as <see cref="ConstraintVertex"/>es)
         /// forming the constraints must also be supplied.
         /// Supplying it explicitly allows the ConstraintVertexes to be initialized
         /// appropriately (e.g. with external data), and avoids re-computing the unique set
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Triangulate
         /// Gets or sets the <see cref="IConstraintSplitPointFinder"/> to be
         /// used during constraint enforcement.
         /// Different splitting strategies may be appropriate
-        /// for special situations. 
+        /// for special situations.
         /// </summary>
         /// <remarks>the ConstraintSplitPointFinder to be used</remarks>
         public IConstraintSplitPointFinder SplitPointFinder
@@ -152,7 +152,7 @@ namespace NetTopologySuite.Triangulate
         /// </summary>
         public KdTree<Vertex> KDT => _kdt;
 
-        /// <summary> 
+        /// <summary>
         /// Gets the sites (vertices) used to initialize the triangulation.
         /// </summary>
         public IList<Vertex> InitialVertices => _initialVertices;

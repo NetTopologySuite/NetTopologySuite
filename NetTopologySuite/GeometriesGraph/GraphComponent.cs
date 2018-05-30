@@ -9,9 +9,9 @@ namespace NetTopologySuite.GeometriesGraph
     /// Label.
     /// </summary>
     abstract public class GraphComponent
-    {        
+    {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private Label _label;
 
@@ -22,12 +22,12 @@ namespace NetTopologySuite.GeometriesGraph
         private bool _isVisited;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected GraphComponent() { }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="label"></param>
         protected GraphComponent(Label label)
@@ -36,7 +36,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Label Label
         {
@@ -45,17 +45,17 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool InResult { get; set; }
 
-        /// <summary> 
+        /// <summary>
         /// IsInResult indicates if this component has already been included in the result.
         /// </summary>
         public bool IsInResult => InResult;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool Covered
         {
@@ -63,22 +63,22 @@ namespace NetTopologySuite.GeometriesGraph
             set
             {
                 _isCovered = value;
-                _isCoveredSet = true;                
+                _isCoveredSet = true;
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsCovered => Covered;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsCoveredSet => _isCoveredSet;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool Visited
         {
@@ -87,12 +87,12 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsVisited => _isVisited;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns>
         /// A coordinate in this component (or null, if there are none).

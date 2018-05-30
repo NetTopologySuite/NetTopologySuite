@@ -145,7 +145,7 @@ namespace NetTopologySuite.Utilities
          * If the current token is a number, this field contains the value
          * of that number. The current token is a number when the value of
          * the <code>ttype</code> field is <code>TT_NUMBER</code>.
-         * 
+         *
          * The initial value of this field is 0.0.
          *</summary>
          */
@@ -775,7 +775,7 @@ namespace NetTopologySuite.Utilities
          * </p>
          * <blockquote><pre>Token['a'], line 10</pre></blockquote>
          *
-         * <returns>  a string representation of the token </returns> 
+         * <returns>  a string representation of the token </returns>
          * </summary>
          */
         public override string ToString()
@@ -800,7 +800,7 @@ namespace NetTopologySuite.Utilities
                     break;
                 default:
                     {
-                        /* 
+                        /*
                          * ttype is the first character of either a quoted string or
                          * is an ordinary character. ttype can definitely not be less
                          * than 0, since those are reserved values used in the previous

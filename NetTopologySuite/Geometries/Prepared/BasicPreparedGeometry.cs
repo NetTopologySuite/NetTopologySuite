@@ -29,7 +29,7 @@ namespace NetTopologySuite.Geometries.Prepared
         public IGeometry Geometry => _baseGeom;
 
         ///<summary>
-        /// Gets the list of representative points for this geometry. 
+        /// Gets the list of representative points for this geometry.
         /// One vertex is included for every component of the geometry
         /// (i.e. including one for every ring of polygonal geometries).
         /// <para/>
@@ -99,7 +99,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <item>The DE-9IM Intersection Matrix for the two geometries matches <c>>[T**FF*FF*]</c></item>
         /// </list>
 	    /// In other words, if the test geometry has any interaction with the boundary of the target
-	    /// geometry the result of <c>ContainsProperly</c> is <c>false</c>. 
+	    /// geometry the result of <c>ContainsProperly</c> is <c>false</c>.
 	    /// This is different semantics to the {@link Geometry#contains} predicate,
 	    /// in which test geometries can intersect the target's boundary and still be contained.
 	    /// <para/>
@@ -108,11 +108,11 @@ namespace NetTopologySuite.Geometries.Prepared
 	    /// of the input boundaries in cases where they intersect.
         /// <para/>
         /// An example use case is computing the intersections
-        /// of a set of geometries with a large polygonal geometry.  
+        /// of a set of geometries with a large polygonal geometry.
         /// Since <i>intersection</i> is a fairly slow operation, it can be more efficient
         /// to use <see cref="ContainsProperly" /> to filter out test geometries which lie
         /// wholly inside the area.  In these cases the intersection is
-        /// known <c>a priori</c> to be simply the original test geometry. 
+        /// known <c>a priori</c> to be simply the original test geometry.
         /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry properly contains the given geometry</returns>

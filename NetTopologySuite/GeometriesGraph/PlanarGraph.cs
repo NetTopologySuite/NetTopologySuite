@@ -5,7 +5,7 @@ using NetTopologySuite.Algorithm;
 
 namespace NetTopologySuite.GeometriesGraph
 {
-    /// <summary> 
+    /// <summary>
     /// The computation of the <c>IntersectionMatrix</c> relies on the use of a structure
     /// called a "topology graph". The topology graph contains nodes and edges
     /// corresponding to the nodes and line segments of a <c>Geometry</c>. Each
@@ -18,9 +18,9 @@ namespace NetTopologySuite.GeometriesGraph
     /// Computing the intersections between all the edges and nodes of a single graph
     /// Computing the intersections between the edges and nodes of two different graphs
     /// </summary>
-    public class PlanarGraph 
-    {        
-        /// <summary> 
+    public class PlanarGraph
+    {
+        /// <summary>
         /// For nodes in the Collection, link the DirectedEdges at the node that are in the result.
         /// This allows clients to link only a subset of nodes in the graph, for
         /// efficiency (because they know that only a subset is of interest).
@@ -33,22 +33,22 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private readonly List<Edge> _edges = new List<Edge>();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private readonly NodeMap _nodes;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected IList<EdgeEnd> edgeEndList = new List<EdgeEnd>();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="nodeFact"></param>
         public PlanarGraph(NodeFactory nodeFact)
@@ -57,31 +57,31 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public PlanarGraph() 
+        public PlanarGraph()
         {
             _nodes = new NodeMap(new NodeFactory());
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public IEnumerator<Edge> GetEdgeEnumerator()
         {
-            return _edges.GetEnumerator();            
+            return _edges.GetEnumerator();
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IList<EdgeEnd> EdgeEnds => edgeEndList;
 
         protected internal IList<Edge> Edges => _edges;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="coord"></param>
@@ -89,16 +89,16 @@ namespace NetTopologySuite.GeometriesGraph
         public bool IsBoundaryNode(int geomIndex, Coordinate coord)
         {
             Node node = _nodes.Find(coord);
-            if (node == null) 
+            if (node == null)
                 return false;
             Label label = node.Label;
-            if (label != null && label.GetLocation(geomIndex) == Location.Boundary) 
+            if (label != null && label.GetLocation(geomIndex) == Location.Boundary)
                 return true;
             return false;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="e"></param>
         protected void InsertEdge(Edge e)
@@ -107,7 +107,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="e"></param>
         public void Add(EdgeEnd e)
@@ -117,51 +117,51 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public IEnumerator<Node> GetNodeEnumerator()
-        {            
-            return _nodes.GetEnumerator();         
+        {
+            return _nodes.GetEnumerator();
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IList<Node> Nodes => new List<Node>(_nodes.Values);
 
         protected NodeMap NodeMap => _nodes;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public Node AddNode(Node node) 
-        { 
-            return _nodes.AddNode(node); 
+        public Node AddNode(Node node)
+        {
+            return _nodes.AddNode(node);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>
-        public Node AddNode(Coordinate coord) 
+        public Node AddNode(Coordinate coord)
         {
-            return _nodes.AddNode(coord); 
+            return _nodes.AddNode(coord);
         }
 
-        /// <returns> 
+        /// <returns>
         /// The node if found; null otherwise
         /// </returns>
         /// <param name="coord"></param>
-        public Node Find(Coordinate coord) 
+        public Node Find(Coordinate coord)
         {
-            return _nodes.Find(coord); 
+            return _nodes.Find(coord);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Add a set of edges to the graph.  For each edge two DirectedEdges
         /// will be created.  DirectedEdges are NOT linked by this method.
         /// </summary>
@@ -183,7 +183,7 @@ namespace NetTopologySuite.GeometriesGraph
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Link the DirectedEdges at the nodes of the graph.
         /// This allows clients to link only a subset of nodes in the graph, for
         /// efficiency (because they know that only a subset is of interest).
@@ -194,7 +194,7 @@ namespace NetTopologySuite.GeometriesGraph
                 ((DirectedEdgeStar) node.Edges).LinkResultDirectedEdges();
         }
 
-        /// <summary> 
+        /// <summary>
         /// Link the DirectedEdges at the nodes of the graph.
         /// This allows clients to link only a subset of nodes in the graph, for
         /// efficiency (because they know that only a subset is of interest).
@@ -205,7 +205,7 @@ namespace NetTopologySuite.GeometriesGraph
                 ((DirectedEdgeStar) node.Edges).LinkAllDirectedEdges();
         }
 
-        /// <summary> 
+        /// <summary>
         /// Returns the EdgeEnd which has edge e as its base edge
         /// (MD 18 Feb 2002 - this should return a pair of edges).
         /// </summary>
@@ -226,7 +226,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
         public Edge FindEdge(Coordinate p0, Coordinate p1)
         {
-            for (int i = 0; i < _edges.Count; i++) 
+            for (int i = 0; i < _edges.Count; i++)
             {
                 Edge e = _edges[i];
                 Coordinate[] eCoord = e.Coordinates;
@@ -245,7 +245,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
         public Edge FindEdgeInSameDirection(Coordinate p0, Coordinate p1)
         {
-            for (int i = 0; i < _edges.Count; i++) 
+            for (int i = 0; i < _edges.Count; i++)
             {
                 Edge e = _edges[i];
                 Coordinate[] eCoord = e.Coordinates;
@@ -270,26 +270,26 @@ namespace NetTopologySuite.GeometriesGraph
         {
             if (! p0.Equals(ep0))
                 return false;
-            if (Orientation.Index(p0, p1, ep1) == OrientationIndex.Collinear && 
+            if (Orientation.Index(p0, p1, ep1) == OrientationIndex.Collinear &&
                 QuadrantOp.Quadrant(p0, p1) == QuadrantOp.Quadrant(ep0, ep1) )
                 return true;
             return false;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="outstream"></param>
         public void WriteEdges(StreamWriter outstream)
         {
             outstream.WriteLine("Edges:");
-            for (int i = 0; i < _edges.Count; i++) 
+            for (int i = 0; i < _edges.Count; i++)
             {
                 outstream.WriteLine("edge " + i + ":");
                 Edge e = _edges[i];
                 e.Write(outstream);
                 e.EdgeIntersectionList.Write(outstream);
             }
-        }        
+        }
     }
 }

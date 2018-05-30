@@ -10,7 +10,7 @@ namespace NetTopologySuite.Simplify
     /// <remarks>
     /// Ensures that any polygonal geometries returned are valid.
     /// Simple lines are not guaranteed to remain simple after simplification.
-    /// All geometry types are handled. 
+    /// All geometry types are handled.
     /// Empty and point geometries are returned unchanged.
     /// Empty geometry components are deleted.
     /// <para/>
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Simplify
     /// <para/>
     /// KNOWN BUGS:
     /// In some cases the approach used to clean invalid simplified polygons
-    /// can distort the output geometry severely.  
+    /// can distort the output geometry severely.
     /// </remarks>
     /// <seealso cref="TopologyPreservingSimplifier"/>
     public class DouglasPeuckerSimplifier
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Simplify
         /// <remarks>
         /// All vertices in the simplified geometry will be within this
         /// distance of the original geometry.
-        /// The tolerance value must be non-negative. 
+        /// The tolerance value must be non-negative.
         /// </remarks>
         public double DistanceTolerance
         {
@@ -99,7 +99,7 @@ namespace NetTopologySuite.Simplify
         public IGeometry GetResultGeometry()
         {
             // empty input produces an empty result
-            if (_inputGeom.IsEmpty) 
+            if (_inputGeom.IsEmpty)
                 return (IGeometry)_inputGeom.Copy();
 
             DPTransformer transformer = new DPTransformer(this, EnsureValidTopology);

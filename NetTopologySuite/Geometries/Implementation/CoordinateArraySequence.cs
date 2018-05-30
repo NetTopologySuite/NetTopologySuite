@@ -14,13 +14,13 @@ namespace NetTopologySuite.Geometries.Implementation
     /// A dimension may be specified for the coordinates in the sequence,
     /// which may be 2 or 3.
     /// The actual coordinates will always have 3 ordinates,
-    /// but the dimension is useful as metadata in some situations. 
+    /// but the dimension is useful as metadata in some situations.
     /// </summary>
 #if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public class CoordinateArraySequence : ICoordinateSequence
-    {    
+    {
         protected Coordinate[] Coordinates;
 
         /**
@@ -28,7 +28,7 @@ namespace NetTopologySuite.Geometries.Implementation
          * Allowable values are 2 or 3.
          */
         private readonly int _dimension = 3;
-  
+
         /// <summary>
         /// Constructs a sequence based on the given array of <see cref="Coordinate"/>s.
         /// The coordinate dimension is 3
@@ -37,11 +37,11 @@ namespace NetTopologySuite.Geometries.Implementation
         /// The array is not copied.
         /// </remarks>
         /// <param name="coordinates">The coordinate array that will be referenced.</param>
-        public CoordinateArraySequence(Coordinate[] coordinates) 
+        public CoordinateArraySequence(Coordinate[] coordinates)
             : this(coordinates, 3) { }
 
         /// <summary>
-        /// Constructs a sequence based on the given array 
+        /// Constructs a sequence based on the given array
         /// of <see cref="Coordinate"/>s.
         /// </summary>
         /// <remarks>The Array is not copied</remarks>
@@ -54,7 +54,7 @@ namespace NetTopologySuite.Geometries.Implementation
             if (coordinates == null)
                 Coordinates = new Coordinate[0];
         }
-        
+
         /// <summary>
         /// Constructs a sequence of a given size, populated with new Coordinates.
         /// </summary>
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Geometries.Implementation
             : this(size, 3) { }
 
         /// <summary>
-        /// Constructs a sequence of a given <paramref name="size"/>, populated 
+        /// Constructs a sequence of a given <paramref name="size"/>, populated
         /// with new <see cref="Coordinate"/>s of the given <paramref name="dimension"/>.
         /// </summary>
         /// <param name="size">The size of the sequence to create.</param>
@@ -92,7 +92,7 @@ namespace NetTopologySuite.Geometries.Implementation
             _dimension = coordSeq.Dimension;
             Coordinates = new Coordinate[coordSeq.Count];
 
-            for (var i = 0; i < Coordinates.Length; i++) 
+            for (var i = 0; i < Coordinates.Length; i++)
                 Coordinates[i] = coordSeq.GetCoordinateCopy(i);
         }
 
@@ -102,8 +102,8 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <value></value>
         public int Dimension => _dimension;
 
-        public Ordinates Ordinates => _dimension == 3 
-            ? Ordinates.XYZ 
+        public Ordinates Ordinates => _dimension == 3
+            ? Ordinates.XYZ
             : Ordinates.XY;
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="i">The index of the coordinate.</param>
         /// <returns>The requested Coordinate instance.</returns>
-        public Coordinate GetCoordinate(int i) 
+        public Coordinate GetCoordinate(int i)
         {
             return Coordinates[i];
         }
@@ -121,7 +121,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="i">The index of the coordinate.</param>
         /// <returns>A copy of the requested Coordinate.</returns>
-        public virtual Coordinate GetCoordinateCopy(int i) 
+        public virtual Coordinate GetCoordinateCopy(int i)
         {
             return new Coordinate(Coordinates[i]);
         }
@@ -131,7 +131,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="index">The index of the coordinate to copy.</param>
         /// <param name="coord">A Coordinate to receive the value.</param>
-        public void GetCoordinate(int index, Coordinate coord) 
+        public void GetCoordinate(int index, Coordinate coord)
         {
             coord.X = Coordinates[index].X;
             coord.Y = Coordinates[index].Y;
@@ -145,7 +145,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>
         /// The value of the X ordinate in the index'th coordinate.
         /// </returns>
-        public double GetX(int index) 
+        public double GetX(int index)
         {
             return Coordinates[index].X;
         }
@@ -157,7 +157,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>
         /// The value of the Y ordinate in the index'th coordinate.
         /// </returns>
-        public double GetY(int index) 
+        public double GetY(int index)
         {
             return Coordinates[index].Y;
         }
@@ -173,17 +173,17 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns></returns>
         public double GetOrdinate(int index, Ordinate ordinate)
         {
-            switch (ordinate) 
+            switch (ordinate)
             {
-                case Ordinate.X:  
+                case Ordinate.X:
                     return Coordinates[index].X;
-                case Ordinate.Y:  
+                case Ordinate.Y:
                     return Coordinates[index].Y;
-                case Ordinate.Z:  
+                case Ordinate.Z:
                     return Coordinates[index].Z;
                 default:
                     return Double.NaN;
-            }            
+            }
         }
 
         /// <summary>
@@ -207,13 +207,13 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
-        protected Coordinate[] GetClonedCoordinates() 
+        protected Coordinate[] GetClonedCoordinates()
         {
             Coordinate[] cloneCoordinates = new Coordinate[Count];
-            for (int i = 0; i < Coordinates.Length; i++) 
+            for (int i = 0; i < Coordinates.Length; i++)
                 cloneCoordinates[i] = Coordinates[i].Copy();
             return cloneCoordinates;
         }
@@ -231,15 +231,15 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="value">The new ordinate value.</param>
         public void SetOrdinate(int index, Ordinate ordinate, double value)
         {
-            switch (ordinate) 
+            switch (ordinate)
             {
-                case Ordinate.X:  
+                case Ordinate.X:
                     Coordinates[index].X = value;
                     break;
-                case Ordinate.Y: 
+                case Ordinate.Y:
                     Coordinates[index].Y = value;
                     break;
-                case Ordinate.Z: 
+                case Ordinate.Z:
                     Coordinates[index].Z = value;
                     break;
                 //default:
@@ -248,10 +248,10 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        ///This method exposes the internal Array of Coordinate Objects.       
+        ///This method exposes the internal Array of Coordinate Objects.
         /// </summary>
         /// <returns></returns>
-        public Coordinate[] ToCoordinateArray() 
+        public Coordinate[] ToCoordinateArray()
         {
             return Coordinates;
         }
@@ -264,8 +264,8 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>A reference to the expanded envelope.</returns>
         public Envelope ExpandEnvelope(Envelope env)
         {
-            for (int i = 0; i < Coordinates.Length; i++ ) 
-                env.ExpandToInclude(Coordinates[i]);            
+            for (int i = 0; i < Coordinates.Length; i++ )
+                env.ExpandToInclude(Coordinates[i]);
             return env;
         }
 
@@ -283,21 +283,21 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Returns the string representation of the coordinate array.
         /// </summary>
         /// <returns></returns>
-        public override string ToString() 
+        public override string ToString()
         {
-            if (Coordinates.Length > 0) 
+            if (Coordinates.Length > 0)
             {
                 StringBuilder strBuf = new StringBuilder(17 * Coordinates.Length);
                 strBuf.Append('(');
                 strBuf.Append(Coordinates[0]);
-                for (int i = 1; i < Coordinates.Length; i++) 
+                for (int i = 1; i < Coordinates.Length; i++)
                 {
                     strBuf.Append(", ");
                     strBuf.Append(Coordinates[i]);
                 }
                 strBuf.Append(')');
                 return strBuf.ToString();
-            } 
+            }
             else return "()";
         }
     }

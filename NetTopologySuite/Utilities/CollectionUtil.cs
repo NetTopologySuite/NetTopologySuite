@@ -12,7 +12,7 @@ namespace NetTopologySuite.Utilities
     {
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
@@ -20,7 +20,7 @@ namespace NetTopologySuite.Utilities
         public delegate T FunctionDelegate<T>(T obj);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TResult"></typeparam>
@@ -78,7 +78,7 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Executes a function on each item in a <see cref="IEnumerable{T}" /> 
+        /// Executes a function on each item in a <see cref="IEnumerable{T}" />
         /// but does not accumulate the result.
         /// </summary>
         /// <param name="coll"></param>
@@ -166,7 +166,7 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Executes a function on each item in a <see cref="System.Collections.ICollection" /> 
+        /// Executes a function on each item in a <see cref="System.Collections.ICollection" />
         /// but does not accumulate the result.
         /// </summary>
         /// <param name="coll"></param>

@@ -108,10 +108,10 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="geom"></param>        
+        /// <param name="geom"></param>
         private void WriteHeader(BinaryWriter writer, IGeometry geom)
         {
             //Byte Order

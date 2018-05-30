@@ -6,15 +6,15 @@ using NetTopologySuite.Algorithm;
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
     /// <summary>
-    /// Models a site (node) in a <see cref="QuadEdgeSubdivision"/>. 
+    /// Models a site (node) in a <see cref="QuadEdgeSubdivision"/>.
     /// The sites can be points on a line string representing a
-    /// linear site.<para/> 
+    /// linear site.<para/>
     /// The vertex can be considered as a vector with a norm, length, inner product, cross
     /// product, etc. Additionally, point relations (e.g., is a point to the left of a line, the circle
     /// defined by this point and two others, etc.) are also defined in this class.
     /// <para/>
-    /// It is common to want to attach user-defined data to 
-    /// the vertices of a subdivision.  
+    /// It is common to want to attach user-defined data to
+    /// the vertices of a subdivision.
     /// One way to do this is to subclass <tt>Vertex</tt>
     /// to carry any desired information.
     /// </summary>
@@ -204,7 +204,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <returns>true if this vertex is inside the circumcircle (a, b, c)</returns>
-        public Boolean IsInCircle(Vertex a, Vertex b, Vertex c) 
+        public Boolean IsInCircle(Vertex a, Vertex b, Vertex c)
         {
             return TrianglePredicate.IsInCircleRobust(a._p, b._p, c._p, _p);
             // non-robust - best to not use
@@ -221,11 +221,11 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         private bool IsCcw(Vertex b, Vertex c)
         {
             /*
-            // test code used to check for robustness of triArea 
-            boolean isCCW = (b.p.x - p.x) * (c.p.y - p.y) 
+            // test code used to check for robustness of triArea
+            boolean isCCW = (b.p.x - p.x) * (c.p.y - p.y)
                           - (b.p.y - p.y) * (c.p.x - p.x) > 0;
             //boolean isCCW = triArea(this, b, c) > 0;
-            boolean isCCWRobust = CGAlgorithms.orientationIndex(p, b.p, c.p) == CGAlgorithms.COUNTERCLOCKWISE; 
+            boolean isCCWRobust = CGAlgorithms.orientationIndex(p, b.p, c.p) == CGAlgorithms.COUNTERCLOCKWISE;
             if (isCCWRobust != isCCW)
                 System.out.println("CCW failure");
             //
@@ -361,7 +361,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// Interpolates the Z-value (height) of a point enclosed in a triangle
         /// whose vertices all have Z values.
         /// The containing triangle must not be degenerate
-        /// (in other words, the three vertices must enclose a 
+        /// (in other words, the three vertices must enclose a
         /// non-zero area).
         /// </summary>
         /// <param name="p">The point to interpolate the Z value of</param>
@@ -388,7 +388,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         /// <summary>
         /// Computes the interpolated Z-value for a point p lying on the segment p0-p1
-        /// </summary>  
+        /// </summary>
         /// <param name="p">The point to interpolate the Z value of</param>
         /// <param name="p0">A vertex of the segment <paramref name="p"/> is lying on</param>
         /// <param name="p1">A vertex of the segment <paramref name="p"/> is lying on</param>

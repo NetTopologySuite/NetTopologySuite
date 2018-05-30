@@ -66,7 +66,7 @@ namespace NetTopologySuite.Shape.Random
         public override IGeometry GetGeometry()
         {
             var nCells = (int)Math.Sqrt(NumPoints) + 1;
-            
+
             // ensure that at least numPts points are generated
             if (nCells * nCells < NumPoints)
                 nCells += 1;
@@ -97,7 +97,7 @@ namespace NetTopologySuite.Shape.Random
 
         private Coordinate RandomPointInCell(double orgX, double orgY, double xLen, double yLen)
         {
-            return _isConstrainedToCircle 
+            return _isConstrainedToCircle
                 ? RandomPointInCircle(orgX, orgY, xLen, yLen)
                 : RandomPointInGridCell(orgX, orgY, xLen, yLen);
         }

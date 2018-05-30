@@ -18,7 +18,7 @@ namespace NetTopologySuite.Samples.Geometries
                 new List<String>(new[]
                                      {
                                          "N", "NOzN", "NO", "NOzO",
-                                         "O", "SOzO", "SO", "SOzS", 
+                                         "O", "SOzO", "SO", "SOzS",
                                          "S", "SWzS", "SW", "SWzW",
                                          "W", "NWzW", "NW", "NWzN"
                                      });
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Samples.Geometries
             const double range = -22.5d;
 
             var slices = new List<IGeometry>(16);
-            
+
             for (double angle = start; angle > 101.25d - 360d; angle += range)
             {
                 var coordinates = new[]

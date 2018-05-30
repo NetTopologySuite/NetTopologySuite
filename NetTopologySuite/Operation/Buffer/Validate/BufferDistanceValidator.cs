@@ -78,9 +78,9 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             {
 // ReSharper disable once RedundantStringFormatCall
                 // String.Format needed to build 2.0 release!
-                Debug.WriteLine(String.Format("Min Dist= {0}  err= {1}  Max Dist= {2}  err= {3}", 
-                    _minDistanceFound, 
-                    1.0 - _minDistanceFound / _bufDistance, 
+                Debug.WriteLine(String.Format("Min Dist= {0}  err= {1}  Max Dist= {2}  err= {3}",
+                    _minDistanceFound,
+                    1.0 - _minDistanceFound / _bufDistance,
                     _maxDistanceFound,
                     _maxDistanceFound / _bufDistance - 1.0)
                   );
@@ -99,7 +99,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// of the distance discrepancy.
         /// </para>
         /// </summary>
-        /// <returns>A geometric error indicator 
+        /// <returns>A geometric error indicator
         /// or <value>null</value>, if no error was found</returns>
         public IGeometry ErrorIndicator => _errorIndicator;
 

@@ -5,14 +5,14 @@ using NetTopologySuite.Mathematics;
 namespace NetTopologySuite.Algorithm
 {
     /// <summary>
-    /// Basic computational geometry algorithms 
+    /// Basic computational geometry algorithms
     /// for geometry and coordinates defined in 3-dimensional Cartesian space.
     /// </summary>
     /// <author>Martin Davis</author>
     public static class CGAlgorithms3D
     {
         /// <summary>
-        /// Computes the distance between the points <paramref name="p0"/> and 
+        /// Computes the distance between the points <paramref name="p0"/> and
         /// <paramref name="p1"/> in 3D space
         /// </summary>
         /// <param name="p0">The first point</param>
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Computes the distance between the point <paramref name="p"/> and the 
+        /// Computes the distance between the point <paramref name="p"/> and the
         /// segment from <paramref name="A"/> to <paramref name="B"/> in 3D space
         /// </summary>
         /// <param name="p">The point</param>
@@ -47,15 +47,15 @@ namespace NetTopologySuite.Algorithm
 
             // otherwise use comp.graphics.algorithms Frequently Asked Questions method
             /*
-             * (1) r = AC dot AB 
-             *         --------- 
-             *         ||AB||^2 
-             *         
-             * r has the following meaning: 
-             *   r=0 P = A 
-             *   r=1 P = B 
-             *   r<0 P is on the backward extension of AB 
-             *   r>1 P is on the forward extension of AB 
+             * (1) r = AC dot AB
+             *         ---------
+             *         ||AB||^2
+             *
+             * r has the following meaning:
+             *   r=0 P = A
+             *   r=1 P = B
+             *   r<0 P is on the backward extension of AB
+             *   r>1 P is on the forward extension of AB
              *   0<r<1 P is interior to AB
              */
 
@@ -92,7 +92,7 @@ namespace NetTopologySuite.Algorithm
                 Coordinate A, Coordinate B, Coordinate C, Coordinate D)
         {
             /**
-             * This calculation is susceptible to roundoff errors when 
+             * This calculation is susceptible to roundoff errors when
              * passed large ordinate values.
              * It may be possible to improve this by using {@link DD} arithmetic.
              */
@@ -119,7 +119,7 @@ namespace NetTopologySuite.Algorithm
             if (denom <= 0.0)
             {
                 /**
-                 * The lines are parallel. 
+                 * The lines are parallel.
                  * In this case solve for the parameters s and t by assuming s is 0.
                  */
                 s = 0;

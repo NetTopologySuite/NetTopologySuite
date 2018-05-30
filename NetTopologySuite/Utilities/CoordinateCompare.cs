@@ -42,10 +42,10 @@ namespace NetTopologySuite.Utilities
 		///&lt;/TR&gt;
 		///&lt;/table&gt;
 		/// </returns>
-		/// <remarks>If a implements IComparable, then a. CompareTo (b) is returned; otherwise, if b 
+		/// <remarks>If a implements IComparable, then a. CompareTo (b) is returned; otherwise, if b
 		/// implements IComparable, then b. CompareTo (a) is returned.
 		/// Comparing a null reference (Nothing in Visual Basic) with any type is allowed and does not
-		/// generate an exception when using IComparable. When sorting, a null reference (Nothing) is 
+		/// generate an exception when using IComparable. When sorting, a null reference (Nothing) is
 		/// considered to be less than any other object.
 		/// </remarks>
 		public int Compare(object x, object y)
@@ -53,16 +53,16 @@ namespace NetTopologySuite.Utilities
 			int returnValue;
             if (x is Coordinate && y is  Coordinate)
             {
-			
+
 			    Coordinate coord1 = (Coordinate) x;
                 Coordinate coord2 = (Coordinate) y;
-				if (coord1.X < coord2.X) 
+				if (coord1.X < coord2.X)
 					returnValue = -1;
-				else if (coord1.X > coord2.X) 
+				else if (coord1.X > coord2.X)
 					returnValue = 1;
-				else if (coord1.Y < coord2.Y) 
+				else if (coord1.Y < coord2.Y)
 					returnValue = -1;
-				else if (coord1.Y > coord2.Y) 
+				else if (coord1.Y > coord2.Y)
 					returnValue = 1;
 				else returnValue = 0;
 			}

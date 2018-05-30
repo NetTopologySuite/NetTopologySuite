@@ -11,10 +11,10 @@ using NetTopologySuite.Operation.Distance;
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
 {
     /**
-     * Tests performance of {@link IndexedFacetDistance} versus standard 
+     * Tests performance of {@link IndexedFacetDistance} versus standard
      * {@link DistanceOp}
-     * using a grid of points to a target set of lines 
-     * 
+     * using a grid of points to a target set of lines
+     *
      * @author Martin Davis
      *
      */

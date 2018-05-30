@@ -9,7 +9,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 	/// Helper class for transforming <see cref="IGeometry" /> objects.
 	/// </summary>
 	public class GeometryTransform
-	{	    
+	{
         private static double[] ToArray(double x, double y)
         {
             return new[] { x, y };
@@ -45,7 +45,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		/// <param name="g"></param>
 		/// <param name="transform"></param>
 		/// <returns></returns>
-        public static IGeometry TransformGeometry(IGeometryFactory factory, 
+        public static IGeometry TransformGeometry(IGeometryFactory factory,
             IGeometry g, IMathTransform transform)
 		{
 		    if (g == null)
@@ -75,11 +75,11 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		/// <param name="p"></param>
 		/// <param name="transform"></param>
 		/// <returns></returns>
-        public static IPoint TransformPoint(IGeometryFactory factory, 
+        public static IPoint TransformPoint(IGeometryFactory factory,
             IPoint p, IMathTransform transform)
 		{
-			try 
-            { 
+			try
+            {
                 var transformed = transform.Transform(p.CoordinateSequence);
                 return factory.CreatePoint(transformed);
             }
@@ -93,13 +93,13 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		/// <param name="l"></param>
 		/// <param name="transform"></param>
 		/// <returns></returns>
-        public static ILineString TransformLineString(IGeometryFactory factory, 
+        public static ILineString TransformLineString(IGeometryFactory factory,
             ILineString l, IMathTransform transform)
 		{
-			try 
+			try
             {
 				var coordSequence = transform.Transform(l.CoordinateSequence);
-                return factory.CreateLineString(coordSequence); 
+                return factory.CreateLineString(coordSequence);
             }
 			catch { return null; }
 		}
@@ -114,7 +114,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
         public static ILinearRing TransformLinearRing(IGeometryFactory factory,
             ILinearRing r, IMathTransform transform)
 		{
-			try 
+			try
             {
                 var coordSequence = transform.Transform(r.CoordinateSequence);
                 return factory.CreateLinearRing(coordSequence);
@@ -132,14 +132,14 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
         public static IPolygon TransformPolygon(IGeometryFactory factory,
             IPolygon p, IMathTransform transform)
 		{
-			var holes = new List<ILinearRing>(p.InteriorRings.Length); 
+			var holes = new List<ILinearRing>(p.InteriorRings.Length);
             for (var i = 0; i < p.InteriorRings.Length; i++)
             {
-                var hole = TransformLinearRing(factory, 
+                var hole = TransformLinearRing(factory,
                     (ILinearRing) p.InteriorRings[i], transform);
                 holes.Add(hole);
             }
-	        var shell = TransformLinearRing(factory, 
+	        var shell = TransformLinearRing(factory,
                 (ILinearRing) p.ExteriorRing, transform);
 	        return factory.CreatePolygon(shell, holes.ToArray());
 		}
@@ -151,7 +151,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		/// <param name="points"></param>
 		/// <param name="transform"></param>
 		/// <returns></returns>
-        public static IMultiPoint TransformMultiPoint(IGeometryFactory factory, 
+        public static IMultiPoint TransformMultiPoint(IGeometryFactory factory,
             IMultiPoint points, IMathTransform transform)
 		{
 		    //We assume the first point holds all the ordinates
@@ -159,7 +159,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
 		    var ordinateFlags = firstPoint.CoordinateSequence.Ordinates;
 		    var ordinates = OrdinatesUtility.ToOrdinateArray(ordinateFlags);
             var coordSequence = factory.CoordinateSequenceFactory.Create(points.NumPoints, ordinateFlags);
-            
+
             for (var i = 0; i < points.NumGeometries; i++)
             {
                 var currPoint = (IPoint) points.GetGeometryN(i);
@@ -221,7 +221,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
         /// <param name="geoms">The input <see cref="IGeometryCollection"/></param>
         /// <param name="transform">The <see cref="IMathTransform"/></param>
         /// <returns>A transformed <see cref="IGeometryCollection"/></returns>
-        public static IGeometryCollection TransformGeometryCollection(IGeometryFactory factory, 
+        public static IGeometryCollection TransformGeometryCollection(IGeometryFactory factory,
             IGeometryCollection geoms, IMathTransform transform)
 		{
 		    var geometries = geoms.Geometries;

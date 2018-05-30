@@ -6,14 +6,14 @@ namespace NetTopologySuite.Algorithm
 
     /// <summary>
     /// Computes the centroid of a <see cref="IGeometry"/> of any dimension.
-    /// If the geometry is nominally of higher dimension, 
-    /// but has lower <i>effective</i> dimension 
+    /// If the geometry is nominally of higher dimension,
+    /// but has lower <i>effective</i> dimension
     /// (i.e. contains only components
-    /// having zero length or area), 
+    /// having zero length or area),
     /// the centroid will be computed as for the equivalent lower-dimension geometry.
     /// If the input geometry is empty, a
     /// <c>null</c> Coordinate is returned.
-    /// 
+    ///
     /// <h2>Algorithm</h2>
     /// <list type="Bullet">
     /// <item><b>Dimension 2</b> - the centroid ic computed

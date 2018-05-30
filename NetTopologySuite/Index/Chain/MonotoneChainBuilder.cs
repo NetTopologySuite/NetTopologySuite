@@ -4,7 +4,7 @@ using NetTopologySuite.GeometriesGraph;
 
 namespace NetTopologySuite.Index.Chain
 {
-    /// <summary> 
+    /// <summary>
     /// Constructs <see cref="MonotoneChain"/>s
     /// for sequences of <see cref="Coordinate"/>s.
     /// </summary>
@@ -23,13 +23,13 @@ namespace NetTopologySuite.Index.Chain
         public static int[] ToIntArray(IList<int> list)
         {
             int[] array = new int[list.Count];
-            for (int i = 0; i < array.Length; i++)            
-                array[i] = list[i];            
+            for (int i = 0; i < array.Length; i++)
+                array[i] = list[i];
             return array;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
@@ -50,7 +50,7 @@ namespace NetTopologySuite.Index.Chain
             var startIndex = GetChainStartIndices(pts);
             for (var i = 0; i < startIndex.Length - 1; i++)
             {
-                var mc = new MonotoneChain(pts, startIndex[i], startIndex[i + 1], context);                
+                var mc = new MonotoneChain(pts, startIndex[i], startIndex[i + 1], context);
                 mcList.Add(mc);
             }
             return mcList;
@@ -74,7 +74,7 @@ namespace NetTopologySuite.Index.Chain
                 int last = FindChainEnd(pts, start);
                 startIndexList.Add(last);
                 start = last;
-            } 
+            }
             while (start < pts.Length - 1);
 
             // copy list to an array of ints, for efficiency
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Index.Chain
         /// </summary>
         /// <param name="pts">The coordinates</param>
         /// <param name="start">The start index</param>
-        /// <returns> 
+        /// <returns>
         /// The index of the last point in the monotone chain starting at <c>start</c>.
         /// </returns>
         private static int FindChainEnd(Coordinate[] pts, int start)
@@ -122,6 +122,6 @@ namespace NetTopologySuite.Index.Chain
                 last++;
             }
             return last - 1;
-        }           
+        }
     }
 }

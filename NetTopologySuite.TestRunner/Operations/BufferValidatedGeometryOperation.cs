@@ -10,7 +10,7 @@ namespace Open.Topology.TestRunner.Operations
 {
 
     /// <summary>
-    /// A <see cref="IGeometryOperation"/> which validates the results of the 
+    /// A <see cref="IGeometryOperation"/> which validates the results of the
     /// <see cref="IGeometry"/> <tt>buffer()</tt> method.
     /// If an invalid result is found, an exception is thrown (this is the most
     /// convenient and noticeable way of flagging the problem when using the TestRunner).
@@ -99,7 +99,7 @@ namespace Open.Topology.TestRunner.Operations
             Validate(geometry, result);
 
             /**
-             * Return an empty GeometryCollection as the result.  
+             * Return an empty GeometryCollection as the result.
              * This allows the test case to avoid specifying an exact result
              */
             if (ReturnEmptyGeometryCollection)

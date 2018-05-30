@@ -70,8 +70,8 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// Gets/Sets whether all intersections should be computed.
         /// <remarks>
-        /// When this is <c>false</c> (the default value), the value of <see cref="IsDone"/> 
-        /// is <c>true</c> after the first intersection is found.        
+        /// When this is <c>false</c> (the default value), the value of <see cref="IsDone"/>
+        /// is <c>true</c> after the first intersection is found.
         /// Default is <c>false</c>.
         /// </remarks>
         /// </summary>

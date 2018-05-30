@@ -19,7 +19,7 @@ namespace Open.Topology.TestRunner.Operations
     {
         private readonly GeometryMethodOperation _chainOp;
 
-        
+
         public PreparedGeometryOperation()
             :this(new GeometryMethodOperation())
         {

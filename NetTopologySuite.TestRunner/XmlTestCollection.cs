@@ -11,17 +11,17 @@ namespace Open.Topology.TestRunner
         #region Private Members
 
         private string m_strCollectionName;
-        
+
         #endregion
 
         #region Events
 
         public event XmlTextEventHandler TestEvent;
-       
+
         #endregion
 
         #region Constructors and Destructors
-		
+
         public XmlTestCollection() : base()
 		{
             m_strCollectionName = String.Empty;
@@ -30,8 +30,8 @@ namespace Open.Topology.TestRunner
         #endregion
 
         #region Public Properties
-        
-        public XmlTest this[int index]  
+
+        public XmlTest this[int index]
         {
             get => (XmlTest)List[index];
 
@@ -49,22 +49,22 @@ namespace Open.Topology.TestRunner
 
         #region Public Methods
 
-        public int Add(XmlTest value)  
+        public int Add(XmlTest value)
         {
             return List.Add(value);
         }
 
-        public int IndexOf(XmlTest value)  
+        public int IndexOf(XmlTest value)
         {
             return List.IndexOf(value);
         }
 
-        public void Insert(int index, XmlTest value)  
+        public void Insert(int index, XmlTest value)
         {
             List.Insert(index, value);
         }
 
-        public void Remove(XmlTest value)  
+        public void Remove(XmlTest value)
         {
             List.Remove(value);
         }
@@ -94,6 +94,6 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        #endregion 
+        #endregion
 	}
 }

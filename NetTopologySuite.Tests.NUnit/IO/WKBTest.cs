@@ -26,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             var g = (Geometry)Rdr.Read("POINT(0 0)");
             RunGeometry(g, 2, ByteOrder.BigEndian, false, 100);
         }
-        
+
         [TestAttribute]
         public void TestFirst()
         {

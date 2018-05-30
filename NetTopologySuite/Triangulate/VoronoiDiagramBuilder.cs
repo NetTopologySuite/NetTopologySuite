@@ -13,7 +13,7 @@ namespace NetTopologySuite.Triangulate
     /// The diagram is returned as a <see cref="IGeometryCollection"/> of <see cref="Polygon"/>s,
     /// representing the faces of the Voronoi diagram.
     /// /// The faces are clipped to the larger of:
-    /// <list type="bullet">    
+    /// <list type="bullet">
     /// <item>
     ///     <description>an envelope supplied by <see cref="set_ClipEnvelope"/>.</description>
     /// </item>
@@ -21,7 +21,7 @@ namespace NetTopologySuite.Triangulate
     ///     <description>an envelope determined by the input sites.</description>
     /// </item>
     /// </list>
-    /// The <tt>userData</tt> attribute of each face <tt>Polygon</tt> is set to 
+    /// The <tt>userData</tt> attribute of each face <tt>Polygon</tt> is set to
     /// the <tt>Coordinate</tt>  of the corresponding input site.
     /// This allows using a <tt>Map</tt> to link faces to data associated with sites.
     /// </summary>
@@ -107,10 +107,10 @@ namespace NetTopologySuite.Triangulate
         }
 
         /// <summary>
-        /// Gets the faces of the computed diagram as a <see cref="IGeometryCollection"/> 
+        /// Gets the faces of the computed diagram as a <see cref="IGeometryCollection"/>
         /// of <see cref="Polygon"/>s, clipped as specified.
         /// <para/>
-        /// The <see cref="IGeometry.UserData"/> attribute of each face <see cref="IPolygon"/> is set to 
+        /// The <see cref="IGeometry.UserData"/> attribute of each face <see cref="IPolygon"/> is set to
         /// the <c>Coordinate</c> of the corresponding input site.
         /// This allows using a <see cref="IDictionary{TKey,TValue}"/> to link faces to data associated with sites.
         /// </summary>

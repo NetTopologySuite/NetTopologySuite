@@ -7,9 +7,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
 {
     /**
      * Test performance of evaluating Triangle predicate computations
-     * using 
+     * using
      * various extended precision APIs.
-     * 
+     *
      * @author Martin Davis
      *
      */
@@ -103,7 +103,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
      * versions are provided, which are more robust
      * (i.e. they produce correct answers in more cases).
      * These are used in triangulation algorithms.
-     * 
+     *
      * @author Martin Davis
      *
      */

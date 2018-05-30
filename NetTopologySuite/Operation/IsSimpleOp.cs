@@ -13,9 +13,9 @@ namespace NetTopologySuite.Operation
     /// In general, the SFS specification of simplicity
     /// follows the rule:
     /// <list type="Bullet">
-    /// <item> 
+    /// <item>
     /// A Geometry is simple if and only if the only self-intersections are at boundary points.
-    /// </item>  
+    /// </item>
     /// </list>
     /// </summary>
     /// <remarks>
@@ -23,25 +23,25 @@ namespace NetTopologySuite.Operation
     /// <list type="Bullet">
     /// <item>Valid <see cref="IPolygonal"/> geometries are simple by definition, so
     /// <c>IsSimple</c> trivially returns true.<br/>
-    /// (Note: this means that <tt>IsSimple</tt> cannot be used to test 
-    /// for (invalid) self-intersections in <tt>Polygon</tt>s.  
+    /// (Note: this means that <tt>IsSimple</tt> cannot be used to test
+    /// for (invalid) self-intersections in <tt>Polygon</tt>s.
     /// In order to check if a <tt>Polygonal</tt> geometry has self-intersections,
     /// use <see cref="NetTopologySuite.Geometries.Geometry.IsValid()" />).</item>
     /// <item><b><see cref="ILineal"/></b> geometries are simple if and only if they do <i>not</i> self-intersect at interior points
-    /// (i.e. points other than boundary points). 
+    /// (i.e. points other than boundary points).
     /// This is equivalent to saying that no two linear components satisfy the SFS <see cref="IGeometry.Touches(IGeometry)"/>
     /// predicate.</item>
     /// <item><b>Zero-dimensional (<see cref="IPuntal"/>)</b> geometries are simple if and only if they have no
     /// repeated points.</item>
     ///<item><b>Empty</b> <see cref="IGeometry"/>s are <i>always</i> simple by definition.</item>
     ///</list>
-    /// For <see cref="ILineal"/> geometries the evaluation of simplicity  
+    /// For <see cref="ILineal"/> geometries the evaluation of simplicity
     /// can be customized by supplying a <see cref="IBoundaryNodeRule"/>
     /// to define how boundary points are determined.
     /// The default is the SFS-standard <see cref="BoundaryNodeRules.Mod2BoundaryNodeRule"/>.
     /// Note that under the <tt>Mod-2</tt> rule, closed <tt>LineString</tt>s (rings)
     /// will never satisfy the <tt>touches</tt> predicate at their endpoints, since these are
-    /// interior points, not boundary points. 
+    /// interior points, not boundary points.
     /// If it is required to test whether a set of <code>LineString</code>s touch
     /// only at their endpoints, use <code>IsSimpleOp</code> with {@link BoundaryNodeRule#ENDPOINT_BOUNDARY_RULE}.
     /// For example, this can be used to validate that a set of lines form a topologically valid
@@ -146,7 +146,7 @@ namespace NetTopologySuite.Operation
 
         private bool IsSimpleMultiPoint(IMultiPoint mp)
         {
-            if (mp.IsEmpty) 
+            if (mp.IsEmpty)
                 return true;
 
             HashSet<Coordinate> points = new HashSet<Coordinate>();
@@ -182,7 +182,7 @@ namespace NetTopologySuite.Operation
             return true;
         }
 
-        /// <summary>Semantics for GeometryCollection is 
+        /// <summary>Semantics for GeometryCollection is
         /// simple iff all components are simple.</summary>
         /// <param name="geom">A GeometryCollection</param>
         /// <returns><c>true</c> if the geometry is simple</returns>
@@ -199,7 +199,7 @@ namespace NetTopologySuite.Operation
 
         private bool IsSimpleLinearGeometry(IGeometry geom)
         {
-            if (geom.IsEmpty) 
+            if (geom.IsEmpty)
                 return true;
 
             GeometryGraph graph = new GeometryGraph(0, geom);
@@ -243,7 +243,7 @@ namespace NetTopologySuite.Operation
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private class EndpointInfo
         {
@@ -269,7 +269,7 @@ namespace NetTopologySuite.Operation
             }
         }
 
-        /// <summary> 
+        /// <summary>
        /// Tests that no edge intersection is the endpoint of a closed line.
        /// This ensures that closed lines are not touched at their endpoint,
        /// which is an interior point according to the Mod-2 rule

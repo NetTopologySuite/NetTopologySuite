@@ -13,17 +13,17 @@ namespace NetTopologySuite.Geometries.Implementation
     public class PackedCoordinateSequenceFactory : ICoordinateSequenceFactory
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public enum PackedType
         {
             /// <summary>
-            /// 
+            ///
             /// </summary>
             Double = 0,
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             Float = 1,
         }
@@ -38,7 +38,7 @@ namespace NetTopologySuite.Geometries.Implementation
         private int dimension = 3;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PackedCoordinateSequenceFactory"/> class, 
+        /// Initializes a new instance of the <see cref="PackedCoordinateSequenceFactory"/> class,
         /// using double values.
         /// </summary>
         public PackedCoordinateSequenceFactory() : this(PackedType.Double) { }
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public PackedType Type
         {
@@ -75,7 +75,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int Dimension
         {
@@ -126,7 +126,7 @@ namespace NetTopologySuite.Geometries.Implementation
         public Ordinates Ordinates => Ordinates.XYZ;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="packedCoordinates"></param>
         /// <param name="dimension"></param>
@@ -139,7 +139,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="packedCoordinates"></param>
         /// <param name="dimension"></param>
@@ -152,7 +152,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="size"></param>
         /// <param name="dimension"></param>

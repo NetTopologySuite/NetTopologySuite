@@ -12,7 +12,7 @@ namespace NetTopologySuite.Tests.Various
         private const int segments = 1; // Using 8 segments all works
         private readonly IGeometryFactory factory = GeometryFactory.Default;
 
-        private WKTReader reader;        
+        private WKTReader reader;
 
         [OneTimeSetUp]
         public void FixtureSetup()

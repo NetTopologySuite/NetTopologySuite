@@ -99,7 +99,7 @@ namespace NetTopologySuite.LinearReferencing
         /// Tests whether there are any vertices left to iterator over.
         /// Specifically, <c>HasNext()</c> returns <tt>true</tt> if the
         /// current state of the iterator represents a valid location
-        /// on the linear geometry. 
+        /// on the linear geometry.
         /// </summary>
         /// <returns><c>true</c> if there are more vertices to scan.</returns>
         public bool HasNext()

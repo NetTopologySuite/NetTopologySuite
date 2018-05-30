@@ -10,7 +10,7 @@ namespace NetTopologySuite.Geometries
 #if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
-    public class MultiPolygon : GeometryCollection, IMultiPolygon 
+    public class MultiPolygon : GeometryCollection, IMultiPolygon
     {
         /// <summary>
         /// Represents an empty <c>MultiPolygon</c>.
@@ -24,15 +24,15 @@ namespace NetTopologySuite.Geometries
         /// The <c>Polygon</c>s for this <c>MultiPolygon</c>
         /// , or <c>null</c> or an empty array to create the empty point.
         /// Elements may be empty <c>Polygon</c>s, but not <c>null</c>
-        /// s. The polygons must conform to the assertions specified in the 
+        /// s. The polygons must conform to the assertions specified in the
         /// <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features
-        /// Specification for SQL.        
+        /// Specification for SQL.
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public MultiPolygon(IPolygon[] polygons) : this(polygons, DefaultFactory) { }  
+        public MultiPolygon(IPolygon[] polygons) : this(polygons, DefaultFactory) { }
 
         /// <summary>
         /// Constructs a <c>MultiPolygon</c>.
@@ -41,9 +41,9 @@ namespace NetTopologySuite.Geometries
         /// The <c>Polygon</c>s for this <c>MultiPolygon</c>
         /// , or <c>null</c> or an empty array to create the empty point.
         /// Elements may be empty <c>Polygon</c>s, but not <c>null</c>
-        /// s. The polygons must conform to the assertions specified in the 
+        /// s. The polygons must conform to the assertions specified in the
         /// <see href="http://www.opengis.org/techno/specs.htm"/> OpenGIS Simple Features
-        /// Specification for SQL.        
+        /// Specification for SQL.
         /// </param>
         /// <param name="factory"></param>
         public MultiPolygon(IPolygon[] polygons, IGeometryFactory factory) : base(polygons, factory) { }
@@ -68,16 +68,16 @@ namespace NetTopologySuite.Geometries
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override Dimension Dimension => Dimension.Surface;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override Dimension BoundaryDimension => Dimension.Curve;
 
-        /// <summary>  
+        /// <summary>
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"MultiPolygon"</returns>
@@ -86,7 +86,7 @@ namespace NetTopologySuite.Geometries
         public override OgcGeometryType OgcGeometryType => OgcGeometryType.MultiPolygon;
 
         ///// <summary>
-        ///// 
+        /////
         ///// </summary>
         //public override bool IsSimple
         //{
@@ -97,13 +97,13 @@ namespace NetTopologySuite.Geometries
         //}
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override IGeometry Boundary
         {
             get
             {
-                if (IsEmpty)    
+                if (IsEmpty)
                     return Factory.CreateMultiLineString();
 
                 var allRings = new List<ILineString>();
@@ -113,20 +113,20 @@ namespace NetTopologySuite.Geometries
                     var rings = polygon.Boundary;
                     for (int j = 0; j < rings.NumGeometries; j++)
                         allRings.Add((ILineString) rings.GetGeometryN(j));
-                }                
+                }
                 return Factory.CreateMultiLineString(allRings.ToArray());
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance) 
+        public override bool EqualsExact(IGeometry other, double tolerance)
         {
-            if (!IsEquivalentClass(other)) 
+            if (!IsEquivalentClass(other))
                 return false;
             return base.EqualsExact(other, tolerance);
         }

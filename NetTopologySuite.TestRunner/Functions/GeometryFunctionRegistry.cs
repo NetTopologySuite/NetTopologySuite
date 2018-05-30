@@ -73,7 +73,7 @@ namespace Open.Topology.TestRunner.Functions
         }
 
         /// <summary>
-        /// Create <see cref="IGeometryFunction"/>s for all the static 
+        /// Create <see cref="IGeometryFunction"/>s for all the static
         /// methods in the given class
         /// </summary>
         /// <param name="functionClass"></param>

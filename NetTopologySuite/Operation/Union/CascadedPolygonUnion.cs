@@ -14,9 +14,9 @@ using NetTopologySuite.Index.Strtree;
 namespace NetTopologySuite.Operation.Union
 {
     /// <summary>
-    /// Provides an efficient method of unioning a collection of 
+    /// Provides an efficient method of unioning a collection of
     /// <see cref="IPolygonal"/> geometries.
-    /// The geometries are indexed using a spatial index, 
+    /// The geometries are indexed using a spatial index,
     /// and unioned recursively in index order.
     /// For geometries with a high degree of overlap,
     /// this has the effect of reducing the number of vertices
@@ -24,18 +24,18 @@ namespace NetTopologySuite.Operation.Union
     /// and robustness.
     /// <para/>
     /// This algorithm is faster and more robust than
-    /// the simple iterated approach of 
+    /// the simple iterated approach of
     /// repeatedly unioning each polygon to a result geometry.
     /// <para/>
-    /// The <tt>buffer(0)</tt> trick is sometimes faster, but can be less robust and 
+    /// The <tt>buffer(0)</tt> trick is sometimes faster, but can be less robust and
     /// can sometimes take a long time to complete.
     /// This is particularly the case where there is a high degree of overlap
     /// between the polygons.  In this case, <tt>buffer(0)</tt> is forced to compute
-    /// with <i>all</i> line segments from the outset, 
+    /// with <i>all</i> line segments from the outset,
     /// whereas cascading can eliminate many segments
     /// at each stage of processing.
     /// The best situation for using <tt>buffer(0)</tt> is the trivial case
-    /// where there is <i>no</i> overlap between the input geometries. 
+    /// where there is <i>no</i> overlap between the input geometries.
     /// However, this case is likely rare in practice.
     /// </summary>
     /// <author>Martin Davis</author>
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Operation.Union
 
         /**
          * The effectiveness of the index is somewhat sensitive
-         * to the node capacity.  
+         * to the node capacity.
          * Testing indicates that a smaller capacity is better.
          * For an STRtree, 4 is probably a good number (since
          * this produces 2x2 "squares").
@@ -93,9 +93,9 @@ namespace NetTopologySuite.Operation.Union
         /// <remarks>
         /// This method discards the input geometries as they are processed.
         /// In many input cases this reduces the memory retained
-        /// as the operation proceeds. 
-        /// Optimal memory usage is achieved 
-        /// by disposing of the original input collection 
+        /// as the operation proceeds.
+        /// Optimal memory usage is achieved
+        /// by disposing of the original input collection
         /// before calling this method.
         /// </remarks>
         /// The union of the input geometries,
@@ -113,7 +113,7 @@ namespace NetTopologySuite.Operation.Union
             /*
              * A spatial index to organize the collection
              * into groups of close geometries.
-             * This makes unioning more efficient, since vertices are more likely 
+             * This makes unioning more efficient, since vertices are more likely
              * to be eliminated on each round.
              */
             var index = new STRtree<object>(StrtreeNodeCapacity);
@@ -173,7 +173,7 @@ namespace NetTopologySuite.Operation.Union
         //=======================================
 
         /// <summary>
-        /// Unions a list of geometries 
+        /// Unions a list of geometries
         /// by treating the list as a flattened binary tree,
         /// and performing a cascaded union on the tree.
         /// </summary>
@@ -297,7 +297,7 @@ namespace NetTopologySuite.Operation.Union
         }
 
         /// <summary>
-        /// Computes the union of two geometries, 
+        /// Computes the union of two geometries,
         /// either or both of which may be null.
         /// </summary>
         /// <param name="g0">A Geometry</param>
@@ -332,9 +332,9 @@ namespace NetTopologySuite.Operation.Union
         }
 
         /// <summary>
-        /// Unions two polygonal geometries, restricting computation 
+        /// Unions two polygonal geometries, restricting computation
         /// to the envelope intersection where possible.
-        /// The case of MultiPolygons is optimized to union only 
+        /// The case of MultiPolygons is optimized to union only
         /// the polygons which lie in the intersection of the two geometry's envelopes.
         /// Polygons outside this region can simply be combined with the union result,
         /// which is potentially much faster.
@@ -378,13 +378,13 @@ namespace NetTopologySuite.Operation.Union
         }
 
         /// <summary> Computes a <see cref="IGeometry"/> containing only <see cref="IPolygonal"/> components.
-        /// Extracts the <see cref="IPolygon"/>s from the input 
+        /// Extracts the <see cref="IPolygon"/>s from the input
         /// and returns them as an appropriate <see cref="IPolygonal"/> geometry.
         /// <para/>
         /// If the input is already <tt>Polygonal</tt>, it is returned unchanged.
         /// <para/>
         /// A particular use case is to filter out non-polygonal components
-        /// returned from an overlay operation.  
+        /// returned from an overlay operation.
         /// </summary>
         /// <param name="g">The geometry to filter</param>
         /// <returns>A polygonal geometry</returns>

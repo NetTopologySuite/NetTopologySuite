@@ -59,7 +59,7 @@ namespace ConsoleTestRunner
                         // The last parameter is still waiting. With no value, set it to true.
                         if (Parameter != null)
                         {
-                            if (!Parameters.ContainsKey(Parameter)) 
+                            if (!Parameters.ContainsKey(Parameter))
                                 Parameters.Add(Parameter,"true");
                         }
                         Parameter = Parts[1];
@@ -70,7 +70,7 @@ namespace ConsoleTestRunner
                         // The last parameter is still waiting. With no value, set it to true.
                         if (Parameter != null)
                         {
-                            if (!Parameters.ContainsKey(Parameter)) 
+                            if (!Parameters.ContainsKey(Parameter))
                                 Parameters.Add(Parameter,"true");
                         }
                         Parameter=Parts[1];
@@ -88,7 +88,7 @@ namespace ConsoleTestRunner
             // In case a parameter is still waiting
             if (Parameter != null)
             {
-                if (!Parameters.ContainsKey(Parameter)) 
+                if (!Parameters.ContainsKey(Parameter))
                     Parameters.Add(Parameter,"true");
             }
         }

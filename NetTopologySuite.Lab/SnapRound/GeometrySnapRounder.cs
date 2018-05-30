@@ -57,7 +57,7 @@ namespace NetTopologySuite.SnapRound
 
             // TODO: reduce precision of input automatically
             // TODO: add switch to GeometryPrecisionReducer to NOT check & clean invalid polygonal geometry (not needed here)
-            // TODO: OR just do precision reduction with custom code here 
+            // TODO: OR just do precision reduction with custom code here
 
             var segStrings = ExtractTaggedSegmentStrings(geom, _pm);
             SnapRound(segStrings);

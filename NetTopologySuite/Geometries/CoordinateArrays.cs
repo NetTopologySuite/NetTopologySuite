@@ -27,13 +27,13 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Finds a <see cref="Coordinate "/> in a list of <see cref="Coordinate "/>s 
+        /// Finds a <see cref="Coordinate "/> in a list of <see cref="Coordinate "/>s
         /// which is not contained in another list of <see cref="Coordinate "/>s.
         /// </summary>
         /// <param name="testPts">The <see cref="Coordinate" />s to test.</param>
         /// <param name="pts">An array of <see cref="Coordinate" />s to test the input points against.</param>
         /// <returns>
-        /// A <see cref="Coordinate" /> from <paramref name="testPts" /> 
+        /// A <see cref="Coordinate" /> from <paramref name="testPts" />
         /// which is not in <paramref name="pts" />, or <c>null</c>.
         /// </returns>
         public static Coordinate PointNotInList(Coordinate[] testPts, Coordinate[] pts)
@@ -156,7 +156,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Converts the given <see cref="System.Collections.ICollection" /> of 
+        /// Converts the given <see cref="System.Collections.ICollection" /> of
         /// <see cref="Coordinate" />s into a <see cref="Coordinate" /> array.
         /// </summary>
         /// <param name="coordList"><see cref="System.Collections.ICollection" /> of coordinates.</param>
@@ -174,7 +174,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Converts the given <see cref="ICollection{T}" /> of 
+        /// Converts the given <see cref="ICollection{T}" /> of
         /// <see cref="Coordinate" />s into a <see cref="Coordinate" /> array.
         /// </summary>
         /// <param name="coordList"><see cref="ICollection{T}"/> of coordinates.</param>
@@ -223,7 +223,7 @@ namespace NetTopologySuite.Geometries
         /// Otherwise, returns the argument.
         /// </summary>
         /// <param name="coord"></param>
-        /// <returns></returns>        
+        /// <returns></returns>
         public static Coordinate[] RemoveRepeatedPoints(Coordinate[] coord)
         {
             if (!HasRepeatedPoints(coord))
@@ -282,7 +282,7 @@ namespace NetTopologySuite.Geometries
         /// Compares two <see cref="Coordinate" /> arrays
         /// in the forward direction of their coordinates,
         /// using lexicographic ordering.
-        /// </summary>        
+        /// </summary>
         public class ForwardComparator : IComparer<Coordinate[]>
         {
             /// <summary>
@@ -303,7 +303,7 @@ namespace NetTopologySuite.Geometries
         /// they will compare as equal under this ordering.
         /// If the arrays are not equal, the ordering returned
         /// is the ordering in the forward direction.
-        /// </summary>        
+        /// </summary>
         public class BidirectionalComparator : IComparer<Coordinate[]>
         {
             public int Compare(Coordinate[] pts1, Coordinate[] pts2)
@@ -354,7 +354,7 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Returns <c>true</c> if the two arrays are identical, both <c>null</c>, or pointwise
-        /// equal, using a user-defined <see cref="System.Collections.IComparer" /> 
+        /// equal, using a user-defined <see cref="System.Collections.IComparer" />
         /// for <see cref="Coordinate" />s.
         /// </summary>
         /// <param name="coord1">An array of <see cref="Coordinate" />s.</param>
@@ -475,7 +475,7 @@ namespace NetTopologySuite.Geometries
 
         /**
          * Extracts the coordinates which intersect an {@link Envelope}.
-         * 
+         *
          * @param coordinates the coordinates to scan
          * @param env the envelope to intersect with
          * @return an array of the coordinates which intersect the envelope

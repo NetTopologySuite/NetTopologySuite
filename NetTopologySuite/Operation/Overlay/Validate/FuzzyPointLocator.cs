@@ -8,7 +8,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
     ///<summary>
     /// Finds the most likely <see cref="Location"/> of a point relative to
     /// the polygonal components of a geometry, using a tolerance value.
-    ///</summary> 
+    ///</summary>
     ///<remarks>
     /// If a point is not clearly in the Interior or Exterior,
     /// it is considered to be on the Boundary.

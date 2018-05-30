@@ -6,7 +6,7 @@ Inserted the poly into the database:
 	OracleCommand cmdGeom = new OracleCommand(@"insert into dkmt.pol_bundesland values (sdo_geometry(:geom,31297),'12.Bundesland',12)", conn);
 	OracleParameter p1 = new OracleParameter(":geom",OracleDbType.Clob);
 	p1.Value = poly;
-            
+
 2.) The following statements are executed in Oracle:
     SELECT a.geometry.get_wkt(), a.blname FROM dkmt.pol_bundesland a WHERE ((a.blname = '12.Bundesland')) --> wkt.jpg
     SELECT a.geometry.get_wkb(), a.blname FROM dkmt.pol_bundesland a WHERE ((a.blname = '12.Bundesland')) --> blob,wkb_blob.jpg
@@ -18,9 +18,9 @@ In c# I did the following to get the geometries - I just tried the basic stuff..
 
 Oracle Test 1: Works fine with both wkb and wkt
 
-	    OracleCommand cmd = new OracleCommand(@"SELECT a.geometry.get_wkb(), a.blname FROM dkmt.pol_bundesland a WHERE ((a.blname = '12.Bundesland'))", conn);	    
-            //OracleCommand cmd = new OracleCommand(@"SELECT a.geometry.get_wkt(), a.blname FROM dkmt.pol_bundesland a WHERE ((a.blname = '12.Bundesland'))", conn);	    
-	    conn.Open();            
+	    OracleCommand cmd = new OracleCommand(@"SELECT a.geometry.get_wkb(), a.blname FROM dkmt.pol_bundesland a WHERE ((a.blname = '12.Bundesland'))", conn);
+            //OracleCommand cmd = new OracleCommand(@"SELECT a.geometry.get_wkt(), a.blname FROM dkmt.pol_bundesland a WHERE ((a.blname = '12.Bundesland'))", conn);
+	    conn.Open();
 	    byte[] wkb = (byte[])cmd.ExecuteScalar();
 	    //string wkt = (string)cmd.ExecuteScalar();
 
@@ -29,8 +29,8 @@ Oracle Test 1: Works fine with both wkb and wkt
 	    OracleCommand cmdGeom = new OracleCommand(@"insert into dkmt.pol_bundesland values (sdo_geometry(:geom,31297),'14.Bundesland',14)", conn);
 	    OracleParameter p1 = new OracleParameter(":geom",OracleDbType.Blob);
             p1.Value = wkb;
-            cmdGeom.Parameters.Add(p1);              
-            
+            cmdGeom.Parameters.Add(p1);
+
             conn.Open();
             int i = cmdGeom.ExecuteNonQuery();
             conn.Close();
@@ -45,7 +45,7 @@ SharpMap:
 NetTopologySuite: (maybe it fails because I didn't define the srid ???)
 	 GeometryFactory fact = new GeometryFactory();
          WKBReader wkbreader = new WKBReader(fact);
- 	 GisSharpBlog.NetTopologySuite.Geometries.Geometry a = wkbreader.Read(wkb);   //Error: Should never reach here! 50331648 
+ 	 GisSharpBlog.NetTopologySuite.Geometries.Geometry a = wkbreader.Read(wkb);   //Error: Should never reach here! 50331648
 
 
 
@@ -55,8 +55,8 @@ With SharpMap WKB Insert doesn't work
 	    OracleCommand cmdGeom = new OracleCommand(@"insert into dkmt.pol_bundesland values (sdo_geometry(:geom,31297),'14.Bundesland',14)", conn);
 	    OracleParameter p1 = new OracleParameter(":geom",OracleDbType.Blob);
             p1.Value = mygeom.AsBinary();
-            cmdGeom.Parameters.Add(p1);              
-            
+            cmdGeom.Parameters.Add(p1);
+
             conn.Open();
             int i = cmdGeom.ExecuteNonQuery();
             conn.Close();
@@ -65,13 +65,13 @@ With NetTopolgySuite and WKT insert works:
 	GeometryFactory fact = new GeometryFactory();
         WKTReader wktreader = new WKTReader(fact);
 	GisSharpBlog.NetTopologySuite.Geometries.Geometry a = wktreader.Read(wkt);
-	//GisSharpBlog.NetTopologySuite.Geometries.Geometry a = wktreader.Read(wkb); fails 
+	//GisSharpBlog.NetTopologySuite.Geometries.Geometry a = wktreader.Read(wkb); fails
 
 	OracleCommand cmdGeom = new OracleCommand(@"insert into dkmt.pol_bundesland values (sdo_geometry(:geom,31297),'15.Bundesland',15)", conn);
         OracleParameter p1 = new OracleParameter(":geom",OracleDbType.Clob);
         p1.Value = wktwriter.Write(a);
         cmdGeom.Parameters.Add(p1);
-	
+
 	conn.Open();
         int i = cmdGeom.ExecuteNonQuery();
         conn.Close();

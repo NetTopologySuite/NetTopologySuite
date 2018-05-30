@@ -12,7 +12,7 @@ namespace NetTopologySuite.Planargraph
     /// may not have a reference to a parent Edge (some applications of
     /// planar graphs may not require explicit Edge objects to be created). Usually
     /// a client using a <c>PlanarGraph</c> will subclass <c>DirectedEdge</c>
-    /// to add its own application-specific data and methods.    
+    /// to add its own application-specific data and methods.
     /// </summary>
     public class DirectedEdge : GraphComponent, IComparable
     {
@@ -29,12 +29,12 @@ namespace NetTopologySuite.Planargraph
                 edges.Add(directedEdge.parentEdge);
             return edges;
         }
-        
+
         protected Edge parentEdge;
-        
-        protected Node from;        
+
+        protected Node from;
         protected Node to;
-        
+
         protected Coordinate p0;
         protected Coordinate p1;
 
@@ -171,11 +171,11 @@ namespace NetTopologySuite.Planargraph
             // if the rays are in different quadrants, determining the ordering is trivial
             if (_quadrant > e.Quadrant)
                 return 1;
-            if (_quadrant < e.Quadrant) 
+            if (_quadrant < e.Quadrant)
                 return -1;
             // vectors are in the same quadrant - check relative orientation of direction vectors
             // this is > e if it is CCW of e
-            return (int)Orientation.Index(e.p0, e.p1, p1);            
+            return (int)Orientation.Index(e.p0, e.p1, p1);
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace NetTopologySuite.Planargraph
 
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
-        {            
+        {
             return "DirectedEdge: " + p0 + " - " + p1 + " " + _quadrant + ":" + _angle;
         }
     }

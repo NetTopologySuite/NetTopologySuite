@@ -17,13 +17,13 @@ namespace NetTopologySuite.Simplify
         private readonly int _minimumSize;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="parentLine"></param>
         public TaggedLineString(ILineString parentLine) : this(parentLine, 2) { }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="parentLine"></param>
         /// <param name="minimumSize"></param>
@@ -35,27 +35,27 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int MinimumSize => _minimumSize;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public ILineString Parent => _parentLine;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate[] ParentCoordinates => _parentLine.Coordinates;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate[] ResultCoordinates => ExtractCoordinates(_resultSegs);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int ResultSize
         {
@@ -67,7 +67,7 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private void Init()
         {
@@ -91,12 +91,12 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public TaggedLineSegment[] Segments => _segs;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="seg"></param>
         public void AddToResult(LineSegment seg)
@@ -105,7 +105,7 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public ILineString AsLineString()
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public ILinearRing AsLinearRing()
@@ -125,7 +125,7 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="segs"></param>
         /// <returns></returns>

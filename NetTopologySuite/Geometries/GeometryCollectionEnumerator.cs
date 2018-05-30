@@ -5,13 +5,13 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
-    /// Iterates over all <c>Geometry</c>'s in a <c>GeometryCollection</c>. 
+    /// Iterates over all <c>Geometry</c>'s in a <c>GeometryCollection</c>.
     /// Implements a pre-order depth-first traversal of the <c>GeometryCollection</c>
     /// (which may be nested). The original <c>GeometryCollection</c> is
     /// returned as well (as the first object), as are all sub-collections. It is
     /// simple to ignore the <c>GeometryCollection</c> objects if they are not
     /// needed.
-    /// </summary>    
+    /// </summary>
     public class GeometryCollectionEnumerator : IEnumerator<IGeometry>, IEnumerable<IGeometry>
     {
         /// <summary>
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Geometries
         /// The collection over which to iterate; also, the first
         /// element returned by the iterator.
         /// </param>
-        public GeometryCollectionEnumerator(IGeometry parent) 
+        public GeometryCollectionEnumerator(IGeometry parent)
         {
             _parent = parent;
             _atStart = true;
@@ -101,7 +101,7 @@ namespace NetTopologySuite.Geometries
                 {
                     _current = _subcollectionEnumerator.Current;
                     return true;
-                } 
+                }
                 _subcollectionEnumerator = null;
             }
             if (_index >= _max)
@@ -166,5 +166,5 @@ namespace NetTopologySuite.Geometries
         }
 
         #endregion
-    }    
+    }
 }

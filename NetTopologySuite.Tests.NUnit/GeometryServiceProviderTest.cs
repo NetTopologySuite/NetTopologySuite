@@ -52,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit
                 var srids = new[] {4326, 31467, 3857, 27700};
                 var precisionModels = new[]
                     {
-                        new PrecisionModel(PrecisionModels.Floating), 
+                        new PrecisionModel(PrecisionModels.Floating),
                         new PrecisionModel(PrecisionModels.FloatingSingle),
                         new PrecisionModel(1),
                         new PrecisionModel(10),

@@ -14,12 +14,12 @@ namespace NetTopologySuite.Tests.NUnit.IO
         {
             var fact = new GeometryFactory();
             var gsf = new NetTopologySuite.Utilities.GeometricShapeFactory(fact) ;
-            gsf.Size = 250; 
+            gsf.Size = 250;
             var g = (Geometry)gsf.CreateCircle();
 
             // serialize the object
             byte[] bytes = null;
-            Assert.DoesNotThrow(() => bytes = SerializationUtility.Serialize(g));            
+            Assert.DoesNotThrow(() => bytes = SerializationUtility.Serialize(g));
 
             // Assert that there was some serialized content produced
             Assert.IsNotNull(bytes, "There was no serialized packet produced");
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             var reader = new WKTReader(new GeometryFactory());
             var gS = (Geometry)reader.Read(wkt);
             var buffer = SerializationUtility.Serialize(gS);
-            
+
             var gD = SerializationUtility.Deserialize<Geometry>(buffer);
             Assert.IsTrue(gD.EqualsExact(gS));
         }

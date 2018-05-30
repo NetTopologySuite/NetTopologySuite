@@ -8,21 +8,21 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.IO.KML
 {
     /// <summary>
-    /// Writes a formatted string containing the KML representation 
-    /// of a JTS <see cref="IGeometry"/>. 
+    /// Writes a formatted string containing the KML representation
+    /// of a JTS <see cref="IGeometry"/>.
     /// The output is KML fragments which can be substituted
-    /// wherever the KML <see cref="IGeometry"/> abstract 
+    /// wherever the KML <see cref="IGeometry"/> abstract
     /// element can be used.
     /// </summary>
     /// <remarks>
     /// Output elements are indented to provide a
-    /// nicely-formatted representation. 
+    /// nicely-formatted representation.
     /// An output line prefix and maximum
     /// number of coordinates per line can be specified.
     /// </remarks>
     /// <remarks>
-    /// The Z ordinate value output can be forced to be a specific value. 
-    /// The <see cref="Extrude"/> and <see cref="AltitudeMode"/> modes can be set. 
+    /// The Z ordinate value output can be forced to be a specific value.
+    /// The <see cref="Extrude"/> and <see cref="AltitudeMode"/> modes can be set.
     /// If set, the corresponding sub-elements will be output.
     /// </remarks>
     public class KMLWriter

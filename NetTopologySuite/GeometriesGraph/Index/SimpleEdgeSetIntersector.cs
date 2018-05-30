@@ -10,15 +10,15 @@ namespace NetTopologySuite.GeometriesGraph.Index
     /// This algorithm is too slow for production use, but is useful for testing purposes.
     /// </summary>
     public class SimpleEdgeSetIntersector : EdgeSetIntersector
-    {        
+    {
         /*
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public SimpleEdgeSetIntersector() { }
         */
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edges"></param>
         /// <param name="si"></param>
@@ -36,7 +36,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edges0"></param>
         /// <param name="edges1"></param>
@@ -62,9 +62,9 @@ namespace NetTopologySuite.GeometriesGraph.Index
         {
             Coordinate[] pts0 = e0.Coordinates;
             Coordinate[] pts1 = e1.Coordinates;
-            for (int i0 = 0; i0 < pts0.Length - 1; i0++) 
-                for (int i1 = 0; i1 < pts1.Length - 1; i1++)             
-                    si.AddIntersections(e0, i0, e1, i1);            
+            for (int i0 = 0; i0 < pts0.Length - 1; i0++)
+                for (int i1 = 0; i1 < pts1.Length - 1; i1++)
+                    si.AddIntersections(e0, i0, e1, i1);
         }
     }
 }

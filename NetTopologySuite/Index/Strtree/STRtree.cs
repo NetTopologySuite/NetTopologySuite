@@ -6,14 +6,14 @@ using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Index.Strtree
 {
-    /// <summary>  
+    /// <summary>
     /// A query-only R-tree created using the Sort-Tile-Recursive (STR) algorithm.
-    /// For two-dimensional spatial data. 
+    /// For two-dimensional spatial data.
     /// The STR packed R-tree is simple to implement and maximizes space
     /// utilization; that is, as many leaves as possible are filled to capacity.
     /// Overlap between nodes is far less than in a basic R-tree. However, once the
     /// tree has been built (explicitly or on the first call to #query), items may
-    /// not be added or removed. 
+    /// not be added or removed.
     /// Described in: P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </summary>
@@ -24,7 +24,7 @@ namespace NetTopologySuite.Index.Strtree
     {
         private static readonly AnonymousXComparerImpl XComparer = new AnonymousXComparerImpl();
         private static readonly AnonymousYComparerImpl YComparer = new AnonymousYComparerImpl();
-        
+
         private class AnonymousXComparerImpl : Comparer<IBoundable<Envelope, TItem>>
         {
             public override int Compare(IBoundable<Envelope, TItem> o1, IBoundable<Envelope, TItem> o2)
@@ -80,14 +80,14 @@ namespace NetTopologySuite.Index.Strtree
 
         private const int DefaultNodeCapacity = 10;
 
-        /// <summary> 
+        /// <summary>
         /// Constructs an STRtree with the default (10) node capacity.
         /// </summary>
         public STRtree() : this(DefaultNodeCapacity)
         {
         }
 
-        /// <summary> 
+        /// <summary>
         /// Constructs an STRtree with the given maximum number of child nodes that
         /// a node may have.
         /// </summary>
@@ -98,7 +98,7 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -109,7 +109,7 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
@@ -119,7 +119,7 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
@@ -150,7 +150,7 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="verticalSlices"></param>
         /// <param name="newLevel"></param>
@@ -169,7 +169,7 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="childBoundables"></param>
         /// <param name="newLevel"></param>
@@ -180,7 +180,7 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="childBoundables">Must be sorted by the x-value of the envelope midpoints.</param>
         /// <param name="sliceCount"></param>
@@ -193,10 +193,10 @@ namespace NetTopologySuite.Index.Strtree
             {
                 slices[j] = new List<IBoundable<Envelope, TItem>>();
                 var boundablesAddedToSlice = 0;
-                /* 
+                /*
                  *          Diego Guidi says:
-                 *          the line below introduce an error: 
-                 *          the first element at the iteration (not the first) is lost! 
+                 *          the line below introduce an error:
+                 *          the first element at the iteration (not the first) is lost!
                  *          This is simply a different implementation of Iteration in .NET against Java
                  */
                 // while (i.MoveNext() && boundablesAddedToSlice < sliceCapacity)
@@ -211,7 +211,7 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
@@ -221,7 +221,7 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected override IIntersectsOp IntersectsOp => IntersectsOperation;
 
@@ -260,7 +260,7 @@ namespace NetTopologySuite.Index.Strtree
             base.Query(searchEnv, visitor);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Removes a single item from the tree.
         /// </summary>
         /// <param name="itemEnv">The Envelope of the item to remove.</param>
@@ -272,7 +272,7 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         protected override IComparer<IBoundable<Envelope, TItem>> GetComparer()
@@ -281,7 +281,7 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// Finds the two nearest items in the tree, 
+        /// Finds the two nearest items in the tree,
         /// using <see cref="IItemDistance{Envelope, TItem}"/> as the distance metric.
         /// A Branch-and-Bound tree traversal algorithm is used
         /// to provide an efficient search.
@@ -295,7 +295,7 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// Finds k items in this tree which are the top k nearest neighbors to the given <c>item</c>, 
+        /// Finds k items in this tree which are the top k nearest neighbors to the given <c>item</c>,
         /// using <c>itemDist</c> as the distance metric.
         /// A Branch-and-Bound tree traversal algorithm is used
         /// to provide an efficient search.
@@ -304,9 +304,9 @@ namespace NetTopologySuite.Index.Strtree
         /// Roussopoulos, Nick, Stephen Kelley, and Frédéric Vincent. "Nearest neighbor queries."
         /// ACM sigmod record. Vol. 24. No. 2. ACM, 1995.
         /// <para/>
-        /// The query <c>item</c> does <b>not</b> have to be 
-        /// contained in the tree, but it does 
-        /// have to be compatible with the <c>itemDist</c> 
+        /// The query <c>item</c> does <b>not</b> have to be
+        /// contained in the tree, but it does
+        /// have to be compatible with the <c>itemDist</c>
         /// distance metric.
         /// </summary>
         /// <param name="env">The envelope of the query item</param>
@@ -322,15 +322,15 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// Finds the item in this tree which is nearest to the given <paramref name="item"/>, 
+        /// Finds the item in this tree which is nearest to the given <paramref name="item"/>,
         /// using <see cref="IItemDistance{Envelope,TItem}"/> as the distance metric.
         /// A Branch-and-Bound tree traversal algorithm is used
         /// to provide an efficient search.
         /// <para/>
-        /// The query <paramref name="item"/> does <b>not</b> have to be 
-        /// contained in the tree, but it does 
-        /// have to be compatible with the <paramref name="itemDist"/> 
-        /// distance metric. 
+        /// The query <paramref name="item"/> does <b>not</b> have to be
+        /// contained in the tree, but it does
+        /// have to be compatible with the <paramref name="itemDist"/>
+        /// distance metric.
         /// </summary>
         /// <param name="env">The envelope of the query item</param>
         /// <param name="item">The item to find the nearest neighbour of</param>
@@ -344,12 +344,12 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// Finds the two nearest items from this tree 
+        /// Finds the two nearest items from this tree
         /// and another tree,
         /// using <see cref="IItemDistance{Envelope, TItem}"/> as the distance metric.
         /// A Branch-and-Bound tree traversal algorithm is used
         /// to provide an efficient search.
-        /// The result value is a pair of items, 
+        /// The result value is a pair of items,
         /// the first from this tree and the second
         /// from the argument tree.
         /// </summary>
@@ -404,8 +404,8 @@ namespace NetTopologySuite.Index.Strtree
                  * If the pair members are leaves
                  * then their distance is the exact lower bound.
                  * Update the distanceLowerBound to reflect this
-                 * (which must be smaller, due to the test 
-                 * immediately prior to this). 
+                 * (which must be smaller, due to the test
+                 * immediately prior to this).
                  */
                 if (bndPair.IsLeaves)
                 {
@@ -419,13 +419,13 @@ namespace NetTopologySuite.Index.Strtree
                     // Ans: by only about 10% - not enough to matter
                     /*
                     double maxDist = bndPair.getMaximumDistance();
-                    if (maxDist * .99 < lastComputedDistance) 
+                    if (maxDist * .99 < lastComputedDistance)
                       return;
                     //*/
 
                     /**
                      * Otherwise, expand one side of the pair,
-                     * (the choice of which side to expand is heuristically determined) 
+                     * (the choice of which side to expand is heuristically determined)
                      * and insert the new expanded pairs into the queue
                      */
                     bndPair.ExpandToQueue(priQ, distanceLowerBound);
@@ -477,8 +477,8 @@ namespace NetTopologySuite.Index.Strtree
                  * If the pair members are leaves
                  * then their distance is the exact lower bound.
                  * Update the distanceLowerBound to reflect this
-                 * (which must be smaller, due to the test 
-                 * immediately prior to this). 
+                 * (which must be smaller, due to the test
+                 * immediately prior to this).
                  */
                 if (bndPair.IsLeaves)
                 {
@@ -509,13 +509,13 @@ namespace NetTopologySuite.Index.Strtree
                     // Ans: by only about 10% - not enough to matter
                     /*
                     double maxDist = bndPair.getMaximumDistance();
-                    if (maxDist * .99 < lastComputedDistance) 
+                    if (maxDist * .99 < lastComputedDistance)
                       return;
                     //*/
 
                     /**
                      * Otherwise, expand one side of the pair,
-                     * (the choice of which side to expand is heuristically determined) 
+                     * (the choice of which side to expand is heuristically determined)
                      * and insert the new expanded pairs into the queue
                      */
                     bndPair.ExpandToQueue(priQ, distanceLowerBound);
@@ -528,7 +528,7 @@ namespace NetTopologySuite.Index.Strtree
 
         private static TItem[] GetItems(PriorityQueue<BoundablePair<TItem>> kNearestNeighbors)
         {
-            /** 
+            /**
              * Iterate the K Nearest Neighbour Queue and retrieve the item from each BoundablePair
              * in this queue
              */

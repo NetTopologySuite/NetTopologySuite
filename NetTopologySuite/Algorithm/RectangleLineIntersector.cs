@@ -11,8 +11,8 @@ namespace NetTopologySuite.Algorithm
     /// (or to put it another way, although they contain four
     /// coordinates they only actually contain 4 ordinates
     /// worth of information).
-    /// The algorithm used takes advantage of the symmetry of 
-    /// the geometric situation 
+    /// The algorithm used takes advantage of the symmetry of
+    /// the geometric situation
     /// to optimize performance by minimizing the number
     /// of line intersection tests.
     /// </remarks>
@@ -95,22 +95,22 @@ namespace NetTopologySuite.Algorithm
 
             /**
              * Since we now know that neither segment endpoint
-             * lies in the rectangle, there are two possible 
+             * lies in the rectangle, there are two possible
              * situations:
              * 1) the segment is disjoint to the rectangle
              * 2) the segment crosses the rectangle completely.
-             * 
-             * In the case of a crossing, the segment must intersect 
+             *
+             * In the case of a crossing, the segment must intersect
              * a diagonal of the rectangle.
-             * 
-             * To distinguish these two cases, it is sufficient 
-             * to test intersection with 
+             *
+             * To distinguish these two cases, it is sufficient
+             * to test intersection with
              * a single diagonal of the rectangle,
              * namely the one with slope "opposite" to the slope
              * of the segment.
              * (Note that if the segment is axis-parallel,
              * it must intersect both diagonals, so this is
-             * still sufficient.)  
+             * still sufficient.)
              */
             if (isSegUpwards)
             {

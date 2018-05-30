@@ -11,8 +11,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 {
     ///<summary>
     /// Stress test of <see cref="RayCrossingCounter"/> Point-In-Ring algorithm.
-    /// The input to each test is a triangle with a slanted side, 
-    /// and a point interpolated along the side. 
+    /// The input to each test is a triangle with a slanted side,
+    /// and a point interpolated along the side.
     /// Almost always the point will not lie exactly on the side.
     /// The test consists of comparing the result of computing Point-In-Ring and the result of
     /// determining the orientation of the point relative to the side.
@@ -24,10 +24,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
     /// The {@link RayCrossingCounterDD} implementation is consistent,
     /// as expected.
     /// <para/>
-    /// Note that the inconsistency does not indicate which algorithm is 
+    /// Note that the inconsistency does not indicate which algorithm is
     /// "more correct" - just that they produce different results.
     /// However, it is highly likely that the original RCC algorithm
-    /// is <b>not</b> as robust as RCCDD, since it involves a series 
+    /// is <b>not</b> as robust as RCCDD, since it involves a series
     /// of double-precision arithmetic operations.
     /// </summary>
     /// <author>Martin Davis</author>

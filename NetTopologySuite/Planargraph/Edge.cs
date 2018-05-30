@@ -10,7 +10,7 @@ namespace NetTopologySuite.Planargraph
     public class Edge : GraphComponent
     {
         /// <summary>
-        /// The two DirectedEdges associated with this Edge. 
+        /// The two DirectedEdges associated with this Edge.
         /// </summary>
         protected DirectedEdge[] dirEdge;
 
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Planargraph
             de1.FromNode.AddOutEdge(de1);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Returns one of the DirectedEdges associated with this Edge.
         /// </summary>
         /// <param name="i">0 or 1.</param>
@@ -67,16 +67,16 @@ namespace NetTopologySuite.Planargraph
         /// <returns></returns>
         public DirectedEdge GetDirEdge(Node fromNode)
         {
-            if (dirEdge[0].FromNode == fromNode) 
+            if (dirEdge[0].FromNode == fromNode)
                 return dirEdge[0];
-            if (dirEdge[1].FromNode == fromNode) 
+            if (dirEdge[1].FromNode == fromNode)
                 return dirEdge[1];
             // node not found
             // possibly should throw an exception here?
             return null;
         }
 
-        /// <summary> 
+        /// <summary>
         /// If <c>node</c> is one of the two nodes associated with this Edge,
         /// returns the other node; otherwise returns null.
         /// </summary>
@@ -84,9 +84,9 @@ namespace NetTopologySuite.Planargraph
         /// <returns></returns>
         public Node GetOppositeNode(Node node)
         {
-            if (dirEdge[0].FromNode == node) 
+            if (dirEdge[0].FromNode == node)
                 return dirEdge[0].ToNode;
-            if (dirEdge[1].FromNode == node) 
+            if (dirEdge[1].FromNode == node)
                 return dirEdge[1].ToNode;
             // node not found
             // possibly should throw an exception here?

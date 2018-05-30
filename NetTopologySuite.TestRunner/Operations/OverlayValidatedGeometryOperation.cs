@@ -13,7 +13,7 @@ namespace Open.Topology.TestRunner.Operations
     /// convenient and noticeable way of flagging the problem when using the TestRunner).
     /// All other Geometry methods are executed normally.
     /// <para/>
-    /// In order to eliminate the need to specify the precise result of an overlay, 
+    /// In order to eliminate the need to specify the precise result of an overlay,
     /// this class forces the final return value to be <tt>GEOMETRYCOLLECTION EMPTY</tt>.
     /// <para/>
     /// This class can be used via the <tt>-geomop</tt> command-line option
@@ -86,9 +86,9 @@ namespace Open.Topology.TestRunner.Operations
         }
 
         /**
-         * 
+         *
          * and optionally validating the result.
-         * 
+         *
          * @param opCode
          * @param g0
          * @param args
@@ -110,7 +110,7 @@ namespace Open.Topology.TestRunner.Operations
             AreaValidate(g0, g1);
 
             /**
-             * Return an empty GeometryCollection as the result.  
+             * Return an empty GeometryCollection as the result.
              * This allows the test case to avoid specifying an exact result
              */
             if (ReturnEmptyGeometryCollection)

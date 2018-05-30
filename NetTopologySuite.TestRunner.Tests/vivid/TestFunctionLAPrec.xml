@@ -29,17 +29,17 @@
 <test>
   <op name="union" arg1="A" arg2="B">
     GEOMETRYCOLLECTION(
-      LINESTRING(95 9, 95 13), 
+      LINESTRING(95 9, 95 13),
       POLYGON(
-        (95 13, 81 414, 87 414, 95 13)), 
-      LINESTRING(93 13, 95 13), 
+        (95 13, 81 414, 87 414, 95 13)),
+      LINESTRING(93 13, 95 13),
       LINESTRING(95 13, 96 13))
   </op>
 </test>
 <test>
   <op name="difference" arg1="A" arg2="B">
     GEOMETRYCOLLECTION(
-      LINESTRING(95 9, 95 13), 
+      LINESTRING(95 9, 95 13),
       POLYGON(
         (95 13, 81 414, 87 414, 95 13)))
   </op>
@@ -47,10 +47,10 @@
 <test>
   <op name="symdifference" arg1="A" arg2="B">
     GEOMETRYCOLLECTION(
-      LINESTRING(95 9, 95 13), 
+      LINESTRING(95 9, 95 13),
       POLYGON(
-        (95 13, 81 414, 87 414, 95 13)), 
-      LINESTRING(93 13, 95 13), 
+        (95 13, 81 414, 87 414, 95 13)),
+      LINESTRING(93 13, 95 13),
       LINESTRING(95 13, 96 13))
   </op>
 </test>

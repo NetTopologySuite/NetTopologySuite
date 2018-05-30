@@ -190,7 +190,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                     ,
                 };
             int[] srids = {4326, 31467, 3857};
-            
+
             const int numJobs = 30;
             var waitHandles = new WaitHandle[numJobs];
             for (int i = 0; i < numJobs; i++)
@@ -201,9 +201,9 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
             WaitHandle.WaitAll(waitHandles, 10000);
 
-            int after = ((NtsGeometryServices)services).NumFactories; 
+            int after = ((NtsGeometryServices)services).NumFactories;
             Console.WriteLine("Now {0} factories created", after);
-            Assert.LessOrEqual(after, before + srids.Length); 
+            Assert.LessOrEqual(after, before + srids.Length);
         }
 
         private static readonly Random Rnd = new Random();

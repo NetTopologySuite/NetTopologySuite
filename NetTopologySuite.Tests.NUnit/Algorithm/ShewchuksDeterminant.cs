@@ -177,9 +177,9 @@ public class ShewchuksDeterminant
    * If the orientation can be computed safely using standard DP
    * arithmetic, this routine returns the orientation index.
    * Otherwise, a value i > 1 is returned.
-   * In this case the orientation index must 
+   * In this case the orientation index must
    * be computed using some other method.
-   * 
+   *
    * @param pa a coordinate
    * @param pb a coordinate
    * @param pc a coordinate
@@ -230,18 +230,18 @@ public class ShewchuksDeterminant
     if (x < 0) return -1;
     return 0;
   }
-  
+
   /**
    * Returns the index of the direction of the point <code>q</code> relative to
    * a vector specified by <code>p1-p2</code>.
-   * 
+   *
    * @param p1
    *          the origin point of the vector
    * @param p2
    *          the final point of the vector
    * @param q
    *          the point to compute the direction to
-   * 
+   *
    * @return 1 if q is counter-clockwise (left) from p1-p2
    * @return -1 if q is clockwise (right) from p1-p2
    * @return 0 if q is collinear with p1-p2
@@ -289,7 +289,7 @@ public class ShewchuksDeterminant
 
     return orient2dadapt(pa, pb, pc, detsum);
   }
-  
+
   /*****************************************************************************/
   /*                                                                           */
   /* orient2d() Adaptive exact 2D orientation test. Robust. */

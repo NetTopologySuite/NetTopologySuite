@@ -15,7 +15,7 @@ using System.Collections.Generic;
 namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
-    /// The Class BoundablePairDistanceComparator. It implements .Net <see cref="IComparer{T}"/> and is used 
+    /// The Class BoundablePairDistanceComparator. It implements .Net <see cref="IComparer{T}"/> and is used
     /// as a parameter to sort the BoundablePair list.
     /// </summary>
 #if HAS_SYSTEM_SERIALIZABLEATTRIBUTE

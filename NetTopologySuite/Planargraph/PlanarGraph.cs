@@ -17,17 +17,17 @@ namespace NetTopologySuite.Planargraph
     public abstract class PlanarGraph
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private IList<Edge> _edges = new List<Edge>();
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected IList<DirectedEdge> dirEdges = new List<DirectedEdge>();
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected NodeMap nodeMap = new NodeMap();
 
@@ -82,8 +82,8 @@ namespace NetTopologySuite.Planargraph
         /// </summary>
         /// <returns></returns>
         public IEnumerator<Node> GetNodeEnumerator()
-        {            
-            return nodeMap.GetEnumerator();          
+        {
+            return nodeMap.GetEnumerator();
         }
 
         /// <summary>
@@ -91,14 +91,14 @@ namespace NetTopologySuite.Planargraph
         /// </summary>
         public ICollection<Node> Nodes => nodeMap.Values;
 
-        /// <summary> 
+        /// <summary>
         /// Returns an Iterator over the DirectedEdges in this PlanarGraph, in the order in which they
         /// were added.
         /// </summary>
         /// <returns></returns>
-        public IEnumerator<DirectedEdge> GetDirEdgeEnumerator() 
-        {            
-            return dirEdges.GetEnumerator();          
+        public IEnumerator<DirectedEdge> GetDirEdgeEnumerator()
+        {
+            return dirEdges.GetEnumerator();
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace NetTopologySuite.Planargraph
         /// <returns></returns>
         public IEnumerator<Edge> GetEdgeEnumerator()
         {
-            return _edges.GetEnumerator(); 
+            return _edges.GetEnumerator();
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace NetTopologySuite.Planargraph
             edge.Remove();
         }
 
-        /// <summary> 
+        /// <summary>
         /// Removes a <see cref="DirectedEdge"/> from its from-<see cref="Node"/> and from this PlanarGraph.
         /// </summary>
         /// <remarks>
@@ -146,7 +146,7 @@ namespace NetTopologySuite.Planargraph
         public void Remove(DirectedEdge de)
         {
             DirectedEdge sym = de.Sym;
-            if (sym != null) 
+            if (sym != null)
                 sym.Sym = null;
             de.FromNode.Remove(de);
             de.Remove();
@@ -166,14 +166,14 @@ namespace NetTopologySuite.Planargraph
             {
                 DirectedEdge sym = de.Sym;
                 // remove the diredge that points to this node
-                if (sym != null) 
+                if (sym != null)
                     Remove(sym);
                 // remove this diredge from the graph collection
                 dirEdges.Remove(de);
 
                 Edge edge = de.Edge;
-                if (edge != null)                
-                    _edges.Remove(edge);                
+                if (edge != null)
+                    _edges.Remove(edge);
             }
             // remove the node from the graph
             nodeMap.Remove(node.Coordinate);

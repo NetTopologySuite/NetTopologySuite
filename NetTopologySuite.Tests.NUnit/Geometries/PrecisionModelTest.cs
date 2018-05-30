@@ -45,7 +45,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
             PreciseCoordinateTester(pm1, -10, -10, -10, -10);
             PreciseCoordinateTester(pm1, -9.9, -9.9, -10, -10);
-            
+
             //We use "Asymmetric Arithmetic Rounding", that's is why this is true:
             PreciseCoordinateTester(pm1, -9.5, -9.5, -9, -9);
         }

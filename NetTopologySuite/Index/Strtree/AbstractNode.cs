@@ -5,7 +5,7 @@ using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Index.Strtree
 {
-    /// <summary> 
+    /// <summary>
     /// A node of an <see cref="AbstractSTRtree{T, TItem}"/>. A node is one of:
     /// <list type="Bullet">
     /// <item>empty</item>
@@ -23,19 +23,19 @@ namespace NetTopologySuite.Index.Strtree
         private T _bounds;
         private readonly int _level;
 
-        /// <summary> 
+        /// <summary>
         /// Constructs an AbstractNode at the given level in the tree
         /// </summary>
         /// <param name="level">
         /// 0 if this node is a leaf, 1 if a parent of a leaf, and so on; the
         /// root node will have the highest level.
         /// </param>
-        protected AbstractNode(int level) 
+        protected AbstractNode(int level)
         {
             _level = level;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Returns either child <see cref="AbstractNode{T, TItem}"/>s, or if this is a leaf node, real data (wrapped
         /// in <see cref="ItemBoundable{T, TItem}"/>s).
         /// </summary>
@@ -47,10 +47,10 @@ namespace NetTopologySuite.Index.Strtree
         /// test for intersection with the bounds of other Boundables. The class of
         /// object returned depends on the subclass of AbstractSTRtree.
         /// </summary>
-        /// <returns> 
+        /// <returns>
         /// An Envelope (for STRtrees), an Interval (for SIRtrees), or other
         /// object (for other subclasses of AbstractSTRtree).
-        /// </returns>        
+        /// </returns>
         protected abstract T ComputeBounds();
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace NetTopologySuite.Index.Strtree
         /// (wrapped in an ItemBoundable).
         /// </summary>
         /// <param name="childBoundable"></param>
-        public void AddChildBoundable(IBoundable<T, TItem> childBoundable) 
+        public void AddChildBoundable(IBoundable<T, TItem> childBoundable)
         {
             Assert.IsTrue(_bounds == null);
             _childBoundables.Add(childBoundable);

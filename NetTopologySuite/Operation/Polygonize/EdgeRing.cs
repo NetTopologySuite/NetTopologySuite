@@ -139,7 +139,7 @@ namespace NetTopologySuite.Operation.Polygonize
         private bool _isIncluded = false;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="factory"></param>
         public EdgeRing(IGeometryFactory factory)
@@ -290,7 +290,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// Used to return the coordinates in this ring
         /// as a valid point, when it has been detected that the ring is topologically
         /// invalid.
-        /// </summary>        
+        /// </summary>
         public ILineString LineString
         {
             get
@@ -325,7 +325,7 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coords"></param>
         /// <param name="isForward"></param>

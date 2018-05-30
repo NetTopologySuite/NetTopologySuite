@@ -24,14 +24,14 @@ namespace Open.Topology.TestRunner
 	    public void ResetFiles()
         {
             if (m_listFileNames != null)
-                m_listFileNames.Clear();            
+                m_listFileNames.Clear();
        }
 
         public void Reset()
         {
             if (m_objCurrentDoc != null)
                 m_objCurrentDoc.ResetTests();
-            
+
             ResetFiles();
         }
 
@@ -46,10 +46,10 @@ namespace Open.Topology.TestRunner
                     {
                         XmlTestCollection listTests = m_objCurrentDoc.CurrentTests;
                         if (listTests != null && listTests.Count > 0)
-                            return listTests.RunTests();                        
+                            return listTests.RunTests();
                     }
                 }
-            }    
+            }
             return false;
         }
 
@@ -57,12 +57,12 @@ namespace Open.Topology.TestRunner
         {
             if (m_listFileNames == null)
                 m_listFileNames = new StringCollection();
-            
+
             try
             {
                 string[] dirs = Directory.GetFiles(directory, "*.xml");
-                foreach (string dir in dirs) 
-                    m_listFileNames.Add(dir);                
+                foreach (string dir in dirs)
+                    m_listFileNames.Add(dir);
                 return true;
             }
             catch (Exception ex)

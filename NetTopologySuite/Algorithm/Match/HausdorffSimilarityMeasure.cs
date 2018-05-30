@@ -47,7 +47,7 @@ namespace NetTopologySuite.Algorithm.Match
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="env"></param>
         /// <returns></returns>

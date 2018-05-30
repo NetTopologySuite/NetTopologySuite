@@ -49,7 +49,7 @@ namespace Open.Topology.TestRunner.Utility
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomStr"></param>
         /// <returns></returns>

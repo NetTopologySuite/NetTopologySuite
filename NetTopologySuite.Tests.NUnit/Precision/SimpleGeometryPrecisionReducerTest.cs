@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Precision
 {
     [TestFixtureAttribute]
-    public class SimpleGeometryPrecisionReducerTest   
+    public class SimpleGeometryPrecisionReducerTest
     {
         private PrecisionModel pmFloat;
         private PrecisionModel pmFixed1;

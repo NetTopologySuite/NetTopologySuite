@@ -22,8 +22,8 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             //RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(10 10)", 5.0, "POINT (6.464466094067262 13.535533905932738)");
             //RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(10 10)", -5.0, "POINT (13.535533905932738 6.464466094067262)");
         }
-        
-        
+
+
         [TestAttribute]
         public void TestMultiLineStringSimple()
         {
@@ -81,7 +81,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         {
             LocationIndexedLine indexedLine = new LocationIndexedLine(linearGeom);
             LinearLocation index = indexedLine.IndexOf(testPt);
-            
+
             return indexedLine.ExtractPoint(index, offsetDistance);
         }
     }

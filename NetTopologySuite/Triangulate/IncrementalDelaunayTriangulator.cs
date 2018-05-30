@@ -60,18 +60,18 @@ namespace NetTopologySuite.Triangulate
 
             if (_subdiv.IsVertexOfEdge(e, v)) {
                 // point is already in subdivision.
-                return e; 
+                return e;
             }
             if (_subdiv.IsOnEdge(e, v.Coordinate))
             {
-                // the point lies exactly on an edge, so delete the edge 
+                // the point lies exactly on an edge, so delete the edge
                 // (it will be replaced by a pair of edges which have the point as a vertex)
                 e = e.OPrev;
                 _subdiv.Delete(e.ONext);
             }
 
             /*
-             * Connect the new point to the vertices of the containing triangle 
+             * Connect the new point to the vertices of the containing triangle
              * (or quadrilateral, if the new point fell on an existing edge.)
              */
             var baseQuadEdge = _subdiv.MakeEdge(e.Orig, v);

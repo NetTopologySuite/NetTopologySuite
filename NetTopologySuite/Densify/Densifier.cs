@@ -7,7 +7,7 @@ namespace NetTopologySuite.Densify
 {
     /// <summary>
     /// Densifies a geometry by inserting extra vertices along the line segments
-    /// contained in the geometry. 
+    /// contained in the geometry.
     /// All segments in the created densified geometry will be no longer than
     /// than the given distance tolerance.
     /// </summary>

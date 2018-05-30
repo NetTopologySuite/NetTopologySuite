@@ -28,7 +28,7 @@ namespace NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="de"></param>
         public void Add(DirectedEdge de)
-        {            
+        {
             _outEdges.Add(de);
             _sorted = false;
         }
@@ -46,11 +46,11 @@ namespace NetTopologySuite.Planargraph
         /// Returns an Iterator over the DirectedEdges, in ascending order by angle with the positive x-axis.
         /// </summary>
         public IEnumerator<DirectedEdge> GetEnumerator()
-        {            
+        {
             SortEdges();
             return _outEdges.GetEnumerator();
         }
-        
+
         /// <summary>
         /// Returns the number of edges around the Node associated with this DirectedEdgeStar.
         /// </summary>
@@ -82,7 +82,7 @@ namespace NetTopologySuite.Planargraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private void SortEdges()
         {
@@ -92,7 +92,7 @@ namespace NetTopologySuite.Planargraph
                 var inSortedOrder = new List<DirectedEdge>(CollectionUtil.StableSort(_outEdges));
                 _outEdges.Clear();
                 _outEdges.AddRange(inSortedOrder);
-                _sorted = true;                
+                _sorted = true;
             }
         }
 
@@ -132,25 +132,25 @@ namespace NetTopologySuite.Planargraph
             return -1;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Returns the remainder when i is divided by the number of edges in this
-        /// DirectedEdgeStar. 
+        /// DirectedEdgeStar.
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
         public int GetIndex(int i)
         {
             int modi = i % _outEdges.Count;
-            //I don't think modi can be 0 (assuming i is positive) [Jon Aquino 10/28/2003] 
-            if (modi < 0) 
+            //I don't think modi can be 0 (assuming i is positive) [Jon Aquino 10/28/2003]
+            if (modi < 0)
                 modi += _outEdges.Count;
             return modi;
         }
 
         /// <summary>
-        /// Returns the <see cref="DirectedEdge"/> on the left-hand 
-        /// side of the given <see cref="DirectedEdge"/> 
-        /// (which  must be a member of this DirectedEdgeStar). 
+        /// Returns the <see cref="DirectedEdge"/> on the left-hand
+        /// side of the given <see cref="DirectedEdge"/>
+        /// (which  must be a member of this DirectedEdgeStar).
         /// </summary>
         /// <param name="dirEdge"></param>
         /// <returns></returns>
@@ -161,7 +161,7 @@ namespace NetTopologySuite.Planargraph
         }
 
         ///<summary>
-        /// Returns the <see cref="DirectedEdge"/> on the right-hand (CW) 
+        /// Returns the <see cref="DirectedEdge"/> on the right-hand (CW)
         /// side of the given <see cref="DirectedEdge"/>
         /// (which must be a member of this DirectedEdgeStar).
         /// </summary>

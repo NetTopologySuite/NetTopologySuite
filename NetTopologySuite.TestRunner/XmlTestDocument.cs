@@ -28,7 +28,7 @@ namespace Open.Topology.TestRunner
         }
 
         #region Private Members
-        
+
         private ArrayList m_listarrTests         = null;
 
         private XmlTestCollection m_listCurTests = null;
@@ -40,7 +40,7 @@ namespace Open.Topology.TestRunner
         #endregion
 
         #region Constructors and Destructor
-        
+
         public XmlTestDocument()
 		{
             m_listarrTests = new ArrayList();
@@ -73,7 +73,7 @@ namespace Open.Topology.TestRunner
         {
             if (!File.Exists(fileName))
             {
-                throw new ArgumentException(fileName, 
+                throw new ArgumentException(fileName,
                     "The file does not exits or the 'fileName' is not valid.");
             }
 
@@ -100,7 +100,7 @@ namespace Open.Topology.TestRunner
                 // Retrieve the "workspace", if any.
                 XmlNode workspace = root["workspace"];
                 if (workspace != null)
-                {  
+                {
                     XmlAttributeCollection workspaceAttributes = workspace.Attributes;
                     if (workspaceAttributes != null && workspaceAttributes.Count > 0)
                     {
@@ -172,7 +172,7 @@ namespace Open.Topology.TestRunner
                                     Double.Parse(precisionAttributes["offsetx"].InnerText, GetNumberFormatInfo());
                                 double offsety =
                                     Double.Parse(precisionAttributes["offsety"].InnerText, GetNumberFormatInfo());
- 
+
                                 pm = new PrecisionModel(scale);
                             }
                         }
@@ -200,7 +200,7 @@ namespace Open.Topology.TestRunner
                         case "com.vividsolutions.jtstest.geomop.OverlayValidatedGeometryOperation":
                             geometryOperation = new OverlayValidatedGeometryOperation();
                             break;
-                            
+
                         default:
                             Console.WriteLine(string.Format("\n *** {0} *** \n", go.Value));
                             Console.ReadKey(true);
@@ -230,7 +230,7 @@ namespace Open.Topology.TestRunner
                 // Now, handle the "case" nodes
                 XmlNodeList elemList = xmldoc.GetElementsByTagName("case");
                 for (int i = 0; i < elemList.Count; i++)
-                {   
+                {
                     ParseCaseNode(elemList[i], dTolerance);
                 }
 
@@ -303,12 +303,12 @@ namespace Open.Topology.TestRunner
                     {
                         testInfo.SetValue("arg1", testElement.GetAttribute("arg1").ToLower());
                     }
-                    
+
                     if (testElement.HasAttribute("arg2"))
                     {
                         testInfo.SetValue("arg2", testElement.GetAttribute("arg2").ToLower());
                     }
-                    
+
                     if (testElement.HasAttribute("arg3"))
                     {
                         testInfo.SetValue("arg3", testElement.GetAttribute("arg3"));
@@ -325,7 +325,7 @@ namespace Open.Topology.TestRunner
                     string baseDesc = testInfo.GetValue("desc");
 
                     for (int i = 0; i < elemList.Count; i++)
-                    {   
+                    {
                         string strDescNew = baseDesc + " - " + (i + 1).ToString();
 
                         testInfo.SetValue("desc", strDescNew);
@@ -342,12 +342,12 @@ namespace Open.Topology.TestRunner
                         {
                             testInfo.SetValue("arg1", testElement.GetAttribute("arg1"));
                         }
-                    
+
                         if (testElement.HasAttribute("arg2"))
                         {
                             testInfo.SetValue("arg2", testElement.GetAttribute("arg2"));
                         }
-                    
+
                         if (testElement.HasAttribute("arg3"))
                         {
                             testInfo.SetValue("arg3", testElement.GetAttribute("arg3"));

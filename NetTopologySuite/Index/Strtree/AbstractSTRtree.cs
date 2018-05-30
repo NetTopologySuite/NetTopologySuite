@@ -29,12 +29,12 @@ namespace NetTopologySuite.Index.Strtree
         protected interface IIntersectsOp
         {
             /// <summary>
-            /// For STRtrees, the bounds will be Envelopes; 
+            /// For STRtrees, the bounds will be Envelopes;
             /// for SIRtrees, Intervals;
             /// for other subclasses of AbstractSTRtree, some other class.
             /// </summary>
             /// <param name="aBounds">The bounds of one spatial object.</param>
-            /// <param name="bBounds">The bounds of another spatial object.</param>                        
+            /// <param name="bBounds">The bounds of another spatial object.</param>
             /// <returns>Whether the two bounds intersect.</returns>
             bool Intersects(T aBounds, T bBounds);
         }
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Index.Strtree
 
         private readonly int _nodeCapacity;
 
-        /// <summary> 
+        /// <summary>
         /// Constructs an AbstractSTRtree with the specified maximum number of child
         /// nodes that a node may have.
         /// </summary>
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Index.Strtree
             _nodeCapacity = nodeCapacity;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Creates parent nodes, grandparent nodes, and so forth up to the root
         /// node, for the data that has been inserted into the tree. Can only be
         /// called once, and thus can be called only after all of the data has been
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
@@ -157,7 +157,7 @@ namespace NetTopologySuite.Index.Strtree
             set => _root = value;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Returns the maximum number of child nodes that a node may have.
         /// </summary>
         public int NodeCapacity => _nodeCapacity;
@@ -249,7 +249,7 @@ namespace NetTopologySuite.Index.Strtree
             var matches = new List<TItem>();
             if (IsEmpty)
                 return matches;
-            
+
             //if (_itemBoundables.Count == 0)
             //{
             //    //Assert.IsTrue(_root.Bounds == null);
@@ -309,9 +309,9 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// Gets a tree structure (as a nested list) 
+        /// Gets a tree structure (as a nested list)
         /// corresponding to the structure of the items and nodes in this tree.
-        /// The returned Lists contain either Object items, 
+        /// The returned Lists contain either Object items,
         /// or Lists which correspond to subtrees of the tree
         /// Subtrees which do not contain any items are not included.
         /// Builds the tree if necessary.
@@ -342,7 +342,7 @@ namespace NetTopologySuite.Index.Strtree
                     valuesTreeForNode.Add(((ItemBoundable<T, TItem>)childBoundable).Item);
                 else Assert.ShouldNeverReachHere();
             }
-            
+
             return valuesTreeForNode.Count <= 0 ? null : valuesTreeForNode;
         }
 

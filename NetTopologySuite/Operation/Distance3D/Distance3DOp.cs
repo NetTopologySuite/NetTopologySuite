@@ -171,7 +171,7 @@ namespace NetTopologySuite.Operation.Distance3D
 
         /// <summary>
         /// Finds the index of the "most polygonal" input geometry.
-        /// This optimizes the computation of the best-fit plane, 
+        /// This optimizes the computation of the best-fit plane,
         /// since it is cached only for the left-hand geometry.
         /// </summary>
         /// <returns>The index of the most polygonal geometry</returns>
@@ -345,8 +345,8 @@ namespace NetTopologySuite.Operation.Distance3D
         /// and vice-versa.
         /// If the polygons intersect, then at least one ring must
         /// intersect the other polygon.
-        /// Note that it is NOT sufficient to test only the shell rings. 
-        /// A counter-example is a "figure-8" polygon A 
+        /// Note that it is NOT sufficient to test only the shell rings.
+        /// A counter-example is a "figure-8" polygon A
         /// and a simple polygon B at right angles to A, with the ring of B
         /// passing through the holes of A.
         /// The polygons intersect,
@@ -423,7 +423,7 @@ namespace NetTopologySuite.Operation.Distance3D
                 var d1 = poly.Plane.OrientedDistance(p1);
 
                 /**
-                 * If the oriented distances of the segment endpoints have the same sign, 
+                 * If the oriented distances of the segment endpoints have the same sign,
                  * the segment does not cross the plane, and is skipped.
                  */
                 if (d0 * d1 > 0)
@@ -432,8 +432,8 @@ namespace NetTopologySuite.Operation.Distance3D
                 /**
                  * Compute segment-plane intersection point
                  * which is then used for a point-in-polygon test.
-                 * The endpoint distances to the plane d0 and d1 
-                 * give the proportional distance of the intersection point 
+                 * The endpoint distances to the plane d0 and d1
+                 * give the proportional distance of the intersection point
                  * along the segment.
                  */
                 var intPt = SegmentPoint(p0, p1, d0, d1);
@@ -551,9 +551,9 @@ namespace NetTopologySuite.Operation.Distance3D
 
         /**
          * Computes a point at a distance along a segment
-         * specified by two relatively proportional values. 
+         * specified by two relatively proportional values.
          * The fractional distance along the segment is d0/(d0+d1).
-         * 
+         *
          * @param p0
          *            start point of the segment
          * @param p1

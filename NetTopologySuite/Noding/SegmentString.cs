@@ -67,33 +67,33 @@ namespace NetTopologySuite.Noding
         public object Context { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public SegmentNodeList NodeList => _nodeList;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <value></value>
         public int Count => _pts.Length;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public Coordinate GetCoordinate(int i) 
-        { 
-            return _pts[i]; 
+        public Coordinate GetCoordinate(int i)
+        {
+            return _pts[i];
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate[] Coordinates => _pts;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsClosed => _pts[0].Equals2D(_pts[_pts.Length - 1]);
 
@@ -101,13 +101,13 @@ namespace NetTopologySuite.Noding
         ///  Gets the octant of the segment starting at vertex <c>index</c>.
         /// </summary>
         /// <param name="index">
-        /// The index of the vertex starting the segment.  
+        /// The index of the vertex starting the segment.
         /// Must not be the last index in the vertex list
         /// </param>
         /// <returns>The octant of the segment at the vertex</returns>
         public Octants GetSegmentOctant(int index)
         {
-            return index == _pts.Length - 1 ? 
+            return index == _pts.Length - 1 ?
                 Octants.Null :
                 SafeOctant(GetCoordinate(index), GetCoordinate(index+1));
         }
@@ -122,7 +122,7 @@ namespace NetTopologySuite.Noding
 
         /// <summary>
         /// Adds EdgeIntersections for one or both
-        /// intersections found for a segment of an edge to the edge intersection list.   
+        /// intersections found for a segment of an edge to the edge intersection list.
         /// </summary>
         /// <param name="li"></param>
         /// <param name="segmentIndex"></param>
@@ -130,7 +130,7 @@ namespace NetTopologySuite.Noding
         public void AddIntersections(LineIntersector li, int segmentIndex, int geomIndex)
         {
             for (var i = 0; i < li.IntersectionNum; i++)
-                AddIntersection(li, segmentIndex, geomIndex, i);            
+                AddIntersection(li, segmentIndex, geomIndex, i);
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="intPt"></param>
         /// <param name="segmentIndex"></param>
@@ -162,11 +162,11 @@ namespace NetTopologySuite.Noding
             if(nextSegIndex < _pts.Length)
             {
                 var nextPt = _pts[nextSegIndex];
-              
+
                 // Normalize segment index if intPt falls on vertex
                 // The check for point equality is 2D only - Z values are ignored
                 if (intPt.Equals2D(nextPt))
-                    normalizedSegmentIndex = nextSegIndex;                
+                    normalizedSegmentIndex = nextSegIndex;
             }
 
             // Add the intersection point to edge intersection list.

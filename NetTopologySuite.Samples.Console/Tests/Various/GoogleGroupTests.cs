@@ -383,7 +383,7 @@ namespace NetTopologySuite.Tests.Various
             var union = coll.Buffer(0.0);
             Assert.IsNotNull(union);
         }
-        
+
         /// <summary>
         /// Asher 16-04-2012
         /// https://groups.google.com/forum/#!msg/nettopologysuite/6ymt34Ycfk8/dF5wTsEAsaIJ
@@ -431,14 +431,14 @@ namespace NetTopologySuite.Tests.Various
             IGeometry geom = reader.Read(wkt);
             Assert.That(geom, Is.Not.Null);
             Assert.That(geom.IsValid, Is.False);
-            
+
             IGeometry normalizedGeom = geom.Normalized();
             Assert.That(normalizedGeom, Is.Not.Null);
             Assert.That(normalizedGeom.IsValid, Is.False);
-            
+
             IGeometry fixedGeom = normalizedGeom.Buffer(0);
             Assert.That(fixedGeom, Is.Not.Null);
-            Assert.That(fixedGeom.IsValid, Is.True);            
+            Assert.That(fixedGeom.IsValid, Is.True);
             Console.WriteLine(fixedGeom);
         }
 
@@ -509,7 +509,7 @@ namespace NetTopologySuite.Tests.Various
         [Test]
         public void TestDifferenceOfComplexMultipolygons()
         {
-            var pol1String = 
+            var pol1String =
 @"MULTIPOLYGON (((636192.59787309519 6154321.6995911133,
 636182.897398793 6154321.8655825993,
 636173.596086427 6154322.1355276527,
@@ -552,7 +552,7 @@ namespace NetTopologySuite.Tests.Various
 636158.15162006055 6154303.2493718751,
 636172.16130951955 6154302.44953468)))";
 
-            var pol2String = 
+            var pol2String =
 @"MULTIPOLYGON (((636167.79101204267 6154298.2703853333,
 636168.33523776615 6154298.2803832982,
 636170.65232001338 6154298.4203548077,
@@ -729,7 +729,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsNotNull(result);
             double area = 0;
             Assert.DoesNotThrow(() => area = result.Area);
-            Assert.AreEqual(0.01025390625, area, 0.01);            
+            Assert.AreEqual(0.01025390625, area, 0.01);
 
             Console.WriteLine("WKT : {0}", result.AsText());
             Console.WriteLine("Area: {0}", area);
@@ -826,7 +826,7 @@ namespace NetTopologySuite.Tests.Various
                 }
                 last = curr;
             }
-            
+
             var tmp = factory.Create(seq.Count + off, seq.Ordinates);
             CoordinateSequences.Copy(res, 0, tmp, 0, tmp.Count);
             return tmp;

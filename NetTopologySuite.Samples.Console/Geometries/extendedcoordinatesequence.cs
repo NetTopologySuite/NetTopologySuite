@@ -3,14 +3,14 @@ using System.Text;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Samples.Geometries
-{	
-	/// <summary> 
+{
+	/// <summary>
     /// Demonstrates how to implement a CoordinateSequence for a new kind of
     /// coordinate (an <c>ExtendedCoordinate</c>} in this example). In this
 	/// implementation, Coordinates returned by ToArray and #get are live -- parties
-	/// that change them are actually changing the ExtendedCoordinateSequence's 
+	/// that change them are actually changing the ExtendedCoordinateSequence's
 	/// underlying data.
-	/// </summary>	
+	/// </summary>
 	public class ExtendedCoordinateSequence : ICoordinateSequence
 	{
 		[Obsolete]
@@ -20,18 +20,18 @@ namespace NetTopologySuite.Samples.Geometries
             Array.Copy(CopyInternal(coordinates), copy, coordinates.Length);
 		    return copy;
 		}
-		
+
         private static Coordinate[] CopyInternal(Coordinate[] coordinates)
         {
             var copy = new Coordinate[coordinates.Length];
             for (var i = 0; i < coordinates.Length; i++)
                 copy[i] = new ExtendedCoordinate(coordinates[i]);
             return copy;
-            
+
         }
 
 		private readonly Coordinate[] _coordinates;
-		
+
 		/// <summary> Copy constructor -- simply aliases the input array, for better performance.
 		/// </summary>
 		public ExtendedCoordinateSequence(ExtendedCoordinate[] coordinates)
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Samples.Geometries
 			_coordinates = new Coordinate[coordinates.Length];
             Array.Copy(coordinates, _coordinates, coordinates.Length);
 		}
-		
+
 		/// <summary> Constructor that makes a copy of an existing array of Coordinates.
 		/// Always makes a copy of the input array, since the actual class
 		/// of the Coordinates in the input array may be different from ExtendedCoordinate.
@@ -89,7 +89,7 @@ namespace NetTopologySuite.Samples.Geometries
 			{
 				cloneCoordinates[i] = (ExtendedCoordinate) _coordinates[i].Copy();
 			}
-			
+
 			return new ExtendedCoordinateSequence(cloneCoordinates);
 		}
 
@@ -112,7 +112,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// <returns></returns>
 		public virtual Coordinate[] ToCoordinateArray()
 		{
-			
+
             return _coordinates;
 		}
 
@@ -158,9 +158,9 @@ namespace NetTopologySuite.Samples.Geometries
             coord.X = exc.X;
             coord.Y = exc.Y;
             coord.Z = exc.Z;
-            
+
             var exCoord = coord as ExtendedCoordinate;
-            if (exCoord != null) 
+            if (exCoord != null)
                 exCoord.M = exc.M;
         }
 
@@ -203,7 +203,7 @@ namespace NetTopologySuite.Samples.Geometries
             var exc = (ExtendedCoordinate) _coordinates[index];
             switch (ordinate)
             {
-                case Ordinate.X: 
+                case Ordinate.X:
                     return exc.X;
                 case Ordinate.Y:
                     return exc.Y;
@@ -213,7 +213,7 @@ namespace NetTopologySuite.Samples.Geometries
                     return exc.M;
                 default:
                     return Double.NaN;
-            }            
+            }
         }
 
         /// <summary>

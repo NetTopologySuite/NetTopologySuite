@@ -48,11 +48,11 @@ namespace NetTopologySuite.Noding
         public int CompareTo(object o1)
         {
             OrientedCoordinateArray oca = (OrientedCoordinateArray) o1;
-            return CompareOriented(_pts, _orientation, oca._pts, oca._orientation);            
+            return CompareOriented(_pts, _orientation, oca._pts, oca._orientation);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pts1"></param>
         /// <param name="orientation1"></param>
@@ -67,7 +67,7 @@ namespace NetTopologySuite.Noding
             int limit2 = orientation2 ? pts2.Length : -1;
 
             int i1 = orientation1 ? 0 : pts1.Length - 1;
-            int i2 = orientation2 ? 0 : pts2.Length - 1;            
+            int i2 = orientation2 ? 0 : pts2.Length - 1;
             while (true)
             {
                 int compPt = pts1[i1].CompareTo(pts2[i2]);
@@ -78,11 +78,11 @@ namespace NetTopologySuite.Noding
                 i2 += dir2;
                 bool done1 = i1 == limit1;
                 bool done2 = i2 == limit2;
-                if(done1 && !done2) 
+                if(done1 && !done2)
                     return -1;
-                if(!done1 && done2) 
+                if(!done1 && done2)
                     return 1;
-                if(done1 && done2) 
+                if(done1 && done2)
                     return 0;
             }
         }

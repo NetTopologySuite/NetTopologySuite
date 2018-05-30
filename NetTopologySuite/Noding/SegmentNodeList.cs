@@ -25,7 +25,7 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <value></value>
         public NodedSegmentString Edge => _edge;
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Noding
             {
                 var ei = (SegmentNode)eiObj;
                 // debugging sanity check
-                Assert.IsTrue(ei.Coord.Equals2D(intPt), "Found equal nodes with different coordinates");               
+                Assert.IsTrue(ei.Coord.Equals2D(intPt), "Found equal nodes with different coordinates");
                 return ei;
             }
             // node does not exist, so create it
@@ -57,9 +57,9 @@ namespace NetTopologySuite.Noding
         /// Returns an iterator of SegmentNodes.
         /// </summary>
         /// <returns>An iterator of SegmentNodes.</returns>
-        public IEnumerator<object>GetEnumerator() 
-        { 
-            return _nodeMap.Values.GetEnumerator(); 
+        public IEnumerator<object>GetEnumerator()
+        {
+            return _nodeMap.Values.GetEnumerator();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
@@ -109,7 +109,7 @@ namespace NetTopologySuite.Noding
                 //var p1 = _edge.GetCoordinate(i + 1);
                 var p2 = _edge.GetCoordinate(i + 2);
                 if (p0.Equals2D(p2))    // add base of collapse as node
-                    collapsedVertexIndexes.Add(i + 1);                
+                    collapsedVertexIndexes.Add(i + 1);
             }
         }
 
@@ -124,7 +124,7 @@ namespace NetTopologySuite.Noding
         private void FindCollapsesFromInsertedNodes(IList<int> collapsedVertexIndexes)
         {
             var collapsedVertexIndex = new int[1];
-            
+
 	        var ie = GetEnumerator();
 	        ie.MoveNext();
 
@@ -141,7 +141,7 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ei0"></param>
         /// <param name="ei1"></param>
@@ -150,7 +150,7 @@ namespace NetTopologySuite.Noding
         private static bool FindCollapseIndex(SegmentNode ei0, SegmentNode ei1, int[] collapsedVertexIndex)
         {
             // only looking for equal nodes
-            if (!ei0.Coord.Equals2D(ei1.Coord)) 
+            if (!ei0.Coord.Equals2D(ei1.Coord))
                 return false;
             var numVerticesBetween = ei1.SegmentIndex - ei0.SegmentIndex;
             if (!ei1.IsInterior)
@@ -180,7 +180,7 @@ namespace NetTopologySuite.Noding
 
             // there should always be at least two entries in the list, since the endpoints are nodes
             var ie = GetEnumerator();
-	        ie.MoveNext();            
+	        ie.MoveNext();
             var eiPrev = (SegmentNode) ie.Current;
             while (ie.MoveNext())
             {
@@ -243,8 +243,8 @@ namespace NetTopologySuite.Noding
             var ipt = 0;
             pts[ipt++] = new Coordinate(ei0.Coord);
             for (var i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
-                pts[ipt++] = _edge.GetCoordinate(i);            
-            if (useIntPt1) 
+                pts[ipt++] = _edge.GetCoordinate(i);
+            if (useIntPt1)
                 pts[ipt] = new Coordinate(ei1.Coord);
 
             return new NodedSegmentString(pts, _edge.Context);
@@ -304,7 +304,7 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="outstream"></param>
         public void Write(StreamWriter outstream)
@@ -319,7 +319,7 @@ namespace NetTopologySuite.Noding
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     class NodeVertexIterator : IEnumerator<object>
     {
@@ -331,14 +331,14 @@ namespace NetTopologySuite.Noding
         private int _currSegIndex;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="nodeList"></param>
         NodeVertexIterator(SegmentNodeList nodeList)
         {
             _nodeList = nodeList;
             _edge = nodeList.Edge;
-            _nodeIt = nodeList.GetEnumerator();            
+            _nodeIt = nodeList.GetEnumerator();
         }
 
         public void Dispose()
@@ -347,7 +347,7 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private void ReadNextNode()
         {
@@ -367,12 +367,12 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public object Current => _currNode;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public bool MoveNext()
@@ -386,7 +386,7 @@ namespace NetTopologySuite.Noding
             }
 
             // check for trying to read too far
-            if (_nextNode == null) 
+            if (_nextNode == null)
                 return false;
 
             if (_nextNode.SegmentIndex == _currNode.SegmentIndex)
@@ -405,11 +405,11 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public void Reset()
         {
-            _nodeIt.Reset();            
+            _nodeIt.Reset();
         }
     }
 }

@@ -1,7 +1,7 @@
 <run>
   <desc>
     Various cases which have been reported or identified as causing buffer failures
-    in previous versions of JTS.  
+    in previous versions of JTS.
     The cases in this file should all pass in the current version of JTS.
   </desc>
   <precisionModel type="FLOATING" />

@@ -8,7 +8,7 @@ namespace ConsoleTestRunner
     public class TestInfo
     {
         #region Private Members
-        
+
         private string m_strFileName     = null;
         private string m_strDirectory    = null;
         private XmlTestType m_enumFilter = XmlTestType.None;
@@ -19,7 +19,7 @@ namespace ConsoleTestRunner
         #endregion
 
         #region Constructors and Destructor
-        
+
         public TestInfo(XmlTestType filter)
         {
             m_enumFilter = filter;
@@ -36,7 +36,7 @@ namespace ConsoleTestRunner
             set => m_strFileName = value;
         }
 
-        public string Directory 
+        public string Directory
         {
             get => m_strDirectory;
 

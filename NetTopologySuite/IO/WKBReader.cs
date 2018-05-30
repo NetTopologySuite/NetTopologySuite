@@ -211,7 +211,7 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="reader"></param>
         private void ReadByteOrder(BinaryReader reader)

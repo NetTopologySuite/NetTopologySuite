@@ -7,10 +7,10 @@ using NetTopologySuite.Operation.Linemerge;
 
 namespace NetTopologySuite.Samples.Operation.Linemerge
 {
-	/// <summary> 
-    /// Example of using the LineMerger class to sew together a set of fully noded 
+	/// <summary>
+    /// Example of using the LineMerger class to sew together a set of fully noded
 	/// linestrings.
-	/// </summary>	
+	/// </summary>
 	public class LineMergeExample
 	{
 		private void InitBlock()
@@ -35,18 +35,18 @@ namespace NetTopologySuite.Samples.Operation.Linemerge
 				lines.Add(Read("LINESTRING (240 360, 260 390, 260 410, 250 430)"));
 				lines.Add(Read("LINESTRING (70 150, 100 180, 100 200)"));
 				lines.Add(Read("LINESTRING (70 270, 60 260, 50 240, 50 220, 60 210)"));
-				lines.Add(Read("LINESTRING (100 200, 90 210, 60 210)"));				
+				lines.Add(Read("LINESTRING (100 200, 90 210, 60 210)"));
 				return lines;
 			}
-			
-		}		
+
+		}
 		private WKTReader reader;
-		
+
 		public LineMergeExample()
 		{
 			InitBlock();
 		}
-		
+
 		[STAThread]
 		public static void main(string[] args)
 		{
@@ -60,32 +60,32 @@ namespace NetTopologySuite.Samples.Operation.Linemerge
 				Console.WriteLine(ex.StackTrace);
 			}
 		}
-		
+
 		internal virtual void Run()
 		{
 			IList<IGeometry> lineStrings = Data;
-			
+
 			LineMerger lineMerger = new LineMerger();
 			lineMerger.Add(lineStrings);
 		    var mergedLineStrings = lineMerger.GetMergedLineStrings();
-			
+
 			Console.WriteLine("Lines formed (" + mergedLineStrings.Count + "):");
             foreach (var obj in mergedLineStrings)
 			    Console.WriteLine(obj);
 		}
-		
-		
+
+
 		internal virtual IGeometry Read(string lineWKT)
 		{
 			try
 			{
-				IGeometry geom = reader.Read(lineWKT);				
+				IGeometry geom = reader.Read(lineWKT);
 				return geom;
 			}
 			catch (Exception ex)
 			{
 				Console.WriteLine(ex.StackTrace);
-			}			
+			}
 			return null;
 		}
 	}

@@ -13,9 +13,9 @@ namespace NetTopologySuite.Tests.NUnit.EdgeGraph
         public void TestNode()
         {
             EGraph graph = Build("MULTILINESTRING((0 0, 1 0), (0 0, 0 1), (0 0, -1 0))");
-            CheckEdgeRing(graph, new Coordinate(0, 0), new[] { 
+            CheckEdgeRing(graph, new Coordinate(0, 0), new[] {
                                                                  new Coordinate(1, 0),
-                                                                 new Coordinate(0, 1), 
+                                                                 new Coordinate(0, 1),
                                                                  new Coordinate(-1, 0)
                                                              });
             CheckEdge(graph, new Coordinate(0, 0), new Coordinate(1, 0));

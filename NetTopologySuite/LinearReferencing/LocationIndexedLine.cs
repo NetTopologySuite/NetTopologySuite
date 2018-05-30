@@ -126,7 +126,7 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         ///<summary>
-        /// Finds the index for a point on the line which is greater than the given index. 
+        /// Finds the index for a point on the line which is greater than the given index.
         /// If no such index exists, returns <paramref name="minIndex" />.
         ///</summary>
         /// <remarks>
@@ -187,7 +187,7 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Computes a valid index for this line by clamping 
+        /// Computes a valid index for this line by clamping
         /// the given index to the valid range of index values.
         /// </summary>
         /// <param name="index"></param>

@@ -3,23 +3,23 @@ using System;
 namespace NetTopologySuite.Index.Sweepline
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public enum SweepLineEvents
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Insert = 1,
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Delete = 2,
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class SweepLineEvent : IComparable
     {
@@ -30,7 +30,7 @@ namespace NetTopologySuite.Index.Sweepline
         private readonly SweepLineInterval sweepInt;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="x"></param>
         /// <param name="insertEvent"></param>
@@ -38,7 +38,7 @@ namespace NetTopologySuite.Index.Sweepline
         public SweepLineEvent(double x, SweepLineEvent insertEvent, SweepLineInterval sweepInt)
         {
             xValue = x;
-            this.insertEvent = insertEvent;            
+            this.insertEvent = insertEvent;
             if (insertEvent != null)
                  eventType = SweepLineEvents.Delete;
             else eventType = SweepLineEvents.Insert;
@@ -46,27 +46,27 @@ namespace NetTopologySuite.Index.Sweepline
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsInsert => insertEvent == null;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsDelete => insertEvent != null;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public SweepLineEvent InsertEvent => insertEvent;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int DeleteEventIndex { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public SweepLineInterval Interval => sweepInt;
 
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Index.Sweepline
         /// correctly handled.
         /// </summary>
         /// <param name="o"></param>
-        public int CompareTo(object o) 
+        public int CompareTo(object o)
         {
             SweepLineEvent pe = (SweepLineEvent) o;
             if (xValue < pe.xValue) return  -1;

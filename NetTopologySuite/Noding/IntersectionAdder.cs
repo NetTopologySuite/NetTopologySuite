@@ -13,7 +13,7 @@ namespace NetTopologySuite.Noding
     public class IntersectionAdder : ISegmentIntersector
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i1"></param>
         /// <param name="i2"></param>
@@ -35,25 +35,25 @@ namespace NetTopologySuite.Noding
         // the proper intersection point found
         private readonly Coordinate _properIntersectionPoint = null;
 
-        private readonly LineIntersector _li;        
-        
+        private readonly LineIntersector _li;
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int NumIntersections = 0;
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int NumInteriorIntersections = 0;
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int NumProperIntersections = 0;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int NumTests = 0;
 
@@ -67,7 +67,7 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public LineIntersector LineIntersector => _li;
 
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Noding
         public Coordinate ProperIntersectionPoint => _properIntersectionPoint;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool HasIntersection => _hasIntersection;
 
@@ -123,9 +123,9 @@ namespace NetTopologySuite.Noding
                     if (e0.IsClosed)
                     {
                         int maxSegIndex = e0.Count - 1;
-                        if ( (segIndex0 == 0 && segIndex1 == maxSegIndex) || 
-                             (segIndex1 == 0 && segIndex0 == maxSegIndex) )                        
-                                return true;                        
+                        if ( (segIndex0 == 0 && segIndex1 == maxSegIndex) ||
+                             (segIndex1 == 0 && segIndex0 == maxSegIndex) )
+                                return true;
                     }
                 }
             }
@@ -157,14 +157,14 @@ namespace NetTopologySuite.Noding
             Coordinate p10 = coordinates1[segIndex1];
             Coordinate p11 = coordinates1[segIndex1 + 1];
 
-            _li.ComputeIntersection(p00, p01, p10, p11);            
+            _li.ComputeIntersection(p00, p01, p10, p11);
             if(_li.HasIntersection)
-            {                
+            {
                 NumIntersections++;
                 if (_li.IsInteriorIntersection())
                 {
                     NumInteriorIntersections++;
-                    _hasInterior = true;                    
+                    _hasInterior = true;
                 }
                 // if the segments are adjacent they have at least one trivial intersection,
                 // the shared endpoint.  Don't bother adding it if it is the

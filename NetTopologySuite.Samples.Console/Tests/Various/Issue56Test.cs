@@ -11,7 +11,7 @@ namespace NetTopologySuite.Tests.Various
     {
         private readonly IGeometryFactory factory = GeometryFactory.Default;
 
-        private WKTWriter writer;  
+        private WKTWriter writer;
 
         [OneTimeSetUp]
         public void FixtureSetup()

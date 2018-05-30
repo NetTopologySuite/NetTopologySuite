@@ -640,7 +640,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 var edge = edgeStack.Pop();
                 if (!visitedEdges.Contains(edge))
                 {
-                    QuadEdge[] triEdges = 
+                    QuadEdge[] triEdges =
                         FetchTriangleToVisit(edge, edgeStack, includeFrame, visitedEdges);
 
                     if (triEdges != null)

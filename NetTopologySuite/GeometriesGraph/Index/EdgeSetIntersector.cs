@@ -22,7 +22,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="testAllSegments"><c>true</c> if self-intersections are to be tested as well.</param>
         abstract public void ComputeIntersections(IList<Edge> edges, SegmentIntersector si, bool testAllSegments);
 
-        /// <summary> 
+        /// <summary>
         /// Computes all mutual intersections between two sets of edges.
         /// </summary>
         abstract public void ComputeIntersections(IList<Edge> edges0, IList<Edge> edges1, SegmentIntersector si);

@@ -5,9 +5,9 @@ using NetTopologySuite.IO;
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
     /// <summary>
-    /// A class that represents the edge data structure which implements the quadedge algebra. 
+    /// A class that represents the edge data structure which implements the quadedge algebra.
     /// The quadedge algebra was described in a well-known paper by Guibas and Stolfi,
-    /// "Primitives for the manipulation of general subdivisions and the computation of Voronoi diagrams", 
+    /// "Primitives for the manipulation of general subdivisions and the computation of Voronoi diagrams",
     /// <i>ACM Transactions on Graphics</i>, 4(2), 1985, 75-123.
     /// <para>
     /// Each edge object is part of a quartet of 4 edges,
@@ -15,7 +15,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
     /// Any edge in the group may be accessed using a series of <see cref="Rot"/> operations.
     /// Quadedges in a subdivision are linked together via their <tt>Next</tt> references.
     /// The linkage between the quadedge quartets determines the topology
-    /// of the subdivision. 
+    /// of the subdivision.
     /// </para>
     /// <para>
     /// The edge class does not contain separate information for vertices or faces; a vertex is implicitly
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <summary>
         /// Splices two edges together or apart.
         /// Splice affects the two edge rings around the origins of a and b, and, independently, the two
-        /// edge rings around the left faces of <tt>a</tt> and <tt>b</tt>. 
+        /// edge rings around the left faces of <tt>a</tt> and <tt>b</tt>.
         /// In each case, (i) if the two rings are distinct,
         /// Splice will combine them into one, or (ii) if the two are the same ring, Splice will break it
         /// into two separate pieces. Thus, Splice can be used both to attach the two edges together, and
@@ -119,7 +119,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 //    private int      visitedKey = 0;
 
         /// <summary>
-        /// Quadedges must be made using {@link makeEdge}, 
+        /// Quadedges must be made using {@link makeEdge},
         /// to ensure proper construction.
         /// </summary>
         private QuadEdge()
@@ -177,7 +177,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /***************************************************************************
-         * QuadEdge Algebra 
+         * QuadEdge Algebra
          ***************************************************************************
          */
 
@@ -299,7 +299,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public double Length => Orig.Coordinate.Distance(Dest.Coordinate);
 
         /// <summary>
-        /// Tests if this quadedge and another have the same line segment geometry, 
+        /// Tests if this quadedge and another have the same line segment geometry,
         /// regardless of orientation.
         /// </summary>
         /// <param name="qe">a quadedge</param>
@@ -338,7 +338,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <summary>
-        /// Converts this edge to a WKT two-point <tt>LINESTRING</tt> indicating 
+        /// Converts this edge to a WKT two-point <tt>LINESTRING</tt> indicating
         /// the geometry of this edge.
         /// </summary>
         /// <returns>a String representing this edge's geometry</returns>

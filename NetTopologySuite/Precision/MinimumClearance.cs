@@ -99,7 +99,7 @@ namespace NetTopologySuite.Precision
         /// for the given Geometry.
         /// </summary>
         /// <param name="g">The input geometry</param>
-        /// <returns>The value of the minimum clearance distance<br/> 
+        /// <returns>The value of the minimum clearance distance<br/>
         /// or <c>LINESTRING EMPTY</c> if no minimum clearance distance exists.</returns>
         public static IGeometry GetLine(IGeometry g)
         {

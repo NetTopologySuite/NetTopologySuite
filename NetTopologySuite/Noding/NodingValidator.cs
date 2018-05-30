@@ -19,9 +19,9 @@ namespace NetTopologySuite.Noding
 
         private readonly LineIntersector _li = new RobustLineIntersector();
         private readonly IList<ISegmentString> _segStrings;
-        
+
         /// <summary>
-        /// Creates a new validator for the given collection 
+        /// Creates a new validator for the given collection
         /// of <see cref="ISegmentString"/>s.
         /// </summary>
         /// <param name="segStrings">The seg strings.</param>
@@ -43,18 +43,18 @@ namespace NetTopologySuite.Noding
 
         /// <summary>
         /// Checks if a segment string contains a segment pattern a-b-a (which implies a self-intersection).
-        /// </summary>   
+        /// </summary>
         private void CheckCollapses()
         {
             foreach (ISegmentString ss in _segStrings)
-                CheckCollapses(ss);            
+                CheckCollapses(ss);
         }
 
         private static void CheckCollapses(ISegmentString ss)
         {
             var pts = ss.Coordinates;
             for (var i = 0; i < pts.Length - 2; i++)
-                CheckCollapse(pts[i], pts[i + 1], pts[i + 2]);            
+                CheckCollapse(pts[i], pts[i + 1], pts[i + 2]);
         }
 
         private static void CheckCollapse(Coordinate p0, Coordinate p1, Coordinate p2)
@@ -80,12 +80,12 @@ namespace NetTopologySuite.Noding
             var pts1 = ss1.Coordinates;
             for (var i0 = 0; i0 < pts0.Length - 1; i0++)
                 for (var i1 = 0; i1 < pts1.Length - 1; i1++)
-                    CheckInteriorIntersections(ss0, i0, ss1, i1);            
+                    CheckInteriorIntersections(ss0, i0, ss1, i1);
         }
 
         private void CheckInteriorIntersections(ISegmentString e0, int segIndex0, ISegmentString e1, int segIndex1)
         {
-            if (e0 == e1 && segIndex0 == segIndex1) 
+            if (e0 == e1 && segIndex0 == segIndex1)
                 return;
 
             var p00 = e0.Coordinates[segIndex0];
@@ -94,10 +94,10 @@ namespace NetTopologySuite.Noding
             var p11 = e1.Coordinates[segIndex1 + 1];
 
             _li.ComputeIntersection(p00, p01, p10, p11);
-            if (_li.HasIntersection)  
+            if (_li.HasIntersection)
                 if (_li.IsProper || HasInteriorIntersection(_li, p00, p01) || HasInteriorIntersection(_li, p10, p11))
                     throw new ApplicationException(String.Format(
-                        "found non-noded intersection at {0}-{1} and {2}-{3}", p00, p01, p10, p11));                            
+                        "found non-noded intersection at {0}-{1} and {2}-{3}", p00, p01, p10, p11));
         }
 
         private static bool HasInteriorIntersection(LineIntersector li, Coordinate p0, Coordinate p1)
@@ -105,7 +105,7 @@ namespace NetTopologySuite.Noding
             for (var i = 0; i < li.IntersectionNum; i++)
             {
                 var intPt = li.GetIntersection(i);
-                if (!(intPt.Equals(p0) || 
+                if (!(intPt.Equals(p0) ||
                       intPt.Equals(p1)))
                     return true;
             }
@@ -134,7 +134,7 @@ namespace NetTopologySuite.Noding
                 for (var j = 1; j < pts.Length - 1; j++)
                     if (pts[j].Equals(testPt))
                         throw new ApplicationException(String.Format(
-                            "found endpt/interior pt intersection at index {0} :pt {1}", j, testPt));                
+                            "found endpt/interior pt intersection at index {0} :pt {1}", j, testPt));
             }
         }
     }

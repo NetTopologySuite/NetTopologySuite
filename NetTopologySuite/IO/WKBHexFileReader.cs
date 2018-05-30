@@ -8,7 +8,7 @@ using RTools_NTS.Util;
 namespace NetTopologySuite.IO
 {
     /// <summary>
-    /// Reads a sequence of {@link Geometry}s in WKBHex format 
+    /// Reads a sequence of {@link Geometry}s in WKBHex format
     /// from a text file.
     /// Each WKBHex geometry must be on a single line
     /// The geometries in the file may be separated by any amount
@@ -126,7 +126,7 @@ namespace NetTopologySuite.IO
         /// <returns><value>true</value> if <see cref="Limit"/> number of geometries has been read.</returns>
         private bool IsAtLimit(ICollection<IGeometry> geoms)
         {
-            if (Limit < 0) 
+            if (Limit < 0)
                 return false;
             return geoms.Count >= Limit;
         }

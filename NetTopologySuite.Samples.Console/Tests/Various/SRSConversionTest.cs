@@ -13,36 +13,36 @@ using ProjNet.CoordinateSystems.Transformations;
 namespace NetTopologySuite.Samples.Tests.Various
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     [TestFixture]
     [Ignore("Need to update ProjNet to GeoAPI v1.6")]
     public class SRSConversionTest :  BaseSamples
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [Test]
         public void TestAlbersProjection()
         {
             CoordinateSystemFactory cFac = new CoordinateSystemFactory();
             IEllipsoid ellipsoid = cFac.CreateFlattenedSphere(
-                "Clarke 1866", 
-                6378206.4, 
-                294.9786982138982, 
+                "Clarke 1866",
+                6378206.4,
+                294.9786982138982,
                 LinearUnit.USSurveyFoot);
 
             IHorizontalDatum datum = cFac.CreateHorizontalDatum(
                 "Clarke 1866",
                 DatumType.HD_Geocentric,
-                ellipsoid, 
+                ellipsoid,
                 null);
 
             IGeographicCoordinateSystem gcs = cFac.CreateGeographicCoordinateSystem(
-                "Clarke 1866", 
-                AngularUnit.Degrees, 
-                datum, 
-                PrimeMeridian.Greenwich, 
+                "Clarke 1866",
+                AngularUnit.Degrees,
+                datum,
+                PrimeMeridian.Greenwich,
                 new AxisInfo("Lon", AxisOrientationEnum.East),
                 new AxisInfo("Lat", AxisOrientationEnum.North));
 
@@ -55,14 +55,14 @@ namespace NetTopologySuite.Samples.Tests.Various
             parameters.Add(new ProjectionParameter("false_northing", 0));
 
             IProjection projection = cFac.CreateProjection(
-                "Albers Conical Equal Area", 
-                "albers", 
+                "Albers Conical Equal Area",
+                "albers",
                 parameters);
 
             IProjectedCoordinateSystem coordsys = cFac.CreateProjectedCoordinateSystem(
-                "Albers Conical Equal Area", 
-                gcs, 
-                projection, 
+                "Albers Conical Equal Area",
+                gcs,
+                projection,
                 LinearUnit.Metre,
                 new AxisInfo("East", AxisOrientationEnum.East),
                 new AxisInfo("North", AxisOrientationEnum.North));
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="p1"></param>
         /// <param name="p2"></param>

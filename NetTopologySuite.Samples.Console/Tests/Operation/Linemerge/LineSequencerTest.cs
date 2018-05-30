@@ -9,31 +9,31 @@ using NetTopologySuite.Samples.SimpleTests;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
-{   
+{
     [TestFixture]
-    public class LineSequencerTest : BaseSamples    
+    public class LineSequencerTest : BaseSamples
     {
         private static readonly WKTReader rdr = new WKTReader(GeometryFactory.Fixed);
 
         public LineSequencerTest() : base(GeometryFactory.Fixed) { }
 
         [Test]
-        public void Simple()      
+        public void Simple()
         {
-            String[] wkt =  
-            {   
+            String[] wkt =
+            {
                 "LINESTRING ( 0 0, 0 10 )" ,
                 "LINESTRING ( 0 20, 0 30 )",
-                "LINESTRING ( 0 10, 0 20 )",     
+                "LINESTRING ( 0 10, 0 20 )",
             };
             const string result = "MULTILINESTRING ((0 0, 0 10), (0 10, 0 20), (0 20, 0 30))";
             RunLineSequencer(wkt, result);
         }
 
         [Test]
-        public void SimpleLoop()      
+        public void SimpleLoop()
         {
-            String[] wkt = 
+            String[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 0 10, 0 0 )",
@@ -43,9 +43,9 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         }
 
         [Test]
-        public void SimpleBigLoop()      
+        public void SimpleBigLoop()
         {
-            String[] wkt = 
+            String[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 0 20, 0 30 )",
@@ -59,7 +59,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         [Test]
         public void SimpleVeryBigLoop()
         {
-            String[] wkt = 
+            String[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 0 30, 0 40 )",
@@ -74,7 +74,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         [Test]
         public void SimpleVeryVeryBigLoop()
         {
-            String[] wkt = 
+            String[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 0 30, 0 40 )",
@@ -86,11 +86,11 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
             const string result = "MULTILINESTRING ((0 50, 0 0), (0 0, 0 10), (0 10, 0 20), (0 20, 0 30), (0 30, 0 40), (0 40, 0 30))";
             RunLineSequencer(wkt, result);
         }
-        
+
         [Test]
-        public void TwoSimpleLoops()      
+        public void TwoSimpleLoops()
         {
-            String[] wkt = 
+            String[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 0 10, 0 0 )",
@@ -102,9 +102,9 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         }
 
         [Test]
-        public void Wide8WithTail()      
+        public void Wide8WithTail()
         {
-            String[] wkt = 
+            String[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 10 0, 10 10 )",
@@ -120,9 +120,9 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         }
 
        [Test]
-        public void SimpleLoopWithTail()      
+        public void SimpleLoopWithTail()
         {
-            String[] wkt = 
+            String[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 0 10, 10 10 )",
@@ -135,7 +135,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         [Test]
         public void LineWithRing()
         {
-            String[] wkt = 
+            String[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 0 10, 10 10, 10 20, 0 10 )",
@@ -149,7 +149,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         [Test]
         public void MultipleGraphsWithRing()
         {
-            String[] wkt = 
+            String[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 0 10, 10 10, 10 20, 0 10 )",
@@ -165,7 +165,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         [Test]
         public void MultipleGraphsWithMultipleRings()
         {
-            String[] wkt = 
+            String[] wkt =
             {
                 "LINESTRING ( 0 0, 0 10 )",
                 "LINESTRING ( 0 10, 10 10, 10 20, 0 10 )",
@@ -177,7 +177,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
             };
             const string result = "MULTILINESTRING ((0 0, 0 10), (0 10, 40 40, 40 20, 0 10), (0 10, 10 10, 10 20, 0 10), (0 10, 0 20), (0 20, 0 30), (0 40, 0 50), (0 50, 0 60))";
             RunLineSequencer(wkt, result);
-        }        
+        }
 
         [Test]
         public void LineSequence()
@@ -200,7 +200,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
             RunIsSequenced(wkt, false);
         }
 
-        private static void RunLineSequencer(String[] inputWKT, String expectedWKT)      
+        private static void RunLineSequencer(String[] inputWKT, String expectedWKT)
         {
             try
             {
@@ -221,7 +221,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
                     Assert.IsTrue(isSequenced, "result is not sequenced");
                 }
             }
-            catch (Exception ex) { Debug.WriteLine(ex.ToString()); throw; }            
+            catch (Exception ex) { Debug.WriteLine(ex.ToString()); throw; }
         }
 
         private static void RunIsSequenced(String inputWKT, bool expected)
@@ -240,14 +240,14 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
             IList<IGeometry> geomList = new List<IGeometry>();
             foreach (string wkt in wkts)
             {
-                try 
+                try
                 {
                     geomList.Add(rdr.Read(wkt));
                 }
                 catch (Exception ex) { Debug.WriteLine(ex.ToString()); throw; }
             }
             return geomList;
-        }  
+        }
     }
 }
 

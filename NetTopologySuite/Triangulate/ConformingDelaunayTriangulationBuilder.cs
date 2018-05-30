@@ -8,8 +8,8 @@ namespace NetTopologySuite.Triangulate
 {
     /// <summary>
     /// A utility class which creates Conforming Delaunay Triangulations
-    /// from collections of points and linear constraints, and extract the resulting 
-    /// triangulation edges or triangles as geometries. 
+    /// from collections of points and linear constraints, and extract the resulting
+    /// triangulation edges or triangles as geometries.
     /// </summary>
     /// <author>Martin Davis</author>
     public class ConformingDelaunayTriangulationBuilder
@@ -25,7 +25,7 @@ namespace NetTopologySuite.Triangulate
         /// Sets the sites (point or vertices) which will be triangulated.
         /// All vertices of the given geometry will be used as sites.
         /// The site vertices do not have to contain the constraint
-        /// vertices as well; any site vertices which are 
+        /// vertices as well; any site vertices which are
         /// identical to a constraint vertex will be removed
         /// from the site vertex set.
         /// </summary>
@@ -38,10 +38,10 @@ namespace NetTopologySuite.Triangulate
         /// <summary>
         /// Sets the linear constraints to be conformed to.
         /// All linear components in the input will be used as constraints.
-        /// The constraint vertices do not have to be disjoint from 
+        /// The constraint vertices do not have to be disjoint from
         /// the site vertices.
         /// The constraints must not contain duplicate segments (up to orientation).
-        /// </summary>        
+        /// </summary>
         public IGeometry Constraints
         {
             set => _constraintLines = value;
@@ -141,7 +141,7 @@ namespace NetTopologySuite.Triangulate
         }
 
         /// <summary>
-        /// Gets the faces of the computed triangulation as a <see cref="IGeometryCollection"/> 
+        /// Gets the faces of the computed triangulation as a <see cref="IGeometryCollection"/>
         /// of <see cref="Polygon"/>.
         /// </summary>
         /// <param name="geomFact">the geometry factory to use to create the output</param>

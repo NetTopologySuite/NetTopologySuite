@@ -6,7 +6,7 @@ using NetTopologySuite.Mathematics;
 namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
 {
     /// <summary>
-    /// Times evaluating floating-point expressions using 
+    /// Times evaluating floating-point expressions using
     /// various extended precision APIs.
     /// </summary>
     /// <author>Martin Davis</author>
@@ -20,9 +20,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
 
         public void Run(int n)
         {
-            if (n == 0) 
+            if (n == 0)
                 n = 1000000;
-            
+
             var doubleTime = RunDouble(n);
             var ddTime = RunDoubleDouble(n);
             var ddSelfTime = RunDoubleDoubleSelf(n);
@@ -122,7 +122,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         ////      Console.WriteLine(det);
         //    }
         //    sw.Stop();
-        //    Console.WriteLine("DD:              nIter = " + nIter 
+        //    Console.WriteLine("DD:              nIter = " + nIter
         //        + "   time = " + sw.ElapsedMilliseconds);
         //    return sw.ElapsedMilliseconds / (double) nIter;
         //  }

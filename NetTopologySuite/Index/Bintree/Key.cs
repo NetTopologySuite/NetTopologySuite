@@ -12,13 +12,13 @@ namespace NetTopologySuite.Index.Bintree
     public class Key
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="interval"></param>
         /// <returns></returns>
         public static int ComputeLevel(Interval interval)
         {
-            double dx = interval.Width;            
+            double dx = interval.Width;
             int level = DoubleBits.GetExponent(dx) + 1;
             return level;
         }
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Index.Bintree
         private Interval _interval;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="interval"></param>
         public Key(Interval interval)
@@ -40,17 +40,17 @@ namespace NetTopologySuite.Index.Bintree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public  double Point => _pt;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public  int Level => _level;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public  Interval Interval => _interval;
 
@@ -74,13 +74,13 @@ namespace NetTopologySuite.Index.Bintree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="level"></param>
         /// <param name="itemInterval"></param>
         private void ComputeInterval(int level, Interval itemInterval)
         {
-            var size = DoubleBits.PowerOf2(level);            
+            var size = DoubleBits.PowerOf2(level);
             _pt = Math.Floor(itemInterval.Min / size) * size;
             _interval.Init(_pt, _pt + size);
             //_interval = Interval.Create(_pt, _pt + size);

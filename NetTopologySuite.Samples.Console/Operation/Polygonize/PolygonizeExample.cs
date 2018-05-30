@@ -8,9 +8,9 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Operation.Poligonize
 {
-	/// <summary>  
+	/// <summary>
     /// Example of using Polygonizer class to polygonize a set of fully noded linestrings.
-	/// </summary>	
+	/// </summary>
 	public class PolygonizeExample
 	{
 		[STAThread]
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
 				Console.WriteLine(ex.StackTrace);
 			}
 		}
-		
+
         [Test]
         public void Test()
         {
@@ -48,9 +48,9 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
 
 		    Polygonizer polygonizer = new Polygonizer();
 			polygonizer.Add(lines);
-			
+
 			var polys = polygonizer.GetPolygons();
-			
+
 			Console.WriteLine("Polygons formed (" + polys.Count + "):");
             foreach(var obj in polys)
 			    Console.WriteLine(obj);

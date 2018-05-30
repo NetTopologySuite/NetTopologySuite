@@ -56,7 +56,7 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="e0"></param>
         /// <param name="e1"></param>

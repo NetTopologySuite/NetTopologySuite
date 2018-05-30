@@ -14,11 +14,11 @@ namespace NetTopologySuite.Triangulate.QuadEdge
     /// associated with triangles.
     /// </summary>
     /// <remarks>
-    /// For some algorithms extended-precision 
-    /// implementations are provided, which are more robust 
+    /// For some algorithms extended-precision
+    /// implementations are provided, which are more robust
     /// (i.e. they produce correct answers in more cases).
     /// Also, some more robust formulations of
-    /// some algorithms are provided, which utilize 
+    /// some algorithms are provided, which utilize
     /// normalization to the origin.
     /// </remarks>
     /// <author>Martin Davis</author>
@@ -26,8 +26,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
     {
 
         /// <summary>
-        /// Tests if a point is inside the circle defined by 
-        /// the triangle with vertices a, b, c (oriented counter-clockwise). 
+        /// Tests if a point is inside the circle defined by
+        /// the triangle with vertices a, b, c (oriented counter-clockwise).
         /// This test uses simple
         /// double-precision arithmetic, and thus is not 100% robust.
         /// </summary>
@@ -50,7 +50,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <summary>
-        /// Tests if a point is inside the circle defined by 
+        /// Tests if a point is inside the circle defined by
         /// the triangle with vertices a, b, c (oriented counter-clockwise).
         /// </summary>
         /// <remarks>
@@ -102,8 +102,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <summary>
-        /// Tests if a point is inside the circle defined by 
-        /// the triangle with vertices a, b, c (oriented counter-clockwise). 
+        /// Tests if a point is inside the circle defined by
+        /// the triangle with vertices a, b, c (oriented counter-clockwise).
         /// </summary>
         /// <remarks>
         /// This method uses more robust computation.
@@ -118,14 +118,14 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             Coordinate p)
         {
             //checkRobustInCircle(a, b, c, p);
-            //    return isInCircleNonRobust(a, b, c, p);       
+            //    return isInCircleNonRobust(a, b, c, p);
             return IsInCircleNormalized(a, b, c, p);
         }
 
 
         /// <summary>
-        /// Tests if a point is inside the circle defined by 
-        /// the triangle with vertices a, b, c (oriented counter-clockwise). 
+        /// Tests if a point is inside the circle defined by
+        /// the triangle with vertices a, b, c (oriented counter-clockwise).
         /// </summary>
         /// <remarks>
         /// The computation uses <see cref="DD"/> arithmetic for robustness.
@@ -188,8 +188,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <summary>
-        /// Tests if a point is inside the circle defined by 
-        /// the triangle with vertices a, b, c (oriented counter-clockwise). 
+        /// Tests if a point is inside the circle defined by
+        /// the triangle with vertices a, b, c (oriented counter-clockwise).
         /// </summary>
         /// <remarks>
         /// The computation uses <see cref="DD"/> arithmetic for robustness, but a faster approach.
@@ -237,7 +237,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -270,14 +270,14 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <summary>
-        /// Computes the inCircle test using distance from the circumcentre. 
+        /// Computes the inCircle test using distance from the circumcentre.
         /// Uses standard double-precision arithmetic.
         /// </summary>
         /// <remarks>
         /// In general this doesn't
         /// appear to be any more robust than the standard calculation. However, there
         /// is at least one case where the test point is far enough from the
-        /// circumcircle that this test gives the correct answer. 
+        /// circumcircle that this test gives the correct answer.
         /// <pre>
         /// LINESTRING (1507029.9878 518325.7547, 1507022.1120341457 518332.8225183258,
         /// 1507029.9833 518325.7458, 1507029.9896965567 518325.744909031)

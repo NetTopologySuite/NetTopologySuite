@@ -5,10 +5,10 @@ using NetTopologySuite.IO;
 using NetTopologySuite.Precision;
 
 namespace NetTopologySuite.Samples.Precision
-{	
-	/// <summary> 
+{
+	/// <summary>
     /// Example of using {EnhancedPrecisionOp} to avoid robustness problems.
-	/// </summary>	
+	/// </summary>
 	public class EnhancedPrecisionOpExample
 	{
 		private void  InitBlock()
@@ -29,14 +29,14 @@ namespace NetTopologySuite.Samples.Precision
 				Console.WriteLine(ex.ToString());
 			}
 		}
-				
+
 		private WKTReader reader;
-		
+
 		public EnhancedPrecisionOpExample()
 		{
 			InitBlock();
 		}
-		
+
 		internal virtual void Run()
 		{
 			string wkt1, wkt2;
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Samples.Precision
 			wkt2 = "POLYGON ((708258.754920656 2402197.91172757, 708257.029447455 2402206.56901508, 708652.961095455 2402312.65463437, 708657.068786251 2402304.6356364, 708258.754920656 2402197.91172757))";
             IGeometry g1 = reader.Read(wkt1);
             IGeometry g2 = reader.Read(wkt2);
-			
+
 			Console.WriteLine("This call to intersection will throw a topology exception due to robustness problems:");
 			try
 			{
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Samples.Precision
 			{
                 Console.WriteLine(ex.ToString());
 			}
-			
+
 			Console.WriteLine("Using EnhancedPrecisionOp allows the intersection to be performed with no errors:");
             IGeometry result2 = EnhancedPrecisionOp.Intersection(g1, g2);
 			Console.WriteLine(result2);

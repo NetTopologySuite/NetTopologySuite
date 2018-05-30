@@ -38,7 +38,7 @@ namespace NetTopologySuite.Mathematics
         /// <item><b>positive</b> if the point lies above the plane (relative to the plane normal)</item>
         /// <item><b>zero</b> if the point is on the plane</item>
         /// <item><b>negative</b> if the point lies below the plane (relative to the plane normal)</item>
-        /// </list> 
+        /// </list>
         /// </summary>
         /// <param name="p">The point to compute the distance for</param>
         /// <returns>The oriented distance to the plane</returns>

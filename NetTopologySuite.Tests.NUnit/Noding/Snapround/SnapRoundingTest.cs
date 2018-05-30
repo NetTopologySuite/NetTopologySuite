@@ -71,7 +71,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 };
             RunRounding(collapse2);
         }
-  
+
 
         [TestAttribute]
         public void TestBadNoding1() {
@@ -165,12 +165,12 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             GeometryNoder noder = new GeometryNoder(pm);
             noder.IsValidityChecked = true;
             var nodedLines = noder.Node(geoms);
-            
+
             foreach ( var ls in nodedLines)
                 Console.WriteLine(ls);
 
             Assert.IsTrue(IsSnapped(nodedLines, SnapTolerance));
-            
+
         }
 
         ICollection<IGeometry> FromWKT(string[] wkts)

@@ -62,16 +62,16 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
         public void TestPolygonal2()
         {
             CheckPolygonize(true, new String[]{
-        "LINESTRING (100 100, 100 0, 0 0, 0 100, 100 100)" 
+        "LINESTRING (100 100, 100 0, 0 0, 0 100, 100 100)"
             ,"LINESTRING (10 10, 10 30, 20 30)"
             ,"LINESTRING (20 30, 30 30, 30 20)"
             ,"LINESTRING (30 20, 30 10, 10 10)"
-            ,"LINESTRING (40 40, 40 20, 30 20)" 
-            ,"LINESTRING (30 20, 20 20, 20 30)" 
+            ,"LINESTRING (40 40, 40 20, 30 20)"
+            ,"LINESTRING (30 20, 20 20, 20 30)"
             ,"LINESTRING (20 30, 20 40, 40 40))"
     },
             new String[]{
-"POLYGON ((0 0, 0 100, 100 100, 100 0, 0 0), (10 10, 30 10, 30 20, 40 20, 40 40, 20 40, 20 30, 10 30, 10 10))", 
+"POLYGON ((0 0, 0 100, 100 100, 100 0, 0 0), (10 10, 30 10, 30 20, 40 20, 40 40, 20 40, 20 30, 10 30, 10 10))",
 "POLYGON ((20 20, 20 30, 30 30, 30 20, 20 20))"
     });
         }
@@ -79,7 +79,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
         public void TestPolygonalOuterOnly1()
         {
             CheckPolygonize(true, new String[] {
-        "LINESTRING (10 10, 10 20, 20 20)" 
+        "LINESTRING (10 10, 10 20, 20 20)"
             ,"LINESTRING (20 20, 20 10)"
             ,"LINESTRING (20 10, 10 10)"
             ,"LINESTRING (20 20, 30 20, 30 10, 20 10)"
@@ -92,7 +92,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
         public void TestPolygonalOuterOnly2()
         {
             CheckPolygonize(true, new String[] {
-        "LINESTRING (100 400, 200 400, 200 300)" 
+        "LINESTRING (100 400, 200 400, 200 300)"
             ,"LINESTRING (200 300, 150 300)"
             ,"LINESTRING (150 300, 100 300, 100 400)"
             ,"LINESTRING (200 300, 250 300, 250 200)"
@@ -107,25 +107,25 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
         }
 
         readonly String[] LINES_CHECKERBOARD = new String[] {
-      "LINESTRING (10 20, 20 20)", 
+      "LINESTRING (10 20, 20 20)",
       "LINESTRING (10 20, 10 30)",
-      "LINESTRING (20 10, 10 10, 10 20)", 
-      "LINESTRING (10 30, 20 30)", 
-      "LINESTRING (10 30, 10 40, 20 40)", 
-      "LINESTRING (30 10, 20 10)", 
-      "LINESTRING (20 20, 20 10)", 
-      "LINESTRING (20 20, 30 20)", 
-      "LINESTRING (20 30, 20 20)", 
-      "LINESTRING (20 30, 30 30)", 
-      "LINESTRING (20 40, 20 30)", 
-      "LINESTRING (20 40, 30 40)", 
-      "LINESTRING (40 20, 40 10, 30 10)", 
-      "LINESTRING (30 20, 30 10)", 
-      "LINESTRING (30 20, 40 20)", 
-      "LINESTRING (30 30, 30 20)", 
-      "LINESTRING (30 30, 40 30)", 
-      "LINESTRING (30 40, 30 30)", 
-      "LINESTRING (30 40, 40 40, 40 30)", 
+      "LINESTRING (20 10, 10 10, 10 20)",
+      "LINESTRING (10 30, 20 30)",
+      "LINESTRING (10 30, 10 40, 20 40)",
+      "LINESTRING (30 10, 20 10)",
+      "LINESTRING (20 20, 20 10)",
+      "LINESTRING (20 20, 30 20)",
+      "LINESTRING (20 30, 20 20)",
+      "LINESTRING (20 30, 30 30)",
+      "LINESTRING (20 40, 20 30)",
+      "LINESTRING (20 40, 30 40)",
+      "LINESTRING (40 20, 40 10, 30 10)",
+      "LINESTRING (30 20, 30 10)",
+      "LINESTRING (30 20, 40 20)",
+      "LINESTRING (30 30, 30 20)",
+      "LINESTRING (30 30, 40 30)",
+      "LINESTRING (30 40, 30 30)",
+      "LINESTRING (30 40, 40 40, 40 30)",
       "LINESTRING (40 30, 40 20)"
   };
 

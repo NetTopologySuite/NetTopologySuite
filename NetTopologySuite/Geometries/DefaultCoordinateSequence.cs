@@ -27,10 +27,10 @@ namespace NetTopologySuite.Geometries
         public DefaultCoordinateSequence(Coordinate[] coordinates)
         {
             if (Geometry.HasNullElements(CollectionUtil.Cast<Coordinate, object>(coordinates)))
-                throw new ArgumentException("Null coordinate");            
+                throw new ArgumentException("Null coordinate");
             _coordinates = coordinates;
         }
-        
+
         /// <summary>
         /// Creates a new sequence based on a deep copy of the given <see cref="ICoordinateSequence"/>.
         /// </summary>
@@ -129,15 +129,15 @@ namespace NetTopologySuite.Geometries
         {
             switch (ordinate)
             {
-                case Ordinate.X: 
+                case Ordinate.X:
                     return _coordinates[index].X;
-                case Ordinate.Y: 
+                case Ordinate.Y:
                     return _coordinates[index].Y;
-                case Ordinate.Z: 
+                case Ordinate.Z:
                     return _coordinates[index].Z;
                 default:
                     return Double.NaN;
-            }            
+            }
         }
 
         /// <summary>
@@ -150,12 +150,12 @@ namespace NetTopologySuite.Geometries
         {
             switch (ordinate)
             {
-                case Ordinate.X: 
+                case Ordinate.X:
                     _coordinates[index].X = value;
                     break;
                 case Ordinate.Y: _coordinates[index].Y = value;
                     break;
-                case Ordinate.Z: 
+                case Ordinate.Z:
                     _coordinates[index].Z = value;
                     break;
             }
@@ -191,7 +191,7 @@ namespace NetTopologySuite.Geometries
             var j = _coordinates.Length;
             for (var i = 0; i < _coordinates.Length; i++)
                 coordinates[--j] = _coordinates[i];
-            
+
             return new DefaultCoordinateSequence(coordinates);
         }
 
@@ -213,7 +213,7 @@ namespace NetTopologySuite.Geometries
         {
             var cloneCoordinates = new Coordinate[_coordinates.Length];
             for (int i = 0; i < _coordinates.Length; i++)
-                cloneCoordinates[i] = (Coordinate) _coordinates[i].Copy();            
+                cloneCoordinates[i] = (Coordinate) _coordinates[i].Copy();
             return new DefaultCoordinateSequence(cloneCoordinates);
         }
 

@@ -50,7 +50,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         {
             /*
              * The tolerance to use needs to depend on the size of the geometries.
-             * It should not be more precise than double-precision can support. 
+             * It should not be more precise than double-precision can support.
              */
             _boundaryDistanceTolerance = ComputeBoundaryDistanceTolerance(a, b);
             _geom = new[] {a, b, result};
@@ -145,10 +145,10 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         {
 // ReSharper disable RedundantStringFormatCall
             // String.Format needed to build 2.0 release!
-            Debug.WriteLine(String.Format("{0}:" + " A:{1} B:{2} expected:{3} actual:{4}", 
+            Debug.WriteLine(String.Format("{0}:" + " A:{1} B:{2} expected:{3} actual:{4}",
                 overlayOp,
-                LocationUtility.ToLocationSymbol(location[0]), 
-                LocationUtility.ToLocationSymbol(location[1]), expectedInterior ? 'i' : 'e', 
+                LocationUtility.ToLocationSymbol(location[0]),
+                LocationUtility.ToLocationSymbol(location[1]), expectedInterior ? 'i' : 'e',
                 LocationUtility.ToLocationSymbol(location[2])));
 // ReSharper restore RedundantStringFormatCall
         }

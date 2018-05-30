@@ -7,7 +7,7 @@ using NetTopologySuite.Operation.Relate;
 
 namespace NetTopologySuite.Operation.Valid
 {
-    /// <summary> 
+    /// <summary>
     /// Checks that a {GeometryGraph} representing an area
     /// (a <c>Polygon</c> or <c>MultiPolygon</c> )
     /// is consistent with the SFS semantics for area geometries.
@@ -16,7 +16,7 @@ namespace NetTopologySuite.Operation.Valid
     /// Testing for duplicate rings.
     /// If an inconsistency if found the location of the problem is recorded.
     /// </summary>
-    public class ConsistentAreaTester 
+    public class ConsistentAreaTester
     {
         private readonly LineIntersector li = new RobustLineIntersector();
         private readonly GeometryGraph geomGraph;
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Operation.Valid
         private Coordinate invalidPoint;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomGraph"></param>
         public ConsistentAreaTester(GeometryGraph geomGraph)
@@ -36,11 +36,11 @@ namespace NetTopologySuite.Operation.Valid
 
         /// <summary>
         /// Returns the intersection point, or <c>null</c> if none was found.
-        /// </summary>        
+        /// </summary>
         public Coordinate InvalidPoint => invalidPoint;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsNodeConsistentArea
         {

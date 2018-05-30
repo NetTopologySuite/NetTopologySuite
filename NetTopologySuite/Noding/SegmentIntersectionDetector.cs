@@ -96,7 +96,7 @@ namespace NetTopologySuite.Noding
             var coords = e0.Coordinates;
             var p00 = coords[segIndex0];
             var p01 = coords[segIndex0 + 1];
-            
+
             coords = e1.Coordinates;
             var p10 = coords[segIndex1];
             var p11 = coords[segIndex1 + 1];

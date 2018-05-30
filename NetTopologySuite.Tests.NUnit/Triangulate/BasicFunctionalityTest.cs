@@ -114,7 +114,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             geom = atb.GetTransformation().Transform(geom);
             Console.WriteLine(geom.AsText());
 
-            //Setup 
+            //Setup
             DelaunayTriangulationBuilder dtb = new DelaunayTriangulationBuilder();
             dtb.SetSites(geom);
             IMultiLineString result = dtb.GetEdges(geom.Factory);
@@ -137,7 +137,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             constraint = geom.Factory.CreateLineString(coordinates);
             Console.WriteLine(constraint.AsText());
 
-            //Setup 
+            //Setup
             ConformingDelaunayTriangulationBuilder dtb = new ConformingDelaunayTriangulationBuilder { Constraints = constraint };
             dtb.SetSites(geom);
             IMultiLineString result = dtb.GetEdges(geom.Factory);
@@ -169,7 +169,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             constraint = geom.Factory.CreateLineString(coordinates);
             Console.WriteLine(constraint.AsText());
 
-            //Setup 
+            //Setup
             ConformingDelaunayTriangulationBuilder dtb = new ConformingDelaunayTriangulationBuilder { Constraints = constraint };
             dtb.SetSites(geom);
             IMultiLineString result = dtb.GetEdges(geom.Factory);

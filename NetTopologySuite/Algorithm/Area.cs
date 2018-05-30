@@ -31,8 +31,8 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Computes the signed area for a ring. The signed area is positive if the 
-        /// ring is oriented CW, negative if the ring is oriented CCW, and zero if the 
+        /// Computes the signed area for a ring. The signed area is positive if the
+        /// ring is oriented CW, negative if the ring is oriented CCW, and zero if the
         /// ring is degenerate or flat.
         /// </summary>
         /// <param name="ring">The coordinates forming the ring</param>
@@ -58,12 +58,12 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Computes the signed area for a ring. The signed area is positive if the 
+        /// Computes the signed area for a ring. The signed area is positive if the
         /// <list type="Table">
-        /// <listheader> 
-        /// <term>value</term>  
-        /// <description>meaning</description>  
-        /// </listheader>  
+        /// <listheader>
+        /// <term>value</term>
+        /// <description>meaning</description>
+        /// </listheader>
         /// <item><term>&gt; 0</term>
         /// <description>The ring is oriented clockwise (CW)</description></item>
         /// <item><term>&lt; 0</term>
@@ -71,7 +71,7 @@ namespace NetTopologySuite.Algorithm
         /// <item><term>== 0</term>
         /// <description>The ring is degenerate or flat</description></item>
         /// </list>
-        /// ring is oriented CW, negative if the ring is oriented CCW, and zero if the 
+        /// ring is oriented CW, negative if the ring is oriented CCW, and zero if the
         /// ring is degenerate or flat.
         /// </summary>
         /// <param name="ring">The coordinates forming the ring</param>

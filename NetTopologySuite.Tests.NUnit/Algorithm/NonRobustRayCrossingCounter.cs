@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     /// </list>
     /// The only exception is when the point-on-segment situation is detected, in which
     /// case no further processing is required.
-    /// The implication of the above rule is that segments 
+    /// The implication of the above rule is that segments
     /// which can be a priori determined to<i> not</i> touch the ray
     /// (i.e. by a test of their bounding box or Y-extent)
     /// do not need to be counted.This allows for optimization by indexing.
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         public void CountSegment(Coordinate p1, Coordinate p2)
         {
             /**
-             * For each segment, check if it crosses 
+             * For each segment, check if it crosses
              * a horizontal ray running from the test point in the positive x direction.
              */
 
@@ -169,15 +169,15 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// </summary>
         /// <remarks>
         /// This property may be called at any time as segments are processed.
-        /// If the result of this method is <tt>true</tt>, 
+        /// If the result of this method is <tt>true</tt>,
         /// no further segments need be supplied, since the result
         /// will never change again.
         /// </remarks>
         public bool IsOnSegment => _isPointOnSegment;
 
         /// <summary>
-        /// Gets the <see cref="GeoAPI.Geometries.Location"/> of the point relative to 
-        /// the ring, polygon or multipolygon from which the processed 
+        /// Gets the <see cref="GeoAPI.Geometries.Location"/> of the point relative to
+        /// the ring, polygon or multipolygon from which the processed
         /// segments were provided.
         /// </summary>
         /// <remarks>
@@ -203,12 +203,12 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
 
         /// <summary>
-        /// Tests whether the point lies in or on 
-        /// the ring, polygon or multipolygon from which the processed 
+        /// Tests whether the point lies in or on
+        /// the ring, polygon or multipolygon from which the processed
         /// segments were provided.
         /// </summary>
         /// <remarks>
-        /// This method only determines the correct location 
+        /// This method only determines the correct location
         /// if <b>all</b> relevant segments must have been processed.
         /// </remarks>
         public bool IsPointInPolygon => Location != Location.Exterior;

@@ -109,7 +109,7 @@ namespace RTools_NTS.Util
 		bool grabEol;
 		/// <summary>
 		/// Whether or not to return EolTokens on end of line.  Eol tokens will not
-		/// break up other tokens which can be multi-line.  For example block comments 
+		/// break up other tokens which can be multi-line.  For example block comments
 		/// and quotes will not be broken by Eol tokens.  Therefore the number of
 		/// Eol tokens does not give you the line count of a stream.
 		/// </summary>
@@ -164,30 +164,30 @@ namespace RTools_NTS.Util
 			get => (parseNumbers);
 /* dropped for speed, this means this property isn't accurate if
  * character types table is modified directly.
- * 			{ 
+ * 			{
 				for (int i = '0'; i <= '9'; i++)
 				{
-					if (!IsCharType((char)i, CharTypeBits.Digit)) 
+					if (!IsCharType((char)i, CharTypeBits.Digit))
 					{
 						return(false);
 					}
 				}
 
-				return(true); 
+				return(true);
 			}
 */
-			set 
+			set
 			{
 				if (value)
 				{
-					for (int i = '0'; i <= '9'; i++) 
+					for (int i = '0'; i <= '9'; i++)
 						charTypes[i] |= (byte)CharTypeBits.Digit;
 				}
 				else
 				{
 					byte digit = (byte)CharTypeBits.Digit;
 
-					for (int i = '0'; i <= '9'; i++) 
+					for (int i = '0'; i <= '9'; i++)
 					{
 						charTypes[i] &= (byte)(~digit); // not digit
 					}
@@ -225,16 +225,16 @@ namespace RTools_NTS.Util
 			//
 			//	return(true);
 			//}
-		    set 
+		    set
 			{
 				parseHexNumbers = value;
 				if (parseHexNumbers)
 				{
 					for (int i = '0'; i <= '9'; i++)
 						charTypes[i] |= (byte)CharTypeBits.HexDigit;
-					for (int i = 'A'; i <= 'F'; i++) 
+					for (int i = 'A'; i <= 'F'; i++)
 						charTypes[i] |= (byte)CharTypeBits.HexDigit;
-					for (int i = 'a'; i <= 'f'; i++) 
+					for (int i = 'a'; i <= 'f'; i++)
 						charTypes[i] |= (byte)CharTypeBits.HexDigit;
 					charTypes['x'] |= (byte)CharTypeBits.HexDigit;
 				}
@@ -242,11 +242,11 @@ namespace RTools_NTS.Util
 				{
 					byte digit = (byte)CharTypeBits.HexDigit;
 
-					for (int i = 'A'; i <= 'F'; i++) 
+					for (int i = 'A'; i <= 'F'; i++)
 					{
 						charTypes[i] &= (byte)(~digit); // not digit
 					}
-					for (int i = 'a'; i <= 'f'; i++) 
+					for (int i = 'a'; i <= 'f'; i++)
 					{
 						charTypes[i] &= (byte)(~digit); // not digit
 					}
@@ -287,7 +287,7 @@ namespace RTools_NTS.Util
 		{
 			charTypes = new byte[StreamTokenizer.NChars + 1];  // plus an EOF entry
 			Array.Copy(other.charTypes, 0, charTypes, 0, charTypes.Length);
-			
+
 			grabWhitespace = other.grabWhitespace;
 			grabEol = other.grabEol;
 			slashSlashComments = other.slashSlashComments;
@@ -361,7 +361,7 @@ namespace RTools_NTS.Util
 		/// as opposed to the default.  Use SetDefaults() for default
 		/// settings.
 		/// </summary>
-		public void ResetCharTypeTable() 
+		public void ResetCharTypeTable()
 		{
 			Array.Clear(charTypes, 0, charTypes.Length);
 			charTypes[StreamTokenizer.NChars] = (byte)CharTypeBits.Eof; // last entry for Eof
@@ -374,7 +374,7 @@ namespace RTools_NTS.Util
 		/// than overwriting other types.
 		/// </summary>
 		/// <param name="c">The character.</param>
-		public void WordChar(int c) 
+		public void WordChar(int c)
 		{
 			charTypes[c] |= (byte)CharTypeBits.Word;
 		}
@@ -387,7 +387,7 @@ namespace RTools_NTS.Util
 		/// </summary>
 		/// <param name="startChar">First character.</param>
 		/// <param name="endChar">Last character.</param>
-		public void WordChars(int startChar, int endChar) 
+		public void WordChars(int startChar, int endChar)
 		{
 			for (int i = startChar; i <= endChar; i++)
 			{
@@ -414,7 +414,7 @@ namespace RTools_NTS.Util
 		/// This type is exclusive with other types.
 		/// </summary>
 		/// <param name="c">The character.</param>
-		public void WhitespaceChar(int c) 
+		public void WhitespaceChar(int c)
 		{
 			charTypes[c] = (byte)CharTypeBits.Whitespace;
 		}
@@ -427,7 +427,7 @@ namespace RTools_NTS.Util
 		/// </summary>
 		/// <param name="startChar">First character.</param>
 		/// <param name="endChar">Last character.</param>
-		public void WhitespaceChars(int startChar, int endChar) 
+		public void WhitespaceChars(int startChar, int endChar)
 		{
 			for (int i = startChar; i <= endChar; i++)
 				charTypes[i] = (byte)CharTypeBits.Whitespace;
@@ -439,7 +439,7 @@ namespace RTools_NTS.Util
 		/// </summary>
 		/// <param name="startChar"></param>
 		/// <param name="endChar"></param>
-		public void OrdinaryChars(int startChar, int endChar) 
+		public void OrdinaryChars(int startChar, int endChar)
 		{
 			for (int i = startChar; i <= endChar; i++)
 				charTypes[i] = 0;
@@ -450,7 +450,7 @@ namespace RTools_NTS.Util
 		/// Character table type manipulation method.
 		/// </summary>
 		/// <param name="c"></param>
-		public void OrdinaryChar(int c) 
+		public void OrdinaryChar(int c)
 		{
 			charTypes[c] = 0;
 		}
@@ -460,7 +460,7 @@ namespace RTools_NTS.Util
 		/// Character table type manipulation method.
 		/// </summary>
 		/// <param name="c"></param>
-		public void CommentChar(int c) 
+		public void CommentChar(int c)
 		{
 			charTypes[c] = (byte)CharTypeBits.Comment;
 		}
@@ -470,7 +470,7 @@ namespace RTools_NTS.Util
 		/// Character table type manipulation method.
 		/// </summary>
 		/// <param name="c"></param>
-		public void QuoteChar(int c) 
+		public void QuoteChar(int c)
 		{
 			charTypes[c] = (byte)CharTypeBits.Quote;
 		}
@@ -506,7 +506,7 @@ namespace RTools_NTS.Util
 		}
 
 		/// <summary>
-		/// Check whether the specified char type byte has a 
+		/// Check whether the specified char type byte has a
 		/// particular type flag set.
 		/// </summary>
 		/// <param name="ctype">The char type byte.</param>
@@ -518,7 +518,7 @@ namespace RTools_NTS.Util
 		}
 
 		/// <summary>
-		/// Check whether the specified char has a 
+		/// Check whether the specified char has a
 		/// particular type flag set.
 		/// </summary>
 		/// <param name="c">The character.</param>
@@ -530,7 +530,7 @@ namespace RTools_NTS.Util
 		}
 
 		/// <summary>
-		/// Check whether the specified char has a 
+		/// Check whether the specified char has a
 		/// particular type flag set.
 		/// </summary>
 		/// <param name="c">The character.</param>
@@ -560,7 +560,7 @@ namespace RTools_NTS.Util
 		/// </summary>
 		/// <param name="prefix">The pre-line prefix.</param>
 		public void Display(string prefix)
-		{			
+		{
 		}
 		#endregion
 	}
@@ -583,7 +583,7 @@ namespace RTools_NTS.Util
 	/// </para>
 	/// <para>
 	/// There are two main ways to use this: 1) Parse the entire stream at
-	/// once and get an ArrayList of Tokens (see the Tokenize* methods), 
+	/// once and get an ArrayList of Tokens (see the Tokenize* methods),
 	/// and 2) call NextToken() successively.
 	/// This reads from a TextReader, which you can set directly, and this
 	/// also provides some convenient methods to parse files and strings.
@@ -605,8 +605,8 @@ namespace RTools_NTS.Util
 	/// <code>
 	/// StreamTokenizer tokenizer = new StreamTokenizer("some string");
 	/// ArrayList tokens = new ArrayList();
-	/// if (!tokenizer.Tokenize(tokens)) 
-	/// { 
+	/// if (!tokenizer.Tokenize(tokens))
+	/// {
 	///		// error handling
 	/// }
 	/// foreach (Token t in tokens) Console.WriteLine("t = {0}", t);
@@ -648,10 +648,10 @@ namespace RTools_NTS.Util
 		//private BufferedTextReader bufferedReader; // was slower
 
 		// keep track of current line number during parse
-		private int lineNumber;  
+		private int lineNumber;
 
 		// used to back up in the stream
-		private CharBuffer backString;  
+		private CharBuffer backString;
 
 		// used to collect characters of the current (next to be
 		// emitted) token
@@ -817,17 +817,17 @@ namespace RTools_NTS.Util
 		/// <returns>The state.</returns>
 		private NextTokenState PickNextState(byte ctype, int c, NextTokenState excludeState)
 		{
-			if (c == '/') 
+			if (c == '/')
 			{
 				return(NextTokenState.MaybeComment); // overrides all other cats
 			}
-			else if ((excludeState != NextTokenState.MaybeHex) 
-				&& settings.ParseHexNumbers && (c == '0')) 
+			else if ((excludeState != NextTokenState.MaybeHex)
+				&& settings.ParseHexNumbers && (c == '0'))
 			{
 				return(NextTokenState.MaybeHex);
 			}
-			else if ((excludeState != NextTokenState.MaybeNumber) && settings.ParseNumbers 
-				&& (settings.IsCharType(ctype, CharTypeBits.Digit) || (c == '-') || (c == '.'))) 
+			else if ((excludeState != NextTokenState.MaybeNumber) && settings.ParseNumbers
+				&& (settings.IsCharType(ctype, CharTypeBits.Digit) || (c == '-') || (c == '.')))
 			{
 				return(NextTokenState.MaybeNumber);
 			}
@@ -868,11 +868,11 @@ namespace RTools_NTS.Util
 				return(Eof);
 			}
 
-			if (c == 10) 
+			if (c == 10)
 			{
-				lineNumber++;				
+				lineNumber++;
 			}
-			else if (c < 0) 
+			else if (c < 0)
 			{
 				c = Eof;
 			}
@@ -901,7 +901,7 @@ namespace RTools_NTS.Util
 			// get previous char from nextTokenSb if there
 			// (nextTokenSb is a StringBuilder containing the characters
 			//  of the next token to be emitted)
-			if (nextTokenSb.Length > 0) 
+			if (nextTokenSb.Length > 0)
 			{
 				prevChar = nextTokenSb[nextTokenSb.Length - 1];
 				prevCtype = settings.CharTypes[prevChar];
@@ -919,11 +919,11 @@ namespace RTools_NTS.Util
 
 			// State Machine: Produces a single token.
 			// Enter a state based on a single character.
-			// Generally, being in a state means we're currently collecting chars 
+			// Generally, being in a state means we're currently collecting chars
 			// in that type of token.
 			// We do state machine until it builds a token (Eof is a token), then
 			// return that token.
-			thisChar = prevChar;  // for first iteration, since prevChar is set to this 
+			thisChar = prevChar;  // for first iteration, since prevChar is set to this
 			bool done = false; // optimization
 			while (!done)
 			{
@@ -994,25 +994,25 @@ namespace RTools_NTS.Util
 						// looking for end quote matching char that started the quote
 						if (thisChar == nextTokenSb[0])
 						{
-							// handle escaped backslashes: count the immediately prior backslashes 
-							// - even (including 0) means it's not escaped 
-							// - odd means it is escaped 
-							int backSlashCount = 0; 
+							// handle escaped backslashes: count the immediately prior backslashes
+							// - even (including 0) means it's not escaped
+							// - odd means it is escaped
+							int backSlashCount = 0;
 							for (int i = nextTokenSb.Length - 1; i >= 0; i--)
-							{ 
-								if (nextTokenSb[ i ] == '\\') backSlashCount++; 
-								else break; 
-							} 
+							{
+								if (nextTokenSb[ i ] == '\\') backSlashCount++;
+								else break;
+							}
 
-							if ((backSlashCount % 2) == 0) 
-							{ 
+							if ((backSlashCount % 2) == 0)
+							{
 								state = NextTokenState.EndQuote;
 							}
 						}
 
 						if ((state != NextTokenState.EndQuote) && (thisChar == Eof))
 						{
-							if (settings.DoUntermCheck) 
+							if (settings.DoUntermCheck)
 							{
 								nextTokenSb.Length = 0;
 								throw new StreamTokenizerUntermQuoteException("Unterminated quote");
@@ -1034,9 +1034,9 @@ namespace RTools_NTS.Util
 						else
 						{
 							// if we get the right char, we're in a comment
-							if (settings.SlashSlashComments && (thisChar == '/')) 
+							if (settings.SlashSlashComments && (thisChar == '/'))
 								state = NextTokenState.LineComment;
-							else if (settings.SlashStarComments && (thisChar == '*')) 
+							else if (settings.SlashStarComments && (thisChar == '*'))
 								state = NextTokenState.BlockComment;
 							else
 							{
@@ -1050,7 +1050,7 @@ namespace RTools_NTS.Util
 					case NextTokenState.LineComment:
 						if (thisChar == Eof)
 						{
-							if (settings.GrabComments) 
+							if (settings.GrabComments)
 							{
 								token = new CommentToken(nextTokenSb.ToString(), tokenLineNumber);
 								done = true;
@@ -1068,7 +1068,7 @@ namespace RTools_NTS.Util
 						{
 							if (thisChar == '\n')
 							{
-								if (settings.GrabComments) 
+								if (settings.GrabComments)
 								{
 									token = new CommentToken(nextTokenSb.ToString(), tokenLineNumber);
 									done = true;
@@ -1088,13 +1088,13 @@ namespace RTools_NTS.Util
 					case NextTokenState.BlockComment:
 						if (thisChar == Eof)
 						{
-							if (settings.DoUntermCheck) 
+							if (settings.DoUntermCheck)
 							{
 								nextTokenSb.Length = 0;
 								throw new StreamTokenizerUntermCommentException("Unterminated comment.");
 							}
 
-							if (settings.GrabComments) 
+							if (settings.GrabComments)
 							{
 								token = new CommentToken(nextTokenSb.ToString(), tokenLineNumber);
 								done = true;
@@ -1119,7 +1119,7 @@ namespace RTools_NTS.Util
 
 					// special case for 2-character token termination
 					case NextTokenState.EndBlockComment:
-						if (settings.GrabComments) 
+						if (settings.GrabComments)
 						{
 							token = new CommentToken(nextTokenSb.ToString(), tokenLineNumber);
 							done = true;
@@ -1148,7 +1148,7 @@ namespace RTools_NTS.Util
 							// pull char from backString
 							thisChar = backString[0];
 							backString.Remove(0, 1);
-							state = PickNextState(settings.CharTypes[thisChar], thisChar, 
+							state = PickNextState(settings.CharTypes[thisChar], thisChar,
 								NextTokenState.MaybeHex);
 						}
 						else state = NextTokenState.HexGot0x;
@@ -1167,8 +1167,8 @@ namespace RTools_NTS.Util
 							// pull char from backString
 							thisChar = backString[0];
 							backString.Remove(0, 1);
-							state = PickNextState(settings.CharTypes[thisChar], thisChar, 
-								NextTokenState.MaybeHex);							
+							state = PickNextState(settings.CharTypes[thisChar], thisChar,
+								NextTokenState.MaybeHex);
 						}
 						else state = NextTokenState.HexNumber;
 						break;
@@ -1191,13 +1191,13 @@ namespace RTools_NTS.Util
 						//
 						bool term = false;
 
-						if (settings.IsCharType(ctype, CharTypeBits.Digit)  
+						if (settings.IsCharType(ctype, CharTypeBits.Digit)
 							|| settings.IsCharType(prevChar, CharTypeBits.Digit)) seenDigit = true;
 
 						// term conditions
-						if (thisChar == '.') 
-						{ 
-							seenDot++; 
+						if (thisChar == '.')
+						{
+							seenDot++;
 							if (seenDot > 1) term = true;  // more than one dot, it aint a number
 						}
 						else if (((thisChar == 'e') || (thisChar == 'E')))
@@ -1222,11 +1222,11 @@ namespace RTools_NTS.Util
 								}
 							}
 						}
-						else if (thisChar == Eof) term = true;  
+						else if (thisChar == Eof) term = true;
 							// or a char that can't be in a number
-						else if ((!settings.IsCharType(ctype, CharTypeBits.Digit) 
-							&& (thisChar != 'e') && (thisChar != 'E') 
-							&& (thisChar != '-') && (thisChar != '.')) 
+						else if ((!settings.IsCharType(ctype, CharTypeBits.Digit)
+							&& (thisChar != 'e') && (thisChar != 'E')
+							&& (thisChar != '-') && (thisChar != '.'))
 							|| ((thisChar == '+') && (seenE == 0)))
 						{
 							// it's not a normal number character
@@ -1246,9 +1246,9 @@ namespace RTools_NTS.Util
 									|| (nextTokenSb.Length >= 19) // probably too large for Int64, use float
 									)
 								{
-									token = new FloatToken(nextTokenSb.ToString(), tokenLineNumber);									
+									token = new FloatToken(nextTokenSb.ToString(), tokenLineNumber);
 								}
-								else 
+								else
 								{
 									token = new IntToken(nextTokenSb.ToString(), tokenLineNumber);
 								}
@@ -1269,7 +1269,7 @@ namespace RTools_NTS.Util
 								// pull char from backString
 								thisChar = backString[0];
 								backString.Remove(0, 1);
-								state = PickNextState(settings.CharTypes[thisChar], thisChar, 
+								state = PickNextState(settings.CharTypes[thisChar], thisChar,
 									NextTokenState.MaybeNumber);
 							}
 						}
@@ -1295,7 +1295,7 @@ namespace RTools_NTS.Util
 				}
 
 				// use a StringBuilder to accumulate characters which are part of this token
-				if (thisChar != Eof) nextTokenSb.Append((char)thisChar);				
+				if (thisChar != Eof) nextTokenSb.Append((char)thisChar);
 			}
 
 			return(true);
@@ -1303,8 +1303,8 @@ namespace RTools_NTS.Util
 
 		/// <summary>
 		/// Starting from current stream location, scan forward
-		/// over an int.  Determine whether it's an integer or not.  If so, 
-		/// push the integer characters to the specified CharBuffer.  
+		/// over an int.  Determine whether it's an integer or not.  If so,
+		/// push the integer characters to the specified CharBuffer.
 		/// If not, put them in backString (essentially leave the
 		/// stream as it was) and return false.
 		/// <para>
@@ -1331,7 +1331,7 @@ namespace RTools_NTS.Util
 			}
 			else if (thisChar == '+')
 			{
-				if (allowPlus) 
+				if (allowPlus)
 				{
 					tmpSb.Append(thisChar);
 				}
@@ -1350,7 +1350,7 @@ namespace RTools_NTS.Util
 				// a digit, back this out so we can handle it in loop below
 				backString.Append(thisChar);
 			}
-			else 
+			else
 			{
 				// not a number starter
 				backString.Append(thisChar);
@@ -1366,14 +1366,14 @@ namespace RTools_NTS.Util
 				tmpSb.Append(thisChar);
 			}
 
-			if (gotInt) 
+			if (gotInt)
 			{
 				sb.Append(tmpSb);
 				return(true);
 			}
-			else 
+			else
 			{
-				// didn't get any chars after first 
+				// didn't get any chars after first
 				backString.Append(tmpSb); // put + or - back on
 				if (thisChar != Eof) backString.Append(thisChar);
 				return(false);
@@ -1434,11 +1434,11 @@ namespace RTools_NTS.Util
 		{
 			FileInfo fi = new FileInfo(fileName);
 			FileStream fr = null;
-			try 
+			try
 			{
 				fr = fi.Open(FileMode.Open, FileAccess.Read, FileShare.None);
 				textReader = new StreamReader(fr);
-			} 
+			}
 			catch (DirectoryNotFoundException)
 			{
 			}

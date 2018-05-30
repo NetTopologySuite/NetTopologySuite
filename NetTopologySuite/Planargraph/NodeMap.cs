@@ -5,7 +5,7 @@ namespace NetTopologySuite.Planargraph
 {
     /// <summary>
     /// A map of <see cref="Node">nodes</see>, indexed by the coordinate of the node.
-    /// </summary>   
+    /// </summary>
     public class NodeMap
     {
         private readonly IDictionary<Coordinate, Node> _nodeMap = new SortedDictionary<Coordinate, Node>();
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Planargraph
         /// <returns>The added node.</returns>
         public Node Add(Node n)
         {
-            _nodeMap[n.Coordinate] = n;            
+            _nodeMap[n.Coordinate] = n;
             return n;
         }
 
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Planargraph
             Node res;
             if (_nodeMap.TryGetValue(coord, out res))
                 return res;
-            return null; 
+            return null;
         }
 
         /// <summary>

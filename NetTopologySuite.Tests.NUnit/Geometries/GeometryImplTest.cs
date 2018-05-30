@@ -361,7 +361,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         [Test]
-        public void TestGeometryCollectionIntersects1() 
+        public void TestGeometryCollectionIntersects1()
         {
             var gc0 = reader.Read("GEOMETRYCOLLECTION ( POINT(0 0) )");
             var gc1 = reader.Read("GEOMETRYCOLLECTION ( LINESTRING(0 0, 1 1) )");
@@ -407,11 +407,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(gc2.Intersects(gc1));
         }
 
-        private void DoTestEqualsExact(IGeometry x, 
+        private void DoTestEqualsExact(IGeometry x,
             IGeometry somethingExactlyEqual,
             IGeometry somethingNotEqualButSameClass,
             IGeometry sameClassButEmpty,
-            IGeometry anotherSameClassButEmpty, 
+            IGeometry anotherSameClassButEmpty,
             ICollectionFactory collectionFactory)
         {
             IGeometry emptyDifferentClass;
@@ -437,7 +437,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
              */
             DoTestEqualsExact(x, somethingExactlyEqual,
                 sameClassButEmpty, sameClassButEmpty);
-        
+
 
             DoTestEqualsExact(collectionFactory.CreateCollection(
                     new IGeometry[] { x, x }, geometryFactory),
@@ -448,7 +448,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                     new IGeometry[] { x, somethingNotEqualButSameClass }, geometryFactory));
         }
 
-        private void DoTestEqualsExact(IGeometry x, 
+        private void DoTestEqualsExact(IGeometry x,
             IGeometry somethingExactlyEqual,
             IGeometry somethingEqualButNotExactly,
             IGeometry somethingNotEqualButSameClass)  {

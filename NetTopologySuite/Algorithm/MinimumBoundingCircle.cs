@@ -7,24 +7,24 @@ namespace NetTopologySuite.Algorithm
 {
     /// <summary>
     /// Computes the <b>Minimum Bounding Circle</b> (MBC) for the points in a <see cref="IGeometry"/>.
-    /// The MBC is the smallest circle which <tt>cover</tt>s all the input points 
+    /// The MBC is the smallest circle which <tt>cover</tt>s all the input points
     /// (this is also sometimes known as the <b>Smallest Enclosing Circle</b>).
     /// This is equivalent to computing the Maximum Diameter of the input point set.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The computed circle can be specified in two equivalent ways, 
+    /// The computed circle can be specified in two equivalent ways,
     /// both of which are provide as output by this class:
     /// <list type="Bullet">
     /// <item>As a centre point and a radius</item>
     /// <item>By the set of points defining the circle.</item>
-    /// 
+    ///
     /// Depending on the number of points in the input
     /// and their relative positions, this
-    /// will be specified by anywhere from 0 to 3 points. 
+    /// will be specified by anywhere from 0 to 3 points.
     /// <list type="Bullet">
     /// <item>0 or 1 points indicate an empty or trivial input point arrangement.</item>
-    /// <item>2 or 3 points define a circle which contains 
+    /// <item>2 or 3 points define a circle which contains
     /// all the input points.</item>
     /// </list>
     /// </list>
@@ -38,7 +38,7 @@ namespace NetTopologySuite.Algorithm
     public class MinimumBoundingCircle
     {
         /**
-         * The algorithm used is based on the one by Jon Rokne in 
+         * The algorithm used is based on the one by Jon Rokne in
          * the article "An Easy Bounding Circle" in <i>Graphic Gems II</i>.
          */
 
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Algorithm
         /// <para>
         /// If the input is degenerate (empty or a single unique point),
         /// this method will return an empty geometry or a single Point geometry.
-        /// Otherwise, a Polygon will be returned which approximates the 
+        /// Otherwise, a Polygon will be returned which approximates the
         /// Minimum Bounding Circle. (Note that because the computed polygon is only an approximation, it may not precisely contain all the input points.)
         /// </para>
         /// </remarks>
@@ -249,10 +249,10 @@ namespace NetTopologySuite.Algorithm
             var Q = PointWitMinAngleWithX(pts, P);
 
             /**
-             * Iterate over the remaining points to find 
+             * Iterate over the remaining points to find
              * a pair or triplet of points which determine the minimal circle.
-             * By the design of the algorithm, 
-             * at most <tt>pts.length</tt> iterations are required to terminate 
+             * By the design of the algorithm,
+             * at most <tt>pts.length</tt> iterations are required to terminate
              * with a correct result.
              */
             for (int i = 0; i < pts.Length; i++)

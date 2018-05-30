@@ -69,10 +69,10 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coordinate"></param>
-        /// <param name="writer"></param>        
+        /// <param name="writer"></param>
         protected void Write(Coordinate coordinate, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, "coord", GMLElements.gmlNS);
@@ -82,10 +82,10 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coordinates"></param>
-        /// <param name="writer"></param>        
+        /// <param name="writer"></param>
         protected void Write(Coordinate[] coordinates, XmlWriter writer)
         {
             foreach (Coordinate coord in coordinates)
@@ -93,10 +93,10 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coordinates"></param>
-        /// <param name="writer"></param>        
+        /// <param name="writer"></param>
         protected void WriteCoordinates(Coordinate[] coordinates, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, "coordinates", GMLElements.gmlNS);
@@ -109,7 +109,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="writer"></param>
@@ -133,7 +133,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="point"></param>
         /// <param name="writer"></param>
@@ -145,7 +145,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="lineString"></param>
         /// <param name="writer"></param>
@@ -157,7 +157,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="linearRing"></param>
         /// <param name="writer"></param>
@@ -169,7 +169,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="polygon"></param>
         /// <param name="writer"></param>
@@ -189,7 +189,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="multiPoint"></param>
         /// <param name="writer"></param>
@@ -206,7 +206,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="multiLineString"></param>
         /// <param name="writer"></param>
@@ -223,7 +223,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="multiPolygon"></param>
         /// <param name="writer"></param>
@@ -240,7 +240,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometryCollection"></param>
         /// <param name="writer"></param>
@@ -281,7 +281,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometryCollection"></param>
         /// <returns></returns>
@@ -294,7 +294,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="multiPolygon"></param>
         /// <returns></returns>
@@ -307,7 +307,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="multiLineString"></param>
         /// <returns></returns>
@@ -320,7 +320,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="multiPoint"></param>
         /// <returns></returns>
@@ -333,7 +333,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="polygon"></param>
         /// <returns></returns>
@@ -345,7 +345,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="lineString"></param>
         /// <returns></returns>
@@ -357,7 +357,7 @@ namespace NetTopologySuite.IO.GML2
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>

@@ -6,7 +6,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
 {
     /// <summary>
     /// Tests <see cref="AffineTransformationBuilder"/>
-    /// </summary>  
+    /// </summary>
     /// <author>Martin Davis</author>
     public class AffineTransformationBuilderTest
     {

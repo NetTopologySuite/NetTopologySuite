@@ -90,7 +90,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             var seq2 = SerializationUtility.Deserialize<ICoordinateSequence>(data);
             Assert.IsTrue(IsEqual(seq2, coords));
         }
-  
+
         // TODO: This private method was marked as protected to allow PackedCoordinateSequenceTest to override Test2DZOrdinate
         // The method should not be marked as protected, and should be altered when the correct PackedCoordinateSequence.GetCoordinate result is migrated to NTS
         protected Coordinate[] CreateArray(int size)

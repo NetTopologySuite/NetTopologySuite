@@ -43,7 +43,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// If changing the structure is required, use a <see cref="GeometryTransformer"/>.
     /// </para>
     /// <para>
-    /// This class supports creating an edited Geometry 
+    /// This class supports creating an edited Geometry
     /// using a different <see cref="IGeometryFactory"/> via the <see cref="GeometryEditor(IGeometryFactory)"/>
     /// constructor.
     /// Examples of situations where this is required is if the geometry is
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// Usage notes
     /// <list type="Bullet">
     /// <item>The resulting Geometry is not checked for validity.
-    /// If validity needs to be enforced, the new Geometry's 
+    /// If validity needs to be enforced, the new Geometry's
     /// <see cref="IGeometry.IsValid"/> method should be called.</item>
     /// <item>By default the UserData of the input geometry is not copied to the result. </item>
     /// </list>
@@ -266,7 +266,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// A <see cref="IGeometryEditorOperation"/> which edits the <see cref="ICoordinateSequence"/> 
+        /// A <see cref="IGeometryEditorOperation"/> which edits the <see cref="ICoordinateSequence"/>
         /// of a <see cref="IGeometry"/>.
         /// <para/>
         /// Operates on Geometry subclasses which contains a single coordinate list.

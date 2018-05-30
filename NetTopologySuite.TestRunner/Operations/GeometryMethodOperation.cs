@@ -9,7 +9,7 @@ namespace Open.Topology.TestRunner.Operations
     /**
      * Invokes a named operation on a set of arguments,
      * the first of which is a {@link Geometry}.
-     * This class provides operations which are the methods 
+     * This class provides operations which are the methods
      * defined on the Geometry class.
      * Other {@link GeometryOperation} classes can delegate to
      * instances of this class to run standard Geometry methods.

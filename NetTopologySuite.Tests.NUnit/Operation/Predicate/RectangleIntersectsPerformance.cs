@@ -70,9 +70,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
         }
 
         /// <summary>
-        /// Creates a set of rectangular Polygons which 
+        /// Creates a set of rectangular Polygons which
         /// cover the given envelope.
-        /// The rectangles   
+        /// The rectangles
         /// At least nRect rectangles are created.
         /// </summary>
         private static IGeometry[] CreateRectangles(Envelope env, int nRect)

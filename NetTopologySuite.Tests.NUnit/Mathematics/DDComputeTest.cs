@@ -21,7 +21,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             //System.Console.WriteLine("Difference from DoubleDouble.E = " + err);
             Assert.IsTrue(err < 64*DD.Epsilon);
         }
-        
+
         /// <summary>
         /// Uses Taylor series to compute e
         /// <para/>

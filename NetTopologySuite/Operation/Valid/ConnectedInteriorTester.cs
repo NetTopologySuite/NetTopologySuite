@@ -7,7 +7,7 @@ using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Operation.Valid
 {
-    /// <summary> 
+    /// <summary>
     /// This class tests that the interior of an area <see cref="Geometry" />
     /// (<see cref="Polygon" /> or <see cref="MultiPolygon" />)
     /// is connected.  An area Geometry is invalid if the interior is disconnected.
@@ -20,7 +20,7 @@ namespace NetTopologySuite.Operation.Valid
     public class ConnectedInteriorTester
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coord"></param>
         /// <param name="pt"></param>
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Operation.Valid
         {
             foreach (Coordinate c in coord)
                 if (!c.Equals(pt))
-                    return c;            
+                    return c;
             return null;
         }
 
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Operation.Valid
         private Coordinate _disconnectedRingcoord;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomGraph"></param>
         public ConnectedInteriorTester(GeometryGraph geomGraph)
@@ -51,12 +51,12 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate Coordinate => _disconnectedRingcoord;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public bool IsInteriorsConnected()
@@ -88,16 +88,16 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="graph"></param>
         private static void SetInteriorEdgesInResult(PlanarGraph graph)
         {
-            foreach (DirectedEdge de in graph.EdgeEnds)               
+            foreach (DirectedEdge de in graph.EdgeEnds)
                 if (de.Label.GetLocation(0, Positions.Right) == Location.Interior)
                     de.InResult = true;
         }
-        
+
         /// <summary>
         /// Form <see cref="DirectedEdge" />s in graph into Minimal EdgeRings.
         /// (Minimal Edgerings must be used, because only they are guaranteed to provide
@@ -125,7 +125,7 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// Mark all the edges for the edgeRings corresponding to the shells of the input polygons.  
+        /// Mark all the edges for the edgeRings corresponding to the shells of the input polygons.
         /// Only ONE ring gets marked for each shell - if there are others which remain unmarked
         /// this indicates a disconnected interior.
         /// </summary>
@@ -133,21 +133,21 @@ namespace NetTopologySuite.Operation.Valid
         /// <param name="graph"></param>
         private void VisitShellInteriors(IGeometry g, PlanarGraph graph)
         {
-            if (g is IPolygon) 
+            if (g is IPolygon)
             {
                 IPolygon p = (IPolygon) g;
                 VisitInteriorRing(p.Shell, graph);
             }
-            if (g is IMultiPolygon) 
+            if (g is IMultiPolygon)
             {
                 IMultiPolygon mp = (IMultiPolygon) g;
-                foreach (IPolygon p in mp.Geometries) 
+                foreach (IPolygon p in mp.Geometries)
                     VisitInteriorRing(p.Shell, graph);
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ring"></param>
         /// <param name="graph"></param>
@@ -164,15 +164,15 @@ namespace NetTopologySuite.Operation.Valid
             DirectedEdge de = (DirectedEdge) graph.FindEdgeEnd(e);
             DirectedEdge intDe = null;
             if (de.Label.GetLocation(0, Positions.Right) == Location.Interior)
-                intDe = de;            
-            else if (de.Sym.Label.GetLocation(0, Positions.Right) == Location.Interior)            
-                intDe = de.Sym;            
+                intDe = de;
+            else if (de.Sym.Label.GetLocation(0, Positions.Right) == Location.Interior)
+                intDe = de.Sym;
             Assert.IsTrue(intDe != null, "unable to find dirEdge with Interior on RHS");
             VisitLinkedDirectedEdges(intDe);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="start"></param>
         protected void VisitLinkedDirectedEdges(DirectedEdge start)
@@ -184,7 +184,7 @@ namespace NetTopologySuite.Operation.Valid
                 Assert.IsTrue(de != null, "found null Directed Edge");
                 de.Visited = true;
                 de = de.Next;
-            } 
+            }
             while (de != startDe);
         }
 

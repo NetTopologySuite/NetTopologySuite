@@ -3,7 +3,7 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
-    /// <summary> 
+    /// <summary>
     /// Computes the centroid of a linear point.
     /// Algorithm:
     /// Compute the average of the midpoints
@@ -15,14 +15,14 @@ namespace NetTopologySuite.Algorithm
         private readonly Coordinate _centSum = new Coordinate();
         private double _totalLength;
 
-        /// <summary> 
+        /// <summary>
         /// Adds the linear components of by a Geometry to the centroid total.
         /// If the geometry has no linear components it does not contribute to the centroid.
         /// </summary>
         /// <param name="geom">The point to add.</param>
         public void Add(IGeometry geom)
         {
-            if (geom is ILineString)             
+            if (geom is ILineString)
                 Add(geom.Coordinates);
 
             else if (geom is IPolygon)
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate Centroid
         {
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Algorithm
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Adds the length defined by an array of coordinates.
         /// </summary>
         /// <param name="pts">An array of <c>Coordinate</c>s.</param>

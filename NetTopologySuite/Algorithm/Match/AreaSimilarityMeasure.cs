@@ -23,12 +23,12 @@ public class AreaSimilarityMeasure : ISimilarityMeasure
 	*/
 
         public double Measure(IGeometry g1, IGeometry g2)
-	{		
+	{
 		double areaInt = g1.Intersection(g2).Area;
 		double areaUnion = g1.Union(g2).Area;
 		return areaInt / areaUnion;
 	}
-	
-	
+
+
 }
 }

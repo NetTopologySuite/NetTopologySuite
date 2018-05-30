@@ -10,7 +10,7 @@ namespace NetTopologySuite.Geometries
     /// Models a collection of <see cref="LineString"/>s.
     /// <para/>
     /// Any collection of <c>LineString</c>s is a valid <c>MultiLineString</c>.
-    /// </summary>    
+    /// </summary>
 #if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
@@ -31,8 +31,8 @@ namespace NetTopologySuite.Geometries
         /// but not <c>null</c>s.
         /// </param>
         /// <param name="factory"></param>
-        public MultiLineString(ILineString[] lineStrings, IGeometryFactory factory) 
-            : base(lineStrings, factory) { }        
+        public MultiLineString(ILineString[] lineStrings, IGeometryFactory factory)
+            : base(lineStrings, factory) { }
 
         /// <summary>
         /// Constructs a <c>MultiLineString</c>.
@@ -44,7 +44,7 @@ namespace NetTopologySuite.Geometries
         /// but not <c>null</c>s.
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public MultiLineString(ILineString[] lineStrings) : this(lineStrings, DefaultFactory) { }
@@ -55,13 +55,13 @@ namespace NetTopologySuite.Geometries
         protected override SortIndexValue SortIndex => SortIndexValue.MultiLineString;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <value></value>
         public override Dimension Dimension => Dimension.Curve;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <value></value>
         public override Dimension BoundaryDimension
@@ -69,13 +69,13 @@ namespace NetTopologySuite.Geometries
             get
             {
                 if (IsClosed)
-                    return Dimension.False;                
+                    return Dimension.False;
                 return Dimension.Point;
             }
         }
 
 
-        /// <summary>  
+        /// <summary>
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"MultiLineString"</returns>
@@ -94,17 +94,17 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                if (IsEmpty) 
+                if (IsEmpty)
                     return false;
                 for (int i = 0; i < Geometries.Length; i++)
                     if (!((ILineString) Geometries[i]).IsClosed)
-                        return false;                
+                        return false;
                 return true;
             }
         }
 
         ///// <summary>
-        ///// 
+        /////
         ///// </summary>
         ///// <value></value>
         //public override bool IsSimple
@@ -138,7 +138,7 @@ namespace NetTopologySuite.Geometries
             int nLines = Geometries.Length;
             ILineString[] revLines = new ILineString[nLines];
             for (int i = 0; i < Geometries.Length; i++)
-                revLines[nLines - 1 - i] = (ILineString) Geometries[i].Reverse();            
+                revLines[nLines - 1 - i] = (ILineString) Geometries[i].Reverse();
             return Factory.CreateMultiLineString(revLines);
         }
 
@@ -163,15 +163,15 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance) 
+        public override bool EqualsExact(IGeometry other, double tolerance)
         {
-            if (!IsEquivalentClass(other)) 
-                return false;            
+            if (!IsEquivalentClass(other))
+                return false;
             return base.EqualsExact(other, tolerance);
         }
     }

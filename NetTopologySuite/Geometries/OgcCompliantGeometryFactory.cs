@@ -10,8 +10,8 @@ namespace NetTopologySuite.Geometries
     public class OgcCompliantGeometryFactory : GeometryFactory
     {
         /// <summary>
-        /// Creates an instance of this class using the default 
-        /// values for <see cref="GeometryFactory.SRID"/>, 
+        /// Creates an instance of this class using the default
+        /// values for <see cref="GeometryFactory.SRID"/>,
         /// <see cref="GeometryFactory.PrecisionModel"/> and
         /// <see cref="GeometryFactory.CoordinateSequenceFactory"/>.
         /// </summary>
@@ -19,17 +19,17 @@ namespace NetTopologySuite.Geometries
         {}
 
         /// <summary>
-        /// Creates an instance of this class using the default 
-        /// values for <see cref="GeometryFactory.SRID"/>, 
-        /// <see cref="GeometryFactory.PrecisionModel"/>, 
+        /// Creates an instance of this class using the default
+        /// values for <see cref="GeometryFactory.SRID"/>,
+        /// <see cref="GeometryFactory.PrecisionModel"/>,
         /// but the specified <paramref name="factory"/>.
         /// </summary>
         public OgcCompliantGeometryFactory(ICoordinateSequenceFactory factory)
             : base(factory)
         { }
 
-        /// Creates an instance of this class using the default 
-        /// values for <see cref="GeometryFactory.SRID"/>, 
+        /// Creates an instance of this class using the default
+        /// values for <see cref="GeometryFactory.SRID"/>,
         /// <see cref="GeometryFactory.CoordinateSequenceFactory"/> but the
         /// specified <paramref name="pm"/>.
         public OgcCompliantGeometryFactory(IPrecisionModel pm)
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Geometries
 
         private ILinearRing CreateLinearRing(Coordinate[] coordinates, bool ccw)
         {
-            if (coordinates != null && Orientation.IsCCW(coordinates) != ccw) 
+            if (coordinates != null && Orientation.IsCCW(coordinates) != ccw)
                 Array.Reverse(coordinates);
             return CreateLinearRing(coordinates);
         }
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Geometries
             if (envelope.MinX == envelope.MaxX
                     || envelope.MinY == envelope.MaxY)
             {
-                return CreateLineString(new[] 
+                return CreateLineString(new[]
                     {
                         new Coordinate(envelope.MinX, envelope.MinY),
                         new Coordinate(envelope.MaxX, envelope.MaxY)

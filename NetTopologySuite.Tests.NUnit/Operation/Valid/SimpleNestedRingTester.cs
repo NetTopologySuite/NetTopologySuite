@@ -12,13 +12,13 @@ namespace NetTopologySuite.Operation.Valid
     /// comparison.
     /// </summary>
     public class SimpleNestedRingTester
-    {        
+    {
         private readonly GeometryGraph graph;  // used to find non-node vertices
         private readonly List<ILinearRing> rings = new List<ILinearRing>();
         private Coordinate nestedPt;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="graph"></param>
         public SimpleNestedRingTester(GeometryGraph graph)
@@ -27,7 +27,7 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ring"></param>
         public void Add(ILinearRing ring)
@@ -36,12 +36,12 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate NestedPoint => nestedPt;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public bool IsNonNested()

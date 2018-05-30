@@ -29,7 +29,7 @@ namespace NetTopologySuite.Operation.Distance3D
         }
 
         /// <summary>
-        /// Finds a best-fit plane for the polygon, 
+        /// Finds a best-fit plane for the polygon,
         /// by sampling a few points from the exterior ring.
         /// <para/>
         /// The algorithm used is Newell's algorithm:
@@ -52,9 +52,9 @@ namespace NetTopologySuite.Operation.Distance3D
          * Computes an average normal vector from a list of polygon coordinates.
          * Uses Newell's method, which is based
          * on the fact that the vector with components
-         * equal to the areas of the projection of the polygon onto 
+         * equal to the areas of the projection of the polygon onto
          * the Cartesian axis planes is normal.
-         * 
+         *
          * @param seq the sequence of coordinates for the polygon
          * @return a normal vector
          */
@@ -84,7 +84,7 @@ namespace NetTopologySuite.Operation.Distance3D
          * in a sequence.
          * If the sequence lies in a single plane,
          * the computed point also lies in the plane.
-         * 
+         *
          * @param seq a coordinate sequence
          * @return a Coordinate with averaged ordinates
          */

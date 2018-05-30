@@ -49,7 +49,7 @@ namespace NetTopologySuite.Mathematics
         }
 
         ///<summary>Creates a vector with the direction and magnitude
-        /// of the difference between the 
+        /// of the difference between the
         /// <paramref name="to"/> and <paramref name="from"/> <see cref="Coordinate"/>s.
         /// </summary>
         /// <param name="from">The origin coordinate</param>
@@ -99,7 +99,7 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>Creates a new vector with the direction and magnitude
-        /// of the difference between the 
+        /// of the difference between the
         /// <paramref name="to"/> and <paramref name="from"/> <see cref="Coordinate"/>s.
         /// </summary>
         /// <param name="from">The origin coordinate</param>
@@ -202,7 +202,7 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public double Length()
@@ -211,7 +211,7 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public double LengthSquared()
@@ -232,7 +232,7 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
@@ -247,7 +247,7 @@ namespace NetTopologySuite.Mathematics
         /// with this vector contributing a fraction
         /// of <tt>frac</tt> to the total.
         /// <para/>
-        /// In other words, 
+        /// In other words,
         /// <pre>
         /// sum = frac * this + (1 - frac) * v
         /// </pre>
@@ -294,7 +294,7 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
@@ -304,7 +304,7 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
@@ -369,7 +369,7 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>

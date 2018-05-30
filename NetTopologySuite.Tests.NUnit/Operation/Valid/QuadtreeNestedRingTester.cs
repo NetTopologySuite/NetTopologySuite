@@ -22,7 +22,7 @@ namespace NetTopologySuite.Operation.Valid
         private Coordinate _nestedPt;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="graph"></param>
         public QuadtreeNestedRingTester(GeometryGraph graph)
@@ -31,12 +31,12 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate NestedPoint => _nestedPt;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ring"></param>
         public void Add(ILinearRing ring)
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public bool IsNonNested()
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private void BuildQuadtree()
         {

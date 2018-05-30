@@ -50,7 +50,7 @@ namespace Open.Topology.TestRunner.Utility
 
         /**
          * Reads one or more WKT geometries from a string.
-         * 
+         *
          * @param wkt
          * @param geomFact
          * @return

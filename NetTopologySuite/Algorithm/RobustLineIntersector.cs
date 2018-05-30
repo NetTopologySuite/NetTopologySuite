@@ -3,13 +3,13 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
-    /// <summary> 
+    /// <summary>
     /// A robust version of <see cref="LineIntersector"/>.
     /// </summary>
     public class RobustLineIntersector : LineIntersector
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="p"></param>
         /// <param name="p1"></param>
@@ -80,20 +80,20 @@ namespace NetTopologySuite.Algorithm
                 IsProper = false;
 
                 /*
-                 * Check for two equal endpoints.  
+                 * Check for two equal endpoints.
                  * This is done explicitly rather than by the orientation tests
                  * below in order to improve robustness.
-                 * 
+                 *
                  * [An example where the orientation tests fail to be consistent is
                  * the following (where the true intersection is at the shared endpoint
                  * POINT (19.850257749638203 46.29709338043669)
-                 * 
-                 * LINESTRING ( 19.850257749638203 46.29709338043669, 20.31970698357233 46.76654261437082 ) 
-                 * and 
+                 *
+                 * LINESTRING ( 19.850257749638203 46.29709338043669, 20.31970698357233 46.76654261437082 )
+                 * and
                  * LINESTRING ( -48.51001596420236 -22.063180333403878, 19.850257749638203 46.29709338043669 )
-                 * 
+                 *
                  * which used to produce the INCORRECT result: (20.31970698357233, 46.76654261437082, NaN)
-                 * 
+                 *
                  */
                 if (p1.Equals2D(q1) || p1.Equals2D(q2))
                     IntersectionPoint[0] = p1;
@@ -117,7 +117,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
@@ -170,7 +170,7 @@ namespace NetTopologySuite.Algorithm
             return NoIntersection;
         }
 
-        /// <summary> 
+        /// <summary>
         /// This method computes the actual value of the intersection point.
         /// To obtain the maximum precision from the intersection calculation,
         /// the coordinates are normalized by subtracting the minimum
@@ -198,15 +198,15 @@ namespace NetTopologySuite.Algorithm
             /*
              * Due to rounding it can happen that the computed intersection is
              * outside the envelopes of the input segments.  Clearly this
-             * is inconsistent. 
+             * is inconsistent.
              * This code checks this condition and forces a more reasonable answer
-             * 
+             *
              * MD - May 4 2005 - This is still a problem.  Here is a failure case:
              *
              * LINESTRING (2089426.5233462777 1180182.3877339689, 2085646.6891757075 1195618.7333999649)
              * LINESTRING (1889281.8148903656 1997547.0560044837, 2259977.3672235999 483675.17050843034)
              * int point = (2097408.2633752143,1144595.8008114607)
-             * 
+             *
              * MD - Dec 14 2006 - This does not seem to be a failure case any longer
              */
             if (!IsInSegmentEnvelopes(intPt))
@@ -230,7 +230,7 @@ namespace NetTopologySuite.Algorithm
             bool isIn = IsInSegmentEnvelopes(intPtDD);
             Debug.WriteLine("DD in env = " + isIn + "  --------------------- " + intPtDD);
             double distance = intPt.Distance(intPtDD);
-            if (distance > 0.0001)                
+            if (distance > 0.0001)
                 Debug.WriteLine("Distance = " + distance);
         }
 
@@ -250,9 +250,9 @@ namespace NetTopologySuite.Algorithm
             return intPt;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Computes a segment intersection using homogeneous coordinates.
-        /// Round-off error can cause the raw computation to fail, 
+        /// Round-off error can cause the raw computation to fail,
         /// (usually due to the segments being approximately parallel).
         /// If this happens, a reasonable approximation is computed instead.
         /// </summary>
@@ -265,7 +265,7 @@ namespace NetTopologySuite.Algorithm
             }
             catch (NotRepresentableException e)
             {
-                // compute an approximate result      
+                // compute an approximate result
                 // intPt = CentralEndpointIntersector.GetIntersection(p1, p2, q1, q2);
                 intPt = NearestEndpoint(p1, p2, q1, q2);
             }
@@ -305,7 +305,7 @@ namespace NetTopologySuite.Algorithm
             n11.X -= normPt.X; n11.Y -= normPt.Y;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Tests whether a point lies in the envelopes of both input segments.
         /// A correctly computed intersection point should return <c>true</c>
         /// for this test.
@@ -322,9 +322,9 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Finds the endpoint of the segments P and Q which 
+        /// Finds the endpoint of the segments P and Q which
         /// is closest to the other segment.
-        /// This is a reasonable surrogate for the true 
+        /// This is a reasonable surrogate for the true
         /// intersection points in ill-conditioned cases
         /// (e.g. where two segments are nearly coincident,
         /// or where the endpoint of one segment lies almost on the other segment).
@@ -332,7 +332,7 @@ namespace NetTopologySuite.Algorithm
         /// <remarks>
         /// This replaces the older CentralEndpoint heuristic,
         /// which chose the wrong endpoint in some cases
-        /// where the segments had very distinct slopes 
+        /// where the segments had very distinct slopes
         /// and one endpoint lay almost on the other segment.
         /// </remarks>
         /// <param name="p1">an endpoint of segment P</param>

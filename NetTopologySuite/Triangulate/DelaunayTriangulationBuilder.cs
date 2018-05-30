@@ -8,8 +8,8 @@ namespace NetTopologySuite.Triangulate
 {
     /// <summary>
     /// A utility class which creates Delaunay Triangulations
-    /// from collections of points and extract the resulting 
-    /// triangulation edges or triangles as geometries. 
+    /// from collections of points and extract the resulting
+    /// triangulation edges or triangles as geometries.
     /// </summary>
     /// <author>Martin Davis</author>
     public class DelaunayTriangulationBuilder
@@ -136,7 +136,7 @@ namespace NetTopologySuite.Triangulate
         }
 
         /// <summary>
-        /// Gets the faces of the computed triangulation as a <see cref="IGeometryCollection"/> 
+        /// Gets the faces of the computed triangulation as a <see cref="IGeometryCollection"/>
         /// of <see cref="Polygon"/>.
         /// </summary>
         /// <param name="geomFact">the geometry factory to use to create the output</param>

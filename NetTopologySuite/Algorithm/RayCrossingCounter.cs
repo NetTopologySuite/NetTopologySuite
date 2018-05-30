@@ -97,7 +97,7 @@ namespace NetTopologySuite.Algorithm
         public void CountSegment(Coordinate p1, Coordinate p2)
         {
             /*
-             * For each segment, check if it crosses 
+             * For each segment, check if it crosses
              * a horizontal ray running from the test point in the positive x direction.
              */
 
@@ -167,7 +167,7 @@ namespace NetTopologySuite.Algorithm
         /// Reports whether the point lies exactly on one of the supplied segments.
         /// </summary>
         /// <remarks>
-        /// This method may be called at any time as segments are processed. If the result of this method is <c>true</c>, 
+        /// This method may be called at any time as segments are processed. If the result of this method is <c>true</c>,
         /// no further segments need be supplied, since the result will never change again.
         /// </remarks>
         public bool IsOnSegment => _isPointOnSegment;
@@ -177,7 +177,7 @@ namespace NetTopologySuite.Algorithm
         /// or multipolygon from which the processed segments were provided.
         /// </summary>
         /// <remarks>
-        /// This property only determines the correct location 
+        /// This property only determines the correct location
         /// if <b>all</b> relevant segments have been processed.
         /// </remarks>
         public Location Location
@@ -198,12 +198,12 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Tests whether the point lies in or on 
-        /// the ring, polygon or multipolygon from which the processed 
+        /// Tests whether the point lies in or on
+        /// the ring, polygon or multipolygon from which the processed
         /// segments were provided.
         /// </summary>
         /// <remarks>
-        /// This property only determines the correct location 
+        /// This property only determines the correct location
         /// if <b>all</b> relevant segments have been processed
         /// </remarks>
         public bool IsPointInPolygon => Location != Location.Exterior;

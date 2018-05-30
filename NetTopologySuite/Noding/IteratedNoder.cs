@@ -21,7 +21,7 @@ namespace NetTopologySuite.Noding
     {
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public const int MaxIterations = 5;
 
@@ -54,9 +54,9 @@ namespace NetTopologySuite.Noding
         /// The <see cref="ISegmentString"/>s have the same context as their parent.
         /// </summary>
         /// <returns></returns>
-        public IList<ISegmentString> GetNodedSubstrings() 
-        { 
-            return _nodedSegStrings; 
+        public IList<ISegmentString> GetNodedSubstrings()
+        {
+            return _nodedSegStrings;
         }
 
         /// <summary>
@@ -66,13 +66,13 @@ namespace NetTopologySuite.Noding
         /// </summary>
         /// <param name="segStrings">A collection of SegmentStrings to be noded.</param>
         /// <exception cref="TopologyException">If the iterated noding fails to converge.</exception>
-        public void ComputeNodes(IList<ISegmentString> segStrings)    
+        public void ComputeNodes(IList<ISegmentString> segStrings)
         {
             var numInteriorIntersections = new int[1];
             _nodedSegStrings = segStrings;
             int nodingIterationCount = 0;
             int lastNodesCreated = -1;
-            do 
+            do
             {
               Node(_nodedSegStrings, numInteriorIntersections);
               nodingIterationCount++;
@@ -81,16 +81,16 @@ namespace NetTopologySuite.Noding
               /*
                * Fail if the number of nodes created is not declining.
                * However, allow a few iterations at least before doing this
-               */       
+               */
               if (lastNodesCreated > 0
                   && nodesCreated >= lastNodesCreated
-                  && nodingIterationCount > _maxIter) 
+                  && nodingIterationCount > _maxIter)
                 throw new TopologyException("Iterated noding failed to converge after "
-                                            + nodingIterationCount + " iterations");              
+                                            + nodingIterationCount + " iterations");
               lastNodesCreated = nodesCreated;
 
-            } 
-            while (lastNodesCreated > 0);        
+            }
+            while (lastNodesCreated > 0);
         }
 
         /// <summary>
@@ -102,10 +102,10 @@ namespace NetTopologySuite.Noding
         private void Node(IList<ISegmentString> segStrings, int[] numInteriorIntersections)
         {
             var si = new IntersectionAdder(_li);
-            var noder = new MCIndexNoder(si);            
+            var noder = new MCIndexNoder(si);
             noder.ComputeNodes(segStrings);
             _nodedSegStrings = noder.GetNodedSubstrings();
-            numInteriorIntersections[0] = si.NumInteriorIntersections;            
+            numInteriorIntersections[0] = si.NumInteriorIntersections;
         }
 
     }

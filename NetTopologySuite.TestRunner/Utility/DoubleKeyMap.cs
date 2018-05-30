@@ -2,7 +2,7 @@
 
 namespace Open.Topology.TestRunner.Utility
 {
-    public class DoubleKeyMap<TKey1, TKey2, TValue> 
+    public class DoubleKeyMap<TKey1, TKey2, TValue>
     {
         internal IDictionary<TKey1, IDictionary<TKey2, TValue>> Data = new Dictionary<TKey1, IDictionary<TKey2, TValue>>();
 

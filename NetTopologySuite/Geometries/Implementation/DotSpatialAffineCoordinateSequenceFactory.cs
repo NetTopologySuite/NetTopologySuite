@@ -67,7 +67,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// For this to be useful, the <see cref="ICoordinateSequence" /> implementation must be mutable.
         /// </summary>
         /// <param name="size"></param>
-        /// <param name="dimension">the dimension of the coordinates in the sequence 
+        /// <param name="dimension">the dimension of the coordinates in the sequence
         /// (if user-specifiable, otherwise ignored)</param>
         /// <returns>A coordinate sequence</returns>
         public ICoordinateSequence Create(int size, int dimension)
@@ -82,7 +82,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="size">The number of coordinates.</param>
         /// <param name="ordinates">
-        /// The ordinates each coordinate has. <see cref="GeoAPI.Geometries.Ordinates.XY"/> is fix, 
+        /// The ordinates each coordinate has. <see cref="GeoAPI.Geometries.Ordinates.XY"/> is fix,
         /// <see cref="GeoAPI.Geometries.Ordinates.Z"/> and <see cref="GeoAPI.Geometries.Ordinates.M"/> can be set.
         /// </param>
         /// <returns>A coordinate sequence.</returns>
@@ -117,7 +117,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// Creates an instance of this class using the provided <paramref name="xy"/> array for x- and y ordinates, 
+        /// Creates an instance of this class using the provided <paramref name="xy"/> array for x- and y ordinates,
         /// the <paramref name="z"/> array for z ordinates and <paramref name="m"/> for measure values.
         /// </summary>
         /// <param name="xy">The x- and y-ordinates</param>

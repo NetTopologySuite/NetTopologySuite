@@ -50,7 +50,7 @@ namespace NetTopologySuite.Tests.XUnit
     {
         public TestRelatePL_Vivid() : base("TestRelatePL.xml") { }
     }
-    
+
     public class TestRelatePP_Vivid : ValidateXUnitRunner
     {
         public TestRelatePP_Vivid() : base("TestRelatePP.xml") { }

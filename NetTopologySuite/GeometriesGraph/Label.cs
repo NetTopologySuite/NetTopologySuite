@@ -3,7 +3,7 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.GeometriesGraph
 {
-    /// <summary> 
+    /// <summary>
     /// A <c>Label</c> indicates the topological relationship of a component
     /// of a topology graph to a given <c>Geometry</c>.
     /// This class supports labels for relationships to two <c>Geometry</c>s,
@@ -23,7 +23,7 @@ namespace NetTopologySuite.GeometriesGraph
     /// It is up to the client code to associate the 0 and 1 <c>TopologyLocation</c>s
     /// with specific geometries.
     /// </summary>
-    public class Label 
+    public class Label
     {
         /// <summary>
         /// Converts a Label to a Line label (that is, one with no side Location).
@@ -33,8 +33,8 @@ namespace NetTopologySuite.GeometriesGraph
         public static Label ToLineLabel(Label label)
         {
             Label lineLabel = new Label(Location.Null);
-            for (int i = 0; i < 2; i++) 
-                lineLabel.SetLocation(i, label.GetLocation(i));            
+            for (int i = 0; i < 2; i++)
+                lineLabel.SetLocation(i, label.GetLocation(i));
             return lineLabel;
         }
 
@@ -51,7 +51,7 @@ namespace NetTopologySuite.GeometriesGraph
             elt[1] = new TopologyLocation(onLoc);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Construct a Label with a single location for both Geometries.
         /// Initialize the location for the Geometry index.
         /// </summary>
@@ -90,9 +90,9 @@ namespace NetTopologySuite.GeometriesGraph
             elt[0] = new TopologyLocation(Location.Null, Location.Null, Location.Null);
             elt[1] = new TopologyLocation(Location.Null, Location.Null, Location.Null);
             elt[geomIndex].SetLocations(onLoc, leftLoc, rightLoc);
-        }        
+        }
 
-        /// <summary> 
+        /// <summary>
         /// Construct a Label with the same values as the argument Label.
         /// </summary>
         /// <param name="lbl"></param>
@@ -103,7 +103,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public  void Flip()
         {
@@ -112,28 +112,28 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public  Location GetLocation(int geomIndex, Positions posIndex) 
-        { 
-            return elt[geomIndex].Get(posIndex); 
+        public  Location GetLocation(int geomIndex, Positions posIndex)
+        {
+            return elt[geomIndex].Get(posIndex);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public  Location GetLocation(int geomIndex) 
-        { 
-            return elt[geomIndex].Get(Positions.On); 
+        public  Location GetLocation(int geomIndex)
+        {
+            return elt[geomIndex].Get(Positions.On);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
@@ -144,7 +144,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="_location"></param>
@@ -154,7 +154,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="_location"></param>
@@ -164,7 +164,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="_location"></param>
@@ -174,7 +174,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="_location"></param>
         public  void SetAllLocationsIfNull(Location _location)
@@ -183,80 +183,80 @@ namespace NetTopologySuite.GeometriesGraph
             SetAllLocationsIfNull(1, _location);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Merge this label with another one.
         /// Merging updates any null attributes of this label with the attributes from lbl.
         /// </summary>
         /// <param name="lbl"></param>
         public  void Merge(Label lbl)
         {
-            for (int i = 0; i < 2; i++) 
+            for (int i = 0; i < 2; i++)
             {
-                if (elt[i] == null && lbl.elt[i] != null) 
-                     elt[i] = new TopologyLocation(lbl.elt[i]);            
-                else elt[i].Merge(lbl.elt[i]);            
+                if (elt[i] == null && lbl.elt[i] != null)
+                     elt[i] = new TopologyLocation(lbl.elt[i]);
+                else elt[i].Merge(lbl.elt[i]);
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="tl"></param>
         private void SetGeometryLocation(int geomIndex, TopologyLocation tl)
         {
-            if (tl == null) 
+            if (tl == null)
                 return;
             elt[geomIndex].SetLocations(tl);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public  int GeometryCount
         {
             get
             {
                 int count = 0;
-                if (!elt[0].IsNull) 
+                if (!elt[0].IsNull)
                     count++;
-                if (!elt[1].IsNull) 
+                if (!elt[1].IsNull)
                     count++;
                 return count;
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public  bool IsNull(int geomIndex) 
+        public  bool IsNull(int geomIndex)
         {
-            return elt[geomIndex].IsNull; 
+            return elt[geomIndex].IsNull;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
         public  bool IsAnyNull(int geomIndex)
-        { 
-            return elt[geomIndex].IsAnyNull; 
+        {
+            return elt[geomIndex].IsAnyNull;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
-        public  bool IsArea()               
-        { 
-            return elt[0].IsArea || elt[1].IsArea;   
+        public  bool IsArea()
+        {
+            return elt[0].IsArea || elt[1].IsArea;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
@@ -271,17 +271,17 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
-        public  bool IsLine(int geomIndex)  
+        public  bool IsLine(int geomIndex)
         {
-            return elt[geomIndex].IsLine;   
+            return elt[geomIndex].IsLine;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="lbl"></param>
         /// <param name="side"></param>
@@ -293,7 +293,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="loc"></param>
@@ -303,7 +303,7 @@ namespace NetTopologySuite.GeometriesGraph
             return elt[geomIndex].AllPositionsEqual(loc);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Converts one GeometryLocation to a Line location.
         /// </summary>
         /// <param name="geomIndex"></param>
@@ -314,18 +314,18 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            if (elt[0] != null) 
+            if (elt[0] != null)
             {
                 sb.Append("A:");
                 sb.Append(this.elt[0]);
             }
-            if (elt[1] != null) 
+            if (elt[1] != null)
             {
                 sb.Append(" B:");
                 sb.Append(this.elt[1]);

@@ -72,7 +72,7 @@ namespace NetTopologySuite.Tests.XUnit
                 var ext = Path.GetExtension(file);
                 if (string.IsNullOrEmpty(ext))
                     continue;
-                
+
                 if (ext.ToLowerInvariant() != ".xml")
                     continue;
 

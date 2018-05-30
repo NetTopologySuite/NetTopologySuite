@@ -4,7 +4,7 @@ using NetTopologySuite.Algorithm;
 
 namespace NetTopologySuite.Geometries
 {
-    /// <summary> 
+    /// <summary>
     /// Represents a planar triangle, and provides methods for calculating various
     /// properties of triangles.
     /// </summary>
@@ -79,7 +79,7 @@ namespace NetTopologySuite.Geometries
 
         ///<summary>Computes the circumcentre of a triangle.</summary>
         /// <remarks>
-        /// The circumcentre is the centre of the circumcircle, 
+        /// The circumcentre is the centre of the circumcircle,
         /// the smallest circle which encloses the triangle.
         /// It is also the common intersection point of the
         /// perpendicular bisectors of the sides of the triangle,
@@ -138,7 +138,7 @@ namespace NetTopologySuite.Geometries
         /// The <c>InCentre</c> of a triangle is the point which is equidistant
         /// from the sides of the triangle.
         /// It is also the point at which the bisectors of the triangle's angles meet.
-        /// It is the centre of the triangle's <c>InCircle</c>, which is the unique circle 
+        /// It is the centre of the triangle's <c>InCircle</c>, which is the unique circle
         /// that is tangent to each of the triangle's three sides.
         /// </remarks>
         /// <param name="a">A vertex of the triangle</param>
@@ -246,8 +246,8 @@ namespace NetTopologySuite.Geometries
         /// and negative if it is oriented CCW.
         /// </para>
         /// <para>
-        /// The signed area value can be used to determine point orientation, but 
-        /// the implementation in this method is susceptible to round-off errors.  
+        /// The signed area value can be used to determine point orientation, but
+        /// the implementation in this method is susceptible to round-off errors.
         /// Use <see cref="Orientation.Index"/> for robust orientation
         /// calculation.
         /// </para>
@@ -272,7 +272,7 @@ namespace NetTopologySuite.Geometries
         }
 
         ///<summary>
-        /// Computes the 3D area of a triangle. 
+        /// Computes the 3D area of a triangle.
         /// The value computed is always non-negative.
         ///</summary>
         /// <param name="a">A vertex of the triangle</param>
@@ -296,7 +296,7 @@ namespace NetTopologySuite.Geometries
             double vy = c.Y - a.Y;
             double vz = c.Z - a.Z;
 
-            // cross-product = u x v 
+            // cross-product = u x v
             double crossx = uy * vz - uz * vy;
             double crossy = uz * vx - ux * vz;
             double crossz = ux * vy - uy * vx;
@@ -309,11 +309,11 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Computes the Z-value (elevation) of an XY point 
+        /// Computes the Z-value (elevation) of an XY point
         /// on a three-dimensional plane defined by a triangle
         /// whose vertices have Z-values.
         /// The defining triangle must not be degenerate
-        /// (in other words, the triangle must enclose a 
+        /// (in other words, the triangle must enclose a
         /// non-zero area),
         /// and must not be parallel to the Z-axis.
         /// <para/>

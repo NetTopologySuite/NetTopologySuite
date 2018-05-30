@@ -7,19 +7,19 @@ namespace NetTopologySuite.Index.Quadtree
     /// A Quadtree is a spatial index structure for efficient range querying
     /// of items bounded by 2D rectangles.<br/>
     /// <see cref="IGeometry"/>s can be indexed by using their <see cref="Envelope"/>s.<br/>
-    /// Any type of object can also be indexed, as long as it has an extent that can be 
+    /// Any type of object can also be indexed, as long as it has an extent that can be
     /// represented by an <see cref="Envelope"/>.
     /// <para/>
     /// This Quadtree index provides a <b>primary filter</b>
     /// for range rectangle queries.  The various query methods return a list of
     /// all items which <i>may</i> intersect the query rectangle.  Note that
     /// it may thus return items which do <b>not</b> in fact intersect the query rectangle.
-    /// A secondary filter is required to test for actual intersection 
-    /// between the query rectangle and the envelope of each candidate item. 
-    /// The secondary filter may be performed explicitly, 
-    /// or it may be provided implicitly by subsequent operations executed on the items 
-    /// (for instance, if the index query is followed by computing a spatial predicate 
-    /// between the query geometry and tree items, 
+    /// A secondary filter is required to test for actual intersection
+    /// between the query rectangle and the envelope of each candidate item.
+    /// The secondary filter may be performed explicitly,
+    /// or it may be provided implicitly by subsequent operations executed on the items
+    /// (for instance, if the index query is followed by computing a spatial predicate
+    /// between the query geometry and tree items,
     /// the envelope intersection check is performed automatically.
     /// <para/>
     /// This implementation does not require specifying the extent of the inserted
@@ -49,17 +49,17 @@ namespace NetTopologySuite.Index.Quadtree
             double minx = itemEnv.MinX;
             double maxx = itemEnv.MaxX;
             double miny = itemEnv.MinY;
-            double maxy = itemEnv.MaxY;            
+            double maxy = itemEnv.MaxY;
             // has a non-zero extent
-            if (minx != maxx && miny != maxy) 
+            if (minx != maxx && miny != maxy)
                 return itemEnv;
             // pad one or both extents
-            if (minx == maxx) 
+            if (minx == maxx)
             {
                 minx = minx - minExtent / 2.0;
                 maxx = minx + minExtent / 2.0;
             }
-            if (miny == maxy) 
+            if (miny == maxy)
             {
                 miny = miny - minExtent / 2.0;
                 maxy = miny + minExtent / 2.0;
@@ -87,7 +87,7 @@ namespace NetTopologySuite.Index.Quadtree
             _root = new Root<T>();
         }
 
-        /// <summary> 
+        /// <summary>
         /// Returns the number of levels in the tree.
         /// </summary>
         public int Depth
@@ -97,7 +97,7 @@ namespace NetTopologySuite.Index.Quadtree
                 //I don't think it's possible for root to be null. Perhaps we should
                 //remove the check. [Jon Aquino]
                 //Or make an assertion [Jon Aquino 10/29/2003]
-                if (_root != null) 
+                if (_root != null)
                     return _root.Depth;
                 return 0;
             }
@@ -115,21 +115,21 @@ namespace NetTopologySuite.Index.Quadtree
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Returns the number of items in the tree.
         /// </summary>
         public int Count
         {
             get
             {
-                if (_root != null) 
+                if (_root != null)
                     return _root.Count;
                 return 0;
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="itemEnv"></param>
         /// <param name="item"></param>
@@ -140,7 +140,7 @@ namespace NetTopologySuite.Index.Quadtree
             _root.Insert(insertEnv, item);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Removes a single item from the tree.
         /// </summary>
         /// <param name="itemEnv">The Envelope of the item to be removed.</param>
@@ -150,19 +150,19 @@ namespace NetTopologySuite.Index.Quadtree
         {
             Envelope posEnv = EnsureExtent(itemEnv, _minExtent);
             return _root.Remove(posEnv, item);
-        }        
+        }
 
         /// <summary>
         /// Queries the tree and returns items which may lie in the given search envelope.
         /// </summary>
         /// <remarks>
-        /// Precisely, the items that are returned are all items in the tree 
+        /// Precisely, the items that are returned are all items in the tree
         /// whose envelope <b>may</b> intersect the search Envelope.
         /// Note that some items with non-intersecting envelopes may be returned as well;
         /// the client is responsible for filtering these out.
         /// In most situations there will be many items in the tree which do not
         /// intersect the search envelope and which are not returned - thus
-        /// providing improved performance over a simple linear scan.    
+        /// providing improved performance over a simple linear scan.
         /// </remarks>
         /// <param name="searchEnv">The envelope of the desired query area.</param>
         /// <returns>A List of items which may intersect the search envelope</returns>
@@ -181,13 +181,13 @@ namespace NetTopologySuite.Index.Quadtree
         /// Queries the tree and visits items which may lie in the given search envelope.
         /// </summary>
         /// <remarks>
-        /// Precisely, the items that are visited are all items in the tree 
+        /// Precisely, the items that are visited are all items in the tree
         /// whose envelope <b>may</b> intersect the search Envelope.
         /// Note that some items with non-intersecting envelopes may be visited as well;
         /// the client is responsible for filtering these out.
         /// In most situations there will be many items in the tree which do not
         /// intersect the search envelope and which are not visited - thus
-        /// providing improved performance over a simple linear scan.    
+        /// providing improved performance over a simple linear scan.
         /// </remarks>
         /// <param name="searchEnv">The envelope of the desired query area.</param>
         /// <param name="visitor">A visitor object which is passed the visited items</param>
@@ -209,9 +209,9 @@ namespace NetTopologySuite.Index.Quadtree
             _root.AddAllItems(ref foundItems);
             return foundItems;
         }
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="itemEnv"></param>
         private void CollectStats(Envelope itemEnv)

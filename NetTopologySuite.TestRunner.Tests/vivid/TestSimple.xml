@@ -150,7 +150,7 @@
   <desc>mL - intersection between elements at non-vertex</desc>
   <a>
     MULTILINESTRING(
-  (40 140, 160 40), 
+  (40 140, 160 40),
   (160 140, 40 40))
   </a>
 <test>
@@ -164,7 +164,7 @@
   <desc>mL - no intersection between elements</desc>
   <a>
     MULTILINESTRING(
-  (20 160, 20 20), 
+  (20 160, 20 20),
   (100 160, 100 20))
   </a>
 <test>
@@ -177,7 +177,7 @@
 <case>
   <desc>mL - mutual intersection at endpoints only</desc>
   <a>
-    MULTILINESTRING ((60 140, 20 80, 60 40), 
+    MULTILINESTRING ((60 140, 20 80, 60 40),
   (60 40, 100 80, 60 140))
   </a>
 <test>
@@ -190,7 +190,7 @@
 <case>
   <desc>mL - one element is non-simple</desc>
   <a>
-    MULTILINESTRING ((60 40, 140 40, 100 120, 100 0), 
+    MULTILINESTRING ((60 40, 140 40, 100 120, 100 0),
   (100 200, 200 120))
   </a>
 <test>
@@ -203,8 +203,8 @@
 <case>
   <desc>mL - proper intersection between elements at vertex</desc>
   <a>
-    MULTILINESTRING ((40 120, 100 60), 
-  (160 120, 100 60), 
+    MULTILINESTRING ((40 120, 100 60),
+  (160 120, 100 60),
   (40 60, 160 60))
   </a>
 <test>
@@ -217,7 +217,7 @@
 <case>
   <desc>mL - intersection between closed lines</desc>
   <a>
-    MULTILINESTRING ((80 160, 40 220, 40 100, 80 160), 
+    MULTILINESTRING ((80 160, 40 220, 40 100, 80 160),
   (80 160, 120 220, 120 100, 80 160))
   </a>
 <test>
@@ -230,8 +230,8 @@
 <case>
   <desc>mL - intersection between closed and open lines</desc>
   <a>
-    MULTILINESTRING ((80 160, 40 220), 
-  (80 160, 120 220, 120 100, 80 160), 
+    MULTILINESTRING ((80 160, 40 220),
+  (80 160, 120 220, 120 100, 80 160),
   (40 100, 80 160))
   </a>
 <test>
@@ -268,8 +268,8 @@
 <case>
   <desc>mA</desc>
   <a>
-    MULTIPOLYGON (((240 160, 140 220, 80 60, 220 40, 240 160)), 
-  ((160 380, 100 240, 20 380, 160 380), 
+    MULTIPOLYGON (((240 160, 140 220, 80 60, 220 40, 240 160)),
+  ((160 380, 100 240, 20 380, 160 380),
     (120 340, 60 360, 80 320, 120 340)))
   </a>
 <test>
@@ -282,8 +282,8 @@
 <case>
   <desc>mA - with touching elements</desc>
   <a>
-    MULTIPOLYGON (((240 160, 100 240, 80 60, 220 40, 240 160)), 
-  ((160 380, 100 240, 20 380, 160 380), 
+    MULTIPOLYGON (((240 160, 100 240, 80 60, 220 40, 240 160)),
+  ((160 380, 100 240, 20 380, 160 380),
     (120 340, 60 360, 80 320, 120 340)))
   </a>
 <test>

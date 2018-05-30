@@ -3,7 +3,7 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
 {
-    /// <summary>  
+    /// <summary>
     /// Models a collection of <c>Point</c>s.
     /// </summary>
 #if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
@@ -15,7 +15,7 @@ namespace NetTopologySuite.Geometries
         /// Represents an empty <c>MultiPoint</c>.
         /// </summary>
         public new static readonly GeoAPI.Geometries.IMultiPoint Empty = new GeometryFactory().CreateMultiPoint(new GeoAPI.Geometries.IPoint[] { });
-        
+
         /// <summary>
         /// Constructs a <c>MultiPoint</c>.
         /// </summary>
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Geometries
         /// Elements may be empty <c>Point</c>s, but not <c>null</c>s.
         /// </param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="GeoAPI.Geometries.PrecisionModels.Floating"/>.
         /// </remarks>
         public MultiPoint(GeoAPI.Geometries.IPoint[] points) : this(points, DefaultFactory) { }
@@ -61,16 +61,16 @@ namespace NetTopologySuite.Geometries
         protected override SortIndexValue SortIndex => SortIndexValue.MultiPoint;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override GeoAPI.Geometries.Dimension Dimension => GeoAPI.Geometries.Dimension.Point;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override GeoAPI.Geometries.Dimension BoundaryDimension => GeoAPI.Geometries.Dimension.False;
 
-        /// <summary>  
+        /// <summary>
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"MultiPoint"</returns>
@@ -82,11 +82,11 @@ namespace NetTopologySuite.Geometries
        /// Gets the boundary of this geometry.
        /// Zero-dimensional geometries have no boundary by definition,
        /// so an empty GeometryCollection is returned.
-       /// </summary> 
+       /// </summary>
        public override GeoAPI.Geometries.IGeometry Boundary => Factory.CreateGeometryCollection();
 
         ///// <summary>
-        ///// 
+        /////
         ///// </summary>
         //public override bool IsSimple
         //{
@@ -97,20 +97,20 @@ namespace NetTopologySuite.Geometries
         //}
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override bool IsValid => true;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(GeoAPI.Geometries.IGeometry other, double tolerance) 
+        public override bool EqualsExact(GeoAPI.Geometries.IGeometry other, double tolerance)
         {
-            if (!IsEquivalentClass(other)) 
-                return false;            
+            if (!IsEquivalentClass(other))
+                return false;
             return base.EqualsExact(other, tolerance);
         }
 
@@ -120,7 +120,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="n">The index of the <c>Coordinate</c> to retrieve, beginning at 0.
         /// </param>
         /// <returns>The <c>n</c>th <c>Coordinate</c>.</returns>
-        protected GeoAPI.Geometries.Coordinate GetCoordinate(int n) 
+        protected GeoAPI.Geometries.Coordinate GetCoordinate(int n)
         {
             return Geometries[n].Coordinate;
         }

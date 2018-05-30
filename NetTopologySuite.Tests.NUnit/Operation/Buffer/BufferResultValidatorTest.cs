@@ -37,7 +37,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                 {
                     //System.Console.WriteLine(WKTWriter.ToPoint(errorLocation));
                 }
-                Assert.Fail("The buffer result was not valid"); 
+                Assert.Fail("The buffer result was not valid");
             }
             Assert.IsTrue(validator.IsValid());
         }

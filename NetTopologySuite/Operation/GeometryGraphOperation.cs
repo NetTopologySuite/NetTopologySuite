@@ -8,31 +8,31 @@ namespace NetTopologySuite.Operation
     /// The base class for operations that require <see cref="GeometryGraph"/>s.
     /// </summary>
     public class GeometryGraphOperation
-    {        
-  
+    {
+
         private LineIntersector _li = new RobustLineIntersector();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected LineIntersector lineIntersector
         {
             get => _li;
             set => _li = value;
         }
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected IPrecisionModel resultPrecisionModel;
 
         /// <summary>
         /// The operation args into an array so they can be accessed by index.
         /// </summary>
-        protected GeometryGraph[] arg;  
+        protected GeometryGraph[] arg;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="g0"></param>
         /// <param name="g1"></param>
@@ -53,10 +53,10 @@ namespace NetTopologySuite.Operation
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="g0"></param>
-        public GeometryGraphOperation(IGeometry g0) 
+        public GeometryGraphOperation(IGeometry g0)
         {
             ComputationPrecision = g0.PrecisionModel;
 
@@ -65,17 +65,17 @@ namespace NetTopologySuite.Operation
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
         public IGeometry GetArgGeometry(int i)
         {
-            return arg[i].Geometry; 
+            return arg[i].Geometry;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected IPrecisionModel ComputationPrecision
         {

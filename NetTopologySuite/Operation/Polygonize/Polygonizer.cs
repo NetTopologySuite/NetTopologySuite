@@ -12,7 +12,7 @@ namespace NetTopologySuite.Operation.Polygonize
     /// the constituent linework is extracted as the edges to be polygonized.
     /// The processed edges must be correctly noded; that is, they must only meet
     /// at their endpoints. Polygonization will accept incorrectly noded input
-    /// but will not form polygons from non-noded edges, 
+    /// but will not form polygons from non-noded edges,
     /// and reports them as errors.
     /// </para><para>
     /// The Polygonizer reports the follow kinds of errors:
@@ -26,14 +26,14 @@ namespace NetTopologySuite.Operation.Polygonize
     /// This is useful for situations where it is known that the input lines form a
     /// valid polygonal geometry.</para>
     /// </remarks>
-    /// 
+    ///
     public class Polygonizer
     {
         /// <summary>
         /// The default polygonizer output behavior
         /// </summary>
         public const bool AllPolys = false;
-        
+
         /// <summary>
         /// Adds every linear element in a <see cref="IGeometry"/> into the polygonizer graph.
         /// </summary>
@@ -79,12 +79,12 @@ namespace NetTopologySuite.Operation.Polygonize
         private IGeometryFactory _geomFactory;
 
         /// <summary>
-        /// Allows disabling the valid ring checking, 
+        /// Allows disabling the valid ring checking,
         /// to optimize situations where invalid rings are not expected.
         /// </summary>
         /// <remarks>The default is <c>true</c></remarks>
         public bool IsCheckingRingsValid
-        {          
+        {
             get => _isCheckingRingsValid;
             set => _isCheckingRingsValid = value;
         }
@@ -94,11 +94,11 @@ namespace NetTopologySuite.Operation.Polygonize
         /// as the input <c>Geometry</c>s.
         /// The output mask is <see cref="AllPolys"/>
         /// </summary>
-        /// 
-        public Polygonizer() 
+        ///
+        public Polygonizer()
             :this(AllPolys)
         {
-            
+
             _lineStringAdder = new LineStringAdder(this);
         }
 
@@ -153,7 +153,7 @@ namespace NetTopologySuite.Operation.Polygonize
 
         /// <summary>
         /// Gets the list of polygons formed by the polygonization.
-        /// </summary>        
+        /// </summary>
         public ICollection<IGeometry> GetPolygons()
         {
             Polygonize();
@@ -162,7 +162,7 @@ namespace NetTopologySuite.Operation.Polygonize
 
         /// <summary>
         /// Gets a geometry representing the polygons formed by the polygonization.
-        /// If a valid polygonal geometry was extracted the result is a <see cref="IPolygonal"/> geometry. 
+        /// If a valid polygonal geometry was extracted the result is a <see cref="IPolygonal"/> geometry.
         /// </summary>
         /// <returns>A geometry containing the polygons</returns>
         public IGeometry GetGeometry()
@@ -177,7 +177,7 @@ namespace NetTopologySuite.Operation.Polygonize
             return _geomFactory.CreateGeometryCollection(Geometries.GeometryFactory.ToGeometryArray(_polyList));
         }
 
-        /// <summary> 
+        /// <summary>
         /// Gets the list of dangling lines found during polygonization.
         /// </summary>
         public ICollection<ILineString> GetDangles()
@@ -210,13 +210,13 @@ namespace NetTopologySuite.Operation.Polygonize
         private void Polygonize()
         {
             // check if already computed
-            if (_polyList != null) 
+            if (_polyList != null)
                 return;
 
             _polyList = new List<IGeometry>();
 
             // if no geometries were supplied it's possible that graph is null
-            if (_graph == null) 
+            if (_graph == null)
                 return;
 
             _dangles = _graph.DeleteDangles();

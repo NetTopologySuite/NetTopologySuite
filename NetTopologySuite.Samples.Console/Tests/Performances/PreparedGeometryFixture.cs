@@ -62,7 +62,7 @@ namespace NetTopologySuite.Samples.Tests.Performances
         private void TestPerformances(int total)
         {
             IPoint point = _factory.CreatePoint(gimme_a_coord());
-            IEnumerable<IPolygon> polygons = create_polygons(total);            
+            IEnumerable<IPolygon> polygons = create_polygons(total);
             IEnumerable<IPreparedGeometry> prepared = polygons.Select(PreparedGeometryFactory.Prepare);
             Stopwatch sw = Stopwatch.StartNew();
             int match = prepared.Count(pg => pg.Contains(point));

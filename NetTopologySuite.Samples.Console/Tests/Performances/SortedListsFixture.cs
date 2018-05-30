@@ -51,7 +51,7 @@ namespace NetTopologySuite.Tests.Performances
         {
             var factory = GeometryFactory.Default;
             var holes = new List<ILinearRing>(100);
-            var shell = CreateRing(0, 0, 20, 10000);            
+            var shell = CreateRing(0, 0, 20, 10000);
             Benchmark(factory.CreatePolygon(shell, holes.ToArray()));
             for (var i = 0; i < 100; i += 5)
             {

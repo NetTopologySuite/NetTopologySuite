@@ -27,7 +27,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             //gridBuilder.SetSeed(1185072199562);
             var area = gridBuilder.Geometry;
 
-            //    PointInAreaLocator pia = new IndexedPointInAreaLocator(area); 
+            //    PointInAreaLocator pia = new IndexedPointInAreaLocator(area);
             IPointOnGeometryLocator pia = new IndexedPointInAreaLocator(area);
 
             var gridTester = new PointInAreaStressTester(geomFactory, area)

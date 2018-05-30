@@ -15,24 +15,24 @@ namespace NetTopologySuite.Operation.Linemerge
     /// merged LineString will be that of the majority of the LineStrings from which it
     /// was derived.</para>
     /// <para>
-    /// Any dimension of Geometry is handled -- the constituent linework is extracted to 
+    /// Any dimension of Geometry is handled -- the constituent linework is extracted to
     /// form the edges. The edges must be correctly noded; that is, they must only meet
     /// at their endpoints.  The LineMerger will still run on incorrectly noded input
     /// but will not form polygons from incorrected noded edges.</para>
     /// <para>
     /// <b>NOTE:</b>once merging has been performed, no more</para>
     /// </remarks>
-    public class LineMerger 
+    public class LineMerger
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private class AnonymousGeometryComponentFilterImpl : IGeometryComponentFilter
         {
             private readonly LineMerger _container;
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             /// <param name="container"></param>
             public AnonymousGeometryComponentFilterImpl(LineMerger container)
@@ -41,7 +41,7 @@ namespace NetTopologySuite.Operation.Linemerge
             }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             /// <param name="component"></param>
             public void Filter(IGeometry component)
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// </summary>
         /// <param name="geometry"></param>
         public void Add(IGeometry geometry)
-        {            
+        {
             geometry.Apply(new AnonymousGeometryComponentFilterImpl(this));
         }
 
@@ -81,22 +81,22 @@ namespace NetTopologySuite.Operation.Linemerge
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="lineString"></param>
-        private void Add(ILineString lineString) 
+        private void Add(ILineString lineString)
         {
-            if (_factory == null) 
-                _factory = lineString.Factory;            
+            if (_factory == null)
+                _factory = lineString.Factory;
             _graph.AddEdge(lineString);
         }
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        private void Merge() 
+        private void Merge()
         {
-            if (_mergedLineStrings != null) 
+            if (_mergedLineStrings != null)
                 return;
 
             // reset marks (this allows incremental processing)
@@ -112,46 +112,31 @@ namespace NetTopologySuite.Operation.Linemerge
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        private void BuildEdgeStringsForObviousStartNodes() 
+        private void BuildEdgeStringsForObviousStartNodes()
         {
             BuildEdgeStringsForNonDegree2Nodes();
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        private void BuildEdgeStringsForIsolatedLoops() 
+        private void BuildEdgeStringsForIsolatedLoops()
         {
             BuildEdgeStringsForUnprocessedNodes();
-        }  
+        }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        private void BuildEdgeStringsForUnprocessedNodes() 
+        private void BuildEdgeStringsForUnprocessedNodes()
         {
             foreach (Node node in _graph.Nodes)
             {
-                if (!node.IsMarked) 
-                { 
+                if (!node.IsMarked)
+                {
                     Assert.IsTrue(node.Degree == 2);
-                    BuildEdgeStringsStartingAt(node);
-                    node.Marked = true;
-                }
-            }
-        }  
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void BuildEdgeStringsForNonDegree2Nodes() 
-        {
-            foreach (Node node in _graph.Nodes)
-            {
-                if (node.Degree != 2) 
-                { 
                     BuildEdgeStringsStartingAt(node);
                     node.Marked = true;
                 }
@@ -159,10 +144,25 @@ namespace NetTopologySuite.Operation.Linemerge
         }
 
         /// <summary>
-        /// 
+        ///
+        /// </summary>
+        private void BuildEdgeStringsForNonDegree2Nodes()
+        {
+            foreach (Node node in _graph.Nodes)
+            {
+                if (node.Degree != 2)
+                {
+                    BuildEdgeStringsStartingAt(node);
+                    node.Marked = true;
+                }
+            }
+        }
+
+        /// <summary>
+        ///
         /// </summary>
         /// <param name="node"></param>
-        private void BuildEdgeStringsStartingAt(Node node) 
+        private void BuildEdgeStringsStartingAt(Node node)
         {
             foreach (LineMergeDirectedEdge directedEdge in node.OutEdges)
             {
@@ -173,19 +173,19 @@ namespace NetTopologySuite.Operation.Linemerge
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="start"></param>
         /// <returns></returns>
-        private EdgeString BuildEdgeStringStartingWith(LineMergeDirectedEdge start) 
-        {    
+        private EdgeString BuildEdgeStringStartingWith(LineMergeDirectedEdge start)
+        {
             EdgeString edgeString = new EdgeString(_factory);
             LineMergeDirectedEdge current = start;
-            do 
+            do
             {
                 edgeString.Add(current);
                 current.Edge.Marked = true;
-                current = current.Next;      
+                current = current.Next;
             }
             while (current != null && current != start);
             return edgeString;
@@ -195,7 +195,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// Returns the LineStrings built by the merging process.
         /// </summary>
         /// <returns></returns>
-        public IList<IGeometry> GetMergedLineStrings() 
+        public IList<IGeometry> GetMergedLineStrings()
         {
             Merge();
             return _mergedLineStrings;

@@ -175,8 +175,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
         /// <summary>
         /// Tests using PreparedGeometry, but creating a new
         /// PreparedGeometry object each time.
-        /// This tests whether there is a penalty for using 
-        /// the PG algorithm as a complete replacement for 
+        /// This tests whether there is a penalty for using
+        /// the PG algorithm as a complete replacement for
         /// the original algorithm.
         /// </summary>
         /// <param name="g">The polygonal test geometry</param>

@@ -71,9 +71,9 @@ namespace NetTopologySuite.Algorithm
         /// If the orientation can be computed safely using standard DP
         /// arithmetic, this routine returns the orientation index.
         /// Otherwise, a value i > 1 is returned.
-        /// In this case the orientation index must 
+        /// In this case the orientation index must
         /// be computed using some other more robust method.
-        /// The filter is fast to compute, so can be used to 
+        /// The filter is fast to compute, so can be used to
         /// avoid the use of slower robust methods except when they are really needed,
         /// thus providing better average performance.
         /// <para/>

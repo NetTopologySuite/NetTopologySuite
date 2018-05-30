@@ -7,7 +7,7 @@ using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.GeometriesGraph
 {
-    /// <summary> 
+    /// <summary>
     /// Models the end of an edge incident on a node.
     /// </summary>
     /// <remarks>
@@ -23,7 +23,7 @@ namespace NetTopologySuite.GeometriesGraph
     public class EdgeEnd : IComparable<EdgeEnd>
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private Label _label;
 
@@ -32,7 +32,7 @@ namespace NetTopologySuite.GeometriesGraph
         private int _quadrant;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edge"></param>
         protected EdgeEnd(Edge edge)
@@ -41,16 +41,16 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edge"></param>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
-        public EdgeEnd(Edge edge, Coordinate p0, Coordinate p1) : 
+        public EdgeEnd(Edge edge, Coordinate p0, Coordinate p1) :
             this(edge, p0, p1, null) { }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edge"></param>
         /// <param name="p0"></param>
@@ -64,7 +64,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
@@ -79,12 +79,12 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Edge Edge { get; protected set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Label Label
         {
@@ -93,37 +93,37 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate Coordinate => _p0;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate DirectedCoordinate => _p1;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int Quadrant => _quadrant;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public double Dx => _dx;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public double Dy => _dy;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Node Node { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
@@ -133,7 +133,7 @@ namespace NetTopologySuite.GeometriesGraph
             return CompareDirection(e);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Implements the total order relation:
         /// a has a greater angle with the positive x-axis than b.
         /// Using the obvious algorithm of simply computing the angle is not robust,
@@ -166,11 +166,11 @@ namespace NetTopologySuite.GeometriesGraph
         public virtual void ComputeLabel(IBoundaryNodeRule boundaryNodeRule) { }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="outstream"></param>
         public virtual void Write(StreamWriter outstream)
-        {            
+        {
             double angle = Math.Atan2(_dy, _dx);
             string fullname = GetType().FullName;
             int lastDotPos = fullname.LastIndexOf('.');

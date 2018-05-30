@@ -5,11 +5,11 @@ using Open.Topology.TestRunner.Result;
 namespace Open.Topology.TestRunner.Operations
 {
     /// <summary>
-    /// A <see cref="IGeometryOperation"/> which executes the original operation 
+    /// A <see cref="IGeometryOperation"/> which executes the original operation
     /// and returns that result,
     /// but also executes a separate operation (which could be multiple operations).
-    /// The side operations can throw exceptions if they do not compute 
-    /// correct results.  This relies on the availability of 
+    /// The side operations can throw exceptions if they do not compute
+    /// correct results.  This relies on the availability of
     /// another reliable implementation to provide the expected result.
     /// <para>
     /// This class can be used via the <tt>-geomop</tt> command-line option

@@ -5,7 +5,7 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Triangulate
 {
     /// <summary>
-    /// Creates a map between the vertex <see cref="Coordinate"/>s of a 
+    /// Creates a map between the vertex <see cref="Coordinate"/>s of a
     /// set of <see cref="Geometry"/>s,
     /// and the parent geometry, and transfers the source geometry
     /// data objects to geometry components tagged with the coordinates.
@@ -62,7 +62,7 @@ namespace NetTopologySuite.Triangulate
         /// in which every component has its userData
         /// set to be a Coordinate which is the key to the output data.
         /// The Coordinate is used to determine
-        /// the output data object to be written back into the component. 
+        /// the output data object to be written back into the component.
         /// </summary>
         /// <param name="targetGeom" />
         public void TransferData(IGeometry targetGeom)

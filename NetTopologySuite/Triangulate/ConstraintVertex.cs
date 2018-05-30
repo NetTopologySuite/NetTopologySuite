@@ -50,7 +50,7 @@ namespace NetTopologySuite.Triangulate
         }
 
         /// <summary>
-        /// Merges the constraint data in the vertex <tt>other</tt> into this vertex. 
+        /// Merges the constraint data in the vertex <tt>other</tt> into this vertex.
         /// This method is called when an inserted vertex is
         /// very close to an existing vertex in the triangulation.
         /// </summary>

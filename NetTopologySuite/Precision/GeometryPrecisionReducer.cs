@@ -178,7 +178,7 @@ namespace NetTopologySuite.Precision
             // no need to change if precision model is the same
             if (geomFactory.PrecisionModel == newPrecModel)
                 return new GeometryEditor();
-            
+
             // otherwise create a geometry editor which changes PrecisionModel
             var newFactory = CreateFactory(geomFactory, newPrecModel);
             var geomEdit = new GeometryEditor(newFactory);

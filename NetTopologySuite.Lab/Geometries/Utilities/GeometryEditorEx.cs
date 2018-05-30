@@ -36,15 +36,15 @@ namespace NetTopologySuite.Geometries.Utilities
     /// </para>
     /// <para>
     /// This class supports creating an edited Geometry
-    /// using a different <c>GeometryFactory</c> via the <see cref="GeometryEditorEx"/> constructor.  
+    /// using a different <c>GeometryFactory</c> via the <see cref="GeometryEditorEx"/> constructor.
     /// Examples of situations where this is required is if the geometry is
-    /// transformed to a new SRID and / or a new PrecisionModel. 
+    /// transformed to a new SRID and / or a new PrecisionModel.
     /// </para>
     /// <para>
     /// <strong> Usage Notes </strong>
     /// <list>
     /// <item>The resulting Geometry is not checked for validity.
-    /// If validity needs to be enforced, the new Geometry's 
+    /// If validity needs to be enforced, the new Geometry's
     /// <see cref="IGeometry.IsValid"/> should be called.
     /// </item>
     /// <item>By default the UserData of the input geometry is not copied to the result.</item>
@@ -62,14 +62,14 @@ namespace NetTopologySuite.Geometries.Utilities
         private readonly GeometryEditor.IGeometryEditorOperation _operation;
 
         /// <summary>
-        /// Creates a new GeometryEditor object which will create edited 
+        /// Creates a new GeometryEditor object which will create edited
         /// <see cref="IGeometry"/>s with the same <see cref="IGeometryFactory"/> as the input Geometry.
         /// </summary>
         public GeometryEditorEx()
             : this(new NoOpGeometryOperation()) { }
 
         /// <summary>
-        /// Creates a new GeometryEditor object which will create edited 
+        /// Creates a new GeometryEditor object which will create edited
         /// <see cref="IGeometry"/>s with the given <see cref="IGeometryFactory"/> as the input Geometry.
         /// </summary>
         /// <param name="targetFactory">
@@ -118,12 +118,12 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <remarks>
         /// Clients can create subclasses of <see cref="GeometryEditor.IGeometryEditorOperation"/>,
-        /// <see cref="CoordinateSequenceOperation"/> or <see cref="CoordinateOperation"/> 
+        /// <see cref="CoordinateSequenceOperation"/> or <see cref="CoordinateOperation"/>
         /// to perform required modifications.
         /// </remarks>
         /// <param name="geometry">The Geometry to edit.</param>
         /// <returns>
-        /// A new <see cref="IGeometry"/> which is the result 
+        /// A new <see cref="IGeometry"/> which is the result
         /// of the editing (which may be empty).
         /// </returns>
         public IGeometry Edit(IGeometry geometry)
@@ -303,9 +303,9 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// A <see cref="GeometryEditor.IGeometryEditorOperation"/> which edits 
+        /// A <see cref="GeometryEditor.IGeometryEditorOperation"/> which edits
         /// the coordinate list of a <see cref="IGeometry"/>.
-        /// Operates on <see cref="IGeometry"/> subclasses 
+        /// Operates on <see cref="IGeometry"/> subclasses
         /// which contains a single coordinate list.
         /// </summary>
         public abstract class CoordinateOperation : GeometryEditor.IGeometryEditorOperation
@@ -350,9 +350,9 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// A <see cref="GeometryEditor.IGeometryEditorOperation"/> which edits 
+        /// A <see cref="GeometryEditor.IGeometryEditorOperation"/> which edits
         /// the <see cref="ICoordinateSequence"/>.
-        /// Operates on <see cref="IGeometry"/> subclasses 
+        /// Operates on <see cref="IGeometry"/> subclasses
         /// which contains a single coordinate list.
         /// </summary>
         public abstract class CoordinateSequenceOperation : GeometryEditor.IGeometryEditorOperation

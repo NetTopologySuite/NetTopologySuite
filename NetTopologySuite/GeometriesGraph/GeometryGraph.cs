@@ -365,7 +365,7 @@ namespace NetTopologySuite.GeometriesGraph
                           || _parentGeom is IMultiPolygon;
             var computeAllSegments = computeRingSelfNodes || !isRings;
             esi.ComputeIntersections(Edges, si, computeAllSegments);
-            
+
             //System.out.println("SegmentIntersector # tests = " + si.numTests);
             AddSelfIntersectionNodes(_argIndex);
             return si;

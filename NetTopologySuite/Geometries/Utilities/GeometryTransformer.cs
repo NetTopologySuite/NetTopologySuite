@@ -193,15 +193,15 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="geom">The <c>LinearRing</c> to transform</param>
         /// <param name="parent">The parent geometry</param>
         /// <returns>
-        /// A <c>LinearRing</c> if the transformation resulted in a structurally valid ring, otherwise, 
+        /// A <c>LinearRing</c> if the transformation resulted in a structurally valid ring, otherwise,
         /// if the transformation caused the LinearRing to collapse to 3 or fewer points, a <c>LineString</c>
         /// </returns>
         protected virtual IGeometry TransformLinearRing(ILinearRing geom, IGeometry parent)
         {
             var seq = TransformCoordinates(geom.CoordinateSequence, geom);
-            if (seq == null) 
+            if (seq == null)
                 return Factory.CreateLinearRing((ICoordinateSequence) null);
-            
+
             var seqSize = seq.Count;
             // ensure a valid LinearRing
             if (seqSize > 0 && seqSize < 4 && !_preserveType)

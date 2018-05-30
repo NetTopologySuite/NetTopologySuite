@@ -64,8 +64,8 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
     internal static class ValidateGeometryExtension
     {
         /// <summary>
-        /// Get or create a valid version of the geometry given. If the geometry is a 
-        /// polygon or multi polygon, self intersections or inconsistencies are fixed. 
+        /// Get or create a valid version of the geometry given. If the geometry is a
+        /// polygon or multi polygon, self intersections or inconsistencies are fixed.
         /// Otherwise the geometry is returned.
         /// </summary>
         /// <param name="geom">The geometry to be fixed</param>
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
             // ToDo other validations
 
             // Only care about polygons
-            return geom; 
+            return geom;
         }
 
         /// <summary>

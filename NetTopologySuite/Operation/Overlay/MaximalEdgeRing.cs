@@ -8,7 +8,7 @@ namespace NetTopologySuite.Operation.Overlay
     /// A ring of edges which may contain nodes of degree > 2.
     /// A MaximalEdgeRing may represent two different spatial entities:
     /// a single polygon possibly containing inversions (if the ring is oriented CW)
-    /// a single hole possibly containing exversions (if the ring is oriented CCW)    
+    /// a single hole possibly containing exversions (if the ring is oriented CCW)
     /// If the MaximalEdgeRing represents a polygon,
     /// the interior of the polygon is strongly connected.
     /// These are the form of rings used to define polygons under some spatial data models.
@@ -19,15 +19,15 @@ namespace NetTopologySuite.Operation.Overlay
     public class MaximalEdgeRing : EdgeRing
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="start"></param>
         /// <param name="geometryFactory"></param>
-        public MaximalEdgeRing(DirectedEdge start, IGeometryFactory geometryFactory) 
+        public MaximalEdgeRing(DirectedEdge start, IGeometryFactory geometryFactory)
             : base(start, geometryFactory) { }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="de"></param>
         /// <returns></returns>
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Operation.Overlay
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="de"></param>
         /// <param name="er"></param>
@@ -46,14 +46,14 @@ namespace NetTopologySuite.Operation.Overlay
             de.EdgeRing = er;
         }
 
-        /// <summary> 
+        /// <summary>
         /// For all nodes in this EdgeRing,
         /// link the DirectedEdges at the node to form minimalEdgeRings
         /// </summary>
         public void LinkDirectedEdgesForMinimalEdgeRings()
         {
             DirectedEdge de = startDe;
-            do 
+            do
             {
                 Node node = de.Node;
                 ((DirectedEdgeStar) node.Edges).LinkMinimalDirectedEdges(this);
@@ -63,22 +63,22 @@ namespace NetTopologySuite.Operation.Overlay
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public IList<EdgeRing> BuildMinimalRings()
         {
             IList<EdgeRing> minEdgeRings = new List<EdgeRing>();
             DirectedEdge de = startDe;
-            do 
+            do
             {
-                if (de.MinEdgeRing == null) 
+                if (de.MinEdgeRing == null)
                 {
                     EdgeRing minEr = new MinimalEdgeRing(de, GeometryFactory);
                     minEdgeRings.Add(minEr);
                 }
                 de = de.Next;
-            } 
+            }
             while (de != startDe);
             return minEdgeRings;
         }

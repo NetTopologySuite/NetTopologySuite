@@ -31,10 +31,10 @@ namespace NetTopologySuite.Geometries
         public const int MinimumValidSize = 4;
 
         /// <summary>
-        /// Constructs a <c>LinearRing</c> with the vertices specified 
+        /// Constructs a <c>LinearRing</c> with the vertices specified
         /// by the given <see cref="ICoordinateSequence"/>.
         /// </summary>
-        /// <param name="points">A sequence points forming a closed and simple linestring, 
+        /// <param name="points">A sequence points forming a closed and simple linestring,
         /// or <c>null</c> to create the empty geometry.</param>
         /// <param name="factory">The factory that creates this <c>LinearRing</c></param>
         /// <exception cref="ArgumentException">If the ring is not closed, or has too few points</exception>

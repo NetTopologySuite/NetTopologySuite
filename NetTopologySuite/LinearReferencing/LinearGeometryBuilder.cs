@@ -61,7 +61,7 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate LastCoordinate => _lastPt;
 
@@ -72,7 +72,7 @@ namespace NetTopologySuite.LinearReferencing
         {
             if (_coordList == null)
                 return;
-            
+
             if (IgnoreInvalidLines && _coordList.Count < 2)
             {
                 _coordList = null;
@@ -98,18 +98,18 @@ namespace NetTopologySuite.LinearReferencing
                     throw ex;
             }
 
-            if (line != null) 
+            if (line != null)
                 _lines.Add(line);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
         private static Coordinate[] ValidCoordinateSequence(Coordinate[] pts)
         {
-            if (pts.Length >= 2) 
+            if (pts.Length >= 2)
                 return pts;
             var validPts = new[] { pts[0], pts[0] };
             return validPts;

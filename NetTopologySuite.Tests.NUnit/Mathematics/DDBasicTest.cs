@@ -153,7 +153,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         /**
          * Computes (a+b)^2 in two different ways and compares the result.
          * For correct results, a and b should be integers.
-         * 
+         *
          * @param a
          * @param b
          */

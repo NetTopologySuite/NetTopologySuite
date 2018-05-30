@@ -33,7 +33,7 @@ namespace Open.Topology.TestRunner.Utility
 
         /**
          * Capitalizes the given string.
-         * 
+         *
          * @param s the string to capitalize
          * @return the capitalized string
          */
@@ -613,5 +613,5 @@ namespace Open.Topology.TestRunner.Utility
             }
         }
 
-    }    
+    }
 }

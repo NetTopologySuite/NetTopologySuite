@@ -6,7 +6,7 @@ using NetTopologySuite.Algorithm;
 namespace NetTopologySuite.Operation.Distance
 {
     /// <summary>
-    /// Represents a sequence of facets (points or line segments) of a <see cref="IGeometry"/> 
+    /// Represents a sequence of facets (points or line segments) of a <see cref="IGeometry"/>
     /// specified by a subsequence of a <see cref="ICoordinateSequence"/>.
     /// </summary>
     /// <author>Martin Davis</author>
@@ -98,7 +98,7 @@ namespace NetTopologySuite.Operation.Distance
                 facetSeq._pts.GetCoordinate(facetSeq._start, _seqPt);
                 return _pt.Distance(_seqPt);
             }
-            
+
             if (isPoint)
             {
                 _pts.GetCoordinate(_start, _pt);

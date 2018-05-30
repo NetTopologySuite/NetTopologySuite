@@ -10,7 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
     public class TriPredicate
     {
         /// <summary>
-        /// Tests if a point is inside the circle defined by the points a, b, c. 
+        /// Tests if a point is inside the circle defined by the points a, b, c.
         /// This test uses simple
         /// double-precision arithmetic, and thus may not be robust.
         /// </summary>
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
 
 
         /// <summary>
-        /// Tests if a point is inside the circle defined by the points a, b, c. 
+        /// Tests if a point is inside the circle defined by the points a, b, c.
         /// This test uses robust computation.
         /// </summary>
         /// <param name="a">A vertex of the triangle</param>
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         }
 
         /// <summary>
-        /// Tests if a point is inside the circle defined by the points a, b, c. 
+        /// Tests if a point is inside the circle defined by the points a, b, c.
         /// The computation uses <see cref="NetTopologySuite.Mathematics.DD"/> arithmetic for robustness.
         /// </summary>
         /// <param name="a">A vertex of the triangle</param>
@@ -103,7 +103,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         }
 
         /// <summary>
-        /// Tests if a point is inside the circle defined by the points a, b, c. 
+        /// Tests if a point is inside the circle defined by the points a, b, c.
         /// The computation uses <see cref="NetTopologySuite.Mathematics.DD"/> arithmetic for robustness.
         /// </summary>
         /// <param name="a">A vertex of the triangle</param>
@@ -127,7 +127,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         }
 
         /// <summary>
-        /// Tests if a point is inside the circle defined by the points a, b, c. 
+        /// Tests if a point is inside the circle defined by the points a, b, c.
         /// The computation uses <see cref="NetTopologySuite.Mathematics.DD"/> arithmetic for robustness.
         /// </summary>
         /// <param name="a">A vertex of the triangle</param>
@@ -191,13 +191,13 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         }
 
         /// <summary>
-        /// Computes the inCircle test using distance from the circumcentre. 
+        /// Computes the inCircle test using distance from the circumcentre.
         /// Uses standard double-precision arithmetic.
         /// <para/>
         /// In general this doesn't
         /// appear to be any more robust than the standard calculation. However, there
         /// is at least one case where the test point is far enough from the
-        /// circumcircle that this test gives the correct answer. 
+        /// circumcircle that this test gives the correct answer.
         /// <pre>
         /// LINESTRING
         /// (1507029.9878 518325.7547, 1507022.1120341457 518332.8225183258,

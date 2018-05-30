@@ -8,11 +8,11 @@ namespace NetTopologySuite.Tests.NUnit.Performance
     /// to be run by the <see cref="PerformanceTestRunner"/>.
     /// <para/>
     /// In a subclass of this class,
-    /// all public methods which start with <c>Run</c> are 
+    /// all public methods which start with <c>Run</c> are
     /// executed as performance tests.
     /// <para/>
     /// Multiple test runs with different run sizes may be made.
-    /// Within each run, each <c>Run</c> method is executed 
+    /// Within each run, each <c>Run</c> method is executed
     /// the specified number of iterations.
     /// The time to run the method is printed for each one.
     /// </summary>
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
         /// <summary>
         /// Gets or sets the size(s) for the runs or the test
         /// </summary>
-        public int[] RunSize    
+        public int[] RunSize
         {
             get => _runSize;
             set

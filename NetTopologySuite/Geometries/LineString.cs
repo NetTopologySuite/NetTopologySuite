@@ -382,7 +382,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <returns>A copy of this instance</returns>
         public override IGeometry Copy()
-        { 
+        {
             var points = _points.Copy();
             return new LineString(points, Factory);
         }

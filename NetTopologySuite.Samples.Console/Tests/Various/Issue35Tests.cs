@@ -13,7 +13,7 @@ namespace NetTopologySuite.Tests.Various
     {
         private readonly IGeometryFactory factory = GeometryFactory.Default;
 
-        private WKTReader reader;        
+        private WKTReader reader;
 
         [OneTimeSetUp]
         public void FixtureSetup()
@@ -79,7 +79,7 @@ namespace NetTopologySuite.Tests.Various
                 @"POLYGON ((34.6084247111331 31.2600368705728, 34.6032199980889
 31.0998473691012, 34.4841253356165 31.1049514260643, 34.4725915455589
 31.2524625304851, 34.6084247111331 31.2600368705728))");
-            geom1.SRID = 4326;            
+            geom1.SRID = 4326;
             Assert.IsNotNull(geom1);
             Assert.IsTrue(geom1.IsValid);
 
@@ -105,11 +105,11 @@ namespace NetTopologySuite.Tests.Various
         {
             var geom = new WKTReader().Read("POLYGON ((1 1, 1 1, 1 1, 1 1, 1 1))");
 
-            var geom2 = new Polygon(new LinearRing(new Coordinate[] 
+            var geom2 = new Polygon(new LinearRing(new Coordinate[]
             {
-                new Coordinate(1, 1), 
                 new Coordinate(1, 1),
-                new Coordinate(1, 1), 
+                new Coordinate(1, 1),
+                new Coordinate(1, 1),
                 new Coordinate(1, 1),
                 new Coordinate(1, 1)
             }));
@@ -119,7 +119,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.AreEqual(geom.GetType(), simple.GetType());
             Assert.AreNotEqual(geom, simple, "Simplify didn't do anything to this invalid polygon.");
             // This happens with JTS 1.9.0, 1.8.0 still returns GeometryCollection.Empty
-            Assert.AreEqual(geom.GetType(), Polygon.Empty); 
+            Assert.AreEqual(geom.GetType(), Polygon.Empty);
         }
     }
 }

@@ -2,24 +2,24 @@ using System;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Samples.Geometries
-{	
-	/// <summary> 
+{
+	/// <summary>
     /// Creates ExtendedCoordinateSequenceFactory internally represented
 	/// as an array of <c>ExtendedCoordinate</c>s.
 	/// </summary>
 	public class ExtendedCoordinateSequenceFactory : ICoordinateSequenceFactory
-	{	
+	{
 		private static ExtendedCoordinateSequenceFactory instance;
-		
+
 		private ExtendedCoordinateSequenceFactory() { }
-		
+
 		/// <summary> Returns the singleton instance of ExtendedCoordinateSequenceFactory
 		/// </summary>
 		public static ExtendedCoordinateSequenceFactory Instance()
 		{
 			return instance;
 		}
-		
+
 		/// <summary> Returns an ExtendedCoordinateSequence based on the given array -- the array is used
 		/// directly if it is an instance of ExtendedCoordinate[]; otherwise it is
 		/// copied.

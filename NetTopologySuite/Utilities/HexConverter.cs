@@ -3,7 +3,7 @@ using System;
 namespace NetTopologySuite.Utilities
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class HexConverter
     {
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Utilities
              // determinazione del valore totale
              double valore = 0;
              try
-             {     
+             {
                   // se il campo è in base 10 non c'è bisogno di calcolare il valore
                   if (baseIn == 10)
                       valore = double.Parse(valueIn);
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Utilities
                         {
                               // valore posizionale del carattere
                               int valPos = codice.IndexOf(c[k]);
-                              
+
                               // verifica per caratteri errati
                               if ((valPos < 0) || (valPos > baseIn - 1))
                                          return result;
@@ -70,7 +70,7 @@ namespace NetTopologySuite.Utilities
                               valore += valPos * Math.Pow(baseIn, posizione);
                         }
                   }
-              
+
                   // generazione del risultato final
                   // se il risultato da generare è in base 10 non c'è
                   // bisogno di calcoli

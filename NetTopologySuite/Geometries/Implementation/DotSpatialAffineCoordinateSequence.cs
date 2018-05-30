@@ -10,15 +10,15 @@ namespace NetTopologySuite.Geometries.Implementation
 #if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
-    public class DotSpatialAffineCoordinateSequence : 
+    public class DotSpatialAffineCoordinateSequence :
         ICoordinateSequence
         //IMeasuredCoordinateSequence
     {
-        
+
         private readonly double[] _xy;
         private readonly double[] _z;
         private readonly double[] _m;
-        
+
         private readonly Ordinates _ordinates;
 
 #if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
@@ -168,7 +168,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="xy"></param>
         /// <param name="z"></param>
@@ -182,7 +182,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="xy"></param>
         /// <param name="z"></param>
@@ -277,7 +277,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         private Coordinate[] GetCachedCoords()
@@ -300,7 +300,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             var ret = GetCachedCoords();
             if (ret != null) return ret;
-            
+
             var j = 0;
             var count = Count;
             ret = new Coordinate[count];
@@ -338,7 +338,7 @@ namespace NetTopologySuite.Geometries.Implementation
             double[] z = null, m = null;
             if (_z != null) z = new double[_z.Length];
             if (_m != null) m = new double[_m.Length];
-            
+
             var j = 2* Count;
             var k = Count;
             for (var i = 0; i < Count; i++)

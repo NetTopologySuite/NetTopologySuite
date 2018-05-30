@@ -17,7 +17,7 @@ namespace NetTopologySuite.Operation.Polygonize
     public class PolygonizeGraph : PlanarGraph
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="node"></param>
         /// <param name="label"></param>
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Operation.Polygonize
             int degree = 0;
             foreach (PolygonizeDirectedEdge de in edges)
             {
-                if (de.Label == label) 
+                if (de.Label == label)
                     degree++;
             }
             return degree;
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="line">The line to add.</param>
         public void AddEdge(ILineString line)
         {
-            if (line.IsEmpty) 
+            if (line.IsEmpty)
                 return;
 
             Coordinate[] linePts = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
@@ -104,14 +104,14 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pt"></param>
         /// <returns></returns>
         private Node GetNode(Coordinate pt)
         {
             Node node = FindNode(pt);
-            if (node == null) 
+            if (node == null)
             {
                 node = new Node(pt);
                 // ensure node is only added once to graph
@@ -121,7 +121,7 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private void ComputeNextCWEdges()
         {
@@ -142,7 +142,7 @@ namespace NetTopologySuite.Operation.Polygonize
                 long label = de.Label;
                 var intNodes = FindIntersectionNodes(de, label);
 
-                if (intNodes == null) 
+                if (intNodes == null)
                     continue;
 
                 // flip the next pointers on the intersection nodes to create minimal edge rings
@@ -158,18 +158,18 @@ namespace NetTopologySuite.Operation.Polygonize
         /// </summary>
         /// <param name="startDE"></param>
         /// <param name="label"></param>
-        /// <returns> 
+        /// <returns>
         /// The list of intersection nodes found,
-        /// or null if no intersection nodes were found.       
+        /// or null if no intersection nodes were found.
         /// </returns>
         private static IEnumerable<Node> FindIntersectionNodes(PolygonizeDirectedEdge startDE, long label)
         {
             PolygonizeDirectedEdge de = startDE;
             IList<Node> intNodes = null;
-            do 
+            do
             {
                 Node node = de.FromNode;
-                if (GetDegree(node, label) > 1) 
+                if (GetDegree(node, label) > 1)
                 {
                     if (intNodes == null)
                         intNodes = new List<Node>();
@@ -179,13 +179,13 @@ namespace NetTopologySuite.Operation.Polygonize
                 de = de.Next;
                 Assert.IsTrue(de != null, "found null DE in ring");
                 Assert.IsTrue(de == startDE || ! de.IsInRing, "found DE already in ring");
-            } 
+            }
             while (de != startDE);
             return intNodes;
         }
 
         /// <summary>
-        /// Computes the minimal EdgeRings formed by the edges in this graph.        
+        /// Computes the minimal EdgeRings formed by the edges in this graph.
         /// </summary>
         /// <returns>A list of the{EdgeRings found by the polygonization process.</returns>
         public IList<EdgeRing> GetEdgeRings()
@@ -209,7 +209,7 @@ namespace NetTopologySuite.Operation.Polygonize
             }
             return edgeRingList;
         }
-        
+
         /// <summary>
         /// Finds and labels all edgerings in the graph.
         /// The edge rings are labeling with unique integers.
@@ -255,7 +255,7 @@ namespace NetTopologySuite.Operation.Polygonize
                 if (de.IsMarked) continue;
 
                 PolygonizeDirectedEdge sym = (PolygonizeDirectedEdge) de.Sym;
-                if (de.Label == sym.Label) 
+                if (de.Label == sym.Label)
                 {
                     de.Marked = true;
                     sym.Marked = true;
@@ -269,7 +269,7 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dirEdges"></param>
         /// <param name="label"></param>
@@ -280,7 +280,7 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="node"></param>
         private static void ComputeNextCWEdges(Node node)
@@ -294,17 +294,17 @@ namespace NetTopologySuite.Operation.Polygonize
             {
                 if (outDE.IsMarked) continue;
 
-                if (startDE == null) 
+                if (startDE == null)
                     startDE = outDE;
 
-                if (prevDE != null) 
+                if (prevDE != null)
                 {
                     PolygonizeDirectedEdge sym = (PolygonizeDirectedEdge) prevDE.Sym;
                     sym.Next = outDE;
                 }
                 prevDE = outDE;
             }
-            if (prevDE != null) 
+            if (prevDE != null)
             {
                 PolygonizeDirectedEdge sym = (PolygonizeDirectedEdge) prevDE.Sym;
                 sym.Next = startDE;
@@ -328,25 +328,25 @@ namespace NetTopologySuite.Operation.Polygonize
             // the edges are stored in CCW order around the star
             IList<DirectedEdge> edges = deStar.Edges;
             //for (IEnumerator i = deStar.Edges.GetEnumerator(); i.MoveNext(); ) {
-            for (int i = edges.Count - 1; i >= 0; i--) 
+            for (int i = edges.Count - 1; i >= 0; i--)
             {
                 PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) edges[i];
                 PolygonizeDirectedEdge sym = (PolygonizeDirectedEdge) de.Sym;
 
                 PolygonizeDirectedEdge outDE = null;
                 if (de.Label == label) outDE = de;
-                
+
                 PolygonizeDirectedEdge inDE = null;
                 if (sym.Label == label) inDE =  sym;
 
                 if (outDE == null && inDE == null) continue;  // this edge is not in edgering
 
-                if (inDE != null) 
-                    prevInDE = inDE;                
+                if (inDE != null)
+                    prevInDE = inDE;
 
-                if (outDE != null) 
+                if (outDE != null)
                 {
-                    if (prevInDE != null) 
+                    if (prevInDE != null)
                     {
                         prevInDE.Next = outDE;
                         prevInDE = null;
@@ -363,7 +363,7 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="startDE"></param>
         /// <returns></returns>
@@ -390,8 +390,8 @@ namespace NetTopologySuite.Operation.Polygonize
             Stack<Node> nodeStack = new Stack<Node>();
             foreach (Node node in nodesToRemove)
                 nodeStack.Push(node);
-            
-            while (nodeStack.Count != 0) 
+
+            while (nodeStack.Count != 0)
             {
                 Node node = nodeStack.Pop();
 
@@ -425,9 +425,9 @@ namespace NetTopologySuite.Operation.Polygonize
         /// Traverses the polygonized edge rings in the graph
         /// and computes the depth parity (odd or even)
         /// relative to the exterior of the graph.
-        /// 
+        ///
         /// If the client has requested that the output
-        /// be polygonally valid, only odd polygons will be constructed. 
+        /// be polygonally valid, only odd polygons will be constructed.
         /// </summary>
         public void ComputeDepthParity()
         {

@@ -75,7 +75,7 @@ namespace NetTopologySuite.Algorithm
         ///</summary>
         /// <remarks>
         /// <para>An angle is acute if it is less than 90 degrees.</para>
-        /// <para>Note: this implementation is not precise (deterministic) for angles very close to 90 degrees.</para>    
+        /// <para>Note: this implementation is not precise (deterministic) for angles very close to 90 degrees.</para>
         /// </remarks>
         /// <param name="p0">An endpoint of the angle</param>
         /// <param name="p1">The base of the angle</param>
@@ -96,7 +96,7 @@ namespace NetTopologySuite.Algorithm
         ///</summary>
         /// <remarks>
         /// <para>An angle is obtuse if it is greater than 90 degrees.</para>
-        /// <para>Note: this implementation is not precise (deterministic) for angles very close to 90 degrees.</para>    
+        /// <para>Note: this implementation is not precise (deterministic) for angles very close to 90 degrees.</para>
         /// </remarks>
         /// <param name="p0">An endpoint of the angle</param>
         /// <param name="p1">The base of the angle</param>
@@ -234,7 +234,7 @@ namespace NetTopologySuite.Algorithm
             {
                 while (angle < 0.0)
                     angle += PiTimes2;
-                // in case round-off error bumps the value over 
+                // in case round-off error bumps the value over
                 if (angle >= PiTimes2)
                     angle = 0.0;
             }
@@ -242,7 +242,7 @@ namespace NetTopologySuite.Algorithm
             {
                 while (angle >= PiTimes2)
                     angle -= PiTimes2;
-                // in case round-off error bumps the value under 
+                // in case round-off error bumps the value under
                 if (angle < 0.0)
                     angle = 0.0;
             }

@@ -190,7 +190,7 @@
         }
 
         protected virtual void TestAll()
-        {            
+        {
             bool success = true;
             for (int i = 0; i < this.Count; i++)
             {
@@ -210,7 +210,7 @@
                 {
                     Console.WriteLine("Test {0} thrown exception\n{1}", i, ex.Message);
                     success = false;
-                }                
+                }
             }
             Assert.True(success, "Fixture failed");
         }

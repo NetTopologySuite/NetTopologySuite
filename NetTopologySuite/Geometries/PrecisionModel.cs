@@ -349,7 +349,7 @@ namespace NetTopologySuite.Geometries
             {
                 /*.Net's default rounding algorithm is "Bankers Rounding" which turned
                  * out to be no good for JTS/NTS geometry operations */
-                // return Math.Round(val * scale) / scale;          
+                // return Math.Round(val * scale) / scale;
 
                 // This is "Asymmetric Arithmetic Rounding"
                 // http://en.wikipedia.org/wiki/Rounding#Round_half_up

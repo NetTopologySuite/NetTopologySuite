@@ -47,22 +47,22 @@
 
 <case>
   <desc>mL - two concentric rings, offset</desc>
-  <a>    MULTILINESTRING ((0 0, 0 200, 200 200, 200 0, 0 0), 
-  (60 180, 20 180, 20 140, 60 140, 60 180))  
+  <a>    MULTILINESTRING ((0 0, 0 200, 200 200, 200 0, 0 0),
+  (60 180, 20 180, 20 140, 60 140, 60 180))
 </a>
 <test><op name="getCentroid" arg1="A" >    POINT (90 110)   </op></test>
 </case>
 
 <case>
   <desc>mL - complicated symmetrical collection of lines</desc>
-  <a>    MULTILINESTRING ((20 20, 60 60), 
-  (20 -20, 60 -60), 
-  (-20 -20, -60 -60), 
-  (-20 20, -60 60), 
-  (-80 0, 0 80, 80 0, 0 -80, -80 0), 
-  (-40 20, -40 -20), 
-  (-20 40, 20 40), 
-  (40 20, 40 -20), 
+  <a>    MULTILINESTRING ((20 20, 60 60),
+  (20 -20, 60 -60),
+  (-20 -20, -60 -60),
+  (-20 20, -60 60),
+  (-80 0, 0 80, 80 0, 0 -80, -80 0),
+  (-40 20, -40 -20),
+  (-20 40, 20 40),
+  (40 20, 40 -20),
   (20 -40, -20 -40)) </a>
 <test><op name="getCentroid" arg1="A" >    POINT (0 0)   </op></test>
 </case>
@@ -81,7 +81,7 @@
 
 <case>
   <desc>A - box with offset hole (showing difference between area and line centroid)</desc>
-  <a>    POLYGON ((0 0, 0 200, 200 200, 200 0, 0 0), 
+  <a>    POLYGON ((0 0, 0 200, 200 200, 200 0, 0 0),
   (60 180, 20 180, 20 140, 60 140, 60 180))
 	 </a>
 <test><op name="getCentroid" arg1="A" >    POINT (103 98)   </op></test>
@@ -89,8 +89,8 @@
 
 <case>
   <desc>A - box with 2 symmetric holes </desc>
-  <a>    POLYGON ((0 0, 0 200, 200 200, 200 0, 0 0), 
-  (60 180, 20 180, 20 140, 60 140, 60 180), 
+  <a>    POLYGON ((0 0, 0 200, 200 200, 200 0, 0 0),
+  (60 180, 20 180, 20 140, 60 140, 60 180),
   (180 60, 140 60, 140 20, 180 20, 180 60))
 	 </a>
 <test><op name="getCentroid" arg1="A" >   POINT (100 100)   </op></test>
@@ -98,23 +98,23 @@
 
 <case>
   <desc>mA - symmetric angles</desc>
-  <a>    MULTIPOLYGON (((0 40, 0 140, 140 140, 140 120, 20 120, 20 40, 0 40)), 
-  ((0 0, 0 20, 120 20, 120 100, 140 100, 140 0, 0 0))) 
+  <a>    MULTIPOLYGON (((0 40, 0 140, 140 140, 140 120, 20 120, 20 40, 0 40)),
+  ((0 0, 0 20, 120 20, 120 100, 140 100, 140 0, 0 0)))
 	</a>
 <test><op name="getCentroid" arg1="A" >    POINT (70 70)   </op></test>
 </case>
 
 <case>
   <desc>GC - two adjacent polygons (showing that centroids are additive) </desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON ((0 200, 20 180, 20 140, 60 140, 200 0, 0 0, 0 200)), 
-  POLYGON ((200 200, 0 200, 20 180, 60 180, 60 140, 200 0, 200 200))) 
+  <a>    GEOMETRYCOLLECTION (POLYGON ((0 200, 20 180, 20 140, 60 140, 200 0, 0 0, 0 200)),
+  POLYGON ((200 200, 0 200, 20 180, 60 180, 60 140, 200 0, 200 200)))
 	</a>
 <test><op name="getCentroid" arg1="A" >    POINT (103 98)   </op></test>
 </case>
 
 <case>
   <desc>GC - heterogeneous collection of lines, points</desc>
-  <a>    GEOMETRYCOLLECTION (LINESTRING (80 0, 80 120, 120 120, 120 0), 
+  <a>    GEOMETRYCOLLECTION (LINESTRING (80 0, 80 120, 120 120, 120 0),
   MULTIPOINT (20 60, 40 80, 60 60))
 	</a>
 <test><op name="getCentroid" arg1="A" >    POINT (100 69)   </op></test>
@@ -122,16 +122,16 @@
 
 <case>
   <desc>GC - heterogeneous collection of polygons, line</desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON ((0 40, 40 40, 40 0, 0 0, 0 40)), 
-  LINESTRING (80 0, 80 80, 120 40)) 
+  <a>    GEOMETRYCOLLECTION (POLYGON ((0 40, 40 40, 40 0, 0 0, 0 40)),
+  LINESTRING (80 0, 80 80, 120 40))
 	</a>
 <test><op name="getCentroid" arg1="A" >    POINT (20 20)   </op></test>
 </case>
 
 <case>
   <desc>GC - heterogeneous collection of polygons, lines, points</desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON ((0 40, 40 40, 40 0, 0 0, 0 40)), 
-  LINESTRING (80 0, 80 80, 120 40), 
+  <a>    GEOMETRYCOLLECTION (POLYGON ((0 40, 40 40, 40 0, 0 0, 0 40)),
+  LINESTRING (80 0, 80 80, 120 40),
   MULTIPOINT (20 60, 40 80, 60 60))
 	</a>
 <test><op name="getCentroid" arg1="A" >    POINT (20 20)   </op></test>
@@ -139,7 +139,7 @@
 
 <case>
   <desc>GC - overlapping polygons </desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON ((20 100, 20 -20, 60 -20, 60 100, 20 100)), 
+  <a>    GEOMETRYCOLLECTION (POLYGON ((20 100, 20 -20, 60 -20, 60 100, 20 100)),
   POLYGON ((-20 60, 100 60, 100 20, -20 20, -20 60)))
 	</a>
 <test><op name="getCentroid" arg1="A" >    POINT (40 40)   </op></test>

@@ -11,15 +11,15 @@ namespace NetTopologySuite.Tests.NUnit
     ///  A base class for IGeometry tests which provides various utility methods.
     /// </summary>
     /// <author>Martin Davis</author>
-    public abstract class GeometryTestCase 
+    public abstract class GeometryTestCase
     {
         readonly WKTReader _reader = new WKTReader();
         private readonly IGeometryFactory _geomFactory = new GeometryFactory();
 
         protected void CheckEqual(IGeometry expected, IGeometry actual)
         {
-            var actualNorm = actual.Normalized();       
-            var expectedNorm = expected.Normalized();                 
+            var actualNorm = actual.Normalized();
+            var expectedNorm = expected.Normalized();
             var equal = actualNorm.EqualsExact(expectedNorm);
             //var writer = new WKTWriter {MaxCoordinatesPerLine };
             Assert.That(equal, Is.True, String.Format("\nExpected = {0}\nactual   = {1}", expected, actual));
@@ -27,7 +27,7 @@ namespace NetTopologySuite.Tests.NUnit
 
         protected void CheckEqual(ICollection<IGeometry> expected, ICollection<IGeometry> actual)
         {
-            CheckEqual(ToGeometryCollection(expected), ToGeometryCollection(actual)); 
+            CheckEqual(ToGeometryCollection(expected), ToGeometryCollection(actual));
         }
 
         private IGeometryCollection ToGeometryCollection(ICollection<IGeometry> geoms)

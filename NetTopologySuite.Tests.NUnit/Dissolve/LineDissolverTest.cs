@@ -20,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
         public void TestSingleSegmentLine()
         {
             CheckDissolve(
-                "LINESTRING (0 0, 1 1)", 
+                "LINESTRING (0 0, 1 1)",
                 "LINESTRING (0 0, 1 1)");
         }
 
@@ -28,7 +28,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
         public void TestTwoSegmentLine()
         {
             CheckDissolve(
-                "LINESTRING (0 0, 1 1, 2 2)", 
+                "LINESTRING (0 0, 1 1, 2 2)",
                 "LINESTRING (0 0, 1 1, 2 2)");
         }
 
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
         public void TestOverlappingTwoSegmentLines()
         {
             CheckDissolve(
-                new[] { "LINESTRING (0 0, 1 1, 2 2)", "LINESTRING (1 1, 2 2, 3 3)" }, 
+                new[] { "LINESTRING (0 0, 1 1, 2 2)", "LINESTRING (1 1, 2 2, 3 3)" },
                 "LINESTRING (0 0, 1 1, 2 2, 3 3)");
         }
 
@@ -44,11 +44,11 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
         public void TestOverlappingLines3()
         {
             CheckDissolve(
-                new[] 
+                new[]
                 {
-                    "LINESTRING (0 0, 1 1, 2 2)", 
+                    "LINESTRING (0 0, 1 1, 2 2)",
                     "LINESTRING (1 1, 2 2, 3 3)",
-                    "LINESTRING (1 1, 2 2, 2 0)" 
+                    "LINESTRING (1 1, 2 2, 2 0)"
                 },
                 "MULTILINESTRING ((0 0, 1 1, 2 2), (2 0, 2 2), (2 2, 3 3))");
         }
@@ -130,7 +130,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
         public void TestZeroLengthStartSegment()
         {
             CheckDissolve(
-        "MULTILINESTRING ((0 0, 0 0, 2 1))",  
+        "MULTILINESTRING ((0 0, 0 0, 2 1))",
         "LINESTRING (0 0, 2 1)");
         }
 

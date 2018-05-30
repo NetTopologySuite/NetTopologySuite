@@ -16,11 +16,11 @@ namespace NetTopologySuite.Index.Strtree
         private readonly TItem _item;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="bounds"></param>
         /// <param name="item"></param>
-        public ItemBoundable(T bounds, TItem item) 
+        public ItemBoundable(T bounds, TItem item)
         {
             _bounds = bounds;
             _item = item;

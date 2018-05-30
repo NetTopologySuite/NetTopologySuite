@@ -33,7 +33,7 @@ namespace NetTopologySuite.IO.GML2
 
         /// <summary>
         /// Initialize reader with the given <see cref="IGeometryFactory"/>.
-        /// </summary>        
+        /// </summary>
         public GMLReader(IGeometryFactory factory)
         {
             _factory = factory;
@@ -163,7 +163,7 @@ namespace NetTopologySuite.IO.GML2
 
         /// <summary>
         /// Extract a <see cref="Coordinate" /> from a x,y string value.
-        /// </summary>        
+        /// </summary>
         protected IEnumerable<Coordinate> ReadPosListAsCoordinates(int numOrdinates, string[] value)
         {
             Assert.IsTrue(value.Length % numOrdinates == 0);
@@ -337,7 +337,7 @@ namespace NetTopologySuite.IO.GML2
 
                     case XmlNodeType.EndElement:
                         string name = reader.Name;
-                        if (name == "MultiLineString" || 
+                        if (name == "MultiLineString" ||
                             name == GMLElements.gmlPrefix + ":MultiLineString")
                             return Factory.CreateMultiLineString(lines.ToArray());
                         break;
@@ -360,7 +360,7 @@ namespace NetTopologySuite.IO.GML2
 
                     case XmlNodeType.EndElement:
                         string name = reader.Name;
-                        if (name == "MultiPolygon" || 
+                        if (name == "MultiPolygon" ||
                             name == GMLElements.gmlPrefix + ":MultiPolygon")
                             return Factory.CreateMultiPolygon(polygons.ToArray());
                         break;

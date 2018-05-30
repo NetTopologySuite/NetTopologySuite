@@ -42,7 +42,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                         10.0))
                 .Test();
         }
-        
+
         [Test]
         public void TestPolygonSpikeInShell()
         {

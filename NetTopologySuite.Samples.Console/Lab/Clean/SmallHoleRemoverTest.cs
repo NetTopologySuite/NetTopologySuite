@@ -57,6 +57,6 @@ namespace NetTopologySuite.Samples.Lab.Clean
             IGeometry expected = Read(expectedWKT);
             IGeometry actual = SmallHoleRemover.Clean(input, 100);
             CheckEqual(expected, actual);
-        }        
+        }
     }
 }

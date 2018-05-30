@@ -13,11 +13,11 @@ namespace NetTopologySuite.Operation.Overlay
     /// </summary>
     public class PolygonBuilder
     {
-        private readonly IGeometryFactory _geometryFactory;        
+        private readonly IGeometryFactory _geometryFactory;
         private readonly List<EdgeRing> _shellList = new List<EdgeRing>();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometryFactory"></param>
         public PolygonBuilder(IGeometryFactory geometryFactory)
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Operation.Overlay
             Add(graph.EdgeEnds, graph.Nodes);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Add a set of edges and nodes, which form a graph.
         /// The graph is assumed to contain one or more polygons,
         /// possibly with holes.
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Operation.Overlay
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IList<IGeometry> Polygons
         {
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Operation.Overlay
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// For all DirectedEdges in result, form them into MaximalEdgeRings.
         /// </summary>
         /// <param name="dirEdges"></param>
@@ -91,7 +91,7 @@ namespace NetTopologySuite.Operation.Overlay
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="maxEdgeRings"></param>
         /// <param name="shellList"></param>
@@ -165,12 +165,12 @@ namespace NetTopologySuite.Operation.Overlay
         {
             foreach (MinimalEdgeRing er in minEdgeRings)
             {
-                if (er.IsHole) 
+                if (er.IsHole)
                     er.Shell = shell;
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// For all rings in the input list,
         /// determine whether the ring is a shell or a hole
         /// and add it to the appropriate list.
@@ -220,7 +220,7 @@ namespace NetTopologySuite.Operation.Overlay
              }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Find the innermost enclosing shell EdgeRing containing the argument EdgeRing, if any.
         /// The innermost enclosing ring is the <i>smallest</i> enclosing ring.
         /// The algorithm used depends on the fact that:
@@ -254,14 +254,14 @@ namespace NetTopologySuite.Operation.Overlay
                 if (isContained)
                 {
                     if (minShell == null || minEnv.Contains(tryEnv))
-                        minShell = tryShell;                    
+                        minShell = tryShell;
                 }
             }
             return minShell;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="shellList"></param>
         /// <returns></returns>
@@ -277,7 +277,7 @@ namespace NetTopologySuite.Operation.Overlay
             return resultPolyList;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Checks the current set of shells (with their associated holes) to
         /// see if any of them contain the point.
         /// </summary>

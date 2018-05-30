@@ -79,7 +79,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Tests whether a <see cref="ICoordinateSequence"/> forms a valid <see cref="ILinearRing"/>,
         /// by checking the sequence length and closure
-        /// (whether the first and last points are identical in 2D). 
+        /// (whether the first and last points are identical in 2D).
         /// Self-intersection is not checked.
         /// </summary>
         /// <param name="seq">The sequence to test</param>
@@ -98,11 +98,11 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Ensures that a CoordinateSequence forms a valid ring, 
+        /// Ensures that a CoordinateSequence forms a valid ring,
         /// returning a new closed sequence of the correct length if required.
-        /// If the input sequence is already a valid ring, it is returned 
+        /// If the input sequence is already a valid ring, it is returned
         /// without modification.
-        /// If the input sequence is too short or is not closed, 
+        /// If the input sequence is too short or is not closed,
         /// it is extended with one or more copies of the start point.
         /// </summary>
         /// <param name="fact">The CoordinateSequenceFactory to use to create the new sequence</param>
@@ -152,10 +152,10 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Tests whether two <see cref="ICoordinateSequence"/>s are equal.
         /// To be equal, the sequences must be the same length.
-        /// They do not need to be of the same dimension, 
+        /// They do not need to be of the same dimension,
         /// but the ordinate values for the smallest dimension of the two
         /// must be equal.
-        /// Two <c>NaN</c> ordinates values are considered to be equal. 
+        /// Two <c>NaN</c> ordinates values are considered to be equal.
         /// </summary>
         /// <param name="cs1">a CoordinateSequence</param>
         /// <param name="cs2">a CoordinateSequence</param>

@@ -148,7 +148,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             Assert.IsTrue(expected == IsAllOrientationsEqualDD(pts), "DD");
         }
-  
+
 
 
         public static bool IsAllOrientationsEqual(

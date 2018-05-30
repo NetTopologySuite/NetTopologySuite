@@ -20,7 +20,7 @@ namespace NetTopologySuite.Operation.Union
         }
 
         ///<summary>
-        /// Computes the union of a <see cref="IPoint"/> geometry with 
+        /// Computes the union of a <see cref="IPoint"/> geometry with
         /// another arbitrary <see cref="IGeometry"/>.
         /// Does not copy any component geometries.
         ///</summary>
@@ -61,8 +61,8 @@ namespace NetTopologySuite.Operation.Union
             exteriorCoords.CopyTo(exteriorCoordsArray, 0);
             Array.Sort(exteriorCoordsArray);
             ICoordinateSequence coords = _geomFact.CoordinateSequenceFactory.Create(exteriorCoordsArray);
-            IGeometry ptComp = coords.Count == 1 
-                ? (IGeometry)_geomFact.CreatePoint(coords) 
+            IGeometry ptComp = coords.Count == 1
+                ? (IGeometry)_geomFact.CreatePoint(coords)
                 : _geomFact.CreateMultiPoint(coords);
 
             // add point component to the other geometry

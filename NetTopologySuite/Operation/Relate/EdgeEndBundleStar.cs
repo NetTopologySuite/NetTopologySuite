@@ -12,7 +12,7 @@ namespace NetTopologySuite.Operation.Relate
     {
         /*
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public EdgeEndBundleStar() { }
          */
@@ -28,15 +28,15 @@ namespace NetTopologySuite.Operation.Relate
             EdgeEnd ee;
             //EdgeEndBundle eb; //= (EdgeEndBundle) edgeMap[e];
             //if (eb == null)
-            if (!edgeMap.TryGetValue(e, out ee)) 
+            if (!edgeMap.TryGetValue(e, out ee))
             {
                 //eb = new EdgeEndBundle(e);
                 //InsertEdgeEnd(e, eb);
                 InsertEdgeEnd(e, new EdgeEndBundle(e));
             }
-            else 
+            else
                 ((EdgeEndBundle)ee).Insert(e);
-            
+
         }
 
         /// <summary>

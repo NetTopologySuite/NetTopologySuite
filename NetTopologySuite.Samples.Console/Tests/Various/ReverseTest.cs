@@ -7,28 +7,28 @@ using NUnit.Framework;
 namespace NetTopologySuite.Samples.Tests.Various
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     [TestFixture]
     public class ReverseTest : BaseSamples
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public ReverseTest() : base() { }        
+        public ReverseTest() : base() { }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [Test]
         public void LineStringReverseTest()
         {
-            ILineString lineString = Factory.CreateLineString(new Coordinate[] 
-            { 
-                new Coordinate(10, 10), 
-                new Coordinate(20, 20), 
-                new Coordinate(20, 30), 
-            });            
+            ILineString lineString = Factory.CreateLineString(new Coordinate[]
+            {
+                new Coordinate(10, 10),
+                new Coordinate(20, 20),
+                new Coordinate(20, 30),
+            });
             var reverse = (ILineString)lineString.Reverse();
 
             Debug.WriteLine(lineString.ToString());
@@ -39,22 +39,22 @@ namespace NetTopologySuite.Samples.Tests.Various
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [Test]
         public void MultiLineStringReverseTest()
         {
-            ILineString lineString1 = Factory.CreateLineString(new Coordinate[] 
-            { 
-                new Coordinate(10, 10), 
-                new Coordinate(20, 20), 
-                new Coordinate(20, 30), 
+            ILineString lineString1 = Factory.CreateLineString(new Coordinate[]
+            {
+                new Coordinate(10, 10),
+                new Coordinate(20, 20),
+                new Coordinate(20, 30),
             });
-            ILineString lineString2 = Factory.CreateLineString(new Coordinate[] 
-            { 
-                new Coordinate(12, 12), 
-                new Coordinate(24, 24), 
-                new Coordinate(24, 36), 
+            ILineString lineString2 = Factory.CreateLineString(new Coordinate[]
+            {
+                new Coordinate(12, 12),
+                new Coordinate(24, 24),
+                new Coordinate(24, 36),
             });
             IMultiLineString multiLineString = Factory.CreateMultiLineString(new[] { lineString1, lineString2, });
             IMultiLineString reverse = multiLineString.Reverse();

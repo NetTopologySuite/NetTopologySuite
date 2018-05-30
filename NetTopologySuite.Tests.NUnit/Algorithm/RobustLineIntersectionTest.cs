@@ -20,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// The fix is to use a new heuristic which out of the 4 endpoints
         /// chooses the one which is closest to the other segment.
         /// This works in all known failure cases.
-        /// </summary>                  
+        /// </summary>
         [TestAttribute]
         public void TestCentralEndpointHeuristicFailure()
         {
@@ -44,10 +44,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
 
         /// <summary>
-        /// Tests a case where intersection point is rounded, 
+        /// Tests a case where intersection point is rounded,
         /// and it is computed as a nearest endpoint.
-        /// Exposed a bug due to aliasing of endpoint. 
-        ///  
+        /// Exposed a bug due to aliasing of endpoint.
+        ///
         /// MD 8 Mar 2013
         /// </summary>
         [TestAttribute]
@@ -314,8 +314,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Coordinate[] pt =
             {
                 l1.GetCoordinateN(0),
-                l1.GetCoordinateN(1), 
-                l2.GetCoordinateN(0), 
+                l1.GetCoordinateN(1),
+                l2.GetCoordinateN(0),
                 l2.GetCoordinateN(1)
             };
             CheckInputNotAltered(pt, scaleFactor);

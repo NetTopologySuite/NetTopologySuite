@@ -3,20 +3,20 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
-    /// <summary> 
+    /// <summary>
     /// Implements an algorithm to compute the
     /// sign of a 2x2 determinant for double precision values robustly.
     /// It is a direct translation of code developed by Olivier Devillers.
-    /// 
+    ///
     /// The original code carries the following copyright notice:
     /// ************************************************************************
     /// Author : Olivier Devillers
     /// Olivier.Devillers@sophia.inria.fr
     /// http:/www.inria.fr:/prisme/personnel/devillers/anglais/determinant.html
-    /// 
+    ///
     /// Olivier Devillers has allowed the code to be distributed under
     /// the LGPL (2012-02-16) saying "It is ok for LGPL distribution."
-    /// 
+    ///
     /// *************************************************************************
     /// *************************************************************************
     /// Copyright (c) 1995  by  INRIA Prisme Project
@@ -27,12 +27,12 @@ namespace NetTopologySuite.Algorithm
     public class RobustDeterminant
     {
         /*
-        
+
         // test point to allow injecting test code
-        public static int SignOfDet2x2(double x1, double y1, double x2, double y2) 
+        public static int SignOfDet2x2(double x1, double y1, double x2, double y2)
         {
-          int d1 = OriginalSignOfDet2x2(x1, y1, x2, y2); 
-          int d2 = -OriginalSignOfDet2x2(y1, x1, x2, y2); 
+          int d1 = OriginalSignOfDet2x2(x1, y1, x2, y2);
+          int d2 = -OriginalSignOfDet2x2(y1, x1, x2, y2);
           assert d1 == -d2;
           return d1;
         }
@@ -43,15 +43,15 @@ namespace NetTopologySuite.Algorithm
          * A possible fix for a rare problem where evaluation is order-dependent.
          */
         /*
-        public static int SignOfDet2x2(double x1, double y1, double x2, double y2) 
+        public static int SignOfDet2x2(double x1, double y1, double x2, double y2)
         {
           if (x1 > x2) {
             return -SignOfDet2x2ordX(x2, y2, x1, y1);
           }
           return SignOfDet2x2ordX(x1, y1, x2, y2);
         }
-    
-        private static int SignOfDet2x2ordX(double x1, double y1, double x2, double y2) 
+
+        private static int SignOfDet2x2ordX(double x1, double y1, double x2, double y2)
         {
           if (y1 > y2) {
             return -OriginalSignOfDet2x2(y1, x1, y2, x2);
@@ -86,7 +86,7 @@ namespace NetTopologySuite.Algorithm
             double swap;
             double k;
             long count = 0;
-            
+
 
             sign = 1;
 
@@ -423,18 +423,18 @@ namespace NetTopologySuite.Algorithm
              * dependent, when computing the orientation of a point very close to a
              * line. This is possibly due to the arithmetic in the translation to the
              * origin.
-             * 
+             *
              * For instance, the following situation produces identical results in spite
              * of the inverse orientation of the line segment:
-             * 
+             *
              * Coordinate p0 = new Coordinate(219.3649559090992, 140.84159161824724);
              * Coordinate p1 = new Coordinate(168.9018919682399, -5.713787599646864);
-             * 
+             *
              * Coordinate p = new Coordinate(186.80814046338352, 46.28973405831556); int
              * orient = orientationIndex(p0, p1, p); int orientInv =
              * orientationIndex(p1, p0, p);
-             * 
-             * 
+             *
+             *
              */
 
             var dx1 = p2.X - p1.X;

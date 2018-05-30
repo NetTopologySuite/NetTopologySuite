@@ -9,7 +9,7 @@ namespace NetTopologySuite.Noding
     /// <para>
     /// The <see cref="ISegmentIntersector" /> is passed to a <see cref="INoder" />.
     /// </para>
-    /// The <see cref="ISegmentIntersector.ProcessIntersections(ISegmentString, int, ISegmentString, int)"/> 
+    /// The <see cref="ISegmentIntersector.ProcessIntersections(ISegmentString, int, ISegmentString, int)"/>
     /// method is called whenever the <see cref="INoder" />
     ///  detects that two <see cref="ISegmentString" />s might intersect.
     /// <para>

@@ -9,11 +9,11 @@ namespace NetTopologySuite.Geometries
     /// <para/>
     /// A <c>Point</c> is topologically valid if and only if:
     /// <list type="Bullet">
-    /// <item>The coordinate which defines it if any) is a valid coordinate 
+    /// <item>The coordinate which defines it if any) is a valid coordinate
     /// (i.e. does not have an <c>NaN</c> X- or Y-ordinate</item>
     /// </list>
     /// </summary>
-    /// 
+    ///
 #if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 
@@ -27,7 +27,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public static readonly IPoint Empty = new GeometryFactory().CreatePoint(EmptyCoordinate);
 
-        /// <summary>  
+        /// <summary>
         /// The <c>Coordinate</c> wrapped by this <c>Point</c>.
         /// </summary>
         private ICoordinateSequence _coordinates;
@@ -38,7 +38,7 @@ namespace NetTopologySuite.Geometries
         protected override SortIndexValue SortIndex => SortIndexValue.Point;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public ICoordinateSequence CoordinateSequence => _coordinates;
 
@@ -47,10 +47,10 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinate">The coordinate used for create this <see cref="Point" />.</param>
         /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public Point(Coordinate coordinate) :   
+        public Point(Coordinate coordinate) :
             this(GeometryFactory.Default.CoordinateSequenceFactory.Create(new Coordinate[] { coordinate } ),
             GeometryFactory.Default) { }
 
@@ -63,15 +63,15 @@ namespace NetTopologySuite.Geometries
         /// </param>
         /// <param name="factory"></param>
         public Point(ICoordinateSequence coordinates, IGeometryFactory factory) : base(factory)
-        {               
-            if (coordinates == null) 
+        {
+            if (coordinates == null)
                 coordinates = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
             NetTopologySuite.Utilities.Assert.IsTrue(coordinates.Count <= 1);
             this._coordinates = coordinates;
-        }        
+        }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override Coordinate[] Coordinates => IsEmpty ? new Coordinate[] { } : new Coordinate[] { this.Coordinate };
 
@@ -84,64 +84,64 @@ namespace NetTopologySuite.Geometries
             var ordinateFlag = OrdinatesUtility.ToOrdinatesFlag(ordinate);
             if ((_coordinates.Ordinates & ordinateFlag) != ordinateFlag)
                 return new[] {Coordinate.NullOrdinate};
-            
+
             return new [] { _coordinates.GetOrdinate(0, ordinate)};
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override int NumPoints => IsEmpty ? 0 : 1;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override bool IsEmpty => _coordinates.Count == 0;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override Dimension Dimension => Dimension.Point;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override Dimension BoundaryDimension => Dimension.False;
 
         /// <summary>
-        /// 
-        /// </summary>        
+        ///
+        /// </summary>
         public double X
         {
             get
             {
                 if (Coordinate == null)
-                    throw new ArgumentOutOfRangeException("X called on empty Point");                
+                    throw new ArgumentOutOfRangeException("X called on empty Point");
                 return Coordinate.X;
             }
             set => Coordinate.X = value;
         }
 
         /// <summary>
-        /// 
-        /// </summary>        
-        public double Y 
+        ///
+        /// </summary>
+        public double Y
         {
             get
             {
                 if (Coordinate == null)
-                    throw new ArgumentOutOfRangeException("Y called on empty Point");                
+                    throw new ArgumentOutOfRangeException("Y called on empty Point");
                 return Coordinate.Y;
             }
             set => Coordinate.Y = value;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override Coordinate Coordinate => _coordinates.Count != 0 ? _coordinates.GetCoordinate(0) : null;
 
-        /// <summary>  
+        /// <summary>
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"Point"</returns>
@@ -160,13 +160,13 @@ namespace NetTopologySuite.Geometries
         public override IGeometry Boundary => Factory.CreateGeometryCollection();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
-        protected override Envelope ComputeEnvelopeInternal() 
+        protected override Envelope ComputeEnvelopeInternal()
         {
-            if (IsEmpty) 
-                return new Envelope();            
+            if (IsEmpty)
+                return new Envelope();
             return new Envelope(Coordinate.X, Coordinate.X, Coordinate.Y, Coordinate.Y);
         }
 
@@ -178,16 +178,16 @@ namespace NetTopologySuite.Geometries
         //}
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance) 
+        public override bool EqualsExact(IGeometry other, double tolerance)
         {
-            if (!IsEquivalentClass(other)) 
-                return false;            
-            if (IsEmpty && other.IsEmpty) 
+            if (!IsEquivalentClass(other))
+                return false;
+            if (IsEmpty && other.IsEmpty)
                 return true;
             if (IsEmpty != other.IsEmpty)
                 return false;
@@ -196,13 +196,13 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="filter"></param>
-        public override void Apply(ICoordinateFilter filter) 
+        public override void Apply(ICoordinateFilter filter)
         {
-            if (IsEmpty) 
-                return;             
+            if (IsEmpty)
+                return;
             filter.Filter(Coordinate);
         }
 
@@ -216,7 +216,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="filter"></param>
         public override void Apply(IGeometryFilter filter)
@@ -225,10 +225,10 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="filter"></param>
-        public override void Apply(IGeometryComponentFilter filter) 
+        public override void Apply(IGeometryComponentFilter filter)
         {
             filter.Filter(this);
         }
@@ -249,10 +249,10 @@ namespace NetTopologySuite.Geometries
         /// (including all coordinates contained by it).
         /// </summary>
         /// <returns>A copy of this instance</returns>
-        public override IGeometry Copy() 
+        public override IGeometry Copy()
         {
             var coordinates = _coordinates.Copy();
-            return new Point(coordinates, Factory); 
+            return new Point(coordinates, Factory);
         }
 
         public override IGeometry Reverse()
@@ -261,23 +261,23 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override void Normalize() { }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        protected internal override int CompareToSameClass(object other) 
+        protected internal override int CompareToSameClass(object other)
         {
             Point point = (Point)  other;
             return Coordinate.CompareTo(point.Coordinate);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="other"></param>
         /// <param name="comparer"></param>
@@ -296,10 +296,10 @@ namespace NetTopologySuite.Geometries
         /// <param name="y">The y coordinate.</param>
         /// <param name="z">The z coordinate.</param>
         /// /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public Point(double x, double y, double z) : 
+        public Point(double x, double y, double z) :
             this(DefaultFactory.CoordinateSequenceFactory.Create(new Coordinate[] { new Coordinate(x, y, z) }), DefaultFactory) { }
 
         /// <summary>
@@ -308,15 +308,15 @@ namespace NetTopologySuite.Geometries
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
         /// /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/> 
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Point(double x, double y)
             : this(DefaultFactory.CoordinateSequenceFactory.Create(new Coordinate[] { new Coordinate(x, y) }), DefaultFactory) { }
 
         /// <summary>
-        /// 
-        /// </summary>        
+        ///
+        /// </summary>
         public double Z
         {
             get
@@ -329,7 +329,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /* END ADDED BY MPAUL42: monoGIS team */
-        
+
         public double M
         {
             get

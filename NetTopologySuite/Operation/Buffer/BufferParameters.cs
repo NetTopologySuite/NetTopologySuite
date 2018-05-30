@@ -4,7 +4,7 @@ using GeoAPI.Operation.Buffer;
 namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
-    /// A value class containing the parameters which 
+    /// A value class containing the parameters which
     /// specify how a buffer should be constructed.
     /// <para/>
     /// The parameters allow control over:
@@ -169,8 +169,8 @@ namespace NetTopologySuite.Operation.Buffer
         ///</summary>
         /// <remarks>
         /// <para>
-        /// The styles supported are <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Round"/>, 
-        /// <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Flat"/>, and 
+        /// The styles supported are <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Round"/>,
+        /// <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Flat"/>, and
         /// <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Square"/>.
         /// </para>
         /// <para>The default is <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Round"/>.</para>
@@ -185,7 +185,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// Gets/Sets the join style for outside (reflex) corners between line segments.
         ///</summary>
         /// <remarks>
-        /// <para>Allowable values are <see cref="GeoAPI.Operations.Buffer.JoinStyle.Round"/> (which is the default), 
+        /// <para>Allowable values are <see cref="GeoAPI.Operations.Buffer.JoinStyle.Round"/> (which is the default),
         /// <see cref="GeoAPI.Operations.Buffer.JoinStyle.Mitre"/> and <see cref="GeoAPI.Operations.Buffer.JoinStyle.Bevel"/></para>
         /// </remarks>
         public JoinStyle JoinStyle

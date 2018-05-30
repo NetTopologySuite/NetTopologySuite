@@ -18,13 +18,13 @@ namespace NetTopologySuite.GeometriesGraph.Index
 
         /*
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public SimpleSweepLineIntersector() { }
         */
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edges"></param>
         /// <param name="si"></param>
@@ -38,7 +38,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edges0"></param>
         /// <param name="edges1"></param>
@@ -51,7 +51,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edges"></param>
         private void Add(IEnumerable<Edge> edges)
@@ -64,7 +64,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edges"></param>
         /// <param name="edgeSet"></param>
@@ -77,7 +77,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edge"></param>
         /// <param name="edgeSet"></param>
@@ -93,7 +93,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Because DELETE events have a link to their corresponding INSERT event,
         /// it is possible to compute exactly the range of events which must be
         /// compared to a given INSERT event object.
@@ -111,7 +111,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="si"></param>
         private void ComputeIntersections(SegmentIntersector si)
@@ -128,7 +128,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>

@@ -29,7 +29,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             RunPtInRing(Location.Boundary, new Coordinate(0, 0), Comb);
             RunPtInRing(Location.Boundary, new Coordinate(0, 1), Comb);
-            // at vertex 
+            // at vertex
             RunPtInRing(Location.Boundary, new Coordinate(4, 5), Comb);
             RunPtInRing(Location.Boundary, new Coordinate(8, 5), Comb);
 
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             RunPtInRing(Location.Boundary, new Coordinate(0, 0), RepeatedPts);
             RunPtInRing(Location.Boundary, new Coordinate(0, 1), RepeatedPts);
 
-            // at vertex 
+            // at vertex
             RunPtInRing(Location.Boundary, new Coordinate(2, 5), RepeatedPts);
             RunPtInRing(Location.Boundary, new Coordinate(8, 5), RepeatedPts);
             RunPtInRing(Location.Boundary, new Coordinate(10, 5), RepeatedPts);
@@ -86,7 +86,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
 
         [Test]
-        public virtual void TestRobustTriangle() 
+        public virtual void TestRobustTriangle()
         {
             RunPtInRing(Location.Exterior, new Coordinate(3.166572116932842, 48.5390194687463), "POLYGON ((2.152214146946829 50.470470727186765, 18.381941666723034 19.567250592139274, 2.390837642830135 49.228045261718165, 2.152214146946829 50.470470727186765))");
         }

@@ -3,7 +3,7 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.GeometriesGraph
 {
-    /// <summary> 
+    /// <summary>
     /// Utility functions for working with quadrants, which are numbered as follows:
     /// <para>
     /// 1 | 0
@@ -11,7 +11,7 @@ namespace NetTopologySuite.GeometriesGraph
     /// 2 | 3
     /// </para>
     /// </summary>
-    public class QuadrantOp 
+    public class QuadrantOp
     {
 
 	    /// <summary>
@@ -35,8 +35,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// Only static methods!
         /// </summary>
         private QuadrantOp() { }
-             
-        /// <summary> 
+
+        /// <summary>
         /// Returns the quadrant of a directed line segment (specified as x and y
         /// displacements, which cannot both be 0).
         /// </summary>
@@ -53,12 +53,12 @@ namespace NetTopologySuite.GeometriesGraph
                      return NE;
                 return SE;
             }
-            if (dy >= 0.0) 
+            if (dy >= 0.0)
                 return NW;
             return SW;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Returns the quadrant of a directed line segment from p0 to p1.
         /// </summary>
         /// <param name="p0"></param>
@@ -68,7 +68,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             if (p1.X == p0.X && p1.Y == p0.Y)
                 throw new ArgumentException("Cannot compute the quadrant for two identical points " + p0);
-            
+
             if (p1.X >= p0.X)
             {
                 if (p1.Y >= p0.Y)
@@ -87,7 +87,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="quad2"></param>
         public static bool IsOpposite(int quad1, int quad2)
         {
-            if (quad1 == quad2) 
+            if (quad1 == quad2)
                 return false;
             int diff = (quad1 - quad2 + 4) % 4;
             // if quadrants are not adjacent, they are opposite
@@ -106,13 +106,13 @@ namespace NetTopologySuite.GeometriesGraph
         {
             // if quadrants are the same they do not determine a unique common halfplane.
             // Simply return one of the two possibilities
-            if (quad1 == quad2) 
+            if (quad1 == quad2)
                 return quad1;
             int diff = (quad1 - quad2 + 4) % 4;
             // if quadrants are not adjacent, they do not share a common halfplane
-            if (diff == 2) 
+            if (diff == 2)
                 return -1;
-            
+
             int min = (quad1 < quad2) ? quad1 : quad2;
             int max = (quad1 > quad2) ? quad1 : quad2;
             // for this one case, the righthand plane is NOT the minimum index;
@@ -122,7 +122,7 @@ namespace NetTopologySuite.GeometriesGraph
             return min;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Returns whether the given quadrant lies within the given halfplane (specified
         /// by its right-hand quadrant).
         /// </summary>
@@ -130,12 +130,12 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="halfPlane"></param>
         public static bool IsInHalfPlane(int quad, int halfPlane)
         {
-            if (halfPlane == SE) 
-                return quad == SE || quad == SW;            
+            if (halfPlane == SE)
+                return quad == SE || quad == SW;
             return quad == halfPlane || quad == halfPlane + 1;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Returns true if the given quadrant is 0 or 1.
         /// </summary>
         /// <param name="quad"></param>

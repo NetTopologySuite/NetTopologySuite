@@ -4,7 +4,7 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Operation.Distance3D
 {
     /// <summary>
-    /// A <see cref="ICoordinateSequence"/> wrapper which 
+    /// A <see cref="ICoordinateSequence"/> wrapper which
     /// projects 3D coordinates into one of the
     /// three Cartesian axis planes,
     /// using the standard orthonormal projection

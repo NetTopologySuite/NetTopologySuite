@@ -12,9 +12,9 @@ namespace NetTopologySuite.LinearReferencing
     /// (However, the common case of a ring is always handled correctly).
     /// </summary>
     public class LocationIndexOfLine
-    {      
+    {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="linearGeom"></param>
         /// <param name="subLine"></param>
@@ -42,7 +42,7 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="subLine"></param>
         /// <returns></returns>
@@ -58,7 +58,7 @@ namespace NetTopologySuite.LinearReferencing
 
             // check for case where subline is zero length
             if (subLine.Length == 0)
-                 subLineLoc[1] = (LinearLocation) subLineLoc[0].Copy();            
+                 subLineLoc[1] = (LinearLocation) subLineLoc[0].Copy();
             else subLineLoc[1] = locPt.IndexOfAfter(endPt, subLineLoc[0]);
             return subLineLoc;
         }

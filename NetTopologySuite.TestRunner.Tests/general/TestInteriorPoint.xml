@@ -48,7 +48,7 @@
 
 <case>
   <desc>mL - complex linestrings</desc>
-  <a>    MULTILINESTRING ((60 240, 140 300, 180 200, 40 140, 100 100, 120 220), 
+  <a>    MULTILINESTRING ((60 240, 140 300, 180 200, 40 140, 100 100, 120 220),
   (240 80, 260 160, 200 240, 180 340, 280 340, 240 180, 180 140, 40 200, 140 260))
 	</a>
 <test><op name="getInteriorPoint" arg1="A" >    POINT (180 200)   </op></test>
@@ -91,8 +91,8 @@
 
 <case>
   <desc>GC - collection of polygons, lines, points</desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON ((0 40, 40 40, 40 0, 0 0, 0 40)), 
-  LINESTRING (80 0, 80 80, 120 40), 
+  <a>    GEOMETRYCOLLECTION (POLYGON ((0 40, 40 40, 40 0, 0 0, 0 40)),
+  LINESTRING (80 0, 80 80, 120 40),
   MULTIPOINT ((20 60), (40 80), (60 60)))
 	</a>
 <test><op name="getInteriorPoint" arg1="A" >    POINT (20 20)   </op></test>
@@ -100,7 +100,7 @@
 
 <case>
   <desc>GC - collection of zero-area polygons and lines</desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON ((10 10, 10 10, 10 10, 10 10)), 
+  <a>    GEOMETRYCOLLECTION (POLYGON ((10 10, 10 10, 10 10, 10 10)),
   LINESTRING (20 20, 30 30))
 	</a>
 <test><op name="getInteriorPoint" arg1="A" >    POINT (10 10)   </op></test>
@@ -108,7 +108,7 @@
 
 <case>
   <desc>GC - collection of zero-area polygons and zero-length lines</desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON ((10 10, 10 10, 10 10, 10 10)), 
+  <a>    GEOMETRYCOLLECTION (POLYGON ((10 10, 10 10, 10 10, 10 10)),
   LINESTRING (20 20, 20 20))
 	</a>
 <test><op name="getInteriorPoint" arg1="A" >    POINT (10 10)   </op></test>
@@ -116,7 +116,7 @@
 
 <case>
   <desc>GC - collection of zero-area polygons, zero-length lines, and points</desc>
-  <a>    GEOMETRYCOLLECTION (POLYGON ((10 10, 10 10, 10 10, 10 10)), 
+  <a>    GEOMETRYCOLLECTION (POLYGON ((10 10, 10 10, 10 10, 10 10)),
   LINESTRING (20 20, 20 20),
   MULTIPOINT ((20 10), (10 20)) )
 	</a>

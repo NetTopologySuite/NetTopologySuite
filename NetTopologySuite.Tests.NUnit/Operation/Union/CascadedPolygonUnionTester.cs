@@ -77,7 +77,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
                     Console.Write(".");
                     //        System.out.println("Adding geom #" + count);
                 }
-            } 
+            }
             Console.Write("\n");
             return unionAll;
         }

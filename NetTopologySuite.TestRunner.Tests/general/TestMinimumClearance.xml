@@ -52,7 +52,7 @@
 
 <case>
   <desc>ML - linestring</desc>
-  <a>    MULTILINESTRING ((100 100, 200 100, 200 200, 150 150), 
+  <a>    MULTILINESTRING ((100 100, 200 100, 200 200, 150 150),
   (100 200, 150 170)) </a>
 <test><op name="minClearance" arg1='A' >  14.142135623730951	</op></test>
 <test><op name="minClearanceLine" arg1='A' >  LINESTRING (150 170, 160 160) </op></test>

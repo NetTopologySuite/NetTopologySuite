@@ -21,7 +21,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             IPoint interior = empty.InteriorPoint;
             Assert.That(interior, Is.Not.Null);
             Assert.That(interior.IsValid, Is.True);
-            Assert.That(interior.IsEmpty, Is.True);            
+            Assert.That(interior.IsEmpty, Is.True);
         }
     }
 }

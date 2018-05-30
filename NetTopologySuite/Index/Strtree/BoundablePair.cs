@@ -5,11 +5,11 @@ using NetTopologySuite.Utilities;
 namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
-    /// A pair of <see cref="IBoundable{Envelope, TItem}"/>s, whose leaf items 
+    /// A pair of <see cref="IBoundable{Envelope, TItem}"/>s, whose leaf items
     /// support a distance metric between them.
     /// Used to compute the distance between the members,
     /// and to expand a member relative to the other
-    /// in order to produce new branches of the 
+    /// in order to produce new branches of the
     /// Branch-and-Bound evaluation tree.
     /// Provides an ordering based on the distance between the members,
     /// which allows building a priority queue by minimum distance.
@@ -38,7 +38,7 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// Gets one of the member <see cref="IBoundable{Envelope, TItem}"/>s in the pair 
+        /// Gets one of the member <see cref="IBoundable{Envelope, TItem}"/>s in the pair
         /// (indexed by [0, 1]).
         /// </summary>
         /// <param name="i">The index of the member to return (0 or 1)</param>
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Index.Strtree
         /// Computes the distance between the <see cref="IBoundable{Envelope, TItem}"/>s in this pair.
         /// The boundables are either composites or leaves.
         /// If either is composite, the distance is computed as the minimum distance
-        /// between the bounds.  
+        /// between the bounds.
         /// If both are leaves, the distance is computed by <see cref="IItemDistance{Envelope, TItem}.Distance(IBoundable{Envelope, TItem}, IBoundable{Envelope, TItem})"/>.
         /// </summary>
         /// <returns>The distance between the <see cref="IBoundable{Envelope, TItem}"/>s in this pair.</returns>
@@ -80,11 +80,11 @@ namespace NetTopologySuite.Index.Strtree
         /*
         private double MaxDistance()
         {
-          return maximumDistance( 
+          return maximumDistance(
               (Envelope) boundable1.Bounds,
-              (Envelope) boundable2.Bounds);      	
+              (Envelope) boundable2.Bounds);
         }
-  
+
         private static double MaximumDistance(Envelope env1, Envelope env2)
         {
           double minx = Math.Min(env1.GetMinX(), env2.GetMinX());
@@ -99,10 +99,10 @@ namespace NetTopologySuite.Index.Strtree
 
         /// <summary>
         /// Gets the minimum possible distance between the Boundables in
-        /// this pair. 
+        /// this pair.
         /// If the members are both items, this will be the
         /// exact distance between them.
-        /// Otherwise, this distance will be a lower bound on 
+        /// Otherwise, this distance will be a lower bound on
         /// the distances between the items in the members.
         /// </summary>
         /// <returns>The exact or lower bound distance for this pair</returns>
@@ -136,9 +136,9 @@ namespace NetTopologySuite.Index.Strtree
          */
 
         /// <summary>
-        /// For a pair which is not a leaf 
+        /// For a pair which is not a leaf
         /// (i.e. has at least one composite boundable)
-        /// computes a list of new pairs 
+        /// computes a list of new pairs
         /// from the expansion of the larger boundable.
         /// </summary>
         public void ExpandToQueue(PriorityQueue<BoundablePair<TItem>> priQ, double minDistance)

@@ -7,11 +7,11 @@ namespace NetTopologySuite.EdgeGraph
     /// <summary>
     /// A graph comprised of <see cref="HalfEdge"/>s.
     /// It supports tracking the vertices in the graph
-    /// via edges incident on them, 
+    /// via edges incident on them,
     /// to allow efficient lookup of edges and vertices.
     /// </summary>
     /// <remarks>
-    /// This class may be subclassed to use a 
+    /// This class may be subclassed to use a
     /// different subclass of HalfEdge,
     /// by overriding <see cref="CreateEdge"/>.
     /// If additional logic is required to initialize
@@ -59,7 +59,7 @@ namespace NetTopologySuite.EdgeGraph
 
             // Attempt to find the edge already in the graph.
             // Return it if found.
-            // Otherwise, use a found edge with same origin (if any) to construct new edge. 
+            // Otherwise, use a found edge with same origin (if any) to construct new edge.
             HalfEdge eAdj;
             bool eAdjFound = vertexMap.TryGetValue(orig, out eAdj);
             HalfEdge eSame = null;

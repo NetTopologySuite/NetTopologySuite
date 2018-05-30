@@ -2,7 +2,7 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Precision
 {
-    /// <summary> 
+    /// <summary>
     /// Provides versions of Geometry spatial functions which use
     /// common bit removal to reduce the likelihood of robustness problems.
     /// In the current implementation no rounding is performed on the

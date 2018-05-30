@@ -6,17 +6,17 @@ using NetTopologySuite.Operation.Distance;
 
 namespace NetTopologySuite.Samples.Operation.Distance
 {
-	/// <summary> 
+	/// <summary>
     /// Example of computing distance and closest points between geometries
 	/// using the DistanceOp class.
-	/// </summary>	
+	/// </summary>
 	public class ClosestPointExample
-	{		
-		internal static GeometryFactory fact;	
+	{
+		internal static GeometryFactory fact;
 		internal static WKTReader wktRdr;
-		
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="args"></param>
 		[STAThread]
@@ -25,14 +25,14 @@ namespace NetTopologySuite.Samples.Operation.Distance
 			ClosestPointExample example = new ClosestPointExample();
 			example.Run();
 		}
-		
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
 		public ClosestPointExample() { }
-		
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
 		public virtual void  Run()
 		{
@@ -44,9 +44,9 @@ namespace NetTopologySuite.Samples.Operation.Distance
 			FindClosestPoint("POLYGON (( 76 185, 125 283, 331 276, 324 122, 177 70, 184 155, 69 123, 76 185 ), ( 267 237, 148 248, 135 185, 223 189, 251 151, 286 183, 267 237 ))", "LINESTRING ( 153 204, 185 224, 209 207, 238 222, 254 186 )");
 			FindClosestPoint("POLYGON (( 76 185, 125 283, 331 276, 324 122, 177 70, 184 155, 69 123, 76 185 ), ( 267 237, 148 248, 135 185, 223 189, 251 151, 286 183, 267 237 ))", "LINESTRING ( 120 215, 185 224, 209 207, 238 222, 254 186 )");
 		}
-		
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="wktA"></param>
         /// <param name="wktB"></param>
@@ -60,10 +60,10 @@ namespace NetTopologySuite.Samples.Operation.Distance
 				Console.WriteLine("Geometry A: " + A);
 				Console.WriteLine("Geometry B: " + B);
 				DistanceOp distOp = new DistanceOp(A, B);
-				
+
 				double distance = distOp.Distance();
 				Console.WriteLine("Distance = " + distance);
-				
+
 				Coordinate[] closestPt = distOp.NearestPoints();
 				ILineString closestPtLine = fact.CreateLineString(closestPt);
 				Console.WriteLine("Closest points: " + closestPtLine + " (distance = " + closestPtLine.Length + ")");
@@ -75,7 +75,7 @@ namespace NetTopologySuite.Samples.Operation.Distance
 		}
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
 		static ClosestPointExample()
 		{

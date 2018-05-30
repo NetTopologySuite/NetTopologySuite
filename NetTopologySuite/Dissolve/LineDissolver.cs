@@ -6,7 +6,7 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Dissolve
 {
     /// <summary>
-    /// Dissolves the linear components 
+    /// Dissolves the linear components
     /// from a collection of <see cref="IGeometry"/>s.
     /// into a set of maximal-length <see cref="ILineString"/>s
     /// in which every unique segment appears once only.
@@ -16,15 +16,15 @@ namespace NetTopologySuite.Dissolve
     /// </summary>
     /// <remarks>
     /// Use cases for dissolving linear components
-    /// include generalization 
-    /// (in particular, simplifying polygonal coverages), 
-    /// and visualization 
+    /// include generalization
+    /// (in particular, simplifying polygonal coverages),
+    /// and visualization
     /// (in particular, avoiding symbology conflicts when
     /// depicting shared polygon boundaries).
     /// </remarks>
     /// <remarks>
     /// This class does NOT node the input lines.
-    /// If there are line segments crossing in the input, 
+    /// If there are line segments crossing in the input,
     /// they will still cross in the output.
     ///</remarks>
     public class LineDissolver
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Dissolve
         }
 
         /// <summary>
-        /// Adds a <see cref="IGeometry"/> to be dissolved. 
+        /// Adds a <see cref="IGeometry"/> to be dissolved.
         /// Any number of geometries may be added by calling this method multiple times.
         /// Any type of Geometry may be added.  The constituent linework will be
         /// extracted to be dissolved.
@@ -164,7 +164,7 @@ namespace NetTopologySuite.Dissolve
         /// <remarks>
         /// Identifying the lowest starting node meets two goals:
         /// * It ensures that isolated input rings are created using the original node and orientation.
-        /// * For isolated rings formed from multiple input linestrings, 
+        /// * For isolated rings formed from multiple input linestrings,
         /// it provides a canonical node and orientation for the output
         /// (rather than essentially random, and thus hard to test).
         /// </remarks>
@@ -193,7 +193,7 @@ namespace NetTopologySuite.Dissolve
 
         /// <summary>
         /// Builds a line starting from the given edge.
-        /// The start edge origin is a node (valence = 1 or >= 3), 
+        /// The start edge origin is a node (valence = 1 or >= 3),
         /// unless it is part of a pure ring.
         /// </summary>
         /// <remarks>

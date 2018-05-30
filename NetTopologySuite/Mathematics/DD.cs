@@ -5,8 +5,8 @@ using System.Text;
 namespace NetTopologySuite.Mathematics
 {
     /// <summary>
-    /// Implements extended-precision floating-point numbers 
-    /// which maintain 106 bits (approximately 30 decimal digits) of precision. 
+    /// Implements extended-precision floating-point numbers
+    /// which maintain 106 bits (approximately 30 decimal digits) of precision.
     /// <para/>
     /// A DoubleDouble uses a representation containing two double-precision values.
     /// A number x is represented as a pair of doubles, x.hi and x.lo,
@@ -14,30 +14,30 @@ namespace NetTopologySuite.Mathematics
     /// <pre>
     ///     |x.lo| &lt;= 0.5*ulp(x.hi)
     /// </pre>
-    /// and ulp(y) means "unit in the last place of y".  
-    /// The basic arithmetic operations are implemented using 
+    /// and ulp(y) means "unit in the last place of y".
+    /// The basic arithmetic operations are implemented using
     /// convenient properties of IEEE-754 floating-point arithmetic.
     /// <para/>
-    /// The range of values which can be represented is the same as in IEEE-754.  
-    /// The precision of the representable numbers 
+    /// The range of values which can be represented is the same as in IEEE-754.
+    /// The precision of the representable numbers
     /// is twice as great as IEEE-754 double precision.
     /// <para/>
     /// The correctness of the arithmetic algorithms relies on operations
     /// being performed with standard IEEE-754 double precision and rounding.
-    /// This is the Java standard arithmetic model, but for performance reasons 
+    /// This is the Java standard arithmetic model, but for performance reasons
     /// Java implementations are not
-    /// constrained to using this standard by default.  
+    /// constrained to using this standard by default.
     /// Some processors (notably the Intel Pentium architecture) perform
     /// floating point operations in (non-IEEE-754-standard) extended-precision.
     /// A JVM implementation may choose to use the non-standard extended-precision
     /// as its default arithmetic mode.
     /// To prevent this from happening, this code uses the
-    /// Java <tt>strictfp</tt> modifier, 
-    /// which forces all operations to take place in the standard IEEE-754 rounding model. 
+    /// Java <tt>strictfp</tt> modifier,
+    /// which forces all operations to take place in the standard IEEE-754 rounding model.
     /// <para/>
-    /// The API provides both a set of value-oriented operations 
+    /// The API provides both a set of value-oriented operations
     /// and a set of mutating operations.
-    /// Value-oriented operations treat DoubleDouble values as 
+    /// Value-oriented operations treat DoubleDouble values as
     /// immutable; operations on them return new objects carrying the result
     /// of the operation.  This provides a simple and safe semantics for
     /// writing DoubleDouble expressions.  However, there is a performance
@@ -47,19 +47,19 @@ namespace NetTopologySuite.Mathematics
     /// care to ensure that aliasing errors are not created
     /// and constant values are not changed.
     /// <para/>
-    /// This implementation uses algorithms originally designed variously by 
-    /// Knuth, Kahan, Dekker, and Linnainmaa.  
-    /// Douglas Priest developed the first C implementation of these techniques. 
+    /// This implementation uses algorithms originally designed variously by
+    /// Knuth, Kahan, Dekker, and Linnainmaa.
+    /// Douglas Priest developed the first C implementation of these techniques.
     /// Other more recent C++ implementation are due to Keith M. Briggs and David Bailey et al.
     /// <h3>References</h3>
     /// <list type="Bullet">
     /// <item>Priest, D., <i>Algorithms for Arbitrary Precision Floating Point Arithmetic</i>,
-    /// in P. Kornerup and D. Matula, Eds., Proc. 10th Symposium on Computer Arithmetic, 
+    /// in P. Kornerup and D. Matula, Eds., Proc. 10th Symposium on Computer Arithmetic,
     /// IEEE Computer Society Press, Los Alamitos, Calif., 1991.</item>
-    /// <item>Yozo Hida, Xiaoye S. Li and David H. Bailey, 
-    /// <i>Quad-Double Arithmetic: Algorithms, Implementation, and Application</i>, 
+    /// <item>Yozo Hida, Xiaoye S. Li and David H. Bailey,
+    /// <i>Quad-Double Arithmetic: Algorithms, Implementation, and Application</i>,
     /// manuscript, Oct 2000; Lawrence Berkeley National Laboratory Report BNL-46996.</item>
-    /// <item>David Bailey, <i>High Precision Software Directory</i>; 
+    /// <item>David Bailey, <i>High Precision Software Directory</i>;
     /// <tt>http://crd.lbl.gov/~dhbailey/mpdist/index.html</tt></item>
     /// </list>
     /// </summary>
@@ -86,7 +86,7 @@ namespace NetTopologySuite.Mathematics
             6.123233995736766036e-17);
 
         /// <summary>
-        /// The value nearest to the constant e (the natural logarithm base). 
+        /// The value nearest to the constant e (the natural logarithm base).
         /// </summary>
         public static readonly DD E = new DD(
             2.718281828459045091e+00,
@@ -125,7 +125,7 @@ namespace NetTopologySuite.Mathematics
 
         /**
          * Converts the <tt>double</tt> argument to a DoubleDouble number.
-         * 
+         *
          * @param x a numeric value
          * @return the extended precision version of the value
          */
@@ -187,7 +187,7 @@ namespace NetTopologySuite.Mathematics
 
         /**
          * Creates a new DoubleDouble with value equal to the argument.
-         * 
+         *
          * @param str the value to initialize by
          * @throws NumberFormatException if <tt>str</tt> is not a valid representation of a number
          */
@@ -234,7 +234,7 @@ namespace NetTopologySuite.Mathematics
 
         /*
         double getHighComponent() { return hi; }
-  
+
         double getLowComponent() { return lo; }
         */
 
@@ -338,9 +338,9 @@ namespace NetTopologySuite.Mathematics
 
         ///// <summary>
         ///// Adds the argument to the value of <tt>this</tt>.
-        ///// To prevent altering constants, 
-        ///// this method <b>must only</b> be used on values known to 
-        ///// be newly created. 
+        ///// To prevent altering constants,
+        ///// this method <b>must only</b> be used on values known to
+        ///// be newly created.
         ///// </summary>
         ///// <param name="y">The addend</param>
         ///// <returns>this object, increased by <paramref name="y"/></returns>
@@ -397,10 +397,10 @@ namespace NetTopologySuite.Mathematics
 
         ///**
         // * Subtracts the argument from the value of <tt>this</tt>.
-        // * To prevent altering constants, 
-        // * this method <b>must only</b> be used on values known to 
-        // * be newly created. 
-        // * 
+        // * To prevent altering constants,
+        // * this method <b>must only</b> be used on values known to
+        // * be newly created.
+        // *
         // * @param y the addend
         // * @return this object, decreased by y
         // */
@@ -413,10 +413,10 @@ namespace NetTopologySuite.Mathematics
 
         ///**
         // * Subtracts the argument from the value of <tt>this</tt>.
-        // * To prevent altering constants, 
-        // * this method <b>must only</b> be used on values known to 
-        // * be newly created. 
-        // * 
+        // * To prevent altering constants,
+        // * this method <b>must only</b> be used on values known to
+        // * be newly created.
+        // *
         // * @param y the addend
         // * @return this object, decreased by y
         // */
@@ -439,7 +439,7 @@ namespace NetTopologySuite.Mathematics
 
         /**
          * Returns a new DoubleDouble whose value is <tt>(this * y)</tt>.
-         * 
+         *
          * @param y the multiplicand
          * @return <tt>(this * y)</tt>
          */
@@ -453,7 +453,7 @@ namespace NetTopologySuite.Mathematics
 
         /**
          * Returns a new DoubleDouble whose value is <tt>(this * y)</tt>.
-         * 
+         *
          * @param y the multiplicand
          * @return <tt>(this * y)</tt>
          */
@@ -466,10 +466,10 @@ namespace NetTopologySuite.Mathematics
 
         ///**
         // * Multiplies this object by the argument, returning <tt>this</tt>.
-        // * To prevent altering constants, 
-        // * this method <b>must only</b> be used on values known to 
-        // * be newly created. 
-        // * 
+        // * To prevent altering constants,
+        // * this method <b>must only</b> be used on values known to
+        // * be newly created.
+        // *
         // * @param y the value to multiply by
         // * @return this object, multiplied by y
         // */
@@ -481,10 +481,10 @@ namespace NetTopologySuite.Mathematics
 
         ///**
         // * Multiplies this object by the argument, returning <tt>this</tt>.
-        // * To prevent altering constants, 
-        // * this method <b>must only</b> be used on values known to 
-        // * be newly created. 
-        // * 
+        // * To prevent altering constants,
+        // * this method <b>must only</b> be used on values known to
+        // * be newly created.
+        // *
         // * @param y the value to multiply by
         // * @return this object, multiplied by y
         // */
@@ -581,8 +581,8 @@ namespace NetTopologySuite.Mathematics
 
         ///// <summary>
         ///// Divides this object by the argument, returning <tt>this</tt>.
-        ///// To prevent altering constants, 
-        ///// this method <b>must only</b> be used on values known to 
+        ///// To prevent altering constants,
+        ///// this method <b>must only</b> be used on values known to
         ///// be newly created.
         ///// </summary>
         ///// <param name="y">the value to divide by</param>
@@ -594,10 +594,10 @@ namespace NetTopologySuite.Mathematics
 
         ///**
         // * Divides this object by the argument, returning <tt>this</tt>.
-        // * To prevent altering constants, 
-        // * this method <b>must only</b> be used on values known to 
-        // * be newly created. 
-        // * 
+        // * To prevent altering constants,
+        // * this method <b>must only</b> be used on values known to
+        // * be newly created.
+        // *
         // * @param y the value to divide by
         // * @return this object, divided by y
         // */
@@ -657,7 +657,7 @@ namespace NetTopologySuite.Mathematics
 
         /**
          * Returns a DoubleDouble whose value is  <tt>1 / this</tt>.
-         * 
+         *
          * @return the reciprocal of this value
          */
 
@@ -708,7 +708,7 @@ namespace NetTopologySuite.Mathematics
         #endregion
 
         /// <summary>
-        /// Returns the largest (closest to positive infinity) 
+        /// Returns the largest (closest to positive infinity)
         /// value that is not greater than the argument
         /// and is equal to a mathematical integer.
         /// Special cases:
@@ -716,7 +716,7 @@ namespace NetTopologySuite.Mathematics
         /// <item>If this value is NaN, returns NaN.</item>
         /// </list>
         /// </summary>
-        /// <returns>The largest (closest to positive infinity) 
+        /// <returns>The largest (closest to positive infinity)
         /// value that is not greater than the argument
         ///  and is equal to a mathematical integer.
         /// </returns>
@@ -730,12 +730,12 @@ namespace NetTopologySuite.Mathematics
             {
                 flo = Math.Floor(_lo);
             }
-            // do we need to renormalize here?    
+            // do we need to renormalize here?
             return new DD(fhi, flo);
         }
 
         /// <summary>
-        /// Returns the smallest (closest to negative infinity) value 
+        /// Returns the smallest (closest to negative infinity) value
         /// that is not less than the argument and is equal to a mathematical integer.
         /// Special cases:
         /// <list type="Bullet">
@@ -743,7 +743,7 @@ namespace NetTopologySuite.Mathematics
         /// </list>
         /// </summary>
         /// <returns>
-        /// The smallest (closest to negative infinity) value 
+        /// The smallest (closest to negative infinity) value
         /// that is not less than the argument and is equal to a mathematical integer.
         /// </returns>
         public DD Ceiling()
@@ -800,7 +800,7 @@ namespace NetTopologySuite.Mathematics
 
         /// <summary>
         /// Returns the integer which is largest in absolute value and not further
-        /// from zero than this value.  
+        /// from zero than this value.
         /// <para/>
         /// Special cases:
         /// <list type="Bullet">
@@ -852,8 +852,8 @@ namespace NetTopologySuite.Mathematics
         /**
          * Computes the positive square root of this value.
          * If the number is NaN or negative, NaN is returned.
-         * 
-         * @return the positive square root of this number. 
+         *
+         * @return the positive square root of this number.
          * If the argument is NaN or less than zero, the result is NaN.
          */
 
@@ -939,7 +939,7 @@ namespace NetTopologySuite.Mathematics
 
         /**
          * Converts this value to the nearest double-precision number.
-         * 
+         *
          * @return the nearest double-precision number to this value
          */
 
@@ -950,7 +950,7 @@ namespace NetTopologySuite.Mathematics
 
         /**
          * Converts this value to the nearest integer.
-         * 
+         *
          * @return the nearest integer to this value
          */
 
@@ -996,7 +996,7 @@ namespace NetTopologySuite.Mathematics
         }
         /**
          * Tests whether this value is equal to another <tt>DoubleDouble</tt> value.
-         * 
+         *
          * @param y a DoubleDouble value
          * @return true if this value = y
          */
@@ -1200,7 +1200,7 @@ namespace NetTopologySuite.Mathematics
          * A decimal point may be optionally inserted in the string of digits
          * (as long as its position lies within the extracted digits
          * - if not, the caller must prepend or append the appropriate zeroes and decimal point).
-         * 
+         *
          * @param y the number to extract ( >= 0)
          * @param decimalPointPos the position in which to insert a decimal point
          * @return the string containing the significant digits and possibly a decimal point
@@ -1247,9 +1247,9 @@ namespace NetTopologySuite.Mathematics
                     //        throw new IllegalStateException("Internal errror: found digit = " + digit);
                 }
                 /**
-                 * If a negative remainder is encountered, simply terminate the extraction.  
+                 * If a negative remainder is encountered, simply terminate the extraction.
                  * This is robust, but maybe slightly inaccurate.
-                 * My current hypothesis is that negative remainders only occur for very small lo components, 
+                 * My current hypothesis is that negative remainders only occur for very small lo components,
                  * so the inaccuracy is tolerable
                  */
                 if (digit < 0)
@@ -1277,7 +1277,7 @@ namespace NetTopologySuite.Mathematics
 
                 bool continueExtractingDigits = true;
                 /**
-                 * Heuristic check: if the remaining portion of 
+                 * Heuristic check: if the remaining portion of
                  * y is non-positive, assume that output is complete
                  */
                 //      if (y.hi <= 0.0)
@@ -1323,7 +1323,7 @@ namespace NetTopologySuite.Mathematics
             var xMag = (int) Math.Floor(xLog10);
             /**
              * Since log computation is inexact, there may be an off-by-one error
-             * in the computed magnitude. 
+             * in the computed magnitude.
              * Following tests that magnitude is correct, and adjusts it if not
              */
             var xApprox = Math.Pow(10, xMag);
@@ -1341,7 +1341,7 @@ namespace NetTopologySuite.Mathematics
 
         /// <summary>
         /// Converts a string representation of a real number into a DoubleDouble value.
-        /// The format accepted is similar to the standard Java real number syntax.  
+        /// The format accepted is similar to the standard Java real number syntax.
         /// It is defined by the following regular expression:
         /// <pre>
         /// [<tt>+</tt>|<tt>-</tt>] {<i>digit</i>} [ <tt>.</tt> {<i>digit</i>} ] [ ( <tt>e</tt> | <tt>E</tt> ) [<tt>+</tt>|<tt>-</tt>] {<i>digit</i>}+

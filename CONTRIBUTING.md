@@ -1,14 +1,14 @@
 # Contributing
 
-**So, you're thinking about contributing to NetTopologySuite aka NTS. Awesome!** 
+**So, you're thinking about contributing to NetTopologySuite aka NTS. Awesome!**
 
-We welcome contributions and these guidelines are there to help you do just that! 
+We welcome contributions and these guidelines are there to help you do just that!
 
 ## What's this NTS?
 
 NTS intends to be a direct port of the [JTS Topology Suite](https://www.locationtech.org/projects/technology.jts) for .NET. While porting we _.Net-ify_ by using e.g. properties or indexers instead of Java `get_` and `set_(_)` methods and so on.
 
-### So what does this mean for contributing to NTS? 
+### So what does this mean for contributing to NTS?
 
 These projects are directly in sync with NTS:
 

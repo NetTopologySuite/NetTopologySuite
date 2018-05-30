@@ -113,7 +113,7 @@ namespace NetTopologySuite.Samples.Technique
                                 _geoms.Add(ToLinestring(lineString.Factory, sequence.Ordinates, tuples));
                                 break;
                         }
-                    } 
+                    }
                     else if (startRelation == IntervalRelation.Below)
                     {
                         switch (relation)

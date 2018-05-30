@@ -11,13 +11,13 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Relate
      * Tests the performance of {@link RelateOp} (via {@link Geometry#intersects(Geometry)}
      * on monotone linestrings, to confirm that the Monotone Chain comparison logic
      * is working as expected.
-     * (In particular, Monotone Chains can be tested for intersections very efficiently, 
+     * (In particular, Monotone Chains can be tested for intersections very efficiently,
      * since the monotone property allows subchain envelopes to be computed dynamically,
      * and thus binary search can be used to determine if two monotone chains intersect).
-     * This should result in roughly linear performance for testing intersection of 
+     * This should result in roughly linear performance for testing intersection of
      * chains (since the construction of the chain dominates the computation).
      * This test demonstrates that this occurs in practice.
-     * 
+     *
      * @author mdavis
      *
      */

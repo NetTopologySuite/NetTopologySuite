@@ -19,7 +19,7 @@ namespace NetTopologySuite.Operation
 
         public static IGeometry GetBoundary(IGeometry g)
         {
-            var bop = new BoundaryOp(g);    
+            var bop = new BoundaryOp(g);
             return bop.GetBoundary();
         }
 

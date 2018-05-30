@@ -3,7 +3,7 @@ using System;
 namespace NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class SweepLineEvent : IComparable
     {
@@ -44,22 +44,22 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsInsert => _eventType == Insert;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsDelete => _eventType == Delete;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public SweepLineEvent InsertEvent => _insertEvent;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int DeleteEventIndex
         {
@@ -68,7 +68,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public object Object => _obj;
 

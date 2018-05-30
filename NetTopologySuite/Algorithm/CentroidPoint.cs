@@ -3,7 +3,7 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
-    /// <summary> 
+    /// <summary>
     /// Computes the centroid of a point point.
     /// Algorithm:
     /// Compute the average of all points.
@@ -14,17 +14,17 @@ namespace NetTopologySuite.Algorithm
         private int _ptCount;
         private readonly Coordinate _centSum = new Coordinate();
 
-        /// <summary> 
+        /// <summary>
         /// Adds the point(s) defined by a Geometry to the centroid total.
         /// If the point is not of dimension 0 it does not contribute to the centroid.
         /// </summary>
         /// <param name="geom">The point to add.</param>
         public void Add(IGeometry geom)
         {
-            if (geom is IPoint)             
+            if (geom is IPoint)
                 Add(geom.Coordinate);
 
-            else if(geom is IGeometryCollection) 
+            else if(geom is IGeometryCollection)
             {
                 var gc = (IGeometryCollection) geom;
                 foreach (var geometry in gc.Geometries)
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Algorithm
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Adds the length defined by a coordinate.
         /// </summary>
         /// <param name="pt">A coordinate.</param>
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate Centroid
         {
@@ -58,5 +58,5 @@ namespace NetTopologySuite.Algorithm
                 return cent;
             }
         }
-    }   
+    }
 }

@@ -6,7 +6,7 @@ namespace NetTopologySuite.Algorithm
     /// <summary>
     /// Functions to compute the orientation of basic geometric structures
     /// including point triplets(triangles) and rings.
-    /// Orientation is a fundamental property of planar geometries 
+    /// Orientation is a fundamental property of planar geometries
     /// (and more generally geometry on two-dimensional manifolds).
     /// <para/>
     /// Orientation is notoriously subject to numerical precision errors
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Algorithm
         /// The index indicates whether the point lies to the <see cref="OrientationIndex.Left"/>
         /// or <see cref="OrientationIndex.Right"/> of the line, or lies on it <see cref="OrientationIndex.Collinear"/>.
         /// The index also indicates the orientation of the triangle formed by the three points
-        /// (<see cref="OrientationIndex.CounterClockwise"/>, <see cref="OrientationIndex.Clockwise"/>, or 
+        /// (<see cref="OrientationIndex.CounterClockwise"/>, <see cref="OrientationIndex.Clockwise"/>, or
         /// <see cref="OrientationIndex.Straight"/> )
         /// </summary>
         /// <param name="p1">The origin point of the line vector</param>
@@ -84,22 +84,22 @@ namespace NetTopologySuite.Algorithm
              * dependent, when computing the orientation of a point very close to a
              * line. This is possibly due to the arithmetic in the translation to the
              * origin.
-             * 
+             *
              * For instance, the following situation produces identical results in spite
              * of the inverse orientation of the line segment:
-             * 
+             *
              * Coordinate p0 = new Coordinate(219.3649559090992, 140.84159161824724);
              * Coordinate p1 = new Coordinate(168.9018919682399, -5.713787599646864);
-             * 
+             *
              * Coordinate p = new Coordinate(186.80814046338352, 46.28973405831556); int
              * orient = orientationIndex(p0, p1, p); int orientInv =
              * orientationIndex(p1, p0, p);
-             * 
+             *
              * A way to force consistent results is to normalize the orientation of the
              * vector using the following code. However, this may make the results of
              * orientationIndex inconsistent through the triangle of points, so it's not
              * clear this is an appropriate patch.
-             * 
+             *
              */
             var res = (OrientationIndex)CGAlgorithmsDD.OrientationIndex(p1, p2, q);
             return res; //(Orientation)CGAlgorithmsDD.OrientationIndex(p1, p2, q);
@@ -130,7 +130,7 @@ namespace NetTopologySuite.Algorithm
             // sanity check
             if (nPts < 3)
                 throw new ArgumentException(
-                    "Ring has fewer than 4 points, so orientation cannot be determined", 
+                    "Ring has fewer than 4 points, so orientation cannot be determined",
                     nameof(ring));
 
             // find highest point
@@ -180,7 +180,7 @@ namespace NetTopologySuite.Algorithm
              * If disc is exactly 0, lines are collinear. There are two possible cases:
              * (1) the lines lie along the x axis in opposite directions (2) the lines
              * lie on top of one another
-             * 
+             *
              * (1) is handled by checking if next is left of prev ==> CCW (2) will never
              * happen if the ring is valid, so don't check for it (Might want to assert
              * this)
@@ -271,7 +271,7 @@ namespace NetTopologySuite.Algorithm
              * If disc is exactly 0, lines are collinear. There are two possible cases:
              * (1) the lines lie along the x axis in opposite directions (2) the lines
              * lie on top of one another
-             * 
+             *
              * (1) is handled by checking if next is left of prev ==> CCW (2) will never
              * happen if the ring is valid, so don't check for it (Might want to assert
              * this)

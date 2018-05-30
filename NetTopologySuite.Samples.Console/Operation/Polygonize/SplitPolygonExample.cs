@@ -14,10 +14,10 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
      * based on
      * http://blog.opengeo.org/2012/06/21/splitpolygon-wps-process-p1/
      * http://blog.opengeo.org/2012/07/24/splitpolygon-wps-process-p2/
-     * 
+     *
      * and
      * https://github.com/mdavisog/wps-splitpoly
-     * 
+     *
      * and of course
      * http://sourceforge.net/mailarchive/forum.php?thread_name=CAK2ens3FY3qMT915_LoRiz6uqyww156swONSWRRaXc0anrxREg%40mail.gmail.com&forum_name=jts-topo-suite-user
      */
@@ -82,12 +82,12 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
             var clipPolygon = (IGeometry) clipPolygonal;
             var nodedLinework = polygon.Boundary.Union(clipPolygon.Boundary);
             var polygons = Polygonize(nodedLinework);
-            
+
             /*
             // Build a prepared clipPolygon
             var prepClipPolygon = NetTopologySuite.Geometries.Prepared.PreparedGeometryFactory.Prepare(clipPolygon);
                 */
-            
+
             // only keep polygons which are inside the input
             var output = new List<IGeometry>();
             for (var i = 0; i < polygons.NumGeometries; i++)

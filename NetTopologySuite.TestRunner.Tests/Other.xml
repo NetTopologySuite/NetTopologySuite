@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <project>
   <test verbose="false" exception="true" interactive="false" filter="none">
-    <dirs>      
+    <dirs>
       <dir>..\..\..\NetTopologySuite.TestRunner.Tests\robust</dir>
       <dir>..\..\..\NetTopologySuite.TestRunner.Tests\failure</dir>
       <dir>..\..\..\NetTopologySuite.TestRunner.Tests\external</dir>

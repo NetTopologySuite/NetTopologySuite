@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
     [TestFixtureAttribute]
     public class LineSequencerTest
     {
-        private static readonly WKTReader Rdr = 
+        private static readonly WKTReader Rdr =
             new WKTReader();
             //new WKTReader(new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed)));
 

@@ -67,7 +67,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             catch (Exception ex)
             {
                 savedException = ex;
-                // Ignore this exception, since the operation will be rerun                                
+                // Ignore this exception, since the operation will be rerun
             }
             if (!isSuccess)
             {

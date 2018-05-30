@@ -71,7 +71,7 @@ namespace ConsoleTestRunner
                 catch (Exception ex)
                 {
                     XmlTestExceptionManager.Publish(ex);
-                } 
+                }
 
                 if (listTests != null && listTests.Count > 0)
                 {
@@ -118,13 +118,13 @@ namespace ConsoleTestRunner
             TestOptionsParser parserOptions = new TestOptionsParser();
             TestInfoCollection listTests =
                 parserOptions.ParseProject(@"..\..\..\NetTopologySuite.TestRunner.Tests\Default.xml");
-            
+
             if (listTests != null && listTests.Count > 0)
             {
                 TestRunner runner = new TestRunner(listTests);
                 runner.Run();
                 runner.PrintResult();
-            }   
+            }
         }
 
         static void RunOther()

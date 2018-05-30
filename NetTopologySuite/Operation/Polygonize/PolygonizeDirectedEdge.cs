@@ -29,7 +29,7 @@ namespace NetTopologySuite.Operation.Polygonize
         public PolygonizeDirectedEdge(Node from, Node to, Coordinate directionPt, bool edgeDirection)
             : base(from, to, directionPt, edgeDirection) { }
 
-        /// <summary> 
+        /// <summary>
         /// Returns the identifier attached to this directed edge.
         /// Attaches an identifier to this directed edge.
         /// </summary>
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// </summary>
         public bool IsInRing => Ring != null;
 
-        /// <summary> 
+        /// <summary>
         /// Gets/Sets the ring of directed edges that this directed edge is
         /// a member of.
         /// </summary>

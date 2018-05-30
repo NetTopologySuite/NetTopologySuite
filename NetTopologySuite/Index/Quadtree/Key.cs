@@ -4,7 +4,7 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Index.Quadtree
 {
-    /// <summary> 
+    /// <summary>
     /// A Key is a unique identifier for a node in a quadtree.
     /// It contains a lower-left point and a level number. The level number
     /// is the power of two for the size of the node envelope.
@@ -12,7 +12,7 @@ namespace NetTopologySuite.Index.Quadtree
     public class Key
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="env"></param>
         /// <returns></returns>
@@ -33,7 +33,7 @@ namespace NetTopologySuite.Index.Quadtree
         private Envelope _env;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="itemEnv"></param>
         public Key(Envelope itemEnv)
@@ -42,22 +42,22 @@ namespace NetTopologySuite.Index.Quadtree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate Point => _pt;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int Level => _level;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Envelope Envelope => _env;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate Centre => new Coordinate((_env.MinX + _env.MaxX) / 2, (_env.MinY + _env.MaxY) / 2);
 
@@ -80,13 +80,13 @@ namespace NetTopologySuite.Index.Quadtree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="level"></param>
         /// <param name="itemEnv"></param>
         private void ComputeKey(int level, Envelope itemEnv)
         {
-            double quadSize = DoubleBits.PowerOf2(level);            
+            double quadSize = DoubleBits.PowerOf2(level);
             _pt.X = Math.Floor(itemEnv.MinX / quadSize) * quadSize;
             _pt.Y = Math.Floor(itemEnv.MinY / quadSize) * quadSize;
             _env.Init(_pt.X, _pt.X + quadSize, _pt.Y, _pt.Y + quadSize);

@@ -9,7 +9,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Distance3d
 public class WithinDistance3DTest
 {
 	static readonly WKTReader Rdr = new WKTReader();
-	
+
     [TestAttribute]
 	public void TestEmpty()
 	{
@@ -107,10 +107,10 @@ public class WithinDistance3DTest
 	{
 		CheckWithinDistance(	"LINESTRING (0 1 2, 1 1 1, 1 0 2 )",
 				"LINESTRING (0 0 0.1, .5 .5 0, 1 1 0, 1.5 1.5 0, 2 2 0 )",
-				1);		
+				1);
 		CheckWithinDistance(	"LINESTRING (10 10 20, 20 20 30, 20 20 1, 30 30 5 )",
 				"LINESTRING (1 80 10, 0 39 5, 39 0 5, 80 1 20)",
-				0.7071067811865476);		
+				0.7071067811865476);
 	}
 
     [TestAttribute]
@@ -119,15 +119,15 @@ public class WithinDistance3DTest
 		// point above poly
 		CheckWithinDistance(	"POINT (150 150 10)",
 				"POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0))",
-				10);	
+				10);
 		// point below poly
 		CheckWithinDistance(	"POINT (150 150 -10)",
 				"POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0))",
-				10);				
+				10);
 		// point right of poly in YZ plane
 		CheckWithinDistance(	"POINT (10 150 150)",
 				"POLYGON ((0 100 200, 0 200 200, 0 200 100, 0 100 100, 0 100 200))",
-				10);				
+				10);
 	}
 
     [TestAttribute]
@@ -136,15 +136,15 @@ public class WithinDistance3DTest
 		// inside
 		CheckWithinDistance(	"POINT (150 150 0)",
 				"POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0))",
-				0);	
+				0);
 		// outside
 		CheckWithinDistance(	"POINT (250 250 0)",
 				"POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0))",
-				70.71067811865476);				
+				70.71067811865476);
 		// on
 		CheckWithinDistance(	"POINT (200 200 0)",
 				"POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0))",
-				0);				
+				0);
 	}
 
     [TestAttribute]
@@ -153,15 +153,15 @@ public class WithinDistance3DTest
 		// line inside
 		CheckWithinDistance(	"LINESTRING (150 150 0, 160 160 0)",
 				"POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0))",
-				0);	
+				0);
 		// line outside
 		CheckWithinDistance(	"LINESTRING (200 250 0, 260 260 0)",
 				"POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0))",
-				50);	
+				50);
 		// line touching
 		CheckWithinDistance(	"LINESTRING (200 200 0, 260 260 0)",
 				"POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0))",
-				0);				
+				0);
 	}
 
     [TestAttribute]
@@ -170,33 +170,33 @@ public class WithinDistance3DTest
 		// line crossing inside
 		CheckWithinDistance(	"LINESTRING (150 150 10, 150 150 -10)",
 				"POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0))",
-				0);	
+				0);
 		// vertical line above
 		CheckWithinDistance(	"LINESTRING (200 200 10, 260 260 100)",
 				"POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0))",
-				10);	
+				10);
 		// vertical line touching
 		CheckWithinDistance(	"LINESTRING (200 200 0, 260 260 100)",
 				"POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0))",
-				0);				
+				0);
 	}
-	
+
 	String polyHoleFlat = "POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0), (120 180 0, 180 180 0, 180 120 0, 120 120 0, 120 180 0))";
 
     [TestAttribute]
     public void TestLinePolygonHoleFlat()
 	{
 		// line crossing hole
-		CheckWithinDistance(	"LINESTRING (150 150 10, 150 150 -10)", 	polyHoleFlat, 20, false);	
+		CheckWithinDistance(	"LINESTRING (150 150 10, 150 150 -10)", 	polyHoleFlat, 20, false);
 		// line crossing interior
-		CheckWithinDistance(	"LINESTRING (110 110 10, 110 110 -10)",		polyHoleFlat, 0);	
+		CheckWithinDistance(	"LINESTRING (110 110 10, 110 110 -10)",		polyHoleFlat, 0);
 	}
 
     [TestAttribute]
     public void TestPointPolygonHoleFlat()
 	{
 		// point above poly hole
-		CheckWithinDistance(	"POINT (130 130 10)", 	polyHoleFlat, 14.143);	
+		CheckWithinDistance(	"POINT (130 130 10)", 	polyHoleFlat, 14.143);
 		// point below poly hole
 		CheckWithinDistance(	"POINT (130 130 -10)", 	polyHoleFlat, 14.143);
 		// point above poly
@@ -234,17 +234,17 @@ public class WithinDistance3DTest
 				10
 				);
 	}
-	
-	
+
+
 	//==========================================================
 	// Convenience methods
 	//==========================================================
-	
+
 	private void CheckWithinDistance(String wkt1, String wkt2, double distance)
 	{
 		CheckWithinDistance(wkt1, wkt2, distance, true);
 	}
-	
+
 	private void CheckWithinDistance(String wkt1, String wkt2, double distance, bool expectedResult)
 	{
 		IGeometry g1;
@@ -271,5 +271,5 @@ public class WithinDistance3DTest
 		var isWithinDist = Distance3DOp.IsWithinDistance(g1, g2, distance);
 		Assert.AreEqual(expectedResult, isWithinDist);
 	}
-	
+
 }}

@@ -40,7 +40,7 @@ namespace NetTopologySuite.Utilities
         /// (which in most cases is the
         /// lower left point of the envelope containing the shape).
         /// </summary>
-        public Coordinate Base  
+        public Coordinate Base
         {
             set => _dim.Base = value;
         }
@@ -73,8 +73,8 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// Gets/Sets the size of the extent of the shape in both x and y directions.        
-        /// </summary>                
+        /// Gets/Sets the size of the extent of the shape in both x and y directions.
+        /// </summary>
         public double Size
         {
             set => _dim.Size = value;
@@ -101,7 +101,7 @@ namespace NetTopologySuite.Utilities
         /// <summary>
         /// Gets/Sets the rotation angle, in radians, to use for the shape.
         /// The rotation is applied relative to the centre of the shape.
-        /// </summary>        
+        /// </summary>
         public double Rotation
         {
             get => _rotationAngle;
@@ -145,27 +145,27 @@ namespace NetTopologySuite.Utilities
             var ySegLen = _dim.Envelope.Height / nSide;
 
             var pts = new Coordinate[4 * nSide + 1];
-            var env = _dim.Envelope;            
+            var env = _dim.Envelope;
 
-            for (i = 0; i < nSide; i++) 
+            for (i = 0; i < nSide; i++)
             {
                 var x = env.MinX + i * xSegLen;
                 var y = env.MinY;
                 pts[ipt++] = CreateCoord(x, y);
             }
-            for (i = 0; i < nSide; i++) 
+            for (i = 0; i < nSide; i++)
             {
                 var x = env.MaxX;
                 var y = env.MinY + i * ySegLen;
                 pts[ipt++] = CreateCoord(x, y);
             }
-            for (i = 0; i < nSide; i++) 
+            for (i = 0; i < nSide; i++)
             {
                 var x = env.MaxX - i * xSegLen;
                 var y = env.MaxY;
                 pts[ipt++] = CreateCoord(x, y);
             }
-            for (i = 0; i < nSide; i++) 
+            for (i = 0; i < nSide; i++)
             {
                 var x = env.MinX;
                 var y = env.MaxY - i * ySegLen;
@@ -193,7 +193,7 @@ namespace NetTopologySuite.Utilities
 
             var pts = new Coordinate[_nPts + 1];
             var iPt = 0;
-            for (var i = 0; i < _nPts; i++) 
+            for (var i = 0; i < _nPts; i++)
             {
                 var ang = i * (2 * Math.PI / _nPts);
                 var x = xRadius * Math.Cos(ang) + centreX;
@@ -210,8 +210,8 @@ namespace NetTopologySuite.Utilities
 
         /// <summary>
         /// Creates an elliptical <c>Polygon</c>.
-        /// If the supplied envelope is square the 
-        /// result will be a circle. 
+        /// If the supplied envelope is square the
+        /// result will be a circle.
         /// </summary>
         /// <returns>An an ellipse or circle.</returns>
         public IPolygon CeateEllipse()
@@ -323,7 +323,7 @@ namespace NetTopologySuite.Utilities
 
             var pts = new Coordinate[_nPts];
             var iPt = 0;
-            for (var i = 0; i < _nPts; i++) 
+            for (var i = 0; i < _nPts; i++)
             {
                 var ang = startAng + i * angInc;
                 var x = xRadius * Math.Cos(ang) + centreX;
@@ -420,7 +420,7 @@ namespace NetTopologySuite.Utilities
             {
                 get => _height;
                set => _height = value;
-           }                                  
+           }
 
             public double Size
             {
@@ -438,10 +438,10 @@ namespace NetTopologySuite.Utilities
                 get
                 {
                     if (Base != null)
-                        return new Envelope(Base.X, Base.X + Width, Base.Y, Base.Y + Height);                    
+                        return new Envelope(Base.X, Base.X + Width, Base.Y, Base.Y + Height);
                     if (Centre != null)
                         return new Envelope(Centre.X - Width / 2, Centre.X + Width / 2,
-                                            Centre.Y - Height / 2, Centre.Y + Height / 2);                    
+                                            Centre.Y - Height / 2, Centre.Y + Height / 2);
                     return new Envelope(0, Width, 0, Height);
                 }
                 set

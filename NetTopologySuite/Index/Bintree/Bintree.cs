@@ -16,9 +16,9 @@ namespace NetTopologySuite.Index.Bintree
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This structure is dynamic - 
-    /// new items can be added at any time,   
-    /// and it will support deletion of items 
+    /// This structure is dynamic -
+    /// new items can be added at any time,
+    /// and it will support deletion of items
     /// (although this is not currently implemented).
     /// </para>
     /// <para>
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Index.Bintree
             var min = itemInterval.Min;
             var max = itemInterval.Max;
             // has a non-zero extent
-            if (min != max) 
+            if (min != max)
                 return itemInterval;
             // pad extent
             if (min == max)
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Index.Bintree
         }
 
         private readonly Root<T> _root;
-        
+
         /*
         * Statistics:
         * minExtent is the minimum extent of all items
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Index.Bintree
         private double _minExtent = 1.0;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Bintree()
         {
@@ -73,26 +73,26 @@ namespace NetTopologySuite.Index.Bintree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int Depth
         {
             get
             {
-                if (_root != null) 
+                if (_root != null)
                     return _root.Depth;
                 return 0;
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int Count
         {
             get
             {
-                if (_root != null) 
+                if (_root != null)
                     return _root.Count;
                 return 0;
             }
@@ -106,22 +106,22 @@ namespace NetTopologySuite.Index.Bintree
         {
             get
             {
-                if (_root != null) 
+                if (_root != null)
                     return _root.NodeCount;
                 return 0;
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="itemInterval"></param>
         /// <param name="item"></param>
         public void Insert(Interval itemInterval, T item)
         {
             CollectStats(itemInterval);
-            var insertInterval = EnsureExtent(itemInterval, _minExtent);            
-            _root.Insert(insertInterval, item);            
+            var insertInterval = EnsureExtent(itemInterval, _minExtent);
+            _root.Insert(insertInterval, item);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace NetTopologySuite.Index.Bintree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public IEnumerator<T> GetEnumerator()
@@ -148,7 +148,7 @@ namespace NetTopologySuite.Index.Bintree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>
@@ -159,7 +159,7 @@ namespace NetTopologySuite.Index.Bintree
         }
 
         /// <summary>
-        /// Queries the tree to find all candidate items which 
+        /// Queries the tree to find all candidate items which
         /// may overlap the query interval.
         /// If the query interval is <tt>null</tt>, all items in the tree are found.
         /// <c>min</c> and <c>max</c> may be the same value.
@@ -189,7 +189,7 @@ namespace NetTopologySuite.Index.Bintree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="interval"></param>
         private void CollectStats(Interval interval)

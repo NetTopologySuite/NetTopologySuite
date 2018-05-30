@@ -3,7 +3,7 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
-    /// <summary> 
+    /// <summary>
     /// Computes the centroid of an area point.
     /// </summary>
     /// <remarks>
@@ -19,7 +19,7 @@ namespace NetTopologySuite.Algorithm
     /// </para>
     /// <para>
     /// The code has also be extended to handle degenerate (zero-area) polygons.
-    /// In this case, the centroid of the line segments in the polygon 
+    /// In this case, the centroid of the line segments in the polygon
     /// will be returned.
     /// </para>
     ///</remarks>
@@ -35,20 +35,20 @@ namespace NetTopologySuite.Algorithm
         private readonly Coordinate _centSum = new Coordinate();
         private double _totalLength;
 
-        /// <summary> 
+        /// <summary>
         /// Adds the area defined by a Geometry to the centroid total.
         /// If the point has no area it does not contribute to the centroid.
         /// </summary>
         /// <param name="geom">The point to add.</param>
         public void Add(IGeometry geom)
         {
-            if (geom is IPolygon) 
+            if (geom is IPolygon)
             {
                 var poly = (IPolygon) geom;
                 BasePoint = poly.ExteriorRing.GetCoordinateN(0);
                 Add(poly);
             }
-            else if (geom is IGeometryCollection) 
+            else if (geom is IGeometryCollection)
             {
                 var gc = (IGeometryCollection) geom;
                 for (var i = 0; i < gc.NumGeometries; i++)
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Algorithm
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Adds the area defined by an array of
         /// coordinates.  The array must be a ring;
         /// i.e. end with the same coordinate as it starts with.
@@ -71,7 +71,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate Centroid
         {
@@ -92,9 +92,9 @@ namespace NetTopologySuite.Algorithm
                 return cent;
             }
         }
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private Coordinate BasePoint
         {
@@ -110,7 +110,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="poly"></param>
         private void Add(IPolygon poly)
@@ -121,7 +121,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pts"></param>
         private void AddShell(Coordinate[] pts)
@@ -133,7 +133,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pts"></param>
         private void AddHole(Coordinate[] pts)
@@ -145,7 +145,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="p0"></param>
         /// <param name="p1"></param>
@@ -161,7 +161,7 @@ namespace NetTopologySuite.Algorithm
             _areasum2 += sign * area2;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Returns three times the centroid of the triangle p1-p2-p3.
         /// The factor of 3 is
         /// left in to permit division to be avoided until later.
@@ -184,7 +184,7 @@ namespace NetTopologySuite.Algorithm
         ///<summary>
         /// Adds the linear segments defined by an array of coordinates
         /// to the linear centroid accumulators.
-        /// This is done in case the polygon(s) have zero-area, 
+        /// This is done in case the polygon(s) have zero-area,
         /// in which case the linear centroid is computed instead.
         ///</summary>
         /// <param name="pts">an array of <see cref="Coordinate"/>s</param>

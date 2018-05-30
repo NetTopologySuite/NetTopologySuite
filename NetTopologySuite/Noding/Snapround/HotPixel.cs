@@ -170,9 +170,9 @@ namespace NetTopologySuite.Noding.Snapround
         /// Tests whether the segment p0-p1 intersects the hot pixel tolerance square.
         /// Because the tolerance square point set is partially open (along the
         /// top and right) the test needs to be more sophisticated than
-        /// simply checking for any intersection.  
+        /// simply checking for any intersection.
         /// However, it can take advantage of the fact that the hot pixel edges
-        /// do not lie on the coordinate grid. 
+        /// do not lie on the coordinate grid.
         /// It is sufficient to check if any of the following occur:
         ///  - a proper intersection between the segment and any hot pixel edge.
         ///  - an intersection between the segment and BOTH the left and bottom hot pixel edges

@@ -9,7 +9,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// <summary>
     /// Creates a buffer polygon with variable width along a line.
     /// <para/>
-    /// Only single lines are supported as input, since buffer widths 
+    /// Only single lines are supported as input, since buffer widths
     /// generally need to be specified specifically for each line.
     /// </summary>
     /// <author>Marting Davis</author>

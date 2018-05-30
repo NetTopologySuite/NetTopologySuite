@@ -26,7 +26,7 @@ namespace NetTopologySuite.EdgeGraph
         }
 
         /// <summary>
-        /// Adds the edges of a Geometry to the graph. 
+        /// Adds the edges of a Geometry to the graph.
         /// May be called multiple times.
         /// Any dimension of Geometry may be added; the constituent edges are extracted.
         /// </summary>
@@ -41,7 +41,7 @@ namespace NetTopologySuite.EdgeGraph
         }
 
         /// <summary>
-        ///  Adds the edges in a collection of <see cref="IGeometry"/>s to the graph. 
+        ///  Adds the edges in a collection of <see cref="IGeometry"/>s to the graph.
         /// May be called multiple times.
         /// Any dimension of <see cref="IGeometry"/> may be added.
         /// </summary>

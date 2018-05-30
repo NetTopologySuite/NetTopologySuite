@@ -5,7 +5,7 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
-    /// <summary> 
+    /// <summary>
     /// Computes the topological relationship (<see cref="Location"/>) of a single point to a Geometry.
     /// </summary>
     /// <remarks>
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Algorithm
         public PointLocator() { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PointLocator"/> class using the provided 
+        /// Initializes a new instance of the <see cref="PointLocator"/> class using the provided
         /// <paramref name="boundaryRule">boundary rule</paramref>.
         /// </summary>
         /// <param name="boundaryRule">The boundary rule to use.</param>
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Algorithm
             _boundaryRule = boundaryRule;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Convenience method to test a point for intersection with a Geometry
         /// </summary>
         /// <param name="p">The coordinate to test.</param>
@@ -56,7 +56,7 @@ namespace NetTopologySuite.Algorithm
             return Locate(p, geom) != Location.Exterior;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Computes the topological relationship ({Location}) of a single point to a Geometry.
         /// It handles both single-element and multi-element Geometries.
         /// The algorithm for multi-part Geometries takes into account the boundaryDetermination rule.
@@ -66,9 +66,9 @@ namespace NetTopologySuite.Algorithm
         {
             if (geom.IsEmpty)
                 return Location.Exterior;
-            if (geom is ILineString) 
+            if (geom is ILineString)
                 return LocateOnLineString(p, (ILineString) geom);
-            if (geom is IPolygon) 
+            if (geom is IPolygon)
                 return LocateInPolygon(p, (IPolygon) geom);
 
             _isIn = false;
@@ -86,26 +86,26 @@ namespace NetTopologySuite.Algorithm
         {
             if (geom is IPoint)
                 UpdateLocationInfo(LocateOnPoint(p, (IPoint) geom));
-            if (geom is ILineString) 
-                UpdateLocationInfo(LocateOnLineString(p, (ILineString) geom));                                  
-            else if(geom is IPolygon) 
-                UpdateLocationInfo(LocateInPolygon(p, (IPolygon) geom));            
-            else if(geom is IMultiLineString) 
+            if (geom is ILineString)
+                UpdateLocationInfo(LocateOnLineString(p, (ILineString) geom));
+            else if(geom is IPolygon)
+                UpdateLocationInfo(LocateInPolygon(p, (IPolygon) geom));
+            else if(geom is IMultiLineString)
             {
                 IMultiLineString ml = (IMultiLineString) geom;
-                foreach (ILineString l in ml.Geometries)                     
-                    UpdateLocationInfo(LocateOnLineString(p, l));                
+                foreach (ILineString l in ml.Geometries)
+                    UpdateLocationInfo(LocateOnLineString(p, l));
             }
             else if(geom is IMultiPolygon)
             {
                 IMultiPolygon mpoly = (IMultiPolygon) geom;
-                foreach (IPolygon poly in mpoly.Geometries) 
+                foreach (IPolygon poly in mpoly.Geometries)
                     UpdateLocationInfo(LocateInPolygon(p, poly));
             }
-            else if (geom is IGeometryCollection) 
+            else if (geom is IGeometryCollection)
             {
                 IEnumerator geomi = new GeometryCollectionEnumerator((IGeometryCollection) geom);
-                while(geomi.MoveNext()) 
+                while(geomi.MoveNext())
                 {
                     IGeometry g2 = (IGeometry) geomi.Current;
                     if (g2 != geom)
@@ -116,9 +116,9 @@ namespace NetTopologySuite.Algorithm
 
         private void UpdateLocationInfo(Location loc)
         {
-            if(loc == Location.Interior) 
+            if(loc == Location.Interior)
                 _isIn = true;
-            if(loc == Location.Boundary) 
+            if(loc == Location.Boundary)
                 _numBoundaries++;
         }
 
@@ -135,14 +135,14 @@ namespace NetTopologySuite.Algorithm
         private static Location LocateOnLineString(Coordinate p, ILineString l)
         {
             // bounding-box check
-            if (!l.EnvelopeInternal.Intersects(p)) 
+            if (!l.EnvelopeInternal.Intersects(p))
                 return Location.Exterior;
-  	
+
 
             Coordinate[] pt = l.Coordinates;
             if(!l.IsClosed)
                 if(p.Equals(pt[0]) || p.Equals(pt[pt.Length - 1]))
-                    return Location.Boundary;                            
+                    return Location.Boundary;
             if (PointLocation.IsOnLine(p, pt))
                 return Location.Interior;
             return Location.Exterior;
@@ -158,21 +158,21 @@ namespace NetTopologySuite.Algorithm
 
         private Location LocateInPolygon(Coordinate p, IPolygon poly)
         {
-            if (poly.IsEmpty) 
+            if (poly.IsEmpty)
                 return Location.Exterior;
             ILinearRing shell = poly.Shell;
             Location shellLoc = LocateInPolygonRing(p, shell);
-            if (shellLoc == Location.Exterior) 
+            if (shellLoc == Location.Exterior)
                 return Location.Exterior;
-            if (shellLoc == Location.Boundary) 
+            if (shellLoc == Location.Boundary)
                 return Location.Boundary;
             // now test if the point lies in or on the holes
             foreach (ILinearRing hole in poly.InteriorRings)
             {
                 Location holeLoc = LocateInPolygonRing(p, hole);
-                if (holeLoc == Location.Interior) 
+                if (holeLoc == Location.Interior)
                     return Location.Exterior;
-                if (holeLoc == Location.Boundary) 
+                if (holeLoc == Location.Boundary)
                     return Location.Boundary;
             }
             return Location.Interior;

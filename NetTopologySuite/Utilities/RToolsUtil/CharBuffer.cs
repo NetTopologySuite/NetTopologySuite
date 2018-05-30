@@ -12,7 +12,7 @@ namespace RTools_NTS.Util
 	/// <remarks>
 	/// <para>To make Remove from the head fast, this is implemented
 	/// as a ring buffer.</para>
-	/// <para>This uses head and tail indices into a fixed-size 
+	/// <para>This uses head and tail indices into a fixed-size
 	/// array. This will grow the array as necessary.</para>
 	/// </remarks>
 	public class CharBuffer
@@ -35,10 +35,10 @@ namespace RTools_NTS.Util
 		public int Length
 		{
 			get => (tailIndex - headIndex);
-		    set 
-			{ 
+		    set
+			{
 				tailIndex = headIndex + value;
-				if (tailIndex >= capacity) throw new 
+				if (tailIndex >= capacity) throw new
 					IndexOutOfRangeException("Tail index greater than capacity");
 			}
 		}
@@ -93,7 +93,7 @@ namespace RTools_NTS.Util
 		}
 
 		/// <summary>
-		/// Ensure that we're set for the requested length by 
+		/// Ensure that we're set for the requested length by
 		/// potentially growing or shifting contents.
 		/// </summary>
 		/// <param name="requestedLength"></param>
@@ -206,7 +206,7 @@ namespace RTools_NTS.Util
 			}
 			else
 			{
-				Array.Copy(buffer, i + headIndex + n, buffer, i + headIndex, 
+				Array.Copy(buffer, i + headIndex + n, buffer, i + headIndex,
 					tailIndex - (i + headIndex + n));
 			}
 		}
@@ -255,6 +255,6 @@ namespace RTools_NTS.Util
 			return(new String(buffer, headIndex, tailIndex - headIndex));
 		}
 
-		#endregion		
+		#endregion
 	}
 }

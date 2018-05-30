@@ -2,7 +2,7 @@ using System;
 
 namespace NetTopologySuite.Index.Bintree
 {
-    /// <summary> 
+    /// <summary>
     /// Represents an (1-dimensional) closed interval on the Real number line.
     /// </summary>
 #if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
@@ -87,16 +87,16 @@ namespace NetTopologySuite.Index.Bintree
                 Max = min;
             }
         }
-               
+
         /// <summary>
         /// Method to expand this interval to contain <paramref name="interval"/>.
         /// </summary>
         /// <param name="interval">The interval to contain.</param>
         public void ExpandToInclude(Interval interval)
         {
-            if (interval.Max > Max) 
+            if (interval.Max > Max)
                 Max = interval.Max;
-            if (interval.Min < Min) 
+            if (interval.Min < Min)
                 Min = interval.Min;
         }
 
@@ -118,7 +118,7 @@ namespace NetTopologySuite.Index.Bintree
         /// <returns><c>true</c> if this interval overlaps the interval R[<paramref name="min"/>, <paramref name="max"/>]</returns>
         public bool Overlaps(double min, double max)
         {
-            if (Min > max || Max < min) 
+            if (Min > max || Max < min)
                 return false;
             return true;
         }

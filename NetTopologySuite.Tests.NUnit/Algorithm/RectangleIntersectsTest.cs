@@ -74,7 +74,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             if (useSegInt) Console.WriteLine("Using Segment Intersector");
             if (useSideInt) Console.WriteLine("Using Side Intersector");
-            
+
             Console.WriteLine("# pts: " + _pts.Length);
 
             var rectSegIntersector = new RectangleLineIntersector(_rectEnv);

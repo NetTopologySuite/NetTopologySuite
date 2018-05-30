@@ -5,7 +5,7 @@ using Open.Topology.TestRunner.Result;
 
 namespace Open.Topology.TestRunner.Operations
 {/// <summary>
-    /// Invokes a function from registry 
+    /// Invokes a function from registry
     ///  or a Geometry method determined by a named operation with a list of arguments,
     ///  the first of which is a <see cref="IGeometry"/>.
     ///  This class allows overriding Geometry methods

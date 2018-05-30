@@ -16,7 +16,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// and the precision model in which to carry out the computation.
     ///</summary>
     /// <remarks>
-    /// When computing buffers in floating point double-precision 
+    /// When computing buffers in floating point double-precision
     /// it can happen that the process of iterated noding can fail to converge (terminate).
     /// In this case a <see cref="TopologyException"/> will be thrown.
     /// Retrying the computation in a fixed precision
@@ -50,7 +50,7 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         ///<summary>
-        /// Sets the precision model to use during the curve computation and noding, 
+        /// Sets the precision model to use during the curve computation and noding,
         /// if it is different to the precision model of the Geometry.
         ///</summary>
         ///<remarks>
@@ -120,7 +120,7 @@ namespace NetTopologySuite.Operation.Buffer
 
             // otherwise use a fast (but non-robust) noder
             var noder = new MCIndexNoder(new IntersectionAdder(new RobustLineIntersector { PrecisionModel = precisionModel}));
-            
+
             //var li = new RobustLineIntersector();
             //li.PrecisionModel = precisionModel;
             //noder.SegmentIntersector = new IntersectionAdder(li);
@@ -143,7 +143,7 @@ namespace NetTopologySuite.Operation.Buffer
             foreach (var segStr in nodedSegStrings)
             {
                 /**
-                 * Discard edges which have zero length, 
+                 * Discard edges which have zero length,
                  * since they carry no information and cause problems with topology building
                  */
                 var pts = segStr.Coordinates;

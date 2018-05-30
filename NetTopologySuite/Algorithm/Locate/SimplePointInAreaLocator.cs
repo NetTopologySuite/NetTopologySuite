@@ -12,7 +12,7 @@ namespace NetTopologySuite.Algorithm.Locate
     public class SimplePointInAreaLocator : IPointOnGeometryLocator
     {
         /// <summary>
-        /// Determines the <see cref="Location"/> of a point in an areal <see cref="IGeometry"/>. 
+        /// Determines the <see cref="Location"/> of a point in an areal <see cref="IGeometry"/>.
         /// Computes <see cref="Location.Boundary"/> if the point lies exactly on a geometry line segment.
         /// </summary>
         /// <param name="p">The point to test</param>
@@ -76,7 +76,7 @@ namespace NetTopologySuite.Algorithm.Locate
 
         /// <summary>
         /// Determines whether a point lies in a <see cref="IPolygon"/>.
-        /// If the point lies on the polygon boundary it is 
+        /// If the point lies on the polygon boundary it is
         /// considered to be inside.
         /// </summary>
         /// <param name="p">The point to test</param>

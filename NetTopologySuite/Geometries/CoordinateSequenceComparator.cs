@@ -14,10 +14,10 @@ namespace NetTopologySuite.Geometries
     /// ordinate dimensions above the limit will not be compared.
     /// </para>
     /// <para>
-    /// If different behaviour is required for comparing size, dimension, 
+    /// If different behaviour is required for comparing size, dimension,
     /// or coordinate values, any or all methods can be overridden.</para>
     /// </remarks>
-    public class CoordinateSequenceComparator : IComparer<ICoordinateSequence> 
+    public class CoordinateSequenceComparator : IComparer<ICoordinateSequence>
     {
         ///<summary>
         /// Compare two <code>double</code>s, allowing for NaN values.

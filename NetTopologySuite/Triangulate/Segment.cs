@@ -12,12 +12,12 @@ namespace NetTopologySuite.Triangulate
     /// </summary>
     /// <author>David Skea</author>
     /// <author>Martin Davis</author>
-    /// 
+    ///
     public class Segment
     {
         private readonly LineSegment _ls;
 
-        /// <summary> 
+        /// <summary>
         /// Creates a new instance for the given ordinates.
         /// </summary>
         public Segment(double x1, double y1, double z1, double x2, double y2, double z2)
@@ -25,15 +25,15 @@ namespace NetTopologySuite.Triangulate
         {
         }
 
-        /// <summary> 
-        /// Creates a new instance for the given ordinates,  with associated external data. 
+        /// <summary>
+        /// Creates a new instance for the given ordinates,  with associated external data.
         /// </summary>
         public Segment(double x1, double y1, double z1, double x2, double y2, double z2, Object data)
             : this(new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2), data)
         {
         }
 
-        /// <summary> 
+        /// <summary>
         /// Creates a new instance for the given points, with associated external data.
         /// </summary>
         /// <param name="p0">the start point</param>
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Triangulate
             this.Data = data;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Creates a new instance for the given points.
         /// </summary>
         /// <param name="p0">the start point</param>

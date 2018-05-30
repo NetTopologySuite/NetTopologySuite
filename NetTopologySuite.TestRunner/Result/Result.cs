@@ -13,21 +13,21 @@ namespace Open.Topology.TestRunner.Result
         String ToLongString();
 
         String ToFormattedString();
-         
+
     }
 
     public interface IResult<T> : IResult
     {
         T Value { get; }
     }
-    
+
     public class BooleanResult : IResult<Boolean>
     {
         public BooleanResult(bool result)
         {
             Value = result;
         }
-        
+
         public Boolean Value { get; private set; }
 
         public bool Equals(IResult other, double tolerance)
@@ -138,7 +138,7 @@ namespace Open.Topology.TestRunner.Result
             var otherGeometryClone = (IGeometry)otherGeometry.Copy();
             thisGeometryClone.Normalize();
             otherGeometryClone.Normalize();
-            
+
             return thisGeometryClone.EqualsExact(otherGeometryClone, tolerance);
 
         }

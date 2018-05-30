@@ -37,15 +37,15 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
             {
                 new Coordinate(100,100),
                 new Coordinate(200,100),
-                new Coordinate(200,200),                
+                new Coordinate(200,200),
                 new Coordinate(100,200),
                 new Coordinate(100,100)
             };
             Coordinate[] interior1 =
-            { 
+            {
                 new Coordinate(120,120),
                 new Coordinate(180,120),
-                new Coordinate(180,180),                
+                new Coordinate(180,180),
                 new Coordinate(120,180),
                 new Coordinate(120,120)
             };
@@ -57,7 +57,7 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
             {
                 new Coordinate(100,100),
                 new Coordinate(200,200),
-                new Coordinate(300,300),                
+                new Coordinate(300,300),
                 new Coordinate(400,400),
                 new Coordinate(500,500)
             };

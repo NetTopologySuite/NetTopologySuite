@@ -3,7 +3,7 @@
 namespace NetTopologySuite.Noding
 {
     /// <summary>
-    /// Intersects two sets of <see cref="ISegmentString"/>s using 
+    /// Intersects two sets of <see cref="ISegmentString"/>s using
     /// brute-force comparison.
     /// </summary>
     public class SimpleSegmentSetMutualIntersector : ISegmentSetMutualIntersector
@@ -20,9 +20,9 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// Calls <see cref="ISegmentIntersector.ProcessIntersections(ISegmentString, int, ISegmentString, int)"/> 
+        /// Calls <see cref="ISegmentIntersector.ProcessIntersections(ISegmentString, int, ISegmentString, int)"/>
         /// for all <i>candidate</i> intersections between
-        /// the given collection of SegmentStrings and the set of base segments. 
+        /// the given collection of SegmentStrings and the set of base segments.
         /// </summary>
         /// <param name="segmentStrings">A collection of <see cref="ISegmentString"/>s to node</param>
         /// <param name="segmentIntersector">The intersection detector to either record intersection occurences

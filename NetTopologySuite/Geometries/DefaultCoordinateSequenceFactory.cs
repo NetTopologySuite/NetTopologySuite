@@ -15,11 +15,11 @@ namespace NetTopologySuite.Geometries
     {
         // NOTE: modified for "safe" assembly in Sql 2005
         // Readonly added
-        private static readonly DefaultCoordinateSequenceFactory instance = 
+        private static readonly DefaultCoordinateSequenceFactory instance =
             new DefaultCoordinateSequenceFactory();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private DefaultCoordinateSequenceFactory() { }
 

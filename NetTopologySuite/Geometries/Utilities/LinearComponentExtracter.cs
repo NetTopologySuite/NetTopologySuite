@@ -4,7 +4,7 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries.Utilities
 {
-    /// <summary> 
+    /// <summary>
     /// Extracts all the 1-dimensional (<see cref="ILineString"/>) components from a <see cref="IGeometry"/>.
     /// For polygonal geometries, this will extract all the component <see cref="ILinearRing"/>s.
     /// If desired, <see cref="ILinearRing"/>s can be forced to be returned as <see cref="ILineString"/>s.
@@ -78,7 +78,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
 
-        /// <summary> 
+        /// <summary>
         /// Extracts the linear components from a single point.
         /// If more than one point is to be processed, it is more
         /// efficient to create a single <c>LineExtracterFilter</c> instance
@@ -127,7 +127,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="geom">The geometry from which to extract</param>
         /// <param name="forceToLineString"><c>true</c> if <see cref="ILinearRing"/>s should be converted to <see cref="ILineString"/>s</param>
-        /// <returns>A linear geometry</returns>                
+        /// <returns>A linear geometry</returns>
         public static IGeometry GetGeometry(IGeometry geom, bool forceToLineString)
         {
             ICollection<IGeometry> lines = GetLines(geom, forceToLineString);
@@ -136,13 +136,13 @@ namespace NetTopologySuite.Geometries.Utilities
 
         private readonly ICollection<IGeometry> _lines;
 
-        /// <summary> 
+        /// <summary>
         /// Constructs a LineExtracterFilter with a list in which to store LineStrings found.
         /// </summary>
         /// <param name="lines"></param>
         public LinearComponentExtracter(ICollection<IGeometry> lines) : this(lines, false) { }
 
-        /// <summary> 
+        /// <summary>
         /// Constructs a LineExtracterFilter with a list in which to store LineStrings found.
         /// </summary>
         /// <param name="lines"></param>
@@ -154,12 +154,12 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsForcedToLineString { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geom"></param>
         public void Filter(IGeometry geom)

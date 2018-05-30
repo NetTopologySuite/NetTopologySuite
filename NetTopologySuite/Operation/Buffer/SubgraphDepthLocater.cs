@@ -164,7 +164,7 @@ namespace NetTopologySuite.Operation.Buffer
             /// <remarks>
             /// Known Bugs:
             /// <list type="Bullet">
-            /// <item>The logic does not obey the <see cref="IComparable.CompareTo"/> contract. 
+            /// <item>The logic does not obey the <see cref="IComparable.CompareTo"/> contract.
             /// This is acceptable for the intended usage, but may cause problems if used with some
             /// utilities in the .Net standard library (e.g. <see cref="T:System.Collections.List.Sort()"/>.</item>
             /// </list>

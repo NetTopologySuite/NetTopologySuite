@@ -33,11 +33,11 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     };
     Assert.IsTrue(IsAllOrientationsEqual(pts2));
   }
-  
+
   /**
    * Tests whether the orientations around a triangle of points
    * are all equal (as is expected if the orientation predicate is correct)
-   * 
+   *
    * @param pts an array of three points
    * @return true if all the orientations around the triangle are equal
    */
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     orient[2] = (int)Orientation.Index(pts[2], pts[0], pts[1]);
     return orient[0] == orient[1] && orient[0] == orient[2];
   }
-  
+
   public static bool IsAllOrientationsEqual(
       double p0x, double p0y,
       double p1x, double p1y,
@@ -62,12 +62,12 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     };
     return IsAllOrientationsEqual(pts);
   }
-  
-  public static Coordinate[] GetCoordinates(String wkt) 
+
+  public static Coordinate[] GetCoordinates(String wkt)
   {
     var geom = reader.Read(wkt);
     return geom.Coordinates;
   }
-  
+
 
 }}

@@ -11,7 +11,7 @@ using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO
 {
-    /// <summary> 
+    /// <summary>
     /// Outputs the textual representation of a <see cref="Geometry" />.
     /// The <see cref="WKTWriter" /> outputs coordinates rounded to the precision
     /// model. No more than the maximum number of necessary decimal places will be
@@ -52,10 +52,10 @@ namespace NetTopologySuite.IO
             buf.Append("LINESTRING");
             if (seq.Count == 0)
                 buf.Append(" EMPTY");
-            else 
+            else
             {
                 buf.Append("(");
-                for (var i = 0; i < seq.Count; i++) 
+                for (var i = 0; i < seq.Count; i++)
                 {
                     if (i > 0)
                         buf.Append(", ");
@@ -111,19 +111,19 @@ namespace NetTopologySuite.IO
 #endif
         }
 
-        /// <summary>  
+        /// <summary>
         /// Creates the <c>NumberFormatInfo</c> used to write <c>double</c>s
         /// with a sufficient number of decimal places.
         /// </summary>
-        /// <param name="precisionModel"> 
+        /// <param name="precisionModel">
         /// The <c>PrecisionModel</c> used to determine
         /// the number of decimal places to write.
         /// </param>
         /// <returns>
-        /// A <c>NumberFormatInfo</c> that write <c>double</c>s 
+        /// A <c>NumberFormatInfo</c> that write <c>double</c>s
         /// without scientific notation.
-        /// </returns>        
-        internal static NumberFormatInfo CreateFormatter(IPrecisionModel precisionModel) 
+        /// </returns>
+        internal static NumberFormatInfo CreateFormatter(IPrecisionModel precisionModel)
         {
             // the default number of decimal places is 16, which is sufficient
             // to accomodate the maximum precision of a double.
@@ -138,7 +138,7 @@ namespace NetTopologySuite.IO
                 NumberGroupSeparator = String.Empty,
                 NumberGroupSizes = new int[] {}
             };
-            return nfi;            
+            return nfi;
         }
 
         /// <summary>
@@ -147,11 +147,11 @@ namespace NetTopologySuite.IO
         /// <param name="ch">The character to repeat.</param>
         /// <param name="count">The number of times to repeat the character.</param>
         /// <returns>A <c>string</c> of characters.</returns>
-        public static string StringOfChar(char ch, int count) 
+        public static string StringOfChar(char ch, int count)
         {
             var buf = new StringBuilder();
-            for (var i = 0; i < count; i++) 
-                buf.Append(ch);            
+            for (var i = 0; i < count; i++)
+                buf.Append(ch);
             return buf.ToString();
         }
 
@@ -272,11 +272,11 @@ namespace NetTopologySuite.IO
         public virtual string WriteFormatted(IGeometry geometry)
         {
             TextWriter sw = new StringWriter();
-            try 
+            try
             {
                 WriteFormatted(geometry, true, sw);
             }
-            catch (IOException) 
+            catch (IOException)
             {
                 Assert.ShouldNeverReachHere();
             }
@@ -318,7 +318,7 @@ namespace NetTopologySuite.IO
             IPrecisionModel precisionModel = geometry.Factory.PrecisionModel;
             _useMaxPrecision = precisionModel.PrecisionModelType == PrecisionModels.Floating;
 
-            _formatter = CreateFormatter(geometry.PrecisionModel);           
+            _formatter = CreateFormatter(geometry.PrecisionModel);
             _format = "0." + StringOfChar('#', _formatter.NumberDecimalDigits);
             AppendGeometryTaggedText(geometry, 0, writer);
 
@@ -337,24 +337,24 @@ namespace NetTopologySuite.IO
         {
             Indent(level, writer);
 
-            if (geometry is IPoint) 
+            if (geometry is IPoint)
             {
                 var point = (IPoint)geometry;
                 AppendPointTaggedText(point.Coordinate, level, writer, point.PrecisionModel);
             }
             else if (geometry is ILinearRing)
-                AppendLinearRingTaggedText((ILinearRing) geometry, level, writer);            
+                AppendLinearRingTaggedText((ILinearRing) geometry, level, writer);
             else if (geometry is ILineString)
-                AppendLineStringTaggedText((ILineString) geometry, level, writer);            
-            else if (geometry is IPolygon) 
+                AppendLineStringTaggedText((ILineString) geometry, level, writer);
+            else if (geometry is IPolygon)
                 AppendPolygonTaggedText((IPolygon) geometry, level, writer);
-            else if (geometry is IMultiPoint) 
-                AppendMultiPointTaggedText((IMultiPoint) geometry, level, writer);            
-            else if (geometry is IMultiLineString) 
-                AppendMultiLineStringTaggedText((IMultiLineString) geometry, level, writer);            
-            else if (geometry is IMultiPolygon) 
-                AppendMultiPolygonTaggedText((IMultiPolygon) geometry, level, writer);            
-            else if (geometry is IGeometryCollection) 
+            else if (geometry is IMultiPoint)
+                AppendMultiPointTaggedText((IMultiPoint) geometry, level, writer);
+            else if (geometry is IMultiLineString)
+                AppendMultiLineStringTaggedText((IMultiLineString) geometry, level, writer);
+            else if (geometry is IMultiPolygon)
+                AppendMultiPolygonTaggedText((IMultiPolygon) geometry, level, writer);
+            else if (geometry is IGeometryCollection)
                 AppendGeometryCollectionTaggedText((IGeometryCollection) geometry, level, writer);
             else Assert.ShouldNeverReachHere("Unsupported Geometry implementation:" + geometry.GetType());
         }
@@ -366,7 +366,7 @@ namespace NetTopologySuite.IO
         /// <param name="coordinate">The <c>Coordinate</c> to process.</param>
         /// <param name="level"></param>
         /// <param name="writer">The output writer to append to.</param>
-        /// <param name="precisionModel"> 
+        /// <param name="precisionModel">
         /// The <c>PrecisionModel</c> to use to convert
         /// from a precise coordinate to an external coordinate.
         /// </param>
@@ -480,9 +480,9 @@ namespace NetTopologySuite.IO
         /// </param>
         private void AppendPointText(Coordinate coordinate, int level, TextWriter writer, IPrecisionModel precisionModel)
         {
-            if (coordinate == null) 
+            if (coordinate == null)
                 writer.Write("EMPTY");
-            else 
+            else
             {
                 writer.Write("(");
                 AppendCoordinate(coordinate, writer, precisionModel);
@@ -534,18 +534,18 @@ namespace NetTopologySuite.IO
         /// <param name="d">The <see cref="double" /> to convert.</param>
         /// <returns>
         /// The <see cref="double" /> as a <see cref="string" />.
-        /// </returns>        
+        /// </returns>
         private string WriteNumber(double d)
-        {            
+        {
             var standard = d.ToString(_format, _formatter);
-            if (!_useMaxPrecision) { 
+            if (!_useMaxPrecision) {
                 return standard;
 }
             try
-            {                
+            {
                 var converted = Convert.ToDouble(standard, _formatter);
                 // check if some precision is lost during text conversion: if so, use {0:R} formatter
-                if (converted == d) 
+                if (converted == d)
                     return standard;
                 return String.Format(_formatter, MaxPrecisionFormat, d);
             }
@@ -597,14 +597,14 @@ namespace NetTopologySuite.IO
         private void AppendLineStringText(ILineString lineString, int level, bool doIndent, TextWriter writer)
         {
             if (lineString.IsEmpty)
-                writer.Write("EMPTY");            
-            else 
+                writer.Write("EMPTY");
+            else
             {
                 if (doIndent) Indent(level, writer);
                 writer.Write("(");
-                for (var i = 0; i < lineString.NumPoints; i++) 
+                for (var i = 0; i < lineString.NumPoints; i++)
                 {
-                    if (i > 0) 
+                    if (i > 0)
                     {
                         writer.Write(", ");
                         if (_coordsPerLine > 0
@@ -629,14 +629,14 @@ namespace NetTopologySuite.IO
         /// <param name="writer">The output writer to append to.</param>
         private void AppendPolygonText(IPolygon polygon, int level, bool indentFirst, TextWriter writer)
         {
-            if (polygon.IsEmpty) 
-                writer.Write("EMPTY");            
-            else 
+            if (polygon.IsEmpty)
+                writer.Write("EMPTY");
+            else
             {
                 if (indentFirst) Indent(level, writer);
                 writer.Write("(");
                 AppendLineStringText(polygon.ExteriorRing, level, false, writer);
-                for (var i = 0; i < polygon.NumInteriorRings; i++) 
+                for (var i = 0; i < polygon.NumInteriorRings; i++)
                 {
                     writer.Write(", ");
                     AppendLineStringText(polygon.GetInteriorRingN(i), level + 1, true, writer);
@@ -654,12 +654,12 @@ namespace NetTopologySuite.IO
         /// <param name="writer">The output writer to append to.</param>
         private void AppendMultiPointText(IMultiPoint multiPoint, int level, TextWriter writer)
         {
-            if (multiPoint.IsEmpty) 
+            if (multiPoint.IsEmpty)
                 writer.Write("EMPTY");
-            else 
+            else
             {
                 writer.Write("(");
-                for (var i = 0; i < multiPoint.NumGeometries; i++) 
+                for (var i = 0; i < multiPoint.NumGeometries; i++)
                 {
                     if (i > 0)
                     {
@@ -684,16 +684,16 @@ namespace NetTopologySuite.IO
         /// <param name="writer">The output writer to append to.</param>
         private void AppendMultiLineStringText(IMultiLineString multiLineString, int level, bool indentFirst, TextWriter writer)
         {
-            if (multiLineString.IsEmpty) 
-                writer.Write("EMPTY");            
-            else 
+            if (multiLineString.IsEmpty)
+                writer.Write("EMPTY");
+            else
             {
                 var level2 = level;
                 var doIndent = indentFirst;
                 writer.Write("(");
-                for (var i = 0; i < multiLineString.NumGeometries; i++) 
+                for (var i = 0; i < multiLineString.NumGeometries; i++)
                 {
-                    if (i > 0) 
+                    if (i > 0)
                     {
                         writer.Write(", ");
                         level2 = level + 1;
@@ -712,18 +712,18 @@ namespace NetTopologySuite.IO
         /// <param name="multiPolygon">The <c>MultiPolygon</c> to process.</param>
         /// <param name="level"></param>
         /// <param name="writer">The output writer to append to.</param>
-        private void AppendMultiPolygonText(IMultiPolygon multiPolygon, int level, TextWriter writer)            
+        private void AppendMultiPolygonText(IMultiPolygon multiPolygon, int level, TextWriter writer)
         {
-            if (multiPolygon.IsEmpty) 
-                writer.Write("EMPTY");            
-            else 
+            if (multiPolygon.IsEmpty)
+                writer.Write("EMPTY");
+            else
             {
                 var level2 = level;
                 var doIndent = false;
                 writer.Write("(");
-                for (var i = 0; i < multiPolygon.NumGeometries; i++) 
+                for (var i = 0; i < multiPolygon.NumGeometries; i++)
                 {
-                    if (i > 0) 
+                    if (i > 0)
                     {
                         writer.Write(", ");
                         level2 = level + 1;
@@ -742,17 +742,17 @@ namespace NetTopologySuite.IO
         /// <param name="geometryCollection">The <c>GeometryCollection</c> to process.</param>
         /// <param name="level"></param>
         /// <param name="writer">The output writer to append to.</param>
-        private void AppendGeometryCollectionText(IGeometryCollection geometryCollection, int level, TextWriter writer)            
+        private void AppendGeometryCollectionText(IGeometryCollection geometryCollection, int level, TextWriter writer)
         {
             if (geometryCollection.IsEmpty)
-                writer.Write("EMPTY");            
-            else 
+                writer.Write("EMPTY");
+            else
             {
                 var level2 = level;
                 writer.Write("(");
-                for (var i = 0; i < geometryCollection.NumGeometries; i++) 
+                for (var i = 0; i < geometryCollection.NumGeometries; i++)
                 {
-                    if (i > 0) 
+                    if (i > 0)
                     {
                         writer.Write(", ");
                         level2 = level + 1;
@@ -764,7 +764,7 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coordIndex"></param>
         /// <param name="level"></param>
@@ -778,7 +778,7 @@ namespace NetTopologySuite.IO
     }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="level"></param>
         /// <param name="writer"></param>

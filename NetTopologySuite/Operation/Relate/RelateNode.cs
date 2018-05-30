@@ -10,7 +10,7 @@ namespace NetTopologySuite.Operation.Relate
     public class RelateNode : Node
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coord"></param>
         /// <param name="edges"></param>

@@ -11,7 +11,7 @@ using Assert = NUnit.Framework.Assert;
 
 namespace NetTopologySuite.Tests.NUnit
 {
-    public class MiscellaneousTest2 
+    public class MiscellaneousTest2
     {
 
         private static readonly IPrecisionModel precisionModel = new PrecisionModel(1);

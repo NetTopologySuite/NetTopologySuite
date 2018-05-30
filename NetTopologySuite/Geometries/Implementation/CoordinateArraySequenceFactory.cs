@@ -12,7 +12,7 @@ namespace NetTopologySuite.Geometries.Implementation
     public sealed class CoordinateArraySequenceFactory : ICoordinateSequenceFactory
     {
         private static readonly CoordinateArraySequenceFactory instance = new CoordinateArraySequenceFactory();
-        
+
         private CoordinateArraySequenceFactory() { }
 
         /// <summary>
@@ -25,16 +25,16 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coordinates">the coordinates, which may not be null nor contain null elements.</param>
         /// <returns></returns>
-        public ICoordinateSequence Create(Coordinate[] coordinates) 
+        public ICoordinateSequence Create(Coordinate[] coordinates)
         {
             return new CoordinateArraySequence(coordinates);
         }
 
-        public ICoordinateSequence Create(ICoordinateSequence coordSeq) 
+        public ICoordinateSequence Create(ICoordinateSequence coordSeq)
         {
             return new CoordinateArraySequence(coordSeq);
         }
-        
+
         public ICoordinateSequence Create(int size, int dimension)
         {
             if (dimension > 3)

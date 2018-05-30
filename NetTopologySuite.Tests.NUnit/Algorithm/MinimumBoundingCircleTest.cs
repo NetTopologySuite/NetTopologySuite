@@ -54,7 +54,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
 
         [TestAttribute]
-        public void TestObtuseTriangle() 
+        public void TestObtuseTriangle()
         {
             DoMinimumBoundingCircleTest("POLYGON ((100 100, 200 100, 150 90, 100 100))", "MULTIPOINT ((100 100), (200 100))",
                 new Coordinate(150, 100), 50);

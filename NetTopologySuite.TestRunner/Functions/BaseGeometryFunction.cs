@@ -7,9 +7,9 @@ namespace Open.Topology.TestRunner.Functions
 {
     /// <summary>
     /// A base for implementations of
-    /// <see cref="IGeometryFunction"/> which provides most 
+    /// <see cref="IGeometryFunction"/> which provides most
     /// of the required structure.
-    /// Extenders must supply the behaviour for the 
+    /// Extenders must supply the behaviour for the
     /// actual function invocation.
     /// </summary>
     /// <author>Martin Davis</author>
@@ -90,7 +90,7 @@ namespace Open.Topology.TestRunner.Functions
         public abstract Object Invoke(IGeometry geom, Object[] args);
 
         /// <summary>
-        /// Two functions are the same if they have the 
+        /// Two functions are the same if they have the
         /// same signature (name, parameter types and return type).
         /// </summary>
         /// <returns>true if this object is the same as the <tt>obj</tt> argument</returns>

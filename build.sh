@@ -25,4 +25,4 @@ dotnet build ./NetTopologySuite.IO/NetTopologySuite.IO.TopoJSON/NetTopologySuite
 #
 # Run unit tests
 #
-# mono .testRunner/NUnit.ConsoleRunner.3.6.0/tools/nunit3-console.exe ./Release/v4.5/AnyCPU/GeoAPI.Tests.dll 
+# mono .testRunner/NUnit.ConsoleRunner.3.6.0/tools/nunit3-console.exe ./Release/v4.5/AnyCPU/GeoAPI.Tests.dll

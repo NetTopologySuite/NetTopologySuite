@@ -30,11 +30,11 @@ namespace NetTopologySuite.Operation.Buffer
     /// computed buffer polygons are only approximations to the true geometry.
     /// The user can control the accuracy of the approximation by specifying
     /// the number of linear segments used to approximate arcs.
-    /// This is specified via <see cref="IBufferParameters.QuadrantSegments"/> 
+    /// This is specified via <see cref="IBufferParameters.QuadrantSegments"/>
     /// or <see cref="QuadrantSegments"/>.
     /// </para>
     /// <para>
-    /// The <see cref="IBufferParameters.EndCapStyle"/> of a linear buffer may be specified. 
+    /// The <see cref="IBufferParameters.EndCapStyle"/> of a linear buffer may be specified.
     /// The following end cap styles are supported:
     /// <ul>
     /// <li><see cref="EndCapStyle.Round" /> - the usual round end caps</li>
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// </ul>
     /// </para>
     /// <para>
-    /// The <see cref="IBufferParameters.JoinStyle"/> of the corners in a buffer may be specified. 
+    /// The <see cref="IBufferParameters.JoinStyle"/> of the corners in a buffer may be specified.
     /// The following join styles are supported:
     /// <ul>
     /// <li><see cref="JoinStyle.Round" /> - the usual round join</li>
@@ -53,11 +53,11 @@ namespace NetTopologySuite.Operation.Buffer
     /// </para>
     /// <para>
     /// The buffer algorithm can perform simplification on the input to increase performance.
-    /// The simplification is performed a way that always increases the buffer area 
+    /// The simplification is performed a way that always increases the buffer area
     /// (so that the simplified input covers the original input).
     /// The degree of simplification can be specified with <see cref="IBufferParameters.SimplifyFactor"/>,
     /// with a <see cref="BufferParameters.DefaultSimplifyFactor"/> used otherwise.
-    /// Note that if the buffer distance is zero then so is the computed simplify tolerance, 
+    /// Note that if the buffer distance is zero then so is the computed simplify tolerance,
     /// no matter what the simplify factor.
     /// </para>
     /// </remarks>
@@ -75,7 +75,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <summary>
         /// Compute a scale factor to limit the precision of
         /// a given combination of Geometry and buffer distance.
-        /// The scale factor is determined by 
+        /// The scale factor is determined by
         /// the number of digits of precision in the (geometry + buffer distance),
         /// limited by the supplied <paramref name="maxPrecisionDigits"/> value.
         /// <para/>

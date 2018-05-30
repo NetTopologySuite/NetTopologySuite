@@ -11,7 +11,7 @@ namespace NetTopologySuite.Samples.Tests.Various
 {
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     [TestFixture]
     public class WKTTest : BaseSamples
@@ -25,13 +25,13 @@ namespace NetTopologySuite.Samples.Tests.Various
         /// Initializes a new instance of the <see cref="WKTTest"/> class.
         /// </summary>
         public WKTTest() : base()
-        {            
+        {
             writer = new WKTWriter();
         }
 
         [Test]
         public void WriteZeroBasedCoordinateWithDifferentFactories()
-        {            
+        {
             TestFormatting(new Coordinate(0.00000000001, 0.00000000002));
             TestFormatting(new Coordinate(0.00001, 0.00002));
             TestFormatting(new Coordinate(0.01, 0.02));
@@ -40,7 +40,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         }
 
         private void TestFormatting(Coordinate c)
-        {            
+        {
             IGeometry point = GeometryFactory.Floating.CreatePoint(c);
             String result = writer.Write(point);
             Debug.WriteLine(result);
@@ -96,7 +96,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             IGeometryFactory factory = GeometryFactory.Default;
 
             WKBReader wkbreader = new WKBReader(factory);
-            IGeometry wkb1 = wkbreader.Read(test00_Geom0_WkbByteArray);            
+            IGeometry wkb1 = wkbreader.Read(test00_Geom0_WkbByteArray);
             Assert.IsNotNull(wkb1);
             TestValid(wkb1);
 
@@ -109,9 +109,9 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.IsTrue(ex.GetType() == typeof(TopologyException));
 
             string tos1 = writer.Write(wkb1);
-            Assert.IsNotNull(tos1);            
+            Assert.IsNotNull(tos1);
             string tos2 = writer.Write(wkb2);
-            Assert.IsNotNull(tos2);            
+            Assert.IsNotNull(tos2);
 
             WKTReader reader = new WKTReader(factory);
             IGeometry wkt1 = reader.Read(tos1);
@@ -127,7 +127,7 @@ namespace NetTopologySuite.Samples.Tests.Various
 
             ex = TryOverlay(wkt1, wkt2);
             Assert.IsNotNull(ex, "Operation must fail!");
-            Assert.IsTrue(ex.GetType() == typeof(TopologyException));          
+            Assert.IsTrue(ex.GetType() == typeof(TopologyException));
         }
 
         private Exception TryOverlay(IGeometry g1, IGeometry g2)

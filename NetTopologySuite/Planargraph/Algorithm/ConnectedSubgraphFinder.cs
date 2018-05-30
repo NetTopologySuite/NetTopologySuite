@@ -28,7 +28,7 @@ namespace NetTopologySuite.Planargraph.Algorithm
                 Edge e = ienum.Current;
                 Node node = e.GetDirEdge(0).FromNode;
                 if (!node.IsVisited)
-                    subgraphs.Add(FindSubgraph(node));                
+                    subgraphs.Add(FindSubgraph(node));
             }
             return subgraphs;
         }
@@ -70,7 +70,7 @@ namespace NetTopologySuite.Planargraph.Algorithm
             {
                 subgraph.Add(de.Edge);
                 Node toNode = de.ToNode;
-                if (!toNode.IsVisited) 
+                if (!toNode.IsVisited)
                     nodeStack.Push(toNode);
             }
         }

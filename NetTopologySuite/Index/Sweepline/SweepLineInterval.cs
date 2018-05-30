@@ -1,7 +1,7 @@
 namespace NetTopologySuite.Index.Sweepline
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class SweepLineInterval
     {
@@ -10,14 +10,14 @@ namespace NetTopologySuite.Index.Sweepline
         private readonly object item;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="min"></param>
         /// <param name="max"></param>
         public SweepLineInterval(double min, double max) : this(min, max, null) { }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="min"></param>
         /// <param name="max"></param>
@@ -30,17 +30,17 @@ namespace NetTopologySuite.Index.Sweepline
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public double Min => min;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public double Max => max;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public object Item => item;
     }

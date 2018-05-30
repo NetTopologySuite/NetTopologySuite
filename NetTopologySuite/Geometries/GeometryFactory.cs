@@ -8,9 +8,9 @@ using NetTopologySuite.Utilities;
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
-    /// Supplies a set of utility methods for building Geometry objects 
+    /// Supplies a set of utility methods for building Geometry objects
     /// from lists of Coordinates.
-    /// </summary>            
+    /// </summary>
     /// <remarks>
     /// Note that the factory constructor methods do <b>not</b> change the input coordinates in any way.
     /// In particular, they are not rounded to the supplied <c>PrecisionModel</c>.
@@ -22,26 +22,26 @@ namespace NetTopologySuite.Geometries
     public class GeometryFactory : IGeometryFactory
     {
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
+        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" />
         /// <c> == </c> <see cref="PrecisionModels.Floating" />.
         /// </summary>
         public static readonly IGeometryFactory Default = new GeometryFactory();
 
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
+        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" />
         /// <c> == </c> <see cref="PrecisionModels.Floating" />.
         /// </summary>
         /// <remarks>A shortcut for <see cref="GeometryFactory.Default" />.</remarks>
         public static readonly IGeometryFactory Floating = Default;
 
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
+        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" />
         /// <c> == </c> <see cref="PrecisionModels.FloatingSingle" />.
         /// </summary>
         public static readonly IGeometryFactory FloatingSingle = new GeometryFactory(new PrecisionModel(PrecisionModels.FloatingSingle));
 
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" /> 
+        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" />
         /// <c> == </c> <see cref="PrecisionModels.Fixed" />.
         /// </summary>
         public static readonly IGeometryFactory Fixed = new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed));
@@ -57,7 +57,7 @@ namespace NetTopologySuite.Geometries
         private readonly ICoordinateSequenceFactory _coordinateSequenceFactory;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public ICoordinateSequenceFactory CoordinateSequenceFactory => _coordinateSequenceFactory;
 
@@ -69,7 +69,7 @@ namespace NetTopologySuite.Geometries
         public int SRID => _srid;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coord"></param>
         /// <param name="exemplar"></param>
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Constructs a GeometryFactory that generates Geometries having the given
         /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
-        /// </summary>        
+        /// </summary>
         public GeometryFactory(IPrecisionModel precisionModel, int srid, ICoordinateSequenceFactory coordinateSequenceFactory)
         {
             _precisionModel = precisionModel;
@@ -241,7 +241,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The Geometry returned is guaranteed to be valid. 
+        /// The Geometry returned is guaranteed to be valid.
         /// To provide this behavior, the following cases occur:
         /// </para>
         /// <para>
@@ -254,7 +254,7 @@ namespace NetTopologySuite.Geometries
         /// </ul>
         /// </para>
         /// </remarks>
-        /// <param name="envelope">The <c>Envelope</c></param>       
+        /// <param name="envelope">The <c>Envelope</c></param>
         /// <returns>
         /// An empty <c>Point</c> (for null <c>Envelope</c>s), a <c>Point</c> (when min x = max x and min y = max y) or a <c>Polygon</c> (in all other cases)
         /// </returns>
@@ -272,7 +272,7 @@ namespace NetTopologySuite.Geometries
             if (envelope.MinX == envelope.MaxX
                     || envelope.MinY == envelope.MaxY)
             {
-                return CreateLineString(new[] 
+                return CreateLineString(new[]
                     {
                         new Coordinate(envelope.MinX, envelope.MinY),
                         new Coordinate(envelope.MaxX, envelope.MaxY)
@@ -331,7 +331,7 @@ namespace NetTopologySuite.Geometries
             return CreateLineString(CoordinateSequenceFactory.Create(0, CoordinateSequenceFactory.Ordinates));
         }
 
-        /// <summary> 
+        /// <summary>
         /// Creates a LineString using the given Coordinates.
         /// A null or empty array creates an empty LineString.
         /// </summary>
@@ -360,7 +360,7 @@ namespace NetTopologySuite.Geometries
             return CreateLinearRing(CoordinateSequenceFactory.Create(0, CoordinateSequenceFactory.Ordinates));
         }
         /// <summary>
-        /// Creates a <c>LinearRing</c> using the given <c>Coordinates</c>; a null or empty array 
+        /// Creates a <c>LinearRing</c> using the given <c>Coordinates</c>; a null or empty array
         /// creates an empty LinearRing. The points must form a closed and simple
         /// linestring. Consecutive points must not be equal.
         /// </summary>
@@ -372,7 +372,7 @@ namespace NetTopologySuite.Geometries
             return CreateLinearRing(coordinates != null ? CoordinateSequenceFactory.Create(coordinates) : null);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Creates a <c>LinearRing</c> using the given <c>CoordinateSequence</c>; a null or empty CoordinateSequence
         /// creates an empty LinearRing. The points must form a closed and simple
         /// linestring. Consecutive points must not be equal.
@@ -392,7 +392,7 @@ namespace NetTopologySuite.Geometries
             return CreatePolygon(CoordinateSequenceFactory.Create(0, CoordinateSequenceFactory.Ordinates));
         }
 
-        /// <summary> 
+        /// <summary>
         /// Constructs a <c>Polygon</c> with the given exterior boundary and
         /// interior boundaries.
         /// </summary>
@@ -404,7 +404,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="holes">
         /// The inner boundaries of the new <c>Polygon</c>, or
         /// <c>null</c> or empty <c>LinearRing</c> s if
-        /// the empty point is to be created.        
+        /// the empty point is to be created.
         /// </param>
         /// <returns>A <see cref="IPolygon"/> object</returns>
         public virtual IPolygon CreatePolygon(ILinearRing shell, ILinearRing[] holes)
@@ -458,7 +458,7 @@ namespace NetTopologySuite.Geometries
             return new MultiPoint(null, this);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Creates a <see cref="IMultiPoint"/> using the given Points.
         /// A null or empty array will  create an empty MultiPoint.
         /// </summary>
@@ -469,7 +469,7 @@ namespace NetTopologySuite.Geometries
             return new MultiPoint(point, this);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Creates a <see cref="IMultiPoint"/> using the given Coordinates.
         /// A null or empty array will create an empty MultiPoint.
         /// </summary>
@@ -481,7 +481,7 @@ namespace NetTopologySuite.Geometries
             return CreateMultiPointFromCoords(coordinates);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Creates a <see cref="IMultiPoint"/> using the given Coordinates.
         /// A null or empty array will create an empty MultiPoint.
         /// </summary>
@@ -492,7 +492,7 @@ namespace NetTopologySuite.Geometries
             return CreateMultiPoint(coordinates != null ? CoordinateSequenceFactory.Create(coordinates) : null);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Creates a <see cref="IMultiPoint"/> using the given CoordinateSequence.
         /// A null or empty CoordinateSequence will create an empty MultiPoint.
         /// </summary>
@@ -569,7 +569,7 @@ namespace NetTopologySuite.Geometries
             return new GeometryCollection(geometries, this);
         }
 
-        /// <summary>  
+        /// <summary>
         /// Build an appropriate <c>Geometry</c>, <c>MultiGeometry</c>, or
         /// <c>GeometryCollection</c> to contain the <c>Geometry</c>s in
         /// it.
@@ -590,7 +590,7 @@ namespace NetTopologySuite.Geometries
         /// </remarks>
         /// <param name="geomList">The <c>Geometry</c> to combine.</param>
         /// <returns>
-        /// A <see cref="IGeometry"/> of the "smallest", "most type-specific" 
+        /// A <see cref="IGeometry"/> of the "smallest", "most type-specific"
         /// class that can contain the elements of <c>geomList</c>.
         /// </returns>
         public IGeometry BuildGeometry(ICollection<IGeometry> geomList)
@@ -654,7 +654,7 @@ namespace NetTopologySuite.Geometries
         /// of the input geometry.
         /// <para/>
         /// This is a convenient way to change the <tt>CoordinateSequence</tt>
-        /// used to represent a geometry, or to change the 
+        /// used to represent a geometry, or to change the
         /// factory used for a geometry.
         /// <para/>
         /// <see cref="IGeometry.Copy()"/> can also be used to make a deep copy,
@@ -666,7 +666,7 @@ namespace NetTopologySuite.Geometries
         public IGeometry CreateGeometry(IGeometry g)
         {
             // NOTE: don't move lambda to a separate variable!
-            //       make a variable and you've broke WinPhone build.       
+            //       make a variable and you've broke WinPhone build.
             var operation = new GeometryEditor.CoordinateSequenceOperation((x, y) => _coordinateSequenceFactory.Create(x));
             GeometryEditor editor = new GeometryEditor(this);
             return editor.Edit(g, operation);

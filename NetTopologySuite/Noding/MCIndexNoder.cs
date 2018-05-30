@@ -30,16 +30,16 @@ namespace NetTopologySuite.Noding
         /// Initializes a new instance of the <see cref="MCIndexNoder"/> class.
         /// </summary>
         /// <param name="segInt">The <see cref="ISegmentIntersector"/> to use.</param>
-        public MCIndexNoder(ISegmentIntersector segInt) 
+        public MCIndexNoder(ISegmentIntersector segInt)
             : base(segInt) { }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IList<MonotoneChain> MonotoneChains => _monoChains;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public ISpatialIndex<MonotoneChain> Index => _index;
 
@@ -63,17 +63,17 @@ namespace NetTopologySuite.Noding
         {
             _nodedSegStrings = inputSegStrings;
             foreach(var obj in inputSegStrings)
-                Add(obj);            
-            IntersectChains();            
+                Add(obj);
+            IntersectChains();
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private void IntersectChains()
         {
             MonotoneChainOverlapAction overlapAction = new SegmentOverlapAction(SegmentIntersector);
-            foreach(var obj in _monoChains) 
+            foreach(var obj in _monoChains)
             {
                 var queryChain = obj;
                 var overlapChains = _index.Query(queryChain.Envelope);
@@ -97,13 +97,13 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="segStr"></param>
         private void Add(ISegmentString segStr)
         {
             var segChains = MonotoneChainBuilder.GetChains(segStr.Coordinates, segStr);
-            foreach (var mc in segChains) 
+            foreach (var mc in segChains)
             {
                 mc.Id = _idCounter++;
                 _index.Insert(mc.Envelope, mc);
@@ -112,7 +112,7 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public class SegmentOverlapAction : MonotoneChainOverlapAction
         {
@@ -123,12 +123,12 @@ namespace NetTopologySuite.Noding
             /// </summary>
             /// <param name="si">The <see cref="ISegmentIntersector" /></param>
             public SegmentOverlapAction(ISegmentIntersector si)
-            {   
+            {
                 _si = si;
             }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             /// <param name="mc1"></param>
             /// <param name="start1"></param>

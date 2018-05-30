@@ -25,7 +25,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             };
             Assert.IsTrue(IsAllOrientationsEqual(pts2));
         }
-  
+
         // MD - deliberately disabled
         [TestAttribute]
         [IgnoreAttribute("This case fails because subtraction of small from large loses precision")]

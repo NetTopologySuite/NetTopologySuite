@@ -12,7 +12,7 @@ namespace NetTopologySuite.Samples.Tests.Github
     {
         [Test, Category("Issue47")]
         public void gml_writer_generates_fragment_with_namespace_if_needed()
-        {            
+        {
             XmlDocument doc = new XmlDocument();
             Point geom = new Point(52, -0.9);
             doc.Load(geom.ToGMLFeature());
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Samples.Tests.Github
 
         [Test, Category("Issue47")]
         public void gml_reader_can_read_gml_fragment()
-        {   
+        {
             GMLReader reader = new GMLReader();
             string testFragment = GenerateTestFragment();
             IGeometry actual = reader.Read(testFragment);

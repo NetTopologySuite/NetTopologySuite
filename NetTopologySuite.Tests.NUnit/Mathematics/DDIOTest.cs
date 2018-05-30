@@ -9,28 +9,28 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
     /// Tests I/O for <see cref="DD"/>s.
     /// </summary>
     /// <author>Martin Davis</author>
-    public class DDIOTest 
+    public class DDIOTest
     {
 
         [Test]
-        public void TestStandardNotation() 
-        {	
+        public void TestStandardNotation()
+        {
             // standard cases
             CheckStandardNotation(1.0, "1.0");
             CheckStandardNotation(0.0, "0.0");
-		
+
             // cases where hi is a power of 10 and lo is negative
             CheckStandardNotation(DD.ValueOf(1e12).Subtract(DD.ValueOf(1)),	"999999999999.0");
             CheckStandardNotation(DD.ValueOf(1e14).Subtract(DD.ValueOf(1)),	"99999999999999.0");
             CheckStandardNotation(DD.ValueOf(1e16).Subtract(DD.ValueOf(1)),	"9999999999999999.0");
-		
+
             DD num8Dec = DD.ValueOf(-379363639).Divide(
                 DD.ValueOf(100000000));
             CheckStandardNotation(num8Dec, "-3.79363639");
-		
+
             CheckStandardNotation(new DD(-3.79363639, 8.039137357367426E-17),
                 "-3.7936363900000000000000000");
-		
+
             CheckStandardNotation(DD.ValueOf(34).Divide(
                 DD.ValueOf(1000)), "0.034");
             CheckStandardNotation(1.05e3, "1050.0");
@@ -119,7 +119,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             //System.Console.WriteLine(("Parsed= " + xdd + " rel err= " + relErr);
 
             Assert.IsTrue(err <= relErrBound,
-                string.Format(NumberFormatInfo.InvariantInfo, 
+                string.Format(NumberFormatInfo.InvariantInfo,
                     "Parsing '" + str + "' results in " + xdd.ToString() + " ( "
                               + xdd.Dump() + ") != " + expectedVal + "\n  err =" + err + ", relerr =" + relErr));
         }
@@ -152,7 +152,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         /// <summary>
         /// This routine simply tests for robustness of the ToString function.
         /// </summary>
-        private static void WriteRepeatedSqrt(DD xdd) 
+        private static void WriteRepeatedSqrt(DD xdd)
         {
             int count = 0;
             while (xdd.ToDoubleValue() > 1e-300) {
@@ -168,7 +168,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
                 DD xx = xSqrt2.Multiply(xSqrt2);
                 double err = Math.Abs(xx.ToDoubleValue() - x);
                 //assertTrue(err < 1e-10);
-	
+
                 xdd = xSqrt;
 
                 // square roots converge on 1 - stop when very close
@@ -178,7 +178,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
                     break;
             }
         }
-	
+
         public void testRepeatedSqr()
         {
             WriteRepeatedSqr(DD.ValueOf(.9));
@@ -188,11 +188,11 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         /// <summary>
         /// This routine simply tests for robustness of the toString function.
         /// </summary>
-        static void WriteRepeatedSqr(DD xdd) 
+        static void WriteRepeatedSqr(DD xdd)
         {
             if (xdd.GreaterOrEqualThan(DD.ValueOf(1)))
                 throw new ArgumentException("Argument must be < 1");
-		
+
             int count = 0;
             while (xdd.ToDoubleValue() > 1e-300) {
                 count++;
@@ -202,11 +202,11 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
                 //System.Console.WriteLine(count + ": " + s);
 
                 DD xSqr2 = DD.Parse(s);
-	
+
                 xdd = xSqr;
             }
         }
-	
+
         [Test]
         public void TestIOSquaresStress() {
             for (int i = 1; i < 10000; i++) {

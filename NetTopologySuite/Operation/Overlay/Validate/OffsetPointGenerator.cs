@@ -34,7 +34,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
 
         /**
          * Set the sides on which to generate offset points.
-         * 
+         *
          * @param doLeft
          * @param doRight
          */

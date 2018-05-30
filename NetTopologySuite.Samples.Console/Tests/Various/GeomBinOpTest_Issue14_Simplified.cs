@@ -5,10 +5,10 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
-namespace NetTopologySuite.Samples.Tests.Various 
+namespace NetTopologySuite.Samples.Tests.Various
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     [TestFixture]
     public class GeomBinOpTest_Issue14_Simplified
@@ -22,7 +22,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         private IGeometry geometry1 = null;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [OneTimeSetUp]
         public void Setup()
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [Test]
         public void GeomBinOpTest_Issue14_00_Simplified_Union()
@@ -56,7 +56,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [Test]
         public void GeomBinOpTest_Issue14_00_Simplified_Difference()
@@ -76,7 +76,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [Test]
         public void GeomBinOpTest_Issue14_00_Simplified_SymmetricDifference()
@@ -96,7 +96,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [Test]
         public void GeomBinOpTest_Issue14_00_Simplified_Intersection()
@@ -116,7 +116,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [Test]
         public void GeomBinOpTest_Issue14_00_Simplified_WkbWkt()
@@ -127,7 +127,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             byte[] test00_Geom0_WkbByteArray_bis = geometry0_bis.AsBinary();
             Assert.AreEqual(test00_Geom0_WkbByteArray.Length, test00_Geom0_WkbByteArray_bis.Length, "Different wkb array length.");
             for (int i = 0; i < test00_Geom0_WkbByteArray_bis.Length; i++)
-                Assert.AreEqual(test00_Geom0_WkbByteArray[i], test00_Geom0_WkbByteArray_bis[i], "Different wkb array element at index " + i + ".");            
+                Assert.AreEqual(test00_Geom0_WkbByteArray[i], test00_Geom0_WkbByteArray_bis[i], "Different wkb array element at index " + i + ".");
         }
     }
 }

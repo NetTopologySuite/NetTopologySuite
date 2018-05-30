@@ -25,7 +25,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
         [TestAttribute]
         public void TestLineNoding()
         {
-            DoTest(new []{ "LINESTRING (0 0, 10 0, 5 -5, 5 5)"}, 
+            DoTest(new []{ "LINESTRING (0 0, 10 0, 5 -5, 5 5)"},
                            "MULTILINESTRING ((0 0, 5 0), (5 0, 10 0, 5 -5, 5 0), (5 0, 5 5))");
   }
 

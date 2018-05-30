@@ -25,7 +25,7 @@ namespace NetTopologySuite.Noding.Snapround
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private class QueryVisitor : IItemVisitor<MonotoneChain>
         {
@@ -33,7 +33,7 @@ namespace NetTopologySuite.Noding.Snapround
             readonly HotPixelSnapAction _action;
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             /// <param name="env"></param>
             /// <param name="action"></param>
@@ -85,7 +85,7 @@ namespace NetTopologySuite.Noding.Snapround
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public class HotPixelSnapAction : MonotoneChainSelectAction
         {
@@ -109,12 +109,12 @@ namespace NetTopologySuite.Noding.Snapround
             }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             public bool IsNodeAdded => _isNodeAdded;
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             /// <param name="mc"></param>
             /// <param name="startIndex"></param>
@@ -123,17 +123,17 @@ namespace NetTopologySuite.Noding.Snapround
                 var ss = (INodableSegmentString) mc.Context;
                 /**
                  * Check to avoid snapping a hotPixel vertex to the same vertex.
-                 * This method is called for segments which intersects the 
+                 * This method is called for segments which intersects the
                  * hot pixel,
                  * so need to check if either end of the segment is equal to the hot pixel
                  * and if so, do not snap.
-                 * 
+                 *
                  * Sep 22 2012 - MD - currently do need to snap to every vertex,
                  * since otherwise the testCollapse1 test in SnapRoundingTest fails.
                  */
                 if (_parentEdge != null)
                 {
-                    if (ss == _parentEdge && 
+                    if (ss == _parentEdge &&
                         (startIndex == _hotPixelVertexIndex)
                         )
                         return;

@@ -19,7 +19,7 @@ namespace NetTopologySuite.Noding
     /// by using the <see cref="FindAllIntersections"/> property.
     /// <para/>
     /// The validator does not check for a-b-a topology collapse situations.
-    /// <para/> 
+    /// <para/>
     /// The validator does not check for endpoint-interior vertex intersections.
     /// This should not be a problem, since the JTS noders should be
     /// able to compute intersections between vertices correctly.

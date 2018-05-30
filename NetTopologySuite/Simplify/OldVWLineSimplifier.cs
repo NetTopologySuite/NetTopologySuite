@@ -5,9 +5,9 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Simplify
 {
     /// <summary>
-    /// Simplifies a linestring (sequence of points) using the 
+    /// Simplifies a linestring (sequence of points) using the
     /// Visvalingam-Whyatt algorithm.
-    /// The Visvalingam-Whyatt algorithm simplifies geometry 
+    /// The Visvalingam-Whyatt algorithm simplifies geometry
     /// by removing vertices while trying to minimize the area changed.
     /// </summary>
     /// <version>1.7</version>

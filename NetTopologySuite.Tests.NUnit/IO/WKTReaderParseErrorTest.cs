@@ -11,8 +11,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
     /// Tests the <see cref="WKTReader"/> with various errors
     /// </summary>
     [TestFixtureAttribute]
-    public class WKTReaderParseErrorTest   
-    {   
+    public class WKTReaderParseErrorTest
+    {
         private IGeometryFactory fact;
         private WKTReader rdr;
 

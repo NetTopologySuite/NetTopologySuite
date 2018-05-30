@@ -11,12 +11,12 @@ namespace NetTopologySuite.Operation.Relate
     /// </summary>
     /// <remarks>
     /// If named spatial predicates are used on the result <see cref="IntersectionMatrix"/>
-    /// of the RelateOp, the result may or not be affected by the 
+    /// of the RelateOp, the result may or not be affected by the
     /// choice of <tt>BoundaryNodeRule</tt>, depending on the exact nature of the pattern.
-    /// For instance, <see cref="GeoAPI.Geometries.IntersectionMatrix.IsIntersects"/> is insensitive 
-    /// to the choice of <tt>BoundaryNodeRule</tt>, 
+    /// For instance, <see cref="GeoAPI.Geometries.IntersectionMatrix.IsIntersects"/> is insensitive
+    /// to the choice of <tt>BoundaryNodeRule</tt>,
     /// whereas <see cref="GeoAPI.Geometries.IntersectionMatrix.IsTouches"/> is affected by the rule chosen.
-    /// <para/> 
+    /// <para/>
     /// <b>Note:</b> custom Boundary Node Rules do not (currently)
     /// affect the results of other <see cref="IGeometry"/> methods (such
     /// as <see cref="IGeometry.Boundary"/>.  The results of
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Operation.Relate
         /// <param name="g0">a Geometry to relate</param>
         /// <param name="g1">another Geometry to relate</param>
         public RelateOp(IGeometry g0, IGeometry g1) : base(g0, g1)
-        {            
+        {
             _relate = new RelateComputer(arg);
         }
 

@@ -5,15 +5,15 @@ using NetTopologySuite.Geometries.Utilities;
 namespace NetTopologySuite.Simplify
 {
     /// <summary>
-    /// Simplifies a <see cref="IGeometry"/> using the Visvalingam-Whyatt area-based algorithm. 
+    /// Simplifies a <see cref="IGeometry"/> using the Visvalingam-Whyatt area-based algorithm.
     /// Ensures that any polygonal geometries returned are valid. Simple lines are not
     /// guaranteed to remain simple after simplification. All geometry types are
     /// handled. Empty and point geometries are returned unchanged. Empty geometry
     /// components are deleted.
-    /// The simplification tolerance is specified as a distance. 
-    /// This is converted to an area tolerance by squaring it.   
+    /// The simplification tolerance is specified as a distance.
+    /// This is converted to an area tolerance by squaring it.
     /// <para>
-    /// <b>Known Bugs</b>    
+    /// <b>Known Bugs</b>
     /// * Not yet optimized for performance.
     /// * Does not simplify the endpoint of rings.
     /// <b>To Do</b>
@@ -76,7 +76,7 @@ namespace NetTopologySuite.Simplify
         /// * valid topology is not required.
         /// * fixing topology is a relative expensive operation.
         /// * in some pathological cases the topology fixing operation may either
-        /// fail or run for too long.        
+        /// fail or run for too long.
         /// </summary>
         /// <remarks>The default is to fix polygon topology.</remarks>
         public bool IsEnsureValidTopology

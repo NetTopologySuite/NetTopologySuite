@@ -13,17 +13,17 @@ namespace NetTopologySuite.Algorithm.Distance
     /// <para>
     /// The algorithm computes the Hausdorff distance restricted to discrete points
     /// for one of the geometries.
-    /// The points can be either the vertices of the geometries (the default), 
+    /// The points can be either the vertices of the geometries (the default),
     /// or the geometries with line segments densified by a given fraction.
     /// Also determines two points of the Geometries which are separated by the computed distance.
     /// </para>
     /// <para>
     /// This algorithm is an approximation to the standard Hausdorff distance.
-    /// Specifically, 
+    /// Specifically,
     /// <code>
     /// for all geometries a, b:    DHD(a, b) &lt;= HD(a, b)
     /// </code>
-    /// The approximation can be made as close as needed by densifying the input geometries.  
+    /// The approximation can be made as close as needed by densifying the input geometries.
     /// In the limit, this value will approach the true Hausdorff distance:
     /// <code>
     /// DHD(A, B, densifyFactor) -> HD(A, B) as densifyFactor -> 0.0
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Algorithm.Distance
     /// <code>
     /// A = LINESTRING (0 0, 100 0, 10 100, 10 100)
     /// B = LINESTRING (0 100, 0 10, 80 10)
-    /// 
+    ///
     /// DHD(A, B) = 22.360679774997898
     /// HD(A, B) ~= 47.8
     /// </code>

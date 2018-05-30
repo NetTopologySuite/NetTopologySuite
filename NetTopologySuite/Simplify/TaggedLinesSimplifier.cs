@@ -17,7 +17,7 @@ namespace NetTopologySuite.Simplify
         /// Gets or sets the distance tolerance for the simplification.<br/>
         /// Points closer than this tolerance to a simplified segment may
         /// be removed.
-        /// </summary>        
+        /// </summary>
         public double DistanceTolerance { get; set; }
 
         /// <summary>

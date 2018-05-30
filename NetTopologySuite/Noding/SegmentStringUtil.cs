@@ -14,7 +14,7 @@ namespace NetTopologySuite.Noding
     {
         ///<summary>
         /// Extracts all linear components from a given <see cref="IGeometry"/>
-        /// to <see cref="ISegmentString"/>s.           
+        /// to <see cref="ISegmentString"/>s.
         /// The <see cref="ISegmentString"/> data item is set to be the source <see cref="IGeometry"/>.
         /// </summary>
         /// <param name="geom">The <see cref="IGeometry"/> to extract from.</param>
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Noding
 
         ///<summary>
         /// Extracts all linear components from a given <see cref="IGeometry"/>
-        /// to <see cref="ISegmentString"/>s.           
+        /// to <see cref="ISegmentString"/>s.
         /// The <see cref="ISegmentString"/> data item is set to be the source <see cref="IGeometry"/>.
         /// </summary>
         /// <param name="geom">The <see cref="IGeometry"/> to extract from.</param>
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Noding
 
         /// <summary>
         /// Converts a collection of <see cref="ISegmentString"/>s into a <see cref="IGeometry"/>.
-        /// The geometry will be either a <see cref="ILineString"/> 
+        /// The geometry will be either a <see cref="ILineString"/>
         /// or a <see cref="IMultiLineString"/> (possibly empty).
         /// </summary>
         /// <param name="segStrings">A collection of <see cref="ISegmentString"/>.</param>
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Noding
                 ILineString line = geomFact.CreateLineString(ss.Coordinates);
                 lines[index++] = line;
             }
-            if (lines.Length == 1) 
+            if (lines.Length == 1)
                 return lines[0];
             return geomFact.CreateMultiLineString(lines);
         }

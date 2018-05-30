@@ -100,11 +100,11 @@ namespace NetTopologySuite.IO
 
 #if FEATURE_FILE_IO
             if (_file != null)
-                _reader =  new StreamReader(new FileStream(_file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read, MaxLookahead)); 
+                _reader =  new StreamReader(new FileStream(_file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read, MaxLookahead));
 #endif
             try
             {
-                return Read(_reader);                
+                return Read(_reader);
             }
             finally
             {

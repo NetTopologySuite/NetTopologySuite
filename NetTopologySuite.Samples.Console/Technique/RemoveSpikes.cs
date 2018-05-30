@@ -231,7 +231,7 @@ namespace NetTopologySuite.Samples.Technique
                 return factory.CreateLineString(seq);
 
             //seq = RemoveSpikesFromSequence(geom.CoordinateSequence, factory.CoordinateSequenceFactory);
-            return ring ? factory.CreateLinearRing(seq) 
+            return ring ? factory.CreateLinearRing(seq)
                         : factory.CreateLineString(seq);
         }
         /*
@@ -267,12 +267,12 @@ namespace NetTopologySuite.Samples.Technique
                 s1 = s2;
             }
 
-        
+
         }
-        
+
         private void CheckSpike(ICoordinateSequence seq, int si1, int si2)
         {
-            
+
         }
 
         private void CheckSpike(ICoordinateSequence seq, int si1, int si2)

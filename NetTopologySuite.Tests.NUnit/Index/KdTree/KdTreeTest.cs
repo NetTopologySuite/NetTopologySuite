@@ -154,15 +154,15 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
             Array.Sort(result);
             Array.Sort(expectedCoord);
 
-            Assert.IsTrue(result.Length == expectedCoord.Length, 
-                          "Result count = {0}, expected count = {1}", 
+            Assert.IsTrue(result.Length == expectedCoord.Length,
+                          "Result count = {0}, expected count = {1}",
                           result.Length, expectedCoord.Length);
 
             var isMatch = CoordinateArrays.Equals(result, expectedCoord);
             Assert.IsTrue(isMatch, "Expected result coordinates not found");
         }
 
-        private void TestQuery(KdTree<object> index, Envelope queryEnv, 
+        private void TestQuery(KdTree<object> index, Envelope queryEnv,
             bool includeRepeated, Coordinate[] expectedCoord)
         {
             var result = KdTree<object>.ToCoordinates(index.Query(queryEnv), includeRepeated);

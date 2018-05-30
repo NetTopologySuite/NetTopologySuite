@@ -3,11 +3,11 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.GeometriesGraph.Index
 {
-    /// <summary> 
+    /// <summary>
     /// MonotoneChains are a way of partitioning the segments of an edge to
     /// allow for fast searching of intersections.
     /// They have the following properties:
-    /// the segments within a monotone chain will never intersect each other, and 
+    /// the segments within a monotone chain will never intersect each other, and
     /// the envelope of any contiguous subset of the segments in a monotone chain
     /// is simply the envelope of the endpoints of the subset.
     /// Property 1 means that there is no need to test pairs of segments from within
@@ -26,7 +26,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         private readonly int[] startIndex;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="e"></param>
         public MonotoneChainEdge(Edge e)
@@ -38,17 +38,17 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Coordinate[] Coordinates => pts;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int[] StartIndexes => startIndex;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="chainIndex"></param>
         /// <returns></returns>
@@ -60,7 +60,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="chainIndex"></param>
         /// <returns></returns>
@@ -72,7 +72,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="mce"></param>
         /// <param name="si"></param>
@@ -80,11 +80,11 @@ namespace NetTopologySuite.GeometriesGraph.Index
         {
             for (int i = 0; i < startIndex.Length - 1; i++)
                 for (int j = 0; j < mce.startIndex.Length - 1; j++)
-                    ComputeIntersectsForChain(i, mce, j, si);           
+                    ComputeIntersectsForChain(i, mce, j, si);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="chainIndex0"></param>
         /// <param name="mce"></param>
@@ -97,7 +97,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="start0"></param>
         /// <param name="end0"></param>
@@ -107,7 +107,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="ei"></param>
         private void ComputeIntersectsForChain( int start0, int end0, MonotoneChainEdge mce, int start1, int end1, SegmentIntersector ei)
         {
-   
+
             // terminating condition for the recursion
             if (end0 - start0 == 1 && end1 - start1 == 1)
             {
@@ -116,19 +116,19 @@ namespace NetTopologySuite.GeometriesGraph.Index
             }
 
             // nothing to do if the envelopes of these chains don't overlap
-            if (!Overlaps(start0, end0, mce, start1, end1)) 
+            if (!Overlaps(start0, end0, mce, start1, end1))
                 return;
 
             // the chains overlap, so split each in half and iterate  (binary search)
             int mid0 = (start0 + end0) / 2;
             int mid1 = (start1 + end1) / 2;
-            
+
             // check terminating conditions before recursing
             if (start0 < mid0)
             {
-                if (start1 < mid1) 
+                if (start1 < mid1)
                     ComputeIntersectsForChain(start0, mid0, mce, start1, mid1, ei);
-                if (mid1 < end1) 
+                if (mid1 < end1)
                     ComputeIntersectsForChain(start0, mid0, mce, mid1, end1, ei);
             }
             if (mid0 < end0)

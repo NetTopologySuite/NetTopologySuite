@@ -46,24 +46,24 @@ namespace Open.Topology.TestRunner
 
         public XmlTest Create(XmlTestInfo testInfo, double tolerance)
         {
-            XmlTest xmlTest = new XmlTest(testInfo.GetValue("desc"), 
+            XmlTest xmlTest = new XmlTest(testInfo.GetValue("desc"),
                 testInfo.IsDefaultTarget(), tolerance, _geometryOperation, _resultMatcher);
 
             // Handle test type or name.
             string strTestType = testInfo.GetValue("name");
             if (string.IsNullOrEmpty(strTestType))
                 return null;
-            
+
             ParseType(strTestType, xmlTest);
 
             // Handle the Geometry A:
             string wkt = testInfo.GetValue("a");
             if (!string.IsNullOrEmpty(wkt))
                 ParseGeometry(Target.A, wkt, xmlTest);
-            
+
             // Handle the Geometry B:
             wkt = testInfo.GetValue("b");
-            if (!string.IsNullOrEmpty(wkt))           
+            if (!string.IsNullOrEmpty(wkt))
                 ParseGeometry(Target.B, wkt, xmlTest);
 
             string arg2 = testInfo.GetValue("arg2");
@@ -98,13 +98,13 @@ namespace Open.Topology.TestRunner
 
             if (testType == "getarea")
                 xmlTestItem.TestType = XmlTestType.Area;
-            
+
             else if (testType == "getboundary")
                 xmlTestItem.TestType = XmlTestType.Boundary;
-            
+
             else if (testType == "getboundarydimension")
                 xmlTestItem.TestType = XmlTestType.BoundaryDimension;
-            
+
             else if (testType == "buffer")
                 xmlTestItem.TestType = XmlTestType.Buffer;
 
@@ -113,13 +113,13 @@ namespace Open.Topology.TestRunner
 
             else if (testType == "getcentroid")
                 xmlTestItem.TestType = XmlTestType.Centroid;
-            
+
             else if (testType == "contains")
                 xmlTestItem.TestType = XmlTestType.Contains;
-            
+
             else if (testType == "convexhull")
                 xmlTestItem.TestType = XmlTestType.ConvexHull;
-            
+
             else if (testType == "crosses")
                 xmlTestItem.TestType = XmlTestType.Crosses;
 
@@ -128,70 +128,70 @@ namespace Open.Topology.TestRunner
 
             else if (testType == "difference")
                 xmlTestItem.TestType = XmlTestType.Difference;
-            
+
             else if (testType == "getdimension")
                 xmlTestItem.TestType = XmlTestType.Dimension;
-            
+
             else if (testType == "disjoint")
                 xmlTestItem.TestType = XmlTestType.Disjoint;
-            
+
             else if (testType == "distance")
                 xmlTestItem.TestType = XmlTestType.Distance;
-            
+
             else if (testType == "getenvelope")
                 xmlTestItem.TestType = XmlTestType.Envelope;
-            
+
             else if (testType == "equals")
                 xmlTestItem.TestType = XmlTestType.Equals;
-            
+
             else if (testType == "getinteriorpoint")
                 xmlTestItem.TestType = XmlTestType.InteriorPoint;
-            
+
             else if (testType == "intersection")
                 xmlTestItem.TestType = XmlTestType.Intersection;
-            
+
             else if (testType == "intersects")
                 xmlTestItem.TestType = XmlTestType.Intersects;
-            
+
             else if (testType == "isempty")
                 xmlTestItem.TestType = XmlTestType.IsEmpty;
-            
+
             else if (testType == "issimple")
                 xmlTestItem.TestType = XmlTestType.IsSimple;
-            
+
             else if (testType == "isvalid")
                 xmlTestItem.TestType = XmlTestType.IsValid;
-            
+
             else if (testType == "iswithindistance")
                 xmlTestItem.TestType = XmlTestType.IsWithinDistance;
-            
+
             else if (testType == "getlength")
                 xmlTestItem.TestType = XmlTestType.Length;
-            
+
             else if (testType == "getnumpoints")
                 xmlTestItem.TestType = XmlTestType.NumPoints;
-            
+
             else if (testType == "overlaps")
                 xmlTestItem.TestType = XmlTestType.Overlaps;
-            
+
             else if (testType == "relate")
                 xmlTestItem.TestType = XmlTestType.Relate;
-            
+
             else if (testType == "getsrid")
                 xmlTestItem.TestType = XmlTestType.SRID;
-            
+
             else if (testType == "symmetricdifference")
                 xmlTestItem.TestType = XmlTestType.SymmetricDifference;
-            
+
             else if (testType == "symdifference")
                 xmlTestItem.TestType = XmlTestType.SymmetricDifference;
-            
+
             else if (testType == "touches")
                 xmlTestItem.TestType = XmlTestType.Touches;
-            
+
             else if (testType == "union")
                 xmlTestItem.TestType = XmlTestType.Union;
-            
+
             else if (testType == "within")
                 xmlTestItem.TestType = XmlTestType.Within;
 
@@ -200,7 +200,7 @@ namespace Open.Topology.TestRunner
 
             else if (testType == "coveredby")
                 xmlTestItem.TestType = XmlTestType.CoveredBy;
-            
+
             else if (testType == "equalsexact")
                 xmlTestItem.TestType = XmlTestType.EqualsExact;
 
@@ -212,7 +212,7 @@ namespace Open.Topology.TestRunner
 
             else if (testType == "minclearanceline")
                 xmlTestItem.TestType = XmlTestType.MinClearanceLine;
-            
+
             else if (testType == "equalstopo")
                 xmlTestItem.TestType = XmlTestType.EqualsTopo;
 
@@ -221,13 +221,13 @@ namespace Open.Topology.TestRunner
                 System.Diagnostics.Debug.Assert(false);
                 throw new ArgumentException(String.Format("The operation type \"{0}\" is not valid: ", testType));
             }
-            
+
             return true;
         }
 
         protected bool ParseResult(string result, XmlTest xmlTestItem)
         {
-            switch (xmlTestItem.TestType) 
+            switch (xmlTestItem.TestType)
             {
                 // Here we expect double
                 case XmlTestType.Area:
@@ -282,7 +282,7 @@ namespace Open.Topology.TestRunner
                 {
                     try
                     {
-                        xmlTestItem.Result = _objReader.Read(result);                        
+                        xmlTestItem.Result = _objReader.Read(result);
                         return true;
                     }
                     catch (Exception ex)
@@ -331,7 +331,7 @@ namespace Open.Topology.TestRunner
         }
 
         protected bool ParseGeometry(Target targetType, string targetText, XmlTest xmlTestItem)
-        {   
+        {
             IGeometry geom;
             try
             {
@@ -347,7 +347,7 @@ namespace Open.Topology.TestRunner
             if (geom == null)
                 return false;
 
-            switch (targetType) 
+            switch (targetType)
             {
                 case Target.A:
                     xmlTestItem.A = geom;

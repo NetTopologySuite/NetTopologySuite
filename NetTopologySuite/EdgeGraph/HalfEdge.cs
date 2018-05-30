@@ -25,7 +25,7 @@ namespace NetTopologySuite.EdgeGraph
     /// <remarks>
     /// HalfEdges form a complete and consistent data structure by themselves,
     /// but an <see cref="EdgeGraph"/> is useful to allow retrieving edges
-    /// by vertex and edge location, as well as ensuring 
+    /// by vertex and edge location, as well as ensuring
     /// edges are created and linked appropriately.
     /// </remarks>
     public class HalfEdge : IComparable<HalfEdge>
@@ -48,7 +48,7 @@ namespace NetTopologySuite.EdgeGraph
         /// <summary>
         /// Initialize a symmetric pair of HalfEdges.
         /// Intended for use by <see cref="EdgeGraph"/> subclasses.
-        /// The edges are initialized to have each other 
+        /// The edges are initialized to have each other
         /// as the <see cref="Sym"/> edge, and to have <see cref="Next"/> pointers
         /// which point to edge other.
         /// This effectively creates a graph containing a single edge.
@@ -108,7 +108,7 @@ namespace NetTopologySuite.EdgeGraph
         }
 
         /// <summary>
-        /// Gets the next edge CCW around the 
+        /// Gets the next edge CCW around the
         /// destination vertex of this edge.
         /// If the vertex has degree 1 then this is the <b>sym</b> edge.
         /// </summary>
@@ -132,7 +132,7 @@ namespace NetTopologySuite.EdgeGraph
         /// </summary>
         /// <param name="dest">the dest vertex to search for</param>
         /// <returns>
-        /// the edge with the required dest vertex, 
+        /// the edge with the required dest vertex,
         /// if it exists, or null
         /// </returns>
         public HalfEdge Find(Coordinate dest)
@@ -221,20 +221,20 @@ namespace NetTopologySuite.EdgeGraph
         /// <summary>
         /// Implements the total order relation.
         /// The angle of edge a is greater than the angle of edge b,
-        /// where the angle of an edge is the angle made by 
-        /// the first segment of the edge with the positive x-axis.       
+        /// where the angle of an edge is the angle made by
+        /// the first segment of the edge with the positive x-axis.
         /// When applied to a list of edges originating at the same point,
-        /// this produces a CCW ordering of the edges around the point.        
+        /// this produces a CCW ordering of the edges around the point.
         /// Using the obvious algorithm of computing the angle is not robust,
         /// since the angle calculation is susceptible to roundoff error.
-        /// </summary> 
+        /// </summary>
         /// <remarks>
-        /// A robust algorithm is:        
-        /// 1. compare the quadrants the edge vectors lie in.  
-        /// If the quadrants are different, 
+        /// A robust algorithm is:
+        /// 1. compare the quadrants the edge vectors lie in.
+        /// If the quadrants are different,
         /// it is trivial to determine which edge has a greater angle.
-        /// 2. If the vectors lie in the same quadrant, the 
-        /// <see cref="Orientation.Index"/> function        
+        /// 2. If the vectors lie in the same quadrant, the
+        /// <see cref="Orientation.Index"/> function
         /// can be used to determine the relative orientation of the vectors.
         /// </remarks>
         public int CompareAngularDirection(HalfEdge e)
@@ -274,7 +274,7 @@ namespace NetTopologySuite.EdgeGraph
 
         /// <summary>
         /// Computes a string representation of a HalfEdge.
-        /// </summary>        
+        /// </summary>
         public override string ToString()
         {
             return String.Format("HE({0} {1}, {2} {3})", Orig.X, Orig.Y, Sym.Orig.X, Sym.Orig.Y);

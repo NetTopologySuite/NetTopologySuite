@@ -10,15 +10,15 @@ namespace NetTopologySuite.Noding
     /// Uses indexing for fast performance and to optimize repeated tests
     /// against a target set of lines.
     /// Short-circuited to return as soon an intersection is found.
-    /// <para/> 
+    /// <para/>
     /// Immutable and thread-safe.
     /// </remarks>
     public class FastSegmentSetIntersectionFinder
     {
-        private readonly ISegmentSetMutualIntersector _segSetMutInt; 
+        private readonly ISegmentSetMutualIntersector _segSetMutInt;
 
         //for testing purposes
-        //private SimpleSegmentSetMutualIntersector mci;  
+        //private SimpleSegmentSetMutualIntersector mci;
 
         /// <summary>
         /// Creates an intersection finder against a given set of segment strings.
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Noding
         /// <param name="segStrings">The SegmentStrings to test</param>
         /// <returns><c>true</c> if an intersection was found</returns>
         public bool Intersects(IList<ISegmentString> segStrings)
-        {            
+        {
             var intFinder = new SegmentIntersectionDetector();
             return Intersects(segStrings, intFinder);
         }

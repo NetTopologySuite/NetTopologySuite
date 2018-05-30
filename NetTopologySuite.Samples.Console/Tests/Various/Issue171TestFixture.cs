@@ -44,8 +44,8 @@ namespace NetTopologySuite.Samples.Tests.Various
         {
             /*
              * http://stackoverflow.com/questions/2105096/why-is-tostring-rounding-my-double-value
-             * 
-             * By default, the return value only contains 15 digits of precision although a maximum of 17 digits is maintained internally. 
+             *
+             * By default, the return value only contains 15 digits of precision although a maximum of 17 digits is maintained internally.
              */
             const string expected = "123456789012345680";
             const double d = 123456789012345680;

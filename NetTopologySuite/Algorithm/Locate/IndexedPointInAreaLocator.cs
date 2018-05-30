@@ -14,7 +14,7 @@ namespace NetTopologySuite.Algorithm.Locate
     /// many points will be tested against a given area.
     /// <para/>
     /// The <c>Location</c> is computed precisely, th that points
-    /// located on the geometry boundary or segments will 
+    /// located on the geometry boundary or segments will
     /// return <see cref="Location.Boundary"/>.
     /// <para/>
     /// <see cref="IPolygonal"/> and <see cref="ILinearRing"/> geometries are supported.
@@ -67,7 +67,7 @@ namespace NetTopologySuite.Algorithm.Locate
           for (Iterator i = segs.iterator(); i.hasNext(); ) {
             LineSegment seg = (LineSegment) i.next();
             rcc.countSegment(seg.getCoordinate(0), seg.getCoordinate(1));
-      
+
             // short-circuit if possible
             if (rcc.isOnSegment()) return;
           }

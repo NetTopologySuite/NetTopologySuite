@@ -10,14 +10,14 @@ namespace NetTopologySuite.Index.KdTree
     /// </summary>
     /// <remarks>
     /// This implementation supports detecting and snapping points which are closer
-    /// than a given distance tolerance. 
+    /// than a given distance tolerance.
     /// If the same point (up to tolerance) is inserted
     /// more than once , it is snapped to the existing node.
     /// In other words, if a point is inserted which lies within the tolerance of a node already in the index,
     /// it is snapped to that node.
     /// When a point is snapped to a node then a new node is not created but the count of the existing node
     /// is incremented.
-    /// If more than one node in the tree is within tolerance of an inserted point, 
+    /// If more than one node in the tree is within tolerance of an inserted point,
     /// the closest and then lowest node is snapped to.
     /// </remarks>
     /// <typeparam name="T">The type of the user data object</typeparam>
@@ -37,13 +37,13 @@ namespace NetTopologySuite.Index.KdTree
         }
 
         ///<summary>
-        /// Converts a collection of <see cref="KdNode{T}"/>{@link KdNode}s 
+        /// Converts a collection of <see cref="KdNode{T}"/>{@link KdNode}s
         /// to an array of <see cref="Coordinate"/>s,
         /// specifying whether repeated nodes should be represented
         /// by multiple coordinates.
         /// </summary>
         /// <param name="kdnodes">a collection of nodes</param>
-        /// <param name="includeRepeated">true if repeated nodes should 
+        /// <param name="includeRepeated">true if repeated nodes should
         /// be included multiple times</param>
         /// <returns>An array of the coordinates represented by the nodes</returns>
         public static Coordinate[] ToCoordinates(ICollection<KdNode<T>> kdnodes, bool includeRepeated)
@@ -75,8 +75,8 @@ namespace NetTopologySuite.Index.KdTree
         }
 
         /// <summary>
-        /// Creates a new instance of a KdTree with a snapping distance 
-        /// tolerance. Points which lie closer than the tolerance to a point already 
+        /// Creates a new instance of a KdTree with a snapping distance
+        /// tolerance. Points which lie closer than the tolerance to a point already
         /// in the tree will be treated as identical to the existing point.
         /// </summary>
         /// <param name="tolerance">The tolerance distance for considering two points equal</param>
@@ -174,7 +174,7 @@ namespace NetTopologySuite.Index.KdTree
 
         /// <summary>
         /// Inserts a point known to be beyond the distance tolerance of any existing node.
-        /// The point is inserted at the bottom of the exact splitting path, 
+        /// The point is inserted at the bottom of the exact splitting path,
         /// so that tree shape is deterministic.
         /// </summary>
         /// <param name="p">The point to insert</param>
@@ -286,7 +286,7 @@ namespace NetTopologySuite.Index.KdTree
         }
 
         /// <summary>
-        /// Performs a range search of the points in the index. 
+        /// Performs a range search of the points in the index.
         /// </summary>
         /// <param name="queryEnv">The range rectangle to query</param>
         /// <param name="visitor"></param>
@@ -296,7 +296,7 @@ namespace NetTopologySuite.Index.KdTree
         }
 
         /// <summary>
-        /// Performs a range search of the points in the index. 
+        /// Performs a range search of the points in the index.
         /// </summary>
         /// <param name="queryEnv">The range rectangle to query</param>
         /// <returns>A collection of the KdNodes found</returns>

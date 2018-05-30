@@ -15,7 +15,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
     /// <author>Martin Davis</author>
     /// <version>1.7</version
     [TestFixtureAttribute]
-    public class ValidClosedRingTest   
+    public class ValidClosedRingTest
     {
         private static WKTReader rdr = new WKTReader();
 

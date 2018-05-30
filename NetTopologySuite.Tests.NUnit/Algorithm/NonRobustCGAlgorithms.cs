@@ -4,7 +4,7 @@ using NetTopologySuite.Algorithm;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
-    /// <summary> 
+    /// <summary>
     /// Non-robust versions of various fundamental Computational Geometric algorithms,
     /// FOR TESTING PURPOSES ONLY!.
     /// The non-robustness is due to rounding error in floating point computation.
@@ -12,7 +12,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     public static class NonRobustCGAlgorithms
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="p"></param>
         /// <param name="ring"></param>
@@ -115,15 +115,15 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             /* If disc is exactly 0, lines are collinear.  There are two possible cases:
                     (1) the lines lie along the x axis in opposite directions
                     (2) the line lie on top of one another
-                    
+
                     (2) should never happen, so we're going to ignore it!
                         (Might want to assert this)
-            
+
                     (1) is handled by checking if next is left of previous ==> CCW
             */
             if (disc == 0.0)
                 return (prev.X > next.X); // polygon is CCW if previous x is right of next x
-            else return (disc > 0.0); // if area is positive, points are ordered CCW                 
+            else return (disc > 0.0); // if area is positive, points are ordered CCW
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             return 0;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Computes the distance from a line segment AB to a line segment CD.
         /// Note: NON-ROBUST!
         /// </summary>
@@ -170,29 +170,29 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             // AB and CD are line segments
             /*
              * from comp.graphics.algo
-             * 
-             * Solving the above for r and s yields 
-             *     (Ay-Cy)(Dx-Cx)-(Ax-Cx)(Dy-Cy) 
-             * r = ----------------------------- (eqn 1) 
+             *
+             * Solving the above for r and s yields
+             *     (Ay-Cy)(Dx-Cx)-(Ax-Cx)(Dy-Cy)
+             * r = ----------------------------- (eqn 1)
              *     (Bx-Ax)(Dy-Cy)-(By-Ay)(Dx-Cx)
-             * 
-             *     (Ay-Cy)(Bx-Ax)-(Ax-Cx)(By-Ay) 
+             *
+             *     (Ay-Cy)(Bx-Ax)-(Ax-Cx)(By-Ay)
              * s = ----------------------------- (eqn 2)
-             *     (Bx-Ax)(Dy-Cy)-(By-Ay)(Dx-Cx) 
-             * 
+             *     (Bx-Ax)(Dy-Cy)-(By-Ay)(Dx-Cx)
+             *
              * Let P be the position vector of the
-             * intersection point, then 
-             * P=A+r(B-A) or 
-             * Px=Ax+r(Bx-Ax) 
-             * Py=Ay+r(By-Ay) 
+             * intersection point, then
+             * P=A+r(B-A) or
+             * Px=Ax+r(Bx-Ax)
+             * Py=Ay+r(By-Ay)
              * By examining the values of r & s, you can also determine some other limiting
-             * conditions: 
-             * If 0<=r<=1 & 0<=s<=1, intersection exists 
-             *    r<0 or r>1 or s<0 or s>1 line segments do not intersect 
-             * If the denominator in eqn 1 is zero, AB & CD are parallel 
+             * conditions:
+             * If 0<=r<=1 & 0<=s<=1, intersection exists
+             *    r<0 or r>1 or s<0 or s>1 line segments do not intersect
+             * If the denominator in eqn 1 is zero, AB & CD are parallel
              * If the numerator in eqn 1 is also zero, AB & CD are collinear.
              */
-            
+
             double r_top = (A.Y - C.Y)*(D.X - C.X) - (A.X - C.X)*(D.Y - C.Y);
             double r_bot = (B.X - A.X)*(D.Y - C.Y) - (B.Y - A.Y)*(D.X - C.X);
 

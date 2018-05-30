@@ -24,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
         {
             var sinePoly = CreateSineStar(new Coordinate(0, 0), 100000.0, nPts);
             _preparedGeometry = PreparedGeometryFactory.Prepare(sinePoly);
-            
+
             WaitHandles = new WaitHandle[ThreadTestRunner.DefaultThreadCount];
         }
 

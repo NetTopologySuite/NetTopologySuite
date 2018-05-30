@@ -8,7 +8,7 @@ namespace NetTopologySuite.Geometries.Utilities
     ///</summary>
     /// <remarks>
     /// <para>Input geometries which are already collections will have their elements extracted first.</para>
-    /// <para>No validation of the result geometry is performed. 
+    /// <para>No validation of the result geometry is performed.
     /// (The only case where invalidity is possible is where <see cref="IPolygonal"/> geometries are combined and result in a self-intersection).</para>
     /// </remarks>
     /// <author>mbdavis</author>
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         private readonly IGeometryFactory _geomFactory;
-        
+
         /// <summary>
         /// Value indicating whether empty geometries should be skipped
         /// </summary>
