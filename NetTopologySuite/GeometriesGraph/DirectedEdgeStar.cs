@@ -39,13 +39,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public Label Label
-        {
-            get
-            {
-                return _label; 
-            }
-        }
+        public Label Label => _label;
 
         /// <summary>
         /// 

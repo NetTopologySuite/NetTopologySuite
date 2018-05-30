@@ -93,24 +93,15 @@ namespace NetTopologySuite.Samples.Geometries
 			return new ExtendedCoordinateSequence(cloneCoordinates);
 		}
 
-	    public Ordinates Ordinates
-	    {
-	        get { return Ordinates.XYZM; }
-	    }
+	    public Ordinates Ordinates => Ordinates.XYZM;
 
 	    /// <summary>
         /// Returns the number of coordinates in this sequence.
         /// </summary>
         /// <value></value>
-		public virtual int Count
-		{
-            get
-            {
-                return _coordinates.Length;
-            }
-		}
+		public virtual int Count => _coordinates.Length;
 
-        /// <summary>
+	    /// <summary>
         /// Returns (possibly copies of) the Coordinates in this collection.
         /// Whether or not the Coordinates returned are the actual underlying
         /// Coordinates or merely copies depends on the implementation. Note that
@@ -282,12 +273,6 @@ namespace NetTopologySuite.Samples.Geometries
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
         /// </summary>
         /// <value></value>
-        public int Dimension
-        {
-            get
-            {
-                return 4;
-            }
-        }
+        public int Dimension => 4;
 	}
 }

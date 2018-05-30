@@ -41,38 +41,20 @@ namespace Open.Topology.TestRunner.Functions
             this.returnType = returnType;
         }
 
-        public String Category
-        {
-            get { return category; }
-        }
+        public String Category => category;
 
-        public String Name
-        {
-            get { return name; }
-        }
+        public String Name => name;
 
-        public String[] ParameterNames
-        {
-            get { return parameterNames; }
-        }
+        public String[] ParameterNames => parameterNames;
 
         /// <summary>
         /// Gets the types of the other function arguments
         /// </summary>
-        public Type[] ParameterTypes
-        {
-            get { return parameterTypes; }
-        }
+        public Type[] ParameterTypes => parameterTypes;
 
-        public Type ReturnType
-        {
-            get { return returnType; }
-        }
+        public Type ReturnType => returnType;
 
-        public bool IsBinary
-        {
-            get { return parameterTypes.Length > 0 && parameterTypes[0] is IGeometry; }
-        }
+        public bool IsBinary => parameterTypes.Length > 0 && parameterTypes[0] is IGeometry;
 
         public String Signature
         {

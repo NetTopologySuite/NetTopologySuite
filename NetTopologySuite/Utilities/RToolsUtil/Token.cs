@@ -22,9 +22,9 @@ namespace RTools_NTS.Util
 		/// <summary>
 		/// The line number where this token was found.  This is base-1.
 		/// </summary>
-        public int LineNumber { get { return (_lineNumber); } /*protected set { _lineNumber = value; }*/ }
+        public int LineNumber => (_lineNumber);
 
-		/// <summary>
+	    /// <summary>
 		/// A storage object for the data of this token.
 		/// </summary>
 		protected object obj;
@@ -33,9 +33,9 @@ namespace RTools_NTS.Util
 		/// The Object stored by this token.  This will be
 		/// a primitive C# type.
 		/// </summary>
-		public object Object { get { return(obj); }}
+		public object Object => (obj);
 
-		/// <summary>
+	    /// <summary>
 		/// Backer for UntermError.
 		/// </summary>
 		bool untermError;
@@ -47,8 +47,8 @@ namespace RTools_NTS.Util
 		/// </summary>
 		public bool UntermError 
 		{ 
-			get { return(untermError); } 
-			set { untermError = value; } 
+			get => (untermError);
+		    set => untermError = value;
 		}
 
 		/// An error message associated with unterm error.
@@ -60,8 +60,8 @@ namespace RTools_NTS.Util
 		/// </summary>
 		public string UntermErrorMsg
 		{
-			get { return(untermErrorMsg); }
-			set 
+			get => (untermErrorMsg);
+		    set 
 			{ 
 				untermError = true;
 				untermErrorMsg = value; 
@@ -221,12 +221,9 @@ namespace RTools_NTS.Util
 		/// Return this token's value as a string.
 		/// </summary>
 		/// <returns>This token's value as a string.</returns>
-		public virtual string StringValue
-		{
-			get { return("unset"); }
-		}
+		public virtual string StringValue => ("unset");
 
-		/// <summary>
+	    /// <summary>
 		/// Produce a string which includes the line number.
 		/// </summary>
 		/// <returns></returns>
@@ -280,8 +277,9 @@ namespace RTools_NTS.Util
 			else return(true);
 		}
 		/// <summary>Override, see base <see cref="Token"/></summary>
-		public override string StringValue { get { return(ToString()); } }
-		/// <summary>Override, see base <see cref="Token"/></summary>
+		public override string StringValue => (ToString());
+
+	    /// <summary>Override, see base <see cref="Token"/></summary>
 		public override int GetHashCode()
 		{
 			return(ToString().GetHashCode());
@@ -312,8 +310,9 @@ namespace RTools_NTS.Util
 			else return(true);
 		}
 		/// <summary>Override, see base <see cref="Token"/></summary>
-		public override string StringValue { get { return(ToString()); } }
-		/// <summary>Override, see base <see cref="Token"/></summary>
+		public override string StringValue => (ToString());
+
+	    /// <summary>Override, see base <see cref="Token"/></summary>
 		public override int GetHashCode()
 		{
 			return(ToString().GetHashCode());
@@ -344,8 +343,9 @@ namespace RTools_NTS.Util
 		public override string ToString() { return((string)obj); }
 
 		/// <summary>Override, see base <see cref="Token"/></summary>
-		public override string StringValue { get { return((string)obj); } }
-		/// <summary>Override, see base <see cref="Token"/></summary>
+		public override string StringValue => ((string)obj);
+
+	    /// <summary>Override, see base <see cref="Token"/></summary>
 		public override int GetHashCode()
 		{
 			return(ToString().GetHashCode());
@@ -453,8 +453,9 @@ namespace RTools_NTS.Util
 			return(ToString().GetHashCode());
 		}
 		/// <summary>Override, see base <see cref="Token"/></summary>
-		public override string StringValue { get { return(String.Format("{0}", (Char)obj)); } }
-		/// <summary>Override, see base <see cref="Token"/></summary>
+		public override string StringValue => (String.Format("{0}", (Char)obj));
+
+	    /// <summary>Override, see base <see cref="Token"/></summary>
 		public override bool Equals(object other)
 		{
 			if (other == null) return(false);

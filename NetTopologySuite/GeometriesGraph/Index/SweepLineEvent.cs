@@ -46,43 +46,31 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <summary>
         /// 
         /// </summary>
-        public bool IsInsert
-        {
-            get { return _eventType == Insert; }
-        }
+        public bool IsInsert => _eventType == Insert;
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsDelete
-        {
-            get { return _eventType == Delete; }
-        }
+        public bool IsDelete => _eventType == Delete;
 
         /// <summary>
         /// 
         /// </summary>
-        public SweepLineEvent InsertEvent
-        {
-            get { return _insertEvent; }
-        }
+        public SweepLineEvent InsertEvent => _insertEvent;
 
         /// <summary>
         /// 
         /// </summary>
         public int DeleteEventIndex
         {
-            get { return _deleteEventIndex; }
-            set { _deleteEventIndex = value; }
+            get => _deleteEventIndex;
+            set => _deleteEventIndex = value;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public object Object
-        {
-            get { return _obj; }
-        }
+        public object Object => _obj;
 
         public bool IsSameLabel(SweepLineEvent ev)
         {

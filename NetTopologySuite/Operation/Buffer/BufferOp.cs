@@ -231,8 +231,8 @@ namespace NetTopologySuite.Operation.Buffer
         [Obsolete]
         public BufferStyle BufferStyle
         {
-            get { return (BufferStyle)_bufParams.EndCapStyle; }
-            set { _bufParams.EndCapStyle = (EndCapStyle)value; }
+            get => (BufferStyle)_bufParams.EndCapStyle;
+            set => _bufParams.EndCapStyle = (EndCapStyle)value;
         }
 
         /// <summary>
@@ -240,8 +240,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         public int QuadrantSegments
         {
-            get { return _bufParams.QuadrantSegments; }
-            set { _bufParams.QuadrantSegments = value; }
+            get => _bufParams.QuadrantSegments;
+            set => _bufParams.QuadrantSegments = value;
         }
 
         /// <summary>

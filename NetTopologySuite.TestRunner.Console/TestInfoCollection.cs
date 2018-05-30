@@ -20,14 +20,8 @@ namespace ConsoleTestRunner
         
         public TestInfo this[int index]  
         {
-            get  
-            {
-                return ((TestInfo)List[index]);
-            }
-            set  
-            {
-                List[index] = value;
-            }
+            get => ((TestInfo)List[index]);
+            set => List[index] = value;
         }
 
         #endregion

@@ -120,18 +120,15 @@ namespace NetTopologySuite.Triangulate
         /// <remarks>the ConstraintSplitPointFinder to be used</remarks>
         public IConstraintSplitPointFinder SplitPointFinder
         {
-            get { return _splitFinder; }
-            set { _splitFinder = value; }
+            get => _splitFinder;
+            set => _splitFinder = value;
         }
 
         /// <summary>
         /// Gets the tolerance value used to construct the triangulation.
         /// </summary>
         /// <remarks>a tolerance value</remarks>
-        public double Tolerance
-        {
-            get { return _tolerance; }
-        }
+        public double Tolerance => _tolerance;
 
         /// <summary>
         /// Gets and sets the <see cref="ConstraintVertexFactory"/> used to create new constraint vertices at split points.
@@ -141,41 +138,29 @@ namespace NetTopologySuite.Triangulate
         /// </remarks>
         public ConstraintVertexFactory VertexFactory
         {
-            get { return _vertexFactory; }
-            set { _vertexFactory = value; }
+            get => _vertexFactory;
+            set => _vertexFactory = value;
         }
 
         /// <summary>
         /// Gets the <see cref="QuadEdgeSubdivision"/> which represents the triangulation.
         /// </summary>
-        public QuadEdgeSubdivision Subdivision
-        {
-            get { return _subdiv; }
-        }
+        public QuadEdgeSubdivision Subdivision => _subdiv;
 
         /// <summary>
         /// Gets the <see cref="KdTree{Vertex}"/> which contains the vertices of the triangulation.
         /// </summary>
-        public KdTree<Vertex> KDT
-        {
-            get { return _kdt; }
-        }
+        public KdTree<Vertex> KDT => _kdt;
 
         /// <summary> 
         /// Gets the sites (vertices) used to initialize the triangulation.
         /// </summary>
-        public IList<Vertex> InitialVertices
-        {
-            get { return _initialVertices; }
-        }
+        public IList<Vertex> InitialVertices => _initialVertices;
 
         /// <summary>
         /// Gets the <see cref="Segment"/>s which represent the constraints.
         /// </summary>
-        public ICollection<Segment> ConstraintSegments
-        {
-            get { return _segments; }
-        }
+        public ICollection<Segment> ConstraintSegments => _segments;
 
         /// <summary>
         /// Gets the convex hull of all the sites in the triangulation,
@@ -183,10 +168,7 @@ namespace NetTopologySuite.Triangulate
         /// Only valid after the constraints have been enforced.
         /// </summary>
         /// <remarks>the convex hull of the sites</remarks>
-        public IGeometry ConvexHull
-        {
-            get { return _convexHull; }
-        }
+        public IGeometry ConvexHull => _convexHull;
 
         // ==================================================================
 

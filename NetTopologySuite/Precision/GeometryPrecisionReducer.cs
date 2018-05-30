@@ -61,8 +61,8 @@ namespace NetTopologySuite.Precision
         /// </summary>
         public bool RemoveCollapsedComponents
         {
-            get { return _removeCollapsed; }
-            set { _removeCollapsed = value; }
+            get => _removeCollapsed;
+            set => _removeCollapsed = value;
         }
 
         /// <summary>
@@ -74,8 +74,8 @@ namespace NetTopologySuite.Precision
         /// </summary>
         public bool ChangePrecisionModel
         {
-            get { return _changePrecisionModel; }
-            set { _changePrecisionModel = value; }
+            get => _changePrecisionModel;
+            set => _changePrecisionModel = value;
         }
 
         /// <summary>
@@ -88,8 +88,8 @@ namespace NetTopologySuite.Precision
         /// </summary>
         public bool Pointwise
         {
-            get { return _isPointwise; }
-            set { _isPointwise = value; }
+            get => _isPointwise;
+            set => _isPointwise = value;
         }
 
         public IGeometry Reduce(IGeometry geom)

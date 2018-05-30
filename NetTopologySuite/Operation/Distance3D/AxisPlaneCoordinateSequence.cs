@@ -64,12 +64,9 @@ namespace NetTopologySuite.Operation.Distance3D
             _indexMap = indexMap;
         }
 
-        public int Dimension
-        {
-            get { return 2; }
-        }
+        public int Dimension => 2;
 
-        public Ordinates Ordinates { get { return _seq.Ordinates; } }
+        public Ordinates Ordinates => _seq.Ordinates;
 
         public Coordinate GetCoordinate(int i)
         {
@@ -110,10 +107,7 @@ namespace NetTopologySuite.Operation.Distance3D
             return _seq.GetOrdinate(index, _indexMap[(int) ordinateIndex]);
         }
 
-        public int Count
-        {
-            get { return _seq.Count; }
-        }
+        public int Count => _seq.Count;
 
         public void SetOrdinate(int index, Ordinate ordinateIndex, double value)
         {

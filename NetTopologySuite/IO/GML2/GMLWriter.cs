@@ -23,10 +23,7 @@ namespace NetTopologySuite.IO.GML2
         /// <summary>
         /// Formatter for double values of coordinates
         /// </summary>
-        protected static NumberFormatInfo NumberFormatter
-        {
-            get { return Global.GetNfi(); }
-        }
+        protected static NumberFormatInfo NumberFormatter => Global.GetNfi();
 
         /// <summary>
         /// Returns an <c>XmlReader</c> with feature informations.

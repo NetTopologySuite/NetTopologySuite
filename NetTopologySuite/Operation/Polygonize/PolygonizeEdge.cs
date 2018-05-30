@@ -22,12 +22,6 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// 
         /// </summary>
-        public ILineString Line
-        {
-            get
-            {
-                return line;
-            }
-        }
+        public ILineString Line => line;
     }
 }

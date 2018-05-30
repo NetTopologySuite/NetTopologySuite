@@ -31,14 +31,8 @@ namespace NetTopologySuite.Triangulate
         /// <remarks>true if the vertex lies on a constraint</remarks>
         public bool IsOnConstraint
         {
-            get
-            {
-                return isOnConstraint;
-            }
-            set
-            {
-                this.isOnConstraint = value;
-            }
+            get => isOnConstraint;
+            set => this.isOnConstraint = value;
         }
 
         /// <summary>
@@ -47,10 +41,7 @@ namespace NetTopologySuite.Triangulate
         /// <remarks>object which carries information about the constraint this vertex lies on</remarks>
         public object Constraint
         {
-            get
-            {
-                return constraint;
-            }
+            get => constraint;
             set
             {
                 isOnConstraint = true;

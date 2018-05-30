@@ -30,7 +30,7 @@ namespace NetTopologySuite.Operation.Valid
             _graph = graph;
         }
 
-        public Coordinate NestedPoint { get {return _nestedPt; }}
+        public Coordinate NestedPoint => _nestedPt;
 
         public void Add(ILinearRing ring)
         {

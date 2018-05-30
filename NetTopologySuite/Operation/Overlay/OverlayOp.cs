@@ -164,10 +164,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <summary>
         /// Gets the graph constructed to compute the overlay.
         /// </summary>
-        public PlanarGraph Graph
-        {
-            get { return _graph; }
-        }
+        public PlanarGraph Graph => _graph;
 
         private void ComputeOverlay(SpatialFunction opCode)
         {

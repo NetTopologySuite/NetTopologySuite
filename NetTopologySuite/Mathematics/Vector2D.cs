@@ -124,18 +124,12 @@ namespace NetTopologySuite.Mathematics
         /// <summary>
         /// Gets the x-ordinate value
         /// </summary>
-        public double X
-        {
-            get { return _x; }
-        }
+        public double X => _x;
 
         /// <summary>
         /// Gets the y-ordinate value
         /// </summary>
-        public double Y
-        {
-            get { return _y; }
-        }
+        public double Y => _y;
 
         /// <summary>
         /// Gets the ordinate values by index

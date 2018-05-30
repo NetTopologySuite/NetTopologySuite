@@ -64,10 +64,7 @@ namespace NetTopologySuite.Triangulate
         /// <remarks>the clip envelope.</remarks>
         public Envelope ClipEnvelope
         {
-            set
-            {
-                _clipEnv = value;
-            }
+            set => _clipEnv = value;
         }
 
         /// <summary>
@@ -78,10 +75,7 @@ namespace NetTopologySuite.Triangulate
         /// <remarks>tolerance the tolerance distance to use</remarks>
         public double Tolerance
         {
-            set
-            {
-                _tolerance = value;
-            }
+            set => _tolerance = value;
         }
 
         private void Create()

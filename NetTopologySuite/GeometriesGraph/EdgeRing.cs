@@ -30,7 +30,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         private readonly IGeometryFactory _geometryFactory;
 
-        protected IGeometryFactory GeometryFactory { get { return _geometryFactory; } }
+        protected IGeometryFactory GeometryFactory => _geometryFactory;
 
         /// <summary>
         /// 
@@ -47,24 +47,12 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public bool IsIsolated
-        {
-            get
-            {
-                return _label.GeometryCount == 1;
-            }
-        }
+        public bool IsIsolated => _label.GeometryCount == 1;
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsHole
-        {
-            get
-            {             
-                return _isHole;
-            }
-        }
+        public bool IsHole => _isHole;
 
         /// <summary>
         /// 
@@ -79,45 +67,24 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public ILinearRing LinearRing
-        {
-            get
-            {
-                return _ring;
-            }
-        }
+        public ILinearRing LinearRing => _ring;
 
         /// <summary>
         /// 
         /// </summary>
-        public Label Label
-        {
-            get
-            {
-                return _label;
-            }
-        }
+        public Label Label => _label;
 
         /// <summary>
         /// 
         /// </summary>
-        public bool IsShell
-        {
-            get
-            {
-                return _shell == null;
-            }
-        }
+        public bool IsShell => _shell == null;
 
         /// <summary>
         /// 
         /// </summary>
         public EdgeRing Shell
         {
-            get
-            {
-                return _shell;
-            }
+            get => _shell;
             set
             {
                 _shell = value;
@@ -184,13 +151,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary> 
         /// Returns the list of DirectedEdges that make up this EdgeRing.
         /// </summary>
-        public IList<DirectedEdge> Edges
-        {
-            get
-            {
-                return _edges;
-            }
-        }
+        public IList<DirectedEdge> Edges => _edges;
 
         /// <summary> 
         /// Collect all the points from the DirectedEdges of this ring into a contiguous list.

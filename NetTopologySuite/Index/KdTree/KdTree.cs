@@ -100,7 +100,7 @@ namespace NetTopologySuite.Index.KdTree
         /// <summary>
         /// Gets a value indicating the root node of the tree
         /// </summary>
-        internal KdNode<T> Root { get { return _root; } }
+        internal KdNode<T> Root => _root;
 
         /// <summary>
         /// Inserts a new point in the kd-tree, with no data.
@@ -348,10 +348,7 @@ namespace NetTopologySuite.Index.KdTree
                 this.tolerance = tolerance;
             }
 
-            public KdNode<T> Node
-            {
-                get { return matchNode; }
-            }
+            public KdNode<T> Node => matchNode;
 
             public Envelope QueryEnvelope()
             {

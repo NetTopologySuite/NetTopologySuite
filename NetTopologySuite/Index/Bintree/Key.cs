@@ -42,35 +42,17 @@ namespace NetTopologySuite.Index.Bintree
         /// <summary>
         /// 
         /// </summary>
-        public  double Point
-        {
-            get
-            {
-                return _pt;
-            }
-        }
+        public  double Point => _pt;
 
         /// <summary>
         /// 
         /// </summary>
-        public  int Level
-        {
-            get
-            {
-                return _level;
-            }
-        }
+        public  int Level => _level;
 
         /// <summary>
         /// 
         /// </summary>
-        public  Interval Interval
-        {
-            get
-            {
-                return _interval;
-            }
-        }
+        public  Interval Interval => _interval;
 
         /// <summary>
         /// Return a square envelope containing the argument envelope,

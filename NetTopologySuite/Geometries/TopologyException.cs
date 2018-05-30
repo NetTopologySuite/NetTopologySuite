@@ -47,12 +47,6 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return pt;
-            }
-        }
+        public Coordinate Coordinate => pt;
     }
 }

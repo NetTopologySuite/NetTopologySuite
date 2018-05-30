@@ -65,7 +65,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         public PackedType Type
         {
-            get { return type; }
+            get => type;
             set
             {
                 if (value != PackedType.Double && value != PackedType.Float)
@@ -79,8 +79,8 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         public int Dimension
         {
-            get { return dimension; }
-            set { this.dimension = value; }
+            get => dimension;
+            set => this.dimension = value;
         }
 
         /// <summary>
@@ -123,10 +123,7 @@ namespace NetTopologySuite.Geometries.Implementation
             return Create(size, OrdinatesUtility.OrdinatesToDimension(ordinates));
         }
 
-        public Ordinates Ordinates
-        {
-            get { return Ordinates.XYZ; }
-        }
+        public Ordinates Ordinates => Ordinates.XYZ;
 
         /// <summary>
         /// 

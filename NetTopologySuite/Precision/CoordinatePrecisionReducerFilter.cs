@@ -38,11 +38,11 @@ namespace NetTopologySuite.Precision
         ///<summary>
         /// Always runs over all geometry components.
         ///</summary>
-        public bool Done { get { return false; } }
+        public bool Done => false;
 
         ///<summary>
         /// Always reports that the geometry has changed
         ///</summary>
-        public bool GeometryChanged { get { return true; } }
+        public bool GeometryChanged => true;
     }
 }

@@ -124,10 +124,7 @@ namespace NetTopologySuite.Geometries
 
         /// <inheritdoc cref="System.Collections.IEnumerator.Current"/>>
         /// <remarks> The parent GeometryCollection is the first object returned!</remarks>
-        object System.Collections.IEnumerator.Current
-        {
-            get { return Current; }
-        }
+        object System.Collections.IEnumerator.Current => Current;
 
         /// <inheritdoc cref="System.Collections.IEnumerator.Reset"/>
         public void Reset()
@@ -139,10 +136,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <inheritdoc cref="IEnumerator{T}.Current"/>
-        public IGeometry Current
-        {
-            get { return _current; }
-        }
+        public IGeometry Current => _current;
 
         private static bool IsAtomic(IGeometry geom)
         {

@@ -61,7 +61,7 @@ namespace NetTopologySuite.Simplify
         /// </summary>
         public double DistanceTolerance
         {
-            get { return _distanceTolerance; }
+            get => _distanceTolerance;
             set
             {
                 if (value < 0.0)
@@ -81,8 +81,8 @@ namespace NetTopologySuite.Simplify
         /// <remarks>The default is to fix polygon topology.</remarks>
         public bool IsEnsureValidTopology
         {
-            get { return _isEnsureValidTopology; }
-            set { _isEnsureValidTopology = value; }
+            get => _isEnsureValidTopology;
+            set => _isEnsureValidTopology = value;
         }
 
         /// <summary>

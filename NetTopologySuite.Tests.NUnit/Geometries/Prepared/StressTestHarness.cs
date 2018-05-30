@@ -24,8 +24,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
         public int TargetSize
         {
-            get { return _numTargetPts; }
-            set { _numTargetPts = value; }
+            get => _numTargetPts;
+            set => _numTargetPts = value;
         }
 
         public void Run(int nIter)

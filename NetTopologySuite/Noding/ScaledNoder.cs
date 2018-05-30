@@ -62,13 +62,7 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// 
         /// </summary>
-        public bool IsIntegerPrecision
-        { 
-            get
-            {
-                return _scaleFactor == 1.0;
-            }
-        }
+        public bool IsIntegerPrecision => _scaleFactor == 1.0;
 
         /// <summary>
         /// 

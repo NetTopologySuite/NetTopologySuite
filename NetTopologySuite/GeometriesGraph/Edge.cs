@@ -63,52 +63,28 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public Coordinate[] Points
         {
-            get
-            {
-                return _pts;
-            }
-            set
-            {
-                _pts = value;
-            }
+            get => _pts;
+            set => _pts = value;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public int NumPoints
-        {
-            get
-            {
-                return Points.Length; 
-            }
-        }
+        public int NumPoints => Points.Length;
 
         /// <summary>
         /// 
         /// </summary>
         public string Name
         {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                _name = value; 
-            }
+            get => _name;
+            set => _name = value;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate[] Coordinates
-        {
-            get
-            {
-                return Points;  
-            }
-        }
+        public Coordinate[] Coordinates => Points;
 
         /// <summary>
         /// 
@@ -132,14 +108,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public override Coordinate Coordinate
         {
-            get
-            {
-                return Points.Length > 0 ? Points[0] : null;
-            }
-            protected set
-            {
-                throw new NotSupportedException();
-            }
+            get => Points.Length > 0 ? Points[0] : null;
+            protected set => throw new NotSupportedException();
         }
 
         /// <summary>
@@ -163,13 +133,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public Depth Depth
-        {
-            get
-            {
-                return _depth; 
-            }
-        }
+        public Depth Depth => _depth;
 
         /// <summary>
         /// The depthDelta is the change in depth as an edge is crossed from R to L.
@@ -177,37 +141,19 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns>The change in depth as the edge is crossed from R to L.</returns>
         public int DepthDelta
         {
-            get
-            {
-                return _depthDelta;  
-            }
-            set
-            {
-                _depthDelta = value;
-            }
+            get => _depthDelta;
+            set => _depthDelta = value;
         }        
 
         /// <summary>
         /// 
         /// </summary>
-        public int MaximumSegmentIndex
-        {
-            get
-            {
-                return Points.Length - 1;
-            }
-        }
+        public int MaximumSegmentIndex => Points.Length - 1;
 
         /// <summary>
         /// 
         /// </summary>
-        public EdgeIntersectionList EdgeIntersectionList
-        {
-            get
-            {
-                return _eiList; 
-            }
-        }
+        public EdgeIntersectionList EdgeIntersectionList => _eiList;
 
         /// <summary>
         /// 
@@ -225,13 +171,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// 
         /// </summary>
-        public bool IsClosed
-        {
-            get
-            {
-                return Points[0].Equals(Points[Points.Length - 1]);
-            }
-        }
+        public bool IsClosed => Points[0].Equals(Points[Points.Length - 1]);
 
         /// <summary> 
         /// An Edge is collapsed if it is an Area edge and it consists of
@@ -271,26 +211,14 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public bool Isolated
         {
-            get
-            {
-                return _isIsolated;
-            }
-            set
-            {
-                _isIsolated = value;
-            }
+            get => _isIsolated;
+            set => _isIsolated = value;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public override bool IsIsolated
-        {
-            get
-            {
-                return _isIsolated;
-            }
-        }
+        public override bool IsIsolated => _isIsolated;
 
         /// <summary>
         /// Adds EdgeIntersections for one or both

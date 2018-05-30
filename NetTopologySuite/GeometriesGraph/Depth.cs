@@ -73,14 +73,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public int this[int geomIndex, Positions posIndex]
         {
-            get
-            {
-                return GetDepth(geomIndex, posIndex);
-            }
-            set
-            {
-                SetDepth(geomIndex, posIndex, value);
-            }
+            get => GetDepth(geomIndex, posIndex);
+            set => SetDepth(geomIndex, posIndex, value);
         }
 
         /// <summary>

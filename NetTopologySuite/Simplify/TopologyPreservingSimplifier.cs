@@ -88,8 +88,8 @@ namespace NetTopologySuite.Simplify
         /// </summary>  
         public double DistanceTolerance
         {
-            get { return _lineSimplifier.DistanceTolerance; }
-            set { _lineSimplifier.DistanceTolerance = value; }
+            get => _lineSimplifier.DistanceTolerance;
+            set => _lineSimplifier.DistanceTolerance = value;
         }
 
         /// <summary>

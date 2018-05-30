@@ -22,51 +22,21 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         /// The point of intersection.
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return _coordinate; 
-            }
-            //set
-            //{
-            //    _coordinate = value; 
-            //}
-        }
+        public Coordinate Coordinate => _coordinate;
 
         private readonly int _segmentIndex;  
 
         /// <summary>
         /// The index of the containing line segment in the parent edge.
         /// </summary>
-        public int SegmentIndex
-        {
-            get 
-            {
-                return _segmentIndex; 
-            }
-            //set
-            //{
-            //    segmentIndex = value; 
-            //}
-        }
+        public int SegmentIndex => _segmentIndex;
 
         private readonly double _distance;       
 
         /// <summary>
         /// The edge distance of this point along the containing line segment.
         /// </summary>
-        public double Distance
-        {
-            get
-            {
-                return _distance; 
-            }
-            //set
-            //{
-            //    dist = value; 
-            //}
-        }
+        public double Distance => _distance;
 
         /// <summary>
         /// 

@@ -66,8 +66,8 @@ namespace NetTopologySuite.EdgeGraph
 
         public bool Marked
         {
-            get { return _marked; }
-            set { _marked = value; }
+            get => _marked;
+            set => _marked = value;
         }
     }
 }

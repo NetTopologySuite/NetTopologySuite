@@ -136,35 +136,17 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return pt;
-            }
-        }
+        public Coordinate Coordinate => pt;
 
         /// <summary>
         /// 
         /// </summary>
-        public TopologyValidationErrors ErrorType
-        {
-            get
-            {
-                return errorType;
-            }
-        }
+        public TopologyValidationErrors ErrorType => errorType;
 
         /// <summary>
         /// 
         /// </summary>
-        public String Message
-        {
-            get
-            {
-                return errMsg[(int) errorType];
-            }
-        }
+        public String Message => errMsg[(int) errorType];
 
         /// <summary>
         /// 

@@ -125,25 +125,13 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// used in this subdivision
         /// </summary>
         /// <remarks>Gets the tolerance value</remarks>
-        public double Tolerance
-        {
-            get
-            {
-                return _tolerance;
-            }
-        }
+        public double Tolerance => _tolerance;
 
         /// <summary>
         /// Gets the envelope of the Subdivision (including the frame).
         /// </summary>
         /// <remarks>Gets the envelope</remarks>
-        public Envelope Envelope
-        {
-            get
-            {
-                return new Envelope(_frameEnv);
-            }
-        }
+        public Envelope Envelope => new Envelope(_frameEnv);
 
         /// <summary>
         /// Gets the collection of base <see cref="QuadEdge"/>s (one for every pair of

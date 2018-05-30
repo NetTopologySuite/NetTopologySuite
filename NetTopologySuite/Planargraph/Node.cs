@@ -58,13 +58,7 @@ namespace NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the location of this Node.
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return pt;
-            }
-        }
+        public Coordinate Coordinate => pt;
 
         /// <summary>
         /// Adds an outgoing DirectedEdge to this Node.
@@ -78,24 +72,12 @@ namespace NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the collection of DirectedEdges that leave this Node.
         /// </summary>
-        public DirectedEdgeStar OutEdges
-        {
-            get
-            {
-                return deStar;
-            }
-        }
+        public DirectedEdgeStar OutEdges => deStar;
 
         /// <summary>
         /// Returns the number of edges around this Node.
         /// </summary>
-        public int Degree
-        {
-            get
-            {
-                return deStar.Degree;
-            }
-        }
+        public int Degree => deStar.Degree;
 
         /// <summary>
         /// Returns the zero-based index of the given Edge, after sorting in ascending order
@@ -128,13 +110,7 @@ namespace NetTopologySuite.Planargraph
         /// Tests whether this component has been removed from its containing graph.
         /// </summary>
         /// <value></value>
-        public override bool IsRemoved
-        {
-            get
-            {
-                return pt == null;
-            }
-        }
+        public override bool IsRemoved => pt == null;
 
         /// <summary>
         /// 

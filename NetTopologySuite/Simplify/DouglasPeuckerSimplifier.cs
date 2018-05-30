@@ -64,7 +64,7 @@ namespace NetTopologySuite.Simplify
         /// </remarks>
         public double DistanceTolerance
         {
-            get { return _distanceTolerance; }
+            get => _distanceTolerance;
             set
             {
                 if (value < 0)
@@ -88,8 +88,8 @@ namespace NetTopologySuite.Simplify
         /// </remarks>
         public bool EnsureValidTopology
         {
-            get { return _isEnsureValidTopology; }
-            set { _isEnsureValidTopology = value; }
+            get => _isEnsureValidTopology;
+            set => _isEnsureValidTopology = value;
         }
 
         /// <summary>

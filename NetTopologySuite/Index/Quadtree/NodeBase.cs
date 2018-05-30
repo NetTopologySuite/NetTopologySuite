@@ -56,11 +56,8 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         public IList<T> Items
         {
-            get
-            {
-                return _items;
-            }
-            protected set { _items = (List<T>)value; }
+            get => _items;
+            protected set => _items = (List<T>)value;
         }
 
         /// <summary>
@@ -130,13 +127,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <summary>
         /// 
         /// </summary>
-        public bool IsPrunable
-        {
-            get
-            {
-                return !(HasChildren || HasItems);
-            }
-        }
+        public bool IsPrunable => !(HasChildren || HasItems);
 
         /// <summary>
         /// 

@@ -83,18 +83,12 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// <summary>
         /// Gets the error message
         /// </summary>
-        public String ErrorMessage
-        {
-            get { return _errorMsg; }
-        }
+        public String ErrorMessage => _errorMsg;
 
         /// <summary>
         /// Gets the error location
         /// </summary>
-        public Coordinate ErrorLocation
-        {
-            get { return _errorLocation; }
-        }
+        public Coordinate ErrorLocation => _errorLocation;
 
         /// <summary>
         /// Gets a geometry which indicates the location and nature of a validation failure.
@@ -106,10 +100,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// </summary>
         /// <returns>A geometric error indicator<br/>
         /// or <value>null</value>, if no error was found</returns>
-        public IGeometry ErrorIndicator
-        {
-            get { return _errorIndicator; }
-        }
+        public IGeometry ErrorIndicator => _errorIndicator;
 
         private void Report(String checkName)
         {

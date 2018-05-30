@@ -13,7 +13,7 @@ namespace NetTopologySuite.Tests.XUnit
         {
         }
 
-        protected override string TestLocation { get { return testLocation; } }
+        protected override string TestLocation => testLocation;
 
         [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test00() { }

@@ -54,13 +54,7 @@ namespace NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the number of edges around the Node associated with this DirectedEdgeStar.
         /// </summary>
-        public int Degree
-        {
-            get
-            {
-                return _outEdges.Count;
-            }
-        }
+        public int Degree => _outEdges.Count;
 
         /// <summary>
         /// Returns the coordinate for the node at which this star is based.

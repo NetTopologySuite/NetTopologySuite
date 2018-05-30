@@ -52,30 +52,21 @@ namespace NetTopologySuite.Geometries
         /// Returns the PrecisionModel that Geometries created by this factory
         /// will be associated with.
         /// </summary>
-        public IPrecisionModel PrecisionModel
-        {
-            get { return _precisionModel; }
-        }
+        public IPrecisionModel PrecisionModel => _precisionModel;
 
         private readonly ICoordinateSequenceFactory _coordinateSequenceFactory;
 
         /// <summary>
         /// 
         /// </summary>
-        public ICoordinateSequenceFactory CoordinateSequenceFactory
-        {
-            get { return _coordinateSequenceFactory; }
-        }
+        public ICoordinateSequenceFactory CoordinateSequenceFactory => _coordinateSequenceFactory;
 
         private readonly int _srid;
 
         /// <summary>
         /// The SRID value defined for this factory.
         /// </summary>
-        public int SRID
-        {
-            get { return _srid; }
-        }
+        public int SRID => _srid;
 
         /// <summary>
         /// 

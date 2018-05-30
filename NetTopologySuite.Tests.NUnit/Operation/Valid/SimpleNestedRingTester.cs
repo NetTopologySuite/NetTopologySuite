@@ -38,13 +38,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <summary>
         /// 
         /// </summary>
-        public Coordinate NestedPoint
-        {
-            get
-            {
-                return nestedPt;
-            }
-        }
+        public Coordinate NestedPoint => nestedPt;
 
         /// <summary>
         /// 

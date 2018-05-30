@@ -25,13 +25,17 @@ namespace NetTopologySuite.Operation.Buffer
         /// <summary>
         /// Gets/Sets the precision model to use when adding new points.
         /// </summary>
-        public IPrecisionModel PrecisionModel { get { return _precisionModel; } set { _precisionModel = value; } }
+        public IPrecisionModel PrecisionModel { get => _precisionModel;
+            set => _precisionModel = value;
+        }
 
         /// <summary>
         /// The distance below which two adjacent points on the curve are considered to be coincident.
         /// </summary>
         /// <remarks>This is chosen to be a small fraction of the offset distance.</remarks>
-        public double MinimumVertexDistance { get { return _minimimVertexDistance; } set { _minimimVertexDistance = value; } }
+        public double MinimumVertexDistance { get => _minimimVertexDistance;
+            set => _minimimVertexDistance = value;
+        }
 
         /// <summary>
         /// Function to add a point

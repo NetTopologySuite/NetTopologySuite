@@ -28,12 +28,6 @@ namespace NetTopologySuite.Index
         /// <summary>
         /// 
         /// </summary>
-        public IList<T> Items
-        {
-            get
-            {
-                return _items;
-            }
-        }
+        public IList<T> Items => _items;
     }
 }
