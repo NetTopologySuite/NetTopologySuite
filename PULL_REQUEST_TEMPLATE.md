@@ -9,4 +9,4 @@
 ### Description
 _(A description of the changes proposed in the pull-request_)
 
-_Thanks for contributing to ImageSharp!_
+_Thanks for contributing to NetTopologySuite!_
