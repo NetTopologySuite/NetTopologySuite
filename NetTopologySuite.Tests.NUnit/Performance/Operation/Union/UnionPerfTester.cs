@@ -44,7 +44,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
         {
             Console.WriteLine("# items: " + _polys.Count);
             run("Cascaded", CASCADED, _polys);
-//    run("Buffer-0", BUFFER0, polys);
+            // run("Buffer-0", BUFFER0, polys);
 
             run("Iterated", ITERATED, _polys);
 
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
                         break;
                 }
 
-//    	printFormatted(union);
+                // printFormatted(union);
 
             }
             Console.WriteLine("Finished in " + sw.ElapsedMilliseconds);
@@ -104,7 +104,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
                 if (count%100 == 0)
                 {
                     Console.Write(".");
-//        System.out.println("Adding geom #" + count);
+                    // System.out.println("Adding geom #" + count);
                 }
             }
             return unionAll;

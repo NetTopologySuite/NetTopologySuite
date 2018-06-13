@@ -31,7 +31,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
             bool result = a.IsValid;
 
             if(result)
-            	  Console.WriteLine("Error!");
+                  Console.WriteLine("Error!");
              else Console.WriteLine("Work completed!");
         }
     }

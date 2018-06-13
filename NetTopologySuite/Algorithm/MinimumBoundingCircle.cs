@@ -217,8 +217,8 @@ namespace NetTopologySuite.Algorithm
             }
 
             /**
-		     * The problem is simplified by reducing to the convex hull.
-		     * Computing the convex hull also has the useful effect of eliminating duplicate points
+             * The problem is simplified by reducing to the convex hull.
+             * Computing the convex hull also has the useful effect of eliminating duplicate points
              */
             var convexHull = _input.ConvexHull();
 
@@ -234,9 +234,9 @@ namespace NetTopologySuite.Algorithm
             }
 
             /**
-		     * Optimization for the trivial case where the CH has fewer than 3 points
-		     */
-		    if (pts.Length <= 2)
+             * Optimization for the trivial case where the CH has fewer than 3 points
+             */
+            if (pts.Length <= 2)
             {
                 _extremalPts = CoordinateArrays.CopyDeep(pts);
                 return;

@@ -149,10 +149,10 @@ namespace NetTopologySuite.Algorithm
 
         private static Location LocateInPolygonRing(Coordinate p, ILinearRing ring)
         {
-  	        // bounding-box check
-  	        if (! ring.EnvelopeInternal.Intersects(p)) return Location.Exterior;
+            // bounding-box check
+            if (! ring.EnvelopeInternal.Intersects(p)) return Location.Exterior;
 
-  	        return PointLocation.LocateInRing(p, ring.CoordinateSequence);
+            return PointLocation.LocateInRing(p, ring.CoordinateSequence);
         }
 
         private Location LocateInPolygon(Coordinate p, IPolygon poly)

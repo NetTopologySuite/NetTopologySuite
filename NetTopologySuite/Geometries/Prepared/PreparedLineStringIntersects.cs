@@ -56,7 +56,7 @@ namespace NetTopologySuite.Geometries.Prepared
             {
                 var segsIntersect = prepLine.IntersectionFinder.Intersects(lineSegStr);
                 // MD - performance testing
-                //		boolean segsIntersect = false;
+                // boolean segsIntersect = false;
                 if (segsIntersect)
                     return true;
             }

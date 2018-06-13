@@ -5,9 +5,9 @@ using Open.Topology.TestRunner;
 
 namespace ConsoleTestRunner
 {
-	/// <summary>
-	/// Summary description for ConsoleTest.
-	/// </summary>
+    /// <summary>
+    /// Summary description for ConsoleTest.
+    /// </summary>
     class ConsoleTest
     {
         static void PrintMenu()

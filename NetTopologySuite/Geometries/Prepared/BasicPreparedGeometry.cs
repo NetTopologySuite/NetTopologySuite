@@ -98,14 +98,14 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <item>Every point of the other geometry is a point of this geometry's interior.</item>
         /// <item>The DE-9IM Intersection Matrix for the two geometries matches <c>>[T**FF*FF*]</c></item>
         /// </list>
-	    /// In other words, if the test geometry has any interaction with the boundary of the target
-	    /// geometry the result of <c>ContainsProperly</c> is <c>false</c>.
-	    /// This is different semantics to the {@link Geometry#contains} predicate,
-	    /// in which test geometries can intersect the target's boundary and still be contained.
-	    /// <para/>
-	    /// The advantage of using this predicate is that it can be computed
-	    /// efficiently, since it avoids the need to compute the full topological relationship
-	    /// of the input boundaries in cases where they intersect.
+        /// In other words, if the test geometry has any interaction with the boundary of the target
+        /// geometry the result of <c>ContainsProperly</c> is <c>false</c>.
+        /// This is different semantics to the {@link Geometry#contains} predicate,
+        /// in which test geometries can intersect the target's boundary and still be contained.
+        /// <para/>
+        /// The advantage of using this predicate is that it can be computed
+        /// efficiently, since it avoids the need to compute the full topological relationship
+        /// of the input boundaries in cases where they intersect.
         /// <para/>
         /// An example use case is computing the intersections
         /// of a set of geometries with a large polygonal geometry.

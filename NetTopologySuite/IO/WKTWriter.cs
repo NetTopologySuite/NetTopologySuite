@@ -36,7 +36,7 @@ namespace NetTopologySuite.IO
             return string.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", p0.X, p0.Y);
 #else
             if (double.IsNaN(p0.Z))
-				return String.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", p0.X, p0.Y);
+                return String.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", p0.X, p0.Y);
             return String.Format(CultureInfo.InvariantCulture, "POINT({0} {1} {2})", p0.X, p0.Y, p0.Z);
 #endif
         }
@@ -106,7 +106,7 @@ namespace NetTopologySuite.IO
             return string.Format(CultureInfo.InvariantCulture, "LINESTRING({0:R} {1:R}, {2:R} {3:R})", p0.X, p0.Y, p1.X, p1.Y);
 #else
             if (double.IsNaN(p0.Z))
-				return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1}, {2} {3})", p0.X, p0.Y, p1.X, p1.Y);
+                return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1}, {2} {3})", p0.X, p0.Y, p1.X, p1.Y);
             return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1} {2}, {3} {4} {5})", p0.X, p0.Y, p0.Z, p1.X, p1.Y, p1.Z);
 #endif
         }
@@ -521,11 +521,11 @@ namespace NetTopologySuite.IO
         /// </param>
         private void AppendCoordinate(Coordinate coordinate, TextWriter writer, IPrecisionModel precisionModel)
         {
-			writer.Write(WriteNumber(coordinate.X) + " " + WriteNumber(coordinate.Y));
+            writer.Write(WriteNumber(coordinate.X) + " " + WriteNumber(coordinate.Y));
             if (_outputDimension >= 3 && !double.IsNaN(coordinate.Z))
-			{
-				writer.Write(" " + WriteNumber(coordinate.Z));
-			}
+            {
+                writer.Write(" " + WriteNumber(coordinate.Z));
+            }
         }
 
         /// <summary>

@@ -14,22 +14,22 @@ namespace NetTopologySuite.GeometriesGraph
     public class QuadrantOp
     {
 
-	    /// <summary>
-	    /// North-East
-	    /// </summary>
-	    public static readonly int NE = 0;
+        /// <summary>
+        /// North-East
+        /// </summary>
+        public static readonly int NE = 0;
         /// <summary>
         /// North-West
         /// </summary>
-	    public static readonly int NW = 1;
-	    /// <summary>
-	    /// South-West
-	    /// </summary>
+        public static readonly int NW = 1;
+        /// <summary>
+        /// South-West
+        /// </summary>
         public static readonly int SW = 2;
         /// <summary>
         /// South-East
         /// </summary>
-	    public static readonly int SE = 3;
+        public static readonly int SE = 3;
 
         /// <summary>
         /// Only static methods!

@@ -130,7 +130,7 @@ namespace NetTopologySuite.Operation.Buffer
             else
                 ComputeLineBufferCurve(inputPts);
 
-            //System.out.println(vertexList);
+            // System.out.println(vertexList);
 
             Coordinate[] lineCoord = _vertexList.Coordinates;
             lineList.Add(lineCoord);
@@ -211,7 +211,7 @@ namespace NetTopologySuite.Operation.Buffer
             // Simplify the appropriate side of the line before generating
             var simp1 = BufferInputLineSimplifier.Simplify(inputPts, distTol);
             // MD - used for testing only (to eliminate simplification)
-            //    Coordinate[] simp1 = inputPts;
+            // Coordinate[] simp1 = inputPts;
 
             int n1 = simp1.Length - 1;
 
@@ -228,7 +228,7 @@ namespace NetTopologySuite.Operation.Buffer
             // Simplify the appropriate side of the line before generating
             var simp2 = BufferInputLineSimplifier.Simplify(inputPts, -distTol);
             // MD - used for testing only (to eliminate simplification)
-            //    Coordinate[] simp2 = inputPts;
+            // Coordinate[] simp2 = inputPts;
             int n2 = simp2.Length - 1;
 
             // since we are traversing line in opposite order, offset position is still LEFT
@@ -279,7 +279,7 @@ namespace NetTopologySuite.Operation.Buffer
             if (side == Positions.Right)
                 distTol = -distTol;
             var simp = BufferInputLineSimplifier.Simplify(inputPts, distTol);
-            //    Coordinate[] simp = inputPts;
+            // Coordinate[] simp = inputPts;
 
             int n = simp.Length - 1;
             InitSideSegments(simp[n - 1], simp[0], side);
@@ -388,11 +388,11 @@ namespace NetTopologySuite.Operation.Buffer
         private void AddOutsideTurn(OrientationIndex orientation, bool addStartPoint)
         {
             /**
-  	         * Heuristic: If offset endpoints are very close together,
-  	         * just use one of them as the corner vertex.
-  	         * This avoids problems with computing mitre corners in the case
-  	         * where the two segments are almost parallel
-  	         * (which is hard to compute a robust intersection for).
+             * Heuristic: If offset endpoints are very close together,
+             * just use one of them as the corner vertex.
+             * This avoids problems with computing mitre corners in the case
+             * where the two segments are almost parallel
+             * (which is hard to compute a robust intersection for).
              */
             if (_offset0.P1.Distance(_offset1.P0) < _distance * OFFSET_SEGMENT_SEPARATION_FACTOR)
             {
@@ -592,8 +592,8 @@ namespace NetTopologySuite.Operation.Buffer
 
             /*
              * This computation is unstable if the offset segments are nearly collinear.
-  	         * Howver, this situation should have been eliminated earlier by the check for
-  	         * whether the offset segment endpoints are almost coincident
+             * Howver, this situation should have been eliminated earlier by the check for
+             * whether the offset segment endpoints are almost coincident
              */
             try
             {
@@ -619,7 +619,7 @@ namespace NetTopologySuite.Operation.Buffer
             else
             {
                 AddLimitedMitreJoin(offset0, offset1, distance, _bufParams.MitreLimit);
-                //  		addBevelJoin(offset0, offset1);
+                // addBevelJoin(offset0, offset1);
             }
         }
 

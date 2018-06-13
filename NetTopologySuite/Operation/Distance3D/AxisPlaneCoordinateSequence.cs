@@ -24,9 +24,9 @@ namespace NetTopologySuite.Operation.Distance3D
         public static ICoordinateSequence ProjectToXY(ICoordinateSequence seq)
         {
             /**
-		 * This is just a no-op, but return a wrapper
-		 * to allow better testing
-		 */
+         * This is just a no-op, but return a wrapper
+         * to allow better testing
+         */
             return new AxisPlaneCoordinateSequence(seq, XYIndex);
         }
 

@@ -26,7 +26,7 @@ namespace NetTopologySuite.Utilities
         /// <summary>
         ///
         /// </summary>
-		private static readonly Global global = new Global();
+        private static readonly Global global = new Global();
 
         /// <summary>
         ///

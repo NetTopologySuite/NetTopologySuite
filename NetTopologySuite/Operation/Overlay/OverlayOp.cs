@@ -112,7 +112,7 @@ namespace NetTopologySuite.Operation.Overlay
                 case SpatialFunction.SymDifference:
                     return   (loc0 == Location.Interior &&  loc1 != Location.Interior)
                           || (loc0 != Location.Interior &&  loc1 == Location.Interior);
-	            default:
+                default:
                     return false;
             }
         }

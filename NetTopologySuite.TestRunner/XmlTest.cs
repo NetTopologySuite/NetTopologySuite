@@ -86,11 +86,11 @@ namespace Open.Topology.TestRunner
 
     #endregion
 
-	/// <summary>
-	/// Summary description for XmlTest.
-	/// </summary>
-	public class XmlTest
-	{
+    /// <summary>
+    /// Summary description for XmlTest.
+    /// </summary>
+    public class XmlTest
+    {
         private static NumberFormatInfo _nfi;
 
         protected static IFormatProvider GetNumberFormatInfo()
@@ -126,14 +126,14 @@ namespace Open.Topology.TestRunner
 
         private readonly double    _dTolerance     = double.Epsilon;
 
-	    private IResultMatcher _resultMatcher;
-	    private readonly IGeometryOperation _geometryOperation;
+        private IResultMatcher _resultMatcher;
+        private readonly IGeometryOperation _geometryOperation;
         #endregion
 
         #region Constructors and Destructor
 
         public XmlTest(string description, bool bIsDefaultTarget, double tolerance, IGeometryOperation geometryOperation, IResultMatcher resultMatcher)
-		{
+        {
             if (!string.IsNullOrEmpty(description))
             {
                 _strDescription = description;
@@ -149,7 +149,7 @@ namespace Open.Topology.TestRunner
             _dTolerance       = tolerance;
             _geometryOperation = geometryOperation;
             _resultMatcher = resultMatcher;
-		}
+        }
 
         #endregion
 
@@ -171,12 +171,12 @@ namespace Open.Topology.TestRunner
 
         public bool Success => _bSuccess;
 
-	    public IGeometry A
+        public IGeometry A
         {
             get => _objGeometryA;
 
-	        set => _objGeometryA = value;
-	    }
+            set => _objGeometryA = value;
+        }
 
         public IGeometry B
         {
@@ -213,12 +213,12 @@ namespace Open.Topology.TestRunner
             set => _objArgument2 = value;
         }
 
-		public bool IsDefaultTarget
-		{
+        public bool IsDefaultTarget
+        {
             get => _bIsDefaultTarget;
 
-		    set => _bIsDefaultTarget = value;
-		}
+            set => _bIsDefaultTarget = value;
+        }
 
         #endregion
 
@@ -259,7 +259,7 @@ namespace Open.Topology.TestRunner
 
         #region Protected Methods
 
-	    public virtual bool RunTest()
+        public virtual bool RunTest()
         {
             try
             {
@@ -423,7 +423,7 @@ namespace Open.Topology.TestRunner
         }
 
         private IResultMatcher CreateEqualityResultMatcher(Type returnType)
-	    {
+        {
             if (returnType == typeof(int))
                 return new EqualityResultMatcher<IntegerResult>();
             if (returnType == typeof(bool))
@@ -434,19 +434,19 @@ namespace Open.Topology.TestRunner
                 return new EqualityResultMatcher<GeometryResult>();
 
             Debug.Assert(false);
-	        return null;
-	    }
+            return null;
+        }
 
-	    private object[] ToArguments()
-	    {
+        private object[] ToArguments()
+        {
             var ret = new System.Collections.Generic.List<object>(2);
-	        var o = ToGeometryOrString(Argument1);
+            var o = ToGeometryOrString(Argument1);
             if (o != null) ret.Add(o);
             o = ToGeometryOrString(Argument2);
             if (o != null) ret.Add(o);
 
             return ret.ToArray();
-	    }
+        }
 
         private object ToGeometryOrString(object o)
         {
@@ -470,7 +470,7 @@ namespace Open.Topology.TestRunner
             return o.ToString();
         }
 
-	    protected virtual bool TestArea()
+        protected virtual bool TestArea()
         {
             double dAreaResult = (double)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
@@ -812,15 +812,15 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-	    private double GetDoubleArgument()
-	    {
+        private double GetDoubleArgument()
+        {
             if (_objArgument1 is IGeometry)
                 return double.Parse((string) _objArgument2, NumberStyles.Any, GetNumberFormatInfo());
 
             return double.Parse((string)_objArgument1, NumberStyles.Any, GetNumberFormatInfo());
         }
 
-	    protected virtual bool TestDifference()
+        protected virtual bool TestDifference()
         {
             Trace.Assert(_objResult != null, "The result object cannot be null");
 
@@ -1720,7 +1720,7 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-	    protected virtual bool TestMinClearance()
+        protected virtual bool TestMinClearance()
         {
             double dResult = (double)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
@@ -1786,5 +1786,5 @@ namespace Open.Topology.TestRunner
         }
 
         #endregion
-	}
+    }
 }

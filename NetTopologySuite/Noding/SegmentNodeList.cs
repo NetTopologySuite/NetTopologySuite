@@ -125,8 +125,8 @@ namespace NetTopologySuite.Noding
         {
             var collapsedVertexIndex = new int[1];
 
-	        var ie = GetEnumerator();
-	        ie.MoveNext();
+            var ie = GetEnumerator();
+            ie.MoveNext();
 
             // there should always be at least two entries in the list, since the endpoints are nodes
             var eiPrev = (SegmentNode) ie.Current;
@@ -180,7 +180,7 @@ namespace NetTopologySuite.Noding
 
             // there should always be at least two entries in the list, since the endpoints are nodes
             var ie = GetEnumerator();
-	        ie.MoveNext();
+            ie.MoveNext();
             var eiPrev = (SegmentNode) ie.Current;
             while (ie.MoveNext())
             {

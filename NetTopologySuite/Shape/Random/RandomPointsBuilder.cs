@@ -76,8 +76,8 @@ namespace NetTopologySuite.Shape.Random
          *
         protected override Coordinate CreateCoord(double x, double y)
         {
-  	        Coordinate pt = new Coordinate(x, y);
-  	        geomFactory.getPrecisionModel().makePrecise(pt);
+            Coordinate pt = new Coordinate(x, y);
+            geomFactory.getPrecisionModel().makePrecise(pt);
             return pt;
         }
         */

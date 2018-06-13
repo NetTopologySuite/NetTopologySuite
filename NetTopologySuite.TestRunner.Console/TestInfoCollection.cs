@@ -3,9 +3,9 @@ using System.Collections;
 
 namespace ConsoleTestRunner
 {
-	/// <summary>
-	/// Summary description for TestInfoCollection.
-	/// </summary>
+    /// <summary>
+    /// Summary description for TestInfoCollection.
+    /// </summary>
     public class TestInfoCollection : CollectionBase
     {
         #region Constructors and Destructor

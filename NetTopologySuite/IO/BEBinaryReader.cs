@@ -24,7 +24,7 @@ namespace NetTopologySuite.IO
         /// Initializes a new instance of the <see cref="BEBinaryReader"/> class.
         /// </summary>
         /// <param name="stream">The stream.</param>
-		public BEBinaryReader(Stream stream)  : base(stream) { }
+        public BEBinaryReader(Stream stream)  : base(stream) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BEBinaryReader"/> class.

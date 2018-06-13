@@ -10,11 +10,11 @@ using Open.Topology.TestRunner.Result;
 
 namespace Open.Topology.TestRunner
 {
-	/// <summary>
-	/// Summary description for XmlTestDocument.
-	/// </summary>
-	public class XmlTestDocument
-	{
+    /// <summary>
+    /// Summary description for XmlTestDocument.
+    /// </summary>
+    public class XmlTestDocument
+    {
         private static NumberFormatInfo nfi = null;
 
         protected static IFormatProvider GetNumberFormatInfo()
@@ -42,7 +42,7 @@ namespace Open.Topology.TestRunner
         #region Constructors and Destructor
 
         public XmlTestDocument()
-		{
+        {
             m_listarrTests = new ArrayList();
         }
 
@@ -67,9 +67,9 @@ namespace Open.Topology.TestRunner
 
         public XmlTestCollection CurrentTests => m_listCurTests;
 
-	    public ArrayList Tests => m_listarrTests;
+        public ArrayList Tests => m_listarrTests;
 
-	    public bool LoadFile(string fileName)
+        public bool LoadFile(string fileName)
         {
             if (!File.Exists(fileName))
             {

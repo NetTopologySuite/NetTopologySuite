@@ -18,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         {
             // Use fixed PM to try and get at least some points hitting the boundary
             GeometryFactory geomFactory = new GeometryFactory(pmFixed_1);
-            //		GeometryFactory geomFactory = new GeometryFactory();
+            // GeometryFactory geomFactory = new GeometryFactory();
 
             PerturbedGridPolygonBuilder gridBuilder = new PerturbedGridPolygonBuilder(geomFactory);
             gridBuilder.NumLines = 20;

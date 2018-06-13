@@ -16,7 +16,7 @@ namespace Open.Topology.TestRunner.Operations
         public PreparedGeometryTeeOperation()
         {
         }
-         */
+        */
 
         /// <summary>
         /// Creates a new operation which chains to the given <see cref="IGeometryOperation"/>
@@ -60,11 +60,11 @@ namespace Open.Topology.TestRunner.Operations
 
             if (pgResult != expected)
             {
-                //			pg.intersects(g2);
+                // pg.intersects(g2);
                 throw new InvalidOperationException("PreparedGeometry.intersects result does not match expected");
             }
 
-            //		System.out.println("Results match!");
+            // System.out.println("Results match!");
         }
 
         private static void CheckContains(IPreparedGeometry pg, IGeometry g2)
@@ -75,7 +75,7 @@ namespace Open.Topology.TestRunner.Operations
             if (pgResult != expected)
                 throw new InvalidOperationException("PreparedGeometry.contains result does not match expected");
 
-            //		System.out.println("Results match!");
+            // System.out.println("Results match!");
         }
 
         private static void CheckContainsProperly(IPreparedGeometry pg, IGeometry g2)
@@ -86,7 +86,7 @@ namespace Open.Topology.TestRunner.Operations
             if (pgResult != expected)
                 throw new InvalidOperationException("PreparedGeometry.containsProperly result does not match expected");
 
-            //		System.out.println("Results match!");
+            // System.out.println("Results match!");
         }
 
         private static void CheckCovers(IPreparedGeometry pg, IGeometry g2)
@@ -97,35 +97,35 @@ namespace Open.Topology.TestRunner.Operations
             if (pgResult != expected)
                 throw new InvalidOperationException("PreparedGeometry.covers result does not match expected");
 
-            //		System.out.println("Results match!");
+            // System.out.println("Results match!");
         }
 
         /*
         static class PreparedGeometryOp
         {
-                public static bool Intersects(IGeometry g1, IGeometry g2)
-                {
-                    var prepGeom = PreparedGeometryFactory.Prepare(g1);
-                    return prepGeom.Intersects(g2);
-                }
+            public static bool Intersects(IGeometry g1, IGeometry g2)
+            {
+                var prepGeom = PreparedGeometryFactory.Prepare(g1);
+                return prepGeom.Intersects(g2);
+            }
 
-                public static bool Contains(IGeometry g1, IGeometry g2)
-                {
-                    var prepGeom = PreparedGeometryFactory.Prepare(g1);
-                    return prepGeom.Contains(g2);
-                }
+            public static bool Contains(IGeometry g1, IGeometry g2)
+            {
+                var prepGeom = PreparedGeometryFactory.Prepare(g1);
+                return prepGeom.Contains(g2);
+            }
 
-                public static bool ContainsProperly(IGeometry g1, IGeometry g2)
-                {
-                    var prepGeom = PreparedGeometryFactory.Prepare(g1);
-                    return prepGeom.ContainsProperly(g2);
-                }
+            public static bool ContainsProperly(IGeometry g1, IGeometry g2)
+            {
+                var prepGeom = PreparedGeometryFactory.Prepare(g1);
+                return prepGeom.ContainsProperly(g2);
+            }
 
-                public static bool Covers(IGeometry g1, IGeometry g2)
-                {
-                    var prepGeom = PreparedGeometryFactory.Prepare(g1);
-                    return prepGeom.Covers(g2);
-                }
+            public static bool Covers(IGeometry g1, IGeometry g2)
+            {
+                var prepGeom = PreparedGeometryFactory.Prepare(g1);
+                return prepGeom.Covers(g2);
+            }
         }
         */
     }

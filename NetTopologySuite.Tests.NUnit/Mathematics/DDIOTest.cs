@@ -20,9 +20,9 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             CheckStandardNotation(0.0, "0.0");
 
             // cases where hi is a power of 10 and lo is negative
-            CheckStandardNotation(DD.ValueOf(1e12).Subtract(DD.ValueOf(1)),	"999999999999.0");
-            CheckStandardNotation(DD.ValueOf(1e14).Subtract(DD.ValueOf(1)),	"99999999999999.0");
-            CheckStandardNotation(DD.ValueOf(1e16).Subtract(DD.ValueOf(1)),	"9999999999999999.0");
+            CheckStandardNotation(DD.ValueOf(1e12).Subtract(DD.ValueOf(1)), "999999999999.0");
+            CheckStandardNotation(DD.ValueOf(1e14).Subtract(DD.ValueOf(1)), "99999999999999.0");
+            CheckStandardNotation(DD.ValueOf(1e16).Subtract(DD.ValueOf(1)), "9999999999999999.0");
 
             DD num8Dec = DD.ValueOf(-379363639).Divide(
                 DD.ValueOf(100000000));
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
 
         private static void CheckStandardNotation(DD x, string expectedStr) {
             string xStr = x.ToStandardNotation();
-            //System.Console.WriteLine("Standard Notation: " + xStr);
+            // System.Console.WriteLine("Standard Notation: " + xStr);
             Assert.AreEqual(expectedStr, xStr);
         }
 
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
 
         private static void CheckSciNotation(DD x, string expectedStr) {
             var xStr = x.ToSciNotation();
-            //System.Console.WriteLine("Sci Notation: " + xStr);
+            // System.Console.WriteLine("Sci Notation: " + xStr);
             Assert.AreEqual(xStr, expectedStr);
         }
 
@@ -90,13 +90,13 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
                     DD.ValueOf(100d)).Divide(DD.ValueOf(1.0E10))
                 .Negate(), 1e-32);
 
-        /**
-		 * The Java double-precision constant 1.4 gives rise to a value which
-		 * differs from the exact binary representation down around the 17th decimal
-		 * place. Thus it will not compare exactly to the DoubleDouble
-		 * representation of the same number. To avoid this, compute the expected
-		 * value using full DD precision.
-		 */
+            /**
+             * The Java double-precision constant 1.4 gives rise to a value which
+             * differs from the exact binary representation down around the 17th decimal
+             * place. Thus it will not compare exactly to the DoubleDouble
+             * representation of the same number. To avoid this, compute the expected
+             * value using full DD precision.
+             */
             CheckParse("1.4",
                 DD.ValueOf(14).Divide(DD.ValueOf(10)), 1e-30);
 
@@ -116,7 +116,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             var err = (xdd - expectedVal).ToDoubleValue();
             var relErr = err / xdd.ToDoubleValue();
 
-            //System.Console.WriteLine(("Parsed= " + xdd + " rel err= " + relErr);
+            // System.Console.WriteLine(("Parsed= " + xdd + " rel err= " + relErr);
 
             Assert.IsTrue(err <= relErrBound,
                 string.Format(NumberFormatInfo.InvariantInfo,
@@ -157,17 +157,17 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             int count = 0;
             while (xdd.ToDoubleValue() > 1e-300) {
                 count++;
-                //if (count == 100)
-                //    count = count;
+                // if (count == 100)
+                //     count = count;
                 double x = xdd.ToDoubleValue();
                 DD xSqrt = xdd.Sqrt();
                 string s = xSqrt.ToString();
-                //System.Console.WriteLine((count + ": " + s);
+                // System.Console.WriteLine((count + ": " + s);
 
                 DD xSqrt2 = DD.Parse(s);
                 DD xx = xSqrt2.Multiply(xSqrt2);
                 double err = Math.Abs(xx.ToDoubleValue() - x);
-                //assertTrue(err < 1e-10);
+                // assertTrue(err < 1e-10);
 
                 xdd = xSqrt;
 
@@ -199,7 +199,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
                 double x = xdd.ToDoubleValue();
                 DD xSqr = xdd.Sqr();
                 string s = xSqr.ToString();
-                //System.Console.WriteLine(count + ": " + s);
+                // System.Console.WriteLine(count + ": " + s);
 
                 DD xSqr2 = DD.Parse(s);
 
@@ -222,12 +222,12 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             DD xdd = DD.ValueOf(x);
             DD xSqrt = xdd.Sqrt();
             string s = xSqrt.ToString();
-            //System.Console.WriteLine(s);
+            // System.Console.WriteLine(s);
 
             DD xSqrt2 = DD.Parse(s);
             DD xx = xSqrt2 * xSqrt2;
             string xxStr = xx.ToString();
-            //System.Console.WriteLine("==>  " + xxStr);
+            // System.Console.WriteLine("==>  " + xxStr);
 
             DD xx2 = DD.Parse(xxStr);
             double err = Math.Abs(xx2.ToDoubleValue() - x);

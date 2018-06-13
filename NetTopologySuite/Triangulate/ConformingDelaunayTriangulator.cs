@@ -34,16 +34,16 @@ namespace NetTopologySuite.Triangulate
     /// <para>
     /// A typical usage pattern for the triangulator is:
     /// <code>
-    /// 	 ConformingDelaunayTriangulator cdt = new ConformingDelaunayTriangulator(sites, tolerance);
+    ///   ConformingDelaunayTriangulator cdt = new ConformingDelaunayTriangulator(sites, tolerance);
     ///
     ///   // optional
     ///   cdt.SplitPointFinder = splitPointFinder;
     ///   cdt.VertexFactory = vertexFactory;
     ///
-    ///	 cdt.SetConstraints(segments,  new List&lt;Vertex&gt;(vertexMap.Values));
-    ///	 cdt.FormInitialDelaunay();
-    ///	 cdt.EnforceConstraints();
-    ///	 subdiv = cdt.Subdivision;
+    ///   cdt.SetConstraints(segments,  new List&lt;Vertex&gt;(vertexMap.Values));
+    ///   cdt.FormInitialDelaunay();
+    ///   cdt.EnforceConstraints();
+    ///   subdiv = cdt.Subdivision;
     /// </code>
     /// </para>
     /// </remarks>
@@ -267,7 +267,7 @@ namespace NetTopologySuite.Triangulate
                 return snappedV;
                 // testing
                 // if ( v.isOnConstraint() && ! currV.isOnConstraint()) {
-                // System.out.println(v);
+                //     System.out.println(v);
                 // }
             }
             return v;
@@ -320,10 +320,10 @@ namespace NetTopologySuite.Triangulate
                 splits = EnforceGabriel(_segments);
 
                 count++;
-                //Debug FObermaier
-                //for(var i = oldSegmentCount; i < _segments.Count; i++)
-                //    Console.WriteLine("Segments added: #" + i + ": " + _segments[i].LineSegment);
-                //oldSegmentCount = _segments.Count;
+                // Debug FObermaier
+                // for(var i = oldSegmentCount; i < _segments.Count; i++)
+                //     Console.WriteLine("Segments added: #" + i + ": " + _segments[i].LineSegment);
+                // oldSegmentCount = _segments.Count;
             } while (splits > 0 && count < MaxSplitIteration);
 
             if (count == MaxSplitIteration)
@@ -344,10 +344,17 @@ namespace NetTopologySuite.Triangulate
         }
 
         /*
-         * private List findMissingConstraints() { List missingSegs = new ArrayList();
-         * for (int i = 0; i < segments.size(); i++) { Segment s = (Segment)
-         * segments.get(i); QuadEdge q = subdiv.locate(s.getStart(), s.getEnd()); if
-         * (q == null) missingSegs.add(s); } return missingSegs; }
+         * private List findMissingConstraints() {
+         *     List missingSegs = new ArrayList();
+         *     for (int i = 0; i < segments.size(); i++) {
+         *         Segment s = (Segment)segments.get(i);
+         *         QuadEdge q = subdiv.locate(s.getStart(), s.getEnd());
+         *         if (q == null)
+         *             missingSegs.add(s);
+         *     }
+         *
+         *     return missingSegs;
+         * }
          */
 
         private int EnforceGabriel(ICollection<Segment> segsToInsert)
@@ -391,16 +398,13 @@ namespace NetTopologySuite.Triangulate
                  * </ul>
                  */
                 ConstraintVertex insertedVertex = InsertSite(splitVertex);
-                //Debugging FObermaier
-                //Console.WriteLine("inserted vertex: " + insertedVertex.ToString());
+                // Debugging FObermaier
+                // Console.WriteLine("inserted vertex: " + insertedVertex.ToString());
 
                 if (!insertedVertex.Coordinate.Equals2D(_splitPt))
                 {
                     Debug.WriteLine("Split pt snapped to: " + insertedVertex);
-                    // throw new ConstraintEnforcementException("Split point snapped to
-                    // existing point
-                    // (tolerance too large or constraint interior narrow angle?)",
-                    // splitPt);
+                    // throw new ConstraintEnforcementException("Split point snapped to existing point (tolerance too large or constraint interior narrow angle?)", splitPt);
                 }
 
                 // split segment and record the new halves
@@ -411,8 +415,8 @@ namespace NetTopologySuite.Triangulate
                                      seg.EndX, seg.EndY, seg.EndZ,
                                      seg.Data);
 
-                //Debugging FObermaier
-                //Console.WriteLine("Segment " + seg.ToString() + " splitted to \n\t" + s1.ToString() + "\n\t"+ s2.ToString());
+                // Debugging FObermaier
+                // Console.WriteLine("Segment " + seg.ToString() + " splitted to \n\t" + s1.ToString() + "\n\t"+ s2.ToString());
                 newSegments.Add(s1);
                 newSegments.Add(s2);
                 segsToRemove.Add(seg);
@@ -432,7 +436,7 @@ namespace NetTopologySuite.Triangulate
             return splits;
         }
 
-        //	public static final String DEBUG_SEG_SPLIT = "C:\\proj\\CWB\\test\\segSplit.jml";
+        // public static final String DEBUG_SEG_SPLIT = "C:\\proj\\CWB\\test\\segSplit.jml";
 
         /// <summary>
         /// Given a set of points stored in the kd-tree and a line segment defined by

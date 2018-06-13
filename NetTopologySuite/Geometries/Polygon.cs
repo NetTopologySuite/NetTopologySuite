@@ -292,8 +292,8 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Returns the area of this <c>Polygon</c>
-		/// </summary>
-		/// <returns></returns>
+        /// </summary>
+        /// <returns></returns>
         public override double Area
         {
             get
@@ -308,8 +308,8 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Returns the perimeter of this <c>Polygon</c>.
-		/// </summary>
-		/// <returns></returns>
+        /// </summary>
+        /// <returns></returns>
         public override double Length
         {
             get

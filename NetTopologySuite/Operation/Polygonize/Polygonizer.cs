@@ -132,7 +132,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// the constituent linework will be extracted and used
         /// </summary>
         /// <param name="g">A <c>Geometry</c> with linework to be polygonized.</param>
-		public void Add(IGeometry g)
+        public void Add(IGeometry g)
         {
             g.Apply(_lineStringAdder);
         }
@@ -147,7 +147,7 @@ namespace NetTopologySuite.Operation.Polygonize
             _geomFactory = line.Factory;
             // create a new graph using the factory from the input Geometry
             if (_graph == null)
-				_graph = new PolygonizeGraph(line.Factory);
+                _graph = new PolygonizeGraph(line.Factory);
             _graph.AddEdge(line);
         }
 

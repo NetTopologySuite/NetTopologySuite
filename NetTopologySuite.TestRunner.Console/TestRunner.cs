@@ -5,10 +5,10 @@ using Open.Topology.TestRunner;
 namespace ConsoleTestRunner
 {
     /// <summary>
-	/// Summary description for TestRunner.
-	/// </summary>
-	class TestRunner
-	{
+    /// Summary description for TestRunner.
+    /// </summary>
+    class TestRunner
+    {
         private static double elapsedTime = 0;
 
         private int m_nSimpleTestCount       = 0;
@@ -228,5 +228,5 @@ namespace ConsoleTestRunner
             }
             return false;
         }
-	}
+    }
 }

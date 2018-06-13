@@ -264,7 +264,7 @@ namespace NetTopologySuite.Geometries
             /*
              * Uses the formula 1/2 * | u x v |
              * where
-             * 	u,v are the side vectors of the triangle
+             *  u,v are the side vectors of the triangle
              *  x is the vector cross-product
              * For 2D vectors, this formula simplifies to the expression below
              */
@@ -284,7 +284,7 @@ namespace NetTopologySuite.Geometries
             /*
              * Uses the formula 1/2 * | u x v |
              * where
-             * 	u,v are the side vectors of the triangle
+             *  u,v are the side vectors of the triangle
              *  x is the vector cross-product
              */
             // side vectors u and v

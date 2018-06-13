@@ -200,7 +200,7 @@ namespace Open.Topology.TestRunner.Operations
             {
                 locStr = " at " + WKTWriter.ToPoint(loc);
             }
-//  	System.out.println(msg);
+            // System.out.println(msg);
             throw new Exception(msg + locStr);
         }
 

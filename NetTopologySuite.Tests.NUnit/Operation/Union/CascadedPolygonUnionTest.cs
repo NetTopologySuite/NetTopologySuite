@@ -21,10 +21,10 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
         {
             RunTest(GeometryUtils.ReadWKT(
                     new[] {
-  			            "POLYGON ((80 260, 200 260, 200 30, 80 30, 80 260))",
-  			            "POLYGON ((30 180, 300 180, 300 110, 30 110, 30 180))",
-  			            "POLYGON ((30 280, 30 150, 140 150, 140 280, 30 280))"
-  		            }),
+                        "POLYGON ((80 260, 200 260, 200 30, 80 30, 80 260))",
+                        "POLYGON ((30 180, 300 180, 300 110, 30 110, 30 180))",
+                        "POLYGON ((30 280, 30 150, 140 150, 140 280, 30 280))"
+                    }),
                     CascadedPolygonUnionTester.MinSimilarityMeaure);
         }
 
@@ -33,10 +33,10 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
         {
             var geoms = CreateDiscs(5, 0.7);
 
-            //System.Console.WriteLine(_geomFact.BuildGeometry(geoms));
+            // System.Console.WriteLine(_geomFact.BuildGeometry(geoms));
 
             RunTest(geoms,
-  		            CascadedPolygonUnionTester.MinSimilarityMeaure);
+                    CascadedPolygonUnionTester.MinSimilarityMeaure);
         }
 
         [TestAttribute]
@@ -44,10 +44,10 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
         {
             var geoms = CreateDiscs(5, 0.55);
 
-            //System.Console.WriteLine(_geomFact.BuildGeometry(geoms));
+            // System.Console.WriteLine(_geomFact.BuildGeometry(geoms));
 
             RunTest(geoms,
-  		            CascadedPolygonUnionTester.MinSimilarityMeaure);
+                    CascadedPolygonUnionTester.MinSimilarityMeaure);
         }
 
         // TODO: add some synthetic tests

@@ -59,9 +59,9 @@ namespace NetTopologySuite.Operation.Buffer
 
         private const int NumPtsToCheck = 10;
 
-        //private const int Init = 0;
+        // private const int Init = 0;
         private const int Delete = 1;
-        //private const int Keep = 2;
+        // private const int Keep = 2;
 
         private readonly Coordinate[] _inputLine;
         private double _distanceTol;
@@ -166,7 +166,7 @@ namespace NetTopologySuite.Operation.Buffer
                 if (_isDeleted[i] != Delete)
                     coordList.Add(_inputLine[i]);
             }
-            //    if (coordList.size() < inputLine.length)      System.out.println("Simplified " + (inputLine.length - coordList.size()) + " pts");
+            // if (coordList.size() < inputLine.length)      System.out.println("Simplified " + (inputLine.length - coordList.size()) + " pts");
             return coordList.ToCoordinateArray();
         }
 
@@ -180,7 +180,7 @@ namespace NetTopologySuite.Operation.Buffer
             if (!IsShallow(p0, p1, p2, distanceTol)) return false;
 
             // MD - don't use this heuristic - it's too restricting
-            //  	if (p0.distance(p2) > distanceTol) return false;
+            // if (p0.distance(p2) > distanceTol) return false;
 
             return IsShallowSampled(p0, p1, i0, i2, distanceTol);
         }

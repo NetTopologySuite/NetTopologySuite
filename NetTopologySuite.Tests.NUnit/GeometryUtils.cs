@@ -9,8 +9,8 @@ namespace NetTopologySuite.Tests.NUnit
 {
     public class GeometryUtils
     {
-	    //TODO: allow specifying GeometryFactory
-	    public static WKTReader reader = new WKTReader();
+        //TODO: allow specifying GeometryFactory
+        public static WKTReader reader = new WKTReader();
 
         public static IList<IGeometry> ReadWKT(string[] inputWKT)
         {

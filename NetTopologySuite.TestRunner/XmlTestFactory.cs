@@ -8,11 +8,11 @@ using Open.Topology.TestRunner.Utility;
 
 namespace Open.Topology.TestRunner
 {
-	/// <summary>
-	/// Summary description for XmlTestFactory.
-	/// </summary>
-	public class XmlTestFactory
-	{
+    /// <summary>
+    /// Summary description for XmlTestFactory.
+    /// </summary>
+    public class XmlTestFactory
+    {
         private static NumberFormatInfo _nfi;
 
         protected static IFormatProvider GetNumberFormatInfo()
@@ -33,11 +33,11 @@ namespace Open.Topology.TestRunner
 
         protected GeometryFactory ObjGeometryFactory;
         private readonly MultiFormatReader _objReader;
-	    private readonly IGeometryOperation _geometryOperation;
-	    private readonly IResultMatcher _resultMatcher;
+        private readonly IGeometryOperation _geometryOperation;
+        private readonly IResultMatcher _resultMatcher;
 
         public XmlTestFactory(PrecisionModel pm, IGeometryOperation geometryOperation, IResultMatcher resultMatcher)
-		{
+        {
             ObjGeometryFactory = new GeometryFactory(pm);
             _geometryOperation = geometryOperation;
             _resultMatcher = resultMatcher;

@@ -3,11 +3,11 @@ using System.Collections;
 
 namespace Open.Topology.TestRunner
 {
-	/// <summary>
-	/// Summary description for XmlTestCollection.
-	/// </summary>
-	public class XmlTestCollection : CollectionBase
-	{
+    /// <summary>
+    /// Summary description for XmlTestCollection.
+    /// </summary>
+    public class XmlTestCollection : CollectionBase
+    {
         #region Private Members
 
         private string m_strCollectionName;
@@ -23,9 +23,9 @@ namespace Open.Topology.TestRunner
         #region Constructors and Destructors
 
         public XmlTestCollection() : base()
-		{
+        {
             m_strCollectionName = string.Empty;
-		}
+        }
 
         #endregion
 
@@ -95,5 +95,5 @@ namespace Open.Topology.TestRunner
         }
 
         #endregion
-	}
+    }
 }

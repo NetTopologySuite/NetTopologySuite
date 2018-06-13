@@ -14,20 +14,20 @@ namespace NetTopologySuite.Algorithm.Match
     /// <author>mbdavis</author>
 public class AreaSimilarityMeasure : ISimilarityMeasure
 {
-	/*
-	public static double measure(Geometry a, Geometry b)
-	{
-		AreaSimilarityMeasure gv = new AreaSimilarityMeasure(a, b);
-		return gv.measure();
-	}
-	*/
+    /*
+    public static double measure(Geometry a, Geometry b)
+    {
+        AreaSimilarityMeasure gv = new AreaSimilarityMeasure(a, b);
+        return gv.measure();
+    }
+    */
 
         public double Measure(IGeometry g1, IGeometry g2)
-	{
-		double areaInt = g1.Intersection(g2).Area;
-		double areaUnion = g1.Union(g2).Area;
-		return areaInt / areaUnion;
-	}
+    {
+        double areaInt = g1.Intersection(g2).Area;
+        double areaUnion = g1.Union(g2).Area;
+        return areaInt / areaUnion;
+    }
 
 }
 }

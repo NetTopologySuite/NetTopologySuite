@@ -446,7 +446,7 @@ namespace NetTopologySuite.Utilities
                 }
                 set
                 {
-    	            _width = value.Width;
+                    _width = value.Width;
                     _height = value.Height;
                     _base = new Coordinate(value.MinX, value.MinY);
                     _centre = new Coordinate(value.Centre);

@@ -103,7 +103,7 @@ namespace NetTopologySuite.Algorithm.Distance
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {
-  	        return WKTWriter.ToLineString(_pt[0], _pt[1]);
+            return WKTWriter.ToLineString(_pt[0], _pt[1]);
         }
     }
 }

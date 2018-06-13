@@ -33,12 +33,12 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             Test(1000);
             Test(2000);
             /*
-    test(100);
-    test(1000);
-    test(2000);
-    test(4000);
-    test(8000);
-    */
+            test(100);
+            test(1000);
+            test(2000);
+            test(4000);
+            test(8000);
+            */
         }
 
         public void Test(int nPts)
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             var lines = _builder.CreateTestGeoms(target.EnvelopeInternal,
                                                  NumLines, 1.0, NumLinePts);
 
-            //Console.WriteLine("Running with " + nPts + " points");
+            // Console.WriteLine("Running with " + nPts + " points");
             Test(target, lines);
         }
 
@@ -57,8 +57,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
         {
             Console.WriteLine("AOI # pts: " + g.NumPoints
                               + "      # lines: " + lines.Count
-                              + "   # pts in line: " + NumLinePts
-                );
+                              + "   # pts in line: " + NumLinePts);
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -66,9 +65,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             for (int i = 0; i < MaxIter; i++)
             {
 
-//    	count = testPrepGeomNotCached(g, lines);
+                // count = testPrepGeomNotCached(g, lines);
                 count = testPrepGeomCached(g, lines);
-//    	count = testOriginal(g, lines);
+                // count = testOriginal(g, lines);
 
             }
             sw.Stop();
@@ -106,22 +105,22 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
         }
 
         /**
-   * Tests using PreparedGeometry, but creating a new
-   * PreparedGeometry object each time.
-   * This tests whether there is a penalty for using
-   * the PG algorithm as a complete replacement for
-   * the original algorithm.
-   *
-   * @param g
-   * @param lines
-   * @return the count
-   */
+         * Tests using PreparedGeometry, but creating a new
+         * PreparedGeometry object each time.
+         * This tests whether there is a penalty for using
+         * the PG algorithm as a complete replacement for
+         * the original algorithm.
+         *
+         * @param g
+         * @param lines
+         * @return the count
+         */
 
         public static int testPrepGeomNotCached(IGeometry g, IEnumerable<IGeometry> lines)
         {
             Console.WriteLine("Using NON-CACHED Prepared Geometry");
             var pgFact = new PreparedGeometryFactory();
-//    PreparedGeometry prepGeom = pgFact.create(g);
+            // PreparedGeometry prepGeom = pgFact.create(g);
 
             int count = 0;
             foreach (var line in lines)

@@ -63,18 +63,18 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.IsTrue(string.Equals(tos, result));
         }
 
-		/// <summary>
-		/// Issue 12
-		/// http://code.google.com/p/nettopologysuite/issues/detail?id=12
-		/// </summary>
-		[Test]
-		public void MultiPoint_WKT_reader_should_skip_extra_parenthesis_around_coordinates()
-		{
-			WKTReader reader = new WKTReader();
-			IGeometry mp1 = reader.Read("MULTIPOINT (10 10, 20 20)");
-			IGeometry mp2 = reader.Read("MULTIPOINT ((10 10), (20 20))");
-			Assert.IsTrue(mp1.EqualsExact(mp2));
-		}
+        /// <summary>
+        /// Issue 12
+        /// http://code.google.com/p/nettopologysuite/issues/detail?id=12
+        /// </summary>
+        [Test]
+        public void MultiPoint_WKT_reader_should_skip_extra_parenthesis_around_coordinates()
+        {
+            WKTReader reader = new WKTReader();
+            IGeometry mp1 = reader.Read("MULTIPOINT (10 10, 20 20)");
+            IGeometry mp2 = reader.Read("MULTIPOINT ((10 10), (20 20))");
+            Assert.IsTrue(mp1.EqualsExact(mp2));
+        }
 
         private static void TestValid(IGeometry geom)
         {

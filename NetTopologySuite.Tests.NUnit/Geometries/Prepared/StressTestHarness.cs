@@ -30,13 +30,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
         public void Run(int nIter)
         {
-            //System.Console.WriteLine("Running " + nIter + " tests");
-            //  	Geometry poly = createCircle(new Coordinate(0, 0), 100, nPts);
+            // System.Console.WriteLine("Running " + nIter + " tests");
+            // Geometry poly = createCircle(new Coordinate(0, 0), 100, nPts);
             IGeometry poly = CreateSineStar(new Coordinate(0, 0), 100, _numTargetPts);
             Console.WriteLine(poly);
 
-            //System.Console.WriteLine();
-            //System.out.Console.WriteLine("Running with " + nPts + " points");
+            // System.Console.WriteLine();
+            // System.out.Console.WriteLine("Running with " + nPts + " points");
             Run(nIter, poly);
         }
 
@@ -88,7 +88,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             gsf.Size = size;
             gsf.NumPoints = nPts;
             IGeometry circle = gsf.CreateCircle();
-            //    System.out.println(circle);
+            // System.out.println(circle);
             return circle;
         }
 
@@ -100,9 +100,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
                 count++;
                 IGeometry test = CreateRandomTestGeometry(target.EnvelopeInternal, 10, 20);
 
-                //Console.WriteLine("Test # " + count);
-                //Console.WriteLine(line);
-                //Console.WriteLine("Test[" + count + "] " + target.GetType().Name + "/" + test.GetType().Name);
+                // Console.WriteLine("Test # " + count);
+                // Console.WriteLine(line);
+                // Console.WriteLine("Test[" + count + "] " + target.GetType().Name + "/" + test.GetType().Name);
                 bool isResultCorrect = CheckResult(target, test);
                 if (!isResultCorrect)
                 {

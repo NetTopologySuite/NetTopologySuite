@@ -1505,7 +1505,7 @@ namespace NetTopologySuite.Geometries
         /// </ul></para>
         /// <para>The buffer operation always returns a polygonal result. The negative or
         /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.
-        ///	This is also the result for the buffers of degenerate (zero-area) polygons.
+        /// This is also the result for the buffers of degenerate (zero-area) polygons.
         /// </para>
         /// </remarks>
         /// <param name="distance">
@@ -1580,8 +1580,8 @@ namespace NetTopologySuite.Geometries
                 return GeometryCollectionMapper.Map(
                     (IGeometryCollection)this, g => g.Intersection(g2));
             }
-            //    if (isGeometryCollection(other))
-            //      return other.intersection(this);
+            // if (isGeometryCollection(other))
+            //     return other.intersection(this);
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
             return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.Intersection);

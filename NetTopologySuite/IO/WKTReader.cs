@@ -164,24 +164,24 @@ namespace NetTopologySuite.IO
 
         //internal int Index { get { return _index; } set { _index = value; } }
 
-		/// <summary>
-		/// Returns the next array of <c>Coordinate</c>s in the stream.
-		/// </summary>
-		/// <param name="tokens">
-		/// Tokenizer over a stream of text in Well-known Text
-		/// format. The next element returned by the stream should be "(" (the
-		/// beginning of "(x1 y1, x2 y2, ..., xn yn)") or "EMPTY".
-		/// </param>
-		/// <param name="skipExtraParenthesis">
-		/// if set to <c>true</c> skip extra parenthesis around coordinates.
-		/// </param>
-		/// <returns>
-		/// The next array of <c>Coordinate</c>s in the
-		/// stream, or an empty array if "EMPTY" is the next element returned by
-		/// the stream.
-		/// </returns>
+        /// <summary>
+        /// Returns the next array of <c>Coordinate</c>s in the stream.
+        /// </summary>
+        /// <param name="tokens">
+        /// Tokenizer over a stream of text in Well-known Text
+        /// format. The next element returned by the stream should be "(" (the
+        /// beginning of "(x1 y1, x2 y2, ..., xn yn)") or "EMPTY".
+        /// </param>
+        /// <param name="skipExtraParenthesis">
+        /// if set to <c>true</c> skip extra parenthesis around coordinates.
+        /// </param>
+        /// <returns>
+        /// The next array of <c>Coordinate</c>s in the
+        /// stream, or an empty array if "EMPTY" is the next element returned by
+        /// the stream.
+        /// </returns>
         private Coordinate[] GetCoordinates(IEnumerator<Token> tokens, bool skipExtraParenthesis, ref bool hasZ)
-		{
+        {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY"))
                 return new Coordinate[]{};
@@ -205,43 +205,43 @@ namespace NetTopologySuite.IO
         private Coordinate GetPreciseCoordinate(IEnumerator<Token> tokens, bool skipExtraParenthesis, ref bool hasZ)
         {
             var coord = new Coordinate();
-			var extraParenthesisFound = false;
-			if (skipExtraParenthesis)
-			{
-				extraParenthesisFound = IsStringValueNext(tokens, "(");
-				if (extraParenthesisFound)
-				{
-				    tokens.MoveNext();
-				    //_index++;
-				}
-			}
-			coord.X = GetNextNumber(tokens);
-			coord.Y = GetNextNumber(tokens);
+            var extraParenthesisFound = false;
+            if (skipExtraParenthesis)
+            {
+                extraParenthesisFound = IsStringValueNext(tokens, "(");
+                if (extraParenthesisFound)
+                {
+                    tokens.MoveNext();
+                    //_index++;
+                }
+            }
+            coord.X = GetNextNumber(tokens);
+            coord.Y = GetNextNumber(tokens);
             if (IsNumberNext(tokens))
             {
                 coord.Z = GetNextNumber(tokens);
                 if (!double.IsNaN(coord.Z)) hasZ = true;
             }
 
-			if (skipExtraParenthesis &&
-				extraParenthesisFound &&
-				IsStringValueNext(tokens, ")"))
-			{
+            if (skipExtraParenthesis &&
+                extraParenthesisFound &&
+                IsStringValueNext(tokens, ")"))
+            {
                 tokens.MoveNext();
                 //_index++;
             }
 
-			_precisionModel.MakePrecise(coord);
+            _precisionModel.MakePrecise(coord);
             return coord;
         }
 
         private static bool IsStringValueNext(IEnumerator<Token> tokens, string stringValue)
-		{
-			var token = tokens.Current /*as Token*/;
+        {
+            var token = tokens.Current /*as Token*/;
             if (token == null)
                 throw new InvalidOperationException("current Token is null");
-			return token.StringValue == stringValue;
-		}
+            return token.StringValue == stringValue;
+        }
 
         /// <summary>
         ///
@@ -265,7 +265,7 @@ namespace NetTopologySuite.IO
         /// </param>
         /// <returns>The next number in the stream.</returns>
         /// <exception cref="GeoAPI.IO.ParseException">if the next token is not a valid number</exception>
-		private static double GetNextNumber(IEnumerator<Token> tokens)
+        private static double GetNextNumber(IEnumerator<Token> tokens)
         {
             var token = tokens.Current /*as Token*/;
             if (!tokens.MoveNext())

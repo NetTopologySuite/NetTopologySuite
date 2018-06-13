@@ -170,7 +170,7 @@ namespace NetTopologySuite.Index.Bintree
                     break;
                     /*
                 default:
-			        break;
+                    break;
                      */
             }
             var subInt = new Interval(min, max);

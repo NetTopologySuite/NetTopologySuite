@@ -32,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
             double ddSelfTime = RunDDSelf(n);
             double ddSelf2Time = runDDSelf2(n);
             double ddTime = RunDD(n);
-            //		double ddSelfTime = runDoubleDoubleSelf(10000000);
+            // double ddSelfTime = runDoubleDoubleSelf(10000000);
 
             Console.WriteLine("DD VS double performance factor      = " + ddTime/doubleTime);
             Console.WriteLine("DDSelf VS double performance factor  = " + ddSelfTime/doubleTime);

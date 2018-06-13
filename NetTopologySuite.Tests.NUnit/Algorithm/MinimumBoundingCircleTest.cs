@@ -88,10 +88,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             // need this hack because apparently equals does not work for MULTIPOINT EMPTY
             if (actual.IsEmpty && expected.IsEmpty)
                 isEqual = true;
-  	        if (!isEqual)
-  	        {
-  	            Console.WriteLine("Actual = " + actual + ", Expected = " + expected);
-  	        }
+            if (!isEqual)
+            {
+                Console.WriteLine("Actual = " + actual + ", Expected = " + expected);
+            }
             Assert.IsTrue(isEqual);
 
             if (expectedCentre != null)

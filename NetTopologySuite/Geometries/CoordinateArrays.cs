@@ -7,7 +7,7 @@ using NetTopologySuite.Mathematics;
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
-    ///	Useful utility functions for handling Coordinate arrays.
+    /// Useful utility functions for handling Coordinate arrays.
     /// </summary>
     public static class CoordinateArrays
     {

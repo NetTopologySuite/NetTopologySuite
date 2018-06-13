@@ -1,12 +1,12 @@
 /*
 * Arguments class: application arguments interpreter
 *
-* Authors:		R. LOPES
-* Contributors:	R. LOPES
-* Created:		25 October 2002
-* Modified:		28 October 2002
+* Authors:      R. LOPES
+* Contributors: R. LOPES
+* Created:      25 October 2002
+* Modified:     28 October 2002
 *
-* Version:		1.0
+* Version:      1.0
 */
 
 using System.Collections.Specialized;

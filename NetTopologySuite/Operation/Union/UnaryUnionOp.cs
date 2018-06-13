@@ -146,9 +146,9 @@ namespace NetTopologySuite.Operation.Union
 
         ///<summary>
         /// Gets the union of the input geometries.
-	    /// If no input geometries were provided but a <see cref="IGeometryFactory"/> was provided,
-	    /// an empty <see cref="IGeometryCollection"/> is returned.
-	    /// <para/>Otherwise, the return value is <c>null</c>
+        /// If no input geometries were provided but a <see cref="IGeometryFactory"/> was provided,
+        /// an empty <see cref="IGeometryCollection"/> is returned.
+        /// <para/>Otherwise, the return value is <c>null</c>
         ///</summary>
         /// <returns>
         /// A Geometry containing the union

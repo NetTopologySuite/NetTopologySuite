@@ -35,10 +35,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
         public void Run(int nPts)
         {
-            //  	Geometry poly = createCircle(new Coordinate(0, 0), 100, nPts);
+            // Geometry poly = createCircle(new Coordinate(0, 0), 100, nPts);
             IGeometry poly = CreateSineStar(new Coordinate(0, 0), 100, nPts);
-            //System.Console.WriteLine(poly);
-            //System.Console.WriteLine("Running with " + nPts + " points");
+            // System.Console.WriteLine(poly);
+            // System.Console.WriteLine("Running with " + nPts + " points");
             Test(poly);
         }
 
@@ -86,7 +86,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             gsf.Size = size;
             gsf.NumPoints = nPts;
             IGeometry circle = gsf.CreateCircle();
-            //    System.out.println(circle);
+            // System.out.println(circle);
             return (ILineString)circle.Boundary;
         }
 
@@ -98,8 +98,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
                 count++;
                 ILineString line = CreateTestLine(g.EnvelopeInternal, 10, 20);
 
-                //      System.out.println("Test # " + count);
-                //  		System.out.println(line);
+                // System.out.println("Test # " + count);
+                // System.out.println(line);
                 TestResultsEqual(g, line);
             }
         }

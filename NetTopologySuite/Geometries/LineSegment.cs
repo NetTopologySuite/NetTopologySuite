@@ -339,7 +339,7 @@ namespace NetTopologySuite.Geometries
             if (p.Equals(_p1)) return 1.0;
 
             // Otherwise, use comp.graphics.algorithms Frequently Asked Questions method
-            /*     	          AC dot AB
+            /*                AC dot AB
                         r = ------------
                               ||AB||^2
                         r has the following meaning:
@@ -670,7 +670,7 @@ namespace NetTopologySuite.Geometries
             // XOR is supposed to be a good way to combine hashcodes
             return hash0 ^ hash1;
 
-            //return base.GetHashCode();
+            // return base.GetHashCode();
         }
     }
 }

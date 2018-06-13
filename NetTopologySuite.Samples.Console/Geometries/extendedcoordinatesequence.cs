@@ -4,22 +4,22 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Samples.Geometries
 {
-	/// <summary>
+    /// <summary>
     /// Demonstrates how to implement a CoordinateSequence for a new kind of
     /// coordinate (an <c>ExtendedCoordinate</c>} in this example). In this
-	/// implementation, Coordinates returned by ToArray and #get are live -- parties
-	/// that change them are actually changing the ExtendedCoordinateSequence's
-	/// underlying data.
-	/// </summary>
-	public class ExtendedCoordinateSequence : ICoordinateSequence
-	{
-		[Obsolete]
+    /// implementation, Coordinates returned by ToArray and #get are live -- parties
+    /// that change them are actually changing the ExtendedCoordinateSequence's
+    /// underlying data.
+    /// </summary>
+    public class ExtendedCoordinateSequence : ICoordinateSequence
+    {
+        [Obsolete]
         public static ExtendedCoordinate[] Copy(Coordinate[] coordinates)
-		{
-			var copy = new ExtendedCoordinate[coordinates.Length];
+        {
+            var copy = new ExtendedCoordinate[coordinates.Length];
             Array.Copy(CopyInternal(coordinates), copy, coordinates.Length);
-		    return copy;
-		}
+            return copy;
+        }
 
         private static Coordinate[] CopyInternal(Coordinate[] coordinates)
         {
@@ -30,24 +30,24 @@ namespace NetTopologySuite.Samples.Geometries
 
         }
 
-		private readonly Coordinate[] _coordinates;
+        private readonly Coordinate[] _coordinates;
 
-		/// <summary> Copy constructor -- simply aliases the input array, for better performance.
-		/// </summary>
-		public ExtendedCoordinateSequence(ExtendedCoordinate[] coordinates)
-		{
-			_coordinates = new Coordinate[coordinates.Length];
+        /// <summary> Copy constructor -- simply aliases the input array, for better performance.
+        /// </summary>
+        public ExtendedCoordinateSequence(ExtendedCoordinate[] coordinates)
+        {
+            _coordinates = new Coordinate[coordinates.Length];
             Array.Copy(coordinates, _coordinates, coordinates.Length);
-		}
+        }
 
-		/// <summary> Constructor that makes a copy of an existing array of Coordinates.
-		/// Always makes a copy of the input array, since the actual class
-		/// of the Coordinates in the input array may be different from ExtendedCoordinate.
-		/// </summary>
-		public ExtendedCoordinateSequence(Coordinate[] copyCoords)
-		{
-			_coordinates = CopyInternal(copyCoords);
-		}
+        /// <summary> Constructor that makes a copy of an existing array of Coordinates.
+        /// Always makes a copy of the input array, since the actual class
+        /// of the Coordinates in the input array may be different from ExtendedCoordinate.
+        /// </summary>
+        public ExtendedCoordinateSequence(Coordinate[] copyCoords)
+        {
+            _coordinates = CopyInternal(copyCoords);
+        }
 
         /// <summary>
         /// Returns (possibly a copy of) the ith Coordinate in this collection.
@@ -60,10 +60,10 @@ namespace NetTopologySuite.Samples.Geometries
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-		public Coordinate GetCoordinate(int i)
-		{
-			return _coordinates[i];
-		}
+        public Coordinate GetCoordinate(int i)
+        {
+            return _coordinates[i];
+        }
 
         /// <summary>
         /// Creates a new object that is a copy of the current instance.
@@ -73,35 +73,35 @@ namespace NetTopologySuite.Samples.Geometries
         /// </returns>
         [Obsolete("Use Copy()")]
         public object Clone()
-	    {
-	        return Copy();
+        {
+            return Copy();
         }
-	    /// <summary>
-	    /// Creates a new object that is a copy of the current instance.
-	    /// </summary>
-	    /// <returns>
-	    /// A new object that is a copy of this instance.
-	    /// </returns>
-	    public ICoordinateSequence Copy()
-		{
-			var cloneCoordinates = new ExtendedCoordinate[Count];
-			for (var i = 0; i < _coordinates.Length; i++)
-			{
-				cloneCoordinates[i] = (ExtendedCoordinate) _coordinates[i].Copy();
-			}
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        /// <returns>
+        /// A new object that is a copy of this instance.
+        /// </returns>
+        public ICoordinateSequence Copy()
+        {
+            var cloneCoordinates = new ExtendedCoordinate[Count];
+            for (var i = 0; i < _coordinates.Length; i++)
+            {
+                cloneCoordinates[i] = (ExtendedCoordinate) _coordinates[i].Copy();
+            }
 
-			return new ExtendedCoordinateSequence(cloneCoordinates);
-		}
+            return new ExtendedCoordinateSequence(cloneCoordinates);
+        }
 
-	    public Ordinates Ordinates => Ordinates.XYZM;
+        public Ordinates Ordinates => Ordinates.XYZM;
 
-	    /// <summary>
+        /// <summary>
         /// Returns the number of coordinates in this sequence.
         /// </summary>
         /// <value></value>
-		public virtual int Count => _coordinates.Length;
+        public virtual int Count => _coordinates.Length;
 
-	    /// <summary>
+        /// <summary>
         /// Returns (possibly copies of) the Coordinates in this collection.
         /// Whether or not the Coordinates returned are the actual underlying
         /// Coordinates or merely copies depends on the implementation. Note that
@@ -110,11 +110,11 @@ namespace NetTopologySuite.Samples.Geometries
         /// be built from scratch.
         /// </summary>
         /// <returns></returns>
-		public virtual Coordinate[] ToCoordinateArray()
-		{
+        public virtual Coordinate[] ToCoordinateArray()
+        {
 
             return _coordinates;
-		}
+        }
 
         /// <summary>
         /// Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
@@ -122,19 +122,19 @@ namespace NetTopologySuite.Samples.Geometries
         /// <returns>
         /// A <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
         /// </returns>
-		public override string ToString()
-		{
-			StringBuilder strBuf = new StringBuilder();
-			strBuf.Append("ExtendedCoordinateSequence [");
-			for (int i = 0; i < _coordinates.Length; i++)
-			{
-				if (i > 0)
-					strBuf.Append(", ");
-				strBuf.Append(_coordinates[i]);
-			}
-			strBuf.Append("]");
-			return strBuf.ToString();
-		}
+        public override string ToString()
+        {
+            StringBuilder strBuf = new StringBuilder();
+            strBuf.Append("ExtendedCoordinateSequence [");
+            for (int i = 0; i < _coordinates.Length; i++)
+            {
+                if (i > 0)
+                    strBuf.Append(", ");
+                strBuf.Append(_coordinates[i]);
+            }
+            strBuf.Append("]");
+            return strBuf.ToString();
+        }
 
         /// <summary>
         /// Gets the coordinate copy.
@@ -254,12 +254,12 @@ namespace NetTopologySuite.Samples.Geometries
             return env;
         }
 
-	    /// <summary>
-	    /// Creates a reversed version of this coordinate sequence with cloned <see cref="Coordinate"/>s
-	    /// </summary>
-	    /// <returns>A reversed version of this sequence</returns>
-	    public ICoordinateSequence Reversed()
-	    {
+        /// <summary>
+        /// Creates a reversed version of this coordinate sequence with cloned <see cref="Coordinate"/>s
+        /// </summary>
+        /// <returns>A reversed version of this sequence</returns>
+        public ICoordinateSequence Reversed()
+        {
             var coordinates = new ExtendedCoordinate[Count];
             for (var i = 0; i < Count; i++)
             {
@@ -268,10 +268,10 @@ namespace NetTopologySuite.Samples.Geometries
             return new ExtendedCoordinateSequence(coordinates);
         }
 
-	    /// <summary>
+        /// <summary>
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
         /// </summary>
         /// <value></value>
         public int Dimension => 4;
-	}
+    }
 }

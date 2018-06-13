@@ -2,9 +2,9 @@ using Open.Topology.TestRunner;
 
 namespace ConsoleTestRunner
 {
-	/// <summary>
-	/// Summary description for TestInfo.
-	/// </summary>
+    /// <summary>
+    /// Summary description for TestInfo.
+    /// </summary>
     public class TestInfo
     {
         #region Private Members

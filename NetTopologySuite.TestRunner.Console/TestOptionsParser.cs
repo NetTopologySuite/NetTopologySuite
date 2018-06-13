@@ -5,21 +5,21 @@ using Open.Topology.TestRunner;
 
 namespace ConsoleTestRunner
 {
-	/// <summary>
-	/// Summary description for TestOptionsParser.
-	/// </summary>
-	public class TestOptionsParser
-	{
+    /// <summary>
+    /// Summary description for TestOptionsParser.
+    /// </summary>
+    public class TestOptionsParser
+    {
         private bool m_bIsDefault;
 
-		public TestOptionsParser()
-		{
+        public TestOptionsParser()
+        {
             m_bIsDefault = false;
-		}
+        }
 
         public bool IsDefault => m_bIsDefault;
 
-	    public TestInfoCollection ParseProject(string projectFile)
+        public TestInfoCollection ParseProject(string projectFile)
         {
             projectFile = Path.Combine(projectFile.Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries));
             if (!File.Exists(projectFile))
@@ -369,5 +369,5 @@ namespace ConsoleTestRunner
 
             return XmlTestType.None;
         }
-	}
+    }
 }

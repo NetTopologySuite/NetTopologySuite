@@ -194,8 +194,8 @@ namespace NetTopologySuite.Index.Quadtree
                     maxy = _env.MaxY;
                     break;
 
-	            default:
-		            break;
+                default:
+                    break;
             }
             Envelope sqEnv = new Envelope(minx, maxx, miny, maxy);
             var node = new Node<T>(sqEnv, _level - 1);

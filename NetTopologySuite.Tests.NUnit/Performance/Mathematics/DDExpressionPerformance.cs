@@ -50,7 +50,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
                 var aDiv = a/factor;
 
                 det = a*a - aMul*aDiv;
-                //			Console.WriteLine(det);
+                // Console.WriteLine(det);
             }
             sw.Stop();
             Console.WriteLine("double:          nIter = " + nIter
@@ -71,8 +71,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
                 var aDiv = decimal.Round(decimal.Divide(a, factor), MidpointRounding.AwayFromZero);
 
                 var det = decimal.Subtract(decimal.Multiply(a, a), decimal.Multiply(aMul, aDiv));
-                //			Console.WriteLine(aDiv);
-                //			Console.WriteLine(det);
+                // Console.WriteLine(aDiv);
+                // Console.WriteLine(det);
             }
             sw.Stop();
             Console.WriteLine("BigDecimal:      nIter = " + nIter
@@ -94,8 +94,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
 
                 DD det = a.Multiply(a)
                     .Subtract(aMul.Multiply(aDiv));
-                //      Console.WriteLine(aDiv);
-                //      Console.WriteLine(det);
+                // Console.WriteLine(aDiv);
+                // Console.WriteLine(det);
             }
             sw.Stop();
             Console.WriteLine("DD:              nIter = " + nIter
@@ -103,26 +103,26 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
             return sw.ElapsedMilliseconds/(double) nIter;
         }
 
-        //  public double XrunDoubleDoubleSelf(int nIter)
-        //  {
-        //    Stopwatch sw = new Stopwatch();
-        //    for (int i = 0; i < nIter; i++) {
-
-        //      DD a = new DD(9.0);
-        //      DD factor = new DD(10.0);
-        //      DD aMul = factor.multiply(a);
-        //      DD aDiv = a.divide(factor);
-
-        //      DD det = a.multiply(a)
-        //          .subtract(aMul.multiply(aDiv));
-        ////      Console.WriteLine(aDiv);
-        ////      Console.WriteLine(det);
-        //    }
-        //    sw.Stop();
-        //    Console.WriteLine("DD:              nIter = " + nIter
-        //        + "   time = " + sw.ElapsedMilliseconds);
-        //    return sw.ElapsedMilliseconds / (double) nIter;
-        //  }
+        // public double XrunDoubleDoubleSelf(int nIter)
+        // {
+        //   Stopwatch sw = new Stopwatch();
+        //   for (int i = 0; i < nIter; i++) {
+        //
+        //     DD a = new DD(9.0);
+        //     DD factor = new DD(10.0);
+        //     DD aMul = factor.multiply(a);
+        //     DD aDiv = a.divide(factor);
+        //
+        //     DD det = a.multiply(a)
+        //         .subtract(aMul.multiply(aDiv));
+        ///    Console.WriteLine(aDiv);
+        ///    Console.WriteLine(det);
+        //   }
+        //   sw.Stop();
+        //   Console.WriteLine("DD:              nIter = " + nIter
+        //       + "   time = " + sw.ElapsedMilliseconds);
+        //   return sw.ElapsedMilliseconds / (double) nIter;
+        // }
 
         //*
         public double RunDoubleDoubleSelf(int nIter)
@@ -145,8 +145,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
                 b2*=c;
                 a2/=b2;
                 DD det = a2;
-                //			Console.WriteLine(aDiv);
-                //			Console.WriteLine(det);
+                // Console.WriteLine(aDiv);
+                // Console.WriteLine(det);
             }
             sw.Stop();
             Console.WriteLine("DD-Self:         nIter = " + nIter

@@ -20,16 +20,16 @@ namespace NetTopologySuite.Algorithm.Match
     public class HausdorffSimilarityMeasure : ISimilarityMeasure
     {
         /*
-	    public static double measure(Geometry a, Geometry b)
-    	{
-		    HausdorffSimilarityMeasure gv = new HausdorffSimilarityMeasure(a, b);
-		    return gv.measure();
-	    }
-	    */
+        public static double measure(Geometry a, Geometry b)
+        {
+            HausdorffSimilarityMeasure gv = new HausdorffSimilarityMeasure(a, b);
+            return gv.measure();
+        }
+        */
 
         /*
-	     * Densify a small amount to increase accuracy of Hausdorff distance
-	     */
+         * Densify a small amount to increase accuracy of Hausdorff distance
+         */
         private static readonly double DensifyFraction = 0.25;
 
         public double Measure(IGeometry g1, IGeometry g2)

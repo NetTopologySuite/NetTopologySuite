@@ -32,10 +32,10 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
             var origin = new Coordinate(0, 0);
             var sinePoly = CreateSineStar(origin, size, nPts).Boundary;
             /**
-  	         * Make the geometry "crinkly" by rounding off the points.
-  	         * This defeats the  MonotoneChain optimization in the full relate
-  	         * algorithm, and provides a more realistic test.
-  	         */
+             * Make the geometry "crinkly" by rounding off the points.
+             * This defeats the  MonotoneChain optimization in the full relate
+             * algorithm, and provides a more realistic test.
+             */
             var sinePolyCrinkly = GeometryPrecisionReducer.Reduce(sinePoly,
                                                                   new PrecisionModel(size/10));
             var target = sinePolyCrinkly;

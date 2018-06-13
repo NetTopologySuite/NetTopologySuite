@@ -16,7 +16,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             // isPointInRing is not defined for pts on boundary
             if (expectedLoc == Location.Boundary)
-  	            return;
+                return;
 
             IGeometry geom = reader.Read(wkt);
             bool expected = expectedLoc == Location.Interior;

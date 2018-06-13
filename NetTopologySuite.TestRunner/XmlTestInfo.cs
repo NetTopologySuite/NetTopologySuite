@@ -3,24 +3,24 @@ using System.Collections.Specialized;
 
 namespace Open.Topology.TestRunner
 {
-	/// <summary>
-	/// Summary description for XmlTestInfo.
-	/// </summary>
-	public struct XmlTestInfo
-	{
+    /// <summary>
+    /// Summary description for XmlTestInfo.
+    /// </summary>
+    public struct XmlTestInfo
+    {
         private readonly StringDictionary _listParameters;
 
-		public XmlTestInfo(bool bReset)
-		{
+        public XmlTestInfo(bool bReset)
+        {
             _listParameters = new StringDictionary();
 
             if (bReset)
                 Reset();
-		}
+        }
 
         public StringDictionary Parameters => _listParameters;
 
-	    public void Reset()
+        public void Reset()
         {
             if (_listParameters != null)
             {
@@ -74,5 +74,5 @@ namespace Open.Topology.TestRunner
 
             return true;
         }
-	}
+    }
 }

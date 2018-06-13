@@ -223,7 +223,7 @@ namespace NetTopologySuite.GeometriesGraph
                         state = ScanningForIncoming;
                         break;
                     default:
-	                    break;
+                        break;
                 }
             }
             if (state == LinkingToOutgoing)
@@ -269,8 +269,8 @@ namespace NetTopologySuite.GeometriesGraph
                         incoming.NextMin = nextOut;
                         state = ScanningForIncoming;
                         break;
-	                default:
-		                break;
+                    default:
+                        break;
                 }
             }
             if (state == LinkingToOutgoing)

@@ -421,12 +421,12 @@ namespace NetTopologySuite.Mathematics
         /// <returns>true if <paramref name="o"/> is a <see cref="T:NetTopologySuite.Mathematics.Vector2D"/>with the same values for the X and Y components.</returns>
         public override bool Equals(object o)
         {
-		    if (!(o is Vector2D)) {
-			    return false;
-		    }
-		    var v = (Vector2D) o;
-		    return _x == v._x && _y == v._y;
-	    }
+            if (!(o is Vector2D)) {
+                return false;
+            }
+            var v = (Vector2D) o;
+            return _x == v._x && _y == v._y;
+        }
 
         /// <summary>
         /// Gets a hashcode for this vector.

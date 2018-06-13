@@ -74,7 +74,7 @@ namespace Open.Topology.TestRunner.Result
         {
             double area = expectedBuffer.Area;
             var diff = actualBuffer.SymmetricDifference(expectedBuffer);
-            //		System.out.println(diff);
+            // System.out.println(diff);
             double areaDiff = diff.Area;
 
             // can't get closer than difference area = 0 !  This also handles case when symDiff is empty

@@ -4,24 +4,24 @@ using System.IO;
 
 namespace Open.Topology.TestRunner
 {
-	/// <summary>
-	/// Summary description for XmlTestController.
-	/// </summary>
-	public class XmlTestController
-	{
+    /// <summary>
+    /// Summary description for XmlTestController.
+    /// </summary>
+    public class XmlTestController
+    {
         private StringCollection m_listFileNames = null;
 
         private XmlTestDocument  m_objCurrentDoc = null;
 
-		public XmlTestController()
-		{
+        public XmlTestController()
+        {
             m_listFileNames = new StringCollection();
             m_objCurrentDoc = new XmlTestDocument();
-		}
+        }
 
         public StringCollection FileNames => m_listFileNames;
 
-	    public void ResetFiles()
+        public void ResetFiles()
         {
             if (m_listFileNames != null)
                 m_listFileNames.Clear();
@@ -80,5 +80,5 @@ namespace Open.Topology.TestRunner
                     return m_objCurrentDoc.CurrentTests;
              return null;
         }
-	}
+    }
 }

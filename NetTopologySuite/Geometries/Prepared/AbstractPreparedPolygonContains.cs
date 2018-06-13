@@ -99,7 +99,7 @@ namespace NetTopologySuite.Geometries.Prepared
              */
             bool properIntersectionImpliesNotContained = IsProperIntersectionImpliesNotContainedSituation(geom);
             // MD - testing only
-            //		properIntersectionImpliesNotContained = true;
+            // properIntersectionImpliesNotContained = true;
 
             // find all intersection types which exist
             FindAndClassifyIntersections(geom);
@@ -133,7 +133,7 @@ namespace NetTopologySuite.Geometries.Prepared
             if (_hasSegmentIntersection)
             {
                 return FullTopologicalPredicate(geom);
-                //			System.out.println(geom);
+                // System.out.println(geom);
             }
 
             /*
