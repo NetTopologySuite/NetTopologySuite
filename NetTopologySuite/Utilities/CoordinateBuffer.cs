@@ -247,13 +247,14 @@ namespace NetTopologySuite.Utilities
         /// </exception>
         /// <exception cref="ArgumentException">
         /// <paramref name="coordinateSequence"/>'s <see cref="ICoordinateSequence.Count"/> is less
-        /// than <see cref="Count"/> or its <see cref="ICoordinateSequence.Ordinates"/> demands that
-        /// more ordinates be set than what this list has in <see cref="StoredOrdinates"/>.
+        /// than <see cref="Count"/>.
         /// </exception>
         /// <remarks>
         /// If <paramref name="coordinateSequence"/>'s <see cref="ICoordinateSequence.Ordinates"/>
         /// omits flags that are present in <see cref="StoredOrdinates"/>, then no error is thrown;
-        /// instead, values stored in this list are simply not copied to the sequence.
+        /// instead, values stored in this list are simply not copied to the sequence.  If, instead,
+        /// it includes extra flags that are not present in <see cref="StoredOrdinates"/>, then it
+        /// will receive <see cref="Coordinate.NullOrdinate"/> in those slots.
         /// </remarks>
         public void CopyTo(ICoordinateSequence coordinateSequence)
         {
