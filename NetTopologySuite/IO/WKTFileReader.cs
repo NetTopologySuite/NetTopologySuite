@@ -104,7 +104,7 @@ namespace NetTopologySuite.IO
 #endif
             try
             {
-                return Read(_reader);
+                return null;
             }
             finally
             {
@@ -112,68 +112,6 @@ namespace NetTopologySuite.IO
                 _reader.Dispose();
 #endif
             }
-        }
-
-        private IList<IGeometry> Read(TextReader bufferedReader)
-        {
-            var geoms = new List<IGeometry>();
-            var tokens = _wktReader.Tokenizer(bufferedReader);
-            tokens.MoveNext();
-            while (!IsAtEndOfTokens(tokens.Current) && !IsAtLimit(geoms))
-            {
-                var g = _wktReader.ReadGeometryTaggedText(tokens);
-                if (_count >= Offset)
-                    geoms.Add(g);
-                _count++;
-            }
-
-            /*
-            while (!IsAtEndOfFile(bufferedReader) && !IsAtLimit(geoms))
-            {
-                IGeometry g = _wktReader.Read(bufferedReader);
-                if (_count >= Offset)
-                    geoms.Add(g);
-                _count++;
-            }
-             */
-            return geoms;
-        }
-
-        private bool IsAtLimit(IList<IGeometry> geoms)
-        {
-            if (Limit < 0) return false;
-            if (geoms.Count < Limit) return false;
-            return true;
-        }
-
-        //private bool IsAtEndOfTokens(IList<Token> tokens)
-        //{
-        //    return !(_wktReader.Index < tokens.Count);
-        //}
-
-        private static bool IsAtEndOfTokens(Token token)
-        {
-            return token is EofToken;
-        }
-
-        ///<summary>
-        /// Tests if reader is at EOF.
-        ///</summary>
-        private bool IsAtEndOfFile(StreamReader bufferedReader)
-        {
-            return bufferedReader.EndOfStream;
-            /*
-            bufferedReader.mark(1000);
-
-            StreamTokenizer tokenizer = new StreamTokenizer(bufferedReader);
-            int type = tokenizer.nextToken();
-
-            if (type == StreamTokenizer.TT_EOF) {
-                return true;
-            }
-            bufferedReader.reset();
-            return false;
-             */
         }
     }
 }

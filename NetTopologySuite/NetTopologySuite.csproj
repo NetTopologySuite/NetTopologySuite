@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
-    <TargetFrameworks>net35-client;net40-client;net403-client;net45;netstandard1.0;netstandard1.3;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net35-client;net40-client;net403-client;net45;netstandard1.3;netstandard2.0</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(SolutionDir)nts.snk</AssemblyOriginatorKeyFile>
     <NoWarn>659,168,1587</NoWarn>
@@ -34,6 +34,8 @@
 
   <ItemGroup>
     <PackageReference Include="GeoAPI.Core" Version="$(GeoAPIPackageReferenceVersion)" />
+    <PackageReference Include="Antlr4" Version="4.6.5-rc002" PrivateAssets="All" />
+    <PackageReference Include="Antlr4.Runtime" Version="4.6.5-rc002" />
 
     <!-- We use ModuleInit.Fody to automatically initialize GeometryServiceProvider when loaded. -->
     <PackageReference Include="ModuleInit.Fody" Version="1.8.0" PrivateAssets="All" />
@@ -51,5 +53,11 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
     <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Antlr4 Update="WKT.g4">
+      <Generator>MSBuild:Compile</Generator>
+    </Antlr4>
   </ItemGroup>
 </Project>
