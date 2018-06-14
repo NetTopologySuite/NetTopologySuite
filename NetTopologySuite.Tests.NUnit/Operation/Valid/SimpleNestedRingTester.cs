@@ -12,13 +12,13 @@ namespace NetTopologySuite.Operation.Valid
     /// comparison.
     /// </summary>
     public class SimpleNestedRingTester
-    {        
+    {
         private readonly GeometryGraph graph;  // used to find non-node vertices
         private readonly List<ILinearRing> rings = new List<ILinearRing>();
         private Coordinate nestedPt;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="graph"></param>
         public SimpleNestedRingTester(GeometryGraph graph)
@@ -27,7 +27,7 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ring"></param>
         public void Add(ILinearRing ring)
@@ -36,35 +36,29 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public Coordinate NestedPoint
-        {
-            get
-            {
-                return nestedPt;
-            }
-        }
+        public Coordinate NestedPoint => nestedPt;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public bool IsNonNested()
         {
-            foreach (ILinearRing innerRing in rings)
+            foreach (var innerRing in rings)
             {
-                Coordinate[] innerRingPts = innerRing.Coordinates;
+                var innerRingPts = innerRing.Coordinates;
 
-                foreach (ILinearRing searchRing in rings)
+                foreach (var searchRing in rings)
                 {
-                    Coordinate[] searchRingPts = searchRing.Coordinates;
+                    var searchRingPts = searchRing.Coordinates;
 
                     if (innerRing == searchRing) continue;
 
                     if (!innerRing.EnvelopeInternal.Intersects(searchRing.EnvelopeInternal)) continue;
 
-                    Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
+                    var innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
                     Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
 
                     bool isInside = PointLocation.IsInRing(innerRingPt, searchRingPts);

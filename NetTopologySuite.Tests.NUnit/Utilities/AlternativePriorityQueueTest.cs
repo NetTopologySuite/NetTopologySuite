@@ -13,7 +13,7 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
         public void TestEnumeration()
         {
             const int NodeCount = 18;
-            AlternativePriorityQueue<double, object> q = new AlternativePriorityQueue<double, object>(NodeCount);
+            var q = new AlternativePriorityQueue<double, object>(NodeCount);
 
             var random = new Random();
             var nodes = new PriorityQueueNode<double, object>[NodeCount];
@@ -30,7 +30,7 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
         [Test]
         public void TestLongSequenceOfOperations()
         {
-            AlternativePriorityQueue<int, int> q = new AlternativePriorityQueue<int, int>();
+            var q = new AlternativePriorityQueue<int, int>();
             addRandomItems(q, 15);
             CheckOrder(q, nodesToKeep: 3);
             addRandomItems(q, 33);
@@ -46,9 +46,9 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
         [Test]
         public void TestCopiedQueue()
         {
-            AlternativePriorityQueue<int, int> q1 = new AlternativePriorityQueue<int, int>();
+            var q1 = new AlternativePriorityQueue<int, int>();
             addRandomItems(q1, 178);
-            AlternativePriorityQueue<int, int> q2 = new AlternativePriorityQueue<int, int>(q1);
+            var q2 = new AlternativePriorityQueue<int, int>(q1);
             addRandomItems(q2, 28);
             CheckOrder(q1, nodesToKeep: 42);
             addRandomItems(q1, 39);
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
         public void TestDifferentComparer()
         {
             IComparer<int> comparer = new BackwardsInt32Comparer();
-            AlternativePriorityQueue<int, int> q = new AlternativePriorityQueue<int, int>(comparer);
+            var q = new AlternativePriorityQueue<int, int>(comparer);
             addRandomItems(q, 15);
             CheckOrder(q, reversed: true);
         }
@@ -71,11 +71,11 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
         [Test]
         public void TestContainsConsistency()
         {
-            AlternativePriorityQueue<int, int> q = new AlternativePriorityQueue<int, int>();
+            var q = new AlternativePriorityQueue<int, int>();
             addRandomItems(q, 150);
 
-            PriorityQueueNode<int, int> missingNode = new PriorityQueueNode<int, int>(14);
-            PriorityQueueNode<int, int> presentNode = new PriorityQueueNode<int, int>(14);
+            var missingNode = new PriorityQueueNode<int, int>(14);
+            var presentNode = new PriorityQueueNode<int, int>(14);
             q.Enqueue(presentNode, 75);
 
             Assert.True(q.Contains(presentNode));
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
         [Test]
         public void TestOrder1()
         {
-            AlternativePriorityQueue<int, int> q = new AlternativePriorityQueue<int, int>();
+            var q = new AlternativePriorityQueue<int, int>();
 
             q.Enqueue(new PriorityQueueNode<int, int>(1), 1);
             q.Enqueue(new PriorityQueueNode<int, int>(10), 10);
@@ -104,7 +104,7 @@ namespace NetTopologySuite.Tests.NUnit.Utilities
         [Test]
         public void TestOrderRandom1()
         {
-            AlternativePriorityQueue<int, int> q = new AlternativePriorityQueue<int, int>();
+            var q = new AlternativePriorityQueue<int, int>();
             addRandomItems(q, 100);
             CheckOrder(q);
         }

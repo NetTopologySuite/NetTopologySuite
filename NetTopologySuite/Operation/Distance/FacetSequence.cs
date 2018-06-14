@@ -6,7 +6,7 @@ using NetTopologySuite.Algorithm;
 namespace NetTopologySuite.Operation.Distance
 {
     /// <summary>
-    /// Represents a sequence of facets (points or line segments) of a <see cref="IGeometry"/> 
+    /// Represents a sequence of facets (points or line segments) of a <see cref="IGeometry"/>
     /// specified by a subsequence of a <see cref="ICoordinateSequence"/>.
     /// </summary>
     /// <author>Martin Davis</author>
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Operation.Distance
             get
             {
                 var env = new Envelope();
-                for (var i = _start; i < _end; i++)
+                for (int i = _start; i < _end; i++)
                 {
                     env.ExpandToInclude(_pts.GetX(i), _pts.GetY(i));
                 }
@@ -64,10 +64,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <summary>
         /// Gets the number of coordinates in this facet sequence
         /// </summary>
-        public int Count
-        {
-            get { return _end - _start; }
-        }
+        public int Count => _end - _start;
 
         /// <summary>
         /// Gets the coordinate at the given index
@@ -82,11 +79,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <summary>
         /// Tests if this facet sequence consists of only one point
         /// </summary>
-        public bool IsPoint
-        {
-            get { return _end - _start == 1; }
-        }
-
+        public bool IsPoint => _end - _start == 1;
 
         /// <summary>
         /// Computes the distance to another facet sequence
@@ -104,7 +97,7 @@ namespace NetTopologySuite.Operation.Distance
                 facetSeq._pts.GetCoordinate(facetSeq._start, _seqPt);
                 return _pt.Distance(_seqPt);
             }
-            
+
             if (isPoint)
             {
                 _pts.GetCoordinate(_start, _pt);
@@ -130,7 +123,7 @@ namespace NetTopologySuite.Operation.Distance
         private double ComputeLineLineDistance(FacetSequence facetSeq)
         {
             // both linear - compute minimum segment-segment distance
-            var minDistance = Double.MaxValue;
+            double minDistance = double.MaxValue;
 
             var p0 = new Coordinate();
             var p1 = new Coordinate();
@@ -160,15 +153,15 @@ namespace NetTopologySuite.Operation.Distance
 
         private static double ComputePointLineDistance(Coordinate pt, FacetSequence facetSeq)
         {
-            var minDistance = Double.MaxValue;
+            double minDistance = double.MaxValue;
 
             var q0 = new Coordinate();
             var q1 = new Coordinate();
-            for (var i = facetSeq._start; i < facetSeq._end - 1; i++)
+            for (int i = facetSeq._start; i < facetSeq._end - 1; i++)
             {
                 facetSeq._pts.GetCoordinate(i, q0);
                 facetSeq._pts.GetCoordinate(i + 1, q1);
-                var dist = DistanceComputer.PointToSegment(pt, q0, q1);
+                double dist = DistanceComputer.PointToSegment(pt, q0, q1);
                 if (dist == 0.0) return 0.0;
                 if (dist < minDistance)
                 {
@@ -179,7 +172,7 @@ namespace NetTopologySuite.Operation.Distance
         }
 
         /// <inheritdoc cref="object.ToString()"/>
-        public override String ToString()
+        public override string ToString()
         {
             var buf = new StringBuilder();
             buf.Append(IsPoint ? "LINESTRING ( " : "POINT (");

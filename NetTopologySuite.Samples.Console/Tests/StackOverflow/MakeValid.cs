@@ -52,8 +52,8 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
             var fixedGeom = geom.Validate();
             Assert.That(fixedGeom, Is.Not.Null);
             var hsm = new HausdorffSimilarityMeasure();
-            var m1 = hsm.Measure(fixedGeom, geom);
-            var m2 = hsm.Measure(geom, fixedGeom);
+            double m1 = hsm.Measure(fixedGeom, geom);
+            double m2 = hsm.Measure(geom, fixedGeom);
             Assert.That(m1, Is.GreaterThan(0.9));
         }
     }
@@ -64,8 +64,8 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
     internal static class ValidateGeometryExtension
     {
         /// <summary>
-        /// Get or create a valid version of the geometry given. If the geometry is a 
-        /// polygon or multi polygon, self intersections or inconsistencies are fixed. 
+        /// Get or create a valid version of the geometry given. If the geometry is a
+        /// polygon or multi polygon, self intersections or inconsistencies are fixed.
         /// Otherwise the geometry is returned.
         /// </summary>
         /// <param name="geom">The geometry to be fixed</param>
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
             // ToDo other validations
 
             // Only care about polygons
-            return geom; 
+            return geom;
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
         static void AddPolygon(IPolygon polygon, Polygonizer polygonizer)
         {
             AddLineString(polygon.ExteriorRing, polygonizer);
-            for (var n = polygon.NumInteriorRings; n-- > 0;)
+            for (int n = polygon.NumInteriorRings; n-- > 0;)
             {
                 AddLineString(polygon.GetInteriorRingN(n), polygonizer);
             }
@@ -138,7 +138,6 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
             //Add result to polygonizer
             polygonizer.Add(toAdd);
         }
-
 
         /// <summary>
         /// Get a geometry from a collection of polygons.

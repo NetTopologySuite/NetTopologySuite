@@ -7,9 +7,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
 {
     /**
      * Test performance of evaluating Triangle predicate computations
-     * using 
+     * using
      * various extended precision APIs.
-     * 
+     *
      * @author Martin Davis
      *
      */
@@ -17,7 +17,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
     [CategoryAttribute("Stress")]
     public class InCirclePerf
     {
-
 
         private readonly Coordinate _pa = new Coordinate(687958.05, 7460725.97);
         private readonly Coordinate _pb = new Coordinate(687957.43, 7460725.93);
@@ -33,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
             double ddSelfTime = RunDDSelf(n);
             double ddSelf2Time = runDDSelf2(n);
             double ddTime = RunDD(n);
-            //		double ddSelfTime = runDoubleDoubleSelf(10000000);
+            // double ddSelfTime = runDoubleDoubleSelf(10000000);
 
             Console.WriteLine("DD VS double performance factor      = " + ddTime/doubleTime);
             Console.WriteLine("DDSelf VS double performance factor  = " + ddSelfTime/doubleTime);
@@ -56,7 +55,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
 
         public double RunDD(int nIter)
         {
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
             for (int i = 0; i < nIter; i++)
             {
@@ -70,7 +69,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
 
         public double RunDDSelf(int nIter)
         {
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
             for (int i = 0; i < nIter; i++)
             {
@@ -84,7 +83,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
 
         public double runDDSelf2(int nIter)
         {
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
             for (int i = 0; i < nIter; i++)
             {
@@ -103,7 +102,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
      * versions are provided, which are more robust
      * (i.e. they produce correct answers in more cases).
      * These are used in triangulation algorithms.
-     * 
+     *
      * @author Martin Davis
      *
      */

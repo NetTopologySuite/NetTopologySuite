@@ -18,8 +18,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [TestAttribute]
         public void TestPolygonEmpty()
         {
-            WKTReader reader = new WKTReader();
-            IGeometry geom = reader.Read("POLYGON EMPTY");
+            var reader = new WKTReader();
+            var geom = reader.Read("POLYGON EMPTY");
             CheckWkbGeometry(geom.AsBinary(), "POLYGON EMPTY");
         }
 
@@ -81,18 +81,18 @@ namespace NetTopologySuite.Tests.NUnit.IO
                              "POLYGON ((100 200, 100 200, 100 200, 100 200)");
         }
 
-        private static void CheckWkbGeometry(String wkbHex, String expectedWKT)
+        private static void CheckWkbGeometry(string wkbHex, string expectedWKT)
         {
             CheckWkbGeometry(WKBReader.HexToBytes(wkbHex), expectedWKT);
         }
 
-        private static void CheckWkbGeometry(byte[] wkb, String expectedWKT)
+        private static void CheckWkbGeometry(byte[] wkb, string expectedWKT)
         {
-            WKBReader wkbReader = new WKBReader();
-            IGeometry g2 = wkbReader.Read(wkb);
+            var wkbReader = new WKBReader();
+            var g2 = wkbReader.Read(wkb);
 
-            WKTReader reader = new WKTReader();
-            IGeometry expected = reader.Read(expectedWKT);
+            var reader = new WKTReader();
+            var expected = reader.Read(expectedWKT);
 
             bool isEqual = (expected.CompareTo(g2 /*, Comp2*/) == 0);
             Assert.IsTrue(isEqual);
@@ -109,14 +109,14 @@ namespace NetTopologySuite.Tests.NUnit.IO
         private static void TestBase64TextFile(Stream file)
         {
             byte[] wkb = ConvertBase64(file);
-            WKBReader wkbReader = new WKBReader();
+            var wkbReader = new WKBReader();
             IGeometry geom = null;
             Assert.DoesNotThrow(() => geom = wkbReader.Read(wkb));
         }
 
         private static byte[] ConvertBase64(Stream file)
         {
-            using (StreamReader sr = new StreamReader(file))
+            using (var sr = new StreamReader(file))
             {
                 return System.Convert.FromBase64String(sr.ReadToEnd());
             }

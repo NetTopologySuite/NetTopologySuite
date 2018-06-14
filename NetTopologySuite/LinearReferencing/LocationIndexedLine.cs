@@ -61,7 +61,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>The Coordinate at the given index</returns>
         public Coordinate ExtractPoint(LinearLocation index, double offsetDistance)
         {
-            LinearLocation indexLow = index.ToLowest(_linearGeom);
+            var indexLow = index.ToLowest(_linearGeom);
             return indexLow.GetSegment(_linearGeom).PointAlongOffset(indexLow.SegmentFraction, offsetDistance);
         }
 
@@ -79,7 +79,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>The Coordinate at the given index</returns>
         public Coordinate ExtractPoint(double index, double offsetDistance)
         {
-            LinearLocation loc = LengthLocationMap.GetLocation(_linearGeom, index);
+            var loc = LengthLocationMap.GetLocation(_linearGeom, index);
             return loc.GetSegment(_linearGeom).PointAlongOffset(loc.SegmentFraction, offsetDistance);
         }
         /// <summary>
@@ -126,7 +126,7 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         ///<summary>
-        /// Finds the index for a point on the line which is greater than the given index. 
+        /// Finds the index for a point on the line which is greater than the given index.
         /// If no such index exists, returns <paramref name="minIndex" />.
         ///</summary>
         /// <remarks>
@@ -169,24 +169,12 @@ namespace NetTopologySuite.LinearReferencing
         /// <summary>
         /// Returns the index of the start of the line.
         /// </summary>
-        public LinearLocation StartIndex
-        {
-            get
-            {
-                return new LinearLocation();
-            }
-        }
+        public LinearLocation StartIndex => new LinearLocation();
 
         /// <summary>
         /// Returns the index of the end of the line.
         /// </summary>
-        public LinearLocation EndIndex
-        {
-            get
-            {
-                return LinearLocation.GetEndLocation(_linearGeom);
-            }
-        }
+        public LinearLocation EndIndex => LinearLocation.GetEndLocation(_linearGeom);
 
         /// <summary>
         /// Tests whether an index is in the valid index range for the line.
@@ -199,14 +187,14 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Computes a valid index for this line by clamping 
+        /// Computes a valid index for this line by clamping
         /// the given index to the valid range of index values.
         /// </summary>
         /// <param name="index"></param>
         /// <returns>A valid index value.</returns>
         public LinearLocation ClampIndex(LinearLocation index)
         {
-            LinearLocation loc = (LinearLocation)index.Copy();
+            var loc = (LinearLocation)index.Copy();
             loc.Clamp(_linearGeom);
             return loc;
         }

@@ -95,7 +95,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="gc"></param>
         private void AddCollection(IGeometry gc)
         {
-            for (var i = 0; i < gc.NumGeometries; i++)
+            for (int i = 0; i < gc.NumGeometries; i++)
             {
                 var g = gc.GetGeometryN(i);
                 Add(g);
@@ -136,7 +136,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="p"></param>
         private void AddPolygon(IPolygon p)
         {
-            var offsetDistance = _distance;
+            double offsetDistance = _distance;
             var offsetSide = Positions.Left;
             if (_distance < 0.0)
             {
@@ -157,7 +157,7 @@ namespace NetTopologySuite.Operation.Buffer
             AddPolygonRing(shellCoord, offsetDistance, offsetSide,
                            Location.Exterior, Location.Interior);
 
-            for (var i = 0; i < p.NumInteriorRings; i++)
+            for (int i = 0; i < p.NumInteriorRings; i++)
             {
                 var hole = (ILinearRing)p.GetInteriorRingN(i);
                 var holeCoord = CoordinateArrays.RemoveRepeatedPoints(hole.Coordinates);
@@ -262,7 +262,7 @@ namespace NetTopologySuite.Operation.Buffer
         {
             var tri = new Triangle(triangleCoord[0], triangleCoord[1], triangleCoord[2]);
             var inCentre = tri.InCentre();
-            var distToCentre = DistanceComputer.PointToSegment(inCentre, tri.P0, tri.P1);
+            double distToCentre = DistanceComputer.PointToSegment(inCentre, tri.P0, tri.P1);
             return distToCentre < Math.Abs(bufferDistance);
         }
     }

@@ -2,13 +2,13 @@ using Open.Topology.TestRunner;
 
 namespace ConsoleTestRunner
 {
-	/// <summary>
-	/// Summary description for TestInfo.
-	/// </summary>
+    /// <summary>
+    /// Summary description for TestInfo.
+    /// </summary>
     public class TestInfo
     {
         #region Private Members
-        
+
         private string m_strFileName     = null;
         private string m_strDirectory    = null;
         private XmlTestType m_enumFilter = XmlTestType.None;
@@ -19,7 +19,7 @@ namespace ConsoleTestRunner
         #endregion
 
         #region Constructors and Destructor
-        
+
         public TestInfo(XmlTestType filter)
         {
             m_enumFilter = filter;
@@ -31,80 +31,44 @@ namespace ConsoleTestRunner
 
         public string FileName
         {
-            get
-            {
-                return m_strFileName;
-            }
+            get => m_strFileName;
 
-            set
-            {
-                m_strFileName = value;
-            }
+            set => m_strFileName = value;
         }
 
-        public string Directory 
+        public string Directory
         {
-            get
-            {
-                return m_strDirectory;
-            }
+            get => m_strDirectory;
 
-            set
-            {
-                m_strDirectory = value;
-            }
+            set => m_strDirectory = value;
         }
 
         public XmlTestType Filter
         {
-            get
-            {
-                return m_enumFilter;
-            }
+            get => m_enumFilter;
 
-            set
-            {
-                m_enumFilter = value;
-            }
+            set => m_enumFilter = value;
         }
 
         public bool Verbose
         {
-            get
-            {
-                return m_bVerbose;
-            }
+            get => m_bVerbose;
 
-            set
-            {
-                m_bVerbose = value;
-            }
+            set => m_bVerbose = value;
         }
 
         public bool Exception
         {
-            get
-            {
-                return m_bException;
-            }
+            get => m_bException;
 
-            set
-            {
-                m_bException = value;
-            }
+            set => m_bException = value;
         }
 
         public bool Interactive
         {
-            get
-            {
-                return m_bInteractive;
-            }
+            get => m_bInteractive;
 
-            set
-            {
-                m_bInteractive = value;
-            }
+            set => m_bInteractive = value;
         }
 
         #endregion

@@ -11,16 +11,16 @@ namespace NetTopologySuite.Index.Chain
         ///// <summary>
         ///// These envelopes are used during the MonotoneChain search process.
         ///// </summary>
-        //[Obsolete()] 
+        //[Obsolete()]
         //public Envelope TempEnv1 = new Envelope();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public LineSegment SelectedSegment = new LineSegment();
 
-        /// <summary> 
-        /// This method is overridden to process a segment 
+        /// <summary>
+        /// This method is overridden to process a segment
         /// in the context of the parent chain.
         /// </summary>
         /// <param name="mc">The parent chain</param>

@@ -11,12 +11,12 @@ namespace NetTopologySuite.Operation.Relate
     /// </summary>
     /// <remarks>
     /// If named spatial predicates are used on the result <see cref="IntersectionMatrix"/>
-    /// of the RelateOp, the result may or not be affected by the 
+    /// of the RelateOp, the result may or not be affected by the
     /// choice of <tt>BoundaryNodeRule</tt>, depending on the exact nature of the pattern.
-    /// For instance, <see cref="GeoAPI.Geometries.IntersectionMatrix.IsIntersects"/> is insensitive 
-    /// to the choice of <tt>BoundaryNodeRule</tt>, 
+    /// For instance, <see cref="GeoAPI.Geometries.IntersectionMatrix.IsIntersects"/> is insensitive
+    /// to the choice of <tt>BoundaryNodeRule</tt>,
     /// whereas <see cref="GeoAPI.Geometries.IntersectionMatrix.IsTouches"/> is affected by the rule chosen.
-    /// <para/> 
+    /// <para/>
     /// <b>Note:</b> custom Boundary Node Rules do not (currently)
     /// affect the results of other <see cref="IGeometry"/> methods (such
     /// as <see cref="IGeometry.Boundary"/>.  The results of
@@ -34,8 +34,8 @@ namespace NetTopologySuite.Operation.Relate
         /// <returns>The <c>IntersectionMatrix</c> for the spatial relationship between the geometries</returns>
         public static IntersectionMatrix Relate(IGeometry a, IGeometry b)
         {
-            RelateOp relOp = new RelateOp(a, b);
-            IntersectionMatrix im = relOp.IntersectionMatrix;
+            var relOp = new RelateOp(a, b);
+            var im = relOp.IntersectionMatrix;
             return im;
         }
 
@@ -49,11 +49,10 @@ namespace NetTopologySuite.Operation.Relate
         /// <returns>The <c>IntersectionMatrix</c> for the spatial relationship between the geometries</returns>
         public static IntersectionMatrix Relate(IGeometry a, IGeometry b, IBoundaryNodeRule boundaryNodeRule)
         {
-            RelateOp relOp = new RelateOp(a, b, boundaryNodeRule);
-            IntersectionMatrix im = relOp.IntersectionMatrix;
+            var relOp = new RelateOp(a, b, boundaryNodeRule);
+            var im = relOp.IntersectionMatrix;
             return im;
         }
-
 
         private readonly RelateComputer _relate;
 
@@ -63,7 +62,7 @@ namespace NetTopologySuite.Operation.Relate
         /// <param name="g0">a Geometry to relate</param>
         /// <param name="g1">another Geometry to relate</param>
         public RelateOp(IGeometry g0, IGeometry g1) : base(g0, g1)
-        {            
+        {
             _relate = new RelateComputer(arg);
         }
 
@@ -83,12 +82,6 @@ namespace NetTopologySuite.Operation.Relate
         /// Gets the IntersectionMatrix for the spatial relationship
         /// between the input geometries.
         /// </summary>
-        public IntersectionMatrix IntersectionMatrix
-        {
-            get
-            {
-                return _relate.ComputeIM();
-            }
-        }
+        public IntersectionMatrix IntersectionMatrix => _relate.ComputeIM();
     }
 }

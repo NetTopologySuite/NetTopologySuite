@@ -7,22 +7,22 @@ using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Tests.NUnit
 {
-    public class GeometryUtils 
+    public class GeometryUtils
     {
-	    //TODO: allow specifying GeometryFactory
-	    public static WKTReader reader = new WKTReader();
-	
-        public static IList<IGeometry> ReadWKT(String[] inputWKT)
+        //TODO: allow specifying GeometryFactory
+        public static WKTReader reader = new WKTReader();
+
+        public static IList<IGeometry> ReadWKT(string[] inputWKT)
         {
             var geometries = new List<IGeometry>();
-            foreach (var geomWkt in inputWKT)
+            foreach (string geomWkt in inputWKT)
             {
                 geometries.Add(reader.Read(geomWkt));
             }
             return geometries;
         }
-  
-        public static IGeometry ReadWKT(String inputWKT)
+
+        public static IGeometry ReadWKT(string inputWKT)
         {
             return reader.Read(inputWKT);
         }
@@ -33,17 +33,17 @@ namespace NetTopologySuite.Tests.NUnit
             var geoms = fileRdr.Read();
             return geoms;
         }
-  
+
         public static bool IsEqual(IGeometry a, IGeometry b)
         {
-            IGeometry a2 = Normalize(a);
-            IGeometry b2 = Normalize(b);
+            var a2 = Normalize(a);
+            var b2 = Normalize(b);
             return a2.EqualsExact(b2);
         }
-  
+
         public static IGeometry Normalize(IGeometry g)
         {
-            Geometry g2 = (Geometry) g.Copy();
+            var g2 = (Geometry) g.Copy();
             g2.Normalize();
             return g2;
         }

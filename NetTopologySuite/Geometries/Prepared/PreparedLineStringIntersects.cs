@@ -25,7 +25,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if the linestring intersects the geometry</returns>
         public static bool Intersects(PreparedLineString prep, IGeometry geom)
         {
-            PreparedLineStringIntersects op = new PreparedLineStringIntersects(prep);
+            var op = new PreparedLineStringIntersects(prep);
             return op.Intersects(geom);
         }
 
@@ -54,9 +54,9 @@ namespace NetTopologySuite.Geometries.Prepared
             // only request intersection finder if there are segments (ie NOT for point inputs)
             if (lineSegStr.Count > 0)
             {
-                var segsIntersect = prepLine.IntersectionFinder.Intersects(lineSegStr);
+                bool segsIntersect = prepLine.IntersectionFinder.Intersects(lineSegStr);
                 // MD - performance testing
-                //		boolean segsIntersect = false;
+                // boolean segsIntersect = false;
                 if (segsIntersect)
                     return true;
             }
@@ -98,9 +98,9 @@ namespace NetTopologySuite.Geometries.Prepared
              * This could be optimized by using the segment index on the lineal target.
              * However, it seems like the L/P case would be pretty rare in practice.
              */
-            PointLocator locator = new PointLocator();
-            IList<Coordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
-            foreach (Coordinate p in coords)
+            var locator = new PointLocator();
+            var coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
+            foreach (var p in coords)
             {
                 if (locator.Intersects(p, prepLine.Geometry))
                     return true;

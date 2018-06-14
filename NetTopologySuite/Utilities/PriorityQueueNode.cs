@@ -61,7 +61,7 @@ namespace NetTopologySuite.Utilities
         /// <summary>
         /// Gets the <typeparamref name="TData"/> that is stored in this node.
         /// </summary>
-        public TData Data { get { return this.data; } }
+        public TData Data => this.data;
 
         /// <summary>
         /// Gets the <typeparamref name="TPriority"/> of this node in the queue.

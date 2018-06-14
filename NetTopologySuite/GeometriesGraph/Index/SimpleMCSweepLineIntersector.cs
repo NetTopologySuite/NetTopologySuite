@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace NetTopologySuite.GeometriesGraph.Index
 {
-    /// <summary> 
+    /// <summary>
     /// Finds all intersections in one or two sets of edges,
     /// using an x-axis sweepline algorithm in conjunction with Monotone Chains.
     /// While still O(n^2) in the worst case, this algorithm
@@ -17,9 +17,8 @@ namespace NetTopologySuite.GeometriesGraph.Index
         // statistics information
         int _nOverlaps;
 
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edges"></param>
         /// <param name="si"></param>
@@ -34,7 +33,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edges0"></param>
         /// <param name="edges1"></param>
@@ -47,12 +46,12 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edges"></param>
         private void AddEdges(IEnumerable<Edge> edges)
         {
-            foreach (Edge edge in edges)
+            foreach (var edge in edges)
             {
                 // edge is its own group
                 AddEdge(edge, edge);
@@ -60,31 +59,31 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edges"></param>
         /// <param name="edgeSet"></param>
         private void AddEdges(IEnumerable<Edge> edges, object edgeSet)
         {
-            foreach (Edge edge in edges)
+            foreach (var edge in edges)
             {
                 AddEdge(edge, edgeSet);
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edge"></param>
         /// <param name="edgeSet"></param>
         private void AddEdge(Edge edge, object edgeSet)
         {
-            MonotoneChainEdge mce = edge.MonotoneChainEdge;
+            var mce = edge.MonotoneChainEdge;
             int[] startIndex = mce.StartIndexes;
-            for (int i = 0; i < startIndex.Length - 1; i++) 
+            for (int i = 0; i < startIndex.Length - 1; i++)
             {
-                MonotoneChain mc = new MonotoneChain(mce, i);
-                SweepLineEvent insertEvent = new SweepLineEvent(edgeSet, mce.GetMinX(i), mc);
+                var mc = new MonotoneChain(mce, i);
+                var insertEvent = new SweepLineEvent(edgeSet, mce.GetMinX(i), mc);
                 _events.Add(insertEvent);
                 _events.Add(new SweepLineEvent(mce.GetMaxX(i), insertEvent));
             }
@@ -101,14 +100,14 @@ namespace NetTopologySuite.GeometriesGraph.Index
             // set DELETE event indexes
             for (int i = 0; i < _events.Count; i++ )
             {
-                SweepLineEvent ev = _events[i];
+                var ev = _events[i];
                 if (ev.IsDelete)
                     ev.InsertEvent.DeleteEventIndex = i;
-            }            
+            }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="si"></param>
         private void ComputeIntersections(SegmentIntersector si)
@@ -118,7 +117,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
 
             for (int i = 0; i < _events.Count; i++ )
             {
-                SweepLineEvent ev = _events[i];
+                var ev = _events[i];
                 if (ev.IsInsert)
                 {
                     // Console.WriteLine("Processing event " + i);
@@ -130,7 +129,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
@@ -138,21 +137,21 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="si"></param>
         private void ProcessOverlaps(int start, int end, SweepLineEvent ev0, SegmentIntersector si)
         {
-            MonotoneChain mc0 = (MonotoneChain)ev0.Object;
+            var mc0 = (MonotoneChain)ev0.Object;
 
             /*
             * Since we might need to test for self-intersections,
             * include current INSERT event object in list of event objects to test.
             * Last index can be skipped, because it must be a Delete event.
             */
-            for (int i = start; i < end; i++ ) 
+            for (int i = start; i < end; i++ )
             {
-                SweepLineEvent ev1 = _events[i]; 
-                if (ev1.IsInsert) 
+                var ev1 = _events[i];
+                if (ev1.IsInsert)
                 {
-                    MonotoneChain mc1 = (MonotoneChain)ev1.Object;
+                    var mc1 = (MonotoneChain)ev1.Object;
                     // don't compare edges in same group, if labels are present
-                    if (!ev0.IsSameLabel(ev1)) 
+                    if (!ev0.IsSameLabel(ev1))
                     {
                         mc0.ComputeIntersections(mc1, si);
                         _nOverlaps++;

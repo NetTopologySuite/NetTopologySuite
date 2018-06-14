@@ -26,22 +26,16 @@ namespace NetTopologySuite.Geometries.Prepared
             _representativePts = ComponentCoordinateExtracter.GetCoordinates(geom);
         }
 
-        public IGeometry Geometry { get { return _baseGeom; } }
+        public IGeometry Geometry => _baseGeom;
 
         ///<summary>
-        /// Gets the list of representative points for this geometry. 
+        /// Gets the list of representative points for this geometry.
         /// One vertex is included for every component of the geometry
         /// (i.e. including one for every ring of polygonal geometries).
         /// <para/>
         /// Do not modify the returned list!
         /// </summary>
-        public IList<Coordinate> RepresentativePoints
-        {
-            get
-            {
-                return new ReadOnlyCollection<Coordinate>(_representativePts);
-            }
-        }
+        public IList<Coordinate> RepresentativePoints => new ReadOnlyCollection<Coordinate>(_representativePts);
 
         ///<summary>
         /// Tests whether any representative of the target geometry intersects the test geometry.
@@ -52,7 +46,7 @@ namespace NetTopologySuite.Geometries.Prepared
         public bool IsAnyTargetComponentInTest(IGeometry testGeom)
         {
             var locator = new PointLocator();
-            foreach (Coordinate representativePoint in RepresentativePoints)
+            foreach (var representativePoint in RepresentativePoints)
             {
                 if (locator.Intersects(representativePoint, testGeom))
                     return true;
@@ -104,21 +98,21 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <item>Every point of the other geometry is a point of this geometry's interior.</item>
         /// <item>The DE-9IM Intersection Matrix for the two geometries matches <c>>[T**FF*FF*]</c></item>
         /// </list>
-	    /// In other words, if the test geometry has any interaction with the boundary of the target
-	    /// geometry the result of <c>ContainsProperly</c> is <c>false</c>. 
-	    /// This is different semantics to the {@link Geometry#contains} predicate,
-	    /// in which test geometries can intersect the target's boundary and still be contained.
-	    /// <para/>
-	    /// The advantage of using this predicate is that it can be computed
-	    /// efficiently, since it avoids the need to compute the full topological relationship
-	    /// of the input boundaries in cases where they intersect.
+        /// In other words, if the test geometry has any interaction with the boundary of the target
+        /// geometry the result of <c>ContainsProperly</c> is <c>false</c>.
+        /// This is different semantics to the {@link Geometry#contains} predicate,
+        /// in which test geometries can intersect the target's boundary and still be contained.
+        /// <para/>
+        /// The advantage of using this predicate is that it can be computed
+        /// efficiently, since it avoids the need to compute the full topological relationship
+        /// of the input boundaries in cases where they intersect.
         /// <para/>
         /// An example use case is computing the intersections
-        /// of a set of geometries with a large polygonal geometry.  
+        /// of a set of geometries with a large polygonal geometry.
         /// Since <i>intersection</i> is a fairly slow operation, it can be more efficient
         /// to use <see cref="ContainsProperly" /> to filter out test geometries which lie
         /// wholly inside the area.  In these cases the intersection is
-        /// known <c>a priori</c> to be simply the original test geometry. 
+        /// known <c>a priori</c> to be simply the original test geometry.
         /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry properly contains the given geometry</returns>

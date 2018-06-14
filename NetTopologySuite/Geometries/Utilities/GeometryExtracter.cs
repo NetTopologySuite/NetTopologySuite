@@ -12,7 +12,7 @@ namespace NetTopologySuite.Geometries.Utilities
         //{
         //    return o is T;
         //}
-    
+
         ///<summary>
         /// Extracts the <c>T</c> components from an <see cref="IGeometry"/> and adds them to the provided <see cref="List{T}"/>.
         ///</summary>

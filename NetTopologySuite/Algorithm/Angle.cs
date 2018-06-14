@@ -42,7 +42,6 @@ namespace NetTopologySuite.Algorithm
             return (angleDegrees * System.Math.PI) / 180.0;
         }
 
-
         ///<summary>
         /// Returns the angle of the vector from p0 to p1, relative to the positive X-axis.
         /// </summary>
@@ -75,12 +74,12 @@ namespace NetTopologySuite.Algorithm
         ///</summary>
         /// <remarks>
         /// <para>An angle is acute if it is less than 90 degrees.</para>
-        /// <para>Note: this implementation is not precise (deterministic) for angles very close to 90 degrees.</para>    
+        /// <para>Note: this implementation is not precise (deterministic) for angles very close to 90 degrees.</para>
         /// </remarks>
         /// <param name="p0">An endpoint of the angle</param>
         /// <param name="p1">The base of the angle</param>
         /// <param name="p2">Another endpoint of the angle</param>
-        public static Boolean IsAcute(Coordinate p0, Coordinate p1, Coordinate p2)
+        public static bool IsAcute(Coordinate p0, Coordinate p1, Coordinate p2)
         {
             // relies on fact that A dot B is positive iff A ang B is acute
             double dx0 = p0.X - p1.X;
@@ -96,12 +95,12 @@ namespace NetTopologySuite.Algorithm
         ///</summary>
         /// <remarks>
         /// <para>An angle is obtuse if it is greater than 90 degrees.</para>
-        /// <para>Note: this implementation is not precise (deterministic) for angles very close to 90 degrees.</para>    
+        /// <para>Note: this implementation is not precise (deterministic) for angles very close to 90 degrees.</para>
         /// </remarks>
         /// <param name="p0">An endpoint of the angle</param>
         /// <param name="p1">The base of the angle</param>
         /// <param name="p2">Another endpoint of the angle</param>
-        public static Boolean IsObtuse(Coordinate p0, Coordinate p1, Coordinate p2)
+        public static bool IsObtuse(Coordinate p0, Coordinate p1, Coordinate p2)
         {
             // relies on fact that A dot B is negative iff A ang B is obtuse
             double dx0 = p0.X - p1.X;
@@ -234,7 +233,7 @@ namespace NetTopologySuite.Algorithm
             {
                 while (angle < 0.0)
                     angle += PiTimes2;
-                // in case round-off error bumps the value over 
+                // in case round-off error bumps the value over
                 if (angle >= PiTimes2)
                     angle = 0.0;
             }
@@ -242,7 +241,7 @@ namespace NetTopologySuite.Algorithm
             {
                 while (angle >= PiTimes2)
                     angle -= PiTimes2;
-                // in case round-off error bumps the value under 
+                // in case round-off error bumps the value under
                 if (angle < 0.0)
                     angle = 0.0;
             }

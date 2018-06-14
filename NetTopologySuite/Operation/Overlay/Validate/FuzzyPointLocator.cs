@@ -8,7 +8,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
     ///<summary>
     /// Finds the most likely <see cref="Location"/> of a point relative to
     /// the polygonal components of a geometry, using a tolerance value.
-    ///</summary> 
+    ///</summary>
     ///<remarks>
     /// If a point is not clearly in the Interior or Exterior,
     /// it is considered to be on the Boundary.
@@ -55,9 +55,9 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         ///<returns>A lineal geometry containing the extracted linework</returns>
         private static IMultiLineString ExtractLinework(IGeometry g)
         {
-            PolygonalLineworkExtracter extracter = new PolygonalLineworkExtracter();
+            var extracter = new PolygonalLineworkExtracter();
             g.Apply(extracter);
-            List<ILineString> linework = extracter.Linework;
+            var linework = extracter.Linework;
             return g.Factory.CreateMultiLineString(linework.ToArray());
         }
 
@@ -65,8 +65,8 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         {
             for (int i = 0; i < _linework.NumGeometries; i++)
             {
-                ILineString line = (ILineString)_linework.GetGeometryN(i);
-                ICoordinateSequence seq = line.CoordinateSequence;
+                var line = (ILineString)_linework.GetGeometryN(i);
+                var seq = line.CoordinateSequence;
                 for (int j = 0; j < seq.Count - 1; j++)
                 {
                     seq.GetCoordinate(j, _seg.P0);
@@ -100,7 +100,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         {
             if (g is IPolygon)
             {
-                IPolygon poly = (IPolygon)g;
+                var poly = (IPolygon)g;
                 _linework.Add(poly.ExteriorRing);
                 for (int i = 0; i < poly.NumInteriorRings; i++)
                 {
@@ -112,9 +112,6 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         ///<summary>
         /// Gets the list of polygonal linework.
         ///</summary>
-        public List<ILineString> Linework
-        {
-            get { return _linework; }
-        }
+        public List<ILineString> Linework => _linework;
     }
 }

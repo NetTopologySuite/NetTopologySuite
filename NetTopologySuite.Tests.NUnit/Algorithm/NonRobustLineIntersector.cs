@@ -4,34 +4,34 @@ using NetTopologySuite.Algorithm;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
-    /// <summary> 
+    /// <summary>
     /// A non-robust version of <c>LineIntersector</c>.
-    /// </summary>   
+    /// </summary>
     public class NonRobustLineIntersector : LineIntersector
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
-        /// <returns> 
-        /// <c>true</c> if both numbers are positive or if both numbers are negative, 
+        /// <returns>
+        /// <c>true</c> if both numbers are positive or if both numbers are negative,
         /// <c>false</c> if both numbers are zero.
         /// </returns>
-        public static bool IsSameSignAndNonZero(double a, double b) 
+        public static bool IsSameSignAndNonZero(double a, double b)
         {
-            if (a == 0 || b == 0)             
-                return false;            
+            if (a == 0 || b == 0)
+                return false;
             return (a < 0 && b < 0) || (a > 0 && b > 0);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="p"></param>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
-        public override void ComputeIntersection(Coordinate p, Coordinate p1, Coordinate p2) 
+        public override void ComputeIntersection(Coordinate p, Coordinate p1, Coordinate p2)
         {
             double a1;
             double b1;
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             r = a1 * p.X + b1 * p.Y + c1;
 
             // if r != 0 the point does not lie on the line
-            if (r != 0) 
+            if (r != 0)
             {
                 Result = NoIntersection;
                 return;
@@ -77,28 +77,28 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             }
 
             IsProper = true;
-            if (p.Equals(p1) || p.Equals(p2))             
+            if (p.Equals(p1) || p.Equals(p2))
                 IsProper = false;
-            
+
             Result = PointIntersection;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
         /// <param name="p3"></param>
         /// <param name="p4"></param>
         /// <returns></returns>
-        public override int ComputeIntersect(Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4) 
+        public override int ComputeIntersect(Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4)
         {
             double a1;
             double b1;
-            double c1;            
+            double c1;
 
-            double a2;            
-            double b2;            
+            double a2;
+            double b2;
             double c2;
             /*
             *  Coefficients of line eqns.
@@ -111,7 +111,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             /*
             *  'Sign' values
             */
-            
+
             IsProper = false;
 
             /*
@@ -132,8 +132,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             *  Check signs of r3 and r4.  If both point 3 and point 4 lie on
             *  same side of line 1, the line segments do not intersect.
             */
-            if (r3 != 0 && r4 != 0 && IsSameSignAndNonZero(r3, r4))             
-                return NoIntersection;           
+            if (r3 != 0 && r4 != 0 && IsSameSignAndNonZero(r3, r4))
+                return NoIntersection;
 
             /*
             *  Compute a2, b2, c2
@@ -153,16 +153,16 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             *  on same side of second line segment, the line segments do
             *  not intersect.
             */
-            if (r1 != 0 && r2 != 0 && IsSameSignAndNonZero(r1, r2)) 
-                return NoIntersection;            
+            if (r1 != 0 && r2 != 0 && IsSameSignAndNonZero(r1, r2))
+                return NoIntersection;
 
             /*
             *  Line segments intersect: compute intersection point.
             */
             double denom = a1 * b2 - a2 * b1;
-            if (denom == 0) 
+            if (denom == 0)
                 return ComputeCollinearIntersection(p1, p2, p3, p4);
-            
+
             double numX = b1 * c2 - b2 * c1;
             Pa.X = numX / denom;
 
@@ -172,25 +172,25 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             // check if this is a proper intersection BEFORE truncating values,
             // to avoid spurious equality comparisons with endpoints
             IsProper = true;
-            if (Pa.Equals(p1) || Pa.Equals(p2) || Pa.Equals(p3) || Pa.Equals(p4))             
-                IsProper = false;            
+            if (Pa.Equals(p1) || Pa.Equals(p2) || Pa.Equals(p3) || Pa.Equals(p4))
+                IsProper = false;
 
-            // truncate computed point to precision grid            
-            if (PrecisionModel != null) 
+            // truncate computed point to precision grid
+            if (PrecisionModel != null)
                 PrecisionModel.MakePrecise(Pa);
-            
+
             return PointIntersection;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
         /// <param name="p3"></param>
         /// <param name="p4"></param>
         /// <returns></returns>
-        private int ComputeCollinearIntersection(Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4) 
+        private int ComputeCollinearIntersection(Coordinate p1, Coordinate p2, Coordinate p3, Coordinate p4)
         {
             double r1;
             double r2;
@@ -199,24 +199,24 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
             Coordinate q3;
             Coordinate q4;
-            
+
             double t3;
             double t4;
-            
+
             r1 = 0;
             r2 = 1;
             r3 = RParameter(p1, p2, p3);
             r4 = RParameter(p1, p2, p4);
 
             // make sure p3-p4 is in same direction as p1-p2
-            if (r3 < r4) 
+            if (r3 < r4)
             {
                 q3 = p3;
                 t3 = r3;
                 q4 = p4;
                 t4 = r4;
             }
-            else 
+            else
             {
                 q3 = p4;
                 t3 = r4;
@@ -225,11 +225,11 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             }
 
             // check for no intersection
-            if (t3 > r2 || t4 < r1) 
+            if (t3 > r2 || t4 < r1)
                 return NoIntersection;
-            
+
             // check for single point intersection
-            if (q4 == p1) 
+            if (q4 == p1)
             {
                 Pa.CoordinateValue = p1;
                 return PointIntersection;
@@ -246,11 +246,11 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
             Pb.CoordinateValue = p2;
             if (t4 < r2) Pb.CoordinateValue = q4;
-            
+
             return CollinearIntersection;
         }
 
-        /// <summary> 
+        /// <summary>
         /// RParameter computes the parameter for the point p
         /// in the parameterized equation
         /// of the line from p1 to p2.
@@ -260,13 +260,13 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             // compute maximum delta, for numerical stability
             // also handle case of p1-p2 being vertical or horizontal
-            double r;            
+            double r;
             double dx = Math.Abs(p2.X - p1.X);
             double dy = Math.Abs(p2.Y - p1.Y);
 
-            if (dx > dy) 
-                 r = (p.X - p1.X) / (p2.X - p1.X);            
-            else r = (p.Y - p1.Y) / (p2.Y - p1.Y);            
+            if (dx > dy)
+                 r = (p.X - p1.X) / (p2.X - p1.X);
+            else r = (p.Y - p1.Y) / (p2.Y - p1.Y);
 
             return r;
         }

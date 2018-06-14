@@ -10,7 +10,7 @@ namespace NetTopologySuite.Tests.Various
         public void EqualsNullThrowsBugFix()
         {
             var polygon = new Polygon(null);
-            var result = polygon.Equals(null);
+            bool result = polygon.Equals(null);
             Assert.IsNotNull(result);
         }
     }

@@ -75,7 +75,7 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
         [TestAttribute]
         public void TestExtrudeAltitudeLineString()
         {
-            KMLWriter writer = new KMLWriter { Extrude = true, AltitudeMode = KMLWriter.AltitudeModeAbsolute };
+            var writer = new KMLWriter { Extrude = true, AltitudeMode = KMLWriter.AltitudeModeAbsolute };
             CheckEqual(writer, "LINESTRING (1 1, 2 2)",
                 "<LineString><extrude>1</extrude><altitudeMode>absolute</altitudeMode><coordinates>1,1 2,2</coordinates></LineString>");
         }
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
         [TestAttribute]
         public void TestExtrudeTesselateLineString()
         {
-            KMLWriter writer = new KMLWriter { Extrude = true, Tesselate = true };
+            var writer = new KMLWriter { Extrude = true, Tesselate = true };
             CheckEqual(writer, "LINESTRING (1 1, 2 2)",
                 "<LineString><extrude>1</extrude><tesselate>1</tesselate><coordinates>1,1 2,2</coordinates></LineString>");
         }
@@ -91,7 +91,7 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
         [TestAttribute]
         public void TestExtrudeAltitudePolygon()
         {
-            KMLWriter writer = new KMLWriter { Extrude = true, AltitudeMode = KMLWriter.AltitudeModeAbsolute };
+            var writer = new KMLWriter { Extrude = true, AltitudeMode = KMLWriter.AltitudeModeAbsolute };
             CheckEqual(writer, "POLYGON ((1 1, 2 1, 2 2, 1 2, 1 1))",
                 "<Polygon><extrude>1</extrude><altitudeMode>absolute</altitudeMode><outerBoundaryIs><LinearRing><coordinates>1,1 2,1 2,2 1,2 1,1</coordinates></LinearRing></outerBoundaryIs></Polygon>");
         }
@@ -99,7 +99,7 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
         [TestAttribute]
         public void TestExtrudeGeometryCollection()
         {
-            KMLWriter writer = new KMLWriter { Extrude = true };
+            var writer = new KMLWriter { Extrude = true };
             CheckEqual(writer, "GEOMETRYCOLLECTION (LINESTRING (1 9, 1 2, 3 2), POLYGON ((3 9, 5 9, 5 7, 3 7, 3 9)), POINT (5 5))",
                 "<MultiGeometry><LineString><extrude>1</extrude><coordinates>1,9 1,2 3,2</coordinates></LineString><Polygon><extrude>1</extrude><outerBoundaryIs><LinearRing><coordinates>3,9 5,9 5,7 3,7 3,9</coordinates></LinearRing></outerBoundaryIs></Polygon><Point><extrude>1</extrude><coordinates>5,5</coordinates></Point></MultiGeometry>");
         }
@@ -107,7 +107,7 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
         [TestAttribute]
         public void TestPrecision()
         {
-            KMLWriter writer = new KMLWriter { Precision = 1 };
+            var writer = new KMLWriter { Precision = 1 };
             CheckEqual(writer, "LINESTRING (1.0001 1.1234, 2.5555 2.99999)",
                 " <LineString><coordinates>1,1.1 2.6,3</coordinates></LineString>");
         }
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
         [TestAttribute]
         public void precision_zero_means_only_integers_allowed()
         {
-            KMLWriter writer = new KMLWriter { Precision = 0 };
+            var writer = new KMLWriter { Precision = 0 };
             CheckEqual(writer, "LINESTRING (1.0001 1.1234, 2.5555 2.99999)",
                 " <LineString><coordinates>1,1 3,3</coordinates></LineString>");
         }
@@ -123,20 +123,20 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
         [TestAttribute]
         public void negative_precision_means_floating_precision()
         {
-            KMLWriter writer = new KMLWriter { Precision = -1 };
+            var writer = new KMLWriter { Precision = -1 };
             CheckEqual(writer, "LINESTRING (1.0001 1.1234, 2.5555 2.99999)",
                 " <LineString><coordinates>1.0001,1.1234 2.5555,2.99999</coordinates></LineString>");
         }
 
         private void CheckEqual(string wkt, string expectedKML)
         {
-            KMLWriter writer = new KMLWriter();
+            var writer = new KMLWriter();
             CheckEqual(writer, wkt, expectedKML);
         }
 
         private void CheckEqual(KMLWriter writer, string wkt, string expected)
         {
-            IGeometry geom = new WKTReader().Read(wkt);
+            var geom = new WKTReader().Read(wkt);
             CheckEqual(writer, geom, expected);
         }
 
@@ -145,8 +145,8 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
             string actual = writer.Write(geom);
             string actualNorm = normalizeKML(actual);
             string expectedNorm = normalizeKML(expected);
-            bool isEqual = String.Equals(actualNorm, expectedNorm, StringComparison.OrdinalIgnoreCase);
-            Assert.IsTrue(isEqual, String.Format("\nGenerated KML:  {0}\n  Expected KML: {1}", actualNorm, expectedNorm));
+            bool isEqual = string.Equals(actualNorm, expectedNorm, StringComparison.OrdinalIgnoreCase);
+            Assert.IsTrue(isEqual, string.Format("\nGenerated KML:  {0}\n  Expected KML: {1}", actualNorm, expectedNorm));
         }
 
         /// <summary>

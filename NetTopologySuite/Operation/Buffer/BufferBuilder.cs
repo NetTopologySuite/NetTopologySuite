@@ -16,7 +16,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// and the precision model in which to carry out the computation.
     ///</summary>
     /// <remarks>
-    /// When computing buffers in floating point double-precision 
+    /// When computing buffers in floating point double-precision
     /// it can happen that the process of iterated noding can fail to converge (terminate).
     /// In this case a <see cref="TopologyException"/> will be thrown.
     /// Retrying the computation in a fixed precision
@@ -50,7 +50,7 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         ///<summary>
-        /// Sets the precision model to use during the curve computation and noding, 
+        /// Sets the precision model to use during the curve computation and noding,
         /// if it is different to the precision model of the Geometry.
         ///</summary>
         ///<remarks>
@@ -59,8 +59,8 @@ namespace NetTopologySuite.Operation.Buffer
         ///</remarks>
         public IPrecisionModel WorkingPrecisionModel
         {
-            get { return _workingPrecisionModel; }
-            set { _workingPrecisionModel = value; }
+            get => _workingPrecisionModel;
+            set => _workingPrecisionModel = value;
         }
 
         ///<summary>
@@ -70,22 +70,22 @@ namespace NetTopologySuite.Operation.Buffer
         ///</summary>
         public INoder Noder
         {
-            get { return _workingNoder; }
-            set { _workingNoder = value; }
+            get => _workingNoder;
+            set => _workingNoder = value;
         }
 
         public IGeometry Buffer(IGeometry g, double distance)
         {
-            IPrecisionModel precisionModel = _workingPrecisionModel;
+            var precisionModel = _workingPrecisionModel;
             if (precisionModel == null)
                 precisionModel = g.PrecisionModel;
 
             // factory must be the same as the one used by the input
             _geomFact = g.Factory;
 
-            OffsetCurveBuilder curveBuilder = new OffsetCurveBuilder(precisionModel, _bufParams);
+            var curveBuilder = new OffsetCurveBuilder(precisionModel, _bufParams);
 
-            OffsetCurveSetBuilder curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder);
+            var curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder);
 
             var bufferSegStrList = curveSetBuilder.GetCurves();
 
@@ -99,8 +99,8 @@ namespace NetTopologySuite.Operation.Buffer
             _graph = new PlanarGraph(new OverlayNodeFactory());
             _graph.AddEdges(_edgeList.Edges);
 
-            IEnumerable<BufferSubgraph> subgraphList = CreateSubgraphs(_graph);
-            PolygonBuilder polyBuilder = new PolygonBuilder(_geomFact);
+            var subgraphList = CreateSubgraphs(_graph);
+            var polyBuilder = new PolygonBuilder(_geomFact);
             BuildSubgraphs(subgraphList, polyBuilder);
             var resultPolyList = polyBuilder.Polygons;
 
@@ -110,7 +110,7 @@ namespace NetTopologySuite.Operation.Buffer
                 return CreateEmptyResultGeometry();
             }
 
-            IGeometry resultGeom = _geomFact.BuildGeometry(resultPolyList);
+            var resultGeom = _geomFact.BuildGeometry(resultPolyList);
             return resultGeom;
         }
 
@@ -120,7 +120,7 @@ namespace NetTopologySuite.Operation.Buffer
 
             // otherwise use a fast (but non-robust) noder
             var noder = new MCIndexNoder(new IntersectionAdder(new RobustLineIntersector { PrecisionModel = precisionModel}));
-            
+
             //var li = new RobustLineIntersector();
             //li.PrecisionModel = precisionModel;
             //noder.SegmentIntersector = new IntersectionAdder(li);
@@ -143,7 +143,7 @@ namespace NetTopologySuite.Operation.Buffer
             foreach (var segStr in nodedSegStrings)
             {
                 /**
-                 * Discard edges which have zero length, 
+                 * Discard edges which have zero length,
                  * since they carry no information and cause problems with topology building
                  */
                 var pts = segStr.Coordinates;
@@ -158,7 +158,6 @@ namespace NetTopologySuite.Operation.Buffer
             //saveEdges(edgeList.getEdges(), "run" + runCount + "_collapsedEdges");
         }
 
-
         /// <summary>
         /// Inserted edges are checked to see if an identical edge already exists.
         /// If so, the edge is not inserted, but its label is merged
@@ -168,14 +167,14 @@ namespace NetTopologySuite.Operation.Buffer
         {
             //<FIX> MD 8 Oct 03  speed up identical edge lookup
             // fast lookup
-            Edge existingEdge = _edgeList.FindEqualEdge(e);
+            var existingEdge = _edgeList.FindEqualEdge(e);
 
             // If an identical edge already exists, simply update its label
             if (existingEdge != null)
             {
-                Label existingLabel = existingEdge.Label;
+                var existingLabel = existingEdge.Label;
 
-                Label labelToMerge = e.Label;
+                var labelToMerge = e.Label;
                 // check if new edge is in reverse direction to existing edge
                 // if so, must flip the label before merging it
                 if (!existingEdge.IsPointwiseEqual(e))
@@ -203,7 +202,7 @@ namespace NetTopologySuite.Operation.Buffer
         private static IEnumerable<BufferSubgraph> CreateSubgraphs(PlanarGraph graph)
         {
             var subgraphList = new List<BufferSubgraph>();
-            foreach (Node node in graph.Nodes)
+            foreach (var node in graph.Nodes)
             {
                 if (!node.IsVisited)
                 {
@@ -237,7 +236,7 @@ namespace NetTopologySuite.Operation.Buffer
             var processedGraphs = new List<BufferSubgraph>();
             foreach (var subgraph in subgraphList)
             {
-                Coordinate p = subgraph.RightMostCoordinate;
+                var p = subgraph.RightMostCoordinate;
                 //      int outsideDepth = 0;
                 //      if (polyBuilder.containsPoint(p))
                 //        outsideDepth = 1;
@@ -263,8 +262,8 @@ namespace NetTopologySuite.Operation.Buffer
             var lines = new List<IGeometry>();
             while (it.MoveNext())
             {
-                ISegmentString ss = it.Current;
-                ILineString line = fact.CreateLineString(ss.Coordinates);
+                var ss = it.Current;
+                var line = fact.CreateLineString(ss.Coordinates);
                 lines.Add(line);
             }
             return fact.BuildGeometry(lines);
@@ -277,7 +276,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <returns>The empty result geometry</returns>
         private IGeometry CreateEmptyResultGeometry()
         {
-            IGeometry emptyGeom = _geomFact.CreatePolygon();
+            var emptyGeom = _geomFact.CreatePolygon();
             return emptyGeom;
         }
     }

@@ -14,8 +14,8 @@ namespace NetTopologySuite.Algorithm.Distance
     public class PointPairDistance
     {
         private readonly Coordinate[] _pt = { new Coordinate(), new Coordinate() };
-        private double _distance = Double.NaN;
-        private Boolean _isNull = true;
+        private double _distance = double.NaN;
+        private bool _isNull = true;
 
         ///<summary>
         /// Initializes to null.
@@ -52,25 +52,19 @@ namespace NetTopologySuite.Algorithm.Distance
         /// <summary>
         /// The distance between the paired coordinates
         /// </summary>
-        public double Distance
-        {
-            get { return _distance; }
-        }
+        public double Distance => _distance;
 
         /// <summary>
         /// Returns an array containing the paired points
         /// </summary>
-        public Coordinate[] Coordinates
-        {
-            get { return _pt; }
-        }
+        public Coordinate[] Coordinates => _pt;
 
         /// <summary>
         /// Gets the value of
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public Coordinate this[int i] { get { return _pt[i]; } }
+        public Coordinate this[int i] => _pt[i];
 
         public void SetMaximum(PointPairDistance ptDist)
         {
@@ -109,7 +103,7 @@ namespace NetTopologySuite.Algorithm.Distance
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {
-  	        return WKTWriter.ToLineString(_pt[0], _pt[1]);
+            return WKTWriter.ToLineString(_pt[0], _pt[1]);
         }
     }
 }

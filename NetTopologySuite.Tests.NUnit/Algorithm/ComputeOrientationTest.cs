@@ -25,7 +25,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             };
             Assert.IsTrue(IsAllOrientationsEqual(pts2));
         }
-  
+
         // MD - deliberately disabled
         [TestAttribute]
         [IgnoreAttribute("This case fails because subtraction of small from large loses precision")]
@@ -49,9 +49,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             return orient[0] == orient[1] && orient[0] == orient[2];
         }
 
-        private Coordinate[] GetCoordinates(String wkt)
+        private Coordinate[] GetCoordinates(string wkt)
         {
-            IGeometry geom = _reader.Read(wkt);
+            var geom = _reader.Read(wkt);
             return geom.Coordinates;
         }
     }

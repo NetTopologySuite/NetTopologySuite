@@ -20,10 +20,10 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
 
         /**
          * From GEOS #572
-         * 
+         *
          * The cause is that the longer line nodes the single-segment line.
          * The node then tests as not lying precisely on the original longer line.
-         * 
+         *
          * @throws Exception
          */
 
@@ -36,12 +36,12 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             RunRelateTest(a, b, "101F00FF2");
         }
 
-        private static void RunRelateTest(String wkt1, String wkt2, String expectedIM)
+        private static void RunRelateTest(string wkt1, string wkt2, string expectedIM)
         {
             var g1 = Reader.Read(wkt1);
             var g2 = Reader.Read(wkt2);
             var im = RelateOp.Relate(g1, g2);
-            var imStr = im.ToString();
+            string imStr = im.ToString();
             //System.Console.WriteLine("expected: {0}", expectedIM);
             //System.Console.WriteLine("result:   {0}", imStr);
             Assert.IsTrue(im.Matches(expectedIM));

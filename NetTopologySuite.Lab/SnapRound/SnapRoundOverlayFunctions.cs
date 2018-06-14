@@ -11,7 +11,7 @@ namespace NetTopologySuite.SnapRound
 
         public static IGeometry Intersection(IGeometry geomA, IGeometry geomB, double scaleFactor)
         {
-            IGeometry[] geom = SnapClean(geomA, geomB, scaleFactor);
+            var geom = SnapClean(geomA, geomB, scaleFactor);
             return geom[0].Intersection(geom[1]);
         }
 
@@ -22,7 +22,7 @@ namespace NetTopologySuite.SnapRound
 
         public static IGeometry Difference(IGeometry geomA, IGeometry geomB, double scaleFactor)
         {
-            IGeometry[] geom = SnapClean(geomA, geomB, scaleFactor);
+            var geom = SnapClean(geomA, geomB, scaleFactor);
             return geom[0].Difference(geom[1]);
         }
 
@@ -33,7 +33,7 @@ namespace NetTopologySuite.SnapRound
 
         public static IGeometry SymmetricDifference(IGeometry geomA, IGeometry geomB, double scaleFactor)
         {
-            IGeometry[] geom = SnapClean(geomA, geomB, scaleFactor);
+            var geom = SnapClean(geomA, geomB, scaleFactor);
             return geom[0].SymmetricDifference(geom[1]);
         }
 
@@ -44,7 +44,7 @@ namespace NetTopologySuite.SnapRound
 
         public static IGeometry Union(IGeometry geomA, IGeometry geomB, double scaleFactor)
         {
-            IGeometry[] geom = SnapClean(geomA, geomB, scaleFactor);
+            var geom = SnapClean(geomA, geomB, scaleFactor);
             return geom[0].Union(geom[1]);
         }
 
@@ -72,7 +72,6 @@ namespace NetTopologySuite.SnapRound
         //    if (!(geom is IPolygonal) ) return geom;
         //    return geom.Buffer(0);
         //}
-
 
     }
 }

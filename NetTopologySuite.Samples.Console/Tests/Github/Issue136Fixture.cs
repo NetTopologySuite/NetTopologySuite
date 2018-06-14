@@ -12,8 +12,8 @@ namespace NetTopologySuite.Samples.Tests.Github
         [Test]
         public void linestring_angle_value_ignores_orientation()
         {
-            LineString lineString1 = new LineString(new[] { new Coordinate(1, 1), new Coordinate(2, 2) });
-            LineString lineString2 = new LineString(new[] { new Coordinate(2, 2), new Coordinate(1, 1) });
+            var lineString1 = new LineString(new[] { new Coordinate(1, 1), new Coordinate(2, 2) });
+            var lineString2 = new LineString(new[] { new Coordinate(2, 2), new Coordinate(1, 1) });
             double angle1 = lineString1.Angle;
             double angle2 = lineString2.Angle;
             Assert.AreEqual(angle1, angle2);
@@ -24,8 +24,8 @@ namespace NetTopologySuite.Samples.Tests.Github
         [Test]
         public void angle_utility_handles_orientation()
         {
-            LineString lineString1 = new LineString(new[] { new Coordinate(1, 1), new Coordinate(2, 2) });
-            LineString lineString2 = new LineString(new[] { new Coordinate(2, 2), new Coordinate(1, 1) });
+            var lineString1 = new LineString(new[] { new Coordinate(1, 1), new Coordinate(2, 2) });
+            var lineString2 = new LineString(new[] { new Coordinate(2, 2), new Coordinate(1, 1) });
             double angle1 = AngleUtility.ToDegrees(
                 AngleUtility.Angle(lineString1.StartPoint.Coordinate, lineString1.EndPoint.Coordinate));
             double angle2 = AngleUtility.ToDegrees(
@@ -37,8 +37,8 @@ namespace NetTopologySuite.Samples.Tests.Github
         [Test]
         public void linesegment_handles_orientation()
         {
-            LineSegment lineSegment1 = new LineSegment(new Coordinate(1, 1), new Coordinate(2, 2));
-            LineSegment lineSegment2 = new LineSegment(new Coordinate(2, 2), new Coordinate(1, 1));
+            var lineSegment1 = new LineSegment(new Coordinate(1, 1), new Coordinate(2, 2));
+            var lineSegment2 = new LineSegment(new Coordinate(2, 2), new Coordinate(1, 1));
             double angle1 = AngleUtility.ToDegrees(lineSegment1.Angle);
             double angle2 = AngleUtility.ToDegrees(lineSegment2.Angle);
             Assert.AreEqual(45d, angle1);

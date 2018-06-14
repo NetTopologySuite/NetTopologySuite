@@ -38,7 +38,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Quadtree
             Console.WriteLine("\n\nTest with original data\n");
             tester.Run();
             var tree1 = (Quadtree<object>)tester.SpatialIndex;
-            var data = SerializationUtility.Serialize(tree1);
+            byte[] data = SerializationUtility.Serialize(tree1);
             var tree2 = SerializationUtility.Deserialize<Quadtree<object>>(data);
             tester.SpatialIndex = tree2;
 

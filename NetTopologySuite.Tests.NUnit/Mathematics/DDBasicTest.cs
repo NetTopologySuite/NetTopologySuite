@@ -52,8 +52,8 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
 
         private void CheckSqrt(DD x, double errBound)
         {
-            DD sqrt = x.Sqrt();
-            DD x2 = sqrt.Multiply(sqrt);
+            var sqrt = x.Sqrt();
+            var x2 = sqrt.Multiply(sqrt);
             CheckErrorBound("Sqrt", x, x2, errBound);
         }
 
@@ -72,8 +72,8 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
 
         private static void CheckTrunc(DD x, DD expected)
         {
-            DD trunc = x.Truncate();
-            var isEqual = trunc.Equals(expected);
+            var trunc = x.Truncate();
+            bool isEqual = trunc.Equals(expected);
             Assert.True(isEqual);
             isEqual = trunc == expected;
             Assert.True(isEqual);
@@ -111,7 +111,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             CheckBinomialSquare(1e10, 1.0);
             CheckBinomialSquare(1e14, 1.0);
             // Following call will fail, because it requires 32 digits of precision
-            //  	checkBinomialSquare(1e16, 1.0);
+            // checkBinomialSquare(1e16, 1.0);
 
             CheckBinomialSquare(1e14, 291.0);
             CheckBinomialSquare(5e14, 291.0);
@@ -120,20 +120,20 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
 
         private static void CheckAddMult2(DD dd)
         {
-            DD sum = dd.Add(dd);
-            DD prod = dd.Multiply(new DD(2.0));
+            var sum = dd.Add(dd);
+            var prod = dd.Multiply(new DD(2.0));
             CheckErrorBound("AddMult2", sum, prod, 0.0);
         }
 
         private static void CheckMultiplyDivide(DD a, DD b, double errBound)
         {
-            DD a2 = a.Multiply(b).Divide(b);
+            var a2 = a.Multiply(b).Divide(b);
             CheckErrorBound("MultiplyDivide", a, a2, errBound);
         }
 
         private static void CheckDivideMultiply(DD a, DD b, double errBound)
         {
-            DD a2 = a.Divide(b).Multiply(b);
+            var a2 = a.Divide(b).Multiply(b);
             CheckErrorBound("DivideMultiply", a, a2, errBound);
         }
 
@@ -142,18 +142,18 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             return x.Subtract(y).Abs();
         }
 
-        private static void CheckErrorBound(String tag, DD x, DD y, double errBound)
+        private static void CheckErrorBound(string tag, DD x, DD y, double errBound)
         {
-            DD err = x.Subtract(y).Abs();
+            var err = x.Subtract(y).Abs();
             Console.WriteLine(tag + " err=" + err);
-            var isWithinEps = err.ToDoubleValue() <= errBound;
+            bool isWithinEps = err.ToDoubleValue() <= errBound;
             Assert.True(isWithinEps);
         }
 
         /**
          * Computes (a+b)^2 in two different ways and compares the result.
          * For correct results, a and b should be integers.
-         * 
+         *
          * @param a
          * @param b
          */
@@ -165,7 +165,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             var bdd = new DD(b);
             var aPlusb = add.Add(bdd);
             var abSq = aPlusb.Multiply(aPlusb);
-            //  	System.out.println("(a+b)^2 = " + abSq);
+            // System.out.println("(a+b)^2 = " + abSq);
 
             // expansion
             var a2DD = add.Multiply(add);
@@ -173,32 +173,32 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             var ab = add.Multiply(bdd);
             var sum = b2DD.Add(ab).Add(ab);
 
-            //  	System.out.println("2ab+b^2 = " + sum);
+            // System.out.println("2ab+b^2 = " + sum);
 
             var diff = abSq.Subtract(a2DD);
-            //  	System.out.println("(a+b)^2 - a^2 = " + diff);
+            // System.out.println("(a+b)^2 - a^2 = " + diff);
 
             var delta = diff.Subtract(sum);
 
-            //System.Console.WriteLine("\nA = " + a + ", B = " + b);
-            //System.Console.WriteLine("[DD]     2ab+b^2 = " + sum
-                              //+ "   (a+b)^2 - a^2 = " + diff
-                              //+ "   delta = " + delta);
+            // System.Console.WriteLine("\nA = " + a + ", B = " + b);
+            // System.Console.WriteLine("[DD]     2ab+b^2 = " + sum
+            //                          + "   (a+b)^2 - a^2 = " + diff
+            //                          + "   delta = " + delta);
             PrintBinomialSquareDouble(a, b);
 
-            var isSame = diff.Equals(sum);
+            bool isSame = diff.Equals(sum);
             Assert.IsTrue(isSame);
-            var isDeltaZero = delta.IsZero;
+            bool isDeltaZero = delta.IsZero;
             Assert.IsTrue(isDeltaZero);
         }
 
         private static void PrintBinomialSquareDouble(double a, double b)
         {
-            var sum = 2*a*b + b*b;
-            var diff = (a + b)*(a + b) - a*a;
-            //Console.WriteLine("[double] 2ab+b^2= " + sum
-            //                  + "   (a+b)^2-a^2= " + diff
-            //                  + "   delta= " + (sum - diff));
+            double sum = 2*a*b + b*b;
+            double diff = (a + b)*(a + b) - a*a;
+            // Console.WriteLine("[double] 2ab+b^2= " + sum
+            //                   + "   (a+b)^2-a^2= " + diff
+            //                   + "   delta= " + (sum - diff));
         }
 
         [TestAttribute]
@@ -227,43 +227,42 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             var aPlusb = add.Add(bdd);
             var aSubb = add.Subtract(bdd);
             var abProd = aPlusb.Multiply(aSubb);
-            //  	System.out.println("(a+b)^2 = " + abSq);
+            // System.out.println("(a+b)^2 = " + abSq);
 
             // expansion
             var a2DD = add.Multiply(add);
             var b2DD = bdd.Multiply(bdd);
 
-            //  	System.out.println("2ab+b^2 = " + sum);
+            // System.out.println("2ab+b^2 = " + sum);
 
             // this should equal b^2
             var diff = abProd.Subtract(a2DD).Negate();
-            //  	System.out.println("(a+b)^2 - a^2 = " + diff);
+            // System.out.println("(a+b)^2 - a^2 = " + diff);
 
             var delta = diff.Subtract(b2DD);
 
-            //System.Console.WriteLine("\nA = " + a + ", B = " + b);
-            //System.Console.WriteLine("[DD] (a+b)(a-b) = " + abProd
-            //                +"   -((a^2 - b^2) - a^2) = " + diff
-            //                + "   delta = " + delta);
-            //  	printBinomialSquareDouble(a,b);
+            // System.Console.WriteLine("\nA = " + a + ", B = " + b);
+            // System.Console.WriteLine("[DD] (a+b)(a-b) = " + abProd
+            //                          + "   -((a^2 - b^2) - a^2) = " + diff
+            //                          + "   delta = " + delta);
+            // printBinomialSquareDouble(a,b);
 
-            var isSame = diff.Equals(b2DD);
+            bool isSame = diff.Equals(b2DD);
             Assert.IsTrue(isSame);
-            var isDeltaZero = delta.IsZero;
+            bool isDeltaZero = delta.IsZero;
             Assert.IsTrue(isDeltaZero);
         }
-
 
         private static void CheckReciprocal(double x, double errBound)
         {
             var xdd = new DD(x);
             var rr = xdd.Reciprocal().Reciprocal();
 
-            var err = xdd.Subtract(rr).ToDoubleValue();
+            double err = xdd.Subtract(rr).ToDoubleValue();
 
-            //System.Console.WriteLine("DD Recip = " + xdd
-            //                  +" DD delta= " + err
-            //                  + " double recip delta= " + (x - 1.0/(1.0/x)));
+            // System.Console.WriteLine("DD Recip = " + xdd
+            //                          + " DD delta= " + err
+            //                          + " double recip delta= " + (x - 1.0/(1.0/x)));
 
             Assert.IsTrue(err <= errBound);
         }
@@ -272,12 +271,12 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         {
             var xdd = new DD(x);
             var pow = xdd.Pow(exp);
-            //System.Console.WriteLine("Pow(" + x + ", " + exp + ") = " + pow);
+            // System.Console.WriteLine("Pow(" + x + ", " + exp + ") = " + pow);
             var pow2 = SlowPow(xdd, exp);
 
             double err = pow.Subtract(pow2).ToDoubleValue();
 
-            var isOK = err < errBound;
+            bool isOK = err < errBound;
             if (!isOK)
                 Console.WriteLine("Test slowPow value " + pow2);
 
@@ -289,7 +288,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             if (exp == 0)
                 return DD.ValueOf(1.0);
 
-            var n = Math.Abs(exp);
+            int n = Math.Abs(exp);
             // MD - could use binary exponentiation for better precision & speed
             var pow = new DD(x);
             for (int i = 1; i < n; i++)

@@ -16,7 +16,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         [CategoryAttribute("Stress")]
         public void TestStressRun()
         {
-            var count = 100;
+            int count = 100;
             while (count-- > 0)
             {
                 int n = random.Next(0, 10000);
@@ -26,10 +26,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 
         private void Run(int nPts)
         {
-            Coordinate[] randPts = CreateRandomPoints(nPts);
+            var randPts = CreateRandomPoints(nPts);
             IGeometry mp = _geomFact.CreateMultiPoint(randPts);
-            MinimumBoundingCircle mbc = new MinimumBoundingCircle(mp);
-            Coordinate centre = mbc.GetCentre();
+            var mbc = new MinimumBoundingCircle(mp);
+            var centre = mbc.GetCentre();
             double radius = mbc.GetRadius();
             Console.WriteLine("Testing " + nPts + " random points.  Radius = " + radius);
 
@@ -40,7 +40,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         {
             for (int i = 0; i < pts.Length; i++)
             {
-                Coordinate p = pts[i];
+                var p = pts[i];
                 double ptRadius = centre.Distance(p);
                 double error = ptRadius - radius;
                 Assert.LessOrEqual(error, tolerance);
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 
         private Coordinate[] CreateRandomPoints(int n)
         {
-            Coordinate[] pts = new Coordinate[n];
+            var pts = new Coordinate[n];
             for (int i = 0; i < n; i++)
             {
                 double x = 100 * random.NextDouble();

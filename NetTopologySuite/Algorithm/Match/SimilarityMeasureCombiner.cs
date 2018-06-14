@@ -9,7 +9,7 @@ namespace NetTopologySuite.Algorithm.Match
     public static class SimilarityMeasureCombiner
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="measure1"></param>
         /// <param name="measure2"></param>

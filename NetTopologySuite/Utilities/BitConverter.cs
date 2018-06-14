@@ -9,7 +9,7 @@ namespace NetTopologySuite.Utilities
     public class BitConverter
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>
@@ -22,7 +22,7 @@ namespace NetTopologySuite.Utilities
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="x"></param>
         /// <returns></returns>

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
+﻿using System.Diagnostics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
-using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Operation.Valid;
 using NetTopologySuite.SnapRound;
 using NUnit.Framework;
@@ -156,7 +151,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
             //            gr.FillPath(new SolidBrush(Color.FromArgb(64, Color.Gold)), gp3);
             //        gr.DrawPath(Pens.Gold, gp3);
 
-
             //    }
             //    var path = System.IO.Path.ChangeExtension(System.IO.Path.GetTempFileName(), "png");
             //    img.Save(path, ImageFormat.Png);
@@ -169,16 +163,16 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
 
         private static AffineTransformation CreateAffineTransformation(Envelope env, int offsetX = 0)
         {
-            var imageRatio = ImageWidth / ImageHeight;
-            var ratio = env.Width / env.Height;
+            int imageRatio = ImageWidth / ImageHeight;
+            double ratio = env.Width / env.Height;
             if (ratio > imageRatio)
             {
-                var growHeight = (env.Width / imageRatio - env.Height) / 2;
+                double growHeight = (env.Width / imageRatio - env.Height) / 2;
                 env.ExpandBy(0, growHeight);
             }
             else if (ratio < imageRatio)
             {
-                var growWidth = (env.Height * imageRatio - env.Width) / 2;
+                double growWidth = (env.Height * imageRatio - env.Width) / 2;
                 env.ExpandBy(growWidth, 0);
             }
 

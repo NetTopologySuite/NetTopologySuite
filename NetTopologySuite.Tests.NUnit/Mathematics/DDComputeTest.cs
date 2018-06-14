@@ -17,11 +17,11 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             //System.Console.WriteLine("--------------------------------");
             //System.Console.WriteLine("Computing e by Taylor series");
             var testE = ComputeEByTaylorSeries();
-            var err = Math.Abs(testE.Subtract(DD.E).ToDoubleValue());
+            double err = Math.Abs(testE.Subtract(DD.E).ToDoubleValue());
             //System.Console.WriteLine("Difference from DoubleDouble.E = " + err);
             Assert.IsTrue(err < 64*DD.Epsilon);
         }
-        
+
         /// <summary>
         /// Uses Taylor series to compute e
         /// <para/>
@@ -32,8 +32,8 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         {
             var s = DD.ValueOf(2.0);
             var t = DD.ValueOf(1.0);
-            var n = 1.0;
-            var i = 0;
+            double n = 1.0;
+            int i = 0;
 
             while (t.ToDoubleValue() > DD.Epsilon)
             {
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             //System.Console.WriteLine("--------------------------------");
             //System.Console.WriteLine("Computing Pi by Machin's rule");
             var testE = ComputePiByMachin();
-            var err = Math.Abs(testE.Subtract(DD.PI).ToDoubleValue());
+            double err = Math.Abs(testE.Subtract(DD.PI).ToDoubleValue());
             //System.Console.WriteLine("Difference from DoubleDouble.PI = " + err);
             Assert.IsTrue(err < 8*DD.Epsilon);
         }
@@ -89,9 +89,9 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             var t2 = t.Sqr();
             var at = new DD(0.0);
             var two = new DD(2.0);
-            var k = 0;
+            int k = 0;
             var d = new DD(1.0);
-            var sign = 1;
+            int sign = 1;
             while (t.ToDoubleValue() > DD.Epsilon)
             {
                 k++;

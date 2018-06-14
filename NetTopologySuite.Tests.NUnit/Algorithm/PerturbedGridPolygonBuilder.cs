@@ -18,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         private int _numLines = 10;
         private double _lineWidth = 20;
 
-        private Int32 _seed;
+        private int _seed;
         private Random _rand;
 
         private IGeometry _grid;
@@ -34,20 +34,20 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         public int Seed
         {
-            get { return _seed; }
-            set { _seed = value; }
+            get => _seed;
+            set => _seed = value;
         }
 
         public int NumLines
         {
-            get { return _numLines; }
-            set {_numLines = value;}
+            get => _numLines;
+            set => _numLines = value;
         }
 
         public double LineWidth
         {
-            get { return _lineWidth; }
-            set { _lineWidth = value; }
+            get => _lineWidth;
+            set => _lineWidth = value;
         }
 
         public IGeometry Geometry
@@ -67,21 +67,21 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
             for (int i = 0; i < _numLines; i++)
             {
-                Coordinate p0 = new Coordinate(GetRandOrdinate(), 0);
-                Coordinate p1 = new Coordinate(GetRandOrdinate(), GridWidth);
-                ILineString line = _geomFactory.CreateLineString(new [] { p0, p1 });
+                var p0 = new Coordinate(GetRandOrdinate(), 0);
+                var p1 = new Coordinate(GetRandOrdinate(), GridWidth);
+                var line = _geomFactory.CreateLineString(new [] { p0, p1 });
                 lines[index++] = line;
             }
 
             for (int i = 0; i < _numLines; i++)
             {
-                Coordinate p0 = new Coordinate(0, GetRandOrdinate());
-                Coordinate p1 = new Coordinate(GridWidth, GetRandOrdinate());
-                ILineString line = _geomFactory.CreateLineString(new [] { p0, p1 });
+                var p0 = new Coordinate(0, GetRandOrdinate());
+                var p1 = new Coordinate(GridWidth, GetRandOrdinate());
+                var line = _geomFactory.CreateLineString(new [] { p0, p1 });
                 lines[index++] = line;
             }
 
-            IMultiLineString ml = _geomFactory.CreateMultiLineString(lines);
+            var ml = _geomFactory.CreateMultiLineString(lines);
             _grid = ml.Buffer(_lineWidth);
             var wktWriter = new WKTWriter(2) {Formatted = true, MaxCoordinatesPerLine = 6};
             if (Verbose)
@@ -99,7 +99,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             }
             return _rand.NextDouble();
         }
-
 
         private double GetRandOrdinate()
         {

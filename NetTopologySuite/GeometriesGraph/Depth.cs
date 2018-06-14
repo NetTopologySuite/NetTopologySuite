@@ -7,24 +7,24 @@ namespace NetTopologySuite.GeometriesGraph
     /// A Depth object records the topological depth of the sides
     /// of an Edge for up to two Geometries.
     /// </summary>
-    public class Depth 
+    public class Depth
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private const int @null = -1;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="_location"></param>
         /// <returns></returns>
         public static int DepthAtLocation(Location _location)
         {
-            if (_location == Location.Exterior) 
+            if (_location == Location.Exterior)
                 return 0;
 
-            if (_location == Location.Interior) 
+            if (_location == Location.Interior)
                 return 1;
 
             return @null;
@@ -33,18 +33,18 @@ namespace NetTopologySuite.GeometriesGraph
         private readonly int[,] depth = new int[2,3];
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public Depth() 
+        public Depth()
         {
             // initialize depth array to a sentinel value
-            for (int i = 0; i < 2; i++) 
-                for (int j = 0; j < 3; j++)                 
-                    depth[i,j] = @null;                
+            for (int i = 0; i < 2; i++)
+                for (int j = 0; j < 3; j++)
+                    depth[i,j] = @null;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
@@ -55,7 +55,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
@@ -73,31 +73,25 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public int this[int geomIndex, Positions posIndex]
         {
-            get
-            {
-                return GetDepth(geomIndex, posIndex);
-            }
-            set
-            {
-                SetDepth(geomIndex, posIndex, value);
-            }
+            get => GetDepth(geomIndex, posIndex);
+            set => SetDepth(geomIndex, posIndex, value);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <returns></returns>
         public Location GetLocation(int geomIndex, Positions posIndex)
         {
-            if (depth[geomIndex, (int)posIndex] <= 0) 
+            if (depth[geomIndex, (int)posIndex] <= 0)
                 return Location.Exterior;
             return Location.Interior;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
@@ -112,7 +106,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// A Depth object is null (has never been initialized) if all depths are null.
         /// </summary>
         public bool IsNull()
-        {                        
+        {
                 for (int i = 0; i < 2; i++)
                 {
                     for (int j = 0; j < 3; j++)
@@ -121,11 +115,11 @@ namespace NetTopologySuite.GeometriesGraph
                             return false;
                     }
                 }
-                return true;            
+                return true;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
@@ -135,7 +129,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
@@ -146,7 +140,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="lbl"></param>
         public void Add(Label lbl)
@@ -155,7 +149,7 @@ namespace NetTopologySuite.GeometriesGraph
             {
                 for (int j = 1; j < 3; j++)
                 {
-                    Location loc = lbl.GetLocation(i, (Positions)j);
+                    var loc = lbl.GetLocation(i, (Positions)j);
                     if (loc == Location.Exterior || loc == Location.Interior)
                     {
                         // initialize depth if it is null, otherwise add this location value
@@ -168,7 +162,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
@@ -187,16 +181,16 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public void Normalize()
         {
-            for (int i = 0; i < 2; i++) 
+            for (int i = 0; i < 2; i++)
             {
-                if (! IsNull(i)) 
+                if (! IsNull(i))
                 {
                     int minDepth = depth[i,1];
                     if (depth[i,2] < minDepth)
                     minDepth = depth[i,2];
 
                     if (minDepth < 0) minDepth = 0;
-                    for (int j = 1; j < 3; j++) 
+                    for (int j = 1; j < 3; j++)
                     {
                         int newValue = 0;
                         if (depth[i,j] > minDepth)
@@ -208,12 +202,12 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            return String.Format("A: {0},{1} B: {2},{3}", this.depth[0,1], this.depth[0,2], this.depth[1,1], this.depth[1,2]);
+            return string.Format("A: {0},{1} B: {2},{3}", this.depth[0,1], this.depth[0,2], this.depth[1,1], this.depth[1,2]);
         }
     }
 
@@ -226,12 +220,12 @@ namespace NetTopologySuite.GeometriesGraph
     public class Depth
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private const int Null = -1;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="location"></param>
         /// <returns></returns>
@@ -249,7 +243,7 @@ namespace NetTopologySuite.GeometriesGraph
         private int[] depth = new int[6];
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Depth()
         {
@@ -259,7 +253,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
@@ -271,7 +265,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
@@ -301,7 +295,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
@@ -315,7 +309,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
@@ -341,7 +335,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
@@ -352,7 +346,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
@@ -364,7 +358,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="lbl"></param>
         public void Add(Label lbl)
@@ -393,7 +387,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
@@ -435,7 +429,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public override string ToString()

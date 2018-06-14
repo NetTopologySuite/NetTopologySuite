@@ -12,16 +12,16 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     {
         private WKTReader reader = new WKTReader();
 
-        protected override void RunPtInRing(Location expectedLoc, Coordinate pt, String wkt)
+        protected override void RunPtInRing(Location expectedLoc, Coordinate pt, string wkt)
         {
             // isPointInRing is not defined for pts on boundary
             if (expectedLoc == Location.Boundary)
-  	            return;
-  	 
-            IGeometry geom = reader.Read(wkt);
+                return;
+
+            var geom = reader.Read(wkt);
             bool expected = expectedLoc == Location.Interior;
             Assert.AreEqual(expected, PointLocation.IsInRing(pt, geom.Coordinates));
-            IPolygon poly = geom as IPolygon;
+            var poly = geom as IPolygon;
             if (poly == null)
                 return;
 

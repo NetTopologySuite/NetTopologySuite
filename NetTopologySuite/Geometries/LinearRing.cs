@@ -31,10 +31,10 @@ namespace NetTopologySuite.Geometries
         public const int MinimumValidSize = 4;
 
         /// <summary>
-        /// Constructs a <c>LinearRing</c> with the vertices specified 
+        /// Constructs a <c>LinearRing</c> with the vertices specified
         /// by the given <see cref="ICoordinateSequence"/>.
         /// </summary>
-        /// <param name="points">A sequence points forming a closed and simple linestring, 
+        /// <param name="points">A sequence points forming a closed and simple linestring,
         /// or <c>null</c> to create the empty geometry.</param>
         /// <param name="factory">The factory that creates this <c>LinearRing</c></param>
         /// <exception cref="ArgumentException">If the ring is not closed, or has too few points</exception>
@@ -58,21 +58,12 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value to sort the geometry
         /// </summary>
-        protected override SortIndexValue SortIndex
-        {
-            get { return SortIndexValue.LinearRing; }
-        }
+        protected override SortIndexValue SortIndex => SortIndexValue.LinearRing;
 
         /// <summary>
         /// Returns <c>Dimensions.False</c>, since by definition LinearRings do not have a boundary.
         /// </summary>
-        public override Dimension BoundaryDimension
-        {
-            get
-            {
-                return Dimension.False;
-            }
-        }
+        public override Dimension BoundaryDimension => Dimension.False;
 
         public override bool IsClosed
         {
@@ -91,10 +82,7 @@ namespace NetTopologySuite.Geometries
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"LinearRing"</returns>
-        public override string GeometryType
-        {
-            get { return "LinearRing"; }
-        }
+        public override string GeometryType => "LinearRing";
 
         /// <summary>
         /// Creates and returns a full copy of this <see cref="ILinearRing"/> object.
@@ -112,8 +100,8 @@ namespace NetTopologySuite.Geometries
             return Factory.CreateLinearRing(sequence);
         }
 
-        public bool IsCCW { get { return Orientation.IsCCW(CoordinateSequence); } }
-        
+        public bool IsCCW => Orientation.IsCCW(CoordinateSequence);
+
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>

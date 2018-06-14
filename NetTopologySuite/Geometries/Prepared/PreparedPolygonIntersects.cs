@@ -57,11 +57,11 @@ namespace NetTopologySuite.Geometries.Prepared
             /*
              * If any segments intersect, result is true
              */
-            IList<ISegmentString> lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
+            var lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
             // only request intersection finder if there are segments (ie NOT for point inputs)
             if (lineSegStr.Count > 0)
             {
-                var segsIntersect = prepPoly.IntersectionFinder.Intersects(lineSegStr);
+                bool segsIntersect = prepPoly.IntersectionFinder.Intersects(lineSegStr);
                 if (segsIntersect)
                     return true;
             }

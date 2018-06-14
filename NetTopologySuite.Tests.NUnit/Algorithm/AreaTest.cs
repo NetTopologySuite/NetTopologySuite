@@ -27,29 +27,29 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             CheckAreaOfRingSigned("LINEARRING (100 200, 100 100, 200 100, 200 200, 100 200)", -10000.0);
         }
 
-        void CheckAreaOfRing(String wkt, double expectedArea)
+        void CheckAreaOfRing(string wkt, double expectedArea)
         {
             var ring = (ILinearRing) Read(wkt);
 
             var ringPts = ring.Coordinates;
-            var actual1 = Area.OfRing(ringPts);
+            double actual1 = Area.OfRing(ringPts);
             Assert.AreEqual(actual1, expectedArea);
 
             var ringSeq = ring.CoordinateSequence;
-            var actual2 = Area.OfRing(ringSeq);
+            double actual2 = Area.OfRing(ringSeq);
             Assert.AreEqual(actual2, expectedArea);
         }
 
-        void CheckAreaOfRingSigned(String wkt, double expectedArea)
+        void CheckAreaOfRingSigned(string wkt, double expectedArea)
         {
             var ring = (ILinearRing) Read(wkt);
 
             var ringPts = ring.Coordinates;
-            var actual1 = Area.OfRingSigned(ringPts);
+            double actual1 = Area.OfRingSigned(ringPts);
             Assert.AreEqual(actual1, expectedArea);
 
             var ringSeq = ring.CoordinateSequence;
-            var actual2 = Area.OfRingSigned(ringSeq);
+            double actual2 = Area.OfRingSigned(ringSeq);
             Assert.AreEqual(actual2, expectedArea);
         }
     }

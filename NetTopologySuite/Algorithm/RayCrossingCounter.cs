@@ -68,7 +68,7 @@ namespace NetTopologySuite.Algorithm
             var p1 = new Coordinate();
             var p2 = new Coordinate();
             int count = ring.Count;
-            for (var i = 1; i < count; i++)
+            for (int i = 1; i < count; i++)
             {
                 ring.GetCoordinate(i, p1);
                 ring.GetCoordinate(i - 1, p2);
@@ -97,7 +97,7 @@ namespace NetTopologySuite.Algorithm
         public void CountSegment(Coordinate p1, Coordinate p2)
         {
             /*
-             * For each segment, check if it crosses 
+             * For each segment, check if it crosses
              * a horizontal ray running from the test point in the positive x direction.
              */
 
@@ -167,17 +167,17 @@ namespace NetTopologySuite.Algorithm
         /// Reports whether the point lies exactly on one of the supplied segments.
         /// </summary>
         /// <remarks>
-        /// This method may be called at any time as segments are processed. If the result of this method is <c>true</c>, 
+        /// This method may be called at any time as segments are processed. If the result of this method is <c>true</c>,
         /// no further segments need be supplied, since the result will never change again.
         /// </remarks>
-        public bool IsOnSegment { get { return _isPointOnSegment; } }
+        public bool IsOnSegment => _isPointOnSegment;
 
         /// <summary>
         /// Gets the <see cref="GeoAPI.Geometries.Location"/> of the point relative to  the ring, polygon
         /// or multipolygon from which the processed segments were provided.
         /// </summary>
         /// <remarks>
-        /// This property only determines the correct location 
+        /// This property only determines the correct location
         /// if <b>all</b> relevant segments have been processed.
         /// </remarks>
         public Location Location
@@ -198,17 +198,14 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Tests whether the point lies in or on 
-        /// the ring, polygon or multipolygon from which the processed 
+        /// Tests whether the point lies in or on
+        /// the ring, polygon or multipolygon from which the processed
         /// segments were provided.
         /// </summary>
         /// <remarks>
-        /// This property only determines the correct location 
+        /// This property only determines the correct location
         /// if <b>all</b> relevant segments have been processed
         /// </remarks>
-        public bool IsPointInPolygon
-        {
-            get { return Location != Location.Exterior; } 
-        }
+        public bool IsPointInPolygon => Location != Location.Exterior;
     }
 }

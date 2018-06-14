@@ -1,12 +1,12 @@
 /*
 * Arguments class: application arguments interpreter
 *
-* Authors:		R. LOPES
-* Contributors:	R. LOPES
-* Created:		25 October 2002
-* Modified:		28 October 2002
+* Authors:      R. LOPES
+* Contributors: R. LOPES
+* Created:      25 October 2002
+* Modified:     28 October 2002
 *
-* Version:		1.0
+* Version:      1.0
 */
 
 using System.Collections.Specialized;
@@ -26,8 +26,8 @@ namespace ConsoleTestRunner
         public Arguments(string[] Args)
         {
             Parameters       = new StringDictionary();
-            Regex Spliter    = new Regex(@"^-{1,2}|^/|=|:",RegexOptions.IgnoreCase|RegexOptions.Compiled);
-            Regex Remover    = new Regex(@"^['String.Empty]?(.*?)['String.Empty]?$",RegexOptions.IgnoreCase|RegexOptions.Compiled);
+            var Spliter    = new Regex(@"^-{1,2}|^/|=|:",RegexOptions.IgnoreCase|RegexOptions.Compiled);
+            var Remover    = new Regex(@"^['String.Empty]?(.*?)['String.Empty]?$",RegexOptions.IgnoreCase|RegexOptions.Compiled);
             string Parameter = null;
             string[] Parts;
 
@@ -59,7 +59,7 @@ namespace ConsoleTestRunner
                         // The last parameter is still waiting. With no value, set it to true.
                         if (Parameter != null)
                         {
-                            if (!Parameters.ContainsKey(Parameter)) 
+                            if (!Parameters.ContainsKey(Parameter))
                                 Parameters.Add(Parameter,"true");
                         }
                         Parameter = Parts[1];
@@ -70,7 +70,7 @@ namespace ConsoleTestRunner
                         // The last parameter is still waiting. With no value, set it to true.
                         if (Parameter != null)
                         {
-                            if (!Parameters.ContainsKey(Parameter)) 
+                            if (!Parameters.ContainsKey(Parameter))
                                 Parameters.Add(Parameter,"true");
                         }
                         Parameter=Parts[1];
@@ -88,18 +88,12 @@ namespace ConsoleTestRunner
             // In case a parameter is still waiting
             if (Parameter != null)
             {
-                if (!Parameters.ContainsKey(Parameter)) 
+                if (!Parameters.ContainsKey(Parameter))
                     Parameters.Add(Parameter,"true");
             }
         }
 
         // Retrieve a parameter value if it exists
-        public string this [string Param]
-        {
-            get
-            {
-                return (Parameters[Param]);
-            }
-        }
+        public string this [string Param] => (Parameters[Param]);
     }
 }

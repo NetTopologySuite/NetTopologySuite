@@ -11,7 +11,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
     public class PointPairDistance
     {
         private readonly Coordinate[] _pt = { new Coordinate(), new Coordinate() };
-        private double _distance = Double.NaN;
+        private double _distance = double.NaN;
         private bool _isNull = true;
 
         public void Initialize() { _isNull = true; }
@@ -38,9 +38,9 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             _isNull = false;
         }
 
-        public double Distance { get { return _distance; } }
+        public double Distance => _distance;
 
-        public Coordinate[] Coordinates { get { return _pt; } }
+        public Coordinate[] Coordinates => _pt;
 
         public Coordinate GetCoordinate(int i) { return _pt[i]; }
 

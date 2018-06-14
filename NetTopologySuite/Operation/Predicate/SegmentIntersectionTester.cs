@@ -10,7 +10,7 @@ namespace NetTopologySuite.Operation.Predicate
     /// Optimized for use when at least one input is of small size.
     /// Short-circuited to return as soon an intersection is found.
     /// </summary>
-    public class SegmentIntersectionTester 
+    public class SegmentIntersectionTester
     {
         // for purposes of intersection testing, don't need to set precision model
         private readonly LineIntersector li = new RobustLineIntersector();
@@ -22,7 +22,7 @@ namespace NetTopologySuite.Operation.Predicate
         private readonly Coordinate pt11 = new Coordinate();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="seq"></param>
         /// <param name="lines"></param>
@@ -39,18 +39,18 @@ namespace NetTopologySuite.Operation.Predicate
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="seq0"></param>
         /// <param name="seq1"></param>
         /// <returns></returns>
-        public bool HasIntersection(ICoordinateSequence seq0, ICoordinateSequence seq1) 
+        public bool HasIntersection(ICoordinateSequence seq0, ICoordinateSequence seq1)
         {
-            for (int i = 1; i < seq0.Count && ! _hasIntersection; i++) 
+            for (int i = 1; i < seq0.Count && ! _hasIntersection; i++)
             {
                 seq0.GetCoordinate(i - 1, pt00);
                 seq0.GetCoordinate(i, pt01);
-                for (int j = 1; j < seq1.Count && ! _hasIntersection; j++) 
+                for (int j = 1; j < seq1.Count && ! _hasIntersection; j++)
                 {
                     seq1.GetCoordinate(j - 1, pt10);
                     seq1.GetCoordinate(j, pt11);

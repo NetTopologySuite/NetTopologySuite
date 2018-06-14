@@ -53,10 +53,7 @@ namespace NetTopologySuite.Utilities
         ///<summary>
         /// Returns size.
         ///</summary>
-        public int Size
-        {
-            get { return this._queue.Count; }
-        }
+        public int Size => this._queue.Count;
 
         ///<summary>
         /// Make the priority queue logically empty.

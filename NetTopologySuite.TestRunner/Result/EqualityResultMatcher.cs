@@ -4,7 +4,7 @@ using GeoAPI.Geometries;
 namespace Open.Topology.TestRunner.Result
 {
     /// <summary>
-    /// A <seealso cref="IResultMatcher{TResult}"/>  which compares result for equality, 
+    /// A <seealso cref="IResultMatcher{TResult}"/>  which compares result for equality,
     /// up to the given tolerance.
     /// </summary>
     public class EqualityResultMatcher<TResult> : IResultMatcher<TResult>
@@ -14,7 +14,7 @@ namespace Open.Topology.TestRunner.Result
         /// <remarks>Tests whether the two results are equal within the given tolerance.
         /// The input parameters are not considered.
         /// </remarks>
-        public bool IsMatch(IGeometry geom, String opName, Object[] args,
+        public bool IsMatch(IGeometry geom, string opName, object[] args,
                             TResult actualResult, TResult expectedResult,
                             double tolerance)
         {

@@ -16,7 +16,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             for (int i = 0; i < n; i++)
             {
                 //System.out.println(i);
-                Coordinate[] seg = RandomDisjointCollinearSegments();
+                var seg = RandomDisjointCollinearSegments();
                 if (0 == DistanceComputer.SegmentToSegment(seg[0], seg[1], seg[2], seg[3]))
                 {
                     /*
@@ -35,7 +35,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 
         private static Coordinate[] RandomDisjointCollinearSegments()
         {
-            var slope = Rnd.NextDouble();
+            double slope = Rnd.NextDouble();
             var seg = new Coordinate[4];
 
             double gap = 1;

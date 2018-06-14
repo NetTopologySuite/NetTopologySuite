@@ -66,13 +66,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <summary>
         /// Gets the coordinate this hot pixel is based at.
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return _originalPt;
-            }
-        }
+        public Coordinate Coordinate => _originalPt;
 
         private const double SafeEnvelopeExpansionFactor = 0.75d;
 
@@ -157,16 +151,16 @@ namespace NetTopologySuite.Noding.Snapround
         /// <returns></returns>
         public bool IntersectsScaled(Coordinate p0, Coordinate p1)
         {
-            var segMinx = Math.Min(p0.X, p1.X);
+            double segMinx = Math.Min(p0.X, p1.X);
             double segMaxx = Math.Max(p0.X, p1.X);
             double segMiny = Math.Min(p0.Y, p1.Y);
             double segMaxy = Math.Max(p0.Y, p1.Y);
 
-            var isOutsidePixelEnv = _maxx < segMinx || _minx > segMaxx ||
+            bool isOutsidePixelEnv = _maxx < segMinx || _minx > segMaxx ||
                                      _maxy < segMiny || _miny > segMaxy;
             if (isOutsidePixelEnv)
                 return false;
-            var intersects = IntersectsToleranceSquare(p0, p1);
+            bool intersects = IntersectsToleranceSquare(p0, p1);
 
             //Assert.IsTrue(!(isOutsidePixelEnv && intersects), "Found bad envelope test");
             return intersects;
@@ -176,9 +170,9 @@ namespace NetTopologySuite.Noding.Snapround
         /// Tests whether the segment p0-p1 intersects the hot pixel tolerance square.
         /// Because the tolerance square point set is partially open (along the
         /// top and right) the test needs to be more sophisticated than
-        /// simply checking for any intersection.  
+        /// simply checking for any intersection.
         /// However, it can take advantage of the fact that the hot pixel edges
-        /// do not lie on the coordinate grid. 
+        /// do not lie on the coordinate grid.
         /// It is sufficient to check if any of the following occur:
         ///  - a proper intersection between the segment and any hot pixel edge.
         ///  - an intersection between the segment and BOTH the left and bottom hot pixel edges
@@ -190,8 +184,8 @@ namespace NetTopologySuite.Noding.Snapround
         /// <returns></returns>
         private bool IntersectsToleranceSquare(Coordinate p0, Coordinate p1)
         {
-            var intersectsLeft = false;
-            var intersectsBottom = false;
+            bool intersectsLeft = false;
+            bool intersectsBottom = false;
             //Console.WriteLine("Hot Pixel: " + WKTWriter.ToLineString(corner));
             //Console.WriteLine("Line: " + WKTWriter.ToLineString(p0, p1));
 

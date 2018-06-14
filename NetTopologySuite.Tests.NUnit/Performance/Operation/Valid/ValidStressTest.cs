@@ -58,7 +58,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
             System.Console.WriteLine("Running " + name);
             var sw = new Stopwatch();
             sw.Start();
-            var isValid = g.IsValid;
+            bool isValid = g.IsValid;
             sw.Stop();
             System.Console.WriteLine("Is Valid = {0}, Ticks: {1:N0}", isValid, sw.ElapsedTicks);
         }
@@ -68,8 +68,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
     {
         public static IPolygon Star(Envelope env, int nSeg, IGeometryFactory geomFact)
         {
-            Coordinate[] pts = new Coordinate[nSeg + 1];
-            Coordinate centre = env.Centre;
+            var pts = new Coordinate[nSeg + 1];
+            var centre = env.Centre;
             double len = 0.5 * System.Math.Min(env.Height, env.Width);
             double angInc = System.Math.PI + 2 * System.Math.PI / nSeg;
 
@@ -85,7 +85,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
             return geomFact.CreatePolygon(pts);
         }
     }
-
 
     /// <summary>
     /// Creates comb-like geometries.
@@ -108,7 +107,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
         private static IPolygon CreateComb(Envelope env, int nArms, IGeometryFactory geomFact)
         {
             int npts = 4 * (nArms - 1) + 2 + 2 + 1;
-            Coordinate[] pts = new Coordinate[npts];
+            var pts = new Coordinate[npts];
             double armWidth = env.Width / (2 * nArms - 1);
             double armLen = env.Height - armWidth;
 

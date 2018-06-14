@@ -10,7 +10,7 @@ namespace NetTopologySuite.Operation.Overlay
     public class OverlayNodeFactory : NodeFactory
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>

@@ -9,7 +9,7 @@ namespace Open.Topology.TestRunner.Functions
     {
         public static IGeometry TransformByVectors(IGeometry g, IGeometry control)
         {
-            var nControl = control.NumGeometries;
+            int nControl = control.NumGeometries;
             var src = new Coordinate[nControl];
             var dest = new Coordinate[nControl];
             for (int i = 0; i < nControl; i++)

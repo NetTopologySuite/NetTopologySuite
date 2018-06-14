@@ -71,7 +71,6 @@ namespace NetTopologySuite.Algorithm
             if (_inputPts.Length == 2)
                 return _geomFactory.CreateLineString(_inputPts);
 
-
             var reducedPts = _inputPts;
             // use heuristic to reduce points, if large
             if (_inputPts.Length > 50)
@@ -126,7 +125,7 @@ namespace NetTopologySuite.Algorithm
              * but this doesn't matter since the points of the interior polygon
              * are forced to be in the reduced set.
              */
-            for (var i = 0; i < pts.Length; i++)
+            for (int i = 0; i < pts.Length; i++)
                 if (!PointLocation.IsInRing(pts[i], polyPts))
                     reducedSet.Add(pts[i]);
 
@@ -154,7 +153,6 @@ namespace NetTopologySuite.Algorithm
             }
             return pad;
         }
-
 
         /// <summary>
         /// Pre sorts the coordinates

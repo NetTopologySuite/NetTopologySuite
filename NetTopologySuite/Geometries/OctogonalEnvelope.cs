@@ -26,7 +26,6 @@ namespace NetTopologySuite.Geometries
             return (new OctagonalEnvelope(geom)).ToGeometry(geom.Factory);
         }
 
-        
         private static double ComputeA(double x, double y)
         {
             return x + y;
@@ -38,10 +37,9 @@ namespace NetTopologySuite.Geometries
         }
 
         private static readonly double SQRT2 = Math.Sqrt(2.0);
-  
 
         // initialize in the null state
-        private double _minX = Double.NaN;
+        private double _minX = double.NaN;
         private double _maxX;
         private double _minY;
         private double _maxY;
@@ -105,46 +103,53 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value indicating the minimal x-ordinate value
         /// </summary>
-        public double MinX { get { return _minX; } }
+        public double MinX => _minX;
+
         /// <summary>
         /// Gets a value indicating the maximal x-ordinate value
         /// </summary>
-        public double MaxX { get { return _maxX; } }
+        public double MaxX => _maxX;
+
         /// <summary>
         /// Gets a value indicating the minimal y-ordinate value
         /// </summary>
-        public double MinY { get { return _minY; } }
+        public double MinY => _minY;
+
         /// <summary>
         /// Gets a value indicating the maximal y-ordinate value
         /// </summary>
-        public double MaxY { get { return _maxY; } }
+        public double MaxY => _maxY;
+
         /// <summary>
         /// Gets a value indicating the minimal <c>a</c> value
         /// </summary>
-        public double MinA { get { return _minA; } }
+        public double MinA => _minA;
+
         /// <summary>
         /// Gets a value indicating the maximal <c>a</c> value
         /// </summary>
-        public double MaxA { get { return _maxA; } }
+        public double MaxA => _maxA;
+
         /// <summary>
         /// Gets a value indicating the minimal <c>b</c> value
         /// </summary>
-        public double MinB { get { return _minB; } }
+        public double MinB => _minB;
+
         /// <summary>
         /// Gets a value indicating the maximal <c>b</c> value
         /// </summary>
-        public double MaxB { get { return _maxB; } }
+        public double MaxB => _maxB;
 
         /// <summary>
         /// Gets a value indicating that this object is null
         /// </summary>
-        public Boolean IsNull
+        public bool IsNull
         {
-            get { return Double.IsNaN(_minX); }
+            get => double.IsNaN(_minX);
             private set
             {
                 if (value)
-                    _minX = Double.NaN;
+                    _minX = double.NaN;
             }
         }
 
@@ -238,8 +243,8 @@ namespace NetTopologySuite.Geometries
         /// <returns>A reference to <c>this</c> octagonal envelope, expanded by <paramref name="x"/> and <paramref name="y"/></returns>
         public OctagonalEnvelope ExpandToInclude(double x, double y)
         {
-            var A = ComputeA(x, y);
-            var B = ComputeB(x, y);
+            double A = ComputeA(x, y);
+            double B = ComputeB(x, y);
 
             if (IsNull)
             {
@@ -289,7 +294,7 @@ namespace NetTopologySuite.Geometries
         /// Gets a value indicating if the extremal values for this octagon are valid.
         /// </summary>
         /// <returns><c>true</c> if this object has valid values</returns>
-        private Boolean IsValid
+        private bool IsValid
         {
             get
             {
@@ -306,7 +311,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other">An octagonal envelope </param>
         /// <returns><c>true</c> if <c>this</c> octagonal envelope intersects <paramref name="other"/> octagonal envelope .</returns>
-        public Boolean Intersects(OctagonalEnvelope other)
+        public bool Intersects(OctagonalEnvelope other)
         {
             if (IsNull || other.IsNull) { return false; }
 
@@ -326,7 +331,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="p">A coordinate</param>
         /// <returns><c>true</c> if <c>this</c> octagonal envelope contains <paramref name="p"/> coordinate.</returns>
-        public Boolean Intersects(Coordinate p)
+        public bool Intersects(Coordinate p)
         {
             if (_minX > p.X) return false;
             if (_maxX < p.X) return false;
@@ -347,7 +352,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other">An octagonal envelope</param>
         /// <returns><c>true</c> if <c>this</c> octagonal envelope contains <paramref name="other"/> octagonal envelope.</returns>
-        public Boolean Contains(OctagonalEnvelope other)
+        public bool Contains(OctagonalEnvelope other)
         {
             if (IsNull || other.IsNull) { return false; }
 
@@ -360,7 +365,6 @@ namespace NetTopologySuite.Geometries
                 && other._minB >= _minB
                 && other._maxB <= _maxB;
         }
-
 
         /// <summary>
         /// Function to convert <c>this</c> octagonal envelope into a geometry

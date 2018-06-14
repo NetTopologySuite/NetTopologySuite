@@ -20,14 +20,14 @@ namespace NetTopologySuite.IO
         ///<summary>Converts a byte array to a hexadecimal string.</summary>
         /// <param name="bytes">A byte array</param>
         [Obsolete("Use ToHex(byte[])")]
-        public static String BytesToHex(byte[] bytes)
+        public static string BytesToHex(byte[] bytes)
         {
             return ToHex(bytes);
         }
 
         ///<summary>Converts a byte array to a hexadecimal string.</summary>
         /// <param name="bytes">A byte array</param>
-        public static String ToHex(byte[] bytes)
+        public static string ToHex(byte[] bytes)
         {
             var buf = new StringBuilder(bytes.Length * 2);
             for (int i = 0; i < bytes.Length; i++)
@@ -54,8 +54,8 @@ namespace NetTopologySuite.IO
         [Obsolete("Use HandleSRID instead")]
         public bool EmitSRID
         {
-            get { return HandleSRID; }
-            set { HandleSRID = value; }
+            get => HandleSRID;
+            set => HandleSRID = value;
         }
 
         private bool _emitZ;
@@ -66,7 +66,7 @@ namespace NetTopologySuite.IO
         [Obsolete("Use HandleOrdinates instead")]
         public bool EmitZ
         {
-            get { return _emitZ; }
+            get => _emitZ;
             set
             {
                 if (value == _emitZ)
@@ -90,7 +90,7 @@ namespace NetTopologySuite.IO
         [Obsolete("Use HandleOrdintes instead.")]
         public bool EmitM
         {
-            get { return _emitM; }
+            get => _emitM;
             set
             {
                 if (value == _emitM)
@@ -108,10 +108,10 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="writer"></param>
-        /// <param name="geom"></param>        
+        /// <param name="geom"></param>
         private void WriteHeader(BinaryWriter writer, IGeometry geom)
         {
             //Byte Order
@@ -149,7 +149,7 @@ namespace NetTopologySuite.IO
             }
 
             //Modify WKB Geometry type
-            var intGeometryType = (uint)geometryType & 0xff;
+            uint intGeometryType = (uint)geometryType & 0xff;
             if ((HandleOrdinates & Ordinates.Z) == Ordinates.Z)
             {
                 intGeometryType += 1000;
@@ -183,7 +183,7 @@ namespace NetTopologySuite.IO
         ///     4 bytes for WKBType.
         ///     4 bytes for SRID value
         /// </summary>
-        protected int InitCount { get { return 5 + (HandleSRID ? 4 : 0); } }
+        protected int InitCount => 5 + (HandleSRID ? 4 : 0);
 
         /// <summary>
         /// Initializes writer with LittleIndian byte order.
@@ -328,7 +328,7 @@ namespace NetTopologySuite.IO
                 writer.Write(coordinate.Z);
             if ((HandleOrdinates & Ordinates.M) == Ordinates.M)
                 //NOTE: Implement
-                writer.Write(Double.NaN);
+                writer.Write(double.NaN);
         }
 
         protected void Write(ICoordinateSequence sequence, bool emitSize, BinaryWriter writer)
@@ -337,18 +337,18 @@ namespace NetTopologySuite.IO
                 writer.Write(sequence.Count);
 
             // zm-values if not provided by sequence
-            var ordinateZ = Coordinate.NullOrdinate;
-            var ordinateM = Coordinate.NullOrdinate;
+            double ordinateZ = Coordinate.NullOrdinate;
+            double ordinateM = Coordinate.NullOrdinate;
 
             // test if zm-values are provided by sequence
-            var getZ = (sequence.Ordinates & Ordinates.Z) == Ordinates.Z;
-            var getM = (sequence.Ordinates & Ordinates.M) == Ordinates.M;
+            bool getZ = (sequence.Ordinates & Ordinates.Z) == Ordinates.Z;
+            bool getM = (sequence.Ordinates & Ordinates.M) == Ordinates.M;
 
             // test if zm-values should be emitted
-            var writeZ = (HandleOrdinates & Ordinates.Z) == Ordinates.Z;
-            var writeM = (HandleOrdinates & Ordinates.M) == Ordinates.M;
+            bool writeZ = (HandleOrdinates & Ordinates.Z) == Ordinates.Z;
+            bool writeM = (HandleOrdinates & Ordinates.M) == Ordinates.M;
 
-            for (var index = 0; index < sequence.Count; index++)
+            for (int index = 0; index < sequence.Count; index++)
             {
                 writer.Write(sequence.GetOrdinate(index, Ordinate.X));
                 writer.Write(sequence.GetOrdinate(index, Ordinate.Y));
@@ -443,7 +443,7 @@ namespace NetTopologySuite.IO
             //     writer.Write((int)WKBGeometryTypes.WKBMultiPoint);
             //else writer.Write((int)WKBGeometryTypes.WKBMultiPointZ);
             writer.Write(multiPoint.NumGeometries);
-            for (var i = 0; i < multiPoint.NumGeometries; i++)
+            for (int i = 0; i < multiPoint.NumGeometries; i++)
                 Write(multiPoint.Geometries[i] as IPoint, writer);
         }
 
@@ -460,7 +460,7 @@ namespace NetTopologySuite.IO
             //     writer.Write((int)WKBGeometryTypes.WKBMultiLineString);
             //else writer.Write((int)WKBGeometryTypes.WKBMultiLineStringZ);
             writer.Write(multiLineString.NumGeometries);
-            for (var i = 0; i < multiLineString.NumGeometries; i++)
+            for (int i = 0; i < multiLineString.NumGeometries; i++)
                 Write(multiLineString.Geometries[i] as ILineString, writer);
         }
 
@@ -477,7 +477,7 @@ namespace NetTopologySuite.IO
             //     writer.Write((int)WKBGeometryTypes.WKBMultiPolygon);
             //else writer.Write((int)WKBGeometryTypes.WKBMultiPolygonZ);
             writer.Write(multiPolygon.NumGeometries);
-            for (var i = 0; i < multiPolygon.NumGeometries; i++)
+            for (int i = 0; i < multiPolygon.NumGeometries; i++)
                 Write(multiPolygon.Geometries[i] as IPolygon, writer);
         }
 
@@ -494,7 +494,7 @@ namespace NetTopologySuite.IO
             //     writer.Write((int)WKBGeometryTypes.WKBGeometryCollection);
             //else writer.Write((int)WKBGeometryTypes.WKBGeometryCollectionZ);
             writer.Write(geomCollection.NumGeometries);
-            for (var i = 0; i < geomCollection.NumGeometries; i++)
+            for (int i = 0; i < geomCollection.NumGeometries; i++)
                 Write(geomCollection.Geometries[i], writer);
         }
 
@@ -609,8 +609,8 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         protected int SetByteStream(IPolygon geometry)
         {
-            var pointSize = _coordinateSize; //Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
-            var count = InitCount;
+            int pointSize = _coordinateSize; //Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
+            int count = InitCount;
             count += 4 /*+ 4*/;                                 // NumRings /*+ NumPoints */
             count += 4 * (geometry.NumInteriorRings + 1);   // Index parts
             count += geometry.NumPoints * pointSize;        // Points in exterior and interior rings
@@ -661,7 +661,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         public bool Strict
         {
-            get { return _strict; }
+            get => _strict;
             set
             {
                 _strict = value;
@@ -674,7 +674,7 @@ namespace NetTopologySuite.IO
 
         public bool HandleSRID
         {
-            get { return _handleSRID; }
+            get => _handleSRID;
             set
             {
                 if (_strict && value)
@@ -683,10 +683,7 @@ namespace NetTopologySuite.IO
             }
         }
 
-        public Ordinates AllowedOrdinates
-        {
-            get { return Ordinates.XYZM; }
-        }
+        public Ordinates AllowedOrdinates => Ordinates.XYZM;
 
         private Ordinates _handleOrdinates;
         private bool _handleSRID;
@@ -694,7 +691,7 @@ namespace NetTopologySuite.IO
 
         public Ordinates HandleOrdinates
         {
-            get { return _handleOrdinates; }
+            get => _handleOrdinates;
             set
             {
                 value = Ordinates.XY | AllowedOrdinates & value;
@@ -714,7 +711,7 @@ namespace NetTopologySuite.IO
 
         public ByteOrder ByteOrder
         {
-            get { return EncodingType; }
+            get => EncodingType;
             set { }
         }
 

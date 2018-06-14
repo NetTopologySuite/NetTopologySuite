@@ -14,7 +14,7 @@ namespace NetTopologySuite.Algorithm.Locate
     /// many points will be tested against a given area.
     /// <para/>
     /// The <c>Location</c> is computed precisely, th that points
-    /// located on the geometry boundary or segments will 
+    /// located on the geometry boundary or segments will
     /// return <see cref="Location.Boundary"/>.
     /// <para/>
     /// <see cref="IPolygonal"/> and <see cref="ILinearRing"/> geometries are supported.
@@ -48,7 +48,6 @@ namespace NetTopologySuite.Algorithm.Locate
         {
             var rcc = new RayCrossingCounter(p);
 
-
             var visitor = new SegmentVisitor(rcc);
             _index.Query(p.Y, p.Y, visitor);
 
@@ -67,7 +66,7 @@ namespace NetTopologySuite.Algorithm.Locate
           for (Iterator i = segs.iterator(); i.hasNext(); ) {
             LineSegment seg = (LineSegment) i.next();
             rcc.countSegment(seg.getCoordinate(0), seg.getCoordinate(1));
-      
+
             // short-circuit if possible
             if (rcc.isOnSegment()) return;
           }
@@ -103,7 +102,7 @@ namespace NetTopologySuite.Algorithm.Locate
                 var lines = LinearComponentExtracter.GetLines(geom);
                 foreach (ILineString line in lines)
                 {
-                    Coordinate[] pts = line.Coordinates;
+                    var pts = line.Coordinates;
                     AddLine(pts);
                 }
             }
@@ -112,7 +111,7 @@ namespace NetTopologySuite.Algorithm.Locate
             {
                 for (int i = 1; i < pts.Length; i++)
                 {
-                    LineSegment seg = new LineSegment(pts[i - 1], pts[i]);
+                    var seg = new LineSegment(pts[i - 1], pts[i]);
                     double min = Math.Min(seg.P0.Y, seg.P1.Y);
                     double max = Math.Max(seg.P0.Y, seg.P1.Y);
                     _index.Insert(min, max, seg);

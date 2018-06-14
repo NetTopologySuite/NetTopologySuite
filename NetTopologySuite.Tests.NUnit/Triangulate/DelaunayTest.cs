@@ -67,17 +67,17 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
 
         private static void RunDelaunay(string sitesWKT, bool computeTriangles, string expectedWKT)
         {
-            WKTReader reader = new WKTReader();
-            IGeometry sites = reader.Read(sitesWKT);
+            var reader = new WKTReader();
+            var sites = reader.Read(sitesWKT);
 
-            DelaunayTriangulationBuilder builder = new DelaunayTriangulationBuilder();
+            var builder = new DelaunayTriangulationBuilder();
             builder.SetSites(sites);
 
-            IGeometryFactory geomFact = GeometryFactory.Default;
+            var geomFact = GeometryFactory.Default;
             IGeometry result = computeTriangles ? builder.GetTriangles(geomFact) : builder.GetEdges(geomFact);
             Assert.IsNotNull(result);
 
-            IGeometry expected = reader.Read(expectedWKT);
+            var expected = reader.Read(expectedWKT);
             result.Normalize();
             expected.Normalize();
             Assert.IsTrue(expected.EqualsExact(result, ComparisonTolerance));

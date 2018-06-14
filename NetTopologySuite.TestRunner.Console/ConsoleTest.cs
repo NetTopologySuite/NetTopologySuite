@@ -5,9 +5,9 @@ using Open.Topology.TestRunner;
 
 namespace ConsoleTestRunner
 {
-	/// <summary>
-	/// Summary description for ConsoleTest.
-	/// </summary>
+    /// <summary>
+    /// Summary description for ConsoleTest.
+    /// </summary>
     class ConsoleTest
     {
         static void PrintMenu()
@@ -25,11 +25,11 @@ namespace ConsoleTestRunner
 
         static void RunInteractive(XmlTestType filter, bool verbose)
         {
-            string fileName = String.Empty;
+            string fileName = string.Empty;
 
-            XmlTestController controller = new XmlTestController();
+            var controller = new XmlTestController();
 
-            TestRunner runner = new TestRunner(filter, verbose);
+            var runner = new TestRunner(filter, verbose);
 
             PrintMenu();
 
@@ -71,7 +71,7 @@ namespace ConsoleTestRunner
                 catch (Exception ex)
                 {
                     XmlTestExceptionManager.Publish(ex);
-                } 
+                }
 
                 if (listTests != null && listTests.Count > 0)
                 {
@@ -101,7 +101,7 @@ namespace ConsoleTestRunner
 
         static void OnErrorEvent(object sender, XmlTestErrorEventArgs args)
         {
-            Exception ex = args.Thrown;
+            var ex = args.Thrown;
 
             if (ex != null)
             {
@@ -115,27 +115,27 @@ namespace ConsoleTestRunner
 
         static void RunDefault()
         {
-            TestOptionsParser parserOptions = new TestOptionsParser();
-            TestInfoCollection listTests =
+            var parserOptions = new TestOptionsParser();
+            var listTests =
                 parserOptions.ParseProject(@"..\..\..\NetTopologySuite.TestRunner.Tests\Default.xml");
-            
+
             if (listTests != null && listTests.Count > 0)
             {
-                TestRunner runner = new TestRunner(listTests);
+                var runner = new TestRunner(listTests);
                 runner.Run();
                 runner.PrintResult();
-            }   
+            }
         }
 
         static void RunOther()
         {
-            TestOptionsParser parserOptions = new TestOptionsParser();
-            TestInfoCollection listTests =
+            var parserOptions = new TestOptionsParser();
+            var listTests =
                 parserOptions.ParseProject(@"..\..\..\NetTopologySuite.TestRunner.Tests\Other.xml");
 
             if (listTests != null && listTests.Count > 0)
             {
-                TestRunner runner = new TestRunner(listTests);
+                var runner = new TestRunner(listTests);
                 runner.Run();
                 runner.PrintResult();
             }
@@ -159,8 +159,8 @@ namespace ConsoleTestRunner
             }
             else
             {
-                TestOptionsParser parser = new TestOptionsParser();
-                TestInfoCollection collection = parser.Parse(args);
+                var parser = new TestOptionsParser();
+                var collection = parser.Parse(args);
 
                 if (parser.IsDefault)
                 {
@@ -173,7 +173,7 @@ namespace ConsoleTestRunner
                         if (collection.Count == 1)
                         {
                             // see if it is the interactive type
-                            TestInfo info = collection[0];
+                            var info = collection[0];
                             if (info.Interactive)
                             {
                                 if (info.Exception)
@@ -183,7 +183,7 @@ namespace ConsoleTestRunner
                         }
                         else
                         {
-                            TestRunner runner = new TestRunner(collection);
+                            var runner = new TestRunner(collection);
                             runner.Run();
                         }
                     }

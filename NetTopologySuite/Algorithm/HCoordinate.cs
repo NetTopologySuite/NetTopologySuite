@@ -4,7 +4,7 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
-    /// <summary> 
+    /// <summary>
     /// Represents a homogeneous coordinate in a 2-D coordinate space.
     /// In NTS <see cref="HCoordinate"/>s are used as a clean way
     /// of computing intersections between line segments.
@@ -46,8 +46,8 @@ namespace NetTopologySuite.Algorithm
             double xInt = x/w;
             double yInt = y/w;
 
-            if ((Double.IsNaN(xInt)) || (Double.IsInfinity(xInt)
-                                         || Double.IsNaN(yInt)) || (Double.IsInfinity(yInt)))
+            if ((double.IsNaN(xInt)) || (double.IsInfinity(xInt)
+                                         || double.IsNaN(yInt)) || (double.IsInfinity(yInt)))
             {
                 throw new NotRepresentableException();
             }
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Algorithm
             return new Coordinate(xInt, yInt);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Computes the (approximate) intersection point between two line segments
         /// using homogeneous coordinates.
         /// Note that this algorithm is
@@ -69,12 +69,12 @@ namespace NetTopologySuite.Algorithm
         /// <param name="q1"></param>
         /// <param name="q2"></param>
         /// <returns></returns>
-        public static Coordinate OldIntersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)            
+        public static Coordinate OldIntersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            HCoordinate l1 = new HCoordinate(new HCoordinate(p1), new HCoordinate(p2));
-            HCoordinate l2 = new HCoordinate(new HCoordinate(q1), new HCoordinate(q2));
-            HCoordinate intHCoord = new HCoordinate(l1, l2);
-            Coordinate intPt = intHCoord.Coordinate;
+            var l1 = new HCoordinate(new HCoordinate(p1), new HCoordinate(p2));
+            var l2 = new HCoordinate(new HCoordinate(q1), new HCoordinate(q2));
+            var intHCoord = new HCoordinate(l1, l2);
+            var intPt = intHCoord.Coordinate;
             return intPt;
         }
 
@@ -88,8 +88,8 @@ namespace NetTopologySuite.Algorithm
         [Obsolete("This is a simple access to x private field: use GetX() instead.")]
         protected double X
         {
-            get { return _x; }
-            set { _x = value; }
+            get => _x;
+            set => _x = value;
         }
 
         /// <summary>
@@ -98,8 +98,8 @@ namespace NetTopologySuite.Algorithm
         [Obsolete("This is a simple access to y private field: use GetY() instead.")]
         protected double Y
         {
-            get { return _y; }
-            set { _y = value; }
+            get => _y;
+            set => _y = value;
         }
 
         /// <summary>
@@ -108,12 +108,12 @@ namespace NetTopologySuite.Algorithm
         [Obsolete("This is a simple access to w private field: how do you use this field for?...")]
         protected double W
         {
-            get { return _w; }
-            set { _w = value; }
+            get => _w;
+            set => _w = value;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public HCoordinate()
         {
@@ -123,12 +123,12 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="w"></param>
-        public HCoordinate(double x, double y, double w) 
+        public HCoordinate(double x, double y, double w)
         {
             _x = x;
             _y = y;
@@ -136,10 +136,10 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="p"></param>
-        public HCoordinate(Coordinate p) 
+        public HCoordinate(Coordinate p)
         {
             _x = p.X;
             _y = p.Y;
@@ -147,11 +147,11 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
-        public HCoordinate(HCoordinate p1, HCoordinate p2) 
+        public HCoordinate(HCoordinate p1, HCoordinate p2)
         {
             _x = p1._y * p2._w - p2._y * p1._w;
             _y = p2._x * p1._w - p1._x * p2._w;
@@ -159,40 +159,34 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public double GetX()
         {
             double a = _x/_w;
-            if ((Double.IsNaN(a)) || (Double.IsInfinity(a))) 
-                throw new NotRepresentableException();                
+            if ((double.IsNaN(a)) || (double.IsInfinity(a)))
+                throw new NotRepresentableException();
             return a;
-            
+
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public double GetY()
-        {            
+        {
             double a = _y/_w;
-            if ((Double.IsNaN(a)) || (Double.IsInfinity(a))) 
-                throw new NotRepresentableException();            
-            return a;            
-        }        
+            if ((double.IsNaN(a)) || (double.IsInfinity(a)))
+                throw new NotRepresentableException();
+            return a;
+        }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get 
-            { 
-                return new Coordinate(GetX(), GetY()); 
-            }
-        }
+        public Coordinate Coordinate => new Coordinate(GetX(), GetY());
 
         ///<summary>
         /// Constructs a homogeneous coordinate which is the intersection of the lines <see cref="Coordinate"/>s.
@@ -209,7 +203,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Creates an instance of this 
+        /// Creates an instance of this
         /// </summary>
         /// <param name="p1"></param>
         /// <param name="p2"></param>

@@ -12,7 +12,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     {
         private NonRobustLineIntersector li = new NonRobustLineIntersector();
 
-
         [TestAttribute]
         [IgnoreAttribute("The JTS testNegativeZero test was being ignored")]
         public void TestNegativeZero() {

@@ -34,7 +34,7 @@ namespace NetTopologySuite.Operation.Linemerge
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private Coordinate[] Coordinates
         {
@@ -44,17 +44,17 @@ namespace NetTopologySuite.Operation.Linemerge
                 {
                     int forwardDirectedEdges = 0;
                     int reverseDirectedEdges = 0;
-                    CoordinateList coordinateList = new CoordinateList();
-                    foreach (LineMergeDirectedEdge directedEdge in directedEdges)
+                    var coordinateList = new CoordinateList();
+                    foreach (var directedEdge in directedEdges)
                     {
-                        if (directedEdge.EdgeDirection)                        
-                             forwardDirectedEdges++;                        
+                        if (directedEdge.EdgeDirection)
+                             forwardDirectedEdges++;
                         else reverseDirectedEdges++;
                          coordinateList.Add(((LineMergeEdge) directedEdge.Edge).Line.Coordinates, false, directedEdge.EdgeDirection);
                     }
                     coordinates = coordinateList.ToCoordinateArray();
                     if (reverseDirectedEdges > forwardDirectedEdges)
-                        CoordinateArrays.Reverse(coordinates);                    
+                        CoordinateArrays.Reverse(coordinates);
                 }
                 return coordinates;
             }

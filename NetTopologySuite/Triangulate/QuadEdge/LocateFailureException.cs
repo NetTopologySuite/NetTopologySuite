@@ -5,19 +5,19 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 {
     public class LocateFailureException : Exception
     {
-        private static String MsgWithSpatial(String msg, LineSegment seg)
+        private static string MsgWithSpatial(string msg, LineSegment seg)
         {
             if (seg != null)
                 return msg + " [ " + seg + " ]";
             return msg;
         }
 
-        public LocateFailureException(String msg)
+        public LocateFailureException(string msg)
             :base(msg)
         {
         }
 
-        public LocateFailureException(String msg, LineSegment seg)
+        public LocateFailureException(string msg, LineSegment seg)
             :base(MsgWithSpatial(msg, seg))
         {
             this.Segment = new LineSegment(seg);

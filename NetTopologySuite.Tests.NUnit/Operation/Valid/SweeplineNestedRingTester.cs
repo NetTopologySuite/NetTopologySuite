@@ -22,7 +22,7 @@ namespace NetTopologySuite.Operation.Valid
         private Coordinate nestedPt;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="graph"></param>
         public SweeplineNestedRingTester(GeometryGraph graph)
@@ -31,18 +31,12 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public Coordinate NestedPoint 
-        {
-            get
-            {
-                return nestedPt; 
-            }
-        }
+        public Coordinate NestedPoint => nestedPt;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ring"></param>
         public void Add(ILinearRing ring)
@@ -51,47 +45,47 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public bool IsNonNested()
         {
             BuildIndex();
-            OverlapAction action = new OverlapAction(this);
+            var action = new OverlapAction(this);
             sweepLine.ComputeOverlaps(action);
             return action.IsNonNested;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private void BuildIndex()
         {
             sweepLine = new SweepLineIndex();
-            foreach (ILinearRing ring in rings)
+            foreach (var ring in rings)
             {
-                Envelope env = ring.EnvelopeInternal;
-                SweepLineInterval sweepInt = new SweepLineInterval(env.MinX, env.MaxX, ring);
+                var env = ring.EnvelopeInternal;
+                var sweepInt = new SweepLineInterval(env.MinX, env.MaxX, ring);
                 sweepLine.Add(sweepInt);
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="innerRing"></param>
         /// <param name="searchRing"></param>
         /// <returns></returns>
         private bool IsInside(ILinearRing innerRing, ILinearRing searchRing)
         {
-            Coordinate[] innerRingPts = innerRing.Coordinates;
-            Coordinate[] searchRingPts = searchRing.Coordinates;
+            var innerRingPts = innerRing.Coordinates;
+            var searchRingPts = searchRing.Coordinates;
             if (!innerRing.EnvelopeInternal.Intersects(searchRing.EnvelopeInternal))
                 return false;
-            Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
+            var innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, graph);
             Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
             bool isInside = PointLocation.IsInRing(innerRingPt, searchRingPts);
-            if (isInside) 
+            if (isInside)
             {
                 nestedPt = innerRingPt;
                 return true;
@@ -100,7 +94,7 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public class OverlapAction : ISweepLineOverlapAction
         {
@@ -108,18 +102,12 @@ namespace NetTopologySuite.Operation.Valid
             bool isNonNested = true;
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
-            public bool IsNonNested
-            {
-                get 
-                { 
-                    return isNonNested; 
-                }
-            }
+            public bool IsNonNested => isNonNested;
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             /// <param name="container"></param>
             public OverlapAction(SweeplineNestedRingTester container)
@@ -128,15 +116,15 @@ namespace NetTopologySuite.Operation.Valid
             }
 
             /// <summary>
-            /// 
+            ///
             /// </summary>
             /// <param name="s0"></param>
             /// <param name="s1"></param>
             public void Overlap(SweepLineInterval s0, SweepLineInterval s1)
             {
-                ILinearRing innerRing = (ILinearRing) s0.Item;
-                ILinearRing searchRing = (ILinearRing) s1.Item;
-                if (innerRing == searchRing) 
+                var innerRing = (ILinearRing) s0.Item;
+                var searchRing = (ILinearRing) s1.Item;
+                if (innerRing == searchRing)
                     return;
                 if (container.IsInside(innerRing, searchRing))
                     isNonNested = false;

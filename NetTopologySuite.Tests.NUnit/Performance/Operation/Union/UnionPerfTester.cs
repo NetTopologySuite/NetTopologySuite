@@ -17,15 +17,15 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
         public const int BUFFER0 = 3;
         public const int ORDERED = 4;
 
-        public static void run(String testName, int testType, IList<IGeometry> polys)
+        public static void run(string testName, int testType, IList<IGeometry> polys)
         {
-            UnionPerfTester test = new UnionPerfTester(polys);
+            var test = new UnionPerfTester(polys);
             test.run(testName, testType);
         }
 
         public static void runAll(IList<IGeometry> polys)
         {
-            UnionPerfTester test = new UnionPerfTester(polys);
+            var test = new UnionPerfTester(polys);
             test.runAll();
         }
 
@@ -40,24 +40,22 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
             _polys = polys;
         }
 
-
-
         public void runAll()
         {
             Console.WriteLine("# items: " + _polys.Count);
             run("Cascaded", CASCADED, _polys);
-//    run("Buffer-0", BUFFER0, polys);
+            // run("Buffer-0", BUFFER0, polys);
 
             run("Iterated", ITERATED, _polys);
 
         }
 
-        public void run(String testName, int testType)
+        public void run(string testName, int testType)
         {
             Console.WriteLine();
             Console.WriteLine("======= Union Algorithm: " + testName + " ===========");
 
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             for (int i = 0; i < MAX_ITER; i++)
             {
                 IGeometry union = null;
@@ -74,7 +72,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
                         break;
                 }
 
-//    	printFormatted(union);
+                // printFormatted(union);
 
             }
             Console.WriteLine("Finished in " + sw.ElapsedMilliseconds);
@@ -82,7 +80,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
 
         private void printFormatted(IGeometry geom)
         {
-            WKTWriter writer = new WKTWriter();
+            var writer = new WKTWriter();
             Console.WriteLine(writer.WriteFormatted(geom));
         }
 
@@ -106,7 +104,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
                 if (count%100 == 0)
                 {
                     Console.Write(".");
-//        System.out.println("Adding geom #" + count);
+                    // System.out.println("Adding geom #" + count);
                 }
             }
             return unionAll;
@@ -127,7 +125,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
 
         private void printItemEnvelopes(IList tree)
         {
-            Envelope itemEnv = new Envelope();
+            var itemEnv = new Envelope();
             foreach (object o in tree)
             {
                 if (o is IList)

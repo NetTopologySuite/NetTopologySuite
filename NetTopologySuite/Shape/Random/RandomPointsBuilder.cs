@@ -76,16 +76,16 @@ namespace NetTopologySuite.Shape.Random
          *
         protected override Coordinate CreateCoord(double x, double y)
         {
-  	        Coordinate pt = new Coordinate(x, y);
-  	        geomFactory.getPrecisionModel().makePrecise(pt);
+            Coordinate pt = new Coordinate(x, y);
+            geomFactory.getPrecisionModel().makePrecise(pt);
             return pt;
         }
         */
 
         protected Coordinate CreateRandomCoord(Envelope env)
         {
-            var x = env.MinX + env.Width * Rnd.NextDouble();
-            var y = env.MinY + env.Height * Rnd.NextDouble();
+            double x = env.MinX + env.Width * Rnd.NextDouble();
+            double y = env.MinY + env.Height * Rnd.NextDouble();
 
             return CreateCoord(x, y);
         }

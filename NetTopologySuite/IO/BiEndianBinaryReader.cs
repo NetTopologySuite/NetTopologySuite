@@ -6,14 +6,14 @@ using NetTopologySuite.Utilities;
 namespace NetTopologySuite.IO
 {
     /// <summary>
-    /// Extends the <see cref="BinaryReader" /> class to allow reading values in the specified format.    
+    /// Extends the <see cref="BinaryReader" /> class to allow reading values in the specified format.
     /// </summary>
     /// <remarks>
-    /// While <see cref="BiEndianBinaryReader" /> extends <see cref="BinaryReader" /> 
+    /// While <see cref="BiEndianBinaryReader" /> extends <see cref="BinaryReader" />
     /// adding methods for reading integer values (<see cref="BiEndianBinaryReader.ReadInt32" />)
-    /// and double values (<see cref="BiEndianBinaryReader.ReadDouble" />) in the specified format, 
-    /// this implementation overrides methods, such <see cref="BinaryReader.ReadInt32" /> 
-    /// and <see cref="BinaryReader.ReadDouble" /> and more, 
+    /// and double values (<see cref="BiEndianBinaryReader.ReadDouble" />) in the specified format,
+    /// this implementation overrides methods, such <see cref="BinaryReader.ReadInt32" />
+    /// and <see cref="BinaryReader.ReadDouble" /> and more,
     /// for reading values in the specified by <see cref="BiEndianBinaryReader.Endianess"/> format.
     /// </remarks>
     public class BiEndianBinaryReader : BinaryReader
@@ -50,14 +50,14 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
         public override short ReadInt16()
         {
-            var result = base.ReadInt16();
+            short result = base.ReadInt16();
             return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
         }
 
         /// <summary>
-        /// Reads a 2-byte unsigned integer from the current stream using the specified encoding 
+        /// Reads a 2-byte unsigned integer from the current stream using the specified encoding
         /// and advances the position of the stream by two bytes.
         /// </summary>
         /// <returns>
@@ -69,7 +69,7 @@ namespace NetTopologySuite.IO
         [CLSCompliant(false)]
         public override ushort ReadUInt16()
         {
-            var result = base.ReadUInt16();
+            ushort result = base.ReadUInt16();
             return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
@@ -87,7 +87,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
         public override int ReadInt32()
         {
-            var result = base.ReadInt32();
+            int result = base.ReadInt32();
             return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
@@ -106,7 +106,7 @@ namespace NetTopologySuite.IO
         [CLSCompliant(false)]
         public override uint ReadUInt32()
         {
-            var result = base.ReadUInt32();
+            uint result = base.ReadUInt32();
             return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
@@ -124,15 +124,14 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
         public override long ReadInt64()
         {
-            var result = base.ReadInt64();
+            long result = base.ReadInt64();
             return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
         }
 
-
         /// <summary>
-        /// Reads an 8-byte unsigned integer from the current stream using the specified encoding 
+        /// Reads an 8-byte unsigned integer from the current stream using the specified encoding
         /// and advances the position of the stream by eight bytes.
         /// </summary>
         /// <returns>
@@ -144,7 +143,7 @@ namespace NetTopologySuite.IO
         [CLSCompliant(false)]
         public override ulong ReadUInt64()
         {
-            var result = base.ReadUInt64();
+            ulong result = base.ReadUInt64();
             return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
@@ -162,7 +161,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
         public override float ReadSingle()
         {
-            var result = base.ReadSingle();
+            float result = base.ReadSingle();
             return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
@@ -180,14 +179,14 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
         public override double ReadDouble()
         {
-            var result = base.ReadDouble();
+            double result = base.ReadDouble();
             return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
         }
 
         /// <summary>
-        /// Reads a string from the current stream. 
+        /// Reads a string from the current stream.
         /// The string is prefixed with the length, encoded as an integer seven bits at a time.
         /// </summary>
         /// <returns>The string being read.</returns>
@@ -202,7 +201,7 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Reads a decimal value from the current stream 
+        /// Reads a decimal value from the current stream
         /// and advances the current position of the stream by sixteen bytes.
         /// </summary>
         /// <returns>

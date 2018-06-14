@@ -48,7 +48,7 @@ namespace NetTopologySuite.Precision
             if (geom is ILinearRing)
                 minLength = LinearRing.MinimumValidSize;
 
-            Coordinate[] collapsedCoords = reducedCoords;
+            var collapsedCoords = reducedCoords;
             if (_removeCollapsed)
                 collapsedCoords = null;
 

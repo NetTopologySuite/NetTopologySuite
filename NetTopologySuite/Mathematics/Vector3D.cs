@@ -22,12 +22,12 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The dot product</returns>
         public static double Dot(Coordinate A, Coordinate B, Coordinate C, Coordinate D)
         {
-            var ABx = B.X - A.X;
-            var ABy = B.Y - A.Y;
-            var ABz = B.Z - A.Z;
-            var CDx = D.X - C.X;
-            var CDy = D.Y - C.Y;
-            var CDz = D.Z - C.Z;
+            double ABx = B.X - A.X;
+            double ABy = B.Y - A.Y;
+            double ABz = B.Z - A.Z;
+            double CDx = D.X - C.X;
+            double CDy = D.Y - C.Y;
+            double CDz = D.Z - C.Z;
             return ABx * CDx + ABy * CDy + ABz * CDz;
         }
         // ReSharper restore InconsistentNaming
@@ -104,26 +104,17 @@ namespace NetTopologySuite.Mathematics
         /// <summary>
         /// Gets a value indicating the x-ordinate
         /// </summary>
-        public double X 
-        {
-            get { return _x; }
-        }
+        public double X => _x;
 
         /// <summary>
         /// Gets a value indicating the y-ordinate
         /// </summary>
-        public double Y
-        {
-            get { return _y; }
-        }
+        public double Y => _y;
 
         /// <summary>
         /// Gets a value indicating the z-ordinate
         /// </summary>
-        public double Z
-        {
-            get { return _z; }
-        }
+        public double Z => _z;
 
         /// <summary>
         /// Computes the dot-product of this <see cref="Vector3D"/> and <paramref name="v"/>
@@ -160,7 +151,7 @@ namespace NetTopologySuite.Mathematics
         /// <returns>A normalized form of this vector</returns>
         public Vector3D Normalize()
         {
-            var length = Length();
+            double length = Length();
             if (length > 0.0)
                 return Divide(Length());
             return Create(0.0, 0.0, 0.0);
@@ -183,16 +174,15 @@ namespace NetTopologySuite.Mathematics
         /// <returns>A normalized form of <paramref name="v"/></returns>
         public static Coordinate Normalize(Coordinate v)
         {
-            var len = Length(v);
+            double len = Length(v);
             return new Coordinate(v.X / len, v.Y / len, v.Z / len);
         }
 
         /// <inheritdoc cref="object.ToString()"/>
-        public override String ToString()
+        public override string ToString()
         {
             return string.Format(NumberFormatInfo.InvariantInfo, "[{0}, {1}, {2}]", _x, _y, _z);
         }
-
 
     }
 }

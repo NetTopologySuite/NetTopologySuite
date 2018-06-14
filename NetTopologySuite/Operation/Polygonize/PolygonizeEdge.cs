@@ -11,7 +11,7 @@ namespace NetTopologySuite.Operation.Polygonize
         private readonly ILineString line;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="line"></param>
         public PolygonizeEdge(ILineString line)
@@ -20,14 +20,8 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public ILineString Line
-        {
-            get
-            {
-                return line;
-            }
-        }
+        public ILineString Line => line;
     }
 }

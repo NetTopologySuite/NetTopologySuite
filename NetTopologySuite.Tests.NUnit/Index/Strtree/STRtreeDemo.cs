@@ -18,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         public STRtreeDemo()
         {
             var envelopes = SourceData();
-            TestTree t = new TestTree(NODE_CAPACITY);
+            var t = new TestTree(NODE_CAPACITY);
             InitTree(t, envelopes);
             PrintSourceData(envelopes);
             PrintLevels(t);
@@ -33,7 +33,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
 
             public new IList<IBoundable<Envelope, object>> BoundablesAtLevel(int level) { return base.BoundablesAtLevel(level); }
 
-            public new AbstractNode<Envelope, object> Root { get { return base.Root; } }
+            public new AbstractNode<Envelope, object> Root => base.Root;
 
             public new IList<IBoundable<Envelope, object>> CreateParentBoundables(IList<IBoundable<Envelope, object>> verticalSlice, int newLevel)
             {
@@ -121,7 +121,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             Console.WriteLine("============ " + title + " ============\n");
             Console.Write("GEOMETRYCOLLECTION(");
             bool first = true;
-            foreach (IBoundable<Envelope, object> boundable in boundables)
+            foreach (var boundable in boundables)
             {
                 if (first)
                 {
@@ -136,7 +136,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             Console.WriteLine(")\n");
         }
 
-        private static String ToString(IBoundable<Envelope, object> b)
+        private static string ToString(IBoundable<Envelope, object> b)
         {
             return "POLYGON(("
                     + Envelope(b).MinX + " "

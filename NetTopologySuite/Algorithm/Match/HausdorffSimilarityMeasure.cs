@@ -20,23 +20,23 @@ namespace NetTopologySuite.Algorithm.Match
     public class HausdorffSimilarityMeasure : ISimilarityMeasure
     {
         /*
-	    public static double measure(Geometry a, Geometry b)
-    	{
-		    HausdorffSimilarityMeasure gv = new HausdorffSimilarityMeasure(a, b);
-		    return gv.measure();
-	    }
-	    */
+        public static double measure(Geometry a, Geometry b)
+        {
+            HausdorffSimilarityMeasure gv = new HausdorffSimilarityMeasure(a, b);
+            return gv.measure();
+        }
+        */
 
         /*
-	     * Densify a small amount to increase accuracy of Hausdorff distance
-	     */
+         * Densify a small amount to increase accuracy of Hausdorff distance
+         */
         private static readonly double DensifyFraction = 0.25;
 
         public double Measure(IGeometry g1, IGeometry g2)
         {
             double distance = DiscreteHausdorffDistance.Distance(g1, g2, DensifyFraction);
 
-            Envelope env = new Envelope(g1.EnvelopeInternal);
+            var env = new Envelope(g1.EnvelopeInternal);
             env.ExpandToInclude(g2.EnvelopeInternal);
             double envSize = DiagonalSize(env);
             // normalize so that more similarity produces a measure closer to 1
@@ -47,7 +47,7 @@ namespace NetTopologySuite.Algorithm.Match
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="env"></param>
         /// <returns></returns>

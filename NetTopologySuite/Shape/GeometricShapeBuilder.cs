@@ -16,28 +16,19 @@ namespace NetTopologySuite.Shape
 
         public Envelope Extent
         {
-            get { return _extent; }
-            set { _extent = value; }
+            get => _extent;
+            set => _extent = value;
         }
 
-        public Coordinate Centre
-        {
-            get { return _extent.Centre; }
-        }
+        public Coordinate Centre => _extent.Centre;
 
-        public double Diameter
-        {
-            get { return Math.Min(_extent.Height, _extent.Width); }
-        }
+        public double Diameter => Math.Min(_extent.Height, _extent.Width);
 
-        public double Radius
-        {
-            get { return Diameter * 0.5; }
-        }
+        public double Radius => Diameter * 0.5;
 
         public LineSegment GetSquareBaseLine()
         {
-            var radius = Radius;
+            double radius = Radius;
 
             var centre = Centre;
             var p0 = new Coordinate(centre.X - radius, centre.Y - radius);
@@ -48,7 +39,7 @@ namespace NetTopologySuite.Shape
 
         public Envelope GetSquareExtent()
         {
-            var radius = Radius;
+            double radius = Radius;
 
             var centre = Centre;
             return new Envelope(centre.X - radius, centre.X + radius,

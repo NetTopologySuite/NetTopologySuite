@@ -11,14 +11,14 @@ namespace NetTopologySuite.Index.Quadtree
     /// computing a midpoint value which does not lie strictly between the
     /// endpoints.
     /// </summary>
-    public class IntervalSize 
+    public class IntervalSize
     {
         /// <summary>
         /// Only static methods!
         /// </summary>
         private IntervalSize() { }
 
-        /// <summary> 
+        /// <summary>
         /// This value is chosen to be a few powers of 2 less than the
         /// number of bits available in the double representation (i.e. 53).
         /// This should allow enough extra precision for simple computations to be correct,
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// </summary>
         public const int MinBinaryExponent = -50;
 
-        /// <summary> 
+        /// <summary>
         /// Computes whether the interval [min, max] is effectively zero width.
         /// I.e. the width of the interval is so much less than the
         /// location of the interval that the midpoint of the interval cannot be
@@ -35,7 +35,7 @@ namespace NetTopologySuite.Index.Quadtree
         public static bool IsZeroWidth(double min, double max)
         {
             double width = max - min;
-            if (width == 0.0) 
+            if (width == 0.0)
                 return true;
             double maxAbs = System.Math.Max(System.Math.Abs(min), System.Math.Abs(max));
             double scaledInterval = width / maxAbs;

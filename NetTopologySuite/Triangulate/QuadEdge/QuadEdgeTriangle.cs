@@ -7,16 +7,16 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
     /// <summary>
-    /// Models a triangle formed from <see cref="QuadEdge"/>s in a <see cref="QuadEdgeSubdivision"/> 
+    /// Models a triangle formed from <see cref="QuadEdge"/>s in a <see cref="QuadEdgeSubdivision"/>
     /// which forms a triangulation. The class provides methods to access the
-    /// topological and geometric properties of the triangle and its neighbours in 
-    /// the triangulation. Triangle vertices are ordered in CCW orientation in the 
+    /// topological and geometric properties of the triangle and its neighbours in
+    /// the triangulation. Triangle vertices are ordered in CCW orientation in the
     /// structure.
     /// </summary>
     /// <remarks>
     /// QuadEdgeTriangles support having an external data attribute attached to them.
-    /// Alternatively, this class can be subclassed and attributes can 
-    /// be defined in the subclass.  Subclasses will need to define 
+    /// Alternatively, this class can be subclassed and attributes can
+    /// be defined in the subclass.  Subclasses will need to define
     /// their own <c>BuilderVisitor</c> class
     /// and <c>CreateOn</c> method.
     /// </remarks>
@@ -136,7 +136,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         private static QuadEdge[] CopyOf(QuadEdge[] edge)
         {
             var res = new QuadEdge[edge.Length];
-            for (var i = 0; i < edge.Length; i++)
+            for (int i = 0; i < edge.Length; i++)
                 res[i] = edge[i];
             return res;
         }
@@ -256,7 +256,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <inheritdoc cref="object.ToString()"/>
-        public override String ToString()
+        public override string ToString()
         {
             return GetGeometry(new GeometryFactory()).ToString();
         }
@@ -291,7 +291,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <summary>
-        /// Gets the triangles which are adjacent (include) to a 
+        /// Gets the triangles which are adjacent (include) to a
         /// given vertex of this triangle.
         /// </summary>
         /// <param name="vertexIndex">The vertex to query</param>
@@ -301,8 +301,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             // Assert: isVertex
             var adjTris = new List<QuadEdgeTriangle>();
 
-            QuadEdge start = GetEdge(vertexIndex);
-            QuadEdge qe = start;
+            var start = GetEdge(vertexIndex);
+            var qe = start;
             do
             {
                 var adjTri = (QuadEdgeTriangle) qe.Data;

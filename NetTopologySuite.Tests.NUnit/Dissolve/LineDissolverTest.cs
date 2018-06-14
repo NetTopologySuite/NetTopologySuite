@@ -20,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
         public void TestSingleSegmentLine()
         {
             CheckDissolve(
-                "LINESTRING (0 0, 1 1)", 
+                "LINESTRING (0 0, 1 1)",
                 "LINESTRING (0 0, 1 1)");
         }
 
@@ -28,7 +28,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
         public void TestTwoSegmentLine()
         {
             CheckDissolve(
-                "LINESTRING (0 0, 1 1, 2 2)", 
+                "LINESTRING (0 0, 1 1, 2 2)",
                 "LINESTRING (0 0, 1 1, 2 2)");
         }
 
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
         public void TestOverlappingTwoSegmentLines()
         {
             CheckDissolve(
-                new[] { "LINESTRING (0 0, 1 1, 2 2)", "LINESTRING (1 1, 2 2, 3 3)" }, 
+                new[] { "LINESTRING (0 0, 1 1, 2 2)", "LINESTRING (1 1, 2 2, 3 3)" },
                 "LINESTRING (0 0, 1 1, 2 2, 3 3)");
         }
 
@@ -44,11 +44,11 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
         public void TestOverlappingLines3()
         {
             CheckDissolve(
-                new[] 
+                new[]
                 {
-                    "LINESTRING (0 0, 1 1, 2 2)", 
+                    "LINESTRING (0 0, 1 1, 2 2)",
                     "LINESTRING (1 1, 2 2, 3 3)",
-                    "LINESTRING (1 1, 2 2, 2 0)" 
+                    "LINESTRING (1 1, 2 2, 2 0)"
                 },
                 "MULTILINESTRING ((0 0, 1 1, 2 2), (2 0, 2 2), (2 2, 3 3))");
         }
@@ -130,10 +130,9 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
         public void TestZeroLengthStartSegment()
         {
             CheckDissolve(
-        "MULTILINESTRING ((0 0, 0 0, 2 1))",  
+        "MULTILINESTRING ((0 0, 0 0, 2 1))",
         "LINESTRING (0 0, 2 1)");
         }
-
 
         private void CheckDissolve(string wkt, string expectedWkt)
         {
@@ -142,20 +141,20 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
 
         private void CheckDissolve(string[] wkt, string expectedWkt)
         {
-            IList<IGeometry> geoms = GeometryUtils.ReadWKT(wkt);
-            IGeometry expected = GeometryUtils.ReadWKT(expectedWkt);
+            var geoms = GeometryUtils.ReadWKT(wkt);
+            var expected = GeometryUtils.ReadWKT(expectedWkt);
             CheckDissolve(geoms, expected);
         }
 
         private void CheckDissolve(IEnumerable<IGeometry> geoms, IGeometry expected)
         {
-            LineDissolver d = new LineDissolver();
+            var d = new LineDissolver();
             d.Add(geoms);
-            IGeometry result = d.GetResult();
-            IGeometry rnorm = result.Normalized();
-            IGeometry enorm = expected.Normalized();
+            var result = d.GetResult();
+            var rnorm = result.Normalized();
+            var enorm = expected.Normalized();
             bool equal = rnorm.EqualsExact(enorm);
-            Assert.IsTrue(equal, String.Format("Expected = {0} actual = {1}", expected, rnorm));
+            Assert.IsTrue(equal, string.Format("Expected = {0} actual = {1}", expected, rnorm));
         }
     }
 }

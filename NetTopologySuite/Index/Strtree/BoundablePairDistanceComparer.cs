@@ -15,7 +15,7 @@ using System.Collections.Generic;
 namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
-    /// The Class BoundablePairDistanceComparator. It implements .Net <see cref="IComparer{T}"/> and is used 
+    /// The Class BoundablePairDistanceComparator. It implements .Net <see cref="IComparer{T}"/> and is used
     /// as a parameter to sort the BoundablePair list.
     /// </summary>
 #if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
@@ -26,7 +26,6 @@ namespace NetTopologySuite.Index.Strtree
 
         /// <summary>The normal order</summary>
         readonly bool _normalOrder;
-
 
         /// <summary>
         /// Instantiates a new boundable pair distance comparator.
@@ -43,8 +42,8 @@ namespace NetTopologySuite.Index.Strtree
         /// <inheritdoc cref="IComparer{T}.Compare"/>
         public int Compare(BoundablePair<TItem> p1, BoundablePair<TItem> p2)
         {
-            var distance1 = p1.Distance;
-            var distance2 = p2.Distance;
+            double distance1 = p1.Distance;
+            double distance2 = p2.Distance;
             if (_normalOrder)
             {
                 if (distance1 > distance2)

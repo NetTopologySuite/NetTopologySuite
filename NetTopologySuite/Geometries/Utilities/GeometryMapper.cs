@@ -26,7 +26,7 @@ namespace NetTopologySuite.Geometries.Utilities
         public static IGeometry Map(IGeometry geom, Func<IGeometry, IGeometry> op)
         {
             var mapped = new List<IGeometry>();
-            for (var i = 0; i < geom.NumGeometries; i++)
+            for (int i = 0; i < geom.NumGeometries; i++)
             {
                 var g = op(geom);
                 if (g != null)
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Geometries.Utilities
         public static IGeometry Map(IGeometry geom, IMapOp op)
         {
             var mapped = new List<IGeometry>();
-            for (var i = 0; i < geom.NumGeometries; i++)
+            for (int i = 0; i < geom.NumGeometries; i++)
             {
                 var g = op.Map(geom.GetGeometryN(i));
                 if (g != null)

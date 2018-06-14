@@ -22,7 +22,7 @@ namespace NetTopologySuite.Operation.Valid
         private Coordinate _nestedPt;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="graph"></param>
         public QuadtreeNestedRingTester(GeometryGraph graph)
@@ -31,18 +31,12 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public Coordinate NestedPoint
-        {
-            get
-            {
-                return _nestedPt;
-            }
-        }
+        public Coordinate NestedPoint => _nestedPt;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ring"></param>
         public void Add(ILinearRing ring)
@@ -52,7 +46,7 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public bool IsNonNested()
@@ -61,20 +55,20 @@ namespace NetTopologySuite.Operation.Valid
 
             for (int i = 0; i < _rings.Count; i++)
             {
-                ILinearRing innerRing = _rings[i];
-                Coordinate[] innerRingPts = innerRing.Coordinates;
+                var innerRing = _rings[i];
+                var innerRingPts = innerRing.Coordinates;
 
                 var results = _quadtree.Query(innerRing.EnvelopeInternal);
                 for (int j = 0; j < results.Count; j++)
                 {
-                    ILinearRing searchRing = results[j];
-                    Coordinate[] searchRingPts = searchRing.Coordinates;
+                    var searchRing = results[j];
+                    var searchRingPts = searchRing.Coordinates;
 
                     if (innerRing == searchRing) continue;
 
                     if (!innerRing.EnvelopeInternal.Intersects(searchRing.EnvelopeInternal)) continue;
 
-                    Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, _graph);
+                    var innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, _graph);
                     Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
 
                     bool isInside = PointLocation.IsInRing(innerRingPt, searchRingPts);
@@ -89,7 +83,7 @@ namespace NetTopologySuite.Operation.Valid
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private void BuildQuadtree()
         {
@@ -97,8 +91,8 @@ namespace NetTopologySuite.Operation.Valid
 
             for (int i = 0; i < _rings.Count; i++)
             {
-                ILinearRing ring = _rings[i];
-                Envelope env = ring.EnvelopeInternal;
+                var ring = _rings[i];
+                var env = ring.EnvelopeInternal;
                 _quadtree.Insert(env, ring);
             }
         }

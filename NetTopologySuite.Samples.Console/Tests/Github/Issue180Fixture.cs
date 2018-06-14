@@ -14,17 +14,17 @@ namespace NetTopologySuite.Samples.Tests.Github
         [Test]
         public void expected_no_interception_point()
         {
-            IGeometryFactory factory = GeometryFactory.Default;
-            WKTReader reader = new WKTReader(factory);
-            IGeometry g1 = reader.Read(
+            var factory = GeometryFactory.Default;
+            var reader = new WKTReader(factory);
+            var g1 = reader.Read(
                 @"LINESTRING (500252.36136968032 3268279.9946693764, 500197.63371806522 3268255.4002767489)");
             Assert.IsNotNull(g1);
             Assert.IsTrue(g1.IsValid);
-            IGeometry g2 = reader.Read(
+            var g2 = reader.Read(
                 @"LINESTRING (499815.091 3269179.8250000011, 500224.99754436983 3268267.6974732862)");
             Assert.IsNotNull(g2);
             Assert.IsTrue(g2.IsValid);
-            IGeometry ret = g1.Intersection(g2);
+            var ret = g1.Intersection(g2);
             Assert.IsNotNull(ret);
             Assert.IsInstanceOf<ILineString>(ret);
             Assert.AreEqual("LINESTRING EMPTY", ret.ToString());

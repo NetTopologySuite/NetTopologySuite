@@ -5,9 +5,9 @@ using NetTopologySuite.Utilities;
 namespace NetTopologySuite.Operation.Linemerge
 {
     /// <summary>
-    /// A <c>com.vividsolutions.jts.planargraph.DirectedEdge</c> of a <c>LineMergeGraph</c>. 
+    /// A <c>com.vividsolutions.jts.planargraph.DirectedEdge</c> of a <c>LineMergeGraph</c>.
     /// </summary>
-    public class LineMergeDirectedEdge : DirectedEdge 
+    public class LineMergeDirectedEdge : DirectedEdge
     {
         /// <summary>
         /// Constructs a LineMergeDirectedEdge connecting the <c>from</c> node to the <c>to</c> node.
@@ -22,21 +22,21 @@ namespace NetTopologySuite.Operation.Linemerge
         /// whether this DirectedEdge's direction is the same as or
         /// opposite to that of the parent Edge (if any).
         /// </param>
-        public LineMergeDirectedEdge(Node from, Node to, Coordinate directionPt, bool edgeDirection) 
+        public LineMergeDirectedEdge(Node from, Node to, Coordinate directionPt, bool edgeDirection)
             : base(from, to, directionPt, edgeDirection) { }
 
         /// <summary>
         /// Returns the directed edge that starts at this directed edge's end point, or null
-        /// if there are zero or multiple directed edges starting there.  
+        /// if there are zero or multiple directed edges starting there.
         /// </summary>
-        public LineMergeDirectedEdge Next 
+        public LineMergeDirectedEdge Next
         {
             get
             {
                 if (ToNode.Degree != 2)
-                    return null;                
-                if (ToNode.OutEdges.Edges[0] == Sym)                
-                    return (LineMergeDirectedEdge) ToNode.OutEdges.Edges[1];                
+                    return null;
+                if (ToNode.OutEdges.Edges[0] == Sym)
+                    return (LineMergeDirectedEdge) ToNode.OutEdges.Edges[1];
                 Assert.IsTrue(ToNode.OutEdges.Edges[1] == Sym);
                 return (LineMergeDirectedEdge) ToNode.OutEdges.Edges[0];
             }

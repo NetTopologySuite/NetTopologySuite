@@ -30,12 +30,12 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                          );
         }
 
-        public int compareBiDir(String wkt0, String wkt1)
+        public int compareBiDir(string wkt0, string wkt1)
         {
-            LineString g0 = (LineString)rdr.Read(wkt0);
-            LineString g1 = (LineString)rdr.Read(wkt1);
-            Coordinate[] pts0 = g0.Coordinates;
-            Coordinate[] pts1 = g1.Coordinates;
+            var g0 = (LineString)rdr.Read(wkt0);
+            var g1 = (LineString)rdr.Read(wkt1);
+            var pts0 = g0.Coordinates;
+            var pts1 = g1.Coordinates;
             IComparer<Coordinate[]> comp = new CoordinateArrays.BidirectionalComparator();
             return comp.Compare(pts0, pts1);
         }

@@ -15,11 +15,11 @@ namespace Open.Topology.TestRunner.Result
         /// <param name="expectedResult">The expected result of the test</param>
         /// <param name="tolerance">The tolerance for the test</param>
         /// <returns>True if the actual and expected results match</returns>
-        bool IsMatch(IGeometry geom, String opName, Object[] args,
+        bool IsMatch(IGeometry geom, string opName, object[] args,
                      IResult actualResult, IResult expectedResult,
                      double tolerance);
     }
-    
+
     /// <summary>
     /// An interface for classes which can determine whether
     /// two <see typeref="TestResult"/>s match, within a given <tt>tolerance</tt>.
@@ -38,7 +38,7 @@ namespace Open.Topology.TestRunner.Result
         /// <param name="expectedResult">The expected result of the test</param>
         /// <param name="tolerance">The tolerance for the test</param>
         /// <returns>True if the actual and expected results match</returns>
-        bool IsMatch(IGeometry geom, String opName, Object[] args,
+        bool IsMatch(IGeometry geom, string opName, object[] args,
                      TResult actualResult, TResult expectedResult,
                      double tolerance);
     }

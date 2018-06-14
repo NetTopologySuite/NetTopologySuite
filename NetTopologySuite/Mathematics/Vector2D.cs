@@ -37,7 +37,6 @@ namespace NetTopologySuite.Mathematics
             return new Vector2D(v);
         }
 
-
         /// <summary>
         /// Creates a vector from a <see cref="Coordinate"/>.
         /// </summary>
@@ -49,7 +48,7 @@ namespace NetTopologySuite.Mathematics
         }
 
         ///<summary>Creates a vector with the direction and magnitude
-        /// of the difference between the 
+        /// of the difference between the
         /// <paramref name="to"/> and <paramref name="from"/> <see cref="Coordinate"/>s.
         /// </summary>
         /// <param name="from">The origin coordinate</param>
@@ -99,7 +98,7 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>Creates a new vector with the direction and magnitude
-        /// of the difference between the 
+        /// of the difference between the
         /// <paramref name="to"/> and <paramref name="from"/> <see cref="Coordinate"/>s.
         /// </summary>
         /// <param name="from">The origin coordinate</param>
@@ -124,18 +123,12 @@ namespace NetTopologySuite.Mathematics
         /// <summary>
         /// Gets the x-ordinate value
         /// </summary>
-        public double X
-        {
-            get { return _x; }
-        }
+        public double X => _x;
 
         /// <summary>
         /// Gets the y-ordinate value
         /// </summary>
-        public double Y
-        {
-            get { return _y; }
-        }
+        public double Y => _y;
 
         /// <summary>
         /// Gets the ordinate values by index
@@ -208,7 +201,7 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public double Length()
@@ -217,7 +210,7 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public double LengthSquared()
@@ -231,14 +224,14 @@ namespace NetTopologySuite.Mathematics
         /// <returns>A new normalized vector</returns>
         public Vector2D Normalize()
         {
-            var length = Length();
+            double length = Length();
             if (length > 0.0)
                 return Divide(length);
             return Create(0.0, 0.0);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
@@ -253,7 +246,7 @@ namespace NetTopologySuite.Mathematics
         /// with this vector contributing a fraction
         /// of <tt>frac</tt> to the total.
         /// <para/>
-        /// In other words, 
+        /// In other words,
         /// <pre>
         /// sum = frac * this + (1 - frac) * v
         /// </pre>
@@ -300,7 +293,7 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
@@ -310,15 +303,15 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
         public double AngleTo(Vector2D v)
         {
-            var a1 = Angle();
-            var a2 = v.Angle();
-            var angDel = a2 - a1;
+            double a1 = Angle();
+            double a2 = v.Angle();
+            double angDel = a2 - a1;
 
             // normalize, maintaining orientation
             if (angDel <= -System.Math.PI)
@@ -354,7 +347,7 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The rotated vector.</returns>
         public Vector2D RotateByQuarterCircle(int numQuarters)
         {
-            var nQuad = numQuarters % 4;
+            int nQuad = numQuarters % 4;
             if (numQuarters < 0 && nQuad != 0)
             {
                 nQuad = nQuad + 4;
@@ -375,7 +368,7 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
@@ -403,7 +396,6 @@ namespace NetTopologySuite.Mathematics
             return new Coordinate(_x, _y);
         }
 
-
         /// <summary>
         /// Creates a copy of this vector
         /// </summary>
@@ -429,12 +421,12 @@ namespace NetTopologySuite.Mathematics
         /// <returns>true if <paramref name="o"/> is a <see cref="T:NetTopologySuite.Mathematics.Vector2D"/>with the same values for the X and Y components.</returns>
         public override bool Equals(object o)
         {
-		    if (!(o is Vector2D)) {
-			    return false;
-		    }
-		    var v = (Vector2D) o;
-		    return _x == v._x && _y == v._y;
-	    }
+            if (!(o is Vector2D)) {
+                return false;
+            }
+            var v = (Vector2D) o;
+            return _x == v._x && _y == v._y;
+        }
 
         /// <summary>
         /// Gets a hashcode for this vector.
@@ -443,12 +435,11 @@ namespace NetTopologySuite.Mathematics
         public override int GetHashCode()
         {
             // Algorithm from Effective Java by Joshua Bloch
-            var result = 17;
+            int result = 17;
             result = 37 * result + Coordinate.GetHashCode(_x);
             result = 37 * result + Coordinate.GetHashCode(_y);
             return result;
         }
-
 
     }
 }

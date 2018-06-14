@@ -19,7 +19,7 @@ namespace NetTopologySuite.Operation.Distance
         private const int STRtreeNodeCapacity = 4;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="g"></param>
         /// <returns></returns>

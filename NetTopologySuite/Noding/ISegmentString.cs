@@ -14,7 +14,7 @@ namespace NetTopologySuite.Noding
         ///<summary>
         /// Gets/Sets the user-defined data for this segment string.
         ///</summary>
-        Object Context { get; set; }
+        object Context { get; set; }
         ///<summary>
         /// Points that make up ISegmentString
         ///</summary>
@@ -22,12 +22,12 @@ namespace NetTopologySuite.Noding
         ///<summary>
         /// Size of Coordinate Sequence
         ///</summary>
-        Int32 Count { get; }
+        int Count { get; }
         /// <summary>
         /// States whether ISegmentString is closed
         /// </summary>
-        Boolean IsClosed { get; }
+        bool IsClosed { get; }
 
-        LineSegment this[Int32 index] { get; set; }
+        LineSegment this[int index] { get; set; }
     }
 }

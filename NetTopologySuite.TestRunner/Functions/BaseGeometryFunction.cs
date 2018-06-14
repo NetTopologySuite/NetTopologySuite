@@ -7,9 +7,9 @@ namespace Open.Topology.TestRunner.Functions
 {
     /// <summary>
     /// A base for implementations of
-    /// <see cref="IGeometryFunction"/> which provides most 
+    /// <see cref="IGeometryFunction"/> which provides most
     /// of the required structure.
-    /// Extenders must supply the behaviour for the 
+    /// Extenders must supply the behaviour for the
     /// actual function invocation.
     /// </summary>
     /// <author>Martin Davis</author>
@@ -21,16 +21,16 @@ namespace Open.Topology.TestRunner.Functions
                    && func.ParameterTypes[0] == typeof(IGeometry);
         }
 
-        protected String category;
-        protected String name;
-        protected String[] parameterNames;
+        protected string category;
+        protected string name;
+        protected string[] parameterNames;
         protected Type[] parameterTypes;
         protected Type returnType;
 
         protected BaseGeometryFunction(
-            String category,
-            String name,
-            String[] parameterNames,
+            string category,
+            string name,
+            string[] parameterNames,
             Type[] parameterTypes,
             Type returnType)
         {
@@ -41,40 +41,22 @@ namespace Open.Topology.TestRunner.Functions
             this.returnType = returnType;
         }
 
-        public String Category
-        {
-            get { return category; }
-        }
+        public string Category => category;
 
-        public String Name
-        {
-            get { return name; }
-        }
+        public string Name => name;
 
-        public String[] ParameterNames
-        {
-            get { return parameterNames; }
-        }
+        public string[] ParameterNames => parameterNames;
 
         /// <summary>
         /// Gets the types of the other function arguments
         /// </summary>
-        public Type[] ParameterTypes
-        {
-            get { return parameterTypes; }
-        }
+        public Type[] ParameterTypes => parameterTypes;
 
-        public Type ReturnType
-        {
-            get { return returnType; }
-        }
+        public Type ReturnType => returnType;
 
-        public bool IsBinary
-        {
-            get { return parameterTypes.Length > 0 && parameterTypes[0] is IGeometry; }
-        }
+        public bool IsBinary => parameterTypes.Length > 0 && parameterTypes[0] is IGeometry;
 
-        public String Signature
+        public string Signature
         {
             get
             {
@@ -91,24 +73,24 @@ namespace Open.Topology.TestRunner.Functions
             }
         }
 
-        protected static Double? GetDoubleOrNull(Object[] args, int index)
+        protected static double? GetDoubleOrNull(object[] args, int index)
         {
             if (args.Length <= index) return null;
             if (args[index] == null) return null;
-            return (Double)args[index];
+            return (double)args[index];
         }
 
-        protected static int? GetIntegerOrNull(Object[] args, int index)
+        protected static int? GetIntegerOrNull(object[] args, int index)
         {
             if (args.Length <= index) return null;
             if (args[index] == null) return null;
             return (int)args[index];
         }
 
-        public abstract Object Invoke(IGeometry geom, Object[] args);
+        public abstract object Invoke(IGeometry geom, object[] args);
 
         /// <summary>
-        /// Two functions are the same if they have the 
+        /// Two functions are the same if they have the
         /// same signature (name, parameter types and return type).
         /// </summary>
         /// <returns>true if this object is the same as the <tt>obj</tt> argument</returns>
@@ -121,14 +103,14 @@ namespace Open.Topology.TestRunner.Functions
             //TODO: compare parameter lists as well
         }
 
-        public override bool Equals(Object obj)
+        public override bool Equals(object obj)
         {
             if (!(obj is IGeometryFunction)) return false;
             var func = (IGeometryFunction)obj;
             if (!name.Equals(func.Name)) return false;
             if (!returnType.Equals(func.ReturnType)) return false;
 
-            Type[] funcParamTypes = func.ParameterTypes;
+            var funcParamTypes = func.ParameterTypes;
             if (parameterTypes.Length != funcParamTypes.Length) return false;
             for (int i = 0; i < parameterTypes.Length; i++)
             {

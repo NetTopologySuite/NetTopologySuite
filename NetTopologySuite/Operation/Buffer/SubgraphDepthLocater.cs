@@ -52,7 +52,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <returns>A List of {DepthSegments} intersecting the stabbing line.</returns>
         private IList<DepthSegment> FindStabbedSegments(Coordinate stabbingRayLeftPt)
         {
-            IList<DepthSegment> stabbedSegments = new List<DepthSegment>();
+            var stabbedSegments = new List<DepthSegment>();
             foreach (var bsg in _subgraphs)
             {
                 FindStabbedSegments(stabbingRayLeftPt, bsg.DirectedEdges, stabbedSegments);
@@ -74,7 +74,7 @@ namespace NetTopologySuite.Operation.Buffer
             * Check all forward DirectedEdges only.  This is still general,
             * because each Edge has a forward DirectedEdge.
             */
-            foreach (DirectedEdge de in dirEdges)
+            foreach (var de in dirEdges)
             {
                 if (!de.IsForward)
                     continue;
@@ -92,7 +92,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="stabbedSegments">The current list of DepthSegments intersecting the stabbing line.</param>
         private void FindStabbedSegments(Coordinate stabbingRayLeftPt, DirectedEdge dirEdge, IList<DepthSegment> stabbedSegments)
         {
-            Coordinate[] pts = dirEdge.Edge.Coordinates;
+            var pts = dirEdge.Edge.Coordinates;
             for (int i = 0; i < pts.Length - 1; i++)
             {
                 _seg.P0 = pts[i];
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Operation.Buffer
                     _seg.Reverse();
 
                 // skip segment if it is left of the stabbing line
-                var maxx = Math.Max(_seg.P0.X, _seg.P1.X);
+                double maxx = Math.Max(_seg.P0.X, _seg.P1.X);
                 if (maxx < stabbingRayLeftPt.X) continue;
 
                 // skip horizontal segments (there will be a non-horizontal one carrying the same depth info
@@ -164,7 +164,7 @@ namespace NetTopologySuite.Operation.Buffer
             /// <remarks>
             /// Known Bugs:
             /// <list type="Bullet">
-            /// <item>The logic does not obey the <see cref="IComparable.CompareTo"/> contract. 
+            /// <item>The logic does not obey the <see cref="IComparable.CompareTo"/> contract.
             /// This is acceptable for the intended usage, but may cause problems if used with some
             /// utilities in the .Net standard library (e.g. <see cref="T:System.Collections.List.Sort()"/>.</item>
             /// </list>
@@ -181,7 +181,7 @@ namespace NetTopologySuite.Operation.Buffer
                 * try and compute a determinate orientation for the segments.
                 * Test returns 1 if other is left of this (i.e. this > other)
                 */
-                var orientIndex = _upwardSeg.OrientationIndex(other._upwardSeg);
+                int orientIndex = _upwardSeg.OrientationIndex(other._upwardSeg);
                 if (orientIndex != 0) return orientIndex;
 
                 /*
@@ -208,7 +208,7 @@ namespace NetTopologySuite.Operation.Buffer
             /// <returns></returns>
             private static int CompareX(LineSegment seg0, LineSegment seg1)
             {
-                var compare0 = seg0.P0.CompareTo(seg1.P0);
+                int compare0 = seg0.P0.CompareTo(seg1.P0);
                 if (compare0 != 0) return compare0;
                 return seg0.P1.CompareTo(seg1.P1);
             }

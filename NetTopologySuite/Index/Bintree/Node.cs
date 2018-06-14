@@ -41,7 +41,7 @@ namespace NetTopologySuite.Index.Bintree
              */
             var largerNode = CreateNode(expandInt);
             if (node != null) largerNode.Insert(node);
-            
+
             return largerNode;
         }
 
@@ -64,16 +64,10 @@ namespace NetTopologySuite.Index.Bintree
         /// <summary>
         /// Gets the node's <see cref="Interval"/>
         /// </summary>
-        public  Interval Interval
-        {
-            get
-            {
-                return _interval;
-            }
-        }
+        public  Interval Interval => _interval;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="itemInterval"></param>
         /// <returns></returns>
@@ -92,10 +86,10 @@ namespace NetTopologySuite.Index.Bintree
         {
             int subnodeIndex = GetSubnodeIndex(searchInterval, _centre);
             // if index is -1 searchEnv is not contained in a subnode
-            if (subnodeIndex != -1) 
+            if (subnodeIndex != -1)
             {
                 // create the node if it does not exist
-                Node<T> node = GetSubnode(subnodeIndex);
+                var node = GetSubnode(subnodeIndex);
                 // recursively search the found/created node
                 return node.GetNode(searchInterval);
             }
@@ -112,10 +106,10 @@ namespace NetTopologySuite.Index.Bintree
             int subnodeIndex = GetSubnodeIndex(searchInterval, _centre);
             if (subnodeIndex == -1)
                 return this;
-            if (Subnode[subnodeIndex] != null) 
+            if (Subnode[subnodeIndex] != null)
             {
                 // query lies in subnode, so search it
-                Node<T> node = Subnode[subnodeIndex];
+                var node = Subnode[subnodeIndex];
                 return node.Find(searchInterval);
             }
             // no existing subnode, so return this one anyway
@@ -123,20 +117,20 @@ namespace NetTopologySuite.Index.Bintree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="node"></param>
         public  void Insert(Node<T> node)
         {
             Assert.IsTrue(_interval == null || _interval.Contains(node.Interval));
             int index = GetSubnodeIndex(node._interval, _centre);
-            if (node._level == _level - 1) 
-                Subnode[index] = node;            
-            else 
+            if (node._level == _level - 1)
+                Subnode[index] = node;
+            else
             {
                 // the node is not a direct child, so make a new child node to contain it
                 // and recursively insert the node
-                Node<T> childNode = CreateSubnode(index);
+                var childNode = CreateSubnode(index);
                 childNode.Insert(node);
                 Subnode[index] = childNode;
             }
@@ -148,23 +142,23 @@ namespace NetTopologySuite.Index.Bintree
         /// </summary>
         private Node<T> GetSubnode(int index)
         {
-            if (Subnode[index] == null)             
-                Subnode[index] = CreateSubnode(index);            
+            if (Subnode[index] == null)
+                Subnode[index] = CreateSubnode(index);
             return Subnode[index];
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
         private Node<T> CreateSubnode(int index)
-        {   
+        {
             // create a new subnode in the appropriate interval
             double min = 0.0;
             double max = 0.0;
 
-            switch (index) 
+            switch (index)
             {
                 case 0:
                     min = _interval.Min;
@@ -176,7 +170,7 @@ namespace NetTopologySuite.Index.Bintree
                     break;
                     /*
                 default:
-			        break;
+                    break;
                      */
             }
             var subInt = new Interval(min, max);

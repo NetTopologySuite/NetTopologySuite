@@ -10,18 +10,18 @@ namespace Open.Topology.TestRunner.Utility
     /// </summary>
     public class MultiFormatReader
     {
-        private static Boolean IsHex(String str, int maxCharsToTest)
+        private static bool IsHex(string str, int maxCharsToTest)
         {
             for (int i = 0; i < maxCharsToTest && i < str.Length; i++)
             {
-                var ch = str[i];
+                char ch = str[i];
                 if (!IsHexDigit(ch))
                     return false;
             }
             return true;
         }
 
-        private static Boolean IsHexDigit(char ch)
+        private static bool IsHexDigit(char ch)
         {
             if (char.IsDigit(ch)) return true;
             char chLow = char.ToLower(ch);
@@ -49,14 +49,14 @@ namespace Open.Topology.TestRunner.Utility
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomStr"></param>
         /// <returns></returns>
         /// <exception cref="ParseException"></exception>
-        public IGeometry Read(String geomStr)
+        public IGeometry Read(string geomStr)
         {
-            var trimStr = geomStr.Trim();
+            string trimStr = geomStr.Trim();
             if (IsHex(trimStr, MaxCharsToCheck))
                 return IOUtility.ReadGeometriesFromWkbHexString(trimStr, _factory);
             return _wktReader.Read(trimStr);

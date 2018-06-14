@@ -10,15 +10,15 @@ namespace NetTopologySuite.Geometries.Implementation
 #if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
-    public class DotSpatialAffineCoordinateSequence : 
+    public class DotSpatialAffineCoordinateSequence :
         ICoordinateSequence
         //IMeasuredCoordinateSequence
     {
-        
+
         private readonly double[] _xy;
         private readonly double[] _z;
         private readonly double[] _m;
-        
+
         private readonly Ordinates _ordinates;
 
 #if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
@@ -42,8 +42,8 @@ namespace NetTopologySuite.Geometries.Implementation
                 return;
             }
             _xy = new double[2 * coordinates.Count];
-            var j = 0;
-            for (var i = 0; i < coordinates.Count; i++)
+            int j = 0;
+            for (int i = 0; i < coordinates.Count; i++)
             {
                 XY[j++] = coordinates[i].X;
                 XY[j++] = coordinates[i].Y;
@@ -52,14 +52,14 @@ namespace NetTopologySuite.Geometries.Implementation
             if ((ordinates & Ordinates.Z) == Ordinates.Z)
             {
                 _z = new double[coordinates.Count];
-                for (var i = 0; i < coordinates.Count; i++)
+                for (int i = 0; i < coordinates.Count; i++)
                     Z[i] = coordinates[i].Z;
             }
 
             if ((ordinates & Ordinates.M) == Ordinates.M)
             {
                 _m = new double[coordinates.Count];
-                for (var i = 0; i < coordinates.Count; i++)
+                for (int i = 0; i < coordinates.Count; i++)
                     M[i] = Coordinate.NullOrdinate;
             }
 
@@ -77,11 +77,11 @@ namespace NetTopologySuite.Geometries.Implementation
             if (dimension <= 2) return;
 
             _z = new double[size];
-            for (var i = 0; i < size; i++)
+            for (int i = 0; i < size; i++)
                 _z[i] = double.NaN;
 
             _m = new double[size];
-            for (var i = 0; i < size; i++)
+            for (int i = 0; i < size; i++)
                 _m[i] = double.NaN;
         }
 
@@ -97,14 +97,14 @@ namespace NetTopologySuite.Geometries.Implementation
             if ((ordinates & Ordinates.Z) == Ordinates.Z)
             {
                 _z = new double[size];
-                for (var i = 0; i < size; i++)
+                for (int i = 0; i < size; i++)
                     _z[i] = Coordinate.NullOrdinate;
             }
 
             if ((ordinates & Ordinates.M) == Ordinates.M)
             {
                 _m = new double[size];
-                for (var i = 0; i < size; i++)
+                for (int i = 0; i < size; i++)
                     _m[i] = Coordinate.NullOrdinate;
             }
         }
@@ -116,7 +116,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="ordinates">The ordinates to copy</param>
         public DotSpatialAffineCoordinateSequence(ICoordinateSequence coordSeq, Ordinates ordinates)
         {
-            var count = coordSeq.Count;
+            int count = coordSeq.Count;
 
             _xy = new double[2 * count];
             if ((ordinates & Ordinates.Z) == Ordinates.Z)
@@ -131,7 +131,7 @@ namespace NetTopologySuite.Geometries.Implementation
                 Buffer.BlockCopy(dsCoordSeq._xy, 0, _xy, 0, 16 * count);
                 if ((ordinates & Ordinates.Z) == Ordinates.Z)
                 {
-                    var copyOrdinateArray = dsCoordSeq.Z != null
+                    double[] copyOrdinateArray = dsCoordSeq.Z != null
                         ? dsCoordSeq.Z
                         : nullOrdinateArray = NullOrdinateArray(count);
                     Buffer.BlockCopy(copyOrdinateArray, 0, _z, 0, 8 * count);
@@ -139,7 +139,7 @@ namespace NetTopologySuite.Geometries.Implementation
 
                 if ((ordinates & Ordinates.M) == Ordinates.M)
                 {
-                    var copyOrdinateArray = dsCoordSeq.M != null
+                    double[] copyOrdinateArray = dsCoordSeq.M != null
                         ? dsCoordSeq.M
                         : nullOrdinateArray ?? NullOrdinateArray(count);
                     Buffer.BlockCopy(copyOrdinateArray, 0, _m, 0, 8*count);
@@ -149,8 +149,8 @@ namespace NetTopologySuite.Geometries.Implementation
                 return;
             }
 
-            var j = 0;
-            for (var i = 0; i < coordSeq.Count; i++)
+            int j = 0;
+            for (int i = 0; i < coordSeq.Count; i++)
             {
                 _xy[j++] = coordSeq.GetX(i);
                 _xy[j++] = coordSeq.GetY(i);
@@ -161,14 +161,14 @@ namespace NetTopologySuite.Geometries.Implementation
 
         private static double[] NullOrdinateArray(int size)
         {
-            var res = new double[size];
-            for (var i = 0; i < size; i++)
+            double[] res = new double[size];
+            for (int i = 0; i < size; i++)
                 res[i] = Coordinate.NullOrdinate;
             return res;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="xy"></param>
         /// <param name="z"></param>
@@ -182,7 +182,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="xy"></param>
         /// <param name="z"></param>
@@ -195,7 +195,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         [Obsolete]
-        public Object Clone()
+        public object Clone()
         {
             return Copy();
 
@@ -209,7 +209,7 @@ namespace NetTopologySuite.Geometries.Implementation
 
         public Coordinate GetCoordinate(int i)
         {
-            var j = 2 * i;
+            int j = 2 * i;
             return _z == null
                 ? new Coordinate(_xy[j++], _xy[j])
                 : new Coordinate(_xy[j++], _xy[j], _z[i]);
@@ -277,7 +277,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         private Coordinate[] GetCachedCoords()
@@ -295,23 +295,22 @@ namespace NetTopologySuite.Geometries.Implementation
             return null;
         }
 
-
         public Coordinate[] ToCoordinateArray()
         {
             var ret = GetCachedCoords();
             if (ret != null) return ret;
-            
-            var j = 0;
-            var count = Count;
+
+            int j = 0;
+            int count = Count;
             ret = new Coordinate[count];
             if (_z != null)
             {
-                for (var i = 0; i < count; i++)
+                for (int i = 0; i < count; i++)
                     ret[i] = new Coordinate(_xy[j++], _xy[j++], _z[i]);
             }
             else
             {
-                for (var i = 0; i < count; i++)
+                for (int i = 0; i < count; i++)
                     ret[i] = new Coordinate(_xy[j++], _xy[j++]);
             }
 
@@ -321,8 +320,8 @@ namespace NetTopologySuite.Geometries.Implementation
 
         public Envelope ExpandEnvelope(Envelope env)
         {
-            var j = 0;
-            for (var i = 0; i < Count; i++)
+            int j = 0;
+            for (int i = 0; i < Count; i++)
                 env.ExpandToInclude(_xy[j++], _xy[j++]);
             return env;
         }
@@ -333,15 +332,15 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>A reversed version of this sequence</returns>
         public ICoordinateSequence Reversed()
         {
-            var xy = new double[_xy.Length];
+            double[] xy = new double[_xy.Length];
 
             double[] z = null, m = null;
             if (_z != null) z = new double[_z.Length];
             if (_m != null) m = new double[_m.Length];
-            
-            var j = 2* Count;
-            var k = Count;
-            for (var i = 0; i < Count; i++)
+
+            int j = 2* Count;
+            int k = Count;
+            for (int i = 0; i < Count; i++)
             {
                 xy[--j] = _xy[2 * i + 1];
                 xy[--j] = _xy[2 * i];
@@ -356,49 +355,34 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             get
             {
-                var res = 2;
+                int res = 2;
                 if (_z != null) res++;
                 if (_m != null) res++;
                 return res;
             }
         }
 
-        public Ordinates Ordinates
-        {
-            get { return _ordinates; }
-        }
+        public Ordinates Ordinates => _ordinates;
 
-        public int Count
-        {
-            get { return XY.Length / 2; }
-        }
+        public int Count => XY.Length / 2;
 
         /// <summary>
         /// Gets the vector with x- and y-ordinate values;
         /// </summary>
         /// <remarks>If you modify the values of this vector externally, you need to call <see cref="ReleaseCoordinateArray"/>!</remarks>
-        public double[] XY
-        {
-            get { return _xy; }
-        }
+        public double[] XY => _xy;
 
         /// <summary>
         /// Gets the vector with z-ordinate values
         /// </summary>
         /// <remarks>If you modify the values of this vector externally, you need to call <see cref="ReleaseCoordinateArray"/>!</remarks>
-        public double[] Z
-        {
-            get { return _z; }
-        }
+        public double[] Z => _z;
 
         /// <summary>
         /// Gets the vector with measure values
         /// </summary>
         /// <remarks>If you modify the values of this vector externally, you need to call <see cref="ReleaseCoordinateArray"/>!</remarks>
-        public double[] M
-        {
-            get { return _m; }
-        }
+        public double[] M => _m;
 
         /// <summary>
         /// Releases the weak reference to the weak referenced coordinate array

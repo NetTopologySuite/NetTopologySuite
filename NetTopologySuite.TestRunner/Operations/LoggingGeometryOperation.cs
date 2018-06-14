@@ -24,7 +24,7 @@ namespace Open.Topology.TestRunner.Operations
             return GetReturnType(op.ToString());
         }
 
-        public Type GetReturnType(String opName)
+        public Type GetReturnType(string opName)
         {
             return GeometryMethodOperation.GetGeometryReturnType(opName);
         }
@@ -34,7 +34,7 @@ namespace Open.Topology.TestRunner.Operations
             _geomOp = geomOp;
         }
 
-        public IResult Invoke(XmlTestType opName, IGeometry geometry, Object[] args)
+        public IResult Invoke(XmlTestType opName, IGeometry geometry, object[] args)
         {
             Console.WriteLine("Operation <" + opName + ">");
             Console.WriteLine("Geometry: " + geometry);

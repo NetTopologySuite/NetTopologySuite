@@ -5,7 +5,7 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Triangulate
 {
     /// <summary>
-    /// Creates a map between the vertex <see cref="Coordinate"/>s of a 
+    /// Creates a map between the vertex <see cref="Coordinate"/>s of a
     /// set of <see cref="Geometry"/>s,
     /// and the parent geometry, and transfers the source geometry
     /// data objects to geometry components tagged with the coordinates.
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Triangulate
 
         public void LoadSourceGeometries(IGeometry geoms)
         {
-            for (var i = 0; i < geoms.NumGeometries; i++)
+            for (int i = 0; i < geoms.NumGeometries; i++)
             {
                 var g = geoms.GetGeometryN(i);
                 LoadVertices(g.Coordinates, g.UserData);
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Triangulate
         {
             for (int i = 0; i < geomColl.NumGeometries; i++)
             {
-                IGeometry geom = geomColl.GetGeometryN(i);
+                var geom = geomColl.GetGeometryN(i);
                 LoadVertices(geom.Coordinates, geom.UserData);
             }
         }
@@ -55,20 +55,14 @@ namespace NetTopologySuite.Triangulate
             }
         }
 
-        public IList<Coordinate> Coordinates
-        {
-            get
-            {
-                return new List<Coordinate>(_coordDataMap.Keys);
-            }
-        }
+        public IList<Coordinate> Coordinates => new List<Coordinate>(_coordDataMap.Keys);
 
         /// <summary>
         /// Input is assumed to be a multiGeometry
         /// in which every component has its userData
         /// set to be a Coordinate which is the key to the output data.
         /// The Coordinate is used to determine
-        /// the output data object to be written back into the component. 
+        /// the output data object to be written back into the component.
         /// </summary>
         /// <param name="targetGeom" />
         public void TransferData(IGeometry targetGeom)

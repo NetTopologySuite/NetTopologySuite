@@ -53,14 +53,8 @@ namespace NetTopologySuite.Precision
         /// </summary>
         public bool RemoveCollapsedComponents
         {
-            get
-            {
-                return _removeCollapsed;
-            }
-            set
-            {
-                _removeCollapsed = value;
-            }
+            get => _removeCollapsed;
+            set => _removeCollapsed = value;
         }
 
         /// <summary>
@@ -71,14 +65,8 @@ namespace NetTopologySuite.Precision
         /// </summary>
         public bool ChangePrecisionModel
         {
-            get
-            {
-                return _changePrecisionModel;
-            }
-            set
-            {
-                _changePrecisionModel = value;
-            }
+            get => _changePrecisionModel;
+            set => _changePrecisionModel = value;
         }
 
         /// <summary>
@@ -91,7 +79,7 @@ namespace NetTopologySuite.Precision
             GeometryEditor geomEdit;
             if (_changePrecisionModel)
             {
-                GeometryFactory newFactory = new GeometryFactory(_newPrecisionModel);
+                var newFactory = new GeometryFactory(_newPrecisionModel);
                 geomEdit = new GeometryEditor(newFactory);
             }
             else
@@ -127,18 +115,18 @@ namespace NetTopologySuite.Precision
                 if (coordinates.Length == 0)
                     return null;
 
-                Coordinate[] reducedCoords = new Coordinate[coordinates.Length];
+                var reducedCoords = new Coordinate[coordinates.Length];
                 // copy coordinates and reduce
                 for (int i = 0; i < coordinates.Length; i++)
                 {
-                    Coordinate coord = new Coordinate(coordinates[i]);
+                    var coord = new Coordinate(coordinates[i]);
                     _container._newPrecisionModel.MakePrecise(coord);
                     reducedCoords[i] = coord;
                 }
 
                 // remove repeated points, to simplify returned point as much as possible
-                CoordinateList noRepeatedCoordList = new CoordinateList(reducedCoords, false);
-                Coordinate[] noRepeatedCoords = noRepeatedCoordList.ToCoordinateArray();
+                var noRepeatedCoordList = new CoordinateList(reducedCoords, false);
+                var noRepeatedCoords = noRepeatedCoordList.ToCoordinateArray();
 
                 /*
                 * Check to see if the removal of repeated points
@@ -156,7 +144,7 @@ namespace NetTopologySuite.Precision
                 if (geom is ILinearRing)
                     minLength = 4;
 
-                Coordinate[] collapsedCoords = reducedCoords;
+                var collapsedCoords = reducedCoords;
                 if (_container._removeCollapsed)
                     collapsedCoords = null;
 

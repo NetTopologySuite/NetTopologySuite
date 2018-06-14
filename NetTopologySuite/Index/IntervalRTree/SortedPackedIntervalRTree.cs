@@ -15,12 +15,12 @@ namespace NetTopologySuite.Index.IntervalRTree
     /// <remarks>
     /// It supports range searching,
     /// where the range is an interval of the real line (which may be a single point).
-    /// A common use is to index 1-dimensional intervals which 
+    /// A common use is to index 1-dimensional intervals which
     /// are the projection of 2-D objects onto an axis of the coordinate system.
     /// <para>
-    /// This index structure is <i>static</i> 
+    /// This index structure is <i>static</i>
     /// - items cannot be added or removed once the first query has been made.
-    /// The advantage of this characteristic is that the index performance 
+    /// The advantage of this characteristic is that the index performance
     /// can be optimized based on a fixed set of items.
     /// </para>
     /// <author>Martin Davis</author>
@@ -68,7 +68,7 @@ namespace NetTopologySuite.Index.IntervalRTree
             var src = _leaves;
             var dest = new List<IntervalRTreeNode<T>>();
 
-            var level = 0;
+            int level = 0;
             while (true)
             {
                 BuildLevel(src, dest, ref level);

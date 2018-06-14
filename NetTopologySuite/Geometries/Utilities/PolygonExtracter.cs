@@ -3,7 +3,7 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries.Utilities
 {
-    /// <summary> 
+    /// <summary>
     /// Extracts all the <see cref="IPolygon"/> elements from a <see cref="IGeometry"/>.
     /// </summary>
     /// <see cref="GeometryExtracter"/>
@@ -41,7 +41,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
         private readonly IList<IGeometry> _comps;
 
-        /// <summary> 
+        /// <summary>
         /// Constructs a PolygonExtracterFilter with a list in which to store Polygons found.
         /// </summary>
         /// <param name="comps"></param>
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geom"></param>
         public void Filter(IGeometry geom)

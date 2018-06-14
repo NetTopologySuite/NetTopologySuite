@@ -8,26 +8,26 @@ From: Ollivier & Co
 Description:
   New Zealand Historic Places clipped to the Canterbury region, donated by
   [Ollivier & Co](http://ollivier.co.nz).
-  
+
   Historic Places are geocoded by address, legal description or locality.
-  
+
   Link to the website by RegID in ArcView by enabling an HTML popup with this URL
   http://www.historic.org.nz/TheRegister/RegisterSearch/RegisterResults.aspx?RID=
   or simply paste this into a browser and add the RID
-  
+
   Accuracy codes indicate the geocoding method:
-  
+
   NZMG	Supplied by NZHPT
   address	Geocoded to the parsed address
   city	To the nearest city or town
   eye	Matched by eye after a search
   suburb	To the nearest suburb
-  
-  There are 5423 records geocoded. 
+
+  There are 5423 records geocoded.
   The RegID is a static unique identifier for each place.
   Name is from the register
   Address is from the register unedited.
-  
+
   Source NZHPT website November 2008.
 
 Region: Canterbury
@@ -64,7 +64,7 @@ Projection: WGS 84
   "You"
   agree as follows:
   1. Definitions
-  
+
     * "Adaptation" means any work created by the editing, modification,
       adaptation or translation of the Work in any media (however a work that
       constitutes a Collection will not be considered an Adaptation for the
@@ -91,13 +91,13 @@ Projection: WGS 84
       exercise rights under this Licence despite a previous violation.
     * For the purpose of this Licence, when not inconsistent with the context,
       words in the singular number include the plural number.
-  
+
   2. Licence Terms
   2.1 Subject to the terms of this agreement the Licensor hereby grants to You a
   worldwide, royalty-free, non-exclusive, Licence for use and for the duration of
   copyright in the Work.
   You may:
-  
+
     * copy the Work;
     * create one or more Adaptations. You must take reasonable steps to ensure
       any Adaptation clearly identifies that changes were made to the original
@@ -106,14 +106,14 @@ Projection: WGS 84
     * copy Adaptations or the Work as incorporated in any Collection; and
     * publish, distribute, archive, perform or otherwise disseminate the Work,
       Adaptation or the Work as incorporated in any Collection, to the public.
-  
+
   All these rights may be exercised in any material form in any media whether now
   known or hereafter created. All these rights also include the right to make
   such modifications as are technically necessary to exercise the rights in other
   media and formats.
   HOWEVER,
   You must not:
-  
+
     * impose any terms on the use to be made of the Work, the Adaptation or the
       Work as incorporated in a Collection that alter or restrict the terms of
       this Licence or any rights granted under it or have the effect or intent of
@@ -129,10 +129,10 @@ Projection: WGS 84
       will not enforce this sub-clause to the extent necessary to enable You to
       reasonably exercise Your right under clause 2.1 to make Adaptations but not
       otherwise.
-  
+
   FINALLY,
   You must:
-  
+
     * make reference to this Licence (by Uniform Resource Identifier (URI),
       spoken word or as appropriate to the media used) on all copies of the Work
       and Adaptations and Collections published, distributed, performed or
@@ -151,15 +151,15 @@ Projection: WGS 84
       this Licence, in particular the URI, if any, that the Licensor specifies to
       be associated with the Work, unless such URI does not refer to the
       copyright notice or licensing information for the Work.
-  
+
   Additional Provisions
   2.2. Further licence from the Licensor
   Each time You publish, distribute, perform or otherwise disseminate
-  
+
     * the Work; or
     * any Adaptation; or
     * the Work as incorporated in a Collection
-  
+
   the Licensor agrees to offer to the relevant third party making use of the Work
   ("User") (in any of the alternatives set out above) a licence to use the Work
   on the same terms and conditions as granted to You hereunder.
@@ -229,9 +229,9 @@ Projection: WGS 84
   CONDITIONS IN SECTION 7.1, 7.2, 7.3, 7.4 AND EACH ACKNOWLEDGES CREATIVE COMMONS
   CORPORATION'S VERY LIMITED ROLE AS A FACILITATOR OF THE LICENCE FROM THE
   LICENSOR TO YOU.
-  
+
   Creative Commons Notice
-  
+
   Creative Commons is not a party to this Licence, and makes no warranty
   whatsoever in connection with the Work. Creative Commons will not be liable to
   You or any party on any legal theory for any damages whatsoever, including

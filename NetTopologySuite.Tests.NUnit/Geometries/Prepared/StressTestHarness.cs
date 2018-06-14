@@ -24,25 +24,25 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
         public int TargetSize
         {
-            get { return _numTargetPts; }
-            set { _numTargetPts = value; }
+            get => _numTargetPts;
+            set => _numTargetPts = value;
         }
 
         public void Run(int nIter)
         {
-            //System.Console.WriteLine("Running " + nIter + " tests");
-            //  	Geometry poly = createCircle(new Coordinate(0, 0), 100, nPts);
-            IGeometry poly = CreateSineStar(new Coordinate(0, 0), 100, _numTargetPts);
+            // System.Console.WriteLine("Running " + nIter + " tests");
+            // Geometry poly = createCircle(new Coordinate(0, 0), 100, nPts);
+            var poly = CreateSineStar(new Coordinate(0, 0), 100, _numTargetPts);
             Console.WriteLine(poly);
 
-            //System.Console.WriteLine();
-            //System.out.Console.WriteLine("Running with " + nPts + " points");
+            // System.Console.WriteLine();
+            // System.out.Console.WriteLine("Running with " + nPts + " points");
             Run(nIter, poly);
         }
 
         static IGeometry CreateCircle(Coordinate origin, double size, int nPts)
         {
-            GeometricShapeFactory gsf = new GeometricShapeFactory();
+            var gsf = new GeometricShapeFactory();
             gsf.Centre = origin;
             gsf.Size = size;
             gsf.NumPoints = nPts;
@@ -54,26 +54,26 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
         static IGeometry CreateSineStar(Coordinate origin, double size, int nPts)
         {
-            SineStarFactory gsf = new SineStarFactory();
+            var gsf = new SineStarFactory();
             gsf.Centre = origin;
             gsf.Size = size;
             gsf.NumPoints = nPts;
             gsf.ArmLengthRatio = 0.1;
             gsf.NumArms = 20;
-            IGeometry poly = gsf.CreateSineStar();
+            var poly = gsf.CreateSineStar();
             return poly;
         }
 
         static IGeometry CreateRandomTestGeometry(Envelope env, double size, int nPts)
         {
-            Random rnd = new Random(1);
+            var rnd = new Random(1);
             double width = env.Width;
             double xOffset = width * rnd.NextDouble();
             double yOffset = env.Height * rnd.NextDouble();
-            Coordinate basePt = new Coordinate(
+            var basePt = new Coordinate(
                             env.MinX + xOffset,
                             env.MinY + yOffset);
-            IGeometry test = CreateTestCircle(basePt, size, nPts);
+            var test = CreateTestCircle(basePt, size, nPts);
             if (test is IPolygon && rnd.NextDouble() > 0.5)
             {
                 test = test.Boundary;
@@ -83,12 +83,12 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
         static IGeometry CreateTestCircle(Coordinate origin, double size, int nPts)
         {
-            GeometricShapeFactory gsf = new GeometricShapeFactory();
+            var gsf = new GeometricShapeFactory();
             gsf.Centre = origin;
             gsf.Size = size;
             gsf.NumPoints = nPts;
             IGeometry circle = gsf.CreateCircle();
-            //    System.out.println(circle);
+            // System.out.println(circle);
             return circle;
         }
 
@@ -98,11 +98,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             while (count < nIter)
             {
                 count++;
-                IGeometry test = CreateRandomTestGeometry(target.EnvelopeInternal, 10, 20);
+                var test = CreateRandomTestGeometry(target.EnvelopeInternal, 10, 20);
 
-                //Console.WriteLine("Test # " + count);
-                //Console.WriteLine(line);
-                //Console.WriteLine("Test[" + count + "] " + target.GetType().Name + "/" + test.GetType().Name);
+                // Console.WriteLine("Test # " + count);
+                // Console.WriteLine(line);
+                // Console.WriteLine("Test[" + count + "] " + target.GetType().Name + "/" + test.GetType().Name);
                 bool isResultCorrect = CheckResult(target, test);
                 if (!isResultCorrect)
                 {

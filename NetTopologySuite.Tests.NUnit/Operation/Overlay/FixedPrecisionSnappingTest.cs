@@ -24,8 +24,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
         [TestAttribute]
         public void TestTriangles()
         {
-            IGeometry a = rdr.Read("POLYGON ((545 317, 617 379, 581 321, 545 317))");
-            IGeometry b = rdr.Read("POLYGON ((484 290, 558 359, 543 309, 484 290))");
+            var a = rdr.Read("POLYGON ((545 317, 617 379, 581 321, 545 317))");
+            var b = rdr.Read("POLYGON ((484 290, 558 359, 543 309, 484 290))");
             a.Intersection(b);
         }
     }

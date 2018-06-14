@@ -24,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
         {
             var sinePoly = CreateSineStar(new Coordinate(0, 0), 100000.0, nPts);
             _preparedGeometry = PreparedGeometryFactory.Prepare(sinePoly);
-            
+
             WaitHandles = new WaitHandle[ThreadTestRunner.DefaultThreadCount];
         }
 
@@ -36,10 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             return poly;
         }
 
-        public override object Argument
-        {
-            get { return _preparedGeometry; }
-        }
+        public override object Argument => _preparedGeometry;
 
         private static readonly Random Rnd = new Random();
         public override ParameterizedThreadStart GetRunnable(int threadIndex)
@@ -49,10 +46,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
                 {
                     var pg = (IPreparedGeometry) parameter;
 
-                    for (var i = 0; i < 20; i++)
+                    for (int i = 0; i < 20; i++)
                     {
                         var g = CreateSineStar(new Coordinate(Rnd.Next(-10, 10), Rnd.Next(-10, 10)), 100000.0, Rnd.Next(75, 110));
-                        var intersects = pg.Intersects(g);
+                        bool intersects = pg.Intersects(g);
                         Console.WriteLine("ThreadId {0} Test {1} Result {2}", threadIndex, i, intersects);
                     }
 

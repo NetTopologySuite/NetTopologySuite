@@ -18,7 +18,7 @@ namespace Open.Topology.TestRunner.Functions
 
         public static IGeometry BufferWithParams(IGeometry g, double? distance,
                                                  int? quadrantSegments, int? capStyle, int? joinStyle,
-                                                 Double? mitreLimit)
+                                                 double? mitreLimit)
         {
             double dist = 0;
             if (distance != null) dist = distance.Value;
@@ -49,9 +49,9 @@ namespace Open.Topology.TestRunner.Functions
             return BuildCurveSet(g, distance, new BufferParameters());
         }
 
-        public static IGeometry BufferOffsetCurveWithParams(IGeometry g, Double? distance,
+        public static IGeometry BufferOffsetCurveWithParams(IGeometry g, double? distance,
             int? quadrantSegments, int? capStyle, int? joinStyle,
-            Double? mitreLimit)
+            double? mitreLimit)
         {
             double dist = 0;
             if (distance != null) dist = distance.Value;
@@ -78,7 +78,7 @@ namespace Open.Topology.TestRunner.Functions
                 var pts = ss.Coordinates;
                 lines.Add(g.Factory.CreateLineString(pts));
             }
-            IGeometry curve = g.Factory.BuildGeometry(lines);
+            var curve = g.Factory.BuildGeometry(lines);
             return curve;
         }
 
@@ -105,7 +105,7 @@ namespace Open.Topology.TestRunner.Functions
         public static IGeometry BufferValidated(IGeometry g, double distance)
         {
             var buf = g.Buffer(distance);
-            var errMsg = BufferResultValidator.IsValidMessage(g, distance, buf);
+            string errMsg = BufferResultValidator.IsValidMessage(g, distance, buf);
             if (errMsg != null)
                 throw new InvalidOperationException(errMsg);
             return buf;
@@ -115,7 +115,7 @@ namespace Open.Topology.TestRunner.Functions
         {
             var buf = g.Buffer(distance);
             var validator = new BufferResultValidator(g, distance, buf);
-            var isValid = validator.IsValid();
+            bool isValid = validator.IsValid();
             return validator.ErrorIndicator;
         }
 

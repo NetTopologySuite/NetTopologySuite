@@ -20,7 +20,7 @@ namespace NetTopologySuite.Planargraph
         #region Static
 
         /// <summary>
-        /// Sets the <see cref="GraphComponent.Visited" /> state 
+        /// Sets the <see cref="GraphComponent.Visited" /> state
         /// for all <see cref="GraphComponent" />s in an <see cref="IEnumerator" />.
         /// </summary>
         /// <param name="i">A <see cref="IEnumerator" /> to scan.</param>
@@ -29,13 +29,13 @@ namespace NetTopologySuite.Planargraph
         {
             while (i.MoveNext())
             {
-                GraphComponent comp = (GraphComponent) i.Current;
+                var comp = (GraphComponent) i.Current;
                 comp.Visited = visited;
             }
         }
 
         /// <summary>
-        /// Sets the <see cref="GraphComponent.Marked" /> state 
+        /// Sets the <see cref="GraphComponent.Marked" /> state
         /// for all <see cref="GraphComponent" />s in an <see cref="IEnumerator" />.
         /// </summary>
         /// <param name="i">A <see cref="IEnumerator" /> to scan.</param>
@@ -44,13 +44,13 @@ namespace NetTopologySuite.Planargraph
         {
             while (i.MoveNext())
             {
-                GraphComponent comp = (GraphComponent) i.Current;
+                var comp = (GraphComponent) i.Current;
                 comp.Marked = marked;
             }
         }
 
         /// <summary>
-        /// Finds the first <see cref="GraphComponent" /> 
+        /// Finds the first <see cref="GraphComponent" />
         /// in a <see cref="IEnumerator" /> set
         /// which has the specified <see cref="GraphComponent.Visited" /> state.
         /// </summary>
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Planargraph
         {
             while (i.MoveNext())
             {
-                GraphComponent comp = (GraphComponent) i.Current;
+                var comp = (GraphComponent) i.Current;
                 if (comp.IsVisited == visitedState)
                     return comp;
             }
@@ -72,13 +72,10 @@ namespace NetTopologySuite.Planargraph
 
         /// <summary>
         /// Tests if a component has been visited during the course of a graph algorithm.
-        /// </summary>              
-        public bool IsVisited
-        {
-            get { return Visited; }
-        }
+        /// </summary>
+        public bool IsVisited => Visited;
 
-        /// <summary> 
+        /// <summary>
         /// Gets/Sets the visited flag for this component.
         /// </summary>
         public bool Visited { get; set; }
@@ -87,10 +84,7 @@ namespace NetTopologySuite.Planargraph
         /// Tests if a component has been marked at some point during the processing
         /// involving this graph.
         /// </summary>
-        public bool IsMarked
-        {
-            get { return Marked; }
-        }
+        public bool IsMarked => Marked;
 
         /// <summary>
         /// Gets/Sets the marked flag for this component.

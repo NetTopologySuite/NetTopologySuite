@@ -7,11 +7,11 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Samples.SimpleTests.Geometries
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class SerializationSamples : BaseSamples
     {
-        private readonly string filepath = String.Empty;
+        private readonly string filepath = string.Empty;
         private IFormatter serializer = null;
 
         private Coordinate[] coordinates = null;
@@ -24,7 +24,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
         {
             filepath = Path.GetTempPath() + "\\testserialization.bin";
 
-            serializer = new BinaryFormatter(); 
+            serializer = new BinaryFormatter();
 
             point = Factory.CreatePoint(new Coordinate(100, 100));
 
@@ -32,7 +32,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
             {
                  new Coordinate(10,10),
                  new Coordinate(20,20),
-                 new Coordinate(20,10),                 
+                 new Coordinate(20,10),
             };
             line = Factory.CreateLineString(coordinates);
 
@@ -40,25 +40,25 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
             {
                 new Coordinate(100,100),
                 new Coordinate(200,100),
-                new Coordinate(200,200),                
+                new Coordinate(200,200),
                 new Coordinate(100,200),
                 new Coordinate(100,100),
             };
-            ILinearRing linearRing = Factory.CreateLinearRing(coordinates);
+            var linearRing = Factory.CreateLinearRing(coordinates);
             polygon = Factory.CreatePolygon(linearRing, null);
 
             coordinates = new Coordinate[]
             {
                 new Coordinate(100,100),
                 new Coordinate(200,200),
-                new Coordinate(300,300),                
+                new Coordinate(300,300),
                 new Coordinate(400,400),
                 new Coordinate(500,500),
             };
-            multiPoint = Factory.CreateMultiPoint(coordinates);                                    
+            multiPoint = Factory.CreateMultiPoint(coordinates);
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override void Start()
         {
@@ -69,11 +69,11 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geom"></param>
         private void TestSerialization(IGeometry geom)
-        {            
+        {
             using (Stream stream = File.OpenWrite(filepath))
                 serializer.Serialize(stream, geom);
 

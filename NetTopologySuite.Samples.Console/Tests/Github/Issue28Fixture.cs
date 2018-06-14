@@ -14,17 +14,17 @@ namespace NetTopologySuite.Samples.Tests.Github
         [Test]
         public void test_wkt_wkb_result()
         {
-            var failed = TestWktWkb(0, GeometryFactory.Default, Issue27Fixture.Poly1Wkt, Issue27Fixture.Poly1Wkb);
+            bool failed = TestWktWkb(0, GeometryFactory.Default, Issue27Fixture.Poly1Wkt, Issue27Fixture.Poly1Wkb);
             failed |= TestWktWkb(1, GeometryFactory.Default, Issue27Fixture.Poly2Wkt, Issue27Fixture.Poly2Wkb);
             Assert.IsFalse(failed);
         }
 
         private static bool TestWktWkb(int number, IGeometryFactory factory, string wkt, string wkb)
         {
-            WKTReader r = new WKTReader(factory);
-            IGeometry wktGeom = r.Read(wkt);
-            WKBReader s = new WKBReader(factory);
-            IGeometry wkbGeom = s.Read(WKBReader.HexToBytes(wkb));
+            var r = new WKTReader(factory);
+            var wktGeom = r.Read(wkt);
+            var s = new WKBReader(factory);
+            var wkbGeom = s.Read(WKBReader.HexToBytes(wkb));
 
             try
             {
@@ -52,9 +52,9 @@ namespace NetTopologySuite.Samples.Tests.Github
         {
             const string theNumberString = "6232756.00054126";
             const double theNumber = 6232756.00054126; //6232756.0005412595;
-            var theBytes = BitConverter.GetBytes(theNumber);
+            byte[] theBytes = BitConverter.GetBytes(theNumber);
             Console.WriteLine("{0:R} -> 0x{1}", theNumber, WKBWriter.ToHex(theBytes));
-            var theWkbedNumber = BitConverter.ToDouble(theBytes,0);
+            double theWkbedNumber = BitConverter.ToDouble(theBytes,0);
             Console.WriteLine("0x{1} -> {0:R}", theWkbedNumber, WKBWriter.ToHex(theBytes));
            //The result of JTS
             theBytes[0] = (byte)(theBytes[0] + 1);

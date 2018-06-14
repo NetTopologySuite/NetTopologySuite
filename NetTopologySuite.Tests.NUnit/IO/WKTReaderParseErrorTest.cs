@@ -11,8 +11,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
     /// Tests the <see cref="WKTReader"/> with various errors
     /// </summary>
     [TestFixtureAttribute]
-    public class WKTReaderParseErrorTest   
-    {   
+    public class WKTReaderParseErrorTest
+    {
         private IGeometryFactory fact;
         private WKTReader rdr;
 
@@ -58,12 +58,12 @@ namespace NetTopologySuite.Tests.NUnit.IO
             ReadBad("POINT ( +1e+01 1X02)");
         }
 
-        private void ReadBad(String wkt)
+        private void ReadBad(string wkt)
         {
             bool threwParseEx = false;
             try
             {
-                IGeometry g = rdr.Read(wkt);
+                var g = rdr.Read(wkt);
             }
             catch (GeoAPI.IO.ParseException ex)
             {

@@ -172,13 +172,7 @@ namespace NetTopologySuite.Geometries
         /// Tests whether the precision model supports floating point.
         /// </summary>
         /// <returns><c>true</c> if the precision model supports floating point.</returns>
-        public bool IsFloating
-        {
-            get
-            {
-                return _modelType == PrecisionModels.Floating || _modelType == PrecisionModels.FloatingSingle;
-            }
-        }
+        public bool IsFloating => _modelType == PrecisionModels.Floating || _modelType == PrecisionModels.FloatingSingle;
 
         /// <summary>
         /// Returns the maximum number of significant digits provided by this
@@ -221,8 +215,8 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public double Scale
         {
-            get { return _scale; }
-            set { throw new NotSupportedException(); }
+            get => _scale;
+            set => throw new NotSupportedException();
         }
 
         ///// <summary>
@@ -238,10 +232,7 @@ namespace NetTopologySuite.Geometries
         /// Gets the type of this PrecisionModel.
         /// </summary>
         /// <returns></returns>
-        public PrecisionModels PrecisionModelType
-        {
-            get { return _modelType; }
-        }
+        public PrecisionModels PrecisionModelType => _modelType;
 
         /// <summary>
         /// Returns the x-offset used to obtain a precise coordinate.
@@ -251,10 +242,7 @@ namespace NetTopologySuite.Geometries
         /// multiplying by the scale.
         /// </returns>
         [Obsolete("Offsets are no longer used")]
-        public double OffsetX
-        {
-            get { return 0; }
-        }
+        public double OffsetX => 0;
 
         /// <summary>
         /// Returns the y-offset used to obtain a precise coordinate.
@@ -264,10 +252,7 @@ namespace NetTopologySuite.Geometries
         /// multiplying by the scale
         /// </returns>
         [Obsolete("Offsets are no longer used")]
-        public double OffsetY
-        {
-            get { return 0; }
-        }
+        public double OffsetY => 0;
 
         /// <summary>
         /// Sets <c>internal</c> to the precise representation of <c>external</c>.
@@ -352,11 +337,11 @@ namespace NetTopologySuite.Geometries
         public double MakePrecise(double val)
         {
             // don't change NaN values
-            if (Double.IsNaN(val)) return val;
+            if (double.IsNaN(val)) return val;
 
             if (_modelType == PrecisionModels.FloatingSingle)
             {
-                var floatSingleVal = (float)val;
+                float floatSingleVal = (float)val;
                 return floatSingleVal;
             }
 
@@ -364,7 +349,7 @@ namespace NetTopologySuite.Geometries
             {
                 /*.Net's default rounding algorithm is "Bankers Rounding" which turned
                  * out to be no good for JTS/NTS geometry operations */
-                // return Math.Round(val * scale) / scale;          
+                // return Math.Round(val * scale) / scale;
 
                 // This is "Asymmetric Arithmetic Rounding"
                 // http://en.wikipedia.org/wiki/Rounding#Round_half_up

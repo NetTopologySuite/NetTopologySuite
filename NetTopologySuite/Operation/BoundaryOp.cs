@@ -19,7 +19,7 @@ namespace NetTopologySuite.Operation
 
         public static IGeometry GetBoundary(IGeometry g)
         {
-            var bop = new BoundaryOp(g);    
+            var bop = new BoundaryOp(g);
             return bop.GetBoundary();
         }
 
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Operation
                 return GetEmptyMultiPoint();
             }
 
-            Coordinate[] bdyPts = ComputeBoundaryCoordinates(mLine);
+            var bdyPts = ComputeBoundaryCoordinates(mLine);
 
             // return Point or MultiPoint
             if (bdyPts.Length == 1)
@@ -93,20 +93,20 @@ namespace NetTopologySuite.Operation
 
         private Coordinate[] ComputeBoundaryCoordinates(IMultiLineString mLine)
         {
-            IList<Coordinate> bdyPts = new List<Coordinate>();
+            var bdyPts = new List<Coordinate>();
             _endpointMap = new SortedDictionary<Coordinate, Counter>();
             for (int i = 0; i < mLine.NumGeometries; i++)
             {
-                ILineString line = (ILineString)mLine.GetGeometryN(i);
+                var line = (ILineString)mLine.GetGeometryN(i);
                 if (line.NumPoints == 0)
                     continue;
                 AddEndpoint(line.GetCoordinateN(0));
                 AddEndpoint(line.GetCoordinateN(line.NumPoints - 1));
             }
 
-            foreach (KeyValuePair<Coordinate, Counter> entry in _endpointMap)
+            foreach (var entry in _endpointMap)
             {
-                Counter counter = entry.Value;
+                var counter = entry.Value;
                 int valence = counter.Count;
                 if (_bnRule.IsInBoundary(valence))
                 {
@@ -114,7 +114,7 @@ namespace NetTopologySuite.Operation
                 }
             }
 
-            return CoordinateArrays.ToCoordinateArray(bdyPts);
+            return CoordinateArrays.ToCoordinateArray((ICollection<Coordinate>)bdyPts);
         }
 
         private void AddEndpoint(Coordinate pt)

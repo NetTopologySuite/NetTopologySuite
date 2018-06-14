@@ -62,7 +62,7 @@ namespace NetTopologySuite.Samples.Tests.Various
 
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(gml);
-            var gmlNode = xmlDoc.DocumentElement.FirstChild.NextSibling.FirstChild.LastChild.InnerXml;
+            string gmlNode = xmlDoc.DocumentElement.FirstChild.NextSibling.FirstChild.LastChild.InnerXml;
             Console.WriteLine(gmlNode);
 
             var gmlReader = new NetTopologySuite.IO.GML2.GMLReader();

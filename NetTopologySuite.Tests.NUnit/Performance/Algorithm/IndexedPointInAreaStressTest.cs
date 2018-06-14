@@ -15,7 +15,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         {
             // Use fixed PM to try and get at least some points hitting the boundary
             var geomFactory = GeometryFactory.Fixed;
-            //		GeometryFactory geomFactory = new GeometryFactory();
+            // GeometryFactory geomFactory = new GeometryFactory();
 
             var gridBuilder = new PerturbedGridPolygonBuilder(geomFactory)
                                   {
@@ -24,10 +24,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                                       Seed = 1185072199
                                       , Verbose =  false
                                   };
-            //gridBuilder.SetSeed(1185072199562);
+            // gridBuilder.SetSeed(1185072199562);
             var area = gridBuilder.Geometry;
 
-            //    PointInAreaLocator pia = new IndexedPointInAreaLocator(area); 
+            // PointInAreaLocator pia = new IndexedPointInAreaLocator(area);
             IPointOnGeometryLocator pia = new IndexedPointInAreaLocator(area);
 
             var gridTester = new PointInAreaStressTester(geomFactory, area)
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                                      TestPointInAreaLocator = pia
                                  };
 
-            Boolean isCorrect = gridTester.Run();
+            bool isCorrect = gridTester.Run();
             Assert.IsTrue(isCorrect);
         }
     }

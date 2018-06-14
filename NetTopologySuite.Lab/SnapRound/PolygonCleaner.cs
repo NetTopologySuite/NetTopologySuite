@@ -33,7 +33,7 @@ namespace NetTopologySuite.SnapRound
 
             /// <summary>
             /// Creates a valid area geometry from one that possibly has bad topology (i.e.
-            /// self-intersections). 
+            /// self-intersections).
             /// </summary>
             /// <param name="area">An area geometry possibly containing self-intersections</param>
             /// <returns>

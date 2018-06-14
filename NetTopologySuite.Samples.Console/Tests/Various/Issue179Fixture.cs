@@ -16,8 +16,8 @@ namespace NetTopologySuite.Tests.Various
             var clone = envelope.Copy();
             Assert.That(clone, Is.Not.Null);
             Assert.That(clone.IsNull, Is.True);
-            Assert.That(clone, Is.EqualTo(clone));      
-            Assert.That(Object.ReferenceEquals(envelope, clone), Is.False);
+            Assert.That(clone, Is.EqualTo(clone));
+            Assert.That(object.ReferenceEquals(envelope, clone), Is.False);
         }
     }
 }

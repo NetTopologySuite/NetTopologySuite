@@ -65,7 +65,7 @@
   <desc>mL - 2 lines with common endpoint</desc>
   <a>
     MULTILINESTRING(
-      (10 10, 20 20), 
+      (10 10, 20 20),
       (20 20, 30 30))
   </a>
 <test>
@@ -79,8 +79,8 @@
   <desc>mL - 3 lines with common endpoint</desc>
   <a>
     MULTILINESTRING(
-      (10 10, 20 20), 
-      (20 20, 30 20), 
+      (10 10, 20 20),
+      (20 20, 30 20),
       (20 20, 30 30))
   </a>
 <test>
@@ -94,9 +94,9 @@
   <desc>mL - 4 lines with common endpoint</desc>
   <a>
     MULTILINESTRING(
-      (10 10, 20 20), 
-      (20 20, 30 20), 
-      (20 20, 30 30), 
+      (10 10, 20 20),
+      (20 20, 30 20),
+      (20 20, 30 30),
       (20 20, 30 40))
   </a>
 <test>
@@ -110,7 +110,7 @@
   <desc>mL - 2 lines, one closed, with common endpoint</desc>
   <a>
     MULTILINESTRING(
-      (10 10, 20 20), 
+      (10 10, 20 20),
       (20 20, 20 30, 30 30, 30 20, 20 20))
   </a>
 <test>
@@ -150,13 +150,13 @@
   <desc>A - polygon with 1 hole</desc>
   <a>
     POLYGON(
-      (40 60, 420 60, 420 320, 40 320, 40 60), 
+      (40 60, 420 60, 420 320, 40 320, 40 60),
       (200 140, 160 220, 260 200, 200 140))
   </a>
 <test>
   <op name="getboundary" arg1="A">
     MULTILINESTRING(
-      (40 60, 420 60, 420 320, 40 320, 40 60), 
+      (40 60, 420 60, 420 320, 40 320, 40 60),
       (200 140, 160 220, 260 200, 200 140))
   </op>
 </test>

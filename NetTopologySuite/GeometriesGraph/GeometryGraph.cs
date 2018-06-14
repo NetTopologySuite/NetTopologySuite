@@ -101,43 +101,22 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public bool HasTooFewPoints
-        {
-            get
-            {
-                return _hasTooFewPoints;
-            }
-        }
+        public bool HasTooFewPoints => _hasTooFewPoints;
 
         /// <summary>
         ///
         /// </summary>
-        public Coordinate InvalidPoint
-        {
-            get
-            {
-                return _invalidPoint;
-            }
-        }
+        public Coordinate InvalidPoint => _invalidPoint;
 
         /// <summary>
         ///
         /// </summary>
-        public IGeometry Geometry
-        {
-            get
-            {
-                return _parentGeom;
-            }
-        }
+        public IGeometry Geometry => _parentGeom;
 
         /// <summary>
         /// Gets the <see cref="IBoundaryNodeRule"/> used with this geometry graph.
         /// </summary>
-        public IBoundaryNodeRule BoundaryNodeRule
-        {
-            get { return _boundaryNodeRule; }
-        }
+        public IBoundaryNodeRule BoundaryNodeRule => _boundaryNodeRule;
 
         /// <summary>
         ///
@@ -159,9 +138,9 @@ namespace NetTopologySuite.GeometriesGraph
         public Coordinate[] GetBoundaryPoints()
         {
             var coll = BoundaryNodes;
-            Coordinate[] pts = new Coordinate[coll.Count];
+            var pts = new Coordinate[coll.Count];
             int i = 0;
-            foreach (Node node in coll)
+            foreach (var node in coll)
             {
                 pts[i++] = (Coordinate)node.Coordinate.Copy();
             }
@@ -184,7 +163,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="edgelist"></param>
         public void ComputeSplitEdges(IList<Edge> edgelist)
         {
-            foreach (Edge e in Edges)
+            foreach (var e in Edges)
             {
                 e.EdgeIntersectionList.AddSplitEdges(edgelist);
             }
@@ -231,7 +210,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             for (int i = 0; i < gc.NumGeometries; i++)
             {
-                IGeometry g = gc.GetGeometryN(i);
+                var g = gc.GetGeometryN(i);
                 Add(g);
             }
         }
@@ -242,7 +221,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="p"></param>
         private void AddPoint(IPoint p)
         {
-            Coordinate coord = p.Coordinate;
+            var coord = p.Coordinate;
             InsertPoint(_argIndex, coord, Location.Interior);
         }
 
@@ -261,21 +240,21 @@ namespace NetTopologySuite.GeometriesGraph
             if (lr.IsEmpty)
                 return;
 
-            Coordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(lr.Coordinates);
+            var coord = CoordinateArrays.RemoveRepeatedPoints(lr.Coordinates);
             if (coord.Length < 4)
             {
                 _hasTooFewPoints = true;
                 _invalidPoint = coord[0];
                 return;
             }
-            Location left = cwLeft;
-            Location right = cwRight;
+            var left = cwLeft;
+            var right = cwRight;
             if (Orientation.IsCCW(coord))
             {
                 left = cwRight;
                 right = cwLeft;
             }
-            Edge e = new Edge(coord, new Label(_argIndex, Location.Boundary, left, right));
+            var e = new Edge(coord, new Label(_argIndex, Location.Boundary, left, right));
             _lineEdgeMap[lr] = e;
             InsertEdge(e);
             // insert the endpoint as a node, to mark that it is on the boundary
@@ -306,7 +285,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="line"></param>
         private void AddLineString(ILineString line)
         {
-            Coordinate[] coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
+            var coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
             if (coord.Length < 2)
             {
                 _hasTooFewPoints = true;
@@ -316,7 +295,7 @@ namespace NetTopologySuite.GeometriesGraph
 
             // add the edge for the LineString
             // line edges do not have locations for their left and right sides
-            Edge e = new Edge(coord, new Label(_argIndex, Location.Interior));
+            var e = new Edge(coord, new Label(_argIndex, Location.Interior));
             _lineEdgeMap[line] = e;
             InsertEdge(e);
 
@@ -338,7 +317,7 @@ namespace NetTopologySuite.GeometriesGraph
         public void AddEdge(Edge e)
         {
             InsertEdge(e);
-            Coordinate[] coord = e.Coordinates;
+            var coord = e.Coordinates;
             // insert the endpoint as a node, to mark that it is on the boundary
             InsertPoint(_argIndex, coord[0], Location.Boundary);
             InsertPoint(_argIndex, coord[coord.Length - 1], Location.Boundary);
@@ -377,16 +356,16 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="isDoneIfProperInt">Short-circuit the intersection computation if a proper intersection is found</param>
         public SegmentIntersector ComputeSelfNodes(LineIntersector li, bool computeRingSelfNodes, bool isDoneIfProperInt)
         {
-            SegmentIntersector si = new SegmentIntersector(li, true, false);
+            var si = new SegmentIntersector(li, true, false);
             si.IsDoneIfProperInt = isDoneIfProperInt;
-            EdgeSetIntersector esi = CreateEdgeSetIntersector();
+            var esi = CreateEdgeSetIntersector();
             // optimize intersection search for valid Polygons and LinearRings
-            var isRings = _parentGeom is ILinearRing
+            bool isRings = _parentGeom is ILinearRing
                           || _parentGeom is IPolygon
                           || _parentGeom is IMultiPolygon;
-            var computeAllSegments = computeRingSelfNodes || !isRings;
+            bool computeAllSegments = computeRingSelfNodes || !isRings;
             esi.ComputeIntersections(Edges, si, computeAllSegments);
-            
+
             //System.out.println("SegmentIntersector # tests = " + si.numTests);
             AddSelfIntersectionNodes(_argIndex);
             return si;
@@ -402,9 +381,9 @@ namespace NetTopologySuite.GeometriesGraph
         public SegmentIntersector ComputeEdgeIntersections(GeometryGraph g,
             LineIntersector li, bool includeProper)
         {
-            SegmentIntersector si = new SegmentIntersector(li, includeProper, true);
+            var si = new SegmentIntersector(li, includeProper, true);
             si.SetBoundaryNodes(BoundaryNodes, g.BoundaryNodes);
-            EdgeSetIntersector esi = CreateEdgeSetIntersector();
+            var esi = CreateEdgeSetIntersector();
             esi.ComputeIntersections(Edges, g.Edges, si);
             return si;
         }
@@ -417,8 +396,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="onLocation"></param>
         private void InsertPoint(int argIndex, Coordinate coord, Location onLocation)
         {
-            Node n = NodeMap.AddNode(coord);
-            Label lbl = n.Label;
+            var n = NodeMap.AddNode(coord);
+            var lbl = n.Label;
             if (lbl == null)
                 n.Label = new Label(argIndex, onLocation);
             else lbl.SetLocation(argIndex, onLocation);
@@ -435,7 +414,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             var n = NodeMap.AddNode(coord);
             // nodes always have labels
-            Label lbl = n.Label;
+            var lbl = n.Label;
             // the new point to insert is on a boundary
             int boundaryCount = 1;
             // determine the current location for the point (if any)
@@ -445,7 +424,7 @@ namespace NetTopologySuite.GeometriesGraph
                 boundaryCount++;
 
             // determine the boundary status of the point according to the Boundary Determination Rule
-            Location newLoc = DetermineBoundary(_boundaryNodeRule, boundaryCount);
+            var newLoc = DetermineBoundary(_boundaryNodeRule, boundaryCount);
             lbl.SetLocation(argIndex, newLoc);
         }
 
@@ -455,10 +434,10 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="argIndex"></param>
         private void AddSelfIntersectionNodes(int argIndex)
         {
-            foreach (Edge e in Edges)
+            foreach (var e in Edges)
             {
-                Location eLoc = e.Label.GetLocation(argIndex);
-                foreach (EdgeIntersection ei in e.EdgeIntersectionList)
+                var eLoc = e.Label.GetLocation(argIndex);
+                foreach (var ei in e.EdgeIntersectionList)
                 {
                     AddSelfIntersectionNode(argIndex, ei.Coordinate, eLoc);
                 }

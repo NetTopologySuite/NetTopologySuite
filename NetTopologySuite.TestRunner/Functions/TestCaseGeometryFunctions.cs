@@ -14,7 +14,7 @@ namespace Open.Topology.TestRunner.Functions
     {
         public static IGeometry BufferMitredJoin(IGeometry g, double distance)
         {
-            BufferParameters bufParams = new BufferParameters();
+            var bufParams = new BufferParameters();
             bufParams.JoinStyle = JoinStyle.Mitre;
 
             return BufferOp.Buffer(g, distance, bufParams);
@@ -30,43 +30,43 @@ namespace Open.Topology.TestRunner.Functions
     {
         public static IGeometry Circumcentre(IGeometry g)
         {
-            Coordinate[] pts = TrianglePts(g);
-            Coordinate cc = Triangle.Circumcentre(pts[0], pts[1], pts[2]);
-            IGeometryFactory geomFact = FunctionsUtil.GetFactoryOrDefault(g);
+            var pts = TrianglePts(g);
+            var cc = Triangle.Circumcentre(pts[0], pts[1], pts[2]);
+            var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
             return geomFact.CreatePoint(cc);
         }
 
         public static IGeometry PerpendicularBisectors(IGeometry g)
         {
-            Coordinate[] pts = TrianglePts(g);
-            Coordinate cc = Triangle.Circumcentre(pts[0], pts[1], pts[2]);
-            IGeometryFactory geomFact = FunctionsUtil.GetFactoryOrDefault(g);
-            ILineString[] line = new ILineString[3];
-            Coordinate p0 = (new LineSegment(pts[1], pts[2])).ClosestPoint(cc);
+            var pts = TrianglePts(g);
+            var cc = Triangle.Circumcentre(pts[0], pts[1], pts[2]);
+            var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
+            var line = new ILineString[3];
+            var p0 = (new LineSegment(pts[1], pts[2])).ClosestPoint(cc);
             line[0] = geomFact.CreateLineString(new[] { p0, cc });
-            Coordinate p1 = (new LineSegment(pts[0], pts[2])).ClosestPoint(cc);
+            var p1 = (new LineSegment(pts[0], pts[2])).ClosestPoint(cc);
             line[1] = geomFact.CreateLineString(new[] { p1, cc });
-            Coordinate p2 = (new LineSegment(pts[0], pts[1])).ClosestPoint(cc);
+            var p2 = (new LineSegment(pts[0], pts[1])).ClosestPoint(cc);
             line[2] = geomFact.CreateLineString(new[] { p2, cc });
             return geomFact.CreateMultiLineString(line);
         }
 
         public static IGeometry Incentre(IGeometry g)
         {
-            Coordinate[] pts = TrianglePts(g);
-            Triangle t = new Triangle(pts[0], pts[1], pts[2]);
-            Coordinate cc = t.InCentre();
-            IGeometryFactory geomFact = FunctionsUtil.GetFactoryOrDefault(g);
+            var pts = TrianglePts(g);
+            var t = new Triangle(pts[0], pts[1], pts[2]);
+            var cc = t.InCentre();
+            var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
             return geomFact.CreatePoint(cc);
         }
 
         public static IGeometry AngleBisectors(IGeometry g)
         {
-            Coordinate[] pts = TrianglePts(g);
-            Triangle t = new Triangle(pts[0], pts[1], pts[2]);
-            Coordinate cc = t.InCentre();
-            IGeometryFactory geomFact = FunctionsUtil.GetFactoryOrDefault(g);
-            ILineString[] line = new ILineString[3];
+            var pts = TrianglePts(g);
+            var t = new Triangle(pts[0], pts[1], pts[2]);
+            var cc = t.InCentre();
+            var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
+            var line = new ILineString[3];
             line[0] = geomFact.CreateLineString(new[] { pts[0], cc });
             line[1] = geomFact.CreateLineString(new[] { pts[1], cc });
             line[2] = geomFact.CreateLineString(new[] { pts[2], cc });
@@ -75,7 +75,7 @@ namespace Open.Topology.TestRunner.Functions
 
         private static Coordinate[] TrianglePts(IGeometry g)
         {
-            Coordinate[] pts = g.Coordinates;
+            var pts = g.Coordinates;
             if (pts.Length < 3)
                 throw new ArgumentException("Input geometry must have at least 3 points");
             return pts;
@@ -88,25 +88,25 @@ namespace Open.Topology.TestRunner.Functions
 
         public static IGeometry DelaunayEdges(IGeometry geom)
         {
-            DelaunayTriangulationBuilder builder = new DelaunayTriangulationBuilder();
+            var builder = new DelaunayTriangulationBuilder();
             builder.SetSites(geom);
             builder.Tolerance = TriangulationTolerance;
-            IMultiLineString edges = builder.GetEdges(geom.Factory);
+            var edges = builder.GetEdges(geom.Factory);
             return edges;
         }
 
         public static IGeometry DelaunayTriangles(IGeometry geom)
         {
-            DelaunayTriangulationBuilder builder = new DelaunayTriangulationBuilder();
+            var builder = new DelaunayTriangulationBuilder();
             builder.SetSites(geom);
             builder.Tolerance = TriangulationTolerance;
-            IGeometryCollection tris = builder.GetTriangles(geom.Factory);
+            var tris = builder.GetTriangles(geom.Factory);
             return tris;
         }
 
         public static IGeometry VoronoiDiagram(IGeometry geom, IGeometry g2)
         {
-            VoronoiDiagramBuilder builder = new VoronoiDiagramBuilder();
+            var builder = new VoronoiDiagramBuilder();
             builder.SetSites(geom);
             if (g2 != null)
                 builder.ClipEnvelope = g2.EnvelopeInternal;
@@ -119,10 +119,10 @@ namespace Open.Topology.TestRunner.Functions
         {
             GeometryDataUtil.SetComponentDataToIndex(geom);
 
-            VertexTaggedGeometryDataMapper mapper = new VertexTaggedGeometryDataMapper();
+            var mapper = new VertexTaggedGeometryDataMapper();
             mapper.LoadSourceGeometries(geom);
 
-            VoronoiDiagramBuilder builder = new VoronoiDiagramBuilder();
+            var builder = new VoronoiDiagramBuilder();
             builder.SetSites(mapper.Coordinates);
             if (g2 != null)
                 builder.ClipEnvelope = g2.EnvelopeInternal;
@@ -139,12 +139,12 @@ namespace Open.Topology.TestRunner.Functions
 
         public static IGeometry ConformingDelaunayEdgesWithTolerance(IGeometry sites, IGeometry constraints, double tol)
         {
-            ConformingDelaunayTriangulationBuilder builder = new ConformingDelaunayTriangulationBuilder();
+            var builder = new ConformingDelaunayTriangulationBuilder();
             builder.SetSites(sites);
             builder.Constraints = constraints;
             builder.Tolerance = tol;
 
-            IGeometryFactory geomFact = sites != null ? sites.Factory : constraints.Factory;
+            var geomFact = sites != null ? sites.Factory : constraints.Factory;
             IGeometry tris = builder.GetEdges(geomFact);
             return tris;
         }
@@ -156,12 +156,12 @@ namespace Open.Topology.TestRunner.Functions
 
         private static IGeometry ConformingDelaunayTrianglesWithTolerance(IGeometry sites, IGeometry constraints, double tol)
         {
-            ConformingDelaunayTriangulationBuilder builder = new ConformingDelaunayTriangulationBuilder();
+            var builder = new ConformingDelaunayTriangulationBuilder();
             builder.SetSites(sites);
             builder.Constraints = constraints;
             builder.Tolerance = tol;
 
-            IGeometryFactory geomFact = sites != null ? sites.Factory : constraints.Factory;
+            var geomFact = sites != null ? sites.Factory : constraints.Factory;
             IGeometry tris = builder.GetTriangles(geomFact);
             return tris;
         }

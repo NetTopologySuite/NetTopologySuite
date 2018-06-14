@@ -4,7 +4,7 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Index
 {
-    /// <summary> 
+    /// <summary>
     /// The basic insertion and query operations supported by classes
     /// implementing spatial index algorithms.
     /// A spatial index typically provides a primary filter for range rectangle queries. A
@@ -22,8 +22,8 @@ namespace NetTopologySuite.Index
         /// </summary>
         void Insert(Envelope itemEnv, T item);
 
-        /// <summary> 
-        /// Queries the index for all items whose extents intersect the given search <c>Envelope</c> 
+        /// <summary>
+        /// Queries the index for all items whose extents intersect the given search <c>Envelope</c>
         /// Note that some kinds of indexes may also return objects which do not in fact
         /// intersect the query envelope.
         /// </summary>
@@ -41,7 +41,7 @@ namespace NetTopologySuite.Index
         /// <param name="visitor">A visitor object to apply to the items found.</param>
         void Query(Envelope searchEnv, IItemVisitor<T> visitor);
 
-        /// <summary> 
+        /// <summary>
         /// Removes a single item from the tree.
         /// </summary>
         /// <param name="itemEnv">The Envelope of the item to remove.</param>

@@ -4,7 +4,7 @@ using GeoAPI.Operation.Buffer;
 namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
-    /// A value class containing the parameters which 
+    /// A value class containing the parameters which
     /// specify how a buffer should be constructed.
     /// <para/>
     /// The parameters allow control over:
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// </remarks>
         public int QuadrantSegments
         {
-            get { return _quadrantSegments; }
+            get => _quadrantSegments;
             set
             {
                 _quadrantSegments = value;
@@ -169,29 +169,29 @@ namespace NetTopologySuite.Operation.Buffer
         ///</summary>
         /// <remarks>
         /// <para>
-        /// The styles supported are <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Round"/>, 
-        /// <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Flat"/>, and 
+        /// The styles supported are <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Round"/>,
+        /// <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Flat"/>, and
         /// <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Square"/>.
         /// </para>
         /// <para>The default is <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Round"/>.</para>
         /// </remarks>
         public EndCapStyle EndCapStyle
         {
-            get { return _endCapStyle; }
-            set { _endCapStyle = value; }
+            get => _endCapStyle;
+            set => _endCapStyle = value;
         }
 
         ///<summary>
         /// Gets/Sets the join style for outside (reflex) corners between line segments.
         ///</summary>
         /// <remarks>
-        /// <para>Allowable values are <see cref="GeoAPI.Operations.Buffer.JoinStyle.Round"/> (which is the default), 
+        /// <para>Allowable values are <see cref="GeoAPI.Operations.Buffer.JoinStyle.Round"/> (which is the default),
         /// <see cref="GeoAPI.Operations.Buffer.JoinStyle.Mitre"/> and <see cref="GeoAPI.Operations.Buffer.JoinStyle.Bevel"/></para>
         /// </remarks>
         public JoinStyle JoinStyle
         {
-            get { return _joinStyle; }
-            set { _joinStyle = value; }
+            get => _joinStyle;
+            set => _joinStyle = value;
         }
 
         ///<summary>
@@ -211,8 +211,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// </remarks>
         public double MitreLimit
         {
-            get { return _mitreLimit; }
-            set { _mitreLimit = value; }
+            get => _mitreLimit;
+            set => _mitreLimit = value;
         }
 
         /// <summary>
@@ -242,8 +242,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         public double SimplifyFactor
         {
-            get { return _simplifyFactor; }
-            set { _simplifyFactor = value < 0 ? 0 : value; }
+            get => _simplifyFactor;
+            set => _simplifyFactor = value < 0 ? 0 : value;
         }
     }
 }

@@ -5,10 +5,10 @@ using Open.Topology.TestRunner;
 namespace ConsoleTestRunner
 {
     /// <summary>
-	/// Summary description for TestRunner.
-	/// </summary>
-	class TestRunner
-	{
+    /// Summary description for TestRunner.
+    /// </summary>
+    class TestRunner
+    {
         private static double elapsedTime = 0;
 
         private int m_nSimpleTestCount       = 0;
@@ -22,7 +22,6 @@ namespace ConsoleTestRunner
         private int m_nFailures   = 0;
         private int m_nExceptions = 0;
         private int m_nTotalCount = 0;
-
 
         public TestRunner(TestInfoCollection listTestInfo)
         {
@@ -46,12 +45,12 @@ namespace ConsoleTestRunner
 
         public void OnSimpleTest(object sender, XmlTestEventArgs args)
         {
-            if (m_enumFilterType == XmlTestType.None || 
+            if (m_enumFilterType == XmlTestType.None ||
                 args.Test.TestType == m_enumFilterType)
             {
                 if (m_bVerbose)
                 {
-                    Console.WriteLine("Test {0}, {1} ({2} : {3})", 
+                    Console.WriteLine("Test {0}, {1} ({2} : {3})",
                         args.Index, args.Success, args.Test.TestType.ToString(),
                         args.Test.Description);
                 }
@@ -63,21 +62,21 @@ namespace ConsoleTestRunner
                     m_nSimpleTestExceptions++;
             }
         }
- 
+
         public void OnTest(object sender, XmlTestEventArgs args)
         {
             ++m_nTestCount;
             if (!args.Success)
                 m_nFailures++;
-            if (args.Test.Thrown != null)            
+            if (args.Test.Thrown != null)
                 m_nExceptions++;
         }
-                      
+
         public void PrintSimpleTestResult(int totalTest)
         {
             Console.WriteLine("Test Cases : {0}, Test Run: {1}, Failures: {2}, Test Exceptions: {3}",
                 totalTest, m_nSimpleTestCount, m_nSimpleTestFailures, m_nSimpleTestExceptions);
-            
+
             Console.WriteLine();
         }
 
@@ -90,7 +89,7 @@ namespace ConsoleTestRunner
                 m_nTotalCount, m_nTestCount, m_nFailures, m_nExceptions);
             Console.WriteLine("Total elapsed time in milliseconds: " + elapsedTime);
             elapsedTime = 0;
-            
+
             Console.WriteLine();
         }
 
@@ -100,12 +99,12 @@ namespace ConsoleTestRunner
             {
                 try
                 {
-                    XmlTestController controller = new XmlTestController();
+                    var controller = new XmlTestController();
 
                     m_nTotalCount = 0;
                     for (int i = 0; i < m_listTestInfo.Count; i++)
                     {
-                        TestInfo info = m_listTestInfo[i];
+                        var info = m_listTestInfo[i];
                         if (info != null)
                         {
                             if (info.FileName != null)
@@ -124,10 +123,10 @@ namespace ConsoleTestRunner
             }
             return false;
         }
- 
+
         public void OnErrorEvent(object sender, XmlTestErrorEventArgs args)
         {
-            Exception ex = args.Thrown;
+            var ex = args.Thrown;
             if (ex != null)
             {
                 Console.WriteLine(ex.Message);
@@ -150,7 +149,7 @@ namespace ConsoleTestRunner
                 catch (Exception ex)
                 {
                     XmlTestExceptionManager.Publish(ex);
-                } 
+                }
 
                 SimpleTestReset(info.Filter, info.Verbose);
 
@@ -161,7 +160,7 @@ namespace ConsoleTestRunner
 
                     if (info.Exception)
                     {
-                        XmlTestExceptionManager.ErrorEvent += 
+                        XmlTestExceptionManager.ErrorEvent +=
                             new XmlTestErrorEventHandler(this.OnErrorEvent);
                     }
 
@@ -169,7 +168,7 @@ namespace ConsoleTestRunner
                     {
                         Console.WriteLine("Running...{0}", listTests.Name);
 
-                        XmlTestTimer timer = new XmlTestTimer();
+                        var timer = new XmlTestTimer();
 
                         timer.Start();
 
@@ -190,7 +189,7 @@ namespace ConsoleTestRunner
 
                         if (info.Exception)
                         {
-                            XmlTestExceptionManager.ErrorEvent -= 
+                            XmlTestExceptionManager.ErrorEvent -=
                                 new XmlTestErrorEventHandler(this.OnErrorEvent);
                         }
                     }
@@ -214,11 +213,11 @@ namespace ConsoleTestRunner
                 {
                     string currentDir = Environment.CurrentDirectory;
                     string[] files = Directory.GetFiles(info.Directory, "*.xml");
-                    foreach (string file in files) 
+                    foreach (string file in files)
                     {
                         info.FileName = file;
                         RunTestFile(info, controller);
-                    }               
+                    }
                     return true;
                 }
                 catch (Exception ex)
@@ -229,5 +228,5 @@ namespace ConsoleTestRunner
             }
             return false;
         }
-	}
+    }
 }

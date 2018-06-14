@@ -17,41 +17,41 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         public void TestGrid()
         {
             // Use fixed PM to try and get at least some points hitting the boundary
-            GeometryFactory geomFactory = new GeometryFactory(pmFixed_1);
-            //		GeometryFactory geomFactory = new GeometryFactory();
-		
-            PerturbedGridPolygonBuilder gridBuilder = new PerturbedGridPolygonBuilder(geomFactory);
+            var geomFactory = new GeometryFactory(pmFixed_1);
+            // GeometryFactory geomFactory = new GeometryFactory();
+
+            var gridBuilder = new PerturbedGridPolygonBuilder(geomFactory);
             gridBuilder.NumLines = 20;
             gridBuilder.LineWidth = 10.0;
-            IGeometry area = gridBuilder.Geometry;
-		
-            SimpleRayCrossingPointInAreaLocator pia = new SimpleRayCrossingPointInAreaLocator(area); 
+            var area = gridBuilder.Geometry;
 
-            PointInAreaStressTester gridTester = new PointInAreaStressTester(geomFactory, area);
+            var pia = new SimpleRayCrossingPointInAreaLocator(area);
+
+            var gridTester = new PointInAreaStressTester(geomFactory, area);
             gridTester.NumPoints = 100000;
             gridTester.TestPointInAreaLocator = pia;
-		
+
             bool isCorrect = gridTester.Run();
             Assert.IsTrue(isCorrect);
         }
-	
+
         class SimpleRayCrossingPointInAreaLocator : IPointOnGeometryLocator
         {
             private IGeometry geom;
-		
+
             public SimpleRayCrossingPointInAreaLocator(IGeometry geom)
             {
                 this.geom = geom;
             }
-		
+
             public Location Locate(Coordinate p)
             {
-                RayCrossingCounter rcc = new RayCrossingCounter(p);
-                RayCrossingSegmentFilter filter = new RayCrossingSegmentFilter(rcc);
+                var rcc = new RayCrossingCounter(p);
+                var filter = new RayCrossingSegmentFilter(rcc);
                 geom.Apply(filter);
                 return rcc.Location;
             }
-		
+
             class RayCrossingSegmentFilter : ICoordinateSequenceFilter
             {
                 private RayCrossingCounter rcc;
@@ -62,7 +62,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                 {
                     this.rcc = rcc;
                 }
-		
+
                 public void Filter(ICoordinateSequence seq, int i)
                 {
                     if (i == 0) return;
@@ -71,18 +71,11 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                     rcc.CountSegment(p0, p1);
                 }
 
-                public bool Done
-                {
-                    get { return rcc.IsOnSegment; }
-                }
+                public bool Done => rcc.IsOnSegment;
 
-                public bool GeometryChanged
-                {
-                    get { return false; }
-                }
+                public bool GeometryChanged => false;
             }
         }
     }
 }
-
 

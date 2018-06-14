@@ -30,11 +30,11 @@ namespace NetTopologySuite.Operation.Buffer
     /// computed buffer polygons are only approximations to the true geometry.
     /// The user can control the accuracy of the approximation by specifying
     /// the number of linear segments used to approximate arcs.
-    /// This is specified via <see cref="IBufferParameters.QuadrantSegments"/> 
+    /// This is specified via <see cref="IBufferParameters.QuadrantSegments"/>
     /// or <see cref="QuadrantSegments"/>.
     /// </para>
     /// <para>
-    /// The <see cref="IBufferParameters.EndCapStyle"/> of a linear buffer may be specified. 
+    /// The <see cref="IBufferParameters.EndCapStyle"/> of a linear buffer may be specified.
     /// The following end cap styles are supported:
     /// <ul>
     /// <li><see cref="EndCapStyle.Round" /> - the usual round end caps</li>
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// </ul>
     /// </para>
     /// <para>
-    /// The <see cref="IBufferParameters.JoinStyle"/> of the corners in a buffer may be specified. 
+    /// The <see cref="IBufferParameters.JoinStyle"/> of the corners in a buffer may be specified.
     /// The following join styles are supported:
     /// <ul>
     /// <li><see cref="JoinStyle.Round" /> - the usual round join</li>
@@ -53,11 +53,11 @@ namespace NetTopologySuite.Operation.Buffer
     /// </para>
     /// <para>
     /// The buffer algorithm can perform simplification on the input to increase performance.
-    /// The simplification is performed a way that always increases the buffer area 
+    /// The simplification is performed a way that always increases the buffer area
     /// (so that the simplified input covers the original input).
     /// The degree of simplification can be specified with <see cref="IBufferParameters.SimplifyFactor"/>,
     /// with a <see cref="BufferParameters.DefaultSimplifyFactor"/> used otherwise.
-    /// Note that if the buffer distance is zero then so is the computed simplify tolerance, 
+    /// Note that if the buffer distance is zero then so is the computed simplify tolerance,
     /// no matter what the simplify factor.
     /// </para>
     /// </remarks>
@@ -75,7 +75,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <summary>
         /// Compute a scale factor to limit the precision of
         /// a given combination of Geometry and buffer distance.
-        /// The scale factor is determined by 
+        /// The scale factor is determined by
         /// the number of digits of precision in the (geometry + buffer distance),
         /// limited by the supplied <paramref name="maxPrecisionDigits"/> value.
         /// <para/>
@@ -93,16 +93,16 @@ namespace NetTopologySuite.Operation.Buffer
           int maxPrecisionDigits)
         {
             var env = g.EnvelopeInternal;
-            var envMax = MathUtil.Max(
+            double envMax = MathUtil.Max(
                 Math.Abs(env.MaxX), Math.Abs(env.MaxY),
                 Math.Abs(env.MinX), Math.Abs(env.MinY));
 
-            var expandByDistance = distance > 0.0 ? distance : 0.0;
-            var bufEnvMax = envMax + 2 * expandByDistance;
+            double expandByDistance = distance > 0.0 ? distance : 0.0;
+            double bufEnvMax = envMax + 2 * expandByDistance;
 
             // the smallest power of 10 greater than the buffer envelope
-            var bufEnvPrecisionDigits = (int)(Math.Log(bufEnvMax) / Math.Log(10) + 1.0);
-            var minUnitLog10 = maxPrecisionDigits - bufEnvPrecisionDigits;
+            int bufEnvPrecisionDigits = (int)(Math.Log(bufEnvMax) / Math.Log(10) + 1.0);
+            int minUnitLog10 = maxPrecisionDigits - bufEnvPrecisionDigits;
 
             double scaleFactor = Math.Pow(10.0, minUnitLog10);
             return scaleFactor;
@@ -231,8 +231,8 @@ namespace NetTopologySuite.Operation.Buffer
         [Obsolete]
         public BufferStyle BufferStyle
         {
-            get { return (BufferStyle)_bufParams.EndCapStyle; }
-            set { _bufParams.EndCapStyle = (EndCapStyle)value; }
+            get => (BufferStyle)_bufParams.EndCapStyle;
+            set => _bufParams.EndCapStyle = (EndCapStyle)value;
         }
 
         /// <summary>
@@ -240,8 +240,8 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         public int QuadrantSegments
         {
-            get { return _bufParams.QuadrantSegments; }
-            set { _bufParams.QuadrantSegments = value; }
+            get => _bufParams.QuadrantSegments;
+            set => _bufParams.QuadrantSegments = value;
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace NetTopologySuite.Operation.Buffer
             BufferOriginalPrecision();
             if (_resultGeometry != null) return;
 
-            IPrecisionModel argPrecModel = _argGeom.Factory.PrecisionModel;
+            var argPrecModel = _argGeom.Factory.PrecisionModel;
             if (argPrecModel.PrecisionModelType == PrecisionModels.Fixed)
                 BufferFixedPrecision(argPrecModel);
             else
@@ -319,7 +319,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         private void BufferFixedPrecision(IPrecisionModel fixedPrecModel)
         {
-            INoder noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)),
+            var noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)),
                                           fixedPrecModel.Scale);
 
             var bufBuilder = new BufferBuilder(_bufParams);

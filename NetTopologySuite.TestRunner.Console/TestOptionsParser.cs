@@ -5,93 +5,88 @@ using Open.Topology.TestRunner;
 
 namespace ConsoleTestRunner
 {
-	/// <summary>
-	/// Summary description for TestOptionsParser.
-	/// </summary>
-	public class TestOptionsParser
-	{
+    /// <summary>
+    /// Summary description for TestOptionsParser.
+    /// </summary>
+    public class TestOptionsParser
+    {
         private bool m_bIsDefault;
 
-		public TestOptionsParser()
-		{
-            m_bIsDefault = false;
-		}
-
-        public bool IsDefault
+        public TestOptionsParser()
         {
-            get
-            {
-                return m_bIsDefault;
-            }
+            m_bIsDefault = false;
         }
+
+        public bool IsDefault => m_bIsDefault;
 
         public TestInfoCollection ParseProject(string projectFile)
         {
+            projectFile = Path.Combine(projectFile.Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries));
             if (!File.Exists(projectFile))
             {
-                throw new ArgumentException(projectFile, 
+                throw new ArgumentException(projectFile,
                     "The file does not exits or the 'projectFile' is not valid.");
             }
 
             try
             {
-                TestInfoCollection collection = new TestInfoCollection();
+                var collection = new TestInfoCollection();
 
-                XmlDocument xmldoc = new XmlDocument();
+                var xmldoc = new XmlDocument();
 
                 xmldoc.Load(projectFile);
 
-                XmlElement root = xmldoc.DocumentElement; 
+                var root = xmldoc.DocumentElement;
 
                 // Now, handle the "case" nodes
-                XmlNodeList elemList = xmldoc.GetElementsByTagName("test");
+                var elemList = xmldoc.GetElementsByTagName("test");
                 for (int i = 0; i < elemList.Count; i++)
-                {   
-                    XmlNode element = elemList[i];
+                {
+                    var element = elemList[i];
                     if (element != null)
                     {
-                        XmlTestType filterType = XmlTestType.None;
+                        var filterType = XmlTestType.None;
                         bool bDisplayException = true;
                         bool bVerbose          = true;
                         bool bInteractive      = false;
 
-                        XmlAttributeCollection attributes = element.Attributes;
+                        var attributes = element.Attributes;
                         if (attributes != null && attributes.Count > 0)
                         {
-                            XmlAttribute attFilter = attributes["filter"];
+                            var attFilter = attributes["filter"];
                             if (attFilter != null)
                             {
                                 filterType = ParseXmlTestType(attFilter.InnerText);
                             }
 
-                            XmlAttribute attException = attributes["exception"];
+                            var attException = attributes["exception"];
                             if (attException != null)
                             {
-                                bDisplayException = Boolean.Parse(attException.InnerText);
+                                bDisplayException = bool.Parse(attException.InnerText);
                             }
 
-                            XmlAttribute attVerbose = attributes["verbose"];
+                            var attVerbose = attributes["verbose"];
                             if (attVerbose != null)
                             {
-                                bVerbose = Boolean.Parse(attVerbose.InnerText);
+                                bVerbose = bool.Parse(attVerbose.InnerText);
                             }
 
-                            XmlAttribute attInteractive = attributes["interactive"];
+                            var attInteractive = attributes["interactive"];
                             if (attInteractive != null)
                             {
-                                bInteractive = Boolean.Parse(attInteractive.InnerText);
-                            }   
+                                bInteractive = bool.Parse(attInteractive.InnerText);
+                            }
                         }
 
-                        XmlNodeList elemFiles = element.SelectNodes("files/file");
+                        var elemFiles = element.SelectNodes("files/file");
                         if (elemFiles != null)
                         {
                             for (int j = 0; j < elemFiles.Count; j++)
-                            { 
-                                XmlNode xmlFile = elemFiles[j];
+                            {
+                                var xmlFile = elemFiles[j];
                                 if (xmlFile != null)
                                 {
-                                    TestInfo info    = new TestInfo(filterType);
+                                    var info    = new TestInfo(filterType);
                                     info.FileName    = xmlFile.InnerText;
                                     info.Verbose     = bVerbose;
                                     info.Exception   = bDisplayException;
@@ -99,18 +94,18 @@ namespace ConsoleTestRunner
 
                                     collection.Add(info);
                                 }
-                            } 
+                            }
                         }
- 
-                        XmlNodeList elemDirs = element.SelectNodes("dirs/dir");
+
+                        var elemDirs = element.SelectNodes("dirs/dir");
                         if (elemDirs != null)
                         {
                             for (int k = 0; k < elemDirs.Count; k++)
-                            { 
-                                XmlNode xmlDir = elemDirs[k];
+                            {
+                                var xmlDir = elemDirs[k];
                                 if (xmlDir != null)
                                 {
-                                    TestInfo info    = new TestInfo(filterType);
+                                    var info    = new TestInfo(filterType);
                                     info.Directory   = xmlDir.InnerText;
                                     info.Verbose     = bVerbose;
                                     info.Exception   = bDisplayException;
@@ -118,7 +113,7 @@ namespace ConsoleTestRunner
 
                                     collection.Add(info);
                                 }
-                            } 
+                            }
                         }
                     }
                 }
@@ -135,10 +130,10 @@ namespace ConsoleTestRunner
 
         public TestInfoCollection Parse(string[] args)
         {
-            TestInfoCollection collection = new TestInfoCollection();
+            var collection = new TestInfoCollection();
 
             // Command line parsing
-            Arguments commandLine = new Arguments(args);
+            var commandLine = new Arguments(args);
 
             // Check if default total test is requested...
             m_bIsDefault = false;
@@ -154,7 +149,7 @@ namespace ConsoleTestRunner
             }
 
             // 2. Handle the display filter option
-            XmlTestType testType = XmlTestType.None;
+            var testType = XmlTestType.None;
             if (commandLine["filter"] != null)
             {
                 testType = ParseXmlTestType(commandLine["filter"]);
@@ -170,7 +165,7 @@ namespace ConsoleTestRunner
                 bDisplayException   = (strException == "true");
             }
 
-            // 4. Handle the verbose display option 
+            // 4. Handle the verbose display option
             bool bVerbose = true;
             if (commandLine["verbose"] != null)
             {
@@ -180,7 +175,7 @@ namespace ConsoleTestRunner
                 bVerbose   = (strVerbose == "true");
             }
 
-            // 4. Handle the interactivity option 
+            // 4. Handle the interactivity option
             bool bInteractive = false;
             if (commandLine["interactive"] != null)
             {
@@ -190,7 +185,7 @@ namespace ConsoleTestRunner
                 bInteractive          = (strInteractive == "true");
                 if (bInteractive)
                 {
-                    TestInfo info = new TestInfo(testType);
+                    var info = new TestInfo(testType);
                     info.Verbose     = bVerbose;
                     info.Exception   = bDisplayException;
                     info.Interactive = bInteractive;
@@ -208,10 +203,10 @@ namespace ConsoleTestRunner
                 Console.WriteLine(strFiles);
 
                 string[] strSplits = strFiles.Split(',');
-    
+
                 for (int i = 0; i < strSplits.Length; i++)
                 {
-                    TestInfo info    = new TestInfo(testType);
+                    var info    = new TestInfo(testType);
                     info.FileName    = strSplits[i].Trim();
                     info.Verbose     = bVerbose;
                     info.Exception   = bDisplayException;
@@ -227,10 +222,10 @@ namespace ConsoleTestRunner
                 string strDirs = commandLine["dirs"];
 
                 string[] strSplits = strDirs.Split(',');
-    
+
                 for (int i = 0; i < strSplits.Length; i++)
                 {
-                    TestInfo info    = new TestInfo(testType);
+                    var info    = new TestInfo(testType);
                     info.Directory   = strSplits[i].Trim();
                     info.Verbose     = bVerbose;
                     info.Exception   = bDisplayException;
@@ -374,5 +369,5 @@ namespace ConsoleTestRunner
 
             return XmlTestType.None;
         }
-	}
+    }
 }

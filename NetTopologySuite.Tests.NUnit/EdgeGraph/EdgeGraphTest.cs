@@ -12,10 +12,10 @@ namespace NetTopologySuite.Tests.NUnit.EdgeGraph
         [TestAttribute]
         public void TestNode()
         {
-            EGraph graph = Build("MULTILINESTRING((0 0, 1 0), (0 0, 0 1), (0 0, -1 0))");
-            CheckEdgeRing(graph, new Coordinate(0, 0), new[] { 
+            var graph = Build("MULTILINESTRING((0 0, 1 0), (0 0, 0 1), (0 0, -1 0))");
+            CheckEdgeRing(graph, new Coordinate(0, 0), new[] {
                                                                  new Coordinate(1, 0),
-                                                                 new Coordinate(0, 1), 
+                                                                 new Coordinate(0, 1),
                                                                  new Coordinate(-1, 0)
                                                              });
             CheckEdge(graph, new Coordinate(0, 0), new Coordinate(1, 0));
@@ -23,8 +23,8 @@ namespace NetTopologySuite.Tests.NUnit.EdgeGraph
 
         private static void CheckEdgeRing(EGraph graph, Coordinate p, Coordinate[] dest)
         {
-            HalfEdge e = graph.FindEdge(p, dest[0]);
-            HalfEdge onext = e;
+            var e = graph.FindEdge(p, dest[0]);
+            var onext = e;
             int i = 0;
             do
             {
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.EdgeGraph
         }
         private static void CheckEdge(EGraph graph, Coordinate p0, Coordinate p1)
         {
-            HalfEdge e = graph.FindEdge(p0, p1);
+            var e = graph.FindEdge(p0, p1);
             Assert.IsNotNull(e);
         }
 
@@ -47,7 +47,7 @@ namespace NetTopologySuite.Tests.NUnit.EdgeGraph
 
         private EGraph Build(string[] wkt)
         {
-            IList<IGeometry> geoms = GeometryUtils.ReadWKT(wkt);
+            var geoms = GeometryUtils.ReadWKT(wkt);
             return EdgeGraphBuilder.Build(geoms);
         }
     }

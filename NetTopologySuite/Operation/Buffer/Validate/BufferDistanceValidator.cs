@@ -44,7 +44,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         private double _maxDistanceFound;
 
         private bool _isValid = true;
-        private String _errMsg;
+        private string _errMsg;
         private Coordinate _errorLocation;
         private IGeometry _errorIndicator;
 
@@ -78,9 +78,9 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             {
 // ReSharper disable once RedundantStringFormatCall
                 // String.Format needed to build 2.0 release!
-                Debug.WriteLine(String.Format("Min Dist= {0}  err= {1}  Max Dist= {2}  err= {3}", 
-                    _minDistanceFound, 
-                    1.0 - _minDistanceFound / _bufDistance, 
+                Debug.WriteLine(string.Format("Min Dist= {0}  err= {1}  Max Dist= {2}  err= {3}",
+                    _minDistanceFound,
+                    1.0 - _minDistanceFound / _bufDistance,
                     _maxDistanceFound,
                     _maxDistanceFound / _bufDistance - 1.0)
                   );
@@ -88,15 +88,9 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             return _isValid;
         }
 
-        public String ErrorMessage
-        {
-            get { return _errMsg; }
-        }
+        public string ErrorMessage => _errMsg;
 
-        public Coordinate ErrorLocation
-        {
-            get { return _errorLocation; }
-        }
+        public Coordinate ErrorLocation => _errorLocation;
 
         /// <summary>
         /// Gets a geometry which indicates the location and nature of a validation failure.
@@ -105,16 +99,13 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// of the distance discrepancy.
         /// </para>
         /// </summary>
-        /// <returns>A geometric error indicator 
+        /// <returns>A geometric error indicator
         /// or <value>null</value>, if no error was found</returns>
-        public IGeometry ErrorIndicator
-        {
-            get { return _errorIndicator; }
-        }
+        public IGeometry ErrorIndicator => _errorIndicator;
 
         private void CheckPositiveValid()
         {
-            IGeometry bufCurve = _result.Boundary;
+            var bufCurve = _result.Boundary;
             CheckMinimumDistance(_input, bufCurve, _minValidDistance);
             if (!_isValid) return;
 
@@ -133,7 +124,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             {
                 return;
             }
-            IGeometry inputCurve = GetPolygonLines(_input);
+            var inputCurve = GetPolygonLines(_input);
             CheckMinimumDistance(inputCurve, _result, _minValidDistance);
             if (!_isValid) return;
 

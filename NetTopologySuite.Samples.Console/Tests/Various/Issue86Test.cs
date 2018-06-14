@@ -16,7 +16,7 @@ namespace NetTopologySuite.Tests.Various
             var y = LonLat_to_Merc(new Coordinate(37.8686533, 47.9457283));
             var x1 = new Coordinate(37.8686517, 47.94573);
             var y1 = new Coordinate(37.8686533, 47.9457283);
-            LineString s = new LineString(new Coordinate[] { x, y });
+            var s = new LineString(new Coordinate[] { x, y });
             Console.WriteLine(s.Length);
             double f = GetDistance(x1, y1);
             Console.WriteLine(f);

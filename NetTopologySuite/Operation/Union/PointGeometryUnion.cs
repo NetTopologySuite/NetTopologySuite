@@ -20,7 +20,7 @@ namespace NetTopologySuite.Operation.Union
         }
 
         ///<summary>
-        /// Computes the union of a <see cref="IPoint"/> geometry with 
+        /// Computes the union of a <see cref="IPoint"/> geometry with
         /// another arbitrary <see cref="IGeometry"/>.
         /// Does not copy any component geometries.
         ///</summary>
@@ -35,14 +35,14 @@ namespace NetTopologySuite.Operation.Union
 
         public IGeometry Union()
         {
-            PointLocator locater = new PointLocator();
+            var locater = new PointLocator();
             // use a set to eliminate duplicates, as required for union
             var exteriorCoords = new HashSet<Coordinate>();
 
             foreach (IPoint point in PointExtracter.GetPoints(_pointGeom))
             {
-                Coordinate coord = point.Coordinate;
-                Location loc = locater.Locate(coord, _otherGeom);
+                var coord = point.Coordinate;
+                var loc = locater.Locate(coord, _otherGeom);
 
                 if (loc == Location.Exterior)
                 {
@@ -60,9 +60,9 @@ namespace NetTopologySuite.Operation.Union
             var exteriorCoordsArray = new Coordinate[exteriorCoords.Count];
             exteriorCoords.CopyTo(exteriorCoordsArray, 0);
             Array.Sort(exteriorCoordsArray);
-            ICoordinateSequence coords = _geomFact.CoordinateSequenceFactory.Create(exteriorCoordsArray);
-            IGeometry ptComp = coords.Count == 1 
-                ? (IGeometry)_geomFact.CreatePoint(coords) 
+            var coords = _geomFact.CoordinateSequenceFactory.Create(exteriorCoordsArray);
+            var ptComp = coords.Count == 1
+                ? (IGeometry)_geomFact.CreatePoint(coords)
                 : _geomFact.CreateMultiPoint(coords);
 
             // add point component to the other geometry

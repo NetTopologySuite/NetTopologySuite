@@ -5,7 +5,7 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.GeometriesGraph
 {
-    /// <summary> 
+    /// <summary>
     /// An EdgeIntersection represents a point on an
     /// edge which intersects with another edge.
     /// The intersection may either be a single point, or a line segment
@@ -17,64 +17,34 @@ namespace NetTopologySuite.GeometriesGraph
     /// </summary>
     public class EdgeIntersection : IComparable
     {
-        private readonly Coordinate _coordinate;   
+        private readonly Coordinate _coordinate;
 
         /// <summary>
         /// The point of intersection.
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get
-            {
-                return _coordinate; 
-            }
-            //set
-            //{
-            //    _coordinate = value; 
-            //}
-        }
+        public Coordinate Coordinate => _coordinate;
 
-        private readonly int _segmentIndex;  
+        private readonly int _segmentIndex;
 
         /// <summary>
         /// The index of the containing line segment in the parent edge.
         /// </summary>
-        public int SegmentIndex
-        {
-            get 
-            {
-                return _segmentIndex; 
-            }
-            //set
-            //{
-            //    segmentIndex = value; 
-            //}
-        }
+        public int SegmentIndex => _segmentIndex;
 
-        private readonly double _distance;       
+        private readonly double _distance;
 
         /// <summary>
         /// The edge distance of this point along the containing line segment.
         /// </summary>
-        public double Distance
-        {
-            get
-            {
-                return _distance; 
-            }
-            //set
-            //{
-            //    dist = value; 
-            //}
-        }
+        public double Distance => _distance;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coord"></param>
         /// <param name="segmentIndex"></param>
         /// <param name="dist"></param>
-        public EdgeIntersection(Coordinate coord, int segmentIndex, double dist) 
+        public EdgeIntersection(Coordinate coord, int segmentIndex, double dist)
         {
             _coordinate = new Coordinate(coord);
             _segmentIndex = segmentIndex;
@@ -82,18 +52,18 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
         public int CompareTo(object obj)
         {
-            EdgeIntersection other = (EdgeIntersection) obj;
+            var other = (EdgeIntersection) obj;
             return Compare(other.SegmentIndex, other.Distance);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="segmentIndex"></param>
         /// <param name="dist"></param>
@@ -104,33 +74,33 @@ namespace NetTopologySuite.GeometriesGraph
         /// </returns>
         public int Compare(int segmentIndex, double dist)
         {
-            if (_segmentIndex < segmentIndex) 
+            if (_segmentIndex < segmentIndex)
                 return -1;
-            if (_segmentIndex > segmentIndex) 
+            if (_segmentIndex > segmentIndex)
                 return 1;
-            if (_distance < dist) 
+            if (_distance < dist)
                 return -1;
-            if (_distance > dist) 
+            if (_distance > dist)
                 return 1;
             return 0;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="maxSegmentIndex"></param>
         /// <returns></returns>
         public bool IsEndPoint(int maxSegmentIndex)
         {
-            if (SegmentIndex == 0 && Distance == 0.0) 
+            if (SegmentIndex == 0 && Distance == 0.0)
                 return true;
-            if (SegmentIndex == maxSegmentIndex) 
+            if (SegmentIndex == maxSegmentIndex)
                 return true;
             return false;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="outstream"></param>
         public void Write(StreamWriter outstream)
@@ -141,7 +111,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <inheritdoc cref="object.ToString()"/>
-        public override String ToString()
+        public override string ToString()
         {
             return _coordinate + " seg # = " + _segmentIndex + " dist = " + _distance;
         }

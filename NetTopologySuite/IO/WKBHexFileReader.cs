@@ -8,7 +8,7 @@ using RTools_NTS.Util;
 namespace NetTopologySuite.IO
 {
     /// <summary>
-    /// Reads a sequence of {@link Geometry}s in WKBHex format 
+    /// Reads a sequence of {@link Geometry}s in WKBHex format
     /// from a text file.
     /// Each WKBHex geometry must be on a single line
     /// The geometries in the file may be separated by any amount
@@ -105,10 +105,10 @@ namespace NetTopologySuite.IO
         private ICollection<IGeometry> Read(StreamReader streamReader)
         {
             var geoms = new List<IGeometry>();
-            var count = 0;
+            int count = 0;
             while (!IsAtEndOfFile(streamReader) && !IsAtLimit(geoms))
             {
-                var line = streamReader.ReadLine();
+                string line = streamReader.ReadLine();
                 if (string.IsNullOrEmpty(line)) continue;
 
                 var g = _wkbReader.Read(WKBReader.HexToBytes(line));
@@ -126,7 +126,7 @@ namespace NetTopologySuite.IO
         /// <returns><value>true</value> if <see cref="Limit"/> number of geometries has been read.</returns>
         private bool IsAtLimit(ICollection<IGeometry> geoms)
         {
-            if (Limit < 0) 
+            if (Limit < 0)
                 return false;
             return geoms.Count >= Limit;
         }
@@ -136,7 +136,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         private static bool IsAtEndOfFile(StreamReader bufferedReader)
         {
-            var position = bufferedReader.BaseStream.Position;
+            long position = bufferedReader.BaseStream.Position;
 
             var tokenizer = new StreamTokenizer(bufferedReader);
             Token t;

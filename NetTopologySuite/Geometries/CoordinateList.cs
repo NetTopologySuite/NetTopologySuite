@@ -96,7 +96,6 @@ namespace NetTopologySuite.Geometries
             return true;
         }
 
-
         /// <summary>
         /// Adds an array of coordinates to the list.
         /// </summary>
@@ -150,7 +149,7 @@ namespace NetTopologySuite.Geometries
             {
                 if (Count >= 1)
                 {
-                    Coordinate last = this[Count - 1];
+                    var last = this[Count - 1];
                     if (last.Equals2D(coord))
                         return false;
                 }
@@ -175,12 +174,12 @@ namespace NetTopologySuite.Geometries
                 {
                     if (i > 0)
                     {
-                        Coordinate prev = this[i - 1];
+                        var prev = this[i - 1];
                         if (prev.Equals2D(coord)) return;
                     }
                     if (i < size)
                     {
-                        Coordinate next = this[i];
+                        var next = this[i];
                         if (next.Equals2D(coord)) return;
                     }
                 }
@@ -197,7 +196,7 @@ namespace NetTopologySuite.Geometries
         public bool AddAll(IList<Coordinate> coll, bool allowRepeated)
         {
             bool isChanged = false;
-            foreach (Coordinate c in coll)
+            foreach (var c in coll)
             {
                 Add(c, allowRepeated);
                 isChanged = true;
@@ -229,7 +228,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The copied object.</returns>
         public object Clone()
         {
-            CoordinateList copy = new CoordinateList();
+            var copy = new CoordinateList();
             foreach (var c in this)
                 copy.Add(c.Copy());
             return copy;

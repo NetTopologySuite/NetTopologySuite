@@ -29,12 +29,12 @@ namespace NetTopologySuite.Index.Strtree
         protected interface IIntersectsOp
         {
             /// <summary>
-            /// For STRtrees, the bounds will be Envelopes; 
+            /// For STRtrees, the bounds will be Envelopes;
             /// for SIRtrees, Intervals;
             /// for other subclasses of AbstractSTRtree, some other class.
             /// </summary>
             /// <param name="aBounds">The bounds of one spatial object.</param>
-            /// <param name="bBounds">The bounds of another spatial object.</param>                        
+            /// <param name="bBounds">The bounds of another spatial object.</param>
             /// <returns>Whether the two bounds intersect.</returns>
             bool Intersects(T aBounds, T bBounds);
         }
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Index.Strtree
 
         private readonly int _nodeCapacity;
 
-        /// <summary> 
+        /// <summary>
         /// Constructs an AbstractSTRtree with the specified maximum number of child
         /// nodes that a node may have.
         /// </summary>
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Index.Strtree
             _nodeCapacity = nodeCapacity;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Creates parent nodes, grandparent nodes, and so forth up to the root
         /// node, for the data that has been inserted into the tree. Can only be
         /// called once, and thus can be called only after all of the data has been
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
@@ -111,7 +111,7 @@ namespace NetTopologySuite.Index.Strtree
             // JTS does a stable sort here.  List<T>.Sort is not stable.
             var sortedChildBoundables = CollectionUtil.StableSort(childBoundables, GetComparer());
 
-            foreach (IBoundable<T, TItem> childBoundable in sortedChildBoundables)
+            foreach (var childBoundable in sortedChildBoundables)
             {
                 if (LastNode(parentBoundables).ChildBoundables.Count == NodeCapacity)
                     parentBoundables.Add(CreateNode(newLevel));
@@ -154,16 +154,13 @@ namespace NetTopologySuite.Index.Strtree
                 Build();
                 return _root;
             }
-            set { _root = value; }
+            set => _root = value;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Returns the maximum number of child nodes that a node may have.
         /// </summary>
-        public int NodeCapacity
-        {
-            get { return _nodeCapacity; }
-        }
+        public int NodeCapacity => _nodeCapacity;
 
         /// <summary>
         /// Tests whether the index contains any items.
@@ -196,7 +193,7 @@ namespace NetTopologySuite.Index.Strtree
 
         protected int GetSize(AbstractNode<T, TItem> node)
         {
-            var size = 0;
+            int size = 0;
             foreach (var childBoundable in node.ChildBoundables)
             {
                 if (childBoundable is AbstractNode<T, TItem>)
@@ -223,12 +220,12 @@ namespace NetTopologySuite.Index.Strtree
 
         protected int GetDepth(AbstractNode<T, TItem> node)
         {
-            var maxChildDepth = 0;
+            int maxChildDepth = 0;
             foreach (var childBoundable in node.ChildBoundables)
             {
                 if (!(childBoundable is AbstractNode<T, TItem>))
                     continue;
-                var childDepth = GetDepth((AbstractNode<T, TItem>)childBoundable);
+                int childDepth = GetDepth((AbstractNode<T, TItem>)childBoundable);
                 if (childDepth > maxChildDepth)
                     maxChildDepth = childDepth;
             }
@@ -252,7 +249,7 @@ namespace NetTopologySuite.Index.Strtree
             var matches = new List<TItem>();
             if (IsEmpty)
                 return matches;
-            
+
             //if (_itemBoundables.Count == 0)
             //{
             //    //Assert.IsTrue(_root.Bounds == null);
@@ -312,9 +309,9 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// Gets a tree structure (as a nested list) 
+        /// Gets a tree structure (as a nested list)
         /// corresponding to the structure of the items and nodes in this tree.
-        /// The returned Lists contain either Object items, 
+        /// The returned Lists contain either Object items,
         /// or Lists which correspond to subtrees of the tree
         /// Subtrees which do not contain any items are not included.
         /// Builds the tree if necessary.
@@ -345,10 +342,9 @@ namespace NetTopologySuite.Index.Strtree
                     valuesTreeForNode.Add(((ItemBoundable<T, TItem>)childBoundable).Item);
                 else Assert.ShouldNeverReachHere();
             }
-            
+
             return valuesTreeForNode.Count <= 0 ? null : valuesTreeForNode;
         }
-
 
         /// <returns>
         /// A test for intersection between two bounds, necessary because subclasses
@@ -386,7 +382,7 @@ namespace NetTopologySuite.Index.Strtree
         private bool Remove(T searchBounds, AbstractNode<T, TItem> node, TItem item)
         {
             // first try removing item from this node
-            var found = RemoveItem(node, item);
+            bool found = RemoveItem(node, item);
             if (found)
                 return true;
             AbstractNode<T, TItem> childToPrune = null;

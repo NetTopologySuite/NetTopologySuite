@@ -27,5 +27,4 @@ namespace NetTopologySuite.Algorithm
         Right = Clockwise
     }
 
-
 }

@@ -26,7 +26,7 @@ namespace NetTopologySuite.Algorithm
         {
             // fast filter for orientation index
             // avoids use of slow extended-precision arithmetic in many cases
-            var index = OrientationIndexFilter(p1, p2, q);
+            int index = OrientationIndexFilter(p1, p2, q);
             if (index <= 1) return index;
 
             // normalize coordinates
@@ -71,9 +71,9 @@ namespace NetTopologySuite.Algorithm
         /// If the orientation can be computed safely using standard DP
         /// arithmetic, this routine returns the orientation index.
         /// Otherwise, a value i > 1 is returned.
-        /// In this case the orientation index must 
+        /// In this case the orientation index must
         /// be computed using some other more robust method.
-        /// The filter is fast to compute, so can be used to 
+        /// The filter is fast to compute, so can be used to
         /// avoid the use of slower robust methods except when they are really needed,
         /// thus providing better average performance.
         /// <para/>
@@ -89,9 +89,9 @@ namespace NetTopologySuite.Algorithm
         {
             double detsum;
 
-            var detleft = (pa.X - pc.X)*(pb.Y - pc.Y);
-            var detright = (pa.Y - pc.Y)*(pb.X - pc.X);
-            var det = detleft - detright;
+            double detleft = (pa.X - pc.X)*(pb.Y - pc.Y);
+            double detright = (pa.Y - pc.Y)*(pb.X - pc.X);
+            double det = detleft - detright;
 
             if (detleft > 0.0)
             {
@@ -114,7 +114,7 @@ namespace NetTopologySuite.Algorithm
                 return Signum(det);
             }
 
-            var errbound = DoublePrecisionSafeEpsilon*detsum;
+            double errbound = DoublePrecisionSafeEpsilon*detsum;
             if ((det >= errbound) || (-det >= errbound))
             {
                 return Signum(det);
@@ -160,14 +160,14 @@ namespace NetTopologySuite.Algorithm
             var numx = numx1 - numx2;
             var fracP = (numx / denom)/*.ToDoubleValue()*/;
 
-            var x = (DD.ValueOf(p1.X) + (DD.ValueOf(p2.X) - DD.ValueOf(p1.X)) * fracP).ToDoubleValue();
+            double x = (DD.ValueOf(p1.X) + (DD.ValueOf(p2.X) - DD.ValueOf(p1.X)) * fracP).ToDoubleValue();
 
             var numy1 = (DD.ValueOf(p2.X) - DD.ValueOf(p1.X)) * (DD.ValueOf(p1.Y) - DD.ValueOf(q1.Y));
             var numy2 = (DD.ValueOf(p2.Y) - DD.ValueOf(p1.Y)) * (DD.ValueOf(p1.X) - DD.ValueOf(q1.X));
             var numy = numy1 - numy2;
             var fracQ = numy / denom;
 
-            var y = (DD.ValueOf(q1.Y) + (DD.ValueOf(q2.Y) - DD.ValueOf(q1.Y)) * fracQ).ToDoubleValue();
+            double y = (DD.ValueOf(q1.Y) + (DD.ValueOf(q2.Y) - DD.ValueOf(q1.Y)) * fracQ).ToDoubleValue();
 
             return new Coordinate(x, y);
         }

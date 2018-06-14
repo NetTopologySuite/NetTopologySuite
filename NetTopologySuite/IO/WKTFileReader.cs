@@ -47,7 +47,7 @@ namespace NetTopologySuite.IO
         ///</summary>
         /// <param name="filename">The name of the file to read from</param>
         /// <param name="wktReader">The geometry reader to use</param>
-        public WKTFileReader(String filename, WKTReader wktReader)
+        public WKTFileReader(string filename, WKTReader wktReader)
             : this(new FileInfo(filename), wktReader)
         {
         }
@@ -100,11 +100,11 @@ namespace NetTopologySuite.IO
 
 #if FEATURE_FILE_IO
             if (_file != null)
-                _reader =  new StreamReader(new FileStream(_file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read, MaxLookahead)); 
+                _reader =  new StreamReader(new FileStream(_file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read, MaxLookahead));
 #endif
             try
             {
-                return Read(_reader);                
+                return Read(_reader);
             }
             finally
             {
@@ -116,7 +116,7 @@ namespace NetTopologySuite.IO
 
         private IList<IGeometry> Read(TextReader bufferedReader)
         {
-            IList<IGeometry> geoms = new List<IGeometry>();
+            var geoms = new List<IGeometry>();
             var tokens = _wktReader.Tokenizer(bufferedReader);
             tokens.MoveNext();
             while (!IsAtEndOfTokens(tokens.Current) && !IsAtLimit(geoms))

@@ -38,17 +38,17 @@ namespace NetTopologySuite.Mathematics
         /// <item><b>positive</b> if the point lies above the plane (relative to the plane normal)</item>
         /// <item><b>zero</b> if the point is on the plane</item>
         /// <item><b>negative</b> if the point lies below the plane (relative to the plane normal)</item>
-        /// </list> 
+        /// </list>
         /// </summary>
         /// <param name="p">The point to compute the distance for</param>
         /// <returns>The oriented distance to the plane</returns>
         public double OrientedDistance(Coordinate p)
         {
             var pb = new Vector3D(p, _basePt);
-            var pbdDotNormal = pb.Dot(_normal);
-            if (Double.IsNaN(pbdDotNormal))
+            double pbdDotNormal = pb.Dot(_normal);
+            if (double.IsNaN(pbdDotNormal))
                 throw new ArgumentException("3D Coordinate has NaN ordinate");
-            var d = pbdDotNormal/_normal.Length();
+            double d = pbdDotNormal/_normal.Length();
             return d;
         }
 
@@ -64,9 +64,9 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The index of the closest axis plane</returns>
         public Plane ClosestAxisPlane()
         {
-            var xmag = Math.Abs(_normal.X);
-            var ymag = Math.Abs(_normal.Y);
-            var zmag = Math.Abs(_normal.Z);
+            double xmag = Math.Abs(_normal.X);
+            double ymag = Math.Abs(_normal.Y);
+            double zmag = Math.Abs(_normal.Z);
             if (xmag > ymag)
             {
                 if (xmag > zmag)

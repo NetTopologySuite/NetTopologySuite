@@ -19,7 +19,6 @@ namespace Open.Topology.TestRunner.Operations
     {
         private readonly GeometryMethodOperation _chainOp;
 
-        
         public PreparedGeometryOperation()
             :this(new GeometryMethodOperation())
         {
@@ -30,7 +29,7 @@ namespace Open.Topology.TestRunner.Operations
             return GetReturnType(op.ToString());
         }
 
-        public Type GetReturnType(String opName)
+        public Type GetReturnType(string opName)
         {
             if (IsPreparedOp(opName))
                 return typeof (bool);
@@ -47,7 +46,7 @@ namespace Open.Topology.TestRunner.Operations
             _chainOp = chainOp;
         }
 
-        private static bool IsPreparedOp(String opName)
+        private static bool IsPreparedOp(string opName)
         {
             if (opName.Equals("intersects", StringComparison.InvariantCultureIgnoreCase)) return true;
             if (opName.Equals("contains", StringComparison.InvariantCultureIgnoreCase)) return true;
@@ -65,12 +64,12 @@ namespace Open.Topology.TestRunner.Operations
         /// <returns>The result</returns>
         /// <exception cref="Exception"></exception>
         /// <seealso cref="IGeometryOperation.Invoke"/>
-        public IResult Invoke(XmlTestType opName, IGeometry geometry, Object[] args)
+        public IResult Invoke(XmlTestType opName, IGeometry geometry, object[] args)
         {
             return Invoke(opName.ToString(), geometry, args);
         }
 
-        public IResult Invoke(String opName, IGeometry geometry, Object[] args)
+        public IResult Invoke(string opName, IGeometry geometry, object[] args)
         {
             if (! IsPreparedOp(opName))
             {
@@ -79,7 +78,7 @@ namespace Open.Topology.TestRunner.Operations
             return InvokePreparedOp(opName, geometry, args);
         }
 
-        private static IResult InvokePreparedOp(String opName, IGeometry geometry, Object[] args)
+        private static IResult InvokePreparedOp(string opName, IGeometry geometry, object[] args)
         {
             var g2 = (IGeometry) args[0];
             if (opName.Equals("intersects", StringComparison.InvariantCultureIgnoreCase))

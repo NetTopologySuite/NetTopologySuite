@@ -15,8 +15,8 @@ namespace Open.Topology.TestRunner.Operations
 
         public double Tolerance
         {
-            get { return _tolerance; }
-            set { _tolerance = value; }
+            get => _tolerance;
+            set => _tolerance = value;
         }
 
         public bool Match(IGeometry a, IGeometry b)

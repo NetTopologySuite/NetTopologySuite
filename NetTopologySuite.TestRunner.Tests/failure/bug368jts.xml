@@ -1,7 +1,7 @@
 <run>
   <desc>
   Result of unioning two polygons is invalid.
-  
+
 http://trac.osgeo.org/geos/ticket/368
   </desc>
   <precisionModel type="FLOATING" />
@@ -28,6 +28,5 @@ POLYGON ((-187352.51466001172 254443.18465124597, -187352.51470705227 254443.184
  </op>
 </test>
 </case>
-
 
 </run>

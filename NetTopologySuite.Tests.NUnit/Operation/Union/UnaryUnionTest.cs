@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
         [TestAttribute]
         public void TestEmptyCollection()
         {
-            DoTest(new String[] { }, "GEOMETRYCOLLECTION EMPTY");
+            DoTest(new string[] { }, "GEOMETRYCOLLECTION EMPTY");
         }
 
         [TestAttribute]
@@ -25,7 +25,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
         [TestAttribute]
         public void TestLineNoding()
         {
-            DoTest(new []{ "LINESTRING (0 0, 10 0, 5 -5, 5 5)"}, 
+            DoTest(new []{ "LINESTRING (0 0, 10 0, 5 -5, 5 5)"},
                            "MULTILINESTRING ((0 0, 5 0), (5 0, 10 0, 5 -5, 5 0), (5 0, 5 5))");
   }
 
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
                 "GEOMETRYCOLLECTION (POINT (60 140),   LINESTRING (40 90, 40 140), LINESTRING (160 90, 160 140), POLYGON ((0 0, 0 90, 40 90, 90 90, 90 0, 0 0)), POLYGON ((120 0, 120 90, 160 90, 210 90, 210 0, 120 0)))");
         }
 
-        private void DoTest(String[] inputWKT, String expectedWKT)
+        private void DoTest(string[] inputWKT, string expectedWKT)
         {
             IGeometry result;
             var geoms = GeometryUtils.ReadWKT(inputWKT);

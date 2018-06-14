@@ -14,10 +14,10 @@ namespace NetTopologySuite.Geometries
     /// ordinate dimensions above the limit will not be compared.
     /// </para>
     /// <para>
-    /// If different behaviour is required for comparing size, dimension, 
+    /// If different behaviour is required for comparing size, dimension,
     /// or coordinate values, any or all methods can be overridden.</para>
     /// </remarks>
-    public class CoordinateSequenceComparator : IComparer<ICoordinateSequence> 
+    public class CoordinateSequenceComparator : IComparer<ICoordinateSequence>
     {
         ///<summary>
         /// Compare two <code>double</code>s, allowing for NaN values.
@@ -31,13 +31,13 @@ namespace NetTopologySuite.Geometries
             if (a < b) return -1;
             if (a > b) return 1;
 
-            if (Double.IsNaN(a))
+            if (double.IsNaN(a))
             {
-                if (Double.IsNaN(b)) return 0;
+                if (double.IsNaN(b)) return 0;
                 return -1;
             }
 
-            if (Double.IsNaN(b)) return 1;
+            if (double.IsNaN(b)) return 1;
             return 0;
         }
 
@@ -69,10 +69,10 @@ namespace NetTopologySuite.Geometries
         /// <param name="o1">A coordinate sequence</param>
         /// <param name="o2">A coordinate sequence</param>
         /// <returns>-1, 0, or 1 depending on whether o1 is less than, equal to, or greater than o2</returns>
-        public int Compare(Object o1, Object o2)
+        public int Compare(object o1, object o2)
         {
-            ICoordinateSequence s1 = (ICoordinateSequence)o1;
-            ICoordinateSequence s2 = (ICoordinateSequence)o2;
+            var s1 = (ICoordinateSequence)o1;
+            var s2 = (ICoordinateSequence)o2;
             return Compare(s1, s2);
         }
 

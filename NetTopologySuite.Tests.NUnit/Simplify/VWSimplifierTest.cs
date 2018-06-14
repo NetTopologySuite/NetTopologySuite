@@ -42,7 +42,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                         10.0))
                 .Test();
         }
-        
+
         [Test]
         public void TestPolygonSpikeInShell()
         {
@@ -180,20 +180,20 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
             long oldTicks = 0;
             long newTicks = 0;
 
-            using (Stream file = EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.world.wkt"))
+            using (var file = EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.world.wkt"))
             {
                 foreach (ILineString line in GeometryUtils.ReadWKTFile(file).SelectMany(LinearComponentExtracter.GetLines))
                 {
-                    Coordinate[] coordinates = line.Coordinates;
+                    var coordinates = line.Coordinates;
 
-                    Stopwatch sw = Stopwatch.StartNew();
-                    Coordinate[] oldResults = OldVWLineSimplifier.Simplify(coordinates, DistanceTolerance);
+                    var sw = Stopwatch.StartNew();
+                    var oldResults = OldVWLineSimplifier.Simplify(coordinates, DistanceTolerance);
                     sw.Stop();
 
                     oldTicks += sw.ElapsedTicks;
 
                     sw.Restart();
-                    Coordinate[] newResults = VWLineSimplifier.Simplify(coordinates, DistanceTolerance);
+                    var newResults = VWLineSimplifier.Simplify(coordinates, DistanceTolerance);
                     sw.Stop();
 
                     newTicks += sw.ElapsedTicks;
@@ -214,9 +214,9 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
     {
         private static readonly WKTReader Rdr = new WKTReader();
 
-        public static IGeometry[] GetResult(String wkt, double tolerance)
+        public static IGeometry[] GetResult(string wkt, double tolerance)
         {
-            IGeometry[] ioGeom = new IGeometry[2];
+            var ioGeom = new IGeometry[2];
             ioGeom[0] = Rdr.Read(wkt);
             ioGeom[1] = VWSimplifier.Simplify(ioGeom[0], tolerance);
             Console.WriteLine(ioGeom[1]);

@@ -10,6 +10,13 @@
 
   <Import Project="$(SolutionDir)NetTopologySuite.Common.props" />
 
+  <!-- These versions of the Fody packages HAPPEN to work for these target frameworks, so tell NuGet
+       that it's OK to pretend like they're net45. -->
+  <PropertyGroup>
+    <AssetTargetFallback Condition=" '$(TargetFramework)' == 'net35-client' Or '$(TargetFramework)' == 'net40-client' Or '$(TargetFramework)' == 'net403-client' ">net45</AssetTargetFallback>
+    <NoWarn>$(NoWarn),NU1701</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup Condition=" '$(RequiresFrameworkAssemblyReferences)' == 'true' ">
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -26,7 +33,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GeoAPI" Version="$(GeoAPIPackageReferenceVersion)" />
+    <PackageReference Include="GeoAPI.Core" Version="$(GeoAPIPackageReferenceVersion)" />
+
+    <!-- We use ModuleInit.Fody to automatically initialize GeometryServiceProvider when loaded. -->
+    <PackageReference Include="ModuleInit.Fody" Version="1.8.0" PrivateAssets="All" />
+    <PackageReference Include="Fody" Version="3.0.3" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' Or '$(TargetFramework)' == 'netstandard1.3' ">

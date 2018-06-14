@@ -13,11 +13,11 @@ namespace NetTopologySuite.Operation.Overlay
     /// </summary>
     public class PolygonBuilder
     {
-        private readonly IGeometryFactory _geometryFactory;        
+        private readonly IGeometryFactory _geometryFactory;
         private readonly List<EdgeRing> _shellList = new List<EdgeRing>();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geometryFactory"></param>
         public PolygonBuilder(IGeometryFactory geometryFactory)
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Operation.Overlay
             Add(graph.EdgeEnds, graph.Nodes);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Add a set of edges and nodes, which form a graph.
         /// The graph is assumed to contain one or more polygons,
         /// possibly with holes.
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Operation.Overlay
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IList<IGeometry> Polygons
         {
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Operation.Overlay
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// For all DirectedEdges in result, form them into MaximalEdgeRings.
         /// </summary>
         /// <param name="dirEdges"></param>
@@ -91,7 +91,7 @@ namespace NetTopologySuite.Operation.Overlay
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="maxEdgeRings"></param>
         /// <param name="shellList"></param>
@@ -116,7 +116,7 @@ namespace NetTopologySuite.Operation.Overlay
                     else
                     {
                         // freeHoleList.addAll(minEdgeRings);
-                        foreach (EdgeRing obj in minEdgeRings)
+                        foreach (var obj in minEdgeRings)
                             freeHoleList.Add(obj);
                     }
                 }
@@ -138,7 +138,7 @@ namespace NetTopologySuite.Operation.Overlay
         {
             int shellCount = 0;
             EdgeRing shell = null;
-            foreach (/*Minimal*/EdgeRing er in minEdgeRings)
+            foreach (var er in minEdgeRings)
             {
                 if (!er.IsHole)
                 {
@@ -165,12 +165,12 @@ namespace NetTopologySuite.Operation.Overlay
         {
             foreach (MinimalEdgeRing er in minEdgeRings)
             {
-                if (er.IsHole) 
+                if (er.IsHole)
                     er.Shell = shell;
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// For all rings in the input list,
         /// determine whether the ring is a shell or a hole
         /// and add it to the appropriate list.
@@ -182,7 +182,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="freeHoleList"></param>
         private static void SortShellsAndHoles(IEnumerable<EdgeRing> edgeRings, IList<EdgeRing> shellList, IList<EdgeRing> freeHoleList)
         {
-            foreach (EdgeRing er in edgeRings)
+            foreach (var er in edgeRings)
             {
                 er.SetInResult();
                 if (er.IsHole)
@@ -206,12 +206,12 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="freeHoleList"></param>
         private static void PlaceFreeHoles(IList<EdgeRing> shellList, IEnumerable<EdgeRing> freeHoleList)
         {
-            foreach (EdgeRing hole in freeHoleList)
+            foreach (var hole in freeHoleList)
             {
                 // only place this hole if it doesn't yet have a shell
                 if (hole.Shell == null)
                 {
-                    EdgeRing shell = FindEdgeRingContaining(hole, shellList);
+                    var shell = FindEdgeRingContaining(hole, shellList);
                     //Assert.IsTrue(shell != null, "unable to assign hole to a shell");
                     if (shell == null)
                         throw new TopologyException("unable to assign hole to a shell", hole.GetCoordinate(0));
@@ -220,7 +220,7 @@ namespace NetTopologySuite.Operation.Overlay
              }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Find the innermost enclosing shell EdgeRing containing the argument EdgeRing, if any.
         /// The innermost enclosing ring is the <i>smallest</i> enclosing ring.
         /// The algorithm used depends on the fact that:
@@ -235,16 +235,16 @@ namespace NetTopologySuite.Operation.Overlay
         /// <value>null</value> if no containing EdgeRing is found.</returns>
         private static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IEnumerable<EdgeRing> shellList)
         {
-            ILinearRing teString = testEr.LinearRing;
-            Envelope testEnv = teString.EnvelopeInternal;
-            Coordinate testPt = teString.GetCoordinateN(0);
+            var teString = testEr.LinearRing;
+            var testEnv = teString.EnvelopeInternal;
+            var testPt = teString.GetCoordinateN(0);
 
             EdgeRing minShell = null;
             Envelope minEnv = null;
-            foreach (EdgeRing tryShell in shellList)
+            foreach (var tryShell in shellList)
             {
-                ILinearRing tryRing = tryShell.LinearRing;
-                Envelope tryEnv = tryRing.EnvelopeInternal;
+                var tryRing = tryShell.LinearRing;
+                var tryEnv = tryRing.EnvelopeInternal;
                 if (minShell != null)
                     minEnv = minShell.LinearRing.EnvelopeInternal;
                 bool isContained = false;
@@ -254,30 +254,30 @@ namespace NetTopologySuite.Operation.Overlay
                 if (isContained)
                 {
                     if (minShell == null || minEnv.Contains(tryEnv))
-                        minShell = tryShell;                    
+                        minShell = tryShell;
                 }
             }
             return minShell;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="shellList"></param>
         /// <returns></returns>
         private IList<IGeometry> ComputePolygons(IEnumerable<EdgeRing> shellList)
         {
-            IList<IGeometry> resultPolyList = new List<IGeometry>();
+            var resultPolyList = new List<IGeometry>();
             // add Polygons for all shells
-            foreach (EdgeRing er in shellList)
+            foreach (var er in shellList)
             {
-                IPolygon poly = er.ToPolygon(_geometryFactory);
+                var poly = er.ToPolygon(_geometryFactory);
                 resultPolyList.Add(poly);
             }
             return resultPolyList;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Checks the current set of shells (with their associated holes) to
         /// see if any of them contain the point.
         /// </summary>
@@ -285,7 +285,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <returns></returns>
         public bool ContainsPoint(Coordinate p)
         {
-            foreach (EdgeRing er in _shellList)
+            foreach (var er in _shellList)
             {
                 if (er.ContainsPoint(p))
                     return true;

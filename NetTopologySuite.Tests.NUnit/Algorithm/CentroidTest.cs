@@ -17,14 +17,14 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// <returns>Coordinate of the geometry's centroid</returns>
         private static Coordinate AreaWeightedCentroid(IGeometry g)
         {
-            var totalArea = g.Area;
-            var cx = 0d;
-            var cy = 0d;
+            double totalArea = g.Area;
+            double cx = 0d;
+            double cy = 0d;
 
-            for (var i = 0; i < g.NumGeometries; i++)
+            for (int i = 0; i < g.NumGeometries; i++)
             {
                 var component = g.GetGeometryN(i);
-                var areaFraction = component.Area / totalArea;
+                double areaFraction = component.Area / totalArea;
 
                 var componentCentroid = component.Centroid.Coordinate;
 

@@ -24,7 +24,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             readerFloat = new WKTReader();
         }
 
-
         [TestAttribute]
         public void TestComparable()
         {
@@ -62,16 +61,16 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             };
 
             Array.Sort(geometries);
-            for (var i = 0; i < geometries.Length; i++)
+            for (int i = 0; i < geometries.Length; i++)
                 Assert.That(ReferenceEquals(geometries[i], geometriesExpectedOrder[i]), Is.True);
         }
 
         [TestAttribute]
         public void TestPolygonRelate()
         {
-            IGeometry bigPolygon = reader.Read(
+            var bigPolygon = reader.Read(
                     "POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
-            IGeometry smallPolygon = reader.Read(
+            var smallPolygon = reader.Read(
                     "POLYGON ((10 10, 10 30, 30 30, 30 10, 10 10))");
             Assert.IsTrue(bigPolygon.Contains(smallPolygon));
         }
@@ -101,8 +100,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             doTestFromCommcast2003AtYahooDotCa(new WKTReader());
         }
 
-
-
         [TestAttribute]
         public void TestDepthMismatchAssertionFailedException()
         {
@@ -116,7 +113,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         private void doTestFromCommcast2003AtYahooDotCa(WKTReader reader)
         {
-    	    readerFloat.Read(
+            readerFloat.Read(
                 "POLYGON ((708653.498611049 2402311.54647056, 708708.895756966 2402203.47250014, 708280.326454234 2402089.6337791, 708247.896591321 2402252.48269854, 708367.379593851 2402324.00761653, 708248.882609455 2402253.07294874, 708249.523621829 2402244.3124463, 708261.854734465 2402182.39086576, 708262.818392579 2402183.35452387, 708653.498611049 2402311.54647056))")
                   .Intersection(reader.Read(
                     "POLYGON ((708258.754920656 2402197.91172757, 708257.029447455 2402206.56901508, 708652.961095455 2402312.65463437, 708657.068786251 2402304.6356364, 708258.754920656 2402197.91172757))"));
@@ -125,13 +122,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Ignore("The equalseHash assert for the differentStart geometry is causing a failure in the test.  The problem is caused by a difference in the logic between JTS and NTS.  JTS computes the hash based on the bounding rectangle, which is the same for both shapes, but NTS computes it based on the coordinates in the shape, which is actually delgated to the derived type via an abstract method.  In theory two polygons with the same number of points could have the same bounding rectangle, but have points in different positions - think of a five pointed star, with the inner points in different locations, while the outer points are the same, and therefor defined the bounding rectangle.  On the other hand, two shapes that are equivalent, but have different start points should really have the same hash code.  The logic for GetHashCode on geometries needs to be reviewed before enabling this test again.")]
         public void TestEquals()
         {
-            IGeometry g = reader.Read("POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
-            IGeometry same = reader.Read("POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
-            IGeometry differentStart = reader.Read(
+            var g = reader.Read("POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
+            var same = reader.Read("POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
+            var differentStart = reader.Read(
                     "POLYGON ((0 50, 50 50, 50 0, 0 0, 0 50))");
-            IGeometry differentFourth = reader.Read(
+            var differentFourth = reader.Read(
                     "POLYGON ((0 0, 0 50, 50 50, 50 -99, 0 0))");
-            IGeometry differentSecond = reader.Read(
+            var differentSecond = reader.Read(
                     "POLYGON ((0 0, 0 99, 50 50, 50 0, 0 0))");
             DoTestEquals(g, same, true, true, true, true);
             DoTestEquals(g, differentStart, true, true, false, true);  // NTS casts from object to IGeometry if possible, so changed a equalsObject to be true not false
@@ -143,7 +140,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             bool equalsObject, bool equalsExact, bool equalsHash)
         {
             Assert.AreEqual(equalsGeometry, a.Equals(b));
-            Assert.AreEqual(equalsObject, a.Equals((Object) b));
+            Assert.AreEqual(equalsObject, a.Equals((object) b));
             Assert.AreEqual(equalsExact, a.EqualsExact(b));
             Assert.AreEqual(equalsHash, a.GetHashCode() == b.GetHashCode());
         }
@@ -151,7 +148,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestInvalidateEnvelope()
         {
-            IGeometry g = reader.Read("POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
+            var g = reader.Read("POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
             Assert.AreEqual(new Envelope(0, 50, 0, 50), g.EnvelopeInternal);
             g.Apply(new CoordinateFilter());
             Assert.AreEqual(new Envelope(0, 50, 0, 50), g.EnvelopeInternal);
@@ -170,9 +167,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestEquals1()
         {
-            IGeometry polygon1 = reader.Read(
+            var polygon1 = reader.Read(
                     "POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
-            IGeometry polygon2 = reader.Read(
+            var polygon2 = reader.Read(
                     "POLYGON ((50 50, 50 0, 0 0, 0 50, 50 50))");
             Assert.IsTrue(polygon1.Equals(polygon2));
         }
@@ -180,9 +177,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestEqualsWithNull()
         {
-            IGeometry polygon = reader.Read("POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
+            var polygon = reader.Read("POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
             Assert.IsTrue(!polygon.Equals(null));
-            Object g = null;
+            object g = null;
             Assert.IsTrue(!polygon.Equals(g));
         }
 
@@ -205,7 +202,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var p2 = new Coordinate(1, 0);
 
             Coordinate[] exactEqualRing1 = { p0, p1, p2, p0 };
-            Coordinate[] exactEqualRing2 = CoordinateArrays.CopyDeep(exactEqualRing1);
+            var exactEqualRing2 = CoordinateArrays.CopyDeep(exactEqualRing1);
             Coordinate[] rotatedRing1 = { p1, p2, p0, p1 };
             Coordinate[] rotatedRing2 = { p2, p0, p1, p2 };
 
@@ -241,21 +238,21 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestEqualsExactForLinearRings()
         {
-            ILinearRing x = geometryFactory.CreateLinearRing(new Coordinate[] {
+            var x = geometryFactory.CreateLinearRing(new Coordinate[] {
                         new Coordinate(0, 0), new Coordinate(100, 0),
                         new Coordinate(100, 100), new Coordinate(0, 0)
                     });
-            ILinearRing somethingExactlyEqual = geometryFactory.CreateLinearRing(new Coordinate[] {
+            var somethingExactlyEqual = geometryFactory.CreateLinearRing(new Coordinate[] {
                         new Coordinate(0, 0), new Coordinate(100, 0),
                         new Coordinate(100, 100), new Coordinate(0, 0)
                     });
-            ILinearRing somethingNotEqualButSameClass = geometryFactory.CreateLinearRing(new Coordinate[] {
+            var somethingNotEqualButSameClass = geometryFactory.CreateLinearRing(new Coordinate[] {
                         new Coordinate(0, 0), new Coordinate(100, 0),
                         new Coordinate(100, 555), new Coordinate(0, 0)
                     });
-            ILinearRing sameClassButEmpty = geometryFactory.CreateLinearRing((ICoordinateSequence)null);
-            ILinearRing anotherSameClassButEmpty = geometryFactory.CreateLinearRing((ICoordinateSequence)null);
-            LineCollectionFactory collectionFactory = new LineCollectionFactory();
+            var sameClassButEmpty = geometryFactory.CreateLinearRing((ICoordinateSequence)null);
+            var anotherSameClassButEmpty = geometryFactory.CreateLinearRing((ICoordinateSequence)null);
+            var collectionFactory = new LineCollectionFactory();
 
             DoTestEqualsExact(x, somethingExactlyEqual,
                 somethingNotEqualButSameClass, sameClassButEmpty,
@@ -272,27 +269,27 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestEqualsExactForLineStrings()
         {
-            ILineString x = geometryFactory.CreateLineString(new Coordinate[] {
+            var x = geometryFactory.CreateLineString(new Coordinate[] {
                         new Coordinate(0, 0), new Coordinate(100, 0),
                         new Coordinate(100, 100)
                     });
-            ILineString somethingExactlyEqual = geometryFactory.CreateLineString(new Coordinate[] {
+            var somethingExactlyEqual = geometryFactory.CreateLineString(new Coordinate[] {
                         new Coordinate(0, 0), new Coordinate(100, 0),
                         new Coordinate(100, 100)
                     });
-            ILineString somethingNotEqualButSameClass = geometryFactory.CreateLineString(new Coordinate[] {
+            var somethingNotEqualButSameClass = geometryFactory.CreateLineString(new Coordinate[] {
                         new Coordinate(0, 0), new Coordinate(100, 0),
                         new Coordinate(100, 555)
                     });
-            ILineString sameClassButEmpty = geometryFactory.CreateLineString((Coordinate[])null);
-            ILineString anotherSameClassButEmpty = geometryFactory.CreateLineString((Coordinate[])null);
-            LineCollectionFactory collectionFactory = new LineCollectionFactory();
+            var sameClassButEmpty = geometryFactory.CreateLineString((Coordinate[])null);
+            var anotherSameClassButEmpty = geometryFactory.CreateLineString((Coordinate[])null);
+            var collectionFactory = new LineCollectionFactory();
 
             DoTestEqualsExact(x, somethingExactlyEqual,
                 somethingNotEqualButSameClass, sameClassButEmpty,
                 anotherSameClassButEmpty, collectionFactory);
 
-            LineCollectionFactory collectionFactory2 = new LineCollectionFactory();
+            var collectionFactory2 = new LineCollectionFactory();
 
             DoTestEqualsExact(x, somethingExactlyEqual,
                 somethingNotEqualButSameClass, sameClassButEmpty,
@@ -302,14 +299,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestEqualsExactForPoints()
         {
-            IPoint x = geometryFactory.CreatePoint(new Coordinate(100, 100));
-            IPoint somethingExactlyEqual = geometryFactory.CreatePoint(new Coordinate(
+            var x = geometryFactory.CreatePoint(new Coordinate(100, 100));
+            var somethingExactlyEqual = geometryFactory.CreatePoint(new Coordinate(
                         100, 100));
-            IPoint somethingNotEqualButSameClass = geometryFactory.CreatePoint(new Coordinate(
+            var somethingNotEqualButSameClass = geometryFactory.CreatePoint(new Coordinate(
                         999, 100));
-            IPoint sameClassButEmpty = geometryFactory.CreatePoint((Coordinate)null);
-            IPoint anotherSameClassButEmpty = geometryFactory.CreatePoint((Coordinate)null);
-            PointCollectionFactory collectionFactory = new PointCollectionFactory();
+            var sameClassButEmpty = geometryFactory.CreatePoint((Coordinate)null);
+            var anotherSameClassButEmpty = geometryFactory.CreatePoint((Coordinate)null);
+            var collectionFactory = new PointCollectionFactory();
 
             DoTestEqualsExact(x, somethingExactlyEqual,
                 somethingNotEqualButSameClass, sameClassButEmpty,
@@ -319,16 +316,16 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestEqualsExactForPolygons()
         {
-            Polygon x = (Polygon) reader.Read(
+            var x = (Polygon) reader.Read(
                     "POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
-            Polygon somethingExactlyEqual = (Polygon) reader.Read(
+            var somethingExactlyEqual = (Polygon) reader.Read(
                     "POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
-            Polygon somethingNotEqualButSameClass = (Polygon) reader.Read(
+            var somethingNotEqualButSameClass = (Polygon) reader.Read(
                     "POLYGON ((50 50, 50 0, 0 0, 0 50, 50 50))");
-            Polygon sameClassButEmpty = (Polygon) reader.Read("POLYGON EMPTY");
-            Polygon anotherSameClassButEmpty = (Polygon) reader.Read(
+            var sameClassButEmpty = (Polygon) reader.Read("POLYGON EMPTY");
+            var anotherSameClassButEmpty = (Polygon) reader.Read(
                     "POLYGON EMPTY");
-            PolygonCollectionFactory collectionFactory = new PolygonCollectionFactory();
+            var collectionFactory = new PolygonCollectionFactory();
 
             DoTestEqualsExact(x, somethingExactlyEqual,
                 somethingNotEqualButSameClass, sameClassButEmpty,
@@ -342,18 +339,18 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                     "POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
             IGeometry polygon2 = (Polygon) reader.Read(
                     "POLYGON ((50 50, 50 0, 0 0, 0 50, 50 50))");
-            IGeometryCollection x = geometryFactory.CreateGeometryCollection(new IGeometry[] {
+            var x = geometryFactory.CreateGeometryCollection(new IGeometry[] {
                         polygon1, polygon2
                     });
-            IGeometryCollection somethingExactlyEqual = geometryFactory.CreateGeometryCollection(new IGeometry[] {
+            var somethingExactlyEqual = geometryFactory.CreateGeometryCollection(new IGeometry[] {
                         polygon1, polygon2
                     });
-            IGeometryCollection somethingNotEqualButSameClass = geometryFactory.CreateGeometryCollection(new IGeometry[] {
+            var somethingNotEqualButSameClass = geometryFactory.CreateGeometryCollection(new IGeometry[] {
                         polygon2
                     });
-            IGeometryCollection sameClassButEmpty = geometryFactory.CreateGeometryCollection(null);
-            IGeometryCollection anotherSameClassButEmpty = geometryFactory.CreateGeometryCollection(null);
-            GeometryCollectionFactory collectionFactory = new GeometryCollectionFactory() ;
+            var sameClassButEmpty = geometryFactory.CreateGeometryCollection(null);
+            var anotherSameClassButEmpty = geometryFactory.CreateGeometryCollection(null);
+            var collectionFactory = new GeometryCollectionFactory() ;
 
             DoTestEqualsExact(x, somethingExactlyEqual,
                 somethingNotEqualButSameClass, sameClassButEmpty,
@@ -361,7 +358,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         [Test]
-        public void TestGeometryCollectionIntersects1() 
+        public void TestGeometryCollectionIntersects1()
         {
             var gc0 = reader.Read("GEOMETRYCOLLECTION ( POINT(0 0) )");
             var gc1 = reader.Read("GEOMETRYCOLLECTION ( LINESTRING(0 0, 1 1) )");
@@ -407,11 +404,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(gc2.Intersects(gc1));
         }
 
-        private void DoTestEqualsExact(IGeometry x, 
+        private void DoTestEqualsExact(IGeometry x,
             IGeometry somethingExactlyEqual,
             IGeometry somethingNotEqualButSameClass,
             IGeometry sameClassButEmpty,
-            IGeometry anotherSameClassButEmpty, 
+            IGeometry anotherSameClassButEmpty,
             ICollectionFactory collectionFactory)
         {
             IGeometry emptyDifferentClass;
@@ -431,13 +428,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             DoTestEqualsExact(sameClassButEmpty, anotherSameClassButEmpty,
                 emptyDifferentClass, x);
 
-
             /**
              * Test comparison of non-empty versus empty.
              */
             DoTestEqualsExact(x, somethingExactlyEqual,
                 sameClassButEmpty, sameClassButEmpty);
-        
 
             DoTestEqualsExact(collectionFactory.CreateCollection(
                     new IGeometry[] { x, x }, geometryFactory),
@@ -448,7 +443,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                     new IGeometry[] { x, somethingNotEqualButSameClass }, geometryFactory));
         }
 
-        private void DoTestEqualsExact(IGeometry x, 
+        private void DoTestEqualsExact(IGeometry x,
             IGeometry somethingExactlyEqual,
             IGeometry somethingEqualButNotExactly,
             IGeometry somethingNotEqualButSameClass)  {

@@ -36,7 +36,7 @@ namespace Open.Topology.TestRunner.Functions
         public static IGeometry BufferBySegments(IGeometry g, double distance)
         {
             var segs = LineHandlingFunctions.ExtractSegments(g);
-            var posDist = Math.Abs(distance);
+            double posDist = Math.Abs(distance);
             var segBuf = BufferByComponents(segs, posDist);
             if (distance < 0.0)
                 return g.Difference(segBuf);

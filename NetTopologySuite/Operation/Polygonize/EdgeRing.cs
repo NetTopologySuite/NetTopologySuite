@@ -51,7 +51,7 @@ namespace NetTopologySuite.Operation.Polygonize
                 if (!tryShellEnv.Contains(testEnv)) continue;
 
                 var testPt = CoordinateArrays.PointNotInList(testRing.Coordinates, tryShellRing.Coordinates);
-                var isContained = PointLocation.IsInRing(testPt, tryShellRing.Coordinates);
+                bool isContained = PointLocation.IsInRing(testPt, tryShellRing.Coordinates);
 
                 // check if this new containing ring is smaller than the current minimum ring
                 if (isContained)
@@ -76,7 +76,7 @@ namespace NetTopologySuite.Operation.Polygonize
         [Obsolete("Use CoordinateArrays.PointNotInList instead")]
         public static Coordinate PointNotInList(Coordinate[] testPts, Coordinate[] pts)
         {
-            foreach (Coordinate testPt in testPts)
+            foreach (var testPt in testPts)
                 if (!IsInList(testPt, pts))
                     return testPt;
             return null;
@@ -92,12 +92,11 @@ namespace NetTopologySuite.Operation.Polygonize
         [Obsolete]
         public static bool IsInList(Coordinate pt, Coordinate[] pts)
         {
-            foreach (Coordinate p in pts)
+            foreach (var p in pts)
                 if (pt.Equals(p))
                     return true;
             return true;
         }
-
 
         /**
          * Traverses a ring of DirectedEdges, accumulating them into a list.
@@ -122,7 +121,6 @@ namespace NetTopologySuite.Operation.Polygonize
             return edges;
         }
 
-
         private readonly IGeometryFactory _factory;
         private readonly List<DirectedEdge> _deList = new List<DirectedEdge>();
         private DirectedEdge lowestEdge = null;
@@ -139,7 +137,7 @@ namespace NetTopologySuite.Operation.Polygonize
         private bool _isIncluded = false;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="factory"></param>
         public EdgeRing(IGeometryFactory factory)
@@ -149,7 +147,7 @@ namespace NetTopologySuite.Operation.Polygonize
 
         public void Build(PolygonizeDirectedEdge startDE)
         {
-            PolygonizeDirectedEdge de = startDE;
+            var de = startDE;
             do
             {
                 Add(de);
@@ -159,7 +157,6 @@ namespace NetTopologySuite.Operation.Polygonize
                 Utilities.Assert.IsTrue(de == startDE || !de.IsInRing, "found DE already in ring");
             } while (de != startDE);
         }
-
 
         /// <summary>
         /// Adds a DirectedEdge which is known to form part of this ring.
@@ -176,10 +173,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// a ring is a hole if it is oriented counter-clockwise.
         /// </summary>
         /// <returns><c>true</c> if this ring is a hole.</returns>
-        public bool IsHole
-        {
-            get { return _isHole; }
-        }
+        public bool IsHole => _isHole;
 
         ///<summary>
         /// Computes whether this ring is a hole.
@@ -231,7 +225,7 @@ namespace NetTopologySuite.Operation.Polygonize
                     for (int i = 0; i < _holes.Count; i++)
                         holeLR[i] = _holes[i];
                 }
-                IPolygon poly = _factory.CreatePolygon(_ring, holeLR);
+                var poly = _factory.CreatePolygon(_ring, holeLR);
                 return poly;
             }
         }
@@ -244,24 +238,21 @@ namespace NetTopologySuite.Operation.Polygonize
         {
             get
             {
-                Coordinate[] tempcoords = Coordinates;
+                var tempcoords = Coordinates;
                 tempcoords = null;
                 if (_ringPts.Length <= 3)
                     return false;
-                ILinearRing tempring = Ring;
+                var tempring = Ring;
                 tempring = null;
                 return _ring.IsValid;
             }
         }
 
-        public bool IsIncludedSet
-        {
-            get { return _isIncludedSet; }
-        }
+        public bool IsIncludedSet => _isIncludedSet;
 
         public bool IsIncluded
         {
-            get { return _isIncluded; }
+            get => _isIncluded;
             set
             {
                 _isIncluded = value;
@@ -279,10 +270,10 @@ namespace NetTopologySuite.Operation.Polygonize
             {
                 if (_ringPts == null)
                 {
-                    CoordinateList coordList = new CoordinateList();
-                    foreach (DirectedEdge de in _deList)
+                    var coordList = new CoordinateList();
+                    foreach (var de in _deList)
                     {
-                        PolygonizeEdge edge = (PolygonizeEdge) de.Edge;
+                        var edge = (PolygonizeEdge) de.Edge;
                         AddEdge(edge.Line.Coordinates, de.EdgeDirection, coordList);
                     }
                     _ringPts = coordList.ToCoordinateArray();
@@ -296,12 +287,12 @@ namespace NetTopologySuite.Operation.Polygonize
         /// Used to return the coordinates in this ring
         /// as a valid point, when it has been detected that the ring is topologically
         /// invalid.
-        /// </summary>        
+        /// </summary>
         public ILineString LineString
         {
             get
             {
-                Coordinate[] tempcoords = Coordinates;
+                var tempcoords = Coordinates;
                 tempcoords = null;
                 return _factory.CreateLineString(_ringPts);
             }
@@ -318,7 +309,7 @@ namespace NetTopologySuite.Operation.Polygonize
             {
                 if (_ring != null)
                     return _ring;
-                Coordinate[] tempcoords = Coordinates;
+                var tempcoords = Coordinates;
                 try
                 {
                     _ring = _factory.CreateLinearRing(_ringPts);
@@ -331,7 +322,7 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coords"></param>
         /// <param name="isForward"></param>
@@ -355,17 +346,14 @@ namespace NetTopologySuite.Operation.Polygonize
         /// </summary>
         public EdgeRing Shell
         {
-            get { return IsHole ? _shell : this; }
-            private set { _shell = value; }
+            get => IsHole ? _shell : this;
+            private set => _shell = value;
         }
 
         /// <summary>
         /// Gets a value indicating whether this ring has a shell assigned to it.
         /// </summary>
-        public bool HasShell
-        {
-            get { return _shell != null; }
-        }
+        public bool HasShell => _shell != null;
 
         /// <summary>
         /// Tests whether this ring is an outer hole.
@@ -383,10 +371,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Tests whether this ring is an outer shell.
         /// </summary>
-        public bool IsOuterShell
-        {
-            get { return OuterHole != null; }
-        }
+        public bool IsOuterShell => OuterHole != null;
 
         public EdgeRing OuterHole
         {
@@ -399,8 +384,8 @@ namespace NetTopologySuite.Operation.Polygonize
                  */
                 for (int i = 0; i < _deList.Count; i++)
                 {
-                    PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) _deList[i];
-                    EdgeRing adjRing = ((PolygonizeDirectedEdge) de.Sym).Ring;
+                    var de = (PolygonizeDirectedEdge) _deList[i];
+                    var adjRing = ((PolygonizeDirectedEdge) de.Sym).Ring;
                     if (adjRing.IsOuterHole) return adjRing;
                 }
                 return null;
@@ -416,8 +401,8 @@ namespace NetTopologySuite.Operation.Polygonize
             if (IsHole) return;
             for (int i = 0; i < _deList.Count; i++)
             {
-                PolygonizeDirectedEdge de = (PolygonizeDirectedEdge) _deList[i];
-                EdgeRing adjShell = ((PolygonizeDirectedEdge) de.Sym).Ring.Shell;
+                var de = (PolygonizeDirectedEdge) _deList[i];
+                var adjShell = ((PolygonizeDirectedEdge) de.Sym).Ring.Shell;
 
                 if (adjShell != null && adjShell.IsIncludedSet)
                 {
@@ -431,7 +416,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Gets a string representation of this object.
         /// </summary>
-        public override String ToString()
+        public override string ToString()
         {
             return WKTWriter.ToLineString(new CoordinateArraySequence(Coordinates));
         }
@@ -441,8 +426,8 @@ namespace NetTopologySuite.Operation.Polygonize
         /// </summary>
         public bool IsProcessed
         {
-            get { return _isProcessed; }
-            set { _isProcessed = value; }
+            get => _isProcessed;
+            set => _isProcessed = value;
         }
 
         /// <summary>

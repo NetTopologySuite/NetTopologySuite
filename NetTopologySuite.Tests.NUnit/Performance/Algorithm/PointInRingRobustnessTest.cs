@@ -11,8 +11,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 {
     ///<summary>
     /// Stress test of <see cref="RayCrossingCounter"/> Point-In-Ring algorithm.
-    /// The input to each test is a triangle with a slanted side, 
-    /// and a point interpolated along the side. 
+    /// The input to each test is a triangle with a slanted side,
+    /// and a point interpolated along the side.
     /// Almost always the point will not lie exactly on the side.
     /// The test consists of comparing the result of computing Point-In-Ring and the result of
     /// determining the orientation of the point relative to the side.
@@ -24,10 +24,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
     /// The {@link RayCrossingCounterDD} implementation is consistent,
     /// as expected.
     /// <para/>
-    /// Note that the inconsistency does not indicate which algorithm is 
+    /// Note that the inconsistency does not indicate which algorithm is
     /// "more correct" - just that they produce different results.
     /// However, it is highly likely that the original RCC algorithm
-    /// is <b>not</b> as robust as RCCDD, since it involves a series 
+    /// is <b>not</b> as robust as RCCDD, since it involves a series
     /// of double-precision arithmetic operations.
     /// </summary>
     /// <author>Martin Davis</author>
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             Assert.IsTrue(_isAllConsistent);
         }
 
-        [Test, Category("Stress"), Ignore]
+        [Test, Category("Stress"), Ignore("Known to fail occasionally")]
         public void TestRandomTriangles()
         {
             CheckRandomTriangles(1000, 100, 100);
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 
         private void CheckRandomTriangles(int sideLen, int numTris, int numEdgePts)
         {
-            for (var i = 0; i < numTris; i++)
+            for (int i = 0; i < numTris; i++)
             {
                 var start = new Coordinate(RandomInt(sideLen), RandomInt(sideLen));
                 var triPts = new Coordinate[] {
@@ -87,7 +87,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         {
             for (int height = 0; height < maxHeight; height++)
             {
-                Coordinate[] triPts = new Coordinate[] {
+                var triPts = new Coordinate[] {
                     new Coordinate(0,0),
                     new Coordinate(0, height),
                     new Coordinate(width, 0),
@@ -101,11 +101,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         {
             for (int i = 0; i < numEdgePts; i++)
             {
-                var lenFrac = i / (double)(numEdgePts + 1);
+                double lenFrac = i / (double)(numEdgePts + 1);
                 CheckTriangleConsistent(triPts, lenFrac);
             }
         }
-
 
         public void CheckTriangleEdge(double height, double width, int numPts)
         {
@@ -118,15 +117,15 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 
         private bool CheckTriangle(double height, double width, double lenFraction)
         {
-            Coordinate[] triPts = new Coordinate[]
+            var triPts = new Coordinate[]
             {
                 new Coordinate(0, 0),
                 new Coordinate(0, height),
                 new Coordinate(width, 0),
                 new Coordinate(0, 0)
             };
-            LineSegment seg = new LineSegment(0, height, width, 0);
-            Coordinate pt = seg.PointAlong(lenFraction);
+            var seg = new LineSegment(0, height, width, 0);
+            var pt = seg.PointAlong(lenFraction);
 
             return CheckTriangleConsistent(triPts, lenFraction);
         }
@@ -141,7 +140,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             //var isPointInRing = PointLocation.IsInRing(pt, triPts);
             //var isPointInRing = PointInRingWindingNumber(pt, triPts);
             //var isPointInRing = Location.Interior == RayCrossingCounter.LocatePointInRing(pt, triPts);
-            var isPointInRing = Location.Interior == NonRobustRayCrossingCounter.LocatePointInRing(pt, triPts);
+            bool isPointInRing = Location.Interior == NonRobustRayCrossingCounter.LocatePointInRing(pt, triPts);
 
             var orientation = Orientation.Index(triPts[1], triPts[2], pt);
             if (Orientation.IsCCW(triPts))
@@ -150,9 +149,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             // if collinear can't determine a failure
             if (orientation == OrientationIndex.Collinear) return true;
 
-            var bothOutside = !isPointInRing && orientation == OrientationIndex.Left;
-            var bothInside = isPointInRing && orientation == OrientationIndex.Right;
-            var isConsistent = bothOutside || bothInside;
+            bool bothOutside = !isPointInRing && orientation == OrientationIndex.Left;
+            bool bothInside = isPointInRing && orientation == OrientationIndex.Right;
+            bool isConsistent = bothOutside || bothInside;
 
             if (!isConsistent)
             {
@@ -178,7 +177,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
             else
             {
                 buf.Append("((");
-                for (var i = 0; i < coord.Length; i++)
+                for (int i = 0; i < coord.Length; i++)
                 {
                     if (i > 0)
                         buf.Append(", ");
@@ -204,11 +203,11 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         /// <returns>true if the point lies inside the ring</returns>
         private static bool PointInRingWindingNumber(Coordinate p, Coordinate[] ring)
         {
-            var winding = 0; // the winding number counter
+            int winding = 0; // the winding number counter
 
-            var n = ring.Length;
+            int n = ring.Length;
 
-            for (var i = 0; i < n - 1; i++)
+            for (int i = 0; i < n - 1; i++)
             {
                 if (ring[i].Y <= p.Y)
                 {

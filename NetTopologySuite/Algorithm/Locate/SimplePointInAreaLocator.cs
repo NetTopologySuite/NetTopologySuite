@@ -12,7 +12,7 @@ namespace NetTopologySuite.Algorithm.Locate
     public class SimplePointInAreaLocator : IPointOnGeometryLocator
     {
         /// <summary>
-        /// Determines the <see cref="Location"/> of a point in an areal <see cref="IGeometry"/>. 
+        /// Determines the <see cref="Location"/> of a point in an areal <see cref="IGeometry"/>.
         /// Computes <see cref="Location.Boundary"/> if the point lies exactly on a geometry line segment.
         /// </summary>
         /// <param name="p">The point to test</param>
@@ -32,10 +32,10 @@ namespace NetTopologySuite.Algorithm.Locate
 
             if (geom is IGeometryCollection)
             {
-                IEnumerator<IGeometry> geomi = new GeometryCollectionEnumerator((IGeometryCollection)geom);
+                var geomi = new GeometryCollectionEnumerator((IGeometryCollection)geom);
                 while (geomi.MoveNext())
                 {
-                    IGeometry g2 = geomi.Current;
+                    var g2 = geomi.Current;
                     if (g2 != geom)
                     {
                         var loc = LocateInGeometry(p, g2);
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Algorithm.Locate
             var shellLoc = LocatePointInRing(p, shell);
             if (shellLoc != Location.Interior) return shellLoc;
             // now test if the point lies in or on the holes
-            for (var i = 0; i < poly.NumInteriorRings; i++)
+            for (int i = 0; i < poly.NumInteriorRings; i++)
             {
                 var hole = (ILinearRing)poly.GetInteriorRingN(i);
                 var holeLoc = LocatePointInRing(p, hole);
@@ -76,7 +76,7 @@ namespace NetTopologySuite.Algorithm.Locate
 
         /// <summary>
         /// Determines whether a point lies in a <see cref="IPolygon"/>.
-        /// If the point lies on the polygon boundary it is 
+        /// If the point lies on the polygon boundary it is
         /// considered to be inside.
         /// </summary>
         /// <param name="p">The point to test</param>

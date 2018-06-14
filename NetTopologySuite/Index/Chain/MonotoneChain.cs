@@ -3,7 +3,7 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Index.Chain
 {
-    /// <summary> 
+    /// <summary>
     /// MonotoneChains are a way of partitioning the segments of a linestring to
     /// allow for fast searching of intersections.
     /// </summary>
@@ -19,7 +19,7 @@ namespace NetTopologySuite.Index.Chain
     /// <para>
     /// Property 1 means that there is no need to test pairs of segments from within
     /// the same monotone chain for intersection.</para>
-    /// <para>Property 2 allows an efficient 
+    /// <para>Property 2 allows an efficient
     /// binary search to be used to find the intersection points of two monotone chains.
     /// For many types of real-world data, these properties eliminate a large number of
     /// segment comparisons, producing substantial speed gains.</para>
@@ -57,7 +57,7 @@ namespace NetTopologySuite.Index.Chain
         private readonly object _context;  // user-defined information
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pts"></param>
         /// <param name="start"></param>
@@ -79,13 +79,7 @@ namespace NetTopologySuite.Index.Chain
         /// <summary>
         /// Gets the chain's context
         /// </summary>
-        public object Context
-        {
-            get
-            {
-                return _context;
-            }
-        }
+        public object Context => _context;
 
         /// <summary>
         /// Gets the chain's envelope
@@ -96,8 +90,8 @@ namespace NetTopologySuite.Index.Chain
             {
                 if (_env == null)
                 {
-                    Coordinate p0 = _pts[_start];
-                    Coordinate p1 = _pts[_end];
+                    var p0 = _pts[_start];
+                    var p1 = _pts[_end];
                     _env = new Envelope(p0, p1);
                 }
                 return _env;
@@ -107,24 +101,12 @@ namespace NetTopologySuite.Index.Chain
         /// <summary>
         /// Gets the start index
         /// </summary>
-        public int StartIndex
-        {
-            get
-            {
-                return _start;
-            }
-        }
+        public int StartIndex => _start;
 
         /// <summary>
         /// Gets the end index of the underlying linestring
         /// </summary>
-        public int EndIndex
-        {
-            get
-            {
-                return _end;
-            }
-        }
+        public int EndIndex => _end;
 
         /// <summary>
         /// Gets the line segment starting at <paramref name="index"/>
@@ -145,20 +127,20 @@ namespace NetTopologySuite.Index.Chain
         {
             get
             {
-                Coordinate[] coord = new Coordinate[_end - _start + 1];
+                var coord = new Coordinate[_end - _start + 1];
                 int index = 0;
-                for (int i = _start; i <= _end; i++) 
-                    coord[index++] = _pts[i];                
+                for (int i = _start; i <= _end; i++)
+                    coord[index++] = _pts[i];
                 return coord;
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Determine all the line segments in the chain whose envelopes overlap
         /// the searchEnvelope, and process them.
         /// </summary>
         /// <remarks>
-        /// The monotone chain search algorithm attempts to optimize 
+        /// The monotone chain search algorithm attempts to optimize
         /// performance by not calling the select action on chain segments
         /// which it can determine are not in the search envelope.
         /// However, it *may* call the select action on segments
@@ -174,7 +156,7 @@ namespace NetTopologySuite.Index.Chain
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="start0"></param>
@@ -182,9 +164,9 @@ namespace NetTopologySuite.Index.Chain
         /// <param name="mcs"></param>
         private void ComputeSelect(Envelope searchEnv, int start0, int end0, MonotoneChainSelectAction mcs)
         {
-            Coordinate p0 = _pts[start0];
-            Coordinate p1 = _pts[end0];
-            
+            var p0 = _pts[start0];
+            var p1 = _pts[end0];
+
             // terminating condition for the recursion
             if (end0 - start0 == 1)
             {
@@ -201,16 +183,16 @@ namespace NetTopologySuite.Index.Chain
             // Assert: mid != start or end (since we checked above for end - start <= 1)
             // check terminating conditions before recursing
             if (start0 < mid)
-                ComputeSelect(searchEnv, start0, mid, mcs);            
+                ComputeSelect(searchEnv, start0, mid, mcs);
             if (mid < end0)
-                ComputeSelect(searchEnv, mid, end0, mcs);            
+                ComputeSelect(searchEnv, mid, end0, mcs);
         }
 
         /// <summary>
         /// Determine all the line segments in two chains which may overlap, and process them.
         /// </summary>
         /// <remarks>
-        /// The monotone chain search algorithm attempts to optimize 
+        /// The monotone chain search algorithm attempts to optimize
         /// performance by not calling the overlap action on chain segments
         /// which it can determine do not overlap.
         /// However, it *may* call the overlap action on segments
@@ -246,14 +228,14 @@ namespace NetTopologySuite.Index.Chain
             {
                 if (start1 < mid1)
                     ComputeOverlaps(start0, mid0, mc, start1, mid1, mco);
-                if (mid1 < end1) 
+                if (mid1 < end1)
                     ComputeOverlaps(start0, mid0, mc, mid1, end1, mco);
             }
             if (mid0 < end0)
             {
-                if (start1 < mid1) 
+                if (start1 < mid1)
                     ComputeOverlaps(mid0, end0, mc, start1, mid1, mco);
-                if (mid1 < end1) 
+                if (mid1 < end1)
                     ComputeOverlaps(mid0, end0, mc, mid1, end1, mco);
             }
         }

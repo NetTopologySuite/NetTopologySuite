@@ -16,26 +16,26 @@ namespace NetTopologySuite.Simplify
 
         /*
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public LineSegmentIndex() { }
         */
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="line"></param>
-        public void Add(TaggedLineString line) 
+        public void Add(TaggedLineString line)
         {
-            TaggedLineSegment[] segs = line.Segments;
-            for (int i = 0; i < segs.Length; i++) 
+            var segs = line.Segments;
+            for (int i = 0; i < segs.Length; i++)
             {
-                TaggedLineSegment seg = segs[i];
+                var seg = segs[i];
                 Add(seg);
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="seg"></param>
         public void Add(LineSegment seg)
@@ -44,7 +44,7 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="seg"></param>
         public void Remove(LineSegment seg)
@@ -53,17 +53,17 @@ namespace NetTopologySuite.Simplify
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="querySeg"></param>
         /// <returns></returns>
         public IList<LineSegment> Query(LineSegment querySeg)
         {
-            Envelope env = new Envelope(querySeg.P0, querySeg.P1);
+            var env = new Envelope(querySeg.P0, querySeg.P1);
 
-            LineSegmentVisitor visitor = new LineSegmentVisitor(querySeg);
+            var visitor = new LineSegmentVisitor(querySeg);
             _index.Query(env, visitor);
-            IList<LineSegment> itemsFound = visitor.Items;        
+            var itemsFound = visitor.Items;
 
             return itemsFound;
         }
@@ -79,34 +79,28 @@ namespace NetTopologySuite.Simplify
         private readonly IList<LineSegment> _items = new List<LineSegment>();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="querySeg"></param>
-        public LineSegmentVisitor(LineSegment querySeg) 
+        public LineSegmentVisitor(LineSegment querySeg)
         {
             _querySeg = querySeg;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="item"></param>
         public void VisitItem(LineSegment item)
         {
-            LineSegment seg = item;
+            var seg = item;
             if (Envelope.Intersects(seg.P0, seg.P1, _querySeg.P0, _querySeg.P1))
                 _items.Add(seg);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public IList<LineSegment> Items 
-        {
-            get
-            {
-                return _items;
-            }
-        }
+        public IList<LineSegment> Items => _items;
     }
 }

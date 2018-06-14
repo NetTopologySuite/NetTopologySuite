@@ -20,24 +20,24 @@ namespace NetTopologySuite.Algorithm
         public static double OfLine(ICoordinateSequence pts)
         {
             // optimized for processing CoordinateSequences
-            var n = pts.Count;
+            int n = pts.Count;
             if (n <= 1)
                 return 0.0;
 
-            var len = 0.0;
+            double len = 0.0;
 
             var p = new Coordinate();
             pts.GetCoordinate(0, p);
-            var x0 = p.X;
-            var y0 = p.Y;
+            double x0 = p.X;
+            double y0 = p.Y;
 
-            for (var i = 1; i < n; i++)
+            for (int i = 1; i < n; i++)
             {
                 pts.GetCoordinate(i, p);
-                var x1 = p.X;
-                var y1 = p.Y;
-                var dx = x1 - x0;
-                var dy = y1 - y0;
+                double x1 = p.X;
+                double y1 = p.Y;
+                double dx = x1 - x0;
+                double dy = y1 - y0;
 
                 len += Math.Sqrt(dx * dx + dy * dy);
 

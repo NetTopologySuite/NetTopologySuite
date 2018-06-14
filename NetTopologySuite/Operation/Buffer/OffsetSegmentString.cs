@@ -30,14 +30,14 @@ namespace NetTopologySuite.Operation.Buffer
 
         public IPrecisionModel PrecisionModel
         {
-            get { return _precisionModel; }
-            set { _precisionModel = value; }
+            get => _precisionModel;
+            set => _precisionModel = value;
         }
 
         public double MinimumVertexDistance
         {
-            get { return _minimimVertexDistance; }
-            set { _minimimVertexDistance = value; }
+            get => _minimimVertexDistance;
+            set => _minimimVertexDistance = value;
         }
 
         public void AddPt(Coordinate pt)
@@ -122,7 +122,7 @@ namespace NetTopologySuite.Operation.Buffer
             return coord;
         }
 
-        public override String ToString()
+        public override string ToString()
         {
             var fact = new GeometryFactory();
             var line = fact.CreateLineString(GetCoordinates());

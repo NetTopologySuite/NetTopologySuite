@@ -31,8 +31,8 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Computes the signed area for a ring. The signed area is positive if the 
-        /// ring is oriented CW, negative if the ring is oriented CCW, and zero if the 
+        /// Computes the signed area for a ring. The signed area is positive if the
+        /// ring is oriented CW, negative if the ring is oriented CCW, and zero if the
         /// ring is degenerate or flat.
         /// </summary>
         /// <param name="ring">The coordinates forming the ring</param>
@@ -58,12 +58,12 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Computes the signed area for a ring. The signed area is positive if the 
+        /// Computes the signed area for a ring. The signed area is positive if the
         /// <list type="Table">
-        /// <listheader> 
-        /// <term>value</term>  
-        /// <description>meaning</description>  
-        /// </listheader>  
+        /// <listheader>
+        /// <term>value</term>
+        /// <description>meaning</description>
+        /// </listheader>
         /// <item><term>&gt; 0</term>
         /// <description>The ring is oriented clockwise (CW)</description></item>
         /// <item><term>&lt; 0</term>
@@ -71,14 +71,14 @@ namespace NetTopologySuite.Algorithm
         /// <item><term>== 0</term>
         /// <description>The ring is degenerate or flat</description></item>
         /// </list>
-        /// ring is oriented CW, negative if the ring is oriented CCW, and zero if the 
+        /// ring is oriented CW, negative if the ring is oriented CCW, and zero if the
         /// ring is degenerate or flat.
         /// </summary>
         /// <param name="ring">The coordinates forming the ring</param>
         /// <returns>The signed area of the ring</returns>
         public static double OfRingSigned(ICoordinateSequence ring)
         {
-            var n = ring.Count;
+            int n = ring.Count;
             if (n < 3)
                 return 0.0;
             /**
@@ -90,10 +90,10 @@ namespace NetTopologySuite.Algorithm
             var p2 = new Coordinate();
             ring.GetCoordinate(0, p1);
             ring.GetCoordinate(1, p2);
-            var x0 = p1.X;
+            double x0 = p1.X;
             p2.X -= x0;
-            var sum = 0.0;
-            for (var i = 1; i < n - 1; i++)
+            double sum = 0.0;
+            for (int i = 1; i < n - 1; i++)
             {
                 p0.Y = p1.Y;
                 p1.X = p2.X;
