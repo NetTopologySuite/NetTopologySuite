@@ -192,7 +192,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
 
         public static IGeometry[] GetResult(string wkt, double tolerance)
         {
-            IGeometry[] ioGeom = new IGeometry[2];
+            var ioGeom = new IGeometry[2];
             ioGeom[0] = Rdr.Read(wkt);
             ioGeom[1] = DouglasPeuckerSimplifier.Simplify(ioGeom[0], tolerance);
             //System.Console.WriteLine(ioGeom[1]);

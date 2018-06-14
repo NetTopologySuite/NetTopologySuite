@@ -16,7 +16,7 @@ namespace NetTopologySuite.Index.KdTree
         public static KdNode<T> NearestNeighbor<T>(this KdTree<T> self, Coordinate coord) where T : class
         {
             KdNode<T> result = null;
-            var closestDistSq = double.MaxValue;
+            double closestDistSq = double.MaxValue;
             NearestNeighbor(self.Root, coord, ref result, ref closestDistSq, true);
             return result;
         }
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Index.KdTree
                 if (currentNode == null)
                     return;
 
-                var distSq = Math.Pow(currentNode.X - queryCoordinate.X, 2) +
+                double distSq = Math.Pow(currentNode.X - queryCoordinate.X, 2) +
                              Math.Pow(currentNode.Y - queryCoordinate.Y, 2);
 
                 if (distSq < closestDistanceSq)

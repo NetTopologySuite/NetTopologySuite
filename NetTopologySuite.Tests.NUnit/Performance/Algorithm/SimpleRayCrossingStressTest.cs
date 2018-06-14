@@ -17,17 +17,17 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         public void TestGrid()
         {
             // Use fixed PM to try and get at least some points hitting the boundary
-            GeometryFactory geomFactory = new GeometryFactory(pmFixed_1);
+            var geomFactory = new GeometryFactory(pmFixed_1);
             // GeometryFactory geomFactory = new GeometryFactory();
 
-            PerturbedGridPolygonBuilder gridBuilder = new PerturbedGridPolygonBuilder(geomFactory);
+            var gridBuilder = new PerturbedGridPolygonBuilder(geomFactory);
             gridBuilder.NumLines = 20;
             gridBuilder.LineWidth = 10.0;
-            IGeometry area = gridBuilder.Geometry;
+            var area = gridBuilder.Geometry;
 
-            SimpleRayCrossingPointInAreaLocator pia = new SimpleRayCrossingPointInAreaLocator(area);
+            var pia = new SimpleRayCrossingPointInAreaLocator(area);
 
-            PointInAreaStressTester gridTester = new PointInAreaStressTester(geomFactory, area);
+            var gridTester = new PointInAreaStressTester(geomFactory, area);
             gridTester.NumPoints = 100000;
             gridTester.TestPointInAreaLocator = pia;
 
@@ -46,8 +46,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 
             public Location Locate(Coordinate p)
             {
-                RayCrossingCounter rcc = new RayCrossingCounter(p);
-                RayCrossingSegmentFilter filter = new RayCrossingSegmentFilter(rcc);
+                var rcc = new RayCrossingCounter(p);
+                var filter = new RayCrossingSegmentFilter(rcc);
                 geom.Apply(filter);
                 return rcc.Location;
             }

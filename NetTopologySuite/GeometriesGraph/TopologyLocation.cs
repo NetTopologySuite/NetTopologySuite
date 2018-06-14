@@ -172,7 +172,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             if (_location.Length <= 1)
                 return;
-            Location temp = _location[(int)Positions.Left];
+            var temp = _location[(int)Positions.Left];
             _location[(int)Positions.Left] = _location[(int)Positions.Right];
             _location[(int)Positions.Right] = temp;
         }
@@ -271,7 +271,7 @@ namespace NetTopologySuite.GeometriesGraph
             // if the src is an Area label & and the dest is not, increase the dest to be an Area
             if (gl._location.Length > _location.Length)
             {
-                Location[] newLoc = new Location[3];
+                var newLoc = new Location[3];
                 newLoc[(int)Positions.On] = _location[(int)Positions.On];
                 newLoc[(int)Positions.Left] = Location.Null;
                 newLoc[(int)Positions.Right] = Location.Null;
@@ -288,7 +288,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             if (_location.Length > 1)
                 sb.Append(LocationUtility.ToLocationSymbol(_location[(int)Positions.Left]));
             sb.Append(LocationUtility.ToLocationSymbol(_location[(int)Positions.On]));

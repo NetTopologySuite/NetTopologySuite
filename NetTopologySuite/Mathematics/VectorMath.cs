@@ -20,9 +20,9 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The normal vector to the triangle <paramref name="p0"/>-<paramref name="p1"/>-<paramref name="p2"/></returns>
         public static Coordinate NormalToTriangle(Coordinate p0, Coordinate p1, Coordinate p2)
         {
-            Coordinate v1 = new Coordinate(p1.X - p0.X, p1.Y - p0.Y, p1.Z - p0.Z);
-            Coordinate v2 = new Coordinate(p2.X - p0.X, p2.Y - p0.Y, p2.Z - p0.Z);
-            Coordinate cp = CrossProduct(v1, v2);
+            var v1 = new Coordinate(p1.X - p0.X, p1.Y - p0.Y, p1.Z - p0.Z);
+            var v2 = new Coordinate(p2.X - p0.X, p2.Y - p0.Y, p2.Z - p0.Z);
+            var cp = CrossProduct(v1, v2);
             Normalize(cp);
             return cp;
         }

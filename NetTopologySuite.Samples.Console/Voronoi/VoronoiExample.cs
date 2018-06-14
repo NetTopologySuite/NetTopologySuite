@@ -24,7 +24,7 @@ namespace NetTopologySuite.Samples.Voronoi
             var factory = new GeometryFactory();
             var resultingDiagram = voronoiDiagram.GetDiagram(factory);
 
-            var i = 0;
+            int i = 0;
             foreach (var voronoiCell in resultingDiagram.Geometries)
             {
                 Console.WriteLine("Voronoi {0}: Contains {1}? {2}", i++, voronoiCell.UserData,

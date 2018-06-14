@@ -72,7 +72,7 @@ namespace NetTopologySuite.Operation.Relate
             // create the label.  If any of the edges belong to areas,
             // the label must be an area label
             bool isArea = false;
-            foreach (EdgeEnd e in _edgeEnds)
+            foreach (var e in _edgeEnds)
             {
                 if (e.Label.IsArea())
                     isArea = true;
@@ -117,7 +117,7 @@ namespace NetTopologySuite.Operation.Relate
             bool foundInterior = false;
             Location loc;
 
-            foreach (EdgeEnd e in _edgeEnds)
+            foreach (var e in _edgeEnds)
             {
                 loc = e.Label.GetLocation(geomIndex);
                 if (loc == Location.Boundary)
@@ -161,11 +161,11 @@ namespace NetTopologySuite.Operation.Relate
         /// <param name="side"></param>
         private void ComputeLabelSide(int geomIndex, Positions side)
         {
-            foreach (EdgeEnd e in _edgeEnds)
+            foreach (var e in _edgeEnds)
             {
                 if (e.Label.IsArea())
                 {
-                    Location loc = e.Label.GetLocation(geomIndex, side);
+                    var loc = e.Label.GetLocation(geomIndex, side);
                     if (loc == Location.Interior)
                     {
                         Label.SetLocation(geomIndex, side, Location.Interior);
@@ -193,7 +193,7 @@ namespace NetTopologySuite.Operation.Relate
         public override void Write(StreamWriter outstream)
         {
             outstream.WriteLine("EdgeEndBundle--> Label: " + Label);
-            foreach (EdgeEnd ee in _edgeEnds)
+            foreach (var ee in _edgeEnds)
             {
                 ee.Write(outstream);
                 outstream.WriteLine();

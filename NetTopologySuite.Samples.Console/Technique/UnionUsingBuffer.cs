@@ -21,8 +21,8 @@ namespace NetTopologySuite.Samples.Technique
         [STAThread]
         public static void main(string[] args)
         {
-            WKTReader rdr = new WKTReader();
-            IGeometry[] geom = new IGeometry[3];
+            var rdr = new WKTReader();
+            var geom = new IGeometry[3];
             geom[0] = rdr.Read("POLYGON (( 100 180, 100 260, 180 260, 180 180, 100 180 ))");
             geom[1] = rdr.Read("POLYGON (( 80 140, 80 200, 200 200, 200 140, 80 140 ))");
             geom[2] = rdr.Read("POLYGON (( 160 160, 160 240, 240 240, 240 160, 160 160 ))");
@@ -35,9 +35,9 @@ namespace NetTopologySuite.Samples.Technique
         /// <param name="geom"></param>
         public static void UnionUsingBufferOp(IGeometry[] geom)
         {
-            IGeometryFactory fact = geom[0].Factory;
+            var fact = geom[0].Factory;
             IGeometry geomColl = fact.CreateGeometryCollection(geom);
-            IGeometry union = geomColl.Buffer(0.0);
+            var union = geomColl.Buffer(0.0);
             Console.WriteLine(union);
         }
     }

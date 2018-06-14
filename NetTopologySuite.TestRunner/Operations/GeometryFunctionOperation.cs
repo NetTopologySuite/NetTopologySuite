@@ -34,7 +34,7 @@ namespace Open.Topology.TestRunner.Operations
         public Type GetReturnType(XmlTestType op)
         {
             string opName = op.ToString();
-            IGeometryFunction func = registry.Find(opName);
+            var func = registry.Find(opName);
             if (func == null)
                 return defaultOp.GetReturnType(op);
             return func.ReturnType;
@@ -42,7 +42,7 @@ namespace Open.Topology.TestRunner.Operations
 
         public IResult Invoke(XmlTestType opName, IGeometry geometry, object[] args)
         {
-            IGeometryFunction func = registry.Find(opName.ToString(), args.Length);
+            var func = registry.Find(opName.ToString(), args.Length);
             if (func == null)
                 return defaultOp.Invoke(opName, geometry, args);
 

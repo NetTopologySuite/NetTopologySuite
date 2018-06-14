@@ -51,7 +51,7 @@ namespace NetTopologySuite.Algorithm
             else if (geom is IGeometryCollection)
             {
                 var gc = (IGeometryCollection) geom;
-                for (var i = 0; i < gc.NumGeometries; i++)
+                for (int i = 0; i < gc.NumGeometries; i++)
                 {
                     Add(gc.GetGeometryN(i));
                 }
@@ -116,7 +116,7 @@ namespace NetTopologySuite.Algorithm
         private void Add(IPolygon poly)
         {
             AddShell(poly.ExteriorRing.Coordinates);
-            foreach (ILineString ls in poly.InteriorRings)
+            foreach (var ls in poly.InteriorRings)
                 AddHole(ls.Coordinates);
         }
 

@@ -22,7 +22,7 @@ namespace NetTopologySuite.Algorithm
         public static bool IsOnLine(Coordinate p, Coordinate[] line)
         {
             var lineIntersector = new RobustLineIntersector();
-            for (var i = 1; i < line.Length; i++)
+            for (int i = 1; i < line.Length; i++)
             {
                 var p0 = line[i - 1];
                 var p1 = line[i];

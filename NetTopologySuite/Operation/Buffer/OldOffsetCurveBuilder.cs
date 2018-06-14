@@ -132,7 +132,7 @@ namespace NetTopologySuite.Operation.Buffer
 
             // System.out.println(vertexList);
 
-            Coordinate[] lineCoord = _vertexList.Coordinates;
+            var lineCoord = _vertexList.Coordinates;
             lineList.Add(lineCoord);
             return lineList;
         }
@@ -161,7 +161,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         private static Coordinate[] CopyCoordinates(Coordinate[] pts)
         {
-            Coordinate[] copy = new Coordinate[pts.Length];
+            var copy = new Coordinate[pts.Length];
             for (int i = 0; i < copy.Length; i++)
             {
                 copy[i] = new Coordinate(pts[i]);
@@ -532,11 +532,11 @@ namespace NetTopologySuite.Operation.Buffer
         ///</summary>
         private void AddLineEndCap(Coordinate p0, Coordinate p1)
         {
-            LineSegment seg = new LineSegment(p0, p1);
+            var seg = new LineSegment(p0, p1);
 
-            LineSegment offsetL = new LineSegment();
+            var offsetL = new LineSegment();
             ComputeOffsetSegment(seg, Positions.Left, _distance, offsetL);
-            LineSegment offsetR = new LineSegment();
+            var offsetR = new LineSegment();
             ComputeOffsetSegment(seg, Positions.Right, _distance, offsetR);
 
             double dx = p1.X - p0.X;
@@ -558,14 +558,14 @@ namespace NetTopologySuite.Operation.Buffer
                     break;
                 case EndCapStyle.Square:
                     // add a square defined by extensions of the offset segment endpoints
-                    Coordinate squareCapSideOffset = new Coordinate();
+                    var squareCapSideOffset = new Coordinate();
                     squareCapSideOffset.X = Math.Abs(_distance) * Math.Cos(angle);
                     squareCapSideOffset.Y = Math.Abs(_distance) * Math.Sin(angle);
 
-                    Coordinate squareCapLOffset = new Coordinate(
+                    var squareCapLOffset = new Coordinate(
                         offsetL.P1.X + squareCapSideOffset.X,
                         offsetL.P1.Y + squareCapSideOffset.Y);
-                    Coordinate squareCapROffset = new Coordinate(
+                    var squareCapROffset = new Coordinate(
                         offsetR.P1.X + squareCapSideOffset.X,
                         offsetR.P1.Y + squareCapSideOffset.Y);
                     _vertexList.AddPt(squareCapLOffset);
@@ -640,7 +640,7 @@ namespace NetTopologySuite.Operation.Buffer
               double distance,
               double mitreLimit)
         {
-            Coordinate basePt = _seg0.P1;
+            var basePt = _seg0.P1;
 
             double ang0 = AngleUtility.Angle(basePt, _seg0.P0);
             double ang1 = AngleUtility.Angle(basePt, _seg1.P1);
@@ -665,15 +665,15 @@ namespace NetTopologySuite.Operation.Buffer
             // compute the midpoint of the bevel segment
             double bevelMidX = basePt.X + mitreDist * Math.Cos(mitreMidAng);
             double bevelMidY = basePt.Y + mitreDist * Math.Sin(mitreMidAng);
-            Coordinate bevelMidPt = new Coordinate(bevelMidX, bevelMidY);
+            var bevelMidPt = new Coordinate(bevelMidX, bevelMidY);
 
             // compute the mitre midline segment from the corner point to the bevel segment midpoint
-            LineSegment mitreMidLine = new LineSegment(basePt, bevelMidPt);
+            var mitreMidLine = new LineSegment(basePt, bevelMidPt);
 
             // finally the bevel segment endpoints are computed as offsets from
             // the mitre midline
-            Coordinate bevelEndLeft = mitreMidLine.PointAlongOffset(1.0, bevelHalfLen);
-            Coordinate bevelEndRight = mitreMidLine.PointAlongOffset(1.0, -bevelHalfLen);
+            var bevelEndLeft = mitreMidLine.PointAlongOffset(1.0, bevelHalfLen);
+            var bevelEndRight = mitreMidLine.PointAlongOffset(1.0, -bevelHalfLen);
 
             if (_side == Positions.Left)
             {
@@ -757,7 +757,7 @@ namespace NetTopologySuite.Operation.Buffer
             currAngleInc = totalAngle / nSegs;
 
             double currAngle = initAngle;
-            Coordinate pt = new Coordinate();
+            var pt = new Coordinate();
             while (currAngle < totalAngle)
             {
                 double angle = startAngle + directionFactor * currAngle;
@@ -774,7 +774,7 @@ namespace NetTopologySuite.Operation.Buffer
         private void AddCircle(Coordinate p, double distance)
         {
             // add start point
-            Coordinate pt = new Coordinate(p.X + distance, p.Y);
+            var pt = new Coordinate(p.X + distance, p.Y);
             _vertexList.AddPt(pt);
             AddFillet(p, 0.0, 2.0 * Math.PI, OrientationIndex.Clockwise, distance);
         }

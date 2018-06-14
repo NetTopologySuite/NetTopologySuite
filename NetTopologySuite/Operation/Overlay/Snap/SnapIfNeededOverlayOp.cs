@@ -52,13 +52,13 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         public IGeometry GetResultGeometry(SpatialFunction opCode)
         {
             IGeometry result = null;
-            var isSuccess = false;
+            bool isSuccess = false;
             Exception savedException = null;
             try
             {
                 // try basic operation with input geometries
                 result = OverlayOp.Overlay(_geom[0], _geom[1], opCode);
-                var isValid = true;
+                bool isValid = true;
                 // not needed if noding validation is used
                 //      boolean isValid = OverlayResultValidator.isValid(geom[0], geom[1], OverlayOp.INTERSECTION, result);
                 // if (isValid)

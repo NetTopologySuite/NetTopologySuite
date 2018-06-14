@@ -15,7 +15,7 @@ namespace Open.Topology.TestRunner.Functions
         public static IGeometry InvalidLocations(IGeometry g)
         {
             var invalidLoc = new List<IPoint>();
-            for (var i = 0; i < g.NumGeometries; i++)
+            for (int i = 0; i < g.NumGeometries; i++)
             {
                 var geom = g.GetGeometryN(i);
                 var ivop = new IsValidOp(geom);
@@ -31,7 +31,7 @@ namespace Open.Topology.TestRunner.Functions
         public static IGeometry InvalidGeoms(IGeometry g)
         {
             var invalidGeoms = new List<IGeometry>();
-            for (var i = 0; i < g.NumGeometries; i++)
+            for (int i = 0; i < g.NumGeometries; i++)
             {
                 var geom = g.GetGeometryN(i);
                 var ivop = new IsValidOp(geom);

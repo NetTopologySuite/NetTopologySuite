@@ -117,7 +117,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             var a = p1.Sub(p0);
             var b = p2.Sub(p0);
 
-            var sa = a.CrossProduct(b);
+            double sa = a.CrossProduct(b);
             if (sa > 0.0)
                 return LEFT;
             if (sa < 0.0)
@@ -256,8 +256,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             // returns the perpendicular bisector of the line segment ab
             double dx = b.X - a.X;
             double dy = b.Y - a.Y;
-            HCoordinate l1 = new HCoordinate(a.X + dx/2.0, a.Y + dy/2.0, 1.0);
-            HCoordinate l2 = new HCoordinate(a.X - dy + dx/2.0, a.Y + dx + dy/2.0, 1.0);
+            var l1 = new HCoordinate(a.X + dx/2.0, a.Y + dy/2.0, 1.0);
+            var l2 = new HCoordinate(a.X - dy + dx/2.0, a.Y + dx + dy/2.0, 1.0);
             return new HCoordinate(l1, l2);
         }
 
@@ -279,9 +279,9 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public double CircumRadiusRatio(Vertex b, Vertex c)
         {
             var x = CircleCenter(b, c);
-            var radius = Distance(x, b);
-            var edgeLength = Distance(this, b);
-            var el = Distance(b, c);
+            double radius = Distance(x, b);
+            double edgeLength = Distance(this, b);
+            double el = Distance(b, c);
             if (el < edgeLength)
             {
                 edgeLength = el;

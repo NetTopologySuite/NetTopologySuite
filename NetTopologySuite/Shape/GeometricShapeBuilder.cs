@@ -28,7 +28,7 @@ namespace NetTopologySuite.Shape
 
         public LineSegment GetSquareBaseLine()
         {
-            var radius = Radius;
+            double radius = Radius;
 
             var centre = Centre;
             var p0 = new Coordinate(centre.X - radius, centre.Y - radius);
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Shape
 
         public Envelope GetSquareExtent()
         {
-            var radius = Radius;
+            double radius = Radius;
 
             var centre = Centre;
             return new Envelope(centre.X - radius, centre.X + radius,

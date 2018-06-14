@@ -48,8 +48,8 @@ namespace NetTopologySuite.Algorithm
                 AddInterior(geom.Coordinates);
             else if(geom is IGeometryCollection)
             {
-                IGeometryCollection gc = (IGeometryCollection) geom;
-                foreach (IGeometry geometry in gc.Geometries)
+                var gc = (IGeometryCollection) geom;
+                foreach (var geometry in gc.Geometries)
                     AddInterior(geometry);
             }
         }
@@ -77,8 +77,8 @@ namespace NetTopologySuite.Algorithm
                 AddEndpoints(geom.Coordinates);
             else if(geom is IGeometryCollection)
             {
-                IGeometryCollection gc = (IGeometryCollection) geom;
-                foreach (IGeometry geometry in gc.Geometries)
+                var gc = (IGeometryCollection) geom;
+                foreach (var geometry in gc.Geometries)
                     AddEndpoints(geometry);
             }
         }

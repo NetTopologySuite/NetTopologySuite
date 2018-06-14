@@ -397,9 +397,9 @@ namespace NetTopologySuite.Operation.Buffer
             var offsetR = new LineSegment();
             ComputeOffsetSegment(seg, Positions.Right, _distance, offsetR);
 
-            var dx = p1.X - p0.X;
-            var dy = p1.Y - p0.Y;
-            var angle = Math.Atan2(dy, dx);
+            double dx = p1.X - p0.X;
+            double dy = p1.Y - p0.Y;
+            double angle = Math.Atan2(dy, dx);
 
             switch (_bufParams.EndCapStyle)
             {
@@ -445,7 +445,7 @@ namespace NetTopologySuite.Operation.Buffer
             LineSegment offset1,
             double distance)
         {
-            var isMitreWithinLimit = true;
+            bool isMitreWithinLimit = true;
             Coordinate intPt;
 
             /**
@@ -458,7 +458,7 @@ namespace NetTopologySuite.Operation.Buffer
                 intPt = HCoordinate.Intersection(offset0.P0,
                    offset0.P1, offset1.P0, offset1.P1);
 
-                var mitreRatio = distance <= 0.0 ? 1.0
+                double mitreRatio = distance <= 0.0 ? 1.0
                     : intPt.Distance(p) / Math.Abs(distance);
 
                 if (mitreRatio > _bufParams.MitreLimit)
@@ -498,29 +498,29 @@ namespace NetTopologySuite.Operation.Buffer
         {
             var basePt = _seg0.P1;
 
-            var ang0 = AngleUtility.Angle(basePt, _seg0.P0);
+            double ang0 = AngleUtility.Angle(basePt, _seg0.P0);
             //var ang1 = AngleUtility.Angle(basePt, _seg1.P1);
 
             // oriented angle between segments
-            var angDiff = AngleUtility.AngleBetweenOriented(_seg0.P0, basePt, _seg1.P1);
+            double angDiff = AngleUtility.AngleBetweenOriented(_seg0.P0, basePt, _seg1.P1);
             // half of the interior angle
-            var angDiffHalf = angDiff / 2;
+            double angDiffHalf = angDiff / 2;
 
             // angle for bisector of the interior angle between the segments
-            var midAng = AngleUtility.Normalize(ang0 + angDiffHalf);
+            double midAng = AngleUtility.Normalize(ang0 + angDiffHalf);
             // rotating this by PI gives the bisector of the reflex angle
-            var mitreMidAng = AngleUtility.Normalize(midAng + Math.PI);
+            double mitreMidAng = AngleUtility.Normalize(midAng + Math.PI);
 
             // the miterLimit determines the distance to the mitre bevel
-            var mitreDist = mitreLimit * distance;
+            double mitreDist = mitreLimit * distance;
             // the bevel delta is the difference between the buffer distance
             // and half of the length of the bevel segment
-            var bevelDelta = mitreDist * Math.Abs(Math.Sin(angDiffHalf));
-            var bevelHalfLen = distance - bevelDelta;
+            double bevelDelta = mitreDist * Math.Abs(Math.Sin(angDiffHalf));
+            double bevelHalfLen = distance - bevelDelta;
 
             // compute the midpoint of the bevel segment
-            var bevelMidX = basePt.X + mitreDist * Math.Cos(mitreMidAng);
-            var bevelMidY = basePt.Y + mitreDist * Math.Sin(mitreMidAng);
+            double bevelMidX = basePt.X + mitreDist * Math.Cos(mitreMidAng);
+            double bevelMidY = basePt.Y + mitreDist * Math.Sin(mitreMidAng);
             var bevelMidPt = new Coordinate(bevelMidX, bevelMidY);
 
             // compute the mitre mid-line segment from the corner point to the bevel segment midpoint
@@ -608,22 +608,22 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="radius">The radius of the fillet</param>
         private void AddDirectedFillet(Coordinate p, double startAngle, double endAngle, OrientationIndex direction, double radius)
         {
-            var directionFactor = direction == OrientationIndex.Clockwise ? -1 : 1;
+            int directionFactor = direction == OrientationIndex.Clockwise ? -1 : 1;
 
-            var totalAngle = Math.Abs(startAngle - endAngle);
-            var nSegs = (int)(totalAngle / _filletAngleQuantum + 0.5);
+            double totalAngle = Math.Abs(startAngle - endAngle);
+            int nSegs = (int)(totalAngle / _filletAngleQuantum + 0.5);
 
             if (nSegs < 1) return;    // no segments because angle is less than increment - nothing to do!
 
             // choose angle increment so that each segment has equal length
             const double initAngle = 0.0;
-            var currAngleInc = totalAngle / nSegs;
+            double currAngleInc = totalAngle / nSegs;
 
-            var currAngle = initAngle;
+            double currAngle = initAngle;
             var pt = new Coordinate();
             while (currAngle < totalAngle)
             {
-                var angle = startAngle + directionFactor * currAngle;
+                double angle = startAngle + directionFactor * currAngle;
                 pt.X = p.X + radius * Math.Cos(angle);
                 pt.Y = p.Y + radius * Math.Sin(angle);
                 _segList.AddPt(pt);

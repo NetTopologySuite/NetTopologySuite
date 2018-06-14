@@ -60,11 +60,11 @@ namespace NetTopologySuite.Operation.Distance3D
          */
         private static Vector3D AverageNormal(ICoordinateSequence seq)
         {
-            var n = seq.Count;
+            int n = seq.Count;
             var sum = new Coordinate(0, 0, 0);
             var p1 = new Coordinate(0, 0, 0);
             var p2 = new Coordinate(0, 0, 0);
-            for (var i = 0; i < n - 1; i++)
+            for (int i = 0; i < n - 1; i++)
             {
                 seq.GetCoordinate(i, p1);
                 seq.GetCoordinate(i + 1, p2);
@@ -91,8 +91,8 @@ namespace NetTopologySuite.Operation.Distance3D
         private static Coordinate AveragePoint(ICoordinateSequence seq)
         {
             var a = new Coordinate(0, 0, 0);
-            var n = seq.Count;
-            for (var i = 0; i < n; i++)
+            int n = seq.Count;
+            for (int i = 0; i < n; i++)
             {
                 a.X += seq.GetOrdinate(i, Ordinate.X);
                 a.Y += seq.GetOrdinate(i, Ordinate.Y);
@@ -133,7 +133,7 @@ namespace NetTopologySuite.Operation.Distance3D
         {
             var seq = ring.CoordinateSequence;
             var seqProj = Project(seq, _facingPlane);
-            Coordinate ptProj = Project(pt, _facingPlane);
+            var ptProj = Project(pt, _facingPlane);
             return Location.Exterior != RayCrossingCounter.LocatePointInRing(ptProj, seqProj);
         }
 

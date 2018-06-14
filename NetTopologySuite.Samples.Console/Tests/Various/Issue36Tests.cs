@@ -89,7 +89,7 @@ namespace NetTopologySuite.Tests.Various
 1134.4055086776207 126.23198674214223, 1131.3807480023995 166.36984216398886, 1131.427488670157 167.52343848559283,
 1131.7375772284845 168.63555999389797, 1133.2495665997578 172.33878671409167))"*/);
 
-            var result = buffered.EqualsExact(expected);
+            bool result = buffered.EqualsExact(expected);
             Assert.IsTrue(result);
         }
 
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.IsNotNull(geometry);
             Assert.IsTrue(geometry.IsValid);
 
-            BufferParameters parameters = new BufferParameters() {EndCapStyle = EndCapStyle.Round};
+            var parameters = new BufferParameters() {EndCapStyle = EndCapStyle.Round};
 
             var curveBuilder = new OffsetCurveBuilder(
                 geometry.PrecisionModel, parameters);
@@ -114,7 +114,7 @@ namespace NetTopologySuite.Tests.Various
             var segmentString = (NodedSegmentString) bufferSegStrList[0];
             Assert.AreEqual(45, segmentString.Count);
 
-            for (var i = 0; i < segmentString.Coordinates.Length; i++)
+            for (int i = 0; i < segmentString.Coordinates.Length; i++)
             {
                 var coord = segmentString.Coordinates[i];
                 Debug.WriteLine(string.Format("{1:R} {2:R}", i, coord.X, coord.Y));

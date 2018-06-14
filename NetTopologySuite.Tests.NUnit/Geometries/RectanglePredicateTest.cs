@@ -36,8 +36,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         private void RunRectanglePred(string[] wkt)
         {
-            IGeometry rect = rdr.Read(wkt[0]);
-            IGeometry b = rdr.Read(wkt[1]);
+            var rect = rdr.Read(wkt[0]);
+            var b = rdr.Read(wkt[1]);
             RunRectanglePred(rect, b);
         }
 

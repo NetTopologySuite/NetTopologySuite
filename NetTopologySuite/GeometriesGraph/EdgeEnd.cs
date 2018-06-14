@@ -181,8 +181,8 @@ namespace NetTopologySuite.GeometriesGraph
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {
-            var angle = Math.Atan2(_dy, _dx);
-            var className = GetType().Name;
+            double angle = Math.Atan2(_dy, _dx);
+            string className = GetType().Name;
             //var lastDotPos = className.LastIndexOf('.');
             //var name = className.Substring(lastDotPos + 1);
             return "  " + className + ": " + _p0 + " - " + _p1 + " " + _quadrant + ":" + angle + "   " + _label;

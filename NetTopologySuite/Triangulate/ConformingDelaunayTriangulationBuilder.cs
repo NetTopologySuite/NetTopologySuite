@@ -63,7 +63,7 @@ namespace NetTopologySuite.Triangulate
             if (_subdiv != null)
                 return;
 
-            Envelope siteEnv = DelaunayTriangulationBuilder.Envelope(_siteCoords);
+            var siteEnv = DelaunayTriangulationBuilder.Envelope(_siteCoords);
             IList<Segment> segments = new List<Segment>();
             if (_constraintLines != null)
             {
@@ -72,9 +72,9 @@ namespace NetTopologySuite.Triangulate
                 segments = CreateConstraintSegments(_constraintLines);
             }
 
-            IEnumerable<Vertex> sites = CreateSiteVertices(_siteCoords);
+            var sites = CreateSiteVertices(_siteCoords);
 
-            ConformingDelaunayTriangulator cdt = new ConformingDelaunayTriangulator(sites, _tolerance);
+            var cdt = new ConformingDelaunayTriangulator(sites, _tolerance);
             cdt.SetConstraints(segments, new List<Vertex>(_constraintVertexMap.Values));
             cdt.FormInitialDelaunay();
             cdt.EnforceConstraints();
@@ -83,8 +83,8 @@ namespace NetTopologySuite.Triangulate
 
         private IEnumerable<Vertex> CreateSiteVertices(IEnumerable<Coordinate> coords)
         {
-            List<Vertex> verts = new List<Vertex>();
-            foreach (Coordinate coord in coords)
+            var verts = new List<Vertex>();
+            foreach (var coord in coords)
             {
                 if (_constraintVertexMap.ContainsKey(coord))
                     continue;
@@ -95,7 +95,7 @@ namespace NetTopologySuite.Triangulate
 
         private void CreateVertices(IGeometry geom)
         {
-            Coordinate[] coords = geom.Coordinates;
+            var coords = geom.Coordinates;
             for (int i = 0; i < coords.Length; i++)
             {
                 Vertex v = new ConstraintVertex(coords[i]);
@@ -105,16 +105,16 @@ namespace NetTopologySuite.Triangulate
 
         private static IList<Segment> CreateConstraintSegments(IGeometry geom)
         {
-            ICollection<IGeometry> lines = LinearComponentExtracter.GetLines(geom);
-            List<Segment> constraintSegs = new List<Segment>();
-            foreach (IGeometry line in lines)
+            var lines = LinearComponentExtracter.GetLines(geom);
+            var constraintSegs = new List<Segment>();
+            foreach (var line in lines)
                 CreateConstraintSegments((ILineString) line, constraintSegs);
             return constraintSegs;
         }
 
         private static void CreateConstraintSegments(ILineString line, IList<Segment> constraintSegs)
         {
-            Coordinate[] coords = line.Coordinates;
+            var coords = line.Coordinates;
             for (int i = 1; i < coords.Length; i++)
                 constraintSegs.Add(new Segment(coords[i - 1], coords[i]));
         }

@@ -68,7 +68,7 @@ namespace NetTopologySuite.Noding
         /// <exception cref="TopologyException">If the iterated noding fails to converge.</exception>
         public void ComputeNodes(IList<ISegmentString> segStrings)
         {
-            var numInteriorIntersections = new int[1];
+            int[] numInteriorIntersections = new int[1];
             _nodedSegStrings = segStrings;
             int nodingIterationCount = 0;
             int lastNodesCreated = -1;

@@ -90,8 +90,8 @@ namespace NetTopologySuite.Index.Chain
             {
                 if (_env == null)
                 {
-                    Coordinate p0 = _pts[_start];
-                    Coordinate p1 = _pts[_end];
+                    var p0 = _pts[_start];
+                    var p1 = _pts[_end];
                     _env = new Envelope(p0, p1);
                 }
                 return _env;
@@ -127,7 +127,7 @@ namespace NetTopologySuite.Index.Chain
         {
             get
             {
-                Coordinate[] coord = new Coordinate[_end - _start + 1];
+                var coord = new Coordinate[_end - _start + 1];
                 int index = 0;
                 for (int i = _start; i <= _end; i++)
                     coord[index++] = _pts[i];
@@ -164,8 +164,8 @@ namespace NetTopologySuite.Index.Chain
         /// <param name="mcs"></param>
         private void ComputeSelect(Envelope searchEnv, int start0, int end0, MonotoneChainSelectAction mcs)
         {
-            Coordinate p0 = _pts[start0];
-            Coordinate p1 = _pts[end0];
+            var p0 = _pts[start0];
+            var p1 = _pts[end0];
 
             // terminating condition for the recursion
             if (end0 - start0 == 1)

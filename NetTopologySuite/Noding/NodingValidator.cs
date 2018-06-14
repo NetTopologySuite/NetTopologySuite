@@ -46,14 +46,14 @@ namespace NetTopologySuite.Noding
         /// </summary>
         private void CheckCollapses()
         {
-            foreach (ISegmentString ss in _segStrings)
+            foreach (var ss in _segStrings)
                 CheckCollapses(ss);
         }
 
         private static void CheckCollapses(ISegmentString ss)
         {
             var pts = ss.Coordinates;
-            for (var i = 0; i < pts.Length - 2; i++)
+            for (int i = 0; i < pts.Length - 2; i++)
                 CheckCollapse(pts[i], pts[i + 1], pts[i + 2]);
         }
 
@@ -69,8 +69,8 @@ namespace NetTopologySuite.Noding
         /// </summary>
         private void CheckInteriorIntersections()
         {
-            foreach (ISegmentString ss0 in _segStrings)
-                foreach (ISegmentString ss1 in _segStrings)
+            foreach (var ss0 in _segStrings)
+                foreach (var ss1 in _segStrings)
                     CheckInteriorIntersections(ss0, ss1);
         }
 
@@ -78,8 +78,8 @@ namespace NetTopologySuite.Noding
         {
             var pts0 = ss0.Coordinates;
             var pts1 = ss1.Coordinates;
-            for (var i0 = 0; i0 < pts0.Length - 1; i0++)
-                for (var i1 = 0; i1 < pts1.Length - 1; i1++)
+            for (int i0 = 0; i0 < pts0.Length - 1; i0++)
+                for (int i1 = 0; i1 < pts1.Length - 1; i1++)
                     CheckInteriorIntersections(ss0, i0, ss1, i1);
         }
 
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Noding
 
         private static bool HasInteriorIntersection(LineIntersector li, Coordinate p0, Coordinate p1)
         {
-            for (var i = 0; i < li.IntersectionNum; i++)
+            for (int i = 0; i < li.IntersectionNum; i++)
             {
                 var intPt = li.GetIntersection(i);
                 if (!(intPt.Equals(p0) ||
@@ -118,7 +118,7 @@ namespace NetTopologySuite.Noding
         /// </summary>
         private void CheckEndPtVertexIntersections()
         {
-            foreach(ISegmentString ss in _segStrings)
+            foreach(var ss in _segStrings)
             {
                 var pts = ss.Coordinates;
                 CheckEndPtVertexIntersections(pts[0], _segStrings);
@@ -128,10 +128,10 @@ namespace NetTopologySuite.Noding
 
         private static void CheckEndPtVertexIntersections(Coordinate testPt, IEnumerable<ISegmentString> segStrings)
         {
-            foreach (ISegmentString ss in segStrings)
+            foreach (var ss in segStrings)
             {
                 var pts = ss.Coordinates;
-                for (var j = 1; j < pts.Length - 1; j++)
+                for (int j = 1; j < pts.Length - 1; j++)
                     if (pts[j].Equals(testPt))
                         throw new ApplicationException(string.Format(
                             "found endpt/interior pt intersection at index {0} :pt {1}", j, testPt));

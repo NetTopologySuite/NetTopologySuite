@@ -42,8 +42,8 @@ namespace NetTopologySuite.Index.Strtree
         /// <inheritdoc cref="IComparer{T}.Compare"/>
         public int Compare(BoundablePair<TItem> p1, BoundablePair<TItem> p2)
         {
-            var distance1 = p1.Distance;
-            var distance2 = p2.Distance;
+            double distance1 = p1.Distance;
+            double distance2 = p2.Distance;
             if (_normalOrder)
             {
                 if (distance1 > distance2)

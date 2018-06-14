@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             var tree1 = (STRtree)tester.SpatialIndex;
             // create the index before serialization
             tree1.Query(new Envelope());
-            var data = SerializationUtility.Serialize(tree1);
+            byte[] data = SerializationUtility.Serialize(tree1);
             var tree2 = SerializationUtility.Deserialize<STRtree>(data);
             tester.SpatialIndex = tree2;
 
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         [Test]
         public void TestDisallowedInserts()
         {
-            STRtree t = new STRtree(5);
+            var t = new STRtree(5);
             t.Insert(new Envelope(0, 0, 0, 0), new object());
             t.Insert(new Envelope(0, 0, 0, 0), new object());
             t.Query(new Envelope());
@@ -121,7 +121,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
                                                          {
                                                              new Coordinate(20, 20), new Coordinate(30, 30)
                                                          }));
-            STRtree t = new STRtree(4);
+            var t = new STRtree(4);
             foreach (var g in geometries)
             {
                 t.Insert(g.EnvelopeInternal, new object());
@@ -164,12 +164,12 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         [Test]
         public void TestKNearestNeighbors()
         {
-            var topK = 1000;
-            var totalRecords = 10000;
+            int topK = 1000;
+            int totalRecords = 10000;
             var geometryFactory = new GeometryFactory();
             var coordinate = new Coordinate(10.1, -10.1);
             var queryCenter = geometryFactory.CreatePoint(coordinate);
-            var valueRange = 1000;
+            int valueRange = 1000;
             var testDataset = new List<IGeometry>();
             var correctData = new List<IGeometry>();
             var random = new Random();
@@ -213,7 +213,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             /*
              * Check the difference between correct result and test result. The difference should be 0.
              */
-            var difference = 0;
+            int difference = 0;
             for (int i = 0; i < topK; i++)
             {
                 if (distanceComparator.Compare(correctData[i], topKList[i]) != 0)
@@ -258,7 +258,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         private static IList<IBoundable<Envelope, object>> ItemWrappers(int size)
         {
             var itemWrappers = new List<IBoundable<Envelope, object>>();
-            for (var i = 0; i < size; i++)
+            for (int i = 0; i < size; i++)
             {
                 itemWrappers.Add(new ItemBoundable<Envelope, object>(new Envelope(0, 0, 0, 0), new object()));
             }

@@ -46,10 +46,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
                 {
                     var pg = (IPreparedGeometry) parameter;
 
-                    for (var i = 0; i < 20; i++)
+                    for (int i = 0; i < 20; i++)
                     {
                         var g = CreateSineStar(new Coordinate(Rnd.Next(-10, 10), Rnd.Next(-10, 10)), 100000.0, Rnd.Next(75, 110));
-                        var intersects = pg.Intersects(g);
+                        bool intersects = pg.Intersects(g);
                         Console.WriteLine("ThreadId {0} Test {1} Result {2}", threadIndex, i, intersects);
                     }
 

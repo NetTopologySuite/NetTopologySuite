@@ -20,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit
         {
             var actualNorm = actual.Normalized();
             var expectedNorm = expected.Normalized();
-            var equal = actualNorm.EqualsExact(expectedNorm);
+            bool equal = actualNorm.EqualsExact(expectedNorm);
             //var writer = new WKTWriter {MaxCoordinatesPerLine };
             Assert.That(equal, Is.True, string.Format("\nExpected = {0}\nactual   = {1}", expected, actual));
         }

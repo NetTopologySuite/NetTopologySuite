@@ -47,8 +47,8 @@ namespace NetTopologySuite.Index.Chain
         public static IList<MonotoneChain> GetChains(Coordinate[] pts, object context)
         {
             var mcList = new List<MonotoneChain>();
-            var startIndex = GetChainStartIndices(pts);
-            for (var i = 0; i < startIndex.Length - 1; i++)
+            int[] startIndex = GetChainStartIndices(pts);
+            for (int i = 0; i < startIndex.Length - 1; i++)
             {
                 var mc = new MonotoneChain(pts, startIndex[i], startIndex[i + 1], context);
                 mcList.Add(mc);

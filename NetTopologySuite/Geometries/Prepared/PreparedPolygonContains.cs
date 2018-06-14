@@ -24,7 +24,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if the polygon contains the geometry</returns>
         public static bool Contains(PreparedPolygon prep, IGeometry geom)
         {
-            PreparedPolygonContains polyInt = new PreparedPolygonContains(prep);
+            var polyInt = new PreparedPolygonContains(prep);
             return polyInt.Contains(geom);
         }
 

@@ -38,14 +38,14 @@ namespace NetTopologySuite.Operation.Buffer.Validate
 
         private void ComputeMaxVertexDistance(IGeometry curve)
         {
-            MaxPointDistanceFilter distFilter = new MaxPointDistanceFilter(_inputGeom);
+            var distFilter = new MaxPointDistanceFilter(_inputGeom);
             curve.Apply(distFilter);
             _maxPtDist.SetMaximum(distFilter.MaxPointDistance);
         }
 
         private void computeMaxMidpointDistance(IGeometry curve)
         {
-            MaxMidpointDistanceFilter distFilter = new MaxMidpointDistanceFilter(_inputGeom);
+            var distFilter = new MaxMidpointDistanceFilter(_inputGeom);
             curve.Apply(distFilter);
             _maxPtDist.SetMaximum(distFilter.MaxPointDistance);
         }

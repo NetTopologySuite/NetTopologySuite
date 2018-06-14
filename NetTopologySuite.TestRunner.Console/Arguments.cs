@@ -26,8 +26,8 @@ namespace ConsoleTestRunner
         public Arguments(string[] Args)
         {
             Parameters       = new StringDictionary();
-            Regex Spliter    = new Regex(@"^-{1,2}|^/|=|:",RegexOptions.IgnoreCase|RegexOptions.Compiled);
-            Regex Remover    = new Regex(@"^['String.Empty]?(.*?)['String.Empty]?$",RegexOptions.IgnoreCase|RegexOptions.Compiled);
+            var Spliter    = new Regex(@"^-{1,2}|^/|=|:",RegexOptions.IgnoreCase|RegexOptions.Compiled);
+            var Remover    = new Regex(@"^['String.Empty]?(.*?)['String.Empty]?$",RegexOptions.IgnoreCase|RegexOptions.Compiled);
             string Parameter = null;
             string[] Parts;
 

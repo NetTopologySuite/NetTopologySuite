@@ -72,7 +72,7 @@ namespace NetTopologySuite.Index.Bintree
         public  IList<T> AddAllItems(IList<T> items)
         {
             // items.addAll(this.items);
-            foreach (T o in _items)
+            foreach (var o in _items)
                 items.Add(o);
             for (int i = 0; i < 2; i++)
                 if (Subnode[i] != null)
@@ -105,7 +105,7 @@ namespace NetTopologySuite.Index.Bintree
 
             // some of these may not actually overlap - this is allowed by the bintree contract
             //resultItems.AddAll(items);
-            foreach (T o in _items)
+            foreach (var o in _items)
                 resultItems.Add(o);
 
             if (Subnode[0] != null) Subnode[0].AddAllItemsFromOverlapping(interval, resultItems);

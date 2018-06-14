@@ -123,7 +123,7 @@ namespace NetTopologySuite.GeometriesGraph
                 if (_env == null)
                 {
                     _env = new Envelope();
-                    for (var i = 0; i < Points.Length; i++)
+                    for (int i = 0; i < Points.Length; i++)
                         _env.ExpandToInclude(Points[i]);
                 }
                 return _env;
@@ -229,7 +229,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         public void AddIntersections(LineIntersector li, int segmentIndex, int geomIndex)
         {
-            for (var i = 0; i < li.IntersectionNum; i++)
+            for (int i = 0; i < li.IntersectionNum; i++)
                 AddIntersection(li, segmentIndex, geomIndex, i);
         }
 
@@ -244,12 +244,12 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="intIndex"></param>
         public void AddIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
         {
-            Coordinate intPt = new Coordinate(li.GetIntersection(intIndex));
-            var normalizedSegmentIndex = segmentIndex;
-            var dist = li.GetEdgeDistance(geomIndex, intIndex);
+            var intPt = new Coordinate(li.GetIntersection(intIndex));
+            int normalizedSegmentIndex = segmentIndex;
+            double dist = li.GetEdgeDistance(geomIndex, intIndex);
 
             // normalize the intersection point location
-            var nextSegIndex = normalizedSegmentIndex + 1;
+            int nextSegIndex = normalizedSegmentIndex + 1;
             if (nextSegIndex < Points.Length)
             {
                 var nextPt = Points[nextSegIndex];
@@ -304,10 +304,10 @@ namespace NetTopologySuite.GeometriesGraph
             if (Points.Length != e.Points.Length)
                 return false;
 
-            var isEqualForward = true;
-            var isEqualReverse = true;
-            var iRev = Points.Length;
-            for (var i = 0; i < Points.Length; i++)
+            bool isEqualForward = true;
+            bool isEqualReverse = true;
+            int iRev = Points.Length;
+            for (int i = 0; i < Points.Length; i++)
             {
                 if (!Points[i].Equals2D(e.Points[i]))
                     isEqualForward = false;
@@ -358,7 +358,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             if (Points.Length != e.Points.Length)
                 return false;
-            for (var i = 0; i < Points.Length; i++)
+            for (int i = 0; i < Points.Length; i++)
                 if (! Points[i].Equals2D(e.Points[i]))
                     return false;
             return true;
@@ -387,7 +387,7 @@ namespace NetTopologySuite.GeometriesGraph
         {
             outstream.Write("edge " + _name + ": ");
             outstream.Write("LINESTRING (");
-            for (var i = 0; i < Points.Length; i++)
+            for (int i = 0; i < Points.Length; i++)
             {
                 if (i > 0)  outstream.Write(",");
                 outstream.Write(Points[i].X + " " + Points[i].Y);
@@ -402,7 +402,7 @@ namespace NetTopologySuite.GeometriesGraph
         public void WriteReverse(TextWriter outstream)
         {
             outstream.Write("edge " + _name + ": ");
-            for (var i = Points.Length - 1; i >= 0; i--)
+            for (int i = Points.Length - 1; i >= 0; i--)
                 outstream.Write(Points[i] + " ");
             outstream.WriteLine(string.Empty);
         }

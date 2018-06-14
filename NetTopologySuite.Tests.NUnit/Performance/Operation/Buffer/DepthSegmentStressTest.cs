@@ -58,7 +58,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             var seg3 = CreateRandomDepthSegment();
 
             // do test work here
-            var fails = false;
+            bool fails = false;
             if (!IsSymmetric(seg1, seg2))
                 fails = true;
             if (!IsTransitive(seg1, seg2, seg3))
@@ -119,7 +119,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             double ang = 2*Math.PI*_rnd.NextDouble();
             double x1 = Math.Round(x0 + max*Math.Cos(ang), MidpointRounding.AwayFromZero);
             double y1 = Math.Round(y0 + max*Math.Sin(ang), MidpointRounding.AwayFromZero);
-            LineSegment seg = new LineSegment(x0, y0, x1, y1);
+            var seg = new LineSegment(x0, y0, x1, y1);
             seg.Normalize();
             return new DepthSegment(seg, 0);
         }
@@ -175,7 +175,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 
             public int XcompareTo(object obj)
             {
-                DepthSegment other = (DepthSegment) obj;
+                var other = (DepthSegment) obj;
 
                 // if segments are collinear and vertical compare endpoints
                 if (isVertical() && other.isVertical()

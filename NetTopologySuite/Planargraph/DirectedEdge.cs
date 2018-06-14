@@ -25,7 +25,7 @@ namespace NetTopologySuite.Planargraph
         public static IList<Edge> ToEdges(IList<DirectedEdge> dirEdges)
         {
             IList<Edge> edges = new List<Edge>();
-            foreach (DirectedEdge directedEdge in dirEdges)
+            foreach (var directedEdge in dirEdges)
                 edges.Add(directedEdge.parentEdge);
             return edges;
         }
@@ -148,7 +148,7 @@ namespace NetTopologySuite.Planargraph
         /// <returns></returns>
         public int CompareTo(object obj)
         {
-            DirectedEdge de = (DirectedEdge) obj;
+            var de = (DirectedEdge) obj;
             return CompareDirection(de);
         }
 

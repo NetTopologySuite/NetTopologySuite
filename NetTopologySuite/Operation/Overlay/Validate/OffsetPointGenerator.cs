@@ -60,7 +60,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
 
         private void ExtractPoints(ILineString line, double offsetDistance, IList<Coordinate> offsetPts)
         {
-            ICoordinateSequence coordinateSequence = line.CoordinateSequence;
+            var coordinateSequence = line.CoordinateSequence;
             int maxIndex = coordinateSequence.Count - 1;
             for (int i = 0; i < maxIndex; i++)
             {
@@ -92,13 +92,13 @@ namespace NetTopologySuite.Operation.Overlay.Validate
 
             if (_doLeft)
             {
-                Coordinate offsetLeft = new Coordinate(midX - uy, midY + ux);
+                var offsetLeft = new Coordinate(midX - uy, midY + ux);
                 offsetPts.Add(offsetLeft);
             }
 
             if (_doRight)
             {
-                Coordinate offsetRight = new Coordinate(midX + uy, midY - ux);
+                var offsetRight = new Coordinate(midX + uy, midY - ux);
                 offsetPts.Add(offsetRight);
             }
         }

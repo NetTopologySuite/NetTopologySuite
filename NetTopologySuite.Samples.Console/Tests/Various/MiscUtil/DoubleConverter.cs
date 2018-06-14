@@ -62,7 +62,7 @@ namespace MiscUtil.Conversion
             }
 
             // Construct a new decimal expansion with the mantissa
-            ArbitraryDecimal ad = new ArbitraryDecimal (mantissa);
+            var ad = new ArbitraryDecimal (mantissa);
 
             // If the exponent is less than 0, we need to repeatedly
             // divide by 2 - which is the equivalent of multiplying

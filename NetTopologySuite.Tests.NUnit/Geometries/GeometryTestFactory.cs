@@ -13,7 +13,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             int i;
             int ipt = 0;
-            Coordinate[] pts = new Coordinate[4 * nSide + 1];
+            var pts = new Coordinate[4 * nSide + 1];
 
             double maxx = minx + nSide * segLen;
             double maxy = miny + nSide * segLen;
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                               double size,
                               int nPts)
         {
-            Coordinate[] pts = CreateCircle(basex, basey, size, nPts);
+            var pts = CreateCircle(basex, basey, size, nPts);
             var ring = fact.CreateLinearRing(pts);
             var poly = fact.CreatePolygon(ring, null);
             return poly;
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                               double size,
                               int nPts)
         {
-            Coordinate[] pts = new Coordinate[nPts + 1];
+            var pts = new Coordinate[nPts + 1];
 
             int iPt = 0;
             double len = size / 2.0;
@@ -82,7 +82,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 double ang = i * (2 * Math.PI / nPts);
                 double x = len * Math.Cos(ang) + basex;
                 double y = len * Math.Sin(ang) + basey;
-                Coordinate pt = new Coordinate(x, y);
+                var pt = new Coordinate(x, y);
                 pts[iPt++] = pt;
             }
             pts[iPt] = pts[0];
@@ -95,7 +95,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                               int nSide,
                               double segLen)
         {
-            Coordinate[] pts = CreateBox(minx, minx, nSide, segLen);
+            var pts = CreateBox(minx, minx, nSide, segLen);
             var ring = fact.CreateLinearRing(pts);
             var poly = fact.CreatePolygon(ring, null);
             return poly;
@@ -126,7 +126,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             if (nArmPt < 5) nArmPt = 5;
 
             int nPts2 = nArmPt * nArms;
-            Coordinate[] pts = new Coordinate[nPts2 + 1];
+            var pts = new Coordinate[nPts2 + 1];
 
             int iPt = 0;
             double starAng = 0.0;
@@ -139,7 +139,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                     double len = armLen * (1 - Math.Cos(ang) / 2) + armBaseLen;
                     double x = len * Math.Cos(starAng + iArmPt * angInc / nArmPt) + basex;
                     double y = len * Math.Sin(starAng + iArmPt * angInc / nArmPt) + basey;
-                    Coordinate pt = new Coordinate(x, y);
+                    var pt = new Coordinate(x, y);
                     pts[iPt++] = pt;
                 }
                 starAng += angInc;
@@ -157,7 +157,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                               int nArms,
                               int nPts)
         {
-            Coordinate[] pts = CreateSineStar(basex, basey, size, armLen, nArms, nPts);
+            var pts = CreateSineStar(basex, basey, size, armLen, nArms, nPts);
             var ring = fact.CreateLinearRing(pts);
             var poly = fact.CreatePolygon(ring, null);
             return poly;

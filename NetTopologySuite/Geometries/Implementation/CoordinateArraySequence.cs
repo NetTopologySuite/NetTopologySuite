@@ -72,7 +72,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             Coordinates = new Coordinate[size];
             _dimension = dimension;
-            for (var i = 0; i < size; i++)
+            for (int i = 0; i < size; i++)
                 Coordinates[i] = new Coordinate();
         }
 
@@ -91,7 +91,7 @@ namespace NetTopologySuite.Geometries.Implementation
             _dimension = coordSeq.Dimension;
             Coordinates = new Coordinate[coordSeq.Count];
 
-            for (var i = 0; i < Coordinates.Length; i++)
+            for (int i = 0; i < Coordinates.Length; i++)
                 Coordinates[i] = coordSeq.GetCoordinateCopy(i);
         }
 
@@ -211,7 +211,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns></returns>
         protected Coordinate[] GetClonedCoordinates()
         {
-            Coordinate[] cloneCoordinates = new Coordinate[Count];
+            var cloneCoordinates = new Coordinate[Count];
             for (int i = 0; i < Coordinates.Length; i++)
                 cloneCoordinates[i] = Coordinates[i].Copy();
             return cloneCoordinates;
@@ -271,7 +271,7 @@ namespace NetTopologySuite.Geometries.Implementation
         public ICoordinateSequence Reversed()
         {
             var coordinates = new Coordinate[Count];
-            for (var i = 0; i < Count; i++ )
+            for (int i = 0; i < Count; i++ )
             {
                 coordinates[Count - i - 1] = new Coordinate(Coordinates[i]);
             }
@@ -286,7 +286,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             if (Coordinates.Length > 0)
             {
-                StringBuilder strBuf = new StringBuilder(17 * Coordinates.Length);
+                var strBuf = new StringBuilder(17 * Coordinates.Length);
                 strBuf.Append('(');
                 strBuf.Append(Coordinates[0]);
                 for (int i = 1; i < Coordinates.Length; i++)

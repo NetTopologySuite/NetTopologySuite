@@ -25,7 +25,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
     {
         public static bool IsValid(IGeometry a, IGeometry b, SpatialFunction overlayOp, IGeometry result)
         {
-            OverlayResultValidator validator = new OverlayResultValidator(a, b, result);
+            var validator = new OverlayResultValidator(a, b, result);
             return validator.IsValid(overlayOp);
         }
 
@@ -84,7 +84,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
 
         private void AddTestPts(IGeometry g)
         {
-            OffsetPointGenerator ptGen = new OffsetPointGenerator(g);
+            var ptGen = new OffsetPointGenerator(g);
             _testCoords.AddRange(ptGen.GetPoints(5 * _boundaryDistanceTolerance));
         }
 
@@ -92,7 +92,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         {
             for (int i = 0; i < _testCoords.Count; i++)
             {
-                Coordinate pt = _testCoords[i];
+                var pt = _testCoords[i];
                 if (!CheckValid(overlayOp, pt))
                 {
                     _invalidLocation = pt;

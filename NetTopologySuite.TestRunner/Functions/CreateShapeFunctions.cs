@@ -18,18 +18,18 @@ namespace Open.Topology.TestRunner.Functions
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
             var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
 
-            var nCellsOnSide = (int) Math.Sqrt(nCells) + 1;
-            var cellSizeX = env.Width/nCellsOnSide;
-            var cellSizeY = env.Height/nCellsOnSide;
+            int nCellsOnSide = (int) Math.Sqrt(nCells) + 1;
+            double cellSizeX = env.Width/nCellsOnSide;
+            double cellSizeY = env.Height/nCellsOnSide;
 
-            for (var i = 0; i < nCellsOnSide; i++)
+            for (int i = 0; i < nCellsOnSide; i++)
             {
-                for (var j = 0; j < nCellsOnSide; j++)
+                for (int j = 0; j < nCellsOnSide; j++)
                 {
-                    var x1 = env.MinX + i * cellSizeX;
-                    var y1 = env.MinY + j * cellSizeY;
-                    var x2 = env.MinX + (i+1) * cellSizeX;
-                    var y2 = env.MinY + (j+1) * cellSizeY;
+                    double x1 = env.MinX + i * cellSizeX;
+                    double y1 = env.MinY + j * cellSizeY;
+                    double x2 = env.MinX + (i+1) * cellSizeX;
+                    double y2 = env.MinY + (j+1) * cellSizeY;
                     var cellEnv = new Envelope(x1, x2, y1, y2);
 
                     geoms.Add(geomFact.ToGeometry(cellEnv));

@@ -140,7 +140,7 @@ namespace NetTopologySuite.Algorithm
                     return _inputGeom.Factory.CreateLineString();
                 }
 
-                Coordinate basePt = _minBaseSeg.Project(_minWidthPt);
+                var basePt = _minBaseSeg.Project(_minWidthPt);
                 return _inputGeom.Factory.CreateLineString(new[] { basePt, _minWidthPt });
             }
         }
@@ -157,7 +157,7 @@ namespace NetTopologySuite.Algorithm
             if (_isConvex) ComputeWidthConvex(_inputGeom);
             else
             {
-                IGeometry convexGeom = (new ConvexHull(_inputGeom)).GetConvexHull();
+                var convexGeom = (new ConvexHull(_inputGeom)).GetConvexHull();
                 ComputeWidthConvex(convexGeom);
             }
         }
@@ -209,7 +209,7 @@ namespace NetTopologySuite.Algorithm
             _minWidth = double.MaxValue;
             int currMaxIndex = 1;
 
-            LineSegment seg = new LineSegment();
+            var seg = new LineSegment();
             // compute the max distance for all segments in the ring, and pick the minimum
             for (int i = 0; i < pts.Length - 1; i++)
             {
@@ -320,18 +320,18 @@ namespace NetTopologySuite.Algorithm
             }
 
             // compute lines along edges of minimum rectangle
-            LineSegment maxPerpLine = ComputeSegmentForLine(-dx, -dy, maxPerp);
-            LineSegment minPerpLine = ComputeSegmentForLine(-dx, -dy, minPerp);
-            LineSegment maxParaLine = ComputeSegmentForLine(-dy, dx, maxPara);
-            LineSegment minParaLine = ComputeSegmentForLine(-dy, dx, minPara);
+            var maxPerpLine = ComputeSegmentForLine(-dx, -dy, maxPerp);
+            var minPerpLine = ComputeSegmentForLine(-dx, -dy, minPerp);
+            var maxParaLine = ComputeSegmentForLine(-dy, dx, maxPara);
+            var minParaLine = ComputeSegmentForLine(-dy, dx, minPara);
 
             // compute vertices of rectangle (where the para/perp max & min lines intersect)
-            Coordinate p0 = maxParaLine.LineIntersection(maxPerpLine);
-            Coordinate p1 = minParaLine.LineIntersection(maxPerpLine);
-            Coordinate p2 = minParaLine.LineIntersection(minPerpLine);
-            Coordinate p3 = maxParaLine.LineIntersection(minPerpLine);
+            var p0 = maxParaLine.LineIntersection(maxPerpLine);
+            var p1 = minParaLine.LineIntersection(maxPerpLine);
+            var p2 = minParaLine.LineIntersection(minPerpLine);
+            var p3 = maxParaLine.LineIntersection(minPerpLine);
 
-            ILinearRing shell = _inputGeom.Factory.CreateLinearRing(
+            var shell = _inputGeom.Factory.CreateLinearRing(
                 new[] { p0, p1, p2, p3, p0 });
             return _inputGeom.Factory.CreatePolygon(shell);
 

@@ -39,8 +39,8 @@ namespace NetTopologySuite.EdgeGraph
         /// <returns>the HalfEdge with origin at p0</returns>
         public static HalfEdge Create(Coordinate p0, Coordinate p1)
         {
-            HalfEdge e0 = new HalfEdge(p0);
-            HalfEdge e1 = new HalfEdge(p1);
+            var e0 = new HalfEdge(p0);
+            var e1 = new HalfEdge(p1);
             e0.Init(e1);
             return e0;
         }
@@ -137,7 +137,7 @@ namespace NetTopologySuite.EdgeGraph
         /// </returns>
         public HalfEdge Find(Coordinate dest)
         {
-            HalfEdge oNext = this;
+            var oNext = this;
             do
             {
                 if (oNext == null)
@@ -179,10 +179,10 @@ namespace NetTopologySuite.EdgeGraph
 
             // otherwise, find edge to insert after
             int ecmp = CompareTo(e);
-            HalfEdge ePrev = this;
+            var ePrev = this;
             do
             {
-                HalfEdge oNext = ePrev.ONext;
+                var oNext = ePrev.ONext;
                 int cmp = oNext.CompareTo(e);
                 if (cmp != ecmp || oNext == this)
                 {
@@ -203,7 +203,7 @@ namespace NetTopologySuite.EdgeGraph
         private void InsertAfter(HalfEdge e)
         {
             Assert.IsEquals(Orig, e.Orig);
-            HalfEdge save = ONext;
+            var save = ONext;
             Sym.Next = e;
             e.Sym.Next = save;
         }
@@ -289,7 +289,7 @@ namespace NetTopologySuite.EdgeGraph
         public int Degree()
         {
             int degree = 0;
-            HalfEdge e = this;
+            var e = this;
             do
             {
                 degree++;
@@ -310,7 +310,7 @@ namespace NetTopologySuite.EdgeGraph
         /// </returns>
         public HalfEdge PrevNode()
         {
-            HalfEdge e = this;
+            var e = this;
             while (e.Degree() == 2)
             {
                 e = e.Prev;

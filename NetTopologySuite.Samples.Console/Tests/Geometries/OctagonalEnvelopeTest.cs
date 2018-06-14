@@ -32,9 +32,9 @@ namespace NetTopologySuite.Samples.Tests.Geometries
             if (!expected.IsValid) throw new IgnoreException("expected geometry not valid");
 
             var octEnv = OctagonalEnvelope.GetOctagonalEnvelope(input);
-            var isEqual = octEnv.EqualsNormalized(expected);
+            bool isEqual = octEnv.EqualsNormalized(expected);
 
-            var hsmDiff = 1d;
+            double hsmDiff = 1d;
             if (!isEqual)
             {
                 var hsm = new HausdorffSimilarityMeasure();

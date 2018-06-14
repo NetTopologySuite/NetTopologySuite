@@ -35,7 +35,7 @@ namespace NetTopologySuite.Algorithm.Locate
                 IEnumerator<IGeometry> geomi = new GeometryCollectionEnumerator((IGeometryCollection)geom);
                 while (geomi.MoveNext())
                 {
-                    IGeometry g2 = geomi.Current;
+                    var g2 = geomi.Current;
                     if (g2 != geom)
                     {
                         var loc = LocateInGeometry(p, g2);
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Algorithm.Locate
             var shellLoc = LocatePointInRing(p, shell);
             if (shellLoc != Location.Interior) return shellLoc;
             // now test if the point lies in or on the holes
-            for (var i = 0; i < poly.NumInteriorRings; i++)
+            for (int i = 0; i < poly.NumInteriorRings; i++)
             {
                 var hole = (ILinearRing)poly.GetInteriorRingN(i);
                 var holeLoc = LocatePointInRing(p, hole);

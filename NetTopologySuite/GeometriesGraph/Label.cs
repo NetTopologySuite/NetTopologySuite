@@ -32,7 +32,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns>Label as Line label.</returns>
         public static Label ToLineLabel(Label label)
         {
-            Label lineLabel = new Label(Location.Null);
+            var lineLabel = new Label(Location.Null);
             for (int i = 0; i < 2; i++)
                 lineLabel.SetLocation(i, label.GetLocation(i));
             return lineLabel;
@@ -319,7 +319,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             if (elt[0] != null)
             {
                 sb.Append("A:");

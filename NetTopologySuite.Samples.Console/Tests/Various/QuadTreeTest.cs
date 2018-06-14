@@ -28,7 +28,7 @@ namespace NetTopologySuite.Tests.Various
 
             Console.WriteLine(string.Format("Query returned: {0}", res.Count));
 
-            var reallyIntersecting = 0;
+            int reallyIntersecting = 0;
             foreach (var point in res)
             {
                 if (search.Intersects(point.EnvelopeInternal))

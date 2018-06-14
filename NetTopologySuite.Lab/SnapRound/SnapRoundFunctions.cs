@@ -37,7 +37,7 @@ namespace NetTopologySuite.SnapRound
                 geom = geomA.Factory.CreateGeometryCollection(new IGeometry[] { geomA, geomB });
             }
 
-            GeometrySnapRounder gsr = new GeometrySnapRounder(pm);
+            var gsr = new GeometrySnapRounder(pm);
             var snapped = gsr.Execute(geom);
             return snapped;
         }

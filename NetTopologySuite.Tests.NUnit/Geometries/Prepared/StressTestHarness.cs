@@ -32,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
         {
             // System.Console.WriteLine("Running " + nIter + " tests");
             // Geometry poly = createCircle(new Coordinate(0, 0), 100, nPts);
-            IGeometry poly = CreateSineStar(new Coordinate(0, 0), 100, _numTargetPts);
+            var poly = CreateSineStar(new Coordinate(0, 0), 100, _numTargetPts);
             Console.WriteLine(poly);
 
             // System.Console.WriteLine();
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
         static IGeometry CreateCircle(Coordinate origin, double size, int nPts)
         {
-            GeometricShapeFactory gsf = new GeometricShapeFactory();
+            var gsf = new GeometricShapeFactory();
             gsf.Centre = origin;
             gsf.Size = size;
             gsf.NumPoints = nPts;
@@ -54,26 +54,26 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
         static IGeometry CreateSineStar(Coordinate origin, double size, int nPts)
         {
-            SineStarFactory gsf = new SineStarFactory();
+            var gsf = new SineStarFactory();
             gsf.Centre = origin;
             gsf.Size = size;
             gsf.NumPoints = nPts;
             gsf.ArmLengthRatio = 0.1;
             gsf.NumArms = 20;
-            IGeometry poly = gsf.CreateSineStar();
+            var poly = gsf.CreateSineStar();
             return poly;
         }
 
         static IGeometry CreateRandomTestGeometry(Envelope env, double size, int nPts)
         {
-            Random rnd = new Random(1);
+            var rnd = new Random(1);
             double width = env.Width;
             double xOffset = width * rnd.NextDouble();
             double yOffset = env.Height * rnd.NextDouble();
-            Coordinate basePt = new Coordinate(
+            var basePt = new Coordinate(
                             env.MinX + xOffset,
                             env.MinY + yOffset);
-            IGeometry test = CreateTestCircle(basePt, size, nPts);
+            var test = CreateTestCircle(basePt, size, nPts);
             if (test is IPolygon && rnd.NextDouble() > 0.5)
             {
                 test = test.Boundary;
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
         static IGeometry CreateTestCircle(Coordinate origin, double size, int nPts)
         {
-            GeometricShapeFactory gsf = new GeometricShapeFactory();
+            var gsf = new GeometricShapeFactory();
             gsf.Centre = origin;
             gsf.Size = size;
             gsf.NumPoints = nPts;
@@ -98,7 +98,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             while (count < nIter)
             {
                 count++;
-                IGeometry test = CreateRandomTestGeometry(target.EnvelopeInternal, 10, 20);
+                var test = CreateRandomTestGeometry(target.EnvelopeInternal, 10, 20);
 
                 // Console.WriteLine("Test # " + count);
                 // Console.WriteLine(line);

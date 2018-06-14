@@ -86,7 +86,7 @@ namespace NetTopologySuite.Operation.Overlay
                      * For nodes on edges, only INTERSECTION can result in edge nodes being included even
                      * if none of their incident edges are included
                      */
-                    Label label = n.Label;
+                    var label = n.Label;
                     if (OverlayOp.IsResultOfOp(label, opCode))
                     {
                         FilterCoveredNodeToPoint(n);
@@ -107,7 +107,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="n">The node to test</param>
         private void FilterCoveredNodeToPoint(Node n)
         {
-            Coordinate coord = n.Coordinate;
+            var coord = n.Coordinate;
             if (!_op.IsCoveredByLA(coord))
             {
                 var pt = _geometryFactory.CreatePoint(coord);

@@ -57,7 +57,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
 
             var sw = new Stopwatch();
             sw.Start();
-            for (var i = 0; i < MaxIter; i++)
+            for (int i = 0; i < MaxIter; i++)
             {
                 foreach (var t in rect)
                 {
@@ -77,17 +77,17 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
         /// </summary>
         private static IGeometry[] CreateRectangles(Envelope env, int nRect)
         {
-            var nSide = 1 + (int) Math.Sqrt(nRect);
-            var dx = env.Width/nSide;
-            var dy = env.Height/nSide;
+            int nSide = 1 + (int) Math.Sqrt(nRect);
+            double dx = env.Width/nSide;
+            double dy = env.Height/nSide;
 
             var rectList = new List<IGeometry>();
-            for (var i = 0; i < nSide; i++)
+            for (int i = 0; i < nSide; i++)
             {
-                for (var j = 0; j < nSide; j++)
+                for (int j = 0; j < nSide; j++)
                 {
-                    var baseX = env.MinX + i*dx;
-                    var baseY = env.MinY + j*dy;
+                    double baseX = env.MinX + i*dx;
+                    double baseY = env.MinY + j*dy;
                     var envRect = new Envelope(
                         baseX, baseX + dx,
                         baseY, baseY + dy);

@@ -136,7 +136,7 @@ namespace NetTopologySuite.Index.Quadtree
         public void Insert(Envelope itemEnv, T item)
         {
             CollectStats(itemEnv);
-            Envelope insertEnv = EnsureExtent(itemEnv, _minExtent);
+            var insertEnv = EnsureExtent(itemEnv, _minExtent);
             _root.Insert(insertEnv, item);
         }
 
@@ -148,7 +148,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <returns><c>true</c> if the item was found (and thus removed).</returns>
         public bool Remove(Envelope itemEnv, T item)
         {
-            Envelope posEnv = EnsureExtent(itemEnv, _minExtent);
+            var posEnv = EnsureExtent(itemEnv, _minExtent);
             return _root.Remove(posEnv, item);
         }
 
@@ -172,7 +172,7 @@ namespace NetTopologySuite.Index.Quadtree
             * the items that are matched are the items in quads which
             * overlap the search envelope
             */
-            ArrayListVisitor<T> visitor = new ArrayListVisitor<T>();
+            var visitor = new ArrayListVisitor<T>();
             Query(searchEnv, visitor);
             return visitor.Items;
         }

@@ -234,7 +234,7 @@ namespace NetTopologySuite.Operation.Polygonize
             // order the shells to make any subsequent processing deterministic
             _shellList.Sort(new EdgeRing.EnvelopeComparator());
 
-            var includeAll = true;
+            bool includeAll = true;
             if (_extractOnlyPolygonal)
             {
                 FindDisjointShells(_shellList);
@@ -270,7 +270,7 @@ namespace NetTopologySuite.Operation.Polygonize
 
         private static void AssignHolesToShells(IEnumerable<EdgeRing> holeList, List<EdgeRing> shellList)
         {
-            foreach (EdgeRing holeEdgeRing in holeList)
+            foreach (var holeEdgeRing in holeList)
             {
                 AssignHoleToShell(holeEdgeRing, shellList);
                 /*

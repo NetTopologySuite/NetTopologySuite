@@ -22,17 +22,17 @@ namespace NetTopologySuite.Tests.Various
         [Test]
         public void PrecisionTest()
         {
-            var fsteps = new[] { .3, .3, .2, .1, .1 };
+            double[] fsteps = new[] { .3, .3, .2, .1, .1 };
             double d1 = 0, d2 = 0;
             var r = new Random(5587269);
-            for (var i = 0; i < 1358 - 11; i++)
-                for (var j = 0; j < 11; j++)
+            for (int i = 0; i < 1358 - 11; i++)
+                for (int j = 0; j < 11; j++)
                 {
-                    foreach (var matfak in fsteps)
+                    foreach (double matfak in fsteps)
                     {
-                        var d = 1.5d * r.NextDouble();
-                        var dtmp = matfak * d;
-                        var fMatFak = (float)matfak;
+                        double d = 1.5d * r.NextDouble();
+                        double dtmp = matfak * d;
+                        float fMatFak = (float)matfak;
                         float ftmp = fMatFak * (float)d;
                         d1 += dtmp;
                         d2 += ftmp;
@@ -59,22 +59,22 @@ namespace NetTopologySuite.Tests.Various
             if (factory == null)
                 throw new ArgumentNullException("factory");
 
-            WKTReader reader = new WKTReader(factory);
-            IGeometry g1 = reader.Read(t1);
+            var reader = new WKTReader(factory);
+            var g1 = reader.Read(t1);
             Assert.IsNotNull(g1);
             Assert.IsTrue(g1.IsValid);
             Assert.IsInstanceOf(typeof(IPolygon), g1);
             Assert.IsInstanceOf(typeof(Polygon), g1);
 
-            IGeometry g2 = reader.Read(t2);
+            var g2 = reader.Read(t2);
             Assert.IsNotNull(g2);
             Assert.IsTrue(g2.IsValid);
             Assert.IsInstanceOf(typeof(IMultiPolygon), g2);
             Assert.IsInstanceOf(typeof(MultiPolygon), g2);
 
-            Stopwatch watch = new Stopwatch();
+            var watch = new Stopwatch();
             watch.Start();
-            IGeometry r = g1.Intersection(g2);
+            var r = g1.Intersection(g2);
             watch.Stop();
             Assert.IsNotNull(r);
             Assert.IsInstanceOf(typeof(IMultiPolygon), r);
@@ -87,7 +87,7 @@ namespace NetTopologySuite.Tests.Various
         public void TestSegmentStringWithCoordinateArraySequenceFactory()
         {
             string[] strings = ss.Split('|');
-            Coordinate[] coordinates = new Coordinate[strings.Length];
+            var coordinates = new Coordinate[strings.Length];
             for (int i = 0; i < strings.Length; i++)
             {
                 string[] components = strings[i].Split(',');
@@ -96,8 +96,8 @@ namespace NetTopologySuite.Tests.Various
                 coordinates[i] = new Coordinate(x, y);
             }
 
-            CoordinateArraySequenceFactory factory = CoordinateArraySequenceFactory.Instance;
-            ICoordinateSequence sequence = factory.Create(coordinates);
+            var factory = CoordinateArraySequenceFactory.Instance;
+            var sequence = factory.Create(coordinates);
             PerformTest(sequence);
         }
 
@@ -105,7 +105,7 @@ namespace NetTopologySuite.Tests.Various
         public void TestSegmentStringWithDotSpatialAffineCoordinateSequenceFactory()
         {
             string[] strings = ss.Split('|');
-            Coordinate[] coordinates = new Coordinate[strings.Length];
+            var coordinates = new Coordinate[strings.Length];
             for (int i = 0; i < strings.Length; i++)
             {
                 string[] components = strings[i].Split(',');
@@ -114,8 +114,8 @@ namespace NetTopologySuite.Tests.Various
                 coordinates[i] = new Coordinate(x, y);
             }
 
-            DotSpatialAffineCoordinateSequenceFactory factory = DotSpatialAffineCoordinateSequenceFactory.Instance;
-            ICoordinateSequence sequence = factory.Create(coordinates);
+            var factory = DotSpatialAffineCoordinateSequenceFactory.Instance;
+            var sequence = factory.Create(coordinates);
             PerformTest(sequence);
         }
 
@@ -124,18 +124,18 @@ namespace NetTopologySuite.Tests.Various
             if (sequence == null)
                 throw new ArgumentNullException("sequence");
 
-            Coordinate[] coordinates = sequence.ToCoordinateArray();
-            NodedSegmentString segmentString = new NodedSegmentString(coordinates, null);
-            Stopwatch watch = new Stopwatch();
-            NodingValidator validator = new NodingValidator(new[] { segmentString });
+            var coordinates = sequence.ToCoordinateArray();
+            var segmentString = new NodedSegmentString(coordinates, null);
+            var watch = new Stopwatch();
+            var validator = new NodingValidator(new[] { segmentString });
             validator.CheckValid();
             watch.Start();
             validator.CheckValid();
             watch.Stop();
             Console.WriteLine("NodingValidator.CheckValid => ElapsedMilliseconds: {0}", watch.ElapsedMilliseconds);
 
-            BasicSegmentString segmentStringBasic = new BasicSegmentString(coordinates, null);
-            FastNodingValidator fastValidator = new FastNodingValidator(new[] { segmentStringBasic });
+            var segmentStringBasic = new BasicSegmentString(coordinates, null);
+            var fastValidator = new FastNodingValidator(new[] { segmentStringBasic });
             watch.Reset(); watch.Start();
             fastValidator.CheckValid();
             watch.Stop();

@@ -12,7 +12,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         [TestAttribute]
         public void TestRotate1()
         {
-            AffineTransformation t = AffineTransformation.RotationInstance(Math.PI / 2);
+            var t = AffineTransformation.RotationInstance(Math.PI / 2);
             CheckTransformation(10, 0, t, 0, 10);
             CheckTransformation(0, 10, t, -10, 0);
             CheckTransformation(-10, -10, t, 10, -10);
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
 
         public void TestReflectXy1()
         {
-            AffineTransformation t = AffineTransformation.ReflectionInstance(1, 1);
+            var t = AffineTransformation.ReflectionInstance(1, 1);
             CheckTransformation(10, 0, t, 0, 10);
             CheckTransformation(0, 10, t, 10, 0);
             CheckTransformation(-10, -10, t, -10, -10);
@@ -41,7 +41,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         [TestAttribute]
         public void TestReflectXy2()
         {
-            AffineTransformation t = AffineTransformation.ReflectionInstance(1, -1);
+            var t = AffineTransformation.ReflectionInstance(1, -1);
             CheckTransformation(10, 0, t, 0, -10);
             CheckTransformation(0, 10, t, -10, 0);
             CheckTransformation(-10, -10, t, 10, 10);
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         [TestAttribute]
         public void TestReflectXyxy1()
         {
-            AffineTransformation t = AffineTransformation.ReflectionInstance(0, 5, 5, 0);
+            var t = AffineTransformation.ReflectionInstance(0, 5, 5, 0);
             CheckTransformation(5, 0, t, 5, 0);
             CheckTransformation(0, 0, t, 5, 5);
             CheckTransformation(-10, -10, t, 15, 15);
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
 
         public void TestScale1()
         {
-            AffineTransformation t = AffineTransformation.ScaleInstance(2, 3);
+            var t = AffineTransformation.ScaleInstance(2, 3);
             CheckTransformation(10, 0, t, 20, 0);
             CheckTransformation(0, 10, t, 0, 30);
             CheckTransformation(-10, -10, t, -20, -30);
@@ -69,14 +69,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
 
         public void TestShear1()
         {
-            AffineTransformation t = AffineTransformation.ShearInstance(2, 3);
+            var t = AffineTransformation.ShearInstance(2, 3);
             CheckTransformation(10, 0, t, 10, 30);
         }
 
         [TestAttribute]
         public void TestTranslate1()
         {
-            AffineTransformation t = AffineTransformation.TranslationInstance(2, 3);
+            var t = AffineTransformation.TranslationInstance(2, 3);
             CheckTransformation(1, 0, t, 3, 3);
             CheckTransformation(0, 0, t, 2, 3);
             CheckTransformation(-10, -5, t, -8, -2);
@@ -85,7 +85,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
 
         public void TestTranslateRotate1()
         {
-            AffineTransformation t = AffineTransformation.TranslationInstance(3, 3)
+            var t = AffineTransformation.TranslationInstance(3, 3)
                                             .Rotate(Math.PI / 2);
             CheckTransformation(10, 0, t, -3, 13);
             CheckTransformation(-10, -10, t, 7, -7);
@@ -94,11 +94,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
 
         public void TestCompose1()
         {
-            AffineTransformation t0 = AffineTransformation.TranslationInstance(10, 0);
+            var t0 = AffineTransformation.TranslationInstance(10, 0);
             t0.Rotate(Math.PI / 2);
             t0.Translate(0, -10);
 
-            AffineTransformation t1 = AffineTransformation.TranslationInstance(0, 0);
+            var t1 = AffineTransformation.TranslationInstance(0, 0);
             t1.Rotate(Math.PI / 2);
 
             CheckTransformation(t0, t1);
@@ -107,10 +107,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         [TestAttribute]
         public void TestCompose2()
         {
-            AffineTransformation t0 = AffineTransformation.ReflectionInstance(0, 0, 1, 0);
+            var t0 = AffineTransformation.ReflectionInstance(0, 0, 1, 0);
             t0.Reflect(0, 0, 0, -1);
 
-            AffineTransformation t1 = AffineTransformation.RotationInstance(Math.PI);
+            var t1 = AffineTransformation.RotationInstance(Math.PI);
 
             CheckTransformation(t0, t1);
         }
@@ -174,10 +174,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         [TestAttribute]
         public void TestCompose3()
         {
-            AffineTransformation t0 = AffineTransformation.ReflectionInstance(0, 10, 10, 0);
+            var t0 = AffineTransformation.ReflectionInstance(0, 10, 10, 0);
             t0.Translate(-10, -10);
 
-            AffineTransformation t1 = AffineTransformation.ReflectionInstance(0, 0, -1, 1);
+            var t1 = AffineTransformation.ReflectionInstance(0, 0, -1, 1);
 
             CheckTransformation(t0, t1);
         }
@@ -192,8 +192,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         /// <param name="yp">the expected output y</param>
         static void CheckTransformation(double x, double y, AffineTransformation trans, double xp, double yp)
         {
-            Coordinate p = new Coordinate(x, y);
-            Coordinate p2 = new Coordinate();
+            var p = new Coordinate(x, y);
+            var p2 = new Coordinate();
             trans.Transform(p, p2);
             Assert.AreEqual(xp, p2.X, .00005);
             Assert.AreEqual(yp, p2.Y, .00005);
@@ -201,8 +201,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             // if the transformation is invertible, test the inverse
             try
             {
-                AffineTransformation invTrans = trans.GetInverse();
-                Coordinate pInv = new Coordinate();
+                var invTrans = trans.GetInverse();
+                var pInv = new Coordinate();
                 invTrans.Transform(p2, pInv);
                 Assert.AreEqual(x, pInv.X, .00005);
                 Assert.AreEqual(y, pInv.Y, .00005);
@@ -221,11 +221,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
 
         static void CheckTransformation(string geomStr)
         {
-            Geometry geom = (Geometry)WktReader.Read(geomStr);
-            AffineTransformation trans = AffineTransformation
+            var geom = (Geometry)WktReader.Read(geomStr);
+            var trans = AffineTransformation
                 .RotationInstance(Math.PI / 2);
-            AffineTransformation inv = trans.GetInverse();
-            Geometry transGeom = (Geometry)geom.Copy();
+            var inv = trans.GetInverse();
+            var transGeom = (Geometry)geom.Copy();
             transGeom.Apply(trans);
             // System.out.println(transGeom);
             transGeom.Apply(inv);

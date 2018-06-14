@@ -107,7 +107,7 @@ namespace NetTopologySuite.Noding
                 // record intersection info
                 _hasIntersection = true;
 
-                var isProper = _li.IsProper;
+                bool isProper = _li.IsProper;
                 if (isProper)
                     _hasProperIntersection = true;
                 if (!isProper)
@@ -118,7 +118,7 @@ namespace NetTopologySuite.Noding
                  * OR no location has yet been recorded
                  * save the location data
                  */
-                var saveLocation = !(FindProper && !isProper);
+                bool saveLocation = !(FindProper && !isProper);
                 /*
                 bool saveLocation = true;
                 if (_findProper && !isProper) saveLocation = false;

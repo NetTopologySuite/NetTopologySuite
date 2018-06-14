@@ -91,7 +91,7 @@ namespace NetTopologySuite.Algorithm
              * it is sufficient to simply test the Y ordinate.
              * "Upwards" means relative to the left end of the segment.
              */
-            var isSegUpwards = p1.Y > p0.Y;
+            bool isSegUpwards = p1.Y > p0.Y;
 
             /**
              * Since we now know that neither segment endpoint

@@ -35,9 +35,9 @@ namespace NetTopologySuite.Noding
         {
             var segStr = new List<ISegmentString>();
             var lines = LinearComponentExtracter.GetLines(geom);
-            foreach (IGeometry line in lines)
+            foreach (var line in lines)
             {
-                Coordinate[] pts = line.Coordinates;
+                var pts = line.Coordinates;
                 segStr.Add(new NodedSegmentString(pts, geom));
             }
             return segStr;
@@ -53,12 +53,12 @@ namespace NetTopologySuite.Noding
         /// <returns>A <see cref="ILineString"/> or a <see cref="IMultiLineString"/>.</returns>
         public static IGeometry ToGeometry(IList<ISegmentString> segStrings, IGeometryFactory geomFact)
         {
-            ILineString[] lines = new ILineString[segStrings.Count];
+            var lines = new ILineString[segStrings.Count];
             int index = 0;
 
-            foreach (ISegmentString ss in segStrings)
+            foreach (var ss in segStrings)
             {
-                ILineString line = geomFact.CreateLineString(ss.Coordinates);
+                var line = geomFact.CreateLineString(ss.Coordinates);
                 lines[index++] = line;
             }
             if (lines.Length == 1)
@@ -68,8 +68,8 @@ namespace NetTopologySuite.Noding
 
         public static string ToString(IEnumerable<ISegmentString> segStrings)
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (ISegmentString segStr in segStrings)
+            var sb = new StringBuilder();
+            foreach (var segStr in segStrings)
                 sb.AppendFormat("{0}\n", segStr);
             return sb.ToString();
         }

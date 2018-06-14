@@ -35,9 +35,9 @@ namespace NetTopologySuite.Geometries.Prepared
         protected bool IsAllTestComponentsInTarget(IGeometry testGeom)
         {
             IList<Coordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
-            foreach (Coordinate p in coords)
+            foreach (var p in coords)
             {
-                Location loc = _targetPointLocator.Locate(p);
+                var loc = _targetPointLocator.Locate(p);
                 if (loc == Location.Exterior)
                     return false;
             }
@@ -53,9 +53,9 @@ namespace NetTopologySuite.Geometries.Prepared
         protected bool IsAllTestComponentsInTargetInterior(IGeometry testGeom)
         {
             IList<Coordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
-            foreach (Coordinate p in coords)
+            foreach (var p in coords)
             {
-                Location loc = _targetPointLocator.Locate(p);
+                var loc = _targetPointLocator.Locate(p);
                 if (loc != Location.Interior)
                     return false;
             }
@@ -71,9 +71,9 @@ namespace NetTopologySuite.Geometries.Prepared
         protected bool IsAnyTestComponentInTarget(IGeometry testGeom)
         {
             IList<Coordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
-            foreach (Coordinate p in coords)
+            foreach (var p in coords)
             {
-                Location loc = _targetPointLocator.Locate(p);
+                var loc = _targetPointLocator.Locate(p);
                 if (loc != Location.Exterior)
                     return true;
             }
@@ -89,9 +89,9 @@ namespace NetTopologySuite.Geometries.Prepared
         protected bool IsAnyTestComponentInTargetInterior(IGeometry testGeom)
         {
             IList<Coordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
-            foreach (Coordinate p in coords)
+            foreach (var p in coords)
             {
-                Location loc = _targetPointLocator.Locate(p);
+                var loc = _targetPointLocator.Locate(p);
                 if (loc == Location.Interior)
                     return true;
             }
@@ -107,9 +107,9 @@ namespace NetTopologySuite.Geometries.Prepared
         protected bool IsAnyTargetComponentInAreaTest(IGeometry testGeom, IList<Coordinate> targetRepPts)
         {
             IPointOnGeometryLocator piaLoc = new SimplePointInAreaLocator(testGeom);
-            foreach (Coordinate p in targetRepPts)
+            foreach (var p in targetRepPts)
             {
-                Location loc = piaLoc.Locate(p);
+                var loc = piaLoc.Locate(p);
                 if (loc != Location.Exterior)
                     return true;
             }

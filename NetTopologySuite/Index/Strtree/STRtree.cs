@@ -140,7 +140,7 @@ namespace NetTopologySuite.Index.Strtree
         protected override IList<IBoundable<Envelope, TItem>> CreateParentBoundables(IList<IBoundable<Envelope, TItem>> childBoundables, int newLevel)
         {
             Assert.IsTrue(childBoundables.Count != 0);
-            var minLeafCount = (int) Math.Ceiling((childBoundables.Count/(double) NodeCapacity));
+            int minLeafCount = (int) Math.Ceiling((childBoundables.Count/(double) NodeCapacity));
             var sortedChildBoundables = new List<IBoundable<Envelope, TItem>>(childBoundables);
             sortedChildBoundables.Sort(XComparer);
             var verticalSlices = VerticalSlices(sortedChildBoundables,
@@ -186,13 +186,13 @@ namespace NetTopologySuite.Index.Strtree
         /// <param name="sliceCount"></param>
         protected IList<IBoundable<Envelope, TItem>>[] VerticalSlices(IList<IBoundable<Envelope, TItem>> childBoundables, int sliceCount)
         {
-            var sliceCapacity = (int) Math.Ceiling(childBoundables.Count/(double) sliceCount);
+            int sliceCapacity = (int) Math.Ceiling(childBoundables.Count/(double) sliceCount);
             var slices = new IList<IBoundable<Envelope, TItem>>[sliceCount];
             var i = childBoundables.GetEnumerator();
-            for (var j = 0; j < sliceCount; j++)
+            for (int j = 0; j < sliceCount; j++)
             {
                 slices[j] = new List<IBoundable<Envelope, TItem>>();
-                var boundablesAddedToSlice = 0;
+                int boundablesAddedToSlice = 0;
                 /*
                  *          Diego Guidi says:
                  *          the line below introduce an error:
@@ -374,7 +374,7 @@ namespace NetTopologySuite.Index.Strtree
 
         private static TItem[] NearestNeighbour(BoundablePair<TItem> initBndPair, double maxDistance)
         {
-            var distanceLowerBound = maxDistance;
+            double distanceLowerBound = maxDistance;
             BoundablePair<TItem> minPair = null;
 
             // initialize internal structures
@@ -387,7 +387,7 @@ namespace NetTopologySuite.Index.Strtree
             {
                 // pop head of queue and expand one side of pair
                 var bndPair = priQ.Poll();
-                var currentDistance = bndPair.Distance; //bndPair.GetDistance();
+                double currentDistance = bndPair.Distance; //bndPair.GetDistance();
 
                 /**
                  * If the distance for the first node in the queue
@@ -442,7 +442,7 @@ namespace NetTopologySuite.Index.Strtree
 
         private TItem[] NearestNeighbour(BoundablePair<TItem> initBndPair, double maxDistance, int k)
         {
-            var distanceLowerBound = maxDistance;
+            double distanceLowerBound = maxDistance;
 
             // initialize internal structures
             var priQ = new PriorityQueue<BoundablePair<TItem>>();
@@ -456,7 +456,7 @@ namespace NetTopologySuite.Index.Strtree
             {
                 // pop head of queue and expand one side of pair
                 var bndPair = priQ.Poll();
-                var currentDistance = bndPair.Distance;
+                double currentDistance = bndPair.Distance;
 
                 /**
                  * If the distance for the first node in the queue
@@ -529,7 +529,7 @@ namespace NetTopologySuite.Index.Strtree
              * Iterate the K Nearest Neighbour Queue and retrieve the item from each BoundablePair
              * in this queue
              */
-            TItem[] items = new TItem[kNearestNeighbors.Size];
+            var items = new TItem[kNearestNeighbors.Size];
             var resultIterator = kNearestNeighbors.GetEnumerator();
             int count = 0;
             while (resultIterator.MoveNext())

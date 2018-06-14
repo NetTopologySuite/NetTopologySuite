@@ -41,7 +41,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         {
             var reader = new WKTReader(new GeometryFactory());
             var gS = (Geometry)reader.Read(wkt);
-            var buffer = SerializationUtility.Serialize(gS);
+            byte[] buffer = SerializationUtility.Serialize(gS);
 
             var gD = SerializationUtility.Deserialize<Geometry>(buffer);
             Assert.IsTrue(gD.EqualsExact(gS));

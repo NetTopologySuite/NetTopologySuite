@@ -149,7 +149,7 @@ namespace NetTopologySuite.IO
             }
 
             //Modify WKB Geometry type
-            var intGeometryType = (uint)geometryType & 0xff;
+            uint intGeometryType = (uint)geometryType & 0xff;
             if ((HandleOrdinates & Ordinates.Z) == Ordinates.Z)
             {
                 intGeometryType += 1000;
@@ -337,18 +337,18 @@ namespace NetTopologySuite.IO
                 writer.Write(sequence.Count);
 
             // zm-values if not provided by sequence
-            var ordinateZ = Coordinate.NullOrdinate;
-            var ordinateM = Coordinate.NullOrdinate;
+            double ordinateZ = Coordinate.NullOrdinate;
+            double ordinateM = Coordinate.NullOrdinate;
 
             // test if zm-values are provided by sequence
-            var getZ = (sequence.Ordinates & Ordinates.Z) == Ordinates.Z;
-            var getM = (sequence.Ordinates & Ordinates.M) == Ordinates.M;
+            bool getZ = (sequence.Ordinates & Ordinates.Z) == Ordinates.Z;
+            bool getM = (sequence.Ordinates & Ordinates.M) == Ordinates.M;
 
             // test if zm-values should be emitted
-            var writeZ = (HandleOrdinates & Ordinates.Z) == Ordinates.Z;
-            var writeM = (HandleOrdinates & Ordinates.M) == Ordinates.M;
+            bool writeZ = (HandleOrdinates & Ordinates.Z) == Ordinates.Z;
+            bool writeM = (HandleOrdinates & Ordinates.M) == Ordinates.M;
 
-            for (var index = 0; index < sequence.Count; index++)
+            for (int index = 0; index < sequence.Count; index++)
             {
                 writer.Write(sequence.GetOrdinate(index, Ordinate.X));
                 writer.Write(sequence.GetOrdinate(index, Ordinate.Y));
@@ -443,7 +443,7 @@ namespace NetTopologySuite.IO
             //     writer.Write((int)WKBGeometryTypes.WKBMultiPoint);
             //else writer.Write((int)WKBGeometryTypes.WKBMultiPointZ);
             writer.Write(multiPoint.NumGeometries);
-            for (var i = 0; i < multiPoint.NumGeometries; i++)
+            for (int i = 0; i < multiPoint.NumGeometries; i++)
                 Write(multiPoint.Geometries[i] as IPoint, writer);
         }
 
@@ -460,7 +460,7 @@ namespace NetTopologySuite.IO
             //     writer.Write((int)WKBGeometryTypes.WKBMultiLineString);
             //else writer.Write((int)WKBGeometryTypes.WKBMultiLineStringZ);
             writer.Write(multiLineString.NumGeometries);
-            for (var i = 0; i < multiLineString.NumGeometries; i++)
+            for (int i = 0; i < multiLineString.NumGeometries; i++)
                 Write(multiLineString.Geometries[i] as ILineString, writer);
         }
 
@@ -477,7 +477,7 @@ namespace NetTopologySuite.IO
             //     writer.Write((int)WKBGeometryTypes.WKBMultiPolygon);
             //else writer.Write((int)WKBGeometryTypes.WKBMultiPolygonZ);
             writer.Write(multiPolygon.NumGeometries);
-            for (var i = 0; i < multiPolygon.NumGeometries; i++)
+            for (int i = 0; i < multiPolygon.NumGeometries; i++)
                 Write(multiPolygon.Geometries[i] as IPolygon, writer);
         }
 
@@ -494,7 +494,7 @@ namespace NetTopologySuite.IO
             //     writer.Write((int)WKBGeometryTypes.WKBGeometryCollection);
             //else writer.Write((int)WKBGeometryTypes.WKBGeometryCollectionZ);
             writer.Write(geomCollection.NumGeometries);
-            for (var i = 0; i < geomCollection.NumGeometries; i++)
+            for (int i = 0; i < geomCollection.NumGeometries; i++)
                 Write(geomCollection.Geometries[i], writer);
         }
 
@@ -609,8 +609,8 @@ namespace NetTopologySuite.IO
         /// <returns></returns>
         protected int SetByteStream(IPolygon geometry)
         {
-            var pointSize = _coordinateSize; //Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
-            var count = InitCount;
+            int pointSize = _coordinateSize; //Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
+            int count = InitCount;
             count += 4 /*+ 4*/;                                 // NumRings /*+ NumPoints */
             count += 4 * (geometry.NumInteriorRings + 1);   // Index parts
             count += geometry.NumPoints * pointSize;        // Points in exterior and interior rings

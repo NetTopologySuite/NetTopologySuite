@@ -36,8 +36,8 @@ namespace NetTopologySuite.Index.Bintree
         /// </summary>
         public static Interval EnsureExtent(Interval itemInterval, double minExtent)
         {
-            var min = itemInterval.Min;
-            var max = itemInterval.Max;
+            double min = itemInterval.Min;
+            double max = itemInterval.Max;
             // has a non-zero extent
             if (min != max)
                 return itemInterval;
@@ -132,7 +132,7 @@ namespace NetTopologySuite.Index.Bintree
         /// <returns><c>true</c> if the item was found (and thus removed)</returns>
         public bool Remove(Interval itemInterval, T item)
         {
-            Interval insertInterval = EnsureExtent(itemInterval, _minExtent);
+            var insertInterval = EnsureExtent(itemInterval, _minExtent);
             return _root.Remove(insertInterval, item);
         }
 

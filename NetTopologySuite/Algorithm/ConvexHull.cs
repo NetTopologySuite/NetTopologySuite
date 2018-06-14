@@ -125,7 +125,7 @@ namespace NetTopologySuite.Algorithm
              * but this doesn't matter since the points of the interior polygon
              * are forced to be in the reduced set.
              */
-            for (var i = 0; i < pts.Length; i++)
+            for (int i = 0; i < pts.Length; i++)
                 if (!PointLocation.IsInRing(pts[i], polyPts))
                     reducedSet.Add(pts[i]);
 

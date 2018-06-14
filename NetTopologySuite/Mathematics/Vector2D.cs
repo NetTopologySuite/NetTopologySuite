@@ -224,7 +224,7 @@ namespace NetTopologySuite.Mathematics
         /// <returns>A new normalized vector</returns>
         public Vector2D Normalize()
         {
-            var length = Length();
+            double length = Length();
             if (length > 0.0)
                 return Divide(length);
             return Create(0.0, 0.0);
@@ -309,9 +309,9 @@ namespace NetTopologySuite.Mathematics
         /// <returns></returns>
         public double AngleTo(Vector2D v)
         {
-            var a1 = Angle();
-            var a2 = v.Angle();
-            var angDel = a2 - a1;
+            double a1 = Angle();
+            double a2 = v.Angle();
+            double angDel = a2 - a1;
 
             // normalize, maintaining orientation
             if (angDel <= -System.Math.PI)
@@ -347,7 +347,7 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The rotated vector.</returns>
         public Vector2D RotateByQuarterCircle(int numQuarters)
         {
-            var nQuad = numQuarters % 4;
+            int nQuad = numQuarters % 4;
             if (numQuarters < 0 && nQuad != 0)
             {
                 nQuad = nQuad + 4;
@@ -435,7 +435,7 @@ namespace NetTopologySuite.Mathematics
         public override int GetHashCode()
         {
             // Algorithm from Effective Java by Joshua Bloch
-            var result = 17;
+            int result = 17;
             result = 37 * result + Coordinate.GetHashCode(_x);
             result = 37 * result + Coordinate.GetHashCode(_y);
             return result;

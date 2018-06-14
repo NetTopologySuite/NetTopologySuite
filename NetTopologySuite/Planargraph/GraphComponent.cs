@@ -29,7 +29,7 @@ namespace NetTopologySuite.Planargraph
         {
             while (i.MoveNext())
             {
-                GraphComponent comp = (GraphComponent) i.Current;
+                var comp = (GraphComponent) i.Current;
                 comp.Visited = visited;
             }
         }
@@ -44,7 +44,7 @@ namespace NetTopologySuite.Planargraph
         {
             while (i.MoveNext())
             {
-                GraphComponent comp = (GraphComponent) i.Current;
+                var comp = (GraphComponent) i.Current;
                 comp.Marked = marked;
             }
         }
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Planargraph
         {
             while (i.MoveNext())
             {
-                GraphComponent comp = (GraphComponent) i.Current;
+                var comp = (GraphComponent) i.Current;
                 if (comp.IsVisited == visitedState)
                     return comp;
             }

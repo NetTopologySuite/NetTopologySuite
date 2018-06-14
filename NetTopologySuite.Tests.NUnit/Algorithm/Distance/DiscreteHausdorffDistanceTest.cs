@@ -46,8 +46,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance
 
         private void RunTest(string wkt1, string wkt2, double expectedDistance)
         {
-            IGeometry g1 = GeometryUtils.ReadWKT(wkt1);
-            IGeometry g2 = GeometryUtils.ReadWKT(wkt2);
+            var g1 = GeometryUtils.ReadWKT(wkt1);
+            var g2 = GeometryUtils.ReadWKT(wkt2);
 
             double distance = DiscreteHausdorffDistance.Distance(g1, g2);
             Assert.AreEqual(distance, expectedDistance, TOLERANCE);
@@ -55,8 +55,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance
 
         private void RunTest(string wkt1, string wkt2, double densifyFrac, double expectedDistance)
         {
-            IGeometry g1 = GeometryUtils.ReadWKT(wkt1);
-            IGeometry g2 = GeometryUtils.ReadWKT(wkt2);
+            var g1 = GeometryUtils.ReadWKT(wkt1);
+            var g2 = GeometryUtils.ReadWKT(wkt2);
 
             double distance = DiscreteHausdorffDistance.Distance(g1, g2, densifyFrac);
             Assert.AreEqual(distance, expectedDistance, TOLERANCE);

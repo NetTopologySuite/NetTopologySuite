@@ -168,8 +168,8 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public int OrientationIndex(LineSegment seg)
         {
-            var orient0 = (int)Orientation.Index(_p0, _p1, seg._p0);
-            var orient1 = (int)Orientation.Index(_p0, _p1, seg._p1);
+            int orient0 = (int)Orientation.Index(_p0, _p1, seg._p0);
+            int orient1 = (int)Orientation.Index(_p0, _p1, seg._p1);
             // this handles the case where the points are Curve or collinear
             if (orient0 >= 0 && orient1 >= 0)
                 return Math.Max(orient0, orient1);
@@ -349,9 +349,9 @@ namespace NetTopologySuite.Geometries
                         r>1 Point is on the forward extension of AB
                         0<r<1 Point is interior to AB
             */
-            var dx = _p1.X - _p0.X;
-            var dy = _p1.Y - _p0.Y;
-            var len = dx * dx + dy * dy;
+            double dx = _p1.X - _p0.X;
+            double dy = _p1.Y - _p0.Y;
+            double len = dx * dx + dy * dy;
 
             // handle zero-length segments
             if (len <= 0.0) return double.NaN;
@@ -396,7 +396,7 @@ namespace NetTopologySuite.Geometries
             if (p.Equals(_p0) || p.Equals(_p1))
                 return new Coordinate(p);
 
-            var r = ProjectionFactor(p);
+            double r = ProjectionFactor(p);
             var coord = new Coordinate { X = _p0.X + r * (_p1.X - _p0.X), Y = _p0.Y + r * (_p1.Y - _p0.Y) };
             return coord;
         }
@@ -413,8 +413,8 @@ namespace NetTopologySuite.Geometries
         /// <returns>The projected line segment, or <c>null</c> if there is no overlap.</returns>
         public LineSegment Project(LineSegment seg)
         {
-            var pf0 = ProjectionFactor(seg._p0);
-            var pf1 = ProjectionFactor(seg._p1);
+            double pf0 = ProjectionFactor(seg._p0);
+            double pf1 = ProjectionFactor(seg._p1);
             // check if segment projects at all
             if (pf0 >= 1.0 && pf1 >= 1.0) return null;
             if (pf0 <= 0.0 && pf1 <= 0.0) return null;
@@ -439,11 +439,11 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public Coordinate ClosestPoint(Coordinate p)
         {
-            var factor = ProjectionFactor(p);
+            double factor = ProjectionFactor(p);
             if (factor > 0 && factor < 1)
                 return Project(p);
-            var dist0 = _p0.Distance(p);
-            var dist1 = _p1.Distance(p);
+            double dist0 = _p0.Distance(p);
+            double dist1 = _p1.Distance(p);
             return dist0 < dist1 ? _p0 : _p1;
         }
 
@@ -614,7 +614,7 @@ namespace NetTopologySuite.Geometries
         public int CompareTo(object o)
         {
             var other = (LineSegment)o;
-            var comp0 = _p0.CompareTo(other._p0);
+            int comp0 = _p0.CompareTo(other._p0);
             return comp0 != 0 ? comp0 : _p1.CompareTo(other._p1);
         }
 

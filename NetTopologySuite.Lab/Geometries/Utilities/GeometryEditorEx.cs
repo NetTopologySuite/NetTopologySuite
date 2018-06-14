@@ -165,7 +165,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 return EditLineString((ILineString)geometry);
             }
 
-            var err = string.Format("Unsupported Geometry class: {0}", geometry.GetType().Name);
+            string err = string.Format("Unsupported Geometry class: {0}", geometry.GetType().Name);
             Assert.ShouldNeverReachHere(err);
             return null;
         }
@@ -242,7 +242,7 @@ namespace NetTopologySuite.Geometries.Utilities
             }
 
             IList<ILinearRing> holes = new List<ILinearRing>(newPolygon.NumInteriorRings);
-            for (var i = 0; i < newPolygon.NumInteriorRings; i++)
+            for (int i = 0; i < newPolygon.NumInteriorRings; i++)
             {
                 var hole = (ILinearRing)Edit(newPolygon.GetInteriorRingN(i));
                 if (hole == null || hole.IsEmpty)
@@ -267,7 +267,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
             // edit the component geometries
             var geometries = new List<IGeometry>(collectionForType.NumGeometries);
-            for (var i = 0; i < collectionForType.NumGeometries; i++)
+            for (int i = 0; i < collectionForType.NumGeometries; i++)
             {
                 var geometry = Edit(collectionForType.GetGeometryN(i));
                 if (geometry == null || geometry.IsEmpty)

@@ -78,7 +78,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>The signed area of the ring</returns>
         public static double OfRingSigned(ICoordinateSequence ring)
         {
-            var n = ring.Count;
+            int n = ring.Count;
             if (n < 3)
                 return 0.0;
             /**
@@ -90,10 +90,10 @@ namespace NetTopologySuite.Algorithm
             var p2 = new Coordinate();
             ring.GetCoordinate(0, p1);
             ring.GetCoordinate(1, p2);
-            var x0 = p1.X;
+            double x0 = p1.X;
             p2.X -= x0;
-            var sum = 0.0;
-            for (var i = 1; i < n - 1; i++)
+            double sum = 0.0;
+            for (int i = 1; i < n - 1; i++)
             {
                 p0.Y = p1.Y;
                 p1.X = p2.X;

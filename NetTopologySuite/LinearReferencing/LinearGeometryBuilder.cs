@@ -79,8 +79,8 @@ namespace NetTopologySuite.LinearReferencing
                 return;
             }
 
-            Coordinate[] rawPts = _coordList.ToCoordinateArray();
-            Coordinate[] pts = rawPts;
+            var rawPts = _coordList.ToCoordinateArray();
+            var pts = rawPts;
             if (FixInvalidLines)
                 pts = ValidCoordinateSequence(rawPts);
 

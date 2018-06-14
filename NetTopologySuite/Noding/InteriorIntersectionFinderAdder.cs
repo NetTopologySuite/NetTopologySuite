@@ -51,12 +51,12 @@ namespace NetTopologySuite.Noding
             if (e0 == e1 && segIndex0 == segIndex1)
                 return;
 
-            Coordinate[] coordinates0 = e0.Coordinates;
-            Coordinate p00 = coordinates0[segIndex0];
-            Coordinate p01 = coordinates0[segIndex0 + 1];
-            Coordinate[] coordinates1 = e1.Coordinates;
-            Coordinate p10 = coordinates1[segIndex1];
-            Coordinate p11 = coordinates1[segIndex1 + 1];
+            var coordinates0 = e0.Coordinates;
+            var p00 = coordinates0[segIndex0];
+            var p01 = coordinates0[segIndex0 + 1];
+            var coordinates1 = e1.Coordinates;
+            var p10 = coordinates1[segIndex1];
+            var p11 = coordinates1[segIndex1 + 1];
             _li.ComputeIntersection(p00, p01, p10, p11);
 
             if (!_li.HasIntersection) return;
@@ -64,9 +64,9 @@ namespace NetTopologySuite.Noding
             for (int intIndex = 0; intIndex < _li.IntersectionNum; intIndex++)
                 _interiorIntersections.Add(_li.GetIntersection(intIndex));
 
-            NodedSegmentString nss0 = (NodedSegmentString)e0;
+            var nss0 = (NodedSegmentString)e0;
             nss0.AddIntersections(_li, segIndex0, 0);
-            NodedSegmentString nss1 = (NodedSegmentString)e1;
+            var nss1 = (NodedSegmentString)e1;
             nss1.AddIntersections(_li, segIndex1, 1);
         }
 

@@ -83,16 +83,16 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             var sw = new Stopwatch();
             sw.Start();
 
-            for (var i = 0; i < _pts.Length; i++)
+            for (int i = 0; i < _pts.Length; i++)
             {
-                for (var j = 0; j < _pts.Length; j++)
+                for (int j = 0; j < _pts.Length; j++)
                 {
                     if (i == j) continue;
 
-                    var segResult = false;
+                    bool segResult = false;
                     if (useSegInt)
                         segResult = rectSegIntersector.Intersects(_pts[i], _pts[j]);
-                    var sideResult = false;
+                    bool sideResult = false;
                     if (useSideInt)
                         sideResult = rectSideIntersector.Intersects(_pts[i], _pts[j]);
 
@@ -119,10 +119,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 {
                     if (i == j) continue;
 
-                    var segResult = false;
+                    bool segResult = false;
                     if (useSegInt)
                         segResult = rectSegIntersector.Intersects(_pts[i], _pts[j]);
-                    var sideResult = false;
+                    bool sideResult = false;
                     if (useSideInt)
                         sideResult = rectSideIntersector.Intersects(_pts[i], _pts[j]);
 

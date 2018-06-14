@@ -135,7 +135,7 @@ namespace NetTopologySuite.Geometries
         public override IGeometry Reverse()
         {
             int nLines = Geometries.Length;
-            ILineString[] revLines = new ILineString[nLines];
+            var revLines = new ILineString[nLines];
             for (int i = 0; i < Geometries.Length; i++)
                 revLines[nLines - 1 - i] = (ILineString) Geometries[i].Reverse();
             return Factory.CreateMultiLineString(revLines);
@@ -155,7 +155,7 @@ namespace NetTopologySuite.Geometries
         public override IGeometry Copy()
         {
             var lineStrings = new ILineString[NumGeometries];
-            for (var i = 0; i < lineStrings.Length; i++)
+            for (int i = 0; i < lineStrings.Length; i++)
                 lineStrings[i] = (ILineString)GetGeometryN(i).Copy();
 
             return new MultiLineString(lineStrings, Factory);

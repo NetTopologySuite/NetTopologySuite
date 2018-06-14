@@ -98,20 +98,20 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             double pp2x, double pp2y
             )
         {
-            Coordinate p0 = new Coordinate(p0x, p0y);
-            Coordinate p1 = new Coordinate(p1x, p1y);
-            Coordinate p2 = new Coordinate(p2x, p2y);
+            var p0 = new Coordinate(p0x, p0y);
+            var p1 = new Coordinate(p1x, p1y);
+            var p2 = new Coordinate(p2x, p2y);
 
-            Coordinate pp0 = new Coordinate(pp0x, pp0y);
-            Coordinate pp1 = new Coordinate(pp1x, pp1y);
-            Coordinate pp2 = new Coordinate(pp2x, pp2y);
+            var pp0 = new Coordinate(pp0x, pp0y);
+            var pp1 = new Coordinate(pp1x, pp1y);
+            var pp2 = new Coordinate(pp2x, pp2y);
 
-            AffineTransformationBuilder atb = new AffineTransformationBuilder(
+            var atb = new AffineTransformationBuilder(
                 p0, p1, p2,
                 pp0, pp1, pp2);
-            AffineTransformation trans = atb.GetTransformation();
+            var trans = atb.GetTransformation();
 
-            Coordinate dest = new Coordinate();
+            var dest = new Coordinate();
             AssertEqualPoint(pp0, trans.Transform(p0, dest));
             AssertEqualPoint(pp1, trans.Transform(p1, dest));
             AssertEqualPoint(pp2, trans.Transform(p2, dest));
@@ -123,17 +123,17 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             double pp1x, double pp1y
             )
         {
-            Coordinate p0 = new Coordinate(p0x, p0y);
-            Coordinate p1 = new Coordinate(p1x, p1y);
+            var p0 = new Coordinate(p0x, p0y);
+            var p1 = new Coordinate(p1x, p1y);
 
-            Coordinate pp0 = new Coordinate(pp0x, pp0y);
-            Coordinate pp1 = new Coordinate(pp1x, pp1y);
+            var pp0 = new Coordinate(pp0x, pp0y);
+            var pp1 = new Coordinate(pp1x, pp1y);
 
-            AffineTransformation trans = AffineTransformationFactory.CreateFromControlVectors(
+            var trans = AffineTransformationFactory.CreateFromControlVectors(
                 p0, p1,
                 pp0, pp1);
 
-            Coordinate dest = new Coordinate();
+            var dest = new Coordinate();
             AssertEqualPoint(pp0, trans.Transform(p0, dest));
             AssertEqualPoint(pp1, trans.Transform(p1, dest));
         }
@@ -142,14 +142,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             double pp0x, double pp0y
             )
         {
-            Coordinate p0 = new Coordinate(p0x, p0y);
+            var p0 = new Coordinate(p0x, p0y);
 
-            Coordinate pp0 = new Coordinate(pp0x, pp0y);
+            var pp0 = new Coordinate(pp0x, pp0y);
 
-            AffineTransformation trans = AffineTransformationFactory.CreateFromControlVectors(
+            var trans = AffineTransformationFactory.CreateFromControlVectors(
                 p0, pp0);
 
-            Coordinate dest = new Coordinate();
+            var dest = new Coordinate();
             AssertEqualPoint(pp0, trans.Transform(p0, dest));
         }
 
@@ -161,18 +161,18 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             double pp2x, double pp2y
             )
         {
-            Coordinate p0 = new Coordinate(p0x, p0y);
-            Coordinate p1 = new Coordinate(p1x, p1y);
-            Coordinate p2 = new Coordinate(p2x, p2y);
+            var p0 = new Coordinate(p0x, p0y);
+            var p1 = new Coordinate(p1x, p1y);
+            var p2 = new Coordinate(p2x, p2y);
 
-            Coordinate pp0 = new Coordinate(pp0x, pp0y);
-            Coordinate pp1 = new Coordinate(pp1x, pp1y);
-            Coordinate pp2 = new Coordinate(pp2x, pp2y);
+            var pp0 = new Coordinate(pp0x, pp0y);
+            var pp1 = new Coordinate(pp1x, pp1y);
+            var pp2 = new Coordinate(pp2x, pp2y);
 
-            AffineTransformationBuilder atb = new AffineTransformationBuilder(
+            var atb = new AffineTransformationBuilder(
                 p0, p1, p2,
                 pp0, pp1, pp2);
-            AffineTransformation trans = atb.GetTransformation();
+            var trans = atb.GetTransformation();
             Assert.IsNull(trans);
         }
 
@@ -183,7 +183,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         [TestAttribute]
         public void TestTransform1()
         {
-            AffineTransformation trans = new AffineTransformation();
+            var trans = new AffineTransformation();
             trans.Rotate(1);
             trans.Translate(10, 10);
             trans.Scale(2, 2);
@@ -193,7 +193,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
         [TestAttribute]
         public void TestTransform2()
         {
-            AffineTransformation trans = new AffineTransformation();
+            var trans = new AffineTransformation();
             trans.Rotate(3);
             trans.Translate(10, 10);
             trans.Scale(2, 10);
@@ -207,16 +207,16 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Utility
             Coordinate p1,
             Coordinate p2)
         {
-            Coordinate pp0 = trans.Transform(p0, new Coordinate());
-            Coordinate pp1 = trans.Transform(p1, new Coordinate());
-            Coordinate pp2 = trans.Transform(p2, new Coordinate());
+            var pp0 = trans.Transform(p0, new Coordinate());
+            var pp1 = trans.Transform(p1, new Coordinate());
+            var pp2 = trans.Transform(p2, new Coordinate());
 
-            AffineTransformationBuilder atb = new AffineTransformationBuilder(
+            var atb = new AffineTransformationBuilder(
                 p0, p1, p2,
                 pp0, pp1, pp2);
-            AffineTransformation atbTrans = atb.GetTransformation();
+            var atbTrans = atb.GetTransformation();
 
-            Coordinate dest = new Coordinate();
+            var dest = new Coordinate();
             AssertEqualPoint(pp0, atbTrans.Transform(p0, dest));
             AssertEqualPoint(pp1, atbTrans.Transform(p1, dest));
             AssertEqualPoint(pp2, atbTrans.Transform(p2, dest));

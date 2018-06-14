@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.Various
             var geometryNts = new WKTReader().Read("POLYGON((0 0,100 0,100 100, 0 100, 0 0 )))");
 
             //the features must be missing. What should I do there to add the features.Thanks
-            var ntsGeometry = GetGeometryUsingNTS(geometryNts);
+            string ntsGeometry = GetGeometryUsingNTS(geometryNts);
             using (var sw = new StreamWriter(File.Create("polygon.gml")))
             {
                 sw.Write(ntsGeometry);

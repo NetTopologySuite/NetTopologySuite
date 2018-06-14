@@ -145,7 +145,7 @@ namespace NetTopologySuite.Planargraph
         /// <param name="de"></param>
         public void Remove(DirectedEdge de)
         {
-            DirectedEdge sym = de.Sym;
+            var sym = de.Sym;
             if (sym != null)
                 sym.Sym = null;
             de.FromNode.Remove(de);
@@ -161,17 +161,17 @@ namespace NetTopologySuite.Planargraph
         public void Remove(Node node)
         {
             // unhook all directed edges
-            IList<DirectedEdge> outEdges = node.OutEdges.Edges;
-            foreach (DirectedEdge de in outEdges)
+            var outEdges = node.OutEdges.Edges;
+            foreach (var de in outEdges)
             {
-                DirectedEdge sym = de.Sym;
+                var sym = de.Sym;
                 // remove the diredge that points to this node
                 if (sym != null)
                     Remove(sym);
                 // remove this diredge from the graph collection
                 dirEdges.Remove(de);
 
-                Edge edge = de.Edge;
+                var edge = de.Edge;
                 if (edge != null)
                     _edges.Remove(edge);
             }

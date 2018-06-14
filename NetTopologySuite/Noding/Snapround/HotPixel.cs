@@ -151,16 +151,16 @@ namespace NetTopologySuite.Noding.Snapround
         /// <returns></returns>
         public bool IntersectsScaled(Coordinate p0, Coordinate p1)
         {
-            var segMinx = Math.Min(p0.X, p1.X);
+            double segMinx = Math.Min(p0.X, p1.X);
             double segMaxx = Math.Max(p0.X, p1.X);
             double segMiny = Math.Min(p0.Y, p1.Y);
             double segMaxy = Math.Max(p0.Y, p1.Y);
 
-            var isOutsidePixelEnv = _maxx < segMinx || _minx > segMaxx ||
+            bool isOutsidePixelEnv = _maxx < segMinx || _minx > segMaxx ||
                                      _maxy < segMiny || _miny > segMaxy;
             if (isOutsidePixelEnv)
                 return false;
-            var intersects = IntersectsToleranceSquare(p0, p1);
+            bool intersects = IntersectsToleranceSquare(p0, p1);
 
             //Assert.IsTrue(!(isOutsidePixelEnv && intersects), "Found bad envelope test");
             return intersects;
@@ -184,8 +184,8 @@ namespace NetTopologySuite.Noding.Snapround
         /// <returns></returns>
         private bool IntersectsToleranceSquare(Coordinate p0, Coordinate p1)
         {
-            var intersectsLeft = false;
-            var intersectsBottom = false;
+            bool intersectsLeft = false;
+            bool intersectsBottom = false;
             //Console.WriteLine("Hot Pixel: " + WKTWriter.ToLineString(corner));
             //Console.WriteLine("Line: " + WKTWriter.ToLineString(p0, p1));
 

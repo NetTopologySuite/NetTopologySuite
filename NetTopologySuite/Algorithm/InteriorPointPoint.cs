@@ -36,8 +36,8 @@ namespace NetTopologySuite.Algorithm
                 Add(geom.Coordinate);
             else if (geom is IGeometryCollection)
             {
-                IGeometryCollection gc = (IGeometryCollection) geom;
-                foreach (IGeometry geometry in gc.Geometries)
+                var gc = (IGeometryCollection) geom;
+                foreach (var geometry in gc.Geometries)
                     Add(geometry);
             }
         }

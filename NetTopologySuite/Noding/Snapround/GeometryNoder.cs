@@ -62,7 +62,7 @@ namespace NetTopologySuite.Noding.Snapround
             //TODO: improve this to check for full snap-rounded correctness
             if (IsValidityChecked)
             {
-                NodingValidator nv = new NodingValidator(nodedLines);
+                var nv = new NodingValidator(nodedLines);
                 nv.CheckValid();
             }
 
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Noding.Snapround
         private IList<ILineString> ToLineStrings(IEnumerable<ISegmentString> segStrings)
         {
             var lines = new List<ILineString>();
-            foreach (ISegmentString ss in segStrings)
+            foreach (var ss in segStrings)
             {
                 // skip collapsed lines
                 if (ss.Count < 2)

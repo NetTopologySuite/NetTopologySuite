@@ -18,8 +18,8 @@ namespace NetTopologySuite.Index.Strtree
         {
             public int Compare(IBoundable<Interval, TItem> o1, IBoundable<Interval, TItem> o2)
             {
-                var c1 = o1.Bounds.Centre;
-                var c2 = o2.Bounds.Centre;
+                double c1 = o1.Bounds.Centre;
+                double c2 = o2.Bounds.Centre;
                 return c1.CompareTo(c2);
 
                 /*

@@ -47,7 +47,7 @@ namespace NetTopologySuite.Noding
         /// </returns>
         public int CompareTo(object o1)
         {
-            OrientedCoordinateArray oca = (OrientedCoordinateArray) o1;
+            var oca = (OrientedCoordinateArray) o1;
             return CompareOriented(_pts, _orientation, oca._pts, oca._orientation);
         }
 

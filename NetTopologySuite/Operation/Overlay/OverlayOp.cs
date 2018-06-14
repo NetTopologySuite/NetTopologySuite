@@ -306,7 +306,7 @@ namespace NetTopologySuite.Operation.Overlay
                     continue;
 
                 depth.Normalize();
-                for (var i = 0; i < 2; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     if (lbl.IsNull(i) || !lbl.IsArea() || depth.IsNull(i))
                         continue;
@@ -357,7 +357,7 @@ namespace NetTopologySuite.Operation.Overlay
                 newEdges.Add(e.CollapsedEdge);
             }
             // Removing all collapsed edges at the end of iteration.
-            foreach (Edge obj in edgesToRemove)
+            foreach (var obj in edgesToRemove)
                 _edgeList.Remove(obj);
             foreach (var obj in newEdges)
                 _edgeList.Add(obj);
@@ -626,10 +626,10 @@ namespace NetTopologySuite.Operation.Overlay
 
         private static Dimension ResultDimension(SpatialFunction opCode, IGeometry g0, IGeometry g1)
         {
-            var dim0 = (int)g0.Dimension;
-            var dim1 = (int)g1.Dimension;
+            int dim0 = (int)g0.Dimension;
+            int dim1 = (int)g1.Dimension;
 
-            var resultDimension = -1;
+            int resultDimension = -1;
             switch (opCode)
             {
                 case SpatialFunction.Intersection:

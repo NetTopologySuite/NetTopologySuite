@@ -49,7 +49,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>A linear geometry</returns>
         public static IGeometry GetGeometry(IGeometry geom)
         {
-            ICollection<IGeometry> list = GetLines(geom);
+            var list = GetLines(geom);
             return geom.Factory.BuildGeometry(list);
         }
 

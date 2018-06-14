@@ -53,7 +53,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Relate
 
         private static ILineString CreateLine(string wkt, int nVertices)
         {
-            var distanceTolerance = 100.0/nVertices;
+            double distanceTolerance = 100.0/nVertices;
             var line = IOUtil.Read(wkt);
             var lineDense = (ILineString) Densifier.Densify(line, distanceTolerance);
             return lineDense;
@@ -63,12 +63,12 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Relate
         {
             Console.WriteLine("Line size: " + _line2.NumPoints);
             //@SuppressWarnings("unused")
-            var isIntersects = _line1.Intersects(_line2);
+            bool isIntersects = _line1.Intersects(_line2);
         }
 
         public override void TearDown()
         {
-            var timeFactor = ComputeTimeFactors();
+            double[] timeFactor = ComputeTimeFactors();
             Console.Write("Time factors: ");
             PrintArray(timeFactor, Console.Out);
             Console.WriteLine();
@@ -76,7 +76,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Relate
 
         private void PrintArray(double[] timeFactor, TextWriter @out)
         {
-            foreach (var tf in timeFactor)
+            foreach (double tf in timeFactor)
             {
                 @out.Write(tf + " ");
             }
@@ -84,7 +84,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Relate
 
         private double[] ComputeTimeFactors()
         {
-            var runTime = RunTime;
+            long[] runTime = RunTime;
             double[] timeFactor = new double[runTime.Length - 1];
             for (int i = 0; i < runTime.Length - 1; i++)
             {

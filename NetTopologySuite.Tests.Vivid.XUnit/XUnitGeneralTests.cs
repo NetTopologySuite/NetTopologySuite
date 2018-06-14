@@ -69,7 +69,7 @@ namespace NetTopologySuite.Tests.XUnit
         {
             foreach (string file in Directory.GetFiles(Path.Combine(TestLocation.Split('\\', StringSplitOptions.RemoveEmptyEntries))))
             {
-                var ext = Path.GetExtension(file);
+                string ext = Path.GetExtension(file);
                 if (string.IsNullOrEmpty(ext))
                     continue;
 

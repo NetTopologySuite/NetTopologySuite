@@ -136,7 +136,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         private static QuadEdge[] CopyOf(QuadEdge[] edge)
         {
             var res = new QuadEdge[edge.Length];
-            for (var i = 0; i < edge.Length; i++)
+            for (int i = 0; i < edge.Length; i++)
                 res[i] = edge[i];
             return res;
         }
@@ -301,8 +301,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             // Assert: isVertex
             var adjTris = new List<QuadEdgeTriangle>();
 
-            QuadEdge start = GetEdge(vertexIndex);
-            QuadEdge qe = start;
+            var start = GetEdge(vertexIndex);
+            var qe = start;
             do
             {
                 var adjTri = (QuadEdgeTriangle) qe.Data;

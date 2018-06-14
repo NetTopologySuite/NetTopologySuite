@@ -43,7 +43,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             IGeometry result = null;
             using (Stream stream = new FileStream(blobFile, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                WKBReader wkbreader = new WKBReader();
+                var wkbreader = new WKBReader();
                 result = wkbreader.Read(stream);
             }
             Debug.WriteLine(result.ToString());
@@ -56,18 +56,18 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void OracleWKBBigEndianWriteTest()
         {
-            ILinearRing shell = Factory.CreateLinearRing(new Coordinate[] {    new Coordinate(100,100),
+            var shell = Factory.CreateLinearRing(new Coordinate[] {    new Coordinate(100,100),
                                                                                 new Coordinate(200,100),
                                                                                 new Coordinate(200,200),
                                                                                 new Coordinate(100,200),
                                                                                 new Coordinate(100,100), });
-            ILinearRing hole = Factory.CreateLinearRing(new Coordinate[] {     new Coordinate(120,120),
+            var hole = Factory.CreateLinearRing(new Coordinate[] {     new Coordinate(120,120),
                                                                                 new Coordinate(180,120),
                                                                                 new Coordinate(180,180),
                                                                                 new Coordinate(120,180),
                                                                                 new Coordinate(120,120), });
-            IPolygon polygon = Factory.CreatePolygon(shell, new ILinearRing[] { hole, });
-            WKBWriter writer = new WKBWriter(ByteOrder.BigEndian);
+            var polygon = Factory.CreatePolygon(shell, new ILinearRing[] { hole, });
+            var writer = new WKBWriter(ByteOrder.BigEndian);
             byte[] bytes = writer.Write(polygon);
             Assert.IsNotNull(bytes);
             Assert.IsNotEmpty(bytes);

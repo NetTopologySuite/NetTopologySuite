@@ -54,7 +54,7 @@ namespace NetTopologySuite.Operation.Buffer
             if (distance < 0.0 && !_bufParams.IsSingleSided) return null;
             if (distance == 0.0) return null;
 
-            var posDistance = Math.Abs(distance);
+            double posDistance = Math.Abs(distance);
             var segGen = GetSegmentGenerator(posDistance);
             if (inputPts.Length <= 1)
             {
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Operation.Buffer
             {
                 if (_bufParams.IsSingleSided)
                 {
-                    var isRightSide = distance < 0.0;
+                    bool isRightSide = distance < 0.0;
                     ComputeSingleSidedBufferCurve(inputPts, isRightSide, segGen);
                 }
                 else
@@ -92,7 +92,7 @@ namespace NetTopologySuite.Operation.Buffer
             {
                 return CopyCoordinates(inputPts);
             }
-            OffsetSegmentGenerator segGen = GetSegmentGenerator(distance);
+            var segGen = GetSegmentGenerator(distance);
             ComputeRingBufferCurve(inputPts, side, segGen);
             return segGen.GetCoordinates();
         }
@@ -104,9 +104,9 @@ namespace NetTopologySuite.Operation.Buffer
             // a zero width offset curve is empty
             if (distance == 0.0) return null;
 
-            var isRightSide = distance < 0.0;
+            bool isRightSide = distance < 0.0;
             double posDistance = Math.Abs(distance);
-            OffsetSegmentGenerator segGen = GetSegmentGenerator(posDistance);
+            var segGen = GetSegmentGenerator(posDistance);
             if (inputPts.Length <= 1)
             {
                 ComputePointCurve(inputPts[0], segGen);
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Operation.Buffer
             {
                 ComputeOffsetCurve(inputPts, isRightSide, segGen);
             }
-            Coordinate[] curvePts = segGen.GetCoordinates();
+            var curvePts = segGen.GetCoordinates();
             // for right side line is traversed in reverse direction, so have to reverse generated line
             if (isRightSide)
                 CoordinateArrays.Reverse(curvePts);
@@ -164,7 +164,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         private void ComputeLineBufferCurve(Coordinate[] inputPts, OffsetSegmentGenerator segGen)
         {
-            var distTol = SimplifyTolerance(_distance);
+            double distTol = SimplifyTolerance(_distance);
 
             //--------- compute points for left side of line
             // Simplify the appropriate side of the line before generating
@@ -172,7 +172,7 @@ namespace NetTopologySuite.Operation.Buffer
             // MD - used for testing only (to eliminate simplification)
             //    Coordinate[] simp1 = inputPts;
 
-            var n1 = simp1.Length - 1;
+            int n1 = simp1.Length - 1;
             segGen.InitSideSegments(simp1[0], simp1[1], Positions.Left);
             for (int i = 2; i <= n1; i++)
             {
@@ -187,11 +187,11 @@ namespace NetTopologySuite.Operation.Buffer
             var simp2 = BufferInputLineSimplifier.Simplify(inputPts, -distTol);
             // MD - used for testing only (to eliminate simplification)
             //    Coordinate[] simp2 = inputPts;
-            var n2 = simp2.Length - 1;
+            int n2 = simp2.Length - 1;
 
             // since we are traversing line in opposite order, offset position is still LEFT
             segGen.InitSideSegments(simp2[n2], simp2[n2 - 1], Positions.Left);
-            for (var i = n2 - 2; i >= 0; i--)
+            for (int i = n2 - 2; i >= 0; i--)
             {
                 segGen.AddNextSegment(simp2[i], true);
             }
@@ -232,7 +232,7 @@ namespace NetTopologySuite.Operation.Buffer
         private void ComputeSingleSidedBufferCurve(Coordinate[] inputPts, bool isRightSide,
                                                    OffsetSegmentGenerator segGen)
         {
-            var distTol = SimplifyTolerance(_distance);
+            double distTol = SimplifyTolerance(_distance);
 
             if (isRightSide)
             {
@@ -244,12 +244,12 @@ namespace NetTopologySuite.Operation.Buffer
                 var simp2 = BufferInputLineSimplifier.Simplify(inputPts, -distTol);
                 // MD - used for testing only (to eliminate simplification)
                 // Coordinate[] simp2 = inputPts;
-                var n2 = simp2.Length - 1;
+                int n2 = simp2.Length - 1;
 
                 // since we are traversing line in opposite order, offset position is still LEFT
                 segGen.InitSideSegments(simp2[n2], simp2[n2 - 1], Positions.Left);
                 segGen.AddFirstSegment();
-                for (var i = n2 - 2; i >= 0; i--)
+                for (int i = n2 - 2; i >= 0; i--)
                 {
                     segGen.AddNextSegment(simp2[i], true);
                 }
@@ -265,10 +265,10 @@ namespace NetTopologySuite.Operation.Buffer
                 // MD - used for testing only (to eliminate simplification)
                 //      Coordinate[] simp1 = inputPts;
 
-                var n1 = simp1.Length - 1;
+                int n1 = simp1.Length - 1;
                 segGen.InitSideSegments(simp1[0], simp1[1], Positions.Left);
                 segGen.AddFirstSegment();
-                for (var i = 2; i <= n1; i++)
+                for (int i = 2; i <= n1; i++)
                 {
                     segGen.AddNextSegment(simp1[i], true);
                 }
@@ -279,7 +279,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         private void ComputeOffsetCurve(Coordinate[] inputPts, bool isRightSide, OffsetSegmentGenerator segGen)
         {
-            var distTol = SimplifyTolerance(_distance);
+            double distTol = SimplifyTolerance(_distance);
 
             if (isRightSide)
             {
@@ -288,12 +288,12 @@ namespace NetTopologySuite.Operation.Buffer
                 var simp2 = BufferInputLineSimplifier.Simplify(inputPts, -distTol);
                 // MD - used for testing only (to eliminate simplification)
                 // Coordinate[] simp2 = inputPts;
-                var n2 = simp2.Length - 1;
+                int n2 = simp2.Length - 1;
 
                 // since we are traversing line in opposite order, offset position is still LEFT
                 segGen.InitSideSegments(simp2[n2], simp2[n2 - 1], Positions.Left);
                 segGen.AddFirstSegment();
-                for (var i = n2 - 2; i >= 0; i--)
+                for (int i = n2 - 2; i >= 0; i--)
                 {
                     segGen.AddNextSegment(simp2[i], true);
                 }
@@ -306,10 +306,10 @@ namespace NetTopologySuite.Operation.Buffer
                 // MD - used for testing only (to eliminate simplification)
                 // Coordinate[] simp1 = inputPts;
 
-                var n1 = simp1.Length - 1;
+                int n1 = simp1.Length - 1;
                 segGen.InitSideSegments(simp1[0], simp1[1], Positions.Left);
                 segGen.AddFirstSegment();
-                for (var i = 2; i <= n1; i++)
+                for (int i = 2; i <= n1; i++)
                 {
                     segGen.AddNextSegment(simp1[i], true);
                 }
@@ -320,7 +320,7 @@ namespace NetTopologySuite.Operation.Buffer
         private void ComputeRingBufferCurve(Coordinate[] inputPts, Positions side, OffsetSegmentGenerator segGen)
         {
             // simplify input line to improve performance
-            var distTol = SimplifyTolerance(_distance);
+            double distTol = SimplifyTolerance(_distance);
             // ensure that correct side is simplified
             if (side == Positions.Right)
                 distTol = -distTol;
@@ -328,11 +328,11 @@ namespace NetTopologySuite.Operation.Buffer
             // MD - used for testing only (to eliminate simplification)
             // Coordinate[] simp = inputPts;
 
-            var n = simp.Length - 1;
+            int n = simp.Length - 1;
             segGen.InitSideSegments(simp[n - 1], simp[0], side);
-            for (var i = 1; i <= n; i++)
+            for (int i = 1; i <= n; i++)
             {
-                var addStartPoint = i != 1;
+                bool addStartPoint = i != 1;
                 segGen.AddNextSegment(simp[i], addStartPoint);
             }
             segGen.CloseRing();

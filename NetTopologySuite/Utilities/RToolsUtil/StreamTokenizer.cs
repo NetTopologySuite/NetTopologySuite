@@ -490,7 +490,7 @@ namespace RTools_NTS.Util
         /// <returns>The string representation of the type flags.</returns>
         public string CharTypeToString(byte ctype)
         {
-            StringBuilder str = new StringBuilder();
+            var str = new StringBuilder();
 
             if (IsCharType(ctype, CharTypeBits.Quote)) str.Append('q');
             if (IsCharType(ctype, CharTypeBits.Comment)) str.Append('m');
@@ -894,7 +894,7 @@ namespace RTools_NTS.Util
             int thisChar = 0; // current character
             byte ctype; // type of this character
 
-            NextTokenState state = NextTokenState.Start;
+            var state = NextTokenState.Start;
             int prevChar = 0; // previous character
             byte prevCtype = (byte)CharTypeBits.Eof;
 
@@ -1432,7 +1432,7 @@ namespace RTools_NTS.Util
         /// <returns>bool - true for success, false for failure.</returns>
         public bool TokenizeFile(string fileName, IList<Token> tokens)
         {
-            FileInfo fi = new FileInfo(fileName);
+            var fi = new FileInfo(fileName);
             FileStream fr = null;
             try
             {

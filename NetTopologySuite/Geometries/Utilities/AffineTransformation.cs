@@ -981,7 +981,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>The transformed Geometry</returns>
         public IGeometry Transform(IGeometry g)
         {
-            IGeometry g2 = g.Copy();
+            var g2 = g.Copy();
             g2.Apply(this);
             return g2;
         }

@@ -24,9 +24,9 @@ namespace NetTopologySuite.Algorithm
             if (double.IsNaN(p0.Z) || double.IsNaN(p1.Z))
                 return p0.Distance(p1);
 
-            var dx = p0.X - p1.X;
-            var dy = p0.Y - p1.Y;
-            var dz = p0.Z - p1.Z;
+            double dx = p0.X - p1.X;
+            double dy = p0.Y - p1.Y;
+            double dz = p0.Z - p1.Z;
             return Math.Sqrt(dx * dx + dy * dy + dz * dz);
         }
 
@@ -59,10 +59,10 @@ namespace NetTopologySuite.Algorithm
              *   0<r<1 P is interior to AB
              */
 
-            var len2 = (B.X - A.X) * (B.X - A.X) + (B.Y - A.Y) * (B.Y - A.Y) + (B.Z - A.Z) * (B.Z - A.Z);
+            double len2 = (B.X - A.X) * (B.X - A.X) + (B.Y - A.Y) * (B.Y - A.Y) + (B.Z - A.Z) * (B.Z - A.Z);
             if (double.IsNaN(len2))
                 throw new ArgumentException("Ordinates must not be NaN");
-            var r = ((p.X - A.X) * (B.X - A.X) + (p.Y - A.Y) * (B.Y - A.Y) + (p.Z - A.Z) * (B.Z - A.Z))
+            double r = ((p.X - A.X) * (B.X - A.X) + (p.Y - A.Y) * (B.Y - A.Y) + (p.Z - A.Z) * (B.Z - A.Z))
                 / len2;
 
             if (r <= 0.0)
@@ -71,13 +71,13 @@ namespace NetTopologySuite.Algorithm
                 return Distance(p, B);
 
             // compute closest point q on line segment
-            var qx = A.X + r * (B.X - A.X);
-            var qy = A.Y + r * (B.Y - A.Y);
-            var qz = A.Z + r * (B.Z - A.Z);
+            double qx = A.X + r * (B.X - A.X);
+            double qy = A.Y + r * (B.Y - A.Y);
+            double qz = A.Z + r * (B.Z - A.Z);
             // result is distance from p to q
-            var dx = p.X - qx;
-            var dy = p.Y - qy;
-            var dz = p.Z - qz;
+            double dx = p.X - qx;
+            double dy = p.Y - qy;
+            double dz = p.Z - qz;
             return Math.Sqrt(dx * dx + dy * dy + dz * dz);
         }
 
@@ -103,13 +103,13 @@ namespace NetTopologySuite.Algorithm
             /**
              * Algorithm derived from http://softsurfer.com/Archive/algorithm_0106/algorithm_0106.htm
              */
-            var a = Vector3D.Dot(A, B, A, B);
-            var b = Vector3D.Dot(A, B, C, D);
-            var c = Vector3D.Dot(C, D, C, D);
-            var d = Vector3D.Dot(A, B, C, A);
-            var e = Vector3D.Dot(C, D, C, A);
+            double a = Vector3D.Dot(A, B, A, B);
+            double b = Vector3D.Dot(A, B, C, D);
+            double c = Vector3D.Dot(C, D, C, D);
+            double d = Vector3D.Dot(A, B, C, A);
+            double e = Vector3D.Dot(C, D, C, A);
 
-            var denom = a * c - b * b;
+            double denom = a * c - b * b;
             if (double.IsNaN(denom))
                 throw new ArgumentException("Ordinates must not be NaN");
 
@@ -147,13 +147,13 @@ namespace NetTopologySuite.Algorithm
              * The closest points are in interiors of segments,
              * so compute them directly
              */
-            var x1 = A.X + s * (B.X - A.X);
-            var y1 = A.Y + s * (B.Y - A.Y);
-            var z1 = A.Z + s * (B.Z - A.Z);
+            double x1 = A.X + s * (B.X - A.X);
+            double y1 = A.Y + s * (B.Y - A.Y);
+            double z1 = A.Z + s * (B.Z - A.Z);
 
-            var x2 = C.X + t * (D.X - C.X);
-            var y2 = C.Y + t * (D.Y - C.Y);
-            var z2 = C.Z + t * (D.Z - C.Z);
+            double x2 = C.X + t * (D.X - C.X);
+            double y2 = C.Y + t * (D.Y - C.Y);
+            double z2 = C.Z + t * (D.Z - C.Z);
 
             // length (p1-p2)
             return Distance(new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2));

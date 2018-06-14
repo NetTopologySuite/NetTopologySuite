@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
         public void Run(int nPts)
         {
             // Geometry poly = createCircle(new Coordinate(0, 0), 100, nPts);
-            IGeometry poly = CreateSineStar(new Coordinate(0, 0), 100, nPts);
+            var poly = CreateSineStar(new Coordinate(0, 0), 100, nPts);
             // System.Console.WriteLine(poly);
             // System.Console.WriteLine("Running with " + nPts + " points");
             Test(poly);
@@ -44,7 +44,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
         static IGeometry CreateCircle(Coordinate origin, double size, int nPts)
         {
-            GeometricShapeFactory gsf = new GeometricShapeFactory();
+            var gsf = new GeometricShapeFactory();
             gsf.Centre = origin;
             gsf.Size = size;
             gsf.NumPoints = nPts;
@@ -56,32 +56,32 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
         static IGeometry CreateSineStar(Coordinate origin, double size, int nPts)
         {
-            SineStarFactory gsf = new SineStarFactory();
+            var gsf = new SineStarFactory();
             gsf.Centre = origin;
             gsf.Size = size;
             gsf.NumPoints = nPts;
             gsf.ArmLengthRatio = 0.1;
             gsf.NumArms = 20;
-            IGeometry poly = gsf.CreateSineStar();
+            var poly = gsf.CreateSineStar();
             return poly;
         }
 
         static ILineString CreateTestLine(Envelope env, double size, int nPts)
         {
-            Random rnd = new Random();
+            var rnd = new Random();
             double width = env.Width;
             double xOffset = width * rnd.NextDouble();
             double yOffset = env.Height * rnd.NextDouble();
-            Coordinate basePt = new Coordinate(
+            var basePt = new Coordinate(
                             env.MinX + xOffset,
                             env.MinY + yOffset);
-            ILineString line = CreateTestLine(basePt, size, nPts);
+            var line = CreateTestLine(basePt, size, nPts);
             return line;
         }
 
         static ILineString CreateTestLine(Coordinate basePt, double size, int nPts)
         {
-            GeometricShapeFactory gsf = new GeometricShapeFactory();
+            var gsf = new GeometricShapeFactory();
             gsf.Centre = basePt;
             gsf.Size = size;
             gsf.NumPoints = nPts;
@@ -96,7 +96,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             while (count < MAX_ITER)
             {
                 count++;
-                ILineString line = CreateTestLine(g.EnvelopeInternal, 10, 20);
+                var line = CreateTestLine(g.EnvelopeInternal, 10, 20);
 
                 // System.out.println("Test # " + count);
                 // System.out.println(line);
@@ -108,8 +108,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
         {
             bool slowIntersects = g.Intersects(line);
 
-            PreparedGeometryFactory pgFact = new PreparedGeometryFactory();
-            IPreparedGeometry prepGeom = pgFact.Create(g);
+            var pgFact = new PreparedGeometryFactory();
+            var prepGeom = pgFact.Create(g);
 
             bool fastIntersects = prepGeom.Intersects(line);
 

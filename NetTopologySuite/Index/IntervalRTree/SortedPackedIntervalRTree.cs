@@ -68,7 +68,7 @@ namespace NetTopologySuite.Index.IntervalRTree
             var src = _leaves;
             var dest = new List<IntervalRTreeNode<T>>();
 
-            var level = 0;
+            int level = 0;
             while (true)
             {
                 BuildLevel(src, dest, ref level);

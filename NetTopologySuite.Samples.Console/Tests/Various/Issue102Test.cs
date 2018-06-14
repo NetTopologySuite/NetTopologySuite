@@ -35,8 +35,8 @@ namespace NetTopologySuite.Tests.Various
 
             try
             {
-                LineString line = Helper.GetLine(Encoded);
-                ILineString res = (ILineString)TopologyPreservingSimplifier.Simplify(line, Tolerance);
+                var line = Helper.GetLine(Encoded);
+                var res = (ILineString)TopologyPreservingSimplifier.Simplify(line, Tolerance);
                 Simplify(line, Tolerance, res, 0);
 
                 for (int i = 1; i <= Max; i++)
@@ -68,7 +68,7 @@ namespace NetTopologySuite.Tests.Various
             try
             {
                 Console.WriteLine("Job {0} started", index);
-                IGeometry geometry = TopologyPreservingSimplifier.Simplify((ILineString)line.Copy(), tolerance);
+                var geometry = TopologyPreservingSimplifier.Simplify((ILineString)line.Copy(), tolerance);
                 Assert.IsTrue(geometry.Equals(supposedResult));
                 Console.WriteLine("Job {0} terminated", index);
             }
@@ -91,7 +91,7 @@ namespace NetTopologySuite.Tests.Various
         /// <returns></returns>
         public static LineString GetLine(string encoded)
         {
-            List<Coordinate> locs = new List<Coordinate>();
+            var locs = new List<Coordinate>();
 
             int index = 0;
             int lat = 0;

@@ -32,7 +32,7 @@ namespace NetTopologySuite.Samples.Lab.Clean
         /// </summary>
         public IGeometry GetResult()
         {
-            HoleRemoverMapOp op = new HoleRemoverMapOp(_predicate);
+            var op = new HoleRemoverMapOp(_predicate);
             return GeometryMapper.Map(_geom, op);
         }
 
@@ -57,7 +57,7 @@ namespace NetTopologySuite.Samples.Lab.Clean
         {
             public static IPolygon Clean(IPolygon poly, Predicate isRemoved)
             {
-                PolygonHoleRemover pihr = new PolygonHoleRemover(poly, isRemoved);
+                var pihr = new PolygonHoleRemover(poly, isRemoved);
                 return pihr.GetResult();
             }
 
@@ -72,12 +72,12 @@ namespace NetTopologySuite.Samples.Lab.Clean
 
             public IPolygon GetResult()
             {
-                IGeometryFactory gf = _poly.Factory;
+                var gf = _poly.Factory;
 
                 IList<IGeometry> holes = new List<IGeometry>();
                 for (int i = 0; i < _poly.NumInteriorRings; i++)
                 {
-                    ILinearRing hole = (ILinearRing)_poly.GetInteriorRingN(i);
+                    var hole = (ILinearRing)_poly.GetInteriorRingN(i);
                     if (!_predicate.Value(hole))
                         holes.Add(hole);
                 }
@@ -86,9 +86,9 @@ namespace NetTopologySuite.Samples.Lab.Clean
                     return _poly;
 
                 // return new polygon with covered holes only
-                ILinearRing shell = (ILinearRing)_poly.ExteriorRing;
-                ILinearRing[] rings = GeometryFactory.ToLinearRingArray(holes);
-                IPolygon result = gf.CreatePolygon(shell, rings);
+                var shell = (ILinearRing)_poly.ExteriorRing;
+                var rings = GeometryFactory.ToLinearRingArray(holes);
+                var result = gf.CreatePolygon(shell, rings);
                 return result;
             }
         }

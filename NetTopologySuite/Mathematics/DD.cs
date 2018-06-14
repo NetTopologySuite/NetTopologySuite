@@ -283,7 +283,7 @@ namespace NetTopologySuite.Mathematics
             h = e + (S - H);
             e = t + h;
 
-            var zhi = H + e;
+            double zhi = H + e;
             return new DD(zhi, e + (H - zhi));
         }
 
@@ -879,7 +879,7 @@ namespace NetTopologySuite.Mathematics
 
             var axdd = ValueOf(ax);
             var diffSq = this - axdd.Sqr();
-            var d2 = diffSq._hi*(x*0.5);
+            double d2 = diffSq._hi*(x*0.5);
 
             return axdd + d2;
         }
@@ -900,8 +900,8 @@ namespace NetTopologySuite.Mathematics
             if (exp == 0.0)
                 return ValueOf(1.0);
 
-            DD r = new DD(this);
-            DD s = ValueOf(1.0);
+            var r = new DD(this);
+            var s = ValueOf(1.0);
             int n = Math.Abs(exp);
 
             if (n > 1)
@@ -1110,7 +1110,7 @@ namespace NetTopologySuite.Mathematics
         /// <returns>A string representation of this number</returns>
         public override string ToString()
         {
-            var mag = Magnitude(_hi);
+            int mag = Magnitude(_hi);
             if (mag >= -3 && mag <= 20)
                 return ToStandardNotation();
             return ToSciNotation();
@@ -1122,12 +1122,12 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The string representation in standard notation</returns>
         public string ToStandardNotation()
         {
-            var specialStr = GetSpecialNumberString();
+            string specialStr = GetSpecialNumberString();
             if (specialStr != null)
                 return specialStr;
 
-            var magnitude = new int[1];
-            var sigDigits = ExtractSignificantDigits(true, magnitude);
+            int[] magnitude = new int[1];
+            string sigDigits = ExtractSignificantDigits(true, magnitude);
             int decimalPointPos = magnitude[0] + 1;
 
             string num = sigDigits;
@@ -1145,7 +1145,7 @@ namespace NetTopologySuite.Mathematics
                 // no point inserted - sig digits must be smaller than magnitude of number
                 // add zeroes to end to make number the correct size
                 int numZeroes = decimalPointPos - sigDigits.Length;
-                var zeroes = new string('0', numZeroes);
+                string zeroes = new string('0', numZeroes);
                 num = sigDigits + zeroes + ".0";
             }
 
@@ -1205,7 +1205,7 @@ namespace NetTopologySuite.Mathematics
         {
             var y = this.Abs();
             // compute *correct* magnitude of y
-            var mag = Magnitude(y._hi);
+            int mag = Magnitude(y._hi);
             var scale = Ten.Pow(mag);
             y /= scale;
 
@@ -1313,15 +1313,15 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The decimal magnitude of <paramref name="x"/></returns>
         private static int Magnitude(double x)
         {
-            var xAbs = Math.Abs(x);
-            var xLog10 = Math.Log(xAbs)/Math.Log(10);
-            var xMag = (int) Math.Floor(xLog10);
+            double xAbs = Math.Abs(x);
+            double xLog10 = Math.Log(xAbs)/Math.Log(10);
+            int xMag = (int) Math.Floor(xLog10);
             /**
              * Since log computation is inexact, there may be an off-by-one error
              * in the computed magnitude.
              * Following tests that magnitude is correct, and adjusts it if not
              */
-            var xApprox = Math.Pow(10, xMag);
+            double xApprox = Math.Pow(10, xMag);
             if (xApprox*10 <= xAbs)
                 xMag += 1;
 
@@ -1367,12 +1367,12 @@ namespace NetTopologySuite.Mathematics
 
             // scan all digits and accumulate into an integral value
             // Keep track of the location of the decimal point (if any) to allow scaling later
-            DD val = new DD();
+            var val = new DD();
 
             int numDigits = 0;
             int numBeforeDec = 0;
             int exp = 0;
-            var hasDecimalChar = false;
+            bool hasDecimalChar = false;
             while (true)
             {
                 if (i >= strlen)
@@ -1412,13 +1412,13 @@ namespace NetTopologySuite.Mathematics
                                           + "' at position " + i
                                           + " in string " + str);
             }
-            DD val2 = val;
+            var val2 = val;
 
             // correct number of digits before decimal sign if we don't have a decimal sign in the string
             if (!hasDecimalChar) numBeforeDec = numDigits;
 
             // scale the number correctly
-            var numDecPlaces = numDigits - numBeforeDec - exp;
+            int numDecPlaces = numDigits - numBeforeDec - exp;
             if (numDecPlaces == 0)
             {
                 val2 = val;
@@ -1430,7 +1430,7 @@ namespace NetTopologySuite.Mathematics
             }
             else if (numDecPlaces < 0)
             {
-                DD scale = Ten.Pow(-numDecPlaces);
+                var scale = Ten.Pow(-numDecPlaces);
                 val2 = val * scale;
             }
             // apply leading sign, if any

@@ -125,7 +125,7 @@ namespace NetTopologySuite.Operation.Union
 
         private void Extract(IEnumerable<IGeometry> geoms)
         {
-            foreach (IGeometry geom in geoms)
+            foreach (var geom in geoms)
                 Extract(geom);
         }
 
@@ -171,14 +171,14 @@ namespace NetTopologySuite.Operation.Union
             IGeometry unionPoints = null;
             if (_points.Count > 0)
             {
-                IGeometry ptGeom = _geomFact.BuildGeometry(_points);
+                var ptGeom = _geomFact.BuildGeometry(_points);
                 unionPoints = UnionNoOpt(ptGeom);
             }
 
             IGeometry unionLines = null;
             if (_lines.Count > 0)
             {
-                IGeometry lineGeom = _geomFact.BuildGeometry(_lines);
+                var lineGeom = _geomFact.BuildGeometry(_lines);
                 unionLines = UnionNoOpt(lineGeom);
             }
 

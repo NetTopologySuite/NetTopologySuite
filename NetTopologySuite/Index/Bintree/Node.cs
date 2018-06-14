@@ -89,7 +89,7 @@ namespace NetTopologySuite.Index.Bintree
             if (subnodeIndex != -1)
             {
                 // create the node if it does not exist
-                Node<T> node = GetSubnode(subnodeIndex);
+                var node = GetSubnode(subnodeIndex);
                 // recursively search the found/created node
                 return node.GetNode(searchInterval);
             }
@@ -109,7 +109,7 @@ namespace NetTopologySuite.Index.Bintree
             if (Subnode[subnodeIndex] != null)
             {
                 // query lies in subnode, so search it
-                Node<T> node = Subnode[subnodeIndex];
+                var node = Subnode[subnodeIndex];
                 return node.Find(searchInterval);
             }
             // no existing subnode, so return this one anyway
@@ -130,7 +130,7 @@ namespace NetTopologySuite.Index.Bintree
             {
                 // the node is not a direct child, so make a new child node to contain it
                 // and recursively insert the node
-                Node<T> childNode = CreateSubnode(index);
+                var childNode = CreateSubnode(index);
                 childNode.Insert(node);
                 Subnode[index] = childNode;
             }

@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             var counter = new NonRobustRayCrossingCounter(p);
 
-            for (var i = 1; i < ring.Length; i++)
+            for (int i = 1; i < ring.Length; i++)
             {
                 var p1 = ring[i];
                 var p2 = ring[i - 1];
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
             var p1 = new Coordinate();
             var p2 = new Coordinate();
-            for (var i = 1; i < ring.Count; i++)
+            for (int i = 1; i < ring.Count; i++)
             {
                 ring.GetCoordinate(i, p1);
                 ring.GetCoordinate(i - 1, p2);

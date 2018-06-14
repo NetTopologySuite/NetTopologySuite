@@ -24,10 +24,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             newCoords = new CoordinateList();
 
-            ICoordinateSequence seq = inputLine.CoordinateSequence;
+            var seq = inputLine.CoordinateSequence;
 
-            Coordinate p0 = new Coordinate();
-            Coordinate p1 = new Coordinate();
+            var p0 = new Coordinate();
+            var p1 = new Coordinate();
             seq.GetCoordinate(0, p0);
             newCoords.Add(new Coordinate(p0));
 
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 seq.GetCoordinate(i + 1, p1);
                 Densify(p0, p1, segLength);
             }
-            Coordinate[] newPts = newCoords.ToCoordinateArray();
+            var newPts = newCoords.ToCoordinateArray();
             return inputLine.Factory.CreateLineString(newPts);
         }
 
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             for (int i = 0; i <= nPtsToAdd; i++)
             {
                 double addedPtFrac = i * segLenFrac;
-                Coordinate pt = new Coordinate(p0.X + addedPtFrac * delx,
+                var pt = new Coordinate(p0.X + addedPtFrac * delx,
                                                 p0.Y + addedPtFrac * dely);
                 newCoords.Add(pt, false);
             }

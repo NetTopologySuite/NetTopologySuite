@@ -105,7 +105,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
 
         private void CheckPositiveValid()
         {
-            IGeometry bufCurve = _result.Boundary;
+            var bufCurve = _result.Boundary;
             CheckMinimumDistance(_input, bufCurve, _minValidDistance);
             if (!_isValid) return;
 
@@ -124,7 +124,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             {
                 return;
             }
-            IGeometry inputCurve = GetPolygonLines(_input);
+            var inputCurve = GetPolygonLines(_input);
             CheckMinimumDistance(inputCurve, _result, _minValidDistance);
             if (!_isValid) return;
 

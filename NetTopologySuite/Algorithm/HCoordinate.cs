@@ -71,10 +71,10 @@ namespace NetTopologySuite.Algorithm
         /// <returns></returns>
         public static Coordinate OldIntersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            HCoordinate l1 = new HCoordinate(new HCoordinate(p1), new HCoordinate(p2));
-            HCoordinate l2 = new HCoordinate(new HCoordinate(q1), new HCoordinate(q2));
-            HCoordinate intHCoord = new HCoordinate(l1, l2);
-            Coordinate intPt = intHCoord.Coordinate;
+            var l1 = new HCoordinate(new HCoordinate(p1), new HCoordinate(p2));
+            var l2 = new HCoordinate(new HCoordinate(q1), new HCoordinate(q2));
+            var intHCoord = new HCoordinate(l1, l2);
+            var intPt = intHCoord.Coordinate;
             return intPt;
         }
 

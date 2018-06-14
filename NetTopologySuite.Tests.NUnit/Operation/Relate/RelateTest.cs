@@ -41,7 +41,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             var g1 = Reader.Read(wkt1);
             var g2 = Reader.Read(wkt2);
             var im = RelateOp.Relate(g1, g2);
-            var imStr = im.ToString();
+            string imStr = im.ToString();
             //System.Console.WriteLine("expected: {0}", expectedIM);
             //System.Console.WriteLine("result:   {0}", imStr);
             Assert.IsTrue(im.Matches(expectedIM));

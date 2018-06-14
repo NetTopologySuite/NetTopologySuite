@@ -19,7 +19,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             var ring = (ILineString) Read(wkt);
 
             var pts = ring.CoordinateSequence;
-            var actual = Length.OfLine(pts);
+            double actual = Length.OfLine(pts);
             Assert.AreEqual(actual, expectedLen);
         }
     }

@@ -85,10 +85,10 @@ namespace NetTopologySuite.LinearReferencing
 
         private LinearLocation IndexOfFromStart(Coordinate inputPt, LinearLocation minIndex)
         {
-            var minDistance = double.MaxValue;
-            var minComponentIndex = 0;
-            var minSegmentIndex = 0;
-            var minFrac = -1.0;
+            double minDistance = double.MaxValue;
+            int minComponentIndex = 0;
+            int minSegmentIndex = 0;
+            double minFrac = -1.0;
 
             var seg = new LineSegment();
             for (var it = new LinearIterator(_linearGeom);
@@ -98,11 +98,11 @@ namespace NetTopologySuite.LinearReferencing
                 {
                     seg.P0 = it.SegmentStart;
                     seg.P1 = it.SegmentEnd;
-                    var segDistance = seg.Distance(inputPt);
-                    var segFrac = seg.SegmentFraction(inputPt);
+                    double segDistance = seg.Distance(inputPt);
+                    double segFrac = seg.SegmentFraction(inputPt);
 
-                    var candidateComponentIndex = it.ComponentIndex;
-                    var candidateSegmentIndex = it.VertexIndex;
+                    int candidateComponentIndex = it.ComponentIndex;
+                    int candidateSegmentIndex = it.VertexIndex;
                     if (segDistance < minDistance)
                     {
                         // ensure after minLocation, if any

@@ -20,7 +20,7 @@ namespace NetTopologySuite.Utilities
         [Obsolete("No longer used anywhere in NTS; use System.Linq.Enumerable.Cast<TResult>(this IEnumerable source) instead.", error: true)]
         public static IEnumerable<T> Cast<T>(IEnumerable inputs)
         {
-            foreach (var input in inputs)
+            foreach (object input in inputs)
                 yield return (T) input;
         }
 

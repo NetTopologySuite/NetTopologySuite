@@ -29,7 +29,7 @@ namespace NetTopologySuite.Samples.Lab.Clean
         /// <param name="areaTolerance">The geometry with invalid holes removed.</param>
         public static IGeometry Clean(IGeometry geom, double areaTolerance)
         {
-            HoleRemover remover = new HoleRemover(geom, new IsSmall(areaTolerance));
+            var remover = new HoleRemover(geom, new IsSmall(areaTolerance));
             return remover.GetResult();
         }
     }

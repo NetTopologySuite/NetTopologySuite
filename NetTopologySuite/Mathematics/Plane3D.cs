@@ -45,10 +45,10 @@ namespace NetTopologySuite.Mathematics
         public double OrientedDistance(Coordinate p)
         {
             var pb = new Vector3D(p, _basePt);
-            var pbdDotNormal = pb.Dot(_normal);
+            double pbdDotNormal = pb.Dot(_normal);
             if (double.IsNaN(pbdDotNormal))
                 throw new ArgumentException("3D Coordinate has NaN ordinate");
-            var d = pbdDotNormal/_normal.Length();
+            double d = pbdDotNormal/_normal.Length();
             return d;
         }
 
@@ -64,9 +64,9 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The index of the closest axis plane</returns>
         public Plane ClosestAxisPlane()
         {
-            var xmag = Math.Abs(_normal.X);
-            var ymag = Math.Abs(_normal.Y);
-            var zmag = Math.Abs(_normal.Z);
+            double xmag = Math.Abs(_normal.X);
+            double ymag = Math.Abs(_normal.Y);
+            double zmag = Math.Abs(_normal.Z);
             if (xmag > ymag)
             {
                 if (xmag > zmag)

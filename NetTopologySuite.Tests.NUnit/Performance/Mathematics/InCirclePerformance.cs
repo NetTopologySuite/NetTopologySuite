@@ -55,7 +55,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
 
         public double RunDD(int nIter)
         {
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
             for (int i = 0; i < nIter; i++)
             {
@@ -69,7 +69,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
 
         public double RunDDSelf(int nIter)
         {
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
             for (int i = 0; i < nIter; i++)
             {
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
 
         public double runDDSelf2(int nIter)
         {
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
             for (int i = 0; i < nIter; i++)
             {

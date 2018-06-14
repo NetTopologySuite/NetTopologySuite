@@ -184,8 +184,8 @@
             if (i >= this.Count)
                 return new TestResults("i > Count", true);
 
-            XmlTest test = this.Tests[i];
-            var b = test.RunTest();
+            var test = this.Tests[i];
+            bool b = test.RunTest();
             return new TestResults(test.Description, b);
         }
 
@@ -196,7 +196,7 @@
             {
                 try
                 {
-                    TestResults result = this.ExecuteTest(i);
+                    var result = this.ExecuteTest(i);
                     if (result.Success)
                     {
                         Console.WriteLine("Test {0} success\n{1}", i, result.Description);

@@ -128,7 +128,7 @@ namespace NetTopologySuite.Geometries.Utilities
             if (geom == null)
                 return;
 
-            for (var i = 0; i < geom.NumGeometries; i++)
+            for (int i = 0; i < geom.NumGeometries; i++)
             {
                 var elemGeom = geom.GetGeometryN(i);
                 if (SkipEmpty && elemGeom.IsEmpty)

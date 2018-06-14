@@ -25,14 +25,14 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
         {
             if (box == null) return null;
 
-            var corners = new double[4][];
+            double[][] corners = new double[4][];
             corners[0] = transform.Transform(ToArray(box.MinX, box.MinY)); //LL
             corners[1] = transform.Transform(ToArray(box.MaxX, box.MaxY)); //UR
             corners[2] = transform.Transform(ToArray(box.MinX, box.MaxY)); //UL
             corners[3] = transform.Transform(ToArray(box.MaxX, box.MinY)); //LR
 
             var result = new Envelope();
-            foreach (var p in corners)
+            foreach (double[] p in corners)
                 result.ExpandToInclude(p[0], p[1]);
             return result;
         }
@@ -132,7 +132,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
             IPolygon p, IMathTransform transform)
         {
             var holes = new List<ILinearRing>(p.InteriorRings.Length);
-            for (var i = 0; i < p.InteriorRings.Length; i++)
+            for (int i = 0; i < p.InteriorRings.Length; i++)
             {
                 var hole = TransformLinearRing(factory,
                     (ILinearRing) p.InteriorRings[i], transform);
@@ -159,7 +159,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
             var ordinates = OrdinatesUtility.ToOrdinateArray(ordinateFlags);
             var coordSequence = factory.CoordinateSequenceFactory.Create(points.NumPoints, ordinateFlags);
 
-            for (var i = 0; i < points.NumGeometries; i++)
+            for (int i = 0; i < points.NumGeometries; i++)
             {
                 var currPoint = (IPoint) points.GetGeometryN(i);
                 var seq = currPoint.CoordinateSequence;

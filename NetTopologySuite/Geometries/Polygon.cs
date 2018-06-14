@@ -145,7 +145,7 @@ namespace NetTopologySuite.Geometries
                 if (IsEmpty)
                     return new Coordinate[] { };
                 var coordinates = new Coordinate[NumPoints];
-                var k = -1;
+                int k = -1;
                 var shellCoordinates = _shell.Coordinates;
                 for (int x = 0; x < shellCoordinates.Length; x++)
                 {
@@ -154,7 +154,7 @@ namespace NetTopologySuite.Geometries
                 }
                 for (int i = 0; i < _holes.Length; i++)
                 {
-                    Coordinate[] childCoordinates = _holes[i].Coordinates;
+                    var childCoordinates = _holes[i].Coordinates;
                     for (int j = 0; j < childCoordinates.Length; j++)
                     {
                         k++;
@@ -179,10 +179,10 @@ namespace NetTopologySuite.Geometries
             if ((_shell.CoordinateSequence.Ordinates & ordinateFlag) != ordinateFlag)
                 return CreateArray(NumPoints, Coordinate.NullOrdinate);
 
-            var result = new double[NumPoints];
-            var ordinates = _shell.GetOrdinates(ordinate);
+            double[] result = new double[NumPoints];
+            double[] ordinates = _shell.GetOrdinates(ordinate);
             Array.Copy(ordinates, 0, result, 0, ordinates.Length);
-            var offset = ordinates.Length;
+            int offset = ordinates.Length;
             foreach (var linearRing in _holes)
             {
                 ordinates = linearRing.GetOrdinates(ordinate);
@@ -203,7 +203,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                var numPoints = _shell.NumPoints;
+                int numPoints = _shell.NumPoints;
                 for (int i = 0; i < _holes.Length; i++)
                     numPoints += _holes[i].NumPoints;
                 return numPoints;
@@ -298,7 +298,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                var area = 0.0;
+                double area = 0.0;
                 area += Algorithm.Area.OfRing(_shell.CoordinateSequence);
                 for (int i = 0; i < _holes.Length; i++)
                     area -= Algorithm.Area.OfRing(_holes[i].CoordinateSequence);
@@ -334,7 +334,7 @@ namespace NetTopologySuite.Geometries
 
                 var rings = new ILinearRing[_holes.Length + 1];
                 rings[0] = _shell;
-                for (var i = 0; i < _holes.Length; i++)
+                for (int i = 0; i < _holes.Length; i++)
                     rings[i + 1] = _holes[i];
                 // create LineString or MultiLineString as appropriate
                 if (rings.Length <= 1)
@@ -444,7 +444,7 @@ namespace NetTopologySuite.Geometries
         {
             var shell = (LinearRing) _shell.Copy();
             var holes = new ILinearRing[_holes.Length];
-            for (var i = 0; i < _holes.Length; i++)
+            for (int i = 0; i < _holes.Length; i++)
                 holes[i] = (LinearRing) _holes[i].Copy();
             return new Polygon(shell, holes, Factory);
         }
@@ -476,7 +476,7 @@ namespace NetTopologySuite.Geometries
         public override void Normalize()
         {
             Normalize(_shell, true);
-            foreach(ILinearRing hole in Holes)
+            foreach(var hole in Holes)
                 Normalize(hole, false);
             Array.Sort(_holes);
         }
@@ -488,8 +488,8 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         protected internal override int CompareToSameClass(object o)
         {
-            LinearRing thisShell = (LinearRing) _shell;
-            ILinearRing otherShell = ((IPolygon) o).Shell;
+            var thisShell = (LinearRing) _shell;
+            var otherShell = ((IPolygon) o).Shell;
             return thisShell.CompareToSameClass(otherShell);
         }
 
@@ -515,7 +515,7 @@ namespace NetTopologySuite.Geometries
             {
                 var thisHole = (LinearRing)GetInteriorRingN(i);
                 var otherHole = (LinearRing)poly.GetInteriorRingN(i);
-                var holeComp = thisHole.CompareToSameClass(otherHole, comparer);
+                int holeComp = thisHole.CompareToSameClass(otherHole, comparer);
                 if (holeComp != 0) return holeComp;
                 i++;
             }
@@ -558,7 +558,7 @@ namespace NetTopologySuite.Geometries
                 // check vertices have correct values
                 var seq = Shell.CoordinateSequence;
                 var env = EnvelopeInternal;
-                for (var i = 0; i < 5; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     double x = seq.GetX(i);
                     if (!(x == env.MinX || x == env.MaxX))
@@ -570,15 +570,15 @@ namespace NetTopologySuite.Geometries
                 }
 
                 // check vertices are in right order
-                var prevX = seq.GetX(0);
-                var prevY = seq.GetY(0);
-                for (var i = 1; i <= 4; i++)
+                double prevX = seq.GetX(0);
+                double prevY = seq.GetY(0);
+                for (int i = 1; i <= 4; i++)
                 {
-                    var x = seq.GetX(i);
-                    var y = seq.GetY(i);
+                    double x = seq.GetX(i);
+                    double y = seq.GetY(i);
 
-                    var xChanged = x != prevX;
-                    var yChanged = y != prevY;
+                    bool xChanged = x != prevX;
+                    bool yChanged = y != prevY;
 
                     if (xChanged == yChanged)
                         return false;
@@ -594,7 +594,7 @@ namespace NetTopologySuite.Geometries
         {
             var shell = (ILinearRing)_shell.Reverse();
             var holes = new ILinearRing[_holes.Length];
-            for (var i = 0; i < _holes.Length; i++)
+            for (int i = 0; i < _holes.Length; i++)
                 holes[i] = (ILinearRing)_holes[i].Reverse();
             return new Polygon(shell, holes, Factory);
         }
@@ -650,7 +650,7 @@ namespace NetTopologySuite.Geometries
         {
             if (sequence!=null && sequence.Count > 0)
             {
-                for (var i = 0; i < sequence.Count; i++)
+                for (int i = 0; i < sequence.Count; i++)
                     baseValue = operation(baseValue) + sequence.GetX(i).GetHashCode();
             }
             return baseValue;

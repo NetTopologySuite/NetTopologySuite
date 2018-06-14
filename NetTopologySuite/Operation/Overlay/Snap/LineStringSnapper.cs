@@ -61,10 +61,10 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <returns>list of the snapped points</returns>
         public Coordinate[] SnapTo(Coordinate[] snapPts)
         {
-            CoordinateList coordList = new CoordinateList(_srcPts);
+            var coordList = new CoordinateList(_srcPts);
             SnapVertices(coordList, snapPts);
             SnapSegments(coordList, snapPts);
-            Coordinate[] newPts = coordList.ToCoordinateArray();
+            var newPts = coordList.ToCoordinateArray();
             return newPts;
         }
 
@@ -77,8 +77,8 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         {
             // try snapping vertices
             // if src is a ring then don't snap final vertex
-            var end = _isClosed ? srcCoords.Count - 1 : srcCoords.Count;
-            for (var i = 0; i < end; i++)
+            int end = _isClosed ? srcCoords.Count - 1 : srcCoords.Count;
+            for (int i = 0; i < end; i++)
             {
                 var srcPt = srcCoords[i];
                 var snapVert = FindSnapForVertex(srcPt, snapPts);
@@ -101,7 +101,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <returns></returns>
         private Coordinate FindSnapForVertex(Coordinate pt, Coordinate[] snapPts)
         {
-            foreach (Coordinate coord in snapPts)
+            foreach (var coord in snapPts)
             {
                 // if point is already equal to a src pt, don't snap
                 if (pt.Equals2D(coord))
@@ -129,17 +129,17 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             // guard against empty input
             if (snapPts.Length == 0) return;
 
-            var distinctPtCount = snapPts.Length;
+            int distinctPtCount = snapPts.Length;
 
             // check for duplicate snap pts when they are sourced from a linear ring.
             // TODO: Need to do this better - need to check *all* points for dups (using a Set?)
             if (snapPts[0].Equals2D(snapPts[snapPts.Length - 1]))
                 distinctPtCount = snapPts.Length - 1;
 
-            for (var i = 0; i < distinctPtCount; i++)
+            for (int i = 0; i < distinctPtCount; i++)
             {
                 var snapPt = snapPts[i];
-                var index = FindSegmentIndexToSnap(snapPt, srcCoords);
+                int index = FindSegmentIndexToSnap(snapPt, srcCoords);
                 /*
                  * If a segment to snap to was found, "crack" it at the snap pt.
                  * The new pt is inserted immediately into the src segment list,
@@ -169,9 +169,9 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// or -1 if no segment snaps to the snap point.</returns>
         private int FindSegmentIndexToSnap(Coordinate snapPt, CoordinateList srcCoords)
         {
-            var minDist = double.MaxValue;
-            var snapIndex = -1;
-            for (var i = 0; i < srcCoords.Count - 1; i++)
+            double minDist = double.MaxValue;
+            int snapIndex = -1;
+            for (int i = 0; i < srcCoords.Count - 1; i++)
             {
                 _seg.P0 = srcCoords[i];
                 _seg.P1 = srcCoords[i + 1];
@@ -188,7 +188,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
                     return -1;
                 }
 
-                var dist = _seg.Distance(snapPt);
+                double dist = _seg.Distance(snapPt);
                 if (dist < _snapTolerance && dist < minDist)
                 {
                     minDist = dist;

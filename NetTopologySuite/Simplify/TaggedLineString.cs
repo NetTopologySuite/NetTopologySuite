@@ -81,11 +81,11 @@ namespace NetTopologySuite.Simplify
         /// </summary>
         private void Init()
         {
-            Coordinate[] pts = _parentLine.Coordinates;
+            var pts = _parentLine.Coordinates;
             _segs = new TaggedLineSegment[pts.Length - 1];
             for (int i = 0; i < pts.Length - 1; i++)
             {
-                TaggedLineSegment seg = new TaggedLineSegment(pts[i], pts[i + 1], _parentLine, i);
+                var seg = new TaggedLineSegment(pts[i], pts[i + 1], _parentLine, i);
                 _segs[i] = seg;
             }
         }
@@ -110,7 +110,7 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         public ILineString AsLineString()
         {
-            Coordinate[] coordinates = ExtractCoordinates(_resultSegs);
+            var coordinates = ExtractCoordinates(_resultSegs);
             return _parentLine.Factory.CreateLineString(coordinates);
         }
 
@@ -120,7 +120,7 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         public ILinearRing AsLinearRing()
         {
-            Coordinate[] coordinates = ExtractCoordinates(_resultSegs);
+            var coordinates = ExtractCoordinates(_resultSegs);
             return _parentLine.Factory.CreateLinearRing(coordinates);
         }
 
@@ -131,7 +131,7 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         private static Coordinate[] ExtractCoordinates(IList<LineSegment> segs)
         {
-            Coordinate[] pts = new Coordinate[segs.Count + 1];
+            var pts = new Coordinate[segs.Count + 1];
             LineSegment seg = null;
             for (int i = 0; i < segs.Count; i++)
             {

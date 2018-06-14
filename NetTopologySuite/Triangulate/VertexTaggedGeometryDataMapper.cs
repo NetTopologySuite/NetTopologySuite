@@ -23,7 +23,7 @@ namespace NetTopologySuite.Triangulate
 
         public void LoadSourceGeometries(IGeometry geoms)
         {
-            for (var i = 0; i < geoms.NumGeometries; i++)
+            for (int i = 0; i < geoms.NumGeometries; i++)
             {
                 var g = geoms.GetGeometryN(i);
                 LoadVertices(g.Coordinates, g.UserData);
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Triangulate
         {
             for (int i = 0; i < geomColl.NumGeometries; i++)
             {
-                IGeometry geom = geomColl.GetGeometryN(i);
+                var geom = geomColl.GetGeometryN(i);
                 LoadVertices(geom.Coordinates, geom.UserData);
             }
         }

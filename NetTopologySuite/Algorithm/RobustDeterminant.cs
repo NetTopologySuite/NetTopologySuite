@@ -435,10 +435,10 @@ namespace NetTopologySuite.Algorithm
              *
              */
 
-            var dx1 = p2.X - p1.X;
-            var dy1 = p2.Y - p1.Y;
-            var dx2 = q.X - p2.X;
-            var dy2 = q.Y - p2.Y;
+            double dx1 = p2.X - p1.X;
+            double dy1 = p2.Y - p1.Y;
+            double dx2 = q.X - p2.X;
+            double dy2 = q.Y - p2.Y;
             return SignOfDet2x2(dx1, dy1, dx2, dy2);
         }
 

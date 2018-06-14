@@ -62,10 +62,10 @@ namespace NetTopologySuite.GeometriesGraph
         {
             get
             {
-                IEnumerator<EdgeEnd> it = GetEnumerator();
+                var it = GetEnumerator();
                 if (!it.MoveNext())
                     return null;
-                EdgeEnd e = it.Current;
+                var e = it.Current;
                 return e.Coordinate;
             }
         }
@@ -106,7 +106,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public EdgeEnd GetNextCW(EdgeEnd ee)
         {
-            IList<EdgeEnd> temp = Edges;
+            var temp = Edges;
             temp = null;    // Hack for calling property
             int i = edgeList.IndexOf(ee);
             int iNextCW = i - 1;
@@ -159,14 +159,14 @@ namespace NetTopologySuite.GeometriesGraph
             bool[] hasDimensionalCollapseEdge = { false, false };
             foreach (var e in Edges)
             {
-                Label label = e.Label;
+                var label = e.Label;
                 for (int geomi = 0; geomi < 2; geomi++)
                     if (label.IsLine(geomi) && label.GetLocation(geomi) == Location.Boundary)
                         hasDimensionalCollapseEdge[geomi] = true;
             }
             foreach (var e in Edges)
             {
-                Label label = e.Label;
+                var label = e.Label;
                 for (int geomi = 0; geomi < 2; geomi++)
                 {
                     if (label.IsAnyNull(geomi))
@@ -176,7 +176,7 @@ namespace NetTopologySuite.GeometriesGraph
                             loc = Location.Exterior;
                         else
                         {
-                            Coordinate p = e.Coordinate;
+                            var p = e.Coordinate;
                             loc = GetLocation(geomi, p, geomGraph);
                         }
                         label.SetAllLocationsIfNull(geomi, loc);
@@ -230,24 +230,24 @@ namespace NetTopologySuite.GeometriesGraph
         {
             // Since edges are stored in CCW order around the node,
             // As we move around the ring we move from the right to the left side of the edge
-            IList<EdgeEnd> edges = Edges;
+            var edges = Edges;
             // if no edges, trivially consistent
             if (edges.Count <= 0)
                 return true;
             // initialize startLoc to location of last Curve side (if any)
             int lastEdgeIndex = edges.Count - 1;
-            Label startLabel = edges[lastEdgeIndex].Label;
-            Location startLoc = startLabel.GetLocation(geomIndex, Positions.Left);
+            var startLabel = edges[lastEdgeIndex].Label;
+            var startLoc = startLabel.GetLocation(geomIndex, Positions.Left);
             Assert.IsTrue(startLoc != Location.Null, "Found unlabelled area edge");
 
-            Location currLoc = startLoc;
-            foreach (EdgeEnd e in Edges)
+            var currLoc = startLoc;
+            foreach (var e in Edges)
             {
-                Label label = e.Label;
+                var label = e.Label;
                 // we assume that we are only checking a area
                 Assert.IsTrue(label.IsArea(geomIndex), "Found non-area edge");
-                Location leftLoc = label.GetLocation(geomIndex, Positions.Left);
-                Location rightLoc = label.GetLocation(geomIndex, Positions.Right);
+                var leftLoc = label.GetLocation(geomIndex, Positions.Left);
+                var rightLoc = label.GetLocation(geomIndex, Positions.Right);
                 // check that edge is really a boundary between inside and outside!
                 if (leftLoc == rightLoc)
                     return false;
@@ -267,11 +267,11 @@ namespace NetTopologySuite.GeometriesGraph
         {
             // Since edges are stored in CCW order around the node,
             // As we move around the ring we move from the right to the left side of the edge
-            Location startLoc = Location.Null;
+            var startLoc = Location.Null;
             // initialize loc to location of last Curve side (if any)
-            foreach (EdgeEnd e in Edges)
+            foreach (var e in Edges)
             {
-                Label label = e.Label;
+                var label = e.Label;
                 if (label.IsArea(geomIndex) && label.GetLocation(geomIndex, Positions.Left) != Location.Null)
                     startLoc = label.GetLocation(geomIndex, Positions.Left);
             }
@@ -279,18 +279,18 @@ namespace NetTopologySuite.GeometriesGraph
             if (startLoc == Location.Null)
                 return;
 
-            Location currLoc = startLoc;
-            foreach (EdgeEnd e in Edges)
+            var currLoc = startLoc;
+            foreach (var e in Edges)
             {
-                Label label = e.Label;
+                var label = e.Label;
                 // set null On values to be in current location
                 if (label.GetLocation(geomIndex, Positions.On) == Location.Null)
                     label.SetLocation(geomIndex, Positions.On, currLoc);
                 // set side labels (if any)
                 if (label.IsArea(geomIndex))
                 {
-                    Location leftLoc   = label.GetLocation(geomIndex, Positions.Left);
-                    Location rightLoc  = label.GetLocation(geomIndex, Positions.Right);
+                    var leftLoc   = label.GetLocation(geomIndex, Positions.Left);
+                    var rightLoc  = label.GetLocation(geomIndex, Positions.Right);
                     // if there is a right location, that is the next location to propagate
                     if (rightLoc != Location.Null)
                     {
@@ -326,7 +326,7 @@ namespace NetTopologySuite.GeometriesGraph
             GetEnumerator();   // force edgelist to be computed
             for (int i = 0; i < edgeList.Count; i++ )
             {
-                EdgeEnd e = edgeList[i];
+                var e = edgeList[i];
                 if (e == eSearch)
                     return i;
             }
@@ -339,7 +339,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="outstream"></param>
         public virtual void Write(StreamWriter outstream)
         {
-            foreach (EdgeEnd e in Edges)
+            foreach (var e in Edges)
                 e.Write(outstream);
         }
 

@@ -127,7 +127,7 @@ namespace NetTopologySuite.Noding
         /// <param name="geomIndex"></param>
         public void AddIntersections(LineIntersector li, int segmentIndex, int geomIndex)
         {
-            for (var i = 0; i < li.IntersectionNum; i++)
+            for (int i = 0; i < li.IntersectionNum; i++)
                 AddIntersection(li, segmentIndex, geomIndex, i);
         }
 
@@ -143,7 +143,7 @@ namespace NetTopologySuite.Noding
         /// <param name="intIndex"></param>
         public void AddIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
         {
-            Coordinate intPt = new Coordinate(li.GetIntersection(intIndex));
+            var intPt = new Coordinate(li.GetIntersection(intIndex));
             AddIntersection(intPt, segmentIndex);
         }
 
@@ -154,9 +154,9 @@ namespace NetTopologySuite.Noding
         /// <param name="segmentIndex"></param>
         public void AddIntersection(Coordinate intPt, int segmentIndex)
         {
-            var normalizedSegmentIndex = segmentIndex;
+            int normalizedSegmentIndex = segmentIndex;
             // normalize the intersection point location
-            var nextSegIndex = normalizedSegmentIndex + 1;
+            int nextSegIndex = normalizedSegmentIndex + 1;
             if(nextSegIndex < _pts.Length)
             {
                 var nextPt = _pts[nextSegIndex];

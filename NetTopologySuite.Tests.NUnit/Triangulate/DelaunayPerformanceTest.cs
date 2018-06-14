@@ -45,11 +45,11 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
 
         public void Run(int nPts)
         {
-            ICollection<Coordinate> pts = RandomPoints(nPts);
+            var pts = RandomPoints(nPts);
             Console.WriteLine("# pts: " + pts.Count);
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
-            DelaunayTriangulationBuilder builder = new DelaunayTriangulationBuilder();
+            var builder = new DelaunayTriangulationBuilder();
             builder.SetSites(pts);
 
             // don't actually form output geometry, to save time and memory
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
 
         private static ICollection<Coordinate> RandomPointsInGrid(int nPts)
         {
-            List<Coordinate> pts = new List<Coordinate>();
+            var pts = new List<Coordinate>();
 
             int nSide = (int)Math.Sqrt(nPts) + 1;
 
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
 
         private static ICollection<Coordinate> RandomPoints(int nPts)
         {
-            List<Coordinate> pts = new List<Coordinate>();
+            var pts = new List<Coordinate>();
 
             for (int i = 0; i < nPts; i++)
             {

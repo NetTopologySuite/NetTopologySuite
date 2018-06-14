@@ -76,16 +76,16 @@ namespace NetTopologySuite.Operation.Buffer
 
         public IGeometry Buffer(IGeometry g, double distance)
         {
-            IPrecisionModel precisionModel = _workingPrecisionModel;
+            var precisionModel = _workingPrecisionModel;
             if (precisionModel == null)
                 precisionModel = g.PrecisionModel;
 
             // factory must be the same as the one used by the input
             _geomFact = g.Factory;
 
-            OffsetCurveBuilder curveBuilder = new OffsetCurveBuilder(precisionModel, _bufParams);
+            var curveBuilder = new OffsetCurveBuilder(precisionModel, _bufParams);
 
-            OffsetCurveSetBuilder curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder);
+            var curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder);
 
             var bufferSegStrList = curveSetBuilder.GetCurves();
 
@@ -99,8 +99,8 @@ namespace NetTopologySuite.Operation.Buffer
             _graph = new PlanarGraph(new OverlayNodeFactory());
             _graph.AddEdges(_edgeList.Edges);
 
-            IEnumerable<BufferSubgraph> subgraphList = CreateSubgraphs(_graph);
-            PolygonBuilder polyBuilder = new PolygonBuilder(_geomFact);
+            var subgraphList = CreateSubgraphs(_graph);
+            var polyBuilder = new PolygonBuilder(_geomFact);
             BuildSubgraphs(subgraphList, polyBuilder);
             var resultPolyList = polyBuilder.Polygons;
 
@@ -110,7 +110,7 @@ namespace NetTopologySuite.Operation.Buffer
                 return CreateEmptyResultGeometry();
             }
 
-            IGeometry resultGeom = _geomFact.BuildGeometry(resultPolyList);
+            var resultGeom = _geomFact.BuildGeometry(resultPolyList);
             return resultGeom;
         }
 
@@ -167,14 +167,14 @@ namespace NetTopologySuite.Operation.Buffer
         {
             //<FIX> MD 8 Oct 03  speed up identical edge lookup
             // fast lookup
-            Edge existingEdge = _edgeList.FindEqualEdge(e);
+            var existingEdge = _edgeList.FindEqualEdge(e);
 
             // If an identical edge already exists, simply update its label
             if (existingEdge != null)
             {
-                Label existingLabel = existingEdge.Label;
+                var existingLabel = existingEdge.Label;
 
-                Label labelToMerge = e.Label;
+                var labelToMerge = e.Label;
                 // check if new edge is in reverse direction to existing edge
                 // if so, must flip the label before merging it
                 if (!existingEdge.IsPointwiseEqual(e))
@@ -202,7 +202,7 @@ namespace NetTopologySuite.Operation.Buffer
         private static IEnumerable<BufferSubgraph> CreateSubgraphs(PlanarGraph graph)
         {
             var subgraphList = new List<BufferSubgraph>();
-            foreach (Node node in graph.Nodes)
+            foreach (var node in graph.Nodes)
             {
                 if (!node.IsVisited)
                 {
@@ -236,7 +236,7 @@ namespace NetTopologySuite.Operation.Buffer
             var processedGraphs = new List<BufferSubgraph>();
             foreach (var subgraph in subgraphList)
             {
-                Coordinate p = subgraph.RightMostCoordinate;
+                var p = subgraph.RightMostCoordinate;
                 //      int outsideDepth = 0;
                 //      if (polyBuilder.containsPoint(p))
                 //        outsideDepth = 1;
@@ -262,8 +262,8 @@ namespace NetTopologySuite.Operation.Buffer
             var lines = new List<IGeometry>();
             while (it.MoveNext())
             {
-                ISegmentString ss = it.Current;
-                ILineString line = fact.CreateLineString(ss.Coordinates);
+                var ss = it.Current;
+                var line = fact.CreateLineString(ss.Coordinates);
                 lines.Add(line);
             }
             return fact.BuildGeometry(lines);

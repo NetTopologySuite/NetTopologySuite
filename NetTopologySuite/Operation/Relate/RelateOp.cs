@@ -34,8 +34,8 @@ namespace NetTopologySuite.Operation.Relate
         /// <returns>The <c>IntersectionMatrix</c> for the spatial relationship between the geometries</returns>
         public static IntersectionMatrix Relate(IGeometry a, IGeometry b)
         {
-            RelateOp relOp = new RelateOp(a, b);
-            IntersectionMatrix im = relOp.IntersectionMatrix;
+            var relOp = new RelateOp(a, b);
+            var im = relOp.IntersectionMatrix;
             return im;
         }
 
@@ -49,8 +49,8 @@ namespace NetTopologySuite.Operation.Relate
         /// <returns>The <c>IntersectionMatrix</c> for the spatial relationship between the geometries</returns>
         public static IntersectionMatrix Relate(IGeometry a, IGeometry b, IBoundaryNodeRule boundaryNodeRule)
         {
-            RelateOp relOp = new RelateOp(a, b, boundaryNodeRule);
-            IntersectionMatrix im = relOp.IntersectionMatrix;
+            var relOp = new RelateOp(a, b, boundaryNodeRule);
+            var im = relOp.IntersectionMatrix;
             return im;
         }
 

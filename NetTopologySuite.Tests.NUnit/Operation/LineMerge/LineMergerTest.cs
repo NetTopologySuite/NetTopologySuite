@@ -74,7 +74,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
 
         public static void DoTest(string[] inputWKT, string[] expectedOutputWKT, bool compareDirections)
         {
-            LineMerger lineMerger = new LineMerger();
+            var lineMerger = new LineMerger();
             lineMerger.Add(ToGeometries(inputWKT));
             Compare(ToGeometries(expectedOutputWKT), lineMerger.GetMergedLineStrings(), compareDirections);
         }
@@ -109,7 +109,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
         public static IList<IGeometry> ToGeometries(string[] inputWKT)
         {
             var geometries = new List<IGeometry>();
-            foreach (var geomWkt in inputWKT)
+            foreach (string geomWkt in inputWKT)
             {
                 try
                 {

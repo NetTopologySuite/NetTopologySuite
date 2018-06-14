@@ -21,7 +21,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <returns></returns>
         public static Node<T> CreateNode(Envelope env)
         {
-            Key key = new Key(env);
+            var key = new Key(env);
             var node = new Node<T>(key.Envelope, key.Level);
             return node;
         }
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <returns></returns>
         public static Node<T> CreateExpanded(Node<T> node, Envelope addEnv)
         {
-            Envelope expandEnv = new Envelope(addEnv);
+            var expandEnv = new Envelope(addEnv);
             if (node != null)
                 expandEnv.ExpandToInclude(node._env);
 
@@ -197,7 +197,7 @@ namespace NetTopologySuite.Index.Quadtree
                 default:
                     break;
             }
-            Envelope sqEnv = new Envelope(minx, maxx, miny, maxy);
+            var sqEnv = new Envelope(minx, maxx, miny, maxy);
             var node = new Node<T>(sqEnv, _level - 1);
             return node;
         }

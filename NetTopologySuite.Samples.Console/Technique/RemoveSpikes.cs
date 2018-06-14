@@ -35,12 +35,12 @@ namespace NetTopologySuite.Samples.Technique
                 {
                     var poly = (IPolygon) geom;
                     poly.ExteriorRing.Apply(new SpikeFixSequenceFilter(_spikeThreshold));
-                    for (var i = 0; i < poly.NumInteriorRings; i++)
+                    for (int i = 0; i < poly.NumInteriorRings; i++)
                         poly.GetInteriorRingN(i).Apply(new SpikeFixSequenceFilter(_spikeThreshold));
                 }
                 if (geom is IGeometryCollection)
                 {
-                    for (var i = 0; i < geom.NumGeometries; i++)
+                    for (int i = 0; i < geom.NumGeometries; i++)
                         geom.GetGeometryN(i).Apply(new SpikeFixFilter(_spikeThreshold));
                 }
             }
@@ -205,7 +205,7 @@ namespace NetTopologySuite.Samples.Technique
                 var poly = (IPolygon)geom;
                 var exteriorRing = RemoveSpikesFromLineString(poly.ExteriorRing, factory, true);
                 var interiorRings = new List<ILinearRing>(poly.NumInteriorRings);
-                for (var i = 0; i < poly.NumInteriorRings; i++)
+                for (int i = 0; i < poly.NumInteriorRings; i++)
                     interiorRings.Add((ILinearRing)RemoveSpikesFromLineString(poly.GetInteriorRingN(i), factory, true));
                 return factory.CreatePolygon((ILinearRing)exteriorRing, interiorRings.ToArray());
             }
@@ -213,7 +213,7 @@ namespace NetTopologySuite.Samples.Technique
             if (geom is IGeometryCollection)
             {
                 var lst = new List<IGeometry>();
-                for (var i = 0; i < geom.NumGeometries; i++)
+                for (int i = 0; i < geom.NumGeometries; i++)
                     lst.Add(Edit(geom.GetGeometryN(i), geom.Factory));
                 return factory.CreateGeometryCollection(lst.ToArray());
             }

@@ -24,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             CheckStandardNotation(DD.ValueOf(1e14).Subtract(DD.ValueOf(1)), "99999999999999.0");
             CheckStandardNotation(DD.ValueOf(1e16).Subtract(DD.ValueOf(1)), "9999999999999999.0");
 
-            DD num8Dec = DD.ValueOf(-379363639).Divide(
+            var num8Dec = DD.ValueOf(-379363639).Divide(
                 DD.ValueOf(100000000));
             CheckStandardNotation(num8Dec, "-3.79363639");
 
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         }
 
         private static void CheckSciNotation(DD x, string expectedStr) {
-            var xStr = x.ToSciNotation();
+            string xStr = x.ToSciNotation();
             // System.Console.WriteLine("Sci Notation: " + xStr);
             Assert.AreEqual(xStr, expectedStr);
         }
@@ -112,9 +112,9 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
 
         private static void CheckParse(string str, DD expectedVal,
             double relErrBound) {
-            DD xdd = DD.Parse(str);
-            var err = (xdd - expectedVal).ToDoubleValue();
-            var relErr = err / xdd.ToDoubleValue();
+            var xdd = DD.Parse(str);
+            double err = (xdd - expectedVal).ToDoubleValue();
+            double relErr = err / xdd.ToDoubleValue();
 
             // System.Console.WriteLine(("Parsed= " + xdd + " rel err= " + relErr);
 
@@ -132,7 +132,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         }
 
         private static void CheckParseError(string str) {
-            var foundParseError = false;
+            bool foundParseError = false;
             try {
                 DD.Parse(str);
             } catch (FormatException ex) {
@@ -160,19 +160,19 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
                 // if (count == 100)
                 //     count = count;
                 double x = xdd.ToDoubleValue();
-                DD xSqrt = xdd.Sqrt();
+                var xSqrt = xdd.Sqrt();
                 string s = xSqrt.ToString();
                 // System.Console.WriteLine((count + ": " + s);
 
-                DD xSqrt2 = DD.Parse(s);
-                DD xx = xSqrt2.Multiply(xSqrt2);
+                var xSqrt2 = DD.Parse(s);
+                var xx = xSqrt2.Multiply(xSqrt2);
                 double err = Math.Abs(xx.ToDoubleValue() - x);
                 // assertTrue(err < 1e-10);
 
                 xdd = xSqrt;
 
                 // square roots converge on 1 - stop when very close
-                DD distFrom1DD = xSqrt.Subtract(DD.ValueOf(1.0));
+                var distFrom1DD = xSqrt.Subtract(DD.ValueOf(1.0));
                 double distFrom1 = distFrom1DD.ToDoubleValue();
                 if (Math.Abs(distFrom1) < 1.0e-40)
                     break;
@@ -197,11 +197,11 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             while (xdd.ToDoubleValue() > 1e-300) {
                 count++;
                 double x = xdd.ToDoubleValue();
-                DD xSqr = xdd.Sqr();
+                var xSqr = xdd.Sqr();
                 string s = xSqr.ToString();
                 // System.Console.WriteLine(count + ": " + s);
 
-                DD xSqr2 = DD.Parse(s);
+                var xSqr2 = DD.Parse(s);
 
                 xdd = xSqr;
             }
@@ -219,17 +219,17 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         /// This tests the correctness and robustness of both output and input.
         /// </summary>
         static void WriteAndReadSqrt(double x) {
-            DD xdd = DD.ValueOf(x);
-            DD xSqrt = xdd.Sqrt();
+            var xdd = DD.ValueOf(x);
+            var xSqrt = xdd.Sqrt();
             string s = xSqrt.ToString();
             // System.Console.WriteLine(s);
 
-            DD xSqrt2 = DD.Parse(s);
-            DD xx = xSqrt2 * xSqrt2;
+            var xSqrt2 = DD.Parse(s);
+            var xx = xSqrt2 * xSqrt2;
             string xxStr = xx.ToString();
             // System.Console.WriteLine("==>  " + xxStr);
 
-            DD xx2 = DD.Parse(xxStr);
+            var xx2 = DD.Parse(xxStr);
             double err = Math.Abs(xx2.ToDoubleValue() - x);
             Assert.IsTrue(err < 1e-10);
         }

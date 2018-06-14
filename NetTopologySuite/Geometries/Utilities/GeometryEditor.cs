@@ -150,7 +150,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 return _factory.CreatePolygon();
 
             var holes = new List<ILinearRing>();
-            for (var i = 0; i < newPolygon.NumInteriorRings; i++)
+            for (int i = 0; i < newPolygon.NumInteriorRings; i++)
             {
                 var hole = (ILinearRing)Edit(newPolygon.GetInteriorRingN(i), operation);
                 if (hole == null || hole.IsEmpty) continue;
@@ -168,7 +168,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
             // edit the component geometries
             IList<IGeometry> geometries = new List<IGeometry>();
-            for (var i = 0; i < collectionForType.NumGeometries; i++)
+            for (int i = 0; i < collectionForType.NumGeometries; i++)
             {
                 var geometry = Edit(collectionForType.GetGeometryN(i), operation);
                 if (geometry == null || geometry.IsEmpty) continue;
@@ -248,7 +248,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
                 if (geometry is Point)
                 {
-                    Coordinate[] newCoordinates = Edit(geometry.Coordinates, geometry);
+                    var newCoordinates = Edit(geometry.Coordinates, geometry);
                     return factory.CreatePoint((newCoordinates.Length > 0) ? newCoordinates[0] : null);
                 }
 

@@ -133,11 +133,11 @@ namespace NetTopologySuite.Algorithm
                     nameof(ring));
 
             // find highest point
-            Coordinate hiPt = ring[0];
+            var hiPt = ring[0];
             int hiIndex = 0;
             for (int i = 1; i <= nPts; i++)
             {
-                Coordinate p = ring[i];
+                var p = ring[i];
                 if (p.Y > hiPt.Y)
                 {
                     hiPt = p;
@@ -161,8 +161,8 @@ namespace NetTopologySuite.Algorithm
                 iNext = (iNext + 1) % nPts;
             } while (ring[iNext].Equals2D(hiPt) && iNext != hiIndex);
 
-            Coordinate prev = ring[iPrev];
-            Coordinate next = ring[iNext];
+            var prev = ring[iPrev];
+            var next = ring[iNext];
 
             /**
              * This check catches cases where the ring contains an A-B-A configuration
@@ -215,7 +215,7 @@ namespace NetTopologySuite.Algorithm
         public static bool IsCCW(ICoordinateSequence ring)
         {
             // # of points without closing endpoint
-            var nPts = ring.Count - 1;
+            int nPts = ring.Count - 1;
             // sanity check
             if (nPts < 3)
                 throw new ArgumentException(
@@ -224,8 +224,8 @@ namespace NetTopologySuite.Algorithm
 
             // find highest point
             var hiPt = ring.GetCoordinate(0);
-            var hiIndex = 0;
-            for (var i = 1; i <= nPts; i++)
+            int hiIndex = 0;
+            for (int i = 1; i <= nPts; i++)
             {
                 var p = ring.GetCoordinate(i);
                 if (p.Y > hiPt.Y)
@@ -237,7 +237,7 @@ namespace NetTopologySuite.Algorithm
 
             // find distinct point before highest point
             Coordinate prev;
-            var iPrev = hiIndex;
+            int iPrev = hiIndex;
             do
             {
                 iPrev = iPrev - 1;
@@ -248,7 +248,7 @@ namespace NetTopologySuite.Algorithm
 
             // find distinct point after highest point
             Coordinate next;
-            var iNext = hiIndex;
+            int iNext = hiIndex;
             do
             {
                 iNext = (iNext + 1) % nPts;

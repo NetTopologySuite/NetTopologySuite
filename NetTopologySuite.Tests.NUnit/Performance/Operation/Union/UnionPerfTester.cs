@@ -19,13 +19,13 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
 
         public static void run(string testName, int testType, IList<IGeometry> polys)
         {
-            UnionPerfTester test = new UnionPerfTester(polys);
+            var test = new UnionPerfTester(polys);
             test.run(testName, testType);
         }
 
         public static void runAll(IList<IGeometry> polys)
         {
-            UnionPerfTester test = new UnionPerfTester(polys);
+            var test = new UnionPerfTester(polys);
             test.runAll();
         }
 
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
             Console.WriteLine();
             Console.WriteLine("======= Union Algorithm: " + testName + " ===========");
 
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             for (int i = 0; i < MAX_ITER; i++)
             {
                 IGeometry union = null;
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
 
         private void printFormatted(IGeometry geom)
         {
-            WKTWriter writer = new WKTWriter();
+            var writer = new WKTWriter();
             Console.WriteLine(writer.WriteFormatted(geom));
         }
 
@@ -125,7 +125,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
 
         private void printItemEnvelopes(IList tree)
         {
-            Envelope itemEnv = new Envelope();
+            var itemEnv = new Envelope();
             foreach (object o in tree)
             {
                 if (o is IList)

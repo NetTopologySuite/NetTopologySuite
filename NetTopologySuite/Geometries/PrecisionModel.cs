@@ -341,7 +341,7 @@ namespace NetTopologySuite.Geometries
 
             if (_modelType == PrecisionModels.FloatingSingle)
             {
-                var floatSingleVal = (float)val;
+                float floatSingleVal = (float)val;
                 return floatSingleVal;
             }
 

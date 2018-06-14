@@ -72,7 +72,7 @@ namespace NetTopologySuite.Noding
         /// </summary>
         private void AddEndpoints()
         {
-            var maxSegIndex = _edge.Count - 1;
+            int maxSegIndex = _edge.Count - 1;
             Add(_edge.GetCoordinate(0), 0);
             Add(_edge.GetCoordinate(maxSegIndex), maxSegIndex);
         }
@@ -92,7 +92,7 @@ namespace NetTopologySuite.Noding
             FindCollapsesFromExistingVertices(collapsedVertexIndexes);
 
             // node the collapses
-            foreach(var vertexIndex in collapsedVertexIndexes)
+            foreach(int vertexIndex in collapsedVertexIndexes)
                 Add(_edge.GetCoordinate(vertexIndex), vertexIndex);
         }
 
@@ -103,7 +103,7 @@ namespace NetTopologySuite.Noding
         /// <param name="collapsedVertexIndexes"></param>
         private void FindCollapsesFromExistingVertices(IList<int> collapsedVertexIndexes)
         {
-            for (var i = 0; i < _edge.Count - 2; i++)
+            for (int i = 0; i < _edge.Count - 2; i++)
             {
                 var p0 = _edge.GetCoordinate(i);
                 //var p1 = _edge.GetCoordinate(i + 1);
@@ -123,7 +123,7 @@ namespace NetTopologySuite.Noding
         /// <param name="collapsedVertexIndexes"></param>
         private void FindCollapsesFromInsertedNodes(IList<int> collapsedVertexIndexes)
         {
-            var collapsedVertexIndex = new int[1];
+            int[] collapsedVertexIndex = new int[1];
 
             var ie = GetEnumerator();
             ie.MoveNext();
@@ -133,7 +133,7 @@ namespace NetTopologySuite.Noding
             while (ie.MoveNext())
             {
                 var ei = (SegmentNode) ie.Current;
-                var isCollapsed = FindCollapseIndex(eiPrev, ei, collapsedVertexIndex);
+                bool isCollapsed = FindCollapseIndex(eiPrev, ei, collapsedVertexIndex);
                 if (isCollapsed)
                     collapsedVertexIndexes.Add(collapsedVertexIndex[0]);
                 eiPrev = ei;
@@ -152,7 +152,7 @@ namespace NetTopologySuite.Noding
             // only looking for equal nodes
             if (!ei0.Coord.Equals2D(ei1.Coord))
                 return false;
-            var numVerticesBetween = ei1.SegmentIndex - ei0.SegmentIndex;
+            int numVerticesBetween = ei1.SegmentIndex - ei0.SegmentIndex;
             if (!ei1.IsInterior)
                 numVerticesBetween--;
             // if there is a single vertex between the two equal nodes, this is a collapse
@@ -229,20 +229,20 @@ namespace NetTopologySuite.Noding
         /// <returns></returns>
         ISegmentString CreateSplitEdge(SegmentNode ei0, SegmentNode ei1)
         {
-            var npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
+            int npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
 
             var lastSegStartPt = _edge.GetCoordinate(ei1.SegmentIndex);
             // if the last intersection point is not equal to the its segment start pt, add it to the points list as well.
             // (This check is needed because the distance metric is not totally reliable!)
             // The check for point equality is 2D only - Z values are ignored
-            var useIntPt1 = ei1.IsInterior || !ei1.Coord.Equals2D(lastSegStartPt);
+            bool useIntPt1 = ei1.IsInterior || !ei1.Coord.Equals2D(lastSegStartPt);
             if(!useIntPt1)
                 npts--;
 
             var pts = new Coordinate[npts];
-            var ipt = 0;
+            int ipt = 0;
             pts[ipt++] = new Coordinate(ei0.Coord);
-            for (var i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
+            for (int i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
                 pts[ipt++] = _edge.GetCoordinate(i);
             if (useIntPt1)
                 pts[ipt] = new Coordinate(ei1.Coord);
@@ -278,22 +278,22 @@ namespace NetTopologySuite.Noding
         private void AddEdgeCoordinates(SegmentNode ei0, SegmentNode ei1,
             CoordinateList coordList)
         {
-            var npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
+            int npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
 
             var lastSegStartPt = _edge.GetCoordinate(ei1.SegmentIndex);
             // if the last intersection point is not equal to the its segment start pt,
             // add it to the points list as well.
             // (This check is needed because the distance metric is not totally reliable!)
             // The check for point equality is 2D only - Z values are ignored
-            var useIntPt1 = ei1.IsInterior || !ei1.Coord.Equals2D(lastSegStartPt);
+            bool useIntPt1 = ei1.IsInterior || !ei1.Coord.Equals2D(lastSegStartPt);
             if (!useIntPt1)
             {
                 npts--;
             }
 
-            var ipt = 0;
+            int ipt = 0;
             coordList.Add(new Coordinate(ei0.Coord), false);
-            for (var i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
+            for (int i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
             {
                 coordList.Add(_edge.GetCoordinate(i));
             }
@@ -310,7 +310,7 @@ namespace NetTopologySuite.Noding
         public void Write(StreamWriter outstream)
         {
             outstream.Write("Intersections:");
-            foreach(var obj in this)
+            foreach(object obj in this)
             {
                 var ei = (SegmentNode) obj;
                 ei.Write(outstream);

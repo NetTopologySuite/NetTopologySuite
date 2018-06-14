@@ -84,8 +84,8 @@ namespace NetTopologySuite.Shape.Random
 
         protected Coordinate CreateRandomCoord(Envelope env)
         {
-            var x = env.MinX + env.Width * Rnd.NextDouble();
-            var y = env.MinY + env.Height * Rnd.NextDouble();
+            double x = env.MinX + env.Width * Rnd.NextDouble();
+            double y = env.MinY + env.Height * Rnd.NextDouble();
 
             return CreateCoord(x, y);
         }

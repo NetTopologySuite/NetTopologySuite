@@ -69,8 +69,8 @@ namespace Open.Topology.TestRunner.Operations
 
         private static void CheckContains(IPreparedGeometry pg, IGeometry g2)
         {
-            var pgResult = pg.Contains(g2);
-            var expected = pg.Geometry.Contains(g2);
+            bool pgResult = pg.Contains(g2);
+            bool expected = pg.Geometry.Contains(g2);
 
             if (pgResult != expected)
                 throw new InvalidOperationException("PreparedGeometry.contains result does not match expected");
@@ -80,8 +80,8 @@ namespace Open.Topology.TestRunner.Operations
 
         private static void CheckContainsProperly(IPreparedGeometry pg, IGeometry g2)
         {
-            var pgResult = pg.ContainsProperly(g2);
-            var expected = ContainsProperly(pg.Geometry, g2);
+            bool pgResult = pg.ContainsProperly(g2);
+            bool expected = ContainsProperly(pg.Geometry, g2);
 
             if (pgResult != expected)
                 throw new InvalidOperationException("PreparedGeometry.containsProperly result does not match expected");
@@ -91,8 +91,8 @@ namespace Open.Topology.TestRunner.Operations
 
         private static void CheckCovers(IPreparedGeometry pg, IGeometry g2)
         {
-            var pgResult = pg.Covers(g2);
-            var expected = pg.Geometry.Covers(g2);
+            bool pgResult = pg.Covers(g2);
+            bool expected = pg.Geometry.Covers(g2);
 
             if (pgResult != expected)
                 throw new InvalidOperationException("PreparedGeometry.covers result does not match expected");

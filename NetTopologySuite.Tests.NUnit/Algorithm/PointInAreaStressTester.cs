@@ -62,7 +62,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
             int ptGridWidth = (int)Math.Sqrt(_numPts);
 
-            Envelope areaEnv = _area.EnvelopeInternal;
+            var areaEnv = _area.EnvelopeInternal;
             double xStep = areaEnv.Width / (ptGridWidth - 1);
             double yStep = areaEnv.Height / (ptGridWidth - 1);
 
@@ -106,8 +106,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             //Console.WriteLine(WKTWriter.toPoint(p));
 
-            Location loc1 = _pia1.Locate(p);
-            Location loc2 = _pia2.Locate(p);
+            var loc1 = _pia1.Locate(p);
+            var loc2 = _pia2.Locate(p);
 
             _locationCount[(int)loc1]++;
 

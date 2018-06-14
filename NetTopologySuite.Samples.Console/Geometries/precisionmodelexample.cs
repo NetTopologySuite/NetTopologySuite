@@ -19,7 +19,7 @@ namespace NetTopologySuite.Samples.Geometries
         [STAThread]
         public static void main(string[] args)
         {
-            PrecisionModelExample example = new PrecisionModelExample();
+            var example = new PrecisionModelExample();
             try
             {
                 example.Run();
@@ -68,12 +68,12 @@ namespace NetTopologySuite.Samples.Geometries
         public virtual void  Intersection(string wktA, string wktB, PrecisionModel pm)
         {
             Console.WriteLine("Running example using Precision Model = " + pm);
-            GeometryFactory fact = new GeometryFactory(pm);
-            WKTReader wktRdr = new WKTReader(fact);
+            var fact = new GeometryFactory(pm);
+            var wktRdr = new WKTReader(fact);
 
-            IGeometry A = wktRdr.Read(wktA);
-            IGeometry B = wktRdr.Read(wktB);
-            IGeometry C = A.Intersection(B);
+            var A = wktRdr.Read(wktA);
+            var B = wktRdr.Read(wktB);
+            var C = A.Intersection(B);
 
             Console.WriteLine("A intersection B = " + C);
         }
@@ -82,12 +82,12 @@ namespace NetTopologySuite.Samples.Geometries
         {
             Console.WriteLine("-------------------------------------------");
             Console.WriteLine("Running example using Precision Model = " + pm);
-            GeometryFactory fact = new GeometryFactory(pm);
-            WKTReader wktRdr = new WKTReader(fact);
+            var fact = new GeometryFactory(pm);
+            var wktRdr = new WKTReader(fact);
 
-            IGeometry A = wktRdr.Read(wktA);
-            IGeometry B = wktRdr.Read(wktB);
-            IGeometry C = A.Difference(B);
+            var A = wktRdr.Read(wktA);
+            var B = wktRdr.Read(wktB);
+            var C = A.Difference(B);
 
             Console.WriteLine("A intersection B = " + C);
         }

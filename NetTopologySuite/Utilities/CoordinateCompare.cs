@@ -54,8 +54,8 @@ namespace NetTopologySuite.Utilities
             if (x is Coordinate && y is  Coordinate)
             {
 
-                Coordinate coord1 = (Coordinate) x;
-                Coordinate coord2 = (Coordinate) y;
+                var coord1 = (Coordinate) x;
+                var coord2 = (Coordinate) y;
                 if (coord1.X < coord2.X)
                     returnValue = -1;
                 else if (coord1.X > coord2.X)

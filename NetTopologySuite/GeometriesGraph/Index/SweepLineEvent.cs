@@ -89,7 +89,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="o"></param>
         public int CompareTo(object o)
         {
-            SweepLineEvent pe = (SweepLineEvent)o;
+            var pe = (SweepLineEvent)o;
             if (_xValue < pe._xValue)
                 return -1;
             if (_xValue > pe._xValue)

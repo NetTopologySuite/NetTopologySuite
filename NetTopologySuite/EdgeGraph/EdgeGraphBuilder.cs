@@ -11,7 +11,7 @@ namespace NetTopologySuite.EdgeGraph
     {
         public static EdgeGraph Build(IEnumerable<IGeometry> geoms)
         {
-            EdgeGraphBuilder builder = new EdgeGraphBuilder();
+            var builder = new EdgeGraphBuilder();
             builder.Add(geoms);
             return builder.GetGraph();
         }
@@ -48,17 +48,17 @@ namespace NetTopologySuite.EdgeGraph
         /// <param name="geometries">the geometries to be added</param>
         public void Add(IEnumerable<IGeometry> geometries)
         {
-            foreach (IGeometry geometry in geometries)
+            foreach (var geometry in geometries)
                 Add(geometry);
         }
 
         private void Add(ILineString lineString)
         {
-            ICoordinateSequence seq = lineString.CoordinateSequence;
+            var seq = lineString.CoordinateSequence;
             for (int i = 1; i < seq.Count; i++)
             {
-                Coordinate prev = seq.GetCoordinate(i - 1);
-                Coordinate curr = seq.GetCoordinate(i);
+                var prev = seq.GetCoordinate(i - 1);
+                var curr = seq.GetCoordinate(i);
                 graph.AddEdge(prev, curr);
             }
         }

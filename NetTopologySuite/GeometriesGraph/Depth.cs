@@ -149,7 +149,7 @@ namespace NetTopologySuite.GeometriesGraph
             {
                 for (int j = 1; j < 3; j++)
                 {
-                    Location loc = lbl.GetLocation(i, (Positions)j);
+                    var loc = lbl.GetLocation(i, (Positions)j);
                     if (loc == Location.Exterior || loc == Location.Interior)
                     {
                         // initialize depth if it is null, otherwise add this location value

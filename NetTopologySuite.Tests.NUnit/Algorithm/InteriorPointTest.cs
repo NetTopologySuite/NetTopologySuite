@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         [TestAttribute]
         public void TestAll()
         {
-            var name = "NetTopologySuite.Tests.NUnit.TestData.europe.wkt";
+            string name = "NetTopologySuite.Tests.NUnit.TestData.europe.wkt";
             var stream = EmbeddedResourceManager.GetResourceStream(name);
             CheckInteriorPointFile(stream, name);
             name = "NetTopologySuite.Tests.NUnit.TestData.africa.wkt";

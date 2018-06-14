@@ -19,19 +19,19 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         [TestAttribute]
         public void TestZeroLength()
         {
-            ICoordinateSequence seq = CsFactory.Create(0, 3);
+            var seq = CsFactory.Create(0, 3);
             Assert.IsTrue(seq.Count == 0);
 
-            ICoordinateSequence seq2 = CsFactory.Create((Coordinate[])null);
+            var seq2 = CsFactory.Create((Coordinate[])null);
             Assert.IsTrue(seq2.Count == 0);
         }
 
         [TestAttribute]
         public void TestCreateBySizeAndModify()
         {
-            Coordinate[] coords = CreateArray(Size);
+            var coords = CreateArray(Size);
 
-            ICoordinateSequence seq = CsFactory.Create(Size, 3);
+            var seq = CsFactory.Create(Size, 3);
             for (int i = 0; i < seq.Count; i++)
             {
                 seq.SetOrdinate(i, Ordinate.X, coords[i].X);
@@ -47,9 +47,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         [TestAttribute]
         public virtual void Test2DZOrdinate()
         {
-            Coordinate[] coords = CreateArray(Size);
+            var coords = CreateArray(Size);
 
-            ICoordinateSequence seq = CsFactory.Create(Size, 2);
+            var seq = CsFactory.Create(Size, 2);
             for (int i = 0; i < seq.Count; i++)
             {
                 seq.SetOrdinate(i, Ordinate.X, coords[i].X);
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 
             for (int i = 0; i < seq.Count; i++)
             {
-                Coordinate p = seq.GetCoordinate(i);
+                var p = seq.GetCoordinate(i);
                 Assert.IsTrue(double.IsNaN(p.Z));
             }
         }
@@ -66,17 +66,17 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         [TestAttribute]
         public void TestCreateByInit()
         {
-            Coordinate[] coords = CreateArray(Size);
-            ICoordinateSequence seq = CsFactory.Create(coords);
+            var coords = CreateArray(Size);
+            var seq = CsFactory.Create(coords);
             Assert.IsTrue(IsEqual(seq, coords));
         }
 
         [TestAttribute]
         public void TestCreateByInitAndCopy()
         {
-            Coordinate[] coords = CreateArray(Size);
-            ICoordinateSequence seq = CsFactory.Create(coords);
-            ICoordinateSequence seq2 = CsFactory.Create(seq);
+            var coords = CreateArray(Size);
+            var seq = CsFactory.Create(coords);
+            var seq2 = CsFactory.Create(seq);
             Assert.IsTrue(IsEqual(seq2, coords));
         }
 
@@ -85,7 +85,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             var coords = CreateArray(Size);
             var seq = CsFactory.Create(coords);
             // throws exception if not serializable
-            var data = SerializationUtility.Serialize(seq);
+            byte[] data = SerializationUtility.Serialize(seq);
             // check round-trip gives same data
             var seq2 = SerializationUtility.Deserialize<ICoordinateSequence>(data);
             Assert.IsTrue(IsEqual(seq2, coords));
@@ -95,7 +95,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         // The method should not be marked as protected, and should be altered when the correct PackedCoordinateSequence.GetCoordinate result is migrated to NTS
         protected Coordinate[] CreateArray(int size)
         {
-            Coordinate[] coords = new Coordinate[size];
+            var coords = new Coordinate[size];
             for (int i = 0; i < size; i++)
             {
                 double baseUnits = 2 * 1;
@@ -133,7 +133,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             if (seq.Count != coords.Length)
                 return false;
 
-            Coordinate p = new Coordinate();
+            var p = new Coordinate();
 
             for (int i = 0; i < seq.Count; i++)
             {

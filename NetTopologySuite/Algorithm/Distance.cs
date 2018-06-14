@@ -57,7 +57,7 @@ namespace NetTopologySuite.Algorithm
              *   If the numerator in eqn 1 is also zero, AB & CD are collinear.
              */
 
-            var noIntersection = false;
+            bool noIntersection = false;
             if (!Envelope.Intersects(A, B, C, D))
             {
                 noIntersection = true;
@@ -108,10 +108,10 @@ namespace NetTopologySuite.Algorithm
                 throw new ArgumentException(
                     "Line array must contain at least one vertex");
             // this handles the case of length = 1
-            var minDistance = p.Distance(line[0]);
-            for (var i = 0; i < line.Length - 1; i++)
+            double minDistance = p.Distance(line[0]);
+            for (int i = 0; i < line.Length - 1; i++)
             {
-                var dist = DistanceComputer.PointToSegment(p, line[i], line[i + 1]);
+                double dist = DistanceComputer.PointToSegment(p, line[i], line[i + 1]);
                 if (dist < minDistance)
                 {
                     minDistance = dist;
@@ -133,11 +133,11 @@ namespace NetTopologySuite.Algorithm
                     "Line array must contain at least one vertex");
             // this handles the case of length = 1
             var lastStart = line.GetCoordinate(0);
-            var minDistance = p.Distance(lastStart);
-            for (var i = 1; i < line.Count - 1; i++)
+            double minDistance = p.Distance(lastStart);
+            for (int i = 1; i < line.Count - 1; i++)
             {
                 var currentEnd = line.GetCoordinate(i);
-                var dist = DistanceComputer.PointToSegment(p, lastStart, currentEnd);
+                double dist = DistanceComputer.PointToSegment(p, lastStart, currentEnd);
                 if (dist < minDistance) minDistance = dist;
                 lastStart = currentEnd;
             }
@@ -193,7 +193,7 @@ namespace NetTopologySuite.Algorithm
              * This is the same calculation as {@link #distancePointLinePerpendicular}.
              * Unrolled here for performance.
              */
-            var s = ((A.Y - p.Y) * (B.X - A.X) - (A.X - p.X) * (B.Y - A.Y)) / len2;
+            double s = ((A.Y - p.Y) * (B.X - A.X) - (A.X - p.X) * (B.Y - A.Y)) / len2;
             return Math.Abs(s) * Math.Sqrt(len2);
         }
 
@@ -216,8 +216,8 @@ namespace NetTopologySuite.Algorithm
              *
              * Then the distance from C to P = |s|*L.
              */
-            var len2 = (B.X - A.X) * (B.X - A.X) + (B.Y - A.Y) * (B.Y - A.Y);
-            var s = ((A.Y - p.Y) * (B.X - A.X) - (A.X - p.X) * (B.Y - A.Y))
+            double len2 = (B.X - A.X) * (B.X - A.X) + (B.Y - A.Y) * (B.Y - A.Y);
+            double s = ((A.Y - p.Y) * (B.X - A.X) - (A.X - p.X) * (B.Y - A.Y))
                 / len2;
 
             return Math.Abs(s) * Math.Sqrt(len2);

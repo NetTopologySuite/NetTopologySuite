@@ -70,7 +70,7 @@ namespace NetTopologySuite.Noding
         /// <returns></returns>
         public IList<ISegmentString> GetNodedSubstrings()
         {
-            IList<ISegmentString> splitSS = _noder.GetNodedSubstrings();
+            var splitSS = _noder.GetNodedSubstrings();
             if (_isScaled)
                 Rescale(splitSS);
             return splitSS;
@@ -82,7 +82,7 @@ namespace NetTopologySuite.Noding
         /// <param name="inputSegStrings"></param>
         public void ComputeNodes(IList<ISegmentString> inputSegStrings)
         {
-            IList<ISegmentString> intSegStrings = inputSegStrings;
+            var intSegStrings = inputSegStrings;
             if(_isScaled)
                 intSegStrings = Scale(inputSegStrings);
             _noder.ComputeNodes(intSegStrings);
@@ -96,7 +96,7 @@ namespace NetTopologySuite.Noding
         private IList<ISegmentString> Scale(IList<ISegmentString> segStrings)
         {
             var nodedSegmentStrings = new List<ISegmentString>(segStrings.Count);
-            for (var i = 0; i < segStrings.Count; i++)
+            for (int i = 0; i < segStrings.Count; i++)
             {
                 var ss = segStrings[i];
                 nodedSegmentStrings.Add(new NodedSegmentString(Scale(ss.Coordinates), ss.Context));
@@ -112,18 +112,18 @@ namespace NetTopologySuite.Noding
         /// <returns></returns>
         private Coordinate[] Scale(Coordinate[] pts)
         {
-            Coordinate[] roundPts = new Coordinate[pts.Length];
+            var roundPts = new Coordinate[pts.Length];
             for (int i = 0; i < pts.Length; i++)
                 roundPts[i] = new Coordinate(Math.Round((pts[i].X - _offsetX) * _scaleFactor),
                                              Math.Round((pts[i].Y - _offsetY) * _scaleFactor),
                                              pts[i].Z);
-            Coordinate[] roundPtsNoDup = CoordinateArrays.RemoveRepeatedPoints(roundPts);
+            var roundPtsNoDup = CoordinateArrays.RemoveRepeatedPoints(roundPts);
             return roundPtsNoDup;
         }
 
         private void Rescale(IList<ISegmentString> segStrings)
         {
-            for (var i = 0; i < segStrings.Count; i++)
+            for (int i = 0; i < segStrings.Count; i++)
                 Rescale(segStrings[i].Coordinates);
         }
 

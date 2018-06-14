@@ -93,16 +93,16 @@ namespace NetTopologySuite.Operation.Buffer
           int maxPrecisionDigits)
         {
             var env = g.EnvelopeInternal;
-            var envMax = MathUtil.Max(
+            double envMax = MathUtil.Max(
                 Math.Abs(env.MaxX), Math.Abs(env.MaxY),
                 Math.Abs(env.MinX), Math.Abs(env.MinY));
 
-            var expandByDistance = distance > 0.0 ? distance : 0.0;
-            var bufEnvMax = envMax + 2 * expandByDistance;
+            double expandByDistance = distance > 0.0 ? distance : 0.0;
+            double bufEnvMax = envMax + 2 * expandByDistance;
 
             // the smallest power of 10 greater than the buffer envelope
-            var bufEnvPrecisionDigits = (int)(Math.Log(bufEnvMax) / Math.Log(10) + 1.0);
-            var minUnitLog10 = maxPrecisionDigits - bufEnvPrecisionDigits;
+            int bufEnvPrecisionDigits = (int)(Math.Log(bufEnvMax) / Math.Log(10) + 1.0);
+            int minUnitLog10 = maxPrecisionDigits - bufEnvPrecisionDigits;
 
             double scaleFactor = Math.Pow(10.0, minUnitLog10);
             return scaleFactor;
@@ -261,7 +261,7 @@ namespace NetTopologySuite.Operation.Buffer
             BufferOriginalPrecision();
             if (_resultGeometry != null) return;
 
-            IPrecisionModel argPrecModel = _argGeom.Factory.PrecisionModel;
+            var argPrecModel = _argGeom.Factory.PrecisionModel;
             if (argPrecModel.PrecisionModelType == PrecisionModels.Fixed)
                 BufferFixedPrecision(argPrecModel);
             else

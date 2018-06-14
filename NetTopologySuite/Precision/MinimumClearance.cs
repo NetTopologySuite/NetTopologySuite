@@ -231,7 +231,7 @@ namespace NetTopologySuite.Precision
                         var p2 = fs2.GetCoordinate(i2);
                         if (!p1.Equals2D(p2))
                         {
-                            var d = p1.Distance(p2);
+                            double d = p1.Distance(p2);
                             if (d < _minDist)
                             {
                                 _minDist = d;
@@ -248,9 +248,9 @@ namespace NetTopologySuite.Precision
 
             private double SegmentDistance(FacetSequence fs1, FacetSequence fs2)
             {
-                for (var i1 = 0; i1 < fs1.Count; i1++)
+                for (int i1 = 0; i1 < fs1.Count; i1++)
                 {
-                    for (var i2 = 1; i2 < fs2.Count; i2++)
+                    for (int i2 = 1; i2 < fs2.Count; i2++)
                     {
                         var p = fs1.GetCoordinate(i1);
 
@@ -259,7 +259,7 @@ namespace NetTopologySuite.Precision
 
                         if (!(p.Equals2D(seg0) || p.Equals2D(seg1)))
                         {
-                            var d = DistanceComputer.PointToSegment(p, seg0, seg1);
+                            double d = DistanceComputer.PointToSegment(p, seg0, seg1);
                             if (d < _minDist)
                             {
                                 _minDist = d;

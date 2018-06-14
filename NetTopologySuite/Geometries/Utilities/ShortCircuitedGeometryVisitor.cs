@@ -16,7 +16,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="geom"></param>
         public void ApplyTo(IGeometry geom)
         {
-            for (var i = 0; i < geom.NumGeometries && ! _isDone; i++)
+            for (int i = 0; i < geom.NumGeometries && ! _isDone; i++)
             {
                 var element = geom.GetGeometryN(i);
                 if (!(element is IGeometryCollection))

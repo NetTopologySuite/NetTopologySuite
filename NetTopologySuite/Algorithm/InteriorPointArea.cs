@@ -70,7 +70,7 @@ namespace NetTopologySuite.Algorithm
             else if (geom is IGeometryCollection)
             {
                 var gc = (IGeometryCollection) geom;
-                foreach (IGeometry geometry in gc.Geometries)
+                foreach (var geometry in gc.Geometries)
                     Add(geometry);
             }
         }
@@ -138,7 +138,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns></returns>
         protected ILineString HorizontalBisector(IGeometry geometry)
         {
-            Envelope envelope = geometry.EnvelopeInternal;
+            var envelope = geometry.EnvelopeInternal;
 
             /**
              * Original algorithm.  Fails when geometry contains a horizontal
@@ -202,14 +202,14 @@ namespace NetTopologySuite.Algorithm
                 {
                     Process(_poly.GetInteriorRingN(i));
                 }
-                var bisectY = Avg(_hiY, _loY);
+                double bisectY = Avg(_hiY, _loY);
                 return bisectY;
             }
 
             private void Process(ILineString line)
             {
                 var seq = line.CoordinateSequence;
-                for (var i = 0; i < seq.Count; i++)
+                for (int i = 0; i < seq.Count; i++)
                 {
                     double y = seq.GetY(i);
                     UpdateInterval(y);

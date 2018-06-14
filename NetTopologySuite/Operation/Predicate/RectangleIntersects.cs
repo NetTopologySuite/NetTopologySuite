@@ -206,7 +206,7 @@ namespace NetTopologySuite.Operation.Predicate
 
             // test each corner of rectangle for inclusion
             var rectPt = new Coordinate();
-            for (var i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 _rectSeq.GetCoordinate(i, rectPt);
                 if (!elementEnv.Contains(rectPt))
@@ -289,7 +289,7 @@ namespace NetTopologySuite.Operation.Predicate
         private void CheckIntersectionWithSegments(ICurve testLine)
         {
             var seq1 = testLine.CoordinateSequence;
-            for (var j = 1; j < seq1.Count; j++)
+            for (int j = 1; j < seq1.Count; j++)
             {
                 seq1.GetCoordinate(j - 1, _p0);
                 seq1.GetCoordinate(j, _p1);

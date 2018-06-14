@@ -57,8 +57,8 @@ namespace NetTopologySuite.Operation.Relate
             /*
             * Build EdgeEnds for all intersections.
             */
-            EdgeEndBuilder eeBuilder = new EdgeEndBuilder();
-            IList<EdgeEnd> eeList = eeBuilder.ComputeEdgeEnds(geomGraph.Edges);
+            var eeBuilder = new EdgeEndBuilder();
+            var eeList = eeBuilder.ComputeEdgeEnds(geomGraph.Edges);
             InsertEdgeEnds(eeList);
         }
 
@@ -74,12 +74,12 @@ namespace NetTopologySuite.Operation.Relate
         /// <param name="argIndex"></param>
         public void ComputeIntersectionNodes(GeometryGraph geomGraph, int argIndex)
         {
-            foreach (Edge e in geomGraph.Edges)
+            foreach (var e in geomGraph.Edges)
             {
-                Location eLoc = e.Label.GetLocation(argIndex);
-                foreach (EdgeIntersection ei in e.EdgeIntersectionList)
+                var eLoc = e.Label.GetLocation(argIndex);
+                foreach (var ei in e.EdgeIntersectionList)
                 {
-                    RelateNode n = (RelateNode) _nodes.AddNode(ei.Coordinate);
+                    var n = (RelateNode) _nodes.AddNode(ei.Coordinate);
                     if (eLoc == Location.Boundary)
                         n.SetLabelBoundary(argIndex);
                     else if (n.Label.IsNull(argIndex))
@@ -101,9 +101,9 @@ namespace NetTopologySuite.Operation.Relate
         /// <param name="argIndex"></param>
         public void CopyNodesAndLabels(GeometryGraph geomGraph, int argIndex)
         {
-            foreach (Node graphNode in geomGraph.Nodes)
+            foreach (var graphNode in geomGraph.Nodes)
             {
-                Node newNode = _nodes.AddNode(graphNode.Coordinate);
+                var newNode = _nodes.AddNode(graphNode.Coordinate);
                 newNode.SetLabel(argIndex, graphNode.Label.GetLocation(argIndex));
             }
         }
@@ -114,7 +114,7 @@ namespace NetTopologySuite.Operation.Relate
         /// <param name="ee"></param>
         public void InsertEdgeEnds(IList<EdgeEnd> ee)
         {
-            foreach (EdgeEnd e in ee)
+            foreach (var e in ee)
                 _nodes.Add(e);
         }
     }

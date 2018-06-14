@@ -50,7 +50,7 @@ namespace NetTopologySuite.Operation.Valid
                 * To fully check validity, it is necessary to
                 * compute ALL intersections, including self-intersections within a single edge.
                 */
-                SegmentIntersector intersector = geomGraph.ComputeSelfNodes(li, true, true);
+                var intersector = geomGraph.ComputeSelfNodes(li, true, true);
                 if (intersector.HasProperIntersection)
                 {
                     invalidPoint = intersector.ProperIntersectionPoint;
@@ -71,7 +71,7 @@ namespace NetTopologySuite.Operation.Valid
             {
                 for (IEnumerator nodeIt = nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext(); )
                 {
-                    RelateNode node = (RelateNode) nodeIt.Current;
+                    var node = (RelateNode) nodeIt.Current;
                     if (!node.Edges.IsAreaLabelsConsistent(geomGraph))
                     {
                         invalidPoint = (Coordinate) node.Coordinate.Copy();
@@ -100,10 +100,10 @@ namespace NetTopologySuite.Operation.Valid
             {
                 for (IEnumerator nodeIt = nodeGraph.GetNodeEnumerator(); nodeIt.MoveNext(); )
                 {
-                    RelateNode node = (RelateNode) nodeIt.Current;
+                    var node = (RelateNode) nodeIt.Current;
                     for (IEnumerator i = node.Edges.GetEnumerator(); i.MoveNext(); )
                     {
-                        EdgeEndBundle eeb = (EdgeEndBundle) i.Current;
+                        var eeb = (EdgeEndBundle) i.Current;
                         if (eeb.EdgeEnds.Count > 1)
                         {
                             invalidPoint = eeb.Edge.GetCoordinate(0);

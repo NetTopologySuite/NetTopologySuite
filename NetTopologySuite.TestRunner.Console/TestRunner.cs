@@ -99,12 +99,12 @@ namespace ConsoleTestRunner
             {
                 try
                 {
-                    XmlTestController controller = new XmlTestController();
+                    var controller = new XmlTestController();
 
                     m_nTotalCount = 0;
                     for (int i = 0; i < m_listTestInfo.Count; i++)
                     {
-                        TestInfo info = m_listTestInfo[i];
+                        var info = m_listTestInfo[i];
                         if (info != null)
                         {
                             if (info.FileName != null)
@@ -126,7 +126,7 @@ namespace ConsoleTestRunner
 
         public void OnErrorEvent(object sender, XmlTestErrorEventArgs args)
         {
-            Exception ex = args.Thrown;
+            var ex = args.Thrown;
             if (ex != null)
             {
                 Console.WriteLine(ex.Message);
@@ -168,7 +168,7 @@ namespace ConsoleTestRunner
                     {
                         Console.WriteLine("Running...{0}", listTests.Name);
 
-                        XmlTestTimer timer = new XmlTestTimer();
+                        var timer = new XmlTestTimer();
 
                         timer.Start();
 

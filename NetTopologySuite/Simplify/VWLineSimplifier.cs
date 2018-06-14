@@ -17,7 +17,7 @@ namespace NetTopologySuite.Simplify
     {
         public static Coordinate[] Simplify(Coordinate[] pts, double distanceTolerance)
         {
-            VWLineSimplifier simp = new VWLineSimplifier(pts, distanceTolerance);
+            var simp = new VWLineSimplifier(pts, distanceTolerance);
             return simp.Simplify();
         }
 
@@ -108,7 +108,7 @@ namespace NetTopologySuite.Simplify
             // good idea anyway, we want to make sure we don't output the same
             // coord multiple times in a row, so we pass "false" for the second
             // parameter to "Add".
-            CoordinateList list = new CoordinateList();
+            var list = new CoordinateList();
 
             list.Add(_pts[0], false);
             for (int i = 0; i < nodes.Length; i++)

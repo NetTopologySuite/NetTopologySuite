@@ -44,7 +44,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             IGeometry point = GeometryFactory.Floating.CreatePoint(c);
             string result = writer.Write(point);
             Debug.WriteLine(result);
-            IGeometry geom = new WKTReader(GeometryFactory.Floating).Read(result);
+            var geom = new WKTReader(GeometryFactory.Floating).Read(result);
             string tos = geom.ToString();
             Assert.IsTrue(string.Equals(tos, result));
 
@@ -70,9 +70,9 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void MultiPoint_WKT_reader_should_skip_extra_parenthesis_around_coordinates()
         {
-            WKTReader reader = new WKTReader();
-            IGeometry mp1 = reader.Read("MULTIPOINT (10 10, 20 20)");
-            IGeometry mp2 = reader.Read("MULTIPOINT ((10 10), (20 20))");
+            var reader = new WKTReader();
+            var mp1 = reader.Read("MULTIPOINT (10 10, 20 20)");
+            var mp2 = reader.Read("MULTIPOINT ((10 10), (20 20))");
             Assert.IsTrue(mp1.EqualsExact(mp2));
         }
 
@@ -93,18 +93,18 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void TestMaximumPrecisionDigitsFormatting()
         {
-            IGeometryFactory factory = GeometryFactory.Default;
+            var factory = GeometryFactory.Default;
 
-            WKBReader wkbreader = new WKBReader(factory);
-            IGeometry wkb1 = wkbreader.Read(test00_Geom0_WkbByteArray);
+            var wkbreader = new WKBReader(factory);
+            var wkb1 = wkbreader.Read(test00_Geom0_WkbByteArray);
             Assert.IsNotNull(wkb1);
             TestValid(wkb1);
 
-            IGeometry wkb2 = wkbreader.Read(test00_Geom1_WkbByteArray);
+            var wkb2 = wkbreader.Read(test00_Geom1_WkbByteArray);
             Assert.IsNotNull(wkb2);
             TestValid(wkb2);
 
-            Exception ex = TryOverlay(wkb1, wkb2);
+            var ex = TryOverlay(wkb1, wkb2);
             Assert.IsNotNull(ex);
             Assert.IsTrue(ex.GetType() == typeof(TopologyException));
 
@@ -113,12 +113,12 @@ namespace NetTopologySuite.Samples.Tests.Various
             string tos2 = writer.Write(wkb2);
             Assert.IsNotNull(tos2);
 
-            WKTReader reader = new WKTReader(factory);
-            IGeometry wkt1 = reader.Read(tos1);
+            var reader = new WKTReader(factory);
+            var wkt1 = reader.Read(tos1);
             Assert.IsNotNull(wkt1);
             Assert.IsTrue(wkt1.IsValid);
 
-            IGeometry wkt2 = reader.Read(tos2);
+            var wkt2 = reader.Read(tos2);
             Assert.IsNotNull(wkt2);
             Assert.IsTrue(wkt2.IsValid);
 

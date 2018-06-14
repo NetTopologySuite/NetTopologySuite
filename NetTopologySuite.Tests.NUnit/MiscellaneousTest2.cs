@@ -37,7 +37,7 @@ namespace NetTopologySuite.Tests.NUnit
         {
             var g = reader.Read(
                 "POLYGON((0 0, 0 0, 0 0, 0 0, 0 0))");
-            var valid = g.IsValid;
+            bool valid = g.IsValid;
             Assert.IsTrue(true); //No exception thrown [Jon Aquino]
         }
 
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Tests.NUnit
         {
             var g = reader.Read(
                 "LINESTRING(0 0, 0 0)");
-            var valid = g.IsValid;
+            bool valid = g.IsValid;
             Assert.IsTrue(true); //No exception thrown [Jon Aquino]
         }
 

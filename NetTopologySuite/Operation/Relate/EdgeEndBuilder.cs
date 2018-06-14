@@ -25,7 +25,7 @@ namespace NetTopologySuite.Operation.Relate
         public IList<EdgeEnd> ComputeEdgeEnds(IEnumerable<Edge> edges)
         {
             IList<EdgeEnd> l = new List<EdgeEnd>();
-            foreach (Edge e in edges)
+            foreach (var e in edges)
                 ComputeEdgeEnds(e, l);
 
             return l;
@@ -39,16 +39,16 @@ namespace NetTopologySuite.Operation.Relate
         /// <param name="l"></param>
         public void ComputeEdgeEnds(Edge edge, IList<EdgeEnd> l)
         {
-            EdgeIntersectionList eiList = edge.EdgeIntersectionList;
+            var eiList = edge.EdgeIntersectionList;
             // ensure that the list has entries for the first and last point of the edge
             eiList.AddEndpoints();
 
-            IEnumerator<EdgeIntersection> it = eiList.GetEnumerator();
+            var it = eiList.GetEnumerator();
             EdgeIntersection eiPrev;
             EdgeIntersection eiCurr = null;
             // no intersections, so there is nothing to do
             if (! it.MoveNext()) return;
-            EdgeIntersection eiNext = it.Current;
+            var eiNext = it.Current;
             do
             {
                 eiPrev = eiCurr;
@@ -89,15 +89,15 @@ namespace NetTopologySuite.Operation.Relate
                 iPrev--;
             }
 
-            Coordinate pPrev = edge.GetCoordinate(iPrev);
+            var pPrev = edge.GetCoordinate(iPrev);
             // if prev intersection is past the previous vertex, use it instead
             if (eiPrev != null && eiPrev.SegmentIndex >= iPrev)
                 pPrev = eiPrev.Coordinate;
 
-            Label label = new Label(edge.Label);
+            var label = new Label(edge.Label);
             // since edgeStub is oriented opposite to it's parent edge, have to flip sides for edge label
             label.Flip();
-            EdgeEnd e = new EdgeEnd(edge, eiCurr.Coordinate, pPrev, label);
+            var e = new EdgeEnd(edge, eiCurr.Coordinate, pPrev, label);
             l.Add(e);
         }
 
@@ -119,12 +119,12 @@ namespace NetTopologySuite.Operation.Relate
             if (iNext >= edge.NumPoints && eiNext == null)
                 return;
 
-            Coordinate pNext = edge.GetCoordinate(iNext);
+            var pNext = edge.GetCoordinate(iNext);
             // if the next intersection is in the same segment as the current, use it as the endpoint
             if (eiNext != null && eiNext.SegmentIndex == eiCurr.SegmentIndex)
                 pNext = eiNext.Coordinate;
 
-            EdgeEnd e = new EdgeEnd(edge, eiCurr.Coordinate, pNext, new Label(edge.Label));
+            var e = new EdgeEnd(edge, eiCurr.Coordinate, pNext, new Label(edge.Label));
             l.Add(e);
         }
     }

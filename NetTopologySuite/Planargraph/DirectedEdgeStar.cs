@@ -107,7 +107,7 @@ namespace NetTopologySuite.Planargraph
             SortEdges();
             for (int i = 0; i < _outEdges.Count; i++)
             {
-                DirectedEdge de = _outEdges[i];
+                var de = _outEdges[i];
                 if (de.Edge == edge)
                     return i;
             }
@@ -125,7 +125,7 @@ namespace NetTopologySuite.Planargraph
             SortEdges();
             for (int i = 0; i < _outEdges.Count; i++)
             {
-                DirectedEdge de = _outEdges[i];
+                var de = _outEdges[i];
                 if (de == dirEdge)
                     return i;
             }

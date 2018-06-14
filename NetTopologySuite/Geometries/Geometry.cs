@@ -249,7 +249,7 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         protected static bool HasNonEmptyElements(IGeometry[] geometries)
         {
-            foreach (IGeometry g in geometries)
+            foreach (var g in geometries)
                 if (!g.IsEmpty)
                     return true;
             return false;
@@ -477,20 +477,20 @@ namespace NetTopologySuite.Geometries
                     return Factory.CreatePoint();
 
                 Coordinate interiorPt = null;
-                Dimension dim = Dimension;
+                var dim = Dimension;
                 if (dim == Dimension.Point)
                 {
-                    InteriorPointPoint intPt = new InteriorPointPoint(this);
+                    var intPt = new InteriorPointPoint(this);
                     interiorPt = intPt.InteriorPoint;
                 }
                 else if (dim == Dimension.Curve)
                 {
-                    InteriorPointLine intPt = new InteriorPointLine(this);
+                    var intPt = new InteriorPointLine(this);
                     interiorPt = intPt.InteriorPoint;
                 }
                 else
                 {
-                    InteriorPointArea intPt = new InteriorPointArea(this);
+                    var intPt = new InteriorPointArea(this);
                     interiorPt = intPt.InteriorPoint;
                 }
                 return CreatePointFromInternalCoord(interiorPt, this);
@@ -729,9 +729,9 @@ namespace NetTopologySuite.Geometries
 
             if (IsGeometryCollection || ((Geometry) g).IsGeometryCollection)
             {
-                for (var i = 0; i < NumGeometries; i++)
+                for (int i = 0; i < NumGeometries; i++)
                 {
-                    for (var j = 0; j < g.NumGeometries; j++)
+                    for (int j = 0; j < g.NumGeometries; j++)
                     {
                         if (GetGeometryN(i).Intersects(g.GetGeometryN(j)))
                             return true;
@@ -1119,8 +1119,8 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         private static bool CompareGeometryCollections(IGeometry obj1, IGeometry obj2)
         {
-            IGeometryCollection coll1 = obj1 as IGeometryCollection;
-            IGeometryCollection coll2 = obj2 as IGeometryCollection;
+            var coll1 = obj1 as IGeometryCollection;
+            var coll2 = obj2 as IGeometryCollection;
             if (coll1 == null || coll2 == null)
                 return false;
 
@@ -1131,8 +1131,8 @@ namespace NetTopologySuite.Geometries
             // Deep test
             for (int i = 0; i < coll1.NumGeometries; i++)
             {
-                IGeometry geom1 = coll1[i];
-                IGeometry geom2 = coll2[i];
+                var geom1 = coll1[i];
+                var geom2 = coll2[i];
                 if (!geom1.EqualsExact(geom2))
                     return false;
             }
@@ -1246,7 +1246,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public XmlReader ToGMLFeature()
         {
-            GMLWriter writer = new GMLWriter();
+            var writer = new GMLWriter();
             return writer.Write(this);
         }
 
@@ -1576,7 +1576,7 @@ namespace NetTopologySuite.Geometries
             // compute for GCs
             if (IsGeometryCollection)
             {
-                IGeometry g2 = other;
+                var g2 = other;
                 return GeometryCollectionMapper.Map(
                     (IGeometryCollection)this, g => g.Intersection(g2));
             }
@@ -1852,7 +1852,7 @@ namespace NetTopologySuite.Geometries
         [Obsolete("Use Copy()")]
         public virtual object Clone()
         {
-            Geometry clone = (Geometry)MemberwiseClone();
+            var clone = (Geometry)MemberwiseClone();
             if (clone._envelope != null)
                 clone._envelope = new Envelope(clone._envelope);
             return clone;
@@ -1964,7 +1964,7 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public int CompareTo(IGeometry geom)
         {
-            Geometry other = geom as Geometry;
+            var other = geom as Geometry;
             if (other == null)
                 return -1;
 
@@ -2009,7 +2009,7 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public int CompareTo(object o, IComparer<ICoordinateSequence> comp)
         {
-            Geometry other = o as Geometry;
+            var other = o as Geometry;
             if (other == null)
                 return -1;
 
@@ -2205,16 +2205,16 @@ namespace NetTopologySuite.Geometries
 
         protected static double[] CreateArray(int size, double value)
         {
-            var result = new double[size];
-            for (var i = 0; i < size; i++)
+            double[] result = new double[size];
+            for (int i = 0; i < size; i++)
                 result[i] = value;
             return result;
         }
 
         protected static double[] CreateArray(ICoordinateSequence sequence, Ordinate ordinate)
         {
-            var result = new double[sequence.Count];
-            for (var i = 0; i < result.Length; i++)
+            double[] result = new double[sequence.Count];
+            for (int i = 0; i < result.Length; i++)
                 result[i] = sequence.GetOrdinate(i, ordinate);
             return result;
         }

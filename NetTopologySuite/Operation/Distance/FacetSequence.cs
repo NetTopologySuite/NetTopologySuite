@@ -53,7 +53,7 @@ namespace NetTopologySuite.Operation.Distance
             get
             {
                 var env = new Envelope();
-                for (var i = _start; i < _end; i++)
+                for (int i = _start; i < _end; i++)
                 {
                     env.ExpandToInclude(_pts.GetX(i), _pts.GetY(i));
                 }
@@ -123,7 +123,7 @@ namespace NetTopologySuite.Operation.Distance
         private double ComputeLineLineDistance(FacetSequence facetSeq)
         {
             // both linear - compute minimum segment-segment distance
-            var minDistance = double.MaxValue;
+            double minDistance = double.MaxValue;
 
             var p0 = new Coordinate();
             var p1 = new Coordinate();
@@ -153,15 +153,15 @@ namespace NetTopologySuite.Operation.Distance
 
         private static double ComputePointLineDistance(Coordinate pt, FacetSequence facetSeq)
         {
-            var minDistance = double.MaxValue;
+            double minDistance = double.MaxValue;
 
             var q0 = new Coordinate();
             var q1 = new Coordinate();
-            for (var i = facetSeq._start; i < facetSeq._end - 1; i++)
+            for (int i = facetSeq._start; i < facetSeq._end - 1; i++)
             {
                 facetSeq._pts.GetCoordinate(i, q0);
                 facetSeq._pts.GetCoordinate(i + 1, q1);
-                var dist = DistanceComputer.PointToSegment(pt, q0, q1);
+                double dist = DistanceComputer.PointToSegment(pt, q0, q1);
                 if (dist == 0.0) return 0.0;
                 if (dist < minDistance)
                 {

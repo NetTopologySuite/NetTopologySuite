@@ -26,11 +26,11 @@ namespace NetTopologySuite.Simplify
         /// <param name="taggedLines">The collection of lines to simplify.</param>
         public void Simplify(ICollection<TaggedLineString> taggedLines)
         {
-            foreach (TaggedLineString taggedLineString in taggedLines)
+            foreach (var taggedLineString in taggedLines)
                 _inputIndex.Add(taggedLineString);
-            foreach (TaggedLineString taggedLineString in taggedLines)
+            foreach (var taggedLineString in taggedLines)
             {
-                TaggedLineStringSimplifier tlss = new TaggedLineStringSimplifier(_inputIndex, _outputIndex);
+                var tlss = new TaggedLineStringSimplifier(_inputIndex, _outputIndex);
                 tlss.DistanceTolerance = DistanceTolerance;
                 tlss.Simplify(taggedLineString);
             }

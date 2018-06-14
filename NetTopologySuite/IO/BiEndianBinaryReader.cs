@@ -50,7 +50,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
         public override short ReadInt16()
         {
-            var result = base.ReadInt16();
+            short result = base.ReadInt16();
             return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
@@ -69,7 +69,7 @@ namespace NetTopologySuite.IO
         [CLSCompliant(false)]
         public override ushort ReadUInt16()
         {
-            var result = base.ReadUInt16();
+            ushort result = base.ReadUInt16();
             return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
@@ -87,7 +87,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
         public override int ReadInt32()
         {
-            var result = base.ReadInt32();
+            int result = base.ReadInt32();
             return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
@@ -106,7 +106,7 @@ namespace NetTopologySuite.IO
         [CLSCompliant(false)]
         public override uint ReadUInt32()
         {
-            var result = base.ReadUInt32();
+            uint result = base.ReadUInt32();
             return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
@@ -124,7 +124,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
         public override long ReadInt64()
         {
-            var result = base.ReadInt64();
+            long result = base.ReadInt64();
             return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
@@ -143,7 +143,7 @@ namespace NetTopologySuite.IO
         [CLSCompliant(false)]
         public override ulong ReadUInt64()
         {
-            var result = base.ReadUInt64();
+            ulong result = base.ReadUInt64();
             return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
@@ -161,7 +161,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
         public override float ReadSingle()
         {
-            var result = base.ReadSingle();
+            float result = base.ReadSingle();
             return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;
@@ -179,7 +179,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="T:System.IO.EndOfStreamException">The end of the stream is reached. </exception>
         public override double ReadDouble()
         {
-            var result = base.ReadDouble();
+            double result = base.ReadDouble();
             return (Endianess == ByteOrder.BigEndian)
                 ? BitTweaks.ReverseByteOrder(result)
                 : result;

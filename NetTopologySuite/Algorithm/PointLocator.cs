@@ -92,13 +92,13 @@ namespace NetTopologySuite.Algorithm
                 UpdateLocationInfo(LocateInPolygon(p, (IPolygon) geom));
             else if(geom is IMultiLineString)
             {
-                IMultiLineString ml = (IMultiLineString) geom;
+                var ml = (IMultiLineString) geom;
                 foreach (ILineString l in ml.Geometries)
                     UpdateLocationInfo(LocateOnLineString(p, l));
             }
             else if(geom is IMultiPolygon)
             {
-                IMultiPolygon mpoly = (IMultiPolygon) geom;
+                var mpoly = (IMultiPolygon) geom;
                 foreach (IPolygon poly in mpoly.Geometries)
                     UpdateLocationInfo(LocateInPolygon(p, poly));
             }
@@ -107,7 +107,7 @@ namespace NetTopologySuite.Algorithm
                 IEnumerator geomi = new GeometryCollectionEnumerator((IGeometryCollection) geom);
                 while(geomi.MoveNext())
                 {
-                    IGeometry g2 = (IGeometry) geomi.Current;
+                    var g2 = (IGeometry) geomi.Current;
                     if (g2 != geom)
                         ComputeLocation(p, g2);
                 }
@@ -126,7 +126,7 @@ namespace NetTopologySuite.Algorithm
         {
             // no point in doing envelope test, since equality test is just as fast
 
-            Coordinate ptCoord = pt.Coordinate;
+            var ptCoord = pt.Coordinate;
             if (ptCoord.Equals2D(p))
                 return Location.Interior;
             return Location.Exterior;
@@ -138,7 +138,7 @@ namespace NetTopologySuite.Algorithm
             if (!l.EnvelopeInternal.Intersects(p))
                 return Location.Exterior;
 
-            Coordinate[] pt = l.Coordinates;
+            var pt = l.Coordinates;
             if(!l.IsClosed)
                 if(p.Equals(pt[0]) || p.Equals(pt[pt.Length - 1]))
                     return Location.Boundary;
@@ -159,8 +159,8 @@ namespace NetTopologySuite.Algorithm
         {
             if (poly.IsEmpty)
                 return Location.Exterior;
-            ILinearRing shell = poly.Shell;
-            Location shellLoc = LocateInPolygonRing(p, shell);
+            var shell = poly.Shell;
+            var shellLoc = LocateInPolygonRing(p, shell);
             if (shellLoc == Location.Exterior)
                 return Location.Exterior;
             if (shellLoc == Location.Boundary)
@@ -168,7 +168,7 @@ namespace NetTopologySuite.Algorithm
             // now test if the point lies in or on the holes
             foreach (ILinearRing hole in poly.InteriorRings)
             {
-                Location holeLoc = LocateInPolygonRing(p, hole);
+                var holeLoc = LocateInPolygonRing(p, hole);
                 if (holeLoc == Location.Interior)
                     return Location.Exterior;
                 if (holeLoc == Location.Boundary)

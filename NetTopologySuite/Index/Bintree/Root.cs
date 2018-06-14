@@ -37,7 +37,7 @@ namespace NetTopologySuite.Index.Bintree
             * the item must be contained in one interval, so insert it into the
             * tree for that interval (which may not yet exist)
             */
-            Node<T> node = Subnode[index];
+            var node = Subnode[index];
             /*
             *  If the subnode doesn't exist or this item is not contained in it,
             *  have to expand the tree upward to contain the item.
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Index.Bintree
 
             if (node == null || ! node.Interval.Contains(itemInterval))
             {
-                Node<T> largerNode = Node<T>.CreateExpanded(node, itemInterval);
+                var largerNode = Node<T>.CreateExpanded(node, itemInterval);
                 Subnode[index] = largerNode;
             }
             /*

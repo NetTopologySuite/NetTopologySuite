@@ -52,9 +52,9 @@ namespace NetTopologySuite.Noding
         {
             var pts0 = ss0.Coordinates;
             var pts1 = ss1.Coordinates;
-            for (var i0 = 0; i0 < pts0.Length - 1; i0++)
+            for (int i0 = 0; i0 < pts0.Length - 1; i0++)
             {
-                for (var i1 = 0; i1 < pts1.Length - 1; i1++)
+                for (int i1 = 0; i1 < pts1.Length - 1; i1++)
                 {
                     segInt.ProcessIntersections(ss0, i0, ss1, i1);
                     if (segInt.IsDone)

@@ -295,7 +295,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         private void CheckIntPoints(Coordinate p, Coordinate q, double distanceTolerance)
         {
-            var isEqual = Equals(p, q, distanceTolerance);
+            bool isEqual = Equals(p, q, distanceTolerance);
             Assert.IsTrue(isEqual, "Int Pts not equal - "
                                    + WKTWriter.ToPoint(p) + " vs "
                                    + WKTWriter.ToPoint(q));
@@ -308,8 +308,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         private void CheckInputNotAltered(string wkt1, string wkt2, int scaleFactor)
         {
-            LineString l1 = (LineString)_reader.Read(wkt1);
-            LineString l2 = (LineString)_reader.Read(wkt2);
+            var l1 = (LineString)_reader.Read(wkt1);
+            var l2 = (LineString)_reader.Read(wkt2);
             Coordinate[] pt =
             {
                 l1.GetCoordinateN(0),
@@ -323,7 +323,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         public void CheckInputNotAltered(Coordinate[] pt, int scaleFactor)
         {
             // save input points
-            Coordinate[] savePt = new Coordinate[4];
+            var savePt = new Coordinate[4];
             for (int i = 0; i < 4; i++)
             {
                 savePt[i] = new Coordinate(pt[i]);

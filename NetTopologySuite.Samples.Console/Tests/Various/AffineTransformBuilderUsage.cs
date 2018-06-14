@@ -91,10 +91,10 @@ namespace NetTopologySuite.Samples.Tests.Various
 
             private static Coordinate MeanCoordinate(IEnumerable<Coordinate> coordinates)
             {
-                Coordinate mean = new Coordinate(0, 0);
+                var mean = new Coordinate(0, 0);
                 int count = 0;
 
-                foreach (Coordinate coordinate in coordinates)
+                foreach (var coordinate in coordinates)
                 {
                     mean.X += coordinate.X;
                     mean.Y += coordinate.Y;
@@ -130,10 +130,10 @@ namespace NetTopologySuite.Samples.Tests.Various
                 //double precision isn't always enough when transforming large numbers.
                 //Lets subtract some mean values and add them later again:
                 //Find approximate center values:
-                Coordinate meanInput = MeanCoordinate(_inputs);
-                Coordinate[] inputs = ToMeanArray(_inputs, meanInput);
-                Coordinate meanOutput = MeanCoordinate(_outputs);
-                Coordinate[] outputs = ToMeanArray(_outputs, meanOutput);
+                var meanInput = MeanCoordinate(_inputs);
+                var inputs = ToMeanArray(_inputs, meanInput);
+                var meanOutput = MeanCoordinate(_outputs);
+                var outputs = ToMeanArray(_outputs, meanOutput);
 
                 double[][] matrix = CreateMatrix(3, 3);
                 //Create normal equation: transpose(B)*B
@@ -219,10 +219,10 @@ namespace NetTopologySuite.Samples.Tests.Various
 
                 //double precision isn't always enough. Lets subtract some mean values and add them later again:
                 //Find approximate center values:
-                Coordinate meanInput = MeanCoordinate(_inputs);
-                Coordinate[] inputs = ToMeanArray(_inputs, meanInput);
-                Coordinate meanOutput = MeanCoordinate(_outputs);
-                Coordinate[] outputs = ToMeanArray(_outputs, meanOutput);
+                var meanInput = MeanCoordinate(_inputs);
+                var inputs = ToMeanArray(_inputs, meanInput);
+                var meanOutput = MeanCoordinate(_outputs);
+                var outputs = ToMeanArray(_outputs, meanOutput);
 
                 double b00 = 0d;
                 double b02 = 0d;
@@ -260,7 +260,7 @@ namespace NetTopologySuite.Samples.Tests.Various
 
             private static Coordinate[] ToMeanArray(List<Coordinate> coordinates, Coordinate mean)
             {
-                Coordinate[] res = new Coordinate[coordinates.Count];
+                var res = new Coordinate[coordinates.Count];
                 for (int i = 0; i < coordinates.Count; i++)
                 {
                     res[i] = new Coordinate(coordinates[i].X - mean.X,
@@ -301,23 +301,23 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void Test()
         {
-            AffineTransformation at = ReadKnotenListe("Knoten_ikk.liste");
+            var at = ReadKnotenListe("Knoten_ikk.liste");
             ApplyTransform("VAM_IVA0_ikk.csv", at);
         }
 
         [Test]
         public void TestLsq()
         {
-            AffineTransformation at = ReadKnotenListeLsq("Knoten_ikk.liste");
+            var at = ReadKnotenListeLsq("Knoten_ikk.liste");
             ApplyTransform("VAM_IVA0_ikk.csv", at, "_neu_lsq");
         }
 
         private static AffineTransformation ReadKnotenListe(string file)
         {
             int index = 0;
-            Coordinate[] src = new Coordinate[3];
-            Coordinate[] dst = new Coordinate[3];
-            using (StreamReader sr = new StreamReader(File.OpenRead(file)))
+            var src = new Coordinate[3];
+            var dst = new Coordinate[3];
+            using (var sr = new StreamReader(File.OpenRead(file)))
             {
                 while (!sr.EndOfStream)
                 {
@@ -333,15 +333,15 @@ namespace NetTopologySuite.Samples.Tests.Various
                     if (index == 3) break;
                 }
             }
-            AffineTransformationBuilder atb = new AffineTransformationBuilder(src[0], src[1], src[2], dst[0], dst[1], dst[2]);
+            var atb = new AffineTransformationBuilder(src[0], src[1], src[2], dst[0], dst[1], dst[2]);
             return atb.GetTransformation();
         }
 
         private static AffineTransformation ReadKnotenListeLsq(string file)
         {
-            LeastSquaresTransform lsq = new LeastSquaresTransform();
+            var lsq = new LeastSquaresTransform();
 
-            using (StreamReader sr = new StreamReader(File.OpenRead(file)))
+            using (var sr = new StreamReader(File.OpenRead(file)))
             {
                 while (!sr.EndOfStream)
                 {
@@ -366,9 +366,9 @@ namespace NetTopologySuite.Samples.Tests.Various
             if (File.Exists(outFile)) File.Delete(outFile);
 
             Console.WriteLine("Performing transformation using \n{0}", at);
-            using (StreamWriter sw = new StreamWriter(File.OpenWrite(outFile)))
+            using (var sw = new StreamWriter(File.OpenWrite(outFile)))
             {
-                using (StreamReader sr = new StreamReader(File.OpenRead(file)))
+                using (var sr = new StreamReader(File.OpenRead(file)))
                 {
                     while (!sr.EndOfStream)
                     {
@@ -378,10 +378,10 @@ namespace NetTopologySuite.Samples.Tests.Various
                             if (!line.StartsWith("#"))
                             {
                                 string[] parts = line.Split(',');
-                                Coordinate src = new Coordinate(double.Parse(parts[2], NumberFormatInfo.InvariantInfo),
+                                var src = new Coordinate(double.Parse(parts[2], NumberFormatInfo.InvariantInfo),
                                                          double.Parse(parts[3], NumberFormatInfo.InvariantInfo));
 
-                                Coordinate dst = new Coordinate();
+                                var dst = new Coordinate();
                                 dst = at.Transform(src, dst);
                                 parts[2] = dst.X.ToString(NumberFormatInfo.InvariantInfo);
                                 parts[3] = dst.Y.ToString(NumberFormatInfo.InvariantInfo);

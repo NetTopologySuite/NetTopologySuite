@@ -58,7 +58,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public int CompareTo(object obj)
         {
-            EdgeIntersection other = (EdgeIntersection) obj;
+            var other = (EdgeIntersection) obj;
             return Compare(other.SegmentIndex, other.Distance);
         }
 

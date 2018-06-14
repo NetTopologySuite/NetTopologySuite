@@ -148,7 +148,7 @@ namespace NetTopologySuite.Geometries
 
             if (holes != null)
             {
-                for (var i = 0; i < holes.Length; i++)
+                for (int i = 0; i < holes.Length; i++)
                 {
                     if (holes[i].IsCCW)
                         holes[i] = ReverseRing(holes[i]);

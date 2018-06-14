@@ -18,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         public STRtreeDemo()
         {
             var envelopes = SourceData();
-            TestTree t = new TestTree(NODE_CAPACITY);
+            var t = new TestTree(NODE_CAPACITY);
             InitTree(t, envelopes);
             PrintSourceData(envelopes);
             PrintLevels(t);
@@ -121,7 +121,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             Console.WriteLine("============ " + title + " ============\n");
             Console.Write("GEOMETRYCOLLECTION(");
             bool first = true;
-            foreach (IBoundable<Envelope, object> boundable in boundables)
+            foreach (var boundable in boundables)
             {
                 if (first)
                 {

@@ -31,7 +31,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="edges"></param>
         public void AddEdges(IEnumerable<Edge> edges)
         {
-            foreach (Edge obj in edges)
+            foreach (var obj in edges)
                 _inputEdges.Add(obj);
         }
 
@@ -43,11 +43,11 @@ namespace NetTopologySuite.Operation.Overlay
             get
             {
                 EdgeSetIntersector esi = new SimpleMCSweepLineIntersector();
-                SegmentIntersector si = new SegmentIntersector(_li, true, false);
+                var si = new SegmentIntersector(_li, true, false);
                 esi.ComputeIntersections(_inputEdges, si, true);
 
                 IList<Edge> splitEdges = new List<Edge>();
-                foreach (Edge e in _inputEdges)
+                foreach (var e in _inputEdges)
                 {
                     e.EdgeIntersectionList.AddSplitEdges(splitEdges);
                 }

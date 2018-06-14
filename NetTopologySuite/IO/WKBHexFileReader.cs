@@ -105,10 +105,10 @@ namespace NetTopologySuite.IO
         private ICollection<IGeometry> Read(StreamReader streamReader)
         {
             var geoms = new List<IGeometry>();
-            var count = 0;
+            int count = 0;
             while (!IsAtEndOfFile(streamReader) && !IsAtLimit(geoms))
             {
-                var line = streamReader.ReadLine();
+                string line = streamReader.ReadLine();
                 if (string.IsNullOrEmpty(line)) continue;
 
                 var g = _wkbReader.Read(WKBReader.HexToBytes(line));
@@ -136,7 +136,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         private static bool IsAtEndOfFile(StreamReader bufferedReader)
         {
-            var position = bufferedReader.BaseStream.Position;
+            long position = bufferedReader.BaseStream.Position;
 
             var tokenizer = new StreamTokenizer(bufferedReader);
             Token t;

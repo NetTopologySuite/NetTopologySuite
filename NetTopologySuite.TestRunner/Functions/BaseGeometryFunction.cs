@@ -110,7 +110,7 @@ namespace Open.Topology.TestRunner.Functions
             if (!name.Equals(func.Name)) return false;
             if (!returnType.Equals(func.ReturnType)) return false;
 
-            Type[] funcParamTypes = func.ParameterTypes;
+            var funcParamTypes = func.ParameterTypes;
             if (parameterTypes.Length != funcParamTypes.Length) return false;
             for (int i = 0; i < parameterTypes.Length; i++)
             {

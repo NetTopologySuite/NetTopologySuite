@@ -264,7 +264,7 @@ public class WithinDistance3DTest
 
     private static void CheckWithinDistance(IGeometry g1, IGeometry g2, double distance, bool expectedResult)
     {
-        var isWithinDist = Distance3DOp.IsWithinDistance(g1, g2, distance);
+            bool isWithinDist = Distance3DOp.IsWithinDistance(g1, g2, distance);
         Assert.AreEqual(expectedResult, isWithinDist);
     }
 

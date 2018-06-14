@@ -45,7 +45,7 @@ namespace NetTopologySuite.Operation.Valid
             for (int i = 0; i < _rings.Count; i++)
             {
                 var innerRing = (ILinearRing)_rings[i];
-                Coordinate[] innerRingPts = innerRing.Coordinates;
+                var innerRingPts = innerRing.Coordinates;
 
                 var results = _index.Query(innerRing.EnvelopeInternal);
                 for (int j = 0; j < results.Count; j++)
@@ -59,7 +59,7 @@ namespace NetTopologySuite.Operation.Valid
                     if (!innerRing.EnvelopeInternal.Intersects(searchRing.EnvelopeInternal))
                         continue;
 
-                    Coordinate innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, _graph);
+                    var innerRingPt = IsValidOp.FindPointNotNode(innerRingPts, searchRing, _graph);
                     // Diego Guidi: removed => see Issue 121
                     //Assert.IsTrue(innerRingPt != null, "Unable to find a ring point not a node of the search ring");
                     /**

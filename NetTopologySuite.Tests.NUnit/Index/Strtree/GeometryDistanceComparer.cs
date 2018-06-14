@@ -42,8 +42,8 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
          /// <inheritdoc cref="IComparer{T}.Compare"/>
         public int Compare(IGeometry g1, IGeometry g2)
         {
-            var distance1 = g1.EnvelopeInternal.Distance(this._queryCenter.EnvelopeInternal);
-            var distance2 = g2.EnvelopeInternal.Distance(this._queryCenter.EnvelopeInternal);
+            double distance1 = g1.EnvelopeInternal.Distance(this._queryCenter.EnvelopeInternal);
+            double distance2 = g2.EnvelopeInternal.Distance(this._queryCenter.EnvelopeInternal);
             if (_normalOrder)
             {
                 if (distance1 > distance2)

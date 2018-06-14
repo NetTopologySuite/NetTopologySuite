@@ -43,7 +43,7 @@ namespace NetTopologySuite.Geometries.Utilities
         public IGeometryCollection Map(IGeometryCollection gc)
         {
             IList<IGeometry> mapped = new List<IGeometry>();
-            for (var i = 0; i < gc.NumGeometries; i++)
+            for (int i = 0; i < gc.NumGeometries; i++)
             {
                 var g = _mapOp(gc.GetGeometryN(i));
                 if (!g.IsEmpty)

@@ -28,7 +28,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="nodes"></param>
         public static void LinkResultDirectedEdges(IList<Node> nodes)
         {
-            foreach (Node node in nodes)
+            foreach (var node in nodes)
                 ((DirectedEdgeStar) node.Edges).LinkResultDirectedEdges();
         }
 
@@ -88,10 +88,10 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public bool IsBoundaryNode(int geomIndex, Coordinate coord)
         {
-            Node node = _nodes.Find(coord);
+            var node = _nodes.Find(coord);
             if (node == null)
                 return false;
-            Label label = node.Label;
+            var label = node.Label;
             if (label != null && label.GetLocation(geomIndex) == Location.Boundary)
                 return true;
             return false;
@@ -169,12 +169,12 @@ namespace NetTopologySuite.GeometriesGraph
         public void AddEdges(IList<Edge> edgesToAdd)
         {
             // create all the nodes for the edges
-            foreach (Edge e in edgesToAdd)
+            foreach (var e in edgesToAdd)
             {
                 _edges.Add(e);
 
-                DirectedEdge de1 = new DirectedEdge(e, true);
-                DirectedEdge de2 = new DirectedEdge(e, false);
+                var de1 = new DirectedEdge(e, true);
+                var de2 = new DirectedEdge(e, false);
                 de1.Sym = de2;
                 de2.Sym = de1;
 
@@ -190,7 +190,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public void LinkResultDirectedEdges()
         {
-            foreach (Node node in Nodes)
+            foreach (var node in Nodes)
                 ((DirectedEdgeStar) node.Edges).LinkResultDirectedEdges();
         }
 
@@ -201,7 +201,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         public void LinkAllDirectedEdges()
         {
-            foreach (Node node in Nodes)
+            foreach (var node in Nodes)
                 ((DirectedEdgeStar) node.Edges).LinkAllDirectedEdges();
         }
 
@@ -213,7 +213,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
         public EdgeEnd FindEdgeEnd(Edge e)
         {
-            foreach (EdgeEnd ee in edgeEndList       )
+            foreach (var ee in edgeEndList       )
                 if (ee.Edge == e) return ee;
             return null;
         }
@@ -228,8 +228,8 @@ namespace NetTopologySuite.GeometriesGraph
         {
             for (int i = 0; i < _edges.Count; i++)
             {
-                Edge e = _edges[i];
-                Coordinate[] eCoord = e.Coordinates;
+                var e = _edges[i];
+                var eCoord = e.Coordinates;
                 if (p0.Equals(eCoord[0]) && p1.Equals(eCoord[1]))
                     return e;
             }
@@ -247,8 +247,8 @@ namespace NetTopologySuite.GeometriesGraph
         {
             for (int i = 0; i < _edges.Count; i++)
             {
-                Edge e = _edges[i];
-                Coordinate[] eCoord = e.Coordinates;
+                var e = _edges[i];
+                var eCoord = e.Coordinates;
                 if (MatchInSameDirection(p0, p1, eCoord[0], eCoord[1]))
                     return e;
                 if (MatchInSameDirection(p0, p1, eCoord[eCoord.Length - 1], eCoord[eCoord.Length - 2]))
@@ -286,7 +286,7 @@ namespace NetTopologySuite.GeometriesGraph
             for (int i = 0; i < _edges.Count; i++)
             {
                 outstream.WriteLine("edge " + i + ":");
-                Edge e = _edges[i];
+                var e = _edges[i];
                 e.Write(outstream);
                 e.EdgeIntersectionList.Write(outstream);
             }

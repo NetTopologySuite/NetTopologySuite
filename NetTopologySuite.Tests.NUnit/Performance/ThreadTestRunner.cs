@@ -18,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
         {
             testcase.Setup();
 
-            for (var i = 0; i < testcase.ThreadCount; i++)
+            for (int i = 0; i < testcase.ThreadCount; i++)
             {
                 var runnable = testcase.GetRunnable(i);
                 var t = new Thread(runnable);

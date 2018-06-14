@@ -249,7 +249,7 @@ namespace NetTopologySuite.GeometriesGraph
             if (position == Positions.Left)
                 directionFactor = -1;
 
-            Positions oppositePos = Position.Opposite(position);
+            var oppositePos = Position.Opposite(position);
             int delta = depthDelta * directionFactor;
             int oppositeDepth = depth + delta;
             SetDepth(position, depth);
@@ -266,9 +266,9 @@ namespace NetTopologySuite.GeometriesGraph
         public void OLDSetEdgeDepths(Positions position, int depth)
         {
             int depthDelta = Edge.DepthDelta;
-            Location loc = Label.GetLocation(0, position);
-            Positions oppositePos = Position.Opposite(position);
-            Location oppositeLoc = Label.GetLocation(0, oppositePos);
+            var loc = Label.GetLocation(0, position);
+            var oppositePos = Position.Opposite(position);
+            var oppositeLoc = Label.GetLocation(0, oppositePos);
             int delta = Math.Abs(depthDelta) * DepthFactor(loc, oppositeLoc);
             int oppositeDepth = depth + delta;
             SetDepth(position, depth);

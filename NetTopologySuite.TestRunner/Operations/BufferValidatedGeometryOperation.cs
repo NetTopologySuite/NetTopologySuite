@@ -93,7 +93,7 @@ namespace Open.Topology.TestRunner.Operations
 
         private IResult InvokeBufferOpValidated(IGeometry geometry /*, Object[] args*/)
         {
-            IGeometry result = InvokeBuffer(geometry);
+            var result = InvokeBuffer(geometry);
 
             // validate
             Validate(geometry, result);
@@ -140,7 +140,7 @@ namespace Open.Topology.TestRunner.Operations
 
         private bool IsEmptyBufferExpected(IGeometry geom)
         {
-            var isNegativeBufferOfNonAreal = (int) geom.Dimension < 2 && _distance <= 0.0;
+            bool isNegativeBufferOfNonAreal = (int) geom.Dimension < 2 && _distance <= 0.0;
             return isNegativeBufferOfNonAreal;
         }
 
@@ -155,8 +155,8 @@ namespace Open.Topology.TestRunner.Operations
 
         private void CheckContainment(IGeometry geom, IGeometry buffer)
         {
-            var isCovered = true;
-            var errMsg = "";
+            bool isCovered = true;
+            string errMsg = "";
             if (_distance > 0)
             {
                 isCovered = buffer.Covers(geom);
@@ -187,7 +187,7 @@ namespace Open.Topology.TestRunner.Operations
             var bufValidator = new BufferResultValidator(geom, distance, buffer);
             if (! bufValidator.IsValid())
             {
-                var errorMsg = bufValidator.ErrorMessage;
+                string errorMsg = bufValidator.ErrorMessage;
                 var errorLoc = bufValidator.ErrorLocation;
                 ReportError(errorMsg, errorLoc);
             }

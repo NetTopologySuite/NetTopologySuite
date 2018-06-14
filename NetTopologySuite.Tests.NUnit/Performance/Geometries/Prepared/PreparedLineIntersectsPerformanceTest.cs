@@ -59,7 +59,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
                               + "      # lines: " + lines.Count
                               + "   # pts in line: " + NumLinePts);
 
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
             int count = 0;
             for (int i = 0; i < MaxIter; i++)

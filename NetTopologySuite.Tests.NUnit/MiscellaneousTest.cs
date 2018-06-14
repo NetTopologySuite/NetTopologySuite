@@ -135,10 +135,10 @@ namespace NetTopologySuite.Tests.NUnit
 
         public void testPolygonCoordinates()
         {
-            Polygon p = (Polygon) reader.Read(
+            var p = (Polygon) reader.Read(
                 "POLYGON ( (0 0, 100 0, 100 100, 0 100, 0 0), "
                 + "          (20 20, 20 80, 80 80, 80 20, 20 20)) ");
-            Coordinate[] coordinates = p.Coordinates;
+            var coordinates = p.Coordinates;
             Assert.AreEqual(10, p.NumPoints);
             Assert.AreEqual(10, coordinates.Length);
             Assert.AreEqual(new Coordinate(0, 0), coordinates[0]);
@@ -154,7 +154,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(p.IsSimple);
             try
             {
-                var tmp = p.X;
+                double tmp = p.X;
                 Assert.IsTrue(false);
             }
             catch (ArgumentOutOfRangeException e1)
@@ -162,7 +162,7 @@ namespace NetTopologySuite.Tests.NUnit
             }
             try
             {
-                var tmp = p.Y;
+                double tmp = p.Y;
                 Assert.IsTrue(false);
             }
             catch (ArgumentOutOfRangeException e2)
@@ -481,12 +481,12 @@ namespace NetTopologySuite.Tests.NUnit
         [TestAttribute]
         public void testCoordinateNaN()
         {
-            Coordinate c1 = new Coordinate();
+            var c1 = new Coordinate();
             Assert.IsTrue(!double.IsNaN(c1.X));
             Assert.IsTrue(!double.IsNaN(c1.Y));
             Assert.IsTrue(double.IsNaN(c1.Z));
 
-            Coordinate c2 = new Coordinate(3, 4);
+            var c2 = new Coordinate(3, 4);
             Assert.AreEqual(3, c2.X, 1E-10);
             Assert.AreEqual(4, c2.Y, 1E-10);
             Assert.IsTrue(double.IsNaN(c2.Z));

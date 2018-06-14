@@ -81,7 +81,7 @@ namespace NetTopologySuite.Operation.Valid
         {
             for (int i = 0; i < gc.NumGeometries; i++)
             {
-                IGeometry g = gc.GetGeometryN(i);
+                var g = gc.GetGeometryN(i);
                 if (HasRepeatedPoint(g))
                     return true;
             }

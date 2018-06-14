@@ -26,10 +26,10 @@ namespace NetTopologySuite.Simplify
         /// <param name="line"></param>
         public void Add(TaggedLineString line)
         {
-            TaggedLineSegment[] segs = line.Segments;
+            var segs = line.Segments;
             for (int i = 0; i < segs.Length; i++)
             {
-                TaggedLineSegment seg = segs[i];
+                var seg = segs[i];
                 Add(seg);
             }
         }
@@ -59,11 +59,11 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         public IList<LineSegment> Query(LineSegment querySeg)
         {
-            Envelope env = new Envelope(querySeg.P0, querySeg.P1);
+            var env = new Envelope(querySeg.P0, querySeg.P1);
 
-            LineSegmentVisitor visitor = new LineSegmentVisitor(querySeg);
+            var visitor = new LineSegmentVisitor(querySeg);
             _index.Query(env, visitor);
-            IList<LineSegment> itemsFound = visitor.Items;
+            var itemsFound = visitor.Items;
 
             return itemsFound;
         }
@@ -93,7 +93,7 @@ namespace NetTopologySuite.Simplify
         /// <param name="item"></param>
         public void VisitItem(LineSegment item)
         {
-            LineSegment seg = item;
+            var seg = item;
             if (Envelope.Intersects(seg.P0, seg.P1, _querySeg.P0, _querySeg.P1))
                 _items.Add(seg);
         }

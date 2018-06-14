@@ -93,11 +93,11 @@ namespace NetTopologySuite.Tests.NUnit.Operation
 
         private static void RunBoundaryTest(string wkt, IBoundaryNodeRule bnRule, string wktExpected)
         {
-            IGeometry g = rdr.Read(wkt);
-            IGeometry expected = rdr.Read(wktExpected);
+            var g = rdr.Read(wkt);
+            var expected = rdr.Read(wktExpected);
 
-            BoundaryOp op = new BoundaryOp(g, bnRule);
-            IGeometry boundary = op.GetBoundary();
+            var op = new BoundaryOp(g, bnRule);
+            var boundary = op.GetBoundary();
             boundary.Normalize();
             //    System.out.println("Computed Boundary = " + boundary);
             Assert.IsTrue(boundary.EqualsExact(expected));

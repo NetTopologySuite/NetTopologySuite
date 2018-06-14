@@ -34,7 +34,7 @@ namespace Open.Topology.TestRunner.Utility
         private static IGeometry ReadGeometryFromWkbHexString(string wkbHexFile, IGeometryFactory geomFact)
         {
             var reader = new WKBReader();
-            var wkbHex = CleanHex(wkbHexFile);
+            string wkbHex = CleanHex(wkbHexFile);
             return reader.Read(WKBReader.HexToBytes(wkbHex));
         }
 
@@ -61,7 +61,7 @@ namespace Open.Topology.TestRunner.Utility
         public static IGeometry ReadGeometriesFromWktString(string wkt, IGeometryFactory geomFact)
         {
             var reader = new WKTReader(geomFact);
-            WKTFileReader fileReader = new WKTFileReader(new StringReader(wkt), reader);
+            var fileReader = new WKTFileReader(new StringReader(wkt), reader);
             var geomList = fileReader.Read();
 
             if (geomList.Count == 1)

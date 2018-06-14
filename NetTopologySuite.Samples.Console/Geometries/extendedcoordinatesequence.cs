@@ -24,7 +24,7 @@ namespace NetTopologySuite.Samples.Geometries
         private static Coordinate[] CopyInternal(Coordinate[] coordinates)
         {
             var copy = new Coordinate[coordinates.Length];
-            for (var i = 0; i < coordinates.Length; i++)
+            for (int i = 0; i < coordinates.Length; i++)
                 copy[i] = new ExtendedCoordinate(coordinates[i]);
             return copy;
 
@@ -85,7 +85,7 @@ namespace NetTopologySuite.Samples.Geometries
         public ICoordinateSequence Copy()
         {
             var cloneCoordinates = new ExtendedCoordinate[Count];
-            for (var i = 0; i < _coordinates.Length; i++)
+            for (int i = 0; i < _coordinates.Length; i++)
             {
                 cloneCoordinates[i] = (ExtendedCoordinate) _coordinates[i].Copy();
             }
@@ -124,7 +124,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// </returns>
         public override string ToString()
         {
-            StringBuilder strBuf = new StringBuilder();
+            var strBuf = new StringBuilder();
             strBuf.Append("ExtendedCoordinateSequence [");
             for (int i = 0; i < _coordinates.Length; i++)
             {
@@ -261,7 +261,7 @@ namespace NetTopologySuite.Samples.Geometries
         public ICoordinateSequence Reversed()
         {
             var coordinates = new ExtendedCoordinate[Count];
-            for (var i = 0; i < Count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 coordinates[Count - i - 1] = new ExtendedCoordinate(coordinates[i]);
             }

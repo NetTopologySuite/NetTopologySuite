@@ -55,7 +55,7 @@ namespace NetTopologySuite.IO
             else
             {
                 buf.Append("(");
-                for (var i = 0; i < seq.Count; i++)
+                for (int i = 0; i < seq.Count; i++)
                 {
                     if (i > 0)
                         buf.Append(", ");
@@ -127,8 +127,8 @@ namespace NetTopologySuite.IO
         {
             // the default number of decimal places is 16, which is sufficient
             // to accomodate the maximum precision of a double.
-            var digits = precisionModel.MaximumSignificantDigits;
-            var decimalPlaces = Math.Max(0, digits); // negative values not allowed
+            int digits = precisionModel.MaximumSignificantDigits;
+            int decimalPlaces = Math.Max(0, digits); // negative values not allowed
 
             // specify decimal separator explicitly to avoid problems in other locales
             var nfi = new NumberFormatInfo
@@ -150,7 +150,7 @@ namespace NetTopologySuite.IO
         public static string StringOfChar(char ch, int count)
         {
             var buf = new StringBuilder();
-            for (var i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
                 buf.Append(ch);
             return buf.ToString();
         }
@@ -220,7 +220,7 @@ namespace NetTopologySuite.IO
         /// <returns>A Geometry Tagged Text string (see the OpenGIS Simple Features Specification).</returns>
         public virtual string Write(IGeometry geometry)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             TextWriter sw = new StringWriter(sb);
             TryWrite(geometry, sw);
             return sb.ToString();
@@ -315,7 +315,7 @@ namespace NetTopologySuite.IO
 
             _useFormating = useFormatting;
             // Enable maxPrecision (via {0:R} formatter) in WriteNumber method
-            IPrecisionModel precisionModel = geometry.Factory.PrecisionModel;
+            var precisionModel = geometry.Factory.PrecisionModel;
             _useMaxPrecision = precisionModel.PrecisionModelType == PrecisionModels.Floating;
 
             _formatter = CreateFormatter(geometry.PrecisionModel);
@@ -537,13 +537,13 @@ namespace NetTopologySuite.IO
         /// </returns>
         private string WriteNumber(double d)
         {
-            var standard = d.ToString(_format, _formatter);
+            string standard = d.ToString(_format, _formatter);
             if (!_useMaxPrecision) {
                 return standard;
 }
             try
             {
-                var converted = Convert.ToDouble(standard, _formatter);
+                double converted = Convert.ToDouble(standard, _formatter);
                 // check if some precision is lost during text conversion: if so, use {0:R} formatter
                 if (converted == d)
                     return standard;
@@ -601,7 +601,7 @@ namespace NetTopologySuite.IO
             {
                 if (doIndent) Indent(level, writer);
                 writer.Write("(");
-                for (var i = 0; i < lineString.NumPoints; i++)
+                for (int i = 0; i < lineString.NumPoints; i++)
                 {
                     if (i > 0)
                     {
@@ -635,7 +635,7 @@ namespace NetTopologySuite.IO
                 if (indentFirst) Indent(level, writer);
                 writer.Write("(");
                 AppendLineStringText(polygon.ExteriorRing, level, false, writer);
-                for (var i = 0; i < polygon.NumInteriorRings; i++)
+                for (int i = 0; i < polygon.NumInteriorRings; i++)
                 {
                     writer.Write(", ");
                     AppendLineStringText(polygon.GetInteriorRingN(i), level + 1, true, writer);
@@ -658,7 +658,7 @@ namespace NetTopologySuite.IO
             else
             {
                 writer.Write("(");
-                for (var i = 0; i < multiPoint.NumGeometries; i++)
+                for (int i = 0; i < multiPoint.NumGeometries; i++)
                 {
                     if (i > 0)
                     {
@@ -687,10 +687,10 @@ namespace NetTopologySuite.IO
                 writer.Write("EMPTY");
             else
             {
-                var level2 = level;
-                var doIndent = indentFirst;
+                int level2 = level;
+                bool doIndent = indentFirst;
                 writer.Write("(");
-                for (var i = 0; i < multiLineString.NumGeometries; i++)
+                for (int i = 0; i < multiLineString.NumGeometries; i++)
                 {
                     if (i > 0)
                     {
@@ -717,10 +717,10 @@ namespace NetTopologySuite.IO
                 writer.Write("EMPTY");
             else
             {
-                var level2 = level;
-                var doIndent = false;
+                int level2 = level;
+                bool doIndent = false;
                 writer.Write("(");
-                for (var i = 0; i < multiPolygon.NumGeometries; i++)
+                for (int i = 0; i < multiPolygon.NumGeometries; i++)
                 {
                     if (i > 0)
                     {
@@ -747,9 +747,9 @@ namespace NetTopologySuite.IO
                 writer.Write("EMPTY");
             else
             {
-                var level2 = level;
+                int level2 = level;
                 writer.Write("(");
-                for (var i = 0; i < geometryCollection.NumGeometries; i++)
+                for (int i = 0; i < geometryCollection.NumGeometries; i++)
                 {
                     if (i > 0)
                     {

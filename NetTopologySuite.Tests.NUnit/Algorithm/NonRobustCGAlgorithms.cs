@@ -29,8 +29,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             for (i = 1; i < nPts; i++)
             {
                 i1 = i - 1;
-                Coordinate p1 = ring[i];
-                Coordinate p2 = ring[i1];
+                var p1 = ring[i];
+                var p2 = ring[i1];
                 x1 = p1.X - p.X;
                 y1 = p1.Y - p.Y;
                 x2 = p2.X - p.X;
@@ -72,11 +72,11 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
             // algorithm to check if a Ring is stored in CCW order
             // find highest point
-            Coordinate hip = ring[0];
+            var hip = ring[0];
             int hii = 0;
             for (int i = 1; i <= nPts; i++)
             {
-                Coordinate p = ring[i];
+                var p = ring[i];
                 if (p.Y > hip.Y)
                 {
                     hip = p;
@@ -94,8 +94,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             do
                 iNext = (iNext + 1)%nPts; while (ring[iNext].Equals(hip) && iNext != hii);
 
-            Coordinate prev = ring[iPrev];
-            Coordinate next = ring[iNext];
+            var prev = ring[iPrev];
+            var next = ring[iNext];
             if (prev.Equals(hip) || next.Equals(hip) || prev.Equals(next))
                 throw new ArgumentException("degenerate ring (does not contain 3 different points)");
 

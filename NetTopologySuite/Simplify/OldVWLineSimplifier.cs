@@ -15,7 +15,7 @@ namespace NetTopologySuite.Simplify
     {
         public static Coordinate[] Simplify(Coordinate[] pts, double distanceTolerance)
         {
-            OldVWLineSimplifier simp = new OldVWLineSimplifier(pts, distanceTolerance);
+            var simp = new OldVWLineSimplifier(pts, distanceTolerance);
             return simp.Simplify();
         }
 
@@ -30,14 +30,14 @@ namespace NetTopologySuite.Simplify
 
         public Coordinate[] Simplify()
         {
-            VWVertex vwLine = VWVertex.BuildLine(_pts);
+            var vwLine = VWVertex.BuildLine(_pts);
             double minArea = _tolerance;
             do
             {
                 minArea = SimplifyVertex(vwLine);
             }
             while (minArea < _tolerance);
-            Coordinate[] simp = vwLine.GetCoordinates();
+            var simp = vwLine.GetCoordinates();
             // ensure computed value is a valid line
             if (simp.Length >= 2)
                 return simp;
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Simplify
         {
             // Scan vertices in line and remove the one with smallest effective area.
             // TODO: use an appropriate data structure to optimize finding the smallest area vertex
-            VWVertex curr = vwLine;
+            var curr = vwLine;
             double minArea = curr.GetArea();
             VWVertex minVertex = null;
             while (curr != null)
@@ -74,9 +74,9 @@ namespace NetTopologySuite.Simplify
             {
                 VWVertex first = null;
                 VWVertex prev = null;
-                foreach (Coordinate c in pts)
+                foreach (var c in pts)
                 {
-                    VWVertex v = new VWVertex(c);
+                    var v = new VWVertex(c);
                     if (first == null)
                         first = v;
                     v.Prev = prev;
@@ -135,7 +135,7 @@ namespace NetTopologySuite.Simplify
 
             public VWVertex Remove()
             {
-                VWVertex tmpPrev = Prev;
+                var tmpPrev = Prev;
                 var tmpNext = Next;
                 VWVertex result = null;
                 if (Prev != null)
@@ -157,8 +157,8 @@ namespace NetTopologySuite.Simplify
 
             public Coordinate[] GetCoordinates()
             {
-                CoordinateList coords = new CoordinateList();
-                VWVertex curr = this;
+                var coords = new CoordinateList();
+                var curr = this;
                 do
                 {
                     coords.Add(curr._pt, false);

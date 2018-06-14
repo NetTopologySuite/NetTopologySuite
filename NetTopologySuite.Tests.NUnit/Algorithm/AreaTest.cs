@@ -32,11 +32,11 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             var ring = (ILinearRing) Read(wkt);
 
             var ringPts = ring.Coordinates;
-            var actual1 = Area.OfRing(ringPts);
+            double actual1 = Area.OfRing(ringPts);
             Assert.AreEqual(actual1, expectedArea);
 
             var ringSeq = ring.CoordinateSequence;
-            var actual2 = Area.OfRing(ringSeq);
+            double actual2 = Area.OfRing(ringSeq);
             Assert.AreEqual(actual2, expectedArea);
         }
 
@@ -45,11 +45,11 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             var ring = (ILinearRing) Read(wkt);
 
             var ringPts = ring.Coordinates;
-            var actual1 = Area.OfRingSigned(ringPts);
+            double actual1 = Area.OfRingSigned(ringPts);
             Assert.AreEqual(actual1, expectedArea);
 
             var ringSeq = ring.CoordinateSequence;
-            var actual2 = Area.OfRingSigned(ringSeq);
+            double actual2 = Area.OfRingSigned(ringSeq);
             Assert.AreEqual(actual2, expectedArea);
         }
     }

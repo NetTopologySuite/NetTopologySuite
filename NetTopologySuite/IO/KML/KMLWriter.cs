@@ -51,7 +51,7 @@ namespace NetTopologySuite.IO.KML
         /// <returns>a string containing the KML geometry representation</returns>
         public static string WriteGeometry(IGeometry geometry, double z)
         {
-            KMLWriter writer = new KMLWriter { Z = z };
+            var writer = new KMLWriter { Z = z };
             return writer.Write(geometry);
         }
 
@@ -79,7 +79,7 @@ namespace NetTopologySuite.IO.KML
         public static string WriteGeometry(IGeometry geometry, double z, int precision,
             bool extrude, string altitudeMode)
         {
-            KMLWriter writer = new KMLWriter
+            var writer = new KMLWriter
             {
                 Z = z,
                 Precision = precision,
@@ -189,7 +189,7 @@ namespace NetTopologySuite.IO.KML
         /// <returns>a string containing the KML geometry representation</returns>
         public string Write(IGeometry geom)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             Write(geom, sb);
             return sb.ToString();
         }
@@ -240,7 +240,7 @@ namespace NetTopologySuite.IO.KML
 
         private string GeometryTag(string geometryName)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("<");
             sb.Append(geometryName);
             sb.Append(">");

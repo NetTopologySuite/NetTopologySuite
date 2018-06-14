@@ -17,7 +17,7 @@ namespace NetTopologySuite.Simplify
         /// <returns></returns>
         public static Coordinate[] Simplify(Coordinate[] pts, double distanceTolerance)
         {
-            DouglasPeuckerLineSimplifier simp = new DouglasPeuckerLineSimplifier(pts);
+            var simp = new DouglasPeuckerLineSimplifier(pts);
             simp.DistanceTolerance = distanceTolerance;
             return simp.Simplify();
         }
@@ -50,7 +50,7 @@ namespace NetTopologySuite.Simplify
                 _usePt[i] = true;
 
             SimplifySection(0, _pts.Length - 1);
-            CoordinateList coordList = new CoordinateList();
+            var coordList = new CoordinateList();
             for (int i = 0; i < _pts.Length; i++)
                 if (_usePt[i])
                     coordList.Add(new Coordinate(_pts[i]));

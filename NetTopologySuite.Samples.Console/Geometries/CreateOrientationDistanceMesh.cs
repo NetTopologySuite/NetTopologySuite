@@ -12,7 +12,7 @@ namespace NetTopologySuite.Samples.Geometries
         [Test]
         public void BuildGeometries()
         {
-            Coordinate coord = new Coordinate(3412805, 5320858);
+            var coord = new Coordinate(3412805, 5320858);
 
             var orientation =
                 new List<string>(new[]
@@ -25,11 +25,11 @@ namespace NetTopologySuite.Samples.Geometries
 
             var slices = BuildSlices(coord);
             int distance = 0;
-            foreach (IGeometry geometry in BuildConcentricBuffers(coord))
+            foreach (var geometry in BuildConcentricBuffers(coord))
             {
                 distance += 5;
                 var orIt = orientation.GetEnumerator();
-                foreach (IGeometry slice in slices)
+                foreach (var slice in slices)
                 {
                     orIt.MoveNext();
                     var geom = geometry.Intersection(slice);
@@ -41,9 +41,9 @@ namespace NetTopologySuite.Samples.Geometries
 
         public IEnumerable<IGeometry> BuildConcentricBuffers(Coordinate coord)
         {
-            IPoint center = GeometryFactory.Floating.CreatePoint(coord);
+            var center = GeometryFactory.Floating.CreatePoint(coord);
             IPolygon lastPolygon = null;
-            var distance = 0;
+            int distance = 0;
             while (distance <= 100000)
             {
                 distance += 5000;

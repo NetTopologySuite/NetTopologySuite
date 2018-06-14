@@ -23,9 +23,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 
         void RunTest(string wkt, double dist)
         {
-            IGeometry g = rdr.Read(wkt);
-            IGeometry buf = g.Buffer(dist);
-            BufferResultValidator validator = new BufferResultValidator(g, dist, buf);
+            var g = rdr.Read(wkt);
+            var buf = g.Buffer(dist);
+            var validator = new BufferResultValidator(g, dist, buf);
 
             if (!validator.IsValid())
             {

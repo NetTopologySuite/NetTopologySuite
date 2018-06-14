@@ -44,7 +44,7 @@ namespace NetTopologySuite.Algorithm
         /// </returns>
         public static Coordinate GetCentroid(IGeometry geom)
         {
-            Centroid cent = new Centroid(geom);
+            var cent = new Centroid(geom);
             return cent.GetCentroid();
         }
 
@@ -101,12 +101,12 @@ namespace NetTopologySuite.Algorithm
             }
             else if (geom is IPolygon)
             {
-                IPolygon poly = (IPolygon)geom;
+                var poly = (IPolygon)geom;
                 Add(poly);
             }
             else if (geom is IGeometryCollection)
             {
-                IGeometryCollection gc = (IGeometryCollection)geom;
+                var gc = (IGeometryCollection)geom;
                 for (int i = 0; i < gc.NumGeometries; i++)
                 {
                     Add(gc.GetGeometryN(i));
@@ -126,7 +126,7 @@ namespace NetTopologySuite.Algorithm
              * Degenerate geometry are computed using their effective dimension
              * (e.g. areas may degenerate to lines or points)
              */
-            Coordinate cent = new Coordinate();
+            var cent = new Coordinate();
             if (Math.Abs(_areasum2) > 0.0)
             {
                 // Input contains areal geometry

@@ -192,7 +192,7 @@ namespace NetTopologySuite.Tests.NUnit.CoordinateSystems.Transformations
             public IList<double[]> TransformList(IList<double[]> points)
             {
                 var list = new List<double[]>();
-                foreach (var doublese in list)
+                foreach (double[] doublese in list)
                 {
                     list.Add(Transform(doublese));
                 }
@@ -253,7 +253,7 @@ namespace NetTopologySuite.Tests.NUnit.CoordinateSystems.Transformations
             public ICoordinateSequence Transform(ICoordinateSequence coordinateSequence)
             {
                 var c = (ICoordinateSequence)coordinateSequence.Copy();
-                for (var i = 0; i < c.Count; i++)
+                for (int i = 0; i < c.Count; i++)
                     _affineTransformation.Transform(c, i);
                 return c;
             }
@@ -347,7 +347,7 @@ namespace NetTopologySuite.Tests.NUnit.CoordinateSystems.Transformations
             if (g1 is IPolygon)
             {
                 TestGeometry(((IPolygon)g1).ExteriorRing, ((IPolygon)g2).ExteriorRing);
-                for (var i = 0; i < ((IPolygon)g1).NumInteriorRings; i++)
+                for (int i = 0; i < ((IPolygon)g1).NumInteriorRings; i++)
                     TestGeometry(((IPolygon)g1).GetInteriorRingN(i), ((IPolygon)g2).GetInteriorRingN(i));
 
                 return;
@@ -355,7 +355,7 @@ namespace NetTopologySuite.Tests.NUnit.CoordinateSystems.Transformations
 
             if (g1 is IGeometryCollection)
             {
-                for (var i = 0; i < g1.NumGeometries;i++ )
+                for (int i = 0; i < g1.NumGeometries;i++ )
                 {
                     TestGeometry(g1.GetGeometryN(i), g2.GetGeometryN(i));
                 }
@@ -373,12 +373,12 @@ namespace NetTopologySuite.Tests.NUnit.CoordinateSystems.Transformations
             Assert.AreEqual(orig.Ordinates, trans.Ordinates, "Sequences provide different ordinates");
 
             var ordinates = OrdinatesUtility.ToOrdinateArray(orig.Ordinates);
-            for (var i = 0; i < orig.Count; i++)
+            for (int i = 0; i < orig.Count; i++)
             {
                 foreach (var ordinate in ordinates)
                 {
-                    var v1 = orig.GetOrdinate(i, ordinate);
-                    var v2 = trans.GetOrdinate(i, ordinate);
+                    double v1 = orig.GetOrdinate(i, ordinate);
+                    double v2 = trans.GetOrdinate(i, ordinate);
 
                     if (double.IsNaN(v1))
                     {

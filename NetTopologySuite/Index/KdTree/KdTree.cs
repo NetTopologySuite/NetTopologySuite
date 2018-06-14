@@ -51,8 +51,8 @@ namespace NetTopologySuite.Index.KdTree
             var coord = new CoordinateList();
             foreach (var node in kdnodes)
             {
-                var count = includeRepeated ? node.Count : 1;
-                for (var i = 0; i < count; i++)
+                int count = includeRepeated ? node.Count : 1;
+                for (int i = 0; i < count; i++)
                 {
                     coord.Add(node.Coordinate, true);
                 }
@@ -187,8 +187,8 @@ namespace NetTopologySuite.Index.KdTree
         {
             var currentNode = _root;
             var leafNode = _root;
-            var isOddLevel = true;
-            var isLessThan = true;
+            bool isOddLevel = true;
+            bool isLessThan = true;
 
             /**
              * Traverse the tree, first cutting the plane left-right (by X ordinate)
@@ -199,7 +199,7 @@ namespace NetTopologySuite.Index.KdTree
                 // test if point is already a node (not strictly necessary)
                 if (currentNode != null)
                 {
-                    var isInTolerance = p.Distance(currentNode.Coordinate) <= _tolerance;
+                    bool isInTolerance = p.Distance(currentNode.Coordinate) <= _tolerance;
 
                     // check if point is already in tree (up to tolerance) and if so simply
                     // return existing node
@@ -356,10 +356,10 @@ namespace NetTopologySuite.Index.KdTree
 
             public void Visit(KdNode<T> node)
             {
-                var dist = p.Distance(node.Coordinate);
-                var isInTolerance = dist <= tolerance;
+                double dist = p.Distance(node.Coordinate);
+                bool isInTolerance = dist <= tolerance;
                 if (!isInTolerance) return;
-                var update = false;
+                bool update = false;
                 if (matchNode == null
                     || dist < matchDist
                     // if distances are the same, record the lesser coordinate

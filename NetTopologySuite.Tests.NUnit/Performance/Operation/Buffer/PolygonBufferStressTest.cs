@@ -87,7 +87,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 
         public void Test(IGeometry g)
         {
-            var maxCount = MaxIter;
+            int maxCount = MaxIter;
             //doIteratedBuffer(g, 1, -120.01, maxCount);
             //doIteratedBuffer(g, 1, 2, maxCount);
             DoAlternatingIteratedBuffer(g, 1, maxCount);

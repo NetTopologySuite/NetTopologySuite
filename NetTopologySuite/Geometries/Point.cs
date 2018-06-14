@@ -272,7 +272,7 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         protected internal override int CompareToSameClass(object other)
         {
-            Point point = (Point)  other;
+            var point = (Point)  other;
             return Coordinate.CompareTo(point.Coordinate);
         }
 

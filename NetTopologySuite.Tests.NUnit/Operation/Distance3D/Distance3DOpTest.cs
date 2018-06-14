@@ -379,7 +379,7 @@ public class Distance3DOpTest
     private void CheckDistance(IGeometry g1, IGeometry g2, double expectedDistance, double tolerance)
     {
         var distOp = new Distance3DOp(g1, g2);
-        var dist = distOp.Distance();
+            double dist = distOp.Distance();
         Assert.AreEqual(expectedDistance, dist, tolerance);
     }
 

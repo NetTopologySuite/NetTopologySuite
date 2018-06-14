@@ -36,7 +36,7 @@ namespace NetTopologySuite.Dissolve
         /// <returns>the dissolved lines</returns>
         public static IGeometry Dissolve(IGeometry g)
         {
-            LineDissolver d = new LineDissolver();
+            var d = new LineDissolver();
             d.Add(g);
             return d.GetResult();
         }
@@ -75,7 +75,7 @@ namespace NetTopologySuite.Dissolve
         /// <param name="geometries">the geometries to be line-merged</param>
         public void Add(IEnumerable<IGeometry> geometries)
         {
-            foreach (IGeometry geometry in geometries)
+            foreach (var geometry in geometries)
                 Add(geometry);
         }
 
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Dissolve
         {
             if (_factory == null)
                 _factory = lineString.Factory;
-            var doneStart = false;
+            bool doneStart = false;
             var seq = lineString.CoordinateSequence;
             for (int i = 1; i < seq.Count; i++)
             {
@@ -115,8 +115,8 @@ namespace NetTopologySuite.Dissolve
 
         private void ComputeResult()
         {
-            IEnumerable<HalfEdge> edges = _graph.GetVertexEdges();
-            foreach (HalfEdge e in edges)
+            var edges = _graph.GetVertexEdges();
+            foreach (var e in edges)
             {
                 if (MarkHalfEdge.IsMarked(e))
                     continue;
@@ -129,7 +129,7 @@ namespace NetTopologySuite.Dissolve
 
         private void Process(HalfEdge e)
         {
-            HalfEdge eNode = e.PrevNode();
+            var eNode = e.PrevNode();
             // if edge is in a ring, just process this edge
             if (eNode == null)
                 eNode = e;
@@ -147,7 +147,7 @@ namespace NetTopologySuite.Dissolve
         {
             while (_nodeEdgeStack.Count > 0)
             {
-                HalfEdge e = _nodeEdgeStack.Pop();
+                var e = _nodeEdgeStack.Pop();
                 if (MarkHalfEdge.IsMarked(e))
                     continue;
                 BuildLine(e);
@@ -184,8 +184,8 @@ namespace NetTopologySuite.Dissolve
                 return;
             }
 
-            Coordinate eOrig = e.Orig;
-            Coordinate rseOrig = _ringStartEdge.Orig;
+            var eOrig = e.Orig;
+            var rseOrig = _ringStartEdge.Orig;
             int compareTo = eOrig.CompareTo(rseOrig);
             if (compareTo < 0)
                 _ringStartEdge = e;
@@ -208,18 +208,18 @@ namespace NetTopologySuite.Dissolve
         /// <param name="eStart"></param>
         private void BuildLine(HalfEdge eStart)
         {
-            CoordinateList line = new CoordinateList();
-            DissolveHalfEdge e = (DissolveHalfEdge)eStart;
+            var line = new CoordinateList();
+            var e = (DissolveHalfEdge)eStart;
             _ringStartEdge = null;
 
             MarkHalfEdge.MarkBoth(e);
-            Coordinate orig = e.Orig;
+            var orig = e.Orig;
             line.Add(orig.Copy(), false);
             // scan along the path until a node is found (if one exists)
             while (e.Sym.Degree() == 2)
             {
                 UpdateRingStartEdge(e);
-                DissolveHalfEdge eNext = (DissolveHalfEdge)e.Next;
+                var eNext = (DissolveHalfEdge)e.Next;
                 // check if edges form a ring - if so, we're done
                 if (eNext == eStart)
                 {
@@ -233,7 +233,7 @@ namespace NetTopologySuite.Dissolve
                 MarkHalfEdge.MarkBoth(e);
             }
             // add final node
-            Coordinate dest = e.Dest;
+            var dest = e.Dest;
             line.Add(dest.Copy(), false);
 
             // queue up the final node edges
@@ -244,15 +244,15 @@ namespace NetTopologySuite.Dissolve
 
         private void BuildRing(HalfEdge eStartRing)
         {
-            CoordinateList line = new CoordinateList();
-            HalfEdge e = eStartRing;
+            var line = new CoordinateList();
+            var e = eStartRing;
 
-            Coordinate orig = e.Orig;
+            var orig = e.Orig;
             line.Add(orig.Copy(), false);
             // scan along the path until a node is found (if one exists)
             while (e.Sym.Degree() == 2)
             {
-                HalfEdge eNext = e.Next;
+                var eNext = e.Next;
                 // check if edges form a ring - if so, we're done
                 if (eNext == eStartRing)
                     break;
@@ -263,7 +263,7 @@ namespace NetTopologySuite.Dissolve
                 e = eNext;
             }
             // add final node
-            Coordinate dest = e.Dest;
+            var dest = e.Dest;
             line.Add(dest.Copy(), false);
 
             // store the scanned line
@@ -272,8 +272,8 @@ namespace NetTopologySuite.Dissolve
 
         private void AddLine(CoordinateList line)
         {
-            Coordinate[] array = line.ToCoordinateArray();
-            ILineString ls = _factory.CreateLineString(array);
+            var array = line.ToCoordinateArray();
+            var ls = _factory.CreateLineString(array);
             _lines.Add(ls);
         }
 
@@ -283,7 +283,7 @@ namespace NetTopologySuite.Dissolve
         /// <param name="node"></param>
         private void StackEdges(HalfEdge node)
         {
-            HalfEdge e = node;
+            var e = node;
             do
             {
                 if (!MarkHalfEdge.IsMarked(e))

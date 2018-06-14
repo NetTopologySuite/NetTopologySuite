@@ -80,7 +80,7 @@ namespace NetTopologySuite.Index.Bintree
         /// <param name="itemInterval"></param>
         private void ComputeInterval(int level, Interval itemInterval)
         {
-            var size = DoubleBits.PowerOf2(level);
+            double size = DoubleBits.PowerOf2(level);
             _pt = Math.Floor(itemInterval.Min / size) * size;
             _interval.Init(_pt, _pt + size);
             //_interval = Interval.Create(_pt, _pt + size);

@@ -85,7 +85,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
         private void TestExpectedResult()
         {
             if (_wktExpected == null) return;
-            IGeometry expectedGeom = _reader.Read(_wktExpected);
+            var expectedGeom = _reader.Read(_wktExpected);
             bool test = expectedGeom.EqualsExact(_ioGeometry[1]);
             Assert.IsTrue(test, "Expected result not found");
         }

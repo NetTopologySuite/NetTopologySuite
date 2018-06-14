@@ -14,7 +14,7 @@ namespace Open.Topology.TestRunner.Utility
         {
             for (int i = 0; i < maxCharsToTest && i < str.Length; i++)
             {
-                var ch = str[i];
+                char ch = str[i];
                 if (!IsHexDigit(ch))
                     return false;
             }
@@ -56,7 +56,7 @@ namespace Open.Topology.TestRunner.Utility
         /// <exception cref="ParseException"></exception>
         public IGeometry Read(string geomStr)
         {
-            var trimStr = geomStr.Trim();
+            string trimStr = geomStr.Trim();
             if (IsHex(trimStr, MaxCharsToCheck))
                 return IOUtility.ReadGeometriesFromWkbHexString(trimStr, _factory);
             return _wktReader.Read(trimStr);

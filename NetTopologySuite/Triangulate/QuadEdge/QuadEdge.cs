@@ -34,10 +34,10 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>the new QuadEdge quartet</returns>
         public static QuadEdge MakeEdge(Vertex o, Vertex d)
         {
-            QuadEdge q0 = new QuadEdge();
-            QuadEdge q1 = new QuadEdge();
-            QuadEdge q2 = new QuadEdge();
-            QuadEdge q3 = new QuadEdge();
+            var q0 = new QuadEdge();
+            var q1 = new QuadEdge();
+            var q2 = new QuadEdge();
+            var q3 = new QuadEdge();
 
             q0.Rot = q1;
             q1.Rot = q2;
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             q2.SetNext(q2);
             q3.SetNext(q1);
 
-            QuadEdge baseQE = q0;
+            var baseQE = q0;
             baseQE.Orig = o;
             baseQE.Dest = d;
             return baseQE;
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <returns>the connected edge</returns>
         public static QuadEdge Connect(QuadEdge a, QuadEdge b)
         {
-            QuadEdge e = MakeEdge(a.Dest, b.Orig);
+            var e = MakeEdge(a.Dest, b.Orig);
             Splice(e, a.LNext);
             Splice(e.Sym, b);
             return e;
@@ -83,13 +83,13 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="b">an edge to splice</param>
         public static void Splice(QuadEdge a, QuadEdge b)
         {
-            QuadEdge alpha = a.ONext.Rot;
-            QuadEdge beta = b.ONext.Rot;
+            var alpha = a.ONext.Rot;
+            var beta = b.ONext.Rot;
 
-            QuadEdge t1 = b.ONext;
-            QuadEdge t2 = a.ONext;
-            QuadEdge t3 = beta.ONext;
-            QuadEdge t4 = alpha.ONext;
+            var t1 = b.ONext;
+            var t2 = a.ONext;
+            var t3 = beta.ONext;
+            var t4 = alpha.ONext;
 
             a.SetNext(t1);
             b.SetNext(t2);
@@ -103,8 +103,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="e">the quadedge to turn</param>
         public static void Swap(QuadEdge e)
         {
-            QuadEdge a = e.OPrev;
-            QuadEdge b = e.Sym.OPrev;
+            var a = e.OPrev;
+            var b = e.Sym.OPrev;
             Splice(e, a);
             Splice(e.Sym, b);
             Splice(e, a.LNext);

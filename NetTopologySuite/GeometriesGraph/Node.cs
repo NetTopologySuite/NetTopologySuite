@@ -108,8 +108,8 @@ namespace NetTopologySuite.GeometriesGraph
         {
             for (int i = 0; i < 2; i++)
             {
-                Location loc = ComputeMergedLocation(label2, i);
-                Location thisLoc = Label.GetLocation(i);
+                var loc = ComputeMergedLocation(label2, i);
+                var thisLoc = Label.GetLocation(i);
                 if (thisLoc == Location.Null)
                     Label.SetLocation(i, loc);
             }
@@ -137,7 +137,7 @@ namespace NetTopologySuite.GeometriesGraph
             if (Label == null) return;
 
             // determine the current location for the point (if any)
-            Location loc = Location.Null;
+            var loc = Location.Null;
             if (Label != null)
                 loc = Label.GetLocation(argIndex);
             // flip the loc
@@ -169,10 +169,10 @@ namespace NetTopologySuite.GeometriesGraph
         public Location ComputeMergedLocation(Label label2, int eltIndex)
         {
             /*Location loc = Location.Null*/
-            Location loc = Label.GetLocation(eltIndex);
+            var loc = Label.GetLocation(eltIndex);
             if (!label2.IsNull(eltIndex))
             {
-                Location nLoc = label2.GetLocation(eltIndex);
+                var nLoc = label2.GetLocation(eltIndex);
                 if (loc != Location.Boundary)
                     loc = nLoc;
             }

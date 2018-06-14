@@ -18,7 +18,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         {
             var g = Reader.Read("POLYGON ((60.0 40.0, 60.0 240.0, 460.0 240.0, 460.0 40.0, 60.0 40.0), (260.0 200.0, 340.0 60.0, 400.0 120.0, 260.0 200.0), (260.0 200.0, 120.0 100.0, 200.0 60.0, 260.0 200.0))");
             Assert.IsNotNull(g);
-            var result = g.IsValid;
+            bool result = g.IsValid;
             Assert.IsTrue(result);
         }
 
@@ -268,7 +268,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             var fixedPol = polygon.Buffer(0);
             Assert.IsTrue(fixedPol.IsValid);
 
-            var result = fixedPol.Contains(point);
+            bool result = fixedPol.Contains(point);
             Assert.IsFalse(result);
         }
 
@@ -311,9 +311,9 @@ namespace NetTopologySuite.Samples.Tests.Various
 215370.009119945,159063.929280482 215399.247659686)";
 
             var reader = new WKTReader(GeometryFactory.Fixed);
-            var wkts = new[] { wkt1, wkt2, wkt3,};
+            string[] wkts = new[] { wkt1, wkt2, wkt3,};
             var polygonizer = new Polygonizer();
-            foreach (var wkt in wkts)
+            foreach (string wkt in wkts)
             {
                 var geom = (ILineString) reader.Read(wkt);
                 Assert.IsNotNull(geom);

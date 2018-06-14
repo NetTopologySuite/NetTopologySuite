@@ -112,7 +112,7 @@ namespace NetTopologySuite.SnapRound
                 if (nss.Count < 2)
                     continue;
                 //Coordinate[] pts = getCoords(nss);
-                Coordinate[] pts = nss.NodeList.GetSplitCoordinates();
+                var pts = nss.NodeList.GetSplitCoordinates();
 
                 ptsMap.Add((IGeometry)nss.Context, pts);
             }
@@ -143,7 +143,7 @@ namespace NetTopologySuite.SnapRound
         {
             if (seq.Count == 0) return new Coordinate[0];
 
-            CoordinateList coordList = new CoordinateList();
+            var coordList = new CoordinateList();
             // copy coordinates and reduce
             for (int i = 0; i < seq.Count; i++)
             {
@@ -153,7 +153,7 @@ namespace NetTopologySuite.SnapRound
                 pm.MakePrecise(coord);
                 coordList.Add(coord, false);
             }
-            Coordinate[] coords = coordList.ToCoordinateArray();
+            var coords = coordList.ToCoordinateArray();
 
             //TODO: what if seq is too short?
             return coords;

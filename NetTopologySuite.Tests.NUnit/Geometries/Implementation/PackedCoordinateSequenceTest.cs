@@ -14,15 +14,15 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         [TestAttribute]
         public void TestMultiPointDim4()
         {
-            GeometryFactory gf = new GeometryFactory(new PackedCoordinateSequenceFactory());
-            ICoordinateSequence mpSeq = gf.CoordinateSequenceFactory.Create(1, Ordinates.XYZM);
+            var gf = new GeometryFactory(new PackedCoordinateSequenceFactory());
+            var mpSeq = gf.CoordinateSequenceFactory.Create(1, Ordinates.XYZM);
             mpSeq.SetOrdinate(0, Ordinate.X, 50);
             mpSeq.SetOrdinate(0, Ordinate.Y, -2);
             mpSeq.SetOrdinate(0, Ordinate.Z, 10);
             mpSeq.SetOrdinate(0, Ordinate.M, 20);
 
-            IMultiPoint mp = gf.CreateMultiPoint(mpSeq);
-            ICoordinateSequence pSeq = ((Point)mp.GetGeometryN(0)).CoordinateSequence;
+            var mp = gf.CreateMultiPoint(mpSeq);
+            var pSeq = ((Point)mp.GetGeometryN(0)).CoordinateSequence;
             Assert.AreEqual(4, pSeq.Dimension);
             Assert.AreEqual(Ordinates.XYZM, pSeq.Ordinates);
             for (int i = 0; i < 4; i++)

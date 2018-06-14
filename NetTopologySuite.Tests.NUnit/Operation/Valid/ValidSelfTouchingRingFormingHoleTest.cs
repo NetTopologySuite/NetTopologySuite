@@ -101,16 +101,16 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
 
         private void CheckIsValidDefault(string wkt, bool expected)
         {
-            IGeometry geom = FromWKT(wkt);
-            IsValidOp validator = new IsValidOp(geom);
+            var geom = FromWKT(wkt);
+            var validator = new IsValidOp(geom);
             bool isValid = validator.IsValid;
             Assert.IsTrue(isValid == expected);
         }
 
         private void CheckIsValidSTR(string wkt, bool expected)
         {
-            IGeometry geom = FromWKT(wkt);
-            IsValidOp validator = new IsValidOp(geom);
+            var geom = FromWKT(wkt);
+            var validator = new IsValidOp(geom);
             validator.IsSelfTouchingRingFormingHoleValid = true;
             bool isValid = validator.IsValid;
             Assert.IsTrue(isValid == expected);

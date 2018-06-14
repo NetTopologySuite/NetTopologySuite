@@ -205,7 +205,7 @@ namespace NetTopologySuite.IO
         private Coordinate GetPreciseCoordinate(IEnumerator<Token> tokens, bool skipExtraParenthesis, ref bool hasZ)
         {
             var coord = new Coordinate();
-            var extraParenthesisFound = false;
+            bool extraParenthesisFound = false;
             if (skipExtraParenthesis)
             {
                 extraParenthesisFound = IsStringValueNext(tokens, "(");
@@ -344,7 +344,7 @@ namespace NetTopologySuite.IO
         /// The next ")" in the stream.</returns>
         private static string GetNextCloser(IEnumerator<Token> tokens)
         {
-            var nextWord = GetNextWord(tokens);
+            string nextWord = GetNextWord(tokens);
             if (nextWord.Equals(")"))
                 return nextWord;
             throw new GeoAPI.IO.ParseException("Expected ')' but encountered '" + nextWord + "'");
@@ -405,7 +405,7 @@ namespace NetTopologySuite.IO
             IGeometry returned;
 
             int srid;
-            var type = GetNextWord(tokens);
+            string type = GetNextWord(tokens);
             if (type == "SRID")
             {
                 tokens.MoveNext(); // =
@@ -481,10 +481,10 @@ namespace NetTopologySuite.IO
         /// the stream.</returns>
         private IPoint ReadPointText(IEnumerator<Token> tokens, IGeometryFactory factory)
         {
-            var nextToken = GetNextEmptyOrOpener(tokens);
+            string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY"))
                 return factory.CreatePoint();
-            var hasZ = false;
+            bool hasZ = false;
             var coord = GetPreciseCoordinate(tokens, false, ref hasZ);
             var point = factory.CreatePoint(ToSequence(hasZ, coord));
             /*var closer = */GetNextCloser(tokens);
@@ -493,16 +493,16 @@ namespace NetTopologySuite.IO
 
         private ICoordinateSequence ToSequence(bool hasZ, params Coordinate[] coords)
         {
-            var dimensions = hasZ ? 3 : 2;
+            int dimensions = hasZ ? 3 : 2;
             var seq = _coordinateSequencefactory.Create(coords.Length, dimensions);
-            for (var i = 0; i < coords.Length; i++)
+            for (int i = 0; i < coords.Length; i++)
             {
                 seq.SetOrdinate(i, Ordinate.X, coords[i].X);
                 seq.SetOrdinate(i, Ordinate.Y, coords[i].Y);
             }
             if (dimensions == 3)
             {
-                for (var i = 0; i < coords.Length; i++)
+                for (int i = 0; i < coords.Length; i++)
                     seq.SetOrdinate(i, Ordinate.Z, coords[i].Z);
             }
             return seq;
@@ -521,7 +521,7 @@ namespace NetTopologySuite.IO
         /// token in the stream.</returns>
         private ILineString ReadLineStringText(IEnumerator<Token> tokens, IGeometryFactory factory)
         {
-            var hasZ = false;
+            bool hasZ = false;
             var coords = GetCoordinates(tokens, false, ref hasZ);
             return factory.CreateLineString(ToSequence(hasZ, coords));
         }
@@ -538,7 +538,7 @@ namespace NetTopologySuite.IO
         /// token in the stream.</returns>
         private ILinearRing ReadLinearRingText(IEnumerator<Token> tokens, IGeometryFactory factory)
         {
-            var hasZ = false;
+            bool hasZ = false;
             var coords = GetCoordinates(tokens, false, ref hasZ);
             return factory.CreateLinearRing(ToSequence(hasZ, coords));
         }
@@ -556,7 +556,7 @@ namespace NetTopologySuite.IO
         /// token in the stream.</returns>
         private IMultiPoint ReadMultiPointText(IEnumerator<Token> tokens, IGeometryFactory factory)
         {
-            var hasZ = false;
+            bool hasZ = false;
             var coords = GetCoordinates(tokens, true, ref hasZ);
             return factory.CreateMultiPoint(ToPoints(ToSequence(hasZ, coords), factory));
         }
@@ -575,7 +575,7 @@ namespace NetTopologySuite.IO
         private IPoint[] ToPoints(ICoordinateSequence coordinates, IGeometryFactory factory)
         {
             var points = new IPoint[coordinates.Count];
-            for (var i = 0; i < coordinates.Count; i++)
+            for (int i = 0; i < coordinates.Count; i++)
             {
                 var cs = _coordinateSequencefactory.Create(1, coordinates.Ordinates);
                 CoordinateSequences.Copy(coordinates, i, cs, 0, 1);
@@ -607,7 +607,7 @@ namespace NetTopologySuite.IO
             nextToken = GetNextCloserOrComma(tokens);
             while (nextToken.Equals(","))
             {
-                ILinearRing hole = ReadLinearRingText(tokens, factory);
+                var hole = ReadLinearRingText(tokens, factory);
                 holes.Add(hole);
                 nextToken = GetNextCloserOrComma(tokens);
             }

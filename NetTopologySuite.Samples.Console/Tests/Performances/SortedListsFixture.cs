@@ -17,7 +17,7 @@ namespace NetTopologySuite.Tests.Performances
 
         public static void LogLine(string format, params object[] data)
         {
-            var line = string.Format(format, data);
+            string line = string.Format(format, data);
             Console.WriteLine(line);
             OutFile.WriteLine(line);
             OutFile.Flush();
@@ -40,10 +40,10 @@ namespace NetTopologySuite.Tests.Performances
         private void Benchmark(IPolygon poly)
         {
             var start = DateTime.Now;
-            var valid = poly.IsValid;
+            bool valid = poly.IsValid;
             var end = DateTime.Now;
             var diff = end - start;
-            var td = diff.TotalSeconds;
+            double td = diff.TotalSeconds;
             LogLine("{0} \t{1} \t{2} \t{3}", poly.NumInteriorRings, poly.NumPoints, valid, td);
         }
 
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Tests.Performances
             var holes = new List<ILinearRing>(100);
             var shell = CreateRing(0, 0, 20, 10000);
             Benchmark(factory.CreatePolygon(shell, holes.ToArray()));
-            for (var i = 0; i < 100; i += 5)
+            for (int i = 0; i < 100; i += 5)
             {
                 holes.Add(CreateRing((i % 10) - 5, (i / 10) - 5, 0.4, 500));
                 Benchmark(factory.CreatePolygon(shell, holes.ToArray()));

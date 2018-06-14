@@ -86,11 +86,11 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                Coordinate[] coordinates = new Coordinate[NumPoints];
+                var coordinates = new Coordinate[NumPoints];
                 int k = -1;
                 for (int i = 0; i < _geometries.Length; i++)
                 {
-                    Coordinate[] childCoordinates = _geometries[i].Coordinates;
+                    var childCoordinates = _geometries[i].Coordinates;
                     for (int j = 0; j < childCoordinates.Length; j++)
                     {
                         k++;
@@ -106,12 +106,12 @@ namespace NetTopologySuite.Geometries
             if (IsEmpty)
                 return new double[0];
 
-            var result = new double[NumPoints];
-            var offset = 0;
-            for (var i = 0; i < NumGeometries; i++)
+            double[] result = new double[NumPoints];
+            int offset = 0;
+            for (int i = 0; i < NumGeometries; i++)
             {
                 var geom = GetGeometryN(i);
-                var ordinates = geom.GetOrdinates(ordinate);
+                double[] ordinates = geom.GetOrdinates(ordinate);
                 Array.Copy(ordinates, 0, result, offset, ordinates.Length);
                 offset += ordinates.Length;
             }
@@ -139,7 +139,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                Dimension dimension = Dimension.False;
+                var dimension = Dimension.False;
                 for (int i = 0; i < _geometries.Length; i++)
                     dimension = (Dimension) Math.Max((int)dimension, (int)_geometries[i].Dimension);
                 return dimension;
@@ -153,7 +153,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                Dimension dimension = Dimension.False;
+                var dimension = Dimension.False;
                 for (int i = 0; i < _geometries.Length; i++)
                     dimension = (Dimension) Math.Max((int) dimension, (int) (_geometries[i].BoundaryDimension));
                 return dimension;
@@ -304,7 +304,7 @@ namespace NetTopologySuite.Geometries
             if (!IsEquivalentClass(other))
                 return false;
 
-            IGeometryCollection otherCollection = (IGeometryCollection) other;
+            var otherCollection = (IGeometryCollection) other;
             if (_geometries.Length != otherCollection.Geometries.Length)
                 return false;
 
@@ -403,7 +403,7 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         protected override Envelope ComputeEnvelopeInternal()
         {
-            Envelope envelope = new Envelope();
+            var envelope = new Envelope();
             for (int i = 0; i < _geometries.Length; i++)
                 envelope.ExpandToInclude(_geometries[i].EnvelopeInternal);
             return envelope;
@@ -423,16 +423,16 @@ namespace NetTopologySuite.Geometries
 
         protected internal override int CompareToSameClass(object o, IComparer<ICoordinateSequence> comp)
         {
-            IGeometryCollection gc = (IGeometryCollection) o;
+            var gc = (IGeometryCollection) o;
 
             int n1 = NumGeometries;
             int n2 = gc.NumGeometries;
             int i = 0;
             while (i < n1 && i < n2)
             {
-                IGeometry thisGeom = GetGeometryN(i);
+                var thisGeom = GetGeometryN(i);
                 Assert.IsTrue(thisGeom is Geometry);
-                IGeometry otherGeom = gc.GetGeometryN(i);
+                var otherGeom = gc.GetGeometryN(i);
                 int holeComp = ((Geometry) thisGeom).CompareToSameClass(otherGeom, comp);
                 if (holeComp != 0) return holeComp;
                 i++;
@@ -449,7 +449,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                IGeometry baseGeom = Geometries[0];
+                var baseGeom = Geometries[0];
                 for (int i = 1; i < Geometries.Length; i++)
                     if (baseGeom.GetType() != Geometries[i].GetType())
                         return false;
@@ -491,7 +491,7 @@ namespace NetTopologySuite.Geometries
         public override IGeometry Reverse()
         {
             int n = _geometries.Length;
-            IGeometry[] revGeoms = new IGeometry[n];
+            var revGeoms = new IGeometry[n];
             for (int i = 0; i < _geometries.Length; i++)
             {
                 revGeoms[i] = _geometries[i].Reverse();

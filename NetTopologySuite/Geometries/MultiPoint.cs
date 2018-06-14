@@ -49,7 +49,7 @@ namespace NetTopologySuite.Geometries
         public override IGeometry Copy()
         {
             var points = new IPoint[NumGeometries];
-            for (var i = 0; i < points.Length; i++)
+            for (int i = 0; i < points.Length; i++)
                 points[i] = (IPoint)GetGeometryN(i).Copy();
 
             return new MultiPoint(points, Factory);

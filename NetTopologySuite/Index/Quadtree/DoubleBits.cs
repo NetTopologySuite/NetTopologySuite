@@ -41,7 +41,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <returns></returns>
         public static int GetExponent(double d)
         {
-            DoubleBits db = new DoubleBits(d);
+            var db = new DoubleBits(d);
             return db.Exponent;
         }
 
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <returns></returns>
         public static double TruncateToPowerOfTwo(double d)
         {
-            DoubleBits db = new DoubleBits(d);
+            var db = new DoubleBits(d);
             db.ZeroLowerBits(52);
             return db.Double;
         }
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Index.Quadtree
         /// <returns></returns>
         public static string ToBinaryString(double d)
         {
-            DoubleBits db = new DoubleBits(d);
+            var db = new DoubleBits(d);
             return db.ToString();
         }
 
@@ -79,8 +79,8 @@ namespace NetTopologySuite.Index.Quadtree
             if (d1 == 0.0 || d2 == 0.0)
                 return 0.0;
 
-            DoubleBits db1 = new DoubleBits(d1);
-            DoubleBits db2 = new DoubleBits(d2);
+            var db1 = new DoubleBits(d1);
+            var db2 = new DoubleBits(d2);
 
             if (db1.Exponent != db2.Exponent)
                 return 0.0;

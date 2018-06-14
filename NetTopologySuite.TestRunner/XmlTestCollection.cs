@@ -75,14 +75,14 @@ namespace Open.Topology.TestRunner
             {
                 for (int i = 0; i < List.Count; i++)
                 {
-                    XmlTest testItem = (XmlTest) List[i];
+                    var testItem = (XmlTest) List[i];
 
                     if (testItem != null)
                     {
                         bool run = testItem.Run();
                         if (TestEvent != null)
                         {
-                            XmlTestEventArgs args = new XmlTestEventArgs(i, run, testItem);
+                            var args = new XmlTestEventArgs(i, run, testItem);
                             this.TestEvent(this, args);
                         }
                     }

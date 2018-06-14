@@ -230,7 +230,7 @@ namespace NetTopologySuite.Operation.Buffer
         private bool IsConcave(Coordinate p0, Coordinate p1, Coordinate p2)
         {
             var orientation = Orientation.Index(p0, p1, p2);
-            var isConcave = (orientation == _angleOrientation);
+            bool isConcave = (orientation == _angleOrientation);
             return isConcave;
         }
     }

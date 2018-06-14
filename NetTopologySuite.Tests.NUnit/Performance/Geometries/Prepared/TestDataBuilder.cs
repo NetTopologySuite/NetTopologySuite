@@ -62,7 +62,7 @@ public class TestDataBuilder
     double yInc = width / nCells;
     for (int i = 0; i < nCells; i++) {
         for (int j = 0; j < nCells; j++) {
-            Coordinate @base = new Coordinate(
+            var @base = new Coordinate(
                     env.MinX + i * xInc,
                     env.MinY + j * yInc);
             var line = CreateLine(@base, size, nPts);

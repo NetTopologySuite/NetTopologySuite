@@ -107,7 +107,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </returns>
         public int FindEdgeIndex(Edge e)
         {
-            for (var i = 0; i < _edges.Count; i++)
+            for (int i = 0; i < _edges.Count; i++)
                 if ((_edges[i]).Equals(e))
                     return i;
             return -1;
@@ -120,14 +120,14 @@ namespace NetTopologySuite.GeometriesGraph
         public void Write(StreamWriter outstream)
         {
             outstream.Write("MULTILINESTRING ( ");
-            for (var j = 0; j < _edges.Count; j++)
+            for (int j = 0; j < _edges.Count; j++)
             {
                 var e = _edges[j];
                 if (j > 0)
                     outstream.Write(",");
                 outstream.Write("(");
                 var pts = e.Coordinates;
-                for (var i = 0; i < pts.Length; i++)
+                for (int i = 0; i < pts.Length; i++)
                 {
                     if (i > 0)
                         outstream.Write(",");

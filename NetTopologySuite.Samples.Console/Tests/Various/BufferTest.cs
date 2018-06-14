@@ -46,15 +46,15 @@ namespace NetTopologySuite.Samples.Tests.Various
         /// </summary>
         private static void PerformTest(IGeometryFactory factory)
         {
-            IGeometry path = new WKTReader(factory).Read(GeomText);
+            var path = new WKTReader(factory).Read(GeomText);
             Assert.IsNotNull(path);
             Debug.WriteLine(string.Format("Original Points: {0}", path.NumPoints));
 
-            IGeometry simplified = DouglasPeuckerSimplifier.Simplify(path, 2);
+            var simplified = DouglasPeuckerSimplifier.Simplify(path, 2);
             Assert.IsNotNull(simplified);
             Debug.WriteLine(string.Format("Simplified Points: {0}", simplified.NumPoints));
 
-            IGeometry buffered = simplified.Buffer(1.143);
+            var buffered = simplified.Buffer(1.143);
             Assert.IsNotNull(buffered);
             Debug.WriteLine(buffered);
         }
@@ -93,12 +93,12 @@ namespace NetTopologySuite.Samples.Tests.Various
 -2.78834607948959 87.2367672248572, -2.95519284268212
 90.5673638758933, -9.1285807394459 82.6849571608342)";
 
-            IGeometryFactory factory = GeometryFactory.Default;
-            WKTReader reader = new WKTReader(factory);
-            IGeometry geom = reader.Read(wkt);
+            var factory = GeometryFactory.Default;
+            var reader = new WKTReader(factory);
+            var geom = reader.Read(wkt);
             Assert.IsNotNull(geom);
             Assert.IsTrue(geom.IsValid);
-            IGeometry result = geom.Buffer(0);
+            var result = geom.Buffer(0);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.IsValid);
             Assert.IsTrue(GeometryCollection.Empty.Equals(result));

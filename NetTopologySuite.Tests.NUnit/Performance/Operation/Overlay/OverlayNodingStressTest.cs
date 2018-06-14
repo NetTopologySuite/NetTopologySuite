@@ -37,14 +37,14 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
 
         private double GetRandomDouble()
         {
-            var r = _rnd.NextDouble();
+            double r = _rnd.NextDouble();
             return r;
         }
 
         [TestAttribute, Explicit("takes ages to complete")]
         public void TestNoding()
         {
-            var iterLimit = ITER_LIMIT;
+            int iterLimit = ITER_LIMIT;
             for (int i = 0; i < iterLimit; i++)
             {
                 Console.WriteLine("Iter: " + i
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
                 double ang1 = GetRandomDouble() * Math.PI;
                 double ang2 = GetRandomDouble() * Math.PI;
                 // Geometry[] geom = generateGeometryStar(ang1, ang2);
-                IGeometry[] geom = GenerateGeometryAccum(ang1, ang2);
+                var geom = GenerateGeometryAccum(ang1, ang2);
                 CheckIntersection(geom[0], geom[1]);
             }
             Console.WriteLine(
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
         public IGeometry[] GenerateGeometryAccum(double angle1, double angle2)
         {
             var rrFact = new RotatedRectangleFactory();
-            var basex = angle2 * MAX_DISPLACEMENT - (MAX_DISPLACEMENT / 2);
+            double basex = angle2 * MAX_DISPLACEMENT - (MAX_DISPLACEMENT / 2);
             var baseCoord = new Coordinate(basex, basex);
             var rr1 = rrFact.CreateRectangle(100, 20, angle1, baseCoord);
 
@@ -141,12 +141,12 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
 
         public IPolygon CreateRectangle(double length, double width, double angle, Coordinate baseCoord)
         {
-            var posx = length / 2 * Math.Cos(angle);
-            var posy = length / 2 * Math.Sin(angle);
-            var negx = -posx;
-            var negy = -posy;
-            var widthOffsetx = (width / 2) * Math.Cos(angle + PiOver2);
-            var widthOffsety = (width / 2) * Math.Sin(angle + PiOver2);
+            double posx = length / 2 * Math.Cos(angle);
+            double posy = length / 2 * Math.Sin(angle);
+            double negx = -posx;
+            double negy = -posy;
+            double widthOffsetx = (width / 2) * Math.Cos(angle + PiOver2);
+            double widthOffsety = (width / 2) * Math.Sin(angle + PiOver2);
 
             var pts = new[] {
                     new Coordinate(baseCoord.X + posx + widthOffsetx, baseCoord.Y + posy + widthOffsety),

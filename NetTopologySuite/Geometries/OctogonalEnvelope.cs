@@ -243,8 +243,8 @@ namespace NetTopologySuite.Geometries
         /// <returns>A reference to <c>this</c> octagonal envelope, expanded by <paramref name="x"/> and <paramref name="y"/></returns>
         public OctagonalEnvelope ExpandToInclude(double x, double y)
         {
-            var A = ComputeA(x, y);
-            var B = ComputeB(x, y);
+            double A = ComputeA(x, y);
+            double B = ComputeB(x, y);
 
             if (IsNull)
             {

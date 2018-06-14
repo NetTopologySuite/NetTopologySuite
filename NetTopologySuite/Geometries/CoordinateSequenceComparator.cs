@@ -71,8 +71,8 @@ namespace NetTopologySuite.Geometries
         /// <returns>-1, 0, or 1 depending on whether o1 is less than, equal to, or greater than o2</returns>
         public int Compare(object o1, object o2)
         {
-            ICoordinateSequence s1 = (ICoordinateSequence)o1;
-            ICoordinateSequence s2 = (ICoordinateSequence)o2;
+            var s1 = (ICoordinateSequence)o1;
+            var s2 = (ICoordinateSequence)o2;
             return Compare(s1, s2);
         }
 

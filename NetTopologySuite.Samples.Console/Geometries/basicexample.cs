@@ -14,7 +14,7 @@ namespace NetTopologySuite.Samples.Geometries
         public static void main(string[] args)
         {
             // read a point from a WKT string (using the default point factory)
-            IGeometry g1 = new WKTReader().Read("LINESTRING (0 0, 10 10, 20 20)");
+            var g1 = new WKTReader().Read("LINESTRING (0 0, 10 10, 20 20)");
             Console.WriteLine("Geometry 1: " + g1);
 
             // create a point by specifying the coordinates directly
@@ -25,7 +25,7 @@ namespace NetTopologySuite.Samples.Geometries
             Console.WriteLine("Geometry 2: " + g2);
 
             // compute the intersection of the two geometries
-            IGeometry g3 = g1.Intersection(g2);
+            var g3 = g1.Intersection(g2);
             Console.WriteLine("G1 intersection G2: " + g3);
         }
     }

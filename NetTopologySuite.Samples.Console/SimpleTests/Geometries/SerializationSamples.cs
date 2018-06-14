@@ -44,7 +44,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
                 new Coordinate(100,200),
                 new Coordinate(100,100),
             };
-            ILinearRing linearRing = Factory.CreateLinearRing(coordinates);
+            var linearRing = Factory.CreateLinearRing(coordinates);
             polygon = Factory.CreatePolygon(linearRing, null);
 
             coordinates = new Coordinate[]

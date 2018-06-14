@@ -18,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
         public void Test()
         {
             Trace.WriteLine("Loading data...");
-            IList<IGeometry> data = GeometryUtils.ReadWKTFile(EmbeddedResourceManager.GetResourceStream(
+            var data = GeometryUtils.ReadWKTFile(EmbeddedResourceManager.GetResourceStream(
                 "NetTopologySuite.Tests.NUnit.TestData.world.wkt"));
 
             const int maxTimes = 5;
@@ -36,9 +36,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
 
         private void RunDissolverWorld(IList<IGeometry> data)
         {
-            LineDissolver dis = new LineDissolver();
+            var dis = new LineDissolver();
             dis.Add(data);
-            IGeometry result = dis.GetResult();
+            var result = dis.GetResult();
             Trace.WriteLine("RunDissolverWorld");
             Trace.WriteLine(Memory.TotalString);
             // Trace.WriteLine(String.Format("Result: {0}", result));
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
 
         private void RunBruteForceWorld(IList<IGeometry> data)
         {
-            IGeometry result = DissolveLines(data);
+            var result = DissolveLines(data);
             Trace.WriteLine("RunBruteForceWorld");
             Trace.WriteLine(Memory.TotalString);
             // Trace.WriteLine(String.Format("Result: {0}", result));
@@ -54,29 +54,29 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
 
         private IGeometry DissolveLines(IList<IGeometry> lines)
         {
-            IGeometry linesGeom = ExtractLines(lines);
+            var linesGeom = ExtractLines(lines);
             return DissolveLines(linesGeom);
         }
 
         private static IGeometry DissolveLines(IGeometry lines)
         {
-            IGeometry dissolved = lines.Union();
-            LineMerger merger = new LineMerger();
+            var dissolved = lines.Union();
+            var merger = new LineMerger();
             merger.Add(dissolved);
-            IList<IGeometry> mergedColl = merger.GetMergedLineStrings();
-            IGeometry merged = lines.Factory.BuildGeometry(mergedColl);
+            var mergedColl = merger.GetMergedLineStrings();
+            var merged = lines.Factory.BuildGeometry(mergedColl);
             return merged;
         }
 
         private static IGeometry ExtractLines(ICollection<IGeometry> geoms)
         {
             IGeometryFactory factory = null;
-            List<IGeometry> lines = new List<IGeometry>();
-            foreach (IGeometry g in geoms)
+            var lines = new List<IGeometry>();
+            foreach (var g in geoms)
             {
                 if (factory == null)
                     factory = g.Factory;
-                ICollection<IGeometry> coll = LinearComponentExtracter.GetLines(g);
+                var coll = LinearComponentExtracter.GetLines(g);
                 lines.AddRange(coll);
             }
 

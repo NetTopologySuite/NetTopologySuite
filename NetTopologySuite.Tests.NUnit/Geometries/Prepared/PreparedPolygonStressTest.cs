@@ -19,7 +19,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
         [CategoryAttribute("Stress")]
         public void Test()
         {
-            PredicateStressTester tester = new PredicateStressTester();
+            var tester = new PredicateStressTester();
             tester.Run(1000);
         }
 
@@ -36,8 +36,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             {
                 bool expectedResult = target.Contains(test);
 
-                PreparedGeometryFactory pgFact = new PreparedGeometryFactory();
-                IPreparedGeometry prepGeom = pgFact.Create(target);
+                var pgFact = new PreparedGeometryFactory();
+                var prepGeom = pgFact.Create(target);
 
                 bool prepResult = prepGeom.Contains(test);
 
@@ -52,8 +52,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             {
                 bool expectedResult = target.Intersects(test);
 
-                PreparedGeometryFactory pgFact = new PreparedGeometryFactory();
-                IPreparedGeometry prepGeom = pgFact.Create(target);
+                var pgFact = new PreparedGeometryFactory();
+                var prepGeom = pgFact.Create(target);
 
                 bool prepResult = prepGeom.Intersects(test);
 

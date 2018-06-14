@@ -48,7 +48,7 @@ namespace Open.Topology.TestRunner.Operations
             {
                 if (GeometryMethods[i].Name.Equals(functionName, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    Type returnClass = GeometryMethods[i].ReturnType;
+                    var returnClass = GeometryMethods[i].ReturnType;
                     /**
                      * Filter out only acceptable classes. (For instance, don't accept the
                      * relate()=>IntersectionMatrix method)
@@ -84,7 +84,7 @@ namespace Open.Topology.TestRunner.Operations
         public IResult Invoke(string opName, IGeometry geometry, object[] args)
         {
             object[] actualArgs = new object[args.Length];
-            MethodInfo geomMethod = GetGeometryMethod(opName, args, actualArgs);
+            var geomMethod = GetGeometryMethod(opName, args, actualArgs);
             if (geomMethod == null)
                 throw new NTSTestReflectionException(opName, args);
             return InvokeMethod(geomMethod, geometry, actualArgs);

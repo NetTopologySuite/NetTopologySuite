@@ -204,16 +204,16 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         {
             try
             {
-                IEnumerable<IGeometry> inputGeoms = FromWKT(inputWKT);
-                LineSequencer sequencer = new LineSequencer();
+                var inputGeoms = FromWKT(inputWKT);
+                var sequencer = new LineSequencer();
                 sequencer.Add(inputGeoms);
 
                 if (!sequencer.IsSequenceable())
                     Assert.IsNull(expectedWKT);
                 else
                 {
-                    IGeometry expected = rdr.Read(expectedWKT);
-                    IGeometry result = sequencer.GetSequencedLineStrings();
+                    var expected = rdr.Read(expectedWKT);
+                    var result = sequencer.GetSequencedLineStrings();
                     bool isTrue = expected.EqualsExact(result);
                     Assert.IsTrue(isTrue, "Expected " + expected + " but was " + result);
 
@@ -228,7 +228,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
         {
             try
             {
-                IGeometry g = rdr.Read(inputWKT);
+                var g = rdr.Read(inputWKT);
                 bool isSequenced = LineSequencer.IsSequenced(g);
                 Assert.IsTrue(isSequenced == expected);
             }

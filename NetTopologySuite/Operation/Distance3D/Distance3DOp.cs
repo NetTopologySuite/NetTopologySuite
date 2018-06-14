@@ -150,7 +150,7 @@ namespace NetTopologySuite.Operation.Distance3D
                                     bool flip)
         {
             _minDistance = dist;
-            var index = flip ? 1 : 0;
+            int index = flip ? 1 : 0;
             _minDistanceLocation[index] = loc0;
             _minDistanceLocation[1 - index] = loc1;
             if (_minDistance < _terminateDistance)
@@ -164,8 +164,8 @@ namespace NetTopologySuite.Operation.Distance3D
                 return;
             _minDistanceLocation = new GeometryLocation[2];
 
-            var geomIndex = MostPolygonalIndex();
-            var flip = geomIndex == 0;
+            int geomIndex = MostPolygonalIndex();
+            bool flip = geomIndex == 0;
             ComputeMinDistanceMultiMulti(_geom[geomIndex], _geom[1 - geomIndex], flip);
         }
 
@@ -224,8 +224,8 @@ namespace NetTopologySuite.Operation.Distance3D
         {
             if (g1 is IGeometryCollection)
             {
-                var n = g1.NumGeometries;
-                for (var i = 0; i < n; i++)
+                int n = g1.NumGeometries;
+                for (int i = 0; i < n; i++)
                 {
                     var g = g1.GetGeometryN(i);
                     ComputeMinDistanceOneMulti(g0, g, flip);
@@ -412,15 +412,15 @@ namespace NetTopologySuite.Operation.Distance3D
             // start point of line
             var p0 = new Coordinate();
             seq.GetCoordinate(0, p0);
-            var d0 = poly.Plane.OrientedDistance(p0);
+            double d0 = poly.Plane.OrientedDistance(p0);
 
             // for each segment in the line
             var p1 = new Coordinate();
-            for (var i = 0; i < seq.Count - 1; i++)
+            for (int i = 0; i < seq.Count - 1; i++)
             {
                 seq.GetCoordinate(i, p0);
                 seq.GetCoordinate(i + 1, p1);
-                var d1 = poly.Plane.OrientedDistance(p1);
+                double d1 = poly.Plane.OrientedDistance(p1);
 
                 /**
                  * If the oriented distances of the segment endpoints have the same sign,
@@ -459,7 +459,7 @@ namespace NetTopologySuite.Operation.Distance3D
             {
                 // point is either inside or in a hole
 
-                var nHole = polyPlane.Polygon.NumInteriorRings;
+                int nHole = polyPlane.Polygon.NumInteriorRings;
                 for (int i = 0; i < nHole; i++)
                 {
                     var hole = polyPlane.Polygon.GetInteriorRingN(i);
@@ -471,7 +471,7 @@ namespace NetTopologySuite.Operation.Distance3D
                 }
                 // point is in interior of polygon
                 // distance is distance to polygon plane
-                var dist = Math.Abs(polyPlane.Plane.OrientedDistance(pt));
+                double dist = Math.Abs(polyPlane.Plane.OrientedDistance(pt));
                 UpdateDistance(dist,
                                new GeometryLocation(polyPlane.Polygon, 0, pt),
                                new GeometryLocation(point, 0, pt),
@@ -488,11 +488,11 @@ namespace NetTopologySuite.Operation.Distance3D
             var coord0 = line0.Coordinates;
             var coord1 = line1.Coordinates;
             // brute force approach!
-            for (var i = 0; i < coord0.Length - 1; i++)
+            for (int i = 0; i < coord0.Length - 1; i++)
             {
                 for (int j = 0; j < coord1.Length - 1; j++)
                 {
-                    var dist = CGAlgorithms3D.DistanceSegmentSegment(coord0[i],
+                    double dist = CGAlgorithms3D.DistanceSegmentSegment(coord0[i],
                                                                      coord0[i + 1], coord1[j], coord1[j + 1]);
                     if (dist < _minDistance)
                     {
@@ -520,7 +520,7 @@ namespace NetTopologySuite.Operation.Distance3D
             // brute force approach!
             for (int i = 0; i < lineCoord.Length - 1; i++)
             {
-                var dist = CGAlgorithms3D.DistancePointSegment(coord, lineCoord[i],
+                double dist = CGAlgorithms3D.DistancePointSegment(coord, lineCoord[i],
                                                                lineCoord[i + 1]);
                 if (dist < _minDistance)
                 {
@@ -537,7 +537,7 @@ namespace NetTopologySuite.Operation.Distance3D
 
         private void ComputeMinDistancePointPoint(IPoint point0, IPoint point1, bool flip)
         {
-            var dist = CGAlgorithms3D.Distance(
+            double dist = CGAlgorithms3D.Distance(
                 point0.Coordinate,
                 point1.Coordinate);
             if (dist < _minDistance)
@@ -571,10 +571,10 @@ namespace NetTopologySuite.Operation.Distance3D
             if (d0 <= 0) return new Coordinate(p0);
             if (d1 <= 0) return new Coordinate(p1);
 
-            var f = Math.Abs(d0) / (Math.Abs(d0) + Math.Abs(d1));
-            var intx = p0.X + f * (p1.X - p0.X);
-            var inty = p0.Y + f * (p1.Y - p0.Y);
-            var intz = p0.Z + f * (p1.Z - p0.Z);
+            double f = Math.Abs(d0) / (Math.Abs(d0) + Math.Abs(d1));
+            double intx = p0.X + f * (p1.X - p0.X);
+            double inty = p0.Y + f * (p1.Y - p0.Y);
+            double intz = p0.Z + f * (p1.Z - p0.Z);
             return new Coordinate(intx, inty, intz);
         }
     }

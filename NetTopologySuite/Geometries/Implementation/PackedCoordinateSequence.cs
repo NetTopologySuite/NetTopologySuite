@@ -46,7 +46,7 @@ namespace NetTopologySuite.Geometries.Implementation
                     return Ordinates.XYZM;
                 default:
                     var flag = Ordinates.None;
-                    for (var i = 3; i < dimension; i++)
+                    for (int i = 3; i < dimension; i++)
                         flag |= (Ordinates) (1 << i);
                     return Ordinates.XY | flag;
             }
@@ -131,7 +131,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns></returns>
         public Coordinate[] ToCoordinateArray()
         {
-            Coordinate[] arr = GetCachedCoords();
+            var arr = GetCachedCoords();
             // testing - never cache
             if (arr != null)
                 return arr;
@@ -454,7 +454,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>A reference to the expanded envelope.</returns>
         public override Envelope ExpandEnvelope(Envelope env)
         {
-            var dim = Dimension;
+            int dim = Dimension;
             for (int i = 0; i < _coords.Length; i += dim)
                 env.ExpandToInclude(_coords[i], _coords[i + 1]);
             return env;
@@ -462,10 +462,10 @@ namespace NetTopologySuite.Geometries.Implementation
 
         public override ICoordinateSequence Reversed()
         {
-            var dim = Dimension;
-            var coords = new double[_coords.Length];
-            var j = Count;
-            for (var i = 0; i < Count; i++)
+            int dim = Dimension;
+            double[] coords = new double[_coords.Length];
+            int j = Count;
+            for (int i = 0; i < Count; i++)
             {
                 Buffer.BlockCopy(_coords, i * dim * sizeof(double), coords, --j * dim * sizeof(double), dim * sizeof(double));
             }
@@ -651,10 +651,10 @@ namespace NetTopologySuite.Geometries.Implementation
 
         public override ICoordinateSequence Reversed()
         {
-            var dim = Dimension;
-            var coords = new float[_coords.Length];
-            var j = Count;
-            for (var i = 0; i < Count; i++)
+            int dim = Dimension;
+            float[] coords = new float[_coords.Length];
+            int j = Count;
+            for (int i = 0; i < Count; i++)
             {
                 Buffer.BlockCopy(_coords, i * dim * sizeof(float), coords, --j * dim * sizeof(float), dim * sizeof(float));
             }

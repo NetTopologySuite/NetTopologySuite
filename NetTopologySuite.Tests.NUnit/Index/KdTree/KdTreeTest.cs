@@ -156,7 +156,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
                           "Result count = {0}, expected count = {1}",
                           result.Length, expectedCoord.Length);
 
-            var isMatch = CoordinateArrays.Equals(result, expectedCoord);
+            bool isMatch = CoordinateArrays.Equals(result, expectedCoord);
             Assert.IsTrue(isMatch, "Expected result coordinates not found");
         }
 
@@ -172,7 +172,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
                           "Result count = {0}, expected count = {1}",
                           result.Length, expectedCoord.Length);
 
-            var isMatch = CoordinateArrays.Equals(result, expectedCoord);
+            bool isMatch = CoordinateArrays.Equals(result, expectedCoord);
             Assert.IsTrue(isMatch, "Expected result coordinates not found");
         }
 
@@ -180,7 +180,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
         {
             var index = new KdTree<object>(tolerance);
             var coords = IOUtil.Read(wktInput).Coordinates;
-            for (var i = 0; i < coords.Length; i++)
+            for (int i = 0; i < coords.Length; i++)
                 index.Insert(coords[i]);
             return index;
         }

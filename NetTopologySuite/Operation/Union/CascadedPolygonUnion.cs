@@ -117,7 +117,7 @@ namespace NetTopologySuite.Operation.Union
              * to be eliminated on each round.
              */
             var index = new STRtree<object>(StrtreeNodeCapacity);
-            foreach (IGeometry item in _inputPolys)
+            foreach (var item in _inputPolys)
                 index.Insert(item.EnvelopeInternal, item);
 
             // To avoiding holding memory remove references to the input geometries,
@@ -145,7 +145,7 @@ namespace NetTopologySuite.Operation.Union
         private IGeometry RepeatedUnion(IEnumerable<IGeometry> geoms)
         {
             IGeometry union = null;
-            foreach (IGeometry g in geoms)
+            foreach (var g in geoms)
             {
                 if (union == null)
                     union = (IGeometry)g.Copy();
@@ -204,7 +204,7 @@ namespace NetTopologySuite.Operation.Union
                 return UnionSafe(GetGeometry(geoms, start), GetGeometry(geoms, start + 1));
 
             // recurse on both halves of the list
-            var mid = (end + start) / 2;
+            int mid = (end + start) / 2;
 
 #if !UseWorker
             g0 = BinaryUnion(geoms, start, mid);
@@ -284,7 +284,7 @@ namespace NetTopologySuite.Operation.Union
         private IList<IGeometry> ReduceToGeometries(IList geomTree)
         {
             IList<IGeometry> geoms = new List<IGeometry>();
-            foreach (var o in geomTree)
+            foreach (object o in geomTree)
             {
                 IGeometry geom = null;
                 if (o is IList)
@@ -359,7 +359,7 @@ namespace NetTopologySuite.Operation.Union
         private IGeometry ExtractByEnvelope(Envelope env, IGeometry geom, IList<IGeometry> disjointGeoms)
         {
             var intersectingGeoms = new List<IGeometry>();
-            for (var i = 0; i < geom.NumGeometries; i++)
+            for (int i = 0; i < geom.NumGeometries; i++)
             {
                 var elem = geom.GetGeometryN(i);
                 if (elem.EnvelopeInternal.Intersects(env))

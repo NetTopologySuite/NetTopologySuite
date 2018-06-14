@@ -277,7 +277,7 @@ namespace NetTopologySuite.Geometries
             //Convert to array, then access array directly, to avoid the function-call overhead
             //of calling Getter millions of times. ToArray may be inefficient for
             //non-BasicCoordinateSequence CoordinateSequences. [Jon Aquino]
-            Coordinate[] coordinates = _points.ToCoordinateArray();
+            var coordinates = _points.ToCoordinateArray();
             double minx = coordinates[0].X;
             double miny = coordinates[0].Y;
             double maxx = coordinates[0].X;
@@ -311,7 +311,7 @@ namespace NetTopologySuite.Geometries
             if (!IsEquivalentClass(other))
                 return false;
 
-            ILineString otherLineString = (ILineString)other;
+            var otherLineString = (ILineString)other;
             if (_points.Count != otherLineString.NumPoints)
                 return false;
 
@@ -423,7 +423,7 @@ namespace NetTopologySuite.Geometries
         {
             Assert.IsTrue(o is ILineString);
 
-            ILineString line = (ILineString)o;
+            var line = (ILineString)o;
             // MD - optimized implementation
             int i = 0;
             int j = 0;

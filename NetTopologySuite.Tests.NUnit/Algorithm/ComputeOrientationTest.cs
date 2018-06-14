@@ -51,7 +51,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         private Coordinate[] GetCoordinates(string wkt)
         {
-            IGeometry geom = _reader.Read(wkt);
+            var geom = _reader.Read(wkt);
             return geom.Coordinates;
         }
     }

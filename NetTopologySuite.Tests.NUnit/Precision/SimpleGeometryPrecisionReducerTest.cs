@@ -35,63 +35,63 @@ namespace NetTopologySuite.Tests.NUnit.Precision
         [TestAttribute]
         public void TestSquare()
         {
-            IGeometry g = reader.Read("POLYGON (( 0 0, 0 1.4, 1.4 1.4, 1.4 0, 0 0 ))");
-            IGeometry g2 = reader.Read("POLYGON (( 0 0, 0 1, 1 1, 1 0, 0 0 ))");
-            IGeometry gReduce = reducer.Reduce(g);
+            var g = reader.Read("POLYGON (( 0 0, 0 1.4, 1.4 1.4, 1.4 0, 0 0 ))");
+            var g2 = reader.Read("POLYGON (( 0 0, 0 1, 1 1, 1 0, 0 0 ))");
+            var gReduce = reducer.Reduce(g);
             Assert.IsTrue(gReduce.EqualsExact(g2));
         }
 
         [TestAttribute]
         public void TestTinySquareCollapse()
         {
-            IGeometry g = reader.Read("POLYGON (( 0 0, 0 .4, .4 .4, .4 0, 0 0 ))");
-            IGeometry g2 = reader.Read("POLYGON EMPTY");
-            IGeometry gReduce = reducer.Reduce(g);
+            var g = reader.Read("POLYGON (( 0 0, 0 .4, .4 .4, .4 0, 0 0 ))");
+            var g2 = reader.Read("POLYGON EMPTY");
+            var gReduce = reducer.Reduce(g);
             Assert.IsTrue(gReduce.EqualsExact(g2));
         }
 
         [TestAttribute]
         public void TestSquareCollapse()
         {
-            IGeometry g = reader.Read("POLYGON (( 0 0, 0 1.4, .4 .4, .4 0, 0 0 ))");
-            IGeometry g2 = reader.Read("POLYGON EMPTY");
-            IGeometry gReduce = reducer.Reduce(g);
+            var g = reader.Read("POLYGON (( 0 0, 0 1.4, .4 .4, .4 0, 0 0 ))");
+            var g2 = reader.Read("POLYGON EMPTY");
+            var gReduce = reducer.Reduce(g);
             Assert.IsTrue(gReduce.EqualsExact(g2));
         }
 
         [TestAttribute]
         public void TestSquareKeepCollapse()
         {
-            IGeometry g = reader.Read("POLYGON (( 0 0, 0 1.4, .4 .4, .4 0, 0 0 ))");
-            IGeometry g2 = reader.Read("POLYGON (( 0 0, 0 1, 0 0, 0 0, 0 0 ))");
-            IGeometry gReduce = reducerKeepCollapse.Reduce(g);
+            var g = reader.Read("POLYGON (( 0 0, 0 1.4, .4 .4, .4 0, 0 0 ))");
+            var g2 = reader.Read("POLYGON (( 0 0, 0 1, 0 0, 0 0, 0 0 ))");
+            var gReduce = reducerKeepCollapse.Reduce(g);
             Assert.IsTrue(gReduce.EqualsExact(g2));
         }
 
         [TestAttribute]
         public void TestLine()
         {
-            IGeometry g = reader.Read("LINESTRING ( 0 0, 0 1.4 )");
-            IGeometry g2 = reader.Read("LINESTRING (0 0, 0 1)");
-            IGeometry gReduce = reducer.Reduce(g);
+            var g = reader.Read("LINESTRING ( 0 0, 0 1.4 )");
+            var g2 = reader.Read("LINESTRING (0 0, 0 1)");
+            var gReduce = reducer.Reduce(g);
             Assert.IsTrue(gReduce.EqualsExact(g2));
         }
 
         [TestAttribute]
         public void TestLineRemoveCollapse()
         {
-            IGeometry g = reader.Read("LINESTRING ( 0 0, 0 .4 )");
-            IGeometry g2 = reader.Read("LINESTRING EMPTY");
-            IGeometry gReduce = reducer.Reduce(g);
+            var g = reader.Read("LINESTRING ( 0 0, 0 .4 )");
+            var g2 = reader.Read("LINESTRING EMPTY");
+            var gReduce = reducer.Reduce(g);
             Assert.IsTrue(gReduce.EqualsExact(g2));
         }
 
         [TestAttribute]
         public void TestLineKeepCollapse()
         {
-            IGeometry g = reader.Read("LINESTRING ( 0 0, 0 .4 )");
-            IGeometry g2 = reader.Read("LINESTRING ( 0 0, 0 0 )");
-            IGeometry gReduce = reducerKeepCollapse.Reduce(g);
+            var g = reader.Read("LINESTRING ( 0 0, 0 .4 )");
+            var g2 = reader.Read("LINESTRING ( 0 0, 0 0 )");
+            var gReduce = reducerKeepCollapse.Reduce(g);
             Assert.IsTrue(gReduce.EqualsExact(g2));
         }
     }

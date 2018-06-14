@@ -63,7 +63,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             bool threwParseEx = false;
             try
             {
-                IGeometry g = rdr.Read(wkt);
+                var g = rdr.Read(wkt);
             }
             catch (GeoAPI.IO.ParseException ex)
             {

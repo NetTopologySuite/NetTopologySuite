@@ -17,13 +17,13 @@ namespace Open.Topology.TestRunner.Functions
             var pi = method.GetParameters();
             Debug.Assert(typeof(IGeometry).IsAssignableFrom(pi[0].GetType()));
 
-            Type clz = method.DeclaringType;
+            var clz = method.DeclaringType;
 
             string category = ExtractCategory(ClassUtility.GetClassname(clz));
             string funcName = method.Name;
             string[] paramNames = ExtractParamNames(method);
-            Type[] paramTypes = ExtractParamTypes(method);
-            Type returnType = method.ReturnType;
+            var paramTypes = ExtractParamTypes(method);
+            var returnType = method.ReturnType;
             return new StaticMethodGeometryFunction(category, funcName, paramNames, paramTypes,
                                                     returnType, method);
         }
@@ -46,7 +46,7 @@ namespace Open.Topology.TestRunner.Functions
         private static Type[] ExtractParamTypes(MethodInfo method)
         {
             var methodParamTypes = method.GetParameters();
-            Type[] types = new Type[methodParamTypes.Length - 1];
+            var types = new Type[methodParamTypes.Length - 1];
             for (int i = 1; i < methodParamTypes.Length; i++)
                 types[i - 1] = methodParamTypes[i].ParameterType;
             return types;
@@ -79,12 +79,12 @@ namespace Open.Topology.TestRunner.Functions
         /// <returns></returns>
         private static object[] CreateFullArgs(IGeometry g, object[] arg)
         {
-            var fullArgLen = 1;
+            int fullArgLen = 1;
             if (arg != null)
                 fullArgLen = arg.Length + 1;
-            var fullArg = new object[fullArgLen];
+            object[] fullArg = new object[fullArgLen];
             fullArg[0] = g;
-            for (var i = 1; i < fullArgLen; i++)
+            for (int i = 1; i < fullArgLen; i++)
             {
                 fullArg[i] = arg[i - 1];
             }

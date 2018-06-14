@@ -131,7 +131,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The <c>ICollection</c> in array format.</returns>
         public static IPoint[] ToPointArray(ICollection<IGeometry> points)
         {
-            IPoint[] list = new IPoint[points.Count];
+            var list = new IPoint[points.Count];
             int i = 0;
             foreach (IPoint p in points)
                 list[i++] = p;
@@ -145,9 +145,9 @@ namespace NetTopologySuite.Geometries
         /// <returns>The <c>ICollection</c> in array format.</returns>
         public static IGeometry[] ToGeometryArray(ICollection<IGeometry> geometries)
         {
-            IGeometry[] list = new IGeometry[geometries.Count];
+            var list = new IGeometry[geometries.Count];
             int i = 0;
-            foreach (IGeometry g in geometries)
+            foreach (var g in geometries)
                 list[i++] = g;
             return list;
         }
@@ -159,7 +159,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The <c>ICollection</c> in array format.</returns>
         public static ILineString[] ToLineStringArray(ICollection<IGeometry> lineStrings)
         {
-            ILineString[] list = new ILineString[lineStrings.Count];
+            var list = new ILineString[lineStrings.Count];
             int i = 0;
             foreach (ILineString ls in lineStrings)
                 list[i++] = ls;
@@ -173,7 +173,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The <c>ICollection</c> in array format.</returns>
         public static ILinearRing[] ToLinearRingArray(ICollection<IGeometry> linearRings)
         {
-            ILinearRing[] list = new ILinearRing[linearRings.Count];
+            var list = new ILinearRing[linearRings.Count];
             int i = 0;
             foreach (ILinearRing lr in linearRings)
                 list[i++] = lr;
@@ -187,7 +187,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The <c>ICollection</c> in array format.</returns>
         public static IPolygon[] ToPolygonArray(ICollection<IGeometry> polygons)
         {
-            IPolygon[] list = new IPolygon[polygons.Count];
+            var list = new IPolygon[polygons.Count];
             int i = 0;
             foreach (IPolygon p in polygons)
                 list[i++] = p;
@@ -201,7 +201,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The <c>ICollection</c> in array format.</returns>
         public static IMultiPoint[] ToMultiPointArray(ICollection<IGeometry> multiPoints)
         {
-            IMultiPoint[] list = new IMultiPoint[multiPoints.Count];
+            var list = new IMultiPoint[multiPoints.Count];
             int i = 0;
             foreach (IMultiPoint mp in multiPoints)
                 list[i++] = mp;
@@ -215,7 +215,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The <c>ICollection</c> in array format.</returns>
         public static IMultiLineString[] ToMultiLineStringArray(ICollection<IGeometry> multiLineStrings)
         {
-            IMultiLineString[] list = new IMultiLineString[multiLineStrings.Count];
+            var list = new IMultiLineString[multiLineStrings.Count];
             int i = 0;
             foreach (IMultiLineString mls in multiLineStrings)
                 list[i++] = mls;
@@ -229,7 +229,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The <c>ICollection</c> in array format.</returns>
         public static IMultiPolygon[] ToMultiPolygonArray(ICollection<IGeometry> multiPolygons)
         {
-            IMultiPolygon[] list = new IMultiPolygon[multiPolygons.Count];
+            var list = new IMultiPolygon[multiPolygons.Count];
             int i = 0;
             foreach (IMultiPolygon mp in multiPolygons)
                 list[i++] = mp;
@@ -280,7 +280,7 @@ namespace NetTopologySuite.Geometries
             }
 
             // return CW polygon
-            ILinearRing ring = CreateLinearRing(new[]
+            var ring = CreateLinearRing(new[]
             {
                 new Coordinate(envelope.MinX, envelope.MinY),
                 new Coordinate(envelope.MinX, envelope.MaxY),
@@ -503,10 +503,10 @@ namespace NetTopologySuite.Geometries
             if (coordinates == null)
                 coordinates = CoordinateSequenceFactory.Create(new Coordinate[] { });
 
-            List<IPoint> points = new List<IPoint>();
+            var points = new List<IPoint>();
             for (int i = 0; i < coordinates.Count; i++)
             {
-                ICoordinateSequence seq = CoordinateSequenceFactory.Create(1, coordinates.Ordinates);
+                var seq = CoordinateSequenceFactory.Create(1, coordinates.Ordinates);
                 CoordinateSequences.Copy(coordinates, i, seq, 0, 1);
                 points.Add(CreatePoint(seq));
             }
@@ -603,12 +603,12 @@ namespace NetTopologySuite.Geometries
             bool hasGeometryCollection = false;
 
             IGeometry geom0 = null;
-            foreach (IGeometry geom in geomList)
+            foreach (var geom in geomList)
             {
                 if (geom == null) continue;
                 geom0 = geom;
 
-                Type partClass = geom.GetType();
+                var partClass = geom.GetType();
                 if (geomClass == null)
                     geomClass = partClass;
                 if (partClass != geomClass)
@@ -668,7 +668,7 @@ namespace NetTopologySuite.Geometries
             // NOTE: don't move lambda to a separate variable!
             //       make a variable and you've broke WinPhone build.
             var operation = new GeometryEditor.CoordinateSequenceOperation((x, y) => _coordinateSequenceFactory.Create(x));
-            GeometryEditor editor = new GeometryEditor(this);
+            var editor = new GeometryEditor(this);
             return editor.Edit(g, operation);
         }
 

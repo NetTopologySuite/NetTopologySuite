@@ -29,7 +29,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
 
         public static bool IsValid(IGeometry g, double distance, IGeometry result)
         {
-            BufferResultValidator validator = new BufferResultValidator(g, distance, result);
+            var validator = new BufferResultValidator(g, distance, result);
             if (validator.IsValid())
                 return true;
             return false;
@@ -182,7 +182,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
 
         private void CheckDistance()
         {
-            BufferDistanceValidator distValid = new BufferDistanceValidator(_input, _distance, _result);
+            var distValid = new BufferDistanceValidator(_input, _distance, _result);
             if (!distValid.IsValid())
             {
                 _isValid = false;

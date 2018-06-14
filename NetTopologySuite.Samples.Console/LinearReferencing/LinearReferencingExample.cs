@@ -42,19 +42,19 @@ namespace NetTopologySuite.Samples.LinearReferencing
         public void RunExtractedLine(string wkt, double start, double end)
         {
             Console.WriteLine("=========================");
-            IGeometry g1 = rdr.Read(wkt);
+            var g1 = rdr.Read(wkt);
             Console.WriteLine("Input Geometry: " + g1);
             Console.WriteLine("Indices to extract: " + start + " " + end);
 
-            LengthIndexedLine indexedLine = new LengthIndexedLine(g1);
+            var indexedLine = new LengthIndexedLine(g1);
 
-            IGeometry subLine = indexedLine.ExtractLine(start, end);
+            var subLine = indexedLine.ExtractLine(start, end);
             Console.WriteLine("Extracted Line: " + subLine);
 
             double[] index = indexedLine.IndicesOf(subLine);
             Console.WriteLine("Indices of extracted line: " + index[0] + " " + index[1]);
 
-            Coordinate midpt = indexedLine.ExtractPoint((index[0] + index[1]) / 2);
+            var midpt = indexedLine.ExtractPoint((index[0] + index[1]) / 2);
             Console.WriteLine("Midpoint of extracted line: " + midpt);
         }
 
@@ -94,7 +94,7 @@ IGeometry InsertPoint(IGeometry geom, Coordinate point)
     var newSeq = element.Factory.CoordinateSequenceFactory.Create(
         oldSeq.Count + 1, oldSeq.Dimension);
 
-    var j = 0;
+            int j = 0;
     if (ll.SegmentIndex == 0 && ll.SegmentFraction == 0)
     {
         if (ll.GetSegment(element).P0.Distance(point) == 0) return geom;

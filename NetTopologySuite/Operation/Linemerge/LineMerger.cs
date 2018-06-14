@@ -76,7 +76,7 @@ namespace NetTopologySuite.Operation.Linemerge
         public void Add(IEnumerable<IGeometry> geometries)
         {
             _mergedLineStrings = null;
-            foreach (IGeometry geometry in geometries)
+            foreach (var geometry in geometries)
                 Add(geometry);
         }
 
@@ -107,7 +107,7 @@ namespace NetTopologySuite.Operation.Linemerge
             BuildEdgeStringsForObviousStartNodes();
             BuildEdgeStringsForIsolatedLoops();
             _mergedLineStrings = new List<IGeometry>();
-            foreach (EdgeString edgeString in _edgeStrings)
+            foreach (var edgeString in _edgeStrings)
                 _mergedLineStrings.Add(edgeString.ToLineString());
         }
 
@@ -132,7 +132,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// </summary>
         private void BuildEdgeStringsForUnprocessedNodes()
         {
-            foreach (Node node in _graph.Nodes)
+            foreach (var node in _graph.Nodes)
             {
                 if (!node.IsMarked)
                 {
@@ -148,7 +148,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// </summary>
         private void BuildEdgeStringsForNonDegree2Nodes()
         {
-            foreach (Node node in _graph.Nodes)
+            foreach (var node in _graph.Nodes)
             {
                 if (node.Degree != 2)
                 {
@@ -179,8 +179,8 @@ namespace NetTopologySuite.Operation.Linemerge
         /// <returns></returns>
         private EdgeString BuildEdgeStringStartingWith(LineMergeDirectedEdge start)
         {
-            EdgeString edgeString = new EdgeString(_factory);
-            LineMergeDirectedEdge current = start;
+            var edgeString = new EdgeString(_factory);
+            var current = start;
             do
             {
                 edgeString.Add(current);

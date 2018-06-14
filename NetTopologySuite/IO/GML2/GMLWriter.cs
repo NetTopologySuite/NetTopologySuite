@@ -34,7 +34,7 @@ namespace NetTopologySuite.IO.GML2
         public XmlReader Write(IGeometry geometry)
         {
             byte[] data;
-            using (MemoryStream stream = new MemoryStream(SetByteStreamLength(geometry)))
+            using (var stream = new MemoryStream(SetByteStreamLength(geometry)))
             {
                 Write(geometry, stream);
                 data = stream.ToArray();
@@ -51,7 +51,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="stream"></param>
         public void Write(IGeometry geometry, Stream stream)
         {
-            XmlWriterSettings settings = new XmlWriterSettings()
+            var settings = new XmlWriterSettings()
             {
 #if HAS_SYSTEM_XML_NAMESPACEHANDLING
                 NamespaceHandling = NamespaceHandling.OmitDuplicates,
@@ -59,7 +59,7 @@ namespace NetTopologySuite.IO.GML2
                 Indent = true,
                 OmitXmlDeclaration = true,
             };
-            XmlWriter writer = XmlWriter.Create(stream, settings);
+            var writer = XmlWriter.Create(stream, settings);
 
             //writer.WriteStartElement(GMLElements.gmlPrefix, "GML", GMLElements.gmlNS);
 
@@ -88,7 +88,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void Write(Coordinate[] coordinates, XmlWriter writer)
         {
-            foreach (Coordinate coord in coordinates)
+            foreach (var coord in coordinates)
                 Write(coord, writer);
         }
 
@@ -288,7 +288,7 @@ namespace NetTopologySuite.IO.GML2
         protected int SetByteStreamLength(IGeometryCollection geometryCollection)
         {
             int count = InitValue;
-            foreach (IGeometry g in geometryCollection.Geometries)
+            foreach (var g in geometryCollection.Geometries)
                 count += SetByteStreamLength(g);
             return count;
         }

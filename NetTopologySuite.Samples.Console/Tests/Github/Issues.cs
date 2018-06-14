@@ -26,9 +26,9 @@ namespace NetTopologySuite.Samples.Tests.Github
             var kd = new KdTree<string>();
             const int Count = 8;
 
-            for (var row = 0; row < Count; ++row)
+            for (int row = 0; row < Count; ++row)
             {
-                for (var column = 0; column < Count; ++column)
+                for (int column = 0; column < Count; ++column)
                 {
                     kd.Insert(new Coordinate(column, row), (column * 100 + row).ToString());
                 }
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Samples.Tests.Github
             // WKT from previous (to 01/31/2017) commit => test ok
             expected = @"MULTILINESTRING ((40 30, 40 40), (40 40, 40 80), (40 80, 40 120), (40 120, 40 160), (40 160, 40 200), (40 200, 40 240), (40 240, 40 280), (40 280, 40 320), (40 320, 40 360), (40 360, 40 440), (80 30, 80 40), (80 40, 80 80), (80 80, 80 120), (80 120, 80 160), (80 160, 80 200), (80 200, 80 240), (80 240, 80 280), (80 280, 80 320), (80 320, 80 360), (80 360, 80 440), (120 30, 120 40), (120 40, 120 80), (120 80, 120 120), (120 120, 120 160), (120 160, 120 200), (120 200, 120 240), (120 240, 120 280), (120 280, 120 320), (120 320, 120 360), (120 360, 120 440), (160 30, 160 40), (160 40, 160 80), (160 80, 160 120), (160 120, 160 160), (160 160, 160 200), (160 200, 160 240), (160 240, 160 280), (160 280, 160 320), (160 320, 160 360), (160 360, 160 440), (200 30, 200 40), (200 40, 200 80), (200 80, 200 120), (200 120, 200 160), (200 160, 200 200), (200 200, 200 240), (200 240, 200 280), (200 280, 200 320), (200 320, 200 360), (200 360, 200 440), (240 30, 240 40), (240 40, 240 80), (240 80, 240 120), (240 120, 240 160), (240 160, 240 200), (240 200, 240 240), (240 240, 240 280), (240 280, 240 320), (240 320, 240 360), (240 360, 240 440), (280 30, 280 40), (280 40, 280 80), (280 80, 280 120), (280 120, 280 160), (280 160, 280 200), (280 200, 280 240), (280 240, 280 280), (280 280, 280 320), (280 320, 280 360), (280 360, 280 440), (320 30, 320 40), (320 40, 320 80), (320 80, 320 120), (320 120, 320 160), (320 160, 320 200), (320 200, 320 240), (320 240, 320 280), (320 280, 320 320), (320 320, 320 360), (320 360, 320 440), (360 30, 360 40), (360 40, 360 80), (360 80, 360 120), (360 120, 360 160), (360 160, 360 200), (360 200, 360 240), (360 240, 360 280), (360 280, 360 320), (360 320, 360 360), (360 360, 360 440), (30 40, 40 40), (40 40, 80 40), (80 40, 120 40), (120 40, 160 40), (160 40, 200 40), (200 40, 240 40), (240 40, 280 40), (280 40, 320 40), (320 40, 360 40), (360 40, 450 40), (30 80, 40 80), (40 80, 80 80), (80 80, 120 80), (120 80, 160 80), (160 80, 200 80), (200 80, 240 80), (240 80, 280 80), (280 80, 320 80), (320 80, 360 80), (360 80, 450 80), (30 120, 40 120), (40 120, 80 120), (80 120, 120 120), (120 120, 160 120), (160 120, 200 120), (200 120, 240 120), (240 120, 280 120), (280 120, 320 120), (320 120, 360 120), (360 120, 450 120), (30 160, 40 160), (40 160, 80 160), (80 160, 120 160), (120 160, 160 160), (160 160, 200 160), (200 160, 240 160), (240 160, 280 160), (280 160, 320 160), (320 160, 360 160), (360 160, 450 160), (30 200, 40 200), (40 200, 80 200), (80 200, 120 200), (120 200, 160 200), (160 200, 200 200), (200 200, 240 200), (240 200, 280 200), (280 200, 320 200), (320 200, 360 200), (360 200, 450 200), (30 240, 40 240), (40 240, 80 240), (80 240, 120 240), (120 240, 160 240), (160 240, 200 240), (200 240, 240 240), (240 240, 280 240), (280 240, 320 240), (320 240, 360 240), (360 240, 450 240), (30 280, 40 280), (40 280, 80 280), (80 280, 120 280), (120 280, 160 280), (160 280, 200 280), (200 280, 240 280), (240 280, 280 280), (280 280, 320 280), (320 280, 360 280), (360 280, 450 280), (30 320, 40 320), (40 320, 80 320), (80 320, 120 320), (120 320, 160 320), (160 320, 200 320), (200 320, 240 320), (240 320, 280 320), (280 320, 320 320), (320 320, 360 320), (360 320, 450 320), (30 360, 40 360), (40 360, 80 360), (80 360, 120 360), (120 360, 160 360), (160 360, 200 360), (200 360, 240 360), (240 360, 280 360), (280 360, 320 360), (320 360, 360 360), (360 360, 450 360))";
             Assert.AreEqual(expected, nodedDedupedLinework.ToString());
-            Polygonizer polygonizer = new Polygonizer();
+            var polygonizer = new Polygonizer();
             polygonizer.Add(nodedDedupedLinework);
 
             var polygons = polygonizer.GetPolygons();
@@ -376,12 +376,12 @@ namespace NetTopologySuite.Samples.Tests.Github
         [Test(Description = "Bug in difference method #141"), Category("GitHub Issue")]
         public void TestDifference()
         {
-            var buffer1 = WKBReader.HexToBytes(
+            byte[] buffer1 = WKBReader.HexToBytes(
                //         1         2         3         4         5         6         7         8
                 "010300000001000000050000000793adf1033458c0a8a08e06b1b34740f6df183c0b3458c0b9d84f"+
                 "27e2b247403559f264963458c0f0eeec1ee5b24740fd9c0635913458c067f1cffdb6b347400793ad"+
                 "f1033458c0a8a08e06b1b34740");
-            var buffer2= WKBReader.HexToBytes(
+            byte[] buffer2 = WKBReader.HexToBytes(
                 "010300000001000000b5000000f5a3caf8a33458c0f66779fd4db34740e8b86ed8a33458c09207fc"+
                 "c351b3474086533f9fa33458c0f5565f8855b347407dda504da33458c04fb0764959b347401eedba"+
                 "e2a23458c0929317065db3474080e79f5fa23458c0ec5a15bd60b34740208427c4a13458c011ac47"+
@@ -471,7 +471,7 @@ namespace NetTopologySuite.Samples.Tests.Github
             ToImage(141, null, null, geom2.Difference(geom1));
 
             bool isCCW = Orientation.IsCCW(((IPolygon) gu.GetGeometryN(0)).ExteriorRing.CoordinateSequence);
-            for (var i = 1; i < gu.NumGeometries; i++)
+            for (int i = 1; i < gu.NumGeometries; i++)
             {
                 var p = (IPolygon) gu.GetGeometryN(1);
                 Assert.That(Orientation.IsCCW(p.ExteriorRing.CoordinateSequence), Is.EqualTo(isCCW));
@@ -501,7 +501,7 @@ namespace NetTopologySuite.Samples.Tests.Github
                 new Coordinate(152873, 594607)
             });
             var indexedLine = new NetTopologySuite.LinearReferencing.LengthIndexedLine(closestLine);
-            var projectedIndex = indexedLine.Project(closestCoordinate);
+            double projectedIndex = indexedLine.Project(closestCoordinate);
             var coordinateToAdd = indexedLine.ExtractPoint(projectedIndex);
             gf.PrecisionModel.MakePrecise(coordinateToAdd);
 
@@ -598,16 +598,16 @@ namespace NetTopologySuite.Samples.Tests.Github
 
         private static AffineTransformation CreateAffineTransformation(Envelope env, int offsetX = 0)
         {
-            var imageRatio = ImageWidth / ImageHeight;
-            var ratio = env.Width / env.Height;
+            int imageRatio = ImageWidth / ImageHeight;
+            double ratio = env.Width / env.Height;
             if (ratio > imageRatio)
             {
-                var growHeight = (env.Width / imageRatio - env.Height) / 2;
+                double growHeight = (env.Width / imageRatio - env.Height) / 2;
                 env.ExpandBy(0, growHeight);
             }
             else if (ratio < imageRatio)
             {
-                var growWidth = (env.Height * imageRatio - env.Width) / 2;
+                double growWidth = (env.Height * imageRatio - env.Width) / 2;
                 env.ExpandBy(growWidth, 0);
             }
 

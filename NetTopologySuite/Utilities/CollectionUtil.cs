@@ -56,7 +56,7 @@ namespace NetTopologySuite.Utilities
         public static IList<T> Transform<T>(IList<T> list, FunctionDelegate<T> function)
         {
             IList<T> result = new List<T>(list.Count);
-            foreach (T item in list)
+            foreach (var item in list)
                 result.Add(function(item));
             return result;
         }
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Utilities
         public static IList<TResult> Transform<T, TResult>(IList<T> list, FunctionDelegate<T, TResult> function)
         {
             IList<TResult> result = new List<TResult>(list.Count);
-            foreach (T item in list)
+            foreach (var item in list)
                 result.Add(function(item));
             return result;
         }
@@ -144,7 +144,7 @@ namespace NetTopologySuite.Utilities
         public static IList<T> Cast<T>(System.Collections.ICollection coll)
         {
             IList<T> result = new List<T>(coll.Count);
-            foreach (var obj in coll)
+            foreach (object obj in coll)
                 result.Add((T)obj);
             return result;
         }
@@ -159,7 +159,7 @@ namespace NetTopologySuite.Utilities
         [Obsolete("Not used anywhere in NTS; use LINQ or a generic overload instead.", error: true)]
         public static System.Collections.IList Transform(System.Collections.ICollection coll, FunctionDelegate<object> func)
         {
-            List<object> result = new List<object>();
+            var result = new List<object>();
             foreach(object obj in coll)
                 result.Add(func(obj));
             return result;
@@ -189,7 +189,7 @@ namespace NetTopologySuite.Utilities
         [Obsolete("Not used anywhere in NTS; use LINQ or a generic overload instead.", error: true)]
         public static System.Collections.IList Select(System.Collections.ICollection coll, FunctionDelegate<object, bool> func)
         {
-            List<object> result = new List<object>();
+            var result = new List<object>();
             foreach (object obj in coll)
                 if (func(obj))
                     result.Add(obj);

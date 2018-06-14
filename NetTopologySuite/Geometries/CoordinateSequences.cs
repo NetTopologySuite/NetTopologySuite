@@ -70,7 +70,7 @@ namespace NetTopologySuite.Geometries
             int minDim = Math.Min(src.Dimension, dest.Dimension);
             for (int dim = 0; dim < minDim; dim++)
             {
-                Ordinate ordinate = (Ordinate)dim;
+                var ordinate = (Ordinate)dim;
                 double value = src.GetOrdinate(srcPos, ordinate);
                 dest.SetOrdinate(destPos, ordinate, value);
             }
@@ -110,14 +110,14 @@ namespace NetTopologySuite.Geometries
         /// <returns>The original sequence, if it was a valid ring, or a new sequence which is valid.</returns>
         public static ICoordinateSequence EnsureValidRing(ICoordinateSequenceFactory fact, ICoordinateSequence seq)
         {
-            var n = seq.Count;
+            int n = seq.Count;
             // empty sequence is valid
             if (n == 0) return seq;
             // too short - make a new one
             if (n <= 3)
                 return CreateClosedRing(fact, seq, 4);
 
-            var isClosed = seq.GetOrdinate(0, Ordinate.X) == seq.GetOrdinate(n - 1, Ordinate.X) &&
+            bool isClosed = seq.GetOrdinate(0, Ordinate.X) == seq.GetOrdinate(n - 1, Ordinate.X) &&
                            seq.GetOrdinate(0, Ordinate.Y) == seq.GetOrdinate(n - 1, Ordinate.Y);
             if (isClosed) return seq;
             // make a new closed ring
@@ -138,12 +138,12 @@ namespace NetTopologySuite.Geometries
         public static ICoordinateSequence Extend(ICoordinateSequenceFactory fact, ICoordinateSequence seq, int size)
         {
             var newseq = fact.Create(size, seq.Ordinates);
-            var n = seq.Count;
+            int n = seq.Count;
             Copy(seq, 0, newseq, 0, n);
             // fill remaining coordinates with end point, if it exists
             if (n > 0)
             {
-                for (var i = n; i < size; i++)
+                for (int i = n; i < size; i++)
                     Copy(seq, n - 1, newseq, i, 1);
             }
             return newseq;
@@ -171,7 +171,7 @@ namespace NetTopologySuite.Geometries
             {
                 for (int d = 0; d < dim; d++)
                 {
-                    Ordinate ordinate = (Ordinate)d;
+                    var ordinate = (Ordinate)d;
                     double v1 = cs1.GetOrdinate(i, ordinate);
                     double v2 = cs2.GetOrdinate(i, ordinate);
                     if (cs1.GetOrdinate(i, ordinate) == cs2.GetOrdinate(i, ordinate))
@@ -200,7 +200,7 @@ namespace NetTopologySuite.Geometries
             if (size == 0)
                 return "()";
             int dim = cs.Dimension;
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append('(');
             for (int i = 0; i < size; i++)
             {

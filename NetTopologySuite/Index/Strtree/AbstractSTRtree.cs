@@ -111,7 +111,7 @@ namespace NetTopologySuite.Index.Strtree
             // JTS does a stable sort here.  List<T>.Sort is not stable.
             var sortedChildBoundables = CollectionUtil.StableSort(childBoundables, GetComparer());
 
-            foreach (IBoundable<T, TItem> childBoundable in sortedChildBoundables)
+            foreach (var childBoundable in sortedChildBoundables)
             {
                 if (LastNode(parentBoundables).ChildBoundables.Count == NodeCapacity)
                     parentBoundables.Add(CreateNode(newLevel));
@@ -193,7 +193,7 @@ namespace NetTopologySuite.Index.Strtree
 
         protected int GetSize(AbstractNode<T, TItem> node)
         {
-            var size = 0;
+            int size = 0;
             foreach (var childBoundable in node.ChildBoundables)
             {
                 if (childBoundable is AbstractNode<T, TItem>)
@@ -220,12 +220,12 @@ namespace NetTopologySuite.Index.Strtree
 
         protected int GetDepth(AbstractNode<T, TItem> node)
         {
-            var maxChildDepth = 0;
+            int maxChildDepth = 0;
             foreach (var childBoundable in node.ChildBoundables)
             {
                 if (!(childBoundable is AbstractNode<T, TItem>))
                     continue;
-                var childDepth = GetDepth((AbstractNode<T, TItem>)childBoundable);
+                int childDepth = GetDepth((AbstractNode<T, TItem>)childBoundable);
                 if (childDepth > maxChildDepth)
                     maxChildDepth = childDepth;
             }
@@ -382,7 +382,7 @@ namespace NetTopologySuite.Index.Strtree
         private bool Remove(T searchBounds, AbstractNode<T, TItem> node, TItem item)
         {
             // first try removing item from this node
-            var found = RemoveItem(node, item);
+            bool found = RemoveItem(node, item);
             if (found)
                 return true;
             AbstractNode<T, TItem> childToPrune = null;

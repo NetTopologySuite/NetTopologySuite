@@ -180,7 +180,7 @@ namespace NetTopologySuite.Geometries.Prepared
             // handles single-element MultiPolygons, as well as Polygons
             if (geom.NumGeometries != 1) return false;
 
-            IPolygon poly = (IPolygon)geom.GetGeometryN(0);
+            var poly = (IPolygon)geom.GetGeometryN(0);
             int numHoles = poly.NumInteriorRings;
             if (numHoles == 0) return true;
             return false;
@@ -188,7 +188,7 @@ namespace NetTopologySuite.Geometries.Prepared
 
         private void FindAndClassifyIntersections(IGeometry geom)
         {
-            IList<ISegmentString> lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
+            var lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
 
             var intDetector = new SegmentIntersectionDetector();
             intDetector.FindAllIntersectionTypes = true;

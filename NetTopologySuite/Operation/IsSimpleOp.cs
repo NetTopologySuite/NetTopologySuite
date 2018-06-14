@@ -149,11 +149,11 @@ namespace NetTopologySuite.Operation
             if (mp.IsEmpty)
                 return true;
 
-            HashSet<Coordinate> points = new HashSet<Coordinate>();
+            var points = new HashSet<Coordinate>();
             for (int i = 0; i < mp.NumGeometries; i++)
             {
-                IPoint pt = (IPoint)mp.GetGeometryN(i);
-                Coordinate p = pt.Coordinate;
+                var pt = (IPoint)mp.GetGeometryN(i);
+                var p = pt.Coordinate;
                 if (points.Contains(p))
                 {
                     _nonSimpleLocation = p;
@@ -202,9 +202,9 @@ namespace NetTopologySuite.Operation
             if (geom.IsEmpty)
                 return true;
 
-            GeometryGraph graph = new GeometryGraph(0, geom);
+            var graph = new GeometryGraph(0, geom);
             LineIntersector li = new RobustLineIntersector();
-            SegmentIntersector si = graph.ComputeSelfNodes(li, true);
+            var si = graph.ComputeSelfNodes(li, true);
             // if no self-intersection, must be simple
             if (!si.HasIntersection) return true;
             if (si.HasProperIntersection)
@@ -227,10 +227,10 @@ namespace NetTopologySuite.Operation
         /// <param name="graph"></param>
         private bool HasNonEndpointIntersection(GeometryGraph graph)
         {
-            foreach (Edge e in graph.Edges)
+            foreach (var e in graph.Edges)
             {
                 int maxSegmentIndex = e.MaximumSegmentIndex;
-                foreach (EdgeIntersection ei in e.EdgeIntersectionList)
+                foreach (var ei in e.EdgeIntersectionList)
                 {
                     if (!ei.IsEndPoint(maxSegmentIndex))
                     {
@@ -280,17 +280,17 @@ namespace NetTopologySuite.Operation
         private bool HasClosedEndpointIntersection(GeometryGraph graph)
         {
             IDictionary<Coordinate, EndpointInfo> endPoints = new SortedDictionary<Coordinate, EndpointInfo>();
-            foreach (Edge e in graph.Edges)
+            foreach (var e in graph.Edges)
             {
                 //int maxSegmentIndex = e.MaximumSegmentIndex;
                 bool isClosed = e.IsClosed;
-                Coordinate p0 = e.GetCoordinate(0);
+                var p0 = e.GetCoordinate(0);
                 AddEndpoint(endPoints, p0, isClosed);
-                Coordinate p1 = e.GetCoordinate(e.NumPoints - 1);
+                var p1 = e.GetCoordinate(e.NumPoints - 1);
                 AddEndpoint(endPoints, p1, isClosed);
             }
 
-            foreach (EndpointInfo eiInfo in endPoints.Values)
+            foreach (var eiInfo in endPoints.Values)
             {
                 if (eiInfo.IsClosed && eiInfo.Degree != 2)
                 {

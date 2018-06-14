@@ -197,7 +197,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             var sequencer = new LineSequencer();
             sequencer.Add(inputGeoms);
 
-            var isCorrect = false;
+            bool isCorrect = false;
             if (!sequencer.IsSequenceable())
             {
                 Assert.IsTrue(expectedWKT == null);
@@ -206,13 +206,13 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             {
                 var expected = Rdr.Read(expectedWKT);
                 var result = sequencer.GetSequencedLineStrings();
-                var isOK = expected.EqualsNormalized(result);
+                bool isOK = expected.EqualsNormalized(result);
                 if (! isOK) {
                     Console.WriteLine("ERROR - Expected: " + expected);
                     Console.WriteLine("          Actual: " + result);
                 }
 
-                var isSequenced = LineSequencer.IsSequenced(result);
+                bool isSequenced = LineSequencer.IsSequenced(result);
                 Assert.IsTrue(isOK, "Result does not match expected (using EqualsNormalized)!");
                 Assert.IsTrue(isSequenced, "Result geometry is not sequenced!");
             }
@@ -221,14 +221,14 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
         private static void RunIsSequenced(string inputWKT, bool expected)
         {
             var g = Rdr.Read(inputWKT);
-            var isSequenced = LineSequencer.IsSequenced(g);
+            bool isSequenced = LineSequencer.IsSequenced(g);
             Assert.IsTrue(isSequenced == expected);
         }
 
         private static List<IGeometry> FromWKT(string[] wkts)
         {
             var geomList = new List<IGeometry>();
-            foreach (var wkt in wkts)
+            foreach (string wkt in wkts)
             {
                 try
                 {

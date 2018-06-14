@@ -38,7 +38,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns>The EdgeIntersection found or added.</returns>
         public EdgeIntersection Add(Coordinate intPt, int segmentIndex, double dist)
         {
-            EdgeIntersection eiNew = new EdgeIntersection(intPt, segmentIndex, dist);
+            var eiNew = new EdgeIntersection(intPt, segmentIndex, dist);
             EdgeIntersection ei;
             if (nodeMap.TryGetValue(eiNew, out ei))
                 return ei;
@@ -61,7 +61,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public bool IsIntersection(Coordinate pt)
         {
-            foreach (EdgeIntersection ei in nodeMap.Values    )
+            foreach (var ei in nodeMap.Values    )
             {
                 if (ei.Coordinate.Equals(pt))
                     return true;
@@ -91,14 +91,14 @@ namespace NetTopologySuite.GeometriesGraph
             // ensure that the list has entries for the first and last point of the edge
             AddEndpoints();
 
-            IEnumerator<EdgeIntersection> it = GetEnumerator();
+            var it = GetEnumerator();
             it.MoveNext();
             // there should always be at least two entries in the list
-            EdgeIntersection eiPrev = it.Current;
+            var eiPrev = it.Current;
             while (it.MoveNext())
             {
-                EdgeIntersection ei = it.Current;
-                Edge newEdge = CreateSplitEdge(eiPrev, ei);
+                var ei = it.Current;
+                var newEdge = CreateSplitEdge(eiPrev, ei);
                 edgeList.Add(newEdge);
 
                 eiPrev = ei;
@@ -115,7 +115,7 @@ namespace NetTopologySuite.GeometriesGraph
         public Edge CreateSplitEdge(EdgeIntersection ei0, EdgeIntersection ei1)
         {
             int npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
-            Coordinate lastSegStartPt = edge.Points[ei1.SegmentIndex];
+            var lastSegStartPt = edge.Points[ei1.SegmentIndex];
             // if the last intersection point is not equal to the its segment start pt,
             // add it to the points list as well.
             // (This check is needed because the distance metric is not totally reliable!)
@@ -124,7 +124,7 @@ namespace NetTopologySuite.GeometriesGraph
             if (! useIntPt1)
                 npts--;
 
-            Coordinate[] pts = new Coordinate[npts];
+            var pts = new Coordinate[npts];
             int ipt = 0;
             pts[ipt++] = new Coordinate(ei0.Coordinate);
             for (int i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
@@ -142,9 +142,9 @@ namespace NetTopologySuite.GeometriesGraph
         public void Write(StreamWriter outstream)
         {
             outstream.WriteLine("Intersections:");
-            for (IEnumerator<EdgeIntersection> it = GetEnumerator(); it.MoveNext(); )
+            for (var it = GetEnumerator(); it.MoveNext(); )
             {
-                EdgeIntersection ei = it.Current;
+                var ei = it.Current;
                 ei.Write(outstream);
             }
         }

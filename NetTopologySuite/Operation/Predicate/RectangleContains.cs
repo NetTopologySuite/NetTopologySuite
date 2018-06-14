@@ -20,7 +20,7 @@ namespace NetTopologySuite.Operation.Predicate
         /// <returns></returns>
         public static bool Contains(IPolygon rectangle, IGeometry b)
         {
-            RectangleContains rc = new RectangleContains(rectangle);
+            var rc = new RectangleContains(rectangle);
             return rc.Contains(b);
         }
 
@@ -69,7 +69,7 @@ namespace NetTopologySuite.Operation.Predicate
 
             for (int i = 0; i < geom.NumGeometries; i++)
             {
-                IGeometry comp = geom.GetGeometryN(i);
+                var comp = geom.GetGeometryN(i);
                 if (!IsContainedInBoundary(comp))
                     return false;
             }
@@ -112,9 +112,9 @@ namespace NetTopologySuite.Operation.Predicate
         /// <returns>true if the linestring is contained in the boundary</returns>
         private bool IsLineStringContainedInBoundary(ILineString line)
         {
-            ICoordinateSequence seq = line.CoordinateSequence;
-            Coordinate p0 = new Coordinate();
-            Coordinate p1 = new Coordinate();
+            var seq = line.CoordinateSequence;
+            var p0 = new Coordinate();
+            var p1 = new Coordinate();
             for (int i = 0; i < seq.Count - 1; i++)
             {
                 seq.GetCoordinate(i, p0);

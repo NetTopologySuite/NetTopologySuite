@@ -76,7 +76,7 @@ namespace NetTopologySuite.Index.Strtree
         {
             if (!(o is Interval))
                 return false;
-            Interval other = (Interval) o;
+            var other = (Interval) o;
             return _min == other._min && _max == other._max;
         }
 

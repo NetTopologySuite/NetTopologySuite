@@ -67,9 +67,9 @@ namespace Open.Topology.TestRunner.Utility
         public static string GetStackTrace(Exception t, int depth)
         {
             string stackTrace = "";
-            StringReader stringReader = new StringReader(GetStackTrace(t));
+            var stringReader = new StringReader(GetStackTrace(t));
             //LineNumberReader lineNumberReader = new LineNumberReader(stringReader);
-            var lineNumber = 0;
+            int lineNumber = 0;
             for (int i = 0; i < depth; i++)
             {
                 try
@@ -129,7 +129,7 @@ namespace Open.Topology.TestRunner.Utility
             var buf = new StringBuilder();
             for (int i = 0; i < str.Length; i++)
             {
-                var ch = str[i];
+                char ch = str[i];
                 if (ch == oldChar)
                 {
                     buf.Append(newStr);
@@ -178,7 +178,7 @@ namespace Open.Topology.TestRunner.Utility
 
         public static IEnumerable<string> ToUpperCase(IEnumerable<string> v)
         {
-            foreach (var s in v)
+            foreach (string s in v)
                 yield return s.ToUpperInvariant();
         }
 
@@ -188,7 +188,7 @@ namespace Open.Topology.TestRunner.Utility
 
         public static IEnumerable<string> ToLowerCase(IEnumerable<string> v)
         {
-            foreach (var s in v)
+            foreach (string s in v)
                 yield return s.ToLowerInvariant();
         }
 
@@ -328,19 +328,19 @@ namespace Open.Topology.TestRunner.Utility
         public static string StripHTMLTags(string original)
         {
             //Strip the tags from the HTML description
-            var skipping = false;
-            var writing = false;
+            bool skipping = false;
+            bool writing = false;
             var buffer = new StringBuilder();
             var tokenizer = new StreamTokenizer();
             tokenizer.Settings.WordChars("<>");
             var tokens = new List<Token>();
             if (tokenizer.Tokenize(tokens))
             {
-                var i = -1;
+                int i = -1;
                 while (i < tokens.Count)
                 {
                     i++;
-                    var token = tokens[i].StringValue;
+                    string token = tokens[i].StringValue;
                     if (token.Equals("<", StringComparison.InvariantCultureIgnoreCase))
                     {
                         skipping = true;
@@ -388,7 +388,7 @@ namespace Open.Topology.TestRunner.Utility
         public static string Split(string s, int n)
         {
             var b = new StringBuilder();
-            var wrapPending = false;
+            bool wrapPending = false;
             for (int i = 0; i < s.Length; i++)
             {
                 if (i%n == 0 && i > 0)
@@ -605,10 +605,10 @@ namespace Open.Topology.TestRunner.Utility
             }
             catch (Exception e)
             {
-                var callStack = e.StackTrace;
-                var atPos = callStack.IndexOf("at");
+                string callStack = e.StackTrace;
+                int atPos = callStack.IndexOf("at");
                 atPos = callStack.IndexOf("at", atPos + 1);
-                var parenthesisPos = callStack.IndexOf("(", atPos);
+                int parenthesisPos = callStack.IndexOf("(", atPos);
                 return callStack.Substring(atPos + 3, parenthesisPos);
             }
         }

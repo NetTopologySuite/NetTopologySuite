@@ -36,7 +36,7 @@ namespace NetTopologySuite.Simplify
         /// <returns>A simplified version of the geometry.</returns>
         public static IGeometry Simplify(IGeometry geom, double distanceTolerance)
         {
-            DouglasPeuckerSimplifier tss = new DouglasPeuckerSimplifier(geom);
+            var tss = new DouglasPeuckerSimplifier(geom);
             tss.DistanceTolerance = distanceTolerance;
             return tss.GetResultGeometry();
         }
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Simplify
             if (_inputGeom.IsEmpty)
                 return (IGeometry)_inputGeom.Copy();
 
-            DPTransformer transformer = new DPTransformer(this, EnsureValidTopology);
+            var transformer = new DPTransformer(this, EnsureValidTopology);
             return transformer.Transform(_inputGeom);
         }
 
@@ -123,8 +123,8 @@ namespace NetTopologySuite.Simplify
             /// <inheritdoc cref="GeometryTransformer.TransformCoordinates(ICoordinateSequence, IGeometry)"/>
             protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
             {
-                Coordinate[] inputPts = coords.ToCoordinateArray();
-                Coordinate[] newPts = inputPts.Length == 0
+                var inputPts = coords.ToCoordinateArray();
+                var newPts = inputPts.Length == 0
                     ? new Coordinate[0]
                     : DouglasPeuckerLineSimplifier.Simplify(inputPts, _container.DistanceTolerance);
 
@@ -143,7 +143,7 @@ namespace NetTopologySuite.Simplify
                 if (geom.IsEmpty)
                     return null;
 
-                IGeometry rawGeom = base.TransformPolygon(geom, parent);
+                var rawGeom = base.TransformPolygon(geom, parent);
                 // don't try and correct if the parent is going to do this
                 if (parent is IMultiPolygon)
                     return rawGeom;
@@ -157,7 +157,7 @@ namespace NetTopologySuite.Simplify
             protected override IGeometry TransformLinearRing(ILinearRing geom, IGeometry parent)
             {
                 bool removeDegenerateRings = parent is IPolygon;
-                IGeometry simpResult = base.TransformLinearRing(geom, parent);
+                var simpResult = base.TransformLinearRing(geom, parent);
 
                 if (removeDegenerateRings && !(simpResult is ILinearRing))
                     return null;
@@ -167,7 +167,7 @@ namespace NetTopologySuite.Simplify
             /// <inheritdoc cref="GeometryTransformer.TransformMultiPolygon(IMultiPolygon, IGeometry)"/>
             protected override IGeometry TransformMultiPolygon(IMultiPolygon geom, IGeometry parent)
             {
-                IGeometry roughGeom = base.TransformMultiPolygon(geom, parent);
+                var roughGeom = base.TransformMultiPolygon(geom, parent);
                 return CreateValidArea(roughGeom);
             }
 

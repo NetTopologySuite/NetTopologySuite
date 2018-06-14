@@ -24,7 +24,7 @@ namespace NetTopologySuite.Tests.Various
         {
             var coord = new Coordinate(300000, int.MinValue);
             var point = factory.CreatePoint(coord);
-            var text = writer.Write(point);
+            string text = writer.Write(point);
             Assert.IsNotNull(text);
             Assert.AreEqual("POINT (300000 -2147483648)", text);
         }
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Tests.Various
         {
             var coord = new Coordinate(300000, double.MinValue);
             var point = factory.CreatePoint(coord);
-            var text = writer.Write(point);
+            string text = writer.Write(point);
             Assert.IsNotNull(text);
             Assert.AreEqual("POINT (300000 -1.7976931348623157E+308)", text);
         }

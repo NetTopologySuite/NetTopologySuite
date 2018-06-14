@@ -113,25 +113,25 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
                 );
 
             var sw = new Stopwatch();
-            var count = 0;
-            var time1 = 0L;
-            var time2 = 0L;
-            var time3 = 0L;
+            int count = 0;
+            long time1 = 0L;
+            long time2 = 0L;
+            long time3 = 0L;
             for (int i = 0; i < MaxIter; i++)
             {
                 Console.WriteLine(string.Format("\nIteration {0}", i));
                 sw.Start();
-                var count1 = TestPrepGeomNotCached(g, lines);
+                int count1 = TestPrepGeomNotCached(g, lines);
                 sw.Stop();
                 time1 += sw.ElapsedMilliseconds;
 
                 sw.Restart();
-                var count2 = TestPrepGeomCached(g, lines);
+                int count2 = TestPrepGeomCached(g, lines);
                 sw.Stop();
                 time2 += sw.ElapsedMilliseconds;
 
                 sw.Restart();
-                var count3 = TestOriginal(g, lines);
+                int count3 = TestOriginal(g, lines);
                 sw.Stop();
                 time3 += sw.ElapsedMilliseconds;
                 sw.Reset();
@@ -147,7 +147,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
         private static int TestOriginal(IGeometry g, IEnumerable<IGeometry> lines)
         {
             Console.WriteLine("Using orginal JTS algorithm");
-            var count = 0;
+            int count = 0;
             foreach (var line in lines)
             {
                 if (g.Intersects(line))
@@ -162,7 +162,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             var pgFact = new PreparedGeometryFactory();
             var prepGeom = pgFact.Create(g);
 
-            var count = 0;
+            int count = 0;
             foreach (var line in lines)
             {
                 if (prepGeom.Intersects(line))

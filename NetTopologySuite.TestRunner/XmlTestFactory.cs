@@ -46,7 +46,7 @@ namespace Open.Topology.TestRunner
 
         public XmlTest Create(XmlTestInfo testInfo, double tolerance)
         {
-            XmlTest xmlTest = new XmlTest(testInfo.GetValue("desc"),
+            var xmlTest = new XmlTest(testInfo.GetValue("desc"),
                 testInfo.IsDefaultTarget(), tolerance, _geometryOperation, _resultMatcher);
 
             // Handle test type or name.

@@ -28,7 +28,7 @@ namespace NetTopologySuite.Samples.Geometries
         [STAThread]
         public static void  main(string[] args)
         {
-            SimpleMethodsExample example = new SimpleMethodsExample();
+            var example = new SimpleMethodsExample();
             try
             {
                 example.Run();
@@ -49,14 +49,14 @@ namespace NetTopologySuite.Samples.Geometries
         /// </summary>
         public virtual void Run()
         {
-            GeometryFactory fact = new GeometryFactory();
-            WKTReader wktRdr = new WKTReader(fact);
+            var fact = new GeometryFactory();
+            var wktRdr = new WKTReader(fact);
 
             string wktA = "POLYGON((40 100, 40 20, 120 20, 120 100, 40 100))";
             string wktB = "LINESTRING(20 80, 80 60, 100 140)";
-            IGeometry A = wktRdr.Read(wktA);
-            IGeometry B = wktRdr.Read(wktB);
-            IGeometry C = A.Intersection(B);
+            var A = wktRdr.Read(wktA);
+            var B = wktRdr.Read(wktB);
+            var C = A.Intersection(B);
             Console.WriteLine("A = " + A);
             Console.WriteLine("B = " + B);
             Console.WriteLine("A intersection B = " + C);

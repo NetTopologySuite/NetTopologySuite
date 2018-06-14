@@ -44,8 +44,8 @@ namespace NetTopologySuite.Operation.Linemerge
                 {
                     int forwardDirectedEdges = 0;
                     int reverseDirectedEdges = 0;
-                    CoordinateList coordinateList = new CoordinateList();
-                    foreach (LineMergeDirectedEdge directedEdge in directedEdges)
+                    var coordinateList = new CoordinateList();
+                    foreach (var directedEdge in directedEdges)
                     {
                         if (directedEdge.EdgeDirection)
                              forwardDirectedEdges++;

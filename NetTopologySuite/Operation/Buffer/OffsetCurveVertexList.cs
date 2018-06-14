@@ -65,7 +65,7 @@ namespace NetTopologySuite.Operation.Buffer
             if (_ptList.Count < 1)
                 return false;
             var lastPt = _ptList[_ptList.Count - 1];
-            var ptDist = pt.Distance(lastPt);
+            double ptDist = pt.Distance(lastPt);
             if (ptDist < _minimimVertexDistance)
                 return true;
             return false;

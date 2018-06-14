@@ -9,7 +9,7 @@ namespace Open.Topology.TestRunner.Utility
         public virtual TValue Put(TKey1 k1, TKey2 k2, TValue v) {
             IDictionary<TKey2, TValue> data2;
             Data.TryGetValue(k1, out data2);
-            TValue prev = default(TValue);
+            var prev = default(TValue);
             if (data2 == null) {
                 data2 = new Dictionary<TKey2, TValue>();
                 Data[k1] = data2;
@@ -63,9 +63,9 @@ namespace Open.Topology.TestRunner.Utility
         }
 
         public virtual ICollection<TValue> Values() {
-            List<TValue> s = new List<TValue>();
-            foreach (IDictionary<TKey2, TValue> k2 in Data.Values) {
-                foreach (TValue v in k2.Values) {
+            var s = new List<TValue>();
+            foreach (var k2 in Data.Values) {
+                foreach (var v in k2.Values) {
                     s.Add(v);
                 }
             }

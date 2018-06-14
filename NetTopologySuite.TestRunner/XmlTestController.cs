@@ -44,7 +44,7 @@ namespace Open.Topology.TestRunner
                     string fileName = m_listFileNames[index];
                     if (m_objCurrentDoc != null && m_objCurrentDoc.LoadFile(fileName))
                     {
-                        XmlTestCollection listTests = m_objCurrentDoc.CurrentTests;
+                        var listTests = m_objCurrentDoc.CurrentTests;
                         if (listTests != null && listTests.Count > 0)
                             return listTests.RunTests();
                     }

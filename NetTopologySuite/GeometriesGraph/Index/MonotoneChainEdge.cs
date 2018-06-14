@@ -33,7 +33,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         {
             this.e = e;
             pts = e.Coordinates;
-            MonotoneChainIndexer mcb = new MonotoneChainIndexer();
+            var mcb = new MonotoneChainIndexer();
             startIndex = mcb.GetChainStartIndices(pts);
         }
 

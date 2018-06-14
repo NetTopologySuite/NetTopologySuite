@@ -72,8 +72,8 @@ namespace NetTopologySuite.Geometries
             // returns the perpendicular bisector of the line segment ab
             double dx = b.X - a.X;
             double dy = b.Y - a.Y;
-            HCoordinate l1 = new HCoordinate(a.X + dx / 2.0, a.Y + dy / 2.0, 1.0);
-            HCoordinate l2 = new HCoordinate(a.X - dy + dx / 2.0, a.Y + dx + dy / 2.0, 1.0);
+            var l1 = new HCoordinate(a.X + dx / 2.0, a.Y + dy / 2.0, 1.0);
+            var l2 = new HCoordinate(a.X - dy + dx / 2.0, a.Y + dx + dy / 2.0, 1.0);
             return new HCoordinate(l1, l2);
         }
 
@@ -214,7 +214,7 @@ namespace NetTopologySuite.Geometries
             double dx = c.X - a.X;
             double dy = c.Y - a.Y;
 
-            Coordinate splitPt = new Coordinate(a.X + frac * dx,
+            var splitPt = new Coordinate(a.X + frac * dx,
                                                 a.Y + frac * dy);
             return splitPt;
         }

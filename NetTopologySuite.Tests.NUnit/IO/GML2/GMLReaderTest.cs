@@ -57,16 +57,16 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML2
             string resname = string.Format("NetTopologySuite.Tests.NUnit.TestData.{0}.xml", file);
             string xml = new StreamReader(EmbeddedResourceManager.GetResourceStream(resname)).ReadToEnd();
 
-            GMLReader gr = new GMLReader();
+            var gr = new GMLReader();
 
             // different target frameworks have different overload sets...
             foreach (var readMethod in GetReadMethods())
             {
-                IGeometryCollection gc = (IGeometryCollection)readMethod(gr, xml);
+                var gc = (IGeometryCollection)readMethod(gr, xml);
                 Assert.IsTrue(gc.NumGeometries == 25);
                 for (int i = 0; i < 25; i++)
                 {
-                    IGeometry g = gc.GetGeometryN(i);
+                    var g = gc.GetGeometryN(i);
                     Assert.IsNotNull(g);
                     Assert.IsInstanceOf(expectedType, g);
                 }
@@ -82,18 +82,18 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML2
                 (reader, xml) => reader.Read(XmlReader.Create(new StringReader(xml)))
             };
 
-            MethodInfo xmlDocMethod = typeof(GMLReader).GetMethod("Read", new Type[] { typeof(XmlDocument) });
+            var xmlDocMethod = typeof(GMLReader).GetMethod("Read", new Type[] { typeof(XmlDocument) });
             if (xmlDocMethod != null)
             {
                 result.Add((reader, xml) =>
                 {
-                    XmlDocument doc = new XmlDocument();
+                    var doc = new XmlDocument();
                     doc.LoadXml(xml);
                     return (IGeometry)xmlDocMethod.Invoke(reader, new object[] { doc });
                 });
             }
 
-            MethodInfo xDocMethod = typeof(GMLReader).GetMethod("Read", new Type[] { typeof(XDocument) });
+            var xDocMethod = typeof(GMLReader).GetMethod("Read", new Type[] { typeof(XDocument) });
             if (xDocMethod != null)
             {
                 result.Add((reader, xml) => (IGeometry)xDocMethod.Invoke(reader, new object[] { XDocument.Parse(xml) }));

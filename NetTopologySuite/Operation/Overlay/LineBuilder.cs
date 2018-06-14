@@ -57,7 +57,7 @@ namespace NetTopologySuite.Operation.Overlay
         private void FindCoveredLineEdges()
         {
             // first set covered for all L edges at nodes which have A edges too
-            foreach (Node node in _op.Graph.Nodes)
+            foreach (var node in _op.Graph.Nodes)
             {
                 ((DirectedEdgeStar) node.Edges).FindCoveredLineEdges();
             }
@@ -68,7 +68,7 @@ namespace NetTopologySuite.Operation.Overlay
              */
             foreach (DirectedEdge de in _op.Graph.EdgeEnds)
             {
-                Edge e = de.Edge;
+                var e = de.Edge;
                 if (de.IsLineEdge && !e.IsCoveredSet)
                 {
                     bool isCovered = _op.IsCoveredByA(de.Coordinate);
@@ -98,8 +98,8 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="edges"></param>
         public void CollectLineEdge(DirectedEdge de, SpatialFunction opCode, IList<Edge> edges)
         {
-            Label label = de.Label;
-            Edge e = de.Edge;
+            var label = de.Label;
+            var e = de.Edge;
             // include Curve edges which are in the result
             if (de.IsLineEdge)
             {
@@ -124,7 +124,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="edges"></param>
         public void CollectBoundaryTouchEdge(DirectedEdge de, SpatialFunction opCode, IList<Edge> edges)
         {
-            Label label = de.Label;
+            var label = de.Label;
             if (de.IsLineEdge)
                 return;         // only interested in area edges
             if (de.IsVisited)
@@ -150,9 +150,9 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="opCode"></param>
         private void BuildLines(SpatialFunction opCode)
         {
-            foreach (Edge e in _lineEdgesList)
+            foreach (var e in _lineEdgesList)
             {
-                ILineString line = _geometryFactory.CreateLineString(e.Coordinates);
+                var line = _geometryFactory.CreateLineString(e.Coordinates);
                 _resultLineList.Add(line);
                 e.InResult = true;
             }
@@ -164,9 +164,9 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="edgesList"></param>
         private void LabelIsolatedLines(IEnumerable<Edge> edgesList)
         {
-            foreach (Edge e in edgesList)
+            foreach (var e in edgesList)
             {
-                Label label = e.Label;
+                var label = e.Label;
                 if (e.IsIsolated)
                 {
                     if (label.IsNull(0))
@@ -183,7 +183,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="targetIndex"></param>
         private void LabelIsolatedLine(Edge e, int targetIndex)
         {
-            Location loc = _ptLocator.Locate(e.Coordinate, _op.GetArgGeometry(targetIndex));
+            var loc = _ptLocator.Locate(e.Coordinate, _op.GetArgGeometry(targetIndex));
             e.Label.SetLocation(targetIndex, loc);
         }
     }

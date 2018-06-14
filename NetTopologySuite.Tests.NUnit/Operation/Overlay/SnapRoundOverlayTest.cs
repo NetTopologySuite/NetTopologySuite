@@ -163,16 +163,16 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
 
         private static AffineTransformation CreateAffineTransformation(Envelope env, int offsetX = 0)
         {
-            var imageRatio = ImageWidth / ImageHeight;
-            var ratio = env.Width / env.Height;
+            int imageRatio = ImageWidth / ImageHeight;
+            double ratio = env.Width / env.Height;
             if (ratio > imageRatio)
             {
-                var growHeight = (env.Width / imageRatio - env.Height) / 2;
+                double growHeight = (env.Width / imageRatio - env.Height) / 2;
                 env.ExpandBy(0, growHeight);
             }
             else if (ratio < imageRatio)
             {
-                var growWidth = (env.Height * imageRatio - env.Width) / 2;
+                double growWidth = (env.Height * imageRatio - env.Width) / 2;
                 env.ExpandBy(growWidth, 0);
             }
 

@@ -92,12 +92,12 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>The corresponding <see cref="LinearLocation" />.</returns>
         public LinearLocation GetLocation(double length, bool resolveLower)
         {
-            var forwardLength = length;
+            double forwardLength = length;
 
             // negative values are measured from end of geometry
             if (length < 0.0)
             {
-                var lineLen = _linearGeom.Length;
+                double lineLen = _linearGeom.Length;
                 forwardLength = lineLen + length;
             }
             var loc = GetLocationForward(forwardLength);
@@ -118,7 +118,7 @@ namespace NetTopologySuite.LinearReferencing
             if (length <= 0.0)
                 return new LinearLocation();
 
-            var totalLength = 0.0;
+            double totalLength = 0.0;
 
             var it = new LinearIterator(_linearGeom);
             while (it.HasNext())
@@ -144,13 +144,13 @@ namespace NetTopologySuite.LinearReferencing
                 {
                     var p0 = it.SegmentStart;
                     var p1 = it.SegmentEnd;
-                    var segLen = p1.Distance(p0);
+                    double segLen = p1.Distance(p0);
                     // length falls in this segment
                     if (totalLength + segLen > length)
                     {
-                        var frac = (length - totalLength) / segLen;
-                        var compIndex = it.ComponentIndex;
-                        var segIndex = it.VertexIndex;
+                        double frac = (length - totalLength) / segLen;
+                        int compIndex = it.ComponentIndex;
+                        int segIndex = it.VertexIndex;
                         return new LinearLocation(compIndex, segIndex, frac);
                     }
                     totalLength += segLen;
@@ -186,7 +186,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns></returns>
         public double GetLength(LinearLocation loc)
         {
-            var totalLength = 0.0;
+            double totalLength = 0.0;
 
             var it = new LinearIterator(_linearGeom);
             while (it.HasNext())
@@ -195,7 +195,7 @@ namespace NetTopologySuite.LinearReferencing
                 {
                     var p0 = it.SegmentStart;
                     var p1 = it.SegmentEnd;
-                    var segLen = p1.Distance(p0);
+                    double segLen = p1.Distance(p0);
                     // length falls in this segment
                     if (loc.ComponentIndex == it.ComponentIndex
                         && loc.SegmentIndex == it.VertexIndex)

@@ -141,18 +141,18 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
 
         private void CheckDissolve(string[] wkt, string expectedWkt)
         {
-            IList<IGeometry> geoms = GeometryUtils.ReadWKT(wkt);
-            IGeometry expected = GeometryUtils.ReadWKT(expectedWkt);
+            var geoms = GeometryUtils.ReadWKT(wkt);
+            var expected = GeometryUtils.ReadWKT(expectedWkt);
             CheckDissolve(geoms, expected);
         }
 
         private void CheckDissolve(IEnumerable<IGeometry> geoms, IGeometry expected)
         {
-            LineDissolver d = new LineDissolver();
+            var d = new LineDissolver();
             d.Add(geoms);
-            IGeometry result = d.GetResult();
-            IGeometry rnorm = result.Normalized();
-            IGeometry enorm = expected.Normalized();
+            var result = d.GetResult();
+            var rnorm = result.Normalized();
+            var enorm = expected.Normalized();
             bool equal = rnorm.EqualsExact(enorm);
             Assert.IsTrue(equal, string.Format("Expected = {0} actual = {1}", expected, rnorm));
         }

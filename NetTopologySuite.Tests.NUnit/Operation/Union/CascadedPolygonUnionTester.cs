@@ -19,9 +19,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
         public bool Test(IList<IGeometry> geoms, double minimumMeasure)
         {
             //System.Console.WriteLine("Computing Iterated union ");
-            IGeometry union1 = UnionIterated(geoms);
+            var union1 = UnionIterated(geoms);
             //System.Console.WriteLine("Computing Cascaded union");
-            IGeometry union2 = UnionCascaded(geoms);
+            var union2 = UnionCascaded(geoms);
 
             //System.Console.WriteLine("Testing similarity with min measure = " + minimumMeasure);
 
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
         public IGeometry UnionIterated(IList<IGeometry> geoms)
         {
             IGeometry unionAll = null;
-            var count = 0;
+            int count = 0;
             foreach (var geom in geoms)
             {
                 if (unionAll == null)

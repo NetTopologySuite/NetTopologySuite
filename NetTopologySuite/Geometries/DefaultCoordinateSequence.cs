@@ -188,8 +188,8 @@ namespace NetTopologySuite.Geometries
         public ICoordinateSequence Reversed()
         {
             var coordinates = new Coordinate[_coordinates.Length];
-            var j = _coordinates.Length;
-            for (var i = 0; i < _coordinates.Length; i++)
+            int j = _coordinates.Length;
+            for (int i = 0; i < _coordinates.Length; i++)
                 coordinates[--j] = _coordinates[i];
 
             return new DefaultCoordinateSequence(coordinates);

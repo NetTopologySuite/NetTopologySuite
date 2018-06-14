@@ -24,7 +24,7 @@ namespace NetTopologySuite.Operation.Buffer
         public static IGeometry Buffer(ILineString line, double startWidth,
             double endWidth)
         {
-            var width = Interpolate(line, startWidth, endWidth);
+            double[] width = Interpolate(line, startWidth, endWidth);
             var vb = new VariableWidthBuffer(line, width);
             return vb.GetResult();
         }
@@ -45,19 +45,19 @@ namespace NetTopologySuite.Operation.Buffer
         {
             start = Math.Abs(start);
             end = Math.Abs(end);
-            var widths = new double[line.NumPoints];
+            double[] widths = new double[line.NumPoints];
             widths[0] = start;
             widths[widths.Length - 1] = end;
 
-            var totalLen = line.Length;
+            double totalLen = line.Length;
             var pts = line.Coordinates;
-            var currLen = 0.0;
+            double currLen = 0.0;
             for (int i = 1; i < widths.Length; i++)
             {
-                var segLen = pts[i].Distance(pts[i - 1]);
+                double segLen = pts[i].Distance(pts[i - 1]);
                 currLen += segLen;
-                var lenFrac = currLen / totalLen;
-                var delta = lenFrac * (end - start);
+                double lenFrac = currLen / totalLen;
+                double delta = lenFrac * (end - start);
                 widths[i] = start + delta;
             }
             return widths;
@@ -65,8 +65,8 @@ namespace NetTopologySuite.Operation.Buffer
 
         private static double[] Abs(double[] v)
         {
-            var a = new double[v.Length];
-            for (var i = 0; i < v.Length; i++)
+            double[] a = new double[v.Length];
+            for (int i = 0; i < v.Length; i++)
             {
                 a[i] = Math.Abs(v[i]);
             }
@@ -100,9 +100,9 @@ namespace NetTopologySuite.Operation.Buffer
             var parts = new List<IGeometry>();
 
             var pts = _line.Coordinates;
-            for (var i = 0; i < _line.NumPoints; i++)
+            for (int i = 0; i < _line.NumPoints; i++)
             {
-                var dist = _width[i] / 2;
+                double dist = _width[i] / 2;
                 var ptBuf = _line.GetPointN(i).Buffer(dist);
                 parts.Add(ptBuf);
 
@@ -125,8 +125,8 @@ namespace NetTopologySuite.Operation.Buffer
         {
             var seg = new LineSegment(p0, p1);
 
-            var dist0 = width0 / 2;
-            var dist1 = width1 / 2;
+            double dist0 = width0 / 2;
+            double dist1 = width1 / 2;
             var s0 = seg.PointAlongOffset(0, dist0);
             var s1 = seg.PointAlongOffset(1, dist1);
             var s2 = seg.PointAlongOffset(1, -dist1);

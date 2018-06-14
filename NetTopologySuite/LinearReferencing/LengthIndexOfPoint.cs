@@ -61,11 +61,11 @@ namespace NetTopologySuite.LinearReferencing
             if (minIndex < 0.0) return IndexOf(inputPt);
 
             // sanity check for minIndex at or past end of line
-            var endIndex = _linearGeom.Length;
+            double endIndex = _linearGeom.Length;
             if (endIndex < minIndex)
                 return endIndex;
 
-            var closestAfter = IndexOfFromStart(inputPt, minIndex);
+            double closestAfter = IndexOfFromStart(inputPt, minIndex);
 
             /*
              * Return the minDistanceLocation found.
@@ -82,10 +82,10 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns></returns>
         private double IndexOfFromStart(Coordinate inputPt, double minIndex)
         {
-            var minDistance = double.MaxValue;
+            double minDistance = double.MaxValue;
 
-            var ptMeasure = minIndex;
-            var segmentStartMeasure = 0.0;
+            double ptMeasure = minIndex;
+            double segmentStartMeasure = 0.0;
 
             var seg = new LineSegment();
             var it = new LinearIterator(_linearGeom);
@@ -96,8 +96,8 @@ namespace NetTopologySuite.LinearReferencing
                 {
                     seg.P0 = it.SegmentStart;
                     seg.P1 = it.SegmentEnd;
-                    var segDistance = seg.Distance(inputPt);
-                    var segMeasureToPt = SegmentNearestMeasure(seg, inputPt, segmentStartMeasure);
+                    double segDistance = seg.Distance(inputPt);
+                    double segMeasureToPt = SegmentNearestMeasure(seg, inputPt, segmentStartMeasure);
                     if (segDistance < minDistance
                         && segMeasureToPt > minIndex)
                     {

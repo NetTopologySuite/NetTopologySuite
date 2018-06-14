@@ -56,7 +56,7 @@ namespace NetTopologySuite.Geometries
         public override IGeometry Copy()
         {
             var polygons = new IPolygon[NumGeometries];
-            for (var i = 0; i < polygons.Length; i++)
+            for (int i = 0; i < polygons.Length; i++)
                 polygons[i] = (IPolygon)GetGeometryN(i).Copy();
 
             return new MultiPolygon(polygons, Factory);
@@ -106,7 +106,7 @@ namespace NetTopologySuite.Geometries
                     return Factory.CreateMultiLineString();
 
                 var allRings = new List<ILineString>();
-                for (var i = 0; i < Geometries.Length; i++)
+                for (int i = 0; i < Geometries.Length; i++)
                 {
                     var polygon = (IPolygon) Geometries[i];
                     var rings = polygon.Boundary;
@@ -137,7 +137,7 @@ namespace NetTopologySuite.Geometries
         public override IGeometry Reverse()
         {
             int n = Geometries.Length;
-            IPolygon[] revGeoms = new IPolygon[n];
+            var revGeoms = new IPolygon[n];
             for (int i = 0; i < Geometries.Length; i++)
             {
                 revGeoms[i] = (Polygon)Geometries[i].Reverse();

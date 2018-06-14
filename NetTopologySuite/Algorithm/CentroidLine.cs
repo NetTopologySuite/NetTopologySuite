@@ -39,7 +39,7 @@ namespace NetTopologySuite.Algorithm
             else if (geom is IGeometryCollection)
             {
                 var gc = (IGeometryCollection)geom;
-                foreach (IGeometry geometry in gc.Geometries)
+                foreach (var geometry in gc.Geometries)
                     Add(geometry);
             }
         }
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Algorithm
         {
             get
             {
-                Coordinate cent = new Coordinate();
+                var cent = new Coordinate();
                 cent.X = _centSum.X / _totalLength;
                 cent.Y = _centSum.Y / _totalLength;
                 return cent;

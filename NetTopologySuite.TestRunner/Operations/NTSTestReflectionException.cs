@@ -37,7 +37,7 @@ namespace Open.Topology.TestRunner.Operations
             else
             {
                 sb.AppendFormat(" with the following Parameters: ({0}", args[0]);
-                for (var i = 1; i < args.Length; i++)
+                for (int i = 1; i < args.Length; i++)
                     sb.AppendFormat(", {0}", args[i]);
                 sb.Append(")!");
             }

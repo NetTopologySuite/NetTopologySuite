@@ -202,13 +202,13 @@ namespace NetTopologySuite.Algorithm.Distance
                 var p0 = seq.GetCoordinate(index - 1);
                 var p1 = seq.GetCoordinate(index);
 
-                var delx = (p1.X - p0.X) / _numSubSegs;
-                var dely = (p1.Y - p0.Y) / _numSubSegs;
+                double delx = (p1.X - p0.X) / _numSubSegs;
+                double dely = (p1.Y - p0.Y) / _numSubSegs;
 
-                for (var i = 0; i < _numSubSegs; i++)
+                for (int i = 0; i < _numSubSegs; i++)
                 {
-                    var x = p0.X + i * delx;
-                    var y = p0.Y + i * dely;
+                    double x = p0.X + i * delx;
+                    double y = p0.Y + i * dely;
                     var pt = new Coordinate(x, y);
                     _minPtDist.Initialize();
                     DistanceToPoint.ComputeDistance(_geom, pt, _minPtDist);

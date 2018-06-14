@@ -32,23 +32,23 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Distance
         [TestAttribute]
         public void TestEverything()
         {
-            IGeometry g1 = _reader.Read("POLYGON ((40 320, 200 380, 320 80, 40 40, 40 320),  (180 280, 80 280, 100 100, 220 140, 180 280))");
-            IGeometry g2 = _reader.Read("POLYGON ((160 240, 120 240, 120 160, 160 140, 160 240))");
+            var g1 = _reader.Read("POLYGON ((40 320, 200 380, 320 80, 40 40, 40 320),  (180 280, 80 280, 100 100, 220 140, 180 280))");
+            var g2 = _reader.Read("POLYGON ((160 240, 120 240, 120 160, 160 140, 160 240))");
             Assert.AreEqual(18.97366596, g1.Distance(g2), 1E-5);
 
             g2 = _reader.Read("POLYGON ((160 240, 120 240, 120 160, 180 100, 160 240))");
             Assert.AreEqual(0.0, g1.Distance(g2), 1E-5);
 
-            LineString l1 = (LineString) _reader.Read("LINESTRING(10 10, 20 20, 30 40)");
-            LineString l2 = (LineString) _reader.Read("LINESTRING(10 10, 20 20, 30 40)");
+            var l1 = (LineString) _reader.Read("LINESTRING(10 10, 20 20, 30 40)");
+            var l2 = (LineString) _reader.Read("LINESTRING(10 10, 20 20, 30 40)");
             Assert.AreEqual(0.0, l1.Distance(l2), 1E-5);
         }
 
         [Ignore("This test is resulting in failure for the distance to the empty polygon because the default position is being calculated as the minimum distance location, which is a constance of Double.MaxValue.  In JTS beyond version 1.9 there is a change to default empty geometry to a distance of 0.  This test should be enabled once the new logic in NetTopologySuite.Operation.Distance.DistanceOp is migrated to NTS")]
         public void TestEmpty()
         {
-            IGeometry g1 = _reader.Read("POINT (0 0)");
-            IGeometry g2 = _reader.Read("POLYGON EMPTY");
+            var g1 = _reader.Read("POINT (0 0)");
+            var g2 = _reader.Read("POLYGON EMPTY");
             Assert.AreEqual(0.0, g1.Distance(g2), 0.0);
         }
 
@@ -97,7 +97,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Distance
         private void DoNearestPointsTest(string wkt0, string wkt1, double distance,
                                         Coordinate p0, Coordinate p1)
         {
-            DistanceOp op = new DistanceOp(new WKTReader().Read(wkt0), new WKTReader().Read(wkt1));
+            var op = new DistanceOp(new WKTReader().Read(wkt0), new WKTReader().Read(wkt1));
             double tolerance = 1E-10;
             Assert.AreEqual(distance, op.NearestPoints()[0].Distance(op.NearestPoints()[1]), tolerance);
             Assert.AreEqual(p0.X, op.NearestPoints()[0].X, tolerance);

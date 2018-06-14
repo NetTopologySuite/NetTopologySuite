@@ -40,12 +40,12 @@ namespace NetTopologySuite.Samples.Tests.Github
         [Test]
         public void test_intersection_bug_clipped()
         {
-            IGeometryFactory factory = GeometryFactory.Default;
-            WKTReader reader = new WKTReader(factory);
-            IGeometry geom = reader.Read(NonNodedIntersection);
-            Envelope clipEnv = geom.EnvelopeInternal;
+            var factory = GeometryFactory.Default;
+            var reader = new WKTReader(factory);
+            var geom = reader.Read(NonNodedIntersection);
+            var clipEnv = geom.EnvelopeInternal;
             clipEnv.ExpandBy(BufferValue);
-            IGeometry clip = factory.ToGeometry(clipEnv);
+            var clip = factory.ToGeometry(clipEnv);
             Assert.DoesNotThrow(() => DoIntersection(FromWkb(Poly1Wkb, clip), FromWkb(Poly2Wkb, clip), clip));
         }
 
@@ -56,9 +56,9 @@ namespace NetTopologySuite.Samples.Tests.Github
 
         private static IGeometry FromWkb(string wkb, IGeometry clip = null)
         {
-            WKBReader reader = new WKBReader(GeometryFactory.Default);
+            var reader = new WKBReader(GeometryFactory.Default);
             byte[] bytes = WKBReader.HexToBytes(wkb);
-            IGeometry geom =  reader.Read(bytes);
+            var geom =  reader.Read(bytes);
             if (clip != null)
                 geom = geom.Intersection(clip);
             return geom;
@@ -72,12 +72,12 @@ namespace NetTopologySuite.Samples.Tests.Github
             Assert.IsTrue(poly2.IsValid);
             Assert.IsTrue(poly2 is IPolygon);
 
-            IGeometry intersection = poly1.Intersection(poly2);
+            var intersection = poly1.Intersection(poly2);
             Assert.IsNotNull(intersection);
             Assert.IsTrue(intersection.IsValid);
 
-            WKTReader reader = new WKTReader();
-            IGeometry expectedIntersection = reader.Read(ExpectedResult);
+            var reader = new WKTReader();
+            var expectedIntersection = reader.Read(ExpectedResult);
             if (clip != null)
                 expectedIntersection = expectedIntersection.Intersection(clip);
 

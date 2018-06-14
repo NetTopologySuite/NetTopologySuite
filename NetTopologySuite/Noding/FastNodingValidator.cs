@@ -33,7 +33,7 @@ namespace NetTopologySuite.Noding
     {
         public static IList<Coordinate> ComputeIntersections(IEnumerable<ISegmentString> segStrings)
         {
-            FastNodingValidator nv = new FastNodingValidator(segStrings);
+            var nv = new FastNodingValidator(segStrings);
             nv.FindAllIntersections = true;
             bool temp = nv.IsValid;
             return nv.Intersections;
@@ -89,7 +89,7 @@ namespace NetTopologySuite.Noding
             if (IsValid)
                 return "no intersections found";
 
-            Coordinate[] intSegs = _segInt.IntersectionSegments;
+            var intSegs = _segInt.IntersectionSegments;
             return "found non-noded intersection between "
                 + WKTWriter.ToLineString(intSegs[0], intSegs[1])
                 + " and "
@@ -124,7 +124,7 @@ namespace NetTopologySuite.Noding
             _isValid = true;
             _segInt = new InteriorIntersectionFinder(_li);
             _segInt.FindAllIntersections = FindAllIntersections;
-            MCIndexNoder noder = new MCIndexNoder(_segInt);
+            var noder = new MCIndexNoder(_segInt);
             noder.ComputeNodes(_segStrings); //.ComputeNodes(segStrings);
             if (_segInt.HasIntersection)
             {
