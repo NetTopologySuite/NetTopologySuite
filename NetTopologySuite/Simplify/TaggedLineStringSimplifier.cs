@@ -54,7 +54,7 @@ namespace NetTopologySuite.Simplify
             int[] sectionIndex = new int[2];
             if ((i + 1) == j)
             {
-                LineSegment newSeg = _line.GetSegment(i);
+                var newSeg = _line.GetSegment(i);
                 _line.AddToResult(newSeg);
                 // leave this segment in the input index, for efficiency
                 return;

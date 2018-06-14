@@ -96,9 +96,9 @@ namespace NetTopologySuite.Operation.Polygonize
             var nStart = GetNode(startPt);
             var nEnd = GetNode(endPt);
 
-            DirectedEdge de0 = new PolygonizeDirectedEdge(nStart, nEnd, linePts[1], true);
-            DirectedEdge de1 = new PolygonizeDirectedEdge(nEnd, nStart, linePts[linePts.Length - 2], false);
-            Edge edge = new PolygonizeEdge(line);
+            var de0 = new PolygonizeDirectedEdge(nStart, nEnd, linePts[1], true);
+            var de1 = new PolygonizeDirectedEdge(nEnd, nStart, linePts[linePts.Length - 2], false);
+            var edge = new PolygonizeEdge(line);
             edge.SetDirectedEdges(de0, de1);
             Add(edge);
         }
@@ -198,7 +198,7 @@ namespace NetTopologySuite.Operation.Polygonize
             ConvertMaximalToMinimalEdgeRings(maximalRings);
 
             // find all edgerings (which will now be minimal ones, as required)
-            IList<EdgeRing> edgeRingList = new List<EdgeRing>();
+            var edgeRingList = new List<EdgeRing>();
             foreach (PolygonizeDirectedEdge de in dirEdges)
             {
                 if (de.IsMarked) continue;
@@ -219,7 +219,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <returns>A List of DirectedEdges, one for each edge ring found.</returns>
         private static IList<DirectedEdge> FindLabeledEdgeRings(IEnumerable<DirectedEdge> dirEdges)
         {
-            IList<DirectedEdge> edgeRingStarts = new List<DirectedEdge>();
+            var edgeRingStarts = new List<DirectedEdge>();
             // label the edge rings formed
             long currLabel = 1;
             foreach (PolygonizeDirectedEdge de in dirEdges)
@@ -249,7 +249,7 @@ namespace NetTopologySuite.Operation.Polygonize
             * Cut Edges are edges where both dirEdges have the same label.
             * Delete them, and record them
             */
-            IList<ILineString> cutLines = new List<ILineString>();
+            var cutLines = new List<ILineString>();
             foreach (PolygonizeDirectedEdge de in dirEdges)
             {
                 if (de.IsMarked) continue;

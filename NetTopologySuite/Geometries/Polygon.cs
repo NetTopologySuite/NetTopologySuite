@@ -364,8 +364,8 @@ namespace NetTopologySuite.Geometries
                 return false;
 
             var otherPolygon = (IPolygon) other;
-            IGeometry thisShell = _shell;
-            IGeometry otherPolygonShell = otherPolygon.Shell;
+            var thisShell = _shell;
+            var otherPolygonShell = otherPolygon.Shell;
             if (!thisShell.EqualsExact(otherPolygonShell, tolerance))
                 return false;
             if (_holes.Length != otherPolygon.Holes.Length)

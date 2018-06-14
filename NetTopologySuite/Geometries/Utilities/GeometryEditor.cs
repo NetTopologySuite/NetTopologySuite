@@ -167,7 +167,7 @@ namespace NetTopologySuite.Geometries.Utilities
             var collectionForType = (IGeometryCollection)operation.Edit(collection, _factory);
 
             // edit the component geometries
-            IList<IGeometry> geometries = new List<IGeometry>();
+            var geometries = new List<IGeometry>();
             for (int i = 0; i < collectionForType.NumGeometries; i++)
             {
                 var geometry = Edit(collectionForType.GetGeometryN(i), operation);

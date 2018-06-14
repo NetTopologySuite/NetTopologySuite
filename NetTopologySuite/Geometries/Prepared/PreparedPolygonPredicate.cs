@@ -34,7 +34,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </returns>
         protected bool IsAllTestComponentsInTarget(IGeometry testGeom)
         {
-            IList<Coordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
+            var coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
             foreach (var p in coords)
             {
                 var loc = _targetPointLocator.Locate(p);
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if all components of the argument are contained in the target geometry interior</returns>
         protected bool IsAllTestComponentsInTargetInterior(IGeometry testGeom)
         {
-            IList<Coordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
+            var coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
             foreach (var p in coords)
             {
                 var loc = _targetPointLocator.Locate(p);
@@ -70,7 +70,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if any component of the argument intersects the prepared area geometry</returns>
         protected bool IsAnyTestComponentInTarget(IGeometry testGeom)
         {
-            IList<Coordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
+            var coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
             foreach (var p in coords)
             {
                 var loc = _targetPointLocator.Locate(p);
@@ -88,7 +88,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if any component of the argument intersects the prepared area geometry interior</returns>
         protected bool IsAnyTestComponentInTargetInterior(IGeometry testGeom)
         {
-            IList<Coordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
+            var coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
             foreach (var p in coords)
             {
                 var loc = _targetPointLocator.Locate(p);
@@ -106,7 +106,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if any component intersects the areal test geometry</returns>
         protected bool IsAnyTargetComponentInAreaTest(IGeometry testGeom, IList<Coordinate> targetRepPts)
         {
-            IPointOnGeometryLocator piaLoc = new SimplePointInAreaLocator(testGeom);
+            var piaLoc = new SimplePointInAreaLocator(testGeom);
             foreach (var p in targetRepPts)
             {
                 var loc = piaLoc.Locate(p);

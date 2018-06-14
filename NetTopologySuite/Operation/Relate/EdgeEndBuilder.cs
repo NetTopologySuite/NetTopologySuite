@@ -24,7 +24,7 @@ namespace NetTopologySuite.Operation.Relate
         /// <returns></returns>
         public IList<EdgeEnd> ComputeEdgeEnds(IEnumerable<Edge> edges)
         {
-            IList<EdgeEnd> l = new List<EdgeEnd>();
+            var l = new List<EdgeEnd>();
             foreach (var e in edges)
                 ComputeEdgeEnds(e, l);
 

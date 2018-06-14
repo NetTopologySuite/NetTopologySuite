@@ -62,7 +62,7 @@ namespace NetTopologySuite.Operation.Valid
         public bool IsInteriorsConnected()
         {
             // node the edges, in case holes touch the shell
-            IList<Edge> splitEdges = new List<Edge>();
+            var splitEdges = new List<Edge>();
             _geomGraph.ComputeSplitEdges(splitEdges);
 
             // form the edges into rings
@@ -107,7 +107,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <returns></returns>
         private IList<EdgeRing> BuildEdgeRings(IEnumerable<EdgeEnd> dirEdges)
         {
-            IList<EdgeRing> edgeRings = new List<EdgeRing>();
+            var edgeRings = new List<EdgeRing>();
             foreach (DirectedEdge de in dirEdges)
             {
                 // if this edge has not yet been processed

@@ -157,7 +157,7 @@ namespace NetTopologySuite.IO
         internal IList<Token> Tokenize(TextReader reader)
         {
             var tokenizer = new StreamTokenizer(reader);
-            IList<Token> tokens = new List<Token>();
+            var tokens = new List<Token>();
             tokenizer.Tokenize(tokens);     // Read directly all tokens
             return tokens;
         }

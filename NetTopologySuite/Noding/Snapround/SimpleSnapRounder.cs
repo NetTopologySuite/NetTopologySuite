@@ -83,7 +83,7 @@ namespace NetTopologySuite.Noding.Snapround
         private static IList<Coordinate> FindInteriorIntersections(IList<ISegmentString> segStrings, LineIntersector li)
         {
             var intFinderAdder = new InteriorIntersectionFinderAdder(li);
-            SinglePassNoder noder = new MCIndexNoder(intFinderAdder);
+            var noder = new MCIndexNoder(intFinderAdder);
             noder.ComputeNodes(segStrings);
             return intFinderAdder.InteriorIntersections;
         }

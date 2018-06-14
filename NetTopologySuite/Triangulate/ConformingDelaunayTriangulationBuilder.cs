@@ -64,7 +64,7 @@ namespace NetTopologySuite.Triangulate
                 return;
 
             var siteEnv = DelaunayTriangulationBuilder.Envelope(_siteCoords);
-            IList<Segment> segments = new List<Segment>();
+            var segments = new List<Segment>();
             if (_constraintLines != null)
             {
                 siteEnv.ExpandToInclude(_constraintLines.EnvelopeInternal);
@@ -98,12 +98,12 @@ namespace NetTopologySuite.Triangulate
             var coords = geom.Coordinates;
             for (int i = 0; i < coords.Length; i++)
             {
-                Vertex v = new ConstraintVertex(coords[i]);
+                var v = new ConstraintVertex(coords[i]);
                 _constraintVertexMap[coords[i]] = v;
             }
         }
 
-        private static IList<Segment> CreateConstraintSegments(IGeometry geom)
+        private static List<Segment> CreateConstraintSegments(IGeometry geom)
         {
             var lines = LinearComponentExtracter.GetLines(geom);
             var constraintSegs = new List<Segment>();

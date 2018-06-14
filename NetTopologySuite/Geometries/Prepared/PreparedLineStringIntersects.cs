@@ -99,7 +99,7 @@ namespace NetTopologySuite.Geometries.Prepared
              * However, it seems like the L/P case would be pretty rare in practice.
              */
             var locator = new PointLocator();
-            IList<Coordinate> coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
+            var coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
             foreach (var p in coords)
             {
                 if (locator.Intersects(p, prepLine.Geometry))

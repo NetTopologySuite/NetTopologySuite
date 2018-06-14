@@ -40,7 +40,7 @@ namespace NetTopologySuite.IO.GML2
                 data = stream.ToArray();
             }
 
-            Stream outStream = new MemoryStream(data);
+            var outStream = new MemoryStream(data);
             return XmlReader.Create(outStream);
         }
 

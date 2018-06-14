@@ -29,11 +29,11 @@ namespace NetTopologySuite.Operation.Linemerge
             var endCoordinate = coordinates[coordinates.Length - 1];
             var startNode = GetNode(startCoordinate);
             var endNode = GetNode(endCoordinate);
-            DirectedEdge directedEdge0 = new LineMergeDirectedEdge(startNode, endNode,
-                                                coordinates[1], true);
-            DirectedEdge directedEdge1 = new LineMergeDirectedEdge(endNode, startNode,
-                                                coordinates[coordinates.Length - 2], false);
-            Edge edge = new LineMergeEdge(lineString);
+            var directedEdge0 = new LineMergeDirectedEdge(startNode, endNode,
+                                                          coordinates[1], true);
+            var directedEdge1 = new LineMergeDirectedEdge(endNode, startNode,
+                                                          coordinates[coordinates.Length - 2], false);
+            var edge = new LineMergeEdge(lineString);
             edge.SetDirectedEdges(directedEdge0, directedEdge1);
             Add(edge);
         }

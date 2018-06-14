@@ -174,7 +174,7 @@ namespace NetTopologySuite.IO.KML
 
         private void CreateFormatter(int precision)
         {
-            IPrecisionModel precisionModel = precision < 0
+            var precisionModel = precision < 0
                 ? new PrecisionModel(PrecisionModels.Floating)
                 : new PrecisionModel(precision);
             _formatter = WKTWriter.CreateFormatter(precisionModel);

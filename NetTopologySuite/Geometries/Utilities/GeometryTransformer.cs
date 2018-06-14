@@ -278,7 +278,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 var components = new List<IGeometry>();
                 if (shell != null)
                     components.Add(shell);
-                foreach (IGeometry hole in holes)
+                foreach (var hole in holes)
                     components.Add(hole);
                 return Factory.BuildGeometry(components);
             }

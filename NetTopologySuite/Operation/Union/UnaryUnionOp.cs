@@ -248,7 +248,7 @@ namespace NetTopologySuite.Operation.Union
         private IGeometry UnionNoOpt(IGeometry g0)
         {
 
-            IGeometry empty = _geomFact.CreatePoint();
+            var empty = _geomFact.CreatePoint();
             return OverlayOp.Overlay(g0, empty, SpatialFunction.Union);
         }
 

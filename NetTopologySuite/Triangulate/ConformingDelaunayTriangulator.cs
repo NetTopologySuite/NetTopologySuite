@@ -463,7 +463,7 @@ namespace NetTopologySuite.Triangulate
             var env = new Envelope(midPt);
             env.ExpandBy(segRadius);
             // Find all points in envelope
-            ICollection<KdNode<Vertex>> result = _kdt.Query(env);
+            var result = _kdt.Query(env);
 
             // For each point found, test if it falls strictly in the circle
             // find closest point

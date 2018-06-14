@@ -58,7 +58,7 @@ namespace NetTopologySuite.Operation.Union
         private IGeometry BufferUnion(IGeometry g0, IGeometry g1)
         {
             var factory = g0.Factory;
-            IGeometry gColl = factory.CreateGeometryCollection(new IGeometry[] { g0, g1 });
+            var gColl = factory.CreateGeometryCollection(new IGeometry[] { g0, g1 });
             var unionAll = gColl.Buffer(0.0);
             return unionAll;
         }

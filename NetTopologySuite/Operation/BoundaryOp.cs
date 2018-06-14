@@ -93,7 +93,7 @@ namespace NetTopologySuite.Operation
 
         private Coordinate[] ComputeBoundaryCoordinates(IMultiLineString mLine)
         {
-            IList<Coordinate> bdyPts = new List<Coordinate>();
+            var bdyPts = new List<Coordinate>();
             _endpointMap = new SortedDictionary<Coordinate, Counter>();
             for (int i = 0; i < mLine.NumGeometries; i++)
             {
@@ -114,7 +114,7 @@ namespace NetTopologySuite.Operation
                 }
             }
 
-            return CoordinateArrays.ToCoordinateArray(bdyPts);
+            return CoordinateArrays.ToCoordinateArray((ICollection<Coordinate>)bdyPts);
         }
 
         private void AddEndpoint(Coordinate pt)

@@ -2132,8 +2132,8 @@ namespace NetTopologySuite.Geometries
         /// <returns>The first non-zero <c>compareTo</c> result, if any; otherwise, zero.</returns>
         protected static int Compare(List<IGeometry> a, List<IGeometry> b)
         {
-            IEnumerator<IGeometry> i = a.GetEnumerator();
-            IEnumerator<IGeometry> j = b.GetEnumerator();
+            var i = a.GetEnumerator();
+            var j = b.GetEnumerator();
 
             while (i.MoveNext() && j.MoveNext())
             {

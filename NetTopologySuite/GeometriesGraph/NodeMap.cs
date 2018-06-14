@@ -99,7 +99,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public IList<Node> GetBoundaryNodes(int geomIndex)
         {
-            IList<Node> bdyNodes = new List<Node>();
+            var bdyNodes = new List<Node>();
             foreach (var node in _nodeMap.Values)
             {
                 if (node.Label.GetLocation(geomIndex) == Location.Boundary)

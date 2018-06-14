@@ -20,7 +20,7 @@ namespace NetTopologySuite.Planargraph.Algorithm
 
         public IList<Subgraph> GetConnectedSubgraphs()
         {
-            IList<Subgraph> subgraphs = new List<Subgraph>();
+            var subgraphs = new List<Subgraph>();
             GraphComponent.SetVisited(graph.GetNodeEnumerator(), false);
             var ienum = graph.GetEdgeEnumerator();
             while(ienum.MoveNext())

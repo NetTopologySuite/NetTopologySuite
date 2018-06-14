@@ -445,7 +445,7 @@ namespace NetTopologySuite.Geometries
         protected internal override int CompareToSameClass(object o, IComparer<ICoordinateSequence> comp)
         {
             Assert.IsTrue(o is ILineString);
-            ILineString line = (LineString)o;
+            var line = (LineString)o;
             return comp.Compare(_points, line.CoordinateSequence);
         }
 

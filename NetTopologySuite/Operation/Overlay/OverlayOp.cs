@@ -181,7 +181,7 @@ namespace NetTopologySuite.Operation.Overlay
             // compute intersections between edges of the two input geometries
             arg[0].ComputeEdgeIntersections(arg[1], lineIntersector, true);
 
-            IList<Edge> baseSplitEdges = new List<Edge>();
+            var baseSplitEdges = new List<Edge>();
             arg[0].ComputeSplitEdges(baseSplitEdges);
             arg[1].ComputeSplitEdges(baseSplitEdges);
             // add the noded edges to this result graph

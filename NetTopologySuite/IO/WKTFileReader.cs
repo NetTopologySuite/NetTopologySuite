@@ -116,7 +116,7 @@ namespace NetTopologySuite.IO
 
         private IList<IGeometry> Read(TextReader bufferedReader)
         {
-            IList<IGeometry> geoms = new List<IGeometry>();
+            var geoms = new List<IGeometry>();
             var tokens = _wktReader.Tokenizer(bufferedReader);
             tokens.MoveNext();
             while (!IsAtEndOfTokens(tokens.Current) && !IsAtLimit(geoms))

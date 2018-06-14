@@ -165,7 +165,7 @@ namespace NetTopologySuite.Operation.Union
         private IGeometry BufferUnion(IGeometry g0, IGeometry g1)
         {
             var factory = g0.Factory;
-            IGeometry gColl = factory.CreateGeometryCollection(new[] { g0, g1 });
+            var gColl = factory.CreateGeometryCollection(new[] { g0, g1 });
             var unionAll = gColl.Buffer(0.0);
             return unionAll;
         }
@@ -283,7 +283,7 @@ namespace NetTopologySuite.Operation.Union
         /// <returns>A list of Geometrys</returns>
         private IList<IGeometry> ReduceToGeometries(IList geomTree)
         {
-            IList<IGeometry> geoms = new List<IGeometry>();
+            var geoms = new List<IGeometry>();
             foreach (object o in geomTree)
             {
                 IGeometry geom = null;

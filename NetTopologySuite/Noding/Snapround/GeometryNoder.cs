@@ -55,7 +55,7 @@ namespace NetTopologySuite.Noding.Snapround
 
             var segStrings = ToSegmentStrings(ExtractLines(geoms));
             //Noder sr = new SimpleSnapRounder(pm);
-            INoder sr = new MCIndexSnapRounder(_pm);
+            var sr = new MCIndexSnapRounder(_pm);
             sr.ComputeNodes(segStrings);
             var nodedLines = sr.GetNodedSubstrings();
 

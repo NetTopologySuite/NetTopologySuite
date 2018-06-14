@@ -142,7 +142,7 @@ namespace NetTopologySuite.Index.Bintree
         /// <returns></returns>
         public IEnumerator<T> GetEnumerator()
         {
-            IList<T> foundItems = new List<T>();
+            var foundItems = new List<T>();
             _root.AddAllItems(foundItems);
             return foundItems.GetEnumerator();
         }
@@ -171,7 +171,7 @@ namespace NetTopologySuite.Index.Bintree
              * the items that are matched are all items in intervals
              * which overlap the query interval
              */
-            IList<T> foundItems = new List<T>();
+            var foundItems = new List<T>();
             Query(interval, foundItems);
             return foundItems;
         }

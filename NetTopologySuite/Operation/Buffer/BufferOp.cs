@@ -319,7 +319,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         private void BufferFixedPrecision(IPrecisionModel fixedPrecModel)
         {
-            INoder noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)),
+            var noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)),
                                           fixedPrecModel.Scale);
 
             var bufBuilder = new BufferBuilder(_bufParams);

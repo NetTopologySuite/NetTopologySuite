@@ -68,13 +68,13 @@ namespace NetTopologySuite.Operation.Overlay
         /// <returns></returns>
         public IList<EdgeRing> BuildMinimalRings()
         {
-            IList<EdgeRing> minEdgeRings = new List<EdgeRing>();
+            var minEdgeRings = new List<EdgeRing>();
             var de = startDe;
             do
             {
                 if (de.MinEdgeRing == null)
                 {
-                    EdgeRing minEr = new MinimalEdgeRing(de, GeometryFactory);
+                    var minEr = new MinimalEdgeRing(de, GeometryFactory);
                     minEdgeRings.Add(minEr);
                 }
                 de = de.Next;

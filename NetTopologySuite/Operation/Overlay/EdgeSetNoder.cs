@@ -42,11 +42,11 @@ namespace NetTopologySuite.Operation.Overlay
         {
             get
             {
-                EdgeSetIntersector esi = new SimpleMCSweepLineIntersector();
+                var esi = new SimpleMCSweepLineIntersector();
                 var si = new SegmentIntersector(_li, true, false);
                 esi.ComputeIntersections(_inputEdges, si, true);
 
-                IList<Edge> splitEdges = new List<Edge>();
+                var splitEdges = new List<Edge>();
                 foreach (var e in _inputEdges)
                 {
                     e.EdgeIntersectionList.AddSplitEdges(splitEdges);

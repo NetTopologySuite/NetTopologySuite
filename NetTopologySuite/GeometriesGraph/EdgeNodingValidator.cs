@@ -25,7 +25,7 @@ namespace NetTopologySuite.GeometriesGraph
         public static IEnumerable<ISegmentString> ToSegmentStrings(IEnumerable<Edge> edges)
         {
             // convert Edges to SegmentStrings
-            IList<ISegmentString> segStrings = new List<ISegmentString>();
+            var segStrings = new List<ISegmentString>();
             foreach (var e in edges)
                 segStrings.Add(new BasicSegmentString(e.Coordinates, e));
             return segStrings;

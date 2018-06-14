@@ -203,7 +203,7 @@ namespace NetTopologySuite.Operation
                 return true;
 
             var graph = new GeometryGraph(0, geom);
-            LineIntersector li = new RobustLineIntersector();
+            var li = new RobustLineIntersector();
             var si = graph.ComputeSelfNodes(li, true);
             // if no self-intersection, must be simple
             if (!si.HasIntersection) return true;
@@ -279,7 +279,7 @@ namespace NetTopologySuite.Operation
         /// </summary>
         private bool HasClosedEndpointIntersection(GeometryGraph graph)
         {
-            IDictionary<Coordinate, EndpointInfo> endPoints = new SortedDictionary<Coordinate, EndpointInfo>();
+            var endPoints = new SortedDictionary<Coordinate, EndpointInfo>();
             foreach (var e in graph.Edges)
             {
                 //int maxSegmentIndex = e.MaximumSegmentIndex;

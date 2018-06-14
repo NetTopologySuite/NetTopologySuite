@@ -221,7 +221,7 @@ namespace NetTopologySuite.IO
         public virtual string Write(IGeometry geometry)
         {
             var sb = new StringBuilder();
-            TextWriter sw = new StringWriter(sb);
+            var sw = new StringWriter(sb);
             TryWrite(geometry, sw);
             return sb.ToString();
         }
@@ -233,7 +233,7 @@ namespace NetTopologySuite.IO
         /// <param name="stream">A <c>Stream</c> to write into</param>
         public void Write(IGeometry geometry, Stream stream)
         {
-            TextWriter sw = new StreamWriter(stream);
+            var sw = new StreamWriter(stream);
             TryWrite(geometry, sw);
         }
 
@@ -271,7 +271,7 @@ namespace NetTopologySuite.IO
         /// </returns>
         public virtual string WriteFormatted(IGeometry geometry)
         {
-            TextWriter sw = new StringWriter();
+            var sw = new StringWriter();
             try
             {
                 WriteFormatted(geometry, true, sw);

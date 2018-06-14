@@ -85,7 +85,7 @@ namespace NetTopologySuite.Noding
 
         private void IntersectChains(IEnumerable<MonotoneChain> monoChains, ISegmentIntersector segmentIntersector)
         {
-            MonotoneChainOverlapAction overlapAction = new SegmentOverlapAction(segmentIntersector);
+            var overlapAction = new SegmentOverlapAction(segmentIntersector);
 
             foreach (var queryChain in monoChains)
             {

@@ -24,7 +24,7 @@ namespace NetTopologySuite.Planargraph
         /// <returns></returns>
         public static IList<Edge> ToEdges(IList<DirectedEdge> dirEdges)
         {
-            IList<Edge> edges = new List<Edge>();
+            var edges = new List<Edge>();
             foreach (var directedEdge in dirEdges)
                 edges.Add(directedEdge.parentEdge);
             return edges;

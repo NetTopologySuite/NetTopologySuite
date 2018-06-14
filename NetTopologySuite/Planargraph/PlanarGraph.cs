@@ -187,7 +187,7 @@ namespace NetTopologySuite.Planargraph
         /// <returns></returns>
         public IList<Node> FindNodesOfDegree(int degree)
         {
-            IList<Node> nodesFound = new List<Node>();
+            var nodesFound = new List<Node>();
             foreach (var node in nodeMap.Values )
             {
                 if (node.Degree == degree)

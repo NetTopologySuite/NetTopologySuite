@@ -68,7 +68,7 @@ namespace NetTopologySuite.Operation.Linemerge
             var prevSubgraphNodes = new HashSet<Coordinate>();
 
             Coordinate lastNode = null;
-            IList<Coordinate> currNodes = new List<Coordinate>();
+            var currNodes = new List<Coordinate>();
             for (int i = 0; i < mls.NumGeometries; i++)
             {
                 var line = (ILineString) mls.GetGeometryN(i);
@@ -212,7 +212,7 @@ namespace NetTopologySuite.Operation.Linemerge
 
         private IList<IEnumerable<DirectedEdge>> FindSequences()
         {
-            IList<IEnumerable<DirectedEdge>> sequences = new List<IEnumerable<DirectedEdge>>();
+            var sequences = new List<IEnumerable<DirectedEdge>>();
             var csFinder = new ConnectedSubgraphFinder(_graph);
             var subgraphs = csFinder.GetConnectedSubgraphs();
             foreach(var subgraph in subgraphs)
@@ -240,7 +240,7 @@ namespace NetTopologySuite.Operation.Linemerge
         private static bool HasSequence(Subgraph graph)
         {
             int oddDegreeCount = 0;
-            IEnumerator i = graph.GetNodeEnumerator();
+            var i = graph.GetNodeEnumerator();
             while(i.MoveNext())
             {
                 var node = (Node) i.Current;
@@ -460,7 +460,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// </returns>
         private IGeometry BuildSequencedGeometry(IEnumerable<IEnumerable<DirectedEdge>> sequences)
         {
-            IList<IGeometry> lines = new List<IGeometry>();
+            var lines = new List<IGeometry>();
 
             foreach (IList<DirectedEdge> seq in sequences)
             {

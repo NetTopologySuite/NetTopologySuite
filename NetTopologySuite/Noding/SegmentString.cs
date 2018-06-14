@@ -26,7 +26,7 @@ namespace NetTopologySuite.Noding
         /// <returns>A collection of NodedSegmentStrings representing the substrings</returns>
         public static IList<ISegmentString> GetNodedSubstrings(IList<ISegmentString> segStrings)
         {
-            IList<ISegmentString> resultEdgelist = new List<ISegmentString>();
+            var resultEdgelist = new List<ISegmentString>();
             GetNodedSubstrings(segStrings, resultEdgelist);
             return resultEdgelist;
         }

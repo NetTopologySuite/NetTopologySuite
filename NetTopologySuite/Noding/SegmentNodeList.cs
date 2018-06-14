@@ -86,7 +86,7 @@ namespace NetTopologySuite.Noding
         /// </summary>
         private void AddCollapsedNodes()
         {
-            IList<int> collapsedVertexIndexes = new List<int>();
+            var collapsedVertexIndexes = new List<int>();
 
             FindCollapsesFromInsertedNodes(collapsedVertexIndexes);
             FindCollapsesFromExistingVertices(collapsedVertexIndexes);

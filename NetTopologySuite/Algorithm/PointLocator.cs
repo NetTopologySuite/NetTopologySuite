@@ -104,7 +104,7 @@ namespace NetTopologySuite.Algorithm
             }
             else if (geom is IGeometryCollection)
             {
-                IEnumerator geomi = new GeometryCollectionEnumerator((IGeometryCollection) geom);
+                var geomi = new GeometryCollectionEnumerator((IGeometryCollection) geom);
                 while(geomi.MoveNext())
                 {
                     var g2 = (IGeometry) geomi.Current;

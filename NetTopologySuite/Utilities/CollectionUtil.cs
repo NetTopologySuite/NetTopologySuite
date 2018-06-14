@@ -39,7 +39,7 @@ namespace NetTopologySuite.Utilities
             where TIn: class
             where TOut : class
         {
-            IList<TOut> result = new List<TOut>(coll.Count);
+            var result = new List<TOut>(coll.Count);
             foreach (var obj in coll)
                 result.Add(obj as TOut);
             return result;
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Utilities
         [Obsolete]
         public static IList<T> Transform<T>(IList<T> list, FunctionDelegate<T> function)
         {
-            IList<T> result = new List<T>(list.Count);
+            var result = new List<T>(list.Count);
             foreach (var item in list)
                 result.Add(function(item));
             return result;
@@ -71,7 +71,7 @@ namespace NetTopologySuite.Utilities
         [Obsolete]
         public static IList<TResult> Transform<T, TResult>(IList<T> list, FunctionDelegate<T, TResult> function)
         {
-            IList<TResult> result = new List<TResult>(list.Count);
+            var result = new List<TResult>(list.Count);
             foreach (var item in list)
                 result.Add(function(item));
             return result;
@@ -101,7 +101,7 @@ namespace NetTopologySuite.Utilities
         [Obsolete]
         public static IList<T> Select<T>(IEnumerable<T> items, FunctionDelegate<T, bool> func)
         {
-            IList<T> result = new List<T>();
+            var result = new List<T>();
             foreach (var obj in items)
                 if (func(obj)) result.Add(obj);
             return result;
@@ -143,7 +143,7 @@ namespace NetTopologySuite.Utilities
         [Obsolete("Not used anywhere in NTS; use LINQ or a generic overload instead.", error: true)]
         public static IList<T> Cast<T>(System.Collections.ICollection coll)
         {
-            IList<T> result = new List<T>(coll.Count);
+            var result = new List<T>(coll.Count);
             foreach (object obj in coll)
                 result.Add((T)obj);
             return result;

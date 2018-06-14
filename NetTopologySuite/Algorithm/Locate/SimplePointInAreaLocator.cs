@@ -32,7 +32,7 @@ namespace NetTopologySuite.Algorithm.Locate
 
             if (geom is IGeometryCollection)
             {
-                IEnumerator<IGeometry> geomi = new GeometryCollectionEnumerator((IGeometryCollection)geom);
+                var geomi = new GeometryCollectionEnumerator((IGeometryCollection)geom);
                 while (geomi.MoveNext())
                 {
                     var g2 = geomi.Current;

@@ -72,7 +72,7 @@ namespace NetTopologySuite.Noding
         /// </summary>
         private void IntersectChains()
         {
-            MonotoneChainOverlapAction overlapAction = new SegmentOverlapAction(SegmentIntersector);
+            var overlapAction = new SegmentOverlapAction(SegmentIntersector);
             foreach(var obj in _monoChains)
             {
                 var queryChain = obj;

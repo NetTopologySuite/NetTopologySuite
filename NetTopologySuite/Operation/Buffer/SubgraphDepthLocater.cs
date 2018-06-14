@@ -52,7 +52,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <returns>A List of {DepthSegments} intersecting the stabbing line.</returns>
         private IList<DepthSegment> FindStabbedSegments(Coordinate stabbingRayLeftPt)
         {
-            IList<DepthSegment> stabbedSegments = new List<DepthSegment>();
+            var stabbedSegments = new List<DepthSegment>();
             foreach (var bsg in _subgraphs)
             {
                 FindStabbedSegments(stabbingRayLeftPt, bsg.DirectedEdges, stabbedSegments);

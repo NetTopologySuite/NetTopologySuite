@@ -138,7 +138,7 @@ namespace NetTopologySuite.Operation.Overlay
         {
             int shellCount = 0;
             EdgeRing shell = null;
-            foreach (/*Minimal*/var er in minEdgeRings)
+            foreach (var er in minEdgeRings)
             {
                 if (!er.IsHole)
                 {
@@ -267,7 +267,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <returns></returns>
         private IList<IGeometry> ComputePolygons(IEnumerable<EdgeRing> shellList)
         {
-            IList<IGeometry> resultPolyList = new List<IGeometry>();
+            var resultPolyList = new List<IGeometry>();
             // add Polygons for all shells
             foreach (var er in shellList)
             {
