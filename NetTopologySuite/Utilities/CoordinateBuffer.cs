@@ -95,7 +95,7 @@ namespace NetTopologySuite.Utilities
         {
             get
             {
-                Ordinates result = Ordinates.XY;
+                var result = Ordinates.XY;
 
                 if (_zs != null)
                 {
@@ -223,7 +223,7 @@ namespace NetTopologySuite.Utilities
             bool extraM = gaveM && !needM;
             bool missingM = needM && !gaveM;
 
-            List<string> messages = new List<string>(3) { "Wrong AddCoordinate method was called for what this list stores." };
+            var messages = new List<string>(3) { "Wrong AddCoordinate method was called for what this list stores." };
 
             if (gaveZ)
             {
@@ -249,7 +249,7 @@ namespace NetTopologySuite.Utilities
                 messages.Add("No value was provided for M, but this list stores M values.");
             }
 
-            throw new InvalidOperationException(String.Join(" ", messages.ToArray()));
+            throw new InvalidOperationException(string.Join(" ", messages.ToArray()));
         }
 
         /// <summary>
@@ -283,10 +283,10 @@ namespace NetTopologySuite.Utilities
                 throw new ArgumentException("Must have enough room for all our coordinates.", nameof(coordinateSequence));
             }
 
-            Ordinates inputOrdinates = this.StoredOrdinates;
-            Ordinates outputOrdinates = coordinateSequence.Ordinates;
+            var inputOrdinates = this.StoredOrdinates;
+            var outputOrdinates = coordinateSequence.Ordinates;
 
-            List<OrdinateColumn> ordinateColumnList = new List<OrdinateColumn>(4);
+            var ordinateColumnList = new List<OrdinateColumn>(4);
 
             if ((outputOrdinates & Ordinates.X) == Ordinates.X)
             {
@@ -308,10 +308,10 @@ namespace NetTopologySuite.Utilities
                 ordinateColumnList.Add(new OrdinateColumn(Ordinate.M, _ms));
             }
 
-            OrdinateColumn[] ordinateColumns = ordinateColumnList.ToArray();
+            var ordinateColumns = ordinateColumnList.ToArray();
             for (int i = 0, cnt = this.Count; i < cnt; i++)
             {
-                foreach ((Ordinate ordinate, List<double> vals) in ordinateColumns)
+                foreach (var (ordinate, vals) in ordinateColumns)
                 {
                     coordinateSequence.SetOrdinate(i, ordinate, vals?[i] ?? Coordinate.NullOrdinate);
                 }
