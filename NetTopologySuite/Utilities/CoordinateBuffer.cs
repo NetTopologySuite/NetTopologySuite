@@ -268,7 +268,6 @@ namespace NetTopologySuite.Utilities
                 throw new ArgumentException("Must have enough room for all our coordinates.", nameof(coordinateSequence));
             }
 
-            var inputOrdinates = this.StoredOrdinates;
             var outputOrdinates = coordinateSequence.Ordinates;
 
             var ordinateColumnList = new List<OrdinateColumn>(4);
