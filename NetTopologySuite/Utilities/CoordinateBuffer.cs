@@ -69,6 +69,8 @@ namespace NetTopologySuite.Utilities
                 throw new ArgumentOutOfRangeException(nameof(initialCapacity), initialCapacity, "Must be non-negative.");
             }
 
+            this.StoredOrdinates = ordinates;
+
             _xs = new List<double>(initialCapacity);
             _ys = new List<double>(initialCapacity);
 
@@ -91,25 +93,7 @@ namespace NetTopologySuite.Utilities
         /// <summary>
         /// Gets the <see cref="Ordinates"/> that this list stores.
         /// </summary>
-        public Ordinates StoredOrdinates
-        {
-            get
-            {
-                var result = Ordinates.XY;
-
-                if (_zs != null)
-                {
-                    result |= Ordinates.Z;
-                }
-
-                if (_ms != null)
-                {
-                    result |= Ordinates.M;
-                }
-
-                return result;
-            }
-        }
+        public Ordinates StoredOrdinates { get; }
 
         /// <summary>
         /// Adds a coordinate to this list.
