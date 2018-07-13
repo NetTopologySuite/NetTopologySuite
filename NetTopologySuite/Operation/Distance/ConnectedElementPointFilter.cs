@@ -27,7 +27,7 @@ namespace NetTopologySuite.Operation.Distance
         private readonly IList<Coordinate> _pts;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pts"></param>
         ConnectedElementPointFilter(IList<Coordinate> pts)
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Operation.Distance
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geom"></param>
         public void Filter(IGeometry geom)

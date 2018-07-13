@@ -6,9 +6,9 @@ namespace NetTopologySuite.Tests.XUnit
     {
         protected ValidateXUnitRunner(string testFile) : base(testFile) { }
 
-        private const String testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\validate";
+        private const string testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\validate";
 
-        protected override string TestLocation { get { return testLocation; } }
+        protected override string TestLocation => testLocation;
     }
 
     public class TestRelateAA : ValidateXUnitRunner
@@ -50,7 +50,7 @@ namespace NetTopologySuite.Tests.XUnit
     {
         public TestRelatePL_Vivid() : base("TestRelatePL.xml") { }
     }
-    
+
     public class TestRelatePP_Vivid : ValidateXUnitRunner
     {
         public TestRelatePP_Vivid() : base("TestRelatePP.xml") { }

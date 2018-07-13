@@ -11,8 +11,8 @@ namespace NetTopologySuite.Tests.Various
         [Test, Category("Issue75")]
         public void EqualsThrowsInvalidCastExceptionBugFix()
         {
-            Point point = new Point(1.0, 1.0);
-            Coordinate coordinate = new Coordinate(-1.0, -1.0);
+            var point = new Point(1.0, 1.0);
+            var coordinate = new Coordinate(-1.0, -1.0);
             bool condition = point.Equals(coordinate);
             Assert.IsFalse(condition);
         }

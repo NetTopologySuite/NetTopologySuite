@@ -70,7 +70,7 @@ namespace NetTopologySuite.Geometries
             int minDim = Math.Min(src.Dimension, dest.Dimension);
             for (int dim = 0; dim < minDim; dim++)
             {
-                Ordinate ordinate = (Ordinate)dim;
+                var ordinate = (Ordinate)dim;
                 double value = src.GetOrdinate(srcPos, ordinate);
                 dest.SetOrdinate(destPos, ordinate, value);
             }
@@ -79,7 +79,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Tests whether a <see cref="ICoordinateSequence"/> forms a valid <see cref="ILinearRing"/>,
         /// by checking the sequence length and closure
-        /// (whether the first and last points are identical in 2D). 
+        /// (whether the first and last points are identical in 2D).
         /// Self-intersection is not checked.
         /// </summary>
         /// <param name="seq">The sequence to test</param>
@@ -98,11 +98,11 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Ensures that a CoordinateSequence forms a valid ring, 
+        /// Ensures that a CoordinateSequence forms a valid ring,
         /// returning a new closed sequence of the correct length if required.
-        /// If the input sequence is already a valid ring, it is returned 
+        /// If the input sequence is already a valid ring, it is returned
         /// without modification.
-        /// If the input sequence is too short or is not closed, 
+        /// If the input sequence is too short or is not closed,
         /// it is extended with one or more copies of the start point.
         /// </summary>
         /// <param name="fact">The CoordinateSequenceFactory to use to create the new sequence</param>
@@ -110,14 +110,14 @@ namespace NetTopologySuite.Geometries
         /// <returns>The original sequence, if it was a valid ring, or a new sequence which is valid.</returns>
         public static ICoordinateSequence EnsureValidRing(ICoordinateSequenceFactory fact, ICoordinateSequence seq)
         {
-            var n = seq.Count;
+            int n = seq.Count;
             // empty sequence is valid
             if (n == 0) return seq;
             // too short - make a new one
             if (n <= 3)
                 return CreateClosedRing(fact, seq, 4);
 
-            var isClosed = seq.GetOrdinate(0, Ordinate.X) == seq.GetOrdinate(n - 1, Ordinate.X) &&
+            bool isClosed = seq.GetOrdinate(0, Ordinate.X) == seq.GetOrdinate(n - 1, Ordinate.X) &&
                            seq.GetOrdinate(0, Ordinate.Y) == seq.GetOrdinate(n - 1, Ordinate.Y);
             if (isClosed) return seq;
             // make a new closed ring
@@ -138,12 +138,12 @@ namespace NetTopologySuite.Geometries
         public static ICoordinateSequence Extend(ICoordinateSequenceFactory fact, ICoordinateSequence seq, int size)
         {
             var newseq = fact.Create(size, seq.Ordinates);
-            var n = seq.Count;
+            int n = seq.Count;
             Copy(seq, 0, newseq, 0, n);
             // fill remaining coordinates with end point, if it exists
             if (n > 0)
             {
-                for (var i = n; i < size; i++)
+                for (int i = n; i < size; i++)
                     Copy(seq, n - 1, newseq, i, 1);
             }
             return newseq;
@@ -152,10 +152,10 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Tests whether two <see cref="ICoordinateSequence"/>s are equal.
         /// To be equal, the sequences must be the same length.
-        /// They do not need to be of the same dimension, 
+        /// They do not need to be of the same dimension,
         /// but the ordinate values for the smallest dimension of the two
         /// must be equal.
-        /// Two <c>NaN</c> ordinates values are considered to be equal. 
+        /// Two <c>NaN</c> ordinates values are considered to be equal.
         /// </summary>
         /// <param name="cs1">a CoordinateSequence</param>
         /// <param name="cs2">a CoordinateSequence</param>
@@ -171,13 +171,13 @@ namespace NetTopologySuite.Geometries
             {
                 for (int d = 0; d < dim; d++)
                 {
-                    Ordinate ordinate = (Ordinate)d;
+                    var ordinate = (Ordinate)d;
                     double v1 = cs1.GetOrdinate(i, ordinate);
                     double v2 = cs2.GetOrdinate(i, ordinate);
                     if (cs1.GetOrdinate(i, ordinate) == cs2.GetOrdinate(i, ordinate))
                         continue;
                     // special check for NaNs
-                    if (Double.IsNaN(v1) && Double.IsNaN(v2))
+                    if (double.IsNaN(v1) && double.IsNaN(v2))
                         continue;
                     return false;
                 }
@@ -194,13 +194,13 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="cs">the sequence to output</param>
         /// <returns>the string representation of the sequence</returns>
-        public static String ToString(ICoordinateSequence cs)
+        public static string ToString(ICoordinateSequence cs)
         {
             int size = cs.Count;
             if (size == 0)
                 return "()";
             int dim = cs.Dimension;
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append('(');
             for (int i = 0; i < size; i++)
             {
@@ -209,7 +209,7 @@ namespace NetTopologySuite.Geometries
                 {
                     if (d > 0) sb.Append(",");
                     double ordinate = cs.GetOrdinate(i, (Ordinate)d);
-                    sb.Append(String.Format("{0:0.#}", ordinate));
+                    sb.Append(string.Format("{0:0.#}", ordinate));
                 }
             }
             sb.Append(')');

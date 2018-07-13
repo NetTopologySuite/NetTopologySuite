@@ -4,7 +4,7 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Triangulate
 {
     /// <summary>
-    /// Models a constraint segment which can be split in two in various ways, 
+    /// Models a constraint segment which can be split in two in various ways,
     /// according to certain geometric constraints.
     /// </summary>
     /// <author>Martin Davis</author>
@@ -39,17 +39,11 @@ namespace NetTopologySuite.Triangulate
 
         public double MinimumLength
         {
-            get
-            {
-                return _minimumLen;
-            }
-            set {_minimumLen = value;}
+            get => _minimumLen;
+            set => _minimumLen = value;
         }
 
-        public Coordinate SplitPoint
-        {
-            get { return _splitPt; }
-        }
+        public Coordinate SplitPoint => _splitPt;
 
         public void SplitAt(double length, Coordinate endPt)
         {

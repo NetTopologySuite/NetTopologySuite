@@ -11,7 +11,7 @@ namespace NetTopologySuite.Geometries.Utilities
     public static class AffineTransformationFactory
     {
         /// <summary>
-        /// Creates a tranformation from a set of three control vectors. A control
+        /// Creates a transformation from a set of three control vectors. A control
         /// vector consists of a source point and a destination point, which is the
         /// image of the source point under the desired transformation. Three control
         /// vectors allows defining a fully general affine transformation.
@@ -27,7 +27,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 Coordinate src1, Coordinate src2, Coordinate dest0, Coordinate dest1,
                 Coordinate dest2)
         {
-            AffineTransformationBuilder builder = new AffineTransformationBuilder(src0,
+            var builder = new AffineTransformationBuilder(src0,
                     src1, src2, dest0, dest1, dest2);
             return builder.GetTransformation();
         }
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Geometries.Utilities
         public static AffineTransformation CreateFromControlVectors(Coordinate src0,
                 Coordinate src1, Coordinate dest0, Coordinate dest1)
         {
-            Coordinate rotPt = new Coordinate(dest1.X - dest0.X, dest1.Y - dest0.Y);
+            var rotPt = new Coordinate(dest1.X - dest0.X, dest1.Y - dest0.Y);
 
             double ang = AngleUtility.AngleBetweenOriented(src1, src0, rotPt);
 
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
             double scale = destDist / srcDist;
 
-            AffineTransformation trans = AffineTransformation.TranslationInstance(
+            var trans = AffineTransformation.TranslationInstance(
                     -src0.X, -src0.Y);
             trans.Rotate(ang);
             trans.Scale(scale, scale);
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Creates an AffineTransformation defined by a maping between two baselines.
+        /// Creates an AffineTransformation defined by a mapping between two baselines.
         /// The computed transformation consists of:
         /// <list type="Bullet">
         /// <item>a translation from the start point of the source baseline to the start point of the destination baseline,</item>
@@ -133,7 +133,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 Coordinate src0, Coordinate src1,
                 Coordinate dest0, Coordinate dest1)
         {
-            Coordinate rotPt = new Coordinate(src0.X + dest1.X - dest0.X, src0.Y + dest1.Y - dest0.Y);
+            var rotPt = new Coordinate(src0.X + dest1.X - dest0.X, src0.Y + dest1.Y - dest0.Y);
 
             double ang = AngleUtility.AngleBetweenOriented(src1, src0, rotPt);
 
@@ -146,7 +146,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
             double scale = destDist / srcDist;
 
-            AffineTransformation trans = AffineTransformation.TranslationInstance(
+            var trans = AffineTransformation.TranslationInstance(
                     -src0.X, -src0.Y);
             trans.Rotate(ang);
             trans.Scale(scale, scale);

@@ -8,13 +8,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
     public class BufferTest
     {
         [TestAttribute]
-        [Ignore]
-        public void Test0()
-        {
-            TestMultiLineStringSeparateBuffersFloatingSingle();
-        }
-
-        [TestAttribute]
         public void TestMultiLineStringDepthFailure()
         {
             new BufferValidator(
@@ -69,7 +62,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                 .TestContains().Test();
 
         }
-        
+
         [TestAttribute, Ignore("This test needs to be investigated in JTS to see why the result is failing.  The expectation is that the buffer is empty, but it isn't")]
         public void TestMultiLineStringSeparateBuffersFloatingSingle()
         {
@@ -81,7 +74,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             .TestEmptyBufferExpected(true)
             .SetPrecisionModel(new PrecisionModel(PrecisionModels.FloatingSingle))
             .Test();
-            
+
         }
 
         [TestAttribute, Ignore("This test needs to be investigated in JTS to see why the result is failing.  The expectation is that there are no holes in the buffer, but there are")]

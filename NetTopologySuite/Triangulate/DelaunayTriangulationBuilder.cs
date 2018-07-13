@@ -7,9 +7,9 @@ using NetTopologySuite.Triangulate.QuadEdge;
 namespace NetTopologySuite.Triangulate
 {
     /// <summary>
-    /// A utility class which creates Delaunay Trianglulations
-    /// from collections of points and extract the resulting 
-    /// triangulation edges or triangles as geometries. 
+    /// A utility class which creates Delaunay Triangulations
+    /// from collections of points and extract the resulting
+    /// triangulation edges or triangles as geometries.
     /// </summary>
     /// <author>Martin Davis</author>
     public class DelaunayTriangulationBuilder
@@ -24,7 +24,7 @@ namespace NetTopologySuite.Triangulate
             if (geom == null)
                 return new CoordinateList();
 
-            Coordinate[] coords = geom.Coordinates;
+            var coords = geom.Coordinates;
             return Unique(coords);
         }
 
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Triangulate
         /// <returns>the envelope of the set of coordinates</returns>
         public static Envelope Envelope(ICollection<Coordinate> coords)
         {
-            Envelope env = new Envelope();
+            var env = new Envelope();
             foreach (var coord in coords)
             {
                 env.ExpandToInclude(coord);
@@ -100,7 +100,7 @@ namespace NetTopologySuite.Triangulate
         ///// <param name="tolerance">the tolerance distance to use</param>
         public double Tolerance
         {
-            set {  _tolerance = value; }
+            set => _tolerance = value;
         }
 
         private void Create()
@@ -110,7 +110,7 @@ namespace NetTopologySuite.Triangulate
             var siteEnv = Envelope(_siteCoords);
             var vertices = ToVertices(_siteCoords);
             _subdiv = new QuadEdgeSubdivision(siteEnv, _tolerance);
-            IncrementalDelaunayTriangulator triangulator = new IncrementalDelaunayTriangulator(_subdiv);
+            var triangulator = new IncrementalDelaunayTriangulator(_subdiv);
             triangulator.InsertSites(vertices);
         }
 
@@ -136,7 +136,7 @@ namespace NetTopologySuite.Triangulate
         }
 
         /// <summary>
-        /// Gets the faces of the computed triangulation as a <see cref="IGeometryCollection"/> 
+        /// Gets the faces of the computed triangulation as a <see cref="IGeometryCollection"/>
         /// of <see cref="Polygon"/>.
         /// </summary>
         /// <param name="geomFact">the geometry factory to use to create the output</param>

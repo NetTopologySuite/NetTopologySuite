@@ -18,21 +18,21 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
 
         public bool Test(IList<IGeometry> geoms, double minimumMeasure)
         {
-            Console.Write("Computing Iterated union ");
-            IGeometry union1 = UnionIterated(geoms);
-            Console.WriteLine("Computing Cascaded union");
-            IGeometry union2 = UnionCascaded(geoms);
+            //System.Console.WriteLine("Computing Iterated union ");
+            var union1 = UnionIterated(geoms);
+            //System.Console.WriteLine("Computing Cascaded union");
+            var union2 = UnionCascaded(geoms);
 
-            Console.WriteLine("Testing similarity with min measure = " + minimumMeasure);
+            //System.Console.WriteLine("Testing similarity with min measure = " + minimumMeasure);
 
             double areaMeasure = (new AreaSimilarityMeasure()).Measure(union1, union2);
             double hausMeasure = (new HausdorffSimilarityMeasure()).Measure(union1, union2);
             double overallMeasure = SimilarityMeasureCombiner.Combine(areaMeasure, hausMeasure);
 
-            Console.WriteLine(
-                    "Area measure = " + areaMeasure
-                    + "   Hausdorff measure = " + hausMeasure
-                    + "    Overall = " + overallMeasure);
+            //Console.WriteLine(
+            //        "Area measure = " + areaMeasure
+            //        + "   Hausdorff measure = " + hausMeasure
+            //        + "    Overall = " + overallMeasure);
 
             return overallMeasure > minimumMeasure;
         }
@@ -52,19 +52,18 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
           System.out.println("Testing similarity with tolerance = " + distanceTolerance);
           bool isSameWithinTolerance =  SimilarityValidator.isSimilar(union1, union2, distanceTolerance);
 
-
           Assert.IsTrue(isSameWithinTolerance);
         }
       */
         public IGeometry UnionIterated(IList<IGeometry> geoms)
         {
             IGeometry unionAll = null;
-            var count = 0;
+            int count = 0;
             foreach (var geom in geoms)
             {
                 if (unionAll == null)
                 {
-                    unionAll = (Geometry)geom.Clone();
+                    unionAll = (Geometry)geom.Copy();
                 }
                 else
                 {
@@ -77,7 +76,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
                     Console.Write(".");
                     //        System.out.println("Adding geom #" + count);
                 }
-            } 
+            }
             Console.Write("\n");
             return unionAll;
         }

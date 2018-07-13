@@ -27,9 +27,7 @@ THE SOFTWARE.
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if NET35
 using System.Linq;
-#endif
 
 namespace NetTopologySuite.Utilities
 {
@@ -170,7 +168,7 @@ namespace NetTopologySuite.Utilities
         /// This is the node whose <typeparamref name="TPriority"/> compares
         /// less than or equal to the priority of all other nodes in the queue.
         /// </summary>
-        public PriorityQueueNode<TPriority, TData> Head { get { return this.nodes[1]; } }
+        public PriorityQueueNode<TPriority, TData> Head => this.nodes[1];
 
         /// <summary>
         /// Removes all nodes from this queue.
@@ -316,15 +314,10 @@ namespace NetTopologySuite.Utilities
         /// <inheritdoc />
         public IEnumerator<PriorityQueueNode<TPriority, TData>> GetEnumerator()
         {
-#if NET35
             return this.nodes
                        .Skip(1)
                        .Take(this.Count)
                        .GetEnumerator();
-#else
-            for(int i = 1; i <= this.Count; i++)
-                yield return this.nodes[i];
-#endif
         }
 
         /// <inheritdoc />

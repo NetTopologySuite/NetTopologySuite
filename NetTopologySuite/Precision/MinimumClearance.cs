@@ -15,7 +15,7 @@ namespace NetTopologySuite.Precision
     /// the vertices of a geometry can be tolerated
     /// before the geometry becomes topologically invalid.
     /// The smaller the Minimum Clearance distance,
-    /// the less vertex pertubation the geometry can tolerate
+    /// the less vertex perturbation the geometry can tolerate
     /// before becoming invalid.
     /// </summary>
     /// <remarks>
@@ -99,7 +99,7 @@ namespace NetTopologySuite.Precision
         /// for the given Geometry.
         /// </summary>
         /// <param name="g">The input geometry</param>
-        /// <returns>The value of the minimum clearance distance<br/> 
+        /// <returns>The value of the minimum clearance distance<br/>
         /// or <c>LINESTRING EMPTY</c> if no minimum clearance distance exists.</returns>
         public static IGeometry GetLine(IGeometry g)
         {
@@ -150,7 +150,7 @@ namespace NetTopologySuite.Precision
             Compute();
             // return empty line string if no min pts where found
             if (_minClearancePts == null || _minClearancePts[0] == null)
-                return _inputGeom.Factory.CreateLineString((Coordinate[])null);
+                return _inputGeom.Factory.CreateLineString();
             return _inputGeom.Factory.CreateLineString(_minClearancePts);
         }
 
@@ -161,7 +161,7 @@ namespace NetTopologySuite.Precision
 
             // initialize to "No Distance Exists" state
             _minClearancePts = new Coordinate[2];
-            _minClearance = Double.MaxValue;
+            _minClearance = double.MaxValue;
 
             // handle empty geometries
             if (_inputGeom.IsEmpty)
@@ -187,7 +187,7 @@ namespace NetTopologySuite.Precision
         ///     p1 == p2 : Double.MAX
         ///
         /// dist(p, seg) =
-        ///     p != seq.p1 && p != seg.p2
+        ///     p != seq.p1 &amp;&amp; p != seg.p2
         ///         ? seg.distance(p)
         ///         : Double.MaxValue
         /// </code>
@@ -196,19 +196,16 @@ namespace NetTopologySuite.Precision
         /// <author>Martin Davis</author>
         private class MinClearanceDistance : IItemDistance<Envelope, FacetSequence>
         {
-            private double _minDist = Double.MaxValue;
+            private double _minDist = double.MaxValue;
             private readonly Coordinate[] _minPts = new Coordinate[2];
 
-            public Coordinate[] Coordinates
-            {
-                get { return _minPts; }
-            }
+            public Coordinate[] Coordinates => _minPts;
 
             public double Distance(IBoundable<Envelope, FacetSequence> b1, IBoundable<Envelope, FacetSequence> b2)
             {
                 var fs1 = b1.Item;
                 var fs2 = b2.Item;
-                _minDist = Double.MaxValue;
+                _minDist = double.MaxValue;
                 return Distance(fs1, fs2);
             }
 
@@ -234,7 +231,7 @@ namespace NetTopologySuite.Precision
                         var p2 = fs2.GetCoordinate(i2);
                         if (!p1.Equals2D(p2))
                         {
-                            var d = p1.Distance(p2);
+                            double d = p1.Distance(p2);
                             if (d < _minDist)
                             {
                                 _minDist = d;
@@ -251,9 +248,9 @@ namespace NetTopologySuite.Precision
 
             private double SegmentDistance(FacetSequence fs1, FacetSequence fs2)
             {
-                for (var i1 = 0; i1 < fs1.Count; i1++)
+                for (int i1 = 0; i1 < fs1.Count; i1++)
                 {
-                    for (var i2 = 1; i2 < fs2.Count; i2++)
+                    for (int i2 = 1; i2 < fs2.Count; i2++)
                     {
                         var p = fs1.GetCoordinate(i1);
 
@@ -262,7 +259,7 @@ namespace NetTopologySuite.Precision
 
                         if (!(p.Equals2D(seg0) || p.Equals2D(seg1)))
                         {
-                            var d = CGAlgorithms.DistancePointLine(p, seg0, seg1);
+                            double d = DistanceComputer.PointToSegment(p, seg0, seg1);
                             if (d < _minDist)
                             {
                                 _minDist = d;

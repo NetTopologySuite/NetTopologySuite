@@ -114,10 +114,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// the output needs to be further treated
         /// before it can be used.
         /// </summary>
-        public bool HasNarrowConcaveAngle
-        {
-            get { return _hasNarrowConcaveAngle; }
-        }
+        public bool HasNarrowConcaveAngle => _hasNarrowConcaveAngle;
 
         private void Init(double distance)
         {
@@ -185,10 +182,10 @@ namespace NetTopologySuite.Operation.Buffer
             // do nothing if points are equal
             if (_s1.Equals(_s2)) return;
 
-            int orientation = CGAlgorithms.ComputeOrientation(_s0, _s1, _s2);
+            var orientation = Orientation.Index(_s0, _s1, _s2);
             bool outsideTurn =
-                  (orientation == CGAlgorithms.Clockwise && _side == Positions.Left)
-              || (orientation == CGAlgorithms.CounterClockwise && _side == Positions.Right);
+                  (orientation == OrientationIndex.Clockwise && _side == Positions.Left)
+              || (orientation == OrientationIndex.CounterClockwise && _side == Positions.Right);
 
             if (orientation == 0)
             { // lines are collinear
@@ -206,20 +203,20 @@ namespace NetTopologySuite.Operation.Buffer
 
         private void AddCollinear(bool addStartPoint)
         {
-            /**
+            /*
              * This test could probably be done more efficiently,
              * but the situation of exact collinearity should be fairly rare.
              */
             _li.ComputeIntersection(_s0, _s1, _s1, _s2);
             int numInt = _li.IntersectionNum;
-            /**
+            /*
              * if numInt is < 2, the lines are parallel and in the same direction. In
              * this case the point can be ignored, since the offset lines will also be
              * parallel.
              */
             if (numInt >= 2)
             {
-                /**
+                /*
                  * segments are collinear but reversing.
                  * Add an "end-cap" fillet
                  * all the way around to other direction This case should ONLY happen
@@ -236,7 +233,7 @@ namespace NetTopologySuite.Operation.Buffer
                 }
                 else
                 {
-                    AddFillet(_s1, _offset0.P1, _offset1.P0, CGAlgorithms.Clockwise, _distance);
+                    AddCornerFillet(_s1, _offset0.P1, _offset1.P0, OrientationIndex.Clockwise, _distance);
                 }
             }
         }
@@ -244,7 +241,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <summary>
         /// Adds the offset points for an outside (convex) turn
         /// </summary>
-        private void AddOutsideTurn(int orientation, bool addStartPoint)
+        private void AddOutsideTurn(OrientationIndex orientation, bool addStartPoint)
         {
             /**
              * Heuristic: If offset endpoints are very close together,
@@ -272,7 +269,7 @@ namespace NetTopologySuite.Operation.Buffer
                 // add a circular fillet connecting the endpoints of the offset segments
                 if (addStartPoint) _segList.AddPt(_offset0.P1);
                 // TESTING - comment out to produce beveled joins
-                AddFillet(_s1, _offset0.P1, _offset1.P0, orientation, _distance);
+                AddCornerFillet(_s1, _offset0.P1, _offset1.P0, orientation, _distance);
                 _segList.AddPt(_offset1.P0);
             }
         }
@@ -282,7 +279,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <param name="orientation"></param>
         /// <param name="addStartPoint"></param>
-        private void AddInsideTurn(int orientation, bool addStartPoint)
+        private void AddInsideTurn(OrientationIndex orientation, bool addStartPoint)
         {
             /**
              * add intersection point of offset segments (if any)
@@ -294,7 +291,7 @@ namespace NetTopologySuite.Operation.Buffer
             }
             else
             {
-                /**
+                /*
                  * If no intersection is detected,
                  * it means the angle is so small and/or the offset so
                  * large that the offsets segments don't intersect.
@@ -314,14 +311,14 @@ namespace NetTopologySuite.Operation.Buffer
                  * This is the purpose of the closingSegFactor heuristic value.
                  */
 
-                /**
-                * The intersection test above is vulnerable to robustness errors; i.e. it
-                * may be that the offsets should intersect very close to their endpoints,
-                * but aren't reported as such due to rounding. To handle this situation
-                * appropriately, we use the following test: If the offset points are very
-                * close, don't add closing segments but simply use one of the offset
-                * points
-                */
+                /*
+                 * The intersection test above is vulnerable to robustness errors; i.e. it
+                 * may be that the offsets should intersect very close to their endpoints,
+                 * but aren't reported as such due to rounding. To handle this situation
+                 * appropriately, we use the following test: If the offset points are very
+                 * close, don't add closing segments but simply use one of the offset
+                 * points
+                 */
                 _hasNarrowConcaveAngle = true;
                 //System.out.println("NARROW ANGLE - distance = " + distance);
                 if (_offset0.P1.Distance(_offset1.P0) < _distance
@@ -400,16 +397,16 @@ namespace NetTopologySuite.Operation.Buffer
             var offsetR = new LineSegment();
             ComputeOffsetSegment(seg, Positions.Right, _distance, offsetR);
 
-            var dx = p1.X - p0.X;
-            var dy = p1.Y - p0.Y;
-            var angle = Math.Atan2(dy, dx);
+            double dx = p1.X - p0.X;
+            double dy = p1.Y - p0.Y;
+            double angle = Math.Atan2(dy, dx);
 
             switch (_bufParams.EndCapStyle)
             {
                 case EndCapStyle.Round:
                     // add offset seg points with a fillet between them
                     _segList.AddPt(offsetL.P1);
-                    AddFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2, CGAlgorithms.Clockwise, _distance);
+                    AddDirectedFillet(p1, angle + Math.PI / 2, angle - Math.PI / 2, OrientationIndex.Clockwise, _distance);
                     _segList.AddPt(offsetR.P1);
                     break;
                 case EndCapStyle.Flat:
@@ -448,12 +445,12 @@ namespace NetTopologySuite.Operation.Buffer
             LineSegment offset1,
             double distance)
         {
-            var isMitreWithinLimit = true;
+            bool isMitreWithinLimit = true;
             Coordinate intPt;
 
             /**
              * This computation is unstable if the offset segments are nearly collinear.
-             * Howver, this situation should have been eliminated earlier by the check for
+             * However, this situation should have been eliminated earlier by the check for
              * whether the offset segment endpoints are almost coincident
              */
             try
@@ -461,7 +458,7 @@ namespace NetTopologySuite.Operation.Buffer
                 intPt = HCoordinate.Intersection(offset0.P0,
                    offset0.P1, offset1.P0, offset1.P1);
 
-                var mitreRatio = distance <= 0.0 ? 1.0
+                double mitreRatio = distance <= 0.0 ? 1.0
                     : intPt.Distance(p) / Math.Abs(distance);
 
                 if (mitreRatio > _bufParams.MitreLimit)
@@ -501,36 +498,36 @@ namespace NetTopologySuite.Operation.Buffer
         {
             var basePt = _seg0.P1;
 
-            var ang0 = AngleUtility.Angle(basePt, _seg0.P0);
+            double ang0 = AngleUtility.Angle(basePt, _seg0.P0);
             //var ang1 = AngleUtility.Angle(basePt, _seg1.P1);
 
             // oriented angle between segments
-            var angDiff = AngleUtility.AngleBetweenOriented(_seg0.P0, basePt, _seg1.P1);
+            double angDiff = AngleUtility.AngleBetweenOriented(_seg0.P0, basePt, _seg1.P1);
             // half of the interior angle
-            var angDiffHalf = angDiff / 2;
+            double angDiffHalf = angDiff / 2;
 
             // angle for bisector of the interior angle between the segments
-            var midAng = AngleUtility.Normalize(ang0 + angDiffHalf);
+            double midAng = AngleUtility.Normalize(ang0 + angDiffHalf);
             // rotating this by PI gives the bisector of the reflex angle
-            var mitreMidAng = AngleUtility.Normalize(midAng + Math.PI);
+            double mitreMidAng = AngleUtility.Normalize(midAng + Math.PI);
 
             // the miterLimit determines the distance to the mitre bevel
-            var mitreDist = mitreLimit * distance;
+            double mitreDist = mitreLimit * distance;
             // the bevel delta is the difference between the buffer distance
             // and half of the length of the bevel segment
-            var bevelDelta = mitreDist * Math.Abs(Math.Sin(angDiffHalf));
-            var bevelHalfLen = distance - bevelDelta;
+            double bevelDelta = mitreDist * Math.Abs(Math.Sin(angDiffHalf));
+            double bevelHalfLen = distance - bevelDelta;
 
             // compute the midpoint of the bevel segment
-            var bevelMidX = basePt.X + mitreDist * Math.Cos(mitreMidAng);
-            var bevelMidY = basePt.Y + mitreDist * Math.Sin(mitreMidAng);
+            double bevelMidX = basePt.X + mitreDist * Math.Cos(mitreMidAng);
+            double bevelMidY = basePt.Y + mitreDist * Math.Sin(mitreMidAng);
             var bevelMidPt = new Coordinate(bevelMidX, bevelMidY);
 
-            // compute the mitre midline segment from the corner point to the bevel segment midpoint
+            // compute the mitre mid-line segment from the corner point to the bevel segment midpoint
             var mitreMidLine = new LineSegment(basePt, bevelMidPt);
 
             // finally the bevel segment endpoints are computed as offsets from
-            // the mitre midline
+            // the mitre mid-line
             var bevelEndLeft = mitreMidLine.PointAlongOffset(1.0, bevelHalfLen);
             var bevelEndRight = mitreMidLine.PointAlongOffset(1.0, -bevelHalfLen);
 
@@ -576,7 +573,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="p1">Endpoint of fillet curve</param>
         /// <param name="direction">The orientation of the fillet</param>
         /// <param name="radius">The radius of the fillet</param>
-        private void AddFillet(Coordinate p, Coordinate p0, Coordinate p1, int direction, double radius)
+        private void AddCornerFillet(Coordinate p, Coordinate p0, Coordinate p1, OrientationIndex direction, double radius)
         {
             double dx0 = p0.X - p.X;
             double dy0 = p0.Y - p.Y;
@@ -585,7 +582,7 @@ namespace NetTopologySuite.Operation.Buffer
             double dy1 = p1.Y - p.Y;
             double endAngle = Math.Atan2(dy1, dx1);
 
-            if (direction == CGAlgorithms.Clockwise)
+            if (direction == OrientationIndex.Clockwise)
             {
                 if (startAngle <= endAngle) startAngle += 2.0 * Math.PI;
             }
@@ -594,7 +591,7 @@ namespace NetTopologySuite.Operation.Buffer
                 if (startAngle >= endAngle) startAngle -= 2.0 * Math.PI;
             }
             _segList.AddPt(p0);
-            AddFillet(p, startAngle, endAngle, direction, radius);
+            AddDirectedFillet(p, startAngle, endAngle, direction, radius);
             _segList.AddPt(p1);
         }
 
@@ -604,26 +601,29 @@ namespace NetTopologySuite.Operation.Buffer
         /// The start and end point for the fillet are not added -
         /// the caller must add them if required.
         /// </summary>
-        /// <param name="direction">Is -1 for a <see cref="CGAlgorithms.Clockwise"/> angle, 1 for a <see cref="CGAlgorithms.CounterClockwise"/> angle</param>
+        /// <param name="p">The center point</param>
+        /// <param name="direction">Is -1 for a <see cref="OrientationIndex.Clockwise"/> angle, 1 for a <see cref="OrientationIndex.CounterClockwise"/> angle</param>
+        /// <param name="startAngle">The start angle of the fillet</param>
+        /// <param name="endAngle">The end angle of the fillet</param>
         /// <param name="radius">The radius of the fillet</param>
-        private void AddFillet(Coordinate p, double startAngle, double endAngle, int direction, double radius)
+        private void AddDirectedFillet(Coordinate p, double startAngle, double endAngle, OrientationIndex direction, double radius)
         {
-            var directionFactor = direction == CGAlgorithms.Clockwise ? -1 : 1;
+            int directionFactor = direction == OrientationIndex.Clockwise ? -1 : 1;
 
-            var totalAngle = Math.Abs(startAngle - endAngle);
-            var nSegs = (int)(totalAngle / _filletAngleQuantum + 0.5);
+            double totalAngle = Math.Abs(startAngle - endAngle);
+            int nSegs = (int)(totalAngle / _filletAngleQuantum + 0.5);
 
             if (nSegs < 1) return;    // no segments because angle is less than increment - nothing to do!
 
             // choose angle increment so that each segment has equal length
             const double initAngle = 0.0;
-            var currAngleInc = totalAngle / nSegs;
+            double currAngleInc = totalAngle / nSegs;
 
-            var currAngle = initAngle;
+            double currAngle = initAngle;
             var pt = new Coordinate();
             while (currAngle < totalAngle)
             {
-                var angle = startAngle + directionFactor * currAngle;
+                double angle = startAngle + directionFactor * currAngle;
                 pt.X = p.X + radius * Math.Cos(angle);
                 pt.Y = p.Y + radius * Math.Sin(angle);
                 _segList.AddPt(pt);
@@ -632,19 +632,19 @@ namespace NetTopologySuite.Operation.Buffer
         }
 
         /// <summary>
-        /// Creates a <see cref="CGAlgorithms.Clockwise"/> circle around a point
+        /// Creates a <see cref="OrientationIndex.Clockwise"/> circle around a point
         /// </summary>
         public void CreateCircle(Coordinate p)
         {
             // add start point
             var pt = new Coordinate(p.X + _distance, p.Y);
             _segList.AddPt(pt);
-            AddFillet(p, 0.0, 2.0 * Math.PI, -1, _distance);
+            AddDirectedFillet(p, 0.0, 2.0 * Math.PI, OrientationIndex.Clockwise, _distance);
             _segList.CloseRing();
         }
 
         /// <summary>
-        /// Creates a <see cref="CGAlgorithms.Clockwise"/> square around a point
+        /// Creates a <see cref="OrientationIndex.Clockwise"/> square around a point
         /// </summary>
         public void CreateSquare(Coordinate p)
         {

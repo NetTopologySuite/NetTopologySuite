@@ -6,9 +6,9 @@ namespace NetTopologySuite.Tests.XUnit
     {
         protected FailureXUnitRunner(string testFile) : base(testFile) { }
 
-        private const String testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\failure";
+        private const string testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\failure";
 
-        protected override string TestLocation { get { return testLocation; } }
+        protected override string TestLocation => testLocation;
     }
 
     public class TestBigNastyBuffer : FailureXUnitRunner

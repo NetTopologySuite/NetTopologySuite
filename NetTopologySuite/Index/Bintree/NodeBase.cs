@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace NetTopologySuite.Index.Bintree
 {
-    /// <summary> 
+    /// <summary>
     /// The base class for nodes in a <c>Bintree</c>.
     /// </summary>
-#if !PCL    
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public abstract class NodeBase<T>
     {
-        /// <summary> 
+        /// <summary>
         /// Returns the index of the subnode that wholely contains the given interval.
         /// If none does, returns -1.
         /// </summary>
@@ -20,46 +20,43 @@ namespace NetTopologySuite.Index.Bintree
         public static int GetSubnodeIndex(Interval interval, double centre)
         {
             int subnodeIndex = -1;
-            if (interval.Min >= centre) 
+            if (interval.Min >= centre)
                 subnodeIndex = 1;
-            if (interval.Max <= centre) 
+            if (interval.Max <= centre)
                 subnodeIndex = 0;
             return subnodeIndex;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private IList<T> _items = new List<T>();
 
         /// <summary>
         /// Subnodes are numbered as follows:
-        /// 0 | 1        
+        /// 0 | 1
         /// .
         /// </summary>
         protected Node<T>[] Subnode = new Node<T>[2];
 
         /*
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected NodeBase() { }
         */
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public  IList<T> Items
         {
-            get
-            {                
-                return _items;
-            }
-            protected set { _items = value; }
+            get => _items;
+            protected set => _items = value;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="item"></param>
         public  void Add(T item)
@@ -68,23 +65,23 @@ namespace NetTopologySuite.Index.Bintree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
         public  IList<T> AddAllItems(IList<T> items)
         {
             // items.addAll(this.items);
-            foreach (T o in _items)
+            foreach (var o in _items)
                 items.Add(o);
             for (int i = 0; i < 2; i++)
                 if (Subnode[i] != null)
-                    Subnode[i].AddAllItems(items);                            
+                    Subnode[i].AddAllItems(items);
             return items;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="interval"></param>
         /// <returns></returns>
@@ -108,7 +105,7 @@ namespace NetTopologySuite.Index.Bintree
 
             // some of these may not actually overlap - this is allowed by the bintree contract
             //resultItems.AddAll(items);
-            foreach (T o in _items)
+            foreach (var o in _items)
                 resultItems.Add(o);
 
             if (Subnode[0] != null) Subnode[0].AddAllItemsFromOverlapping(interval, resultItems);
@@ -153,10 +150,7 @@ namespace NetTopologySuite.Index.Bintree
         /// <summary>
         /// Gets whether this node is prunable
         /// </summary>
-        public bool IsPrunable
-        {
-            get { return !(HasChildren || HasItems); }
-        }
+        public bool IsPrunable => !(HasChildren || HasItems);
 
         /// <summary>
         /// Gets whether this node has any children
@@ -175,10 +169,9 @@ namespace NetTopologySuite.Index.Bintree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public bool HasItems { get { return _items.Count != 0; }
-        }
+        public bool HasItems => _items.Count != 0;
 
         /// <summary>
         /// Gets whether this node has any subnodes
@@ -202,7 +195,7 @@ namespace NetTopologySuite.Index.Bintree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public  int Count
         {
@@ -217,7 +210,7 @@ namespace NetTopologySuite.Index.Bintree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public  int NodeCount
         {

@@ -26,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             var g = (Geometry)Rdr.Read("POINT(0 0)");
             RunGeometry(g, 2, ByteOrder.BigEndian, false, 100);
         }
-        
+
         [TestAttribute]
         public void TestFirst()
         {
@@ -100,7 +100,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [TestAttribute]
         public void TestBigPolygon()
         {
-            GeometricShapeFactory shapeFactory = new GeometricShapeFactory(GeomFactory);
+            var shapeFactory = new GeometricShapeFactory(GeomFactory);
             shapeFactory.Base = new Coordinate(0, 0);
             shapeFactory.Size = 1000;
             shapeFactory.NumPoints = 1000;
@@ -138,27 +138,27 @@ namespace NetTopologySuite.Tests.NUnit.IO
             RunWKBTest("GEOMETRYCOLLECTION EMPTY");
         }
 
-        private void RunWKBTest(String wkt)
+        private void RunWKBTest(string wkt)
         {
             RunWKBTestCoordinateArray(wkt);
             RunWKBTestPackedCoordinate(wkt);
         }
 
-        private void RunWKBTestPackedCoordinate(String wkt)
+        private void RunWKBTestPackedCoordinate(string wkt)
         {
-            GeometryFactory factory = new GeometryFactory(
+            var factory = new GeometryFactory(
                 new PackedCoordinateSequenceFactory(PackedCoordinateSequenceFactory.PackedType.Double, 2));
-            WKTReader reader = new WKTReader(factory);
-            IGeometry g = reader.Read(wkt);
+            var reader = new WKTReader(factory);
+            var g = reader.Read(wkt);
 
             // Since we are using a PCS of dim=2, only check 2-dimensional storage
             RunWKBTest(g, 2, true);
             RunWKBTest(g, 2, false);
         }
 
-        private void RunWKBTestCoordinateArray(String wkt)
+        private void RunWKBTestCoordinateArray(string wkt)
         {
-            IGeometry g = Rdr.Read(wkt);
+            var g = Rdr.Read(wkt);
 
             // CoordinateArrays support dimension 3, so test both dimensions
             g = SetDimension(g, 2);
@@ -174,7 +174,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             if (p0 is IGeometryCollection)
             {
                 var tmp = new List<IGeometry>();
-                for (var i = 0; i < p0.NumGeometries; i++)
+                for (int i = 0; i < p0.NumGeometries; i++)
                     tmp.Add(SetDimension(p0.GetGeometryN(i), dimension));
                 return p0.Factory.BuildGeometry(tmp);
             }
@@ -197,7 +197,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 if (p.NumInteriorRings > 0)
                 {
                     ir = new ILinearRing[p.NumInteriorRings];
-                    for (var i = 0; i < p.NumInteriorRings; i++)
+                    for (int i = 0; i < p.NumInteriorRings; i++)
                         ir[i] =
                             p0.Factory.CreateLinearRing(SetDimension(fact,
                                 ((ILinearRing) p.GetInteriorRingN(i)).CoordinateSequence,
@@ -217,9 +217,9 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
             var res = fact.Create(seq.Count, dimension);
             dimension = Math.Min(dimension, seq.Dimension);
-            for (var i = 0; i < seq.Count; i++)
+            for (int i = 0; i < seq.Count; i++)
             {
-                for (var j = 0; j < dimension; j++)
+                for (int j = 0; j < dimension; j++)
                     res.SetOrdinate(i, (Ordinate)j, seq.GetOrdinate(i, (Ordinate)j));
             }
             return res;
@@ -261,17 +261,17 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 g.SRID = srid;
             }
 
-            WKBWriter wkbWriter = new WKBWriter(byteOrder, includeSRID, dimension==2 ? false : true);
+            var wkbWriter = new WKBWriter(byteOrder, includeSRID, dimension==2 ? false : true);
             byte[] wkb = wkbWriter.Write(g);
-            String wkbHex = null;
+            string wkbHex = null;
             if (toHex)
                 wkbHex = WKBWriter.ToHex(wkb);
 
             if (toHex)
                 wkb = WKBReader.HexToBytes(wkbHex);
-            Geometry g2 = (Geometry)_wkbReader.Read(wkb);
+            var g2 = (Geometry)_wkbReader.Read(wkb);
 
-            CoordinateSequenceComparator comp = (dimension == 2) ? Comp2 : Comp3;
+            var comp = (dimension == 2) ? Comp2 : Comp3;
             bool isEqual = (g.CompareTo(g2, comp) == 0);
             Assert.IsTrue(isEqual);
 

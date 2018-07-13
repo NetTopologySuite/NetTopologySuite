@@ -1,5 +1,6 @@
 using System;
 using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm;
 
 namespace NetTopologySuite.Geometries
 {
@@ -18,7 +19,7 @@ namespace NetTopologySuite.Geometries
     /// If these conditions are not met, the constructors throw
     /// an <see cref="ArgumentException"/></para>
     /// </remarks>
-#if !PCL
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public class LinearRing : LineString, ILinearRing
@@ -30,14 +31,12 @@ namespace NetTopologySuite.Geometries
         public const int MinimumValidSize = 4;
 
         /// <summary>
-        /// Constructs a <c>LinearRing</c> with the given points.
+        /// Constructs a <c>LinearRing</c> with the vertices specified
+        /// by the given <see cref="ICoordinateSequence"/>.
         /// </summary>
-        /// <param name="points">
-        /// Points forming a closed and simple linestring, or
-        /// <c>null</c> or an empty array to create the empty point.
-        /// This array must not contain <c>null</c> elements.
-        /// </param>
-        /// <param name="factory"></param>
+        /// <param name="points">A sequence points forming a closed and simple linestring,
+        /// or <c>null</c> to create the empty geometry.</param>
+        /// <param name="factory">The factory that creates this <c>LinearRing</c></param>
         /// <exception cref="ArgumentException">If the ring is not closed, or has too few points</exception>
         public LinearRing(ICoordinateSequence points, IGeometryFactory factory)
             : base(points, factory)
@@ -57,15 +56,14 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Gets a value to sort the geometry
+        /// </summary>
+        protected override SortIndexValue SortIndex => SortIndexValue.LinearRing;
+
+        /// <summary>
         /// Returns <c>Dimensions.False</c>, since by definition LinearRings do not have a boundary.
         /// </summary>
-        public override Dimension BoundaryDimension
-        {
-            get
-            {
-                return Dimension.False;
-            }
-        }
+        public override Dimension BoundaryDimension => Dimension.False;
 
         public override bool IsClosed
         {
@@ -84,9 +82,16 @@ namespace NetTopologySuite.Geometries
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"LinearRing"</returns>
-        public override string GeometryType
+        public override string GeometryType => "LinearRing";
+
+        /// <summary>
+        /// Creates and returns a full copy of this <see cref="ILinearRing"/> object.
+        /// (including all coordinates contained by it).
+        /// </summary>
+        /// <returns>A copy of this instance</returns>
+        public override IGeometry Copy()
         {
-            get { return "LinearRing"; }
+            return new LinearRing(CoordinateSequence.Copy(), Factory);
         }
 
         public override IGeometry Reverse()
@@ -95,8 +100,8 @@ namespace NetTopologySuite.Geometries
             return Factory.CreateLinearRing(sequence);
         }
 
-        public bool IsCCW { get { return Algorithm.CGAlgorithms.IsCCW(CoordinateSequence); } }
-        
+        public bool IsCCW => Orientation.IsCCW(CoordinateSequence);
+
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
 
         /// <summary>

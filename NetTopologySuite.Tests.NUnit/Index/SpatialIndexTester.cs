@@ -28,12 +28,12 @@ namespace NetTopologySuite.Tests.NUnit.Index
         {
             if (Verbose)
             {
-                Console.WriteLine("===============================");
-                Console.WriteLine("Grid Extent: " + (CellExtent*CellsPerGridSide));
-                Console.WriteLine("Cell Extent: " + CellExtent);
-                Console.WriteLine("Feature Extent: " + FeatureExtent);
-                Console.WriteLine("Cells Per Grid Side: " + CellsPerGridSide);
-                Console.WriteLine("Offset For 2nd Set Of Features: " + OFFSET);
+                //System.Console.WriteLine(Console.WriteLine("===============================");
+                //System.Console.WriteLine("Grid Extent: " + (CellExtent*CellsPerGridSide));
+                //System.Console.WriteLine("Cell Extent: " + CellExtent);
+                //System.Console.WriteLine("Feature Extent: " + FeatureExtent);
+                //System.Console.WriteLine("Cells Per Grid Side: " + CellsPerGridSide);
+                //System.Console.WriteLine("Offset For 2nd Set Of Features: " + OFFSET);
             }
             _sourceData = new List<Envelope>();
             AddSourceData(0, _sourceData);
@@ -72,8 +72,8 @@ namespace NetTopologySuite.Tests.NUnit.Index
                 double maxx = minx + FeatureExtent;
                 for (int j = 0; j < CellsPerGridSide; j++)
                 {
-                    var miny = (j*CellExtent) + offset;
-                    var maxy = miny + FeatureExtent;
+                    double miny = (j*CellExtent) + offset;
+                    double maxy = miny + FeatureExtent;
                     var e = new Envelope(minx, maxx, miny, maxy);
                     sourceData.Add(e);
                 }
@@ -84,16 +84,16 @@ namespace NetTopologySuite.Tests.NUnit.Index
         {
             if (Verbose)
             {
-                Console.WriteLine("---------------");
-                Console.WriteLine("Envelope Extent: " + queryEnvelopeExtent);
+                //System.Console.WriteLine("---------------");
+                //System.Console.WriteLine("Envelope Extent: " + queryEnvelopeExtent);
             }
             int extraMatchCount = 0;
             int expectedMatchCount = 0;
             int actualMatchCount = 0;
             int queryCount = 0;
-            for (var x = 0d; x < CellExtent*CellsPerGridSide; x += queryEnvelopeExtent)
+            for (double x = 0d; x < CellExtent*CellsPerGridSide; x += queryEnvelopeExtent)
             {
-                for (var y = 0d; y < CellExtent*CellsPerGridSide; y += queryEnvelopeExtent)
+                for (double y = 0d; y < CellExtent*CellsPerGridSide; y += queryEnvelopeExtent)
                 {
                     var queryEnvelope = new Envelope(x, x + queryEnvelopeExtent, y, y + queryEnvelopeExtent);
                     var expectedMatches = IntersectingEnvelopes(queryEnvelope, sourceData);
@@ -113,13 +113,13 @@ namespace NetTopologySuite.Tests.NUnit.Index
 
             if (Verbose)
             {
-                Console.WriteLine("Expected Matches: " + expectedMatchCount);
-                Console.WriteLine("Actual Matches: " + actualMatchCount);
-                Console.WriteLine("Extra Matches: " + extraMatchCount);
-                Console.WriteLine("Query Count: " + queryCount);
-                Console.WriteLine("Average Expected Matches: " + (expectedMatchCount/(double) queryCount));
-                Console.WriteLine("Average Actual Matches: " + (actualMatchCount/(double) queryCount));
-                Console.WriteLine("Average Extra Matches: " + (extraMatchCount/(double) queryCount));
+                //System.Console.WriteLine("Expected Matches: " + expectedMatchCount);
+                //System.Console.WriteLine("Actual Matches: " + actualMatchCount);
+                //System.Console.WriteLine("Extra Matches: " + extraMatchCount);
+                //System.Console.WriteLine("Query Count: " + queryCount);
+                //System.Console.WriteLine("Average Expected Matches: " + (expectedMatchCount/(double) queryCount));
+                //System.Console.WriteLine("Average Actual Matches: " + (actualMatchCount/(double) queryCount));
+                //System.Console.WriteLine("Average Extra Matches: " + (extraMatchCount/(double) queryCount));
             }
         }
 
@@ -129,8 +129,8 @@ namespace NetTopologySuite.Tests.NUnit.Index
             //==, not #equals. [Jon Aquino]
             foreach (var expected in expectedEnvelopes)
             {
-                var found = false;
-                foreach (var actual in actualEnvelopes)
+                bool found = false;
+                foreach (object actual in actualEnvelopes)
                 {
                     /*if (actual == expected)
                     {

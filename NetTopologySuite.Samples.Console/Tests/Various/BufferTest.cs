@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Samples.Tests.Various
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     [TestFixture]
     public class BufferTest : BaseSamples
@@ -24,7 +24,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         public BufferTest() : base(GeometryFactory.Fixed) { }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [Test]
         public void TestWithDefaultFactory()
@@ -33,7 +33,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [Test]
         public void TestWithFixedFactory()
@@ -42,26 +42,26 @@ namespace NetTopologySuite.Samples.Tests.Various
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        private static void PerformTest(IGeometryFactory factory) 
+        private static void PerformTest(IGeometryFactory factory)
         {
-            IGeometry path = new WKTReader(factory).Read(GeomText);
-            Assert.IsNotNull(path); 
-            Debug.WriteLine(String.Format("Original Points: {0}", path.NumPoints));
+            var path = new WKTReader(factory).Read(GeomText);
+            Assert.IsNotNull(path);
+            Debug.WriteLine(string.Format("Original Points: {0}", path.NumPoints));
 
-            IGeometry simplified = DouglasPeuckerSimplifier.Simplify(path, 2);
-            Assert.IsNotNull(simplified); 
-            Debug.WriteLine(String.Format("Simplified Points: {0}", simplified.NumPoints));
+            var simplified = DouglasPeuckerSimplifier.Simplify(path, 2);
+            Assert.IsNotNull(simplified);
+            Debug.WriteLine(string.Format("Simplified Points: {0}", simplified.NumPoints));
 
-            IGeometry buffered = simplified.Buffer(1.143);            
+            var buffered = simplified.Buffer(1.143);
             Assert.IsNotNull(buffered);
             Debug.WriteLine(buffered);
         }
 
         public void BufferZero()
         {
-            const string wkt = 
+            const string wkt =
 @"LINESTRING (0.131499700898395 -106.048825207893, 0.214925873208014
 -101.719050959423, 0.214925750753543 -97.6113163891882,
 0.214925621679813 -93.2815420840726, 0.131499285788604
@@ -93,12 +93,12 @@ namespace NetTopologySuite.Samples.Tests.Various
 -2.78834607948959 87.2367672248572, -2.95519284268212
 90.5673638758933, -9.1285807394459 82.6849571608342)";
 
-            IGeometryFactory factory = GeometryFactory.Default;
-            WKTReader reader = new WKTReader(factory);
-            IGeometry geom = reader.Read(wkt);
+            var factory = GeometryFactory.Default;
+            var reader = new WKTReader(factory);
+            var geom = reader.Read(wkt);
             Assert.IsNotNull(geom);
             Assert.IsTrue(geom.IsValid);
-            IGeometry result = geom.Buffer(0);
+            var result = geom.Buffer(0);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.IsValid);
             Assert.IsTrue(GeometryCollection.Empty.Equals(result));

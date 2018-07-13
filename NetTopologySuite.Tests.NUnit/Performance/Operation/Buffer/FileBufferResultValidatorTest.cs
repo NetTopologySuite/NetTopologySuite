@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using GeoAPI.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Buffer.Validate;
@@ -13,33 +14,32 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
     [CategoryAttribute("Stress")]
     public class FileBufferResultValidatorTest
     {
+        private const int MAX_FEATURE = 1;
         WKTReader rdr = new WKTReader();
 
         [TestAttribute]
         public void TestAfrica()
         {
-            var filePath = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile("NetTopologySuite.Tests.NUnit.TestData.africa.wkt");
-
-            //    runTest(TestFiles.DATA_DIR + "world.wkt");
-            RunTest(filePath);
-
-            EmbeddedResourceManager.CleanUpTempFile(filePath);
+            using (var file = EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.africa.wkt"))
+            {
+                //    runTest(TestFiles.DATA_DIR + "world.wkt");
+                RunTest(file);
+            }
         }
 
         [TestAttribute]
         public void TestPerformanceAfrica()
         {
-            var filePath = EmbeddedResourceManager.SaveEmbeddedResourceToTempFile("NetTopologySuite.Tests.NUnit.TestData.africa.wkt");
-
-            //    runTest(TestFiles.DATA_DIR + "world.wkt");
-            PerformanceTest(filePath);
-
-            EmbeddedResourceManager.CleanUpTempFile(filePath);
+            using (var file = EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.africa.wkt"))
+            {
+                //    runTest(TestFiles.DATA_DIR + "world.wkt");
+                PerformanceTest(file);
+            }
         }
 
-        void RunTest(String filename)
+        void RunTest(Stream file)
         {
-            WKTFileReader fileRdr = new WKTFileReader(filename, rdr);
+            var fileRdr = new WKTFileReader(new StreamReader(file), rdr);
             var polys = fileRdr.Read();
 
             RunAll(polys, 0.01);
@@ -50,10 +50,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             RunAll(polys, 1000.0);
         }
 
-        void PerformanceTest(String filename)
+        void PerformanceTest(Stream file)
         {
-            WKTFileReader fileRdr = new WKTFileReader(filename, rdr);
-            IList<IGeometry> polys = fileRdr.Read();
+            var fileRdr = new WKTFileReader(new StreamReader(file), rdr);
+            var polys = fileRdr.Read();
 
             //RunAll(polys, 0.01);
             //RunAll(polys, 0.1);
@@ -65,17 +65,20 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 
         void RunAll(ICollection<IGeometry> geoms, double dist)
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            Console.WriteLine("Geom count = " + geoms.Count + "   distance = " + dist);
+            //var sw = new Stopwatch();
+            //sw.Start();
+            int count = 0;
+            //System.Console.WriteLine("Geom count = " + geoms.Count + "   distance = " + dist);
             foreach (var g in geoms)
             {
                 RunBuffer(g, dist);
-                //RunBuffer(g.reverse(), dist);
-                Console.Write(".");
+                RunBuffer(g.Reverse(), dist);
+                //System.Console.WriteLine(".");
+                count++;
+                if (count > MAX_FEATURE) break;
             }
-            sw.Stop();
-            Console.WriteLine("  " + sw.Elapsed.TotalMilliseconds + " milliseconds");
+            //sw.Stop();
+            //System.Console.WriteLine("  " + sw.Elapsed.TotalMilliseconds + " milliseconds");
         }
 
         static void RunBuffer(IGeometry g, double dist)
@@ -85,7 +88,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 
             if (!validator.IsValid())
             {
-                String msg = validator.ErrorMessage;
+                string msg = validator.ErrorMessage;
 
                 Console.WriteLine(msg);
                 Console.WriteLine(WKTWriter.ToPoint(validator.ErrorLocation));

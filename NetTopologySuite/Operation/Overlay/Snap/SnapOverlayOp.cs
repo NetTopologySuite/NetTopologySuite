@@ -24,7 +24,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <returns></returns>
         public static IGeometry Overlay(IGeometry g0, IGeometry g1, SpatialFunction opCode)
         {
-            SnapOverlayOp op = new SnapOverlayOp(g0, g1);
+            var op = new SnapOverlayOp(g0, g1);
             return op.GetResultGeometry(opCode);
         }
 
@@ -157,9 +157,9 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             cbr = new CommonBitsRemover();
             cbr.Add(geom[0]);
             cbr.Add(geom[1]);
-            IGeometry[] remGeom = new IGeometry[2];
-            remGeom[0] = cbr.RemoveCommonBits((IGeometry)geom[0].Clone());
-            remGeom[1] = cbr.RemoveCommonBits((IGeometry)geom[1].Clone());
+            var remGeom = new IGeometry[2];
+            remGeom[0] = cbr.RemoveCommonBits((IGeometry)geom[0].Copy());
+            remGeom[1] = cbr.RemoveCommonBits((IGeometry)geom[1].Copy());
             return remGeom;
         }
 
@@ -169,10 +169,8 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <param name="g"></param>
         private void CheckValid(IGeometry g)
         {
-#if !PCL
             if (!g.IsValid)
                 Debug.WriteLine("Snapped geometry is invalid");
-#endif
         }
     }
 }

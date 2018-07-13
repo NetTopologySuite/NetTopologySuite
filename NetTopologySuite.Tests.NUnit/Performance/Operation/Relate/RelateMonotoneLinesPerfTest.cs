@@ -11,13 +11,13 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Relate
      * Tests the performance of {@link RelateOp} (via {@link Geometry#intersects(Geometry)}
      * on monotone linestrings, to confirm that the Monotone Chain comparison logic
      * is working as expected.
-     * (In particular, Monotone Chains can be tested for intersections very efficiently, 
+     * (In particular, Monotone Chains can be tested for intersections very efficiently,
      * since the monotone property allows subchain envelopes to be computed dynamically,
      * and thus binary search can be used to determine if two monotone chains intersect).
-     * This should result in roughly linear performance for testing intersection of 
+     * This should result in roughly linear performance for testing intersection of
      * chains (since the construction of the chain dominates the computation).
      * This test demonstrates that this occurs in practice.
-     * 
+     *
      * @author mdavis
      *
      */
@@ -25,7 +25,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Relate
     public class RelateMonotoneLinesPerfTest : PerformanceTestCase
     {
         private const int DENSIFY_FACTOR = 1000;
-
 
         public RelateMonotoneLinesPerfTest()
             : base("RelateMonotoneLinesPerfTest")
@@ -54,7 +53,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Relate
 
         private static ILineString CreateLine(string wkt, int nVertices)
         {
-            var distanceTolerance = 100.0/nVertices;
+            double distanceTolerance = 100.0/nVertices;
             var line = IOUtil.Read(wkt);
             var lineDense = (ILineString) Densifier.Densify(line, distanceTolerance);
             return lineDense;
@@ -64,12 +63,12 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Relate
         {
             Console.WriteLine("Line size: " + _line2.NumPoints);
             //@SuppressWarnings("unused")
-            var isIntersects = _line1.Intersects(_line2);
+            bool isIntersects = _line1.Intersects(_line2);
         }
 
         public override void TearDown()
         {
-            var timeFactor = ComputeTimeFactors();
+            double[] timeFactor = ComputeTimeFactors();
             Console.Write("Time factors: ");
             PrintArray(timeFactor, Console.Out);
             Console.WriteLine();
@@ -77,7 +76,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Relate
 
         private void PrintArray(double[] timeFactor, TextWriter @out)
         {
-            foreach (var tf in timeFactor)
+            foreach (double tf in timeFactor)
             {
                 @out.Write(tf + " ");
             }
@@ -85,7 +84,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Relate
 
         private double[] ComputeTimeFactors()
         {
-            var runTime = RunTime;
+            long[] runTime = RunTime;
             double[] timeFactor = new double[runTime.Length - 1];
             for (int i = 0; i < runTime.Length - 1; i++)
             {

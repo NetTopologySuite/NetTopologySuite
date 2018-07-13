@@ -47,7 +47,7 @@ namespace Open.Topology.TestRunner.Functions
         public static IGeometry Clip(IGeometry a, IGeometry mask)
         {
             var geoms = new List<IGeometry>();
-            for (var i = 0; i < a.NumGeometries; i++)
+            for (int i = 0; i < a.NumGeometries; i++)
             {
                 var clip = a.GetGeometryN(i).Intersection(mask);
                 geoms.Add(clip);

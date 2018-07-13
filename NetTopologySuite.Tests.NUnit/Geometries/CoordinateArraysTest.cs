@@ -10,7 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestPtNotInList1()
         {
-            Coordinate list = CoordinateArrays.PointNotInList(
+            var list = CoordinateArrays.PointNotInList(
                 new[] { new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(3, 3) },
                 new[] { new Coordinate(1, 1), new Coordinate(1, 2), new Coordinate(1, 3) }
                 );
@@ -20,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestPtNotInList2()
         {
-            Coordinate list = CoordinateArrays.PointNotInList(
+            var list = CoordinateArrays.PointNotInList(
                 new[] { new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(3, 3) },
                 new[] { new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(3, 3) }
                 );

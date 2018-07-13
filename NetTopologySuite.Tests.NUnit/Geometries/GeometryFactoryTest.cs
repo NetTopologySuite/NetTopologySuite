@@ -45,29 +45,29 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestCopyGeometryWithNonDefaultDimension()
         {
-            GeometryFactory gf = new GeometryFactory(CoordinateArraySequenceFactory.Instance);
-            ICoordinateSequence mpSeq = gf.CoordinateSequenceFactory.Create(1, 2);
+            var gf = new GeometryFactory(CoordinateArraySequenceFactory.Instance);
+            var mpSeq = gf.CoordinateSequenceFactory.Create(1, 2);
             mpSeq.SetOrdinate(0, Ordinate.X, 50);
             mpSeq.SetOrdinate(0, Ordinate.Y, -2);
 
-            IPoint g = gf.CreatePoint(mpSeq);
-            IPoint geometryN = (IPoint)g.GetGeometryN(0);
-            ICoordinateSequence gSeq = geometryN.CoordinateSequence;
+            var g = gf.CreatePoint(mpSeq);
+            var geometryN = (IPoint)g.GetGeometryN(0);
+            var gSeq = geometryN.CoordinateSequence;
             Assert.AreEqual(2, gSeq.Dimension);
 
-            IPoint g2 = (IPoint)Factory.CreateGeometry(g);
-            ICoordinateSequence g2Seq = g2.CoordinateSequence;
+            var g2 = (IPoint)Factory.CreateGeometry(g);
+            var g2Seq = g2.CoordinateSequence;
             Assert.AreEqual(2, g2Seq.Dimension);
         }
 
-        private void CheckCreateGeometryExact(String wkt)
+        private void CheckCreateGeometryExact(string wkt)
         {
             var g = Read(wkt);
             var g2 = Factory.CreateGeometry(g);
             Assert.IsTrue(g.EqualsExact(g2));
         }
 
-        private IGeometry Read(String wkt)
+        private IGeometry Read(string wkt)
         {
             return _reader.Read(wkt);
         }

@@ -26,7 +26,7 @@ namespace NetTopologySuite.Noding
         ///</summary>
         ///<param name="pts">the vertices of the segment string</param>
         ///<param name="data">the user-defined data of this segment string (may be null)</param>
-        public BasicSegmentString(Coordinate[] pts, Object data)
+        public BasicSegmentString(Coordinate[] pts, object data)
         {
             _pts = pts;
             this.Context = data;
@@ -34,19 +34,13 @@ namespace NetTopologySuite.Noding
 
         ///<summary>Gets the user-defined data for this segment string.
         ///</summary>
-        public Object Context { get; set; }
+        public object Context { get; set; }
 
-        public Coordinate[] Coordinates { get { return _pts; } }
+        public Coordinate[] Coordinates => _pts;
 
-        public Boolean IsClosed
-        {
-            get { return _pts[0].Equals2D(_pts[_pts.Length]); }
-        }
+        public bool IsClosed => _pts[0].Equals2D(_pts[_pts.Length - 1]);
 
-        public Int32 Count
-        {
-            get { return _pts.Length; }
-        }
+        public int Count => _pts.Length;
 
         ///<summary>
         /// Gets the octant of the segment starting at vertex <code>index</code>
@@ -60,29 +54,23 @@ namespace NetTopologySuite.Noding
                 Octant.GetOctant(_pts[index], _pts[index + 1]);
         }
 
-        public LineSegment this[Int32 index]
+        public LineSegment this[int index]
         {
             get
             {
                 if (index < 0 || index >= Count)
                 {
-#if PCL
-                    throw new ArgumentOutOfRangeException("index", "Parameter must be greater than or equal to 0 and less than TotalItemCount.");
-#else
                     throw new ArgumentOutOfRangeException("index", index,
                                                           "Parameter must be greater than or equal to 0 and less than TotalItemCount.");
-#endif
                 }
 
                 return new LineSegment(_pts[index], _pts[index + 1]);
             }
-            set
-            {
-                throw new NotSupportedException(
-                    "Setting line segments in a ISegmentString not supported.");
-            }
+            set => throw new NotSupportedException(
+                "Setting line segments in a ISegmentString not supported.");
         }
 
+        /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {
             return WKTWriter.ToLineString(new CoordinateArraySequence(_pts));

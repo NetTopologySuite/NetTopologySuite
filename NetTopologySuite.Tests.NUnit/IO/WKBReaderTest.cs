@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using GeoAPI.Geometries;
 using NetTopologySuite.IO;
+using NetTopologySuite.Tests.NUnit.TestData;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.IO
@@ -17,8 +18,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [TestAttribute]
         public void TestPolygonEmpty()
         {
-            WKTReader reader = new WKTReader();
-            IGeometry geom = reader.Read("POLYGON EMPTY");
+            var reader = new WKTReader();
+            var geom = reader.Read("POLYGON EMPTY");
             CheckWkbGeometry(geom.AsBinary(), "POLYGON EMPTY");
         }
 
@@ -80,18 +81,18 @@ namespace NetTopologySuite.Tests.NUnit.IO
                              "POLYGON ((100 200, 100 200, 100 200, 100 200)");
         }
 
-        private static void CheckWkbGeometry(String wkbHex, String expectedWKT)
+        private static void CheckWkbGeometry(string wkbHex, string expectedWKT)
         {
             CheckWkbGeometry(WKBReader.HexToBytes(wkbHex), expectedWKT);
         }
 
-        private static void CheckWkbGeometry(byte[] wkb, String expectedWKT)
+        private static void CheckWkbGeometry(byte[] wkb, string expectedWKT)
         {
-            WKBReader wkbReader = new WKBReader();
-            IGeometry g2 = wkbReader.Read(wkb);
+            var wkbReader = new WKBReader();
+            var g2 = wkbReader.Read(wkb);
 
-            WKTReader reader = new WKTReader();
-            IGeometry expected = reader.Read(expectedWKT);
+            var reader = new WKTReader();
+            var expected = reader.Read(expectedWKT);
 
             bool isEqual = (expected.CompareTo(g2 /*, Comp2*/) == 0);
             Assert.IsTrue(isEqual);
@@ -101,34 +102,24 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [TestAttribute]
         public void TestBase64TextFiles()
         {
-            TestBase64TextFile(@"D:\Development\Codeplex.TFS\SharpMap\Branches\1.0\UnitTests\TestData\Base 64.txt");
+            // taken from: https://raw.githubusercontent.com/SharpMap/SharpMap/5289522c26e77584eaa95428c1bd2202ff18a340/UnitTests/TestData/Base%2064.txt
+            TestBase64TextFile(EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.Base 64.txt"));
         }
 
-        private static void TestBase64TextFile(string file)
+        private static void TestBase64TextFile(Stream file)
         {
-            if (!File.Exists(file))
-            {
-                Assert.Ignore("File not present ({0})", file);
-                return;
-            }
-
             byte[] wkb = ConvertBase64(file);
-            WKBReader wkbReader = new WKBReader();
+            var wkbReader = new WKBReader();
             IGeometry geom = null;
             Assert.DoesNotThrow(() => geom = wkbReader.Read(wkb));
         }
 
-        private static byte[] ConvertBase64(string file)
+        private static byte[] ConvertBase64(Stream file)
         {
-            byte[] res = null;
-            using (StreamReader sr = new StreamReader(file))
+            using (var sr = new StreamReader(file))
             {
-                StringBuilder sb = new StringBuilder(sr.ReadLine());
-                while (!sr.EndOfStream)
-                    sb.AppendLine(sr.ReadLine());
-                res = System.Convert.FromBase64String(sb.ToString());
+                return System.Convert.FromBase64String(sr.ReadToEnd());
             }
-            return res;
         }
     }
 }

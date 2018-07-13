@@ -28,22 +28,22 @@ namespace NetTopologySuite.Triangulate
     /// </para>
     /// <para>
     /// A Conforming Delaunay triangulation is distinct from a Constrained Delaunay triangulation.
-    /// A Constrained Delaunay triangulation is not necessarily fully Delaunay, 
+    /// A Constrained Delaunay triangulation is not necessarily fully Delaunay,
     /// and it contains the constraint segments exactly as edges of the triangulation.
     /// </para>
     /// <para>
     /// A typical usage pattern for the triangulator is:
     /// <code>
-    /// 	 ConformingDelaunayTriangulator cdt = new ConformingDelaunayTriangulator(sites, tolerance);
-    /// 
-    ///   // optional	
+    ///   ConformingDelaunayTriangulator cdt = new ConformingDelaunayTriangulator(sites, tolerance);
+    ///
+    ///   // optional
     ///   cdt.SplitPointFinder = splitPointFinder;
     ///   cdt.VertexFactory = vertexFactory;
-    ///   
-    ///	 cdt.SetConstraints(segments,  new List<Vertex>(vertexMap.Values));
-    ///	 cdt.FormInitialDelaunay();
-    ///	 cdt.EnforceConstraints();
-    ///	 subdiv = cdt.Subdivision;
+    ///
+    ///   cdt.SetConstraints(segments,  new List&lt;Vertex&gt;(vertexMap.Values));
+    ///   cdt.FormInitialDelaunay();
+    ///   cdt.EnforceConstraints();
+    ///   subdiv = cdt.Subdivision;
     /// </code>
     /// </para>
     /// </remarks>
@@ -53,8 +53,8 @@ namespace NetTopologySuite.Triangulate
     {
         private static Envelope ComputeVertexEnvelope(IEnumerable<Vertex> vertices)
         {
-            Envelope env = new Envelope();
-            foreach (Vertex v in vertices)
+            var env = new Envelope();
+            foreach (var v in vertices)
                 env.ExpandToInclude(v.Coordinate);
             return env;
         }
@@ -97,10 +97,10 @@ namespace NetTopologySuite.Triangulate
         /// <summary>
         /// Sets the constraints to be conformed to by the computed triangulation.
         /// The constraints must not contain duplicate segments (up to orientation).
-        /// The unique set of vertices (as <see cref="ConstraintVertex"/>es) 
+        /// The unique set of vertices (as <see cref="ConstraintVertex"/>es)
         /// forming the constraints must also be supplied.
         /// Supplying it explicitly allows the ConstraintVertexes to be initialized
-        /// appropriately(e.g. with external data), and avoids re-computing the unique set
+        /// appropriately (e.g. with external data), and avoids re-computing the unique set
         /// if it is already available.
         /// </summary>
         /// <param name="segments">list of the constraint {@link Segment}s</param>
@@ -115,23 +115,20 @@ namespace NetTopologySuite.Triangulate
         /// Gets or sets the <see cref="IConstraintSplitPointFinder"/> to be
         /// used during constraint enforcement.
         /// Different splitting strategies may be appropriate
-        /// for special situations. 
+        /// for special situations.
         /// </summary>
         /// <remarks>the ConstraintSplitPointFinder to be used</remarks>
         public IConstraintSplitPointFinder SplitPointFinder
         {
-            get { return _splitFinder; }
-            set { _splitFinder = value; }
+            get => _splitFinder;
+            set => _splitFinder = value;
         }
 
         /// <summary>
         /// Gets the tolerance value used to construct the triangulation.
         /// </summary>
         /// <remarks>a tolerance value</remarks>
-        public double Tolerance
-        {
-            get { return _tolerance; }
-        }
+        public double Tolerance => _tolerance;
 
         /// <summary>
         /// Gets and sets the <see cref="ConstraintVertexFactory"/> used to create new constraint vertices at split points.
@@ -141,41 +138,29 @@ namespace NetTopologySuite.Triangulate
         /// </remarks>
         public ConstraintVertexFactory VertexFactory
         {
-            get { return _vertexFactory; }
-            set { _vertexFactory = value; }
+            get => _vertexFactory;
+            set => _vertexFactory = value;
         }
 
         /// <summary>
         /// Gets the <see cref="QuadEdgeSubdivision"/> which represents the triangulation.
         /// </summary>
-        public QuadEdgeSubdivision Subdivision
-        {
-            get { return _subdiv; }
-        }
+        public QuadEdgeSubdivision Subdivision => _subdiv;
 
         /// <summary>
         /// Gets the <see cref="KdTree{Vertex}"/> which contains the vertices of the triangulation.
         /// </summary>
-        public KdTree<Vertex> KDT
-        {
-            get { return _kdt; }
-        }
+        public KdTree<Vertex> KDT => _kdt;
 
-        /// <summary> 
+        /// <summary>
         /// Gets the sites (vertices) used to initialize the triangulation.
         /// </summary>
-        public IList<Vertex> InitialVertices
-        {
-            get { return _initialVertices; }
-        }
+        public IList<Vertex> InitialVertices => _initialVertices;
 
         /// <summary>
         /// Gets the <see cref="Segment"/>s which represent the constraints.
         /// </summary>
-        public ICollection<Segment> ConstraintSegments
-        {
-            get { return _segments; }
-        }
+        public ICollection<Segment> ConstraintSegments => _segments;
 
         /// <summary>
         /// Gets the convex hull of all the sites in the triangulation,
@@ -183,19 +168,16 @@ namespace NetTopologySuite.Triangulate
         /// Only valid after the constraints have been enforced.
         /// </summary>
         /// <remarks>the convex hull of the sites</remarks>
-        public IGeometry ConvexHull
-        {
-            get { return _convexHull; }
-        }
+        public IGeometry ConvexHull => _convexHull;
 
         // ==================================================================
 
         private void ComputeBoundingBox()
         {
-            Envelope vertexEnv = ComputeVertexEnvelope(_initialVertices);
-            Envelope segEnv = ComputeVertexEnvelope(_segVertices);
+            var vertexEnv = ComputeVertexEnvelope(_initialVertices);
+            var segEnv = ComputeVertexEnvelope(_segVertices);
 
-            Envelope allPointsEnv = new Envelope(vertexEnv);
+            var allPointsEnv = new Envelope(vertexEnv);
             allPointsEnv.ExpandToInclude(segEnv);
 
             double deltaX = allPointsEnv.Width * 0.2;
@@ -209,22 +191,22 @@ namespace NetTopologySuite.Triangulate
 
         private void ComputeConvexHull()
         {
-            GeometryFactory fact = new GeometryFactory();
-            Coordinate[] coords = GetPointArray();
-            ConvexHull hull = new ConvexHull(coords, fact);
+            var fact = new GeometryFactory();
+            var coords = GetPointArray();
+            var hull = new ConvexHull(coords, fact);
             _convexHull = hull.GetConvexHull();
         }
 
         private Coordinate[] GetPointArray()
         {
-            Coordinate[] pts = new Coordinate[_initialVertices.Count
+            var pts = new Coordinate[_initialVertices.Count
                     + _segVertices.Count];
             int index = 0;
-            foreach (Vertex v in _initialVertices)
+            foreach (var v in _initialVertices)
             {
                 pts[index++] = v.Coordinate;
             }
-            foreach (Vertex v in _segVertices)
+            foreach (var v in _segVertices)
             {
                 pts[index++] = v.Coordinate;
             }
@@ -264,10 +246,8 @@ namespace NetTopologySuite.Triangulate
         /// <param name="vertices">a collection of ConstraintVertex</param>
         private void InsertSites(ICollection<Vertex> vertices)
         {
-#if !PCL
             Debug.WriteLine("Adding sites: " + vertices.Count);
-#endif
-            foreach (Vertex v in vertices)
+            foreach (var v in vertices)
             {
                 InsertSite((ConstraintVertex)v);
             }
@@ -275,19 +255,19 @@ namespace NetTopologySuite.Triangulate
 
         private ConstraintVertex InsertSite(ConstraintVertex v)
         {
-            KdNode<Vertex> kdnode = _kdt.Insert(v.Coordinate, v);
+            var kdnode = _kdt.Insert(v.Coordinate, v);
             if (!kdnode.IsRepeated)
             {
                 _incDel.InsertSite(v);
             }
             else
             {
-                ConstraintVertex snappedV = (ConstraintVertex)kdnode.Data;
+                var snappedV = (ConstraintVertex)kdnode.Data;
                 snappedV.Merge(v);
                 return snappedV;
                 // testing
                 // if ( v.isOnConstraint() && ! currV.isOnConstraint()) {
-                // System.out.println(v);
+                //     System.out.println(v);
                 // }
             }
             return v;
@@ -340,18 +320,16 @@ namespace NetTopologySuite.Triangulate
                 splits = EnforceGabriel(_segments);
 
                 count++;
-                //Debug FObermaier
-                //for(var i = oldSegmentCount; i < _segments.Count; i++)
-                //    Console.WriteLine("Segments added: #" + i + ": " + _segments[i].LineSegment);
-                //oldSegmentCount = _segments.Count;
+                // Debug FObermaier
+                // for(var i = oldSegmentCount; i < _segments.Count; i++)
+                //     Console.WriteLine("Segments added: #" + i + ": " + _segments[i].LineSegment);
+                // oldSegmentCount = _segments.Count;
             } while (splits > 0 && count < MaxSplitIteration);
 
             if (count == MaxSplitIteration)
             {
-#if !PCL
                 Debug.WriteLine("ABORTED! Too many iterations while enforcing constraints");
                 if (!Debugger.IsAttached)
-#endif
                     throw new ConstraintEnforcementException(
                         "Too many splitting iterations while enforcing constraints.  Last split point was at: ",
                         _splitPt);
@@ -366,17 +344,24 @@ namespace NetTopologySuite.Triangulate
         }
 
         /*
-         * private List findMissingConstraints() { List missingSegs = new ArrayList();
-         * for (int i = 0; i < segments.size(); i++) { Segment s = (Segment)
-         * segments.get(i); QuadEdge q = subdiv.locate(s.getStart(), s.getEnd()); if
-         * (q == null) missingSegs.add(s); } return missingSegs; }
+         * private List findMissingConstraints() {
+         *     List missingSegs = new ArrayList();
+         *     for (int i = 0; i < segments.size(); i++) {
+         *         Segment s = (Segment)segments.get(i);
+         *         QuadEdge q = subdiv.locate(s.getStart(), s.getEnd());
+         *         if (q == null)
+         *             missingSegs.add(s);
+         *     }
+         *
+         *     return missingSegs;
+         * }
          */
 
         private int EnforceGabriel(ICollection<Segment> segsToInsert)
         {
-            List<Segment> newSegments = new List<Segment>();
+            var newSegments = new List<Segment>();
             int splits = 0;
-            List<Segment> segsToRemove = new List<Segment>();
+            var segsToRemove = new List<Segment>();
 
             /*
              * On each iteration must always scan all constraint (sub)segments, since
@@ -384,18 +369,18 @@ namespace NetTopologySuite.Triangulate
              * insertion of another constraint. However, this process must converge
              * eventually, with no splits remaining to find.
              */
-            foreach (Segment seg in segsToInsert)
+            foreach (var seg in segsToInsert)
             {
                 // System.out.println(seg);
 
-                Coordinate encroachPt = FindNonGabrielPoint(seg);
+                var encroachPt = FindNonGabrielPoint(seg);
                 // no encroachment found - segment must already be in subdivision
                 if (encroachPt == null)
                     continue;
 
                 // compute split point
                 _splitPt = _splitFinder.FindSplitPoint(seg, encroachPt);
-                ConstraintVertex splitVertex = CreateVertex(_splitPt, seg);
+                var splitVertex = CreateVertex(_splitPt, seg);
 
                 /*
                  * Check whether the inserted point still equals the split pt. This will
@@ -412,41 +397,38 @@ namespace NetTopologySuite.Triangulate
                  * equidistant from the corner.
                  * </ul>
                  */
-                ConstraintVertex insertedVertex = InsertSite(splitVertex);
-                //Debugging FObermaier
-                //Console.WriteLine("inserted vertex: " + insertedVertex.ToString());
+                var insertedVertex = InsertSite(splitVertex);
+                // Debugging FObermaier
+                // Console.WriteLine("inserted vertex: " + insertedVertex.ToString());
 
                 if (!insertedVertex.Coordinate.Equals2D(_splitPt))
                 {
                     Debug.WriteLine("Split pt snapped to: " + insertedVertex);
-                    // throw new ConstraintEnforcementException("Split point snapped to
-                    // existing point
-                    // (tolerance too large or constraint interior narrow angle?)",
-                    // splitPt);
+                    // throw new ConstraintEnforcementException("Split point snapped to existing point (tolerance too large or constraint interior narrow angle?)", splitPt);
                 }
 
                 // split segment and record the new halves
-                Segment s1 = new Segment(seg.StartX, seg.StartY, seg.StartZ,
+                var s1 = new Segment(seg.StartX, seg.StartY, seg.StartZ,
                                      splitVertex.X, splitVertex.Y, splitVertex.Z,
                                      seg.Data);
-                Segment s2 = new Segment(splitVertex.X, splitVertex.Y, splitVertex.Z,
+                var s2 = new Segment(splitVertex.X, splitVertex.Y, splitVertex.Z,
                                      seg.EndX, seg.EndY, seg.EndZ,
                                      seg.Data);
 
-                //Debugging FObermaier
-                //Console.WriteLine("Segment " + seg.ToString() + " splitted to \n\t" + s1.ToString() + "\n\t"+ s2.ToString());
+                // Debugging FObermaier
+                // Console.WriteLine("Segment " + seg.ToString() + " splitted to \n\t" + s1.ToString() + "\n\t"+ s2.ToString());
                 newSegments.Add(s1);
                 newSegments.Add(s2);
                 segsToRemove.Add(seg);
 
                 splits = splits + 1;
             }
-            foreach (Segment seg in segsToRemove)
+            foreach (var seg in segsToRemove)
             {
                 segsToInsert.Remove(seg);
             }
 
-            foreach (Segment seg in newSegments)
+            foreach (var seg in newSegments)
             {
                 segsToInsert.Add(seg);
             }
@@ -454,7 +436,7 @@ namespace NetTopologySuite.Triangulate
             return splits;
         }
 
-        //	public static final String DEBUG_SEG_SPLIT = "C:\\proj\\CWB\\test\\segSplit.jml";
+        // public static final String DEBUG_SEG_SPLIT = "C:\\proj\\CWB\\test\\segSplit.jml";
 
         /// <summary>
         /// Given a set of points stored in the kd-tree and a line segment defined by
@@ -471,25 +453,25 @@ namespace NetTopologySuite.Triangulate
         /// </returns>
         private Coordinate FindNonGabrielPoint(Segment seg)
         {
-            Coordinate p = seg.Start;
-            Coordinate q = seg.End;
+            var p = seg.Start;
+            var q = seg.End;
             // Find the mid point on the line and compute the radius of enclosing circle
-            Coordinate midPt = new Coordinate((p.X + q.X) / 2.0, (p.Y + q.Y) / 2.0);
+            var midPt = new Coordinate((p.X + q.X) / 2.0, (p.Y + q.Y) / 2.0);
             double segRadius = p.Distance(midPt);
 
             // compute envelope of circumcircle
-            Envelope env = new Envelope(midPt);
+            var env = new Envelope(midPt);
             env.ExpandBy(segRadius);
             // Find all points in envelope
-            ICollection<KdNode<Vertex>> result = _kdt.Query(env);
+            var result = _kdt.Query(env);
 
             // For each point found, test if it falls strictly in the circle
             // find closest point
             Coordinate closestNonGabriel = null;
-            double minDist = Double.MaxValue;
-            foreach (KdNode<Vertex> nextNode in result)
+            double minDist = double.MaxValue;
+            foreach (var nextNode in result)
             {
-                Coordinate testPt = nextNode.Coordinate;
+                var testPt = nextNode.Coordinate;
                 // ignore segment endpoints
                 if (testPt.Equals2D(p) || testPt.Equals2D(q))
                     continue;

@@ -91,7 +91,7 @@ namespace NetTopologySuite
         {
             //private readonly object _lock = new object();
             private readonly Dictionary<TKey, TValue> _dictionary = new Dictionary<TKey, TValue>();
-            private readonly System.Threading.ReaderWriterLockSlim _rwLockSlim = 
+            private readonly System.Threading.ReaderWriterLockSlim _rwLockSlim =
                 new System.Threading.ReaderWriterLockSlim(System.Threading.LockRecursionPolicy.NoRecursion);
 
             public void Add(TKey key, ref TValue value)
@@ -111,7 +111,7 @@ namespace NetTopologySuite
                     {
                         _dictionary.Add(key, value);
                     }
-                    finally 
+                    finally
                     {
                         _rwLockSlim.ExitWriteLock();
                     }

@@ -24,6 +24,11 @@ namespace NetTopologySuite.Algorithm
     /// The implication of the above rule is that segments which can be a priori determined to <i>not</i> touch the ray
     /// (i.e. by a test of their bounding box or Y-extent) do not need to be counted.  This allows for optimization by indexing.
     /// </para>
+    /// <para>
+    /// This implementation uses the extended-precision orientation test,
+    /// to provide maximum robustness and consistency within
+    /// other algorithms.
+    /// </para>
     /// </remarks>
     /// <author>Martin Davis</author>
     public class RayCrossingCounter
@@ -51,7 +56,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Determines the <see cref="Location"/> of a point in a ring.
+        /// Determines the <see cref="GeoAPI.Geometries.Location"/> of a point in a ring.
         /// </summary>
         /// <param name="p">The point to test</param>
         /// <param name="ring">A coordinate sequence forming a ring</param>
@@ -63,7 +68,7 @@ namespace NetTopologySuite.Algorithm
             var p1 = new Coordinate();
             var p2 = new Coordinate();
             int count = ring.Count;
-            for (var i = 1; i < count; i++)
+            for (int i = 1; i < count; i++)
             {
                 ring.GetCoordinate(i, p1);
                 ring.GetCoordinate(i - 1, p2);
@@ -92,7 +97,7 @@ namespace NetTopologySuite.Algorithm
         public void CountSegment(Coordinate p1, Coordinate p2)
         {
             /*
-             * For each segment, check if it crosses 
+             * For each segment, check if it crosses
              * a horizontal ray running from the test point in the positive x direction.
              */
 
@@ -139,32 +144,19 @@ namespace NetTopologySuite.Algorithm
             if (((p1.Y > _p.Y) && (p2.Y <= _p.Y))
                     || ((p2.Y > _p.Y) && (p1.Y <= _p.Y)))
             {
-                // translate the segment so that the test point lies on the origin
-                double x1 = p1.X - _p.X;
-                double y1 = p1.Y - _p.Y;
-                double x2 = p2.X - _p.X;
-                double y2 = p2.Y - _p.Y;
-
-                /*
-                 * The translated segment straddles the x-axis. Compute the sign of the
-                 * ordinate of intersection with the x-axis. (y2 != y1, so denominator
-                 * will never be 0.0)
-                 */
-                // double xIntSign = RobustDeterminant.signOfDet2x2(x1, y1, x2, y2) / (y2
-                // - y1);
-                // MD - faster & more robust computation?
-                double xIntSign = RobustDeterminant.SignOfDet2x2(x1, y1, x2, y2);
-                if (xIntSign == 0.0)
+                var orient = Orientation.Index(p1, p2, _p);
+                if (orient == OrientationIndex.Collinear)
                 {
                     _isPointOnSegment = true;
                     return;
                 }
-                if (y2 < y1)
-                    xIntSign = -xIntSign;
-                // xsave = xInt;
-
-                // The segment crosses the ray if the sign is strictly positive.
-                if (xIntSign > 0.0)
+                // Re-orient the result if needed to ensure effective segment direction is upwards
+                if (p2.Y < p1.Y)
+                {
+                    orient = Orientation.ReOrient(orient);
+                }
+                // The upward segment crosses the ray if the test point lies to the left (CCW) of the segment.
+                if (orient == OrientationIndex.Left)
                 {
                     _crossingCount++;
                 }
@@ -173,18 +165,21 @@ namespace NetTopologySuite.Algorithm
 
         ///<summary>
         /// Reports whether the point lies exactly on one of the supplied segments.
+        /// </summary>
         /// <remarks>
-        /// This method may be called at any time as segments are processed. If the result of this method is <c>true</c>, 
+        /// This method may be called at any time as segments are processed. If the result of this method is <c>true</c>,
         /// no further segments need be supplied, since the result will never change again.
         /// </remarks>
-        ///</summary>
-        public bool IsOnSegment { get { return _isPointOnSegment; } }
+        public bool IsOnSegment => _isPointOnSegment;
 
-        ///<summary>
+        /// <summary>
         /// Gets the <see cref="GeoAPI.Geometries.Location"/> of the point relative to  the ring, polygon
         /// or multipolygon from which the processed segments were provided.
-        ///</summary>
-        /// <remarks>This property only determines the correct location if <b>all</b> relevant segments have been processed</remarks>
+        /// </summary>
+        /// <remarks>
+        /// This property only determines the correct location
+        /// if <b>all</b> relevant segments have been processed.
+        /// </remarks>
         public Location Location
         {
             get
@@ -202,14 +197,15 @@ namespace NetTopologySuite.Algorithm
             }
         }
 
-        ///<summary>
-        /// Tests whether the point lies in or on the ring, polygon
-        ///</summary>
-        ///<remarks>
-        /// This property only determines the correct location if <b>all</b> relevant segments have been processed</remarks>
-        public bool IsPointInPolygon
-        {
-            get { return Location != Location.Exterior; } 
-        }
+        /// <summary>
+        /// Tests whether the point lies in or on
+        /// the ring, polygon or multipolygon from which the processed
+        /// segments were provided.
+        /// </summary>
+        /// <remarks>
+        /// This property only determines the correct location
+        /// if <b>all</b> relevant segments have been processed
+        /// </remarks>
+        public bool IsPointInPolygon => Location != Location.Exterior;
     }
 }

@@ -11,7 +11,7 @@ using Assert = NUnit.Framework.Assert;
 
 namespace NetTopologySuite.Tests.NUnit
 {
-    public class MiscellaneousTest2 
+    public class MiscellaneousTest2
     {
 
         private static readonly IPrecisionModel precisionModel = new PrecisionModel(1);
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Tests.NUnit
         {
             var g = reader.Read(
                 "POLYGON((0 0, 0 0, 0 0, 0 0, 0 0))");
-            var valid = g.IsValid;
+            bool valid = g.IsValid;
             Assert.IsTrue(true); //No exception thrown [Jon Aquino]
         }
 
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Tests.NUnit
         {
             var g = reader.Read(
                 "LINESTRING(0 0, 0 0)");
-            var valid = g.IsValid;
+            bool valid = g.IsValid;
             Assert.IsTrue(true); //No exception thrown [Jon Aquino]
         }
 
@@ -81,9 +81,9 @@ namespace NetTopologySuite.Tests.NUnit
         }
         [TestAttribute]
         public void test1()  {
-            Assert.IsTrue(CGAlgorithms.IsOnLine(new Coordinate(10, 10),
+            Assert.IsTrue(PointLocation.IsOnLine(new Coordinate(10, 10),
                                                 new Coordinate[] {new Coordinate(0,10), new Coordinate(20,10)}));
-            Assert.IsTrue(!CGAlgorithms.IsOnLine(new Coordinate(30, 10),
+            Assert.IsTrue(!PointLocation.IsOnLine(new Coordinate(30, 10),
                                                  new Coordinate[] {new Coordinate(0,10), new Coordinate(20,10)}));
         }
 

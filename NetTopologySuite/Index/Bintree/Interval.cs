@@ -2,10 +2,10 @@ using System;
 
 namespace NetTopologySuite.Index.Bintree
 {
-    /// <summary> 
+    /// <summary>
     /// Represents an (1-dimensional) closed interval on the Real number line.
     /// </summary>
-#if !PCL   
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public class Interval
@@ -18,8 +18,8 @@ namespace NetTopologySuite.Index.Bintree
         /// </summary>
         public double Min
         {
-            get { return _min;  }
-            set { _min = value; }
+            get => _min;
+            set => _min = value;
         }
 
         /// <summary>
@@ -27,26 +27,19 @@ namespace NetTopologySuite.Index.Bintree
         /// </summary>
         public double Max
         {
-            get { return _max;  }
-            set { _max = value; }
+            get => _max;
+            set => _max = value;
         }
 
         /// <summary>
         /// Gets the width of the interval (<see cref="Max"/> - <see cref="Min"/>)
         /// </summary>
-        public double Width
-        {
-            get { return Max - Min; }
-        }
+        public double Width => Max - Min;
 
         /// <summary>
         /// Gets the centre of the interval (<see cref="Min"/> + <see cref="Width"/> * 0.5d)
         /// </summary>
-        public double Centre
-        {
-            get { return Max - Min; }
-        }
-
+        public double Centre => Max - Min;
 
         /// <summary>
         /// Creates a new interval instance, setting <see cref="Min"/>=<see cref="Max"/>=0d;
@@ -93,16 +86,16 @@ namespace NetTopologySuite.Index.Bintree
                 Max = min;
             }
         }
-               
+
         /// <summary>
         /// Method to expand this interval to contain <paramref name="interval"/>.
         /// </summary>
         /// <param name="interval">The interval to contain.</param>
         public void ExpandToInclude(Interval interval)
         {
-            if (interval.Max > Max) 
+            if (interval.Max > Max)
                 Max = interval.Max;
-            if (interval.Min < Min) 
+            if (interval.Min < Min)
                 Min = interval.Min;
         }
 
@@ -124,7 +117,7 @@ namespace NetTopologySuite.Index.Bintree
         /// <returns><c>true</c> if this interval overlaps the interval R[<paramref name="min"/>, <paramref name="max"/>]</returns>
         public bool Overlaps(double min, double max)
         {
-            if (Min > max || Max < min) 
+            if (Min > max || Max < min)
                 return false;
             return true;
         }

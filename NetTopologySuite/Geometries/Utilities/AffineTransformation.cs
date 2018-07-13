@@ -1,6 +1,6 @@
 using System;
 using GeoAPI.Geometries;
-#if PCL
+#if !HAS_SYSTEM_ICLONEABLE
 using ICloneable = GeoAPI.ICloneable;
 #endif
 
@@ -212,7 +212,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="xShear"> the value to shear by in the x direction</param>
         /// <param name="yShear"> the value to shear by in the y direction</param>
-        /// <returns> a tranformation for the shear</returns>
+        /// <returns> a transformation for the shear</returns>
         public static AffineTransformation ShearInstance(double xShear, double yShear)
         {
             var trans = new AffineTransformation();
@@ -225,7 +225,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="x"> the value to translate by in the x direction</param>
         /// <param name="y"> the value to translate by in the y direction</param>
-        /// <returns> a tranformation for the translation</returns>
+        /// <returns> a transformation for the translation</returns>
         public static AffineTransformation TranslationInstance(double x, double y)
         {
             var trans = new AffineTransformation();
@@ -387,13 +387,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </pre>
         /// </remarks>
         /// <returns> an array of length 6</returns>
-        public double[] MatrixEntries
-        {
-            get
-            {
-                return new[] { _m00, _m01, _m02, _m10, _m11, _m12 };
-            }
-        }
+        public double[] MatrixEntries => new[] { _m00, _m01, _m02, _m10, _m11, _m12 };
 
         /// <summary>
         /// Computes the determinant of the transformation matrix.
@@ -419,10 +413,7 @@ namespace NetTopologySuite.Geometries.Utilities
         ///
         /// <returns>The determinant of the transformation</returns>
         /// <see cref="GetInverse"/>
-        public double Determinant
-        {
-            get { return _m00 * _m11 - _m01 * _m10; }
-        }
+        public double Determinant => _m00 * _m11 - _m01 * _m10;
 
         /// <summary>
         /// Computes the inverse of this transformation, if one
@@ -984,13 +975,13 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Cretaes a new <see cref="IGeometry"/> which is the result of this transformation applied to the input Geometry.
+        /// Creates a new <see cref="IGeometry"/> which is the result of this transformation applied to the input Geometry.
         /// </summary>
         /// <param name="g">A <c>Geometry</c></param>
         /// <returns>The transformed Geometry</returns>
         public IGeometry Transform(IGeometry g)
         {
-            IGeometry g2 = (IGeometry)g.Clone();
+            var g2 = g.Copy();
             g2.Apply(this);
             return g2;
         }
@@ -1019,37 +1010,25 @@ namespace NetTopologySuite.Geometries.Utilities
             Transform(seq, i);
         }
 
-        public Boolean GeometryChanged
-        {
-            get { return true; }
-        }
+        public bool GeometryChanged => true;
 
         /// <summary>
         /// Reports that this filter should continue to be executed until
         /// all coordinates have been transformed.
         /// </summary>
         /// <returns> false</returns>
-        public Boolean Done
-        {
-            get { return false; }
-        }
+        public bool Done => false;
 
         ///<summary>Tests if this transformation is the identity transformation.</summary>
-        public Boolean IsIdentity
-        {
-            get
-            {
-                return (_m00 == 1 && _m01 == 0 && _m02 == 0
-                        && _m10 == 0 && _m11 == 1 && _m12 == 0);
-            }
-        }
+        public bool IsIdentity => (_m00 == 1 && _m01 == 0 && _m02 == 0
+                                      && _m10 == 0 && _m11 == 1 && _m12 == 0);
 
         ///<summary>
         /// Tests if an object is an <c>AffineTransformation</c> and has the same matrix as this transformation.
         ///</summary>
         /// <param name="obj">An object to test</param>
         /// <returns>true if the given object is equal to this object</returns>
-        public override Boolean Equals(Object obj)
+        public override bool Equals(object obj)
         {
             return Equals(obj as AffineTransformation);
             /*
@@ -1087,7 +1066,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </code>
         /// </summary>
         ///<returns>A string representing this transformation</returns>
-        public override String ToString()
+        public override string ToString()
         {
             return "AffineTransformation[[" + _m00 + ", " + _m01 + ", " + _m02
             + "], ["

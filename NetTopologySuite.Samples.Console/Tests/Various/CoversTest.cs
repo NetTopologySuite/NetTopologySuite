@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Samples.Tests.Various
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     [TestFixture]
     public class CoversTest : BaseSamples
@@ -14,30 +14,30 @@ namespace NetTopologySuite.Samples.Tests.Various
         private Polygon polygon1 = null;
         private Polygon polygon2 = null;
 
-        Coordinate[] array1 = new Coordinate[]  {   new Coordinate(10, 10), 
+        Coordinate[] array1 = new Coordinate[]  {   new Coordinate(10, 10),
                                                     new Coordinate(50, 10),
                                                     new Coordinate(50, 50),
                                                     new Coordinate(10, 50),
                                                     new Coordinate(10, 10), };
 
-        Coordinate[] array2 = new Coordinate[]  {   new Coordinate(11, 11), 
+        Coordinate[] array2 = new Coordinate[]  {   new Coordinate(11, 11),
                                                     new Coordinate(20, 11),
                                                     new Coordinate(20, 20),
                                                     new Coordinate(11, 20),
                                                     new Coordinate(11, 11), };
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public CoversTest() : base()
-        {            
+        {
             polygon1 = new Polygon(new LinearRing(array1));
             polygon2 = new Polygon(new LinearRing(array2));
 
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [Test]
         public void CoversTestTest()
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.IsTrue(polygon2.Within(polygon1));
             Assert.IsTrue(polygon1.Covers(polygon2));
             Assert.IsFalse(polygon1.CoveredBy(polygon2));
-            
-        }        
+
+        }
     }
 }

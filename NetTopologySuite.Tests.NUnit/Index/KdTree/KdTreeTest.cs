@@ -43,7 +43,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
             kd.Insert(new Coordinate(493, 87), "F");
             kd.Insert(new Coordinate(502, 290), "G");
 
-
             var res = kd.NearestNeighbor(new Coordinate(297, 133)); //Should be B
             Assert.AreEqual("B", res.Data);
             res = kd.NearestNeighbor(new Coordinate(272, 216)); //Should be E        }
@@ -125,7 +124,6 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
                 "MULTIPOINT ( (10 60), (20 60), (20 60))");
         }
 
-
         private void TestQuery(string wktInput, double tolerance,
             Envelope queryEnv, string wktExpected)
         {
@@ -136,8 +134,8 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
                 IOUtil.Read(wktExpected).Coordinates);
         }
 
-        private void TestQueryRepeated(String wktInput, double tolerance,
-            Envelope queryEnv, String wktExpected)
+        private void TestQueryRepeated(string wktInput, double tolerance,
+            Envelope queryEnv, string wktExpected)
         {
             var index = Build(wktInput, tolerance);
             TestQuery(
@@ -154,15 +152,15 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
             Array.Sort(result);
             Array.Sort(expectedCoord);
 
-            Assert.IsTrue(result.Length == expectedCoord.Length, 
-                          "Result count = {0}, expected count = {1}", 
+            Assert.IsTrue(result.Length == expectedCoord.Length,
+                          "Result count = {0}, expected count = {1}",
                           result.Length, expectedCoord.Length);
 
-            var isMatch = CoordinateArrays.Equals(result, expectedCoord);
+            bool isMatch = CoordinateArrays.Equals(result, expectedCoord);
             Assert.IsTrue(isMatch, "Expected result coordinates not found");
         }
 
-        private void TestQuery(KdTree<object> index, Envelope queryEnv, 
+        private void TestQuery(KdTree<object> index, Envelope queryEnv,
             bool includeRepeated, Coordinate[] expectedCoord)
         {
             var result = KdTree<object>.ToCoordinates(index.Query(queryEnv), includeRepeated);
@@ -174,7 +172,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
                           "Result count = {0}, expected count = {1}",
                           result.Length, expectedCoord.Length);
 
-            var isMatch = CoordinateArrays.Equals(result, expectedCoord);
+            bool isMatch = CoordinateArrays.Equals(result, expectedCoord);
             Assert.IsTrue(isMatch, "Expected result coordinates not found");
         }
 
@@ -182,7 +180,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.KdTree
         {
             var index = new KdTree<object>(tolerance);
             var coords = IOUtil.Read(wktInput).Coordinates;
-            for (var i = 0; i < coords.Length; i++)
+            for (int i = 0; i < coords.Length; i++)
                 index.Insert(coords[i]);
             return index;
         }

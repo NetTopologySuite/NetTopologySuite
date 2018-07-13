@@ -16,14 +16,14 @@ namespace NetTopologySuite.Shape.Fractal
 
         private static int RecursionLevelForSize(int numPts)
         {
-            var pow4 = numPts / 3d;
-            var exp = Math.Log(pow4) / Math.Log(4);
+            double pow4 = numPts / 3d;
+            double exp = Math.Log(pow4) / Math.Log(4);
             return (int)exp;
         }
 
         public override IGeometry GetGeometry()
         {
-            var level = RecursionLevelForSize(NumPoints);
+            int level = RecursionLevelForSize(NumPoints);
             var baseLine = GetSquareBaseLine();
             var pts = GetBoundary(level, baseLine.GetCoordinate(0), baseLine.Length);
             return GeomFactory.CreatePolygon(
@@ -40,7 +40,7 @@ namespace NetTopologySuite.Shape.Fractal
 
         private Coordinate[] GetBoundary(int level, Coordinate origin, double width)
         {
-            var y = origin.Y;
+            double y = origin.Y;
             // for all levels beyond 0 need to vertically shift shape by height of one "arm" to centre it
             if (level > 0)
             {
@@ -70,7 +70,7 @@ namespace NetTopologySuite.Shape.Fractal
                 var offsetVec = heightVec.RotateByQuarterCircle(1);
                 var offsetPt = offsetVec.Translate(midPt);
 
-                var n2 = level - 1;
+                int n2 = level - 1;
                 var thirdPt = baseV.Multiply(OneThird).Translate(p0);
                 var twoThirdPt = baseV.Multiply(TwoThirds).Translate(p0);
 

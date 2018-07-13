@@ -1,5 +1,6 @@
 ﻿using System;
 using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm;
 using NUnit.Framework;
 using NetTopologySuite.Mathematics;
 
@@ -111,7 +112,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     CheckOriginalJTS(pts, true);
   }
 
-
   public void TestBadCCW6()
   {
     // from JTS Convex Hull "Almost collinear" unit test
@@ -140,15 +140,13 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         private static void CheckOriginalJTS(Coordinate[] pts, bool expected)
         {
-            Assert.IsTrue(expected == OrientationIndexTest.IsAllOrientationsEqual(pts), "NTS Robust FAIL");
+            Assert.IsTrue(expected == IsAllOrientationsEqualRD(pts), "NTS RobustDeterminant FAIL");
         }
 
         private static void CheckDD(Coordinate[] pts, bool expected)
         {
             Assert.IsTrue(expected == IsAllOrientationsEqualDD(pts), "DD");
         }
-  
-
 
         public static bool IsAllOrientationsEqual(
             double p0x, double p0y,
@@ -167,7 +165,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         public static bool IsAllOrientationsEqualDD(Coordinate[] pts)
         {
-            var orient = new int[3];
+            int[] orient = new int[3];
             orient[0] = NetTopologySuite.Algorithm.CGAlgorithmsDD.OrientationIndex(pts[0], pts[1], pts[2]);
             orient[1] = NetTopologySuite.Algorithm.CGAlgorithmsDD.OrientationIndex(pts[1], pts[2], pts[0]);
             orient[2] = NetTopologySuite.Algorithm.CGAlgorithmsDD.OrientationIndex(pts[2], pts[0], pts[1]);
@@ -176,17 +174,17 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         private static int OrientationIndexDD(Coordinate p1, Coordinate p2, Coordinate q)
         {
-            DD dx1 = DD.ValueOf(p2.X) - p1.X;
-            DD dy1 = DD.ValueOf(p2.Y) - p1.Y;
-            DD dx2 = DD.ValueOf(q.X) - p2.X;
-            DD dy2 = DD.ValueOf(q.Y) - p2.Y;
+            var dx1 = DD.ValueOf(p2.X) - p1.X;
+            var dy1 = DD.ValueOf(p2.Y) - p1.Y;
+            var dx2 = DD.ValueOf(q.X) - p2.X;
+            var dy2 = DD.ValueOf(q.Y) - p2.Y;
 
             return SignOfDet2x2DD(dx1, dy1, dx2, dy2);
         }
 
         private static int SignOfDet2x2DD(DD x1, DD y1, DD x2, DD y2)
         {
-            DD det = x1 * y2 - y1 * x2;
+            var det = x1 * y2 - y1 * x2;
             if (det.IsZero)
                 return 0;
             if (det.IsNegative)
@@ -203,5 +201,13 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             return orient0 == orient1 && orient0 == orient2;
         }
 
+        public static bool IsAllOrientationsEqualRD(Coordinate[] pts)
+        {
+            int[] orient = new int[3];
+            orient[0] = RobustDeterminant.OrientationIndex(pts[0], pts[1], pts[2]);
+            orient[1] = RobustDeterminant.OrientationIndex(pts[1], pts[2], pts[0]);
+            orient[2] = RobustDeterminant.OrientationIndex(pts[2], pts[0], pts[1]);
+            return orient[0] == orient[1] && orient[0] == orient[2];
+        }
     }
 }

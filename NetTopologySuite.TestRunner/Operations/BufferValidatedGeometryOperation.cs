@@ -10,7 +10,7 @@ namespace Open.Topology.TestRunner.Operations
 {
 
     /// <summary>
-    /// A <see cref="IGeometryOperation"/> which validates the results of the 
+    /// A <see cref="IGeometryOperation"/> which validates the results of the
     /// <see cref="IGeometry"/> <tt>buffer()</tt> method.
     /// If an invalid result is found, an exception is thrown (this is the most
     /// convenient and noticeable way of flagging the problem when using the TestRunner).
@@ -45,7 +45,7 @@ namespace Open.Topology.TestRunner.Operations
             return GetReturnType(op.ToString());
         }
 
-        public Type GetReturnType(String opName)
+        public Type GetReturnType(string opName)
         {
             return _chainOp.GetReturnType(opName);
         }
@@ -68,7 +68,7 @@ namespace Open.Topology.TestRunner.Operations
         /// <param name="args">The arguments to the operation (which may be typed as Strings)</param>
         /// <returns>The result</returns>
         /// <exception cref="Exception">If some error was encountered trying to find or process the operation</exception>
-        public IResult Invoke(XmlTestType op, IGeometry geometry, Object[] args)
+        public IResult Invoke(XmlTestType op, IGeometry geometry, object[] args)
         {
             string opName = op.ToString();
             bool isBufferOp = opName.Equals("buffer", StringComparison.InvariantCultureIgnoreCase);
@@ -81,25 +81,25 @@ namespace Open.Topology.TestRunner.Operations
             return InvokeBufferOpValidated(geometry /*, args */);
         }
 
-        private void ParseArgs(Object[] args)
+        private void ParseArgs(object[] args)
         {
             _argCount = args.Length;
-            _distance = Double.Parse((String) args[0]);
+            _distance = double.Parse((string) args[0]);
             if (_argCount >= 2)
-                _quadSegments = Int32.Parse((String) args[1]);
+                _quadSegments = int.Parse((string) args[1]);
             if (_argCount >= 3)
-                _endCapStyle = (EndCapStyle)Int32.Parse((String)args[2]);
+                _endCapStyle = (EndCapStyle)int.Parse((string)args[2]);
         }
 
         private IResult InvokeBufferOpValidated(IGeometry geometry /*, Object[] args*/)
         {
-            IGeometry result = InvokeBuffer(geometry);
+            var result = InvokeBuffer(geometry);
 
             // validate
             Validate(geometry, result);
 
             /**
-             * Return an empty GeometryCollection as the result.  
+             * Return an empty GeometryCollection as the result.
              * This allows the test case to avoid specifying an exact result
              */
             if (ReturnEmptyGeometryCollection)
@@ -140,7 +140,7 @@ namespace Open.Topology.TestRunner.Operations
 
         private bool IsEmptyBufferExpected(IGeometry geom)
         {
-            var isNegativeBufferOfNonAreal = (int) geom.Dimension < 2 && _distance <= 0.0;
+            bool isNegativeBufferOfNonAreal = (int) geom.Dimension < 2 && _distance <= 0.0;
             return isNegativeBufferOfNonAreal;
         }
 
@@ -155,8 +155,8 @@ namespace Open.Topology.TestRunner.Operations
 
         private void CheckContainment(IGeometry geom, IGeometry buffer)
         {
-            var isCovered = true;
-            var errMsg = "";
+            bool isCovered = true;
+            string errMsg = "";
             if (_distance > 0)
             {
                 isCovered = buffer.Covers(geom);
@@ -187,23 +187,22 @@ namespace Open.Topology.TestRunner.Operations
             var bufValidator = new BufferResultValidator(geom, distance, buffer);
             if (! bufValidator.IsValid())
             {
-                var errorMsg = bufValidator.ErrorMessage;
+                string errorMsg = bufValidator.ErrorMessage;
                 var errorLoc = bufValidator.ErrorLocation;
                 ReportError(errorMsg, errorLoc);
             }
         }
 
-        private static void ReportError(String msg, Coordinate loc)
+        private static void ReportError(string msg, Coordinate loc)
         {
-            String locStr = "";
+            string locStr = "";
             if (loc != null)
             {
                 locStr = " at " + WKTWriter.ToPoint(loc);
             }
-//  	System.out.println(msg);
+            // System.out.println(msg);
             throw new Exception(msg + locStr);
         }
-
 
     }
 }

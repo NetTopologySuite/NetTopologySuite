@@ -22,7 +22,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if the polygon covers the geometry</returns>
         public static bool Covers(PreparedPolygon prep, IGeometry geom)
         {
-            PreparedPolygonCovers polyInt = new PreparedPolygonCovers(prep);
+            var polyInt = new PreparedPolygonCovers(prep);
             return polyInt.Covers(geom);
         }
 

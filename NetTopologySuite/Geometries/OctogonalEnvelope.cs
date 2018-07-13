@@ -8,7 +8,7 @@ namespace NetTopologySuite.Geometries
     /// </summary>
     /// <remarks>
     /// The OctagonalEnvelope of a geometric object
-    /// is a geometry which is tight bound along the (up to) four extremal rectilineal parallels
+    /// is a geometry which is tight bound along the (up to) four extremal rectilinear parallels
     /// and along the (up to) four extremal diagonal parallels.
     /// Depending on the shape of the contained
     /// geometry, the octagon may be degenerate to any extreme
@@ -26,7 +26,6 @@ namespace NetTopologySuite.Geometries
             return (new OctagonalEnvelope(geom)).ToGeometry(geom.Factory);
         }
 
-        
         private static double ComputeA(double x, double y)
         {
             return x + y;
@@ -38,10 +37,9 @@ namespace NetTopologySuite.Geometries
         }
 
         private static readonly double SQRT2 = Math.Sqrt(2.0);
-  
 
         // initialize in the null state
-        private double _minX = Double.NaN;
+        private double _minX = double.NaN;
         private double _maxX;
         private double _minY;
         private double _maxY;
@@ -102,34 +100,73 @@ namespace NetTopologySuite.Geometries
             ExpandToInclude(geom);
         }
 
+        /// <summary>
+        /// Gets a value indicating the minimal x-ordinate value
+        /// </summary>
+        public double MinX => _minX;
 
-        public double MinX { get { return _minX; } }
-        public double MaxX { get { return _maxX; } }
-        public double MinY { get { return _minY; } }
-        public double MaxY { get { return _maxY; } }
-        public double MinA { get { return _minA; } }
-        public double MaxA { get { return _maxA; } }
-        public double MinB { get { return _minB; } }
-        public double MaxB { get { return _maxB; } }
+        /// <summary>
+        /// Gets a value indicating the maximal x-ordinate value
+        /// </summary>
+        public double MaxX => _maxX;
 
-        ///
-        ///  Sets the value of this object to the null value
-        ///
-        public Boolean IsNull
+        /// <summary>
+        /// Gets a value indicating the minimal y-ordinate value
+        /// </summary>
+        public double MinY => _minY;
+
+        /// <summary>
+        /// Gets a value indicating the maximal y-ordinate value
+        /// </summary>
+        public double MaxY => _maxY;
+
+        /// <summary>
+        /// Gets a value indicating the minimal <c>a</c> value
+        /// </summary>
+        public double MinA => _minA;
+
+        /// <summary>
+        /// Gets a value indicating the maximal <c>a</c> value
+        /// </summary>
+        public double MaxA => _maxA;
+
+        /// <summary>
+        /// Gets a value indicating the minimal <c>b</c> value
+        /// </summary>
+        public double MinB => _minB;
+
+        /// <summary>
+        /// Gets a value indicating the maximal <c>b</c> value
+        /// </summary>
+        public double MaxB => _maxB;
+
+        /// <summary>
+        /// Gets a value indicating that this object is null
+        /// </summary>
+        public bool IsNull
         {
-            get { return Double.IsNaN(_minX); }
+            get => double.IsNaN(_minX);
             private set
             {
                 if (value)
-                    _minX = Double.NaN;
+                    _minX = double.NaN;
             }
         }
 
+        /// <summary>
+        /// Method to expand this <see cref="OctagonalEnvelope"/> to include the provided <paramref name="g"/> geometry.
+        /// </summary>
+        /// <param name="g">The geometry</param>
         public void ExpandToInclude(IGeometry g)
         {
             g.Apply(new BoundingOctagonComponentFilter(this));
         }
 
+        /// <summary>
+        /// Method to expand this <see cref="OctagonalEnvelope"/> to include the provided <paramref name="seq"/> coordinate sequence.
+        /// </summary>
+        /// <param name="seq">The coordinate sequence</param>
+        /// <returns>A reference to <c>this</c> octagonal envelope, expanded by <paramref name="seq"/></returns>
         public OctagonalEnvelope ExpandToInclude(ICoordinateSequence seq)
         {
             for (int i = 0; i < seq.Count; i++)
@@ -141,6 +178,11 @@ namespace NetTopologySuite.Geometries
             return this;
         }
 
+        /// <summary>
+        /// Method to expand this <see cref="OctagonalEnvelope"/> to include the provided <paramref name="oct"/> OctogonalEnvelope.
+        /// </summary>
+        /// <param name="oct">The OctogonalEnvelope</param>
+        /// <returns>A reference to <c>this</c> octagonal envelope, expanded by <paramref name="oct"/></returns>
         public OctagonalEnvelope ExpandToInclude(OctagonalEnvelope oct)
         {
             if (oct.IsNull) return this;
@@ -168,12 +210,22 @@ namespace NetTopologySuite.Geometries
             return this;
         }
 
+        /// <summary>
+        /// Function to expand this <see cref="OctagonalEnvelope"/> to include the provided <paramref name="p"/> coordinate.
+        /// </summary>
+        /// <param name="p">The coordinate</param>
+        /// <returns>A reference to <c>this</c> octagonal envelope, expanded by <paramref name="p"/></returns>
         public OctagonalEnvelope ExpandToInclude(Coordinate p)
         {
             ExpandToInclude(p.X, p.Y);
             return this;
         }
 
+        /// <summary>
+        /// Function to expand this <see cref="OctagonalEnvelope"/> to include the provided <paramref name="env"/> envelope.
+        /// </summary>
+        /// <param name="env">The envelope</param>
+        /// <returns>A reference to <c>this</c> octagonal envelope, expanded by <paramref name="env"/></returns>
         public OctagonalEnvelope ExpandToInclude(Envelope env)
         {
             ExpandToInclude(env.MinX, env.MinY);
@@ -183,6 +235,12 @@ namespace NetTopologySuite.Geometries
             return this;
         }
 
+        /// <summary>
+        /// Function to expand this <see cref="OctagonalEnvelope"/> to include the provided <paramref name="x"/>- and <paramref name="y"/> ordinates.
+        /// </summary>
+        /// <param name="x">A x-ordinate value</param>
+        /// <param name="y">A y-ordinate value</param>
+        /// <returns>A reference to <c>this</c> octagonal envelope, expanded by <paramref name="x"/> and <paramref name="y"/></returns>
         public OctagonalEnvelope ExpandToInclude(double x, double y)
         {
             double A = ComputeA(x, y);
@@ -232,12 +290,11 @@ namespace NetTopologySuite.Geometries
                 IsNull = true;
         }
 
-        ///
-        /// Tests if the extremal values for this octagon are valid.
-        ///
-        /// @return <code>true</code> if this object has valid values
-        ///
-        private Boolean IsValid
+        /// <summary>
+        /// Gets a value indicating if the extremal values for this octagon are valid.
+        /// </summary>
+        /// <returns><c>true</c> if this object has valid values</returns>
+        private bool IsValid
         {
             get
             {
@@ -249,7 +306,12 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        public Boolean Intersects(OctagonalEnvelope other)
+        /// <summary>
+        /// Function to test if <c>this</c> octagonal envelope intersects <paramref name="other"/> octagonal envelope .
+        /// </summary>
+        /// <param name="other">An octagonal envelope </param>
+        /// <returns><c>true</c> if <c>this</c> octagonal envelope intersects <paramref name="other"/> octagonal envelope .</returns>
+        public bool Intersects(OctagonalEnvelope other)
         {
             if (IsNull || other.IsNull) { return false; }
 
@@ -264,7 +326,12 @@ namespace NetTopologySuite.Geometries
             return true;
         }
 
-        public Boolean Intersects(Coordinate p)
+        /// <summary>
+        /// Function to test if <c>this</c> octagonal envelope contains <paramref name="p"/> coordinate.
+        /// </summary>
+        /// <param name="p">A coordinate</param>
+        /// <returns><c>true</c> if <c>this</c> octagonal envelope contains <paramref name="p"/> coordinate.</returns>
+        public bool Intersects(Coordinate p)
         {
             if (_minX > p.X) return false;
             if (_maxX < p.X) return false;
@@ -280,7 +347,12 @@ namespace NetTopologySuite.Geometries
             return true;
         }
 
-        public Boolean Contains(OctagonalEnvelope other)
+        /// <summary>
+        /// Function to test if <c>this</c> octagonal envelope contains <paramref name="other"/> octagonal envelope.
+        /// </summary>
+        /// <param name="other">An octagonal envelope</param>
+        /// <returns><c>true</c> if <c>this</c> octagonal envelope contains <paramref name="other"/> octagonal envelope.</returns>
+        public bool Contains(OctagonalEnvelope other)
         {
             if (IsNull || other.IsNull) { return false; }
 
@@ -294,26 +366,34 @@ namespace NetTopologySuite.Geometries
                 && other._maxB <= _maxB;
         }
 
+        /// <summary>
+        /// Function to convert <c>this</c> octagonal envelope into a geometry
+        /// </summary>
+        /// <param name="geomFactory">The factory to create the geometry</param>
+        /// <returns>A geometry</returns>
         public IGeometry ToGeometry(IGeometryFactory geomFactory)
         {
+            if (geomFactory == null)
+                throw new ArgumentNullException(nameof(geomFactory));
+
             if (IsNull)
             {
-                return geomFactory.CreatePoint((ICoordinateSequence)null);
+                return geomFactory.CreatePoint();
             }
 
-            Coordinate px00 = new Coordinate(_minX, _minA - _minX);
-            Coordinate px01 = new Coordinate(_minX, _minX - _minB);
+            var px00 = new Coordinate(_minX, _minA - _minX);
+            var px01 = new Coordinate(_minX, _minX - _minB);
 
-            Coordinate px10 = new Coordinate(_maxX, _maxX - _maxB);
-            Coordinate px11 = new Coordinate(_maxX, _maxA - _maxX);
+            var px10 = new Coordinate(_maxX, _maxX - _maxB);
+            var px11 = new Coordinate(_maxX, _maxA - _maxX);
 
-            Coordinate py00 = new Coordinate(_minA - _minY, _minY);
-            Coordinate py01 = new Coordinate(_minY + _maxB, _minY);
+            var py00 = new Coordinate(_minA - _minY, _minY);
+            var py01 = new Coordinate(_minY + _maxB, _minY);
 
-            Coordinate py10 = new Coordinate(_maxY + _minB, _maxY);
-            Coordinate py11 = new Coordinate(_maxA - _maxY, _maxY);
+            var py10 = new Coordinate(_maxY + _minB, _maxY);
+            var py11 = new Coordinate(_maxA - _maxY, _maxY);
 
-            IPrecisionModel pm = geomFactory.PrecisionModel;
+            var pm = geomFactory.PrecisionModel;
             pm.MakePrecise(px00);
             pm.MakePrecise(px01);
             pm.MakePrecise(px10);
@@ -323,7 +403,7 @@ namespace NetTopologySuite.Geometries
             pm.MakePrecise(py10);
             pm.MakePrecise(py11);
 
-            CoordinateList coordList = new CoordinateList();
+            var coordList = new CoordinateList();
             coordList.Add(px00, false);
             coordList.Add(px01, false);
             coordList.Add(py10, false);
@@ -346,7 +426,7 @@ namespace NetTopologySuite.Geometries
             // must be a polygon, so add closing point
             coordList.Add(px00, false);
             pts = coordList.ToCoordinateArray();
-            return geomFactory.CreatePolygon(geomFactory.CreateLinearRing(pts), null);
+            return geomFactory.CreatePolygon(geomFactory.CreateLinearRing(pts));
         }
 
         private class BoundingOctagonComponentFilter : IGeometryComponentFilter
@@ -360,13 +440,13 @@ namespace NetTopologySuite.Geometries
 
             public void Filter(IGeometry geom)
             {
-                if (geom is ILineString)
+                if (geom is ILineString lgeom)
                 {
-                    _octogonalEnvelope.ExpandToInclude(((ILineString)geom).CoordinateSequence);
+                    _octogonalEnvelope.ExpandToInclude(lgeom.CoordinateSequence);
                 }
-                else if (geom is IPoint)
+                else if (geom is IPoint pgeom)
                 {
-                    _octogonalEnvelope.ExpandToInclude(((IPoint)geom).CoordinateSequence);
+                    _octogonalEnvelope.ExpandToInclude(pgeom.CoordinateSequence);
                 }
             }
         }

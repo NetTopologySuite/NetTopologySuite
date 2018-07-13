@@ -51,7 +51,7 @@ namespace NetTopologySuite.Samples.Tests.Performances
             int count = 0;
             while (count++ < total)
             {
-                Coordinate[] coords = new Coordinate[NumShellCoords];
+                var coords = new Coordinate[NumShellCoords];
                 for (int j = 0; j < NumShellCoords - 1; j++)
                     coords[j] = gimme_a_coord();
                 coords[NumShellCoords - 1] = coords[0];
@@ -61,10 +61,10 @@ namespace NetTopologySuite.Samples.Tests.Performances
 
         private void TestPerformances(int total)
         {
-            IPoint point = _factory.CreatePoint(gimme_a_coord());
-            IEnumerable<IPolygon> polygons = create_polygons(total);            
-            IEnumerable<IPreparedGeometry> prepared = polygons.Select(PreparedGeometryFactory.Prepare);
-            Stopwatch sw = Stopwatch.StartNew();
+            var point = _factory.CreatePoint(gimme_a_coord());
+            var polygons = create_polygons(total);
+            var prepared = polygons.Select(PreparedGeometryFactory.Prepare);
+            var sw = Stopwatch.StartNew();
             int match = prepared.Count(pg => pg.Contains(point));
             sw.Stop();
             Console.WriteLine("matched '{0}' of '{1}': elapsed time: '{2}'", match, total, sw.Elapsed);

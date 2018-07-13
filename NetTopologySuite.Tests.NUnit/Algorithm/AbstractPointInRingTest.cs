@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     [TestFixtureAttribute]
-    public abstract class AbstractPointInRingTest
+    public abstract class AbstractPointInRingTest : GeometryTestCase
     {
         [TestAttribute]
         public void TestBox()
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             RunPtInRing(Location.Boundary, new Coordinate(0, 0), Comb);
             RunPtInRing(Location.Boundary, new Coordinate(0, 1), Comb);
-            // at vertex 
+            // at vertex
             RunPtInRing(Location.Boundary, new Coordinate(4, 5), Comb);
             RunPtInRing(Location.Boundary, new Coordinate(8, 5), Comb);
 
@@ -40,13 +40,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             // on angled segment
             RunPtInRing(Location.Boundary, new Coordinate(22, 7), Comb);
 
-
-
             RunPtInRing(Location.Interior, new Coordinate(1, 5), Comb);
             RunPtInRing(Location.Interior, new Coordinate(5, 5), Comb);
             RunPtInRing(Location.Interior, new Coordinate(1, 7), Comb);
-
-
 
             RunPtInRing(Location.Exterior, new Coordinate(12, 10), Comb);
             RunPtInRing(Location.Exterior, new Coordinate(16, 5), Comb);
@@ -59,12 +55,13 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /*
         * Tests that repeated points are handled correctly
         */
+        [Test]
         public void TestRepeatedPts()
         {
             RunPtInRing(Location.Boundary, new Coordinate(0, 0), RepeatedPts);
             RunPtInRing(Location.Boundary, new Coordinate(0, 1), RepeatedPts);
 
-            // at vertex 
+            // at vertex
             RunPtInRing(Location.Boundary, new Coordinate(2, 5), RepeatedPts);
             RunPtInRing(Location.Boundary, new Coordinate(8, 5), RepeatedPts);
             RunPtInRing(Location.Boundary, new Coordinate(10, 5), RepeatedPts);
@@ -74,7 +71,23 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         }
 
-        abstract protected void RunPtInRing(Location expectedLoc, Coordinate pt, String wkt);
+        /**
+          * Cases generated from RayCrossingCounterStressTest/PointInRingRobustnessTest.
+          */
+        [Test]
+        public virtual void TestRobustStressTriangles()
+        {
+            RunPtInRing(Location.Exterior, new Coordinate(25.374625374625374, 128.35564435564436), "POLYGON ((0.0 0.0, 0.0 172.0, 100.0 0.0, 0.0 0.0))");
+            RunPtInRing(Location.Interior, new Coordinate(97.96039603960396, 782.0), "POLYGON ((642.0 815.0, 69.0 764.0, 394.0 966.0, 642.0 815.0))");
+        }
+
+        [Test]
+        public virtual void TestRobustTriangle()
+        {
+            RunPtInRing(Location.Exterior, new Coordinate(3.166572116932842, 48.5390194687463), "POLYGON ((2.152214146946829 50.470470727186765, 18.381941666723034 19.567250592139274, 2.390837642830135 49.228045261718165, 2.152214146946829 50.470470727186765))");
+        }
+
+        abstract protected void RunPtInRing(Location expectedLoc, Coordinate pt, string wkt);
 
     }
 }

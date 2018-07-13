@@ -78,17 +78,16 @@ namespace NetTopologySuite.Samples.Technique
             var tuples = new List<Tuple<Coordinate, double>>();
 
             var sequence = lineString.CoordinateSequence;
-            var startMeasure = sequence.GetOrdinate(0, Ordinate.M);
+            double startMeasure = sequence.GetOrdinate(0, Ordinate.M);
             var startRelation = _measureInterval.Relation(startMeasure);
             if (startRelation == IntervalRelation.In)
             {
                 tuples.Add(Tuple.Create(sequence.GetCoordinate(0), startMeasure));
             }
 
-
-            for (var i = 1; i < sequence.Count; i++)
+            for (int i = 1; i < sequence.Count; i++)
             {
-                var measure = sequence.GetOrdinate(i, Ordinate.M);
+                double measure = sequence.GetOrdinate(i, Ordinate.M);
                 var relation = _measureInterval.Relation(measure);
 
                 if (relation == IntervalRelation.In)
@@ -113,7 +112,7 @@ namespace NetTopologySuite.Samples.Technique
                                 _geoms.Add(ToLinestring(lineString.Factory, sequence.Ordinates, tuples));
                                 break;
                         }
-                    } 
+                    }
                     else if (startRelation == IntervalRelation.Below)
                     {
                         switch (relation)
@@ -163,7 +162,7 @@ namespace NetTopologySuite.Samples.Technique
             List<Tuple<Coordinate, double>> tuples)
         {
             var seq = factory.CoordinateSequenceFactory.Create(tuples.Count, ordinates);
-            for (var i = 0; i < tuples.Count; i++)
+            for (int i = 0; i < tuples.Count; i++)
             {
                 seq.SetOrdinate(i, Ordinate.X, tuples[i].Item1.X);
                 seq.SetOrdinate(i, Ordinate.Y, tuples[i].Item1.Y);
@@ -177,7 +176,7 @@ namespace NetTopologySuite.Samples.Technique
 
         private static Tuple<Coordinate, double> Interpolate(double m1, double measure, double m2, LineSegment segment)
         {
-            var measureFraction = (measure - m1) / (m2 - m1);
+            double measureFraction = (measure - m1) / (m2 - m1);
             return Tuple.Create(segment.PointAlong(measureFraction), measure);
         }
 
@@ -206,7 +205,7 @@ namespace NetTopologySuite.Samples.Technique
 
         }
 
-        public IList<IGeometry> Filtered { get { return _geoms.AsReadOnly(); }}
+        public IList<IGeometry> Filtered => _geoms.AsReadOnly();
     }
 
     internal enum IntervalRelation

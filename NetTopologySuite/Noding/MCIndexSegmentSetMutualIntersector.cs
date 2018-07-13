@@ -33,10 +33,7 @@ namespace NetTopologySuite.Noding
         /// Gets the index constructed over the base segment strings
         /// </summary>
         /// <remarks>NOTE: To retain thread-safety, treat returned value as immutable</remarks>
-        public ISpatialIndex<MonotoneChain> Index
-        {
-            get { return _index; }
-        }
+        public ISpatialIndex<MonotoneChain> Index => _index;
 
         private void InitBaseSegments(IEnumerable<ISegmentString> segStrings)
         {
@@ -61,7 +58,7 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// Calls <see cref="ISegmentIntersector.ProcessIntersections(ISegmentString, int, ISegmentString, int)"/>
         /// for all <i>candidate</i> intersections between
-        /// the given collection of SegmentStrings and the set of indexed segments. 
+        /// the given collection of SegmentStrings and the set of indexed segments.
         /// </summary>
         /// <param name="segmentStrings"></param>
         /// <param name="segmentIntersector"></param>
@@ -88,7 +85,7 @@ namespace NetTopologySuite.Noding
 
         private void IntersectChains(IEnumerable<MonotoneChain> monoChains, ISegmentIntersector segmentIntersector)
         {
-            MonotoneChainOverlapAction overlapAction = new SegmentOverlapAction(segmentIntersector);
+            var overlapAction = new SegmentOverlapAction(segmentIntersector);
 
             foreach (var queryChain in monoChains)
             {

@@ -33,7 +33,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.AreEqual(AngleUtility.IsAcute(new Coordinate(10, 0), new Coordinate(0, 0), new Coordinate(-5, 10)), false);
             Assert.AreEqual(AngleUtility.IsAcute(new Coordinate(10, 0), new Coordinate(0, 0), new Coordinate(-5, -10)), false);
 
-
         }
         [TestAttribute]
         public void TestNormalizePositive()
@@ -78,7 +77,6 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.AreEqual(AngleUtility.Normalize(2.5 * Math.PI), 0.5 * Math.PI, Tolerance);
             Assert.AreEqual(AngleUtility.Normalize(3 * Math.PI), Math.PI, Tolerance);
             Assert.AreEqual(AngleUtility.Normalize(4 * Math.PI), 0.0, Tolerance);
-
 
         }
     }

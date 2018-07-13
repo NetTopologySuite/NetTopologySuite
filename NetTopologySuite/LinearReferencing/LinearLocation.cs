@@ -3,7 +3,7 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 
-#if PCL
+#if !HAS_SYSTEM_ICLONEABLE
 using ICloneable = GeoAPI.ICloneable;
 #endif
 
@@ -27,11 +27,11 @@ namespace NetTopologySuite.LinearReferencing
         {
             if (!(linear is ILineString || linear is IMultiLineString))
             {
-                string message = String.Format("Expected {0} or {1}, but was {2}",
+                string message = string.Format("Expected {0} or {1}, but was {2}",
                     typeof(ILineString), typeof(IMultiLineString), linear.GetType());
                 throw new ArgumentException(message, "linear");
             }
-            LinearLocation loc = new LinearLocation();
+            var loc = new LinearLocation();
             loc.SetToEnd(linear);
             return loc;
         }
@@ -170,7 +170,7 @@ namespace NetTopologySuite.LinearReferencing
 
             if (_segmentIndex >= linear.NumPoints)
             {
-                ILineString line = (ILineString)linear.GetGeometryN(_componentIndex);
+                var line = (ILineString)linear.GetGeometryN(_componentIndex);
                 _segmentIndex = line.NumPoints - 1;
                 _segmentFraction = 1.0;
             }
@@ -206,15 +206,15 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>The length of the segment.</returns>
         public double GetSegmentLength(IGeometry linearGeom)
         {
-            ILineString lineComp = (ILineString)linearGeom.GetGeometryN(_componentIndex);
+            var lineComp = (ILineString)linearGeom.GetGeometryN(_componentIndex);
 
             // ensure segment index is valid
             int segIndex = _segmentIndex;
             if (_segmentIndex >= lineComp.NumPoints - 1)
                 segIndex = lineComp.NumPoints - 2;
 
-            Coordinate p0 = lineComp.GetCoordinateN(segIndex);
-            Coordinate p1 = lineComp.GetCoordinateN(segIndex + 1);
+            var p0 = lineComp.GetCoordinateN(segIndex);
+            var p1 = lineComp.GetCoordinateN(segIndex + 1);
             return p0.Distance(p1);
         }
 
@@ -226,7 +226,7 @@ namespace NetTopologySuite.LinearReferencing
         public void SetToEnd(IGeometry linear)
         {
             _componentIndex = linear.NumGeometries - 1;
-            ILineString lastLine = (ILineString)linear.GetGeometryN(_componentIndex);
+            var lastLine = (ILineString)linear.GetGeometryN(_componentIndex);
             _segmentIndex = lastLine.NumPoints - 1;
             _segmentFraction = 1.0;
         }
@@ -234,35 +234,23 @@ namespace NetTopologySuite.LinearReferencing
         /// <summary>
         /// Gets the component index for this location.
         /// </summary>
-        public int ComponentIndex
-        {
-            get { return _componentIndex; }
-        }
+        public int ComponentIndex => _componentIndex;
 
         /// <summary>
         /// Gets the segment index for this location.
         /// </summary>
-        public int SegmentIndex
-        {
-            get { return _segmentIndex; }
-        }
+        public int SegmentIndex => _segmentIndex;
 
         /// <summary>
         /// Gets the segment fraction for this location.
         /// </summary>
-        public double SegmentFraction
-        {
-            get { return _segmentFraction; }
-        }
+        public double SegmentFraction => _segmentFraction;
 
         /// <summary>
         /// Tests whether this location refers to a vertex:
         /// returns <c>true</c> if the location is a vertex.
         /// </summary>
-        public bool IsVertex
-        {
-            get { return _segmentFraction <= 0.0 || _segmentFraction >= 1.0; }
-        }
+        public bool IsVertex => _segmentFraction <= 0.0 || _segmentFraction >= 1.0;
 
         /// <summary>
         /// Gets the <see cref="Coordinate" /> along the
@@ -273,11 +261,11 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>The <see cref="Coordinate" /> at the location.</returns>
         public Coordinate GetCoordinate(IGeometry linearGeom)
         {
-            ILineString lineComp = (ILineString)linearGeom.GetGeometryN(_componentIndex);
-            Coordinate p0 = lineComp.GetCoordinateN(_segmentIndex);
+            var lineComp = (ILineString)linearGeom.GetGeometryN(_componentIndex);
+            var p0 = lineComp.GetCoordinateN(_segmentIndex);
             if (_segmentIndex >= lineComp.NumPoints - 1)
                 return p0;
-            Coordinate p1 = lineComp.GetCoordinateN(_segmentIndex + 1);
+            var p1 = lineComp.GetCoordinateN(_segmentIndex + 1);
             return PointAlongSegmentByFraction(p0, p1, _segmentFraction);
         }
 
@@ -288,15 +276,15 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>the <c>LineSegment</c> containing the location</returns>
         public LineSegment GetSegment(IGeometry linearGeom)
         {
-            ILineString lineComp = (ILineString)linearGeom.GetGeometryN(_componentIndex);
-            Coordinate p0 = lineComp.GetCoordinateN(_segmentIndex);
+            var lineComp = (ILineString)linearGeom.GetGeometryN(_componentIndex);
+            var p0 = lineComp.GetCoordinateN(_segmentIndex);
             // check for endpoint - return last segment of the line if so
             if (_segmentIndex >= lineComp.NumPoints - 1)
             {
-                Coordinate prev = lineComp.GetCoordinateN(lineComp.NumPoints - 2);
+                var prev = lineComp.GetCoordinateN(lineComp.NumPoints - 2);
                 return new LineSegment(prev, p0);
             }
-            Coordinate p1 = lineComp.GetCoordinateN(_segmentIndex + 1);
+            var p1 = lineComp.GetCoordinateN(_segmentIndex + 1);
             return new LineSegment(p0, p1);
         }
 
@@ -310,7 +298,7 @@ namespace NetTopologySuite.LinearReferencing
         {
             if (_componentIndex < 0 || _componentIndex >= linearGeom.NumGeometries)
                 return false;
-            ILineString lineComp = (ILineString)linearGeom.GetGeometryN(_componentIndex);
+            var lineComp = (ILineString)linearGeom.GetGeometryN(_componentIndex);
             if (_segmentIndex < 0 || _segmentIndex > lineComp.NumPoints)
                 return false;
             if (_segmentIndex == lineComp.NumPoints && _segmentFraction != 0.0)
@@ -337,7 +325,7 @@ namespace NetTopologySuite.LinearReferencing
         /// </exception>
         public int CompareTo(object obj)
         {
-            LinearLocation other = (LinearLocation)obj;
+            var other = (LinearLocation)obj;
             return CompareTo(other);
         }
 
@@ -475,7 +463,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>True if the location is a component endpoint</returns>
         public bool IsEndpoint(IGeometry linearGeom)
         {
-            ILineString lineComp = (ILineString)linearGeom.GetGeometryN(_componentIndex);
+            var lineComp = (ILineString)linearGeom.GetGeometryN(_componentIndex);
             // check for endpoint
             int nseg = lineComp.NumPoints - 1;
             return _segmentIndex >= nseg ||
@@ -495,7 +483,7 @@ namespace NetTopologySuite.LinearReferencing
         public LinearLocation ToLowest(IGeometry linearGeom)
         {
             // TODO: compute lowest component index
-            IGeometry lineComp = linearGeom.GetGeometryN(_componentIndex);
+            var lineComp = linearGeom.GetGeometryN(_componentIndex);
             int nseg = lineComp.NumPoints - 1;
             // if not an endpoint can be returned directly
             if (_segmentIndex < nseg)
@@ -507,7 +495,13 @@ namespace NetTopologySuite.LinearReferencing
         /// Copies this location.
         /// </summary>
         /// <returns>A copy of this location.</returns>
+        [Obsolete("Use Copy()")]
         public object Clone()
+        {
+            return Copy();
+        }
+
+        public LinearLocation Copy()
         {
             return new LinearLocation(_segmentIndex, _segmentFraction);
         }

@@ -137,7 +137,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             RunOffsetTest("MULTILINESTRING ((0 0, 10 0), (10 0, 20 0))", "POINT(20 0)", 1.0, "POINT (20 1)");
         }
 
-        protected IGeometry Read(String wkt)
+        protected IGeometry Read(string wkt)
         {
             try
             {
@@ -149,17 +149,17 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             }
         }
 
-        protected void RunIndicesOfThenExtract(String inputStr, String subLineStr)
+        protected void RunIndicesOfThenExtract(string inputStr, string subLineStr)
         {
-            IGeometry input = Read(inputStr);
-            IGeometry subLine = Read(subLineStr);
-            IGeometry result = IndicesOfThenExtract(input, subLine);
+            var input = Read(inputStr);
+            var subLine = Read(subLineStr);
+            var result = IndicesOfThenExtract(input, subLine);
             CheckExpected(result, subLineStr);
         }
 
-        protected void CheckExpected(IGeometry result, String expected)
+        protected void CheckExpected(IGeometry result, string expected)
         {
-            IGeometry subLine = Read(expected);
+            var subLine = Read(expected);
             bool isEqual = result.EqualsExact(subLine, 1.0e-5);
             if (!isEqual)
                 Console.WriteLine("Computed result is: " + result);
@@ -178,11 +178,11 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         }
         */
 
-        protected void RunIndexOfAfterTest(String inputStr, String testPtWKT)
+        protected void RunIndexOfAfterTest(string inputStr, string testPtWKT)
         {
-            IGeometry input = Read(inputStr);
-            IGeometry testPoint = Read(testPtWKT);
-            Coordinate testPt = testPoint.Coordinate;
+            var input = Read(inputStr);
+            var testPoint = Read(testPtWKT);
+            var testPt = testPoint.Coordinate;
             bool resultOk = IndexOfAfterCheck(input, testPt);
             Assert.IsTrue(resultOk);
         }
@@ -191,14 +191,14 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
 
         private const double ToleranceDist = 0.001;
 
-        protected void RunOffsetTest(String inputWKT, String testPtWKT, double offsetDistance, String expectedPtWKT)
+        protected void RunOffsetTest(string inputWKT, string testPtWKT, double offsetDistance, string expectedPtWKT)
         {
-            IGeometry input = Read(inputWKT);
-            IGeometry testPoint = Read(testPtWKT);
-            IGeometry expectedPoint = Read(expectedPtWKT);
-            Coordinate testPt = testPoint.Coordinate;
-            Coordinate expectedPt = expectedPoint.Coordinate;
-            Coordinate offsetPt = ExtractOffsetAt(input, testPt, offsetDistance);
+            var input = Read(inputWKT);
+            var testPoint = Read(testPtWKT);
+            var expectedPoint = Read(expectedPtWKT);
+            var testPt = testPoint.Coordinate;
+            var expectedPt = expectedPoint.Coordinate;
+            var offsetPt = ExtractOffsetAt(input, testPt, offsetDistance);
 
             bool isOk = offsetPt.Distance(expectedPt) < ToleranceDist;
             if (!isOk)

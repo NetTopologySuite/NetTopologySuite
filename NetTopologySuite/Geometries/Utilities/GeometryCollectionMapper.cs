@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GeoAPI.Geometries;
-#if !NET35 && !PCL
-using MapGeometryDelegate = GeoAPI.Func<GeoAPI.Geometries.IGeometry, GeoAPI.Geometries.IGeometry>;
-#else
-using MapGeometryDelegate = System.Func<GeoAPI.Geometries.IGeometry, GeoAPI.Geometries.IGeometry>;
-#endif
+
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
@@ -21,19 +18,19 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="gc"></param>
         /// <param name="op"></param>
         /// <returns></returns>
-        public static IGeometryCollection Map(IGeometryCollection gc, MapGeometryDelegate op)
+        public static IGeometryCollection Map(IGeometryCollection gc, Func<IGeometry, IGeometry> op)
         {
             var mapper = new GeometryCollectionMapper(op);
             return mapper.Map(gc);
         }
 
-        private readonly MapGeometryDelegate _mapOp;
+        private readonly Func<IGeometry, IGeometry> _mapOp;
 
         /// <summary>
         /// Creates an instance of this class
         /// </summary>
         /// <param name="mapOp"></param>
-        public GeometryCollectionMapper(MapGeometryDelegate mapOp)
+        public GeometryCollectionMapper(Func<IGeometry, IGeometry> mapOp)
         {
             _mapOp = mapOp;
         }
@@ -45,8 +42,8 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns></returns>
         public IGeometryCollection Map(IGeometryCollection gc)
         {
-            IList<IGeometry> mapped = new List<IGeometry>();
-            for (var i = 0; i < gc.NumGeometries; i++)
+            var mapped = new List<IGeometry>();
+            for (int i = 0; i < gc.NumGeometries; i++)
             {
                 var g = _mapOp(gc.GetGeometryN(i));
                 if (!g.IsEmpty)

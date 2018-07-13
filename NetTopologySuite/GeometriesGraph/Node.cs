@@ -4,22 +4,22 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class Node : GraphComponent
     {
         /// <summary>
         /// Only non-null if this node is precise.
         /// </summary>
-        private Coordinate _coord;     
-        
+        private Coordinate _coord;
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private EdgeEndStar _edges;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coord"></param>
         /// <param name="edges"></param>
@@ -31,27 +31,21 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public override Coordinate Coordinate
         {
-            get
-            {
-                return _coord; 
-            }
-            protected set { _coord = value; }
+            get => _coord;
+            protected set => _coord = value;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public EdgeEndStar Edges
         {
-            get
-            {
-                return _edges; 
-            }
-            protected set { _edges = value; }
+            get => _edges;
+            protected set => _edges = value;
         }
 
         /// <summary>
@@ -60,7 +54,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// This test can be used to determine if the node is in the result,
         /// since if any incident edge is in the result, the node must be in the result as well.
         /// </summary>
-        /// <returns><value>true</value> if any indicident edge in the in the result
+        /// <returns><value>true</value> if any incident edge in the in the result
         /// </returns>
         public bool IsIncidentEdgeInResult()
         {
@@ -73,15 +67,9 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public override bool IsIsolated
-        {
-            get
-            {
-                return (Label.GeometryCount == 1);
-            }
-        }
+        public override bool IsIsolated => (Label.GeometryCount == 1);
 
         /// <summary>
         /// Basic nodes do not compute IMs.
@@ -89,7 +77,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="im"></param>
         public override void ComputeIM(IntersectionMatrix im) { }
 
-        /// <summary> 
+        /// <summary>
         /// Add the edge to the list of edges at this node.
         /// </summary>
         /// <param name="e"></param>
@@ -101,7 +89,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="n"></param>
         public void MergeLabel(Node n)
@@ -118,28 +106,28 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="label2"></param>
         public void MergeLabel(Label label2)
         {
-            for (int i = 0; i < 2; i++) 
+            for (int i = 0; i < 2; i++)
             {
-                Location loc = ComputeMergedLocation(label2, i);
-                Location thisLoc = Label.GetLocation(i);
-                if (thisLoc == Location.Null) 
+                var loc = ComputeMergedLocation(label2, i);
+                var thisLoc = Label.GetLocation(i);
+                if (thisLoc == Location.Null)
                     Label.SetLocation(i, loc);
             }
         }
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="argIndex"></param>
         /// <param name="onLocation"></param>
         public void SetLabel(int argIndex, Location onLocation)
         {
-            if (Label == null) 
-                 Label = new Label(argIndex, onLocation);            
+            if (Label == null)
+                 Label = new Label(argIndex, onLocation);
             else Label.SetLocation(argIndex, onLocation);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Updates the label of a node to BOUNDARY,
         /// obeying the mod-2 boundaryDetermination rule.
         /// </summary>
@@ -149,7 +137,7 @@ namespace NetTopologySuite.GeometriesGraph
             if (Label == null) return;
 
             // determine the current location for the point (if any)
-            Location loc = Location.Null;
+            var loc = Location.Null;
             if (Label != null)
                 loc = Label.GetLocation(argIndex);
             // flip the loc
@@ -157,19 +145,19 @@ namespace NetTopologySuite.GeometriesGraph
             switch (loc)
             {
             case Location.Boundary:
-                newLoc = Location.Interior; 
+                newLoc = Location.Interior;
                 break;
             case Location.Interior:
-                newLoc = Location.Boundary; 
+                newLoc = Location.Boundary;
                 break;
             default:
-                newLoc = Location.Boundary; 
+                newLoc = Location.Boundary;
                 break;
             }
             Label.SetLocation(argIndex, newLoc);
         }
 
-        /// <summary> 
+        /// <summary>
         /// The location for a given eltIndex for a node will be one
         /// of { Null, Interior, Boundary }.
         /// A node may be on both the boundary and the interior of a point;
@@ -181,18 +169,18 @@ namespace NetTopologySuite.GeometriesGraph
         public Location ComputeMergedLocation(Label label2, int eltIndex)
         {
             /*Location loc = Location.Null*/
-            Location loc = Label.GetLocation(eltIndex);
-            if (!label2.IsNull(eltIndex)) 
+            var loc = Label.GetLocation(eltIndex);
+            if (!label2.IsNull(eltIndex))
             {
-                Location nLoc = label2.GetLocation(eltIndex);
-                if (loc != Location.Boundary) 
+                var nLoc = label2.GetLocation(eltIndex);
+                if (loc != Location.Boundary)
                     loc = nLoc;
             }
             return loc;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="outstream"></param>
         public void Write(TextWriter outstream)
@@ -201,7 +189,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public override string ToString()

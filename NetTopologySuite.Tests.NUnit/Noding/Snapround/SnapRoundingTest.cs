@@ -31,13 +31,12 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
         [TestAttribute]
         public void TestLineStringLongShort()
         {
-            String[] geoms = {
+            string[] geoms = {
                                  "LINESTRING (0 0, 2 0)",
                                  "LINESTRING (0 0, 10 -1)"
                              };
             RunRounding(geoms);
         }
-
 
         [TestAttribute]
         public void TestBadLines1() {
@@ -71,7 +70,6 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 };
             RunRounding(collapse2);
         }
-  
 
         [TestAttribute]
         public void TestBadNoding1() {
@@ -126,7 +124,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                 var noder = new GeometryNoder(geometryFactory.PrecisionModel);
                 var nodedLineStrings = noder.Node(lineStrings.ToArray());
 
-                var shortestDistanceToPointBeforeNoding = double.MaxValue;
+                double shortestDistanceToPointBeforeNoding = double.MaxValue;
 
                 foreach (var lineString in lineStrings)
                 {
@@ -134,7 +132,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                                                                    shortestDistanceToPointBeforeNoding);
                 }
 
-                var shortestDistanceToPointAfterNoding = Double.MaxValue;
+                double shortestDistanceToPointAfterNoding = double.MaxValue;
 
                 foreach (var lineString in nodedLineStrings)
                 {
@@ -142,8 +140,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
                                                                   shortestDistanceToPointAfterNoding);
                 }
 
-                var difference = Math.Abs(shortestDistanceToPointAfterNoding - shortestDistanceToPointBeforeNoding);
-
+                double difference = Math.Abs(shortestDistanceToPointAfterNoding - shortestDistanceToPointBeforeNoding);
 
                 Console.WriteLine("Scale: {0}", scale);
                 Console.WriteLine("Distance to point before noding: {0}", shortestDistanceToPointBeforeNoding);
@@ -161,16 +158,16 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
         void RunRounding(string[] wkt)
         {
             var geoms = FromWKT(wkt);
-            PrecisionModel pm = new PrecisionModel(SnapTolerance);
-            GeometryNoder noder = new GeometryNoder(pm);
+            var pm = new PrecisionModel(SnapTolerance);
+            var noder = new GeometryNoder(pm);
             noder.IsValidityChecked = true;
             var nodedLines = noder.Node(geoms);
-            
+
             foreach ( var ls in nodedLines)
                 Console.WriteLine(ls);
 
             Assert.IsTrue(IsSnapped(nodedLines, SnapTolerance));
-            
+
         }
 
         ICollection<IGeometry> FromWKT(string[] wkts)
@@ -193,7 +190,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             for (int i = 0; i < lines.Count; i++)
             {
                 var line = lines[i];
-                for (var j = 0; j < line.NumPoints; j++)
+                for (int j = 0; j < line.NumPoints; j++)
                 {
                     var v = line.GetCoordinateN(j);
                     if (!IsSnapped(v, lines)) return false;
@@ -205,10 +202,10 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
 
         private static bool IsSnapped(Coordinate v, IList<ILineString> lines)
         {
-            for (var i = 0; i < lines.Count ; i++)
+            for (int i = 0; i < lines.Count ; i++)
             {
                 var line = lines[i];
-                for (var j = 0; j < line.NumPoints - 1; j++)
+                for (int j = 0; j < line.NumPoints - 1; j++)
                 {
                     var p0 = line.GetCoordinateN(j);
                     var p1 = line.GetCoordinateN(j);
@@ -223,7 +220,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             if (v.Equals2D(p0)) return true;
             if (v.Equals2D(p1)) return true;
             var seg = new LineSegment(p0, p1);
-            var dist = seg.Distance(v);
+            double dist = seg.Distance(v);
             if (dist < SnapTolerance / 2.05) return false;
             return true;
         }

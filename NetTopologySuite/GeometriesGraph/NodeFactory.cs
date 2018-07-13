@@ -3,11 +3,11 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class NodeFactory
     {
-        /// <summary> 
+        /// <summary>
         /// The basic node constructor does not allow for incident edges.
         /// </summary>
         /// <param name="coord"></param>

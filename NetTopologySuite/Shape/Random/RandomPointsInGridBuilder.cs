@@ -46,8 +46,8 @@ namespace NetTopologySuite.Shape.Random
         /// </summary>
         public bool ConstrainedToCircle
         {
-            get { return _isConstrainedToCircle; }
-            set { _isConstrainedToCircle = value; }
+            get => _isConstrainedToCircle;
+            set => _isConstrainedToCircle = value;
         }
 
         /// <summary>
@@ -58,71 +58,70 @@ namespace NetTopologySuite.Shape.Random
         /// </summary>
         public double GutterFraction { get; set; }
 
-
         /// <summary>
         /// Gets the <see cref="IMultiPoint"/> containing the generated point
         /// </summary>
         /// <returns>A MultiPoint</returns>
         public override IGeometry GetGeometry()
         {
-            var nCells = (int)Math.Sqrt(NumPoints) + 1;
-            
+            int nCells = (int)Math.Sqrt(NumPoints) + 1;
+
             // ensure that at least numPts points are generated
             if (nCells * nCells < NumPoints)
                 nCells += 1;
 
-            var gridDX = Extent.Width / nCells;
-            var gridDY = Extent.Height / nCells;
+            double gridDX = Extent.Width / nCells;
+            double gridDY = Extent.Height / nCells;
 
-            var gutterFrac = MathUtil.Clamp(GutterFraction, 0.0, 1.0);
-            var gutterOffsetX = gridDX * gutterFrac / 2;
-            var gutterOffsetY = gridDY * gutterFrac / 2;
-            var cellFrac = 1.0 - gutterFrac;
-            var cellDX = cellFrac * gridDX;
-            var cellDY = cellFrac * gridDY;
+            double gutterFrac = MathUtil.Clamp(GutterFraction, 0.0, 1.0);
+            double gutterOffsetX = gridDX * gutterFrac / 2;
+            double gutterOffsetY = gridDY * gutterFrac / 2;
+            double cellFrac = 1.0 - gutterFrac;
+            double cellDX = cellFrac * gridDX;
+            double cellDY = cellFrac * gridDY;
 
             var pts = new Coordinate[nCells * nCells];
-            var index = 0;
-            for (var i = 0; i < nCells; i++)
+            int index = 0;
+            for (int i = 0; i < nCells; i++)
             {
-                for (var j = 0; j < nCells; j++)
+                for (int j = 0; j < nCells; j++)
                 {
-                    var orgX = Extent.MinX + i * gridDX + gutterOffsetX;
-                    var orgY = Extent.MinY + j * gridDY + gutterOffsetY;
+                    double orgX = Extent.MinX + i * gridDX + gutterOffsetX;
+                    double orgY = Extent.MinY + j * gridDY + gutterOffsetY;
                     pts[index++] = RandomPointInCell(orgX, orgY, cellDX, cellDY);
                 }
             }
-            return GeomFactory.CreateMultiPoint(pts);
+            return GeomFactory.CreateMultiPointFromCoords(pts);
         }
 
         private Coordinate RandomPointInCell(double orgX, double orgY, double xLen, double yLen)
         {
-            return _isConstrainedToCircle 
+            return _isConstrainedToCircle
                 ? RandomPointInCircle(orgX, orgY, xLen, yLen)
                 : RandomPointInGridCell(orgX, orgY, xLen, yLen);
         }
 
         private Coordinate RandomPointInGridCell(double orgX, double orgY, double xLen, double yLen)
         {
-            var x = orgX + xLen * Rnd.NextDouble();
-            var y = orgY + yLen * Rnd.NextDouble();
+            double x = orgX + xLen * Rnd.NextDouble();
+            double y = orgY + yLen * Rnd.NextDouble();
             return CreateCoord(x, y);
         }
 
         private static Coordinate RandomPointInCircle(double orgX, double orgY, double width, double height)
         {
-            var centreX = orgX + width / 2;
-            var centreY = orgY + height / 2;
+            double centreX = orgX + width / 2;
+            double centreY = orgY + height / 2;
 
-            var rndAng = 2 * Math.PI * Rnd.NextDouble();
-            var rndRadius = Rnd.NextDouble();
+            double rndAng = 2 * Math.PI * Rnd.NextDouble();
+            double rndRadius = Rnd.NextDouble();
             // use square root of radius, since area is proportional to square of radius
-            var rndRadius2 = Math.Sqrt(rndRadius);
-            var rndX = width / 2 * rndRadius2 * Math.Cos(rndAng);
-            var rndY = height / 2 * rndRadius2 * Math.Sin(rndAng);
+            double rndRadius2 = Math.Sqrt(rndRadius);
+            double rndX = width / 2 * rndRadius2 * Math.Cos(rndAng);
+            double rndY = height / 2 * rndRadius2 * Math.Sin(rndAng);
 
-            var x0 = centreX + rndX;
-            var y0 = centreY + rndY;
+            double x0 = centreX + rndX;
+            double y0 = centreY + rndY;
             return new Coordinate(x0, y0);
         }
     }

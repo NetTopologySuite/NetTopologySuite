@@ -37,9 +37,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestLines()
         {
-            Console.WriteLine(rect);
+            //Console.WriteLine(rect);
 
-            List<IGeometry> testGeoms = getTestGeometries();
+            var testGeoms = getTestGeometries();
             foreach (var testGeom in testGeoms)
             {
                 runRectanglePredicates(rect, testGeom);
@@ -49,13 +49,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestDenseLines()
         {
-            Console.WriteLine(rect);
+            //Console.WriteLine(rect);
 
             var testGeoms = getTestGeometries();
             foreach (var testGeom in testGeoms)
             {
-                SegmentDensifier densifier = new SegmentDensifier((LineString)testGeom);
-                LineString denseLine = (LineString)densifier.Densify(testGeomSize / 400);
+                var densifier = new SegmentDensifier((LineString)testGeom);
+                var denseLine = (LineString)densifier.Densify(testGeomSize / 400);
 
                 runRectanglePredicates(rect, denseLine);
             }
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         private List<IGeometry> getTestGeometries()
         {
-            Envelope testEnv = new Envelope(rectEnv.MinX - bufSize, rectEnv.MaxX + bufSize,
+            var testEnv = new Envelope(rectEnv.MinX - bufSize, rectEnv.MaxX + bufSize,
                                             rectEnv.MinY - bufSize, rectEnv.MaxY + bufSize);
             var testGeoms = CreateTestGeometries(testEnv, 5, testGeomSize);
             return testGeoms;
@@ -106,7 +106,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             {
                 for (double x = env.MinX; x <= env.MaxX; x += inc)
                 {
-                    Coordinate baseCoord = new Coordinate(x, y);
+                    var baseCoord = new Coordinate(x, y);
                     testGeoms.Add(CreateAngle(baseCoord, size, 0));
                     testGeoms.Add(CreateAngle(baseCoord, size, 1));
                     testGeoms.Add(CreateAngle(baseCoord, size, 2));
@@ -118,7 +118,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         public IGeometry CreateAngle(Coordinate baseCoord, double size, int quadrant)
         {
-            var factor = new int[,] {
+            int[,] factor = new int[,] {
                                     { 1, 0 },
                                     { 0, 1 },
                                     { -1, 0 },
@@ -128,8 +128,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             int xFac = factor[quadrant, 0];
             int yFac = factor[quadrant, 1];
 
-            Coordinate p0 = new Coordinate(baseCoord.X + xFac * size, baseCoord.Y + yFac * size);
-            Coordinate p2 = new Coordinate(baseCoord.X + yFac * size, baseCoord.Y + (-xFac) * size);
+            var p0 = new Coordinate(baseCoord.X + xFac * size, baseCoord.Y + yFac * size);
+            var p2 = new Coordinate(baseCoord.X + yFac * size, baseCoord.Y + (-xFac) * size);
 
             return fact.CreateLineString(new Coordinate[] { p0, baseCoord, p2 });
         }

@@ -20,7 +20,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             const long l = 123456789012345680;
 
             IPrecisionModel precisionModel = new PrecisionModel(1E9);
-            NumberFormatInfo formatter = CreateFormatter(precisionModel);
+            var formatter = CreateFormatter(precisionModel);
             string format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
             string actual = l.ToString(format, formatter);
             Assert.That(actual, Is.EqualTo(expected));
@@ -33,7 +33,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             const decimal m = 123456789012345680;
 
             IPrecisionModel precisionModel = new PrecisionModel(1E9);
-            NumberFormatInfo formatter = CreateFormatter(precisionModel);
+            var formatter = CreateFormatter(precisionModel);
             string format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
             string actual = m.ToString(format, formatter);
             Assert.That(actual, Is.EqualTo(expected));
@@ -44,14 +44,14 @@ namespace NetTopologySuite.Samples.Tests.Various
         {
             /*
              * http://stackoverflow.com/questions/2105096/why-is-tostring-rounding-my-double-value
-             * 
-             * By default, the return value only contains 15 digits of precision although a maximum of 17 digits is maintained internally. 
+             *
+             * By default, the return value only contains 15 digits of precision although a maximum of 17 digits is maintained internally.
              */
             const string expected = "123456789012345680";
             const double d = 123456789012345680;
 
             IPrecisionModel precisionModel = new PrecisionModel(1E9);
-            NumberFormatInfo formatter = CreateFormatter(precisionModel);
+            var formatter = CreateFormatter(precisionModel);
             string format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
             string actual = d.ToString(format, formatter);
             Assert.That(actual, Is.Not.EqualTo(expected));
@@ -100,17 +100,17 @@ namespace NetTopologySuite.Samples.Tests.Various
         private static void DoPerformancesTest(int times)
         {
             const double d = 123456789;
-            Stopwatch w = Stopwatch.StartNew();
+            var w = Stopwatch.StartNew();
             for (int i = 0; i < times; i++)
             {
                 string s = DoubleConverter.ToExactString(d + i);
                 Assert.IsNotNull(s);
             }
             w.Stop();
-            TimeSpan usingDc = w.Elapsed;
+            var usingDc = w.Elapsed;
 
             IPrecisionModel precisionModel = new PrecisionModel(1E9);
-            NumberFormatInfo formatter = CreateFormatter(precisionModel);
+            var formatter = CreateFormatter(precisionModel);
             string format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
             w = Stopwatch.StartNew();
             for (int i = 0; i < times; i++)
@@ -119,11 +119,11 @@ namespace NetTopologySuite.Samples.Tests.Various
                 Assert.IsNotNull(s);
             }
             w.Stop();
-            TimeSpan usingDef = w.Elapsed;
+            var usingDef = w.Elapsed;
 
             if (usingDc <= usingDef)
                 return;
-            TimeSpan diff = usingDc - usingDef;
+            var diff = usingDc - usingDef;
             Console.WriteLine("slower for {0}: {1} seconds", times, diff.TotalSeconds);
         }
 
@@ -132,11 +132,11 @@ namespace NetTopologySuite.Samples.Tests.Various
         {
             int digits = precisionModel.MaximumSignificantDigits;
             int decimalPlaces = Math.Max(0, digits);
-            NumberFormatInfo nfi = new NumberFormatInfo
+            var nfi = new NumberFormatInfo
             {
                 NumberDecimalSeparator = ".",
                 NumberDecimalDigits = decimalPlaces,
-                NumberGroupSeparator = String.Empty,
+                NumberGroupSeparator = string.Empty,
                 NumberGroupSizes = new int[] { }
             };
             return nfi;
@@ -145,7 +145,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         // same code used in WKTWriter
         private static string StringOfChar(char ch, int count)
         {
-            StringBuilder buf = new StringBuilder();
+            var buf = new StringBuilder();
             for (int i = 0; i < count; i++)
                 buf.Append(ch);
             return buf.ToString();

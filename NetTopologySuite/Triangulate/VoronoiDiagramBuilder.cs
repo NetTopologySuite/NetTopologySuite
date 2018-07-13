@@ -13,7 +13,7 @@ namespace NetTopologySuite.Triangulate
     /// The diagram is returned as a <see cref="IGeometryCollection"/> of <see cref="Polygon"/>s,
     /// representing the faces of the Voronoi diagram.
     /// /// The faces are clipped to the larger of:
-    /// <list type="bullet">    
+    /// <list type="bullet">
     /// <item>
     ///     <description>an envelope supplied by <see cref="set_ClipEnvelope"/>.</description>
     /// </item>
@@ -21,7 +21,7 @@ namespace NetTopologySuite.Triangulate
     ///     <description>an envelope determined by the input sites.</description>
     /// </item>
     /// </list>
-    /// The <tt>userData</tt> attribute of each face <tt>Polygon</tt> is set to 
+    /// The <tt>userData</tt> attribute of each face <tt>Polygon</tt> is set to
     /// the <tt>Coordinate</tt>  of the corresponding input site.
     /// This allows using a <tt>Map</tt> to link faces to data associated with sites.
     /// </summary>
@@ -64,10 +64,7 @@ namespace NetTopologySuite.Triangulate
         /// <remarks>the clip envelope.</remarks>
         public Envelope ClipEnvelope
         {
-            set
-            {
-                _clipEnv = value;
-            }
+            set => _clipEnv = value;
         }
 
         /// <summary>
@@ -78,17 +75,14 @@ namespace NetTopologySuite.Triangulate
         /// <remarks>tolerance the tolerance distance to use</remarks>
         public double Tolerance
         {
-            set
-            {
-                _tolerance = value;
-            }
+            set => _tolerance = value;
         }
 
         private void Create()
         {
             if (_subdiv != null) return;
 
-            Envelope siteEnv = DelaunayTriangulationBuilder.Envelope(_siteCoords);
+            var siteEnv = DelaunayTriangulationBuilder.Envelope(_siteCoords);
             _diagramEnv = siteEnv;
             // add a buffer around the final envelope
             double expandBy = Math.Max(_diagramEnv.Width, _diagramEnv.Height);
@@ -98,7 +92,7 @@ namespace NetTopologySuite.Triangulate
 
             var vertices = DelaunayTriangulationBuilder.ToVertices(_siteCoords);
             _subdiv = new QuadEdgeSubdivision(siteEnv, _tolerance);
-            IncrementalDelaunayTriangulator triangulator = new IncrementalDelaunayTriangulator(_subdiv);
+            var triangulator = new IncrementalDelaunayTriangulator(_subdiv);
             triangulator.InsertSites(vertices);
         }
 
@@ -113,19 +107,19 @@ namespace NetTopologySuite.Triangulate
         }
 
         /// <summary>
-        /// Gets the faces of the computed diagram as a <see cref="IGeometryCollection"/> 
+        /// Gets the faces of the computed diagram as a <see cref="IGeometryCollection"/>
         /// of <see cref="Polygon"/>s, clipped as specified.
         /// <para/>
-        /// The <see cref="IGeometry.UserData"/> attribute of each face <see cref="IPolygon"/> is set to 
+        /// The <see cref="IGeometry.UserData"/> attribute of each face <see cref="IPolygon"/> is set to
         /// the <c>Coordinate</c> of the corresponding input site.
         /// This allows using a <see cref="IDictionary{TKey,TValue}"/> to link faces to data associated with sites.
         /// </summary>
         /// <param name="geomFact">the geometry factory to use to create the output</param>
-        /// <returns>a <see cref="IGeometryCollection"/> containg the face <see cref="IPolygon"/>s of the diagram</returns>
+        /// <returns>a <see cref="IGeometryCollection"/> containing the face <see cref="IPolygon"/>s of the diagram</returns>
         public IGeometryCollection GetDiagram(IGeometryFactory geomFact)
         {
             Create();
-            IGeometryCollection polys = _subdiv.GetVoronoiDiagram(geomFact);
+            var polys = _subdiv.GetVoronoiDiagram(geomFact);
 
             // clip polys to diagramEnv
             return ClipGeometryCollection(polys, _diagramEnv);

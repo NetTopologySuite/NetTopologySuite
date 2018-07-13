@@ -1,4 +1,7 @@
 using System;
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
+using System.Runtime.Serialization;
+#endif
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries.Implementation
@@ -7,12 +10,18 @@ namespace NetTopologySuite.Geometries.Implementation
     /// A <c>CoordinateSequence</c> implementation based on a packed arrays.
     /// A <c>CoordinateSequence</c> implementation based on a packed arrays.
     /// </summary>
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
+    [Serializable]
+#endif
     public abstract class PackedCoordinateSequence : ICoordinateSequence
-    {        
+    {
         /// <summary>
         /// A soft reference to the Coordinate[] representation of this sequence.
         /// Makes repeated coordinate array accesses more efficient.
         /// </summary>
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
+        [NonSerialized]
+#endif
         protected WeakReference CoordRef;
 
         /// <summary>
@@ -37,7 +46,7 @@ namespace NetTopologySuite.Geometries.Implementation
                     return Ordinates.XYZM;
                 default:
                     var flag = Ordinates.None;
-                    for (var i = 3; i < dimension; i++)
+                    for (int i = 3; i < dimension; i++)
                         flag |= (Ordinates) (1 << i);
                     return Ordinates.XY | flag;
             }
@@ -49,7 +58,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <value></value>
         public int Dimension
         {
-            get { return _dimension; }
+            get => _dimension;
             protected set
             {
                 _dimension = value;
@@ -57,10 +66,7 @@ namespace NetTopologySuite.Geometries.Implementation
             }
         }
 
-        public Ordinates Ordinates
-        {
-            get { return _ordinates; }
-        }
+        public Ordinates Ordinates => _ordinates;
 
         /// <summary>
         /// Returns the number of coordinates in this sequence.
@@ -79,7 +85,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public Coordinate GetCoordinate(int i) 
+        public Coordinate GetCoordinate(int i)
         {
             var arr = GetCachedCoords();
             if(arr != null)
@@ -97,59 +103,60 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>
         /// A copy of the i'th coordinate in the sequence
         /// </returns>
-        public Coordinate GetCoordinateCopy(int i) 
+        public Coordinate GetCoordinateCopy(int i)
         {
             return GetCoordinateInternal(i);
         }
 
         /// <summary>
-        /// Copies the i'th coordinate in the sequence to the supplied Coordinate.  
-        /// Only the first two dimensions are copied.        
+        /// Copies the i'th coordinate in the sequence to the supplied Coordinate.
+        /// Only the first two dimensions are copied.
         /// </summary>
         /// <param name="i">The index of the coordinate to copy.</param>
         /// <param name="c">A Coordinate to receive the value.</param>
-        public void GetCoordinate(int i, Coordinate c) 
+        public void GetCoordinate(int i, Coordinate c)
         {
             c.X = GetOrdinate(i, Ordinate.X);
             c.Y = GetOrdinate(i, Ordinate.Y);
-        }        
+        }
 
         /// <summary>
         /// Returns (possibly copies of) the Coordinates in this collection.
         /// Whether or not the Coordinates returned are the actual underlying
-        /// Coordinates or merely copies depends on the implementation. 
+        /// Coordinates or merely copies depends on the implementation.
         /// Note that if this implementation does not store its data as an array of Coordinates,
         /// this method will incur a performance penalty because the array needs to
         /// be built from scratch.
         /// </summary>
         /// <returns></returns>
-        public Coordinate[] ToCoordinateArray() 
+        public Coordinate[] ToCoordinateArray()
         {
-            Coordinate[] arr = GetCachedCoords();
+            var arr = GetCachedCoords();
             // testing - never cache
             if (arr != null)
                 return arr;
 
             arr = new Coordinate[Count];
-            for (int i = 0; i < arr.Length; i++) 
+            for (int i = 0; i < arr.Length; i++)
                 arr[i] = GetCoordinateInternal(i);
-            
+
             CoordRef = new WeakReference(arr);
             return arr;
-        }        
+        }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         private Coordinate[] GetCachedCoords()
         {
-            if (CoordRef != null) 
+            var localCoordRef = CoordRef;
+            if (localCoordRef != null)
             {
-                var arr = (Coordinate[]) CoordRef.Target;
-                if (arr != null) 
+                var arr = (Coordinate[]) localCoordRef.Target;
+                if (arr != null)
                     return arr;
-                
+
                 CoordRef = null;
                 return null;
             }
@@ -163,7 +170,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>
         /// The value of the X ordinate in the index'th coordinate.
         /// </returns>
-        public double GetX(int index) 
+        public double GetX(int index)
         {
             return GetOrdinate(index, Ordinate.X);
         }
@@ -175,7 +182,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>
         /// The value of the Y ordinate in the index'th coordinate.
         /// </returns>
-        public double GetY(int index) 
+        public double GetY(int index)
         {
             return GetOrdinate(index, Ordinate.Y);
         }
@@ -191,13 +198,12 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns></returns>
         public abstract double GetOrdinate(int index, Ordinate ordinate);
 
-
         /// <summary>
         /// Sets the first ordinate of a coordinate in this sequence.
         /// </summary>
         /// <param name="index"></param>
         /// <param name="value"></param>
-        public void SetX(int index, double value) 
+        public void SetX(int index, double value)
         {
             CoordRef = null;
             SetOrdinate(index, Ordinate.X, value);
@@ -208,7 +214,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="index"></param>
         /// <param name="value"></param>
-        public void SetY(int index, double value) 
+        public void SetY(int index, double value)
         {
             CoordRef = null;
             SetOrdinate(index, Ordinate.Y, value);
@@ -216,17 +222,18 @@ namespace NetTopologySuite.Geometries.Implementation
 
         /// <summary>
         /// Sets the ordinate of a coordinate in this sequence.
-        /// </summary>              
+        /// </summary>
         /// <param name="index">The coordinate index.</param>
-        /// <param name="ordinate">The ordinate index in the coordinate, 0 based, 
+        /// <param name="ordinate">The ordinate index in the coordinate, 0 based,
         /// smaller than the number of dimensions.</param>
         /// <param name="value">The new ordinate value.</param>
         /// <remarks>
         /// Warning: for performance reasons the ordinate index is not checked.
         /// If it is larger than the dimension a meaningless value may be returned.
-        /// </remarks> 
+        /// </remarks>
         public abstract void SetOrdinate(int index, Ordinate ordinate, double value);
 
+        /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {
             return CoordinateSequences.ToString(this);
@@ -246,7 +253,10 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public abstract Object Clone();
+        [Obsolete("Use Copy()")]
+        public abstract object Clone();
+
+        public abstract ICoordinateSequence Copy();
 
         /// <summary>
         /// Expands the given Envelope to include the coordinates in the sequence.
@@ -257,12 +267,23 @@ namespace NetTopologySuite.Geometries.Implementation
         public abstract Envelope ExpandEnvelope(Envelope env);
 
         public abstract ICoordinateSequence Reversed();
+
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
+        [OnDeserialized]
+        private void OnDeserialization(StreamingContext context)
+        {
+            CoordRef = null;
+        }
+#endif
     }
 
     /// <summary>
     /// Packed coordinate sequence implementation based on doubles.
     /// </summary>
-    public class PackedDoubleCoordinateSequence : PackedCoordinateSequence 
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
+    [Serializable]
+#endif
+    public class PackedDoubleCoordinateSequence : PackedCoordinateSequence
     {
         /// <summary>
         /// The packed coordinate array
@@ -274,15 +295,15 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coords"></param>
         /// <param name="dimensions"></param>
-        public PackedDoubleCoordinateSequence(double[] coords, int dimensions) 
+        public PackedDoubleCoordinateSequence(double[] coords, int dimensions)
         {
-            if (dimensions < 2) 
+            if (dimensions < 2)
                 throw new ArgumentException("Must have at least 2 dimensions");
-            
-            if (coords.Length % dimensions != 0) 
-                throw new ArgumentException("Packed array does not contain " + 
+
+            if (coords.Length % dimensions != 0)
+                throw new ArgumentException("Packed array does not contain " +
                     "an integral number of coordinates");
-      
+
             Dimension = dimensions;
             _coords = coords;
         }
@@ -292,11 +313,11 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coordinates"></param>
         /// <param name="dimensions"></param>
-        public PackedDoubleCoordinateSequence(float[] coordinates, int dimensions) 
+        public PackedDoubleCoordinateSequence(float[] coordinates, int dimensions)
         {
             _coords = new double[coordinates.Length];
             Dimension = dimensions;
-            for (int i = 0; i < coordinates.Length; i++) 
+            for (int i = 0; i < coordinates.Length; i++)
                 _coords[i] = coordinates[i];
         }
 
@@ -305,14 +326,14 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coordinates"></param>
         /// <param name="dimension"></param>
-        public PackedDoubleCoordinateSequence(Coordinate[] coordinates, int dimension) 
+        public PackedDoubleCoordinateSequence(Coordinate[] coordinates, int dimension)
         {
             if (coordinates == null)
                 coordinates = new Coordinate[0];
             Dimension = dimension;
 
             _coords = new double[coordinates.Length * Dimension];
-            for (int i = 0; i < coordinates.Length; i++) 
+            for (int i = 0; i < coordinates.Length; i++)
             {
                 _coords[i * Dimension] = coordinates[i].X;
                 if (Dimension >= 2)
@@ -321,7 +342,7 @@ namespace NetTopologySuite.Geometries.Implementation
                     _coords[i * Dimension + 2] = coordinates[i].Z;
             }
         }
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
         /// </summary>
@@ -345,7 +366,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        protected override Coordinate GetCoordinateInternal(int index) 
+        protected override Coordinate GetCoordinateInternal(int index)
         {
             double x = _coords[index * Dimension];
             double y = _coords[index * Dimension + 1];
@@ -366,10 +387,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Returns the number of coordinates in this sequence.
         /// </summary>
         /// <value></value>
-        public override int Count 
-        {
-            get { return _coords.Length / Dimension; }
-        }
+        public override int Count => _coords.Length / Dimension;
 
         /// <summary>
         /// Creates a new object that is a copy of the current instance.
@@ -377,7 +395,15 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public override Object Clone() 
+        [Obsolete]
+        public override object Clone()
+        {
+            return Copy();
+
+        }
+
+        /// <inheritdoc cref="ICoordinateSequence.Copy"/>
+        public override ICoordinateSequence Copy()
         {
             double[] clone = new double[_coords.Length];
             Array.Copy(_coords, clone, _coords.Length);
@@ -390,10 +416,15 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Ordinate indices greater than 1 have user-defined semantics
         /// (for instance, they may contain other dimensions or measure values).
         /// </summary>
+        /// <remarks>
+        /// Beware, for performance reasons the ordinate index is not checked, if
+        /// it's over dimensions you may not get an exception but a meaningless
+        /// value.
+        /// </remarks>
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <returns></returns>
-        public override double GetOrdinate(int index, Ordinate ordinate) 
+        public override double GetOrdinate(int index, Ordinate ordinate)
         {
             return _coords[index * Dimension + (int) ordinate];
         }
@@ -408,8 +439,8 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <remarks>
         /// Warning: for performance reasons the ordinate index is not checked.
         /// If it is larger than the dimension a meaningless value may be returned.
-        /// </remarks> 
-        public override void SetOrdinate(int index, Ordinate ordinate, double value) 
+        /// </remarks>
+        public override void SetOrdinate(int index, Ordinate ordinate, double value)
         {
             CoordRef = null;
             _coords[index * Dimension + (int) ordinate] = value;
@@ -423,18 +454,18 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>A reference to the expanded envelope.</returns>
         public override Envelope ExpandEnvelope(Envelope env)
         {
-            var dim = Dimension;
+            int dim = Dimension;
             for (int i = 0; i < _coords.Length; i += dim)
-                env.ExpandToInclude(_coords[i], _coords[i + 1]);        
+                env.ExpandToInclude(_coords[i], _coords[i + 1]);
             return env;
         }
 
         public override ICoordinateSequence Reversed()
         {
-            var dim = Dimension;
-            var coords = new double[_coords.Length];
-            var j = Count;
-            for (var i = 0; i < Count; i++)
+            int dim = Dimension;
+            double[] coords = new double[_coords.Length];
+            int j = Count;
+            for (int i = 0; i < Count; i++)
             {
                 Buffer.BlockCopy(_coords, i * dim * sizeof(double), coords, --j * dim * sizeof(double), dim * sizeof(double));
             }
@@ -445,7 +476,10 @@ namespace NetTopologySuite.Geometries.Implementation
     /// <summary>
     /// Packed coordinate sequence implementation based on floats.
     /// </summary>
-    public class PackedFloatCoordinateSequence : PackedCoordinateSequence 
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
+    [Serializable]
+#endif
+    public class PackedFloatCoordinateSequence : PackedCoordinateSequence
     {
         /// <summary>
         /// The packed coordinate array
@@ -457,30 +491,30 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coords"></param>
         /// <param name="dimensions"></param>
-        public PackedFloatCoordinateSequence(float[] coords, int dimensions) 
+        public PackedFloatCoordinateSequence(float[] coords, int dimensions)
         {
-            if (dimensions < 2) 
-                throw new ArgumentException("Must have at least 2 dimensions");      
-            
-            if (coords.Length % dimensions != 0) 
-                throw new ArgumentException("Packed array does not contain " + 
+            if (dimensions < 2)
+                throw new ArgumentException("Must have at least 2 dimensions");
+
+            if (coords.Length % dimensions != 0)
+                throw new ArgumentException("Packed array does not contain " +
                     "an integral number of coordinates");
-      
+
             Dimension = dimensions;
             _coords = coords;
         }
-    
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedFloatCoordinateSequence"/> class.
         /// </summary>
         /// <param name="coordinates"></param>
         /// <param name="dimensions"></param>
-        public PackedFloatCoordinateSequence(double[] coordinates, int dimensions) 
+        public PackedFloatCoordinateSequence(double[] coordinates, int dimensions)
         {
             _coords = new float[coordinates.Length];
             Dimension = dimensions;
-            for (int i = 0; i < coordinates.Length; i++) 
-                _coords[i] = (float) coordinates[i];      
+            for (int i = 0; i < coordinates.Length; i++)
+                _coords[i] = (float) coordinates[i];
         }
 
         /// <summary>
@@ -488,14 +522,14 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coordinates"></param>
         /// <param name="dimension"></param>
-        public PackedFloatCoordinateSequence(Coordinate[] coordinates, int dimension) 
+        public PackedFloatCoordinateSequence(Coordinate[] coordinates, int dimension)
         {
             if (coordinates == null)
                 coordinates = new Coordinate[0];
             Dimension = dimension;
 
             _coords = new float[coordinates.Length * Dimension];
-            for (int i = 0; i < coordinates.Length; i++) 
+            for (int i = 0; i < coordinates.Length; i++)
             {
                 _coords[i * Dimension] = (float) coordinates[i].X;
                 if (Dimension >= 2)
@@ -510,7 +544,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="size"></param>
         /// <param name="dimension"></param>
-        public PackedFloatCoordinateSequence(int size, int dimension) 
+        public PackedFloatCoordinateSequence(int size, int dimension)
         {
             Dimension = dimension;
             _coords = new float[size * Dimension];
@@ -522,7 +556,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        protected override Coordinate GetCoordinateInternal(int index) 
+        protected override Coordinate GetCoordinateInternal(int index)
         {
             double x = _coords[index * Dimension];
             double y = _coords[index * Dimension + 1];
@@ -543,10 +577,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Returns the number of coordinates in this sequence.
         /// </summary>
         /// <value></value>
-        public override int Count
-        {
-            get { return _coords.Length / Dimension; }
-        }
+        public override int Count => _coords.Length / Dimension;
 
         /// <summary>
         /// Creates a new object that is a copy of the current instance.
@@ -554,7 +585,15 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public override Object Clone() 
+        [Obsolete]
+        public override object Clone()
+        {
+            return Copy();
+
+        }
+
+        /// <inheritdoc cref="ICoordinateSequence.Copy"/>
+        public override ICoordinateSequence Copy()
         {
             float[] clone = new float[_coords.Length];
             Array.Copy(_coords, clone, _coords.Length);
@@ -567,10 +606,15 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Ordinate indices greater than 1 have user-defined semantics
         /// (for instance, they may contain other dimensions or measure values).
         /// </summary>
+        /// <remarks>
+        /// Beware, for performance reasons the ordinate index is not checked, if
+        /// it's over dimensions you may not get an exception but a meaningless
+        /// value.
+        /// </remarks>
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <returns></returns>
-        public override double GetOrdinate(int index, Ordinate ordinate) 
+        public override double GetOrdinate(int index, Ordinate ordinate)
         {
             return _coords[index * Dimension + (int) ordinate];
         }
@@ -586,7 +630,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Warning: for performance reasons the ordinate index is not checked:
         /// if it is over dimensions you may not get an exception but a meaningless value.
         /// </remarks>
-        public override void SetOrdinate(int index, Ordinate ordinate, double value) 
+        public override void SetOrdinate(int index, Ordinate ordinate, double value)
         {
             CoordRef = null;
             _coords[index * Dimension + (int) ordinate] = (float) value;
@@ -601,16 +645,16 @@ namespace NetTopologySuite.Geometries.Implementation
         public override Envelope ExpandEnvelope(Envelope env)
         {
         for (int i = 0; i < _coords.Length; i += Dimension )
-            env.ExpandToInclude(_coords[i], _coords[i + 1]);      
+            env.ExpandToInclude(_coords[i], _coords[i + 1]);
         return env;
         }
 
         public override ICoordinateSequence Reversed()
         {
-            var dim = Dimension;
-            var coords = new float[_coords.Length];
-            var j = Count;
-            for (var i = 0; i < Count; i++)
+            int dim = Dimension;
+            float[] coords = new float[_coords.Length];
+            int j = Count;
+            for (int i = 0; i < Count; i++)
             {
                 Buffer.BlockCopy(_coords, i * dim * sizeof(float), coords, --j * dim * sizeof(float), dim * sizeof(float));
             }

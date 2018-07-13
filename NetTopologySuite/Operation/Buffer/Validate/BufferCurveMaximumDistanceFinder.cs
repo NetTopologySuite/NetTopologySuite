@@ -34,20 +34,18 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             return _maxPtDist.Distance;
         }
 
-        public PointPairDistance DistancePoints
-        {
-            get { return _maxPtDist; }
-        }
+        public PointPairDistance DistancePoints => _maxPtDist;
+
         private void ComputeMaxVertexDistance(IGeometry curve)
         {
-            MaxPointDistanceFilter distFilter = new MaxPointDistanceFilter(_inputGeom);
+            var distFilter = new MaxPointDistanceFilter(_inputGeom);
             curve.Apply(distFilter);
             _maxPtDist.SetMaximum(distFilter.MaxPointDistance);
         }
 
         private void computeMaxMidpointDistance(IGeometry curve)
         {
-            MaxMidpointDistanceFilter distFilter = new MaxMidpointDistanceFilter(_inputGeom);
+            var distFilter = new MaxMidpointDistanceFilter(_inputGeom);
             curve.Apply(distFilter);
             _maxPtDist.SetMaximum(distFilter.MaxPointDistance);
         }
@@ -70,10 +68,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                 maxPtDist.SetMaximum(minPtDist);
             }
 
-            public PointPairDistance MaxPointDistance
-            {
-                get { return maxPtDist; }
-            }
+            public PointPairDistance MaxPointDistance => maxPtDist;
         }
 
         public class MaxMidpointDistanceFilter
@@ -104,20 +99,11 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                 maxPtDist.SetMaximum(minPtDist);
             }
 
-            public bool GeometryChanged
-            {
-                get { return false; }
-            }
+            public bool GeometryChanged => false;
 
-            public bool Done
-            {
-                get { return false; }
-            }
+            public bool Done => false;
 
-            public PointPairDistance MaxPointDistance
-            {
-                get { return maxPtDist; }
-            }
+            public PointPairDistance MaxPointDistance => maxPtDist;
         }
 
     }

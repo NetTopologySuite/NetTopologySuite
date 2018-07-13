@@ -14,7 +14,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         {
             var incEdge = new List<QuadEdge>();
 
-            QuadEdge qe = start;
+            var qe = start;
             do
             {
                 incEdge.Add(qe);

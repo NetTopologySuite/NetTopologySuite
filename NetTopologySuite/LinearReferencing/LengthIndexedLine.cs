@@ -18,7 +18,7 @@ namespace NetTopologySuite.LinearReferencing
         private readonly IGeometry _linearGeom;
 
         /// <summary>
-        /// Constructs an object which allows a linear <see cref="Geometry" />
+        /// Constructs an object which allows a linear <see cref="IGeometry" />
         /// to be linearly referenced using length as an index.
         /// </summary>
         /// <param name="linearGeom">The linear geometry to reference along.</param>
@@ -41,7 +41,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>The <see cref="Coordinate" /> at the given index.</returns>
         public Coordinate ExtractPoint(double index)
         {
-            LinearLocation loc = LengthLocationMap.GetLocation(_linearGeom, index);
+            var loc = LengthLocationMap.GetLocation(_linearGeom, index);
             return loc.GetCoordinate(_linearGeom);
         }
 
@@ -59,8 +59,8 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns>The Coordinate at the given index</returns>
         public Coordinate ExtractPoint(double index, double offsetDistance)
         {
-            LinearLocation loc = LengthLocationMap.GetLocation(_linearGeom, index);
-            LinearLocation locLow = loc.ToLowest(_linearGeom);
+            var loc = LengthLocationMap.GetLocation(_linearGeom, index);
+            var locLow = loc.ToLowest(_linearGeom);
             return locLow.GetSegment(_linearGeom).PointAlongOffset(locLow.SegmentFraction, offsetDistance);
         }
 
@@ -75,15 +75,15 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns></returns>
         public IGeometry ExtractLine(double startIndex, double endIndex)
         {
-            LocationIndexedLine lil = new LocationIndexedLine(_linearGeom);
+            var lil = new LocationIndexedLine(_linearGeom);
             double startIndex2 = ClampIndex(startIndex);
             double endIndex2 = ClampIndex(endIndex);
             // if extracted line is zero-length, resolve start lower as well to ensure they are equal
             bool resolveStartLower = startIndex2 == endIndex2;
-            LinearLocation startLoc = LocationOf(startIndex2, resolveStartLower);
+            var startLoc = LocationOf(startIndex2, resolveStartLower);
             //    LinearLocation endLoc = locationOf(endIndex2, true);
             //    LinearLocation startLoc = locationOf(startIndex2);
-            LinearLocation endLoc = LocationOf(endIndex2);
+            var endLoc = LocationOf(endIndex2);
             return ExtractLineByLocation.Extract(_linearGeom, startLoc, endLoc);
         }
 
@@ -149,13 +149,13 @@ namespace NetTopologySuite.LinearReferencing
         /// Computes the indices for a subline of the line.
         /// (The subline must conform to the line; that is,
         /// all vertices in the subline (except possibly the first and last)
-        /// must be vertices of the line and occcur in the same order).
+        /// must be vertices of the line and occur in the same order).
         /// </summary>
         /// <param name="subLine">A subLine of the line.</param>
         /// <returns>A pair of indices for the start and end of the subline..</returns>
         public double[] IndicesOf(IGeometry subLine)
         {
-            LinearLocation[] locIndex = LocationIndexOfLine.IndicesOf(_linearGeom, subLine);
+            var locIndex = LocationIndexOfLine.IndicesOf(_linearGeom, subLine);
             double[] index =
             {
                 LengthLocationMap.GetLength(_linearGeom, locIndex[0]),
@@ -179,24 +179,12 @@ namespace NetTopologySuite.LinearReferencing
         /// <summary>
         /// Returns the index of the start of the line.
         /// </summary>
-        public double StartIndex
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public double StartIndex => 0;
 
         /// <summary>
         /// Returns the index of the end of the line.
         /// </summary>
-        public double EndIndex
-        {
-            get
-            {
-                return _linearGeom.Length;
-            }
-        }
+        public double EndIndex => _linearGeom.Length;
 
         /// <summary>
         /// Tests whether an index is in the valid index range for the line.

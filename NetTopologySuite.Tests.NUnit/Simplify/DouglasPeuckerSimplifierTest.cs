@@ -33,7 +33,6 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
                 .Test();
         }
 
-
         [TestAttribute]
         public void TestPolygonNoReduction()
         {
@@ -191,12 +190,12 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
     {
         private static readonly WKTReader Rdr = new WKTReader();
 
-        public static IGeometry[] GetResult(String wkt, double tolerance)
+        public static IGeometry[] GetResult(string wkt, double tolerance)
         {
-            IGeometry[] ioGeom = new IGeometry[2];
+            var ioGeom = new IGeometry[2];
             ioGeom[0] = Rdr.Read(wkt);
             ioGeom[1] = DouglasPeuckerSimplifier.Simplify(ioGeom[0], tolerance);
-            Console.WriteLine(ioGeom[1]);
+            //System.Console.WriteLine(ioGeom[1]);
             return ioGeom;
         }
     }

@@ -17,8 +17,8 @@ namespace Open.Topology.TestRunner.Functions
 
         public static IGeometry ReducePrecisionPointwise(IGeometry geom, double scaleFactor)
         {
-            PrecisionModel pm = new PrecisionModel(scaleFactor);
-            IGeometry reducedGeom = GeometryPrecisionReducer.Reduce(geom, pm);
+            var pm = new PrecisionModel(scaleFactor);
+            var reducedGeom = GeometryPrecisionReducer.Reduce(geom, pm);
             return reducedGeom;
         }
     }

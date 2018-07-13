@@ -3,7 +3,7 @@
 	<test verbose="false" exception="true" interactive="false" filter="none">
 		<dirs>
       <dir>..\..\..\NetTopologySuite.TestRunner.Tests\general</dir>
-      <dir>..\..\..\NetTopologySuite.TestRunner.Tests\validate</dir>      
+      <dir>..\..\..\NetTopologySuite.TestRunner.Tests\validate</dir>
     </dirs>
 	</test>
 </project>

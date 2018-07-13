@@ -3,8 +3,8 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries.Utilities
 {
-    /// <summary> 
-    /// Extracts all the 0-dimensional (<c>Point</c>) components from a <c>Geometry</c>.    
+    /// <summary>
+    /// Extracts all the 0-dimensional (<c>Point</c>) components from a <c>Geometry</c>.
     /// </summary>
     /// <see cref="GeometryExtracter"/>
     public class PointExtracter : IGeometryFilter
@@ -41,7 +41,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
         private readonly List<IGeometry> _pts;
 
-        /// <summary> 
+        /// <summary>
         /// Constructs a PointExtracterFilter with a list in which to store Points found.
         /// </summary>
         /// <param name="pts"></param>
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geom"></param>
         public void Filter(IGeometry geom)

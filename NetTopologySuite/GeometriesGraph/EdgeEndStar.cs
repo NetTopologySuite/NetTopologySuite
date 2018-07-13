@@ -21,7 +21,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         protected IDictionary<EdgeEnd, EdgeEnd> edgeMap = new SortedDictionary<EdgeEnd, EdgeEnd>();
 
-        /// <summary> 
+        /// <summary>
         /// A list of all outgoing edges in the result, in CCW order.
         /// </summary>
         protected IList<EdgeEnd> edgeList;
@@ -33,17 +33,17 @@ namespace NetTopologySuite.GeometriesGraph
 
         /*
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected EdgeEndStar() { }
          */
-        /// <summary> 
+        /// <summary>
         /// Insert a EdgeEnd into this EdgeEndStar.
         /// </summary>
         /// <param name="e"></param>
         abstract public void Insert(EdgeEnd e);
 
-        /// <summary> 
+        /// <summary>
         /// Insert an EdgeEnd into the map, and clear the edgeList cache,
         /// since the list of edges has now changed.
         /// </summary>
@@ -51,7 +51,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="obj"></param>
         protected void InsertEdgeEnd(EdgeEnd e, EdgeEnd obj)
         {
-            edgeMap[e] = obj; 
+            edgeMap[e] = obj;
             edgeList = null;    // edge list has changed - clear the cache
         }
 
@@ -62,24 +62,18 @@ namespace NetTopologySuite.GeometriesGraph
         {
             get
             {
-                IEnumerator<EdgeEnd> it = GetEnumerator();
+                var it = GetEnumerator();
                 if (!it.MoveNext())
                     return null;
-                EdgeEnd e = it.Current;
+                var e = it.Current;
                 return e.Coordinate;
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public int Degree
-        {
-            get
-            {
-                return edgeMap.Count;
-            }
-        }
+        public int Degree => edgeMap.Count;
 
         /// <summary>
         /// Iterator access to the ordered list of edges is optimized by
@@ -93,26 +87,26 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IList<EdgeEnd> Edges
         {
             get
             {
-                if (edgeList == null) 
-                    edgeList = new List<EdgeEnd>(edgeMap.Values);            
+                if (edgeList == null)
+                    edgeList = new List<EdgeEnd>(edgeMap.Values);
                 return edgeList;
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ee"></param>
         /// <returns></returns>
         public EdgeEnd GetNextCW(EdgeEnd ee)
         {
-            IList<EdgeEnd> temp = Edges;
+            var temp = Edges;
             temp = null;    // Hack for calling property
             int i = edgeList.IndexOf(ee);
             int iNextCW = i - 1;
@@ -122,16 +116,16 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomGraph"></param>
         public virtual void ComputeLabelling(GeometryGraph[] geomGraph)
         {
             ComputeEdgeEndLabels(geomGraph[0].BoundaryNodeRule);
             // Propagate side labels  around the edges in the star
-            // for each parent Geometry        
-            PropagateSideLabels(0);        
-            PropagateSideLabels(1);        
+            // for each parent Geometry
+            PropagateSideLabels(0);
+            PropagateSideLabels(1);
 
             /*
             * If there are edges that still have null labels for a point
@@ -142,11 +136,11 @@ namespace NetTopologySuite.GeometriesGraph
             * If so, the edge has location Interior for the point.
             * In all other cases (e.g. the node is on a line, on a point, or not on the point at all) the edge
             * has the location Exterior for the point.
-            * 
+            *
             * Note that the edge cannot be on the Boundary of the point, since then
             * there would have been a parallel edge from the Geometry at this node also labelled Boundary
             * and this edge would have been labelled in the previous step.
-            * 
+            *
             * This code causes a problem when dimensional collapses are present, since it may try and
             * determine the location of a node where a dimensional collapse has occurred.
             * The point should be considered to be on the Exterior
@@ -165,34 +159,34 @@ namespace NetTopologySuite.GeometriesGraph
             bool[] hasDimensionalCollapseEdge = { false, false };
             foreach (var e in Edges)
             {
-                Label label = e.Label;
-                for (int geomi = 0; geomi < 2; geomi++) 
+                var label = e.Label;
+                for (int geomi = 0; geomi < 2; geomi++)
                     if (label.IsLine(geomi) && label.GetLocation(geomi) == Location.Boundary)
-                        hasDimensionalCollapseEdge[geomi] = true;                
+                        hasDimensionalCollapseEdge[geomi] = true;
             }
             foreach (var e in Edges)
             {
-                Label label = e.Label;        
-                for (int geomi = 0; geomi < 2; geomi++) 
+                var label = e.Label;
+                for (int geomi = 0; geomi < 2; geomi++)
                 {
-                    if (label.IsAnyNull(geomi)) 
+                    if (label.IsAnyNull(geomi))
                     {
                         Location loc;
                         if (hasDimensionalCollapseEdge[geomi])
-                            loc = Location.Exterior;                
-                        else 
+                            loc = Location.Exterior;
+                        else
                         {
-                            Coordinate p = e.Coordinate;
+                            var p = e.Coordinate;
                             loc = GetLocation(geomi, p, geomGraph);
                         }
                         label.SetAllLocationsIfNull(geomi, loc);
                     }
-                }        
-            }        
+                }
+            }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private void ComputeEdgeEndLabels(IBoundaryNodeRule boundaryNodeRule)
         {
@@ -204,7 +198,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="p"></param>
@@ -213,13 +207,13 @@ namespace NetTopologySuite.GeometriesGraph
         private Location GetLocation(int geomIndex, Coordinate p, GeometryGraph[] geom)
         {
             // compute location only on demand
-            if (_ptInAreaLocation[geomIndex] == Location.Null) 
-                _ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.Locate(p, geom[geomIndex].Geometry);            
+            if (_ptInAreaLocation[geomIndex] == Location.Null)
+                _ptInAreaLocation[geomIndex] = SimplePointInAreaLocator.Locate(p, geom[geomIndex].Geometry);
             return _ptInAreaLocation[geomIndex];
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsAreaLabelsConsistent(GeometryGraph geometryGraph)
         {
@@ -228,7 +222,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
@@ -236,77 +230,77 @@ namespace NetTopologySuite.GeometriesGraph
         {
             // Since edges are stored in CCW order around the node,
             // As we move around the ring we move from the right to the left side of the edge
-            IList<EdgeEnd> edges = Edges;
+            var edges = Edges;
             // if no edges, trivially consistent
             if (edges.Count <= 0)
                 return true;
             // initialize startLoc to location of last Curve side (if any)
             int lastEdgeIndex = edges.Count - 1;
-            Label startLabel = edges[lastEdgeIndex].Label;
-            Location startLoc = startLabel.GetLocation(geomIndex, Positions.Left);
+            var startLabel = edges[lastEdgeIndex].Label;
+            var startLoc = startLabel.GetLocation(geomIndex, Positions.Left);
             Assert.IsTrue(startLoc != Location.Null, "Found unlabelled area edge");
 
-            Location currLoc = startLoc;
-            foreach (EdgeEnd e in Edges)
+            var currLoc = startLoc;
+            foreach (var e in Edges)
             {
-                Label label = e.Label;
+                var label = e.Label;
                 // we assume that we are only checking a area
                 Assert.IsTrue(label.IsArea(geomIndex), "Found non-area edge");
-                Location leftLoc = label.GetLocation(geomIndex, Positions.Left);
-                Location rightLoc = label.GetLocation(geomIndex, Positions.Right);        
+                var leftLoc = label.GetLocation(geomIndex, Positions.Left);
+                var rightLoc = label.GetLocation(geomIndex, Positions.Right);
                 // check that edge is really a boundary between inside and outside!
-                if (leftLoc == rightLoc) 
-                    return false;            
-                // check side location conflict                 
-                if (rightLoc != currLoc)         
-                    return false;            
+                if (leftLoc == rightLoc)
+                    return false;
+                // check side location conflict
+                if (rightLoc != currLoc)
+                    return false;
                 currLoc = leftLoc;
             }
             return true;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         public void PropagateSideLabels(int geomIndex)
         {
             // Since edges are stored in CCW order around the node,
             // As we move around the ring we move from the right to the left side of the edge
-            Location startLoc = Location.Null;
+            var startLoc = Location.Null;
             // initialize loc to location of last Curve side (if any)
-            foreach (EdgeEnd e in Edges)
+            foreach (var e in Edges)
             {
-                Label label = e.Label;
+                var label = e.Label;
                 if (label.IsArea(geomIndex) && label.GetLocation(geomIndex, Positions.Left) != Location.Null)
                     startLoc = label.GetLocation(geomIndex, Positions.Left);
             }
             // no labelled sides found, so no labels to propagate
-            if (startLoc == Location.Null) 
+            if (startLoc == Location.Null)
                 return;
 
-            Location currLoc = startLoc;
-            foreach (EdgeEnd e in Edges)
+            var currLoc = startLoc;
+            foreach (var e in Edges)
             {
-                Label label = e.Label;
+                var label = e.Label;
                 // set null On values to be in current location
                 if (label.GetLocation(geomIndex, Positions.On) == Location.Null)
                     label.SetLocation(geomIndex, Positions.On, currLoc);
                 // set side labels (if any)
-                if (label.IsArea(geomIndex)) 
+                if (label.IsArea(geomIndex))
                 {
-                    Location leftLoc   = label.GetLocation(geomIndex, Positions.Left);
-                    Location rightLoc  = label.GetLocation(geomIndex, Positions.Right);
+                    var leftLoc   = label.GetLocation(geomIndex, Positions.Left);
+                    var rightLoc  = label.GetLocation(geomIndex, Positions.Right);
                     // if there is a right location, that is the next location to propagate
-                    if (rightLoc != Location.Null) 
-                    {            
+                    if (rightLoc != Location.Null)
+                    {
                         if (rightLoc != currLoc)
                             throw new TopologyException("side location conflict", e.Coordinate);
-                        if (leftLoc == Location.Null) 
-                            Assert.ShouldNeverReachHere("found single null side (at " + e.Coordinate + ")");                    
+                        if (leftLoc == Location.Null)
+                            Assert.ShouldNeverReachHere("found single null side (at " + e.Coordinate + ")");
                         currLoc = leftLoc;
                     }
-                    else 
+                    else
                     {
                         /* RHS is null - LHS must be null too.
                         *  This must be an edge from the other point, which has no location
@@ -323,32 +317,33 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="eSearch"></param>
         /// <returns></returns>
         public int FindIndex(EdgeEnd eSearch)
         {
             GetEnumerator();   // force edgelist to be computed
-            for (int i = 0; i < edgeList.Count; i++ ) 
+            for (int i = 0; i < edgeList.Count; i++ )
             {
-                EdgeEnd e = edgeList[i];
-                if (e == eSearch) 
+                var e = edgeList[i];
+                if (e == eSearch)
                     return i;
             }
             return -1;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="outstream"></param>
         public virtual void Write(StreamWriter outstream)
         {
-            foreach (EdgeEnd e in Edges)
+            foreach (var e in Edges)
                 e.Write(outstream);
         }
 
+        /// <inheritdoc cref="object.ToString()"/>>
         public override string ToString()
         {
             var buf = new StringBuilder();

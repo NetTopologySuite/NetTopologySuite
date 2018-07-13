@@ -21,7 +21,6 @@ namespace NetTopologySuite.Utilities
             return g == null ? Factory : g.Factory;
         }
 
-
         public static IGeometryFactory GetFactoryOrDefault(IEnumerable<IGeometry> gs)
         {
             if (gs == null)
@@ -55,10 +54,10 @@ namespace NetTopologySuite.Utilities
 
         public static IGeometry BuildGeometry(IGeometry a, IGeometry b)
         {
-            var size = 0;
+            int size = 0;
             if (a != null) size++;
             if (b != null) size++;
-            IGeometry[] geoms = new IGeometry[size];
+            var geoms = new IGeometry[size];
             size = 0;
             if (a != null) geoms[size++] = a;
             if (b != null) geoms[size] = b;

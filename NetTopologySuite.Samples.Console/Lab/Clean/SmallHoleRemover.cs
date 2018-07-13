@@ -17,19 +17,19 @@ namespace NetTopologySuite.Samples.Lab.Clean
 
             public bool Value(IGeometry geom)
             {
-                double holeArea = Math.Abs(CGAlgorithms.SignedArea(geom.Coordinates));
+                double holeArea = Math.Abs(Area.OfRingSigned(geom.Coordinates));
                 return holeArea <= _area;
             }
         }
 
         /// <summary>
-        /// Removes small holes from the polygons in a geometry. 
+        /// Removes small holes from the polygons in a geometry.
         /// </summary>
         /// <param name="geom">The geometry to clean.</param>
         /// <param name="areaTolerance">The geometry with invalid holes removed.</param>
         public static IGeometry Clean(IGeometry geom, double areaTolerance)
         {
-            HoleRemover remover = new HoleRemover(geom, new IsSmall(areaTolerance));
+            var remover = new HoleRemover(geom, new IsSmall(areaTolerance));
             return remover.GetResult();
         }
     }

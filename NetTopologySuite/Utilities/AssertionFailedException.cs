@@ -1,4 +1,4 @@
-#if !PCL
+#if HAS_SYSTEM_APPLICATIONEXCEPTION
 using System;
 #else
 using ApplicationException = System.Exception;
@@ -7,18 +7,18 @@ using ApplicationException = System.Exception;
 namespace NetTopologySuite.Utilities
 {
    /// <summary>
-   /// 
+   ///
    /// </summary>
-    public class AssertionFailedException : ApplicationException 
+    public class AssertionFailedException : ApplicationException
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public AssertionFailedException()
         { }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="message"></param>
         public AssertionFailedException(string message) : base(message) { }

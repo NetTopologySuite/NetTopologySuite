@@ -3,7 +3,7 @@ using System;
 namespace NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class SweepLineEvent : IComparable
     {
@@ -44,45 +44,33 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public bool IsInsert
-        {
-            get { return _eventType == Insert; }
-        }
+        public bool IsInsert => _eventType == Insert;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public bool IsDelete
-        {
-            get { return _eventType == Delete; }
-        }
+        public bool IsDelete => _eventType == Delete;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public SweepLineEvent InsertEvent
-        {
-            get { return _insertEvent; }
-        }
+        public SweepLineEvent InsertEvent => _insertEvent;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int DeleteEventIndex
         {
-            get { return _deleteEventIndex; }
-            set { _deleteEventIndex = value; }
+            get => _deleteEventIndex;
+            set => _deleteEventIndex = value;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public object Object
-        {
-            get { return _obj; }
-        }
+        public object Object => _obj;
 
         public bool IsSameLabel(SweepLineEvent ev)
         {
@@ -101,7 +89,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="o"></param>
         public int CompareTo(object o)
         {
-            SweepLineEvent pe = (SweepLineEvent)o;
+            var pe = (SweepLineEvent)o;
             if (_xValue < pe._xValue)
                 return -1;
             if (_xValue > pe._xValue)

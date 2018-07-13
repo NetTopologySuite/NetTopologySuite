@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <OutputPath>$(SolutionDir)$(Configuration)\$(Platform)</OutputPath>
+    <DocumentationFile>$(OutputPath)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GeoAPIPackageReferenceVersion>1.7.5-pre024</GeoAPIPackageReferenceVersion>
+    <RestoreAdditionalProjectSources>$(RestoreAdditionalProjectSources);https://www.myget.org/F/nettopologysuite/api/v3/index.json</RestoreAdditionalProjectSources>
+  </PropertyGroup>
+
+  <!-- Client Profile frameworks don't have built-in shortcuts, so we need to specify these. -->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net35-client' ">
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net40-client' ">
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net403-client' ">
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.0.3</TargetFrameworkVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net35-client' Or '$(TargetFramework)' == 'net40-client' Or '$(TargetFramework)' == 'net403-client' Or '$(TargetFramework)' == 'net45' ">
+    <RequiresFrameworkAssemblyReferences>true</RequiresFrameworkAssemblyReferences>
+
+    <!-- There was no compelling reason for this to be here. -->
+    <DefineConstants>$(DefineConstants);COMPAT_SHAPEFILE_IMPORT_TO_SQL_SERVER</DefineConstants>
+
+    <DefineConstants>$(DefineConstants);FEATURE_FILE_IO</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_APPLICATIONEXCEPTION</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_ICLONEABLE</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_IO_MEMORYSTREAM_CTOR_PUBLICLYVISIBLE</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_RUNTIME_INTEROPSERVICES_COMVISIBLEATTRIBUTE</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_RUNTIME_INTEROPSERVICES_GUIDATTRIBUTE</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_SERIALIZABLEATTRIBUTE</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_TEXT_ENCODING_DEFAULT</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_TEXT_ENCODING_ASCII</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_TYPE_ISASSIGNABLEFROM</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_XML_XMLDOCUMENT</DefineConstants>
+    <DefineConstants>$(DefineConstants);SERIALIZATION_COMPAT_NETTOPOLOGYSUITE_FEATURE_ATTRIBUTESTABLE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net40-client' Or '$(TargetFramework)' == 'net403-client' Or '$(TargetFramework)' == 'net45' ">
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_XML_NAMESPACEHANDLING</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_STRING_ISNULLORWHITESPACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_REFLECTION_TYPEINFO</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' Or '$(TargetFramework)' == 'netstandard1.3' ">
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' Or '$(TargetFramework)' == 'netstandard1.3' Or '$(TargetFramework)' == 'netstandard2.0' ">
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_XML_NAMESPACEHANDLING</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_REFLECTION_TYPEINFO</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_STRING_ISNULLORWHITESPACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' Or '$(TargetFramework)' == 'netstandard2.0' ">
+    <DefineConstants>$(DefineConstants);FEATURE_FILE_IO</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_IO_MEMORYSTREAM_CTOR_PUBLICLYVISIBLE</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_TEXT_ENCODING_ASCII</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_XML_XMLDOCUMENT</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_APPLICATIONEXCEPTION</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_ICLONEABLE</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_SERIALIZABLEATTRIBUTE</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_TEXT_ENCODING_DEFAULT</DefineConstants>
+    <DefineConstants>$(DefineConstants);HAS_SYSTEM_TYPE_ISASSIGNABLEFROM</DefineConstants>
+  </PropertyGroup>
+</Project>

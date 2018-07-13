@@ -7,12 +7,12 @@ namespace NetTopologySuite.Index.Quadtree
     /// <summary>
     /// The base class for nodes in a <c>Quadtree</c>.
     /// </summary>
-#if !PCL
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
-    public abstract class NodeBase<T> 
-    {        
-        /// <summary> 
+    public abstract class NodeBase<T>
+    {
+        /// <summary>
         /// Gets the index of the subquad that wholly contains the given envelope.
         /// If none does, returns -1.
         /// </summary>
@@ -23,23 +23,23 @@ namespace NetTopologySuite.Index.Quadtree
             int subnodeIndex = -1;
             if (env.MinX >= centreX)
             {
-                if (env.MinY >= centreY) 
+                if (env.MinY >= centreY)
                     subnodeIndex = 3;
-                if (env.MaxY <= centreY) 
+                if (env.MaxY <= centreY)
                     subnodeIndex = 1;
             }
             if (env.MaxX <= centreX)
             {
-                if (env.MinY >= centreY) 
+                if (env.MinY >= centreY)
                     subnodeIndex = 2;
-                if (env.MaxY <= centreY) 
+                if (env.MaxY <= centreY)
                     subnodeIndex = 0;
             }
             return subnodeIndex;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private List<T> _items = new List<T>();
 
@@ -52,41 +52,38 @@ namespace NetTopologySuite.Index.Quadtree
         protected Node<T>[] Subnode = new Node<T>[4];
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IList<T> Items
         {
-            get
-            {
-                return _items;
-            }
-            protected set { _items = (List<T>)value; }
+            get => _items;
+            protected set => _items = (List<T>)value;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool HasItems
         {
             get
             {
-                // return !items.IsEmpty; 
+                // return !items.IsEmpty;
                 if (_items.Count == 0)
                     return false;
-                return true;                
+                return true;
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="item"></param>
         public void Add(T item)
         {
-            _items.Add(item);            
+            _items.Add(item);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Removes a single item from this subtree.
         /// </summary>
         /// <param name="itemEnv">The envelope containing the item.</param>
@@ -115,12 +112,12 @@ namespace NetTopologySuite.Index.Quadtree
             }
 
             // if item was found lower down, don't need to search for it here
-            if (found) 
+            if (found)
                 return true;
 
             // otherwise, try and remove the item from the list of items in this node
             if(_items.Contains(item))
-            {                
+            {
                 _items.Remove(item);
                 found = true;
             }
@@ -128,18 +125,12 @@ namespace NetTopologySuite.Index.Quadtree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public bool IsPrunable
-        {
-            get
-            {
-                return !(HasChildren || HasItems);
-            }
-        }
+        public bool IsPrunable => !(HasChildren || HasItems);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool HasChildren
         {
@@ -155,7 +146,7 @@ namespace NetTopologySuite.Index.Quadtree
         }
 
         /// <summary>
-        /// 
+        /// Gets a value indicating that this node is empty, i.e. it does not contain an items or sub-nodes.
         /// </summary>
         public bool IsEmpty
         {
@@ -164,14 +155,18 @@ namespace NetTopologySuite.Index.Quadtree
                 bool isEmpty = true;
                 if(_items.Count != 0)
                     isEmpty = false;
-                for (int i = 0; i < 4; i++)
-                    if (Subnode[i] != null)
-                        if (!Subnode[i].IsEmpty)
-                            isEmpty = false;
+                else
+                {
+                    for (int i = 0; i < 4; i++)
+                        if (Subnode[i] != null)
+                            if (!Subnode[i].IsEmpty)
+                                isEmpty = false;
+                }
+
                 return isEmpty;
             }
         }
-               
+
         /// <summary>
         /// Insert items in <c>this</c> into the parameter!
         /// </summary>
@@ -182,23 +177,23 @@ namespace NetTopologySuite.Index.Quadtree
             // this node may have items as well as subnodes (since items may not
             // be wholely contained in any single subnode
             // resultItems.addAll(this.items);
-            foreach (T o in _items)
+            foreach (var o in _items)
                 resultItems.Add(o);
-            for (int i = 0; i < 4; i++)            
+            for (int i = 0; i < 4; i++)
                 if (Subnode[i] != null)
-                    Subnode[i].AddAllItems(ref resultItems);                
+                    Subnode[i].AddAllItems(ref resultItems);
             return resultItems;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <returns></returns>
         protected abstract bool IsSearchMatch(Envelope searchEnv);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="resultItems"></param>
@@ -209,16 +204,16 @@ namespace NetTopologySuite.Index.Quadtree
 
             // this node may have items as well as subnodes (since items may not
             // be wholely contained in any single subnode
-            foreach (T o in _items)
+            foreach (var o in _items)
                 resultItems.Add(o);
 
-            for (int i = 0; i < 4; i++)            
+            for (int i = 0; i < 4; i++)
                 if (Subnode[i] != null)
-                    Subnode[i].AddAllItemsFromOverlapping(searchEnv, ref resultItems);                            
+                    Subnode[i].AddAllItemsFromOverlapping(searchEnv, ref resultItems);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
@@ -232,24 +227,24 @@ namespace NetTopologySuite.Index.Quadtree
             VisitItems(searchEnv, visitor);
 
             for (int i = 0; i < 4; i++)
-                if (Subnode[i] != null)                
-                    Subnode[i].Visit(searchEnv, visitor);                            
+                if (Subnode[i] != null)
+                    Subnode[i].Visit(searchEnv, visitor);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="searchEnv"></param>
         /// <param name="visitor"></param>
         private void VisitItems(Envelope searchEnv, IItemVisitor<T> visitor)
         {
             // would be nice to filter items based on search envelope, but can't until they contain an envelope
-            for (IEnumerator<T> i = _items.GetEnumerator(); i.MoveNext(); )            
-                visitor.VisitItem(i.Current);            
+            for (IEnumerator<T> i = _items.GetEnumerator(); i.MoveNext(); )
+                visitor.VisitItem(i.Current);
         }
-       
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int Depth
         {
@@ -270,22 +265,22 @@ namespace NetTopologySuite.Index.Quadtree
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public int Count    
+        public int Count
         {
             get
             {
                 int subSize = 0;
                 for (int i = 0; i < 4; i++)
-                    if (Subnode[i] != null)                    
-                        subSize += Subnode[i].Count;                                    
+                    if (Subnode[i] != null)
+                        subSize += Subnode[i].Count;
                 return subSize + _items.Count;
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int NodeCount
         {

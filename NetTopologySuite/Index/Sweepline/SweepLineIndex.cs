@@ -16,17 +16,17 @@ namespace NetTopologySuite.Index.Sweepline
 
         /*
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public SweepLineIndex() { }
         */
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="sweepInt"></param>
         public void Add(SweepLineInterval sweepInt)
         {
-            SweepLineEvent insertEvent = new SweepLineEvent(sweepInt.Min, null, sweepInt);
+            var insertEvent = new SweepLineEvent(sweepInt.Min, null, sweepInt);
             _events.Add(insertEvent);
             _events.Add(new SweepLineEvent(sweepInt.Max, insertEvent, sweepInt));
         }
@@ -38,20 +38,20 @@ namespace NetTopologySuite.Index.Sweepline
         /// </summary>
         private void BuildIndex()
         {
-            if (_indexBuilt) 
+            if (_indexBuilt)
                 return;
             _events.Sort();
             for (int i = 0; i < _events.Count; i++)
             {
-                SweepLineEvent ev = _events[i];
-                if (ev.IsDelete)                
-                    ev.InsertEvent.DeleteEventIndex = i;                
+                var ev = _events[i];
+                if (ev.IsDelete)
+                    ev.InsertEvent.DeleteEventIndex = i;
             }
             _indexBuilt = true;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="action"></param>
         public void ComputeOverlaps(ISweepLineOverlapAction action)
@@ -61,14 +61,14 @@ namespace NetTopologySuite.Index.Sweepline
 
             for (int i = 0; i < _events.Count; i++)
             {
-                SweepLineEvent ev = _events[i];
-                if (ev.IsInsert)               
-                    ProcessOverlaps(i, ev.DeleteEventIndex, ev.Interval, action);                
+                var ev = _events[i];
+                if (ev.IsInsert)
+                    ProcessOverlaps(i, ev.DeleteEventIndex, ev.Interval, action);
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
@@ -83,10 +83,10 @@ namespace NetTopologySuite.Index.Sweepline
              */
             for (int i = start; i < end; i++)
             {
-                SweepLineEvent ev = _events[i];
+                var ev = _events[i];
                 if (ev.IsInsert)
                 {
-                    SweepLineInterval s1 = ev.Interval;
+                    var s1 = ev.Interval;
                     action.Overlap(s0, s1);
                     _nOverlaps++;
                 }

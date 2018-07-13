@@ -8,7 +8,7 @@ namespace Open.Topology.TestRunner.Result
     /// <summary>
     /// A <see cref="IResultMatcher{GeometryResult}"/> which compares the results of
     /// buffer operations for equality, up to the given tolerance.
-    /// All other operations are delagated to the 
+    /// All other operations are delagated to the
     /// standard <see cref="EqualityResultMatcher{GeometryResult}"/> algorithm.
     /// </summary>
     /// <author>mbdavis</author>
@@ -27,16 +27,16 @@ namespace Open.Topology.TestRunner.Result
         /// <param name="expectedResult">The expected result of the test</param>
         /// <param name="tolerance">The tolerance for the test</param>
         /// <returns>true if the actual and expected results are considered equal</returns>
-        public bool IsMatch(IGeometry geom, String opName, Object[] args,
+        public bool IsMatch(IGeometry geom, string opName, object[] args,
                             GeometryResult actualResult, GeometryResult expectedResult,
                             double tolerance)
         {
-            if (String.Compare(opName, "buffer", true) != 0)
+            if (string.Compare(opName, "buffer", true) != 0)
                 return _defaultMatcher.IsMatch(geom, opName, args, actualResult, expectedResult, tolerance);
 
             double distance;
-            double.TryParse(((String) args[0]), NumberStyles.Any, CultureInfo.InvariantCulture, out distance);
-            
+            double.TryParse(((string) args[0]), NumberStyles.Any, CultureInfo.InvariantCulture, out distance);
+
             return IsBufferResultMatch(actualResult.Value, expectedResult.Value, distance);
         }
 
@@ -55,11 +55,11 @@ namespace Open.Topology.TestRunner.Result
                 return true;
 
             /**
-             * MD - need some more checks here - symDiffArea won't catch very small holes ("tears") 
-             * near the edge of computed buffers (which can happen in current version of JTS (1.8)).  
+             * MD - need some more checks here - symDiffArea won't catch very small holes ("tears")
+             * near the edge of computed buffers (which can happen in current version of JTS (1.8)).
              * This can probably be handled by testing
-             * that every point of the actual buffer is at least a certain distance away from the 
-             * geometry boundary.  
+             * that every point of the actual buffer is at least a certain distance away from the
+             * geometry boundary.
             */
             if (!IsSymDiffAreaInTolerance(actualBuffer, expectedBuffer))
                 return false;
@@ -74,14 +74,14 @@ namespace Open.Topology.TestRunner.Result
         {
             double area = expectedBuffer.Area;
             var diff = actualBuffer.SymmetricDifference(expectedBuffer);
-            //		System.out.println(diff);
+            // System.out.println(diff);
             double areaDiff = diff.Area;
 
             // can't get closer than difference area = 0 !  This also handles case when symDiff is empty
             if (areaDiff <= 0.0)
                 return true;
 
-            double frac = Double.PositiveInfinity;
+            double frac = double.PositiveInfinity;
             if (area > 0.0)
                 frac = areaDiff/area;
 

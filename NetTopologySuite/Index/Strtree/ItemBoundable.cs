@@ -7,7 +7,7 @@ namespace NetTopologySuite.Index.Strtree
     /// Boundable wrapper for a non-Boundable spatial object. Used internally by
     /// AbstractSTRtree.
     /// </summary>
-#if !PCL    
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public class ItemBoundable<T, TItem> : IBoundable<T, TItem> where T : IIntersectable<T>, IExpandable<T>
@@ -16,11 +16,11 @@ namespace NetTopologySuite.Index.Strtree
         private readonly TItem _item;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="bounds"></param>
         /// <param name="item"></param>
-        public ItemBoundable(T bounds, TItem item) 
+        public ItemBoundable(T bounds, TItem item)
         {
             _bounds = bounds;
             _item = item;
@@ -29,23 +29,11 @@ namespace NetTopologySuite.Index.Strtree
         /// <summary>
         /// The bounds
         /// </summary>
-        public T Bounds 
-        {
-            get
-            {
-                return _bounds;
-            }
-        }
+        public T Bounds => _bounds;
 
         /// <summary>
         /// The item
         /// </summary>
-        public TItem Item
-        {
-            get
-            {
-                return _item;
-            }
-        }
+        public TItem Item => _item;
     }
 }

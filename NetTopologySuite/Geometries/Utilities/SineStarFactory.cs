@@ -48,7 +48,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>The geometry representing the sine star</returns>
         public IGeometry CreateSineStar()
         {
-            Envelope env = Envelope;
+            var env = Envelope;
             double radius = env.Width / 2.0;
 
             double armRatio = ArmLengthRatio;
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Geometries.Utilities
             double centreX = env.MinX + radius;
             double centreY = env.MinY + radius;
 
-            Coordinate[] pts = new Coordinate[NumPoints + 1];
+            var pts = new Coordinate[NumPoints + 1];
             int iPt = 0;
             for (int i = 0; i < NumPoints; i++)
             {
@@ -71,7 +71,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 double ptArcFrac = (i / (double)NumPoints) * NumArms;
                 double armAngFrac = ptArcFrac - Math.Floor(ptArcFrac);
 
-                // the angle for the current arm - in [0,2Pi]  
+                // the angle for the current arm - in [0,2Pi]
                 // (each arm is a complete sine wave cycle)
                 double armAng = 2 * Math.PI * armAngFrac;
                 // the current length of the arm
@@ -88,8 +88,8 @@ namespace NetTopologySuite.Geometries.Utilities
             }
             pts[iPt] = new Coordinate(pts[0]);
 
-            ILinearRing ring = GeomFact.CreateLinearRing(pts);
-            IPolygon poly = GeomFact.CreatePolygon(ring, null);
+            var ring = GeomFact.CreateLinearRing(pts);
+            var poly = GeomFact.CreatePolygon(ring);
             return poly;
         }
     }

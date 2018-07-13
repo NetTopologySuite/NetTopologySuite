@@ -8,21 +8,21 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.IO.KML
 {
     /// <summary>
-    /// Writes a formatted string containing the KML representation 
-    /// of a JTS <see cref="IGeometry"/>. 
+    /// Writes a formatted string containing the KML representation
+    /// of a JTS <see cref="IGeometry"/>.
     /// The output is KML fragments which can be substituted
-    /// wherever the KML <see cref="IGeometry"/> abstract 
+    /// wherever the KML <see cref="IGeometry"/> abstract
     /// element can be used.
     /// </summary>
     /// <remarks>
     /// Output elements are indented to provide a
-    /// nicely-formatted representation. 
+    /// nicely-formatted representation.
     /// An output line prefix and maximum
     /// number of coordinates per line can be specified.
     /// </remarks>
     /// <remarks>
-    /// The Z ordinate value output can be forced to be a specific value. 
-    /// The <see cref="Extrude"/> and <see cref="AltitudeMode"/> modes can be set. 
+    /// The Z ordinate value output can be forced to be a specific value.
+    /// The <see cref="Extrude"/> and <see cref="AltitudeMode"/> modes can be set.
     /// If set, the corresponding sub-elements will be output.
     /// </remarks>
     public class KMLWriter
@@ -51,7 +51,7 @@ namespace NetTopologySuite.IO.KML
         /// <returns>a string containing the KML geometry representation</returns>
         public static string WriteGeometry(IGeometry geometry, double z)
         {
-            KMLWriter writer = new KMLWriter { Z = z };
+            var writer = new KMLWriter { Z = z };
             return writer.Write(geometry);
         }
 
@@ -79,7 +79,7 @@ namespace NetTopologySuite.IO.KML
         public static string WriteGeometry(IGeometry geometry, double z, int precision,
             bool extrude, string altitudeMode)
         {
-            KMLWriter writer = new KMLWriter
+            var writer = new KMLWriter
             {
                 Z = z,
                 Precision = precision,
@@ -95,7 +95,7 @@ namespace NetTopologySuite.IO.KML
 
         private string _linePrefix;
         private int _maxCoordinatesPerLine = 5;
-        private double _z = Double.NaN;
+        private double _z = double.NaN;
         private bool _extrude;
         private bool _tesselate;
         private string _altitudeMode;
@@ -108,8 +108,8 @@ namespace NetTopologySuite.IO.KML
         /// </summary>
         public string LinePrefix
         {
-            get { return _linePrefix; }
-            set { _linePrefix = value; }
+            get => _linePrefix;
+            set => _linePrefix = value;
         }
 
         /// <summary>
@@ -117,8 +117,8 @@ namespace NetTopologySuite.IO.KML
         /// </summary>
         public int MaxCoordinatesPerLine
         {
-            get { return _maxCoordinatesPerLine; }
-            set { _maxCoordinatesPerLine = Math.Max(1, value); }
+            get => _maxCoordinatesPerLine;
+            set => _maxCoordinatesPerLine = Math.Max(1, value);
         }
 
         /// <summary>
@@ -127,8 +127,8 @@ namespace NetTopologySuite.IO.KML
         /// </summary>
         public double Z
         {
-            get { return _z; }
-            set { _z = value; }
+            get => _z;
+            set => _z = value;
         }
 
         /// <summary>
@@ -136,8 +136,8 @@ namespace NetTopologySuite.IO.KML
         /// </summary>
         public bool Extrude
         {
-            get { return _extrude; }
-            set { _extrude = value; }
+            get => _extrude;
+            set => _extrude = value;
         }
 
         /// <summary>
@@ -145,8 +145,8 @@ namespace NetTopologySuite.IO.KML
         /// </summary>
         public bool Tesselate
         {
-            get { return _tesselate; }
-            set { _tesselate = value; }
+            get => _tesselate;
+            set => _tesselate = value;
         }
 
         /// <summary>
@@ -154,8 +154,8 @@ namespace NetTopologySuite.IO.KML
         /// </summary>
         public string AltitudeMode
         {
-            get { return _altitudeMode; }
-            set { _altitudeMode = value; }
+            get => _altitudeMode;
+            set => _altitudeMode = value;
         }
 
         /// <summary>
@@ -168,18 +168,18 @@ namespace NetTopologySuite.IO.KML
         /// </remarks>
         public int Precision
         {
-            get { return _formatter.NumberDecimalDigits; }
-            set { CreateFormatter(value); }
+            get => _formatter.NumberDecimalDigits;
+            set => CreateFormatter(value);
         }
 
         private void CreateFormatter(int precision)
         {
-            IPrecisionModel precisionModel = precision < 0
+            var precisionModel = precision < 0
                 ? new PrecisionModel(PrecisionModels.Floating)
                 : new PrecisionModel(precision);
             _formatter = WKTWriter.CreateFormatter(precisionModel);
             string digits = WKTWriter.StringOfChar('#', _formatter.NumberDecimalDigits);
-            _format = String.Format("0.{0}", digits);
+            _format = string.Format("0.{0}", digits);
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace NetTopologySuite.IO.KML
         /// <returns>a string containing the KML geometry representation</returns>
         public string Write(IGeometry geom)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             Write(geom, sb);
             return sb.ToString();
         }
@@ -240,7 +240,7 @@ namespace NetTopologySuite.IO.KML
 
         private string GeometryTag(string geometryName)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("<");
             sb.Append(geometryName);
             sb.Append(">");
@@ -255,7 +255,7 @@ namespace NetTopologySuite.IO.KML
                 StartLine("<tesselate>1</tesselate>\n", level, sb);
             if (AltitudeMode != null)
             {
-                string s = String.Format("<altitudeMode>{0}</altitudeMode>\n", AltitudeMode);
+                string s = string.Format("<altitudeMode>{0}</altitudeMode>\n", AltitudeMode);
                 StartLine(s, level, sb);
             }
         }
@@ -363,12 +363,12 @@ namespace NetTopologySuite.IO.KML
 
             double z = p.Z;
             // if altitude was specified directly, use it
-            if (!Double.IsNaN(Z))
+            if (!double.IsNaN(Z))
                 z = Z;
 
             // only write if Z present
             // MD - is this right? Or should it always be written?
-            if (!Double.IsNaN(z))
+            if (!double.IsNaN(z))
             {
                 sb.Append(CoordinateSeparator);
                 Write(z, sb);

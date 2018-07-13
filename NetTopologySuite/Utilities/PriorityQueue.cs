@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace NetTopologySuite.Utilities
@@ -8,10 +9,28 @@ namespace NetTopologySuite.Utilities
     ///</summary>
     /// <typeparam name="T">Objects to add</typeparam>
     /// <author>Martin Davis</author>
-    public class PriorityQueue<T>
+    public class PriorityQueue<T> : IEnumerable<T>
         where T : IComparable<T>
     {
-        private readonly AlternativePriorityQueue<T, T> queue = new AlternativePriorityQueue<T, T>();
+        private readonly AlternativePriorityQueue<T, T> _queue;
+
+        /// <summary>
+        /// Creates an instance of this class
+        /// </summary>
+        public PriorityQueue()
+        {
+            _queue = new AlternativePriorityQueue<T, T>();
+        }
+
+        /// <summary>
+        /// Creates an instance of this class
+        /// </summary>
+        /// <param name="capacity">The capacity of the queue</param>
+        /// <param name="comparer">The comparer to use for computing priority values</param>
+        public PriorityQueue(int capacity, IComparer<T> comparer)
+        {
+            _queue = new AlternativePriorityQueue<T, T>(capacity, comparer);
+        }
 
         ///<summary>Insert into the priority queue. Duplicates are allowed.
         ///</summary>
@@ -19,7 +38,7 @@ namespace NetTopologySuite.Utilities
         public void Add(T x)
         {
             var node = new PriorityQueueNode<T, T>(x);
-            this.queue.Enqueue(node, x);
+            this._queue.Enqueue(node, x);
         }
 
         ///<summary>
@@ -28,23 +47,20 @@ namespace NetTopologySuite.Utilities
         /// <returns><c>true</c> if empty, <c>false</c> otherwise.</returns>
         public bool IsEmpty()
         {
-            return this.queue.Count == 0;
+            return this._queue.Count == 0;
         }
 
         ///<summary>
         /// Returns size.
         ///</summary>
-        public int Size
-        {
-            get { return this.queue.Count; }
-        }
+        public int Size => this._queue.Count;
 
         ///<summary>
         /// Make the priority queue logically empty.
         ///</summary>
         public void Clear()
         {
-            this.queue.Clear();
+            this._queue.Clear();
         }
 
         ///<summary>
@@ -53,10 +69,63 @@ namespace NetTopologySuite.Utilities
         /// <remarks>The smallest item, or <value>default(T)</value> if empty.</remarks>
         public T Poll()
         {
-            var node = this.queue.Dequeue();
+            var node = this._queue.Dequeue();
             return node == null
                 ? default(T)
                 : node.Data;
+        }
+
+        public T Peek()
+        {
+            var node = _queue.Head;
+            return node == null
+                ? default(T)
+                : node.Data;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return new DataEnumerator<T>(_queue.GetEnumerator());
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        private class DataEnumerator<T> : IEnumerator<T>
+        {
+            private readonly IEnumerator<PriorityQueueNode<T, T>> _pqnEnumerator;
+            public DataEnumerator(IEnumerator<PriorityQueueNode<T, T>> pqnEnumerator)
+            {
+                _pqnEnumerator = pqnEnumerator;
+            }
+
+            public void Dispose()
+            {
+                _pqnEnumerator.Dispose();
+            }
+
+            public bool MoveNext()
+            {
+                return _pqnEnumerator.MoveNext();
+            }
+
+            public void Reset()
+            {
+                _pqnEnumerator.Reset();
+            }
+
+            public T Current
+            {
+                get
+                {
+                    var n = _pqnEnumerator.Current;
+                    return n != null ? n.Data : default(T);
+                }
+            }
+
+            object IEnumerator.Current => Current;
         }
     }
 }

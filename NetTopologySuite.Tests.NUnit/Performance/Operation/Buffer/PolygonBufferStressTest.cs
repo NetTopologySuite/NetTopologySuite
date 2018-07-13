@@ -15,6 +15,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
     /// issues (bad noding causing topology failures).
     /// However by ver 1.13 (at least) this test should pass perfectly.
     /// This is due to the many heuristics introduced to improve buffer
+    /// robustness.
     /// </summary>
     public class PolygonBufferStressTest
     {
@@ -57,7 +58,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 
         private IGeometry GetSampleGeometry()
         {
-            String wkt;
+            string wkt;
             // triangle
             //wkt ="POLYGON (( 233 221, 210 172,  262 181, 233 221  ))";
 
@@ -86,7 +87,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 
         public void Test(IGeometry g)
         {
-            var maxCount = MaxIter;
+            int maxCount = MaxIter;
             //doIteratedBuffer(g, 1, -120.01, maxCount);
             //doIteratedBuffer(g, 1, 2, maxCount);
             DoAlternatingIteratedBuffer(g, 1, maxCount);

@@ -29,7 +29,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                 }
             }
             else
-            { 
+            {
                 // assume geom is Point
                 ptDist.SetMinimum(geom.Coordinate, pt);
             }

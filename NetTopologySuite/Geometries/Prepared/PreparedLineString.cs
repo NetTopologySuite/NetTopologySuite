@@ -48,8 +48,8 @@ namespace NetTopologySuite.Geometries.Prepared
         }
 
         /*
-         * There's not much point in trying to optimize contains, since 
-         * contains for linear targets requires the entire test geometry 
+         * There's not much point in trying to optimize contains, since
+         * contains for linear targets requires the entire test geometry
          * to exactly match the target linework.
          */
     }

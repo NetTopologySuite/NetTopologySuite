@@ -10,14 +10,14 @@ namespace NetTopologySuite.Simplify
     public class DouglasPeuckerLineSimplifier
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pts"></param>
         /// <param name="distanceTolerance"></param>
         /// <returns></returns>
         public static Coordinate[] Simplify(Coordinate[] pts, double distanceTolerance)
         {
-            DouglasPeuckerLineSimplifier simp = new DouglasPeuckerLineSimplifier(pts);
+            var simp = new DouglasPeuckerLineSimplifier(pts);
             simp.DistanceTolerance = distanceTolerance;
             return simp.Simplify();
         }
@@ -26,21 +26,21 @@ namespace NetTopologySuite.Simplify
         private bool[] _usePt;
 
         /// <summary>
-        /// 
+        /// Creates an instance of this class using the provided <paramref name="pts"/> array of coordinates
         /// </summary>
-        /// <param name="pts"></param>
+        /// <param name="pts">An array of coordinates</param>
         public DouglasPeuckerLineSimplifier(Coordinate[] pts)
         {
             _pts = pts;
         }
 
         /// <summary>
-        /// 
+        /// The distance tolerance for the simplification.
         /// </summary>
         public double DistanceTolerance { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public Coordinate[] Simplify()
@@ -50,7 +50,7 @@ namespace NetTopologySuite.Simplify
                 _usePt[i] = true;
 
             SimplifySection(0, _pts.Length - 1);
-            CoordinateList coordList = new CoordinateList();
+            var coordList = new CoordinateList();
             for (int i = 0; i < _pts.Length; i++)
                 if (_usePt[i])
                     coordList.Add(new Coordinate(_pts[i]));
@@ -59,11 +59,6 @@ namespace NetTopologySuite.Simplify
 
         private readonly LineSegment _seg = new LineSegment();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="i"></param>
-        /// <param name="j"></param>
         private void SimplifySection(int i, int j)
         {
             if ((i + 1) == j)

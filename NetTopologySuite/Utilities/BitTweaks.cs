@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 
-#if PCL
-using DoubleBitsConverter = NetTopologySuite.Utilities.BitConverter;
-#else
-using DoubleBitsConverter = System.BitConverter;
-#endif
-
 namespace NetTopologySuite.Utilities
 {
     internal static class BitTweaks
@@ -48,7 +42,7 @@ namespace NetTopologySuite.Utilities
 
         internal static double ReverseByteOrder(double value)
         {
-            return DoubleBitsConverter.Int64BitsToDouble(ReverseByteOrder(DoubleBitsConverter.DoubleToInt64Bits(value)));
+            return System.BitConverter.Int64BitsToDouble(ReverseByteOrder(System.BitConverter.DoubleToInt64Bits(value)));
         }
 
         internal static ushort ReverseByteOrder(ushort value)

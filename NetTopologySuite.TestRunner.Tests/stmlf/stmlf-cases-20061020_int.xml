@@ -21,7 +21,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = -12  </desc>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
 
-
  <case><desc>99455 - 3082006
 abs( area(A) - difference(A,B) - intersection(A,B) ) = -9  </desc>
 <a>
@@ -33,7 +32,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = -9  </desc>
 </b>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
-
 
  <case><desc>275046 - 3361837
 abs( area(A) - difference(A,B) - intersection(A,B) ) = -7  </desc>
@@ -47,7 +45,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = -7  </desc>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
 
-
  <case><desc>984559 - 984543
 abs( area(A) - difference(A,B) - intersection(A,B) ) = 3  </desc>
 <a>
@@ -59,7 +56,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = 3  </desc>
 </b>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
-
 
  <case><desc>982104 - 1320680
 abs( area(A) - difference(A,B) - intersection(A,B) ) = -4  </desc>
@@ -73,7 +69,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = -4  </desc>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
 
-
  <case><desc>720830 - 32827
 abs( area(A) - difference(A,B) - intersection(A,B) ) = -2  </desc>
 <a>
@@ -85,7 +80,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = -2  </desc>
 </b>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
-
 
  <case><desc>11503 - 422581
 abs( area(A) - difference(A,B) - intersection(A,B) ) = 3  </desc>
@@ -99,7 +93,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = 3  </desc>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
 
-
  <case><desc>35309 - 21138
 abs( area(A) - difference(A,B) - intersection(A,B) ) = 2  </desc>
 <a>
@@ -111,7 +104,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = 2  </desc>
 </b>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
-
 
  <case><desc>189022 - 7822
 abs( area(A) - difference(A,B) - intersection(A,B) ) = -3  </desc>
@@ -125,7 +117,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = -3  </desc>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
 
-
  <case><desc>191097 - 2916437
 abs( area(A) - difference(A,B) - intersection(A,B) ) = 2  </desc>
 <a>
@@ -137,7 +128,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = 2  </desc>
 </b>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
-
 
  <case><desc>256271 - 367713
 abs( area(A) - difference(A,B) - intersection(A,B) ) = 5  </desc>
@@ -151,7 +141,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = 5  </desc>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
 
-
  <case><desc>275129 - 384120
 abs( area(A) - difference(A,B) - intersection(A,B) ) = 2  </desc>
 <a>
@@ -163,7 +152,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = 2  </desc>
 </b>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
-
 
  <case><desc>275562 - 3361837
 abs( area(A) - difference(A,B) - intersection(A,B) ) = 3  </desc>
@@ -177,7 +165,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = 3  </desc>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
 
-
  <case><desc>466188 - 3072591
 abs( area(A) - difference(A,B) - intersection(A,B) ) = -3  </desc>
 <a>
@@ -189,7 +176,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = -3  </desc>
 </b>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
-
 
  <case><desc>415163 - 3180189
 abs( area(A) - difference(A,B) - intersection(A,B) ) = -5  </desc>
@@ -203,7 +189,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = -5  </desc>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
 
-
  <case><desc>401167 - 3148390
 abs( area(A) - difference(A,B) - intersection(A,B) ) = -2  </desc>
 <a>
@@ -215,7 +200,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = -2  </desc>
 </b>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
-
 
  <case><desc>164313 - 164648
 abs( area(A) - difference(A,B) - intersection(A,B) ) = -3  </desc>
@@ -229,7 +213,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = -3  </desc>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
 
-
  <case><desc>464026 - 6704
 abs( area(A) - difference(A,B) - intersection(A,B) ) = -3  </desc>
 <a>
@@ -241,7 +224,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = -3  </desc>
 </b>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
-
 
  <case><desc>469351 - 5219716
 abs( area(A) - difference(A,B) - intersection(A,B) ) = -4  </desc>
@@ -255,7 +237,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = -4  </desc>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
 
-
  <case><desc>975328 - 1755529
 abs( area(A) - difference(A,B) - intersection(A,B) ) = 2  </desc>
 <a>
@@ -267,7 +248,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = 2  </desc>
 </b>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
-
 
  <case><desc>525923 - 45230
 abs( area(A) - difference(A,B) - intersection(A,B) ) = -2  </desc>
@@ -281,7 +261,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = -2  </desc>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
 
-
  <case><desc>532351 - 3180577
 abs( area(A) - difference(A,B) - intersection(A,B) ) = -2  </desc>
 <a>
@@ -293,7 +272,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = -2  </desc>
 </b>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
-
 
  <case><desc>587497 - 409926
 abs( area(A) - difference(A,B) - intersection(A,B) ) = 2  </desc>
@@ -307,7 +285,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = 2  </desc>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
 
-
  <case><desc>589978 - 39794
 abs( area(A) - difference(A,B) - intersection(A,B) ) = 3  </desc>
 <a>
@@ -320,7 +297,6 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = 3  </desc>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
 
-
  <case><desc>671968 - 1396084
 abs( area(A) - difference(A,B) - intersection(A,B) ) = -4  </desc>
 <a>
@@ -332,6 +308,5 @@ abs( area(A) - difference(A,B) - intersection(A,B) ) = -4  </desc>
 </b>
 <test><op name="intersection" arg1='A' arg2='B'>GEOMETRYCOLLECTION EMPTY</op></test>
 </case>
-
 
 </run>

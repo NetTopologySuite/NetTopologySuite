@@ -49,8 +49,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.AreEqual(forward.Ordinates, reversed.Ordinates, "Coordinate sequences don't serve same ordinate values");
 
             var ordinates = OrdinatesUtility.ToOrdinateArray(forward.Ordinates);
-            var j = forward.Count;
-            for (var i = 0; i < forward.Count; i++)
+            int j = forward.Count;
+            for (int i = 0; i < forward.Count; i++)
             {
                 j--;
                 foreach(var ordinate in ordinates)

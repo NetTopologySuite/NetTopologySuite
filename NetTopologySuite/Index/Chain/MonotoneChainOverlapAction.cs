@@ -1,31 +1,34 @@
+using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Index.Chain
 {
-    /// <summary> 
+    /// <summary>
     /// The action for the internal iterator for performing
     /// overlap queries on a MonotoneChain.
     /// </summary>
     public class MonotoneChainOverlapAction
-    {        
-        /// <summary>
-        /// This envelope is used during the MonotoneChain search process.
-        /// </summary>
-        public Envelope TempEnv1 = new Envelope();
+    {
+        ///// <summary>
+        ///// This envelope is used during the MonotoneChain search process.
+        ///// </summary>
+        //[Obsolete]
+        //public Envelope TempEnv1;// = new Envelope();
+
+        ///// <summary>
+        ///// This envelope is used during the MonotoneChain search process.
+        ///// </summary>
+        //[Obsolete]
+        //public Envelope TempEnv2;// = new Envelope();
 
         /// <summary>
-        /// This envelope is used during the MonotoneChain search process. 
-        /// </summary>
-        public Envelope TempEnv2 = new Envelope();
-
-        /// <summary>
-        /// 
+        ///
         /// </summary>
         protected LineSegment overlapSeg1 = new LineSegment();
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected LineSegment overlapSeg2 = new LineSegment();
 
@@ -43,7 +46,7 @@ namespace NetTopologySuite.Index.Chain
             Overlap(overlapSeg1, overlapSeg2);
         }
 
-        /// <summary> 
+        /// <summary>
         /// This is a convenience function which can be overridden to obtain the actual
         /// line segments which overlap.
         /// </summary>

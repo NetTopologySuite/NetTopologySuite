@@ -32,7 +32,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if the polygon properly contains the geometry</returns>
         public static bool ContainsProperly(PreparedPolygon prep, IGeometry geom)
         {
-            PreparedPolygonContainsProperly polyInt = new PreparedPolygonContainsProperly(prep);
+            var polyInt = new PreparedPolygonContainsProperly(prep);
             return polyInt.ContainsProperly(geom);
         }
 
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Geometries.Prepared
             /*
              * If any segments intersect, result is false.
              */
-            IList<ISegmentString> lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
+            var lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
             bool segsIntersect = prepPoly.IntersectionFinder.Intersects(lineSegStr);
             if (segsIntersect)
                 return false;

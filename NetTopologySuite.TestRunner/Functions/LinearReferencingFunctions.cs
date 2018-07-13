@@ -21,7 +21,7 @@ namespace Open.Topology.TestRunner.Functions
         public static IGeometry Project(IGeometry g, IGeometry g2)
         {
             var ll = new LengthIndexedLine(g);
-            var index = ll.Project(g2.Coordinate);
+            double index = ll.Project(g2.Coordinate);
             var p = ll.ExtractPoint(index);
             return g.Factory.CreatePoint(p);
         }

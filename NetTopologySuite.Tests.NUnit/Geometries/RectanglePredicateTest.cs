@@ -19,7 +19,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestShortAngleOnBoundary()
         {
-            String[] onBoundary =
+            string[] onBoundary =
             { "POLYGON ((10 10, 30 10, 30 30, 10 30, 10 10))",
                 "LINESTRING (10 25, 10 10, 25 10)" };
             RunRectanglePred(onBoundary);
@@ -28,16 +28,16 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [TestAttribute]
         public void TestAngleOnBoundary()
         {
-            String[] onBoundary =
+            string[] onBoundary =
             { "POLYGON ((10 10, 30 10, 30 30, 10 30, 10 10))",
                 "LINESTRING (10 30, 10 10, 30 10)" };
             RunRectanglePred(onBoundary);
         }
 
-        private void RunRectanglePred(String[] wkt)
+        private void RunRectanglePred(string[] wkt)
         {
-            IGeometry rect = rdr.Read(wkt[0]);
-            IGeometry b = rdr.Read(wkt[1]);
+            var rect = rdr.Read(wkt[0]);
+            var b = rdr.Read(wkt[1]);
             RunRectanglePred(rect, b);
         }
 
@@ -51,11 +51,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             bool relateContainsValue = rect.Relate(testGeom).IsContains();
             bool containsOK = containsValue == relateContainsValue;
 
-            //System.out.println(testGeom);
-            if (!intersectsOK || !containsOK)
-            {
-                Console.WriteLine(testGeom);
-            }
+            ////System.Console.WriteLine(testGeom);
+            //if (!intersectsOK || !containsOK)
+            //    Console.WriteLine(testGeom);
+
             Assert.IsTrue(intersectsOK);
             Assert.IsTrue(containsOK);
         }

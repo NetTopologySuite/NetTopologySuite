@@ -54,7 +54,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
 
         [TestAttribute]
-        public void TestObtuseTriangle() 
+        public void TestObtuseTriangle()
         {
             DoMinimumBoundingCircleTest("POLYGON ((100 100, 200 100, 150 90, 100 100))", "MULTIPOINT ((100 100), (200 100))",
                 new Coordinate(150, 100), 50);
@@ -69,29 +69,29 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         static double TOLERANCE = 1.0e-5;
 
-        private void DoMinimumBoundingCircleTest(String wkt, String expectedWKT)
+        private void DoMinimumBoundingCircleTest(string wkt, string expectedWKT)
         {
             DoMinimumBoundingCircleTest(wkt, expectedWKT, null, -1);
         }
 
-        private void DoMinimumBoundingCircleTest(String wkt, String expectedWKT, Coordinate expectedCentre, double expectedRadius)
+        private void DoMinimumBoundingCircleTest(string wkt, string expectedWKT, Coordinate expectedCentre, double expectedRadius)
         {
-            MinimumBoundingCircle mbc = new MinimumBoundingCircle(reader.Read(wkt));
-            Coordinate[] exPts = mbc.GetExtremalPoints();
+            var mbc = new MinimumBoundingCircle(reader.Read(wkt));
+            var exPts = mbc.GetExtremalPoints();
             IGeometry actual = geometryFactory.CreateMultiPoint(exPts);
             double actualRadius = mbc.GetRadius();
-            Coordinate actualCentre = mbc.GetCentre();
-            Console.WriteLine("   Centre = " + actualCentre + "   Radius = " + actualRadius);
+            var actualCentre = mbc.GetCentre();
+            //Console.WriteLine("   Centre = " + actualCentre + "   Radius = " + actualRadius);
 
-            IGeometry expected = reader.Read(expectedWKT);
+            var expected = reader.Read(expectedWKT);
             bool isEqual = actual.Equals(expected);
             // need this hack because apparently equals does not work for MULTIPOINT EMPTY
             if (actual.IsEmpty && expected.IsEmpty)
                 isEqual = true;
-  	        if (!isEqual)
-  	        {
-  	            Console.WriteLine("Actual = " + actual + ", Expected = " + expected);
-  	        }
+            if (!isEqual)
+            {
+                Console.WriteLine("Actual = " + actual + ", Expected = " + expected);
+            }
             Assert.IsTrue(isEqual);
 
             if (expectedCentre != null)

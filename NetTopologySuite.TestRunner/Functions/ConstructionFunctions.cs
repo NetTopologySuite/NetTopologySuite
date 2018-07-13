@@ -17,7 +17,7 @@ namespace Open.Topology.TestRunner.Functions
 
         public static IGeometry MinimumDiameter(IGeometry g) { return (new MinimumDiameter(g)).Diameter; }
         public static double MinimumDiameterLength(IGeometry g) { return (new MinimumDiameter(g)).Diameter.Length; }
-        
+
         public static IGeometry MinimumRectangle(IGeometry g) { return (new MinimumDiameter(g)).GetMinimumRectangle(); }
         public static IGeometry MinimumBoundingCircle(Geometry g) { return (new MinimumBoundingCircle(g)).GetCircle(); }
         public static IGeometry MaximumDiameter(IGeometry g) { return g.Factory.CreateLineString((new MinimumBoundingCircle(g)).GetExtremalPoints()); }
@@ -32,7 +32,6 @@ namespace Open.Topology.TestRunner.Functions
 
         public static IGeometry Densify(Geometry g, double distance) { return Densifier.Densify(g, distance); }
 
-
         public static IGeometry MergeLines(Geometry g)
         {
             var merger = new LineMerger();
@@ -44,7 +43,7 @@ namespace Open.Topology.TestRunner.Functions
         public static IGeometry ExtractLines(IGeometry g)
         {
             var lines = LinearComponentExtracter.GetLines(g);
-            return g.Factory.BuildGeometry(NetTopologySuite.Utilities.CollectionUtil.Cast<IGeometry>((ICollection)lines));
+            return g.Factory.BuildGeometry(lines);
         }
     }
 }

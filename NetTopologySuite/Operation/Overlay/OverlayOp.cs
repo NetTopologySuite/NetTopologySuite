@@ -39,17 +39,17 @@ namespace NetTopologySuite.Operation.Overlay
     public class OverlayOp : GeometryGraphOperation
     {
         /// <summary>
-        /// Disable <see cref="EdgeNodingValidator"/> 
-        /// when an intersection is made (<see cref="ComputeOverlay"/>), 
+        /// Disable <see cref="EdgeNodingValidator"/>
+        /// when an intersection is made (<see cref="ComputeOverlay"/>),
         /// so performances are dramatically improved but failures are not managed.
         /// </summary>
         /// <remarks>
         /// Use ay your own risk!
-        /// </remarks>        
+        /// </remarks>
         public static bool NodingValidatorDisabled { get; set; }
 
         /// <summary>
-        /// Computes an overlay operation 
+        /// Computes an overlay operation
         /// for the given geometry arguments.
         /// </summary>
         /// <param name="geom0">The first geometry argument</param>
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Operation.Overlay
 
         /// <summary>
         /// Tests whether a point with a given topological <see cref="Label"/>
-        /// relative to two geometries is contained in 
+        /// relative to two geometries is contained in
         /// the result of overlaying the geometries using
         /// a given overlay operation.
         /// <para/>
@@ -84,7 +84,7 @@ namespace NetTopologySuite.Operation.Overlay
 
         /// <summary>
         /// Tests whether a point with given <see cref="Location"/>s
-        /// relative to two geometries is contained in 
+        /// relative to two geometries is contained in
         /// the result of overlaying the geometries using
         /// a given overlay operation.
         /// <para/>
@@ -96,12 +96,12 @@ namespace NetTopologySuite.Operation.Overlay
         /// <returns><c>true</c> if the locations correspond to the overlayOpCode.</returns>
         public static bool IsResultOfOp(Location loc0, Location loc1, SpatialFunction overlayOpCode)
         {
-            if (loc0 == Location.Boundary) 
+            if (loc0 == Location.Boundary)
                 loc0 = Location.Interior;
-            if (loc1 == Location.Boundary) 
+            if (loc1 == Location.Boundary)
                 loc1 = Location.Interior;
 
-            switch (overlayOpCode) 
+            switch (overlayOpCode)
             {
                 case SpatialFunction.Intersection:
                     return loc0 == Location.Interior && loc1 == Location.Interior;
@@ -112,9 +112,9 @@ namespace NetTopologySuite.Operation.Overlay
                 case SpatialFunction.SymDifference:
                     return   (loc0 == Location.Interior &&  loc1 != Location.Interior)
                           || (loc0 != Location.Interior &&  loc1 == Location.Interior);
-	            default:
+                default:
                     return false;
-            }            
+            }
         }
 
         private readonly PointLocator _ptLocator = new PointLocator();
@@ -136,7 +136,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="g1">The second geometry argument</param>
         public OverlayOp(IGeometry g0, IGeometry g1)
             : base(g0, g1)
-        {            
+        {
             _graph = new PlanarGraph(new OverlayNodeFactory());
 
             /*
@@ -164,10 +164,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <summary>
         /// Gets the graph constructed to compute the overlay.
         /// </summary>
-        public PlanarGraph Graph
-        {
-            get { return _graph; }
-        }
+        public PlanarGraph Graph => _graph;
 
         private void ComputeOverlay(SpatialFunction opCode)
         {
@@ -179,14 +176,14 @@ namespace NetTopologySuite.Operation.Overlay
 
             // node the input Geometries
             arg[0].ComputeSelfNodes(lineIntersector, false);
-            arg[1].ComputeSelfNodes(lineIntersector, false);            
+            arg[1].ComputeSelfNodes(lineIntersector, false);
 
             // compute intersections between edges of the two input geometries
             arg[0].ComputeEdgeIntersections(arg[1], lineIntersector, true);
 
-            IList<Edge> baseSplitEdges = new List<Edge>();
-            arg[0].ComputeSplitEdges(baseSplitEdges);            
-            arg[1].ComputeSplitEdges(baseSplitEdges);            
+            var baseSplitEdges = new List<Edge>();
+            arg[0].ComputeSplitEdges(baseSplitEdges);
+            arg[1].ComputeSplitEdges(baseSplitEdges);
             // add the noded edges to this result graph
             InsertUniqueEdges(baseSplitEdges);
 
@@ -197,18 +194,18 @@ namespace NetTopologySuite.Operation.Overlay
             {
                 /*
                  * Check that the noding completed correctly.
-                 * 
-                 * This test is slow, but necessary in order to catch robustness failure 
+                 *
+                 * This test is slow, but necessary in order to catch robustness failure
                  * situations.
-                 * If an exception is thrown because of a noding failure, 
+                 * If an exception is thrown because of a noding failure,
                  * then snapping will be performed, which will hopefully avoid the problem.
-                 * In the future hopefully a faster check can be developed.  
-                 * 
+                 * In the future hopefully a faster check can be developed.
+                 *
                  */
                 var nv = new EdgeNodingValidator(_edgeList.Edges);
                 nv.CheckValid();
             }
-            
+
             _graph.AddEdges(_edgeList.Edges);
             ComputeLabelling();
             LabelIncompleteNodes();
@@ -228,16 +225,16 @@ namespace NetTopologySuite.Operation.Overlay
             var lineBuilder = new LineBuilder(this, _geomFact, _ptLocator);
             _resultLineList = lineBuilder.Build(opCode);
 
-            var pointBuilder = new PointBuilder(this, _geomFact, _ptLocator);
+            var pointBuilder = new PointBuilder(this, _geomFact);//, _ptLocator);
             _resultPointList = pointBuilder.Build(opCode);
 
             // gather the results from all calculations into a single Geometry for the result set
             _resultGeom = ComputeGeometry(_resultPointList, _resultLineList, _resultPolyList, opCode);
-        }        
+        }
 
         private void InsertUniqueEdges(IEnumerable<Edge> edges)
         {
-            for (var i = edges.GetEnumerator(); i.MoveNext(); ) 
+            for (var i = edges.GetEnumerator(); i.MoveNext(); )
             {
                 var e = i.Current;
                 InsertUniqueEdge(e);
@@ -295,7 +292,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// </summary>
         private void ComputeLabelsFromDepths()
         {
-            for (var it = _edgeList.GetEnumerator(); it.MoveNext(); ) 
+            for (var it = _edgeList.GetEnumerator(); it.MoveNext(); )
             {
                 var e = it.Current;
                 var lbl = e.Label;
@@ -305,11 +302,11 @@ namespace NetTopologySuite.Operation.Overlay
                 * since these are the only ones which might
                 * be the result of dimensional collapses.
                 */
-                if (depth.IsNull()) 
+                if (depth.IsNull())
                     continue;
 
-                depth.Normalize();                    
-                for (var i = 0; i < 2; i++)
+                depth.Normalize();
+                for (int i = 0; i < 2; i++)
                 {
                     if (lbl.IsNull(i) || !lbl.IsArea() || depth.IsNull(i))
                         continue;
@@ -319,10 +316,10 @@ namespace NetTopologySuite.Operation.Overlay
                      * It has the same location on both sides of the edge,
                      * so it has collapsed to a line.
                      */
-                    if (depth.GetDelta(i) == 0)                   
+                    if (depth.GetDelta(i) == 0)
                         lbl.ToLine(i);
                     else
-                    {                                
+                    {
                         /*
                          * This edge may be the result of a dimensional collapse,
                          * but it still has different locations on both sides.  The
@@ -347,12 +344,12 @@ namespace NetTopologySuite.Operation.Overlay
             var newEdges = new List<Edge>();
             var edgesToRemove = new List<Edge>();
             var it = _edgeList.GetEnumerator();
-            while (it.MoveNext()) 
+            while (it.MoveNext())
             {
                 var e = it.Current;
-                if (!e.IsCollapsed) 
+                if (!e.IsCollapsed)
                     continue;
-                // edgeList.Remove(it.Current as Edge); 
+                // edgeList.Remove(it.Current as Edge);
                 // Diego Guidi says:
                 // This instruction throws a "System.InvalidOperationException: Collection was modified; enumeration operation may not execute".
                 // i try to not modify edgeList here, and remove all elements at the end of iteration.
@@ -360,8 +357,8 @@ namespace NetTopologySuite.Operation.Overlay
                 newEdges.Add(e.CollapsedEdge);
             }
             // Removing all collapsed edges at the end of iteration.
-            foreach (Edge obj in edgesToRemove)
-                _edgeList.Remove(obj);            
+            foreach (var obj in edgesToRemove)
+                _edgeList.Remove(obj);
             foreach (var obj in newEdges)
                 _edgeList.Add(obj);
         }
@@ -379,7 +376,7 @@ namespace NetTopologySuite.Operation.Overlay
         private void CopyPoints(int argIndex)
         {
             var i = arg[argIndex].GetNodeEnumerator();
-            while (i.MoveNext()) 
+            while (i.MoveNext())
             {
                 var graphNode = i.Current;
                 var newNode = _graph.AddNode(graphNode.Coordinate);
@@ -387,7 +384,7 @@ namespace NetTopologySuite.Operation.Overlay
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Compute initial labelling for all DirectedEdges at each node.
         /// In this step, DirectedEdges will acquire a complete labelling
         /// (i.e. one with labels for both Geometries)
@@ -397,7 +394,7 @@ namespace NetTopologySuite.Operation.Overlay
         private void ComputeLabelling()
         {
             var nodeit = _graph.Nodes.GetEnumerator();
-            while (nodeit.MoveNext()) 
+            while (nodeit.MoveNext())
             {
                 var node = nodeit.Current;
                 node.Edges.ComputeLabelling(arg);
@@ -406,7 +403,7 @@ namespace NetTopologySuite.Operation.Overlay
             UpdateNodeLabelling();
         }
 
-        /// <summary> 
+        /// <summary>
         /// For nodes which have edges from only one Geometry incident on them,
         /// the previous step will have left their dirEdges with no labelling for the other
         /// Geometry.  However, the sym dirEdge may have a labelling for the other
@@ -415,7 +412,7 @@ namespace NetTopologySuite.Operation.Overlay
         private void MergeSymLabels()
         {
             var nodeit = _graph.Nodes.GetEnumerator();
-            while (nodeit.MoveNext()) 
+            while (nodeit.MoveNext())
             {
                 var node = nodeit.Current;
                 ((DirectedEdgeStar) node.Edges).MergeSymLabels();
@@ -429,7 +426,7 @@ namespace NetTopologySuite.Operation.Overlay
             // (Note that a node may have already been labelled
             // because it is a point in one of the input geometries)
             var nodeit = _graph.Nodes.GetEnumerator();
-            while (nodeit.MoveNext()) 
+            while (nodeit.MoveNext())
             {
                 var node = nodeit.Current;
                 var lbl = ((DirectedEdgeStar) node.Edges).Label;
@@ -454,11 +451,11 @@ namespace NetTopologySuite.Operation.Overlay
         {
             //int nodeCount = 0;
             var ni = _graph.Nodes.GetEnumerator();
-            while (ni.MoveNext()) 
+            while (ni.MoveNext())
             {
                 var n = ni.Current;
                 var label = n.Label;
-                if (n.IsIsolated) 
+                if (n.IsIsolated)
                 {
                     //nodeCount++;
                     if (label.IsNull(0))
@@ -471,7 +468,7 @@ namespace NetTopologySuite.Operation.Overlay
             /*
             int nPoly0 = arg[0].getGeometry().getNumGeometries();
             int nPoly1 = arg[1].getGeometry().getNumGeometries();
-            Console.WriteLine("# isolated nodes= " + nodeCount 
+            Console.WriteLine("# isolated nodes= " + nodeCount
                     + "   # poly[0] = " + nPoly0
                     + "   # poly[1] = " + nPoly1);
             */
@@ -500,14 +497,14 @@ namespace NetTopologySuite.Operation.Overlay
         private void FindResultAreaEdges(SpatialFunction opCode)
         {
             var it = _graph.EdgeEnds.GetEnumerator();
-            while (it.MoveNext()) 
+            while (it.MoveNext())
             {
                 var de = (DirectedEdge) it.Current;
                 // mark all dirEdges with the appropriate label
                 var label = de.Label;
                 if (label.IsArea() && !de.IsInteriorAreaEdge &&
-                    IsResultOfOp(label.GetLocation(0, Positions.Right), label.GetLocation(1, Positions.Right), opCode))                 
-                        de.InResult = true;                            
+                    IsResultOfOp(label.GetLocation(0, Positions.Right), label.GetLocation(1, Positions.Right), opCode))
+                        de.InResult = true;
             }
         }
 
@@ -520,7 +517,7 @@ namespace NetTopologySuite.Operation.Overlay
             // remove any dirEdges whose sym is also included
             // (they "cancel each other out")
             var it = _graph.EdgeEnds.GetEnumerator();
-            while (it.MoveNext()) 
+            while (it.MoveNext())
             {
                 var de = (DirectedEdge) it.Current;
                 var sym = de.Sym;
@@ -539,7 +536,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <returns><c>true</c> if the coordinate point is covered by a result Line or Area geometry.</returns>
         public bool IsCoveredByLA(Coordinate coord)
         {
-            if (IsCovered(coord, _resultLineList)) 
+            if (IsCovered(coord, _resultLineList))
                 return true;
             return IsCovered(coord, _resultPolyList);
         }
@@ -560,11 +557,11 @@ namespace NetTopologySuite.Operation.Overlay
         private bool IsCovered(Coordinate coord, IEnumerable<IGeometry> geomList)
         {
             var it = geomList.GetEnumerator();
-            while (it.MoveNext()) 
+            while (it.MoveNext())
             {
                 var geom = it.Current;
                 var loc = _ptLocator.Locate(coord, geom);
-                if (loc != Location.Exterior) 
+                if (loc != Location.Exterior)
                     return true;
             }
             return false;
@@ -581,7 +578,7 @@ namespace NetTopologySuite.Operation.Overlay
 
             if (geomList.Count == 0)
                 return CreateEmptyResult(opCode, arg[0].Geometry, arg[1].Geometry, _geomFact);
-            
+
             // build the most specific point possible
             return _geomFact.BuildGeometry(geomList);
         }
@@ -589,7 +586,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <summary>
         /// Creates an empty result geometry of the appropriate dimension,
         /// based on the given overlay operation and the dimensions of the inputs.
-        /// The created geometry is always an atomic geometry, 
+        /// The created geometry is always an atomic geometry,
         /// not a collection.
         /// <para/>
         /// The empty result is constructed using the following rules:
@@ -612,16 +609,16 @@ namespace NetTopologySuite.Operation.Overlay
             switch (ResultDimension(overlayOpCode, a, b))
             {
                 case Dimension.False:
-                    result = geomFact.CreateGeometryCollection(new IGeometry[0]);
+                    result = geomFact.CreateGeometryCollection();
                     break;
                 case Dimension.Point:
-                    result = geomFact.CreatePoint((Coordinate)null);
+                    result = geomFact.CreatePoint();
                     break;
                 case Dimension.Curve:
-                    result = geomFact.CreateLineString((Coordinate[])null);
+                    result = geomFact.CreateLineString();
                     break;
                 case Dimension.Surface:
-                    result = geomFact.CreatePolygon(null, null);
+                    result = geomFact.CreatePolygon();
                     break;
             }
             return result;
@@ -629,10 +626,10 @@ namespace NetTopologySuite.Operation.Overlay
 
         private static Dimension ResultDimension(SpatialFunction opCode, IGeometry g0, IGeometry g1)
         {
-            var dim0 = (int)g0.Dimension;
-            var dim1 = (int)g1.Dimension;
+            int dim0 = (int)g0.Dimension;
+            int dim1 = (int)g1.Dimension;
 
-            var resultDimension = -1;
+            int resultDimension = -1;
             switch (opCode)
             {
                 case SpatialFunction.Intersection:

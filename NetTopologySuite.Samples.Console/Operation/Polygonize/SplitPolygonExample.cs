@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using GeoAPI.Geometries;
-using GeoAPI.Geometries.Prepared;
-using NetTopologySuite.Densify;
 using NUnit.Framework;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Polygonize;
-using NetTopologySuite.Tests.NUnit.Operation.Distance3d;
-using Matrix = System.Drawing.Drawing2D.Matrix;
 
 namespace NetTopologySuite.Samples.Operation.Poligonize
 {
@@ -21,10 +14,10 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
      * based on
      * http://blog.opengeo.org/2012/06/21/splitpolygon-wps-process-p1/
      * http://blog.opengeo.org/2012/07/24/splitpolygon-wps-process-p2/
-     * 
+     *
      * and
      * https://github.com/mdavisog/wps-splitpoly
-     * 
+     *
      * and of course
      * http://sourceforge.net/mailarchive/forum.php?thread_name=CAK2ens3FY3qMT915_LoRiz6uqyww156swONSWRRaXc0anrxREg%40mail.gmail.com&forum_name=jts-topo-suite-user
      */
@@ -38,7 +31,7 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
 
             // only keep polygons which are inside the input
             var output = new List<IGeometry>();
-            for (var i = 0; i < polygons.NumGeometries; i++)
+            for (int i = 0; i < polygons.NumGeometries; i++)
             {
                 var candpoly = (IPolygon)polygons.GetGeometryN(i);
                 if (polygon.Contains(candpoly.InteriorPoint))
@@ -89,15 +82,15 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
             var clipPolygon = (IGeometry) clipPolygonal;
             var nodedLinework = polygon.Boundary.Union(clipPolygon.Boundary);
             var polygons = Polygonize(nodedLinework);
-            
+
             /*
             // Build a prepared clipPolygon
             var prepClipPolygon = NetTopologySuite.Geometries.Prepared.PreparedGeometryFactory.Prepare(clipPolygon);
                 */
-            
+
             // only keep polygons which are inside the input
             var output = new List<IGeometry>();
-            for (var i = 0; i < polygons.NumGeometries; i++)
+            for (int i = 0; i < polygons.NumGeometries; i++)
             {
                 var candpoly = (IPolygon) polygons.GetGeometryN(i);
                 var interiorPoint = candpoly.InteriorPoint;
@@ -112,7 +105,6 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
                 */
             return polygon.Factory.BuildGeometry(output);
         }
-
 
         [STAThread]
         public static void Main(string[] args)
@@ -146,7 +138,7 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
             var reader = new WKTReader();
             var polygon = reader.Read("POLYGON((0 0, 0 100, 100 100, 100 0, 0 0), (10 10, 90 10, 90 90, 10 90, 10 10))");
 
-            var lineWkts = new[]
+            string[] lineWkts = new[]
             {
                 "MULTILINESTRING((50 -10, 50 20),(50 110, 50 80))",
                 "LINESTRING(50 20, 50 -10, 110 -10, 110 110, 50 110, 50 80)",
@@ -158,7 +150,7 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
                 "LINESTRING(5 -10, 5 110, 110 50)"
             };
 
-            foreach (var lineWkt in lineWkts)
+            foreach (string lineWkt in lineWkts)
                 DoSplitTest(polygon, lineWkt);
 
         }
@@ -168,13 +160,13 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
             var reader = new WKTReader();
             var polygon = reader.Read("POLYGON((0 0, 0 100, 100 100, 100 0, 0 0), (10 10, 90 10, 90 90, 10 90, 10 10))");
 
-            var clipPolygonWkts = new[]
+            string[] clipPolygonWkts = new[]
                                {
                                    "POLYGON((-10 45, 110 45, 110 55, -10 55, -10 45))",
                                };
 
             Console.WriteLine(string.Format("Clipping\n{0}", polygon));
-            foreach (var lineWkt in clipPolygonWkts)
+            foreach (string lineWkt in clipPolygonWkts)
             {
                 var polygonal = (IPolygonal)reader.Read(lineWkt);
                 Console.WriteLine(string.Format("\nwith\n{0}", lineWkt));
@@ -231,45 +223,44 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
         }
         private static void ToImage(IGeometry geom1, IGeometry geom2, IGeometry geom3)
         {
-            var gpw = new Windows.Forms.GraphicsPathWriter();
+            //var gpw = new Windows.Forms.GraphicsPathWriter();
 
-            var extent = geom1.EnvelopeInternal;
-            if (geom2 != null)
-                extent.ExpandToInclude(geom2.EnvelopeInternal);
-            extent.ExpandBy(0.05 * extent.Width);
+            //var extent = geom1.EnvelopeInternal;
+            //if (geom2 != null)
+            //    extent.ExpandToInclude(geom2.EnvelopeInternal);
+            //extent.ExpandBy(0.05 * extent.Width);
 
-            using (var img = new Bitmap(2 * ImageWidth, ImageHeight))
-            {
-                using (var gr = Graphics.FromImage(img))
-                {
-                    var at = CreateAffineTransformation(extent);
-                    gr.Clear(Color.WhiteSmoke);
-                    gr.SmoothingMode = SmoothingMode.AntiAlias;
-                    //gr.Transform = CreateTransform(extent);
+            //using (var img = new Bitmap(2 * ImageWidth, ImageHeight))
+            //{
+            //    using (var gr = Graphics.FromImage(img))
+            //    {
+            //        var at = CreateAffineTransformation(extent);
+            //        gr.Clear(Color.WhiteSmoke);
+            //        gr.SmoothingMode = SmoothingMode.AntiAlias;
+            //        //gr.Transform = CreateTransform(extent);
 
-                    var gp1 = gpw.ToShape(at.Transform(geom1));
-                    if (geom1 is IPolygonal)
-                        gr.FillPath(Brushes.CornflowerBlue, gp1);
-                    gr.DrawPath(Pens.Blue, gp1);
+            //        var gp1 = gpw.ToShape(at.Transform(geom1));
+            //        if (geom1 is IPolygonal)
+            //            gr.FillPath(Brushes.CornflowerBlue, gp1);
+            //        gr.DrawPath(Pens.Blue, gp1);
 
-                    var gp2 = gpw.ToShape(at.Transform(geom2));
-                    if (geom2 is IPolygonal)
-                        gr.FillPath(Brushes.OrangeRed, gp2);
-                    gr.DrawPath(Pens.IndianRed, gp2);
+            //        var gp2 = gpw.ToShape(at.Transform(geom2));
+            //        if (geom2 is IPolygonal)
+            //            gr.FillPath(Brushes.OrangeRed, gp2);
+            //        gr.DrawPath(Pens.IndianRed, gp2);
 
-                    at = CreateAffineTransformation(extent, ImageWidth);
+            //        at = CreateAffineTransformation(extent, ImageWidth);
 
-                    var gp3 = gpw.ToShape(at.Transform(geom3));
-                    if (geom3 is IPolygonal)
-                        gr.FillPath(Brushes.Orange, gp3);
-                    gr.DrawPath(Pens.Peru, gp3);
+            //        var gp3 = gpw.ToShape(at.Transform(geom3));
+            //        if (geom3 is IPolygonal)
+            //            gr.FillPath(Brushes.Orange, gp3);
+            //        gr.DrawPath(Pens.Peru, gp3);
 
-
-                }
-                var path = System.IO.Path.ChangeExtension(System.IO.Path.GetTempFileName(), "png");
-                img.Save(path, ImageFormat.Png);
-                Console.WriteLine("Image written to {0}", new Uri(path).AbsoluteUri);
-            }
+            //    }
+            //    var path = System.IO.Path.ChangeExtension(System.IO.Path.GetTempFileName(), "png");
+            //    img.Save(path, ImageFormat.Png);
+            //    Console.WriteLine("Image written to {0}", new Uri(path).AbsoluteUri);
+            //}
         }
 
         private const int ImageHeight = 320;
@@ -277,16 +268,16 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
 
         private static AffineTransformation CreateAffineTransformation(Envelope env, int offsetX = 0)
         {
-            var imageRatio = ImageWidth/ImageHeight;
-            var ratio = env.Width/env.Height;
+            int imageRatio = ImageWidth/ImageHeight;
+            double ratio = env.Width/env.Height;
             if (ratio > imageRatio)
             {
-                var growHeight = (env.Width/imageRatio - env.Height)/2;
+                double growHeight = (env.Width/imageRatio - env.Height)/2;
                 env.ExpandBy(0, growHeight);
             }
             else if (ratio < imageRatio)
             {
-                var growWidth = (env.Height*imageRatio - env.Width)/2;
+                double growWidth = (env.Height*imageRatio - env.Width)/2;
                 env.ExpandBy(growWidth, 0);
             }
 

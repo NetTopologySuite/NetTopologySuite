@@ -12,7 +12,7 @@ namespace NetTopologySuite.Planargraph
     /// may not have a reference to a parent Edge (some applications of
     /// planar graphs may not require explicit Edge objects to be created). Usually
     /// a client using a <c>PlanarGraph</c> will subclass <c>DirectedEdge</c>
-    /// to add its own application-specific data and methods.    
+    /// to add its own application-specific data and methods.
     /// </summary>
     public class DirectedEdge : GraphComponent, IComparable
     {
@@ -24,17 +24,17 @@ namespace NetTopologySuite.Planargraph
         /// <returns></returns>
         public static IList<Edge> ToEdges(IList<DirectedEdge> dirEdges)
         {
-            IList<Edge> edges = new List<Edge>();
-            foreach (DirectedEdge directedEdge in dirEdges)
+            var edges = new List<Edge>();
+            foreach (var directedEdge in dirEdges)
                 edges.Add(directedEdge.parentEdge);
             return edges;
         }
-        
+
         protected Edge parentEdge;
-        
-        protected Node from;        
+
+        protected Node from;
         protected Node to;
-        
+
         protected Coordinate p0;
         protected Coordinate p1;
 
@@ -77,28 +77,21 @@ namespace NetTopologySuite.Planargraph
         /// </summary>
         public Edge Edge
         {
-            get { return parentEdge; }
-            set { parentEdge = value; }
-
+            get => parentEdge;
+            set => parentEdge = value;
         }
 
         /// <summary>
         /// Returns 0, 1, 2, or 3, indicating the quadrant in which this DirectedEdge's
         /// orientation lies.
         /// </summary>
-        public int Quadrant
-        {
-            get { return _quadrant; }
-        }
+        public int Quadrant => _quadrant;
 
         /// <summary>
         /// Returns a point to which an imaginary line is drawn from the from-node to
         /// specify this DirectedEdge's orientation.
         /// </summary>
-        public Coordinate DirectionPt
-        {
-            get { return p1; }
-        }
+        public Coordinate DirectionPt => p1;
 
         /// <summary>
         /// Returns whether the direction of the parent Edge (if any) is the same as that
@@ -109,35 +102,23 @@ namespace NetTopologySuite.Planargraph
         /// <summary>
         /// Returns the node from which this DirectedEdge leaves.
         /// </summary>
-        public Node FromNode
-        {
-            get { return from; }
-        }
+        public Node FromNode => from;
 
         /// <summary>
         /// Returns the node to which this DirectedEdge goes.
         /// </summary>
-        public Node ToNode
-        {
-            get { return to; }
-        }
+        public Node ToNode => to;
 
         /// <summary>
         /// Returns the coordinate of the from-node.
         /// </summary>
-        public Coordinate Coordinate
-        {
-            get { return from.Coordinate; }
-        }
+        public Coordinate Coordinate => from.Coordinate;
 
         /// <summary>
         /// Returns the angle that the start of this DirectedEdge makes with the
         /// positive x-axis, in radians.
         /// </summary>
-        public double Angle
-        {
-            get { return _angle; }
-        }
+        public double Angle => _angle;
 
         /// <summary>
         /// Returns the symmetric DirectedEdge -- the other DirectedEdge associated with
@@ -147,8 +128,8 @@ namespace NetTopologySuite.Planargraph
         /// </summary>
         public DirectedEdge Sym
         {
-            get { return _sym;  }
-            set { _sym = value; }
+            get => _sym;
+            set => _sym = value;
         }
 
         /// <summary>
@@ -165,9 +146,9 @@ namespace NetTopologySuite.Planargraph
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public int CompareTo(Object obj)
+        public int CompareTo(object obj)
         {
-            DirectedEdge de = (DirectedEdge) obj;
+            var de = (DirectedEdge) obj;
             return CompareDirection(de);
         }
 
@@ -190,11 +171,11 @@ namespace NetTopologySuite.Planargraph
             // if the rays are in different quadrants, determining the ordering is trivial
             if (_quadrant > e.Quadrant)
                 return 1;
-            if (_quadrant < e.Quadrant) 
+            if (_quadrant < e.Quadrant)
                 return -1;
             // vectors are in the same quadrant - check relative orientation of direction vectors
             // this is > e if it is CCW of e
-            return CGAlgorithms.ComputeOrientation(e.p0, e.p1, p1);            
+            return (int)Orientation.Index(e.p0, e.p1, p1);
         }
 
         /// <summary>
@@ -213,10 +194,7 @@ namespace NetTopologySuite.Planargraph
         /// Tests whether this component has been removed from its containing graph.
         /// </summary>
         /// <value></value>
-        public override bool IsRemoved
-        {
-            get { return parentEdge == null; }
-        }
+        public override bool IsRemoved => parentEdge == null;
 
         /// <summary>
         /// Removes this directed edge from its containing graph.
@@ -227,8 +205,9 @@ namespace NetTopologySuite.Planargraph
             parentEdge = null;
         }
 
+        /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
-        {            
+        {
             return "DirectedEdge: " + p0 + " - " + p1 + " " + _quadrant + ":" + _angle;
         }
     }

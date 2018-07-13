@@ -3,7 +3,7 @@
 
 <case>
 <desc>Robustness issue when validating polygon with nearly parallel edges separated by small distance
-(self-intersection).  
+(self-intersection).
 Fixed by extended-precision determinant.
 http://trac.osgeo.org/geos/ticket/588
 </desc>

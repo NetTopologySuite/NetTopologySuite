@@ -1,7 +1,7 @@
 ﻿//namespace NetTopologySuite.Tests.XUnit
 //{
 //    using System;
-    
+
 //    [Obsolete("XML tests from old JTS versions")]
 //    public abstract class VividXUnitRunner : XUnitRunner
 //    {
@@ -28,7 +28,7 @@
 //    }
 
 //    public class TestConvexHull : VividXUnitRunner
-//    { 
+//    {
 //        public TestConvexHull() : base("TestConvexHull.xml") { }
 //    }
 
@@ -42,7 +42,6 @@
 //        public TestFunctionAAPrec() : base("TestFunctionAAPrec.xml") { }
 //    }
 
-
 //    public class TestFunctionLA : VividXUnitRunner
 //    {
 //        public TestFunctionLA() : base("TestFunctionLA.xml") { }
@@ -52,7 +51,6 @@
 //    {
 //        public TestFunctionLAPrec() : base("TestFunctionLAPrec.xml") { }
 //    }
-
 
 //    public class TestFunctionLL : VividXUnitRunner
 //    {
@@ -86,7 +84,7 @@
 
 //    public class TestInteriorPoint : VividXUnitRunner
 //    {
-//        public TestInteriorPoint() : base("TestInteriorPoint.xml") { } 
+//        public TestInteriorPoint() : base("TestInteriorPoint.xml") { }
 //    }
 
 //    public class TestRectanglePredicate : VividXUnitRunner
@@ -124,8 +122,8 @@
 //        public TestRelatePA() : base("TestRelatePA.xml") { }
 //    }
 
-//    public class TestRelatePL : VividXUnitRunner 
-//    { 
+//    public class TestRelatePL : VividXUnitRunner
+//    {
 //        public TestRelatePL() : base("TestRelatePL.xml") { }
 //    }
 

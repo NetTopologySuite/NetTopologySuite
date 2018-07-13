@@ -20,12 +20,12 @@
 
         protected XUnitRunner(string testFile)
         {
-            this.TestFile = testFile;
+            this.TestFile = Path.Combine(testFile.Split('\\'));
         }
 
         protected string TestFile { get; set; }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void FixtureSetUp()
         {
         }
@@ -39,14 +39,11 @@
             }
         }
 
-        public Int32 Count
-        {
-            get { return this.Tests.Count; }
-        }
+        public int Count => this.Tests.Count;
 
         protected XmlTestCollection LoadTests()
         {
-            return this._controller.Load(Path.Combine(this.TestLocation, this.TestFile));
+            return this._controller.Load(Path.Combine(Path.Combine(this.TestLocation.Split('\\', StringSplitOptions.RemoveEmptyEntries)), this.TestFile));
         }
 
         [Test]
@@ -56,7 +53,7 @@
                 this.TestAll();
         }
 
-        [Test]
+        [Test, Category("FailureCase")]
         public virtual void Test00()
         {
             this.ExecuteTest(0);
@@ -92,7 +89,7 @@
             this.ExecuteTest(5);
         }
 
-        [Test]
+        [Test, Category("FailureCase")]
         public virtual void Test06()
         {
             this.ExecuteTest(6);
@@ -187,19 +184,19 @@
             if (i >= this.Count)
                 return new TestResults("i > Count", true);
 
-            XmlTest test = this.Tests[i];
-            var b = test.RunTest();
+            var test = this.Tests[i];
+            bool b = test.RunTest();
             return new TestResults(test.Description, b);
         }
 
         protected virtual void TestAll()
-        {            
+        {
             bool success = true;
             for (int i = 0; i < this.Count; i++)
             {
                 try
                 {
-                    TestResults result = this.ExecuteTest(i);
+                    var result = this.ExecuteTest(i);
                     if (result.Success)
                     {
                         Console.WriteLine("Test {0} success\n{1}", i, result.Description);
@@ -213,7 +210,7 @@
                 {
                     Console.WriteLine("Test {0} thrown exception\n{1}", i, ex.Message);
                     success = false;
-                }                
+                }
             }
             Assert.True(success, "Fixture failed");
         }

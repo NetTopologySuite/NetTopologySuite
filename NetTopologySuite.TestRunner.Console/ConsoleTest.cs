@@ -1,14 +1,15 @@
 using System;
 using System.IO;
+using System.Reflection;
 using Open.Topology.TestRunner;
 
 namespace ConsoleTestRunner
 {
-	/// <summary>
-	/// Summary description for ConsoleTest.
-	/// </summary>
+    /// <summary>
+    /// Summary description for ConsoleTest.
+    /// </summary>
     class ConsoleTest
-    {        
+    {
         static void PrintMenu()
         {
             Console.WriteLine("\n\n**\n**\n** Interactive Test Instructions \n**\n**\n**\n");
@@ -24,11 +25,11 @@ namespace ConsoleTestRunner
 
         static void RunInteractive(XmlTestType filter, bool verbose)
         {
-            string fileName = String.Empty;
+            string fileName = string.Empty;
 
-            XmlTestController controller = new XmlTestController();
+            var controller = new XmlTestController();
 
-            TestRunner runner = new TestRunner(filter, verbose);
+            var runner = new TestRunner(filter, verbose);
 
             PrintMenu();
 
@@ -70,7 +71,7 @@ namespace ConsoleTestRunner
                 catch (Exception ex)
                 {
                     XmlTestExceptionManager.Publish(ex);
-                } 
+                }
 
                 if (listTests != null && listTests.Count > 0)
                 {
@@ -100,7 +101,7 @@ namespace ConsoleTestRunner
 
         static void OnErrorEvent(object sender, XmlTestErrorEventArgs args)
         {
-            Exception ex = args.Thrown;
+            var ex = args.Thrown;
 
             if (ex != null)
             {
@@ -114,27 +115,27 @@ namespace ConsoleTestRunner
 
         static void RunDefault()
         {
-            TestOptionsParser parserOptions = new TestOptionsParser();
-            TestInfoCollection listTests =
+            var parserOptions = new TestOptionsParser();
+            var listTests =
                 parserOptions.ParseProject(@"..\..\..\NetTopologySuite.TestRunner.Tests\Default.xml");
-            
+
             if (listTests != null && listTests.Count > 0)
             {
-                TestRunner runner = new TestRunner(listTests);
+                var runner = new TestRunner(listTests);
                 runner.Run();
                 runner.PrintResult();
-            }   
+            }
         }
 
         static void RunOther()
         {
-            TestOptionsParser parserOptions = new TestOptionsParser();
-            TestInfoCollection listTests =
+            var parserOptions = new TestOptionsParser();
+            var listTests =
                 parserOptions.ParseProject(@"..\..\..\NetTopologySuite.TestRunner.Tests\Other.xml");
 
             if (listTests != null && listTests.Count > 0)
             {
-                TestRunner runner = new TestRunner(listTests);
+                var runner = new TestRunner(listTests);
                 runner.Run();
                 runner.PrintResult();
             }
@@ -146,6 +147,11 @@ namespace ConsoleTestRunner
         [STAThread]
         static void Main(string[] args)
         {
+            // paths *to* the XML files, as well as paths *in* the XML files,
+            // assume that we're running from the app's directory; apparently,
+            // the VS2017 / new-style SDK changes did something to make that
+            // no longer guaranteed to be the case at startup.
+            Environment.CurrentDirectory = new FileInfo(Assembly.GetEntryAssembly().Location).Directory.FullName;
             if (args == null || args.Length == 0)
             {
                 XmlTestExceptionManager.ErrorEvent += new XmlTestErrorEventHandler(OnErrorEvent);
@@ -153,8 +159,8 @@ namespace ConsoleTestRunner
             }
             else
             {
-                TestOptionsParser parser = new TestOptionsParser();
-                TestInfoCollection collection = parser.Parse(args);
+                var parser = new TestOptionsParser();
+                var collection = parser.Parse(args);
 
                 if (parser.IsDefault)
                 {
@@ -167,7 +173,7 @@ namespace ConsoleTestRunner
                         if (collection.Count == 1)
                         {
                             // see if it is the interactive type
-                            TestInfo info = collection[0];
+                            var info = collection[0];
                             if (info.Interactive)
                             {
                                 if (info.Exception)
@@ -177,7 +183,7 @@ namespace ConsoleTestRunner
                         }
                         else
                         {
-                            TestRunner runner = new TestRunner(collection);
+                            var runner = new TestRunner(collection);
                             runner.Run();
                         }
                     }

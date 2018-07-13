@@ -10,24 +10,24 @@ namespace NetTopologySuite.GeometriesGraph.Index
     /// This algorithm is too slow for production use, but is useful for testing purposes.
     /// </summary>
     public class SimpleEdgeSetIntersector : EdgeSetIntersector
-    {        
+    {
         /*
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public SimpleEdgeSetIntersector() { }
         */
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edges"></param>
         /// <param name="si"></param>
         /// <param name="testAllSegments"></param>
         public override void ComputeIntersections(IList<Edge> edges, SegmentIntersector si, bool testAllSegments)
         {
-            foreach (Edge edge0 in edges)
+            foreach (var edge0 in edges)
             {
-                foreach (Edge edge1 in edges)
+                foreach (var edge1 in edges)
                 {
                     if (testAllSegments || edge0 != edge1)
                         ComputeIntersects(edge0, edge1, si);
@@ -36,16 +36,16 @@ namespace NetTopologySuite.GeometriesGraph.Index
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="edges0"></param>
         /// <param name="edges1"></param>
         /// <param name="si"></param>
         public override void ComputeIntersections(IList<Edge> edges0, IList<Edge> edges1, SegmentIntersector si)
         {
-            foreach (Edge edge0 in edges0)
+            foreach (var edge0 in edges0)
             {
-                foreach (Edge edge1 in edges1)
+                foreach (var edge1 in edges1)
                     ComputeIntersects(edge0, edge1, si);
             }
         }
@@ -60,11 +60,11 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <param name="si"></param>
         private static void ComputeIntersects(Edge e0, Edge e1, SegmentIntersector si)
         {
-            Coordinate[] pts0 = e0.Coordinates;
-            Coordinate[] pts1 = e1.Coordinates;
-            for (int i0 = 0; i0 < pts0.Length - 1; i0++) 
-                for (int i1 = 0; i1 < pts1.Length - 1; i1++)             
-                    si.AddIntersections(e0, i0, e1, i1);            
+            var pts0 = e0.Coordinates;
+            var pts1 = e1.Coordinates;
+            for (int i0 = 0; i0 < pts0.Length - 1; i0++)
+                for (int i1 = 0; i1 < pts1.Length - 1; i1++)
+                    si.AddIntersections(e0, i0, e1, i1);
         }
     }
 }

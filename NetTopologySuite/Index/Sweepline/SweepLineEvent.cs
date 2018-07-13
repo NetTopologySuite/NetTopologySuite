@@ -3,23 +3,23 @@ using System;
 namespace NetTopologySuite.Index.Sweepline
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public enum SweepLineEvents
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Insert = 1,
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Delete = 2,
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class SweepLineEvent : IComparable
     {
@@ -30,7 +30,7 @@ namespace NetTopologySuite.Index.Sweepline
         private readonly SweepLineInterval sweepInt;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="x"></param>
         /// <param name="insertEvent"></param>
@@ -38,7 +38,7 @@ namespace NetTopologySuite.Index.Sweepline
         public SweepLineEvent(double x, SweepLineEvent insertEvent, SweepLineInterval sweepInt)
         {
             xValue = x;
-            this.insertEvent = insertEvent;            
+            this.insertEvent = insertEvent;
             if (insertEvent != null)
                  eventType = SweepLineEvents.Delete;
             else eventType = SweepLineEvents.Insert;
@@ -46,53 +46,29 @@ namespace NetTopologySuite.Index.Sweepline
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public bool IsInsert
-        {
-            get
-            {
-                return insertEvent == null;
-            }
-        }
+        public bool IsInsert => insertEvent == null;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public bool IsDelete
-        {
-            get
-            {
-                return insertEvent != null;
-            }
-        }
+        public bool IsDelete => insertEvent != null;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public SweepLineEvent InsertEvent
-        {
-            get
-            {
-                return insertEvent;
-            }
-        }
+        public SweepLineEvent InsertEvent => insertEvent;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int DeleteEventIndex { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public SweepLineInterval Interval
-        {
-            get
-            {
-                return sweepInt;
-            }
-        }
+        public SweepLineInterval Interval => sweepInt;
 
         /// <summary>
         /// ProjectionEvents are ordered first by their x-value, and then by their eventType.
@@ -101,9 +77,9 @@ namespace NetTopologySuite.Index.Sweepline
         /// correctly handled.
         /// </summary>
         /// <param name="o"></param>
-        public int CompareTo(object o) 
+        public int CompareTo(object o)
         {
-            SweepLineEvent pe = (SweepLineEvent) o;
+            var pe = (SweepLineEvent) o;
             if (xValue < pe.xValue) return  -1;
             if (xValue > pe.xValue) return   1;
             if (eventType < pe.eventType) return  -1;

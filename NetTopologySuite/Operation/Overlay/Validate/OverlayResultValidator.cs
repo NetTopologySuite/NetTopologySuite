@@ -25,7 +25,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
     {
         public static bool IsValid(IGeometry a, IGeometry b, SpatialFunction overlayOp, IGeometry result)
         {
-            OverlayResultValidator validator = new OverlayResultValidator(a, b, result);
+            var validator = new OverlayResultValidator(a, b, result);
             return validator.IsValid(overlayOp);
         }
 
@@ -45,12 +45,11 @@ namespace NetTopologySuite.Operation.Overlay.Validate
 
         private Coordinate _invalidLocation;
 
-
         public OverlayResultValidator(IGeometry a, IGeometry b, IGeometry result)
         {
             /*
              * The tolerance to use needs to depend on the size of the geometries.
-             * It should not be more precise than double-precision can support. 
+             * It should not be more precise than double-precision can support.
              */
             _boundaryDistanceTolerance = ComputeBoundaryDistanceTolerance(a, b);
             _geom = new[] {a, b, result};
@@ -81,14 +80,11 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             return isValid;
         }
 
-        public Coordinate InvalidLocation
-        {
-            get { return _invalidLocation; }
-        }
+        public Coordinate InvalidLocation => _invalidLocation;
 
         private void AddTestPts(IGeometry g)
         {
-            OffsetPointGenerator ptGen = new OffsetPointGenerator(g);
+            var ptGen = new OffsetPointGenerator(g);
             _testCoords.AddRange(ptGen.GetPoints(5 * _boundaryDistanceTolerance));
         }
 
@@ -96,7 +92,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         {
             for (int i = 0; i < _testCoords.Count; i++)
             {
-                Coordinate pt = _testCoords[i];
+                var pt = _testCoords[i];
                 if (!CheckValid(overlayOp, pt))
                 {
                     _invalidLocation = pt;
@@ -146,16 +142,14 @@ namespace NetTopologySuite.Operation.Overlay.Validate
 
         private static void ReportResult(SpatialFunction overlayOp, Location[] location, bool expectedInterior)
         {
-#if !PCL
 // ReSharper disable RedundantStringFormatCall
             // String.Format needed to build 2.0 release!
-            Debug.WriteLine(String.Format("{0}:" + " A:{1} B:{2} expected:{3} actual:{4}", 
+            Debug.WriteLine(string.Format("{0}:" + " A:{1} B:{2} expected:{3} actual:{4}",
                 overlayOp,
-                LocationUtility.ToLocationSymbol(location[0]), 
-                LocationUtility.ToLocationSymbol(location[1]), expectedInterior ? 'i' : 'e', 
+                LocationUtility.ToLocationSymbol(location[0]),
+                LocationUtility.ToLocationSymbol(location[1]), expectedInterior ? 'i' : 'e',
                 LocationUtility.ToLocationSymbol(location[2])));
 // ReSharper restore RedundantStringFormatCall
-#endif
         }
     }
 }

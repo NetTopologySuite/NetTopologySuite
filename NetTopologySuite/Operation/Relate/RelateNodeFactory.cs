@@ -9,7 +9,7 @@ namespace NetTopologySuite.Operation.Relate
     public class RelateNodeFactory : NodeFactory
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>

@@ -7,16 +7,16 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
     /// <summary>
-    /// Models a triangle formed from <see cref="QuadEdge"/>s in a <see cref="QuadEdgeSubdivision"/> 
+    /// Models a triangle formed from <see cref="QuadEdge"/>s in a <see cref="QuadEdgeSubdivision"/>
     /// which forms a triangulation. The class provides methods to access the
-    /// topological and geometric properties of the triangle and its neighbours in 
-    /// the triangulation. Triangle vertices are ordered in CCW orientation in the 
+    /// topological and geometric properties of the triangle and its neighbours in
+    /// the triangulation. Triangle vertices are ordered in CCW orientation in the
     /// structure.
     /// </summary>
     /// <remarks>
     /// QuadEdgeTriangles support having an external data attribute attached to them.
-    /// Alternatively, this class can be subclassed and attributes can 
-    /// be defined in the subclass.  Subclasses will need to define 
+    /// Alternatively, this class can be subclassed and attributes can
+    /// be defined in the subclass.  Subclasses will need to define
     /// their own <c>BuilderVisitor</c> class
     /// and <c>CreateOn</c> method.
     /// </remarks>
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                                tri[2].Coordinate,
                                tri[0].Coordinate
                            };
-            return CGAlgorithms.IsPointInRing(pt, ring);
+            return PointLocation.IsInRing(pt, ring);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                                tri[2].Orig.Coordinate,
                                tri[0].Orig.Coordinate
                            };
-            return CGAlgorithms.IsPointInRing(pt, ring);
+            return PointLocation.IsInRing(pt, ring);
         }
 
         public static IGeometry ToPolygon(Vertex[] v)
@@ -87,7 +87,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                               };
             var fact = new GeometryFactory();
             var ring = fact.CreateLinearRing(ringPts);
-            var tri = fact.CreatePolygon(ring, null);
+            var tri = fact.CreatePolygon(ring);
             return tri;
         }
 
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                               };
             var fact = new GeometryFactory();
             var ring = fact.CreateLinearRing(ringPts);
-            var tri = fact.CreatePolygon(ring, null);
+            var tri = fact.CreatePolygon(ring);
             return tri;
         }
 
@@ -125,12 +125,20 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="edge">An array of the edges of the triangle in CCW order</param>
         public QuadEdgeTriangle(QuadEdge[] edge)
         {
-            _edge = (QuadEdge[]) edge.Clone();
+            _edge = CopyOf(edge);
             // link the quadedges back to this triangle
             for (int i = 0; i < 3; i++)
             {
                 edge[i].Data = this;
             }
+        }
+
+        private static QuadEdge[] CopyOf(QuadEdge[] edge)
+        {
+            var res = new QuadEdge[edge.Length];
+            for (int i = 0; i < edge.Length; i++)
+                res[i] = edge[i];
+            return res;
         }
 
         /// <summary>
@@ -237,17 +245,18 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public bool Contains(Coordinate pt)
         {
             var ring = GetCoordinates();
-            return CGAlgorithms.IsPointInRing(pt, ring);
+            return PointLocation.IsInRing(pt, ring);
         }
 
         public IGeometry GetGeometry(GeometryFactory fact)
         {
             var ring = fact.CreateLinearRing(GetCoordinates());
-            var tri = fact.CreatePolygon(ring, null);
+            var tri = fact.CreatePolygon(ring);
             return tri;
         }
 
-        public override String ToString()
+        /// <inheritdoc cref="object.ToString()"/>
+        public override string ToString()
         {
             return GetGeometry(new GeometryFactory()).ToString();
         }
@@ -282,7 +291,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <summary>
-        /// Gets the triangles which are adjacent (include) to a 
+        /// Gets the triangles which are adjacent (include) to a
         /// given vertex of this triangle.
         /// </summary>
         /// <param name="vertexIndex">The vertex to query</param>
@@ -292,8 +301,8 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             // Assert: isVertex
             var adjTris = new List<QuadEdgeTriangle>();
 
-            QuadEdge start = GetEdge(vertexIndex);
-            QuadEdge qe = start;
+            var start = GetEdge(vertexIndex);
+            var qe = start;
             do
             {
                 var adjTri = (QuadEdgeTriangle) qe.Data;

@@ -1,5 +1,6 @@
 ﻿using System;
 using GeoAPI.Geometries;
+using NetTopologySuite.Algorithm;
 
 namespace NetTopologySuite.Geometries
 {
@@ -9,8 +10,8 @@ namespace NetTopologySuite.Geometries
     public class OgcCompliantGeometryFactory : GeometryFactory
     {
         /// <summary>
-        /// Creates an instance of this class using the default 
-        /// values for <see cref="GeometryFactory.SRID"/>, 
+        /// Creates an instance of this class using the default
+        /// values for <see cref="GeometryFactory.SRID"/>,
         /// <see cref="GeometryFactory.PrecisionModel"/> and
         /// <see cref="GeometryFactory.CoordinateSequenceFactory"/>.
         /// </summary>
@@ -18,17 +19,17 @@ namespace NetTopologySuite.Geometries
         {}
 
         /// <summary>
-        /// Creates an instance of this class using the default 
-        /// values for <see cref="GeometryFactory.SRID"/>, 
-        /// <see cref="GeometryFactory.PrecisionModel"/>, 
+        /// Creates an instance of this class using the default
+        /// values for <see cref="GeometryFactory.SRID"/>,
+        /// <see cref="GeometryFactory.PrecisionModel"/>,
         /// but the specified <paramref name="factory"/>.
         /// </summary>
         public OgcCompliantGeometryFactory(ICoordinateSequenceFactory factory)
             : base(factory)
         { }
 
-        /// Creates an instance of this class using the default 
-        /// values for <see cref="GeometryFactory.SRID"/>, 
+        /// Creates an instance of this class using the default
+        /// values for <see cref="GeometryFactory.SRID"/>,
         /// <see cref="GeometryFactory.CoordinateSequenceFactory"/> but the
         /// specified <paramref name="pm"/>.
         public OgcCompliantGeometryFactory(IPrecisionModel pm)
@@ -51,14 +52,14 @@ namespace NetTopologySuite.Geometries
 
         private ILinearRing CreateLinearRing(Coordinate[] coordinates, bool ccw)
         {
-            if (coordinates != null && Algorithm.CGAlgorithms.IsCCW(coordinates) != ccw) 
+            if (coordinates != null && Orientation.IsCCW(coordinates) != ccw)
                 Array.Reverse(coordinates);
             return CreateLinearRing(coordinates);
         }
 
         private ILinearRing CreateLinearRing(ICoordinateSequence coordinates, bool ccw)
         {
-            if (coordinates != null && Algorithm.CGAlgorithms.IsCCW(coordinates) != ccw)
+            if (coordinates != null && Orientation.IsCCW(coordinates) != ccw)
             {
                 //CoordinateSequences.Reverse(coordinates);
                 coordinates = coordinates.Reversed();
@@ -82,7 +83,7 @@ namespace NetTopologySuite.Geometries
             if (envelope.MinX == envelope.MaxX
                     || envelope.MinY == envelope.MaxY)
             {
-                return CreateLineString(new[] 
+                return CreateLineString(new[]
                     {
                         new Coordinate(envelope.MinX, envelope.MinY),
                         new Coordinate(envelope.MaxX, envelope.MaxY)
@@ -147,7 +148,7 @@ namespace NetTopologySuite.Geometries
 
             if (holes != null)
             {
-                for (var i = 0; i < holes.Length; i++)
+                for (int i = 0; i < holes.Length; i++)
                 {
                     if (holes[i].IsCCW)
                         holes[i] = ReverseRing(holes[i]);

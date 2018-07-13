@@ -1,4 +1,3 @@
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Index.Chain
@@ -9,18 +8,19 @@ namespace NetTopologySuite.Index.Chain
     /// </summary>
     public class MonotoneChainSelectAction
     {
-        /// <summary>
-        /// These envelopes are used during the MonotoneChain search process.
-        /// </summary>
-        public Envelope TempEnv1 = new Envelope();
+        ///// <summary>
+        ///// These envelopes are used during the MonotoneChain search process.
+        ///// </summary>
+        //[Obsolete()]
+        //public Envelope TempEnv1 = new Envelope();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public LineSegment SelectedSegment = new LineSegment();
 
-        /// <summary> 
-        /// This method is overridden to process a segment 
+        /// <summary>
+        /// This method is overridden to process a segment
         /// in the context of the parent chain.
         /// </summary>
         /// <param name="mc">The parent chain</param>
@@ -28,7 +28,7 @@ namespace NetTopologySuite.Index.Chain
         public virtual void Select(MonotoneChain mc, int startIndex)
         {
             mc.GetLineSegment(startIndex, ref SelectedSegment);
-            // call this routine in case select(segmenet) was overridden
+            // call this routine in case select(segment) was overridden
             Select(SelectedSegment);
         }
 

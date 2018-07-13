@@ -27,29 +27,11 @@ namespace Open.Topology.TestRunner
             _objTest  = testItem;
         }
 
-        public int Index 
-        {
-            get
-            {
-                return _nIndex;
-            }
-        }
+        public int Index => _nIndex;
 
-        public bool Success
-        {
-            get
-            {
-                return _bSuccess;
-            }
-        }
+        public bool Success => _bSuccess;
 
-        public XmlTest Test
-        {
-            get
-            {
-                return _objTest;
-            }
-        }
+        public XmlTest Test => _objTest;
     }
 
     public delegate void XmlTextEventHandler(object sender, XmlTestEventArgs args);
@@ -57,7 +39,7 @@ namespace Open.Topology.TestRunner
     #endregion
 
     #region XmlTestType Enumeration
-               
+
     public enum XmlTestType
     {
         None                    = 0,
@@ -101,14 +83,14 @@ namespace Open.Topology.TestRunner
         MinClearanceLine        = 38,
         EqualsTopo              = 39,
     }
- 
+
     #endregion
 
-	/// <summary>
-	/// Summary description for XmlTest.
-	/// </summary>
-	public class XmlTest
-	{
+    /// <summary>
+    /// Summary description for XmlTest.
+    /// </summary>
+    public class XmlTest
+    {
         private static NumberFormatInfo _nfi;
 
         protected static IFormatProvider GetNumberFormatInfo()
@@ -125,7 +107,7 @@ namespace Open.Topology.TestRunner
         private static int _nCount        = 1;
 
         private bool    _bIsDefaultTarget = true;
-        
+
         private Exception _objException;
 
         private bool      _bSuccess;
@@ -142,16 +124,16 @@ namespace Open.Topology.TestRunner
 
         private string    _strDescription;
 
-        private readonly double    _dTolerance     = Double.Epsilon;
+        private readonly double    _dTolerance     = double.Epsilon;
 
-	    private IResultMatcher _resultMatcher;
-	    private readonly IGeometryOperation _geometryOperation;
+        private IResultMatcher _resultMatcher;
+        private readonly IGeometryOperation _geometryOperation;
         #endregion
 
         #region Constructors and Destructor
 
         public XmlTest(string description, bool bIsDefaultTarget, double tolerance, IGeometryOperation geometryOperation, IResultMatcher resultMatcher)
-		{
+        {
             if (!string.IsNullOrEmpty(description))
             {
                 _strDescription = description;
@@ -167,7 +149,7 @@ namespace Open.Topology.TestRunner
             _dTolerance       = tolerance;
             _geometryOperation = geometryOperation;
             _resultMatcher = resultMatcher;
-		}
+        }
 
         #endregion
 
@@ -175,133 +157,73 @@ namespace Open.Topology.TestRunner
 
         public string Description
         {
-            get
-            {
-                return _strDescription;
-            }
+            get => _strDescription;
 
-            set
-            {
-                _strDescription = value;
-            }
+            set => _strDescription = value;
         }
 
         public Exception Thrown
         {
-            get
-            {
-                return _objException;
-            }
+            get => _objException;
 
-            set
-            {
-                _objException = value;
-            }
+            set => _objException = value;
         }
 
-        public bool Success
-        {
-            get
-            {
-                return _bSuccess;
-            }
-        }
+        public bool Success => _bSuccess;
 
         public IGeometry A
         {
-            get
-            {
-                return _objGeometryA;
-            }
+            get => _objGeometryA;
 
-            set 
-            {
-                _objGeometryA = value;
-            }
+            set => _objGeometryA = value;
         }
 
         public IGeometry B
         {
-            get
-            {
-                return _objGeometryB;
-            }
+            get => _objGeometryB;
 
-            set 
-            {
-                _objGeometryB = value;
-            }
+            set => _objGeometryB = value;
         }
 
         public XmlTestType TestType
         {
-            get
-            {
-                return _enumTestType;
-            }
+            get => _enumTestType;
 
-            set
-            {
-                _enumTestType = value;
-            }
+            set => _enumTestType = value;
         }
 
         public object Result
         {
-            get
-            {
-                return _objResult;
-            }
+            get => _objResult;
 
-            set
-            {
-                _objResult = value;
-            }
+            set => _objResult = value;
         }
 
         public object Argument1
         {
-            get
-            {
-                return _objArgument1;
-            }
+            get => _objArgument1;
 
-            set
-            {
-                _objArgument1 = value;
-            }
+            set => _objArgument1 = value;
         }
 
         public object Argument2
         {
-            get
-            {
-                return _objArgument2;
-            }
+            get => _objArgument2;
 
-            set
-            {
-                _objArgument2 = value;
-            }
+            set => _objArgument2 = value;
         }
 
-		public bool IsDefaultTarget
-		{
-            get
-            {
-                return _bIsDefaultTarget;
-            }
+        public bool IsDefaultTarget
+        {
+            get => _bIsDefaultTarget;
 
-            set
-            {
-				_bIsDefaultTarget = value;
-            }
-		}
+            set => _bIsDefaultTarget = value;
+        }
 
         #endregion
 
         #region Public Methods
-        
+
         public bool Run()
         {
             try
@@ -309,22 +231,22 @@ namespace Open.Topology.TestRunner
                 _bSuccess = this.RunTest();
                 if (!_bSuccess)
                 {
-                    // DEBUG ERRORS: retry to launch the test and analyze...                                       
+                    // DEBUG ERRORS: retry to launch the test and analyze...
                     Console.WriteLine();
                     Console.WriteLine("Retry failed test: {0}", Description);
                     Console.WriteLine(Argument1);
-                    Console.WriteLine(Argument2);                    
+                    Console.WriteLine(Argument2);
                     Console.WriteLine(A);
-                    Console.WriteLine(B);                    
+                    Console.WriteLine(B);
                     Console.WriteLine("Test type: " + TestType);
-                    _bSuccess = RunTest();                    
+                    _bSuccess = RunTest();
                     Console.WriteLine("Result expected is {0}, but was {1}", true, _bSuccess);
                     Console.WriteLine();
                 }
                 return _bSuccess;
             }
             catch (Exception ex)
-            {                
+            {
                 _objException = ex;
                 Debug.WriteLine(ex.Message);
                 Debug.WriteLine(ex.StackTrace);
@@ -337,13 +259,13 @@ namespace Open.Topology.TestRunner
 
         #region Protected Methods
 
-	    public virtual bool RunTest()
+        public virtual bool RunTest()
         {
             try
             {
                 if (_geometryOperation != null)
             {
-                var arguments = ToArguments();
+                    object[] arguments = ToArguments();
 
                 IResult expectedResult = null;
                 var returnType = _geometryOperation.GetReturnType(_enumTestType);
@@ -368,8 +290,8 @@ namespace Open.Topology.TestRunner
                                            arguments, result, expectedResult, _dTolerance);
                 }
             }
-            
-            switch (_enumTestType) 
+
+            switch (_enumTestType)
             {
                 case XmlTestType.Area:
                     return TestArea();
@@ -484,12 +406,12 @@ namespace Open.Topology.TestRunner
 
                 case XmlTestType.MinClearanceLine:
                     return TestMinClearanceLine();
-                
+
                 case XmlTestType.EqualsTopo:
                     return TestEqualsTopo();
 
                 default:
-                    string format = String.Format("Test not implemented: {0}", this._enumTestType);
+                    string format = string.Format("Test not implemented: {0}", this._enumTestType);
                     throw new NotImplementedException(format);
             }
             }
@@ -501,7 +423,7 @@ namespace Open.Topology.TestRunner
         }
 
         private IResultMatcher CreateEqualityResultMatcher(Type returnType)
-	    {
+        {
             if (returnType == typeof(int))
                 return new EqualityResultMatcher<IntegerResult>();
             if (returnType == typeof(bool))
@@ -510,21 +432,21 @@ namespace Open.Topology.TestRunner
                 return new EqualityResultMatcher<DoubleResult>();
             if (returnType == typeof(IGeometry))
                 return new EqualityResultMatcher<GeometryResult>();
-	        
-            Debug.Assert(false);
-	        return null;
-	    }
 
-	    private object[] ToArguments()
-	    {
+            Debug.Assert(false);
+            return null;
+        }
+
+        private object[] ToArguments()
+        {
             var ret = new System.Collections.Generic.List<object>(2);
-	        var o = ToGeometryOrString(Argument1);
+            object o = ToGeometryOrString(Argument1);
             if (o != null) ret.Add(o);
             o = ToGeometryOrString(Argument2);
             if (o != null) ret.Add(o);
-	        
+
             return ret.ToArray();
-	    }
+        }
 
         private object ToGeometryOrString(object o)
         {
@@ -536,7 +458,7 @@ namespace Open.Topology.TestRunner
 
             if (o is string)
             {
-                var a = (string) o;
+                string a = (string) o;
                 if (a == "A" || a == "a")
                     return A;
                 if (a == "B" || a == "b")
@@ -544,11 +466,11 @@ namespace Open.Topology.TestRunner
 
                 return a;
             }
-            
+
             return o.ToString();
         }
 
-	    protected virtual bool TestArea()
+        protected virtual bool TestArea()
         {
             double dAreaResult = (double)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
@@ -567,15 +489,15 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestBoundary()          
+        protected virtual bool TestBoundary()
         {
             Trace.Assert(_objResult != null, "The result object cannot be null");
 
-            Geometry geoResult = (Geometry) _objResult;
+            var geoResult = (Geometry) _objResult;
 
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
-                Geometry boundary = (Geometry) _objGeometryA.Boundary;
+                var boundary = (Geometry) _objGeometryA.Boundary;
                 if (boundary != null)
                 {
                     if (boundary.IsEmpty && geoResult.IsEmpty)
@@ -595,7 +517,7 @@ namespace Open.Topology.TestRunner
             }
             else if (_objGeometryB != null)
             {
-                Geometry boundary = (Geometry) _objGeometryB.Boundary;
+                var boundary = (Geometry) _objGeometryB.Boundary;
                 if (boundary != null)
                 {
                     if (boundary.IsEmpty && geoResult.IsEmpty)
@@ -617,7 +539,7 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestBoundaryDimension() 
+        protected virtual bool TestBoundaryDimension()
         {
             int nResult = (int)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
@@ -636,18 +558,18 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestBuffer()            
+        protected virtual bool TestBuffer()
         {
-            Geometry geoResult = (Geometry)_objResult;
+            var geoResult = (Geometry)_objResult;
             double dArg;
             if (_objArgument1 is IGeometry)
-                Double.TryParse((string)_objArgument2, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
+                double.TryParse((string)_objArgument2, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
             else
-                Double.TryParse((string)_objArgument1, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
+                double.TryParse((string)_objArgument1, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
 
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
-                Geometry buffer = (Geometry) _objGeometryA.Buffer(dArg);
+                var buffer = (Geometry) _objGeometryA.Buffer(dArg);
                 if (buffer != null)
                 {
                     if (_resultMatcher is IResultMatcher<GeometryResult>)
@@ -658,7 +580,7 @@ namespace Open.Topology.TestRunner
                             _objGeometryA, "buffer", new[] { _objArgument1 }, res, exp, _dTolerance);
 
                     }
-                    
+
                     if (buffer.IsEmpty && geoResult.IsEmpty)
                     {
                         return true;
@@ -674,7 +596,7 @@ namespace Open.Topology.TestRunner
             }
             else if (_objGeometryB != null)
             {
-                Geometry buffer = (Geometry) _objGeometryB.Buffer(dArg);
+                var buffer = (Geometry) _objGeometryB.Buffer(dArg);
                 if (buffer != null)
                 {
                     if (_resultMatcher is IResultMatcher<GeometryResult>)
@@ -703,16 +625,16 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestBufferMitredJoin()            
+        protected virtual bool TestBufferMitredJoin()
         {
-            Geometry geoResult = (Geometry)_objResult;
+            var geoResult = (Geometry)_objResult;
             double dArg;
-            Double.TryParse((string)_objArgument1, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
+            double.TryParse((string)_objArgument1, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
 
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
                 var bp = new BufferParameters {JoinStyle = JoinStyle.Mitre};
-                Geometry buffer = (Geometry) _objGeometryA.Buffer(dArg, bp);
+                var buffer = (Geometry) _objGeometryA.Buffer(dArg, bp);
                 if (buffer != null)
                 {
                     if (_resultMatcher is IResultMatcher<GeometryResult>)
@@ -729,15 +651,15 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestCentroid()          
+        protected virtual bool TestCentroid()
         {
             Trace.Assert(_objResult != null, "The result object cannot be null");
 
-            Geometry geoResult = (Geometry)_objResult;
+            var geoResult = (Geometry)_objResult;
 
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
-                Geometry centroid = (Geometry) _objGeometryA.Centroid;
+                var centroid = (Geometry) _objGeometryA.Centroid;
                 if (centroid != null)
                 {
                     if (centroid.IsEmpty && geoResult.IsEmpty)
@@ -755,7 +677,7 @@ namespace Open.Topology.TestRunner
             }
             else if (_objGeometryB != null)
             {
-                Geometry centroid = (Geometry) _objGeometryB.Centroid;
+                var centroid = (Geometry) _objGeometryB.Centroid;
                 if (centroid != null)
                 {
                     if (centroid.IsEmpty && geoResult.IsEmpty)
@@ -775,7 +697,7 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestContains()          
+        protected virtual bool TestContains()
         {
             bool bResult = (bool)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
@@ -804,21 +726,21 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestConvexHull()        
+        protected virtual bool TestConvexHull()
         {
             Trace.Assert(_objResult != null, "The result object cannot be null");
 
-            Geometry geoResult = (Geometry)_objResult;
+            var geoResult = (Geometry)_objResult;
 
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
-                Geometry convexhall = (Geometry) _objGeometryA.ConvexHull();
+                var convexhall = (Geometry) _objGeometryA.ConvexHull();
                 if (convexhall != null)
                 {
                     if (convexhall.IsEmpty && geoResult.IsEmpty)
                         return true;
-    
-                    bool bResult = CompareGeometries(geoResult, convexhall);  
+
+                    bool bResult = CompareGeometries(geoResult, convexhall);
                     if (!bResult)
                     {
                         Console.WriteLine(_objGeometryA.ToString());
@@ -832,12 +754,12 @@ namespace Open.Topology.TestRunner
             }
             else if (_objGeometryB != null)
             {
-                Geometry convexhall = (Geometry) _objGeometryB.ConvexHull();
+                var convexhall = (Geometry) _objGeometryB.ConvexHull();
                 if (convexhall != null)
                 {
                     if (convexhall.IsEmpty && geoResult.IsEmpty)
                         return true;
-                    
+
                     return CompareGeometries(geoResult, convexhall);
                 }
             }
@@ -845,7 +767,7 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestCrosses()           
+        protected virtual bool TestCrosses()
         {
             bool bResult = (bool)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
@@ -878,7 +800,7 @@ namespace Open.Topology.TestRunner
         {
             var geoResult = _objResult as IGeometry;
 
-            var dArg = GetDoubleArgument();
+            double dArg = GetDoubleArgument();
 
             var geom = _bIsDefaultTarget && _objGeometryA != null ? _objGeometryA : _objGeometryB;
 
@@ -890,24 +812,24 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-	    private double GetDoubleArgument()
-	    {
+        private double GetDoubleArgument()
+        {
             if (_objArgument1 is IGeometry)
-                return Double.Parse((string) _objArgument2, NumberStyles.Any, GetNumberFormatInfo());
-            
-            return Double.Parse((string)_objArgument1, NumberStyles.Any, GetNumberFormatInfo());
+                return double.Parse((string) _objArgument2, NumberStyles.Any, GetNumberFormatInfo());
+
+            return double.Parse((string)_objArgument1, NumberStyles.Any, GetNumberFormatInfo());
         }
 
-	    protected virtual bool TestDifference()        
+        protected virtual bool TestDifference()
         {
             Trace.Assert(_objResult != null, "The result object cannot be null");
 
-            Geometry geoResult = (Geometry)_objResult;
+            var geoResult = (Geometry)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
                 if (_objArgument1 == null)
                 {
-                    Geometry difference = (Geometry) _objGeometryA.Difference(_objGeometryB);
+                    var difference = (Geometry) _objGeometryA.Difference(_objGeometryB);
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -927,7 +849,7 @@ namespace Open.Topology.TestRunner
                 }
                 else
                 {
-                    Geometry difference = (Geometry) _objGeometryA.Difference((Geometry)_objArgument1);
+                    var difference = (Geometry) _objGeometryA.Difference((Geometry)_objArgument1);
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -950,7 +872,7 @@ namespace Open.Topology.TestRunner
             {
                 if (_objArgument1 == null)
                 {
-                    Geometry difference = (Geometry) _objGeometryB.Difference(_objGeometryA);
+                    var difference = (Geometry) _objGeometryB.Difference(_objGeometryA);
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -970,7 +892,7 @@ namespace Open.Topology.TestRunner
                 }
                 else
                 {
-                    Geometry difference = (Geometry) _objGeometryB.Difference((Geometry)_objArgument1);
+                    var difference = (Geometry) _objGeometryB.Difference((Geometry)_objArgument1);
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -993,7 +915,7 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestDimension()         
+        protected virtual bool TestDimension()
         {
             int nResult = (int)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
@@ -1012,7 +934,7 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestDisjoint()          
+        protected virtual bool TestDisjoint()
         {
             bool bResult = (bool)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
@@ -1041,7 +963,7 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestDistance()          
+        protected virtual bool TestDistance()
         {
             double dResult = (double)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
@@ -1076,21 +998,21 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestEnvelope()          
+        protected virtual bool TestEnvelope()
         {
             Trace.Assert(_objResult != null, "The result object cannot be null");
 
-            Geometry geoResult = (Geometry)_objResult;
+            var geoResult = (Geometry)_objResult;
 
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
-                Geometry envelope = (Geometry) _objGeometryA.Envelope;
+                var envelope = (Geometry) _objGeometryA.Envelope;
                 if (envelope != null)
                     return envelope.Equals(geoResult);
             }
             else if (_objGeometryB != null)
             {
-                Geometry envelope = (Geometry) _objGeometryB.Envelope;
+                var envelope = (Geometry) _objGeometryB.Envelope;
                 if (envelope != null)
                     return envelope.Equals(geoResult);
             }
@@ -1098,7 +1020,7 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestEquals()             
+        protected virtual bool TestEquals()
         {
             bool bResult = (bool)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
@@ -1131,11 +1053,11 @@ namespace Open.Topology.TestRunner
         {
             Trace.Assert(_objResult != null, "The result object cannot be null");
 
-            Geometry geoResult = (Geometry) _objResult;
+            var geoResult = (Geometry) _objResult;
 
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
-                Geometry interiorpoint = (Geometry) _objGeometryA.InteriorPoint;
+                var interiorpoint = (Geometry) _objGeometryA.InteriorPoint;
                 if (interiorpoint != null)
                 {
                     if (interiorpoint.IsEmpty && geoResult.IsEmpty)
@@ -1148,7 +1070,7 @@ namespace Open.Topology.TestRunner
             }
             else if (_objGeometryB != null)
             {
-                Geometry interiorpoint = (Geometry) _objGeometryB.InteriorPoint;
+                var interiorpoint = (Geometry) _objGeometryB.InteriorPoint;
                 if (interiorpoint != null)
                 {
                     if (interiorpoint.IsEmpty && geoResult.IsEmpty)
@@ -1167,12 +1089,12 @@ namespace Open.Topology.TestRunner
         {
             Trace.Assert(_objResult != null, "The result object cannot be null");
 
-            Geometry geoResult = (Geometry)_objResult;
+            var geoResult = (Geometry)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
-                if (_objArgument1 == null)                
+                if (_objArgument1 == null)
                 {
-                    Geometry intersection = (Geometry) _objGeometryA.Intersection(_objGeometryB);                    
+                    var intersection = (Geometry) _objGeometryA.Intersection(_objGeometryB);
                     if (intersection != null)
                     {
                         if (intersection.IsEmpty && geoResult.IsEmpty)
@@ -1185,7 +1107,7 @@ namespace Open.Topology.TestRunner
                 }
                 else
                 {
-                    Geometry intersection = (Geometry) _objGeometryA.Intersection((Geometry) _objArgument1);
+                    var intersection = (Geometry) _objGeometryA.Intersection((Geometry) _objArgument1);
                     if (intersection != null)
                     {
                         if (intersection.IsEmpty && geoResult.IsEmpty)
@@ -1201,7 +1123,7 @@ namespace Open.Topology.TestRunner
             {
                 if (_objArgument1 == null)
                 {
-                    Geometry intersection = (Geometry) _objGeometryB.Intersection(_objGeometryA);
+                    var intersection = (Geometry) _objGeometryB.Intersection(_objGeometryA);
                     if (intersection != null)
                     {
                         if (intersection.IsEmpty && geoResult.IsEmpty)
@@ -1214,7 +1136,7 @@ namespace Open.Topology.TestRunner
                 }
                 else
                 {
-                    Geometry intersection = (Geometry) _objGeometryB.Intersection((Geometry)_objArgument1);
+                    var intersection = (Geometry) _objGeometryB.Intersection((Geometry)_objArgument1);
                     if (intersection != null)
                     {
                         if (intersection.IsEmpty && geoResult.IsEmpty)
@@ -1230,7 +1152,7 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestIntersects()        
+        protected virtual bool TestIntersects()
         {
             bool bResult = (bool)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
@@ -1259,7 +1181,7 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestIsEmpty()           
+        protected virtual bool TestIsEmpty()
         {
             bool bResult = (bool)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
@@ -1278,7 +1200,7 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestIsSimple()          
+        protected virtual bool TestIsSimple()
         {
             bool bResult = (bool)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
@@ -1297,7 +1219,7 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestIsValid()           
+        protected virtual bool TestIsValid()
         {
             bool bResult = (bool)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
@@ -1318,7 +1240,7 @@ namespace Open.Topology.TestRunner
         protected virtual bool TestIsWithinDistance()
         {
             bool bResult = (bool)_objResult;
-            double dArg = Double.Parse((string)_objArgument2, GetNumberFormatInfo());
+            double dArg = double.Parse((string)_objArgument2, GetNumberFormatInfo());
 
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
@@ -1328,7 +1250,7 @@ namespace Open.Topology.TestRunner
                 }
                 else
                 {
-                    return _objGeometryA.IsWithinDistance((Geometry)_objArgument1, 
+                    return _objGeometryA.IsWithinDistance((Geometry)_objArgument1,
                         dArg) == bResult;
                 }
             }
@@ -1340,7 +1262,7 @@ namespace Open.Topology.TestRunner
                 }
                 else
                 {
-                    return _objGeometryB.IsWithinDistance((Geometry)_objArgument1, 
+                    return _objGeometryB.IsWithinDistance((Geometry)_objArgument1,
                         dArg) == bResult;
                 }
             }
@@ -1348,7 +1270,7 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestLength()            
+        protected virtual bool TestLength()
         {
             double dLengthResult = (double)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
@@ -1386,7 +1308,7 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestOverlaps()          
+        protected virtual bool TestOverlaps()
         {
             bool bResult = (bool)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
@@ -1415,14 +1337,14 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestRelate()            
+        protected virtual bool TestRelate()
         {
             bool bResult = (bool)_objResult;
             string arg   = (string)_objArgument2;
 
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
-                IntersectionMatrix matrix = _objGeometryA.Relate(_objGeometryB);
+                var matrix = _objGeometryA.Relate(_objGeometryB);
 
                 string strMatrix = matrix.ToString();
 
@@ -1430,7 +1352,7 @@ namespace Open.Topology.TestRunner
             }
             else if (_objGeometryB != null)
             {
-                IntersectionMatrix matrix = _objGeometryB.Relate(_objGeometryA);
+                var matrix = _objGeometryB.Relate(_objGeometryA);
 
                 string strMatrix = matrix.ToString();
 
@@ -1440,7 +1362,7 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestSRID()              
+        protected virtual bool TestSRID()
         {
             int nResult = (int)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
@@ -1463,12 +1385,12 @@ namespace Open.Topology.TestRunner
         {
             Trace.Assert(_objResult != null, "The result object cannot be null");
 
-            Geometry geoResult = (Geometry)_objResult;
+            var geoResult = (Geometry)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
                 if (_objArgument1 == null)
                 {
-                    Geometry difference = (Geometry) _objGeometryA.SymmetricDifference(_objGeometryB);
+                    var difference = (Geometry) _objGeometryA.SymmetricDifference(_objGeometryB);
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -1488,7 +1410,7 @@ namespace Open.Topology.TestRunner
                 }
                 else
                 {
-                    Geometry difference = (Geometry) _objGeometryA.SymmetricDifference((Geometry)_objArgument1);
+                    var difference = (Geometry) _objGeometryA.SymmetricDifference((Geometry)_objArgument1);
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -1511,7 +1433,7 @@ namespace Open.Topology.TestRunner
             {
                 if (_objArgument1 == null)
                 {
-                    Geometry difference = (Geometry) _objGeometryB.SymmetricDifference(_objGeometryA);
+                    var difference = (Geometry) _objGeometryB.SymmetricDifference(_objGeometryA);
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -1531,7 +1453,7 @@ namespace Open.Topology.TestRunner
                 }
                 else
                 {
-                    Geometry difference = (Geometry) _objGeometryB.SymmetricDifference((Geometry)_objArgument1);
+                    var difference = (Geometry) _objGeometryB.SymmetricDifference((Geometry)_objArgument1);
                     if (difference != null)
                     {
                         if (difference.IsEmpty && geoResult.IsEmpty)
@@ -1554,7 +1476,7 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestTouches()           
+        protected virtual bool TestTouches()
         {
             bool bResult = (bool)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
@@ -1583,17 +1505,17 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestUnion()             
+        protected virtual bool TestUnion()
         {
             Trace.Assert(_objResult != null, "The result object cannot be null");
 
-            Geometry geoResult = (Geometry)_objResult;            
+            var geoResult = (Geometry)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
                 if (_objArgument1 == null)
                 {
-                    Geometry union = (Geometry)_objGeometryA.Union();
-                    
+                    var union = (Geometry)_objGeometryA.Union();
+
                     if (union != null)
                     {
                         if (union.IsEmpty && geoResult.IsEmpty)
@@ -1613,7 +1535,7 @@ namespace Open.Topology.TestRunner
                 }
                 else
                 {
-                    Geometry union = (Geometry) _objGeometryA.Union((Geometry)_objArgument1);
+                    var union = (Geometry) _objGeometryA.Union((Geometry)_objArgument1);
                     if (union != null)
                     {
                         if (union.IsEmpty && geoResult.IsEmpty)
@@ -1636,7 +1558,7 @@ namespace Open.Topology.TestRunner
             {
                 if (_objArgument1 == null)
                 {
-                    Geometry union = (Geometry) _objGeometryB.Union(_objGeometryA);
+                    var union = (Geometry) _objGeometryB.Union(_objGeometryA);
                     if (union != null)
                     {
                         if (union.IsEmpty && geoResult.IsEmpty)
@@ -1656,7 +1578,7 @@ namespace Open.Topology.TestRunner
                 }
                 else
                 {
-                    Geometry union = (Geometry) _objGeometryB.Union((Geometry)_objArgument1);
+                    var union = (Geometry) _objGeometryB.Union((Geometry)_objArgument1);
                     if (union != null)
                     {
                         if (union.IsEmpty && geoResult.IsEmpty)
@@ -1679,7 +1601,7 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-        protected virtual bool TestWithin()            
+        protected virtual bool TestWithin()
         {
             bool bResult = (bool)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
@@ -1715,7 +1637,7 @@ namespace Open.Topology.TestRunner
             {
                 if (_objArgument1 == null)
                      return _objGeometryA.Covers(_objGeometryB) == bResult;
-                else return _objGeometryA.Covers((Geometry)_objArgument1) == bResult;                
+                else return _objGeometryA.Covers((Geometry)_objArgument1) == bResult;
             }
             else if (_objGeometryB != null)
             {
@@ -1798,12 +1720,12 @@ namespace Open.Topology.TestRunner
             return false;
         }
 
-	    protected virtual bool TestMinClearance()
+        protected virtual bool TestMinClearance()
         {
             double dResult = (double)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
-                MinimumClearance c = new MinimumClearance(_objGeometryA);
+                var c = new MinimumClearance(_objGeometryA);
                 double dClearance = c.GetDistance();
                 return Math.Abs(dClearance - dResult) <= _dTolerance;
             }
@@ -1812,10 +1734,10 @@ namespace Open.Topology.TestRunner
 
         protected virtual bool TestMinClearanceLine()
         {
-            IGeometry gResult = (IGeometry)_objResult;
+            var gResult = (IGeometry)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
-                MinimumClearance c = new MinimumClearance(_objGeometryA);
+                var c = new MinimumClearance(_objGeometryA);
                 IGeometry gClearance = c.GetLine();
                 return gResult.EqualsNormalized(gClearance);
             }
@@ -1851,8 +1773,8 @@ namespace Open.Topology.TestRunner
         {
             if (a != null && b != null && a.GetType().Name == b.GetType().Name)
             {
-                Geometry aClone = (Geometry)a.Clone();
-                Geometry bClone = (Geometry)b.Clone();
+                var aClone = (Geometry)a.Copy();
+                var bClone = (Geometry)b.Copy();
 
                 aClone.Normalize();
                 bClone.Normalize();
@@ -1864,5 +1786,5 @@ namespace Open.Topology.TestRunner
         }
 
         #endregion
-	}
+    }
 }

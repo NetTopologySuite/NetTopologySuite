@@ -2,7 +2,6 @@ using NetTopologySuite.Utilities;
 
 using BitConverter = System.BitConverter;
 
-
 namespace NetTopologySuite.Precision
 {
     /// <summary>
@@ -113,13 +112,7 @@ namespace NetTopologySuite.Precision
         /// <summary>
         ///
         /// </summary>
-        public double Common
-        {
-            get
-            {
-                return BitConverter.Int64BitsToDouble(_commonBits);
-            }
-        }
+        public double Common => BitConverter.Int64BitsToDouble(_commonBits);
 
         /// <summary>
         /// A representation of the Double bits formatted for easy readability

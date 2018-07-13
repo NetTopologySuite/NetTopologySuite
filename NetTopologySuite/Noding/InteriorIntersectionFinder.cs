@@ -30,7 +30,7 @@ namespace NetTopologySuite.Noding
         /// <returns>a intersection finder which finds all interior intersections.</returns>
         public static InteriorIntersectionFinder CreateAllIntersectionsFinder(LineIntersector li)
         {
-            InteriorIntersectionFinder finder = new InteriorIntersectionFinder(li);
+            var finder = new InteriorIntersectionFinder(li);
             finder.FindAllIntersections = true;
             return finder;
         }
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Noding
         /// <returns>a intersection finder which counts all interior intersections.</returns>
         public static InteriorIntersectionFinder CreateIntersectionCounter(LineIntersector li)
         {
-            InteriorIntersectionFinder finder = new InteriorIntersectionFinder(li);
+            var finder = new InteriorIntersectionFinder(li);
             finder.FindAllIntersections = true;
             finder.KeepIntersections = false;
             return finder;
@@ -70,8 +70,8 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// Gets/Sets whether all intersections should be computed.
         /// <remarks>
-        /// When this is <c>false</c> (the default value), the value of <see cref="IsDone"/> 
-        /// is <c>true</c> after the first intersection is found.        
+        /// When this is <c>false</c> (the default value), the value of <see cref="IsDone"/>
+        /// is <c>true</c> after the first intersection is found.
         /// Default is <c>false</c>.
         /// </remarks>
         /// </summary>
@@ -86,8 +86,8 @@ namespace NetTopologySuite.Noding
         /// </summary>
         public bool KeepIntersections
         {
-            get { return _keepIntersections; }
-            set { _keepIntersections = value; }
+            get => _keepIntersections;
+            set => _keepIntersections = value;
         }
 
         ///<summary>
@@ -102,51 +102,30 @@ namespace NetTopologySuite.Noding
         ///<summary>
         /// Tests whether an intersection was found.
         ///</summary>
-        public Boolean HasIntersection
-        {
-            get
-            {
-                return _interiorIntersection != null;
-            }
-        }
+        public bool HasIntersection => _interiorIntersection != null;
 
         /// <summary>
         /// Gets the intersections found.
         /// </summary>
         /// <returns>A list of <see cref="Coordinate"/>.</returns>
-        public IList<Coordinate> Intersections
-        {
-            get
-            {
-                return new ReadOnlyCollection<Coordinate>(_intersections);
-            }
-        }
+        public IList<Coordinate> Intersections => new ReadOnlyCollection<Coordinate>(_intersections);
 
         /// <summary>
         /// Gets the count of intersections found.
         /// </summary>
         /// <returns>The intersection count.</returns>
-        public int Count
-        {
-            get { return intersectionCount; }
-        }
+        public int Count => intersectionCount;
 
         ///<summary>
         /// Gets the computed location of the intersection.
         /// Due to round-off, the location may not be exact.
         ///</summary>
-        public Coordinate InteriorIntersection
-        {
-            get { return _interiorIntersection; }
-        }
+        public Coordinate InteriorIntersection => _interiorIntersection;
 
         ///<summary>
         /// Gets the endpoints of the intersecting segments.
         ///</summary>
-        public Coordinate[] IntersectionSegments
-        {
-            get { return _intSegments; }
-        }
+        public Coordinate[] IntersectionSegments => _intSegments;
 
         ///<summary>
         /// This method is called by clients of the <see cref="ISegmentIntersector"/> class to process
@@ -177,15 +156,15 @@ namespace NetTopologySuite.Noding
              */
             if (CheckEndSegmentsOnly)
             {
-                Boolean isEndSegPresent = IsEndSegment(e0, segIndex0) || IsEndSegment(e1, segIndex1);
+                bool isEndSegPresent = IsEndSegment(e0, segIndex0) || IsEndSegment(e1, segIndex1);
                 if (!isEndSegPresent)
                     return;
             }
 
-            Coordinate p00 = e0.Coordinates[segIndex0];
-            Coordinate p01 = e0.Coordinates[segIndex0 + 1];
-            Coordinate p10 = e1.Coordinates[segIndex1];
-            Coordinate p11 = e1.Coordinates[segIndex1 + 1];
+            var p00 = e0.Coordinates[segIndex0];
+            var p01 = e0.Coordinates[segIndex0 + 1];
+            var p10 = e1.Coordinates[segIndex1];
+            var p11 = e1.Coordinates[segIndex1 + 1];
 
             _li.ComputeIntersection(p00, p01, p10, p11);
             if (_li.HasIntersection)
@@ -213,14 +192,14 @@ namespace NetTopologySuite.Noding
         ///<param name="segStr">a segment string</param>
         ///<param name="index">the index of a segment in the segment string</param>
         ///<returns>true if the segment is an end segment</returns>
-        private static Boolean IsEndSegment(ISegmentString segStr, int index)
+        private static bool IsEndSegment(ISegmentString segStr, int index)
         {
             if (index == 0) return true;
             if (index >= segStr.Count - 2) return true;
             return false;
         }
 
-        public Boolean IsDone
+        public bool IsDone
         {
             get
             {

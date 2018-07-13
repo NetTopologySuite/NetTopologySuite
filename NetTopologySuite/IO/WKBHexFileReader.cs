@@ -8,7 +8,7 @@ using RTools_NTS.Util;
 namespace NetTopologySuite.IO
 {
     /// <summary>
-    /// Reads a sequence of {@link Geometry}s in WKBHex format 
+    /// Reads a sequence of {@link Geometry}s in WKBHex format
     /// from a text file.
     /// Each WKBHex geometry must be on a single line
     /// The geometries in the file may be separated by any amount
@@ -43,6 +43,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         public int Offset { get; set; }
 
+#if FEATURE_FILE_IO
         /// <summary>
         /// Reads a sequence of geometries.<br/>
         /// If an <see cref="Offset"/> is specified, geometries read up to the offset count are skipped.
@@ -52,7 +53,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="ArgumentNullException">Thrown if no filename was specified</exception>
         /// <exception cref="FileNotFoundException">Thrown if the filename specified does not exist</exception>
         /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
-        /// <exception cref="ParseException">Thrown if an error occured reading a geometry</exception>
+        /// <exception cref="ParseException">Thrown if an error occurred reading a geometry</exception>
         public ICollection<IGeometry> Read(string file)
         {
             if (string.IsNullOrEmpty(file))
@@ -64,6 +65,7 @@ namespace NetTopologySuite.IO
                 return Read(stream);
             }
         }
+#endif
 
         /// <summary>
         /// Reads a sequence of geometries.<br/>
@@ -74,7 +76,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="ArgumentNullException">Thrown if no stream was passed</exception>
         /// <exception cref="ArgumentException">Thrown if passed stream is not readable or seekable</exception>
         /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
-        /// <exception cref="ParseException">Thrown if an error occured reading a geometry</exception>
+        /// <exception cref="GeoAPI.IO.ParseException">Thrown if an error occured reading a geometry</exception>
         public ICollection<IGeometry> Read(Stream stream)
         {
             if (stream == null)
@@ -99,14 +101,14 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="streamReader">The stream reader to use.</param>
         /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
-        /// <exception cref="ParseException">Thrown if an error occured reading a geometry</exception>
+        /// <exception cref="GeoAPI.IO.ParseException">Thrown if an error occured reading a geometry</exception>
         private ICollection<IGeometry> Read(StreamReader streamReader)
         {
             var geoms = new List<IGeometry>();
-            var count = 0;
+            int count = 0;
             while (!IsAtEndOfFile(streamReader) && !IsAtLimit(geoms))
             {
-                var line = streamReader.ReadLine();
+                string line = streamReader.ReadLine();
                 if (string.IsNullOrEmpty(line)) continue;
 
                 var g = _wkbReader.Read(WKBReader.HexToBytes(line));
@@ -124,7 +126,7 @@ namespace NetTopologySuite.IO
         /// <returns><value>true</value> if <see cref="Limit"/> number of geometries has been read.</returns>
         private bool IsAtLimit(ICollection<IGeometry> geoms)
         {
-            if (Limit < 0) 
+            if (Limit < 0)
                 return false;
             return geoms.Count >= Limit;
         }
@@ -134,7 +136,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         private static bool IsAtEndOfFile(StreamReader bufferedReader)
         {
-            var position = bufferedReader.BaseStream.Position;
+            long position = bufferedReader.BaseStream.Position;
 
             var tokenizer = new StreamTokenizer(bufferedReader);
             Token t;

@@ -7,57 +7,57 @@ namespace NetTopologySuite.Tests.XUnit
     {
         //protected GeneralXUnitRunner(string testFile) : base(testFile) { }
 
-        private const String testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\general";
+        private const string testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\general";
 
-        public GeneralXUnitRunner() : base(String.Empty)
+        public GeneralXUnitRunner() : base(string.Empty)
         {
         }
 
-        protected override string TestLocation { get { return testLocation; } }
+        protected override string TestLocation => testLocation;
 
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test00() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test01() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test02() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test03() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test04() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test05() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test06() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test07() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test08() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test09() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test10() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test11() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test12() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test13() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test14() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test15() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test16() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test17() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test18() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test19() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test20() { }
-        [NUnit.Framework.Ignore]
+        [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void TestCountOk() { }
 
         [NUnit.Framework.Test]
@@ -67,12 +67,12 @@ namespace NetTopologySuite.Tests.XUnit
         }
         protected override void TestAll()
         {
-            foreach (string file in Directory.GetFiles(TestLocation))
+            foreach (string file in Directory.GetFiles(Path.Combine(TestLocation.Split('\\', StringSplitOptions.RemoveEmptyEntries))))
             {
-                var ext = Path.GetExtension(file);
+                string ext = Path.GetExtension(file);
                 if (string.IsNullOrEmpty(ext))
                     continue;
-                
+
                 if (ext.ToLowerInvariant() != ".xml")
                     continue;
 

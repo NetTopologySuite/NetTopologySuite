@@ -19,7 +19,6 @@ namespace Open.Topology.TestRunner.Functions
 
         private static readonly double T_WIDTH = WIDTH - 2 * S_RADIUS - J_WIDTH;
 
-
         public static IGeometry LogoLines(IGeometry g)
         {
             return CreateJ(g)

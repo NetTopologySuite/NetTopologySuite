@@ -23,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             var line = reader.Read("LINESTRING (10 0, 10 0)");
             var indexedLine = new LocationIndexedLine(line);
             var loc0 = indexedLine.IndexOf(new Coordinate(11, 0));
-            Assert.IsTrue(loc0.CompareTo(new LinearLocation(0, Double.NaN)) == 0);
+            Assert.IsTrue(loc0.CompareTo(new LinearLocation(0, double.NaN)) == 0);
         }
 
         [TestAttribute]
@@ -35,19 +35,18 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             Assert.IsTrue(loc0.CompareTo(new LinearLocation(1, 0.1)) == 0);
         }
 
-
         [TestAttribute]
         public void TestSameSegmentLineString()
         {
-            IGeometry line = reader.Read("LINESTRING (0 0, 10 0, 20 0, 30 0)");
-            LocationIndexedLine indexedLine = new LocationIndexedLine(line);
+            var line = reader.Read("LINESTRING (0 0, 10 0, 20 0, 30 0)");
+            var indexedLine = new LocationIndexedLine(line);
 
-            LinearLocation loc0 = indexedLine.IndexOf(new Coordinate(0, 0));
-            LinearLocation loc0_5 = indexedLine.IndexOf(new Coordinate(5, 0));
-            LinearLocation loc1 = indexedLine.IndexOf(new Coordinate(10, 0));
-            LinearLocation loc2 = indexedLine.IndexOf(new Coordinate(20, 0));
-            LinearLocation loc2_5 = indexedLine.IndexOf(new Coordinate(25, 0));
-            LinearLocation loc3 = indexedLine.IndexOf(new Coordinate(30, 0));
+            var loc0 = indexedLine.IndexOf(new Coordinate(0, 0));
+            var loc0_5 = indexedLine.IndexOf(new Coordinate(5, 0));
+            var loc1 = indexedLine.IndexOf(new Coordinate(10, 0));
+            var loc2 = indexedLine.IndexOf(new Coordinate(20, 0));
+            var loc2_5 = indexedLine.IndexOf(new Coordinate(25, 0));
+            var loc3 = indexedLine.IndexOf(new Coordinate(30, 0));
 
             Assert.IsTrue(loc0.IsOnSameSegment(loc0));
             Assert.IsTrue(loc0.IsOnSameSegment(loc0_5));
@@ -77,17 +76,17 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         [TestAttribute]
         public void TestSameSegmentMultiLineString()
         {
-            IGeometry line = reader.Read("MULTILINESTRING ((0 0, 10 0, 20 0), (20 0, 30 0))");
-            LocationIndexedLine indexedLine = new LocationIndexedLine(line);
+            var line = reader.Read("MULTILINESTRING ((0 0, 10 0, 20 0), (20 0, 30 0))");
+            var indexedLine = new LocationIndexedLine(line);
 
-            LinearLocation loc0 = indexedLine.IndexOf(new Coordinate(0, 0));
-            LinearLocation loc0_5 = indexedLine.IndexOf(new Coordinate(5, 0));
-            LinearLocation loc1 = indexedLine.IndexOf(new Coordinate(10, 0));
-            LinearLocation loc2 = indexedLine.IndexOf(new Coordinate(20, 0));
-            LinearLocation loc2B = new LinearLocation(1, 0, 0.0);
+            var loc0 = indexedLine.IndexOf(new Coordinate(0, 0));
+            var loc0_5 = indexedLine.IndexOf(new Coordinate(5, 0));
+            var loc1 = indexedLine.IndexOf(new Coordinate(10, 0));
+            var loc2 = indexedLine.IndexOf(new Coordinate(20, 0));
+            var loc2B = new LinearLocation(1, 0, 0.0);
 
-            LinearLocation loc2_5 = indexedLine.IndexOf(new Coordinate(25, 0));
-            LinearLocation loc3 = indexedLine.IndexOf(new Coordinate(30, 0));
+            var loc2_5 = indexedLine.IndexOf(new Coordinate(25, 0));
+            var loc3 = indexedLine.IndexOf(new Coordinate(30, 0));
 
             Assert.IsTrue(loc0.IsOnSameSegment(loc0));
             Assert.IsTrue(loc0.IsOnSameSegment(loc0_5));
@@ -119,21 +118,21 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         [TestAttribute]
         public void TestGetSegmentMultiLineString()
         {
-            IGeometry line = reader.Read("MULTILINESTRING ((0 0, 10 0, 20 0), (20 0, 30 0))");
-            LocationIndexedLine indexedLine = new LocationIndexedLine(line);
+            var line = reader.Read("MULTILINESTRING ((0 0, 10 0, 20 0), (20 0, 30 0))");
+            var indexedLine = new LocationIndexedLine(line);
 
-            LinearLocation loc0 = indexedLine.IndexOf(new Coordinate(0, 0));
-            LinearLocation loc0_5 = indexedLine.IndexOf(new Coordinate(5, 0));
-            LinearLocation loc1 = indexedLine.IndexOf(new Coordinate(10, 0));
-            LinearLocation loc2 = indexedLine.IndexOf(new Coordinate(20, 0));
-            LinearLocation loc2B = new LinearLocation(1, 0, 0.0);
+            var loc0 = indexedLine.IndexOf(new Coordinate(0, 0));
+            var loc0_5 = indexedLine.IndexOf(new Coordinate(5, 0));
+            var loc1 = indexedLine.IndexOf(new Coordinate(10, 0));
+            var loc2 = indexedLine.IndexOf(new Coordinate(20, 0));
+            var loc2B = new LinearLocation(1, 0, 0.0);
 
-            LinearLocation loc2_5 = indexedLine.IndexOf(new Coordinate(25, 0));
-            LinearLocation loc3 = indexedLine.IndexOf(new Coordinate(30, 0));
+            var loc2_5 = indexedLine.IndexOf(new Coordinate(25, 0));
+            var loc3 = indexedLine.IndexOf(new Coordinate(30, 0));
 
-            LineSegment seg0 = new LineSegment(new Coordinate(0, 0), new Coordinate(10, 0));
-            LineSegment seg1 = new LineSegment(new Coordinate(10, 0), new Coordinate(20, 0));
-            LineSegment seg2 = new LineSegment(new Coordinate(20, 0), new Coordinate(30, 0));
+            var seg0 = new LineSegment(new Coordinate(0, 0), new Coordinate(10, 0));
+            var seg1 = new LineSegment(new Coordinate(10, 0), new Coordinate(20, 0));
+            var seg2 = new LineSegment(new Coordinate(20, 0), new Coordinate(30, 0));
 
             Assert.IsTrue(loc0.GetSegment(line).Equals(seg0));
             Assert.IsTrue(loc0_5.GetSegment(line).Equals(seg0));

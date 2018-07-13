@@ -16,7 +16,7 @@ namespace NetTopologySuite.Utilities
         /// <returns>an array of the unique coordinates</returns>
         public static Coordinate[] FilterCoordinates(Coordinate[] coords)
         {
-            UniqueCoordinateArrayFilter filter = new UniqueCoordinateArrayFilter();
+            var filter = new UniqueCoordinateArrayFilter();
             for (int i = 0; i < coords.Length; i++)
                 filter.Filter(coords[i]);
             return filter.Coordinates;
@@ -27,13 +27,10 @@ namespace NetTopologySuite.Utilities
         /// <summary>
         /// Returns the gathered <see cref="Coordinate"/>s.
         /// </summary>
-        public Coordinate[] Coordinates
-        {
-            get { return _list.ToArray(); }
-        }
+        public Coordinate[] Coordinates => _list.ToArray();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="coord"></param>
         public void Filter(Coordinate coord)

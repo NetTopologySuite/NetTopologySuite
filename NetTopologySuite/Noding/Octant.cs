@@ -2,7 +2,7 @@ using System;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Noding
-{    
+{
     /// <summary>
     /// Octants in the Cartesian plane.
     /// Octants are numbered as follows:
@@ -11,54 +11,54 @@ namespace NetTopologySuite.Noding
     ///  3 \|/ 0
     ///  ---+--
     ///  4 /|\ 7
-    ///   /5|6\ 
+    ///   /5|6\
     /// </para>
     ///  If line segments lie along a coordinate axis, the octant is the lower of the two possible values.
     /// </summary>
     public enum Octants
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Null = -1,
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Zero    = 0,
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         One     = 1,
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Two     = 2,
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Three   = 3,
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Four    = 4,
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Five    = 5,
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Six     = 6,
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Seven   = 7,
     }
@@ -67,7 +67,7 @@ namespace NetTopologySuite.Noding
     ///  Methods for computing and working with <see cref="Octants"/> of the Cartesian plane.
     /// </summary>
     public static class Octant
-    {        
+    {
         /// <summary>
         /// Returns the octant of a directed line segment (specified as x and y
         /// displacements, which cannot both be 0).
@@ -93,7 +93,7 @@ namespace NetTopologySuite.Noding
                         return Octants.One;
                 }
                 else // dy < 0
-                { 
+                {
                     if (adx >= ady)
                         return Octants.Seven;
                     else
@@ -101,7 +101,7 @@ namespace NetTopologySuite.Noding
                 }
             }
             else // dx < 0
-            { 
+            {
                 if (dy >= 0)
                 {
                     if (adx >= ady)
@@ -110,7 +110,7 @@ namespace NetTopologySuite.Noding
                         return Octants.Two;
                 }
                 else // dy < 0
-                { 
+                {
                     if (adx >= ady)
                         return Octants.Four;
                     else
@@ -132,6 +132,6 @@ namespace NetTopologySuite.Noding
             if (dx == 0.0 && dy == 0.0)
                 throw new ArgumentException("Cannot compute the octant for two identical points " + p0);
             return GetOctant(dx, dy);
-        }     
+        }
     }
 }

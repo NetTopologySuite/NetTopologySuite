@@ -3,28 +3,22 @@ using System.Collections.Specialized;
 
 namespace Open.Topology.TestRunner
 {
-	/// <summary>
-	/// Summary description for XmlTestInfo.
-	/// </summary>
-	public struct XmlTestInfo
-	{
+    /// <summary>
+    /// Summary description for XmlTestInfo.
+    /// </summary>
+    public struct XmlTestInfo
+    {
         private readonly StringDictionary _listParameters;
 
-		public XmlTestInfo(bool bReset)
-		{
+        public XmlTestInfo(bool bReset)
+        {
             _listParameters = new StringDictionary();
 
             if (bReset)
                 Reset();
-		}
-
-        public StringDictionary Parameters
-        {
-            get
-            {
-                return _listParameters;
-            }
         }
+
+        public StringDictionary Parameters => _listParameters;
 
         public void Reset()
         {
@@ -32,14 +26,14 @@ namespace Open.Topology.TestRunner
             {
                 _listParameters.Clear();
 
-                _listParameters.Add("desc",   String.Empty);
-                _listParameters.Add("a",      String.Empty);
-                _listParameters.Add("b",      String.Empty);
-                _listParameters.Add("name",   String.Empty);
-                _listParameters.Add("result", String.Empty);
-                _listParameters.Add("arg1",   String.Empty);
-                _listParameters.Add("arg2",   String.Empty);
-                _listParameters.Add("arg3",   String.Empty);
+                _listParameters.Add("desc",   string.Empty);
+                _listParameters.Add("a",      string.Empty);
+                _listParameters.Add("b",      string.Empty);
+                _listParameters.Add("name",   string.Empty);
+                _listParameters.Add("result", string.Empty);
+                _listParameters.Add("arg1",   string.Empty);
+                _listParameters.Add("arg2",   string.Empty);
+                _listParameters.Add("arg3",   string.Empty);
             }
         }
 
@@ -58,7 +52,7 @@ namespace Open.Topology.TestRunner
                 return _listParameters[key];
             }
 
-            return String.Empty;
+            return string.Empty;
         }
 
         public void Clear()
@@ -80,5 +74,5 @@ namespace Open.Topology.TestRunner
 
             return true;
         }
-	}
+    }
 }

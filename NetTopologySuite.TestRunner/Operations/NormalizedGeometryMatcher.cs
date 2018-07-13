@@ -15,14 +15,14 @@ namespace Open.Topology.TestRunner.Operations
 
         public double Tolerance
         {
-            get { return _tolerance; }
-            set { _tolerance = value; }
+            get => _tolerance;
+            set => _tolerance = value;
         }
 
         public bool Match(IGeometry a, IGeometry b)
         {
-            var aClone = (IGeometry) a.Clone();
-            var bClone = (IGeometry) b.Clone();
+            var aClone = (IGeometry) a.Copy();
+            var bClone = (IGeometry) b.Copy();
             aClone.Normalize();
             bClone.Normalize();
             return aClone.EqualsExact(bClone, _tolerance);

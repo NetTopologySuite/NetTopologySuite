@@ -1,13 +1,9 @@
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using GeoAPI.Geometries;
-#if !NET35 && !PCL
-using GeoAPI;
-using Enumerable = GeoAPI.Linq.Enumerable;
-#else
 using System;
-using Enumerable = System.Linq.Enumerable;
-#endif
+using System.Collections.Generic;
+using System.Linq;
+
+using GeoAPI.Geometries;
+
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
@@ -31,7 +27,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// </item>
     /// <item>
     /// The coordinate lists may be changed (e.g. by adding, deleting or modifying coordinates).
-    /// The modifed coordinate lists must be consistent with their original parent component
+    /// The modified coordinate lists must be consistent with their original parent component
     /// (e.g. a <tt>LinearRing</tt> must always have at least 4 coordinates, and the first and last
     /// coordinate must be equal).
     /// </item>
@@ -47,7 +43,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// If changing the structure is required, use a <see cref="GeometryTransformer"/>.
     /// </para>
     /// <para>
-    /// This class supports creating an edited Geometry 
+    /// This class supports creating an edited Geometry
     /// using a different <see cref="IGeometryFactory"/> via the <see cref="GeometryEditor(IGeometryFactory)"/>
     /// constructor.
     /// Examples of situations where this is required is if the geometry is
@@ -56,7 +52,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// Usage notes
     /// <list type="Bullet">
     /// <item>The resulting Geometry is not checked for validity.
-    /// If validity needs to be enforced, the new Geometry's 
+    /// If validity needs to be enforced, the new Geometry's
     /// <see cref="IGeometry.IsValid"/> method should be called.</item>
     /// <item>By default the UserData of the input geometry is not copied to the result. </item>
     /// </list>
@@ -98,10 +94,9 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         public bool CopyUserData
         {
-            get { return _isUserDataCopied; }
-            set { _isUserDataCopied = value; }
+            get => _isUserDataCopied;
+            set => _isUserDataCopied = value;
         }
-
 
         /// <summary>
         /// Edit the input <c>Geometry</c> with the given edit operation.
@@ -144,7 +139,7 @@ namespace NetTopologySuite.Geometries.Utilities
             var newPolygon = (IPolygon)operation.Edit(polygon, _factory);
             // create one if needed
             if (newPolygon == null)
-                newPolygon = _factory.CreatePolygon((ICoordinateSequence)null);
+                newPolygon = _factory.CreatePolygon();
             if (newPolygon.IsEmpty)
                 //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
                 return newPolygon;
@@ -152,10 +147,10 @@ namespace NetTopologySuite.Geometries.Utilities
             var shell = (ILinearRing)Edit(newPolygon.ExteriorRing, operation);
             if (shell == null || shell.IsEmpty)
                 //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
-                return _factory.CreatePolygon(null, null);
+                return _factory.CreatePolygon();
 
             var holes = new List<ILinearRing>();
-            for (var i = 0; i < newPolygon.NumInteriorRings; i++)
+            for (int i = 0; i < newPolygon.NumInteriorRings; i++)
             {
                 var hole = (ILinearRing)Edit(newPolygon.GetInteriorRingN(i), operation);
                 if (hole == null || hole.IsEmpty) continue;
@@ -172,8 +167,8 @@ namespace NetTopologySuite.Geometries.Utilities
             var collectionForType = (IGeometryCollection)operation.Edit(collection, _factory);
 
             // edit the component geometries
-            IList<IGeometry> geometries = new List<IGeometry>();
-            for (var i = 0; i < collectionForType.NumGeometries; i++)
+            var geometries = new List<IGeometry>();
+            for (int i = 0; i < collectionForType.NumGeometries; i++)
             {
                 var geometry = Edit(collectionForType.GetGeometryN(i), operation);
                 if (geometry == null || geometry.IsEmpty) continue;
@@ -181,15 +176,15 @@ namespace NetTopologySuite.Geometries.Utilities
             }
 
             if (collectionForType is IMultiPoint)
-                return _factory.CreateMultiPoint(Enumerable.ToArray(Enumerable.Cast<IPoint>(geometries)));
+                return _factory.CreateMultiPoint(geometries.Cast<IPoint>().ToArray());
 
             if (collectionForType is IMultiLineString)
-                return _factory.CreateMultiLineString(Enumerable.ToArray(Enumerable.Cast<ILineString>(geometries)));
+                return _factory.CreateMultiLineString(geometries.Cast<ILineString>().ToArray());
 
             if (collectionForType is IMultiPolygon)
-                return _factory.CreateMultiPolygon(Enumerable.ToArray(Enumerable.Cast<IPolygon>(geometries)));
+                return _factory.CreateMultiPolygon(geometries.Cast<IPolygon>().ToArray());
 
-            return _factory.CreateGeometryCollection(Enumerable.ToArray(geometries));
+            return _factory.CreateGeometryCollection(geometries.ToArray());
         }
 
         /// <summary>
@@ -253,7 +248,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
                 if (geometry is Point)
                 {
-                    Coordinate[] newCoordinates = Edit(geometry.Coordinates, geometry);
+                    var newCoordinates = Edit(geometry.Coordinates, geometry);
                     return factory.CreatePoint((newCoordinates.Length > 0) ? newCoordinates[0] : null);
                 }
 
@@ -270,7 +265,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// A <see cref="IGeometryEditorOperation"/> which edits the <see cref="ICoordinateSequence"/> 
+        /// A <see cref="IGeometryEditorOperation"/> which edits the <see cref="ICoordinateSequence"/>
         /// of a <see cref="IGeometry"/>.
         /// <para/>
         /// Operates on Geometry subclasses which contains a single coordinate list.

@@ -14,14 +14,14 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         [TestAttribute]
         public void Test2Lines() {
-            RobustLineIntersector i = new RobustLineIntersector();
-            Coordinate p1 = new Coordinate(10, 10);
-            Coordinate p2 = new Coordinate(20, 20);
-            Coordinate q1 = new Coordinate(20, 10);
-            Coordinate q2 = new Coordinate(10, 20);
-            Coordinate x = new Coordinate(15, 15);
+            var i = new RobustLineIntersector();
+            var p1 = new Coordinate(10, 10);
+            var p2 = new Coordinate(20, 20);
+            var q1 = new Coordinate(20, 10);
+            var q2 = new Coordinate(10, 20);
+            var x = new Coordinate(15, 15);
             i.ComputeIntersection(p1, p2, q1, q2);
-            Assert.AreEqual(RobustLineIntersector.DoIntersect, i.IntersectionNum);
+            Assert.AreEqual(RobustLineIntersector.PointIntersection, i.IntersectionNum);
             Assert.AreEqual(1, i.IntersectionNum);
             Assert.AreEqual(x, i.GetIntersection(0));
             Assert.IsTrue(i.IsProper);
@@ -30,52 +30,52 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         [TestAttribute]
         public void TestCollinear1() {
-            RobustLineIntersector i = new RobustLineIntersector();
-            Coordinate p1 = new Coordinate(10, 10);
-            Coordinate p2 = new Coordinate(20, 10);
-            Coordinate q1 = new Coordinate(22, 10);
-            Coordinate q2 = new Coordinate(30, 10);
+            var i = new RobustLineIntersector();
+            var p1 = new Coordinate(10, 10);
+            var p2 = new Coordinate(20, 10);
+            var q1 = new Coordinate(22, 10);
+            var q2 = new Coordinate(30, 10);
             i.ComputeIntersection(p1, p2, q1, q2);
-            Assert.AreEqual(RobustLineIntersector.DontIntersect, i.IntersectionNum);
+            Assert.AreEqual(RobustLineIntersector.NoIntersection, i.IntersectionNum);
             Assert.IsTrue(!i.IsProper);
             Assert.IsTrue(!i.HasIntersection);
         }
 
         [TestAttribute]
         public void TestCollinear2() {
-            RobustLineIntersector i = new RobustLineIntersector();
-            Coordinate p1 = new Coordinate(10, 10);
-            Coordinate p2 = new Coordinate(20, 10);
-            Coordinate q1 = new Coordinate(20, 10);
-            Coordinate q2 = new Coordinate(30, 10);
+            var i = new RobustLineIntersector();
+            var p1 = new Coordinate(10, 10);
+            var p2 = new Coordinate(20, 10);
+            var q1 = new Coordinate(20, 10);
+            var q2 = new Coordinate(30, 10);
             i.ComputeIntersection(p1, p2, q1, q2);
-            Assert.AreEqual(RobustLineIntersector.DoIntersect, i.IntersectionNum);
+            Assert.AreEqual(RobustLineIntersector.PointIntersection, i.IntersectionNum);
             Assert.IsTrue(!i.IsProper);
             Assert.IsTrue(i.HasIntersection);
         }
 
         [TestAttribute]
         public void TestCollinear3() {
-            RobustLineIntersector i = new RobustLineIntersector();
-            Coordinate p1 = new Coordinate(10, 10);
-            Coordinate p2 = new Coordinate(20, 10);
-            Coordinate q1 = new Coordinate(15, 10);
-            Coordinate q2 = new Coordinate(30, 10);
+            var i = new RobustLineIntersector();
+            var p1 = new Coordinate(10, 10);
+            var p2 = new Coordinate(20, 10);
+            var q1 = new Coordinate(15, 10);
+            var q2 = new Coordinate(30, 10);
             i.ComputeIntersection(p1, p2, q1, q2);
-            Assert.AreEqual(RobustLineIntersector.Collinear, i.IntersectionNum);
+            Assert.AreEqual(RobustLineIntersector.CollinearIntersection, i.IntersectionNum);
             Assert.IsTrue(!i.IsProper);
             Assert.IsTrue(i.HasIntersection);
         }
 
         [TestAttribute]
         public void TestCollinear4() {
-            RobustLineIntersector i = new RobustLineIntersector();
-            Coordinate p1 = new Coordinate(30, 10);
-            Coordinate p2 = new Coordinate(20, 10);
-            Coordinate q1 = new Coordinate(10, 10);
-            Coordinate q2 = new Coordinate(30, 10);
+            var i = new RobustLineIntersector();
+            var p1 = new Coordinate(30, 10);
+            var p2 = new Coordinate(20, 10);
+            var q1 = new Coordinate(10, 10);
+            var q2 = new Coordinate(30, 10);
             i.ComputeIntersection(p1, p2, q1, q2);
-            Assert.AreEqual(RobustLineIntersector.Collinear, i.IntersectionNum);
+            Assert.AreEqual(RobustLineIntersector.CollinearIntersection, i.IntersectionNum);
             Assert.IsTrue(i.HasIntersection);
         }
 
@@ -124,7 +124,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         [TestAttribute]
         public void TestIsCCW() {
-            Assert.AreEqual(1, CGAlgorithms.ComputeOrientation(
+            Assert.AreEqual(OrientationIndex.CounterClockwise, Orientation.Index(
             new Coordinate(-123456789, -40),
             new Coordinate(0, 0),
             new Coordinate(381039468754763d, 123456789)));
@@ -132,11 +132,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         [TestAttribute]
         public void TestIsCCW2() {
-            Assert.AreEqual(0, CGAlgorithms.ComputeOrientation(
-            new Coordinate(10, 10),
-            new Coordinate(20, 20),
-            new Coordinate(0, 0)));
-            Assert.AreEqual(0, NonRobustCGAlgorithms.ComputeOrientation(
+            Assert.AreEqual(OrientationIndex.Collinear, Orientation.Index(
             new Coordinate(10, 10),
             new Coordinate(20, 20),
             new Coordinate(0, 0)));
@@ -144,14 +140,14 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         [TestAttribute]
         public void TestA() {
-            Coordinate p1 = new Coordinate(-123456789, -40);
-            Coordinate p2 = new Coordinate(381039468754763d, 123456789);
-            Coordinate q  = new Coordinate(0, 0);
-            ILineString l = new GeometryFactory().CreateLineString(new Coordinate[] {p1, p2});
-            IPoint p = new GeometryFactory().CreatePoint(q);
+            var p1 = new Coordinate(-123456789, -40);
+            var p2 = new Coordinate(381039468754763d, 123456789);
+            var q  = new Coordinate(0, 0);
+            var l = new GeometryFactory().CreateLineString(new Coordinate[] {p1, p2});
+            var p = new GeometryFactory().CreatePoint(q);
             Assert.AreEqual(false, l.Intersects(p));
-            Assert.AreEqual(false, CGAlgorithms.IsOnLine(q, new Coordinate[] { p1, p2 }));
-            Assert.AreEqual(-1, CGAlgorithms.ComputeOrientation(p1, p2, q));
+            Assert.AreEqual(false, PointLocation.IsOnLine(q, new Coordinate[] { p1, p2 }));
+            Assert.AreEqual(OrientationIndex.Clockwise, Orientation.Index(p1, p2, q));
         }
 
     }

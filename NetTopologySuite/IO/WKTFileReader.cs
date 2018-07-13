@@ -15,7 +15,7 @@ namespace NetTopologySuite.IO
     /// </author>
     public class WKTFileReader
     {
-#if !PCL
+#if FEATURE_FILE_IO
         private const int MaxLookahead = 2048;
         private readonly FileInfo _file;
 #endif
@@ -30,7 +30,7 @@ namespace NetTopologySuite.IO
             Limit = -1;
         }
 
-#if !PCL
+#if FEATURE_FILE_IO
         ///<summary>
         /// Creates a new <see cref="WKTFileReader" /> given the <paramref name="file" /> to read from and a <see cref="WKTReader" /> to use to parse the geometries.
         ///</summary>
@@ -47,13 +47,11 @@ namespace NetTopologySuite.IO
         ///</summary>
         /// <param name="filename">The name of the file to read from</param>
         /// <param name="wktReader">The geometry reader to use</param>
-        public WKTFileReader(String filename, WKTReader wktReader)
+        public WKTFileReader(string filename, WKTReader wktReader)
             : this(new FileInfo(filename), wktReader)
         {
         }
 #endif
-
-#if PCL
         ///<summary>
         /// Creates a new <see cref="WKTFileReader" />, given a <see cref="Stream"/> to read from.
         ///</summary>
@@ -63,7 +61,6 @@ namespace NetTopologySuite.IO
             : this(new StreamReader(stream), wktReader)
         {
         }
-#endif
 
         ///<summary>
         /// Creates a new <see cref="WKTFileReader" />, given a <see cref="TextReader"/> to read with.
@@ -94,30 +91,32 @@ namespace NetTopologySuite.IO
         /// If an offset is specified, geometries read up to the offset count are skipped.</para>
         /// <para>If a limit is specified, no more than <see cref="Limit" /> geometries are read.</para>
         /// </remarks>
+        /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
+        /// <exception cref="GeoAPI.IO.ParseException">Thrown if an error occurred reading a geometry</exception>
         /// <returns>The list of geometries read</returns>
         public IList<IGeometry> Read()
         {
             _count = 0;
 
-#if !PCL
+#if FEATURE_FILE_IO
             if (_file != null)
-                _reader =  new StreamReader(new BufferedStream(_file.OpenRead(), MaxLookahead)); 
+                _reader =  new StreamReader(new FileStream(_file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read, MaxLookahead));
 #endif
             try
             {
-                return Read(_reader);                
+                return Read(_reader);
             }
             finally
             {
-#if !PCL
-                _reader.Close();
+#if FEATURE_FILE_IO
+                _reader.Dispose();
 #endif
             }
         }
 
         private IList<IGeometry> Read(TextReader bufferedReader)
         {
-            IList<IGeometry> geoms = new List<IGeometry>();
+            var geoms = new List<IGeometry>();
             var tokens = _wktReader.Tokenizer(bufferedReader);
             tokens.MoveNext();
             while (!IsAtEndOfTokens(tokens.Current) && !IsAtLimit(geoms))

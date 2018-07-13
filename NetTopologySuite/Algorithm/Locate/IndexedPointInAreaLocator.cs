@@ -8,10 +8,16 @@ using NetTopologySuite.Index.IntervalRTree;
 namespace NetTopologySuite.Algorithm.Locate
 {
     ///<summary>
-    /// Determines the location of <see cref="Coordinate"/>s relative to
-    /// a <see cref="IPolygonal"/> geometry, using indexing for efficiency.
+    /// Determines the <see cref="Location"/> of <see cref="Coordinate"/>s relative to
+    /// an areal geometry, using indexing for efficiency.
     /// This algorithm is suitable for use in cases where
     /// many points will be tested against a given area.
+    /// <para/>
+    /// The <c>Location</c> is computed precisely, th that points
+    /// located on the geometry boundary or segments will
+    /// return <see cref="Location.Boundary"/>.
+    /// <para/>
+    /// <see cref="IPolygonal"/> and <see cref="ILinearRing"/> geometries are supported.
     /// <para/>
     /// Thread-safe and immutable.
     ///</summary>
@@ -22,11 +28,12 @@ namespace NetTopologySuite.Algorithm.Locate
 
         ///<summary>
         /// Creates a new locator for a given <see cref="IGeometry"/>.
+        /// <see cref="IPolygonal"/> and <see cref="ILinearRing"/> geometries are supported
         ///</summary>
-        /// <param name="g">the Geometry to locate in</param>
+        /// <param name="g">The Geometry to locate in</param>
         public IndexedPointInAreaLocator(IGeometry g)
         {
-            if (!(g is IPolygonal))
+            if (!(g is IPolygonal || g is ILinearRing))
                 throw new ArgumentException("Argument must be Polygonal");
             _index = new IntervalIndexedGeometry(g);
         }
@@ -39,10 +46,9 @@ namespace NetTopologySuite.Algorithm.Locate
         /// </returns>
         public Location Locate(Coordinate p)
         {
-            RayCrossingCounter rcc = new RayCrossingCounter(p);
+            var rcc = new RayCrossingCounter(p);
 
-
-            SegmentVisitor visitor = new SegmentVisitor(rcc);
+            var visitor = new SegmentVisitor(rcc);
             _index.Query(p.Y, p.Y, visitor);
 
             /*
@@ -60,7 +66,7 @@ namespace NetTopologySuite.Algorithm.Locate
           for (Iterator i = segs.iterator(); i.hasNext(); ) {
             LineSegment seg = (LineSegment) i.next();
             rcc.countSegment(seg.getCoordinate(0), seg.getCoordinate(1));
-      
+
             // short-circuit if possible
             if (rcc.isOnSegment()) return;
           }
@@ -96,7 +102,7 @@ namespace NetTopologySuite.Algorithm.Locate
                 var lines = LinearComponentExtracter.GetLines(geom);
                 foreach (ILineString line in lines)
                 {
-                    Coordinate[] pts = line.Coordinates;
+                    var pts = line.Coordinates;
                     AddLine(pts);
                 }
             }
@@ -105,7 +111,7 @@ namespace NetTopologySuite.Algorithm.Locate
             {
                 for (int i = 1; i < pts.Length; i++)
                 {
-                    LineSegment seg = new LineSegment(pts[i - 1], pts[i]);
+                    var seg = new LineSegment(pts[i - 1], pts[i]);
                     double min = Math.Min(seg.P0.Y, seg.P1.Y);
                     double max = Math.Max(seg.P0.Y, seg.P1.Y);
                     _index.Insert(min, max, seg);

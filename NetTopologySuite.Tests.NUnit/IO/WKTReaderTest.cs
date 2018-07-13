@@ -172,13 +172,13 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
         public void DoTestThreading()
         {
-            IGeometryServices services = GeometryServiceProvider.Instance;
+            var services = GeometryServiceProvider.Instance;
             services.CreateGeometryFactory();
             int before = ((NtsGeometryServices) services).NumFactories;
 
             Debug.WriteLine("{0} factories already created", before);
 
-            var wkts = new[]
+            string[] wkts = new[]
                 {
                     "POINT ( 10 20 )",
                     "LINESTRING EMPTY",
@@ -190,7 +190,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                     ,
                 };
             int[] srids = {4326, 31467, 3857};
-            
+
             const int numJobs = 30;
             var waitHandles = new WaitHandle[numJobs];
             for (int i = 0; i < numJobs; i++)
@@ -201,27 +201,27 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
             WaitHandle.WaitAll(waitHandles, 10000);
 
-            int after = ((NtsGeometryServices)services).NumFactories; 
+            int after = ((NtsGeometryServices)services).NumFactories;
             Console.WriteLine("Now {0} factories created", after);
-            Assert.LessOrEqual(after, before + srids.Length); 
+            Assert.LessOrEqual(after, before + srids.Length);
         }
 
         private static readonly Random Rnd = new Random();
         private static void TestReaderInThreadedContext(object info)
         {
-            var parameters = (object[]) info;
-            var wkts = (string[]) parameters[0];
+            object[] parameters = (object[]) info;
+            string[] wkts = (string[]) parameters[0];
             var waitHandle = (AutoResetEvent) parameters[1];
-            var srids = (int[]) parameters[2];
-            var jobId = (int) parameters[3];
+            int[] srids = (int[]) parameters[2];
+            int jobId = (int) parameters[3];
 
-            for (var i = 0; i < 1000; i++)
+            for (int i = 0; i < 1000; i++)
             {
-                var wkt = wkts[Rnd.Next(0, wkts.Length)];
+                string wkt = wkts[Rnd.Next(0, wkts.Length)];
                 var reader = new WKTReader();
                 var geom = reader.Read(wkt);
                 Assert.NotNull(geom);
-                foreach (var srid in srids)
+                foreach (int srid in srids)
                 {
                     geom.SRID = srid;
                     Assert.AreEqual(geom.SRID, srid);

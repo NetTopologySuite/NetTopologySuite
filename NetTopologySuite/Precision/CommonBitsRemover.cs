@@ -57,10 +57,7 @@ namespace NetTopologySuite.Precision
         /// <summary>
         /// The common bits of the Coordinates in the supplied Geometries.
         /// </summary>
-        public Coordinate CommonCoordinate
-        {
-            get { return _commonCoord; }
-        }
+        public Coordinate CommonCoordinate => _commonCoord;
 
         /// <summary>
         /// Removes the common coordinate bits from a Geometry.
@@ -72,10 +69,10 @@ namespace NetTopologySuite.Precision
         {
             if (_commonCoord.X == 0.0 && _commonCoord.Y == 0.0)
                 return geom;
-            Coordinate invCoord = new Coordinate(_commonCoord);
+            var invCoord = new Coordinate(_commonCoord);
             invCoord.X = -invCoord.X;
             invCoord.Y = -invCoord.Y;
-            Translater trans = new Translater(invCoord);
+            var trans = new Translater(invCoord);
             geom.Apply(trans);
             geom.GeometryChanged();
             return geom;
@@ -114,13 +111,7 @@ namespace NetTopologySuite.Precision
             /// <summary>
             ///
             /// </summary>
-            public Coordinate CommonCoordinate
-            {
-                get
-                {
-                    return new Coordinate(_commonBitsX.Common, _commonBitsY.Common);
-                }
-            }
+            public Coordinate CommonCoordinate => new Coordinate(_commonBitsX.Common, _commonBitsY.Common);
         }
 
         /// <summary>
@@ -145,15 +136,15 @@ namespace NetTopologySuite.Precision
             /// <param name="seq">The coordinate sequence</param>
             public void Filter(ICoordinateSequence seq, int i)
             {
-                var xp = seq.GetOrdinate(i, Ordinate.X) + _trans.X;
-                var yp = seq.GetOrdinate(i, Ordinate.Y) + _trans.Y;
+                double xp = seq.GetOrdinate(i, Ordinate.X) + _trans.X;
+                double yp = seq.GetOrdinate(i, Ordinate.Y) + _trans.Y;
                 seq.SetOrdinate(i, Ordinate.X, xp);
                 seq.SetOrdinate(i, Ordinate.Y, yp);
             }
 
-            public bool Done {  get { return false; } }
+            public bool Done => false;
 
-            public bool GeometryChanged {  get { return true; } }
+            public bool GeometryChanged => true;
         }
     }
 }

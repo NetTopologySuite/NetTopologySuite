@@ -1,7 +1,7 @@
 namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public enum Positions
     {
@@ -15,25 +15,25 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         Left = 1,
 
-        /// <summary> 
+        /// <summary>
         /// An indicator that a Location is to the <c>right</c> of a GraphComponent (2)
-        /// </summary> 
+        /// </summary>
         Right = 2,
 
-        /// <summary> 
+        /// <summary>
         /// An indicator that a Location is <c>is parallel to x-axis</c> of a GraphComponent (-1)
-        /// /// </summary> 
+        /// /// </summary>
         Parallel = -1,
     }
 
-    /// <summary> 
+    /// <summary>
     /// A Position indicates the position of a Location relative to a graph component
     /// (Node, Edge, or Area).
     /// </summary>
-    public class Position 
+    public class Position
     {
-        /// <summary> 
-        /// Returns Positions.Left if the position is Positions.Right, 
+        /// <summary>
+        /// Returns Positions.Left if the position is Positions.Right,
         /// Positions.Right if the position is Left, or the position
         /// otherwise.
         /// </summary>

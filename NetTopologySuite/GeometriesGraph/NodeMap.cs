@@ -4,7 +4,7 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.GeometriesGraph
 {
-    /// <summary> 
+    /// <summary>
     /// A map of nodes, indexed by the coordinate of the node.
     /// </summary>
     public class NodeMap
@@ -13,7 +13,7 @@ namespace NetTopologySuite.GeometriesGraph
         private readonly NodeFactory _nodeFact;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="nodeFact"></param>
         public NodeMap(NodeFactory nodeFact)
@@ -21,7 +21,7 @@ namespace NetTopologySuite.GeometriesGraph
             _nodeFact = nodeFact;
         }
 
-        /// <summary> 
+        /// <summary>
         /// This method expects that a node has a coordinate value.
         /// </summary>
         /// <param name="coord"></param>
@@ -37,14 +37,14 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
         public Node AddNode(Node n)
         {
-            Node node = _nodeMap[n.Coordinate];
-            if (node == null) 
+            var node = _nodeMap[n.Coordinate];
+            if (node == null)
             {
                 _nodeMap.Add(n.Coordinate, n);
                 return n;
@@ -53,7 +53,7 @@ namespace NetTopologySuite.GeometriesGraph
             return node;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Adds a node for the start point of this EdgeEnd
         /// (if one does not already exist in this map).
         /// Adds the EdgeEnd to the (possibly new) node.
@@ -61,12 +61,12 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="e"></param>
         public void Add(EdgeEnd e)
         {
-            Coordinate p = e.Coordinate;
-            Node n = AddNode(p);
+            var p = e.Coordinate;
+            var n = AddNode(p);
             n.Add(e);
         }
 
-        /// <returns> 
+        /// <returns>
         /// The node if found; null otherwise.
         /// </returns>
         /// <param name="coord"></param>
@@ -79,7 +79,7 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public IEnumerator<Node> GetEnumerator()
@@ -88,22 +88,19 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public IList<Node> Values
-        {
-            get { return new List<Node>(_nodeMap.Values); }
-        }
+        public IList<Node> Values => new List<Node>(_nodeMap.Values);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <returns></returns>
         public IList<Node> GetBoundaryNodes(int geomIndex)
         {
-            IList<Node> bdyNodes = new List<Node>();
-            foreach (Node node in _nodeMap.Values)
+            var bdyNodes = new List<Node>();
+            foreach (var node in _nodeMap.Values)
             {
                 if (node.Label.GetLocation(geomIndex) == Location.Boundary)
                     bdyNodes.Add(node);
@@ -112,12 +109,12 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="outstream"></param>
         public void Write(StreamWriter outstream)
         {
-            foreach (Node node in _nodeMap.Values)
+            foreach (var node in _nodeMap.Values)
             {
                 node.Write(outstream);
             }

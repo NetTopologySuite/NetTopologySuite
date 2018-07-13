@@ -8,11 +8,11 @@ namespace NetTopologySuite.Tests.NUnit.Performance
     /// to be run by the <see cref="PerformanceTestRunner"/>.
     /// <para/>
     /// In a subclass of this class,
-    /// all public methods which start with <c>Run</c> are 
+    /// all public methods which start with <c>Run</c> are
     /// executed as performance tests.
     /// <para/>
     /// Multiple test runs with different run sizes may be made.
-    /// Within each run, each <c>Run</c> method is executed 
+    /// Within each run, each <c>Run</c> method is executed
     /// the specified number of iterations.
     /// The time to run the method is printed for each one.
     /// </summary>
@@ -37,17 +37,14 @@ namespace NetTopologySuite.Tests.NUnit.Performance
 
         public abstract void TestInternal();
 
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name => _name;
 
         /// <summary>
         /// Gets or sets the size(s) for the runs or the test
         /// </summary>
-        public int[] RunSize    
+        public int[] RunSize
         {
-            get { return _runSize; }
+            get => _runSize;
             set
             {
                 if (value == null) throw new ArgumentNullException("value");
@@ -57,7 +54,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
             }
         }
 
-        public long[] RunTime {  get { return _runTime;  } }
+        public long[] RunTime => _runTime;
 
         /// <summary>
         /// Gets or sets the number of iterations to execute te test methods in each run
@@ -68,7 +65,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
         /// Sets up any fixtures needed for the test runs
         /// </summary>
         /// <exception cref="Exception"></exception>
-        [TestFixtureSetUpAttribute]
+        [OneTimeSetUp]
         public virtual void SetUp()
         {
 
@@ -94,7 +91,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
         /// Tear down any fixtures made fot the testing
         /// </summary>
         /// <exception cref="Exception"></exception>
-        [TestFixtureTearDownAttribute]
+        [OneTimeTearDown]
         public virtual void TearDown()
         {
 

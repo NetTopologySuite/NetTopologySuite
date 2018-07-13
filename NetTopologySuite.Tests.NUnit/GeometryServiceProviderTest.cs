@@ -36,16 +36,12 @@ namespace NetTopologySuite.Tests.NUnit
 
             Assert.Throws<ArgumentNullException>(() => GeometryServiceProvider.Instance = null);
 
-            GeometryServiceProvider.Instance = nts;
             var factory = nts.CreateGeometryFactory();
 
             Assert.IsNotNull(factory);
             Assert.AreEqual(nts.DefaultSRID, factory.SRID);
             Assert.AreEqual(nts.DefaultPrecisionModel, factory.PrecisionModel);
             Assert.AreEqual(nts.DefaultCoordinateSequenceFactory, factory.CoordinateSequenceFactory);
-
-            // restore default!
-            GeometryServiceProvider.Instance = new NtsGeometryServices();
         }
 
         [TestAttribute]
@@ -53,10 +49,10 @@ namespace NetTopologySuite.Tests.NUnit
         {
             try
             {
-                var srids = new[] {4326, 31467, 3857, 27700};
+                int[] srids = new[] {4326, 31467, 3857, 27700};
                 var precisionModels = new[]
                     {
-                        new PrecisionModel(PrecisionModels.Floating), 
+                        new PrecisionModel(PrecisionModels.Floating),
                         new PrecisionModel(PrecisionModels.FloatingSingle),
                         new PrecisionModel(1),
                         new PrecisionModel(10),
@@ -65,7 +61,7 @@ namespace NetTopologySuite.Tests.NUnit
 
                 const int numWorkItems = 30;
                 var waitHandles = new WaitHandle[numWorkItems];
-                for (var i = 0; i < numWorkItems; i++)
+                for (int i = 0; i < numWorkItems; i++)
                 {
                     waitHandles[i] = new AutoResetEvent(false);
                     ThreadPool.QueueUserWorkItem(TestFacories, new object[] {srids, precisionModels, waitHandles[i], i+1, false});
@@ -86,17 +82,17 @@ namespace NetTopologySuite.Tests.NUnit
 
         private static void TestFacories(object info)
         {
-            var parameters = (object[]) info;
-            var srids = (int[]) parameters[0];
+            object[] parameters = (object[]) info;
+            int[] srids = (int[]) parameters[0];
             var precisionModels = (IPrecisionModel[]) parameters[1];
             var wh = (AutoResetEvent) parameters[2];
-            var workItemId = (int) parameters[3];
-            var verbose = (bool) parameters[4];
+            int workItemId = (int) parameters[3];
+            bool verbose = (bool) parameters[4];
             var rnd = new Random();
 
-            for (var i = 0; i < 1000; i++)
+            for (int i = 0; i < 1000; i++)
             {
-                var srid = srids[rnd.Next(0, srids.Length)];
+                int srid = srids[rnd.Next(0, srids.Length)];
                 var precisionModel = precisionModels[rnd.Next(0, precisionModels.Length)];
 
                 var factory = GeometryServiceProvider.Instance.CreateGeometryFactory(precisionModel, srid);

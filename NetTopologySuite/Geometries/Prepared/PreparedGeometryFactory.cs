@@ -5,7 +5,7 @@ namespace NetTopologySuite.Geometries.Prepared
 {
     ///<summary>
     /// A factory for creating <see cref="IPreparedGeometry"/>s. It chooses an appropriate implementation of PreparedGeometry
-    /// based on the geoemtric type of the input geometry.
+    /// based on the geometric type of the input geometry.
     ///</summary>
     /// <remarks>
     /// In the future, the factory may accept hints that indicate

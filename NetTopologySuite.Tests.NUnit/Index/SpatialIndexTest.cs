@@ -58,7 +58,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
                 {
                     double miny = (j * CELL_EXTENT) + offset;
                     double maxy = miny + FEATURE_EXTENT;
-                    Envelope e = new Envelope(minx, maxx, miny, maxy);
+                    var e = new Envelope(minx, maxx, miny, maxy);
                     sourceData.Add(e);
                 }
             }
@@ -76,7 +76,7 @@ namespace NetTopologySuite.Tests.NUnit.Index
             {
                 for (double y = 0; y < CELL_EXTENT * CELLS_PER_GRID_SIDE; y += queryEnvelopeExtent)
                 {
-                    Envelope queryEnvelope = new Envelope(x, x + queryEnvelopeExtent, y, y + queryEnvelopeExtent);
+                    var queryEnvelope = new Envelope(x, x + queryEnvelopeExtent, y, y + queryEnvelopeExtent);
                     var expectedMatches = IntersectingEnvelopes(queryEnvelope, sourceData);
                     var actualMatches = index.Query(queryEnvelope);
                     Assert.IsTrue(expectedMatches.Count <= actualMatches.Count);
@@ -100,10 +100,10 @@ namespace NetTopologySuite.Tests.NUnit.Index
         {
             //Don't use #containsAll because we want to check using
             //==, not #equals. [Jon Aquino]
-            foreach (var expected in expectedEnvelopes)
+            foreach (object expected in expectedEnvelopes)
             {
                 bool found = false;
-                foreach (var actual in actualEnvelopes)
+                foreach (object actual in actualEnvelopes)
                 {
                     if (actual == expected)
                     {

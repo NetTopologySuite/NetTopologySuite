@@ -20,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// The fix is to use a new heuristic which out of the 4 endpoints
         /// chooses the one which is closest to the other segment.
         /// This works in all known failure cases.
-        /// </summary>                  
+        /// </summary>
         [TestAttribute]
         public void TestCentralEndpointHeuristicFailure()
         {
@@ -44,10 +44,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
 
         /// <summary>
-        /// Tests a case where intersection point is rounded, 
+        /// Tests a case where intersection point is rounded,
         /// and it is computed as a nearest endpoint.
-        /// Exposed a bug due to aliasing of endpoint. 
-        ///  
+        /// Exposed a bug due to aliasing of endpoint.
+        ///
         /// MD 8 Mar 2013
         /// </summary>
         [TestAttribute]
@@ -201,7 +201,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 0);
         }
 
-        private void CheckIntersectionNone(String wkt1, String wkt2)
+        private void CheckIntersectionNone(string wkt1, string wkt2)
         {
             var l1 = (LineString)_reader.Read(wkt1);
             var l2 = (LineString)_reader.Read(wkt2);
@@ -213,8 +213,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             CheckIntersection(pt, 0, null, 0);
         }
 
-
-        private void CheckIntersection(String wkt1, String wkt2,
+        private void CheckIntersection(string wkt1, string wkt2,
             int expectedIntersectionNum,
             Coordinate[] intPt,
             double distanceTolerance)
@@ -229,9 +228,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             CheckIntersection(pt, expectedIntersectionNum, intPt, distanceTolerance);
         }
 
-        private void CheckIntersection(String wkt1, String wkt2,
+        private void CheckIntersection(string wkt1, string wkt2,
             int expectedIntersectionNum,
-            String expectedWKT,
+            string expectedWKT,
             double distanceTolerance)
         {
             var l1 = (LineString)_reader.Read(wkt1);
@@ -296,7 +295,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         private void CheckIntPoints(Coordinate p, Coordinate q, double distanceTolerance)
         {
-            var isEqual = Equals(p, q, distanceTolerance);
+            bool isEqual = Equals(p, q, distanceTolerance);
             Assert.IsTrue(isEqual, "Int Pts not equal - "
                                    + WKTWriter.ToPoint(p) + " vs "
                                    + WKTWriter.ToPoint(q));
@@ -307,15 +306,15 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             return p0.Distance(p1) <= distanceTolerance;
         }
 
-        private void CheckInputNotAltered(String wkt1, String wkt2, int scaleFactor)
+        private void CheckInputNotAltered(string wkt1, string wkt2, int scaleFactor)
         {
-            LineString l1 = (LineString)_reader.Read(wkt1);
-            LineString l2 = (LineString)_reader.Read(wkt2);
+            var l1 = (LineString)_reader.Read(wkt1);
+            var l2 = (LineString)_reader.Read(wkt2);
             Coordinate[] pt =
             {
                 l1.GetCoordinateN(0),
-                l1.GetCoordinateN(1), 
-                l2.GetCoordinateN(0), 
+                l1.GetCoordinateN(1),
+                l2.GetCoordinateN(0),
                 l2.GetCoordinateN(1)
             };
             CheckInputNotAltered(pt, scaleFactor);
@@ -324,7 +323,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         public void CheckInputNotAltered(Coordinate[] pt, int scaleFactor)
         {
             // save input points
-            Coordinate[] savePt = new Coordinate[4];
+            var savePt = new Coordinate[4];
             for (int i = 0; i < 4; i++)
             {
                 savePt[i] = new Coordinate(pt[i]);

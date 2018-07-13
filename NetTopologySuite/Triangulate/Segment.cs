@@ -9,15 +9,15 @@ namespace NetTopologySuite.Triangulate
     /// Models a constraint segment in a triangulation.
     /// A constraint segment is an oriented straight line segment between a start point
     /// and an end point.
-    /// 
-    /// @author David Skea
-    /// @author Martin Davis
+    /// </summary>
+    /// <author>David Skea</author>
+    /// <author>Martin Davis</author>
     ///
     public class Segment
     {
         private readonly LineSegment _ls;
 
-        /// <summary> 
+        /// <summary>
         /// Creates a new instance for the given ordinates.
         /// </summary>
         public Segment(double x1, double y1, double z1, double x2, double y2, double z2)
@@ -25,27 +25,27 @@ namespace NetTopologySuite.Triangulate
         {
         }
 
-        /// <summary> 
-        /// Creates a new instance for the given ordinates,  with associated external data. 
+        /// <summary>
+        /// Creates a new instance for the given ordinates,  with associated external data.
         /// </summary>
-        public Segment(double x1, double y1, double z1, double x2, double y2, double z2, Object data)
+        public Segment(double x1, double y1, double z1, double x2, double y2, double z2, object data)
             : this(new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2), data)
         {
         }
 
-        /// <summary> 
+        /// <summary>
         /// Creates a new instance for the given points, with associated external data.
         /// </summary>
         /// <param name="p0">the start point</param>
         /// <param name="p1">the end point</param>
         /// <param name="data">an external data object</param>
-        public Segment(Coordinate p0, Coordinate p1, Object data)
+        public Segment(Coordinate p0, Coordinate p1, object data)
         {
             _ls = new LineSegment(p0, p1);
             this.Data = data;
         }
 
-        /// <summary> 
+        /// <summary>
         /// Creates a new instance for the given points.
         /// </summary>
         /// <param name="p0">the start point</param>
@@ -59,19 +59,13 @@ namespace NetTopologySuite.Triangulate
         /// Gets the start coordinate of the segment
         /// </summary>
         /// <remarks>a Coordinate</remarks>
-        public Coordinate Start
-        {
-            get {return _ls.GetCoordinate(0);}
-        }
+        public Coordinate Start => _ls.GetCoordinate(0);
 
         /// <summary>
         /// Gets the end coordinate of the segment
         /// </summary>
         /// <remarks>a Coordinate</remarks>
-        public Coordinate End
-        {
-            get {return _ls.GetCoordinate(1);}
-        }
+        public Coordinate End => _ls.GetCoordinate(1);
 
         /// <summary>
         /// Gets the start X ordinate of the segment
@@ -155,16 +149,13 @@ namespace NetTopologySuite.Triangulate
         /// Gets a <tt>LineSegment</tt> modelling this segment.
         /// </summary>
         /// <remarks>a LineSegment</remarks>
-        public LineSegment LineSegment
-        {
-           get {return _ls;}
-        }
+        public LineSegment LineSegment => _ls;
 
         /// <summary>
         /// Gets or sets the external data associated with this segment
         /// </summary>
         /// <remarks>a data object</remarks>
-        public Object Data { get; set; }
+        public object Data { get; set; }
 
         /// <summary>
         /// Determines whether two segments are topologically equal.
@@ -191,7 +182,7 @@ namespace NetTopologySuite.Triangulate
         /// Computes a string representation of this segment.
         /// </summary>
         /// <returns>a string</returns>
-        public override String ToString()
+        public override string ToString()
         {
             return _ls.ToString();
         }

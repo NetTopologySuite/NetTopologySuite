@@ -31,20 +31,25 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// Initializes a new instance of the <see cref="ScaledNoder"/> class.
         /// </summary>
-        /// <param name="noder"></param>
-        /// <param name="scaleFactor"></param>
-        public ScaledNoder(INoder noder, double scaleFactor) 
-            : this(noder, scaleFactor, 0, 0) { }      
+        /// <param name="noder">The noder to use</param>
+        /// <param name="scaleFactor">The scale factor to use</param>
+        public ScaledNoder(INoder noder, double scaleFactor)
+        {
+            _noder = noder;
+            _scaleFactor = scaleFactor;
+            // no need to scale if input precision is already integral
+            _isScaled = !IsIntegerPrecision;
+        }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="noder"></param>
         /// <param name="scaleFactor"></param>
         /// <param name="offsetX"></param>
         /// <param name="offsetY"></param>
         [Obsolete("Do not use offsetX and offsetY")]
-        public ScaledNoder(INoder noder, double scaleFactor, double offsetX, double offsetY) 
+        public ScaledNoder(INoder noder, double scaleFactor, double offsetX, double offsetY)
         {
             _noder = noder;
             _scaleFactor = scaleFactor;
@@ -55,81 +60,73 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
-        public bool IsIntegerPrecision
-        { 
-            get
-            {
-                return _scaleFactor == 1.0;
-            }
-        }
+        public bool IsIntegerPrecision => _scaleFactor == 1.0;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public IList<ISegmentString> GetNodedSubstrings()
         {
-            IList<ISegmentString> splitSS = _noder.GetNodedSubstrings();
-            if (_isScaled) 
+            var splitSS = _noder.GetNodedSubstrings();
+            if (_isScaled)
                 Rescale(splitSS);
             return splitSS;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="inputSegStrings"></param>
         public void ComputeNodes(IList<ISegmentString> inputSegStrings)
         {
-            IList<ISegmentString> intSegStrings = inputSegStrings;
+            var intSegStrings = inputSegStrings;
             if(_isScaled)
                 intSegStrings = Scale(inputSegStrings);
             _noder.ComputeNodes(intSegStrings);
-        }    
+        }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="segStrings"></param>
         /// <returns></returns>
         private IList<ISegmentString> Scale(IList<ISegmentString> segStrings)
         {
-            return CollectionUtil.Transform<ISegmentString, ISegmentString>(segStrings, 
-                ss => ((ISegmentString)new NodedSegmentString(Scale(ss.Coordinates), ss.Context)));
+            var nodedSegmentStrings = new List<ISegmentString>(segStrings.Count);
+            for (int i = 0; i < segStrings.Count; i++)
+            {
+                var ss = segStrings[i];
+                nodedSegmentStrings.Add(new NodedSegmentString(Scale(ss.Coordinates), ss.Context));
+            }
+
+            return nodedSegmentStrings;
         }
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
         private Coordinate[] Scale(Coordinate[] pts)
         {
-            Coordinate[] roundPts = new Coordinate[pts.Length];
+            var roundPts = new Coordinate[pts.Length];
             for (int i = 0; i < pts.Length; i++)
                 roundPts[i] = new Coordinate(Math.Round((pts[i].X - _offsetX) * _scaleFactor),
                                              Math.Round((pts[i].Y - _offsetY) * _scaleFactor),
                                              pts[i].Z);
-            Coordinate[] roundPtsNoDup = CoordinateArrays.RemoveRepeatedPoints(roundPts);
+            var roundPtsNoDup = CoordinateArrays.RemoveRepeatedPoints(roundPts);
             return roundPtsNoDup;
-        }      
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="segStrings"></param>
-        private void Rescale(IList<ISegmentString> segStrings)
-        {
-            CollectionUtil.Apply(segStrings,
-                ss => { Rescale(ss.Coordinates); return null; } );                                           
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pts"></param>
+        private void Rescale(IList<ISegmentString> segStrings)
+        {
+            for (int i = 0; i < segStrings.Count; i++)
+                Rescale(segStrings[i].Coordinates);
+        }
+
         private void Rescale(Coordinate[] pts)
         {
             Coordinate p0 = null;
@@ -141,20 +138,19 @@ namespace NetTopologySuite.Noding
                 p1 = new Coordinate(pts[1]);
             }
 
-            for (int i = 0; i < pts.Length; i++) 
+            for (int i = 0; i < pts.Length; i++)
             {
                 pts[i].X = pts[i].X / _scaleFactor + _offsetX;
                 pts[i].Y = pts[i].Y / _scaleFactor + _offsetY;
             }
 
+#if DEBUG
             if (pts.Length == 2 && pts[0].Equals2D(pts[1]))
             {
-#if !PCL
                 Debug.WriteLine(pts[0]);
                 Debug.WriteLine(pts[1]);
-#endif
             }
-
+#endif
         }
     }
 }

@@ -92,14 +92,14 @@ namespace Open.Topology.TestRunner.Functions
         {
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
             var pts = new Coordinate[nPts];
-            var baseX = env.MinX;
-            var baseY = env.MinY;
+            double baseX = env.MinX;
+            double baseY = env.MinY;
 
-            var i = 0;
+            int i = 0;
             while (i < nPts)
             {
-                var x = baseX + env.Width * HaltonOrdinate(i + 1, basei);
-                var y = baseY + env.Height * HaltonOrdinate(i + 1, basej);
+                double x = baseX + env.Width * HaltonOrdinate(i + 1, basei);
+                double y = baseY + env.Height * HaltonOrdinate(i + 1, basej);
                 var p = new Coordinate(x, y);
                 if (env.Contains(p))
                     pts[i++] = new Coordinate(p);
@@ -120,7 +120,6 @@ namespace Open.Topology.TestRunner.Functions
             }
             return result;
         }
-
 
         public static IGeometry RandomSegments(IGeometry g, int nPts)
         {
@@ -235,7 +234,7 @@ namespace Open.Topology.TestRunner.Functions
         {
             while (true)
             {
-                var quad = (int)(RND.NextDouble() * 4);
+                int quad = (int)(RND.NextDouble() * 4);
                 if (quad > 3) quad = 3;
                 if (quad != exclude) return quad;
             }
@@ -243,8 +242,8 @@ namespace Open.Topology.TestRunner.Functions
 
         private static Coordinate RandomPtAround(Coordinate basePt, double xLen, double yLen)
         {
-            var x0 = basePt.X + xLen * (RND.NextDouble() - 0.5);
-            var y0 = basePt.Y + yLen * (RND.NextDouble() - 0.5);
+            double x0 = basePt.X + xLen * (RND.NextDouble() - 0.5);
+            double y0 = basePt.Y + yLen * (RND.NextDouble() - 0.5);
             return new Coordinate(x0, y0);
         }
     }

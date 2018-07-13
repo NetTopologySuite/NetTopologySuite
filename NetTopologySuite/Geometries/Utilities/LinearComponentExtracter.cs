@@ -4,7 +4,7 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries.Utilities
 {
-    /// <summary> 
+    /// <summary>
     /// Extracts all the 1-dimensional (<see cref="ILineString"/>) components from a <see cref="IGeometry"/>.
     /// For polygonal geometries, this will extract all the component <see cref="ILinearRing"/>s.
     /// If desired, <see cref="ILinearRing"/>s can be forced to be returned as <see cref="ILineString"/>s.
@@ -20,7 +20,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>The Collection of linear components (LineStrings or LinearRings)</returns>
         public static ICollection<IGeometry> GetLines(ICollection<IGeometry> geoms, ICollection<IGeometry> lines)
         {
-            foreach (IGeometry g in geoms)
+            foreach (var g in geoms)
             {
                 GetLines(g, lines);
             }
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>The Collection of linear components (LineStrings or LinearRings)</returns>
         public static ICollection<IGeometry> GetLines(ICollection<IGeometry> geoms, ICollection<IGeometry> lines, bool forceToLineString)
         {
-            foreach (IGeometry g in geoms)
+            foreach (var g in geoms)
             {
                 GetLines(g, lines, forceToLineString);
             }
@@ -77,8 +77,7 @@ namespace NetTopologySuite.Geometries.Utilities
             return lines;
         }
 
-
-        /// <summary> 
+        /// <summary>
         /// Extracts the linear components from a single point.
         /// If more than one point is to be processed, it is more
         /// efficient to create a single <c>LineExtracterFilter</c> instance
@@ -88,7 +87,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>The list of linear components.</returns>
         public static ICollection<IGeometry> GetLines(IGeometry geom)
         {
-            Collection<IGeometry> lines = new Collection<IGeometry>();
+            var lines = new Collection<IGeometry>();
             geom.Apply(new LinearComponentExtracter(lines));
             return lines;
         }
@@ -104,7 +103,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>The list of linear components</returns>
         public static ICollection<IGeometry> GetLines(IGeometry geom, bool forceToLineString)
         {
-            Collection<IGeometry> lines = new Collection<IGeometry>();
+            var lines = new Collection<IGeometry>();
             geom.Apply(new LinearComponentExtracter(lines, forceToLineString));
             return lines;
         }
@@ -117,7 +116,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns>A linear geometry</returns>
         public static IGeometry GetGeometry(IGeometry geom)
         {
-            ICollection<IGeometry> list = GetLines(geom);
+            var list = GetLines(geom);
             return geom.Factory.BuildGeometry(list);
         }
 
@@ -127,22 +126,22 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="geom">The geometry from which to extract</param>
         /// <param name="forceToLineString"><c>true</c> if <see cref="ILinearRing"/>s should be converted to <see cref="ILineString"/>s</param>
-        /// <returns>A linear geometry</returns>                
+        /// <returns>A linear geometry</returns>
         public static IGeometry GetGeometry(IGeometry geom, bool forceToLineString)
         {
-            ICollection<IGeometry> lines = GetLines(geom, forceToLineString);
+            var lines = GetLines(geom, forceToLineString);
             return geom.Factory.BuildGeometry(lines);
         }
 
         private readonly ICollection<IGeometry> _lines;
 
-        /// <summary> 
+        /// <summary>
         /// Constructs a LineExtracterFilter with a list in which to store LineStrings found.
         /// </summary>
         /// <param name="lines"></param>
         public LinearComponentExtracter(ICollection<IGeometry> lines) : this(lines, false) { }
 
-        /// <summary> 
+        /// <summary>
         /// Constructs a LineExtracterFilter with a list in which to store LineStrings found.
         /// </summary>
         /// <param name="lines"></param>
@@ -154,19 +153,19 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public bool IsForcedToLineString { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="geom"></param>
         public void Filter(IGeometry geom)
         {
             if (IsForcedToLineString && geom is ILinearRing)
             {
-                ILineString line = geom.Factory.CreateLineString(((ILinearRing)geom).CoordinateSequence);
+                var line = geom.Factory.CreateLineString(((ILinearRing)geom).CoordinateSequence);
                 _lines.Add(line);
                 return;
             }

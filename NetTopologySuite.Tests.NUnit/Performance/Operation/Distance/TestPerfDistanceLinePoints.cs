@@ -11,10 +11,10 @@ using NetTopologySuite.Operation.Distance;
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
 {
     /**
-     * Tests performance of {@link IndexedFacetDistance} versus standard 
+     * Tests performance of {@link IndexedFacetDistance} versus standard
      * {@link DistanceOp}
-     * using a grid of points to a target set of lines 
-     * 
+     * using a grid of points to a target set of lines
+     *
      * @author Martin Davis
      *
      */
@@ -29,7 +29,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
         private static readonly int NUM_TARGET_ITEMS = 4000;
         private static readonly double EXTENT = 1000;
         private static readonly int NUM_PTS_SIDE = 100;
-
 
         private bool verbose = true;
 
@@ -68,6 +67,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
             Test(pts, target);
         }
 
+        /*
         private void xtest(int num)
         {
             var target = LoadData("C:\\proj\\JTS\\test\\g2e\\ffmwdec08.wkt");
@@ -76,6 +76,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
 
             Test(pts, target);
         }
+        */
 
         private void Test(IGeometry[] pts, IGeometry target)
         {
@@ -84,10 +85,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
                                   + "     Target points = " + target.NumPoints);
             //    if (! verbose) System.out.print(num + ", ");
 
-            var dist = 0.0;
+            double dist = 0.0;
             var sw = new Stopwatch();
             sw.Start();
-            for (var i = 0; i < MAX_ITER; i++)
+            for (int i = 0; i < MAX_ITER; i++)
             {
                 ComputeDistance(pts, target);
             }
@@ -96,7 +97,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
                 Console.WriteLine(sw.ElapsedMilliseconds);
             if (verbose)
             {
-                var name = USE_INDEXED_DIST ? "IndexedFacetDistance" : "Distance";
+                string name = USE_INDEXED_DIST ? "IndexedFacetDistance" : "Distance";
                 Console.WriteLine(name + " - Run time: " + sw.ElapsedMilliseconds);
                 Console.WriteLine();
             }
@@ -124,10 +125,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
         private static IGeometry CreateDiagonalCircles(double extent, int nSegs)
         {
             var circles = new IPolygon[nSegs];
-            var inc = extent/nSegs;
+            double inc = extent/nSegs;
             for (int i = 0; i < nSegs; i++)
             {
-                var ord = i*inc;
+                double ord = i*inc;
                 var p = new Coordinate(ord, ord);
                 var pt = geomFact.CreatePoint(p);
                 circles[i] = (IPolygon) pt.Buffer(inc/2);
@@ -185,6 +186,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
             return pts;
         }
 
+        /*
         private static IGeometry LoadData(String file)
         {
             var geoms = LoadWKT(file);
@@ -197,6 +199,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
             var fileRdr = new WKTFileReader(filename, rdr);
             return fileRdr.Read();
         }
-
+        */
     }
 }

@@ -35,15 +35,15 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             double snapTolerance = ComputeSizeBasedSnapTolerance(g);
 
             /*
-		     * Overlay is carried out in the precision model
-		     * of the two inputs.
-		     * If this precision model is of type FIXED, then the snap tolerance
-		     * must reflect the precision grid size.
-		     * Specifically, the snap tolerance should be at least
-		     * the distance from a corner of a precision grid cell
-		     * to the centre point of the cell.
+             * Overlay is carried out in the precision model
+             * of the two inputs.
+             * If this precision model is of type FIXED, then the snap tolerance
+             * must reflect the precision grid size.
+             * Specifically, the snap tolerance should be at least
+             * the distance from a corner of a precision grid cell
+             * to the centre point of the cell.
              */
-            IPrecisionModel pm = g.PrecisionModel;
+            var pm = g.PrecisionModel;
             if (pm.PrecisionModelType == PrecisionModels.Fixed)
             {
                 double fixedSnapTol = (1 / pm.Scale) * 2 / 1.415;
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <returns></returns>
         public static double ComputeSizeBasedSnapTolerance(IGeometry g)
         {
-            Envelope env = g.EnvelopeInternal;
+            var env = g.EnvelopeInternal;
             double minDimension = Math.Min(env.Height, env.Width);
             double snapTol = minDimension * SnapPrexisionFactor;
             return snapTol;
@@ -136,9 +136,9 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <returns>a new snapped Geometry</returns>
         public IGeometry SnapTo(IGeometry g, double tolerance)
         {
-            Coordinate[] snapPts = ExtractTargetCoordinates(g);
+            var snapPts = ExtractTargetCoordinates(g);
 
-            SnapTransformer snapTrans = new SnapTransformer(tolerance, snapPts);
+            var snapTrans = new SnapTransformer(tolerance, snapPts);
             return snapTrans.Transform(_srcGeom);
         }
 
@@ -173,7 +173,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         {
             // TODO: should do this more efficiently.  Use CoordSeq filter to get points, KDTree for uniqueness & queries
             var ptSet = new HashSet<Coordinate>(g.Coordinates);
-            Coordinate[] result = new Coordinate[ptSet.Count];
+            var result = new Coordinate[ptSet.Count];
             ptSet.CopyTo(result, 0);
             Array.Sort(result);
             return result;
@@ -184,18 +184,18 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// </summary>
         private static double ComputeSnapTolerance(Coordinate[] ringPts)
         {
-            var minSegLen = ComputeMinimumSegmentLength(ringPts);
+            double minSegLen = ComputeMinimumSegmentLength(ringPts);
             // use a small percentage of this to be safe
-            var snapTol = minSegLen / 10;
+            double snapTol = minSegLen / 10;
             return snapTol;
         }
 
         private static double ComputeMinimumSegmentLength(Coordinate[] pts)
         {
-            var minSegLen = Double.MaxValue;
-            for (var i = 0; i < pts.Length - 1; i++)
+            double minSegLen = double.MaxValue;
+            for (int i = 0; i < pts.Length - 1; i++)
             {
-                var segLen = pts[i].Distance(pts[i + 1]);
+                double segLen = pts[i].Distance(pts[i + 1]);
                 if (segLen < minSegLen)
                     minSegLen = segLen;
             }
@@ -237,8 +237,8 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <returns></returns>
         protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
         {
-            Coordinate[] srcPts = coords.ToCoordinateArray();
-            Coordinate[] newPts = SnapLine(srcPts, _snapPts);
+            var srcPts = coords.ToCoordinateArray();
+            var newPts = SnapLine(srcPts, _snapPts);
             return Factory.CoordinateSequenceFactory.Create(newPts);
         }
 

@@ -7,7 +7,7 @@ namespace NetTopologySuite.Geometries
     /// Creates CoordinateSequences internally represented
     /// as an array of x's and an array of y's.
     /// </summary>
-#if !PCL
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     [Obsolete("No longer used")]
@@ -15,11 +15,11 @@ namespace NetTopologySuite.Geometries
     {
         // NOTE: modified for "safe" assembly in Sql 2005
         // Readonly added
-        private static readonly DefaultCoordinateSequenceFactory instance = 
+        private static readonly DefaultCoordinateSequenceFactory instance =
             new DefaultCoordinateSequenceFactory();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private DefaultCoordinateSequenceFactory() { }
 
@@ -33,13 +33,7 @@ namespace NetTopologySuite.Geometries
         /// Returns the singleton instance of DefaultCoordinateSequenceFactory.
         /// </summary>
         /// <returns>Singleton instance of DefaultCoordinateSequenceFactory.</returns>
-        public static DefaultCoordinateSequenceFactory Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
+        public static DefaultCoordinateSequenceFactory Instance => instance;
 
         /// <summary>
         /// Returns a DefaultCoordinateSequence based on the given array
@@ -68,9 +62,6 @@ namespace NetTopologySuite.Geometries
             throw new NotImplementedException();
         }
 
-        public Ordinates Ordinates
-        {
-            get { return Ordinates.XYZ; }
-        }
+        public Ordinates Ordinates => Ordinates.XYZ;
     }
 }

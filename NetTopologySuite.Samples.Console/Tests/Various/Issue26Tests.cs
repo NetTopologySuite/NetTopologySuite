@@ -12,9 +12,9 @@ namespace NetTopologySuite.Tests.Various
         private const int segments = 1; // Using 8 segments all works
         private readonly IGeometryFactory factory = GeometryFactory.Default;
 
-        private WKTReader reader;        
+        private WKTReader reader;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void FixtureSetup()
         {
             reader = new WKTReader(factory);
@@ -87,7 +87,7 @@ namespace NetTopologySuite.Tests.Various
             geom = geom.Buffer(distance, segments);
             // This assert fails.
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
-		}
+        }
 
         [Test, Category("Issue26")]
         public void TestBufferInvalid3()
@@ -100,7 +100,7 @@ namespace NetTopologySuite.Tests.Various
             geom = geom.Buffer(distance, segments);
             // This assert fails.
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
-		}
+        }
 
         [Test, Category("Issue26")]
         public void TestBufferInvalid4()
@@ -117,7 +117,7 @@ namespace NetTopologySuite.Tests.Various
             geom = geom.Buffer(distance, segments);
             // This assert fails.
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
-		}
+        }
 
         [Test, Category("Issue26")]
         public void TestBufferInvalid5()
@@ -132,7 +132,7 @@ namespace NetTopologySuite.Tests.Various
             geom = geom.Buffer(distance * 5, segments);
             // This assert fails.
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
-		}
+        }
 
         [Test, Category("Issue26")]
         public void TestBufferInvalid6()
@@ -146,7 +146,7 @@ namespace NetTopologySuite.Tests.Various
             geom = geom.Buffer(distance, segments);
             // This assert fails.
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
-		}
+        }
 
         [Test, Category("Issue26")]
         public void TestBufferInvalid7()
@@ -159,7 +159,7 @@ namespace NetTopologySuite.Tests.Various
             geom = geom.Buffer(distance, segments);
             // This assert fails.
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
-		}
+        }
 
         [Test, Category("Issue26")]
         public void TestBufferInvalid8()
@@ -173,7 +173,7 @@ namespace NetTopologySuite.Tests.Various
             geom = geom.Buffer(distance, segments);
             // This assert fails.
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
-		}
+        }
 
         [Test, Category("Issue26")]
         public void TestBufferInvalid9()
@@ -187,7 +187,7 @@ namespace NetTopologySuite.Tests.Various
             geom = geom.Buffer(distance, segments);
             // This assert fails.
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
-		}
+        }
 
         [Test, Category("Issue26")]
         public void TestBufferInvalid10()
@@ -201,7 +201,7 @@ namespace NetTopologySuite.Tests.Various
             geom = geom.Buffer(distance, segments);
             // This assert fails.
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
-		}
+        }
 
         [Test, Category("Issue26")]
         public void TestBufferInvalid11()
@@ -216,6 +216,6 @@ namespace NetTopologySuite.Tests.Various
             geom = geom.Buffer(distance, segments);
             // This assert fails.
             Assert.IsTrue(geom.IsValid, "Buffer shouldn't produce invalid polygons.");
-		}
+        }
     }
 }

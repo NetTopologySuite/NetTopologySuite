@@ -71,7 +71,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="li"></param>
         private void SnapRound(IList<ISegmentString> segStrings, LineIntersector li)
         {
-            IList<Coordinate> intersections = FindInteriorIntersections(segStrings, li);
+            var intersections = FindInteriorIntersections(segStrings, li);
             ComputeIntersectionSnaps(intersections);
             ComputeVertexSnaps(segStrings);
         }
@@ -79,7 +79,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <summary>
         /// Computes all interior intersections in the collection of <see cref="ISegmentString" />s,
         /// and returns their <see cref="Coordinate" />s.
-        ///
+        /// <para/>
         /// Does NOT node the segStrings.
         /// </summary>
         /// <param name="segStrings"></param>
@@ -87,7 +87,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <returns>A list of Coordinates for the intersections.</returns>
         private IList<Coordinate> FindInteriorIntersections(IList<ISegmentString> segStrings, LineIntersector li)
         {
-            InteriorIntersectionFinderAdder intFinderAdder = new InteriorIntersectionFinderAdder(li);
+            var intFinderAdder = new InteriorIntersectionFinderAdder(li);
             _noder.SegmentIntersector = intFinderAdder;
             _noder.ComputeNodes(segStrings);
             return intFinderAdder.InteriorIntersections;
@@ -123,10 +123,10 @@ namespace NetTopologySuite.Noding.Snapround
         private void ComputeVertexSnaps(INodableSegmentString e)
         {
             var pts0 = e.Coordinates;
-            for (var i = 0; i < pts0.Length; i++)
+            for (int i = 0; i < pts0.Length; i++)
             {
                 var hotPixel = new HotPixel(pts0[i], _scaleFactor, _li);
-                var isNodeAdded = _pointSnapper.Snap(hotPixel, e, i);
+                bool isNodeAdded = _pointSnapper.Snap(hotPixel, e, i);
                 // if a node is created for a vertex, that vertex must be noded too
                 if (isNodeAdded)
                     e.AddIntersection(pts0[i], i);

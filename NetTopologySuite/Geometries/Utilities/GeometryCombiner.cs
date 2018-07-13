@@ -8,7 +8,7 @@ namespace NetTopologySuite.Geometries.Utilities
     ///</summary>
     /// <remarks>
     /// <para>Input geometries which are already collections will have their elements extracted first.</para>
-    /// <para>No validation of the result geometry is performed. 
+    /// <para>No validation of the result geometry is performed.
     /// (The only case where invalidity is possible is where <see cref="IPolygonal"/> geometries are combined and result in a self-intersection).</para>
     /// </remarks>
     /// <author>mbdavis</author>
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         private readonly IGeometryFactory _geomFactory;
-        
+
         /// <summary>
         /// Value indicating whether empty geometries should be skipped
         /// </summary>
@@ -119,7 +119,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 ExtractElements(geom, elems);
 
             if (elems.Count == 0)
-                return _geomFactory != null ? _geomFactory.CreateGeometryCollection(null) : null;
+                return _geomFactory != null ? _geomFactory.CreateGeometryCollection() : null;
             return _geomFactory.BuildGeometry(elems);
         }
 
@@ -128,7 +128,7 @@ namespace NetTopologySuite.Geometries.Utilities
             if (geom == null)
                 return;
 
-            for (var i = 0; i < geom.NumGeometries; i++)
+            for (int i = 0; i < geom.NumGeometries; i++)
             {
                 var elemGeom = geom.GetGeometryN(i);
                 if (SkipEmpty && elemGeom.IsEmpty)

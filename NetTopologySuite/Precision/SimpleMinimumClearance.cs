@@ -56,7 +56,7 @@ namespace NetTopologySuite.Precision
         {
             if (_minClearancePts != null) return;
             _minClearancePts = new Coordinate[2];
-            _minClearance = Double.MaxValue;
+            _minClearance = double.MaxValue;
             _inputGeom.Apply(new VertexCoordinateFilter(this, _inputGeom));
         }
 
@@ -135,20 +135,14 @@ namespace NetTopologySuite.Precision
             {
                 if (_queryPt.Equals2D(seg0) || _queryPt.Equals2D(seg1))
                     return;
-                double segDist = CGAlgorithms.DistancePointLine(_queryPt, seg1, seg0);
+                double segDist = DistanceComputer.PointToSegment(_queryPt, seg1, seg0);
                 if (segDist > 0)
                     _smc.UpdateClearance(segDist, _queryPt, seg1, seg0);
             }
 
-            public Boolean Done
-            {
-                get { return false; }
-            }
+            public bool Done => false;
 
-            public bool GeometryChanged
-            {
-                get { return false; }
-            }
+            public bool GeometryChanged => false;
         }
     }
 }

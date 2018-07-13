@@ -4,7 +4,7 @@ using GeoAPI.Geometries;
 namespace NetTopologySuite.Operation.Distance3D
 {
     /// <summary>
-    /// A <see cref="ICoordinateSequence"/> wrapper which 
+    /// A <see cref="ICoordinateSequence"/> wrapper which
     /// projects 3D coordinates into one of the
     /// three Cartesian axis planes,
     /// using the standard orthonormal projection
@@ -24,9 +24,9 @@ namespace NetTopologySuite.Operation.Distance3D
         public static ICoordinateSequence ProjectToXY(ICoordinateSequence seq)
         {
             /**
-		 * This is just a no-op, but return a wrapper
-		 * to allow better testing
-		 */
+         * This is just a no-op, but return a wrapper
+         * to allow better testing
+         */
             return new AxisPlaneCoordinateSequence(seq, XYIndex);
         }
 
@@ -64,12 +64,9 @@ namespace NetTopologySuite.Operation.Distance3D
             _indexMap = indexMap;
         }
 
-        public int Dimension
-        {
-            get { return 2; }
-        }
+        public int Dimension => 2;
 
-        public Ordinates Ordinates { get { return _seq.Ordinates; } }
+        public Ordinates Ordinates => _seq.Ordinates;
 
         public Coordinate GetCoordinate(int i)
         {
@@ -110,10 +107,7 @@ namespace NetTopologySuite.Operation.Distance3D
             return _seq.GetOrdinate(index, _indexMap[(int) ordinateIndex]);
         }
 
-        public int Count
-        {
-            get { return _seq.Count; }
-        }
+        public int Count => _seq.Count;
 
         public void SetOrdinate(int index, Ordinate ordinateIndex, double value)
         {
@@ -130,7 +124,13 @@ namespace NetTopologySuite.Operation.Distance3D
             throw new NotSupportedException();
         }
 
-        public Object Clone()
+        [Obsolete]
+        public object Clone()
+        {
+            return Copy();
+        }
+
+        public ICoordinateSequence Copy()
         {
             throw new NotSupportedException();
         }

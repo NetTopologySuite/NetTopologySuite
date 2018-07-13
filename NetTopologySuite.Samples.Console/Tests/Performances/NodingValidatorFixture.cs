@@ -20,12 +20,12 @@ namespace NetTopologySuite.Tests.Performances
             var geom2 = reader.Read(strWKT2);
 
             OverlayOp.NodingValidatorDisabled = true;
-            var elapsed1 = Perform(geom1, geom2);
+            long elapsed1 = Perform(geom1, geom2);
             elapsed1 = Perform(geom1, geom2);
             Debug.WriteLine("NodingValidator disabled => elapsed time: " + elapsed1);
 
             OverlayOp.NodingValidatorDisabled = false;
-            var elapsed2 = Perform(geom1, geom2);
+            long elapsed2 = Perform(geom1, geom2);
             Debug.WriteLine("NodingValidator enabled => elapsed time: " + elapsed2);
 
             Assert.IsTrue(elapsed1 < elapsed2);

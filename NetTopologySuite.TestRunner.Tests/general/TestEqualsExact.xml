@@ -1,5 +1,5 @@
 <run>
-<description> 
+<description>
 Tests of exact equality and exact equality with normalization
 </description>
 
@@ -73,10 +73,10 @@ Tests of exact equality and exact equality with normalization
 <case>
   <desc>mL - 2 lines with common endpoint</desc>
   <a> MULTILINESTRING(
-      (10 10, 20 20), 
+      (10 10, 20 20),
       (20 20, 30 30)) </a>
   <b> MULTILINESTRING(
-      (10 10, 20 20), 
+      (10 10, 20 20),
       (20 20, 30 30)) </b>
 <test><op name="equalsExact" arg1="A" arg2="B">    true  </op></test>
 </case>
@@ -84,7 +84,7 @@ Tests of exact equality and exact equality with normalization
 <case>
   <desc>mL - 2 lines with common endpoint, permuted</desc>
   <a> MULTILINESTRING(
-      (10 10, 20 20), 
+      (10 10, 20 20),
       (20 20, 30 30)) </a>
   <b> MULTILINESTRING(
       (30 30, 20 20),
@@ -114,12 +114,12 @@ Tests of exact equality and exact equality with normalization
   <desc>A - polygon with 1 hole</desc>
   <a>
     POLYGON(
-      (40 60, 420 60, 420 320, 40 320, 40 60), 
+      (40 60, 420 60, 420 320, 40 320, 40 60),
       (200 140, 160 220, 260 200, 200 140))
   </a>
   <b>
     POLYGON(
-      (40 60, 420 60, 420 320, 40 320, 40 60), 
+      (40 60, 420 60, 420 320, 40 320, 40 60),
       (200 140, 160 220, 260 200, 200 140))
   </b>
 <test><op name="equalsExact" arg1="A" arg2="B">    true  </op></test>

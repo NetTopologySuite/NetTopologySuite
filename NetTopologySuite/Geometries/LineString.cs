@@ -17,13 +17,13 @@ namespace NetTopologySuite.Geometries
     /// pair of consecutive vertices.
     /// Consecutive vertices may be equal.
     /// The line segments in the line may intersect each other (in other words,
-    /// the linestring may "curl back" in itself and self-intersect.
-    /// Linestrings with exactly two identical points are invalid.
-    /// <para>A linestring must have either 0 or 2 or more points.
+    /// the <c>LineString</c> may "curl back" in itself and self-intersect.
+    /// <c>LineString</c>s with exactly two identical points are invalid.
+    /// <para>A <c>LineString</c> must have either 0 or 2 or more points.
     /// If these conditions are not met, the constructors throw an <see cref="ArgumentException"/>.
     /// </para>
     /// </remarks>
-#if !PCL
+#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
     public class LineString : Geometry, ILineString
@@ -40,15 +40,48 @@ namespace NetTopologySuite.Geometries
         private ICoordinateSequence _points;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LineString"/> class.
+        /// </summary>
+        /// <remarks>
+        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
+        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
+        /// </remarks>
+        /// <param name="points">The coordinates used for create this <see cref="LineString" />.</param>
+        /// <exception cref="ArgumentException">If too few points are provided</exception>
+        //[Obsolete("Use GeometryFactory instead")]
+        public LineString(Coordinate[] points) :
+            this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LineString"/> class.
+        /// </summary>
+        /// <param name="points">
+        /// The points of the <c>LineString</c>, or <c>null</c>
+        /// to create the empty point. Consecutive points may not be equal.
+        /// </param>
+        /// <param name="factory"></param>
+        /// <exception cref="ArgumentException">If too few points are provided</exception>
+        public LineString(ICoordinateSequence points, IGeometryFactory factory)
+            : base(factory)
+        {
+            if (points == null)
+                points = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
+            if (points.Count == 1)
+                throw new ArgumentException("Invalid number of points in LineString (found "
+                                            + points.Count + " - must be 0 or >= 2)");
+            _points = points;
+        }
+
+        /// <summary>
+        /// Gets a value to sort the geometry
+        /// </summary>
+        protected override SortIndexValue SortIndex => SortIndexValue.LineString;
+
+        /// <summary>
         ///
         /// </summary>
-        public override Coordinate[] Coordinates
-        {
-            get
-            {
-                return _points.ToCoordinateArray();
-            }
-        }
+        public override Coordinate[] Coordinates => _points.ToCoordinateArray();
 
         public override double[] GetOrdinates(Ordinate ordinate)
         {
@@ -65,13 +98,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public ICoordinateSequence CoordinateSequence
-        {
-            get
-            {
-                return _points;
-            }
-        }
+        public ICoordinateSequence CoordinateSequence => _points;
 
         /// <summary>
         ///
@@ -98,13 +125,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public override Dimension Dimension
-        {
-            get
-            {
-                return Dimension.Curve;
-            }
-        }
+        public override Dimension Dimension => Dimension.Curve;
 
         /// <summary>
         ///
@@ -124,24 +145,12 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public override bool IsEmpty
-        {
-            get
-            {
-                return _points.Count == 0;
-            }
-        }
+        public override bool IsEmpty => _points.Count == 0;
 
         /// <summary>
         ///
         /// </summary>
-        public override int NumPoints
-        {
-            get
-            {
-                return _points.Count;
-            }
-        }
+        public override int NumPoints => _points.Count;
 
         /// <summary>
         ///
@@ -195,42 +204,21 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public bool IsRing
-        {
-            get
-            {
-                return IsClosed && IsSimple;
-            }
-        }
+        public bool IsRing => IsClosed && IsSimple;
 
         /// <summary>
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"LineString"</returns>
-        public override string GeometryType
-        {
-            get
-            {
-                return "LineString";
-            }
-        }
+        public override string GeometryType => "LineString";
 
-        public override OgcGeometryType OgcGeometryType
-        {
-            get { return OgcGeometryType.LineString; }
-        }
+        public override OgcGeometryType OgcGeometryType => OgcGeometryType.LineString;
 
         /// <summary>
         /// Returns the length of this <c>LineString</c>
         /// </summary>
         /// <returns>The length of the polygon.</returns>
-        public override double Length
-        {
-            get
-            {
-                return CGAlgorithms.Length(_points);
-            }
-        }
+        public override double Length => Algorithm.Length.OfLine(_points);
 
         ///// <summary>
         /////
@@ -243,13 +231,7 @@ namespace NetTopologySuite.Geometries
         //    }
         //}
 
-        public override IGeometry Boundary
-        {
-            get
-            {
-                return (new BoundaryOp(this)).GetBoundary();
-            }
-        }
+        public override IGeometry Boundary => (new BoundaryOp(this)).GetBoundary();
 
         /// <summary>
         /// Creates a <see cref="LineString" /> whose coordinates are in the reverse order of this objects.
@@ -258,7 +240,7 @@ namespace NetTopologySuite.Geometries
         public override IGeometry Reverse()
         {
             /*
-            var seq = (ICoordinateSequence)_points.Clone();
+            var seq = (ICoordinateSequence)_points.Copy();
             CoordinateSequences.Reverse(seq);
              */
             var seq = _points.Reversed();
@@ -295,7 +277,7 @@ namespace NetTopologySuite.Geometries
             //Convert to array, then access array directly, to avoid the function-call overhead
             //of calling Getter millions of times. ToArray may be inefficient for
             //non-BasicCoordinateSequence CoordinateSequences. [Jon Aquino]
-            Coordinate[] coordinates = _points.ToCoordinateArray();
+            var coordinates = _points.ToCoordinateArray();
             double minx = coordinates[0].X;
             double miny = coordinates[0].Y;
             double maxx = coordinates[0].X;
@@ -329,7 +311,7 @@ namespace NetTopologySuite.Geometries
             if (!IsEquivalentClass(other))
                 return false;
 
-            ILineString otherLineString = (ILineString)other;
+            var otherLineString = (ILineString)other;
             if (_points.Count != otherLineString.NumPoints)
                 return false;
 
@@ -382,18 +364,29 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        ///
+        /// Creates and returns a full copy of this object.
+        /// (including all coordinates contained by it).
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A copy of this instance</returns>
+        [Obsolete("Use Copy()")]
         public override object Clone()
         {
-            LineString ls = (LineString)base.Clone();
-            ls._points = (ICoordinateSequence)_points.Clone();
-            return ls;
+            return Copy();
         }
 
         /// <summary>
-        /// Normalizes a <c>LineString</c>.  A normalized linestring
+        /// Creates and returns a full copy of this <see cref="ILineString"/> object.
+        /// (including all coordinates contained by it).
+        /// </summary>
+        /// <returns>A copy of this instance</returns>
+        public override IGeometry Copy()
+        {
+            var points = _points.Copy();
+            return new LineString(points, Factory);
+        }
+
+        /// <summary>
+        /// Normalizes a <c>LineString</c>.  A normalized <c>LineString</c>
         /// has the first point which is not equal to it's reflected point
         /// less than the reflected point.
         /// </summary>
@@ -406,7 +399,11 @@ namespace NetTopologySuite.Geometries
                 if (!_points.GetCoordinate(i).Equals(_points.GetCoordinate(j)))
                 {
                     if (_points.GetCoordinate(i).CompareTo(_points.GetCoordinate(j)) > 0)
-                        CoordinateSequences.Reverse(_points);
+                    {
+                        var copy = _points.Copy();
+                        CoordinateSequences.Reverse(copy);
+                        _points = copy;
+                    }
                     return;
                 }
             }
@@ -426,7 +423,7 @@ namespace NetTopologySuite.Geometries
         {
             Assert.IsTrue(o is ILineString);
 
-            ILineString line = (ILineString)o;
+            var line = (ILineString)o;
             // MD - optimized implementation
             int i = 0;
             int j = 0;
@@ -445,48 +442,14 @@ namespace NetTopologySuite.Geometries
             return 0;
         }
 
-        protected internal override int CompareToSameClass(Object o, IComparer<ICoordinateSequence> comp)
+        protected internal override int CompareToSameClass(object o, IComparer<ICoordinateSequence> comp)
         {
             Assert.IsTrue(o is ILineString);
-            ILineString line = (LineString)o;
+            var line = (LineString)o;
             return comp.Compare(_points, line.CoordinateSequence);
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LineString"/> class.
-        /// </summary>
-        /// <remarks>
-        /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
-        /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
-        /// </remarks>
-        /// <param name="points">The coordinates used for create this <see cref="LineString" />.</param>
-        /// <exception cref="ArgumentException">If too few points are provided</exception>
-        //[Obsolete("Use GeometryFactory instead")]
-        public LineString(Coordinate[] points) :
-            this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LineString"/> class.
-        /// </summary>
-        /// <param name="points">
-        /// The points of the linestring, or <c>null</c>
-        /// to create the empty point. Consecutive points may not be equal.
-        /// </param>
-        /// <param name="factory"></param>
-        /// <exception cref="ArgumentException">If too few points are provided</exception>
-        public LineString(ICoordinateSequence points, IGeometryFactory factory)
-            : base(factory)
-        {
-            if (points == null)
-                points = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
-            if (points.Count == 1)
-                throw new ArgumentException("Invalid number of points in LineString (found "
-                      + points.Count + " - must be 0 or >= 2)");
-            _points = points;
-        }
-
         /// <summary>
         ///
         /// </summary>
@@ -494,10 +457,7 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public Coordinate this[int n]
         {
-            get
-            {
-                return _points.GetCoordinate(n);
-            }
+            get => _points.GetCoordinate(n);
             set
             {
                 _points.SetOrdinate(n, Ordinate.X, value.X);
@@ -510,13 +470,7 @@ namespace NetTopologySuite.Geometries
         ///
         /// </summary>
         /// <value></value>
-        public int Count
-        {
-            get
-            {
-                return _points.Count;
-            }
-        }
+        public int Count => _points.Count;
 
         /// <summary>
         /// Returns the value of the angle between the <see cref="StartPoint" />

@@ -23,7 +23,7 @@ namespace NetTopologySuite.Algorithm.Locate
     /// </summary>
     public static class PointOnGeometryLocatorExtensions
     {
-        /// <summary> 
+        /// <summary>
         /// Convenience method to test a point for intersection with a geometry
         /// <para/>
         /// The geometry is wrapped in a <see cref="IPointOnGeometryLocator"/> class.

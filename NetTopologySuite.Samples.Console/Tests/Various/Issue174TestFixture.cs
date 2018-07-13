@@ -16,7 +16,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         private void AssertStronglyNamedAssembly(Type typeFromAssemblyToCheck)
         {
             Assert.IsNotNull(typeFromAssemblyToCheck, "Cannot determine assembly from null");
-            Assembly assembly = typeFromAssemblyToCheck.Assembly;
+            var assembly = typeFromAssemblyToCheck.Assembly;
             StringAssert.DoesNotContain("PublicKeyToken=null", assembly.FullName, "Strongly named assembly should have a PublicKeyToken in fully qualified name");
         }
 
@@ -38,30 +38,6 @@ namespace NetTopologySuite.Samples.Tests.Various
             AssertStronglyNamedAssembly(typeof(VoronoiDiagramBuilder));
         }
 
-        [Test, Category("Issue174")]
-        public void ensure_NetTopologySuite_IO_GDB_assembly_is_strongly_named()
-        {
-            AssertStronglyNamedAssembly(typeof(GDBReader));
-        }
-
-        [Test, Category("Issue174")]
-        public void ensure_NetTopologySuite_IO_GeoJSON_assembly_is_strongly_named()
-        {
-            AssertStronglyNamedAssembly(typeof(GeoJsonSerializer));
-        }
-
-        [Test, Category("Issue174")]
-        public void ensure_NetTopologySuite_IO_GeoTools_assembly_is_strongly_named()
-        {
-            AssertStronglyNamedAssembly(typeof(ShapefileDataReader));
-        }
-
-        [Test, Category("Issue174")]
-        public void ensure_NetTopologySuite_IO_MsSqlSpatial_assembly_is_strongly_named()
-        {
-            AssertStronglyNamedAssembly(typeof(MsSqlSpatialReader));
-        }
-
         //// Problem with Oracle.DataAccess...?
         ////
         //// Warning	1	There was a mismatch between the processor architecture of the project
@@ -78,30 +54,5 @@ namespace NetTopologySuite.Samples.Tests.Various
         //{
         //  AssertStronglyNamedAssembly(typeof(NetTopologySuite.IO.OracleGeometryReader));
         //}
-
-        [Test, Category("Issue174")]
-        public void ensure_NetTopologySuite_IO_PostGis_assembly_is_strongly_named()
-        {
-            AssertStronglyNamedAssembly(typeof(PostGisReader));
-        }
-
-        [Test, Category("Issue174")]
-        public void ensure_NetTopologySuite_IO_ShapeFile_assembly_is_strongly_named()
-        {
-            AssertStronglyNamedAssembly(typeof(ShapeReader));
-        }
-
-        [Test, Category("Issue174")]
-        public void ensure_NetTopologySuite_IO_SpatialLite_assembly_is_strongly_named()
-        {
-            AssertStronglyNamedAssembly(typeof(GaiaGeoReader));
-        }
-
-        [Test, Category("Issue174")]
-        public void ensure_NetTopologySuite_IO_SqlServer2008_assembly_is_strongly_named()
-        {
-            AssertStronglyNamedAssembly(typeof(MsSql2008GeometryReader));
-        }
-
     }
 }

@@ -8,14 +8,14 @@ namespace NetTopologySuite.IO
 {
 
     /// <summary>
-    /// Extends the <see cref="BinaryWriter" /> class to allow writing values in the BigEndian format.    
+    /// Extends the <see cref="BinaryWriter" /> class to allow writing values in the BigEndian format.
     /// </summary>
     /// <remarks>
-    /// While <see cref="BEBinaryWriter" /> extends <see cref="BinaryWriter" /> 
+    /// While <see cref="BEBinaryWriter" /> extends <see cref="BinaryWriter" />
     /// adding methods for writing integer values (<see cref="BEBinaryWriter.Write(int)" />)
     /// and double values (<see cref="BEBinaryWriter.Write(double)" />) in the BigEndian format,
-    /// this implementation overrides methods, such <see cref="BinaryWriter.Write(int)" /> 
-    /// and <see cref="BinaryWriter.Write(double)" /> and more, 
+    /// this implementation overrides methods, such <see cref="BinaryWriter.Write(int)" />
+    /// and <see cref="BinaryWriter.Write(double)" /> and more,
     /// for writing <see cref="ByteOrder.BigEndian" /> values in the BigEndian format.
     /// </remarks>
     public class BEBinaryWriter : BinaryWriter
@@ -24,7 +24,6 @@ namespace NetTopologySuite.IO
         /// Initializes a new instance of the <see cref="BEBinaryWriter"/> class.
         /// </summary>
         public BEBinaryWriter() { }
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BEBinaryWriter"/> class.
@@ -145,9 +144,9 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Writes a length-prefixed string to this stream in the current encoding 
-        /// of the <see cref="T:System.IO.BinaryWriter"></see>, 
-        /// and advances the current position of the stream in accordance 
+        /// Writes a length-prefixed string to this stream in the current encoding
+        /// of the <see cref="T:System.IO.BinaryWriter"></see>,
+        /// and advances the current position of the stream in accordance
         /// with the encoding used and the specific characters being written to the stream.
         /// </summary>
         /// <param name="value">The value to write.</param>
@@ -159,7 +158,7 @@ namespace NetTopologySuite.IO
         {
             throw new NotImplementedException();
         }
-#if !PCL
+
         /// <summary>
         /// Writes a decimal value to the current stream and advances the stream position by sixteen bytes.
         /// </summary>
@@ -171,6 +170,5 @@ namespace NetTopologySuite.IO
         {
             throw new NotImplementedException();
         }
-#endif
     }
 }
