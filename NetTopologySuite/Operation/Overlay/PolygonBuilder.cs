@@ -240,21 +240,28 @@ namespace NetTopologySuite.Operation.Overlay
             var testPt = teString.GetCoordinateN(0);
 
             EdgeRing minShell = null;
-            Envelope minEnv = null;
+            Envelope minShellEnv = null;
             foreach (var tryShell in shellList)
             {
-                var tryRing = tryShell.LinearRing;
-                var tryEnv = tryRing.EnvelopeInternal;
-                if (minShell != null)
-                    minEnv = minShell.LinearRing.EnvelopeInternal;
+                var tryShellRing = tryShell.LinearRing;
+                var tryShellEnv = tryShellRing.EnvelopeInternal;
+                // the hole envelope cannot equal the shell envelope
+                // (also guards against testing rings against themselves)
+                if (tryShellEnv.Equals(testEnv)) continue;
+                // hole must be contained in shell
+                if (!tryShellEnv.Contains(testEnv)) continue;
+
                 bool isContained = false;
-                if (tryEnv.Contains(testEnv) && PointLocation.IsInRing(testPt, tryRing.Coordinates))
-                        isContained = true;
+                if (PointLocation.IsInRing(testPt, tryShellRing.Coordinates))
+                    isContained = true;
+
                 // check if this new containing ring is smaller than the current minimum ring
                 if (isContained)
                 {
-                    if (minShell == null || minEnv.Contains(tryEnv))
+                    if (minShell == null || minShellEnv.Contains(tryShellEnv)) {
                         minShell = tryShell;
+                        minShellEnv = tryShellEnv;
+                    }
                 }
             }
             return minShell;
@@ -275,22 +282,6 @@ namespace NetTopologySuite.Operation.Overlay
                 resultPolyList.Add(poly);
             }
             return resultPolyList;
-        }
-
-        /// <summary>
-        /// Checks the current set of shells (with their associated holes) to
-        /// see if any of them contain the point.
-        /// </summary>
-        /// <param name="p"></param>
-        /// <returns></returns>
-        public bool ContainsPoint(Coordinate p)
-        {
-            foreach (var er in _shellList)
-            {
-                if (er.ContainsPoint(p))
-                    return true;
-            }
-            return false;
         }
     }
 }
