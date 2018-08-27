@@ -8,7 +8,7 @@ namespace NetTopologySuite.Noding
 {
     ///<summary>
     ///</summary>
-    public class InteriorIntersectionFinder : ISegmentIntersector
+    public class NodingIntersectionFinder : ISegmentIntersector
     {
         ///<summary>
         /// Creates an intersection finder which tests if there is at least one interior intersection.
@@ -17,9 +17,9 @@ namespace NetTopologySuite.Noding
         ///</summary>
         /// <param name="li">A line intersector.</param>
         /// <returns>A intersection finder which tests if there is at least one interior intersection.</returns>
-        public static InteriorIntersectionFinder CreateAnyIntersectionFinder(LineIntersector li)
+        public static NodingIntersectionFinder CreateAnyIntersectionFinder(LineIntersector li)
         {
-            return new InteriorIntersectionFinder(li);
+            return new NodingIntersectionFinder(li);
         }
 
         ///<summary>
@@ -28,9 +28,9 @@ namespace NetTopologySuite.Noding
         ///</summary>
         /// <param name="li">A line intersector.</param>
         /// <returns>a intersection finder which finds all interior intersections.</returns>
-        public static InteriorIntersectionFinder CreateAllIntersectionsFinder(LineIntersector li)
+        public static NodingIntersectionFinder CreateAllIntersectionsFinder(LineIntersector li)
         {
-            var finder = new InteriorIntersectionFinder(li);
+            var finder = new NodingIntersectionFinder(li);
             finder.FindAllIntersections = true;
             return finder;
         }
@@ -41,9 +41,9 @@ namespace NetTopologySuite.Noding
         ///</summary>
         /// <param name="li">A line intersector.</param>
         /// <returns>a intersection finder which counts all interior intersections.</returns>
-        public static InteriorIntersectionFinder CreateIntersectionCounter(LineIntersector li)
+        public static NodingIntersectionFinder CreateIntersectionCounter(LineIntersector li)
         {
-            var finder = new InteriorIntersectionFinder(li);
+            var finder = new NodingIntersectionFinder(li);
             finder.FindAllIntersections = true;
             finder.KeepIntersections = false;
             return finder;
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Noding
         /// Creates an intersection finder which finds an interior intersection if one exists
         ///</summary>
         ///<param name="li">the LineIntersector to use</param>
-        public InteriorIntersectionFinder(LineIntersector li)
+        public NodingIntersectionFinder(LineIntersector li)
         {
             _li = li;
             _interiorIntersection = null;
@@ -141,14 +141,16 @@ namespace NetTopologySuite.Noding
         public void ProcessIntersections(
             ISegmentString e0, int segIndex0,
             ISegmentString e1, int segIndex1
-            )
+        )
         {
             // short-circuit if intersection already found
             if (!FindAllIntersections && HasIntersection)
                 return;
 
             // don't bother intersecting a segment with itself
-            if (e0 == e1 && segIndex0 == segIndex1) return;
+            bool isSameSegString = e0 == e1;
+            bool isSameSegment = isSameSegString && segIndex0 == segIndex1;
+            if (isSameSegment) return;
 
             /*
              * If enabled, only test end segments (on either segString).
@@ -165,24 +167,87 @@ namespace NetTopologySuite.Noding
             var p01 = e0.Coordinates[segIndex0 + 1];
             var p10 = e1.Coordinates[segIndex1];
             var p11 = e1.Coordinates[segIndex1 + 1];
-
+            bool isEnd00 = segIndex0 == 0;
+            bool isEnd01 = segIndex0 + 2 == e0.Count;
+            bool isEnd10 = segIndex1 == 0;
+            bool isEnd11 = segIndex1 + 2 == e1.Count;
             _li.ComputeIntersection(p00, p01, p10, p11);
-            if (_li.HasIntersection)
-            {
-                if (_li.IsInteriorIntersection())
-                {
-                    _intSegments = new Coordinate[4];
-                    _intSegments[0] = p00;
-                    _intSegments[1] = p01;
-                    _intSegments[2] = p10;
-                    _intSegments[3] = p11;
 
-                    _interiorIntersection = _li.GetIntersection(0);
-                    if (KeepIntersections)
-                        _intersections.Add(_interiorIntersection);
-                    intersectionCount++;
-                }
+
+            // Check for an intersection in the interior of a segment
+            bool isInteriorInt = _li.HasIntersection && _li.IsInteriorIntersection();
+            /**
+             * Check for an intersection between two vertices which are not both endpoints.
+             */
+            bool isAdjacentSegment = isSameSegString && Math.Abs(segIndex1 - segIndex0) <= 1;
+            bool isInteriorVertexInt = (!isAdjacentSegment) && IsInteriorVertexIntersection(p00, p01, p10, p11,
+                                           isEnd00, isEnd01, isEnd10, isEnd11);
+
+            if (isInteriorInt || isInteriorVertexInt)
+            {
+                // found an intersection!
+                _intSegments = new Coordinate[4];
+                _intSegments[0] = p00;
+                _intSegments[1] = p01;
+                _intSegments[2] = p10;
+                _intSegments[3] = p11;
+
+                //TODO: record endpoint intersection(s)
+                _interiorIntersection = _li.GetIntersection(0);
+                if (_keepIntersections) _intersections.Add(_interiorIntersection);
+                intersectionCount++;
             }
+        }
+
+        /// <summary>
+        /// Tests if an intersection occurs between a segmentString interior vertex and another vertex.
+        /// Note that intersections between two endpoint vertices are valid noding,
+        /// and are not flagged.
+        /// </summary>
+        /// <param name="p00">A segment vertex</param>
+        /// <param name="p01">A segment vertex</param>
+        /// <param name="p10">A segment vertex</param>
+        /// <param name="p11">A segment vertex</param>
+        /// <param name="isEnd00">true if vertex is a segmentString endpoint</param>
+        /// <param name="isEnd01">true if vertex is a segmentString endpoint</param>
+        /// <param name="isEnd10">true if vertex is a segmentString endpoint</param>
+        /// <param name="isEnd11">true if vertex is a segmentString endpoint</param>
+        /// <returns><c>true</c> if an intersection is found/</returns>
+        private static bool IsInteriorVertexIntersection(
+            Coordinate p00, Coordinate p01,
+            Coordinate p10, Coordinate p11,
+            bool isEnd00, bool isEnd01,
+            bool isEnd10, bool isEnd11)
+        {
+            if (IsInteriorVertexIntersection(p00, p10, isEnd00, isEnd10)) return true;
+            if (IsInteriorVertexIntersection(p00, p11, isEnd00, isEnd11)) return true;
+            if (IsInteriorVertexIntersection(p01, p10, isEnd01, isEnd10)) return true;
+            if (IsInteriorVertexIntersection(p01, p11, isEnd01, isEnd11)) return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Tests if two vertices with at least one in a segmentString interior
+        /// are equal.
+        /// </summary>
+        /// <param name="p0">A segment vertex</param>
+        /// <param name="p1">A segment vertex</param>
+        /// <param name="isEnd0"><c>true</c> if vertex is a segmentString endpoint</param>
+        /// <param name="isEnd1"><c>true</c> if vertex is a segmentString endpoint</param>
+        /// <returns><c>true</c> if an intersection is found</returns>
+        private static bool IsInteriorVertexIntersection(
+            Coordinate p0, Coordinate p1,
+            bool isEnd0, bool isEnd1)
+        {
+
+            // Intersections between endpoints are valid nodes, so not reported
+            if (isEnd0 && isEnd1) return false;
+
+            if (p0.Equals2D(p1))
+            {
+                return true;
+            }
+            return false;
         }
 
         ///<summary>
@@ -199,6 +264,9 @@ namespace NetTopologySuite.Noding
             return false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public bool IsDone
         {
             get

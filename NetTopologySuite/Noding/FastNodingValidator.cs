@@ -13,24 +13,35 @@ namespace NetTopologySuite.Noding
     ///</summary>
     /// <remarks>
     /// <para>
-    /// In the most common use case, validation stops after a single
-    /// non-noded intersection is detected,
-    /// but the class can be requested to detect all intersections
+    /// By default validation stops after a single
+    /// non-noded intersection is detected.
+    /// Alternatively, it can be requested to detect all intersections
     /// by using the <see cref="FindAllIntersections"/> property.
     /// <para/>
-    /// The validator does not check for a-b-a topology collapse situations.
+    /// The validator does not check for topology collapse situations
+    /// (e.g. where two segment strings are fully co-incident).
     /// <para/>
-    /// The validator does not check for endpoint-interior vertex intersections.
-    /// This should not be a problem, since the JTS noders should be
-    /// able to compute intersections between vertices correctly.
+    /// The validator checks for the following situations which indicated incorrect noding:
+    /// <list type="Bullen">
+    /// <item>Proper intersections between segments (i.e. the intersection is interior to both segments)</item>
+    /// <item>Intersections at an interior vertex (i.e. with an endpoint or another interior vertex)</item>
+    /// </list>
     /// </para>
     /// <para>
     /// The client may either test the <see cref="IsValid"/> condition,
     /// or request that a suitable <see cref="TopologyException"/> be thrown.
     /// </para>
     /// </remarks>
+    /// <seealso cref="NodingValidator"/>
     public class FastNodingValidator
     {
+        /// <summary>
+        /// Gets a list of all intersections found.
+        /// Intersections are represented as <see cref="Coordinate"/>s.
+        /// List is empty if none were found.
+        /// <param name="segStrings">A collection of SegmentStrings</param>
+        /// <returns>a list of <see cref="Coordinate"/></returns>
+        /// </summary>
         public static IList<Coordinate> ComputeIntersections(IEnumerable<ISegmentString> segStrings)
         {
             var nv = new FastNodingValidator(segStrings);
@@ -42,7 +53,7 @@ namespace NetTopologySuite.Noding
         private readonly LineIntersector _li = new RobustLineIntersector();
 
         private readonly List<ISegmentString> _segStrings = new List<ISegmentString>();
-        private InteriorIntersectionFinder _segInt;
+        private NodingIntersectionFinder _segInt;
         private bool _isValid = true;
 
         /// <summary>
@@ -122,7 +133,7 @@ namespace NetTopologySuite.Noding
              * since noding should have split any true interior intersections already.
              */
             _isValid = true;
-            _segInt = new InteriorIntersectionFinder(_li);
+            _segInt = new NodingIntersectionFinder(_li);
             _segInt.FindAllIntersections = FindAllIntersections;
             var noder = new MCIndexNoder(_segInt);
             noder.ComputeNodes(_segStrings); //.ComputeNodes(segStrings);
