@@ -123,7 +123,7 @@ namespace NetTopologySuite.Geometries.Implementation
             return Create(size, OrdinatesUtility.OrdinatesToDimension(ordinates));
         }
 
-        public Ordinates Ordinates => Ordinates.XYZ;
+        public Ordinates Ordinates => OrdinatesUtility.DimensionToOrdinates(dimension);
 
         /// <summary>
         ///
