@@ -1574,16 +1574,18 @@ namespace NetTopologySuite.Geometries
                 return OverlayOp.CreateEmptyResult(SpatialFunction.Intersection, this, other, _factory);
 
             // compute for GCs
+            // (An inefficient algorithm, but will work)
+            // TODO: improve efficiency of computation for GCs
             if (IsGeometryCollection)
             {
                 var g2 = other;
                 return GeometryCollectionMapper.Map(
                     (IGeometryCollection)this, g => g.Intersection(g2));
             }
-            // if (isGeometryCollection(other))
-            //     return other.intersection(this);
-            CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection(other);
+
+            // No longer needed since GCs are handled by previous code
+            //CheckNotGeometryCollection(this);
+            //CheckNotGeometryCollection(other);
             return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.Intersection);
         }
 
@@ -2043,18 +2045,17 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Throws an exception if <c>g</c>'s class is <c>GeometryCollection</c>.
-        /// (its subclasses do not trigger an exception).
+        /// Throws an exception if <c>g</c>'s type is a <c>GeometryCollection</c>.
+        /// (Its subclasses do not trigger an exception).
         /// </summary>
         /// <param name="g">The <c>Geometry</c> to check.</param>
         /// <exception cref="ArgumentException">
         /// if <c>g</c> is a <c>GeometryCollection</c>, but not one of its subclasses.
         /// </exception>
-        protected void CheckNotGeometryCollection(IGeometry g)
+        protected static void CheckNotGeometryCollection(IGeometry g)
         {
-            //if (IsNonHomogenousGeometryCollection(g))
-            if (IsGeometryCollection)
-                throw new ArgumentException("This method does not support GeometryCollection arguments");
+            if (((Geometry)g).IsGeometryCollection)
+                throw new ArgumentException("Operation does not support GeometryCollection arguments");
         }
 
         /*
