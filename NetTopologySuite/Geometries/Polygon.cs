@@ -475,9 +475,9 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public override void Normalize()
         {
-            Normalize(_shell, true);
-            foreach(var hole in Holes)
-                Normalize(hole, false);
+            _shell = Normalized(_shell, true);
+            for (int i = 0; i < _holes.Length; i++)
+                _holes[i] = Normalized(_holes[i], false);
             Array.Sort(_holes);
         }
 
@@ -524,23 +524,23 @@ namespace NetTopologySuite.Geometries
             return 0;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="ring"></param>
-        /// <param name="clockwise"></param>
+        private static ILinearRing Normalized(ILinearRing ring, bool clockwise)
+        {
+            var res = (ILinearRing)ring.Copy();
+            Normalize(res, clockwise);
+            return res;
+        }
+        
         private static void Normalize(ILinearRing ring, bool clockwise)
         {
             if (ring.IsEmpty)
                 return;
-            var uniqueCoordinates = new Coordinate[ring.Coordinates.Length - 1];
-            Array.Copy(ring.Coordinates, 0, uniqueCoordinates, 0, uniqueCoordinates.Length);
-            var minCoordinate = CoordinateArrays.MinCoordinate(ring.Coordinates);
-            CoordinateArrays.Scroll(uniqueCoordinates, minCoordinate);
-            Array.Copy(uniqueCoordinates, 0, ring.Coordinates, 0, uniqueCoordinates.Length);
-            ring.Coordinates[uniqueCoordinates.Length] = uniqueCoordinates[0];
-            if (Orientation.IsCCW(ring.Coordinates) == clockwise)
-                CoordinateArrays.Reverse(ring.Coordinates);
+
+            var seq = ring.CoordinateSequence;
+            int minCoordinateIndex = CoordinateSequences.MinCoordinateIndex(seq, 0, seq.Count - 2);
+            CoordinateSequences.Scroll(seq, minCoordinateIndex, true);
+            if (Orientation.IsCCW(seq) == clockwise)
+                CoordinateSequences.Reverse(seq);
         }
 
         /// <summary>

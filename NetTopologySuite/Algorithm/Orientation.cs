@@ -19,31 +19,6 @@ namespace NetTopologySuite.Algorithm
     /// </author>
     public static class Orientation
     {
-        ///**
-        // * A value that indicates an orientation of clockwise, or a right turn.
-        // */
-        //public const int CLOCKWISE = -1;
-        ///**
-        // * A value that indicates an orientation of clockwise, or a right turn.
-        // */
-        //public const int RIGHT = CLOCKWISE;
-        ///**
-        // * A value that indicates an orientation of counterclockwise, or a left turn.
-        // */
-        //public const int COUNTERCLOCKWISE = 1;
-        ///**
-        // * A value that indicates an orientation of counterclockwise, or a left turn.
-        // */
-        //public const int LEFT = COUNTERCLOCKWISE;
-        ///**
-        // * A value that indicates an orientation of collinear, or no turn (straight).
-        // */
-        //public const int COLLINEAR = 0;
-        ///**
-        // * A value that indicates an orientation of collinear, or no turn (straight).
-        // */
-        //public const int STRAIGHT = COLLINEAR;
-
         /// <summary>
         /// Returns the orientation index of the direction of the point <paramref name="q"/> relative to
         /// a directed infinite line specified by <c>p1-&gt;p2</c>.

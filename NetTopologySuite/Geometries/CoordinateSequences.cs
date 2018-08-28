@@ -215,5 +215,141 @@ namespace NetTopologySuite.Geometries
             sb.Append(')');
             return sb.ToString();
         }
+
+        /// <summary>
+        /// Returns the minimum coordinate, using the usual lexicographic comparison.
+        /// </summary>
+        /// <param name="seq">The coordinate sequence to search</param>
+        /// <returns>The minimum coordinate in the sequence, found using <see cref="Coordinate.CompareTo(Coordinate)"/></returns>
+        public static Coordinate MinCoordinate(ICoordinateSequence seq)
+        {
+            Coordinate minCoord = null;
+            for (int i = 0; i < seq.Count; i++)
+            {
+                var testCoord = seq.GetCoordinate(i);
+                if (minCoord == null || minCoord.CompareTo(testCoord) > 0)
+                {
+                    minCoord = testCoord;
+                }
+            }
+            return minCoord;
+        }
+
+        /// <summary>
+        /// Returns the index of the minimum coordinate of the whole
+        /// coordinate sequence, using the usual lexicographic comparison.
+        /// </summary>
+        /// <param name="seq">The coordinate sequence to search</param>
+        /// <param name="from">The lower search index</param>
+        /// <param name="to">The upper search index</param>
+        /// <returns>The index of the minimum coordinate in the sequence, found using <see cref="Coordinate.CompareTo(Coordinate)"/></returns>
+        public static int MinCoordinateIndex(ICoordinateSequence seq)
+        {
+            return MinCoordinateIndex(seq, 0, seq.Count - 1);
+        }
+
+        /// <summary>
+        /// Returns the index of the minimum coordinate of a part of
+        /// the coordinate sequence (defined by <paramref name="from"/>
+        /// and <paramref name="to"/>), using the usual lexicographic
+        /// comparison.
+        /// </summary>
+        /// <param name="seq">The coordinate sequence to search</param>
+        /// <param name="from">The lower search index</param>
+        /// <param name="to">The upper search index</param>
+        /// <returns>The index of the minimum coordinate in the sequence, found using <see cref="Coordinate.CompareTo(Coordinate)"/></returns>
+        public static int MinCoordinateIndex(ICoordinateSequence seq, int from, int to)
+        {
+            int minCoordIndex = -1;
+            Coordinate minCoord = null;
+            for (int i = from; i <= to; i++)
+            {
+                var testCoord = seq.GetCoordinate(i);
+                if (minCoord == null || minCoord.CompareTo(testCoord) > 0)
+                {
+                    minCoord = testCoord;
+                    minCoordIndex = i;
+                }
+            }
+            return minCoordIndex;
+        }
+
+        /// <summary>
+        /// Shifts the positions of the coordinates until <c>firstCoordinate</c> is first.
+        /// </summary>
+        /// <param name="seq">The coordinate sequence to rearrange</param>
+        /// <param name="firstCoordinate">The coordinate to make first"></param>
+        public static void Scroll(ICoordinateSequence seq, Coordinate firstCoordinate)
+        {
+            int i = IndexOf(firstCoordinate, seq);
+            if (i <= 0) return;
+            Scroll(seq, i);
+        }
+
+        /// <summary>
+        /// Shifts the positions of the coordinates until the coordinate at  <code>firstCoordinateIndex</code>
+        /// is first.
+        /// </summary>
+        /// <param name="seq">The coordinate sequence to rearrange</param>
+        /// <param name="indexOfFirstCoordinate">The index of the coordinate to make first</param>
+        public static void Scroll(ICoordinateSequence seq, int indexOfFirstCoordinate)
+        {
+            Scroll(seq, indexOfFirstCoordinate, CoordinateSequences.IsRing(seq));
+        }
+
+        /// <summary>
+        /// Shifts the positions of the coordinates until the coordinate at  <code>firstCoordinateIndex</code>
+        /// is first.
+        /// </summary>
+        /// <param name="seq">The coordinate sequence to rearrange</param>
+        /// <param name="indexOfFirstCoordinate">The index of the coordinate to make first</param>
+        /// <param name="ensureRing">Makes sure that <paramref name="seq"/> will be a closed ring upon exit</param>
+        public static void Scroll(ICoordinateSequence seq, int indexOfFirstCoordinate, bool ensureRing)
+        {
+            int i = indexOfFirstCoordinate;
+            if (i <= 0) return;
+
+            // make a copy of the sequence
+            var copy = seq.Copy();
+
+            // test if ring, determine last index
+            int last = ensureRing ? seq.Count - 1 : seq.Count;
+
+            // fill in values
+            for (int j = 0; j < last; j++)
+            {
+                for (int k = 0; k < seq.Dimension; k++)
+                    seq.SetOrdinate(j, (Ordinate)k, copy.GetOrdinate((indexOfFirstCoordinate + j) % last, (Ordinate)k));
+            }
+
+            // Fix the ring (first == last)
+            if (ensureRing)
+            {
+                for (int k = 0; k < seq.Dimension; k++)
+                    seq.SetOrdinate(last, (Ordinate)k, seq.GetOrdinate(0, (Ordinate)k));
+            }
+        }
+
+        /// <summary>
+        /// Returns the index of <c>coordinate</c> in a <see cref="ICoordinateSequence"/>
+        /// The first position is 0; the second, 1; etc.
+        /// </summary>
+        /// <param name="coordinate">The <c>Coordinate</c> to search for</param>
+        /// <param name="seq">The coordinate sequence to search</param>
+        /// <returns>
+        /// The position of <c>coordinate</c>, or -1 if it is not found
+        /// </returns>
+        public static int IndexOf(Coordinate coordinate, ICoordinateSequence seq)
+        {
+            for (int i = 0; i < seq.Count; i++)
+            {
+                if (coordinate.X == seq.GetOrdinate(i, Ordinate.X) &&
+                    coordinate.Y == seq.GetOrdinate(i, Ordinate.Y))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
     }
 }
