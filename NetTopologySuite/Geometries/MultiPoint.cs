@@ -41,12 +41,9 @@ namespace NetTopologySuite.Geometries
         /// </remarks>
         public MultiPoint(GeoAPI.Geometries.IPoint[] points) : this(points, DefaultFactory) { }
 
-        /// <summary>
-        /// Creates and returns a full copy of this <see cref="IMultiPoint"/> object.
-        /// (including all coordinates contained by it).
-        /// </summary>
-        /// <returns>A copy of this instance</returns>
-        public override IGeometry Copy()
+        /// <inheritdoc cref="Geometry.CopyInternal"/>>
+        protected override IGeometry CopyInternal()
+
         {
             var points = new IPoint[NumGeometries];
             for (int i = 0; i < points.Length; i++)

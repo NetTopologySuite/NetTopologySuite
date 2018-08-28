@@ -435,18 +435,14 @@ namespace NetTopologySuite.Geometries
             return Copy();
         }
 
-        /// <summary>
-        /// Creates and returns a full copy of this <see cref="IPolygon"/> object.
-        /// (including all coordinates contained by it).
-        /// </summary>
-        /// <returns>A copy of this instance</returns>
-        public override IGeometry Copy()
+        /// <inheritdoc cref="Geometry.CopyInternal"/>>
+        protected override IGeometry CopyInternal()
         {
-            var shell = (LinearRing) _shell.Copy();
-            var holes = new ILinearRing[_holes.Length];
+            var shellCopy = (LinearRing) _shell.Copy();
+            var holesCopy = new ILinearRing[_holes.Length];
             for (int i = 0; i < _holes.Length; i++)
-                holes[i] = (LinearRing) _holes[i].Copy();
-            return new Polygon(shell, holes, Factory);
+                holesCopy[i] = (LinearRing) _holes[i].Copy();
+            return new Polygon(shellCopy, holesCopy, Factory);
         }
 
         //[Obsolete]

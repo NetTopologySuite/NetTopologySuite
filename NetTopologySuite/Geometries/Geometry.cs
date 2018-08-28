@@ -1540,11 +1540,12 @@ namespace NetTopologySuite.Geometries
             return (new ConvexHull(this)).GetConvexHull();
         }
 
-        ///<summary>
-        /// Computes a new geometry which has all component coordinate sequences
-        /// in reverse order (opposite orientation) to this one.
-        ///</summary>
-        /// <returns>A reversed geometry</returns>
+        /// <inheritdoc />
+        /// <summary>
+        ///  Computes a new geometry which has all component coordinate sequences
+        ///  in reverse order (opposite orientation) to this one.
+        /// </summary>
+        ///  <returns>A reversed geometry</returns>
         public abstract IGeometry Reverse();
 
         /// <summary>
@@ -1861,13 +1862,29 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Creates and returns a full copy of this <see cref="IGeometry"/> object
-        /// (including all coordinates contained by it).
-        /// Subclasses are responsible for implementing this method and copying
-        /// their internal data.
+        /// Creates a deep copy of this <see cref="IGeometry"/> object.
+        /// Coordinate sequences contained in it are copied.
+        /// All instance fields are copied (i.e. the <c>SRID</c> and <c>UserData</c>).
         /// </summary>
+        /// <remarks>
+        /// <b>NOTE:</b> The userData object reference (if present) is copied,
+        /// but the value itself is not copied.
+        /// If a deep copy is required this must be performed by the caller. 
+        /// </remarks>
         /// <returns>A deep copy of this geometry</returns>
-        public abstract IGeometry Copy();
+        public IGeometry Copy()
+        {
+            var copy = CopyInternal();
+            copy.SRID = SRID;
+            copy.UserData = UserData;
+            return copy;
+        }
+
+        /// <summary>
+        /// An internal method to copy subclass-specific geometry data.
+        /// </summary>
+        /// <returns>A copy of the target geometry object.</returns>
+        protected abstract IGeometry CopyInternal();
 
         /// <summary>
         /// Converts this <c>Geometry</c> to normal form (or canonical form ).

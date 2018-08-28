@@ -48,12 +48,8 @@ namespace NetTopologySuite.Geometries
         /// <param name="factory"></param>
         public MultiPolygon(IPolygon[] polygons, IGeometryFactory factory) : base(polygons, factory) { }
 
-        /// <summary>
-        /// Creates and returns a full copy of this <see cref="IMultiPolygon"/> object.
-        /// (including all coordinates contained by it).
-        /// </summary>
-        /// <returns>A copy of this instance</returns>
-        public override IGeometry Copy()
+        /// <inheritdoc cref="Geometry.CopyInternal"/>>
+        protected override IGeometry CopyInternal()
         {
             var polygons = new IPolygon[NumGeometries];
             for (int i = 0; i < polygons.Length; i++)

@@ -147,12 +147,8 @@ namespace NetTopologySuite.Geometries
 
         }
 
-        /// <summary>
-        /// Creates and returns a full copy of this <see cref="IMultiLineString"/> object.
-        /// (including all coordinates contained by it).
-        /// </summary>
-        /// <returns>A copy of this instance</returns>
-        public override IGeometry Copy()
+        /// <inheritdoc cref="Geometry.CopyInternal"/>>
+        protected override IGeometry CopyInternal()
         {
             var lineStrings = new ILineString[NumGeometries];
             for (int i = 0; i < lineStrings.Length; i++)
