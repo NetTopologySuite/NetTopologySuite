@@ -76,7 +76,7 @@ namespace Open.Topology.TestRunner.Functions
 
         public static int InteriorIntersectionCount(IGeometry geom)
         {
-            var intCounter = InteriorIntersectionFinder.CreateIntersectionCounter(new RobustLineIntersector());
+            var intCounter = NodingIntersectionFinder.CreateIntersectionCounter(new RobustLineIntersector());
             INoder noder = new MCIndexNoder(intCounter);
             noder.ComputeNodes(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
             return intCounter.Count;

@@ -7,6 +7,9 @@ namespace NetTopologySuite.GeometriesGraph
     /// <summary>
     /// Validates that a collection of <see cref="Edge"/> is correctly noded.
     /// Throws an appropriate exception if an noding error is found.
+    /// <remarks>
+    /// Uses <see cref="FastNodingValidator"/> to perform the validation.
+    /// </remarks>
     /// </summary>
     public class EdgeNodingValidator
     {

@@ -435,18 +435,14 @@ namespace NetTopologySuite.Geometries
             return Copy();
         }
 
-        /// <summary>
-        /// Creates and returns a full copy of this <see cref="IPolygon"/> object.
-        /// (including all coordinates contained by it).
-        /// </summary>
-        /// <returns>A copy of this instance</returns>
-        public override IGeometry Copy()
+        /// <inheritdoc cref="Geometry.CopyInternal"/>>
+        protected override IGeometry CopyInternal()
         {
-            var shell = (LinearRing) _shell.Copy();
-            var holes = new ILinearRing[_holes.Length];
+            var shellCopy = (LinearRing) _shell.Copy();
+            var holesCopy = new ILinearRing[_holes.Length];
             for (int i = 0; i < _holes.Length; i++)
-                holes[i] = (LinearRing) _holes[i].Copy();
-            return new Polygon(shell, holes, Factory);
+                holesCopy[i] = (LinearRing) _holes[i].Copy();
+            return new Polygon(shellCopy, holesCopy, Factory);
         }
 
         //[Obsolete]
@@ -475,9 +471,9 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public override void Normalize()
         {
-            Normalize(_shell, true);
-            foreach(var hole in Holes)
-                Normalize(hole, false);
+            _shell = Normalized(_shell, true);
+            for (int i = 0; i < _holes.Length; i++)
+                _holes[i] = Normalized(_holes[i], false);
             Array.Sort(_holes);
         }
 
@@ -524,23 +520,23 @@ namespace NetTopologySuite.Geometries
             return 0;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="ring"></param>
-        /// <param name="clockwise"></param>
+        private static ILinearRing Normalized(ILinearRing ring, bool clockwise)
+        {
+            var res = (ILinearRing)ring.Copy();
+            Normalize(res, clockwise);
+            return res;
+        }
+        
         private static void Normalize(ILinearRing ring, bool clockwise)
         {
             if (ring.IsEmpty)
                 return;
-            var uniqueCoordinates = new Coordinate[ring.Coordinates.Length - 1];
-            Array.Copy(ring.Coordinates, 0, uniqueCoordinates, 0, uniqueCoordinates.Length);
-            var minCoordinate = CoordinateArrays.MinCoordinate(ring.Coordinates);
-            CoordinateArrays.Scroll(uniqueCoordinates, minCoordinate);
-            Array.Copy(uniqueCoordinates, 0, ring.Coordinates, 0, uniqueCoordinates.Length);
-            ring.Coordinates[uniqueCoordinates.Length] = uniqueCoordinates[0];
-            if (Orientation.IsCCW(ring.Coordinates) == clockwise)
-                CoordinateArrays.Reverse(ring.Coordinates);
+
+            var seq = ring.CoordinateSequence;
+            int minCoordinateIndex = CoordinateSequences.MinCoordinateIndex(seq, 0, seq.Count - 2);
+            CoordinateSequences.Scroll(seq, minCoordinateIndex, true);
+            if (Orientation.IsCCW(seq) == clockwise)
+                CoordinateSequences.Reverse(seq);
         }
 
         /// <summary>

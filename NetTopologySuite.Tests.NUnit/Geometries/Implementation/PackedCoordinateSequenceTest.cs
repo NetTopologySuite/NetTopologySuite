@@ -28,5 +28,17 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             for (int i = 0; i < 4; i++)
                 Assert.AreEqual(mpSeq.GetOrdinate(0, (Ordinate)i), pSeq.GetOrdinate(0, (Ordinate)i));
         }
+
+        [Test, Sequential]
+        public void TestOrdinates(
+            [Values(2, 3, 4)] int dimension,
+            [Values(Ordinates.XY, Ordinates.XYZ, Ordinates.XYZM)] Ordinates ordinates)
+        {
+            var factory = new PackedCoordinateSequenceFactory(
+                PackedCoordinateSequenceFactory.PackedType.Double,
+                dimension);
+
+            Assert.AreEqual(ordinates, factory.Ordinates);
+        }
     }
 }

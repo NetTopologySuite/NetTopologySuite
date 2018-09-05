@@ -44,8 +44,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         private ICoordinateSequence GetCoordinateSequence(string wkt)
         {
             var geom = reader.Read(wkt);
-            if (geom is IGeometryCollection)
-                throw new ArgumentException($"{nameof(wkt)} must be of LineString or Polygon");
+            if (!(geom is IPolygon))
+                throw new ArgumentException($"{nameof(wkt)} must be of Polygon");
 
             var poly = (IPolygon) geom;
             return poly.ExteriorRing.CoordinateSequence;

@@ -1540,11 +1540,12 @@ namespace NetTopologySuite.Geometries
             return (new ConvexHull(this)).GetConvexHull();
         }
 
-        ///<summary>
-        /// Computes a new geometry which has all component coordinate sequences
-        /// in reverse order (opposite orientation) to this one.
-        ///</summary>
-        /// <returns>A reversed geometry</returns>
+        /// <inheritdoc />
+        /// <summary>
+        ///  Computes a new geometry which has all component coordinate sequences
+        ///  in reverse order (opposite orientation) to this one.
+        /// </summary>
+        ///  <returns>A reversed geometry</returns>
         public abstract IGeometry Reverse();
 
         /// <summary>
@@ -1574,16 +1575,18 @@ namespace NetTopologySuite.Geometries
                 return OverlayOp.CreateEmptyResult(SpatialFunction.Intersection, this, other, _factory);
 
             // compute for GCs
+            // (An inefficient algorithm, but will work)
+            // TODO: improve efficiency of computation for GCs
             if (IsGeometryCollection)
             {
                 var g2 = other;
                 return GeometryCollectionMapper.Map(
                     (IGeometryCollection)this, g => g.Intersection(g2));
             }
-            // if (isGeometryCollection(other))
-            //     return other.intersection(this);
-            CheckNotGeometryCollection(this);
-            CheckNotGeometryCollection(other);
+
+            // No longer needed since GCs are handled by previous code
+            //CheckNotGeometryCollection(this);
+            //CheckNotGeometryCollection(other);
             return SnapIfNeededOverlayOp.Overlay(this, other, SpatialFunction.Intersection);
         }
 
@@ -1859,13 +1862,29 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Creates and returns a full copy of this <see cref="IGeometry"/> object
-        /// (including all coordinates contained by it).
-        /// Subclasses are responsible for implementing this method and copying
-        /// their internal data.
+        /// Creates a deep copy of this <see cref="IGeometry"/> object.
+        /// Coordinate sequences contained in it are copied.
+        /// All instance fields are copied (i.e. the <c>SRID</c> and <c>UserData</c>).
         /// </summary>
+        /// <remarks>
+        /// <b>NOTE:</b> The userData object reference (if present) is copied,
+        /// but the value itself is not copied.
+        /// If a deep copy is required this must be performed by the caller. 
+        /// </remarks>
         /// <returns>A deep copy of this geometry</returns>
-        public abstract IGeometry Copy();
+        public IGeometry Copy()
+        {
+            var copy = CopyInternal();
+            copy.SRID = SRID;
+            copy.UserData = UserData;
+            return copy;
+        }
+
+        /// <summary>
+        /// An internal method to copy subclass-specific geometry data.
+        /// </summary>
+        /// <returns>A copy of the target geometry object.</returns>
+        protected abstract IGeometry CopyInternal();
 
         /// <summary>
         /// Converts this <c>Geometry</c> to normal form (or canonical form ).
@@ -2043,18 +2062,17 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Throws an exception if <c>g</c>'s class is <c>GeometryCollection</c>.
-        /// (its subclasses do not trigger an exception).
+        /// Throws an exception if <c>g</c>'s type is a <c>GeometryCollection</c>.
+        /// (Its subclasses do not trigger an exception).
         /// </summary>
         /// <param name="g">The <c>Geometry</c> to check.</param>
         /// <exception cref="ArgumentException">
         /// if <c>g</c> is a <c>GeometryCollection</c>, but not one of its subclasses.
         /// </exception>
-        protected void CheckNotGeometryCollection(IGeometry g)
+        protected static void CheckNotGeometryCollection(IGeometry g)
         {
-            //if (IsNonHomogenousGeometryCollection(g))
-            if (IsGeometryCollection)
-                throw new ArgumentException("This method does not support GeometryCollection arguments");
+            if (((Geometry)g).IsGeometryCollection)
+                throw new ArgumentException("Operation does not support GeometryCollection arguments");
         }
 
         /*

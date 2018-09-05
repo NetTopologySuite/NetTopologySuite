@@ -214,7 +214,19 @@ namespace NetTopologySuite.Utilities
         /// result will be a circle.
         /// </summary>
         /// <returns>An an ellipse or circle.</returns>
+        [Obsolete("Use CreateEllipse")]
         public IPolygon CeateEllipse()
+        {
+            return CreateEllipse();
+        }
+
+        /// <summary>
+        /// Creates an elliptical <c>Polygon</c>.
+        /// If the supplied envelope is square the
+        /// result will be a circle.
+        /// </summary>
+        /// <returns>An an ellipse or circle.</returns>
+        public IPolygon CreateEllipse()
         {
             var env = _dim.Envelope;
             double xRadius = env.Width / 2.0;

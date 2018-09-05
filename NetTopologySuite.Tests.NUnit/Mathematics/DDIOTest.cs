@@ -13,7 +13,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
     {
 
         [Test]
-        public void TestStandardNotation()
+        public void TestWriteStandardNotation()
         {
             // standard cases
             CheckStandardNotation(1.0, "1.0");
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         }
 
         [Test]
-        public void TestSciNotation() {
+        public void TestWriteSciNotation() {
             CheckSciNotation(0.0, "0.0E0");
             CheckSciNotation(1.05e10, "1.05E10");
             CheckSciNotation(0.34, "3.4000000000000002442490654175344E-1");
@@ -71,26 +71,36 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         }
 
         [Test]
-        public void TestParse() {
+        public void TestParse()
+        {
             CheckParse("0", 0, 1e-32);
+            CheckParse("00", 0, 1e-32);
+            CheckParse("000", 0, 1e-32);
+
             CheckParse("1", 1, 1e-32);
             CheckParse("100", 100, 1e-32);
+            CheckParse("00100", 100, 1e-32);
+
             CheckParse("-1", -1, 1e-32);
-            CheckParse("-100", -100, 1e-32);
+            CheckParse("-01", -1, 1e-32);
             CheckParse("-123", -123, 1e-32);
+            CheckParse("-00123", -123, 1e-32);
+        }
 
-            CheckParse(".1", 0.1, 1e-32);
-            CheckParse("0", 0, 1e-32);
-            CheckParse("1", 1, 1e-32);
-            CheckParse("1.05e10", 1.05E10, 1e-32);
-            CheckParse("-1.05e10", -1.05E10, 1e-32);
-            CheckParse("1.05e-10", DD.ValueOf(105d).Divide(
-                DD.ValueOf(100d)).Divide(DD.ValueOf(1.0E10)), 1e-32);
-            CheckParse("-1.05e-10", DD.ValueOf(105d).Divide(
-                    DD.ValueOf(100d)).Divide(DD.ValueOf(1.0E10))
-                .Negate(), 1e-32);
+        [Test]
+        public void TestParseStandardNotation()
+        {
+            CheckParse("1.0000000", 1, 1e-32);
+            CheckParse("1.0", 1, 1e-32);
+            CheckParse("1.", 1, 1e-32);
+            CheckParse("01.", 1, 1e-32);
 
-            /**
+            CheckParse("-1.0", -1, 1e-32);
+            CheckParse("-1.", -1, 1e-32);
+            CheckParse("-01.0", -1, 1e-32);
+            CheckParse("-123.0", -123, 1e-32);
+
+            /*
              * The Java double-precision constant 1.4 gives rise to a value which
              * differs from the exact binary representation down around the 17th decimal
              * place. Thus it will not compare exactly to the DoubleDouble
@@ -103,6 +113,22 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             // 39.5D can be converted to an exact FP representation
             CheckParse("39.5", 39.5, 1e-30);
             CheckParse("-39.5", -39.5, 1e-30);
+        }
+
+        [Test]
+        public void TestParseSciNotation()
+        {
+            CheckParse("1.05e10", 1.05E10, 1e-32);
+            CheckParse("01.05e10", 1.05E10, 1e-32);
+            CheckParse("12.05e10", 1.205E11, 1e-32);
+
+            CheckParse("-1.05e10", -1.05E10, 1e-32);
+
+            CheckParse("1.05e-10", DD.ValueOf(105.0).Divide(
+                DD.ValueOf(100.0)).Divide(DD.ValueOf(1.0E10)), 1e-32);
+            CheckParse("-1.05e-10", DD.ValueOf(105.0).Divide(
+                    DD.ValueOf(100.0)).Divide(DD.ValueOf(1.0E10))
+                .Negate(), 1e-32);
         }
 
         private static void CheckParse(string str, double expectedVal, double errBound)
@@ -179,9 +205,10 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             }
         }
 
-        public void testRepeatedSqr()
+        [Test]
+        public void TestWriteRepeatedSqr()
         {
-            WriteRepeatedSqr(DD.ValueOf(.9));
+            WriteRepeatedSqr(DD.ValueOf(0.9));
             WriteRepeatedSqr(DD.PI.Divide(DD.ValueOf(10)));
         }
 
@@ -208,7 +235,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         }
 
         [Test]
-        public void TestIOSquaresStress() {
+        public void TestWriteIOSquaresStress() {
             for (int i = 1; i < 10000; i++) {
                 WriteAndReadSqrt(i);
             }
