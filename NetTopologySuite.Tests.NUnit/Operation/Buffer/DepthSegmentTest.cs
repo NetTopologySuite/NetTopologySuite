@@ -74,7 +74,10 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 
         private SubgraphDepthLocater.DepthSegment depthSeg(double x0, double y0, double x1, double y1)
         {
-            return new SubgraphDepthLocater.DepthSegment(new LineSegment(x0, y0, x1, y1), 0);
+            var seg = new LineSegment(x0, y0, x1, y1);
+            if (seg.P0.Y > seg.P1.Y)
+                seg.Reverse();
+            return new SubgraphDepthLocater.DepthSegment(seg, 0);
         }
 
     }

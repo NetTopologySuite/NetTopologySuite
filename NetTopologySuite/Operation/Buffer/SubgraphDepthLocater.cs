@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
@@ -39,8 +40,7 @@ namespace NetTopologySuite.Operation.Buffer
             // if no segments on stabbing line subgraph must be outside all others.
             if (stabbedSegments.Count == 0)
                 return 0;
-            stabbedSegments.Sort();
-            var ds = stabbedSegments[0];
+            var ds = stabbedSegments.Min();
             return ds.LeftDepth;
         }
 
@@ -133,25 +133,27 @@ namespace NetTopologySuite.Operation.Buffer
             private readonly LineSegment _upwardSeg;
 
             /// <summary>
-            ///
+            /// Gets or sets the depth to the left of this segment
             /// </summary>
-            public int LeftDepth { get; set; }
+            public int LeftDepth { get; }
 
             /// <summary>
-            ///
+            /// Initializes this DepthSegments
             /// </summary>
-            /// <param name="seg"></param>
-            /// <param name="depth"></param>
+            /// <param name="seg">A line segment</param>
+            /// <param name="depth">A depth value</param>
             public DepthSegment(LineSegment seg, int depth)
             {
                 // input seg is assumed to be normalized
                 _upwardSeg = new LineSegment(seg);
-                this.LeftDepth = depth;
+                LeftDepth = depth;
             }
 
             /// <summary>
-            /// Defines a comparison operation on DepthSegments
+            /// Defines a comparison operation on <see cref="DepthSegment"/>s
             /// which orders them left to right.
+            /// </summary>
+            /// <remarks>
             /// Assumes the segments are normalized.
             /// <para/>
             /// The definition of ordering is:
@@ -160,8 +162,6 @@ namespace NetTopologySuite.Operation.Buffer
             /// <item>1 : if DS1.seg is right of or above DS2.seg (DS1 &gt; DS2).</item>
             /// <item>0 : if the segments are identical</item>
             /// </list>
-            /// </summary>
-            /// <remarks>
             /// Known Bugs:
             /// <list type="Bullet">
             /// <item>The logic does not obey the <see cref="IComparable.CompareTo"/> contract.
@@ -178,17 +178,17 @@ namespace NetTopologySuite.Operation.Buffer
                 if (_upwardSeg.MaxX <= other._upwardSeg.MinX) return -1;
 
                 /*
-                * try and compute a determinate orientation for the segments.
-                * Test returns 1 if other is left of this (i.e. this > other)
-                */
+                 * try and compute a determinate orientation for the segments.
+                 * Test returns 1 if other is left of this (i.e. this > other)
+                 */
                 int orientIndex = _upwardSeg.OrientationIndex(other._upwardSeg);
                 if (orientIndex != 0) return orientIndex;
 
                 /*
-                * If comparison between this and other is indeterminate,
-                * try the opposite call order.
-                * The sign of the result needs to be flipped
-                */
+                 * If comparison between this and other is indeterminate,
+                 * try the opposite call order.
+                 * The sign of the result needs to be flipped
+                 */
                 orientIndex = -1 * other._upwardSeg.OrientationIndex(_upwardSeg);
                 if (orientIndex != 0) return orientIndex;
 
@@ -198,8 +198,8 @@ namespace NetTopologySuite.Operation.Buffer
 
             /// <summary>
             /// Compare two collinear segments for left-most ordering.
-            /// If segs are vertical, use vertical ordering for comparison.
-            /// If segs are equal, return 0.
+            /// If segments are vertical, use vertical ordering for comparison.
+            /// If segments are equal, return 0.
             /// Segments are assumed to be directed so that the second coordinate is >= to the first
             /// (e.g. up and to the right).
             /// </summary>
