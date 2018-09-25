@@ -54,9 +54,9 @@ namespace NetTopologySuite.Geometries
 #endif
     public class PrecisionModel : IPrecisionModel
     {
-        ///<summary>
+        /// <summary>
         /// Determines which of two <see cref="IPrecisionModel"/>s is the most precise
-        ///</summary>
+        /// </summary>
         /// <param name="pm1">A precision model</param>
         /// <param name="pm2">A precision model</param>
         /// <returns>The PrecisionModel which is most precise</returns>

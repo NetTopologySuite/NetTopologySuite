@@ -3,16 +3,16 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries.Utilities
 {
-    ///<summary>
+    /// <summary>
     /// Extracts all the <see cref="ILineString"/> elements from a <see cref="IGeometry"/>.
     /// </summary>
-    ///<see cref="GeometryExtracter"/>
+    /// <see cref="GeometryExtracter"/>
     public class LineStringExtracter : IGeometryFilter
     {
-        ///<summary>
+        /// <summary>
         /// Extracts the <see cref="ILineString"/> elements from a single <see cref="IGeometry"/>
         /// and adds them to the<see cref="List{ILineString}"/>.
-        ///</summary>
+        /// </summary>
         /// <param name="geom">The geometry from which to extract</param>
         /// <param name="lines">The list to add the extracted elements to</param>
         /// <returns>The <paramref name="lines"/> list argument</returns>
@@ -30,10 +30,10 @@ namespace NetTopologySuite.Geometries.Utilities
             return lines;
         }
 
-        ///<summary>
+        /// <summary>
         /// Extracts the <see cref="ILineString"/> elements from a single <see cref="IGeometry"/>
         /// and returns them in a <see cref="ICollection{ILineString}"/>.
-        ///</summary>
+        /// </summary>
         /// <param name="geom">The geometry from which to extract</param>
         /// <returns>A list containing the linear elements</returns>
         public static ICollection<IGeometry> GetLines(IGeometry geom)
@@ -55,9 +55,9 @@ namespace NetTopologySuite.Geometries.Utilities
 
         private readonly ICollection<IGeometry> _comps;
 
-        ///<summary>
+        /// <summary>
         /// Constructs a filter with a list in which to store the elements found.
-        ///</summary>
+        /// </summary>
         public LineStringExtracter(ICollection<IGeometry> comps)
         {
             _comps = comps;

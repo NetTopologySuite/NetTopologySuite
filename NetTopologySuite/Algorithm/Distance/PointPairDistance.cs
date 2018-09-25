@@ -17,14 +17,14 @@ namespace NetTopologySuite.Algorithm.Distance
         private double _distance = double.NaN;
         private bool _isNull = true;
 
-        ///<summary>
+        /// <summary>
         /// Initializes to null.
-        ///</summary>
+        /// </summary>
         public void Initialize() { _isNull = true; }
 
-        ///<summary>
+        /// <summary>
         /// Initializes the points.
-        ///</summary>
+        /// </summary>
         /// <param name="p0">1st coordinate</param>
         /// <param name="p1">2nd coordinate</param>
         public void Initialize(Coordinate p0, Coordinate p1)
@@ -35,9 +35,9 @@ namespace NetTopologySuite.Algorithm.Distance
             _isNull = false;
         }
 
-        ///<summary>
+        /// <summary>
         /// Initializes the points, avoiding recomputing the distance.
-        ///</summary>
+        /// </summary>
         /// <param name="p0">1st coordinate</param>
         /// <param name="p1">2nd coordinate</param>
         /// <param name="distance">the distance between <see paramref="p0"/> and <see paramref="p1"/></param>

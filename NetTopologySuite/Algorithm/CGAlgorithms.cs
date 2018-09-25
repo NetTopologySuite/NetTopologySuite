@@ -124,9 +124,9 @@ namespace NetTopologySuite.Algorithm
             return PointLocation.IsInRing(p, ring);
         }
 
-        ///<summary>
+        /// <summary>
         /// Determines whether a point lies in the interior, on the boundary, or in the exterior of a ring.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// <para>The ring may be oriented in either direction.</para>
         /// <para>This method does <i>not</i> first check the point against the envelope of the ring.</para>
@@ -140,9 +140,9 @@ namespace NetTopologySuite.Algorithm
             return PointLocation.LocateInRing(p, ring);
         }
 
-        ///<summary>
+        /// <summary>
         /// Determines whether a point lies in the interior, on the boundary, or in the exterior of a ring.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// <para>The ring may be oriented in either direction.</para>
         /// <para>This method does <i>not</i> first check the point against the envelope of the ring.</para>

@@ -175,7 +175,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <returns><c>true</c> if this ring is a hole.</returns>
         public bool IsHole => _isHole;
 
-        ///<summary>
+        /// <summary>
         /// Computes whether this ring is a hole.
         /// Due to the way the edges in the polygonization graph are linked,
         /// a ring is a hole if it is oriented counter-clockwise.

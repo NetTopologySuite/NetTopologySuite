@@ -65,9 +65,9 @@ namespace NetTopologySuite.LinearReferencing
             return indexLow.GetSegment(_linearGeom).PointAlongOffset(indexLow.SegmentFraction, offsetDistance);
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the <see cref="Coordinate"/> for the point on the line at the given index, offset by the given distance.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// If the index is out of range the first or last point on the line will be returned.
         /// The computed point is offset to the left of the line if the offset distance is
@@ -125,10 +125,10 @@ namespace NetTopologySuite.LinearReferencing
             return LocationIndexOfLine.IndicesOf(_linearGeom, subLine);
         }
 
-        ///<summary>
+        /// <summary>
         /// Finds the index for a point on the line which is greater than the given index.
         /// If no such index exists, returns <paramref name="minIndex" />.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// <para>
         /// This method can be used to determine all indexes for

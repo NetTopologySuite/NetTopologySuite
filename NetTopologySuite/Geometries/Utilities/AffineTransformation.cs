@@ -474,7 +474,7 @@ namespace NetTopologySuite.Geometries.Utilities
             return new AffineTransformation(im00, im01, im02, im10, im11, im12);
         }
 
-        ///<summary>
+        /// <summary>
         /// Explicitly computes the math for a reflection.  May not work.
         /// </summary>
         /// <param name="x0">The x-ordinate of one point on the reflection line</param>
@@ -990,8 +990,8 @@ namespace NetTopologySuite.Geometries.Utilities
         /// Applies this transformation to the i'th coordinate
         /// in the given CoordinateSequence.
         /// </summary>
-        ///<param name="seq"> a <code>CoordinateSequence</code></param>
-        ///<param name="i"> the index of the coordinate to transform</param>
+        /// <param name="seq"> a <code>CoordinateSequence</code></param>
+        /// <param name="i"> the index of the coordinate to transform</param>
         public void Transform(ICoordinateSequence seq, int i)
         {
             double xp = _m00 * seq.GetOrdinate(i, Ordinate.X) + _m01 * seq.GetOrdinate(i, Ordinate.Y) + _m02;
@@ -1000,9 +1000,9 @@ namespace NetTopologySuite.Geometries.Utilities
             seq.SetOrdinate(i, Ordinate.Y, yp);
         }
 
-        ///<summary>
+        /// <summary>
         /// Transforms the i'th coordinate in the input sequence
-        ///</summary>
+        /// </summary>
         /// <param name="seq">A <c>CoordinateSequence</c></param>
         /// <param name="i">The index of the coordinate to transform</param>
         public void Filter(ICoordinateSequence seq, int i)
@@ -1019,13 +1019,13 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> false</returns>
         public bool Done => false;
 
-        ///<summary>Tests if this transformation is the identity transformation.</summary>
+        /// <summary>Tests if this transformation is the identity transformation.</summary>
         public bool IsIdentity => (_m00 == 1 && _m01 == 0 && _m02 == 0
                                       && _m10 == 0 && _m11 == 1 && _m12 == 0);
 
-        ///<summary>
+        /// <summary>
         /// Tests if an object is an <c>AffineTransformation</c> and has the same matrix as this transformation.
-        ///</summary>
+        /// </summary>
         /// <param name="obj">An object to test</param>
         /// <returns>true if the given object is equal to this object</returns>
         public override bool Equals(object obj)
@@ -1058,14 +1058,14 @@ namespace NetTopologySuite.Geometries.Utilities
             && _m12 == trans._m12;
         }
 
-        ///<summary>
+        /// <summary>
         /// Gets a text representation of this transformation.
         /// The string is of the form:
         /// <code>
         /// AffineTransformation[[m00, m01, m02], [m10, m11, m12]]
         /// </code>
         /// </summary>
-        ///<returns>A string representing this transformation</returns>
+        /// <returns>A string representing this transformation</returns>
         public override string ToString()
         {
             return "AffineTransformation[[" + _m00 + ", " + _m01 + ", " + _m02
@@ -1073,9 +1073,9 @@ namespace NetTopologySuite.Geometries.Utilities
             + _m10 + ", " + _m11 + ", " + _m12 + "]]";
         }
 
-        ///<summary>
+        /// <summary>
         /// Clones this transformation
-        ///</summary>
+        /// </summary>
         /// <returns>A copy of this transformation</returns>
         public object Clone()
         {

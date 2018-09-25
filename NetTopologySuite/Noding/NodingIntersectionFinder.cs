@@ -6,15 +6,15 @@ using NetTopologySuite.Algorithm;
 
 namespace NetTopologySuite.Noding
 {
-    ///<summary>
-    ///</summary>
+    /// <summary>
+    /// </summary>
     public class NodingIntersectionFinder : ISegmentIntersector
     {
-        ///<summary>
+        /// <summary>
         /// Creates an intersection finder which tests if there is at least one interior intersection.
         /// Uses short-circuiting for efficient performance.
         /// The intersection found is recorded.
-        ///</summary>
+        /// </summary>
         /// <param name="li">A line intersector.</param>
         /// <returns>A intersection finder which tests if there is at least one interior intersection.</returns>
         public static NodingIntersectionFinder CreateAnyIntersectionFinder(LineIntersector li)
@@ -22,10 +22,10 @@ namespace NetTopologySuite.Noding
             return new NodingIntersectionFinder(li);
         }
 
-        ///<summary>
+        /// <summary>
         /// Creates an intersection finder which finds all interior intersections.
         /// The intersections are recorded for later inspection.
-        ///</summary>
+        /// </summary>
         /// <param name="li">A line intersector.</param>
         /// <returns>a intersection finder which finds all interior intersections.</returns>
         public static NodingIntersectionFinder CreateAllIntersectionsFinder(LineIntersector li)
@@ -35,10 +35,10 @@ namespace NetTopologySuite.Noding
             return finder;
         }
 
-        ///<summary>
+        /// <summary>
         /// Creates an intersection finder which counts all interior intersections.
         /// The intersections are note recorded to reduce memory usage.
-        ///</summary>
+        /// </summary>
         /// <param name="li">A line intersector.</param>
         /// <returns>a intersection finder which counts all interior intersections.</returns>
         public static NodingIntersectionFinder CreateIntersectionCounter(LineIntersector li)
@@ -57,10 +57,10 @@ namespace NetTopologySuite.Noding
         private int intersectionCount = 0;
         private bool _keepIntersections = true;
 
-        ///<summary>
+        /// <summary>
         /// Creates an intersection finder which finds an interior intersection if one exists
-        ///</summary>
-        ///<param name="li">the LineIntersector to use</param>
+        /// </summary>
+        /// <param name="li">the LineIntersector to use</param>
         public NodingIntersectionFinder(LineIntersector li)
         {
             _li = li;
@@ -90,18 +90,18 @@ namespace NetTopologySuite.Noding
             set => _keepIntersections = value;
         }
 
-        ///<summary>
+        /// <summary>
         /// Gets/Sets whether only end segments should be tested for interior intersection.
         /// This is a performance optimization that may be used if
         /// the segments have been previously noded by an appropriate algorithm.
         /// It may be known that any potential noding failures will occur only in
         /// end segments.
-        ///</summary>
+        /// </summary>
         public bool CheckEndSegmentsOnly { get; set; }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether an intersection was found.
-        ///</summary>
+        /// </summary>
         public bool HasIntersection => _interiorIntersection != null;
 
         /// <summary>
@@ -116,28 +116,28 @@ namespace NetTopologySuite.Noding
         /// <returns>The intersection count.</returns>
         public int Count => intersectionCount;
 
-        ///<summary>
+        /// <summary>
         /// Gets the computed location of the intersection.
         /// Due to round-off, the location may not be exact.
-        ///</summary>
+        /// </summary>
         public Coordinate InteriorIntersection => _interiorIntersection;
 
-        ///<summary>
+        /// <summary>
         /// Gets the endpoints of the intersecting segments.
-        ///</summary>
+        /// </summary>
         public Coordinate[] IntersectionSegments => _intSegments;
 
-        ///<summary>
+        /// <summary>
         /// This method is called by clients of the <see cref="ISegmentIntersector"/> class to process
         /// intersections for two segments of the <see cref="ISegmentString"/>s being intersected.<br/>
         /// Note that some clients (such as <c>MonotoneChain</c>s) may optimize away
         /// this call for segment pairs which they have determined do not intersect
         /// (e.g. by an disjoint envelope test).
-        ///</summary>
-        ///<param name="e0"></param>
-        ///<param name="segIndex0"></param>
-        ///<param name="e1"></param>
-        ///<param name="segIndex1"></param>
+        /// </summary>
+        /// <param name="e0"></param>
+        /// <param name="segIndex0"></param>
+        /// <param name="e1"></param>
+        /// <param name="segIndex1"></param>
         public void ProcessIntersections(
             ISegmentString e0, int segIndex0,
             ISegmentString e1, int segIndex1
@@ -250,13 +250,13 @@ namespace NetTopologySuite.Noding
             return false;
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether a segment in a <see cref="ISegmentString" /> is an end segment.
         /// (either the first or last).
-        ///</summary>
-        ///<param name="segStr">a segment string</param>
-        ///<param name="index">the index of a segment in the segment string</param>
-        ///<returns>true if the segment is an end segment</returns>
+        /// </summary>
+        /// <param name="segStr">a segment string</param>
+        /// <param name="index">the index of a segment in the segment string</param>
+        /// <returns>true if the segment is an end segment</returns>
         private static bool IsEndSegment(ISegmentString segStr, int index)
         {
             if (index == 0) return true;

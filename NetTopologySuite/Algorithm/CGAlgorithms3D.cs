@@ -35,8 +35,8 @@ namespace NetTopologySuite.Algorithm
         /// segment from <paramref name="A"/> to <paramref name="B"/> in 3D space
         /// </summary>
         /// <param name="p">The point</param>
-        ///<param name="A">The start point of the segment</param>
-        ///<param name="B">The end point of the segment</param>
+        /// <param name="A">The start point of the segment</param>
+        /// <param name="B">The end point of the segment</param>
         /// <returns></returns>
         public static double DistancePointSegment(Coordinate p,
                 Coordinate A, Coordinate B)
@@ -81,12 +81,12 @@ namespace NetTopologySuite.Algorithm
             return Math.Sqrt(dx * dx + dy * dy + dz * dz);
         }
 
-        ///<summary>Computes the distance between two 3D segments.</summary>
-        ///<param name="A">The start point of the first segment</param>
-        ///<param name="B">The end point of the first segment</param>
-        ///<param name="C">The start point of the second segment</param>
-        ///<param name="D">The end point of the second segment</param>
-        ///<returns>The distance between the segments</returns>
+        /// <summary>Computes the distance between two 3D segments.</summary>
+        /// <param name="A">The start point of the first segment</param>
+        /// <param name="B">The end point of the first segment</param>
+        /// <param name="C">The start point of the second segment</param>
+        /// <param name="D">The end point of the second segment</param>
+        /// <returns>The distance between the segments</returns>
         public static double DistanceSegmentSegment(
                 Coordinate A, Coordinate B, Coordinate C, Coordinate D)
         {

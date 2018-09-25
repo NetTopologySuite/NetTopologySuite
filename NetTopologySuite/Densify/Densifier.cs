@@ -69,7 +69,7 @@ namespace NetTopologySuite.Densify
         private readonly IGeometry _inputGeom;
         private double _distanceTolerance;
 
-        ///<summary>Creates a new densifier instance</summary>
+        /// <summary>Creates a new densifier instance</summary>
         /// <param name="inputGeom">The geometry to densify</param>
         public Densifier(IGeometry inputGeom)
         {
@@ -143,14 +143,14 @@ namespace NetTopologySuite.Densify
                 return CreateValidArea(roughGeom);
             }
 
-            ///<summary>
+            /// <summary>
             /// Creates a valid area geometry from one that possibly has bad topology
             /// (i.e. self-intersections). Since buffer can handle invalid topology, but
             /// always returns valid geometry, constructing a 0-width buffer "corrects"
             /// the topology. Note this only works for area geometries, since buffer
             /// always returns areas. This also may return empty geometries, if the input
             /// has no actual area.
-            ///</summary>
+            /// </summary>
             /// <param name="roughAreaGeom">An area geometry possibly containing self-intersections</param>
             /// <returns>A valid area geometry</returns>
             private static IGeometry CreateValidArea(IGeometry roughAreaGeom)

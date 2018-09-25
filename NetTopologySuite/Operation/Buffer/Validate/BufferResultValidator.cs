@@ -35,8 +35,8 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             return false;
         }
 
-        ///<summary>Checks whether the geometry buffer is valid, and returns an error message if not.
-        ///</summary>
+        /// <summary>Checks whether the geometry buffer is valid, and returns an error message if not.
+        /// </summary>
         /// <param name="g"></param>
         /// <param name="distance"></param>
         /// <param name="result"></param>

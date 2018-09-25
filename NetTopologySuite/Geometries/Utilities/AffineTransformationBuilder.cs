@@ -2,9 +2,9 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries.Utilities
 {
-    ///<summary>
+    /// <summary>
     /// Builds an <see cref="AffineTransformation"/> defined by a set of control vectors.
-    ///</summary>
+    /// </summary>
     /// <remarks>
     /// <para>
     /// A control vector consists of a source point and a destination point,
@@ -44,9 +44,9 @@ namespace NetTopologySuite.Geometries.Utilities
         // the matrix entries for the transformation
         private double _m00, _m01, _m02, _m10, _m11, _m12;
 
-        ///<summary>
+        /// <summary>
         /// Constructs a new builder for the transformation defined by the given set of control point mappings.
-        ///</summary>
+        /// </summary>
         /// <param name="src0">A control point</param>
         /// <param name="src1">A control point</param>
         /// <param name="src2">A control point</param>
@@ -68,11 +68,11 @@ namespace NetTopologySuite.Geometries.Utilities
             _dest2 = dest2;
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the <see cref="AffineTransformation"/>
         /// determined by the control point mappings,
         /// or <c>null</c> if the control vectors do not determine a well-defined transformation.
-        ///</summary>
+        /// </summary>
         /// <returns>
         /// <list>
         /// <item>An affine transformation</item>
@@ -88,7 +88,7 @@ namespace NetTopologySuite.Geometries.Utilities
             return null;
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the transformation matrix by
         /// solving the two systems of linear equations
         /// defined by the control point mappings,
@@ -113,10 +113,10 @@ namespace NetTopologySuite.Geometries.Utilities
             return true;
         }
 
-        ///<summary>
+        /// <summary>
         /// Solves the transformation matrix system of linear equations
         /// for the given right-hand side vector.
-        ///</summary>
+        /// </summary>
         /// <param name="b">The vector for the right-hand side of the system</param>
         /// <returns>The solution vector, if it can be determinated, otherwise null</returns>
         private double[] Solve(double[] b)

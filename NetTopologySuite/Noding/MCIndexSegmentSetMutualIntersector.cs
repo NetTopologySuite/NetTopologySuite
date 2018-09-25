@@ -6,12 +6,12 @@ using MonotoneChain = NetTopologySuite.Index.Chain.MonotoneChain;
 
 namespace NetTopologySuite.Noding
 {
-    ///<summary>
+    /// <summary>
     /// Intersects two sets of <see cref="ISegmentString"/>s using a index based
     /// on <see cref="MonotoneChain"/>s and a <see cref="ISpatialIndex"/>.
     /// <para/>
     /// Thread-safe and immutable.
-    ///</summary>
+    /// </summary>
     public class MCIndexSegmentSetMutualIntersector : ISegmentSetMutualIntersector
     {
        /*

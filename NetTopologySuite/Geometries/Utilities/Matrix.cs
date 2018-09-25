@@ -27,11 +27,11 @@ namespace NetTopologySuite.Geometries.Utilities
             m[j] = temp;
         }
 
-        ///<summary>
+        /// <summary>
         /// Solves a system of equations using Gaussian Elimination.<br/>
         /// In order to avoid overhead the algorithm runs in-place
         /// on A - if A should not be modified the client must supply a copy.
-        ///</summary>
+        /// </summary>
         /// <param name="a">A an nxn matrix in row/column order )modified by this method)</param>
         /// <param name="b">A vector of length n</param>
         /// <exception cref="T:System.ArgumentException">if the matrix is the wrong size</exception>

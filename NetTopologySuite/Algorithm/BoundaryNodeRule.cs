@@ -4,7 +4,7 @@ using NetTopologySuite.Operation.Relate;
 
 namespace NetTopologySuite.Algorithm
 {
-    ///<summary>
+    /// <summary>
     /// An interface for rules which determine whether node points
     /// which are in boundaries of <see cref="ILineal"/> geometry components
     /// are in the boundary of the parent geometry collection.
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Algorithm
     /// states that closed rings have <b>no</b> boundary points.
     /// <para/>
     /// This interface and its subclasses follow the <tt>Strategy</tt> design pattern.
-    ///</summary>
+    /// </summary>
     /// <author>Martin Davis</author>
     /// <seealso cref="RelateOp"/>
     /// <seealso cref="BoundaryOp"/>
@@ -39,13 +39,13 @@ namespace NetTopologySuite.Algorithm
     /// <seealso cref="PointLocator"/>
     public interface IBoundaryNodeRule
     {
-        ///<summary>
+        /// <summary>
         /// Tests whether a point that lies in <c>boundaryCount</c>
         /// geometry component boundaries is considered to form part of the boundary
         /// of the parent geometry.
-        ///</summary>
+        /// </summary>
         /// <param name="boundaryCount">boundaryCount the number of component boundaries that this point occurs in</param>
-        ///<returns>true if points in this number of boundaries lie in the parent boundary</returns>
+        /// <returns>true if points in this number of boundaries lie in the parent boundary</returns>
         bool IsInBoundary(int boundaryCount);
     }
 
@@ -54,39 +54,39 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public static class BoundaryNodeRules
     {
-        ///<summary>
+        /// <summary>
         /// The Mod-2 Boundary Node Rule (which is the rule specified in the OGC SFS).
-        ///</summary>
+        /// </summary>
         /// <see cref="Mod2BoundaryNodeRule"/>
         public static readonly IBoundaryNodeRule Mod2BoundaryRule = new Mod2BoundaryNodeRule();
 
-        ///<summary>The Endpoint Boundary Node Rule.</summary>
+        /// <summary>The Endpoint Boundary Node Rule.</summary>
         /// <see cref="EndPointBoundaryNodeRule"/>
         public static readonly IBoundaryNodeRule EndpointBoundaryRule = new EndPointBoundaryNodeRule();
 
-        ///<summary>The MultiValent Endpoint Boundary Node Rule.</summary>
-        ///<see cref="MultiValentEndPointBoundaryNodeRule"/>
+        /// <summary>The MultiValent Endpoint Boundary Node Rule.</summary>
+        /// <see cref="MultiValentEndPointBoundaryNodeRule"/>
         public static readonly IBoundaryNodeRule MultivalentEndpointBoundaryRule = new MultiValentEndPointBoundaryNodeRule();
 
-        ///<summary>The Monovalent Endpoint Boundary Node Rule.</summary>
-        ///<see cref="MonoValentEndPointBoundaryNodeRule"/>
+        /// <summary>The Monovalent Endpoint Boundary Node Rule.</summary>
+        /// <see cref="MonoValentEndPointBoundaryNodeRule"/>
         public static readonly IBoundaryNodeRule MonoValentEndpointBoundaryRule = new MonoValentEndPointBoundaryNodeRule();
 
-        ///<summary>
+        /// <summary>
         /// The Boundary Node Rule specified by the OGC Simple Features Specification,
         /// which is the same as the Mod-2 rule.
         /// </summary>
         /// <see cref="Mod2BoundaryNodeRule"/>
         public static readonly IBoundaryNodeRule OgcSfsBoundaryRule = Mod2BoundaryRule;
 
-        ///<summary>
+        /// <summary>
         /// A <see cref="IBoundaryNodeRule"/> specifies that points are in the
         /// boundary of a lineal geometry iff
         /// the point lies on the boundary of an odd number
         /// of components.
         /// Under this rule <see cref="ILinearRing"/>s and closed
         /// <see cref="ILineString"/>s have an empty boundary.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// This is the rule specified by the <i>OGC SFS</i>,
         /// and is the default rule used in JTS.
@@ -130,13 +130,13 @@ namespace NetTopologySuite.Algorithm
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// A <see cref="IBoundaryNodeRule"/> which determines that only
         /// endpoints with valency greater than 1 are on the boundary.
         /// This corresponds to the boundary of a <see cref="IMultiLineString"/>
         /// being all the "attached" endpoints, but not
         /// the "unattached" ones.
-        ///</summary>
+        /// </summary>
         /// <author>Martin Davis</author>
         private class MultiValentEndPointBoundaryNodeRule : IBoundaryNodeRule
         {
@@ -146,7 +146,7 @@ namespace NetTopologySuite.Algorithm
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// A <see cref="IBoundaryNodeRule"/> which determines that only
         /// endpoints with valency of exactly 1 are on the boundary.
         /// This corresponds to the boundary of a <see cref="IMultiLineString"/>

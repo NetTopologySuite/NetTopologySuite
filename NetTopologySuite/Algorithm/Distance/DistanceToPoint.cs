@@ -3,17 +3,17 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm.Distance
 {
-    ///<summary>
+    /// <summary>
     /// Computes the Euclidean distance (L2 metric) from a <see cref="Coordinate"/> to a <see cref="IGeometry"/>.
-    ///</summary>
+    /// </summary>
     /// <remarks>
     /// Also computes two points on the geometry which are separated by the distance found.
     /// </remarks>
     public static class DistanceToPoint
     {
-        ///<summary>
+        /// <summary>
         /// Computes the Euclidean distance (L2 metric) from a <see cref="Coordinate"/> to a <see cref="IGeometry"/>.
-        ///</summary>
+        /// </summary>
         /// <param name="geom">The geometry</param>
         /// <param name="pt">The Point</param>
         /// <param name="ptDist">The <c>PointPairDistance</c></param>
@@ -43,9 +43,9 @@ namespace NetTopologySuite.Algorithm.Distance
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the Euclidean distance (L2 metric) from a <see cref="Coordinate"/> to a <see cref="ILineString"/>.
-        ///</summary>
+        /// </summary>
         /// <param name="line">The <c>LineString</c></param>
         /// <param name="pt">The Point</param>
         /// <param name="ptDist">The <c>PointPairDistance</c></param>
@@ -62,9 +62,9 @@ namespace NetTopologySuite.Algorithm.Distance
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the Euclidean distance (L2 metric) from a <see cref="Coordinate"/> to a <see cref="LineSegment"/>.
-        ///</summary>
+        /// </summary>
         /// <param name="segment">The <c>LineSegment</c></param>
         /// <param name="pt">The Point</param>
         /// <param name="ptDist">The <c>PointPairDistance</c></param>
@@ -74,9 +74,9 @@ namespace NetTopologySuite.Algorithm.Distance
             ptDist.SetMinimum(closestPt, pt);
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the Euclidean distance (L2 metric) from a <see cref="Coordinate"/> to a <see cref="Polygon"/>.
-        ///</summary>
+        /// </summary>
         /// <param name="poly">The <c>Polygon</c></param>
         /// <param name="pt">The Point</param>
         /// <param name="ptDist">The <c>PointPairDistance</c></param>

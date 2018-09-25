@@ -47,7 +47,7 @@ namespace NetTopologySuite.Mathematics
             return new Vector2D(coord);
         }
 
-        ///<summary>Creates a vector with the direction and magnitude
+        /// <summary>Creates a vector with the direction and magnitude
         /// of the difference between the
         /// <paramref name="to"/> and <paramref name="from"/> <see cref="Coordinate"/>s.
         /// </summary>

@@ -8,7 +8,7 @@ using NetTopologySuite.GeometriesGraph.Index;
 
 namespace NetTopologySuite.Operation
 {
-    ///<summary>
+    /// <summary>
     /// Tests whether a <see cref="IGeometry"/> is simple.
     /// In general, the SFS specification of simplicity
     /// follows the rule:
@@ -33,8 +33,8 @@ namespace NetTopologySuite.Operation
     /// predicate.</item>
     /// <item><b>Zero-dimensional (<see cref="IPuntal"/>)</b> geometries are simple if and only if they have no
     /// repeated points.</item>
-    ///<item><b>Empty</b> <see cref="IGeometry"/>s are <i>always</i> simple by definition.</item>
-    ///</list>
+    /// <item><b>Empty</b> <see cref="IGeometry"/>s are <i>always</i> simple by definition.</item>
+    /// </list>
     /// For <see cref="ILineal"/> geometries the evaluation of simplicity
     /// can be customized by supplying a <see cref="IBoundaryNodeRule"/>
     /// to define how boundary points are determined.
@@ -61,18 +61,18 @@ namespace NetTopologySuite.Operation
         {
         }
 
-        ///<summary>
+        /// <summary>
         /// Creates a simplicity checker using the default SFS Mod-2 Boundary Node Rule
-        ///</summary>
+        /// </summary>
         /// <param name="geom">The geometry to test</param>
         public IsSimpleOp(IGeometry geom)
         {
             _inputGeom = geom;
         }
 
-        ///<summary>
+        /// <summary>
         /// Creates a simplicity checker using a given <see cref="IBoundaryNodeRule"/>
-        ///</summary>
+        /// </summary>
         /// <param name="geom">The geometry to test</param>
         /// <param name="boundaryNodeRule">The rule to use</param>
         public IsSimpleOp(IGeometry geom, IBoundaryNodeRule boundaryNodeRule)
@@ -81,9 +81,9 @@ namespace NetTopologySuite.Operation
             _isClosedEndpointsInInterior = !boundaryNodeRule.IsInBoundary(2);
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether the geometry is simple.
-        ///</summary>
+        /// </summary>
         /// <returns>true if the geometry is simple</returns>
         public bool IsSimple()
         {
@@ -104,11 +104,11 @@ namespace NetTopologySuite.Operation
             return true;
         }
 
-        ///<summary>
+        /// <summary>
         /// Gets a coordinate for the location where the geometry fails to be simple.
         /// (i.e. where it has a non-boundary self-intersection).
         /// <see cref="IsSimple()"/> must be called before this location is accessed
-        ///</summary>
+        /// </summary>
         /// <returns> a coordinate for the location of the non-boundary self-intersection
         /// or <value>null</value> if the geometry is simple</returns>
         public Coordinate NonSimpleLocation => _nonSimpleLocation;

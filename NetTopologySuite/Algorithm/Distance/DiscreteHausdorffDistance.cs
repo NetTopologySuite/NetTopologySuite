@@ -4,7 +4,7 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm.Distance
 {
-    ///<summary>
+    /// <summary>
     /// An algorithm for computing a distance metric
     /// which is an approximation to the Hausdorff Distance
     /// based on a discretization of the input <see cref="IGeometry"/>.
@@ -98,9 +98,9 @@ namespace NetTopologySuite.Algorithm.Distance
             _g1 = g1;
         }
 
-        ///<summary>
+        /// <summary>
         /// Gets/sets the fraction by which to densify each segment.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// Each segment will be (virtually) split into a number of equal-length
         /// subsegments, whose fraction of the total length is closest

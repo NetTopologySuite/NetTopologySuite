@@ -14,13 +14,13 @@ namespace NetTopologySuite.Noding
     /// This strategy will be called when two identical (up to orientation)
     /// strings are dissolved together.
     /// The default merging strategy is simply to discard one of the merged strings.
-    ///<para>
+    /// <para>
     /// A common use for this class is to merge noded edges
     /// while preserving topological labelling.
     /// This requires a custom merging strategy to be supplied
     /// to merge the topology labels appropriately.
     /// </para>
-    ///</remarks>
+    /// </remarks>
     public class SegmentStringDissolver
     {
         /// <summary>

@@ -6,9 +6,9 @@ using NetTopologySuite.Operation.Overlay;
 
 namespace NetTopologySuite.Operation.Union
 {
-    ///<summary>
+    /// <summary>
     /// Unions a <c>Collection</c> of <see cref="IGeometry"/>s or a single Geometry (which may be a <see cref="IGeometryCollection"/>) together.
-    ///</summary>
+    /// </summary>
     /// <remarks>
     /// <para>
     /// By using this special-purpose operation over a collection of geometries
@@ -41,7 +41,7 @@ namespace NetTopologySuite.Operation.Union
     /// </remarks>
     /// <author>
     /// mbdavis
-    ///</author>
+    /// </author>
     public class UnaryUnionOp
     {
         /// <summary>
@@ -144,12 +144,12 @@ namespace NetTopologySuite.Operation.Union
             GeometryExtracter.Extract<IPoint>(geom, _points);
         }
 
-        ///<summary>
+        /// <summary>
         /// Gets the union of the input geometries.
         /// If no input geometries were provided but a <see cref="IGeometryFactory"/> was provided,
         /// an empty <see cref="IGeometryCollection"/> is returned.
         /// <para/>Otherwise, the return value is <c>null</c>
-        ///</summary>
+        /// </summary>
         /// <returns>
         /// A Geometry containing the union
         /// or an empty <see cref="IGeometryCollection"/> if no geometries were provided in the input,
@@ -215,9 +215,9 @@ namespace NetTopologySuite.Operation.Union
         //    return ret;
         //}
 
-        ///<summary>
+        /// <summary>
         /// Computes the union of two geometries, either of both of which may be null.
-        ///</summary>
+        /// </summary>
         /// <param name="g0"></param>
         /// <param name="g1"></param>
         /// <returns>
@@ -237,9 +237,9 @@ namespace NetTopologySuite.Operation.Union
             return g0.Union(g1);
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes a unary union with no extra optimization, and no short-circuiting.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// Due to the way the overlay operations are implemented, this is still efficient in the case of linear and puntal geometries.
         /// </remarks>

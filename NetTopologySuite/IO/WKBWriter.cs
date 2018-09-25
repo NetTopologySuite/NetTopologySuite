@@ -17,7 +17,7 @@ namespace NetTopologySuite.IO
     // Thanks to Roberto Acioli for Coordinate.Z patch
     public class WKBWriter : IBinaryGeometryWriter
     {
-        ///<summary>Converts a byte array to a hexadecimal string.</summary>
+        /// <summary>Converts a byte array to a hexadecimal string.</summary>
         /// <param name="bytes">A byte array</param>
         [Obsolete("Use ToHex(byte[])")]
         public static string BytesToHex(byte[] bytes)
@@ -25,7 +25,7 @@ namespace NetTopologySuite.IO
             return ToHex(bytes);
         }
 
-        ///<summary>Converts a byte array to a hexadecimal string.</summary>
+        /// <summary>Converts a byte array to a hexadecimal string.</summary>
         /// <param name="bytes">A byte array</param>
         public static string ToHex(byte[] bytes)
         {

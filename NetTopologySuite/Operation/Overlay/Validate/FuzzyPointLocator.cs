@@ -5,17 +5,17 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Overlay.Validate
 {
-    ///<summary>
+    /// <summary>
     /// Finds the most likely <see cref="Location"/> of a point relative to
     /// the polygonal components of a geometry, using a tolerance value.
-    ///</summary>
-    ///<remarks>
+    /// </summary>
+    /// <remarks>
     /// If a point is not clearly in the Interior or Exterior,
     /// it is considered to be on the Boundary.
     /// In other words, if the point is within the tolerance of the Boundary,
     /// it is considered to be on the Boundary; otherwise,
     /// whether it is Interior or Exterior is determined directly.
-    ///</remarks>
+    /// </remarks>
     /// <author>Martin Davis</author>
     public class FuzzyPointLocator
     {
@@ -48,11 +48,11 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             return _ptLocator.Locate(pt, _g);
         }
 
-        ///<summary>
+        /// <summary>
         /// Extracts linework for polygonal components.
-        ///</summary>
-        ///<param name="g">The geometry from which to extract</param>
-        ///<returns>A lineal geometry containing the extracted linework</returns>
+        /// </summary>
+        /// <param name="g">The geometry from which to extract</param>
+        /// <returns>A lineal geometry containing the extracted linework</returns>
         private static IMultiLineString ExtractLinework(IGeometry g)
         {
             var extracter = new PolygonalLineworkExtracter();
@@ -80,10 +80,10 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         }
     }
 
-    ///<summary>
+    /// <summary>
     /// Extracts the LineStrings in the boundaries of all the polygonal elements in the target <see cref="IGeometry"/>.
-    ///</summary>
-    ///<author>Martin Davis</author>
+    /// </summary>
+    /// <author>Martin Davis</author>
     class PolygonalLineworkExtracter : IGeometryFilter
     {
         private readonly List<ILineString> _linework;
@@ -93,7 +93,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             _linework = new List<ILineString>();
         }
 
-        ///<summary>
+        /// <summary>
         /// Filters out all linework for polygonal elements
         /// </summary>
         public void Filter(IGeometry g)
@@ -109,9 +109,9 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// Gets the list of polygonal linework.
-        ///</summary>
+        /// </summary>
         public List<ILineString> Linework => _linework;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace NetTopologySuite.Geometries.Prepared
 {
-    ///<summary>
+    /// <summary>
     /// Computes the <c>contains</c> spatial relationship predicate for a <see cref="PreparedPolygon"/> relative to all other <see cref="IGeometry"/> classes.
     /// Uses short-circuit tests and indexing to improve performance.
     /// </summary>
@@ -16,9 +16,9 @@ namespace NetTopologySuite.Geometries.Prepared
     /// <author>Martin Davis</author>
     internal class PreparedPolygonContains : AbstractPreparedPolygonContains
     {
-        ///<summary>
+        /// <summary>
         /// Computes the <c>contains</c> spatial relationship predicate between a <see cref="PreparedPolygon"/> and a <see cref="IGeometry"/>.
-        ///</summary>
+        /// </summary>
         /// <param name="prep">The prepared polygon</param>
         /// <param name="geom">A test geometry</param>
         /// <returns>true if the polygon contains the geometry</returns>
@@ -28,18 +28,18 @@ namespace NetTopologySuite.Geometries.Prepared
             return polyInt.Contains(geom);
         }
 
-        ///<summary>
+        /// <summary>
         /// Creates an instance of this operation.
-        ///</summary>
+        /// </summary>
         /// <param name="prepPoly">the PreparedPolygon to evaluate</param>
         public PreparedPolygonContains(PreparedPolygon prepPoly)
             : base(prepPoly)
         {
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether this PreparedPolygon <c>contains</c> a given geometry.
-        ///</summary>
+        /// </summary>
         /// <param name="geom">The test geometry</param>
         /// <returns>true if the test geometry is contained</returns>
         public bool Contains(IGeometry geom)
@@ -47,10 +47,10 @@ namespace NetTopologySuite.Geometries.Prepared
             return Eval(geom);
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the full topological <c>contains</c> predicate.<br/>
         /// Used when short-circuit tests are not conclusive.
-        ///</summary>
+        /// </summary>
         /// <param name="geom">The test geometry </param>
         /// <returns>true if this prepared polygon contains the test geometry</returns>
         protected override bool FullTopologicalPredicate(IGeometry geom)

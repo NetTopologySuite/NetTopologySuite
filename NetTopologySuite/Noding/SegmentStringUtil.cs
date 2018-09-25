@@ -6,13 +6,13 @@ using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Noding
 {
-    ///<summary>
+    /// <summary>
     /// Utility methods for processing <see cref="ISegmentString"/>s
-    ///</summary>
+    /// </summary>
     /// <author>Martin Davis</author>
     public class SegmentStringUtil
     {
-        ///<summary>
+        /// <summary>
         /// Extracts all linear components from a given <see cref="IGeometry"/>
         /// to <see cref="ISegmentString"/>s.
         /// The <see cref="ISegmentString"/> data item is set to be the source <see cref="IGeometry"/>.
@@ -24,7 +24,7 @@ namespace NetTopologySuite.Noding
             return ExtractNodedSegmentStrings(geom);
         }
 
-        ///<summary>
+        /// <summary>
         /// Extracts all linear components from a given <see cref="IGeometry"/>
         /// to <see cref="ISegmentString"/>s.
         /// The <see cref="ISegmentString"/> data item is set to be the source <see cref="IGeometry"/>.

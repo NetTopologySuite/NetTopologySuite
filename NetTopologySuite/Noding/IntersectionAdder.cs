@@ -184,9 +184,9 @@ namespace NetTopologySuite.Noding
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// Always process all intersections
-        ///</summary>
+        /// </summary>
         public bool IsDone => false;
     }
 }

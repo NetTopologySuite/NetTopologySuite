@@ -440,9 +440,9 @@ namespace NetTopologySuite.Operation.Polygonize
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// Traverses all connected edges, computing the depth parity of the associated polygons.
-        ///</summary>
+        /// </summary>
         /// <param name="de"></param>
         private void ComputeDepthParity(PolygonizeDirectedEdge de)
         {

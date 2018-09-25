@@ -47,14 +47,14 @@ namespace NetTopologySuite.Operation.Buffer
         private double _mitreLimit = DefaultMitreLimit;
         private double _simplifyFactor = DefaultSimplifyFactor;
 
-        ///<summary>
+        /// <summary>
         /// Creates a default set of parameters
-        ///</summary>
+        /// </summary>
         public BufferParameters()
         {
         }
 
-        ///<summary>
+        /// <summary>
         /// Creates a set of parameters with the given quadrantSegments value.
         /// </summary>
         /// <param name="quadrantSegments">The number of quadrant segments to use</param>
@@ -94,9 +94,9 @@ namespace NetTopologySuite.Operation.Buffer
             MitreLimit = mitreLimit;
         }
 
-        ///<summary>
+        /// <summary>
         /// Gets/sets the number of quadrant segments which will be used
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// QuadrantSegments is the number of line segments used to approximate an angle fillet.
         /// <list type="Table">
@@ -153,9 +153,9 @@ namespace NetTopologySuite.Operation.Buffer
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the maximum distance error due to a given level of approximation to a true arc.
-        ///</summary>
+        /// </summary>
         /// <param name="quadSegs">The number of segments used to approximate a quarter-circle</param>
         /// <returns>The error of approximation</returns>
         public static double BufferDistanceError(int quadSegs)
@@ -164,9 +164,9 @@ namespace NetTopologySuite.Operation.Buffer
             return 1 - Math.Cos(alpha / 2.0);
         }
 
-        ///<summary>
+        /// <summary>
         /// Gets/Sets the end cap style of the generated buffer.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// <para>
         /// The styles supported are <see cref="GeoAPI.Operations.Buffer.EndCapStyle.Round"/>,
@@ -181,9 +181,9 @@ namespace NetTopologySuite.Operation.Buffer
             set => _endCapStyle = value;
         }
 
-        ///<summary>
+        /// <summary>
         /// Gets/Sets the join style for outside (reflex) corners between line segments.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// <para>Allowable values are <see cref="GeoAPI.Operations.Buffer.JoinStyle.Round"/> (which is the default),
         /// <see cref="GeoAPI.Operations.Buffer.JoinStyle.Mitre"/> and <see cref="GeoAPI.Operations.Buffer.JoinStyle.Bevel"/></para>
@@ -194,9 +194,9 @@ namespace NetTopologySuite.Operation.Buffer
             set => _joinStyle = value;
         }
 
-        ///<summary>
+        /// <summary>
         /// Sets the limit on the mitre ratio used for very sharp corners.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// <para>
         /// The mitre ratio is the ratio of the distance from the corner

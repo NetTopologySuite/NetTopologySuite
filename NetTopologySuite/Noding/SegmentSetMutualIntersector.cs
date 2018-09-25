@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace NetTopologySuite.Noding
 {
-    ///<summary>
+    /// <summary>
     /// An intersector for the red-blue intersection problem.
     /// In this class of line arrangement problem,
     /// two disjoint sets of linestrings are intersected.
@@ -20,7 +20,7 @@ namespace NetTopologySuite.Noding
     /// Implementations can take advantage of this fact to optimize processing
     /// (i.e. by avoiding testing for intersections between linestrings
     /// belonging to the same set).
-    ///</summary>
+    /// </summary>
     public interface ISegmentSetMutualIntersector
     {
         /// <summary>

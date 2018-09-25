@@ -6,9 +6,9 @@ using NetTopologySuite.Geometries.Utilities;
 
 namespace NetTopologySuite.Operation.Overlay.Validate
 {
-    ///<summary>
+    /// <summary>
     /// Generates points offset by a given distance from both sides of the midpoint of all segments in a <see cref="IGeometry"/>.
-    ///</summary>
+    /// </summary>
     /// <remarks>
     /// <para>
     /// Can be used to generate probe points for determining whether a polygonal overlay result is incorrect.
@@ -18,7 +18,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
     /// but <see cref="SetSidesToGenerate(bool, bool)"/> is
     /// only meaningful if the orientation is known.
     /// </para>
-    ///</remarks>
+    /// </remarks>
     /// <author>Martin Davis</author>
     public class OffsetPointGenerator
     {
@@ -44,9 +44,9 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             _doRight = doRight;
         }
 
-        ///<summary>
+        /// <summary>
         /// Gets the computed offset points.
-        ///</summary>
+        /// </summary>
         public List<Coordinate> GetPoints(double offsetDistance)
         {
             var offsetPts = new List<Coordinate>();
@@ -70,14 +70,14 @@ namespace NetTopologySuite.Operation.Overlay.Validate
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// Generates the two points which are offset from the
         /// midpoint of the segment <c>(p0, p1)</c> by the <c>offsetDistance</c>
-        ///</summary>
+        /// </summary>
         /// <param name="p0">The first point of the segment to offset from.</param>
         /// <param name="p1">The second point of the segment to offset from</param>
-        ///<param name="offsetDistance"></param>
-        ///<param name="offsetPts"></param>
+        /// <param name="offsetDistance"></param>
+        /// <param name="offsetPts"></param>
         private void ComputeOffsetPoints(Coordinate p0, Coordinate p1, double offsetDistance, IList<Coordinate> offsetPts)
         {
             double dx = p1.X - p0.Y;

@@ -26,7 +26,7 @@ namespace NetTopologySuite.Dissolve
     /// This class does NOT node the input lines.
     /// If there are line segments crossing in the input,
     /// they will still cross in the output.
-    ///</remarks>
+    /// </remarks>
     public class LineDissolver
     {
         /// <summary>

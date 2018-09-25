@@ -7,10 +7,10 @@ using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Noding
 {
-    ///<summary>
+    /// <summary>
     /// Validates that a collection of <see cref="ISegmentString"/>s is correctly noded.
     /// Indexing is used to improve performance.
-    ///</summary>
+    /// </summary>
     /// <remarks>
     /// <para>
     /// By default validation stops after a single
@@ -79,9 +79,9 @@ namespace NetTopologySuite.Noding
         /// </summary>
         public IList<Coordinate> Intersections => _segInt.Intersections;
 
-        ///<summary>
+        /// <summary>
         /// Checks for an intersection and reports if one is found.
-        ///</summary>
+        /// </summary>
         public bool IsValid
         {
             get
@@ -91,10 +91,10 @@ namespace NetTopologySuite.Noding
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// Returns an error message indicating the segments containing the intersection.
-        ///</summary>
-        ///<returns>an error message documenting the intersection location</returns>
+        /// </summary>
+        /// <returns>an error message documenting the intersection location</returns>
         public string GetErrorMessage()
         {
             if (IsValid)
@@ -107,11 +107,11 @@ namespace NetTopologySuite.Noding
                 + WKTWriter.ToLineString(intSegs[2], intSegs[3]);
         }
 
-        ///<summary>
+        /// <summary>
         /// Checks for an intersection and throws
         /// a TopologyException if one is found.
-        ///</summary>
-        ///<exception cref="TopologyException">if an intersection is found</exception>
+        /// </summary>
+        /// <exception cref="TopologyException">if an intersection is found</exception>
         public void CheckValid()
         {
             if (!IsValid)

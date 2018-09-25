@@ -4,24 +4,24 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Noding
 {
-    ///<summary>
+    /// <summary>
     /// An interface for classes which represent a sequence of contiguous line segments.
     /// SegmentStrings can carry a context object, which is useful
     /// for preserving topological or parentage information.
-    ///</summary>
+    /// </summary>
     public interface ISegmentString
     {
-        ///<summary>
+        /// <summary>
         /// Gets/Sets the user-defined data for this segment string.
-        ///</summary>
+        /// </summary>
         object Context { get; set; }
-        ///<summary>
+        /// <summary>
         /// Points that make up ISegmentString
-        ///</summary>
+        /// </summary>
         Coordinate[] Coordinates { get; }
-        ///<summary>
+        /// <summary>
         /// Size of Coordinate Sequence
-        ///</summary>
+        /// </summary>
         int Count { get; }
         /// <summary>
         /// States whether ISegmentString is closed

@@ -150,9 +150,9 @@ namespace NetTopologySuite.Simplify
                 return CreateValidArea(rawGeom);
             }
 
-            ///<summary>
+            /// <summary>
             /// Simplifies a LinearRing.  If the simplification results in a degenerate ring, remove the component.
-            ///</summary>
+            /// </summary>
             /// <returns>null if the simplification results in a degenerate ring</returns>
             protected override IGeometry TransformLinearRing(ILinearRing geom, IGeometry parent)
             {

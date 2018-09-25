@@ -61,9 +61,9 @@ namespace NetTopologySuite.Geometries
             return true;
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the line which is the perpendicular bisector of the
-        ///</summary>
+        /// </summary>
         /// <param name="a">A point</param>
         /// <param name="b">Another point</param>
         /// <returns>The perpendicular bisector, as an HCoordinate line segment a-b.</returns>
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Geometries
             return new HCoordinate(l1, l2);
         }
 
-        ///<summary>Computes the circumcentre of a triangle.</summary>
+        /// <summary>Computes the circumcentre of a triangle.</summary>
         /// <remarks>
         /// The circumcentre is the centre of the circumcircle,
         /// the smallest circle which encloses the triangle.
@@ -131,9 +131,9 @@ namespace NetTopologySuite.Geometries
             return m00 * m11 - m01 * m10;
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the incentre of a triangle.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// The <c>InCentre</c> of a triangle is the point which is equidistant
         /// from the sides of the triangle.
@@ -158,7 +158,7 @@ namespace NetTopologySuite.Geometries
             return new Coordinate(inCentreX, inCentreY);
         }
 
-        ///<summary>Computes the centroid (centre of mass) of a triangle.</summary>
+        /// <summary>Computes the centroid (centre of mass) of a triangle.</summary>
         /// <remarks>
         /// This is also the point at which the triangle's three
         /// medians intersect (a triangle median is the segment from a vertex of the triangle to the
@@ -169,7 +169,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
-        ///<returns>The centroid of the triangle</returns>
+        /// <returns>The centroid of the triangle</returns>
         public static Coordinate Centroid(Coordinate a, Coordinate b, Coordinate c)
         {
             double x = (a.X + b.X + c.X) / 3;
@@ -177,7 +177,7 @@ namespace NetTopologySuite.Geometries
             return new Coordinate(x, y);
         }
 
-        ///<summary>Computes the length of the longest side of a triangle</summary>
+        /// <summary>Computes the length of the longest side of a triangle</summary>
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
@@ -197,7 +197,7 @@ namespace NetTopologySuite.Geometries
             return maxLen;
         }
 
-        ///<summary>Computes the point at which the bisector of the angle ABC cuts the segment AC.</summary>
+        /// <summary>Computes the point at which the bisector of the angle ABC cuts the segment AC.</summary>
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
@@ -219,10 +219,10 @@ namespace NetTopologySuite.Geometries
             return splitPt;
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the 2D area of a triangle.
         /// The area value is always non-negative.
-        ///</summary>
+        /// </summary>
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
@@ -237,9 +237,9 @@ namespace NetTopologySuite.Geometries
                 / 2.0;
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the signed 2D area of a triangle.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// <para>
         /// The area value is positive if the triangle is oriented CW,
@@ -271,10 +271,10 @@ namespace NetTopologySuite.Geometries
             return ((c.X - a.X) * (b.Y - a.Y) - (b.X - a.X) * (c.Y - a.Y)) / 2;
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the 3D area of a triangle.
         /// The value computed is always non-negative.
-        ///</summary>
+        /// </summary>
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>

@@ -126,8 +126,8 @@ namespace NetTopologySuite.Geometries
             return base.EqualsExact(other, tolerance);
         }
 
-        ///<summary>Creates a {@link MultiPolygon} with every component reversed.
-        ///</summary>
+        /// <summary>Creates a {@link MultiPolygon} with every component reversed.
+        /// </summary>
         /// <remarks>The order of the components in the collection are not reversed.</remarks>
         /// <returns>An <see cref="IMultiPolygon"/> in the reverse order</returns>
         public override IGeometry Reverse()

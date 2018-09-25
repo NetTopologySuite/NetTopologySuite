@@ -5,14 +5,14 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation
 {
-    ///<summary>
+    /// <summary>
     /// Computes the boundary of a <see cref="IGeometry"/>.
     /// Allows specifying the <see cref="IBoundaryNodeRule"/> to be used.
     /// This operation will always return a <see cref="IGeometry"/> of the appropriate
     /// dimension for the boundary (even if the input geometry is empty).
     /// The boundary of zero-dimensional geometries (Points) is
     /// always the empty <see cref="IGeometryCollection"/>.
-    ///</summary>
+    /// </summary>
     /// <author>Martin Davis</author>
     public class BoundaryOp
     {
@@ -153,9 +153,9 @@ namespace NetTopologySuite.Operation
         }
     }
 
-    ///<summary>
+    /// <summary>
     /// Stores an integer count, for use as a Map entry.
-    ///</summary>
+    /// </summary>
     /// <author>Martin Davis</author>
     class Counter
     {

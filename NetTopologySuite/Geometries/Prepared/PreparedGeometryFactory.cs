@@ -3,21 +3,21 @@ using GeoAPI.Geometries.Prepared;
 
 namespace NetTopologySuite.Geometries.Prepared
 {
-    ///<summary>
+    /// <summary>
     /// A factory for creating <see cref="IPreparedGeometry"/>s. It chooses an appropriate implementation of PreparedGeometry
     /// based on the geometric type of the input geometry.
-    ///</summary>
+    /// </summary>
     /// <remarks>
     /// In the future, the factory may accept hints that indicate
     /// special optimizations which can be performed.
-    ///</remarks>
+    /// </remarks>
     /// <author>Martin Davis</author>
     public class PreparedGeometryFactory
     {
-        ///<summary>
+        /// <summary>
         /// Creates a new <see cref="IPreparedGeometry"/> appropriate for the argument <see cref="IGeometry"/>.
-        ///</summary>
-        ///<param name="geom">The geometry to prepare</param>
+        /// </summary>
+        /// <param name="geom">The geometry to prepare</param>
         /// <returns>
         /// the prepared geometry
         /// </returns>
@@ -26,10 +26,10 @@ namespace NetTopologySuite.Geometries.Prepared
             return (new PreparedGeometryFactory()).Create(geom);
         }
 
-        ///<summary>
+        /// <summary>
         /// Creates a new <see cref="IPreparedGeometry"/> appropriate for the argument <see cref="IGeometry"/>.
-        ///</summary>
-        ///<param name="geom">The geometry to prepare</param>
+        /// </summary>
+        /// <param name="geom">The geometry to prepare</param>
         /// <returns>
         /// the prepared geometry
         /// </returns>

@@ -478,11 +478,11 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public IGeometry this[int i] => _geometries[i];
 
-        ///<summary>
+        /// <summary>
         /// Creates a <see cref="IGeometryCollection"/> with
         /// every component reversed.
         /// The order of the components in the collection are not reversed.
-        ///</summary>
+        /// </summary>
         /// <returns>A <see cref="IGeometryCollection"/></returns> in the reverse order
         public override IGeometry Reverse()
         {

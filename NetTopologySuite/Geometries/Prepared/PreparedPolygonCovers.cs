@@ -2,9 +2,9 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries.Prepared
 {
-    ///<summary>
+    /// <summary>
     /// Computes the <c>Covers</c> spatial relationship predicate for a <see cref="PreparedPolygon"/> relative to all other <see cref="IGeometry"/> classes.
-    ///</summary>
+    /// </summary>
     /// <remarks>
     /// Uses short-circuit tests and indexing to improve performance.
     /// <para>
@@ -14,9 +14,9 @@ namespace NetTopologySuite.Geometries.Prepared
     /// <author>Martin Davis</author>
     internal class PreparedPolygonCovers : AbstractPreparedPolygonContains
     {
-        ///<summary>
+        /// <summary>
         /// Computes the <c>Covers</c> spatial relationship predicate for a <see cref="PreparedPolygon"/> relative to all other <see cref="IGeometry"/> classes.
-        ///</summary>
+        /// </summary>
         /// <param name="prep">The prepared polygon</param>
         /// <param name="geom">A test geometry</param>
         /// <returns>true if the polygon covers the geometry</returns>
@@ -26,9 +26,9 @@ namespace NetTopologySuite.Geometries.Prepared
             return polyInt.Covers(geom);
         }
 
-        ///<summary>
+        /// <summary>
         /// Creates an instance of this operation.
-        ///</summary>
+        /// </summary>
         /// <param name="prepPoly">The PreparedPolygon to evaluate</param>
         public PreparedPolygonCovers(PreparedPolygon prepPoly)
             : base(prepPoly)
@@ -36,9 +36,9 @@ namespace NetTopologySuite.Geometries.Prepared
             RequireSomePointInInterior = false;
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether this PreparedPolygon <c>covers</c> a given geometry.
-        ///</summary>
+        /// </summary>
         /// <param name="geom">The test geometry</param>
         /// <returns>true if the test geometry is covered</returns>
         public bool Covers(IGeometry geom)
@@ -46,9 +46,9 @@ namespace NetTopologySuite.Geometries.Prepared
             return Eval(geom);
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the full topological <c>covers</c> predicate. Used when short-circuit tests are not conclusive.
-        ///</summary>
+        /// </summary>
         /// <param name="geom">The test geometry</param>
         /// <returns>true if this prepared polygon covers the test geometry</returns>
         protected override bool FullTopologicalPredicate(IGeometry geom)

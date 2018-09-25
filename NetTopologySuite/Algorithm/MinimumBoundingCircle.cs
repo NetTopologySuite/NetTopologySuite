@@ -83,7 +83,7 @@ namespace NetTopologySuite.Algorithm
             return centrePoint.Buffer(_radius);
         }
 
-        ///<summary>
+        /// <summary>
         /// Gets a geometry representing a line between the two farthest points
         /// in the input.
         /// These points will be two of the extremal points of the Minimum Bounding Circle.

@@ -5,12 +5,12 @@ using NetTopologySuite.Noding;
 
 namespace NetTopologySuite.Geometries.Prepared
 {
-    ///<summary>
+    /// <summary>
     /// A base class containing the logic for computes the <i>contains</i>
     /// and <i>covers</i> spatial relationship predicates
     /// for a <see cref="PreparedPolygon"/> relative to all other <see cref="IGeometry"/> classes.
     /// Uses short-circuit tests and indexing to improve performance.
-    ///</summary>
+    /// </summary>
     /// <remarks>
     /// <para>
     /// Contains and covers are very similar, and differ only in how certain
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Geometries.Prepared
         private bool _hasProperIntersection;
         private bool _hasNonProperIntersection;
 
-        ///<summary>
+        /// <summary>
         /// Creates an instance of this operation.
         /// </summary>
         /// <param name="prepPoly">The PreparedPolygon to evaluate</param>
@@ -51,10 +51,10 @@ namespace NetTopologySuite.Geometries.Prepared
         {
         }
 
-        ///<summary>
+        /// <summary>
         /// Evaluate the <i>contains</i> or <i>covers</i> relationship
         /// for the given geometry.
-        ///</summary>
+        /// </summary>
         /// <param name="geom">the test geometry</param>
         /// <returns>true if the test geometry is contained</returns>
         protected bool Eval(IGeometry geom)
@@ -199,10 +199,10 @@ namespace NetTopologySuite.Geometries.Prepared
             _hasNonProperIntersection = intDetector.HasNonProperIntersection;
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the full topological predicate.
         /// Used when short-circuit tests are not conclusive.
-        ///</summary>
+        /// </summary>
         /// <param name="geom">The test geometry</param>
         /// <returns>true if this prepared polygon has the relationship with the test geometry</returns>
         protected abstract bool FullTopologicalPredicate(IGeometry geom);

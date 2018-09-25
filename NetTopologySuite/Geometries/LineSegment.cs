@@ -23,7 +23,7 @@ namespace NetTopologySuite.Geometries
 #if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
 #endif
-    public class LineSegment : IComparable
+    public class LineSegment : IComparable<LineSegment>
     {
         private Coordinate _p0, _p1;
 
@@ -147,7 +147,7 @@ namespace NetTopologySuite.Geometries
         /// Tests whether the segment is vertical.
         /// </summary>
         /// <returns><c>true</c> if the segment is vertical.</returns>
-        public bool IsVertical => _p0.X == _p1.X;
+        public bool IsVertical => _p0.X.Equals(_p1.X);
 
         /// <summary>
         /// Determines the orientation of a LineSegment relative to this segment.
@@ -180,10 +180,10 @@ namespace NetTopologySuite.Geometries
             return 0;
         }
 
-        ///<summary>
+        /// <summary>
         /// Determines the orientation index of a <see cref="Coordinate"/> relative to this segment.
         /// The orientation index is as defined in <see cref="Orientation.Index"/>.
-        ///</summary>
+        /// </summary>
         ///
         /// <returns>
         /// <list>
@@ -224,7 +224,7 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public double Angle => Math.Atan2(_p1.Y - _p0.Y, _p1.X - _p0.X);
 
-        ///<summary>The midpoint of the segment</summary>
+        /// <summary>The midpoint of the segment</summary>
         public Coordinate MidPoint => new Coordinate((_p0.X + _p1.X) / 2,
             (_p0.Y + _p1.Y) / 2);
 
@@ -571,10 +571,9 @@ namespace NetTopologySuite.Geometries
         {
             if (o == null)
                 return false;
-            if (!(o is LineSegment))
-                return false;
-            var other = (LineSegment)o;
-            return _p0.Equals(other._p0) && _p1.Equals(other._p1);
+            if (o is LineSegment other)
+                return _p0.Equals(other._p0) && _p1.Equals(other._p1);
+            return false;
         }
 
         /// <summary>
@@ -585,7 +584,9 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public static bool operator ==(LineSegment obj1, LineSegment obj2)
         {
-            return Equals(obj1, obj2);
+            if (obj1 != null)
+                return obj1.Equals(obj2);
+            return false;
         }
 
         /// <summary>
@@ -603,7 +604,7 @@ namespace NetTopologySuite.Geometries
         /// Compares this object with the specified object for order.
         /// Uses the standard lexicographic ordering for the points in the LineSegment.
         /// </summary>
-        /// <param name="o">
+        /// <param name="other">
         /// The <c>LineSegment</c> with which this <c>LineSegment</c>
         /// is being compared.
         /// </param>
@@ -611,9 +612,10 @@ namespace NetTopologySuite.Geometries
         /// A negative integer, zero, or a positive integer as this <c>LineSegment</c>
         /// is less than, equal to, or greater than the specified <c>LineSegment</c>.
         /// </returns>
-        public int CompareTo(object o)
+        public int CompareTo(LineSegment other)
         {
-            var other = (LineSegment)o;
+            if (ReferenceEquals(this, other))
+                return 0;
             int comp0 = _p0.CompareTo(other._p0);
             return comp0 != 0 ? comp0 : _p1.CompareTo(other._p1);
         }

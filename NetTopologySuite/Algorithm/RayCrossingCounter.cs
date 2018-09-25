@@ -2,7 +2,7 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
-    ///<summary>
+    /// <summary>
     /// Counts the number of segments crossed by a horizontal ray extending to the right
     /// from a given point, in an incremental fashion.
     /// <para>This can be used to determine whether a point lies in a <see cref="IPolygonal"/> geometry.</para>
@@ -33,10 +33,10 @@ namespace NetTopologySuite.Algorithm
     /// <author>Martin Davis</author>
     public class RayCrossingCounter
     {
-        ///<summary>
+        /// <summary>
         /// Determines the <see cref="GeoAPI.Geometries.Location"/> of a point in a ring.
         /// This method is an exemplar of how to use this class.
-        ///</summary>
+        /// </summary>
         /// <param name="p">The point to test</param>
         /// <param name="ring">An array of Coordinates forming a ring</param>
         /// <returns>The location of the point in the ring</returns>
@@ -89,9 +89,9 @@ namespace NetTopologySuite.Algorithm
             _p = p;
         }
 
-        ///<summary>
+        /// <summary>
         /// Counts a segment
-        ///</summary>
+        /// </summary>
         /// <param name="p1">An endpoint of the segment</param>
         /// <param name="p2">Another endpoint of the segment</param>
         public void CountSegment(Coordinate p1, Coordinate p2)
@@ -163,7 +163,7 @@ namespace NetTopologySuite.Algorithm
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// Reports whether the point lies exactly on one of the supplied segments.
         /// </summary>
         /// <remarks>

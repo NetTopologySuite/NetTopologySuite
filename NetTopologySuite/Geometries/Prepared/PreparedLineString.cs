@@ -3,10 +3,10 @@ using NetTopologySuite.Noding;
 
 namespace NetTopologySuite.Geometries.Prepared
 {
-    ///<summary>
+    /// <summary>
     /// A prepared version for <see cref="ILineal"/> geometries.
     /// <para>Instances of this class are thread-safe</para>.
-    ///</summary>
+    /// </summary>
     /// <author>mbdavis</author>
     public class PreparedLineString : BasicPreparedGeometry
     {

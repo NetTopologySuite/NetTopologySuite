@@ -6,20 +6,20 @@ using NetTopologySuite.Noding;
 
 namespace NetTopologySuite.Geometries.Prepared
 {
-    ///<summary>
+    /// <summary>
     /// Computes the <i>intersects</i> spatial relationship predicate
     /// for a target <see cref="PreparedLineString"/> relative to other <see cref="IGeometry"/> classes.
-    ///</summary>
+    /// </summary>
     /// <remarks>
     /// Uses short-circuit tests and indexing to improve performance.
     /// </remarks>
     /// <author>Martin Davis</author>
     internal class PreparedLineStringIntersects
     {
-        ///<summary>
+        /// <summary>
         /// Computes the intersects predicate between a <see cref="PreparedLineString"/>
         /// and a <see cref="IGeometry"/>.
-        ///</summary>
+        /// </summary>
         /// <param name="prep">The prepared linestring</param>
         /// <param name="geom">A test geometry</param>
         /// <returns>true if the linestring intersects the geometry</returns>
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Geometries.Prepared
 
         protected PreparedLineString prepLine;
 
-        ///<summary>
+        /// <summary>
         /// Creates an instance of this operation.
         /// </summary>
         /// <param name="prepLine">The target PreparedLineString</param>
@@ -40,9 +40,9 @@ namespace NetTopologySuite.Geometries.Prepared
             this.prepLine = prepLine;
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether this geometry intersects a given geometry.
-        ///</summary>
+        /// </summary>
         /// <param name="geom">The test geometry</param>
         /// <returns>true if the test geometry intersects</returns>
         public bool Intersects(IGeometry geom)
@@ -83,10 +83,10 @@ namespace NetTopologySuite.Geometries.Prepared
             return false;
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether any representative point of the test Geometry intersects
         /// the target geometry.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// Only handles test geometries which are Puntal (dimension 0)
         /// </remarks>

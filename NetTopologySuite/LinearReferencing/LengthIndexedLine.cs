@@ -45,9 +45,9 @@ namespace NetTopologySuite.LinearReferencing
             return loc.GetCoordinate(_linearGeom);
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the <see cref="Coordinate"/> for the point on the line at the given index, offset by the given distance.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// If the index is out of range the first or last point on the line will be returned.
         /// The computed point is offset to the left of the line if the offset distance is

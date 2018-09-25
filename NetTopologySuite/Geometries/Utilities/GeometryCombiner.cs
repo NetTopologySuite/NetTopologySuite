@@ -3,9 +3,9 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries.Utilities
 {
-    ///<summary>
+    /// <summary>
     /// Combines <see cref="IGeometry"/>s to produce a <see cref="IGeometryCollection"/> of the most appropriate type.
-    ///</summary>
+    /// </summary>
     /// <remarks>
     /// <para>Input geometries which are already collections will have their elements extracted first.</para>
     /// <para>No validation of the result geometry is performed.
@@ -15,7 +15,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// <seealso cref="IGeometryFactory.BuildGeometry"/>
     public class GeometryCombiner
     {
-        ///<summary>Combines a collection of geometries.</summary>
+        /// <summary>Combines a collection of geometries.</summary>
         /// <param name="geoms">The geometries to combine</param>
         /// <returns>The combined geometry</returns>
         public static IGeometry Combine(ICollection<IGeometry> geoms)
@@ -24,7 +24,7 @@ namespace NetTopologySuite.Geometries.Utilities
             return combiner.Combine();
         }
 
-        ///<summary>
+        /// <summary>
         ///Combines two geometries.
         /// </summary>
         /// <param name="g0">A geometry to combine</param>
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Geometries.Utilities
             return combiner.Combine();
         }
 
-        ///<summary>
+        /// <summary>
         ///Combines three geometries.
         /// </summary>
         /// <param name="g0">A geometry to combine</param>
@@ -81,9 +81,9 @@ namespace NetTopologySuite.Geometries.Utilities
 
         private readonly ICollection<IGeometry> _inputGeoms;
 
-        ///<summary>
+        /// <summary>
         /// Creates a new combiner for a collection of geometries
-        ///</summary>
+        /// </summary>
         /// <param name="geoms">The geometries to combine</param>
         public GeometryCombiner(ICollection<IGeometry> geoms)
         {
@@ -91,9 +91,9 @@ namespace NetTopologySuite.Geometries.Utilities
             _inputGeoms = geoms;
         }
 
-        ///<summary>
+        /// <summary>
         /// Extracts the GeometryFactory used by the geometries in a collection
-        ///</summary>
+        /// </summary>
         /// <param name="geoms"></param>
         /// <returns>a GeometryFactory</returns>
         public static IGeometryFactory ExtractFactory(ICollection<IGeometry> geoms)
@@ -107,9 +107,9 @@ namespace NetTopologySuite.Geometries.Utilities
             return geomenumerator.Current.Factory;
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the combination of the input geometries to produce the most appropriate <see cref="IGeometry"/> or <see cref="IGeometryCollection"/>
-        ///</summary>
+        /// </summary>
         /// <returns>A Geometry which is the combination of the inputs</returns>
         /// <returns></returns>
         public IGeometry Combine()

@@ -7,9 +7,9 @@ using NetTopologySuite.Geometries.Utilities;
 
 namespace NetTopologySuite.Geometries.Prepared
 {
-    ///<summary>
+    /// <summary>
     /// A base class for <see cref="IPreparedGeometry"/> subclasses.
-    ///</summary>
+    /// </summary>
     /// <remarks>
     /// <para>Contains default implementations for methods, which simply delegate to the equivalent <see cref="IGeometry"/> methods.</para>
     /// <para>This class may be used as a "no-op" class for Geometry types which do not have a corresponding <see cref="IPreparedGeometry"/> implementation.</para>
@@ -28,7 +28,7 @@ namespace NetTopologySuite.Geometries.Prepared
 
         public IGeometry Geometry => _baseGeom;
 
-        ///<summary>
+        /// <summary>
         /// Gets the list of representative points for this geometry.
         /// One vertex is included for every component of the geometry
         /// (i.e. including one for every ring of polygonal geometries).
@@ -37,10 +37,10 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </summary>
         public IList<Coordinate> RepresentativePoints => new ReadOnlyCollection<Coordinate>(_representativePts);
 
-        ///<summary>
+        /// <summary>
         /// Tests whether any representative of the target geometry intersects the test geometry.
         /// This is useful in A/A, A/L, A/P, L/P, and P/P cases.
-        ///</summary>
+        /// </summary>
         /// <param name="testGeom">The test geometry</param>
         /// <returns>true if any component intersects the areal test geometry</returns>
         public bool IsAnyTargetComponentInTest(IGeometry testGeom)
@@ -54,9 +54,9 @@ namespace NetTopologySuite.Geometries.Prepared
             return false;
         }
 
-        ///<summary>
+        /// <summary>
         /// Determines whether a Geometry g interacts with this geometry by testing the geometry envelopes.
-        ///</summary>
+        /// </summary>
         /// <param name="g">A geometry</param>
         /// <returns>true if the envelopes intersect</returns>
         protected bool EnvelopesIntersect(IGeometry g)
@@ -66,9 +66,9 @@ namespace NetTopologySuite.Geometries.Prepared
             return true;
         }
 
-        ///<summary>
+        /// <summary>
         /// Determines whether the envelope of this geometry covers the Geometry g.
-        ///</summary>
+        /// </summary>
         /// <param name="g">A geometry</param>
         /// <returns>true if g is contained in this envelope</returns>
         protected bool EnvelopeCovers(IGeometry g)
@@ -78,9 +78,9 @@ namespace NetTopologySuite.Geometries.Prepared
             return true;
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether the base <see cref="IGeometry"/> contains a given geometry.
-        ///</summary>
+        /// </summary>
         /// <param name="g">The Geometry to test</param>
         /// <returns>true if this Geometry contains the given Geometry</returns>
         /// <see cref="IGeometry.Contains(IGeometry)"/>
@@ -131,9 +131,9 @@ namespace NetTopologySuite.Geometries.Prepared
             return _baseGeom.Relate(g, "T**FF*FF*");
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether the base <see cref="IGeometry"/> is covered by a given geometry.
-        ///</summary>
+        /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry is covered by the given geometry</returns>
         /// <see cref="IGeometry.CoveredBy(IGeometry)"/>
@@ -143,9 +143,9 @@ namespace NetTopologySuite.Geometries.Prepared
             return _baseGeom.CoveredBy(g);
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether the base <see cref="IGeometry"/> covers a given geometry.
-        ///</summary>
+        /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry covers the given geometry</returns>
         /// <see cref="IGeometry.Covers(IGeometry)"/>
@@ -155,9 +155,9 @@ namespace NetTopologySuite.Geometries.Prepared
             return _baseGeom.Covers(g);
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether the base <see cref="IGeometry"/> crosses a given geometry.
-        ///</summary>
+        /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry crosses the given geometry</returns>
         /// <see cref="IGeometry.Crosses(IGeometry)"/>
@@ -167,9 +167,9 @@ namespace NetTopologySuite.Geometries.Prepared
             return _baseGeom.Crosses(g);
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether the base <see cref="IGeometry"/> is disjoint from given geometry.
-        ///</summary>
+        /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry is disjoint from the given geometry</returns>
         /// <see cref="IGeometry.Disjoint(IGeometry)"/>
@@ -179,9 +179,9 @@ namespace NetTopologySuite.Geometries.Prepared
             return !Intersects(g);
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether the base <see cref="IGeometry"/> intersects a given geometry.
-        ///</summary>
+        /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry intersects the given geometry</returns>
         /// <see cref="IGeometry.Intersects(IGeometry)"/>
@@ -191,9 +191,9 @@ namespace NetTopologySuite.Geometries.Prepared
             return _baseGeom.Intersects(g);
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether the base <see cref="IGeometry"/> overlaps a given geometry.
-        ///</summary>
+        /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry overlaps the given geometry</returns>
         /// <see cref="IGeometry.Overlaps(IGeometry)"/>
@@ -203,9 +203,9 @@ namespace NetTopologySuite.Geometries.Prepared
             return _baseGeom.Overlaps(g);
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether the base <see cref="IGeometry"/> touches a given geometry.
-        ///</summary>
+        /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry touches the given geometry</returns>
         /// <see cref="IGeometry.Touches(IGeometry)"/>
@@ -215,9 +215,9 @@ namespace NetTopologySuite.Geometries.Prepared
             return _baseGeom.Touches(g);
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether the base <see cref="IGeometry"/> is within a given geometry.
-        ///</summary>
+        /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry is within the given geometry</returns>
         /// <see cref="IGeometry.Within(IGeometry)"/>

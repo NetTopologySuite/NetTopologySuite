@@ -2,10 +2,10 @@
 
 namespace NetTopologySuite.Geometries.Utilities
 {
-    ///<summary>
+    /// <summary>
     /// Indicates that an <see cref="AffineTransformation"/> is non-invertible.
-    ///</summary>
-    ///<author>Martin Davis</author>
+    /// </summary>
+    /// <author>Martin Davis</author>
     public class NoninvertibleTransformationException : Exception
     {
         public NoninvertibleTransformationException()

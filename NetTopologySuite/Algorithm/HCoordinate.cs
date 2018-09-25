@@ -1,6 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -12,7 +11,7 @@ namespace NetTopologySuite.Algorithm
     /// <author>David Skea</author>
     public class HCoordinate
     {
-        ///<summary>
+        /// <summary>
         /// Computes the (approximate) intersection point between two line segments using homogeneous coordinates.
         /// </summary>
         /// <remarks>
@@ -188,10 +187,10 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         public Coordinate Coordinate => new Coordinate(GetX(), GetY());
 
-        ///<summary>
+        /// <summary>
         /// Constructs a homogeneous coordinate which is the intersection of the lines <see cref="Coordinate"/>s.
         /// define by the homogeneous coordinates represented by two
-        ///</summary>
+        /// </summary>
         /// <param name="p1">A coordinate</param>
         /// <param name="p2">A coordinate</param>
         public HCoordinate(Coordinate p1, Coordinate p2)

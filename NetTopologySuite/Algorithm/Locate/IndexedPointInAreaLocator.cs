@@ -7,7 +7,7 @@ using NetTopologySuite.Index.IntervalRTree;
 
 namespace NetTopologySuite.Algorithm.Locate
 {
-    ///<summary>
+    /// <summary>
     /// Determines the <see cref="Location"/> of <see cref="Coordinate"/>s relative to
     /// an areal geometry, using indexing for efficiency.
     /// This algorithm is suitable for use in cases where
@@ -20,16 +20,16 @@ namespace NetTopologySuite.Algorithm.Locate
     /// <see cref="IPolygonal"/> and <see cref="ILinearRing"/> geometries are supported.
     /// <para/>
     /// Thread-safe and immutable.
-    ///</summary>
+    /// </summary>
     /// <author>Martin Davis</author>
     public class IndexedPointInAreaLocator : IPointOnGeometryLocator
     {
         private readonly IntervalIndexedGeometry _index;
 
-        ///<summary>
+        /// <summary>
         /// Creates a new locator for a given <see cref="IGeometry"/>.
         /// <see cref="IPolygonal"/> and <see cref="ILinearRing"/> geometries are supported
-        ///</summary>
+        /// </summary>
         /// <param name="g">The Geometry to locate in</param>
         public IndexedPointInAreaLocator(IGeometry g)
         {
@@ -38,9 +38,9 @@ namespace NetTopologySuite.Algorithm.Locate
             _index = new IntervalIndexedGeometry(g);
         }
 
-        ///<summary>
+        /// <summary>
         /// Determines the <see cref="Location"/> of a point in an areal <see cref="IGeometry"/>.
-        ///</summary>
+        /// </summary>
         /// <param name="p">The point to test</param>
         /// <returns>The location of the point in the geometry
         /// </returns>

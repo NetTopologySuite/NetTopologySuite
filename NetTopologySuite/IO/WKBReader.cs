@@ -18,10 +18,10 @@ namespace NetTopologySuite.IO
     /// s</remarks>
     public class WKBReader : IBinaryGeometryReader
     {
-        ///<summary>
+        /// <summary>
         /// Converts a hexadecimal string to a byte array.
         /// The hexadecimal digit symbols are case-insensitive.
-        ///</summary>
+        /// </summary>
         /// <param name="hex">A string containing hex digits</param>
         /// <returns>An array of bytes with the value of the hex string</returns>
         public static byte[] HexToBytes(string hex)
@@ -366,8 +366,8 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <param name="cs">The coordinate system</param>
-        ///<param name="srid">The spatial reference id for the geometry.</param>
-        ///<returns>A <see cref="ILinearRing"/> geometry</returns>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="ILinearRing"/> geometry</returns>
         protected ILinearRing ReadLinearRing(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
@@ -381,8 +381,8 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <param name="cs">The coordinate system</param>
-        ///<param name="srid">The spatial reference id for the geometry.</param>
-        ///<returns>A <see cref="IPoint"/> geometry</returns>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="IPoint"/> geometry</returns>
         protected IGeometry ReadPoint(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
@@ -394,8 +394,8 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <param name="cs">The coordinate system</param>
-        ///<param name="srid">The spatial reference id for the geometry.</param>
-        ///<returns>A <see cref="ILineString"/> geometry</returns>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="ILineString"/> geometry</returns>
         protected IGeometry ReadLineString(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
@@ -409,8 +409,8 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <param name="cs">The coordinate system</param>
-        ///<param name="srid">The spatial reference id for the geometry.</param>
-        ///<returns>A <see cref="IPolygon"/> geometry</returns>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="IPolygon"/> geometry</returns>
         protected IGeometry ReadPolygon(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
@@ -432,8 +432,8 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <param name="cs">The coordinate system</param>
-        ///<param name="srid">The spatial reference id for the geometry.</param>
-        ///<returns>A <see cref="IMultiPoint"/> geometry</returns>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="IMultiPoint"/> geometry</returns>
         protected IGeometry ReadMultiPoint(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
@@ -457,8 +457,8 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <param name="cs">The coordinate system</param>
-        ///<param name="srid">The spatial reference id for the geometry.</param>
-        ///<returns>A <see cref="IMultiLineString"/> geometry</returns>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="IMultiLineString"/> geometry</returns>
         protected IGeometry ReadMultiLineString(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
@@ -482,8 +482,8 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <param name="cs">The coordinate system</param>
-        ///<param name="srid">The spatial reference id for the geometry.</param>
-        ///<returns>A <see cref="IMultiPolygon"/> geometry</returns>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="IMultiPolygon"/> geometry</returns>
         protected IGeometry ReadMultiPolygon(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);
@@ -507,8 +507,8 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="reader">The reader</param>
         /// <param name="cs">The coordinate system</param>
-        ///<param name="srid">The spatial reference id for the geometry.</param>
-        ///<returns>A <see cref="IGeometryCollection"/> geometry</returns>
+        /// <param name="srid">The spatial reference id for the geometry.</param>
+        /// <returns>A <see cref="IGeometryCollection"/> geometry</returns>
         protected IGeometry ReadGeometryCollection(BinaryReader reader, CoordinateSystem cs, int srid)
         {
             var factory = _geometryServices.CreateGeometryFactory(_precisionModel, srid, _sequenceFactory);

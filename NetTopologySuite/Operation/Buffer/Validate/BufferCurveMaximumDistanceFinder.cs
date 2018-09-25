@@ -4,10 +4,10 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Buffer.Validate
 {
-    ///<summary>
+    /// <summary>
     /// Finds the approximate maximum distance from a buffer curve to
     /// the originating geometry.
-    ///</summary>
+    /// </summary>
     /// <remarks><para>The approximate maximum distance is determined by testing
     /// all vertices in the buffer curve, as well
     /// as midpoints of the curve segments.

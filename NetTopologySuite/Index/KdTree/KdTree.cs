@@ -26,7 +26,7 @@ namespace NetTopologySuite.Index.KdTree
     public partial class KdTree<T>
         where T : class
     {
-        ///<summary>
+        /// <summary>
         /// Converts a collection of<see cref= "KdNode{T}" /> s to an array of <see cref="Coordinate"/>s.
         /// </summary>
         /// <param name="kdnodes">A collection of nodes</param>
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Index.KdTree
             return ToCoordinates(kdnodes, false);
         }
 
-        ///<summary>
+        /// <summary>
         /// Converts a collection of <see cref="KdNode{T}"/>{@link KdNode}s
         /// to an array of <see cref="Coordinate"/>s,
         /// specifying whether repeated nodes should be represented

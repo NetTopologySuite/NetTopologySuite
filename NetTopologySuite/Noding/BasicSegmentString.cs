@@ -6,7 +6,7 @@ using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Noding
 {
-    ///<summary>
+    /// <summary>
     /// Represents a list of contiguous line segments,
     /// and supports noding the segments.
     /// The line segments are represented by an array of <see cref="Coordinate" />s.
@@ -15,25 +15,25 @@ namespace NetTopologySuite.Noding
     /// SegmentStrings can carry a context object, which is useful
     /// for preserving topological or parentage information.
     /// All noded substrings are initialized with the same context object.
-    ///</summary>
+    /// </summary>
     public class BasicSegmentString : ISegmentString
     {
 
         private readonly Coordinate[] _pts;
 
-        ///<summary>
+        /// <summary>
         /// Creates a new segment string from a list of vertices.
-        ///</summary>
-        ///<param name="pts">the vertices of the segment string</param>
-        ///<param name="data">the user-defined data of this segment string (may be null)</param>
+        /// </summary>
+        /// <param name="pts">the vertices of the segment string</param>
+        /// <param name="data">the user-defined data of this segment string (may be null)</param>
         public BasicSegmentString(Coordinate[] pts, object data)
         {
             _pts = pts;
             this.Context = data;
         }
 
-        ///<summary>Gets the user-defined data for this segment string.
-        ///</summary>
+        /// <summary>Gets the user-defined data for this segment string.
+        /// </summary>
         public object Context { get; set; }
 
         public Coordinate[] Coordinates => _pts;
@@ -42,11 +42,11 @@ namespace NetTopologySuite.Noding
 
         public int Count => _pts.Length;
 
-        ///<summary>
+        /// <summary>
         /// Gets the octant of the segment starting at vertex <code>index</code>
-        ///</summary>
-        ///<param name="index">the index of the vertex starting the segment. Must not be the last index in the vertex list</param>
-        ///<returns>octant of the segment at the vertex</returns>
+        /// </summary>
+        /// <param name="index">the index of the vertex starting the segment. Must not be the last index in the vertex list</param>
+        /// <returns>octant of the segment at the vertex</returns>
         public Octants GetSegmentOctant(int index)
         {
             return index == _pts.Length - 1

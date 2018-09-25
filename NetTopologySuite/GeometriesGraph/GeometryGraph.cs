@@ -464,9 +464,9 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         // MD - experimental for now
-        ///<summary>
+        /// <summary>
         /// Determines the <see cref="Location"/> of the given <see cref="Coordinate"/> in this geometry.
-        ///</summary>
+        /// </summary>
         /// <param name="pt">The point to test</param>
         /// <returns>
         /// The location of the point in the geometry

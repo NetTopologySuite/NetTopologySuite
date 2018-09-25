@@ -75,7 +75,7 @@ namespace NetTopologySuite.Geometries
 
         public override GeoAPI.Geometries.OgcGeometryType OgcGeometryType => GeoAPI.Geometries.OgcGeometryType.MultiPoint;
 
-        ///<summary>
+        /// <summary>
        /// Gets the boundary of this geometry.
        /// Zero-dimensional geometries have no boundary by definition,
        /// so an empty GeometryCollection is returned.

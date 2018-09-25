@@ -4,10 +4,10 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm.Locate
 {
-    ///<summary>
+    /// <summary>
     /// Computes the location of points relative to an areal <see cref="IGeometry"/>, using a simple O(n) algorithm.
     /// This algorithm is suitable for use in cases where only one or a few points will be tested against a given area.
-    ///</summary>
+    /// </summary>
     /// <remarks>The algorithm used is only guaranteed to return correct results for points which are <b>not</b> on the boundary of the Geometry.</remarks>
     public class SimplePointInAreaLocator : IPointOnGeometryLocator
     {
@@ -87,9 +87,9 @@ namespace NetTopologySuite.Algorithm.Locate
             return Location.Exterior != LocatePointInPolygon(p, poly);
         }
 
-        ///<summary>
+        /// <summary>
         /// Determines whether a point lies in a LinearRing, using the ring envelope to short-circuit if possible.
-        ///</summary>
+        /// </summary>
         /// <param name="p">The point to test</param>
         /// <param name="ring">A linear ring</param>
         /// <returns><c>true</c> if the point lies inside the ring</returns>

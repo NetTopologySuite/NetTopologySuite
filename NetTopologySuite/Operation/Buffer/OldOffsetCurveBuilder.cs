@@ -8,9 +8,9 @@ using NetTopologySuite.GeometriesGraph;
 
 namespace NetTopologySuite.Operation.Buffer
 {
-    ///<summary>
+    /// <summary>
     /// Computes the raw offset curve for a single <see cref="IGeometry"/> component (ring, line or point).
-    ///</summary>
+    /// </summary>
     /// <remarks>
     /// A raw offset curve line is not noded - it may contain self-intersections (and usually will).
     /// The final buffer polygon is computed by forming a topological graph
@@ -137,9 +137,9 @@ namespace NetTopologySuite.Operation.Buffer
             return lineList;
         }
 
-        ///<summary>
+        /// <summary>
         /// This method handles the degenerate cases of single points and lines, as well as rings.
-        ///</summary>
+        /// </summary>
         /// <returns>a List of Coordinate[]</returns>
         public IList<Coordinate[]> GetRingCurve(Coordinate[] inputPts, Positions side, double distance)
         {
@@ -379,9 +379,9 @@ namespace NetTopologySuite.Operation.Buffer
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// Adds the offset points for an outside (convex) turn
-        ///</summary>
+        /// </summary>
         /// <param name="orientation">
         /// </param>
         /// <param name="addStartPoint"></param>
@@ -418,9 +418,9 @@ namespace NetTopologySuite.Operation.Buffer
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// Adds the offset points for an inside (concave) turn.
-        ///</summary>
+        /// </summary>
         /// <param name="orientation"></param>
         /// <param name="addStartPoint"></param>
         private void AddInsideTurn(OrientationIndex orientation, bool addStartPoint)
@@ -496,18 +496,18 @@ namespace NetTopologySuite.Operation.Buffer
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// Add last offset point
-        ///</summary>
+        /// </summary>
         private void AddLastSegment()
         {
             _vertexList.AddPt(_offset1.P1);
         }
 
-        ///<summary>
+        /// <summary>
         /// Compute an offset segment for an input segment on a given side and at a given distance.
         /// The offset points are computed in full double precision, for accuracy.
-        ///</summary>
+        /// </summary>
         /// <param name="seg">The segment to offset</param>
         /// <param name="side">The side of the segment (<see cref="Positions"/>) the offset lies on</param>
         /// <param name="distance">The offset distance</param>
@@ -527,9 +527,9 @@ namespace NetTopologySuite.Operation.Buffer
             offset.P1.Y = seg.P1.Y + ux;
         }
 
-        ///<summary>
+        /// <summary>
         /// Add an end cap around point p1, terminating a line segment coming from p0
-        ///</summary>
+        /// </summary>
         private void AddLineEndCap(Coordinate p0, Coordinate p1)
         {
             var seg = new LineSegment(p0, p1);
@@ -574,10 +574,10 @@ namespace NetTopologySuite.Operation.Buffer
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// Adds a mitre join connecting the two reflex offset segments.
         /// The mitre will be beveled if it exceeds the mitre ratio limit.
-        ///</summary>
+        /// </summary>
         /// <param name="p">The base point</param>
         /// <param name="offset0">The first offset segment</param>
         /// <param name="offset1">The second offset segment</param>
@@ -623,9 +623,9 @@ namespace NetTopologySuite.Operation.Buffer
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// Adds a limited mitre join connecting the two reflex offset segments.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// A limited mitre is a mitre which is beveled at the distance
         /// determined by the mitre ratio limit.
@@ -687,9 +687,9 @@ namespace NetTopologySuite.Operation.Buffer
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// Adds a bevel join connecting the two offset segments around a reflex corner.
-        ///</summary>
+        /// </summary>
         /// <param name="offset0">The first offset segment</param>
         /// <param name="offset1">The second offset segment</param>
         private void AddBevelJoin(
@@ -700,9 +700,9 @@ namespace NetTopologySuite.Operation.Buffer
             _vertexList.AddPt(offset1.P0);
         }
 
-        ///<summary>
+        /// <summary>
         /// Add points for a circular fillet around a reflex corner. Adds the start and end points
-        ///</summary>
+        /// </summary>
         /// <param name="p">Base point of curve</param>
         /// <param name="p0">Start point of fillet curve</param>
         /// <param name="p1">Endpoint of fillet curve</param>
@@ -730,12 +730,12 @@ namespace NetTopologySuite.Operation.Buffer
             _vertexList.AddPt(p1);
         }
 
-        ///<summary>
+        /// <summary>
         /// Adds points for a circular fillet arc between two specified angles.
-        ///</summary>
-        ///<remarks>
+        /// </summary>
+        /// <remarks>
         /// The start and end point for the fillet are not added - the caller must add them if required.
-        ///</remarks>
+        /// </remarks>
         /// <param name="p">The point around which to add the fillet points</param>
         /// <param name="startAngle">The start angle (in radians)</param>
         /// <param name="endAngle">The end angle (in radians)</param>
@@ -768,9 +768,9 @@ namespace NetTopologySuite.Operation.Buffer
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// Adds a CW circle around a point
-        ///</summary>
+        /// </summary>
         private void AddCircle(Coordinate p, double distance)
         {
             // add start point
@@ -779,9 +779,9 @@ namespace NetTopologySuite.Operation.Buffer
             AddFillet(p, 0.0, 2.0 * Math.PI, OrientationIndex.Clockwise, distance);
         }
 
-        ///<summary>
+        /// <summary>
         /// Adds a CW square around a point
-        ///</summary>
+        /// </summary>
         private void AddSquare(Coordinate p, double distance)
         {
             // add start point

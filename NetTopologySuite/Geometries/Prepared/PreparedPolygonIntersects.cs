@@ -4,18 +4,18 @@ using NetTopologySuite.Noding;
 
 namespace NetTopologySuite.Geometries.Prepared
 {
-    ///<summary>
+    /// <summary>
     /// Computes the <i>intersects</i> spatial relationship predicate
     /// for <see cref="PreparedPolygon"/>s relative to all other <see cref="IGeometry"/> classes.
-    ///</summary>
+    /// </summary>
     /// <remarks>Uses short-circuit tests and indexing to improve performance.</remarks>
     /// <author>Martin Davis</author>
     internal class PreparedPolygonIntersects : PreparedPolygonPredicate
     {
-        ///<summary>
+        /// <summary>
         /// Computes the intersects predicate between a <see cref="PreparedPolygon"/>
         /// and a <see cref="IGeometry"/>.
-        ///</summary>
+        /// </summary>
         /// <param name="prep">The prepared polygon</param>
         /// <param name="geom">A test geometry</param>
         /// <returns>true if the polygon intersects the geometry</returns>
@@ -25,16 +25,16 @@ namespace NetTopologySuite.Geometries.Prepared
             return polyInt.Intersects(geom);
         }
 
-        ///<summary>
+        /// <summary>
         /// Creates an instance of this operation.
-        ///</summary>
+        /// </summary>
         /// <param name="prepPoly">The prepared polygon</param>
         public PreparedPolygonIntersects(PreparedPolygon prepPoly) :
             base(prepPoly) { }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether this PreparedPolygon intersects a given geometry.
-        ///</summary>
+        /// </summary>
         /// <param name="geom">The test geometry</param>
         /// <returns>true if the test geometry intersects</returns>
         public bool Intersects(IGeometry geom)

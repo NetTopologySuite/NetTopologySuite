@@ -2,9 +2,9 @@
 
 namespace NetTopologySuite.Algorithm.Match
 {
-    ///<summary>
+    /// <summary>
     /// Provides methods to mathematically combine <see cref="ISimilarityMeasure"/> values.
-    ///</summary>
+    /// </summary>
     /// <author>Martin Davis</author>
     public static class SimilarityMeasureCombiner
     {

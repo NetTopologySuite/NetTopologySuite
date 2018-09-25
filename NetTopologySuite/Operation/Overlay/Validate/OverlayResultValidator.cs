@@ -6,12 +6,12 @@ using NetTopologySuite.Operation.Overlay.Snap;
 
 namespace NetTopologySuite.Operation.Overlay.Validate
 {
-    ///<summary>
+    /// <summary>
     /// Validates that the result of an overlay operation is geometrically correct within a determined tolerance.
     /// Uses fuzzy point location to find points which are
     /// definitely in either the interior or exterior of the result
     /// geometry, and compares these results with the expected ones.
-    ///</summary>
+    /// </summary>
     /// <remarks>
     /// This algorithm is only useful where the inputs are polygonal.
     /// This is a heuristic test, and may return false positive results

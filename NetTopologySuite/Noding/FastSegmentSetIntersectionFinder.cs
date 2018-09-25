@@ -3,7 +3,7 @@ using NetTopologySuite.Algorithm;
 
 namespace NetTopologySuite.Noding
 {
-    ///<summary>
+    /// <summary>
     /// Finds if two sets of <see cref="ISegmentString"/>s intersect.
     /// </summary>
     /// <remarks>
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Noding
             _segSetMutInt = new MCIndexSegmentSetMutualIntersector(baseSegStrings);
         }
 
-        ///<summary>Gets the segment set intersector used by this class.</summary>
+        /// <summary>Gets the segment set intersector used by this class.</summary>
         /// <remarks>This allows other uses of the same underlying indexed structure.</remarks>
         public ISegmentSetMutualIntersector SegmentSetIntersector => _segSetMutInt;
 

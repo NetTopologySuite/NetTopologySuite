@@ -22,10 +22,10 @@ namespace NetTopologySuite.Precision
     [Obsolete("Use GeometryPrecisionReducer")]
     public class SimpleGeometryPrecisionReducer
     {
-        ///<summary>
+        /// <summary>
         /// Convenience method for doing precision reduction on a single geometry,
         /// with collapses removed and keeping the geometry precision model the same.
-        ///</summary>
+        /// </summary>
         /// <returns>The reduced geometry</returns>
         public static IGeometry Reduce(IGeometry g, PrecisionModel precModel)
         {

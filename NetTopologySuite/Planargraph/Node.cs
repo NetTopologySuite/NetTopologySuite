@@ -90,9 +90,9 @@ namespace NetTopologySuite.Planargraph
             return deStar.GetIndex(edge);
         }
 
-        ///<summary>
+        /// <summary>
         /// Removes a <see cref="DirectedEdge"/> incident on this node. Does not change the state of the directed edge.
-        ///</summary>
+        /// </summary>
         public void Remove(DirectedEdge de)
         {
             deStar.Remove(de);

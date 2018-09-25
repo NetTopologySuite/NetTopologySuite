@@ -246,7 +246,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         /// <summary>
         /// Returns the buffer computed for a geometry for a given buffer distance.
-        ///</summary>
+        /// </summary>
         /// <param name="distance"> the buffer distance</param>
         /// <returns> the buffer of the input geometry</returns>
         public IGeometry GetResultGeometry(double distance)

@@ -41,11 +41,11 @@ namespace NetTopologySuite.Noding
         /// <param name="segIndex1"></param>
         void ProcessIntersections(ISegmentString e0, int segIndex0, ISegmentString e1, int segIndex1);
 
-        ///<summary>
+        /// <summary>
         /// Reports whether the client of this class needs to continue testing
         /// all intersections in an arrangement.
-        ///</summary>
-        ///<returns>if there is no need to continue testing segments</returns>
+        /// </summary>
+        /// <returns>if there is no need to continue testing segments</returns>
         bool IsDone { get; }
 
     }

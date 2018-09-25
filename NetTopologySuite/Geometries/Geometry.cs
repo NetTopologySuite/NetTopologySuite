@@ -684,7 +684,7 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Tests whether this geometry intersects the argument geometry.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// The <c>Intersects</c> predicate has the following equivalent definitions:
         /// <list type="Bullet">
@@ -743,9 +743,9 @@ namespace NetTopologySuite.Geometries
             return Relate(g).IsIntersects();
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether this geometry crosses the specified geometry.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// The <c>Crosses</c> predicate has the following equivalent definitions:
         /// <list type="Bullet">
@@ -807,7 +807,7 @@ namespace NetTopologySuite.Geometries
             return g.Contains(this);
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether this geometry contains the argument geometry.
         /// </summary>
         /// <remarks>
@@ -948,7 +948,7 @@ namespace NetTopologySuite.Geometries
             return Relate(g).IsCovers();
         }
 
-        ///<summary>Tests whether this geometry is covered by the specified geometry.</summary>
+        /// <summary>Tests whether this geometry is covered by the specified geometry.</summary>
         /// <remarks>
         /// The <c>CoveredBy</c> predicate has the following equivalent definitions:
         /// <list>
@@ -970,29 +970,29 @@ namespace NetTopologySuite.Geometries
         /// This predicate is similar to <see cref="Within"/>,
         /// but is more inclusive (i.e. returns <c>true</c> for more cases).
         /// </para>
-        ///</remarks>
-        ///<param name="g">the <c>Geometry</c> with which to compare this <c>Geometry</c></param>
-        ///<returns><c>true</c> if this <c>Geometry</c> is covered by <c>g</c></returns>
-        ///<seealso cref="Within"/>
-        ///<seealso cref="Covers"/>
+        /// </remarks>
+        /// <param name="g">the <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        /// <returns><c>true</c> if this <c>Geometry</c> is covered by <c>g</c></returns>
+        /// <seealso cref="Within"/>
+        /// <seealso cref="Covers"/>
         public bool CoveredBy(IGeometry g)
         {
             return g.Covers(this);
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether the elements in the DE-9IM
         /// <see cref="IntersectionMatrix"/> for the two <c>Geometry</c>s match the elements in <c>intersectionPattern</c>.
         /// </summary>
         /// <remarks>
         /// The pattern is a 9-character string, with symbols drawn from the following set:
         /// <list>
-        ///<item>0 (dimension 0)</item>
-        ///<item>1 (dimension 1)</item>
-        ///<item>2 (dimension 2)</item>
-        ///<item>T ( matches 0, 1 or 2)</item>
-        ///<item>F ( matches FALSE)</item>
-        ///<item>* ( matches any value)</item>
+        /// <item>0 (dimension 0)</item>
+        /// <item>1 (dimension 1)</item>
+        /// <item>2 (dimension 2)</item>
+        /// <item>T ( matches 0, 1 or 2)</item>
+        /// <item>F ( matches FALSE)</item>
+        /// <item>* ( matches any value)</item>
         /// </list> For more information on the DE-9IM, see the <i>OpenGIS Simple Features
         /// Specification</i>.
         /// </remarks>
@@ -1814,13 +1814,13 @@ namespace NetTopologySuite.Geometries
         /// <param name="filter">The filter to apply to this <c>Geometry</c>'s coordinates</param>
         public abstract void Apply(ICoordinateFilter filter);
 
-        ///<summary>
+        /// <summary>
         /// Performs an operation on the coordinates in this <c>Geometry</c>'s <see cref="ICoordinateSequence"/>s.
         /// </summary>
         /// <remarks>
         /// If the filter reports that a coordinate value has been changed,
         /// <see cref="GeometryChanged"/> will be called automatically.
-        ///</remarks>
+        /// </remarks>
         /// <param name="filter">The filter to apply</param>
         public abstract void Apply(ICoordinateSequenceFilter filter);
 
@@ -2123,11 +2123,11 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         protected internal abstract int CompareToSameClass(object o);
 
-        ///<summary>
+        /// <summary>
         /// Returns whether this <c>Geometry</c> is greater than, equal to,
         /// or less than another <c>Geometry</c> of the same class.
         /// using the given <see cref="IComparer{ICoordinateSequence}"/>.
-        ///</summary>
+        /// </summary>
         /// <param name="o">A <c>Geometry</c> having the same class as this <c>Geometry</c></param>
         /// <param name="comp">The comparer</param>
         /// <returns>A positive number, 0, or a negative number, depending on whether

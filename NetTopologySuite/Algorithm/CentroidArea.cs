@@ -22,7 +22,7 @@ namespace NetTopologySuite.Algorithm
     /// In this case, the centroid of the line segments in the polygon
     /// will be returned.
     /// </para>
-    ///</remarks>
+    /// </remarks>
     [Obsolete("Use Centroid instead")]
     public class CentroidArea
     {
@@ -181,12 +181,12 @@ namespace NetTopologySuite.Algorithm
             return (p2.X - p1.X) * (p3.Y - p1.Y) - (p3.X - p1.X) * (p2.Y - p1.Y);
         }
 
-        ///<summary>
+        /// <summary>
         /// Adds the linear segments defined by an array of coordinates
         /// to the linear centroid accumulators.
         /// This is done in case the polygon(s) have zero-area,
         /// in which case the linear centroid is computed instead.
-        ///</summary>
+        /// </summary>
         /// <param name="pts">an array of <see cref="Coordinate"/>s</param>
         private void AddLinearSegments(Coordinate[] pts)
         {

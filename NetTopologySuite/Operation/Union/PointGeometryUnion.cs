@@ -19,14 +19,14 @@ namespace NetTopologySuite.Operation.Union
             _geomFact = otherGeom.Factory;
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the union of a <see cref="IPoint"/> geometry with
         /// another arbitrary <see cref="IGeometry"/>.
         /// Does not copy any component geometries.
-        ///</summary>
-        ///<param name="pointGeom"></param>
-        ///<param name="otherGeom"></param>
-        ///<returns></returns>
+        /// </summary>
+        /// <param name="pointGeom"></param>
+        /// <param name="otherGeom"></param>
+        /// <returns></returns>
         public static IGeometry Union(IPuntal pointGeom, IGeometry otherGeom)
         {
             var unioner = new PointGeometryUnion(pointGeom, otherGeom);

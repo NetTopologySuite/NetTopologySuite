@@ -13,9 +13,9 @@ namespace NetTopologySuite.Geometries.Utilities
         //    return o is T;
         //}
 
-        ///<summary>
+        /// <summary>
         /// Extracts the <c>T</c> components from an <see cref="IGeometry"/> and adds them to the provided <see cref="List{T}"/>.
-        ///</summary>
+        /// </summary>
         /// <param name="geom">the geometry from which to extract</param>
         /// <param name="list">the list to add the extracted elements to</param>
         /// <typeparam name="T">The geometry type to extract</typeparam>
@@ -33,10 +33,10 @@ namespace NetTopologySuite.Geometries.Utilities
             return list;
         }
 
-        ///<summary>
+        /// <summary>
         /// Extracts the <code>T</code> elements from a single <see cref="IGeometry"/> and returns them in a <see cref="List{T}"/>.
-        ///</summary>
-        ///<param name="geom">the geometry from which to extract</param>
+        /// </summary>
+        /// <param name="geom">the geometry from which to extract</param>
         public static IList<IGeometry> Extract<T>(IGeometry geom) where T : class, IGeometry
         {
             return Extract<T>(geom, new List<IGeometry>());
@@ -44,9 +44,9 @@ namespace NetTopologySuite.Geometries.Utilities
 
     }
 
-    ///<summary>
+    /// <summary>
     /// Extracts the components of type <c>T</c> from a <see cref="IGeometry"/>.
-    ///</summary>
+    /// </summary>
     public class GeometryExtracter<T> : IGeometryFilter
         where T: IGeometry
     {
@@ -54,9 +54,9 @@ namespace NetTopologySuite.Geometries.Utilities
         //private readonly Type _clz;
         private readonly IList<IGeometry> _comps;
 
-        ///<summary>
+        /// <summary>
         /// Constructs a filter with a list in which to store the elements found.
-        ///</summary>
+        /// </summary>
         /// <param name="comps">The list to extract into</param>
         public GeometryExtracter(/*Type clz, */IList<IGeometry> comps)
         {

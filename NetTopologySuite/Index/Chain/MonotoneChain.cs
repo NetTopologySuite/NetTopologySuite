@@ -47,7 +47,7 @@ namespace NetTopologySuite.Index.Chain
     /// returned by the query.
     /// Queries made in this manner are thread-safe.
     /// </para>
-    ///</remarks>
+    /// </remarks>
     public class MonotoneChain
     {
         private readonly Coordinate[] _pts;

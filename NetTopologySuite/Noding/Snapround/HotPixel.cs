@@ -234,10 +234,10 @@ namespace NetTopologySuite.Noding.Snapround
             return false;
         }
 
-        ///<summary>
+        /// <summary>
         /// Adds a new node (equal to the snap pt) to the specified segment
         /// if the segment passes through the hot pixel
-        ///</summary>
+        /// </summary>
         /// <param name="segStr"></param>
         /// <param name="segIndex"></param>
         /// <returns><c>true</c> if a node was added to the segment</returns>

@@ -4,11 +4,11 @@ using NetTopologySuite.Noding;
 
 namespace NetTopologySuite.Geometries.Prepared
 {
-    ///<summary>
+    /// <summary>
     /// Computes the <c>containsProperly</c> spatial relationship predicate for <see cref="PreparedPolygon" />s relative to all other {@link Geometry} classes.<br/>
     /// Uses short-circuit tests and indexing to improve performance.
-    ///</summary>
-    ///<remarks>
+    /// </summary>
+    /// <remarks>
     /// <para>
     /// A Geometry A <c>containsProperly</c> another Geometry B iff
     /// all points of B are contained in the Interior of A.
@@ -21,14 +21,14 @@ namespace NetTopologySuite.Geometries.Prepared
     /// In a situation with many geometries intersecting the boundary
     /// of the target geometry, this can make a performance difference.
     /// </para>
-    ///</remarks>
+    /// </remarks>
     /// <author>Martin Davis</author>
     internal class PreparedPolygonContainsProperly : PreparedPolygonPredicate
     {
-        ///<summary>Computes the <c>containsProperly</c> predicate between a <see cref="PreparedPolygon"/> and a <see cref="IGeometry"/>.
-        ///</summary>
+        /// <summary>Computes the <c>containsProperly</c> predicate between a <see cref="PreparedPolygon"/> and a <see cref="IGeometry"/>.
+        /// </summary>
         /// <param name="prep">The prepared polygon</param>
-        ///<param name="geom">A test geometry</param>
+        /// <param name="geom">A test geometry</param>
         /// <returns>true if the polygon properly contains the geometry</returns>
         public static bool ContainsProperly(PreparedPolygon prep, IGeometry geom)
         {
@@ -36,19 +36,19 @@ namespace NetTopologySuite.Geometries.Prepared
             return polyInt.ContainsProperly(geom);
         }
 
-        ///<summary>
+        /// <summary>
         /// Creates an instance of this operation.
-        ///</summary>
+        /// </summary>
         /// <param name="prepPoly">The PreparedPolygon to evaluate</param>
         public PreparedPolygonContainsProperly(PreparedPolygon prepPoly)
             : base(prepPoly)
         {
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether this PreparedPolygon containsProperly a given geometry.
-        ///</summary>
-        ///<param name="geom">The test geometry</param>
+        /// </summary>
+        /// <param name="geom">The test geometry</param>
         /// <returns>true if the polygon properly contains the geometry</returns>
         public bool ContainsProperly(IGeometry geom)
         {

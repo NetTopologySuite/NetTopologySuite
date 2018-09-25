@@ -241,7 +241,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// parallel to p1.
         /// </summary>
         /// <param name="p0"></param>
-        ///<param name="p1"></param>
+        /// <param name="p1"></param>
         /// <returns> The edge, if found <c>null</c> if the edge was not found.</returns>
         public Edge FindEdgeInSameDirection(Coordinate p0, Coordinate p1)
         {

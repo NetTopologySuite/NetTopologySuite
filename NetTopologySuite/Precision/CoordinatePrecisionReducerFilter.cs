@@ -2,10 +2,10 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Precision
 {
-    ///<summary>
+    /// <summary>
     /// Reduces the precision of the <see cref="Coordinate"/>s in a
     /// <see cref="ICoordinateSequence"/> to match the supplied <see cref="IPrecisionModel"/>.
-    ///</summary>
+    /// </summary>
     /// <remarks>
     /// Uses <see cref="IPrecisionModel.MakePrecise(double)"/>.
     /// The input is modified in-place, so
@@ -17,32 +17,32 @@ namespace NetTopologySuite.Precision
     {
         private readonly IPrecisionModel _precModel;
 
-        ///<summary>
+        /// <summary>
         /// Creates a new precision reducer filter.
-        ///</summary>
+        /// </summary>
         /// <param name="precModel">The PrecisionModel to use</param>
         public CoordinatePrecisionReducerFilter(IPrecisionModel precModel)
         {
             _precModel = precModel;
         }
 
-        ///<summary>
+        /// <summary>
         /// Rounds the Coordinates in the sequence to match the PrecisionModel
-        ///</summary>
+        /// </summary>
         public void Filter(ICoordinateSequence seq, int i)
         {
             seq.SetOrdinate(i, Ordinate.X, _precModel.MakePrecise(seq.GetOrdinate(i, Ordinate.X)));
             seq.SetOrdinate(i, Ordinate.Y, _precModel.MakePrecise(seq.GetOrdinate(i, Ordinate.Y)));
         }
 
-        ///<summary>
+        /// <summary>
         /// Always runs over all geometry components.
-        ///</summary>
+        /// </summary>
         public bool Done => false;
 
-        ///<summary>
+        /// <summary>
         /// Always reports that the geometry has changed
-        ///</summary>
+        /// </summary>
         public bool GeometryChanged => true;
     }
 }

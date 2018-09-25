@@ -3,10 +3,10 @@ using NetTopologySuite.Algorithm;
 
 namespace NetTopologySuite.Noding
 {
-    ///<summary>
+    /// <summary>
     /// Detects and records an intersection between two <see cref="ISegmentString"/>s,
     /// if one exists.  Only a single intersection is recorded.
-    ///</summary>
+    /// </summary>
     /// <remarks>
     /// This strategy can be configured to search for <b>proper</b> intersections.
     /// In this case, the presence of <i>any</i> intersection will still be recorded,
@@ -24,17 +24,17 @@ namespace NetTopologySuite.Noding
         private Coordinate _intPt;
         private Coordinate[] _intSegments;
 
-        ///<summary>
+        /// <summary>
         /// Creates an intersection finder using a <see cref="RobustLineIntersector"/>
-        ///</summary>
+        /// </summary>
         public SegmentIntersectionDetector()
             :this(new RobustLineIntersector())
         {
         }
 
-        ///<summary>
+        /// <summary>
         /// Creates an intersection finder using a given <see cref="LineIntersector"/>
-        ///</summary>
+        /// </summary>
         /// <param name="li">The LineIntersector to use</param>
         public SegmentIntersectionDetector(LineIntersector li)
         {
@@ -51,35 +51,35 @@ namespace NetTopologySuite.Noding
         /// </summary>
         public bool FindAllIntersectionTypes { get; set; }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether an intersection was found.
-        ///</summary>
+        /// </summary>
         public bool HasIntersection => _hasIntersection;
 
-        ///<summary>
+        /// <summary>
         /// Tests whether a proper intersection was found.
-        ///</summary>
+        /// </summary>
         public bool HasProperIntersection => _hasProperIntersection;
 
-        ///<summary>
+        /// <summary>
         /// Tests whether a non-proper intersection was found.
-        ///</summary>
+        /// </summary>
         public bool HasNonProperIntersection => _hasNonProperIntersection;
 
-        ///<summary>
+        /// <summary>
         /// Gets the computed location of the intersection. Due to round-off, the location may not be exact.
-        ///</summary>
+        /// </summary>
         public Coordinate Intersection => _intPt;
 
-        ///<summary>Gets the endpoints of the intersecting segments.
-        ///</summary>
+        /// <summary>Gets the endpoints of the intersecting segments.
+        /// </summary>
         /// <remarks>An array of the segment endpoints (p00, p01, p10, p11)</remarks>
         public Coordinate[] IntersectionSegments => _intSegments;
 
-        ///<summary>
+        /// <summary>
         /// This method is called by clients of the <see cref="ISegmentIntersector"/> class to process
         /// intersections for two segments of the <see cref="ISegmentString"/>s being intersected.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// Note that some clients (such as <c>MonotoneChain</c>s) may optimize away
         /// this call for segment pairs which they have determined do not intersect

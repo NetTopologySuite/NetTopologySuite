@@ -147,7 +147,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
              */
         }
 
-        ///<summary>
+        /// <summary>
         /// Checks that two geometries are at least a minimum distance apart.
         /// </summary>
         /// <param name="g1">A geometry</param>
@@ -170,7 +170,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             }
         }
 
-        ///<summary>
+        /// <summary>
         /// Checks that the furthest distance from the buffer curve to the input
         /// is less than the given maximum distance.
         /// </summary>

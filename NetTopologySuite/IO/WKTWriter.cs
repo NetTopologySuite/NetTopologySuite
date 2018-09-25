@@ -175,18 +175,18 @@ namespace NetTopologySuite.IO
             _outputDimension = outputDimension;
         }
 
-        ///<summary>
+        /// <summary>
         /// Gets/sets whther the output woll be formatted
-        ///</summary>
+        /// </summary>
         public bool Formatted
         {
             get => _isFormatted;
             set => _isFormatted = value;
         }
 
-        ///<summary>
+        /// <summary>
         /// Gets/sets the maximum number of coordinates per line written in formatted output.
-        ///</summary>
+        /// </summary>
         /// <remarks>If the provided coordinate number is &lt; 0, coordinates will be written all on one line.</remarks>
         public int MaxCoordinatesPerLine
         {
@@ -194,7 +194,7 @@ namespace NetTopologySuite.IO
             set => _coordsPerLine = value;
         }
 
-        ///<summary>Gets/sets the tab size to use for indenting.</summary>
+        /// <summary>Gets/sets the tab size to use for indenting.</summary>
         /// <exception cref="ArgumentException">If the size is non-positive</exception>
         public int Tab
         {
@@ -490,11 +490,11 @@ namespace NetTopologySuite.IO
             }
         }
 
-        ///<summary>Appends the i'th coordinate from the sequence to the writer</summary>
+        /// <summary>Appends the i'th coordinate from the sequence to the writer</summary>
         /// <param name="seq">the <see cref="ICoordinateSequence"/> to process</param>
         /// <param name="i">the index of the coordinate to write</param>
         /// <param name="writer">writer the output writer to append to</param>
-        ///<exception cref="IOException"></exception>
+        /// <exception cref="IOException"></exception>
         private void AppendCoordinate(ICoordinateSequence seq, int i, TextWriter writer)
         {
             writer.Write(WriteNumber(seq.GetX(i)) + " " + WriteNumber(seq.GetY(i)));
@@ -556,8 +556,8 @@ namespace NetTopologySuite.IO
             }
         }
 
-        ///<summary>Converts a <see cref="ICoordinateSequence"/> to &lt;LineString Text&gt; format, then appends it to the writer</summary>
-        ///<exception cref="IOException"></exception>
+        /// <summary>Converts a <see cref="ICoordinateSequence"/> to &lt;LineString Text&gt; format, then appends it to the writer</summary>
+        /// <exception cref="IOException"></exception>
         private void AppendSequenceText(ICoordinateSequence seq, int level, bool doIndent, TextWriter writer)
         {
             if (seq.Count == 0)

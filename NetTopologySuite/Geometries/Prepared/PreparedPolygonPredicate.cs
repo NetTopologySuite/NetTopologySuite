@@ -5,18 +5,18 @@ using NetTopologySuite.Geometries.Utilities;
 
 namespace NetTopologySuite.Geometries.Prepared
 {
-    ///<summary>
+    /// <summary>
     /// A base class for predicate operations on <see cref="PreparedPolygon"/>s.
-    ///</summary>
+    /// </summary>
     /// <author>mbdavis</author>
     internal abstract class PreparedPolygonPredicate
     {
         protected PreparedPolygon prepPoly;
         private readonly IPointOnGeometryLocator _targetPointLocator;
 
-        ///<summary>
+        /// <summary>
         /// Creates an instance of this operation.
-        ///</summary>
+        /// </summary>
         /// <param name="prepPoly">the PreparedPolygon to evaluate</param>
         protected PreparedPolygonPredicate(PreparedPolygon prepPoly)
         {
@@ -24,9 +24,9 @@ namespace NetTopologySuite.Geometries.Prepared
             _targetPointLocator = prepPoly.PointLocator;
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether all components of the test Geometry are contained in the target geometry.
-        ///</summary>
+        /// </summary>
         /// <remarks>Handles both linear and point components.</remarks>
         /// <param name="testGeom">A geometry to test</param>
         /// <returns>
@@ -44,9 +44,9 @@ namespace NetTopologySuite.Geometries.Prepared
             return true;
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether all components of the test Geometry are contained in the interior of the target geometry.
-        ///</summary>
+        /// </summary>
         /// <remarks>Handles both linear and point components.</remarks>
         /// <param name="testGeom">A geometry to test</param>
         /// <returns>true if all components of the argument are contained in the target geometry interior</returns>
@@ -62,9 +62,9 @@ namespace NetTopologySuite.Geometries.Prepared
             return true;
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether any component of the test Geometry intersects the area of the target geometry.
-        ///</summary>
+        /// </summary>
         /// <remarks>Handles test geometries with both linear and point components.</remarks>
         /// <param name="testGeom">A geometry to test</param>
         /// <returns>true if any component of the argument intersects the prepared area geometry</returns>
@@ -80,9 +80,9 @@ namespace NetTopologySuite.Geometries.Prepared
             return false;
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether any component of the test Geometry intersects the interior of the target geometry.
-        ///</summary>
+        /// </summary>
         /// <remarks>Handles test geometries with both linear and point components.</remarks>
         /// <param name="testGeom">A geometry to test</param>
         /// <returns>true if any component of the argument intersects the prepared area geometry interior</returns>
@@ -98,9 +98,9 @@ namespace NetTopologySuite.Geometries.Prepared
             return false;
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether any component of the target geometry intersects the test geometry (which must be an areal geometry)
-        ///</summary>
+        /// </summary>
         /// <param name="testGeom">The test geometry</param>
         /// <param name="targetRepPts">The representative points of the target geometry</param>
         /// <returns>true if any component intersects the areal test geometry</returns>

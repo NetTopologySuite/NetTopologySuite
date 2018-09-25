@@ -4,9 +4,9 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Buffer
 {
-    ///<summary>
+    /// <summary>
     /// Simplifies a buffer input line to remove concavities with shallow depth.
-    ///</summary>
+    /// </summary>
     /// <remarks>
     /// <para>
     /// The most important benefit of doing this
@@ -73,9 +73,9 @@ namespace NetTopologySuite.Operation.Buffer
             _inputLine = inputLine;
         }
 
-        ///<summary>
+        /// <summary>
         /// Simplify the input coordinate list.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// If the distance tolerance is positive, concavities on the LEFT side of the line are simplified.
         /// If the supplied distance tolerance is negative, concavities on the RIGHT side of the line are simplified.

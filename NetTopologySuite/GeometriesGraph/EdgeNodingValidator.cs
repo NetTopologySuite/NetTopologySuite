@@ -14,9 +14,9 @@ namespace NetTopologySuite.GeometriesGraph
     public class EdgeNodingValidator
     {
 
-        ///<summary>
+        /// <summary>
         /// Checks whether the supplied <see cref="Edge"/>s are correctly noded.
-        ///</summary>
+        /// </summary>
         /// <param name="edges">an enumeration of Edges.</param>
         /// <exception cref="TopologyException">If the SegmentStrings are not correctly noded</exception>
         public static void CheckValid(IEnumerable<Edge> edges)
@@ -36,7 +36,7 @@ namespace NetTopologySuite.GeometriesGraph
 
         private readonly FastNodingValidator _nv;
 
-       ///<summary>
+       /// <summary>
        /// Creates a new validator for the given collection of <see cref="Edge"/>s.
        /// </summary>
        public EdgeNodingValidator(IEnumerable<Edge> edges)

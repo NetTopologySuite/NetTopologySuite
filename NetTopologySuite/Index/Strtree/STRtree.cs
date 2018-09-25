@@ -313,7 +313,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <param name="item">The item to find the nearest neighbour of</param>
         /// <param name="itemDist">A distance metric applicable to the items in this tree and the query item</param>
         /// <param name="k">The K nearest items in kNearestNeighbour</param>
-        ///<returns>K nearest items in this tree</returns>
+        /// <returns>K nearest items in this tree</returns>
         public TItem[] NearestNeighbour(Envelope env, TItem item, IItemDistance<Envelope, TItem> itemDist, int k)
         {
             var bnd = new ItemBoundable<Envelope, TItem> (env, item);

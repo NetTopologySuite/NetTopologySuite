@@ -160,7 +160,7 @@ namespace NetTopologySuite.Planargraph
             return _outEdges[GetIndex(i + 1)];
         }
 
-        ///<summary>
+        /// <summary>
         /// Returns the <see cref="DirectedEdge"/> on the right-hand (CW)
         /// side of the given <see cref="DirectedEdge"/>
         /// (which must be a member of this DirectedEdgeStar).

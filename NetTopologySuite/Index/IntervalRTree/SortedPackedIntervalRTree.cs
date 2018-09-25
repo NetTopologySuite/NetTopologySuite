@@ -31,9 +31,9 @@ namespace NetTopologySuite.Index.IntervalRTree
         private readonly List<IntervalRTreeNode<T>> _leaves = new List<IntervalRTreeNode<T>>();
         private volatile IntervalRTreeNode<T> _root;
 
-        ///<summary>
+        /// <summary>
         /// Adds an item to the index which is associated with the given interval
-        ///</summary>
+        /// </summary>
         /// <param name="min">The lower bound of the item interval</param>
         /// <param name="max">The upper bound of the item interval</param>
         /// <param name="item">The item to insert</param>
@@ -111,10 +111,10 @@ namespace NetTopologySuite.Index.IntervalRTree
         }
 #endif
 
-        ///<summary>
+        /// <summary>
         /// Search for intervals in the index which intersect the given closed interval
         /// and apply the visitor to them.
-        ///</summary>
+        /// </summary>
         /// <param name="min">The lower bound of the query interval</param>
         /// <param name="max">The upper bound of the query interval</param>
         /// <param name="visitor">The visitor to pass any matched items to</param>

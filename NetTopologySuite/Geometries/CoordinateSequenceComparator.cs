@@ -4,7 +4,7 @@ using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
 {
-    ///<summary>
+    /// <summary>
     /// Compares two <see cref="ICoordinateSequence"/>s.
     /// </summary><remarks>
     /// <para>
@@ -19,10 +19,10 @@ namespace NetTopologySuite.Geometries
     /// </remarks>
     public class CoordinateSequenceComparator : IComparer<ICoordinateSequence>
     {
-        ///<summary>
+        /// <summary>
         /// Compare two <code>double</code>s, allowing for NaN values.
         /// NaN is treated as being less than any valid number.
-        ///</summary>
+        /// </summary>
         /// <param name="a">A <code>double</code></param>
         /// <param name="b">A <code>double</code></param>
         /// <returns>-1, 0, or 1 depending on whether a is less than, equal to or greater than b</returns>
@@ -63,9 +63,9 @@ namespace NetTopologySuite.Geometries
             DimensionLimit = dimensionLimit;
         }
 
-        ///<summary>
+        /// <summary>
         /// Compares two <see cref="ICoordinateSequence" />s for relative order.
-        ///</summary>
+        /// </summary>
         /// <param name="o1">A coordinate sequence</param>
         /// <param name="o2">A coordinate sequence</param>
         /// <returns>-1, 0, or 1 depending on whether o1 is less than, equal to, or greater than o2</returns>
@@ -76,9 +76,9 @@ namespace NetTopologySuite.Geometries
             return Compare(s1, s2);
         }
 
-        ///<summary>
+        /// <summary>
         /// Compares the same coordinate of two <see cref="ICoordinateSequence"/>s
-        ///</summary>
+        /// </summary>
         /// <param name="s1">A coordinate sequence</param>
         /// <param name="s2">A coordinate sequence</param>
         /// <param name="i">The index of the coordinate to test</param>

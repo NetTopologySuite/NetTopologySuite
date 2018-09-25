@@ -1,9 +1,8 @@
-using System;
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
-    ///<summary>
+    /// <summary>
     /// Utility functions for working with angles.
     /// Unless otherwise noted, methods in this class express angles in radians.
     /// </summary>
@@ -22,9 +21,9 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         public const double PiOver4 = System.Math.PI / 4.0;
 
-        ///<summary>
+        /// <summary>
         /// Converts from radians to degrees.
-        ///</summary>
+        /// </summary>
         /// <param name="radians">An angle in radians</param>
         /// <returns>The angle in degrees</returns>
         public static double ToDegrees(double radians)
@@ -32,9 +31,9 @@ namespace NetTopologySuite.Algorithm
             return (radians * 180) / (System.Math.PI);
         }
 
-        ///<summary>
+        /// <summary>
         /// Converts from degrees to radians.
-        ///</summary>
+        /// </summary>
         /// <param name="angleDegrees">An angle in degrees</param>
         /// <returns>The angle in radians</returns>
         public static double ToRadians(double angleDegrees)
@@ -42,7 +41,7 @@ namespace NetTopologySuite.Algorithm
             return (angleDegrees * System.Math.PI) / 180.0;
         }
 
-        ///<summary>
+        /// <summary>
         /// Returns the angle of the vector from p0 to p1, relative to the positive X-axis.
         /// </summary>
         /// <remarks>The angle is normalized to be in the range [ -Pi, Pi ].</remarks>
@@ -56,9 +55,9 @@ namespace NetTopologySuite.Algorithm
             return System.Math.Atan2(dy, dx);
         }
 
-        ///<summary>
+        /// <summary>
         /// Returns the angle that the vector from (0,0) to p, relative to the positive X-axis.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// The angle is normalized to be in the range ( -Pi, Pi ].
         /// </remarks>
@@ -69,9 +68,9 @@ namespace NetTopologySuite.Algorithm
             return System.Math.Atan2(p.Y, p.X);
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether the angle between p0-p1-p2 is acute.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// <para>An angle is acute if it is less than 90 degrees.</para>
         /// <para>Note: this implementation is not precise (deterministic) for angles very close to 90 degrees.</para>
@@ -90,9 +89,9 @@ namespace NetTopologySuite.Algorithm
             return dotprod > 0;
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether the angle between p0-p1-p2 is obtuse
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// <para>An angle is obtuse if it is greater than 90 degrees.</para>
         /// <para>Note: this implementation is not precise (deterministic) for angles very close to 90 degrees.</para>
@@ -111,9 +110,9 @@ namespace NetTopologySuite.Algorithm
             return dotprod < 0;
         }
 
-        ///<summary>
+        /// <summary>
         /// Returns the unoriented smallest angle between two vectors.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// The computed angle will be in the range [0, Pi).
         /// </remarks>
@@ -153,10 +152,10 @@ namespace NetTopologySuite.Algorithm
             return angDel;
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the interior angle between two segments of a ring.
         /// The ring is assumed to be oriented in a clockwise direction.
-        ///</summary>
+        /// </summary>
         /// <remarks>The computed angle will be in the range [0, 2Pi]</remarks>
         /// <param name="p0">A point of the ring</param>
         /// <param name="p1">The next point of the ring</param>
@@ -169,9 +168,9 @@ namespace NetTopologySuite.Algorithm
             return System.Math.Abs(angleNext - anglePrev);
         }
 
-        ///<summary>
+        /// <summary>
         /// Returns whether an angle must turn clockwise or counterclockwise to overlap another angle.
-        ///</summary>
+        /// </summary>
         /// <param name="ang1">An angle (in radians)</param>
         /// <param name="ang2">An angle (in radians)</param>
         /// <returns>Whether a1 must turn <see cref="OrientationIndex.Clockwise"/>, <see cref="OrientationIndex.CounterClockwise"/> or <see cref="OrientationIndex.None"/> to overlap a2.</returns>
@@ -192,9 +191,9 @@ namespace NetTopologySuite.Algorithm
             return OrientationIndex.None;
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the normalized value of an angle, which is the equivalent angle in the range ( -Pi, Pi ].
-        ///</summary>
+        /// </summary>
         /// <param name="angle">The angle to normalize</param>
         /// <returns>An equivalent angle in the range (-Pi, Pi]</returns>
         public static double Normalize(double angle)
@@ -206,7 +205,7 @@ namespace NetTopologySuite.Algorithm
             return angle;
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the normalized positive value of an angle, which is the equivalent angle in the range [ 0, 2*Pi ).
         /// <para>
         /// E.g.
@@ -223,7 +222,7 @@ namespace NetTopologySuite.Algorithm
         /// <item>NormalizePositive(4PI) = 0.0</item>
         /// </list>
         /// </para>
-        ///</summary>
+        /// </summary>
         /// <remarks></remarks>
         /// <param name="angle">The angle to normalize, in radians.</param>
         /// <returns>An equivalent positive angle</returns>
@@ -248,10 +247,10 @@ namespace NetTopologySuite.Algorithm
             return angle;
         }
 
-        ///<summary>
+        /// <summary>
         /// Computes the unoriented smallest difference between two angles.
-        ///</summary>
-        ///<remarks>
+        /// </summary>
+        /// <remarks>
         /// <list type="Bulltet">
         /// <item>The angles are assumed to be normalized to the range [-Pi, Pi].</item>
         /// <item>The result will be in the range [0, Pi].</item>

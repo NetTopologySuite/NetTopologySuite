@@ -6,9 +6,9 @@ using RTools_NTS.Util;
 
 namespace NetTopologySuite.IO
 {
-    ///<summary>
+    /// <summary>
     /// Reads a sequence of <see cref="IGeometry"/>s in WKT format from a text file.
-    ///</summary>
+    /// </summary>
     /// <remarks>The geometries in the file may be separated by any amount of whitespace and newlines.</remarks>
     /// <author>
     /// Martin Davis
@@ -31,9 +31,9 @@ namespace NetTopologySuite.IO
         }
 
 #if FEATURE_FILE_IO
-        ///<summary>
+        /// <summary>
         /// Creates a new <see cref="WKTFileReader" /> given the <paramref name="file" /> to read from and a <see cref="WKTReader" /> to use to parse the geometries.
-        ///</summary>
+        /// </summary>
         /// <param name="file"> the <see cref="FileInfo" /> to read from</param>
         /// <param name="wktReader">the geometry reader to use</param>
         public WKTFileReader(FileInfo file, WKTReader wktReader)
@@ -42,9 +42,9 @@ namespace NetTopologySuite.IO
             _file = file;
         }
 
-        ///<summary>
+        /// <summary>
         /// Creates a new <see cref="WKTFileReader" />, given the name of the file to read from.
-        ///</summary>
+        /// </summary>
         /// <param name="filename">The name of the file to read from</param>
         /// <param name="wktReader">The geometry reader to use</param>
         public WKTFileReader(string filename, WKTReader wktReader)
@@ -52,9 +52,9 @@ namespace NetTopologySuite.IO
         {
         }
 #endif
-        ///<summary>
+        /// <summary>
         /// Creates a new <see cref="WKTFileReader" />, given a <see cref="Stream"/> to read from.
-        ///</summary>
+        /// </summary>
         /// <param name="stream">The stream to read from</param>
         /// <param name="wktReader">The geometry reader to use</param>
         public WKTFileReader(Stream stream, WKTReader wktReader)
@@ -62,9 +62,9 @@ namespace NetTopologySuite.IO
         {
         }
 
-        ///<summary>
+        /// <summary>
         /// Creates a new <see cref="WKTFileReader" />, given a <see cref="TextReader"/> to read with.
-        ///</summary>
+        /// </summary>
         /// <param name="reader">The stream reader of the file to read from</param>
         /// <param name="wktReader">The geometry reader to use</param>
         public WKTFileReader(TextReader reader, WKTReader wktReader)
@@ -73,19 +73,19 @@ namespace NetTopologySuite.IO
             _reader = reader;
         }
 
-        ///<summary>
+        /// <summary>
         /// Gets/Sets the maximum number of geometries to read.
-        ///</summary>
+        /// </summary>
         public int Limit { get; set; }
 
-        ///<summary>
+        /// <summary>
         /// Gets/Sets the number of geometries to skip before reading.
-        ///</summary>
+        /// </summary>
         public int Offset { get; set; }
 
-        ///<summary>
+        /// <summary>
         /// Reads a sequence of geometries.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// <para>
         /// If an offset is specified, geometries read up to the offset count are skipped.</para>
@@ -156,9 +156,9 @@ namespace NetTopologySuite.IO
             return token is EofToken;
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests if reader is at EOF.
-        ///</summary>
+        /// </summary>
         private bool IsAtEndOfFile(StreamReader bufferedReader)
         {
             return bufferedReader.EndOfStream;

@@ -269,9 +269,9 @@ namespace NetTopologySuite.LinearReferencing
             return PointAlongSegmentByFraction(p0, p1, _segmentFraction);
         }
 
-        ///<summary>
+        /// <summary>
         /// Gets a <see cref="LineSegment"/> representing the segment of the given linear <see cref="IGeometry"/> which contains this location.
-        ///</summary>
+        /// </summary>
         /// <param name="linearGeom">A linear geometry</param>
         /// <returns>the <c>LineSegment</c> containing the location</returns>
         public LineSegment GetSegment(IGeometry linearGeom)
@@ -435,7 +435,7 @@ namespace NetTopologySuite.LinearReferencing
             return 0;
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether two locations are on the same segment in the parent <see cref="IGeometry"/>.
         /// </summary>
         /// <param name="loc">A location on the same geometry</param>

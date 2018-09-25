@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace NetTopologySuite.Utilities
 {
-    ///<summary>
+    /// <summary>
     /// A priority queue over a set of <see cref="IComparable{T}"/> objects.
-    ///</summary>
+    /// </summary>
     /// <typeparam name="T">Objects to add</typeparam>
     /// <author>Martin Davis</author>
     public class PriorityQueue<T> : IEnumerable<T>
@@ -32,8 +32,8 @@ namespace NetTopologySuite.Utilities
             _queue = new AlternativePriorityQueue<T, T>(capacity, comparer);
         }
 
-        ///<summary>Insert into the priority queue. Duplicates are allowed.
-        ///</summary>
+        /// <summary>Insert into the priority queue. Duplicates are allowed.
+        /// </summary>
         /// <param name="x">The item to insert.</param>
         public void Add(T x)
         {
@@ -41,31 +41,31 @@ namespace NetTopologySuite.Utilities
             this._queue.Enqueue(node, x);
         }
 
-        ///<summary>
+        /// <summary>
         /// Test if the priority queue is logically empty.
-        ///</summary>
+        /// </summary>
         /// <returns><c>true</c> if empty, <c>false</c> otherwise.</returns>
         public bool IsEmpty()
         {
             return this._queue.Count == 0;
         }
 
-        ///<summary>
+        /// <summary>
         /// Returns size.
-        ///</summary>
+        /// </summary>
         public int Size => this._queue.Count;
 
-        ///<summary>
+        /// <summary>
         /// Make the priority queue logically empty.
-        ///</summary>
+        /// </summary>
         public void Clear()
         {
             this._queue.Clear();
         }
 
-        ///<summary>
+        /// <summary>
         /// Remove the smallest item from the priority queue.
-        ///</summary>
+        /// </summary>
         /// <remarks>The smallest item, or <value>default(T)</value> if empty.</remarks>
         public T Poll()
         {

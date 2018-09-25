@@ -4,27 +4,27 @@ using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Geometries.Utilities
 {
-    ///<summary>
+    /// <summary>
     /// Creates geometries which are shaped like multi-armed stars with each arm shaped like a sine wave.
     /// These kinds of geometries are useful as a more complex geometry for testing algorithms.
-    ///</summary>
+    /// </summary>
     /// <author>
     /// Martin Davis
     /// </author>
     public class SineStarFactory : GeometricShapeFactory
     {
-        ///<summary>
+        /// <summary>
         /// Creates a factory which will create sine stars using the default <see cref="IGeometryFactory"/>
-        ///</summary>
+        /// </summary>
         public SineStarFactory()
             : this(new GeometryFactory())
         {
 
         }
 
-        ///<summary>
+        /// <summary>
         /// Creates a factory which will create sine stars using the given <see cref="IGeometryFactory"/>
-        ///</summary>
+        /// </summary>
         /// <param name="geomFact">The factory to use</param>
         public SineStarFactory(IGeometryFactory geomFact)
             : base(geomFact)
@@ -33,18 +33,18 @@ namespace NetTopologySuite.Geometries.Utilities
             ArmLengthRatio = 0.5;
         }
 
-        ///<summary>Gets/Sets the number of arms in the star</summary>
+        /// <summary>Gets/Sets the number of arms in the star</summary>
         public int NumArms { get; set; }
 
-        ///<summary>
+        /// <summary>
         /// Sets the ration of the length of each arm to the distance from the tip of the arm to the centre of the star.
-        ///</summary>
+        /// </summary>
         /// <remarks>Value should be between 0.0 and 1.0</remarks>
         public double ArmLengthRatio { get; set; }
 
-        ///<summary>
+        /// <summary>
         /// Generates the geometry for the sine star
-        ///</summary>
+        /// </summary>
         /// <returns>The geometry representing the sine star</returns>
         public IGeometry CreateSineStar()
         {

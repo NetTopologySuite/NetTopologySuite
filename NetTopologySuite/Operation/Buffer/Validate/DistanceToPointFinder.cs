@@ -3,10 +3,10 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Buffer.Validate
 {
-    ///<summary>
+    /// <summary>
     /// Computes the Euclidean distance (L2 metric) from a Point to a Geometry.
     /// Also computes two points which are separated by the distance.
-    ///</summary>
+    /// </summary>
     public static class DistanceToPointFinder
     {
         public static void ComputeDistance(IGeometry geom, Coordinate pt, PointPairDistance ptDist)

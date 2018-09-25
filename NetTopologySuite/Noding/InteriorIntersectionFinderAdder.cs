@@ -70,9 +70,9 @@ namespace NetTopologySuite.Noding
             nss1.AddIntersections(_li, segIndex1, 1);
         }
 
-        ///<summary>
+        /// <summary>
         /// Always process all intersections
-        ///</summary>
+        /// </summary>
         public bool IsDone => false;
     }
 }

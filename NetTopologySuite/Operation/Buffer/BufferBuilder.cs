@@ -10,11 +10,11 @@ using NetTopologySuite.Operation.Overlay;
 
 namespace NetTopologySuite.Operation.Buffer
 {
-    ///<summary>
+    /// <summary>
     /// Builds the buffer geometry for a given input geometry and precision model.
     /// Allows setting the level of approximation for circular arcs,
     /// and the precision model in which to carry out the computation.
-    ///</summary>
+    /// </summary>
     /// <remarks>
     /// When computing buffers in floating point double-precision
     /// it can happen that the process of iterated noding can fail to converge (terminate).
@@ -24,7 +24,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// </remarks>
     internal class BufferBuilder
     {
-        ///<summary>Compute the change in depth as an edge is crossed from R to L</summary>
+        /// <summary>Compute the change in depth as an edge is crossed from R to L</summary>
         private static int DepthDelta(Label label)
         {
             var lLoc = label.GetLocation(0, Positions.Left);
@@ -43,31 +43,31 @@ namespace NetTopologySuite.Operation.Buffer
         private PlanarGraph _graph;
         private readonly EdgeList _edgeList = new EdgeList();
 
-        ///<summary>Creates a new BufferBuilder</summary>
+        /// <summary>Creates a new BufferBuilder</summary>
         public BufferBuilder(IBufferParameters bufParams)
         {
             _bufParams = bufParams;
         }
 
-        ///<summary>
+        /// <summary>
         /// Sets the precision model to use during the curve computation and noding,
         /// if it is different to the precision model of the Geometry.
-        ///</summary>
-        ///<remarks>
+        /// </summary>
+        /// <remarks>
         /// If the precision model is less than the precision of the Geometry precision model,
         /// the Geometry must have previously been rounded to that precision.
-        ///</remarks>
+        /// </remarks>
         public IPrecisionModel WorkingPrecisionModel
         {
             get => _workingPrecisionModel;
             set => _workingPrecisionModel = value;
         }
 
-        ///<summary>
+        /// <summary>
         /// Sets the <see cref="INoder"/> to use during noding.
         /// This allows choosing fast but non-robust noding, or slower
         /// but robust noding.
-        ///</summary>
+        /// </summary>
         public INoder Noder
         {
             get => _workingNoder;
@@ -269,10 +269,10 @@ namespace NetTopologySuite.Operation.Buffer
             return fact.BuildGeometry(lines);
         }
 
-        ///<summary>
+        /// <summary>
         /// Gets the standard result for an empty buffer.
         /// Since buffer always returns a polygonal result, this is chosen to be an empty polygon.
-        ///</summary>
+        /// </summary>
         /// <returns>The empty result geometry</returns>
         private IGeometry CreateEmptyResultGeometry()
         {

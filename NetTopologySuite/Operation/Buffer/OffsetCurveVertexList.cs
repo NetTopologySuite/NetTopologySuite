@@ -5,9 +5,9 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Buffer
 {
-    ///<summary>
+    /// <summary>
     /// A list of the vertices in a constructed offset curve.
-    ///</summary>
+    /// </summary>
     /// <remarks>Automatically removes close adjacent vertices.</remarks>
     /// <author>Martin Davis</author>
     public class OffsetCurveVertexList
@@ -55,9 +55,9 @@ namespace NetTopologySuite.Operation.Buffer
             //System.out.println(bufPt);
         }
 
-        ///<summary>
+        /// <summary>
         /// Tests whether the given point duplicates the previous point in the list (up to tolerance)
-        ///</summary>
+        /// </summary>
         /// <param name="pt">The point to test</param>
         /// <returns>true if the point duplicates the previous point</returns>
         private bool IsDuplicate(Coordinate pt)

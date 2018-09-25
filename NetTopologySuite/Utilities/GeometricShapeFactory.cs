@@ -347,9 +347,9 @@ namespace NetTopologySuite.Utilities
             return (ILineString) Rotate(line);
         }
 
-        ///<summary>
+        /// <summary>
         /// Creates an elliptical arc polygon.
-        ///</summary>
+        /// </summary>
         /// <remarks>
         /// The polygon is formed from the specified arc of an ellipse
         /// and the two radii connecting the endpoints to the centre of the ellipse.
