@@ -147,7 +147,7 @@ namespace NetTopologySuite.Geometries
         /// Tests whether the segment is vertical.
         /// </summary>
         /// <returns><c>true</c> if the segment is vertical.</returns>
-        public bool IsVertical => _p0.X.Equals(_p1.X);
+        public bool IsVertical => _p0.X == _p1.X;
 
         /// <summary>
         /// Determines the orientation of a LineSegment relative to this segment.
@@ -575,7 +575,7 @@ namespace NetTopologySuite.Geometries
                 return _p0.Equals(other._p0) && _p1.Equals(other._p1);
             return false;
         }
-
+        
         /// <summary>
         ///
         /// </summary>
@@ -584,9 +584,7 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         public static bool operator ==(LineSegment obj1, LineSegment obj2)
         {
-            if (obj1 != null)
-                return obj1.Equals(obj2);
-            return false;
+            return Equals(obj1, obj2);
         }
 
         /// <summary>
