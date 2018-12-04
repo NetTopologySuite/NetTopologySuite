@@ -2,7 +2,7 @@
 May 1st, 2018
 
 ## Preamble
-NTS is derivative work of __[JTS Topology Suite](https://github.com/locationtech/jts)__. You can read about the licensing for this project [below][JTS Topology Suite licensing].
+NTS is derivative work of __[JTS Topology Suite](https://github.com/locationtech/jts)__. You can read about the licensing for this project [below](#jts-topology-suite-licensing).
 
 
 ## Project License
