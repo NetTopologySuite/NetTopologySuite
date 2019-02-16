@@ -347,6 +347,9 @@ namespace NetTopologySuite.Geometries.Implementation
             return new DotSpatialAffineCoordinateSequence(xy, z, m);
         }
 
+        /// <inheritdoc />
+        int ICoordinateSequence.Measures => 0;
+
         public int Dimension
         {
             get

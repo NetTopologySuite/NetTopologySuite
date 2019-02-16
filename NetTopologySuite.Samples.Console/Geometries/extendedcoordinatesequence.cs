@@ -268,6 +268,9 @@ namespace NetTopologySuite.Samples.Geometries
             return new ExtendedCoordinateSequence(coordinates);
         }
 
+        /// <inheritdoc />
+        int ICoordinateSequence.Measures => 0;
+
         /// <summary>
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
         /// </summary>

@@ -64,6 +64,9 @@ namespace NetTopologySuite.Operation.Distance3D
             _indexMap = indexMap;
         }
 
+        /// <inheritdoc />
+        int ICoordinateSequence.Measures => 0;
+
         public int Dimension => 2;
 
         public Ordinates Ordinates => _seq.Ordinates;
