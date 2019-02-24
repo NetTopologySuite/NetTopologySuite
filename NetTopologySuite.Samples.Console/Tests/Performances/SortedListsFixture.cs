@@ -64,7 +64,7 @@ namespace NetTopologySuite.Tests.Performances
         {
             var factory = GeometryFactory.Default;
             var point = factory.CreatePoint(new Coordinate(x, y));
-            IPolygon poly = (Polygon) point.Buffer(radius, points, BufferStyle.CapRound);
+            IPolygon poly = (Polygon) point.Buffer(radius, points, EndCapStyle.Round);
             return poly.Shell;
         }
     }

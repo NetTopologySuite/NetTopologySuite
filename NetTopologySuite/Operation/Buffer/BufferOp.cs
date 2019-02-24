@@ -173,27 +173,6 @@ namespace NetTopologySuite.Operation.Buffer
             return geomBuf;
         }
 
-        /// <summary>
-        /// Computes the buffer for a geometry for a given buffer distance
-        /// and accuracy of approximation.
-        /// </summary>
-        /// <param name="g"> the geometry to buffer</param>
-        /// <param name="distance"> the buffer distance</param>
-        /// <param name="quadrantSegments"> the number of segments used to approximate a quarter circle</param>
-        /// <param name="endCapStyle"> the end cap style to use</param>
-        /// <returns> the buffer of the input geometry</returns>
-        [Obsolete("use Buffer(IGeometry, distance, IBufferParameters) instead!")]
-        public static IGeometry Buffer(IGeometry g, double distance,
-          int quadrantSegments,
-          BufferStyle endCapStyle)
-        {
-            var bufOp = new BufferOp(g);
-            bufOp.QuadrantSegments = quadrantSegments;
-            bufOp.BufferStyle = endCapStyle;
-            var geomBuf = bufOp.GetResultGeometry(distance);
-            return geomBuf;
-        }
-
         private readonly IGeometry _argGeom;
         private double _distance;
 
@@ -221,18 +200,6 @@ namespace NetTopologySuite.Operation.Buffer
         {
             _argGeom = g;
             _bufParams = bufParams;
-        }
-
-        /// <summary>
-        /// Specifies the end cap style of the generated buffer.
-        /// The styles supported are <see cref="GeoAPI.Operations.Buffer.BufferStyle.CapRound" />, <see cref="GeoAPI.Operations.Buffer.BufferStyle.CapButt" />, and <see cref="GeoAPI.Operations.Buffer.BufferStyle.CapSquare" />.
-        /// The default is <see cref="GeoAPI.Operations.Buffer.BufferStyle.CapRound" />.
-        /// </summary>
-        [Obsolete]
-        public BufferStyle BufferStyle
-        {
-            get => (BufferStyle)_bufParams.EndCapStyle;
-            set => _bufParams.EndCapStyle = (EndCapStyle)value;
         }
 
         /// <summary>
