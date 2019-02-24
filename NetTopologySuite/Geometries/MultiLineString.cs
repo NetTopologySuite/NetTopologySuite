@@ -139,12 +139,6 @@ namespace NetTopologySuite.Geometries
             return Factory.CreateMultiLineString(revLines);
         }
 
-        IMultiLineString IMultiLineString.Reverse()
-        {
-            return (IMultiLineString) Reverse();
-
-        }
-
         /// <inheritdoc cref="Geometry.CopyInternal"/>>
         protected override IGeometry CopyInternal()
         {
