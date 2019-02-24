@@ -34,6 +34,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         {
             var factory = new PackedCoordinateSequenceFactory();
             var seq = factory.Create(5, 2);
+            ICoordinateSequence copy;
             Coordinate coord;
             Coordinate[] array;
 
@@ -49,6 +50,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.That(array[4], Is.EqualTo(coord));
             Assert.That(array[4], Is.Not.SameAs(coord));
             Assert.That(IsEqual(seq, array), Is.True);
+            copy = factory.Create(array);
+            Assert.That(IsEqual(copy, array), Is.True);
+            copy = factory.Create(seq);
+            Assert.That(IsEqual(copy, array), Is.True);
 
             seq = factory.Create(5, 3);
             InitProgression(seq);
@@ -64,6 +69,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.That(array[4], Is.EqualTo(coord));
             Assert.That(array[4], Is.Not.SameAs(coord));
             Assert.That(IsEqual(seq, array), Is.True);
+            copy = factory.Create(array);
+            Assert.That(IsEqual(copy, array), Is.True);
+            copy = factory.Create(seq);
+            Assert.That(IsEqual(copy, array), Is.True);
 
             seq = factory.Create(5, 3, 1);
             InitProgression(seq);
@@ -79,6 +88,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.That(array[4], Is.EqualTo(coord));
             Assert.That(array[4], Is.Not.SameAs(coord));
             Assert.That(IsEqual(seq, array), Is.True);
+            copy = factory.Create(array);
+            Assert.That(IsEqual(copy, array), Is.True);
+            copy = factory.Create(seq);
+            Assert.That(IsEqual(copy, array), Is.True);
 
             seq = factory.Create(5, 4, 1);
             InitProgression(seq);
@@ -95,6 +108,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.That(array[4], Is.EqualTo(coord));
             Assert.That(array[4], Is.Not.SameAs(coord));
             Assert.That(IsEqual(seq, array), Is.True);
+            copy = factory.Create(array);
+            Assert.That(IsEqual(copy, array), Is.True);
+            copy = factory.Create(seq);
+            Assert.That(IsEqual(copy, array), Is.True);
 
             Assert.That(() => factory.Create(5, 2, 1), Throws.InstanceOf<ArgumentException>());
         }
