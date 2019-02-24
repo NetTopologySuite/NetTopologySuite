@@ -49,6 +49,8 @@ namespace NetTopologySuite.Samples.Geometries
             _coordinates = CopyInternal(copyCoords);
         }
 
+        Coordinate ICoordinateSequence.CreateCoordinate() => throw null;
+
         /// <summary>
         /// Returns (possibly a copy of) the ith Coordinate in this collection.
         /// Whether or not the Coordinate returned is the actual underlying
@@ -92,6 +94,10 @@ namespace NetTopologySuite.Samples.Geometries
 
             return new ExtendedCoordinateSequence(cloneCoordinates);
         }
+
+        public bool HasZ => true;
+
+        public bool HasM => true;
 
         public Ordinates Ordinates => Ordinates.XYZM;
 
@@ -186,6 +192,18 @@ namespace NetTopologySuite.Samples.Geometries
         public double GetY(int index)
         {
             return _coordinates[index].Y;
+        }
+
+        /// <inheritdoc />
+        public double GetZ(int index)
+        {
+            return _coordinates[index].Z;
+        }
+
+        /// <inheritdoc />
+        public double GetM(int index)
+        {
+            return _coordinates[index].M;
         }
 
         /// <summary>

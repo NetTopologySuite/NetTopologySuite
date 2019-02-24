@@ -432,8 +432,8 @@ namespace NetTopologySuite.Mathematics
         {
             // Algorithm from Effective Java by Joshua Bloch
             int result = 17;
-            result = 37 * result + Coordinate.GetHashCode(_x);
-            result = 37 * result + Coordinate.GetHashCode(_y);
+            result = 37 * result + _x.GetHashCode();
+            result = 37 * result + _y.GetHashCode();
             return result;
         }
 

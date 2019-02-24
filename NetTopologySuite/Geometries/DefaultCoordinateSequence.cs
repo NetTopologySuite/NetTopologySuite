@@ -55,12 +55,18 @@ namespace NetTopologySuite.Geometries
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
         /// </summary>
         /// <value></value>
-        public int Dimension => 3;
+        public int Dimension => 2;
 
         /// <inheritdoc />
         public int Measures => 0;
 
+        public bool HasZ => false;
+
+        public bool HasM => false;
+
         public Ordinates Ordinates => Ordinates.XYZ;
+
+        Coordinate ICoordinateSequence.CreateCoordinate() => throw null;
 
         /// <summary>
         /// Returns the coordinate at specified index.

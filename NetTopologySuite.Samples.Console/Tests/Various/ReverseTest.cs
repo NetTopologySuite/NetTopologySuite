@@ -57,7 +57,7 @@ namespace NetTopologySuite.Samples.Tests.Various
                 new Coordinate(24, 36),
             });
             var multiLineString = Factory.CreateMultiLineString(new[] { lineString1, lineString2, });
-            var reverse = multiLineString.Reverse();
+            var reverse = (IMultiLineString)multiLineString.Reverse();
 
             Debug.WriteLine(multiLineString.ToString());
             Debug.WriteLine(reverse.ToString());

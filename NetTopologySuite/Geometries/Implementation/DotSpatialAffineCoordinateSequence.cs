@@ -203,12 +203,18 @@ namespace NetTopologySuite.Geometries.Implementation
             return new DotSpatialAffineCoordinateSequence(this, Ordinates);
         }
 
+        Coordinate ICoordinateSequence.CreateCoordinate() => throw null;
+
         public Coordinate GetCoordinate(int i)
         {
             int j = 2 * i;
             return _z == null
-                ? new Coordinate(_xy[j++], _xy[j])
-                : new CoordinateZ(_xy[j++], _xy[j], _z[i]);
+                ? _m == null
+                    ? new Coordinate(_xy[j++], _xy[j])
+                    : new CoordinateM(_xy[j++], _xy[j], _m[i])
+                : _m == null
+                    ? new CoordinateZ(_xy[j++], _xy[j], _z[i])
+                    : new CoordinateZM(_xy[j++], _xy[j], _z[i], _m[i]);
         }
 
         public Coordinate GetCoordinateCopy(int i)
@@ -220,7 +226,14 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             coord.X = _xy[2 * index];
             coord.Y = _xy[2 * index + 1];
-            coord.Z = _z != null ? _z[index] : Coordinate.NullOrdinate;
+            if (HasZ)
+            {
+                coord.Z = _z[index];
+            }
+            if (HasM)
+            {
+                coord.M = _m[index];
+            }
         }
 
         public double GetX(int index)
@@ -253,10 +266,11 @@ namespace NetTopologySuite.Geometries.Implementation
                     return _xy[index * 2];
                 case Ordinate.Y:
                     return _xy[index * 2 + 1];
-                case Ordinate.Z:
-                    return _z != null ? _z[index] : Coordinate.NullOrdinate;
+                case Ordinate.Ordinate2 when HasZ:
+                    return _z[index];
+                case Ordinate.Ordinate2:
                 case Ordinate.M:
-                    return _m != null ? _m[index] : Coordinate.NullOrdinate;
+                    return _m?[index] ?? Coordinate.NullOrdinate;
                 default:
                     throw new NotSupportedException();
             }
@@ -272,9 +286,10 @@ namespace NetTopologySuite.Geometries.Implementation
                 case Ordinate.Y:
                     _xy[index * 2 + 1] = value;
                     break;
-                case Ordinate.Z:
+                case Ordinate.Ordinate2 when HasZ:
                     if (_z != null) _z[index] = value;
                     break;
+                case Ordinate.Ordinate2:
                 case Ordinate.M:
                     if (_m != null) _m[index] = value;
                     break;
@@ -371,6 +386,10 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         public int Measures => _m == null ? 0 : 1;
+
+        public bool HasZ => _z != null;
+
+        public bool HasM => _m != null;
 
         public Ordinates Ordinates => _ordinates;
 

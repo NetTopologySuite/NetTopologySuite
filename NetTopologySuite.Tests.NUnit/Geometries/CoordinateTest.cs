@@ -193,5 +193,74 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
             Assert.Throws<ArgumentOutOfRangeException>(() => c[Ordinate.M] = 4);
         }
+
+        [Test]
+        public void TestCoordinateXY()
+        {
+            var xy = new Coordinate();
+            CheckZUnsupported(xy);
+            CheckMUnsupported(xy);
+
+            xy = new Coordinate(1.0, 1.0);   // 2D
+            var coord = new CoordinateZ(xy); // copy
+            Assert.That(coord, Is.EqualTo(xy));
+            Assert.That(coord.Z, Is.NaN);
+            Assert.That(coord.M, Is.NaN);
+
+            coord = new CoordinateZ(1.0, 1.0, 1.0); // 2.5d
+            xy = new Coordinate(coord); // copy
+            Assert.That(xy, Is.EqualTo(coord));
+        }
+
+        [Test]
+        public void TestCoordinateXYM()
+        {
+            var xym = new CoordinateM();
+            CheckZUnsupported(xym);
+
+            xym.M = 1.0;
+            Assert.That(xym.M, Is.EqualTo(1.0));
+
+            var coord = new CoordinateZ(xym); // copy
+            Assert.That(coord, Is.EqualTo(xym));
+            Assert.That(coord.Z, Is.NaN);
+            Assert.That(coord.M, Is.NaN);
+
+            coord = new CoordinateZ(1.0, 1.0, 1.0); // 2.5d
+            xym = new CoordinateM(coord); // copy
+            Assert.That(xym, Is.EqualTo(coord));
+        }
+
+        [Test]
+        public void TestCoordinateXYMZ()
+        {
+            var xyzm = new CoordinateZM();
+            xyzm.Z = 1.0;
+            Assert.That(xyzm.Z, Is.EqualTo(1.0));
+            xyzm.M = 1.0;
+            Assert.That(xyzm.M, Is.EqualTo(1.0));
+
+            var coord = new CoordinateZ(xyzm); // copy
+            Assert.That(coord, Is.EqualTo(xyzm));
+            Assert.That(coord.Z, Is.EqualTo(1.0));
+            Assert.That(coord.M, Is.NaN);
+
+            coord = new CoordinateZ(1.0, 1.0, 1.0); // 2.5d
+            xyzm = new CoordinateZM(coord); // copy
+            Assert.That(xyzm, Is.EqualTo(coord));
+            Assert.That(xyzm.Z, Is.EqualTo(coord.Z).Within(0.000001));
+        }
+
+        private static void CheckZUnsupported(Coordinate coord)
+        {
+            Assert.That(() => coord.Z = 0, Throws.InvalidOperationException);
+            Assert.That(coord.Z, Is.NaN);
+        }
+
+        private static void CheckMUnsupported(Coordinate coord)
+        {
+            Assert.That(() => coord.M = 0, Throws.InvalidOperationException);
+            Assert.That(coord.M, Is.NaN);
+        }
     }
 }

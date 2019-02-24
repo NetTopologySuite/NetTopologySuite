@@ -90,7 +90,8 @@ namespace NetTopologySuite.Geometries
 
         public override IGeometry Reverse()
         {
-            var sequence = CoordinateSequence.Reversed();
+            var sequence = CoordinateSequence.Copy();
+            CoordinateSequences.Reverse(sequence);
             return Factory.CreateLinearRing(sequence);
         }
 

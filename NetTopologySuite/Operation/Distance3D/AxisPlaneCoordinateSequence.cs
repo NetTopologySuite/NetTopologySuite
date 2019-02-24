@@ -64,12 +64,18 @@ namespace NetTopologySuite.Operation.Distance3D
             _indexMap = indexMap;
         }
 
-        /// <inheritdoc />
-        int ICoordinateSequence.Measures => 0;
-
         public int Dimension => 2;
 
+        /// <inheritdoc />
+        public int Measures => 0;
+
+        public bool HasZ => false;
+
+        public bool HasM => false;
+
         public Ordinates Ordinates => _seq.Ordinates;
+
+        Coordinate ICoordinateSequence.CreateCoordinate() => throw null;
 
         public Coordinate GetCoordinate(int i)
         {

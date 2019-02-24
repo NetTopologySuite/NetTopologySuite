@@ -81,6 +81,12 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <inheritdoc />
         public int Measures => _measures;
 
+        /// <inheritdoc />
+        public bool HasZ => Dimension - Measures > 2;
+
+        /// <inheritdoc />
+        public bool HasM => Dimension > 2 && Measures > 0;
+
         public Ordinates Ordinates => _ordinates;
 
         /// <summary>
@@ -88,6 +94,8 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <value></value>
         public abstract int Count { get; }
+
+        Coordinate ICoordinateSequence.CreateCoordinate() => throw null;
 
         /// <summary>
         /// Returns (possibly a copy of) the ith Coordinate in this collection.
@@ -133,6 +141,15 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             c.X = GetOrdinate(i, Ordinate.X);
             c.Y = GetOrdinate(i, Ordinate.Y);
+            if (HasZ)
+            {
+                c.Z = GetZ(i);
+            }
+
+            if (HasM)
+            {
+                c.M = GetM(i);
+            }
         }
 
         /// <summary>
@@ -211,7 +228,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </returns>
         public double GetZ(int index)
         {
-            if (Dimension - Measures > 2)
+            if (HasZ)
             {
                 return GetOrdinate(index, Ordinate.Z);
             }
@@ -230,9 +247,9 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </returns>
         public double GetM(int index)
         {
-            if (Dimension > 2 && Measures > 0)
+            if (HasM)
             {
-                int mIndex = Dimension - Dimension;
+                int mIndex = Dimension - Measures;
                 return GetOrdinate(index, (Ordinate)mIndex);
             }
             else

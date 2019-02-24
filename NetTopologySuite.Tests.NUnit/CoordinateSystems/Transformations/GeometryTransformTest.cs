@@ -156,17 +156,6 @@ namespace NetTopologySuite.Tests.NUnit.CoordinateSystems.Transformations
             /// </summary>
             /// <param name="coordinate">The coordinate to transform</param>
             /// <returns>The transformed coordinate</returns>
-            public ICoordinate Transform(ICoordinate coordinate)
-            {
-                var cout = coordinate.Copy();
-                return _affineTransformation.Transform(cout, cout);
-            }
-
-            /// <summary>
-            /// Transforms a a coordinate. The input coordinate remains unchanged.
-            /// </summary>
-            /// <param name="coordinate">The coordinate to transform</param>
-            /// <returns>The transformed coordinate</returns>
             public Coordinate Transform(Coordinate coordinate)
             {
                 return _affineTransformation.Transform(coordinate, new Coordinate());

@@ -102,9 +102,17 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <inheritdoc />
         public int Measures => 0;
 
+        /// <inheritdoc />
+        public bool HasZ => Dimension - Measures > 2;
+
+        /// <inheritdoc />
+        public bool HasM => Dimension > 2 && Measures > 0;
+
         public Ordinates Ordinates => _dimension == 3
             ? Ordinates.XYZ
             : Ordinates.XY;
+
+        Coordinate ICoordinateSequence.CreateCoordinate() => throw null;
 
         /// <summary>
         /// Get the Coordinate with index i.
@@ -171,7 +179,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </returns>
         public double GetZ(int index)
         {
-            if (Dimension - Measures > 2)
+            if (HasZ)
             {
                 return GetOrdinate(index, Ordinate.Z);
             }
@@ -190,14 +198,14 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </returns>
         public double GetM(int index)
         {
-            if (Dimension > 2 && Measures > 0)
+            if (HasM)
             {
-                int mIndex = Dimension - Dimension;
+                int mIndex = Dimension - Measures;
                 return GetOrdinate(index, (Ordinate)mIndex);
             }
             else
             {
-                return Coordinate.NullOrdinate;
+                return double.NaN;
             }
         }
 

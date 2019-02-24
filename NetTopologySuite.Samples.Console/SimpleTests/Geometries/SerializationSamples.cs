@@ -55,7 +55,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
                 new Coordinate(400,400),
                 new Coordinate(500,500),
             };
-            multiPoint = Factory.CreateMultiPoint(coordinates);
+            multiPoint = Factory.CreateMultiPointFromCoords(coordinates);
         }
         /// <summary>
         ///
