@@ -143,7 +143,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// <returns></returns>
         public Coordinate GetCoordinateCopy(int index)
         {
-            return new Coordinate(_coordinates[index]);
+            return _coordinates[index].Copy();
         }
 
         /// <summary>

@@ -81,7 +81,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
                 pts[i] = new Coordinate(x, y);
                 ang += angInc;
             }
-            pts[nSeg] = new Coordinate(pts[0]);
+            pts[nSeg] = pts[0].Copy();
             return geomFact.CreatePolygon(pts);
         }
     }
@@ -129,7 +129,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
             }
             pts[ipts++] = new Coordinate(env.MaxX, yBase);
             pts[ipts++] = new Coordinate(xBase, yBase);
-            pts[ipts++] = new Coordinate(pts[0]);
+            pts[ipts++] = pts[0].Copy();
 
             return geomFact.CreatePolygon(pts);
         }

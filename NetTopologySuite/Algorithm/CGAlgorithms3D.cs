@@ -42,7 +42,7 @@ namespace NetTopologySuite.Algorithm
                 Coordinate A, Coordinate B)
         {
             // if start = end, then just compute distance to one of the endpoints
-            if (A.Equals3D(B))
+            if (A.Equals2D(B) && A.Z.Equals(B.Z))
                 return Distance(p, A);
 
             // otherwise use comp.graphics.algorithms Frequently Asked Questions method
@@ -95,9 +95,9 @@ namespace NetTopologySuite.Algorithm
              * passed large ordinate values.
              * It may be possible to improve this by using {@link DD} arithmetic.
              */
-            if (A.Equals3D(B))
+            if (A.Equals2D(B) && A.Z.Equals(B.Z))
                 return DistancePointSegment(A, C, D);
-            if (C.Equals3D(B))
+            if (C.Equals2D(B) && C.Z.Equals(B.Z))
                 return DistancePointSegment(C, A, B);
 
             /**
@@ -156,7 +156,7 @@ namespace NetTopologySuite.Algorithm
             double z2 = C.Z + t * (D.Z - C.Z);
 
             // length (p1-p2)
-            return Distance(new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2));
+            return Distance(new CoordinateZ(x1, y1, z1), new CoordinateZ(x2, y2, z2));
         }
     }
 }

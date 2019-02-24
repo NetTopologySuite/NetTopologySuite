@@ -212,7 +212,7 @@ namespace NetTopologySuite.Algorithm
             if (_input.NumPoints == 1)
             {
                 pts = _input.Coordinates;
-                _extremalPts = new[] { new Coordinate(pts[0]) };
+                _extremalPts = new[] { pts[0].Copy() };
                 return;
             }
 
@@ -262,7 +262,7 @@ namespace NetTopologySuite.Algorithm
                 // if PRQ is obtuse, then MBC is determined by P and Q
                 if (AngleUtility.IsObtuse(P, R, Q))
                 {
-                    _extremalPts = new Coordinate[] { new Coordinate(P), new Coordinate(Q) };
+                    _extremalPts = new Coordinate[] { P.Copy(), Q.Copy() };
                     return;
                 }
                 // if RPQ is obtuse, update baseline and iterate
@@ -278,7 +278,7 @@ namespace NetTopologySuite.Algorithm
                     continue;
                 }
                 // otherwise all angles are acute, and the MBC is determined by the triangle PQR
-                _extremalPts = new Coordinate[] { new Coordinate(P), new Coordinate(Q), new Coordinate(R) };
+                _extremalPts = new Coordinate[] { P.Copy(), Q.Copy(), R.Copy() };
                 return;
             }
             Assert.ShouldNeverReachHere("Logic failure in Minimum Bounding Circle algorithm!");

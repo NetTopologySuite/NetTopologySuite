@@ -78,7 +78,7 @@ namespace NetTopologySuite.Geometries
         /// <return>The copy of the coordinate specified.</return>
         public Coordinate GetCoordinateCopy(int i)
         {
-            return new Coordinate(_coordinates[i]);
+            return _coordinates[i].Copy();
         }
 
         /// <summary>

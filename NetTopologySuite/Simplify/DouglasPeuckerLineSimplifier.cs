@@ -53,7 +53,7 @@ namespace NetTopologySuite.Simplify
             var coordList = new CoordinateList();
             for (int i = 0; i < _pts.Length; i++)
                 if (_usePt[i])
-                    coordList.Add(new Coordinate(_pts[i]));
+                    coordList.Add(_pts[i].Copy());
             return coordList.ToCoordinateArray();
         }
 

@@ -99,7 +99,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             for (int i = 0; i < size; i++)
             {
                 double baseUnits = 2 * 1;
-                coords[i] = new Coordinate(baseUnits, baseUnits + 1, baseUnits + 2);
+                coords[i] = new CoordinateZ(baseUnits, baseUnits + 1, baseUnits + 2);
             }
             return coords;
         }

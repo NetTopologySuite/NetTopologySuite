@@ -70,7 +70,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                     start,
                     new Coordinate(RandomInt(sideLen), RandomInt(sideLen)),
                     new Coordinate(RandomInt(sideLen), RandomInt(sideLen)),
-                    new Coordinate(start)
+                    start.Copy()
                 };
                 CheckTriangleEdgePoints(triPts, numEdgePts);
             }

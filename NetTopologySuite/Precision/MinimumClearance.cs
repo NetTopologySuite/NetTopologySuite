@@ -277,7 +277,7 @@ namespace NetTopologySuite.Precision
             {
                 _minPts[0] = p;
                 var seg = new LineSegment(seg0, seg1);
-                _minPts[1] = new Coordinate(seg.ClosestPoint(p));
+                _minPts[1] = seg.ClosestPoint(p).Copy();
             }
         }
     }

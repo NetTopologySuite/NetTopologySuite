@@ -138,7 +138,8 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             double projIndex = indexedLine.Project(new Coordinate(5, 5));
             var projPt = indexedLine.ExtractPoint(projIndex);
             //    System.out.println(projPt);
-            Assert.IsTrue(projPt.Equals3D(new Coordinate(5, 5, 5)));
+            Assert.That(projPt, Is.InstanceOf<CoordinateZ>());
+            Assert.IsTrue(((CoordinateZ)projPt).Equals3D(new CoordinateZ(5, 5, 5)));
         }
 
         /// <summary>

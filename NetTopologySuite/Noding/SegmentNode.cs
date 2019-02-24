@@ -34,7 +34,7 @@ namespace NetTopologySuite.Noding
         {
             Coord = null;
             _segString = segString;
-            Coord = new Coordinate(coord.X, coord.Y, coord.Z);
+            Coord = coord.Copy();
             SegmentIndex = segmentIndex;
             _segmentOctant = segmentOctant;
             _isInterior = !coord.Equals2D(segString.Coordinates[segmentIndex]);

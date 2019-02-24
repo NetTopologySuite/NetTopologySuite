@@ -388,7 +388,7 @@ namespace NetTopologySuite.Geometries
         public Coordinate Project(Coordinate p)
         {
             if (p.Equals(_p0) || p.Equals(_p1))
-                return new Coordinate(p);
+                return p.Copy();
 
             double r = ProjectionFactor(p);
             var coord = new Coordinate { X = _p0.X + r * (_p1.X - _p0.X), Y = _p0.Y + r * (_p1.Y - _p0.Y) };

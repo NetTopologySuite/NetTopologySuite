@@ -85,10 +85,10 @@ namespace NetTopologySuite.Operation.Overlay.Snap
                 if (snapVert != null)
                 {
                     // update src with snap pt
-                    srcCoords[i] = new Coordinate(snapVert);
+                    srcCoords[i] = snapVert.Copy();
                     // keep final closing point in synch (rings only)
                     if (i == 0 && _isClosed)
-                        srcCoords[srcCoords.Count - 1] = new Coordinate(snapVert);
+                        srcCoords[srcCoords.Count - 1] = snapVert.Copy();
                 }
             }
         }
@@ -147,7 +147,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
                  * Duplicate points are not added.
                  */
                 if (index >= 0)
-                    srcCoords.Add(index + 1, new Coordinate(snapPt), false);
+                    srcCoords.Add(index + 1, snapPt.Copy(), false);
             }
         }
 

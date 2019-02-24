@@ -140,7 +140,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [TestAttribute]
         public void TestReadZ()
         {
-            Assert.AreEqual(new Coordinate(1, 2, 3), _reader.Read("POINT (1 2 3)").Coordinate);
+            Assert.AreEqual(new CoordinateZ(1, 2, 3), _reader.Read("POINT (1 2 3)").Coordinate);
         }
 
         [TestAttribute]

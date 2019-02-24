@@ -24,7 +24,7 @@ namespace NetTopologySuite.Precision
             // copy coordinates and reduce
             for (int i = 0; i < coordinates.Length; i++)
             {
-                var coord = new Coordinate(coordinates[i]);
+                var coord = coordinates[i].Copy();
                 _targetPrecModel.MakePrecise(coord);
                 reducedCoords[i] = coord;
             }

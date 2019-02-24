@@ -78,7 +78,7 @@ namespace NetTopologySuite.Operation.Distance3D
 
         public Coordinate GetCoordinateCopy(int i)
         {
-            return new Coordinate(GetX(i), GetY(i), GetZ(i));
+            return new CoordinateZ(GetX(i), GetY(i), GetZ(i));
         }
 
         public void GetCoordinate(int index, Coordinate coord)

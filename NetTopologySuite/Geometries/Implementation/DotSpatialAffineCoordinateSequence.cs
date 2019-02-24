@@ -208,7 +208,7 @@ namespace NetTopologySuite.Geometries.Implementation
             int j = 2 * i;
             return _z == null
                 ? new Coordinate(_xy[j++], _xy[j])
-                : new Coordinate(_xy[j++], _xy[j], _z[i]);
+                : new CoordinateZ(_xy[j++], _xy[j], _z[i]);
         }
 
         public Coordinate GetCoordinateCopy(int i)
@@ -302,7 +302,7 @@ namespace NetTopologySuite.Geometries.Implementation
             if (_z != null)
             {
                 for (int i = 0; i < count; i++)
-                    ret[i] = new Coordinate(_xy[j++], _xy[j++], _z[i]);
+                    ret[i] = new CoordinateZ(_xy[j++], _xy[j++], _z[i]);
             }
             else
             {

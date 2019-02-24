@@ -123,7 +123,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>A copy of the requested Coordinate.</returns>
         public virtual Coordinate GetCoordinateCopy(int i)
         {
-            return new Coordinate(Coordinates[i]);
+            return Coordinates[i].Copy();
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace NetTopologySuite.Geometries.Implementation
             var coordinates = new Coordinate[Count];
             for (int i = 0; i < Count; i++ )
             {
-                coordinates[Count - i - 1] = new Coordinate(Coordinates[i]);
+                coordinates[Count - i - 1] = Coordinates[i].Copy();
             }
             return new CoordinateArraySequence(coordinates, Dimension);
         }

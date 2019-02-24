@@ -152,7 +152,7 @@ namespace NetTopologySuite.IO.GML2
             }
             return ordinates.Length == 2
                 ? new Coordinate(ordinates[0], ordinates[1])
-                : new Coordinate(ordinates[0], ordinates[1], ordinates[2]);
+                : new CoordinateZ(ordinates[0], ordinates[1], ordinates[2]);
         }
 
         /// <summary>

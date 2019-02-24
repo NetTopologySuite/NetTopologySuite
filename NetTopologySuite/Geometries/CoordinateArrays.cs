@@ -131,7 +131,7 @@ namespace NetTopologySuite.Geometries
             var copy = new Coordinate[coordinates.Length];
             for (int i = 0; i < coordinates.Length; i++)
             {
-                var c = new Coordinate(coordinates[i]);
+                var c = coordinates[i].Copy();
                 copy[i] = c;
             }
             return copy;
@@ -150,7 +150,7 @@ namespace NetTopologySuite.Geometries
         {
             for (int i = 0; i < length; i++)
             {
-                var c = new Coordinate(src[srcStart + i]);
+                var c = src[srcStart + i].Copy();
                 dest[destStart + i] = c;
             }
         }

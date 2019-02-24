@@ -126,7 +126,7 @@ namespace NetTopologySuite.GeometriesGraph
 
             var pts = new Coordinate[npts];
             int ipt = 0;
-            pts[ipt++] = new Coordinate(ei0.Coordinate);
+            pts[ipt++] = ei0.Coordinate.Copy();
             for (int i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
                 pts[ipt++] = edge.Points[i];
 

@@ -293,7 +293,7 @@ namespace NetTopologySuite.Geometries
         /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Point(double x, double y, double z) :
-            this(DefaultFactory.CoordinateSequenceFactory.Create(new Coordinate[] { new Coordinate(x, y, z) }), DefaultFactory) { }
+            this(DefaultFactory.CoordinateSequenceFactory.Create(new Coordinate[] { new CoordinateZ(x, y, z) }), DefaultFactory) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Point"/> class.

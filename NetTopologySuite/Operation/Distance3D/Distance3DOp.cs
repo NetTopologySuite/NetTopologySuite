@@ -568,14 +568,14 @@ namespace NetTopologySuite.Operation.Distance3D
         private static Coordinate SegmentPoint(Coordinate p0, Coordinate p1, double d0,
                                                double d1)
         {
-            if (d0 <= 0) return new Coordinate(p0);
-            if (d1 <= 0) return new Coordinate(p1);
+            if (d0 <= 0) return p0.Copy();
+            if (d1 <= 0) return p1.Copy();
 
             double f = Math.Abs(d0) / (Math.Abs(d0) + Math.Abs(d1));
             double intx = p0.X + f * (p1.X - p0.X);
             double inty = p0.Y + f * (p1.Y - p0.Y);
             double intz = p0.Z + f * (p1.Z - p0.Z);
-            return new Coordinate(intx, inty, intz);
+            return new CoordinateZ(intx, inty, intz);
         }
     }
 }

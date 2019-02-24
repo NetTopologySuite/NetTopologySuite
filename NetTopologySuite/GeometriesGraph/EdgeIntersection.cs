@@ -46,7 +46,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="dist"></param>
         public EdgeIntersection(Coordinate coord, int segmentIndex, double dist)
         {
-            _coordinate = new Coordinate(coord);
+            _coordinate = coord.Copy();
             _segmentIndex = segmentIndex;
             _distance = dist;
         }

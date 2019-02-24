@@ -364,7 +364,7 @@ namespace NetTopologySuite.Geometries.Implementation
             double x = _coords[index * Dimension];
             double y = _coords[index * Dimension + 1];
             double z = Dimension == 2 ? Coordinate.NullOrdinate : _coords[index * Dimension + 2];
-            return new Coordinate(x, y, z);
+            return new CoordinateZ(x, y, z);
         }
 
         /// <summary>
@@ -552,7 +552,7 @@ namespace NetTopologySuite.Geometries.Implementation
             double x = _coords[index * Dimension];
             double y = _coords[index * Dimension + 1];
             double z = Dimension == 2 ? 0.0 : _coords[index * Dimension + 2];
-            return new Coordinate(x, y, z);
+            return new CoordinateZ(x, y, z);
         }
 
         /// <summary>

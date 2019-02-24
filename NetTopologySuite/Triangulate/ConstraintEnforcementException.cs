@@ -36,7 +36,7 @@ namespace NetTopologySuite.Triangulate
         public ConstraintEnforcementException(string msg, Coordinate pt)
             : base(MsgWithCoord(msg, pt))
         {
-            _pt = new Coordinate(pt);
+            _pt = pt.Copy();
         }
 
         /// <summary>

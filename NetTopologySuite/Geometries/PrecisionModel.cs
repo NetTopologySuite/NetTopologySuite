@@ -287,7 +287,7 @@ namespace NetTopologySuite.Geometries
         [Obsolete("Use MakePrecise instead")]
         public Coordinate ToInternal(Coordinate cexternal)
         {
-            var cinternal = new Coordinate(cexternal);
+            var cinternal = cexternal.Copy();
             MakePrecise(cinternal);
             return cinternal;
         }
@@ -303,7 +303,7 @@ namespace NetTopologySuite.Geometries
         [Obsolete("No longer needed, since internal representation is same as external representation")]
         public Coordinate ToExternal(Coordinate cinternal)
         {
-            var cexternal = new Coordinate(cinternal);
+            var cexternal = cinternal.Copy();
             return cexternal;
         }
 

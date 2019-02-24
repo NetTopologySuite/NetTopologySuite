@@ -175,7 +175,7 @@ namespace NetTopologySuite.Mathematics
         public static Coordinate Normalize(Coordinate v)
         {
             double len = Length(v);
-            return new Coordinate(v.X / len, v.Y / len, v.Z / len);
+            return new CoordinateZ(v.X / len, v.Y / len, v.Z / len);
         }
 
         /// <inheritdoc cref="object.ToString()"/>

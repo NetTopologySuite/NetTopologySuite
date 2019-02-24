@@ -164,7 +164,7 @@ namespace NetTopologySuite.Operation.Buffer
             var copy = new Coordinate[pts.Length];
             for (int i = 0; i < copy.Length; i++)
             {
-                copy[i] = new Coordinate(pts[i]);
+                copy[i] = pts[i].Copy();
             }
             return copy;
         }

@@ -102,7 +102,7 @@ namespace NetTopologySuite.Algorithm
             double dist = point.Distance(_centroid);
             if (dist < _minDistance)
             {
-                _interiorPoint = new Coordinate(point);
+                _interiorPoint = point.Copy();
                 _minDistance = dist;
             }
         }

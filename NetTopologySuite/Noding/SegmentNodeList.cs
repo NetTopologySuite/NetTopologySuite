@@ -241,11 +241,11 @@ namespace NetTopologySuite.Noding
 
             var pts = new Coordinate[npts];
             int ipt = 0;
-            pts[ipt++] = new Coordinate(ei0.Coord);
+            pts[ipt++] = ei0.Coord.Copy();
             for (int i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
                 pts[ipt++] = _edge.GetCoordinate(i);
             if (useIntPt1)
-                pts[ipt] = new Coordinate(ei1.Coord);
+                pts[ipt] = ei1.Coord.Copy();
 
             return new NodedSegmentString(pts, _edge.Context);
         }
@@ -292,14 +292,14 @@ namespace NetTopologySuite.Noding
             }
 
             int ipt = 0;
-            coordList.Add(new Coordinate(ei0.Coord), false);
+            coordList.Add(ei0.Coord.Copy(), false);
             for (int i = ei0.SegmentIndex + 1; i <= ei1.SegmentIndex; i++)
             {
                 coordList.Add(_edge.GetCoordinate(i));
             }
             if (useIntPt1)
             {
-                coordList.Add(new Coordinate(ei1.Coord));
+                coordList.Add(ei1.Coord.Copy());
             }
         }
 

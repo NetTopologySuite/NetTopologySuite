@@ -206,7 +206,7 @@ namespace NetTopologySuite.Geometries
         public void CloseRing()
         {
             if (Count > 0)
-                Add(new Coordinate(this[0]), false);
+                Add(this[0].Copy(), false);
         }
 
         /// <summary>

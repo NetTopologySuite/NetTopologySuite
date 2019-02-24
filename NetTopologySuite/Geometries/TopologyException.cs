@@ -37,7 +37,7 @@ namespace NetTopologySuite.Geometries
         public TopologyException(string msg, Coordinate pt)
             : base (MsgWithCoord(msg, pt))
         {
-            this.pt = new Coordinate(pt);
+            this.pt = pt.Copy();
         }
 
         /// <summary>

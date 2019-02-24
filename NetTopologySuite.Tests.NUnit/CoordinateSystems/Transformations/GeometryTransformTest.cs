@@ -158,7 +158,7 @@ namespace NetTopologySuite.Tests.NUnit.CoordinateSystems.Transformations
             /// <returns>The transformed coordinate</returns>
             public ICoordinate Transform(ICoordinate coordinate)
             {
-                var cout = new Coordinate(coordinate);
+                var cout = coordinate.Copy();
                 return _affineTransformation.Transform(cout, cout);
             }
 

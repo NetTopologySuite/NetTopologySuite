@@ -171,7 +171,7 @@ namespace NetTopologySuite.Utilities
                 double y = env.MaxY - i * ySegLen;
                 pts[ipt++] = CreateCoord(x, y);
             }
-            pts[ipt] = new Coordinate(pts[0]);
+            pts[ipt] = pts[0].Copy();
 
             var ring = GeomFact.CreateLinearRing(pts);
             var poly = GeomFact.CreatePolygon(ring);
@@ -244,7 +244,7 @@ namespace NetTopologySuite.Utilities
                 double y = yRadius * Math.Sin(ang) + centreY;
                 pts[iPt++] = CreateCoord(x, y);
             }
-            pts[iPt] = new Coordinate(pts[0]);
+            pts[iPt] = pts[0].Copy();
 
             var ring = GeomFact.CreateLinearRing(pts);
             var poly = GeomFact.CreatePolygon(ring);
@@ -304,7 +304,7 @@ namespace NetTopologySuite.Utilities
                 pts[6 * nSegsInOct + i] = CreateCoordTrans(-y, x, centre);
                 pts[8 * nSegsInOct - i] = CreateCoordTrans(-x, y, centre);
             }
-            pts[pts.Length - 1] = new Coordinate(pts[0]);
+            pts[pts.Length - 1] = pts[0].Copy();
 
             var ring = GeomFact.CreateLinearRing(pts);
             var poly = GeomFact.CreatePolygon(ring);
@@ -461,7 +461,7 @@ namespace NetTopologySuite.Utilities
                     _width = value.Width;
                     _height = value.Height;
                     _base = new Coordinate(value.MinX, value.MinY);
-                    _centre = new Coordinate(value.Centre);
+                    _centre = value.Centre.Copy();
                 }
             }
         }

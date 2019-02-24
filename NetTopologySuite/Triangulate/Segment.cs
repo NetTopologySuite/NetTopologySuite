@@ -21,7 +21,7 @@ namespace NetTopologySuite.Triangulate
         /// Creates a new instance for the given ordinates.
         /// </summary>
         public Segment(double x1, double y1, double z1, double x2, double y2, double z2)
-            :this(new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2))
+            :this(new CoordinateZ(x1, y1, z1), new CoordinateZ(x2, y2, z2))
         {
         }
 
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Triangulate
         /// Creates a new instance for the given ordinates,  with associated external data.
         /// </summary>
         public Segment(double x1, double y1, double z1, double x2, double y2, double z2, object data)
-            : this(new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2), data)
+            : this(new CoordinateZ(x1, y1, z1), new CoordinateZ(x2, y2, z2), data)
         {
         }
 
