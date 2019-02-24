@@ -2,11 +2,7 @@
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Utilities;
 
-#if HAS_SYSTEM_ICLONEABLE
 using ICloneable = System.ICloneable;
-#else
-using ICloneable = GeoAPI.ICloneable;
-#endif
 
 namespace NetTopologySuite.Mathematics
 {

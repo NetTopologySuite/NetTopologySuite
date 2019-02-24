@@ -7,9 +7,7 @@ namespace NetTopologySuite.Geometries.Implementation
     /// Builds packed array coordinate sequences. The array data type can be either
     /// double or float, and defaults to double.
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public class PackedCoordinateSequenceFactory : ICoordinateSequenceFactory
     {
         /// <summary>

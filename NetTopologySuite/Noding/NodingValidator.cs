@@ -4,9 +4,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 
-#if !HAS_SYSTEM_APPLICATIONEXCEPTION
-using ApplicationException = System.Exception;
-#endif
 namespace NetTopologySuite.Noding
 {
     /// <summary>

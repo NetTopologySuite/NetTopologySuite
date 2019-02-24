@@ -14,10 +14,7 @@ namespace NetTopologySuite.Geometries
     /// </list>
     /// </summary>
     ///
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-
-#endif
     public class Point : Geometry, IPoint
     {
         private static readonly Coordinate EmptyCoordinate = null;

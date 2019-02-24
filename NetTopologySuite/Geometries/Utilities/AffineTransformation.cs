@@ -1,8 +1,5 @@
 using System;
 using GeoAPI.Geometries;
-#if !HAS_SYSTEM_ICLONEABLE
-using ICloneable = GeoAPI.ICloneable;
-#endif
 
 namespace NetTopologySuite.Geometries.Utilities
 {

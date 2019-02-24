@@ -7,10 +7,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 
-#if !HAS_SYSTEM_APPLICATIONEXCEPTION
-using ApplicationException = System.Exception;
-#endif
-
 namespace NetTopologySuite.IO.GML2
 {
     /// <summary>
@@ -39,7 +35,6 @@ namespace NetTopologySuite.IO.GML2
             _factory = factory;
         }
 
-#if HAS_SYSTEM_XML_XMLDOCUMENT
         /// <summary>
         /// Read a GML document and returns relative <see cref="IGeometry"/>.
         /// </summary>
@@ -49,7 +44,6 @@ namespace NetTopologySuite.IO.GML2
         {
             return Read(document.InnerXml);
         }
-#endif
 
         /// <summary>
         /// Read a GML document and returns relative <see cref="IGeometry"/>.

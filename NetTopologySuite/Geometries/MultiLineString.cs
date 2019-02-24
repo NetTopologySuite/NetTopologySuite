@@ -11,9 +11,7 @@ namespace NetTopologySuite.Geometries
     /// <para/>
     /// Any collection of <c>LineString</c>s is a valid <c>MultiLineString</c>.
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public class MultiLineString : GeometryCollection, IMultiLineString
     {
         /// <summary>

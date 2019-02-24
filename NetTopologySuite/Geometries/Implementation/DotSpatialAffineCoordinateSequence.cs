@@ -7,9 +7,7 @@ namespace NetTopologySuite.Geometries.Implementation
     /// <summary>
     /// A coordinate sequence that follows the dotspatial shape range
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public class DotSpatialAffineCoordinateSequence :
         ICoordinateSequence
         //IMeasuredCoordinateSequence
@@ -21,9 +19,7 @@ namespace NetTopologySuite.Geometries.Implementation
 
         private readonly Ordinates _ordinates;
 
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
         [NonSerialized]
-#endif
         private WeakReference _coordinateArrayRef;
 
         /// <summary>

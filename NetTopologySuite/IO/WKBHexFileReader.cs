@@ -43,7 +43,6 @@ namespace NetTopologySuite.IO
         /// </summary>
         public int Offset { get; set; }
 
-#if FEATURE_FILE_IO
         /// <summary>
         /// Reads a sequence of geometries.<br/>
         /// If an <see cref="Offset"/> is specified, geometries read up to the offset count are skipped.
@@ -65,7 +64,6 @@ namespace NetTopologySuite.IO
                 return Read(stream);
             }
         }
-#endif
 
         /// <summary>
         /// Reads a sequence of geometries.<br/>

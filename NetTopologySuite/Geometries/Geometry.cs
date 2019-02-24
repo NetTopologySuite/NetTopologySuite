@@ -120,9 +120,7 @@ namespace NetTopologySuite.Geometries
     /// Geometries can be used effectively in .Net collections.
     /// </para>
     /// </remarks>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public abstract class Geometry : IGeometry
     {
         /// <summary>
