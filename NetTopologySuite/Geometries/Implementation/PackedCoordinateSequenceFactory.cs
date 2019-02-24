@@ -124,11 +124,34 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="packedCoordinates"></param>
         /// <param name="dimension"></param>
         /// <returns>Packaged coordinate seqeunce of the requested type</returns>
+        public ICoordinateSequence Create(double[] packedCoordinates, int dimension)
+        {
+            return Create(packedCoordinates, dimension, 0);
+        }
+
+        /// <summary>
+        /// Create a packed coordinate sequence from the provided array. 
+        /// </summary>
+        /// <param name="packedCoordinates"></param>
+        /// <param name="dimension"></param>
+        /// <param name="measures"></param>
+        /// <returns>Packaged coordinate seqeunce of the requested type</returns>
         public ICoordinateSequence Create(double[] packedCoordinates, int dimension, int measures)
         {
             if (type == PackedType.Double)
                  return new PackedDoubleCoordinateSequence(packedCoordinates, dimension, measures);
             return new PackedFloatCoordinateSequence(packedCoordinates, dimension, measures);
+        }
+
+        /// <summary>
+        /// Create a packed coordinate sequence from the provided array. 
+        /// </summary>
+        /// <param name="packedCoordinates"></param>
+        /// <param name="dimension"></param>
+        /// <returns>Packaged coordinate seqeunce of the requested type</returns>
+        public ICoordinateSequence Create(float[] packedCoordinates, int dimension)
+        {
+            return Create(packedCoordinates, dimension, 0);
         }
 
         /// <summary>

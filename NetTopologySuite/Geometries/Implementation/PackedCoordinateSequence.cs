@@ -410,6 +410,16 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coordinates"></param>
         /// <param name="dimension"></param>
+        public PackedDoubleCoordinateSequence(Coordinate[] coordinates, int dimension)
+            : this(coordinates, dimension, 0)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
+        /// </summary>
+        /// <param name="coordinates"></param>
+        /// <param name="dimension"></param>
         /// <param name="measures"></param>
         public PackedDoubleCoordinateSequence(Coordinate[] coordinates, int dimension, int measures)
             : base(dimension, measures)
@@ -621,6 +631,16 @@ namespace NetTopologySuite.Geometries.Implementation
             _coords = new float[coordinates.Length];
             for (int i = 0; i < coordinates.Length; i++)
                 _coords[i] = (float) coordinates[i];
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PackedFloatCoordinateSequence"/> class.
+        /// </summary>
+        /// <param name="coordinates"></param>
+        /// <param name="dimension"></param>
+        public PackedFloatCoordinateSequence(Coordinate[] coordinates, int dimension)
+            : this(coordinates, dimension, 0)
+        {
         }
 
         /// <summary>
