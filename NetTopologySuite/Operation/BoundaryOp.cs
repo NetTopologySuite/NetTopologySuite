@@ -143,7 +143,7 @@ namespace NetTopologySuite.Operation
                 {
                     return line.StartPoint;
                 }
-                return _geomFact.CreateMultiPoint((Coordinate[])null);
+                return _geomFact.CreateMultiPointFromCoords((Coordinate[])null);
             }
             return _geomFact.CreateMultiPoint(new[]
                         {

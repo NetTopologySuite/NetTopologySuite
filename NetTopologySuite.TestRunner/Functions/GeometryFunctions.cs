@@ -129,7 +129,7 @@ namespace Open.Topology.TestRunner.Functions
         public static IGeometry GetCoordinates(IGeometry g)
         {
             var pts = g.Coordinates;
-            return g.Factory.CreateMultiPoint(pts);
+            return g.Factory.CreateMultiPointFromCoords(pts);
         }
     }
 }

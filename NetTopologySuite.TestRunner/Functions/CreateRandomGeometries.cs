@@ -104,7 +104,7 @@ namespace Open.Topology.TestRunner.Functions
                 if (env.Contains(p))
                     pts[i++] = new Coordinate(p);
             }
-            return FunctionsUtil.GetFactoryOrDefault(g).CreateMultiPoint(pts);
+            return FunctionsUtil.GetFactoryOrDefault(g).CreateMultiPointFromCoords(pts);
         }
 
         private static double HaltonOrdinate(int index, int basis)
