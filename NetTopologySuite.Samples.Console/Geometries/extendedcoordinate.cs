@@ -1,5 +1,5 @@
+using System;
 using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Samples.Geometries
 {
@@ -37,10 +37,61 @@ namespace NetTopologySuite.Samples.Geometries
         /// </summary>
         private double _m;
 
-        public double M
+        public override double M
         {
             get => _m;
             set => _m = value;
+        }
+
+        public override Coordinate CoordinateValue
+        {
+            get => this;
+            set
+            {
+                X = value.X;
+                Y = value.Y;
+                Z = value.Z;
+                M = value.M;
+            }
+        }
+
+        /// <inheritdoc />
+        public override double this[Ordinate ordinateIndex]
+        {
+            get
+            {
+                switch (ordinateIndex)
+                {
+                    case Ordinate.X:
+                        return X;
+                    case Ordinate.Y:
+                        return Y;
+                    case Ordinate.Z:
+                        return Z;
+                    case Ordinate.M:
+                        return M;
+                }
+                throw new ArgumentOutOfRangeException(nameof(ordinateIndex));
+            }
+            set
+            {
+                switch (ordinateIndex)
+                {
+                    case Ordinate.X:
+                        X = value;
+                        return;
+                    case Ordinate.Y:
+                        Y = value;
+                        return;
+                    case Ordinate.Z:
+                        Z = value;
+                        return;
+                    case Ordinate.M:
+                        M = value;
+                        return;
+                }
+                throw new ArgumentOutOfRangeException(nameof(ordinateIndex));
+            }
         }
 
         /// <inheritdoc cref="object.ToString()"/>

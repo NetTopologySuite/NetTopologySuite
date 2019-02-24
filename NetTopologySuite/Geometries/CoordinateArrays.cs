@@ -22,12 +22,12 @@ namespace NetTopologySuite.Geometries
             {
                 return 2; // unknown, assume default
             }
-            var first = pts[0];
-            if (first == null)
+            int dimension = 0;
+            foreach (var coordinate in pts)
             {
-                return 2; // unknown, assume default
+                dimension = Math.Max(dimension, Coordinates.Dimension(coordinate));
             }
-            return Coordinates.Dimension(first);
+            return dimension;
         }
 
         /// <summary>
@@ -41,12 +41,12 @@ namespace NetTopologySuite.Geometries
             {
                 return 0; // unknown, assume default
             }
-            var first = pts[0];
-            if (first == null)
+            int measures = 0;
+            foreach (var coordinate in pts)
             {
-                return 0; // unknown, assume default
+                measures = Math.Max(measures, Coordinates.Measures(coordinate));
             }
-            return Coordinates.Measures(first);
+            return measures;
         }
 
         /// <summary>

@@ -93,6 +93,22 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.That(() => factory.Create(5, 2, 1), Throws.InstanceOf<ArgumentException>());
         }
 
+        [Test]
+        public void TestMixedCoordinates()
+        {
+            var factory = CsFactory;
+            var coord1 = new CoordinateZ(1.0, 1.0, 1.0);
+            var coord2 = new Coordinate(2.0, 2.0);
+            var coord3 = new CoordinateM(3.0, 3.0, 3.0);
+            var array = new Coordinate[] { coord1, coord2, coord3 };
+            var seq = factory.Create(array);
+            Assert.That(seq.Dimension, Is.EqualTo(3));
+            Assert.That(seq.Measures, Is.EqualTo(1));
+            Assert.That(seq.GetCoordinate(0), Is.EqualTo(coord1));
+            Assert.That(seq.GetCoordinate(1), Is.EqualTo(coord2));
+            Assert.That(seq.GetCoordinate(2), Is.EqualTo(coord3));
+        }
+
         private static void InitProgression(ICoordinateSequence seq)
         {
             for (int index = 0; index < seq.Count; index++)

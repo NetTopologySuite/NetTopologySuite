@@ -152,17 +152,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
                 return false;
 
             // carefully get coordinate of the same type as the sequence
-            var p = seq.Count == 0 ? new Coordinate() : seq.GetCoordinate(0).Copy();
-            p.X = 0;
-            p.Y = 0;
-            if (seq.HasZ)
-            {
-                p.Z = 0;
-            }
-            if (seq.HasM)
-            {
-                p.M = 0;
-            }
+            var p = seq.CreateCoordinate();
 
             for (int i = 0; i < seq.Count; i++)
             {
@@ -170,51 +160,51 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
                     return false;
 
                 // Ordinate named getters
-                if (coords[i].X != seq.GetX(i))
+                if (!coords[i].X.Equals(seq.GetX(i)))
                     return false;
-                if (coords[i].Y != seq.GetY(i))
+                if (!coords[i].Y.Equals(seq.GetY(i)))
                     return false;
                 if (seq.HasZ)
                 {
-                    if (coords[i].Z != seq.GetZ(i))
+                    if (!coords[i].Z.Equals(seq.GetZ(i)))
                         return false;
                 }
                 if (seq.HasM)
                 {
-                    if (coords[i].M != seq.GetM(i))
+                    if (!coords[i].M.Equals(seq.GetM(i)))
                         return false;
                 }
 
                 // Ordinate indexed getters
-                if (coords[i].X != seq.GetOrdinate(i, Ordinate.X))
+                if (!coords[i].X.Equals(seq.GetOrdinate(i, Ordinate.X)))
                     return false;
-                if (coords[i].Y != seq.GetOrdinate(i, Ordinate.Y))
+                if (!coords[i].Y.Equals(seq.GetOrdinate(i, Ordinate.Y)))
                     return false;
                 if (seq.Dimension > 2)
                 {
-                    if (coords[i][Ordinate.Ordinate2] != seq.GetOrdinate(i, Ordinate.Ordinate2))
+                    if (!coords[i][Ordinate.Ordinate2].Equals(seq.GetOrdinate(i, Ordinate.Ordinate2)))
                         return false;
                 }
                 if (seq.Dimension > 3)
                 {
-                    if (coords[i][Ordinate.Ordinate3] != seq.GetOrdinate(i, Ordinate.Ordinate3))
+                    if (!coords[i][Ordinate.Ordinate3].Equals(seq.GetOrdinate(i, Ordinate.Ordinate3)))
                         return false;
                 }
 
                 // Coordinate getter
                 seq.GetCoordinate(i, p);
-                if (coords[i].X != p.X)
+                if (!coords[i].X.Equals(p.X))
                     return false;
-                if (coords[i].Y != p.Y)
+                if (!coords[i].Y.Equals(p.Y))
                     return false;
                 if (seq.HasZ)
                 {
-                    if (coords[i].Z != p.Z)
+                    if (!coords[i].Z.Equals(p.Z))
                         return false;
                 }
                 if (seq.HasM)
                 {
-                    if (coords[i].M != p.M)
+                    if (!coords[i].M.Equals(p.M))
                         return false;
                 }
             }
