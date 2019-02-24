@@ -147,7 +147,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         private void RunWKBTestPackedCoordinate(string wkt)
         {
             var factory = new GeometryFactory(
-                new PackedCoordinateSequenceFactory(PackedCoordinateSequenceFactory.PackedType.Double, 2));
+                new PackedCoordinateSequenceFactory(PackedCoordinateSequenceFactory.PackedType.Double));
             var reader = new WKTReader(factory);
             var g = reader.Read(wkt);
 
