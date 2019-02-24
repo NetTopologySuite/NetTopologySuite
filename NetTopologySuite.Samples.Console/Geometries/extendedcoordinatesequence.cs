@@ -286,13 +286,13 @@ namespace NetTopologySuite.Samples.Geometries
             return new ExtendedCoordinateSequence(coordinates);
         }
 
-        /// <inheritdoc />
-        int ICoordinateSequence.Measures => 0;
-
         /// <summary>
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
         /// </summary>
         /// <value></value>
         public int Dimension => 4;
+
+        /// <inheritdoc />
+        public int Measures => 1;
     }
 }
