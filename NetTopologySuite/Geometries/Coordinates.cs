@@ -48,14 +48,14 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Determine dimension based on subclass of <see cref="Coordinate"/>.
         /// </summary>
-        /// <param name="coordiante"></param>
-        /// <returns>dimension</returns>
-        public static int GetDimension(Coordinate coordiante)
+        /// <param name="coordiante">supplied coordinate</param>
+        /// <returns>number of ordinates recorded</returns>
+        public static int GetDimension(Coordinate coordinate)
         {
             // NTS-specific note: be VERY CAREFUL with methods that rely on checking the types of
             // Coordinate objects when compared to JTS: GeoAPI offers the same four types (with
             // slightly different names), but with a substantially different hierarchy relationship.
-            var type = coordiante.GetType();
+            var type = coordinate.GetType();
             if (type == typeof(Coordinate))
             {
                 return 2;
@@ -82,16 +82,16 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Determine dimension based on subclass of <see cref="Coordinate"/>.
+        /// Determine number of measures based on subclass of <see cref="Coordinate"/>.
         /// </summary>
-        /// <param name="coordiante"></param>
-        /// <returns>dimension</returns>
-        public static int GetMeasures(Coordinate coordiante)
+        /// <param name="cooordiante">supplied coordinate</param>
+        /// <returns>number of measures recorded </returns>
+        public static int GetMeasures(Coordinate cooordinate)
         {
             // NTS-specific note: be VERY CAREFUL with methods that rely on checking the types of
             // Coordinate objects when compared to JTS: GeoAPI offers the same four types (with
             // slightly different names), but with a substantially different hierarchy relationship.
-            var type = coordiante.GetType();
+            var type = cooordinate.GetType();
             if (type == typeof(CoordinateM) || type == typeof(CoordinateZM))
             {
                 return 1;
