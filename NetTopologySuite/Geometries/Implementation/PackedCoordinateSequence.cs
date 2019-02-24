@@ -21,17 +21,17 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <summary>
         /// The dimensions of the coordinates held in the packed array
         /// </summary>
-        private readonly int _dimension;
+        private int _dimension;
 
         /// <summary>
         /// The number of measures of the coordinates held in the packed array.
         /// </summary>
-        private readonly int _measures;
+        private int _measures;
 
         /// <summary>
         /// The ordinates
         /// </summary>
-        private readonly Ordinates _ordinates;
+        private Ordinates _ordinates;
 
         protected PackedCoordinateSequence(int dimension, int measures)
         {
@@ -76,10 +76,26 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
         /// </summary>
         /// <value></value>
-        public int Dimension => _dimension;
+        public int Dimension
+        {
+            get => _dimension;
+            protected set
+            {
+                _dimension = value;
+                _ordinates = DimensionToOrdinate(_dimension, _measures);
+            }
+        }
 
         /// <inheritdoc />
-        public int Measures => _measures;
+        public int Measures
+        {
+            get => _measures;
+            protected set
+            {
+                _measures = value;
+                _ordinates = DimensionToOrdinate(_dimension, _measures);
+            }
+        }
 
         /// <inheritdoc />
         public bool HasZ => Dimension - Measures > 2;
