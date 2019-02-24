@@ -51,14 +51,14 @@ namespace NetTopologySuite.Geometries
                 _coordinates[i] = new Coordinate();
         }
 
-        /// <inheritdoc />
-        int ICoordinateSequence.Measures => 0;
-
         /// <summary>
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
         /// </summary>
         /// <value></value>
         public int Dimension => 3;
+
+        /// <inheritdoc />
+        public int Measures => 0;
 
         public Ordinates Ordinates => Ordinates.XYZ;
 
@@ -115,6 +115,45 @@ namespace NetTopologySuite.Geometries
         public double GetY(int index)
         {
             return _coordinates[index].Y;
+        }
+
+        /// <summary>
+        /// Returns ordinate Z of the specified coordinate if available.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns>
+        /// The value of the Z ordinate in the index'th coordinate, or Double.NaN if not defined.
+        /// </returns>
+        public double GetZ(int index)
+        {
+            if (Dimension - Measures > 2)
+            {
+                return GetOrdinate(index, Ordinate.Z);
+            }
+            else
+            {
+                return double.NaN;
+            }
+        }
+
+        /// <summary>
+        /// Returns ordinate M of the specified coordinate if available.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns>
+        /// The value of the Z ordinate in the index'th coordinate, or Double.NaN if not defined.
+        /// </returns>
+        public double GetM(int index)
+        {
+            if (Dimension > 2 && Measures > 0)
+            {
+                int mIndex = Dimension - Dimension;
+                return GetOrdinate(index, (Ordinate)mIndex);
+            }
+            else
+            {
+                return Coordinate.NullOrdinate;
+            }
         }
 
         /// <summary>

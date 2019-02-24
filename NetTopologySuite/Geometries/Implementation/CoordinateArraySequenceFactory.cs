@@ -45,6 +45,11 @@ namespace NetTopologySuite.Geometries.Implementation
             return new CoordinateArraySequence(size, dimension);
         }
 
+        public ICoordinateSequence Create(int size, int dimension, int measures)
+        {
+            return this.Create(size, dimension);
+        }
+
         public ICoordinateSequence Create(int size, Ordinates ordinates)
         {
             return new CoordinateArraySequence(size, OrdinatesUtility.OrdinatesToDimension(ordinates));

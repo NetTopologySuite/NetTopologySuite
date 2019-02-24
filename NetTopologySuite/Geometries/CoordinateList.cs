@@ -189,7 +189,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="coll">Coordinates collection to be inserted.</param>
         /// <param name="allowRepeated">If set to false, repeated coordinates are collapsed.</param>
         /// <returns>Return true if at least one element has added (IList not empty).</returns>
-        public bool AddAll(IList<Coordinate> coll, bool allowRepeated)
+        public bool AddAll(IEnumerable<Coordinate> coll, bool allowRepeated)
         {
             bool isChanged = false;
             foreach (var c in coll)

@@ -233,6 +233,18 @@ namespace NetTopologySuite.Geometries.Implementation
             return _xy[2 * index + 1];
         }
 
+        /// <inheritdoc />
+        public double GetZ(int index)
+        {
+            return _z?[index] ?? Coordinate.NullOrdinate;
+        }
+
+        /// <inheritdoc />
+        public double GetM(int index)
+        {
+            return _m?[index] ?? Coordinate.NullOrdinate;
+        }
+
         public double GetOrdinate(int index, Ordinate ordinate)
         {
             switch (ordinate)
@@ -347,9 +359,6 @@ namespace NetTopologySuite.Geometries.Implementation
             return new DotSpatialAffineCoordinateSequence(xy, z, m);
         }
 
-        /// <inheritdoc />
-        int ICoordinateSequence.Measures => 0;
-
         public int Dimension
         {
             get
@@ -360,6 +369,8 @@ namespace NetTopologySuite.Geometries.Implementation
                 return res;
             }
         }
+
+        public int Measures => _m == null ? 0 : 1;
 
         public Ordinates Ordinates => _ordinates;
 

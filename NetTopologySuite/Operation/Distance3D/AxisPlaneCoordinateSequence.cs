@@ -103,6 +103,11 @@ namespace NetTopologySuite.Operation.Distance3D
             return GetOrdinate(index, Ordinate.Z);
         }
 
+        public double GetM(int index)
+        {
+            return double.NaN;
+        }
+
         public double GetOrdinate(int index, Ordinate ordinateIndex)
         {
             // Z ord is always 0

@@ -74,6 +74,18 @@ namespace NetTopologySuite.Geometries.Implementation
             return new DotSpatialAffineCoordinateSequence(size, Ordinates & OrdinatesUtility.DimensionToOrdinates(dimension));
         }
 
+        /// <inheritdoc />
+        public ICoordinateSequence Create(int size, int dimension, int measures)
+        {
+            var ordinates = OrdinatesUtility.DimensionToOrdinates(dimension);
+            if (dimension == 3 && measures == 1)
+            {
+                ordinates = Ordinates.XYM;
+            }
+
+            return new DotSpatialAffineCoordinateSequence(size, Ordinates & ordinates);
+        }
+
         /// <summary>
         /// Creates a <see cref="ICoordinateSequence" /> of the specified size and ordinates.
         /// For this to be useful, the <see cref="ICoordinateSequence" /> implementation must be mutable.
