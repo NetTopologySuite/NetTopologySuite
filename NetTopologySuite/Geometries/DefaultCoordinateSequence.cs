@@ -66,7 +66,8 @@ namespace NetTopologySuite.Geometries
 
         public Ordinates Ordinates => Ordinates.XYZ;
 
-        Coordinate ICoordinateSequence.CreateCoordinate() => throw null;
+        /// <inheritdoc />
+        public Coordinate CreateCoordinate() => Coordinates.Create(Dimension, Measures);
 
         /// <summary>
         /// Returns the coordinate at specified index.

@@ -203,7 +203,8 @@ namespace NetTopologySuite.Geometries.Implementation
             return new DotSpatialAffineCoordinateSequence(this, Ordinates);
         }
 
-        Coordinate ICoordinateSequence.CreateCoordinate() => throw null;
+        /// <inheritdoc />
+        public Coordinate CreateCoordinate() => Coordinates.Create(Dimension, Measures);
 
         public Coordinate GetCoordinate(int i)
         {

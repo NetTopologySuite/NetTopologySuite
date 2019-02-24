@@ -61,7 +61,7 @@ namespace NetTopologySuite.Geometries.Implementation
                 dimension = 2; // handle bogus dimension
             if (dimension - measures < 2)
             {
-                throw new ArgumentException("max spatial dimension 2 required");
+                throw new ArgumentException($"Minimum spatial dimension of 2 required. Input was dimension {dimension}and number of measures {measures}.");
             }
             return new CoordinateArraySequence(size, dimension, measures);
         }

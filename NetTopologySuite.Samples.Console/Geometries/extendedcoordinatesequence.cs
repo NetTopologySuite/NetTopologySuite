@@ -49,7 +49,8 @@ namespace NetTopologySuite.Samples.Geometries
             _coordinates = CopyInternal(copyCoords);
         }
 
-        Coordinate ICoordinateSequence.CreateCoordinate() => throw null;
+        /// <inheritdoc />
+        public Coordinate CreateCoordinate() => new ExtendedCoordinate();
 
         /// <summary>
         /// Returns (possibly a copy of) the ith Coordinate in this collection.
@@ -164,10 +165,7 @@ namespace NetTopologySuite.Samples.Geometries
             coord.X = exc.X;
             coord.Y = exc.Y;
             coord.Z = exc.Z;
-
-            var exCoord = coord as ExtendedCoordinate;
-            if (exCoord != null)
-                exCoord.M = exc.M;
+            coord.M = exc.M;
         }
 
         /// <summary>

@@ -75,7 +75,8 @@ namespace NetTopologySuite.Operation.Distance3D
 
         public Ordinates Ordinates => _seq.Ordinates;
 
-        Coordinate ICoordinateSequence.CreateCoordinate() => throw null;
+        /// <inheritdoc />
+        public Coordinate CreateCoordinate() => Geometries.Coordinates.Create(Dimension, Measures);
 
         public Coordinate GetCoordinate(int i)
         {

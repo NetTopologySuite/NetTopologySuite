@@ -123,7 +123,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="packedCoordinates"></param>
         /// <param name="dimension"></param>
-        /// <returns>Packaged coordiante seqeunce of the requested type</returns>
+        /// <returns>Packaged coordinate seqeunce of the requested type</returns>
         public ICoordinateSequence Create(double[] packedCoordinates, int dimension, int measures)
         {
             if (type == PackedType.Double)
@@ -137,7 +137,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="packedCoordinates"></param>
         /// <param name="dimension"></param>
         /// <param name="measures"></param>
-        /// <returns>Packaged coordiante seqeunce of the requested type</returns>
+        /// <returns>Packaged coordinate seqeunce of the requested type</returns>
         public ICoordinateSequence Create(float[] packedCoordinates, int dimension, int measures)
         {
             if (type == PackedType.Double)

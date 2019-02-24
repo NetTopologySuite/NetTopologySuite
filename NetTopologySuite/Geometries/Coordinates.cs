@@ -48,7 +48,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Determine dimension based on subclass of <see cref="Coordinate"/>.
         /// </summary>
-        /// <param name="coordiante">supplied coordinate</param>
+        /// <param name="coordinate">supplied coordinate</param>
         /// <returns>number of ordinates recorded</returns>
         public static int Dimension(Coordinate coordinate)
         {
@@ -84,7 +84,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Determine number of measures based on subclass of <see cref="Coordinate"/>.
         /// </summary>
-        /// <param name="cooordiante">supplied coordinate</param>
+        /// <param name="cooordinate">supplied coordinate</param>
         /// <returns>number of measures recorded </returns>
         public static int Measures(Coordinate cooordinate)
         {

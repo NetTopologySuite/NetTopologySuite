@@ -151,7 +151,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             if (seq.Count != coords.Length)
                 return false;
 
-            // carefully get coordiante of the same type as the sequence
+            // carefully get coordinate of the same type as the sequence
             var p = seq.Count == 0 ? new Coordinate() : seq.GetCoordinate(0).Copy();
             p.X = 0;
             p.Y = 0;

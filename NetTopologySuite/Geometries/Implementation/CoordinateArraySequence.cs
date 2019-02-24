@@ -106,7 +106,7 @@ namespace NetTopologySuite.Geometries.Implementation
             _dimension = dimension;
             _measures = measures;
             for (int i = 0; i < size; i++)
-                Coordinates[i] = Geometries.Coordinates.Create(dimension, measures);
+                Coordinates[i] = CreateCoordinate();
         }
 
         /// <summary>
@@ -146,7 +146,8 @@ namespace NetTopologySuite.Geometries.Implementation
 
         public Ordinates Ordinates => PackedCoordinateSequence.DimensionToOrdinate(_dimension, _measures);
 
-        Coordinate ICoordinateSequence.CreateCoordinate() => throw null;
+        /// <inheritdoc />
+        public Coordinate CreateCoordinate() => Geometries.Coordinates.Create(Dimension, Measures);
 
         /// <summary>
         /// Get the Coordinate with index i.

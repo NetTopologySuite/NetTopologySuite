@@ -95,7 +95,8 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <value></value>
         public abstract int Count { get; }
 
-        Coordinate ICoordinateSequence.CreateCoordinate() => throw null;
+        /// <inheritdoc />
+        public Coordinate CreateCoordinate() => Coordinates.Create(Dimension, Measures);
 
         /// <summary>
         /// Returns (possibly a copy of) the ith Coordinate in this collection.

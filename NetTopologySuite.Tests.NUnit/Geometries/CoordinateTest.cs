@@ -232,7 +232,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         [Test]
-        public void TestCoordinateXYMZ()
+        public void TestCoordinateXYZM()
         {
             var xyzm = new CoordinateZM();
             xyzm.Z = 1.0;
