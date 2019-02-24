@@ -401,19 +401,13 @@ namespace NetTopologySuite.Geometries.Implementation
                 coordinates = new Coordinate[0];
 
             _coords = new double[coordinates.Length * Dimension];
-            var ordinate2ForCoord = Ordinate.Ordinate2;
-            if (Dimension == 3 && Measures == 1)
-            {
-                ordinate2ForCoord = Ordinate.M;
-            }
-
             for (int i = 0; i < coordinates.Length; i++)
             {
                 _coords[i * Dimension] = coordinates[i].X;
                 if (Dimension >= 2)
                     _coords[i * Dimension + 1] = coordinates[i].Y;
                 if (Dimension >= 3)
-                    _coords[i * Dimension + 2] = coordinates[i][ordinate2ForCoord]; // Z or M
+                    _coords[i * Dimension + 2] = coordinates[i][Ordinate.Ordinate2]; // Z or M
                 if (Dimension >= 4)
                     _coords[i * Dimension + 3] = coordinates[i][Ordinate.M]; // M
             }

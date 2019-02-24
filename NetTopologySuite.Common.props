@@ -4,7 +4,7 @@
     <OutputPath>$(SolutionDir)$(Configuration)\$(Platform)</OutputPath>
     <DocumentationFile>$(OutputPath)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <GeoAPIPackageReferenceVersion>2.0.0-nuget004</GeoAPIPackageReferenceVersion>
+    <GeoAPIPackageReferenceVersion>2.0.0-nuget005</GeoAPIPackageReferenceVersion>
     <RestoreAdditionalProjectSources>$(RestoreAdditionalProjectSources);https://www.myget.org/F/nettopologysuite/api/v3/index.json</RestoreAdditionalProjectSources>
   </PropertyGroup>
 

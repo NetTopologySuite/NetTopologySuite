@@ -295,7 +295,7 @@ namespace NetTopologySuite.IO
                     case CoordinateSystem.XYM:
                         double m = reader.ReadDouble();
                         if (HandleOrdinate(Ordinate.M))
-                            sequence.SetOrdinate(i, Ordinate.M, m);
+                            sequence.SetOrdinate(i, Ordinate.Ordinate2, m);
                         break;
                     case CoordinateSystem.XYZM:
                         z = reader.ReadDouble();

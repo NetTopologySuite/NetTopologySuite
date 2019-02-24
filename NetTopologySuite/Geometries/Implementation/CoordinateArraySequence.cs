@@ -267,7 +267,7 @@ namespace NetTopologySuite.Geometries.Implementation
                 case Ordinate.Y:
                     return Coordinates[index].Y;
                 default:
-                    return Coordinates[index][ToOrdianteForCoordinateIndexer(ordinate)];
+                    return Coordinates[index][ordinate];
             }
         }
 
@@ -325,7 +325,7 @@ namespace NetTopologySuite.Geometries.Implementation
                     Coordinates[index].Y = value;
                     break;
                 default:
-                    Coordinates[index][ToOrdianteForCoordinateIndexer(ordinate)] = value;
+                    Coordinates[index][ordinate] = value;
                     break;
             }
         }
@@ -382,17 +382,6 @@ namespace NetTopologySuite.Geometries.Implementation
                 return strBuf.ToString();
             }
             else return "()";
-        }
-
-        private Ordinate ToOrdianteForCoordinateIndexer(Ordinate ordinate)
-        {
-            // GeoAPI's CoordinateM expects Ordinate.M, which is Ordinate.Ordinate3.
-            if (ordinate == Ordinate.Ordinate2 && !HasZ)
-            {
-                return Ordinate.M;
-            }
-
-            return ordinate;
         }
     }
 }

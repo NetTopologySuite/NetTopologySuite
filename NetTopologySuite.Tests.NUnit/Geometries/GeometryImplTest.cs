@@ -171,14 +171,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                     "POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
             var polygon2 = reader.Read(
                     "POLYGON ((50 50, 50 0, 0 0, 0 50, 50 50))");
-            Assert.IsTrue(polygon1.Equals(polygon2));
+            Assert.IsTrue(polygon1.EqualsTopologically(polygon2));
         }
 
         [TestAttribute]
         public void TestEqualsWithNull()
         {
             var polygon = reader.Read("POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
-            Assert.IsTrue(!polygon.Equals(null));
             object g = null;
             Assert.IsTrue(!polygon.Equals(g));
         }
