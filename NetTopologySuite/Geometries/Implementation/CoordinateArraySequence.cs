@@ -70,6 +70,7 @@ namespace NetTopologySuite.Geometries.Implementation
             _measures = measures;
             if (coordinates == null)
                 Coordinates = new Coordinate[0];
+            EnforceArrayConsistency(Coordinates);
         }
 
         /// <summary>
@@ -130,6 +131,30 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
+        /// Ensure array contents of the same type, making use of <see cref="CreateCoordinate"/> as needed.
+        /// </summary>
+        /// <param name="array">array is modified in place as needed</param>
+        protected void EnforceArrayConsistency(Coordinate[] array)
+        {
+            var sample = CreateCoordinate();
+            var type = sample.GetType();
+            for (int i = 0; i < array.Length; i++)
+            {
+                var coordinate = array[i];
+                if (coordinate == null)
+                {
+                    array[i] = CreateCoordinate();
+                }
+                else if (coordinate.GetType() != type)
+                {
+                    var duplicate = CreateCoordinate();
+                    duplicate.CoordinateValue = coordinate;
+                    array[i] = duplicate;
+                }
+            }
+        }
+
+        /// <summary>
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
         /// </summary>
         /// <value></value>
@@ -166,7 +191,9 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>A copy of the requested Coordinate.</returns>
         public virtual Coordinate GetCoordinateCopy(int i)
         {
-            return Coordinates[i].Copy();
+            var copy = CreateCoordinate();
+            copy.CoordinateValue = Coordinates[i];
+            return copy;
         }
 
         /// <summary>
@@ -300,7 +327,11 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             var cloneCoordinates = new Coordinate[Count];
             for (int i = 0; i < Coordinates.Length; i++)
-                cloneCoordinates[i] = Coordinates[i].Copy();
+            {
+                var duplicate = CreateCoordinate();
+                duplicate.CoordinateValue = Coordinates[i];
+                cloneCoordinates[i] = duplicate;
+            }
             return cloneCoordinates;
         }
 
