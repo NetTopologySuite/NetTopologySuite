@@ -30,9 +30,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         }
 
         [Test]
-        public void testDimensionAndMeasure()
+        public void TestDimensionAndMeasure()
         {
-            var factory = new PackedCoordinateSequenceFactory();
+            var factory = CsFactory;
             var seq = factory.Create(5, 2);
             ICoordinateSequence copy;
             Coordinate coord;

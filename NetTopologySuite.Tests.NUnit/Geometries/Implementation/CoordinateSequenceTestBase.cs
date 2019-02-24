@@ -192,7 +192,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
                     return false;
                 if (seq.Dimension > 2)
                 {
-                    if (coords[i][Ordinate.Ordinate2] != seq.GetOrdinate(i, Ordinate.Ordinate2))
+                    // GeoAPI's CoordinateM expects Ordinate.M, which is Ordinate.Ordinate3.
+                    var coordOrdinate = seq.HasZ ? Ordinate.Z : Ordinate.M;
+                    if (coords[i][coordOrdinate] != seq.GetOrdinate(i, Ordinate.Ordinate2))
                         return false;
                 }
                 if (seq.Dimension > 3)

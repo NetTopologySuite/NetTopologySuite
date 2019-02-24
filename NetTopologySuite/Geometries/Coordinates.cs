@@ -50,7 +50,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordiante">supplied coordinate</param>
         /// <returns>number of ordinates recorded</returns>
-        public static int GetDimension(Coordinate coordinate)
+        public static int Dimension(Coordinate coordinate)
         {
             // NTS-specific note: be VERY CAREFUL with methods that rely on checking the types of
             // Coordinate objects when compared to JTS: GeoAPI offers the same four types (with
@@ -86,7 +86,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="cooordiante">supplied coordinate</param>
         /// <returns>number of measures recorded </returns>
-        public static int GetMeasures(Coordinate cooordinate)
+        public static int Measures(Coordinate cooordinate)
         {
             // NTS-specific note: be VERY CAREFUL with methods that rely on checking the types of
             // Coordinate objects when compared to JTS: GeoAPI offers the same four types (with

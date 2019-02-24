@@ -12,6 +12,44 @@ namespace NetTopologySuite.Geometries
     public static class CoordinateArrays
     {
         /// <summary>
+        /// Determine dimension based on subclass of <see cref="Coordinate"/>.
+        /// </summary>
+        /// <param name="pts">pts supplied coordinates</param>
+        /// <returns>number of ordinates recorded</returns>
+        public static int Dimension(Coordinate[] pts)
+        {
+            if (pts == null || pts.Length == 0)
+            {
+                return 2; // unknown, assume default
+            }
+            var first = pts[0];
+            if (first == null)
+            {
+                return 2; // unknown, assume default
+            }
+            return Coordinates.Dimension(first);
+        }
+
+        /// <summary>
+        /// Determine number of measures based on subclass of <see cref="Coordinate"/>.
+        /// </summary>
+        /// <param name="pts">supplied coordinates</param>
+        /// <returns>number of measures recorded</returns>
+        public static int Measures(Coordinate[] pts)
+        {
+            if (pts == null || pts.Length == 0)
+            {
+                return 0; // unknown, assume default
+            }
+            var first = pts[0];
+            if (first == null)
+            {
+                return 0; // unknown, assume default
+            }
+            return Coordinates.Measures(first);
+        }
+
+        /// <summary>
         /// Tests whether an array of <see cref="Coordinate"/>s forms a ring, by checking length and closure.
         /// Self-intersection is not checked.
         /// </summary>

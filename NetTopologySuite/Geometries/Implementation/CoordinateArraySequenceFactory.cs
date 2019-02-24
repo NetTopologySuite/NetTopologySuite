@@ -47,7 +47,23 @@ namespace NetTopologySuite.Geometries.Implementation
 
         public ICoordinateSequence Create(int size, int dimension, int measures)
         {
-            return this.Create(size, dimension);
+            if (dimension > 4)
+            {
+                dimension = 4;
+                //throw new IllegalArgumentException("dimension must be <= 4");
+            }
+            if (measures > 1)
+            {
+                measures = 1;
+                //throw new IllegalArgumentException("measures must be <= 1");
+            }
+            if (dimension < 2)
+                dimension = 2; // handle bogus dimension
+            if (dimension - measures < 2)
+            {
+                throw new ArgumentException("max spatial dimension 2 required");
+            }
+            return new CoordinateArraySequence(size, dimension, measures);
         }
 
         public ICoordinateSequence Create(int size, Ordinates ordinates)

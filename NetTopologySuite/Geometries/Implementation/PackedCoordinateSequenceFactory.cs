@@ -76,8 +76,8 @@ namespace NetTopologySuite.Geometries.Implementation
             if (coordinates != null && coordinates.Length > 1 && coordinates[0] != null)
             {
                 var first = coordinates[0];
-                dimension = Coordinates.GetDimension(first);
-                measures = Coordinates.GetMeasures(first);
+                dimension = Coordinates.Dimension(first);
+                measures = Coordinates.Measures(first);
             }
 
             if (type == PackedType.Double)
