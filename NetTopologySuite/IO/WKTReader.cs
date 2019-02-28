@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using GeoAPI.Geometries;
 using GeoAPI.IO;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
+using NetTopologySuite.Utilities;
 using RTools_NTS.Util;
 
 namespace NetTopologySuite.IO
@@ -43,6 +46,11 @@ namespace NetTopologySuite.IO
         private static readonly System.Globalization.CultureInfo InvariantCulture =
             System.Globalization.CultureInfo.InvariantCulture;
         private static readonly string NaNString = double.NaN.ToString(InvariantCulture); /*"NaN"*/
+        private static readonly ICoordinateSequenceFactory CoordinateSequenceFactoryXYZM = PackedCoordinateSequenceFactory.DoubleFactory;
+
+        private bool _isAllowOldNtsCoordinateSyntax = true;
+        private bool _isAllowOldNtsMultipointSyntax = true;
+        private bool _measureToZ;
 
         /// <summary>
         /// Creates a <c>WKTReader</c> that creates objects using a basic GeometryFactory.
@@ -59,6 +67,37 @@ namespace NetTopologySuite.IO
             _coordinateSequencefactory = geometryFactory.CoordinateSequenceFactory;
             _precisionModel = geometryFactory.PrecisionModel;
             DefaultSRID = geometryFactory.SRID;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not coordinates may have 3 ordinate values
+        /// even though no Z or M ordinate indicator is present.  The default value is
+        /// <see langword="true"/>.
+        /// </summary>
+        public bool IsOldNtsCoordinateSyntaxAllowed
+        {
+            get => _isAllowOldNtsCoordinateSyntax;
+            set => _isAllowOldNtsCoordinateSyntax = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not point coordinates in a MultiPoint
+        /// geometry must not be enclosed in paren.  The default value is <see langword="true"/>.
+        /// </summary>
+        public bool IsOldNtsMultiPointSyntaxAllowed
+        {
+            get => _isAllowOldNtsMultipointSyntax;
+            set => _isAllowOldNtsMultipointSyntax = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not <code>GEOMETRY M</code> WKT will return
+        /// geometries with sequences that have a dimension of 3.
+        /// </summary>
+        public bool MeasureToZ
+        {
+            get => _measureToZ;
+            set => _measureToZ = value;
         }
 
         /// <summary>
@@ -139,8 +178,7 @@ namespace NetTopologySuite.IO
             //_index = 0;                      // Reset pointer to start of tokens
             try
             {
-                var enumerator = new StreamTokenizer(reader).GetEnumerator();
-                enumerator.MoveNext();
+                var enumerator = Tokenizer(reader);
                 return ReadGeometryTaggedText(enumerator);
             }
             catch (IOException e)
@@ -149,9 +187,22 @@ namespace NetTopologySuite.IO
             }
         }
 
-        internal IEnumerator<Token> Tokenizer(TextReader reader)
+        internal TokenStream Tokenizer(TextReader reader)
         {
-            return new StreamTokenizer(reader).GetEnumerator();
+            var tokenizer = new StreamTokenizer(reader);
+
+            // set tokenizer to NOT parse numbers
+            tokenizer.Settings.ResetCharTypeTable();
+            tokenizer.Settings.WordChars('a', 'z');
+            tokenizer.Settings.WordChars('A', 'Z');
+            ////tokenizer.Settings.WordChars(128 + 32, 255);
+            tokenizer.Settings.WordChars('0', '9');
+            tokenizer.Settings.WordChars('-', '-');
+            tokenizer.Settings.WordChars('+', '+');
+            tokenizer.Settings.WordChars('.', '.');
+            tokenizer.Settings.WhitespaceChars(0, ' ');
+            tokenizer.Settings.CommentChar('#');
+            return new TokenStream(tokenizer.GetEnumerator());
         }
 
         internal IList<Token> Tokenize(TextReader reader)
@@ -163,6 +214,196 @@ namespace NetTopologySuite.IO
         }
 
         //internal int Index { get { return _index; } set { _index = value; } }
+
+        /// <summary>
+        /// Reads a <c>Coordinate</c> from a stream using the given <see cref="StreamTokenizer"/>.
+        /// <para>
+        /// All ordinate values are read, but -depending on the <see cref="ICoordinateSequenceFactory"/>
+        /// of the underlying <see cref="IGeometryFactory"/>- not necessarily all can be handled.
+        /// Those are silently dropped.
+        /// </para>
+        /// </summary>
+        /// <param name="tokens">the tokenizer to use.</param>
+        /// <param name="ordinateFlags">a bit-mask defining the ordinates to read.</param>
+        /// <param name="tryParen">a value indicating if a starting <code>"("</code> should be probed.</param>
+        /// <returns>a <see cref="ICoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
+        /// <exception cref="IOException">if an I/O error occurs.</exception>
+        /// <exception cref="GeoAPI.IO.ParseException">if an unexpected token was encountered.</exception>
+        private ICoordinateSequence GetCoordinate(TokenStream tokens, Ordinates ordinateFlags, bool tryParen)
+        {
+            bool opened = false;
+            if (tryParen && IsOpenerNext(tokens))
+            {
+                tokens.NextToken(true);
+                opened = true;
+            }
+
+            // create a sequence for one coordinate
+            var sequence = _coordinateSequencefactory.Create(1, this.ToDimension(ordinateFlags));
+            sequence.SetOrdinate(0, Ordinate.X, _precisionModel.MakePrecise(GetNextNumber(tokens)));
+            sequence.SetOrdinate(0, Ordinate.Y, _precisionModel.MakePrecise(GetNextNumber(tokens)));
+
+            // additionally read other vertices
+            if ((ordinateFlags & Ordinates.Z) == Ordinates.Z)
+            {
+                sequence.SetOrdinate(0, Ordinate.Z, GetNextNumber(tokens));
+            }
+
+            if ((ordinateFlags & Ordinates.M) == Ordinates.M)
+            {
+                if (((ordinateFlags & Ordinates.Z) == 0) && _measureToZ)
+                {
+                    sequence.SetOrdinate(0, Ordinate.Ordinate2, GetNextNumber(tokens));
+                }
+                else
+                {
+                    sequence.SetOrdinate(0, Ordinate.M, GetNextNumber(tokens));
+                }
+            }
+
+            if (ordinateFlags == Ordinates.XY && _isAllowOldNtsCoordinateSyntax && IsNumberNext(tokens))
+            {
+                sequence.SetOrdinate(0, Ordinate.Z, GetNextNumber(tokens));
+            }
+
+            // read close token if it was opened here
+            if (opened)
+            {
+                GetNextCloser(tokens);
+            }
+
+            return sequence;
+        }
+
+        /// <summary>
+        /// Reads a <c>Coordinate</c> from a stream using the given <see cref="StreamTokenizer"/>.
+        /// <para>
+        /// All ordinate values are read, but -depending on the <see cref="ICoordinateSequenceFactory"/>
+        /// of the underlying <see cref="IGeometryFactory"/>- not necessarily all can be handled.
+        /// Those are silently dropped.
+        /// </para>
+        /// </summary>
+        /// <param name="tokens">the tokenizer to use.</param>
+        /// <param name="ordinateFlags">a bit-mask defining the ordinates to read.</param>
+        /// <returns>a <see cref="ICoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
+        /// <exception cref="IOException">if an I/O error occurs.</exception>
+        /// <exception cref="GeoAPI.IO.ParseException">if an unexpected token was encountered.</exception>
+        private ICoordinateSequence GetCoordinateSequence(TokenStream tokens, Ordinates ordinateFlags)
+        {
+            return this.GetCoordinateSequence(tokens, ordinateFlags, false);
+        }
+
+        /// <summary>
+        /// Reads a <c>CoordinateSequence</c> from a stream using the given <see cref="StreamTokenizer"/>.
+        /// <para>
+        /// All ordinate values are read, but -depending on the <see cref="ICoordinateSequenceFactory"/>
+        /// of the underlying <see cref="IGeometryFactory"/>- not necessarily all can be handled.
+        /// Those are silently dropped.
+        /// </para>
+        /// </summary>
+        /// <param name="tokens">the tokenizer to use.</param>
+        /// <param name="ordinateFlags">a bit-mask defining the ordinates to read.</param>
+        /// <param name="tryParen">a value indicating if a starting <code>"("</code> should be probed for each coordinate.</param>
+        /// <returns>a <see cref="ICoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
+        /// <exception cref="IOException">if an I/O error occurs.</exception>
+        /// <exception cref="GeoAPI.IO.ParseException">if an unexpected token was encountered.</exception>
+        private ICoordinateSequence GetCoordinateSequence(TokenStream tokens, Ordinates ordinateFlags, bool tryParen)
+        {
+            if (GetNextEmptyOrOpener(tokens) == "EMPTY")
+            {
+                return _coordinateSequencefactory.Create(0, this.ToDimension(ordinateFlags));
+            }
+
+            var coordinates = new List<ICoordinateSequence>();
+            do
+            {
+                coordinates.Add(this.GetCoordinate(tokens, ordinateFlags, tryParen));
+            }
+            while (GetNextCloserOrComma(tokens) == ",");
+
+            return this.MergeSequences(coordinates, ordinateFlags);
+        }
+
+        /// <summary>
+        /// Computes the required dimension based on the given ordinate bit-mask.
+        /// It is assumed that <see cref="Ordinates.XY"/> is set.
+        /// </summary>
+        /// <param name="ordinateFlags">the ordinate bit-mask.</param>
+        /// <returns>the number of dimensions required to store ordinates for the given bit-mask.</returns>
+        private int ToDimension(Ordinates ordinateFlags)
+        {
+            int dimension = 2;
+            if ((ordinateFlags & Ordinates.Z) == Ordinates.Z)
+            {
+                dimension = 3;
+            }
+
+            if ((ordinateFlags & Ordinates.Z) == Ordinates.Z)
+            {
+                dimension = _measureToZ ? dimension + 1 : 4;
+            }
+
+            if (dimension < 3 && _isAllowOldNtsCoordinateSyntax)
+            {
+                dimension = 3;
+            }
+
+            return dimension;
+        }
+
+        /// <summary>
+        /// Merges an array of one-coordinate-<see cref="ICoordinateSequence"/>s into one
+        /// <see cref="ICoordinateSequence"/>.
+        /// </summary>
+        /// <param name="sequences">an array of coordinate sequences. Each sequence contains <b>exactly one</b> coordinate.</param>
+        /// <param name="ordinateFlags">a bit-mask of required ordinates.</param>
+        /// <returns>a coordinate sequence containing all coordinate.</returns>
+        private ICoordinateSequence MergeSequences(List<ICoordinateSequence> sequences, Ordinates ordinateFlags)
+        {
+            // if the sequences array is empty or null create an empty sequence
+            if (sequences == null || sequences.Count == 0)
+            {
+                return _coordinateSequencefactory.Create(0, this.ToDimension(ordinateFlags));
+            }
+
+            if (sequences.Count == 1)
+            {
+                return sequences[0];
+            }
+
+            if (ordinateFlags == Ordinates.XY && _isAllowOldNtsCoordinateSyntax)
+            {
+                ordinateFlags |= Ordinates.Z;
+            }
+
+            // create and fill the result sequence
+            var sequence = _coordinateSequencefactory.Create(sequences.Count, this.ToDimension(ordinateFlags));
+            for (int i = 0; i < sequences.Count; i++)
+            {
+                var item = sequences[i];
+                sequence.SetOrdinate(i, Ordinate.X, item.GetOrdinate(0, Ordinate.X));
+                sequence.SetOrdinate(i, Ordinate.Y, item.GetOrdinate(0, Ordinate.Y));
+                if ((ordinateFlags & Ordinates.Z) == Ordinates.Z)
+                {
+                    sequence.SetOrdinate(i, Ordinate.Z, item.GetOrdinate(0, Ordinate.Z));
+                }
+
+                if ((ordinateFlags & Ordinates.M) == Ordinates.M)
+                {
+                    if (((ordinateFlags & Ordinates.Z) == 0) && _measureToZ)
+                    {
+                        sequence.SetOrdinate(0, Ordinate.Ordinate2, item.GetOrdinate(0, Ordinate.Z));
+                    }
+                    else
+                    {
+                        sequence.SetOrdinate(0, Ordinate.M, item.GetOrdinate(0, Ordinate.M));
+                    }
+                }
+            }
+
+            // return it
+            return sequence;
+        }
 
         /// <summary>
         /// Returns the next array of <c>Coordinate</c>s in the stream.
@@ -180,7 +421,8 @@ namespace NetTopologySuite.IO
         /// stream, or an empty array if "EMPTY" is the next element returned by
         /// the stream.
         /// </returns>
-        private Coordinate[] GetCoordinates(IEnumerator<Token> tokens, bool skipExtraParenthesis, ref bool hasZ)
+        [Obsolete("in favor of functions returning ICoordinateSequences.")]
+        private Coordinate[] GetCoordinates(TokenStream tokens, bool skipExtraParenthesis, ref bool hasZ)
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY"))
@@ -197,12 +439,17 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        ///
+        /// Returns the next precise <c>Coordinate</c> in the stream.
         /// </summary>
-        /// <param name="tokens"></param>
-        /// <param name="skipExtraParenthesis"></param>
-        /// <returns></returns>
-        private Coordinate GetPreciseCoordinate(IEnumerator<Token> tokens, bool skipExtraParenthesis, ref bool hasZ)
+        /// <param name="tokens">
+        /// tokenizer over a stream of text in Well-known Text format.
+        /// The next element returned by the stream should be a number.
+        /// </param>
+        /// <returns>the next array of <c>Coordinate</c>s in the stream.</returns>
+        /// <exception cref="IOException">if an I/O error occurs.</exception>
+        /// <exception cref="GeoAPI.IO.ParseException">if an unexpected token was encountered</exception>
+        [Obsolete("in favor of functions returning ICoordinateSequences.")]
+        private Coordinate GetPreciseCoordinate(TokenStream tokens, bool skipExtraParenthesis, ref bool hasZ)
         {
             var coord = new Coordinate();
             bool extraParenthesisFound = false;
@@ -211,7 +458,7 @@ namespace NetTopologySuite.IO
                 extraParenthesisFound = IsStringValueNext(tokens, "(");
                 if (extraParenthesisFound)
                 {
-                    tokens.MoveNext();
+                    tokens.NextToken(true);
                     //_index++;
                 }
             }
@@ -227,7 +474,7 @@ namespace NetTopologySuite.IO
                 extraParenthesisFound &&
                 IsStringValueNext(tokens, ")"))
             {
-                tokens.MoveNext();
+                tokens.NextToken(true);
                 //_index++;
             }
 
@@ -235,9 +482,9 @@ namespace NetTopologySuite.IO
             return coord;
         }
 
-        private static bool IsStringValueNext(IEnumerator<Token> tokens, string stringValue)
+        private static bool IsStringValueNext(TokenStream tokens, string stringValue)
         {
-            var token = tokens.Current /*as Token*/;
+            var token = tokens.NextToken(false) /*as Token*/;
             if (token == null)
                 throw new InvalidOperationException("current Token is null");
             return token.StringValue == stringValue;
@@ -248,12 +495,21 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="tokens"></param>
         /// <returns></returns>
-        private static bool IsNumberNext(IEnumerator<Token> tokens)
+        private static bool IsNumberNext(TokenStream tokens)
         {
-            var token = tokens.Current /*as Token*/;
-            return token is FloatToken ||
-                   token is IntToken ||
-                   (token is WordToken && string.Compare(token.Object.ToString(), NaNString, StringComparison.OrdinalIgnoreCase) == 0);
+            return tokens.NextToken(false) is WordToken;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="tokens"></param>
+        /// <returns></returns>
+        private static bool IsOpenerNext(TokenStream tokens)
+        {
+            return tokens.NextToken(false) is CharToken charToken &&
+                   charToken.Object is char c &&
+                   c == '(';
         }
 
         /// <summary>
@@ -265,36 +521,27 @@ namespace NetTopologySuite.IO
         /// </param>
         /// <returns>The next number in the stream.</returns>
         /// <exception cref="GeoAPI.IO.ParseException">if the next token is not a valid number</exception>
-        private static double GetNextNumber(IEnumerator<Token> tokens)
+        private static double GetNextNumber(TokenStream tokens)
         {
-            var token = tokens.Current /*as Token*/;
-            if (!tokens.MoveNext())
-                throw new InvalidOperationException("premature end of enumerator");
-
-            if (token == null)
-                throw new ArgumentNullException("tokens", "Token list contains a null value");
-            if (token is EofToken)
-                throw new GeoAPI.IO.ParseException("Expected number but encountered end of stream");
-            if (token is EolToken)
-                throw new GeoAPI.IO.ParseException("Expected number but encountered end of line");
-            if (token is FloatToken || token is IntToken)
-                return (double) token.ConvertToType(typeof(double));
-            if (token is WordToken)
+            var token = tokens.NextToken(true);
+            switch (token)
             {
-                if (string.Compare(token.Object.ToString(), NaNString, StringComparison.OrdinalIgnoreCase) == 0)
-                {
-                    return double.NaN;
-                }
-                throw new GeoAPI.IO.ParseException("Expected number but encountered word: " + token.StringValue);
-            }
-            if (token.StringValue == "(")
-                throw new GeoAPI.IO.ParseException("Expected number but encountered '('");
-            if (token.StringValue == ")")
-                throw new GeoAPI.IO.ParseException("Expected number but encountered ')'");
-            if (token.StringValue == ",")
-                throw new GeoAPI.IO.ParseException("Expected number but encountered ','");
+                case WordToken wordToken:
+                    if (wordToken.StringValue.Equals(NaNString, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return double.NaN;
+                    }
 
-            throw new GeoAPI.IO.ParseException("Expected number but encountered '" + token.StringValue + "'");
+                    if (double.TryParse(wordToken.StringValue, NumberStyles.Float | NumberStyles.AllowThousands, InvariantCulture, out double val))
+                    {
+                        return val;
+                    }
+
+                    throw new GeoAPI.IO.ParseException($"Invalid number: {wordToken.StringValue}");
+
+                default:
+                    throw new GeoAPI.IO.ParseException($"Expected number but found {token?.ToDebugString() ?? "the end of input"}");
+            }
         }
 
         /// <summary>
@@ -306,12 +553,71 @@ namespace NetTopologySuite.IO
         /// </param>
         /// <returns>
         /// The next "EMPTY" or "(" in the stream as uppercase text.</returns>
-        private static string GetNextEmptyOrOpener(IEnumerator<Token> tokens)
+        private static string GetNextEmptyOrOpener(TokenStream tokens)
         {
             string nextWord = GetNextWord(tokens);
+            if (nextWord.Equals("Z", StringComparison.OrdinalIgnoreCase))
+            {
+                //z = true;
+                nextWord = GetNextWord(tokens);
+            }
+            else if (nextWord.Equals("M", StringComparison.OrdinalIgnoreCase))
+            {
+                //m = true;
+                nextWord = GetNextWord(tokens);
+            }
+            else if (nextWord.Equals("ZM", StringComparison.OrdinalIgnoreCase))
+            {
+                //z = true;
+                //m = true;
+                nextWord = GetNextWord(tokens);
+            }
+
             if (nextWord.Equals("EMPTY") || nextWord.Equals("("))
                 return nextWord;
             throw new GeoAPI.IO.ParseException("Expected 'EMPTY' or '(' but encountered '" + nextWord + "'");
+        }
+
+        /// <summary>
+        /// Returns the next ordinate flag information in the stream as uppercase text.
+        /// This can be Z, M or ZM.
+        /// </summary>
+        /// <param name="tokens">tokenizer over a stream of text in Well-known Text</param>
+        /// <returns>the next EMPTY or L_PAREN in the stream as uppercase text.</returns>
+        /// <exception cref="IOException">if an I/O error occurs</exception>
+        /// <exception cref="GeoAPI.IO.ParseException">if the next token is not EMPTY or L_PAREN</exception>
+        private static Ordinates GetNextOrdinateFlags(TokenStream tokens)
+        {
+            string nextWord = LookAheadWord(tokens);
+            if (nextWord.Equals("Z", StringComparison.OrdinalIgnoreCase))
+            {
+                tokens.NextToken(true);
+                return Ordinates.XYZ;
+            }
+            else if (nextWord.Equals("M", StringComparison.OrdinalIgnoreCase))
+            {
+                tokens.NextToken(true);
+                return Ordinates.XYZ;
+            }
+            else if (nextWord.Equals("ZM", StringComparison.OrdinalIgnoreCase))
+            {
+                tokens.NextToken(true);
+                return Ordinates.XYZM;
+            }
+            return Ordinates.XY;
+        }
+
+        /// <summary>
+        /// Returns the next word in the stream.
+        /// </summary>
+        /// <param name="tokens">tokenizer over a stream of text in Well-known Text format. The next token must be a word.</param>
+        /// <returns>the next word in the stream as uppercase text</returns>
+        /// <exception cref="GeoAPI.IO.ParseException">if the next token is not a word</exception>
+        /// <exception cref="IOException">if an I/O error occurs</exception>
+        private static string LookAheadWord(TokenStream tokens)
+        {
+            string nextWord = GetNextWord(tokens, false);
+            return nextWord;
         }
 
         /// <summary>
@@ -323,7 +629,7 @@ namespace NetTopologySuite.IO
         /// </param>
         /// <returns>
         /// The next ")" or "," in the stream.</returns>
-        private static string GetNextCloserOrComma(IEnumerator<Token> tokens)
+        private static string GetNextCloserOrComma(TokenStream tokens)
         {
             string nextWord = GetNextWord(tokens);
             if (nextWord.Equals(",") || nextWord.Equals(")"))
@@ -342,7 +648,7 @@ namespace NetTopologySuite.IO
         /// </param>
         /// <returns>
         /// The next ")" in the stream.</returns>
-        private static string GetNextCloser(IEnumerator<Token> tokens)
+        private static string GetNextCloser(TokenStream tokens)
         {
             string nextWord = GetNextWord(tokens);
             if (nextWord.Equals(")"))
@@ -357,34 +663,29 @@ namespace NetTopologySuite.IO
         /// Tokenizer over a stream of text in Well-known Text
         /// format. The next token must be a word.
         /// </param>
+        /// <param name="advance">
+        /// <see langword="true"/> to advance the stream, <see langword="false"/> to just peek.
+        /// </param>
         /// <returns>The next word in the stream as uppercase text.</returns>
-        private static string GetNextWord(IEnumerator<Token> tokens)
+        private static string GetNextWord(TokenStream tokens, bool advance = true)
         {
-            var token = tokens.Current /*as Token*/;
-            if (token == null)
-                throw new InvalidOperationException("current token is null");
+            var token = tokens.NextToken(advance) /*as Token*/;
+            switch (token)
+            {
+                case WordToken wordToken:
+                    if (wordToken.StringValue.Equals("EMPTY", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return "EMPTY";
+                    }
 
-            if (!tokens.MoveNext())
-                throw new InvalidOperationException("premature end of enumerator");
+                    return wordToken.StringValue;
 
-            if (token is EofToken)
-                throw new GeoAPI.IO.ParseException("Expected number but encountered end of stream");
-            if (token is EolToken)
-                throw new GeoAPI.IO.ParseException("Expected number but encountered end of line");
-            if (token is FloatToken || token is IntToken)
-                throw new GeoAPI.IO.ParseException("Expected word but encountered number: " + token.StringValue);
-            if (token is WordToken)
-                return token.StringValue.ToUpper();
-            if (token.StringValue == "(")
-                return "(";
-            if (token.StringValue == ")")
-                return ")";
-            if (token.StringValue == ",")
-                return ",";
+                case CharToken charToken when charToken.Object is char c && (c == '(' || c == ')' || c == ','):
+                    return charToken.StringValue;
 
-            throw new InvalidOperationException("Should never reach here!");
-            //Assert.ShouldNeverReachHere();
-            //return null;
+                default:
+                    throw new GeoAPI.IO.ParseException($"Expected a word but encountered {token?.ToDebugString() ?? "the end of input"}");
+            }
         }
 
         /// <summary>
@@ -396,7 +697,7 @@ namespace NetTopologySuite.IO
         /// </param>
         /// <returns>A <c>Geometry</c> specified by the next token
         /// in the stream.</returns>
-        internal IGeometry ReadGeometryTaggedText(IEnumerator<Token> tokens)
+        internal IGeometry ReadGeometryTaggedText(TokenStream tokens)
         {
             /*
              * A new different implementation by Marc Jacquin:
@@ -408,9 +709,7 @@ namespace NetTopologySuite.IO
             string type = GetNextWord(tokens);
             if (type == "SRID")
             {
-                tokens.MoveNext(); // =
                 srid = Convert.ToInt32(GetNextNumber(tokens));
-                tokens.MoveNext(); // ;
                 type = GetNextWord(tokens);
 
                 //sridValue = tokens[2].ToString();
@@ -423,44 +722,65 @@ namespace NetTopologySuite.IO
             else
                 srid = DefaultSRID;
 
-            /*Test of Z, M or ZM suffix*/
-            var suffix = tokens.Current;
-
-            if (suffix is WordToken)
+            var ordinateFlags = Ordinates.XY;
+            try
             {
-                if (suffix == "Z")
+                if (type.EndsWith("ZM", StringComparison.OrdinalIgnoreCase))
                 {
-                    tokens.MoveNext();
+                    ordinateFlags = Ordinates.XYZM;
                 }
-                else if (suffix == "ZM")
+                else if (type.EndsWith("Z", StringComparison.OrdinalIgnoreCase))
                 {
-                    tokens.MoveNext();
+                    ordinateFlags = Ordinates.XYZ;
                 }
-                else if (suffix == "M")
+                else if (type.EndsWith("M", StringComparison.OrdinalIgnoreCase))
                 {
-                    tokens.MoveNext();
+                    ordinateFlags = Ordinates.XYM;
                 }
             }
+            catch (IOException)
+            {
+                return null;
+            }
+            catch (GeoAPI.IO.ParseException)
+            {
+                return null;
+            }
 
+            if (ordinateFlags == Ordinates.XY)
+            {
+                ordinateFlags = GetNextOrdinateFlags(tokens);
+            }
+
+            var csFactory = (_coordinateSequencefactory.Ordinates & ordinateFlags) == ordinateFlags
+                ? _coordinateSequencefactory
+                : CoordinateSequenceFactoryXYZM;
+
+            // DEVIATION: JTS largely uses the same geometry factory that we were given originally,
+            // only swapping out the coordinate sequence factory, BUT then it overwrites the SRID on
+            // the created geometry after-the-fact.  Our version of the Geometry.SRID setter does it
+            // differently than JTS's, so this is actually how we have to do it to match the output
+            // from JTS (which could hypothetically return a collection whose inner elements have
+            // different SRIDs than the collection itself if that's how it's specified).
             var factory = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, srid,
-                _coordinateSequencefactory);
+                csFactory);
 
-            if (type.Equals("POINT"))
-                returned = ReadPointText(tokens, factory);
-            else if (type.Equals("LINESTRING"))
-                returned = ReadLineStringText(tokens, factory);
-            else if (type.Equals("LINEARRING"))
-                returned = ReadLinearRingText(tokens, factory);
-            else if (type.Equals("POLYGON"))
-                returned = ReadPolygonText(tokens, factory);
-            else if (type.Equals("MULTIPOINT"))
-                returned = ReadMultiPointText(tokens, factory);
-            else if (type.Equals("MULTILINESTRING"))
-                returned = ReadMultiLineStringText(tokens, factory);
-            else if (type.Equals("MULTIPOLYGON"))
-                returned = ReadMultiPolygonText(tokens, factory);
-            else if (type.Equals("GEOMETRYCOLLECTION"))
-                returned = ReadGeometryCollectionText(tokens, factory);
+            if (type.StartsWith("POINT"))
+                returned = ReadPointText(tokens, factory, ordinateFlags);
+            else if (type.StartsWith("LINESTRING"))
+                returned = ReadLineStringText(tokens, factory, ordinateFlags);
+            else if (type.StartsWith("LINEARRING"))
+                returned = ReadLinearRingText(tokens, factory, ordinateFlags);
+            else if (type.StartsWith("POLYGON"))
+                returned = ReadPolygonText(tokens, factory, ordinateFlags);
+            else if (type.StartsWith("MULTIPOINT"))
+                returned = ReadMultiPointText(tokens, factory, ordinateFlags);
+            else if (type.StartsWith("MULTILINESTRING"))
+                returned = ReadMultiLineStringText(tokens, factory, ordinateFlags);
+            else if (type.StartsWith("MULTIPOLYGON"))
+                returned = ReadMultiPolygonText(tokens, factory, ordinateFlags);
+            else if (type.StartsWith("GEOMETRYCOLLECTION"))
+                returned = ReadGeometryCollectionText(tokens, factory, ordinateFlags);
             else throw new GeoAPI.IO.ParseException("Unknown type: " + type);
 
             if (returned == null)
@@ -479,33 +799,10 @@ namespace NetTopologySuite.IO
         /// <param name="factory"> </param>
         /// <returns>A <c>Point</c> specified by the next token in
         /// the stream.</returns>
-        private IPoint ReadPointText(IEnumerator<Token> tokens, IGeometryFactory factory)
+        private IPoint ReadPointText(TokenStream tokens, IGeometryFactory factory, Ordinates ordinateFlags)
         {
-            string nextToken = GetNextEmptyOrOpener(tokens);
-            if (nextToken.Equals("EMPTY"))
-                return factory.CreatePoint();
-            bool hasZ = false;
-            var coord = GetPreciseCoordinate(tokens, false, ref hasZ);
-            var point = factory.CreatePoint(ToSequence(hasZ, coord));
-            /*var closer = */GetNextCloser(tokens);
+            var point = factory.CreatePoint(GetCoordinateSequence(tokens, ordinateFlags));
             return point;
-        }
-
-        private ICoordinateSequence ToSequence(bool hasZ, params Coordinate[] coords)
-        {
-            int dimensions = hasZ ? 3 : 2;
-            var seq = _coordinateSequencefactory.Create(coords.Length, dimensions);
-            for (int i = 0; i < coords.Length; i++)
-            {
-                seq.SetOrdinate(i, Ordinate.X, coords[i].X);
-                seq.SetOrdinate(i, Ordinate.Y, coords[i].Y);
-            }
-            if (dimensions == 3)
-            {
-                for (int i = 0; i < coords.Length; i++)
-                    seq.SetOrdinate(i, Ordinate.Z, coords[i].Z);
-            }
-            return seq;
         }
 
         /// <summary>
@@ -519,11 +816,9 @@ namespace NetTopologySuite.IO
         /// <returns>
         /// A <c>LineString</c> specified by the next
         /// token in the stream.</returns>
-        private ILineString ReadLineStringText(IEnumerator<Token> tokens, IGeometryFactory factory)
+        private ILineString ReadLineStringText(TokenStream tokens, IGeometryFactory factory, Ordinates ordinateFlags)
         {
-            bool hasZ = false;
-            var coords = GetCoordinates(tokens, false, ref hasZ);
-            return factory.CreateLineString(ToSequence(hasZ, coords));
+            return factory.CreateLineString(GetCoordinateSequence(tokens, ordinateFlags));
         }
 
         /// <summary>
@@ -536,11 +831,9 @@ namespace NetTopologySuite.IO
         /// <param name="factory"> </param>
         /// <returns>A <c>LinearRing</c> specified by the next
         /// token in the stream.</returns>
-        private ILinearRing ReadLinearRingText(IEnumerator<Token> tokens, IGeometryFactory factory)
+        private ILinearRing ReadLinearRingText(TokenStream tokens, IGeometryFactory factory, Ordinates ordinateFlags)
         {
-            bool hasZ = false;
-            var coords = GetCoordinates(tokens, false, ref hasZ);
-            return factory.CreateLinearRing(ToSequence(hasZ, coords));
+            return factory.CreateLinearRing(GetCoordinateSequence(tokens, ordinateFlags));
         }
 
         /// <summary>
@@ -554,34 +847,10 @@ namespace NetTopologySuite.IO
         /// <returns>
         /// A <c>MultiPoint</c> specified by the next
         /// token in the stream.</returns>
-        private IMultiPoint ReadMultiPointText(IEnumerator<Token> tokens, IGeometryFactory factory)
+        private IMultiPoint ReadMultiPointText(TokenStream tokens, IGeometryFactory factory, Ordinates ordinateFlags)
         {
-            bool hasZ = false;
-            var coords = GetCoordinates(tokens, true, ref hasZ);
-            return factory.CreateMultiPoint(ToPoints(ToSequence(hasZ, coords), factory));
-        }
-
-        /// <summary>
-        /// Creates an array of <c>Point</c>s having the given <c>Coordinate</c>s.
-        /// </summary>
-        /// <param name="coordinates">
-        /// The <c>Coordinate</c>s with which to create the <c>Point</c>s
-        /// </param>
-        /// <param name="factory">The factory to create the points</param>
-        /// <returns>
-        /// <c>Point</c>s created using this <c>WKTReader</c>
-        /// s <c>GeometryFactory</c>.
-        /// </returns>
-        private IPoint[] ToPoints(ICoordinateSequence coordinates, IGeometryFactory factory)
-        {
-            var points = new IPoint[coordinates.Count];
-            for (int i = 0; i < coordinates.Count; i++)
-            {
-                var cs = _coordinateSequencefactory.Create(1, coordinates.Ordinates);
-                CoordinateSequences.Copy(coordinates, i, cs, 0, 1);
-                points[i] = factory.CreatePoint(cs);
-            }
-            return points;
+            return factory.CreateMultiPoint(
+                GetCoordinateSequence(tokens, ordinateFlags, _isAllowOldNtsMultipointSyntax));
         }
 
         /// <summary>
@@ -596,18 +865,18 @@ namespace NetTopologySuite.IO
         /// A <c>Polygon</c> specified by the next token
         /// in the stream.
         /// </returns>
-        private IPolygon ReadPolygonText(IEnumerator<Token> tokens, IGeometryFactory factory)
+        private IPolygon ReadPolygonText(TokenStream tokens, IGeometryFactory factory, Ordinates ordinateFlags)
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY"))
                 return factory.CreatePolygon();
 
             var holes = new List<ILinearRing>();
-            var shell = ReadLinearRingText(tokens, factory);
+            var shell = ReadLinearRingText(tokens, factory, ordinateFlags);
             nextToken = GetNextCloserOrComma(tokens);
             while (nextToken.Equals(","))
             {
-                var hole = ReadLinearRingText(tokens, factory);
+                var hole = ReadLinearRingText(tokens, factory, ordinateFlags);
                 holes.Add(hole);
                 nextToken = GetNextCloserOrComma(tokens);
             }
@@ -625,22 +894,21 @@ namespace NetTopologySuite.IO
         /// <returns>
         /// A <c>MultiLineString</c> specified by the
         /// next token in the stream.</returns>
-        private IMultiLineString ReadMultiLineStringText(IEnumerator<Token> tokens, IGeometryFactory factory)
+        private IMultiLineString ReadMultiLineStringText(TokenStream tokens, IGeometryFactory factory, Ordinates ordinateFlags)
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY"))
                 return factory.CreateMultiLineString();
 
             var lineStrings = new List<ILineString>();
-            var lineString = ReadLineStringText(tokens, factory);
-            lineStrings.Add(lineString);
-            nextToken = GetNextCloserOrComma(tokens);
-            while (nextToken.Equals(",")) {
-
-                lineString = ReadLineStringText(tokens, factory);
+            do
+            {
+                var lineString = ReadLineStringText(tokens, factory, ordinateFlags);
                 lineStrings.Add(lineString);
                 nextToken = GetNextCloserOrComma(tokens);
             }
+            while (nextToken.Equals(","));
+
             return factory.CreateMultiLineString(lineStrings.ToArray());
         }
 
@@ -655,22 +923,21 @@ namespace NetTopologySuite.IO
         /// A <c>MultiPolygon</c> specified by the next
         /// token in the stream, or if if the coordinates used to create the
         /// <c>Polygon</c> shells and holes do not form closed linestrings.</returns>
-        private IMultiPolygon ReadMultiPolygonText(IEnumerator<Token> tokens, IGeometryFactory factory)
+        private IMultiPolygon ReadMultiPolygonText(TokenStream tokens, IGeometryFactory factory, Ordinates ordinateFlags)
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY"))
                 return factory.CreateMultiPolygon();
 
             var polygons = new List<IPolygon>();
-            var polygon = ReadPolygonText(tokens, factory);
-            polygons.Add(polygon);
-            nextToken = GetNextCloserOrComma(tokens);
-            while (nextToken.Equals(","))
+            do
             {
-                polygon = ReadPolygonText(tokens, factory);
+                var polygon = ReadPolygonText(tokens, factory, ordinateFlags);
                 polygons.Add(polygon);
                 nextToken = GetNextCloserOrComma(tokens);
             }
+            while (nextToken.Equals(","));
+
             return factory.CreateMultiPolygon(polygons.ToArray());
         }
 
@@ -686,22 +953,21 @@ namespace NetTopologySuite.IO
         /// <returns>
         /// A <c>GeometryCollection</c> specified by the
         /// next token in the stream.</returns>
-        private IGeometryCollection ReadGeometryCollectionText(IEnumerator<Token> tokens, IGeometryFactory factory)
+        private IGeometryCollection ReadGeometryCollectionText(TokenStream tokens, IGeometryFactory factory, Ordinates ordinateFlags)
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY"))
                 return factory.CreateGeometryCollection();
 
             var geometries = new List<IGeometry>();
-            var geometry = ReadGeometryTaggedText(tokens);
-            geometries.Add(geometry);
-            nextToken = GetNextCloserOrComma(tokens);
-            while (nextToken.Equals(","))
+            do
             {
-                geometry = ReadGeometryTaggedText(tokens);
+                var geometry = ReadGeometryTaggedText(tokens);
                 geometries.Add(geometry);
                 nextToken = GetNextCloserOrComma(tokens);
             }
+            while (nextToken.Equals(","));
+
             return factory.CreateGeometryCollection(geometries.ToArray());
         }
 

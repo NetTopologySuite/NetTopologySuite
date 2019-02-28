@@ -108,8 +108,7 @@ namespace NetTopologySuite.IO
         {
             var geoms = new List<IGeometry>();
             var tokens = _wktReader.Tokenizer(bufferedReader);
-            tokens.MoveNext();
-            while (!IsAtEndOfTokens(tokens.Current) && !IsAtLimit(geoms))
+            while (!IsAtEndOfTokens(tokens.NextToken(false)) && !IsAtLimit(geoms))
             {
                 var g = _wktReader.ReadGeometryTaggedText(tokens);
                 if (_count >= Offset)
