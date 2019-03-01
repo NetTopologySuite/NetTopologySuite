@@ -392,11 +392,11 @@ namespace NetTopologySuite.IO
                 {
                     if (((ordinateFlags & Ordinates.Z) == 0) && _measureToZ)
                     {
-                        sequence.SetOrdinate(0, Ordinate.Ordinate2, item.GetOrdinate(0, Ordinate.Z));
+                        sequence.SetOrdinate(i, Ordinate.Ordinate2, item.GetOrdinate(0, Ordinate.Z));
                     }
                     else
                     {
-                        sequence.SetOrdinate(0, Ordinate.M, item.GetOrdinate(0, Ordinate.M));
+                        sequence.SetOrdinate(i, Ordinate.M, item.GetOrdinate(0, Ordinate.M));
                     }
                 }
             }

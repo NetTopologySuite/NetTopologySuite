@@ -4,35 +4,38 @@ using System.Threading;
 using GeoAPI;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.IO
 {
-    /// <summary>
-    /// Test for <see cref="WKTReader" />
-    /// </summary>
     [TestFixtureAttribute]
-    public class WKTReaderTest
+    public class WKTReadWriteTest
     {
-        readonly WKTWriter _writer = new WKTWriter();
-        private readonly IPrecisionModel _precisionModel;
+        private readonly ICoordinateSequenceFactory _csFactory;
         private readonly IGeometryFactory _geometryFactory;
-        readonly WKTReader _reader;
+        private readonly WKTReader _reader;
 
-        public WKTReaderTest()
+        private readonly WKTWriter _writer;
+
+        public WKTReadWriteTest()
         {
-            _precisionModel = new PrecisionModel(1);
-            _geometryFactory = new GeometryFactory(_precisionModel, 0);
+            // We deliberately chose a coordinate sequence factory that can handle 4 dimensions
+            _csFactory = PackedCoordinateSequenceFactory.DoubleFactory;
+            _geometryFactory = new GeometryFactory(_csFactory);
             _reader = new WKTReader(_geometryFactory);
+
+            _writer = new WKTWriter(4);
         }
 
         [TestAttribute]
         public void TestReadNaN()
         {
-            Assert.AreEqual("POINT (10 10)", _writer.Write(_reader.Read("POINT (10 10 NaN)")));
-            Assert.AreEqual("POINT (10 10)", _writer.Write(_reader.Read("POINT (10 10 nan)")));
-            Assert.AreEqual("POINT (10 10)", _writer.Write(_reader.Read("POINT (10 10 NAN)")));
+            const string pt = "POINT (10 10)";
+            Assert.AreEqual(pt, _writer.Write(_reader.Read("POINT (10 10 NaN)")));
+            Assert.AreEqual(pt, _writer.Write(_reader.Read("POINT (10 10 nan)")));
+            Assert.AreEqual(pt, _writer.Write(_reader.Read("POINT (10 10 NAN)")));
         }
 
         [TestAttribute]
@@ -94,7 +97,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             }
             catch (ArgumentException e)
             {
-                Assert.IsTrue(e.Message.IndexOf("must form a closed linestring", StringComparison.Ordinal) > -1);
+                Assert.IsTrue(e.Message.Contains("must form a closed linestring"));
             }
             Assert.AreEqual("LINEARRING (10 10, 20 20, 30 40, 10 10)", _writer.Write(_reader.Read("LINEARRING (10 10, 20 20, 30 40, 10 10)")));
             Assert.AreEqual("LINEARRING EMPTY", _writer.Write(_reader.Read("LINEARRING EMPTY")));
@@ -135,24 +138,6 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING EMPTY, LINESTRING (15 15, 20 20))", _writer.Write(_reader.Read("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING EMPTY, LINESTRING (15 15, 20 20))")));
             Assert.AreEqual("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING (10 10, 20 20, 30 40, 10 10), LINESTRING (15 15, 20 20))", _writer.Write(_reader.Read("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING (10 10, 20 20, 30 40, 10 10), LINESTRING (15 15, 20 20))")));
             Assert.AreEqual("GEOMETRYCOLLECTION EMPTY", _writer.Write(_reader.Read("GEOMETRYCOLLECTION EMPTY")));
-        }
-
-        [TestAttribute]
-        public void TestReadZ()
-        {
-            Assert.AreEqual(new CoordinateZ(1, 2, 3), _reader.Read("POINT (1 2 3)").Coordinate);
-        }
-
-        [TestAttribute]
-        public void TestReadLargeNumbers()
-        {
-            var precisionModel = new PrecisionModel(1E9);
-            var geometryFactory = new GeometryFactory(precisionModel, 0);
-            var reader = new WKTReader(geometryFactory);
-            var point1 = reader.Read("POINT (123456789.01234567890 10)");
-            var point2 = geometryFactory.CreatePoint(new Coordinate(123456789.01234567890, 10));
-            Assert.AreEqual(point1.Coordinate.X, point2.Coordinate.X, 1E-7);
-            Assert.AreEqual(point1.Coordinate.Y, point2.Coordinate.Y, 1E-7);
         }
 
         [TestAttribute]
