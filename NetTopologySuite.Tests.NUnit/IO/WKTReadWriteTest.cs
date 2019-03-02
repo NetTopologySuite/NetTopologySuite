@@ -48,6 +48,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual(10, pt.Coordinate.Y);
             Assert.AreEqual(10, pt.Coordinate.Z);
             Assert.IsTrue(((IPoint)pt).CoordinateSequence.Ordinates == Ordinates.XYZ);
+            _reader.IsOldNtsCoordinateSyntaxAllowed = false;
             pt = _reader.Read("POINT(10 10)");
             Assert.IsTrue(((IPoint)pt).CoordinateSequence.Ordinates == Ordinates.XY);
         }
@@ -55,20 +56,24 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [Test]
         public void TestReaderOrdinateSequenceDimension()
         {
+            _reader.IsOldNtsCoordinateSyntaxAllowed = false;
             var pt = (IPoint)_reader.Read("POINT(10 10)");
             Assert.IsTrue(pt.CoordinateSequence.Ordinates == Ordinates.XY);
 
+            _reader.IsOldNtsCoordinateSyntaxAllowed = true;
             pt = (IPoint)_reader.Read("POINT(10 10 NAN)");
-            Assert.IsTrue(pt.CoordinateSequence.Ordinates == Ordinates.XY);
+            Assert.IsTrue(pt.CoordinateSequence.Ordinates == Ordinates.XYZ);
 
             pt = (IPoint)_reader.Read("POINT(10 10 5)");
             Assert.IsTrue(pt.CoordinateSequence.Ordinates == Ordinates.XYZ);
 
+            _reader.IsOldNtsCoordinateSyntaxAllowed = false;
             var ls = (ILineString)_reader.Read("LINESTRING(10 10, 10 20)");
             Assert.IsTrue(ls.CoordinateSequence.Ordinates == Ordinates.XY);
 
+            _reader.IsOldNtsCoordinateSyntaxAllowed = true;
             ls = (ILineString)_reader.Read("LINESTRING(10 10 NAN, 10 20 NAN)");
-            Assert.IsTrue(ls.CoordinateSequence.Ordinates == Ordinates.XY);
+            Assert.IsTrue(ls.CoordinateSequence.Ordinates == Ordinates.XYZ);
 
             ls = (ILineString)_reader.Read("LINESTRING(10 10 1, 10 20 2)");
             Assert.IsTrue(ls.CoordinateSequence.Ordinates == Ordinates.XYZ);
