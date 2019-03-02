@@ -227,7 +227,11 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
         private void RunWKBTest(IGeometry g, int dimension, bool toHex)
         {
-            SetZ(g);
+            if (dimension > 2)
+            {
+                SetOrdinate2(g);
+            }
+
             RunWKBTest(g, dimension, ByteOrder.LittleEndian, toHex);
             RunWKBTest(g, dimension, ByteOrder.BigEndian, toHex);
         }
@@ -240,9 +244,9 @@ namespace NetTopologySuite.Tests.NUnit.IO
             RunGeometry((Geometry)g, dimension, byteOrder, toHex, -1);
         }
 
-        private static void SetZ(IGeometry g)
+        private static void SetOrdinate2(IGeometry g)
         {
-            g.Apply(new AverageZFilter());
+            g.Apply(new AverageOrdinate2Filter());
         }
 
         //static Comparator comp2D = new Coordinate.DimensionalComparator();
@@ -283,11 +287,11 @@ namespace NetTopologySuite.Tests.NUnit.IO
         }
     }
 
-    class AverageZFilter : ICoordinateFilter
+    class AverageOrdinate2Filter : ICoordinateFilter
     {
         public void Filter(Coordinate coord)
         {
-            coord.Z = (coord.X + coord.Y) / 2;
+            coord[Ordinate.Ordinate2] = (coord.X + coord.Y) / 2;
         }
     }
 
