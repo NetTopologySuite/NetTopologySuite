@@ -1,4 +1,3 @@
-using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NUnit.Framework;
@@ -9,6 +8,50 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
     public class CoordinateArraySequenceTest : CoordinateSequenceTestBase
     {
         protected override ICoordinateSequenceFactory CsFactory => CoordinateArraySequenceFactory.Instance;
+
+        [Test]
+        public void TestFactoryLimits()
+        {
+            // Expected to clip dimension and measure value within factory limits
+
+            var factory = (CoordinateArraySequenceFactory)CsFactory;
+            var sequence = factory.Create(10, 4);
+            Assert.That(sequence.Dimension, Is.EqualTo(3));
+            Assert.That(sequence.Measures, Is.EqualTo(0));
+            Assert.That(sequence.HasZ);
+            Assert.That(!sequence.HasM);
+
+            sequence = factory.Create(10, 4, 0);
+            Assert.That(sequence.Dimension, Is.EqualTo(3));
+            Assert.That(sequence.Measures, Is.EqualTo(0));
+            Assert.That(sequence.HasZ);
+            Assert.That(!sequence.HasM);
+
+            sequence = factory.Create(10, 4, 2); // note clip to spatial dimension
+            Assert.That(sequence.Dimension, Is.EqualTo(3));
+            Assert.That(sequence.Measures, Is.EqualTo(1));
+            Assert.That(!sequence.HasZ);
+            Assert.That(sequence.HasM);
+
+            sequence = factory.Create(10, 5, 1);
+            Assert.That(sequence.Dimension, Is.EqualTo(4));
+            Assert.That(sequence.Measures, Is.EqualTo(1));
+            Assert.That(sequence.HasZ);
+            Assert.That(sequence.HasM);
+
+            // previously this clipped to dimension 3, measure 3
+            sequence = factory.Create(10, 1);
+            Assert.That(sequence.Dimension, Is.EqualTo(2));
+            Assert.That(sequence.Measures, Is.EqualTo(0));
+            Assert.That(!sequence.HasZ);
+            Assert.That(!sequence.HasM);
+
+            sequence = factory.Create(10, 2, 1);
+            Assert.That(sequence.Dimension, Is.EqualTo(3));
+            Assert.That(sequence.Measures, Is.EqualTo(1));
+            Assert.That(!sequence.HasZ);
+            Assert.That(sequence.HasM);
+        }
 
         [Test]
         public void TestDimensionAndMeasure()
@@ -90,7 +133,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             copy = factory.Create(seq);
             Assert.That(IsEqual(copy, array), Is.True);
 
-            Assert.That(() => factory.Create(5, 2, 1), Throws.InstanceOf<ArgumentException>());
+            // dimensions clipped from XM to XYM
+            seq = factory.Create(5, 2, 1);
+            Assert.That(seq.Dimension, Is.EqualTo(3));
+            Assert.That(seq.Measures, Is.EqualTo(1));
         }
 
         [Test]

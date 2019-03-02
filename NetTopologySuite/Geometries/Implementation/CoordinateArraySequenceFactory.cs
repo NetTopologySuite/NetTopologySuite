@@ -40,30 +40,31 @@ namespace NetTopologySuite.Geometries.Implementation
             // throw new ArgumentOutOfRangeException("dimension must <= 3");
             // handle bogus dimension
             if (dimension < 2)
-                // TODO: change to dimension = 2  ???
-                return new CoordinateArraySequence(size);
+                dimension = 2;
             return new CoordinateArraySequence(size, dimension);
         }
 
         public ICoordinateSequence Create(int size, int dimension, int measures)
         {
-            if (dimension > 4)
-            {
-                dimension = 4;
-                //throw new IllegalArgumentException("dimension must be <= 4");
-            }
+            int spatial = dimension - measures;
+
             if (measures > 1)
             {
-                measures = 1;
-                //throw new IllegalArgumentException("measures must be <= 1");
+                measures = 1; // clip measures
             }
-            if (dimension < 2)
-                dimension = 2; // handle bogus dimension
-            if (dimension - measures < 2)
+
+            if (spatial > 3)
             {
-                throw new ArgumentException($"Minimum spatial dimension of 2 required. Input was dimension {dimension}and number of measures {measures}.");
+                spatial = 3; // clip spatial dimension
+                // throw new ArgumentException("spatial dimension must be <= 3");
             }
-            return new CoordinateArraySequence(size, dimension, measures);
+
+            if (spatial < 2)
+            {
+                spatial = 2; // handle bogus dimension
+            }
+
+            return new CoordinateArraySequence(size, spatial + measures, measures);
         }
 
         public ICoordinateSequence Create(int size, Ordinates ordinates)
