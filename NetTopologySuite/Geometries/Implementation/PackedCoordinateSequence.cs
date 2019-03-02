@@ -260,7 +260,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="index"></param>
         /// <returns>
-        /// The value of the Z ordinate in the index'th coordinate, or Double.NaN if not defined.
+        /// The value of the M ordinate in the index'th coordinate, or Double.NaN if not defined.
         /// </returns>
         public double GetM(int index)
         {
