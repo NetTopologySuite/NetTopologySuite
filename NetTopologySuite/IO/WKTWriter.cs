@@ -1,5 +1,3 @@
-#define LikeJTS
-
 using System;
 using System.Globalization;
 using System.IO;
@@ -32,13 +30,9 @@ namespace NetTopologySuite.IO
         /// <returns>The WKT</returns>
         public static string ToPoint(Coordinate p0)
         {
-#if LikeJTS
-            return string.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", p0.X, p0.Y);
-#else
-            if (double.IsNaN(p0.Z))
-                return String.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", p0.X, p0.Y);
-            return String.Format(CultureInfo.InvariantCulture, "POINT({0} {1} {2})", p0.X, p0.Y, p0.Z);
-#endif
+            // legacy note: JTS's version never checks Z or M, so the things that call this aren't
+            // expecting to see them.  the "actual" code to write points handles Z / M just fine.
+            return "POINT ( " + p0.X.ToString("G17") + " " + p0.Y.ToString("G17") + " )";
         }
 
         /// <summary>
@@ -48,6 +42,8 @@ namespace NetTopologySuite.IO
         /// <returns>The WKT</returns>
         public static string ToLineString(ICoordinateSequence seq)
         {
+            // legacy note: JTS's version never checks Z or M, so the things that call this aren't
+            // expecting to see them.  the "actual" code to write lines handles Z / M just fine.
             var buf = new StringBuilder();
             buf.Append("LINESTRING");
             if (seq.Count == 0)
@@ -59,7 +55,7 @@ namespace NetTopologySuite.IO
                 {
                     if (i > 0)
                         buf.Append(", ");
-                    buf.Append(string.Format(CultureInfo.InvariantCulture, "{0} {1}", seq.GetX(i), seq.GetY(i)));
+                    buf.Append(seq.GetX(i).ToString("G17") + " " + seq.GetY(i).ToString("G17"));
               }
               buf.Append(")");
             }
@@ -76,6 +72,8 @@ namespace NetTopologySuite.IO
          */
         public static string ToLineString(Coordinate[] coord)
         {
+            // legacy note: JTS's version never checks Z or M, so the things that call this aren't
+            // expecting to see them.  the "actual" code to write lines handles Z / M just fine.
             var buf = new StringBuilder();
             buf.Append("LINESTRING ");
             if (coord.Length == 0)
@@ -87,7 +85,7 @@ namespace NetTopologySuite.IO
                 {
                     if (i > 0)
                         buf.Append(", ");
-                    buf.Append(coord[i].X + " " + coord[i].Y);
+                    buf.Append(coord[i].X.ToString("G17") + " " + coord[i].Y.ToString("G17"));
                 }
                 buf.Append(")");
             }
@@ -102,13 +100,9 @@ namespace NetTopologySuite.IO
         /// <returns>The WKT</returns>
         public static string ToLineString(Coordinate p0, Coordinate p1)
         {
-#if LikeJTS
-            return string.Format(CultureInfo.InvariantCulture, "LINESTRING({0:R} {1:R}, {2:R} {3:R})", p0.X, p0.Y, p1.X, p1.Y);
-#else
-            if (double.IsNaN(p0.Z))
-                return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1}, {2} {3})", p0.X, p0.Y, p1.X, p1.Y);
-            return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1} {2}, {3} {4} {5})", p0.X, p0.Y, p0.Z, p1.X, p1.Y, p1.Z);
-#endif
+            // legacy note: JTS's version never checks Z or M, so the things that call this aren't
+            // expecting to see them.  the "actual" code to write lines handles Z / M just fine.
+            return "LINESTRING ( " + p0.X.ToString("G17") + " " + p0.Y.ToString("G17") + ", " + p1.X.ToString("G17") + " " + p1.Y.ToString("G17") + " )";
         }
 
         /// <summary>
@@ -212,7 +206,6 @@ namespace NetTopologySuite.IO
         private Ordinates _outputOrdinates;
         private readonly int _outputDimension;
 
-        private const string MaxPrecisionFormat = "{0:R}";
         private IPrecisionModel _precisionModel;
         private bool _isFormatted;
         private int _coordsPerLine = -1;
@@ -692,16 +685,15 @@ namespace NetTopologySuite.IO
             try
             {
                 double converted = Convert.ToDouble(standard, formatProvider);
-                // check if some precision is lost during text conversion: if so, use {0:R} formatter
+                // check if some precision is lost during text conversion: if so, use G17
                 if (converted == d)
                     return standard;
-                return string.Format(formatProvider, MaxPrecisionFormat, d);
             }
             catch (OverflowException ex)
             {
-                // Use MaxPrecisionFormat anyway
-                return string.Format(formatProvider, MaxPrecisionFormat, d);
             }
+
+            return d.ToString("G17", formatProvider);
         }
 
         /// <summary>
