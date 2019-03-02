@@ -410,12 +410,11 @@ namespace NetTopologySuite.Operation.Distance3D
                 return null;
 
             // start point of line
-            var p0 = new Coordinate();
-            seq.GetCoordinate(0, p0);
+            var p0 = seq.GetCoordinateCopy(0);
             double d0 = poly.Plane.OrientedDistance(p0);
 
             // for each segment in the line
-            var p1 = new Coordinate();
+            var p1 = p0.Copy();
             for (int i = 0; i < seq.Count - 1; i++)
             {
                 seq.GetCoordinate(i, p0);

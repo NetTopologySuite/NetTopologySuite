@@ -26,8 +26,7 @@ namespace NetTopologySuite.Algorithm
 
             double len = 0.0;
 
-            var p = new Coordinate();
-            pts.GetCoordinate(0, p);
+            var p = pts.GetCoordinateCopy(0);
             double x0 = p.X;
             double y0 = p.Y;
 
