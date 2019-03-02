@@ -504,7 +504,7 @@ namespace NetTopologySuite.Geometries
             var points = new List<IPoint>();
             for (int i = 0; i < coordinates.Count; i++)
             {
-                var seq = CoordinateSequenceFactory.Create(1, coordinates.Ordinates);
+                var seq = CoordinateSequenceFactory.Create(1, coordinates.Dimension, coordinates.Measures);
                 CoordinateSequences.Copy(coordinates, i, seq, 0, 1);
                 points.Add(CreatePoint(seq));
             }

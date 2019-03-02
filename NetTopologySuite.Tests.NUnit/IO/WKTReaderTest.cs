@@ -17,7 +17,6 @@ namespace NetTopologySuite.Tests.NUnit.IO
         private readonly WKTReader reader2DOld;
         private readonly WKTReader reader3D;
         private readonly WKTReader reader2DM;
-        private readonly WKTReader reader2DMtoZ;
         private readonly WKTReader reader3DM;
 
         public WKTReaderTest()
@@ -30,9 +29,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
             this.reader3D = GetWKTReader(Ordinates.XYZ, 1);
 
-            this.reader2DM = GetWKTReader(Ordinates.XYM, false, 1);
-
-            this.reader2DMtoZ = GetWKTReader(Ordinates.XYM, true, 1);
+            this.reader2DM = GetWKTReader(Ordinates.XYM, 1);
 
             this.reader3DM = GetWKTReader(Ordinates.XYZM, 1);
         }
@@ -63,7 +60,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             var seqPt2D = CreateSequence(Ordinates.XY, coordinates);
             var seqPt2DE = CreateSequence(Ordinates.XY, Array.Empty<double>());
             var seqPt3D = CreateSequence(Ordinates.XYZ, coordinates);
-            var seqPt2DM = CreateSequence(Ordinates.XYM, true, coordinates);
+            var seqPt2DM = CreateSequence(Ordinates.XYM, coordinates);
             var seqPt3DM = CreateSequence(Ordinates.XYZM, coordinates);
 
             // act
@@ -89,7 +86,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             var seqLs2D = CreateSequence(Ordinates.XY, coordinates);
             var seqLs2DE = CreateSequence(Ordinates.XY, Array.Empty<double>());
             var seqLs3D = CreateSequence(Ordinates.XYZ, coordinates);
-            var seqLs2DM = CreateSequence(Ordinates.XYM, true, coordinates);
+            var seqLs2DM = CreateSequence(Ordinates.XYM, coordinates);
             var seqLs3DM = CreateSequence(Ordinates.XYZM, coordinates);
 
             // act
@@ -115,7 +112,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             var seqLs2D = CreateSequence(Ordinates.XY, coordinates);
             var seqLs2DE = CreateSequence(Ordinates.XY, Array.Empty<double>());
             var seqLs3D = CreateSequence(Ordinates.XYZ, coordinates);
-            var seqLs2DM = CreateSequence(Ordinates.XYM, true, coordinates);
+            var seqLs2DM = CreateSequence(Ordinates.XYM, coordinates);
             var seqLs3DM = CreateSequence(Ordinates.XYZM, coordinates);
 
             // act
@@ -158,9 +155,9 @@ namespace NetTopologySuite.Tests.NUnit.IO
             };
             ICoordinateSequence[] csPoly2DM =
             {
-                CreateSequence(Ordinates.XYM, true, shell),
-                CreateSequence(Ordinates.XYM, true, ring1),
-                CreateSequence(Ordinates.XYM, true, ring2),
+                CreateSequence(Ordinates.XYM, shell),
+                CreateSequence(Ordinates.XYM, ring1),
+                CreateSequence(Ordinates.XYM, ring2),
             };
             ICoordinateSequence[] csPoly3DM =
             {
@@ -238,8 +235,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
             };
             ICoordinateSequence[] csMP2DM =
             {
-                CreateSequence(Ordinates.XYM, true, coordinates[0]),
-                CreateSequence(Ordinates.XYM, true, coordinates[1]),
+                CreateSequence(Ordinates.XYM, coordinates[0]),
+                CreateSequence(Ordinates.XYM, coordinates[1]),
             };
             ICoordinateSequence[] csMP3DM =
             {
@@ -292,8 +289,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
             };
             ICoordinateSequence[] csMls2DM =
             {
-                CreateSequence(Ordinates.XYM, true, coordinates[0]),
-                CreateSequence(Ordinates.XYM, true, coordinates[1]),
+                CreateSequence(Ordinates.XYM, coordinates[0]),
+                CreateSequence(Ordinates.XYM, coordinates[1]),
             };
             ICoordinateSequence[] csMls3DM =
             {
@@ -374,7 +371,6 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 (IMultiPolygon)rdr.Read("MULTIPOLYGON Z(((10 10 10, 10 20 10, 20 20 10, 20 15 10, 10 10 10), (11 11 10, 12 11 10, 12 12 10, 12 11 10, 11 11 10)))"),
                 (IMultiPolygon)rdr.Read("MULTIPOLYGON Z(((10 10 10, 10 20 10, 20 20 10, 20 15 10, 10 10 10), (11 11 10, 12 11 10, 12 12 10, 12 11 10, 11 11 10)), ((60 60 10, 70 70 10, 80 60 10, 60 60 10)))"),
             };
-            rdr = this.reader2DMtoZ;
             IMultiPolygon[] poly2DM =
             {
                 (IMultiPolygon)rdr.Read("MULTIPOLYGON M(((10 10 11, 10 20 11, 20 20 11, 20 15 11, 10 10 11)))"),
@@ -463,21 +459,10 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.That(point1.GetOrdinate(0, Ordinate.Y), Is.EqualTo(point2.GetOrdinate(0, Ordinate.Y)).Within(1E-7));
         }
 
-        private static ICoordinateSequence CreateSequence(Ordinates ordinateFlags, double[] ordinateValues)
+        private static ICoordinateSequence CreateSequence(Ordinates ordinateFlags, double[] xy)
         {
-            return CreateSequence(ordinateFlags, false, ordinateValues);
-        }
-
-        private static ICoordinateSequence CreateSequence(Ordinates ordinateFlags, bool thirdToMeasure, double[] xy)
-        {
-            // check if measure to z is meaningful
-            if (ordinateFlags.HasFlag(Ordinates.Z))
-            {
-                thirdToMeasure = false;
-            }
-
             // get the number of dimension to verify size of provided ordinate values array
-            int dimension = RequiredDimension(ordinateFlags, false);
+            int dimension = RequiredDimension(ordinateFlags);
 
             // inject additional values
             double[] ordinateValues = InjectZM(ordinateFlags, xy);
@@ -490,11 +475,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
             }
 
             // create a sequence capable of storing all ordinate values.
-            var res = GetCSFactory(ordinateFlags, thirdToMeasure)
-                .Create(size, RequiredDimension(ordinateFlags, thirdToMeasure));
-
-            // determine ordinate indices
-            Ordinate[] ordinateIndices = { Ordinate.X, Ordinate.Y, thirdToMeasure ? Ordinate.M : Ordinate.Z, Ordinate.M };
+            var res = GetCSFactory(ordinateFlags)
+                .Create(size, RequiredDimension(ordinateFlags));
 
             // fill in values
             int k = 0;
@@ -502,7 +484,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             {
                 for (int j = 0; j < dimension; j++)
                 {
-                    res.SetOrdinate(k, ordinateIndices[j], ordinateValues[i + j]);
+                    res.SetOrdinate(k, (Ordinate)j, ordinateValues[i + j]);
                 }
 
                 k++;
@@ -511,30 +493,26 @@ namespace NetTopologySuite.Tests.NUnit.IO
             return res;
         }
 
-        private static int RequiredDimension(Ordinates ordinateFlags, bool zToMeasure)
+        private static int RequiredDimension(Ordinates ordinateFlags)
         {
-            int res = 2;
-            if (ordinateFlags.HasFlag(Ordinates.Z))
+            switch (ordinateFlags)
             {
-                res += 1;
-            }
+                case Ordinates.XY:
+                    return 2;
 
-            if (ordinateFlags.HasFlag(Ordinates.M))
-            {
-                res += 1;
-                if (zToMeasure)
-                {
-                    res += 1;
-                }
-            }
+                case Ordinates.XYZ:
+                case Ordinates.XYM:
+                    return 3;
 
-            return res;
+                default:
+                    return 4;
+            }
         }
 
         private static double[] InjectZM(Ordinates ordinateFlags, double[] xy)
         {
             int size = xy.Length / 2;
-            int dimension = RequiredDimension(ordinateFlags, false);
+            int dimension = RequiredDimension(ordinateFlags);
             double[] res = new double[size * dimension];
             int k = 0;
             for (int i = 0; i < xy.Length; i += 2)

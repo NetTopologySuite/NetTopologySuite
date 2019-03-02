@@ -16,7 +16,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         private readonly IGeometryFactory _factory = new GeometryFactory(new PrecisionModel(1), 0, PackedCoordinateSequenceFactory.DoubleFactory);
         private readonly WKTWriter _writer = new WKTWriter();
         private readonly WKTWriter _writer3D = new WKTWriter(3);
-        private readonly WKTWriter _writer2DM = new WKTWriter(3) { ZIsMeasure = true };
+        private readonly WKTWriter _writer2DM = new WKTWriter(3) { OutputOrdinates = Ordinates.XYM };
 
         [TestAttribute]
         public void TestWritePoint()
@@ -187,19 +187,19 @@ namespace NetTopologySuite.Tests.NUnit.IO
             string wkt = _writer3D.Write(point);
             Assert.AreEqual("POINT Z(1 1 1)", wkt);
             wkt = _writer2DM.Write(point);
-            Assert.AreEqual("POINT M(1 1 1)", wkt);
+            Assert.AreEqual("POINT (1 1)", wkt);
         }
         [TestAttribute]
-        public void testWrite3D_withNaN()
+        public void TestWrite3D_withNaN()
         {
             IGeometryFactory geometryFactory = new GeometryFactory();
             Coordinate[] coordinates = { new Coordinate(1, 1),
                                  new CoordinateZ(2, 2, 2) };
             var line = geometryFactory.CreateLineString(coordinates);
             string wkt = _writer3D.Write(line);
-            Assert.AreEqual("LINESTRING Z(1 1, 2 2 2)", wkt);
+            Assert.AreEqual("LINESTRING Z(1 1 NaN, 2 2 2)", wkt);
             wkt = _writer2DM.Write(line);
-            Assert.AreEqual("LINESTRING M(1 1, 2 2 2)", wkt);
+            Assert.AreEqual("LINESTRING (1 1, 2 2)", wkt);
         }
 
         [Test]
@@ -208,19 +208,10 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.That(_writer.OutputOrdinates, Is.EqualTo(Ordinates.XY));
             Assert.That(_writer3D.OutputOrdinates, Is.EqualTo(Ordinates.XYZ));
             Assert.That(_writer2DM.OutputOrdinates, Is.EqualTo(Ordinates.XYM));
-            Assert.That(_writer2DM.ZIsMeasure, Is.True);
-            _writer2DM.ZIsMeasure = false;
-            Assert.That(_writer2DM.ZIsMeasure, Is.False);
-            Assert.That(_writer2DM.OutputOrdinates, Is.EqualTo(Ordinates.XYZ));
-            _writer2DM.ZIsMeasure = true;
-            Assert.That(_writer2DM.OutputOrdinates, Is.EqualTo(Ordinates.XYM));
 
             var gf = new GeometryFactory(PackedCoordinateSequenceFactory.DoubleFactory);
             var writer3DM = new WKTWriter(4);
             Assert.That(writer3DM.OutputOrdinates, Is.EqualTo(Ordinates.XYZM));
-            Assert.That(writer3DM.ZIsMeasure, Is.False);
-            writer3DM.ZIsMeasure = true;
-            Assert.That(writer3DM.ZIsMeasure, Is.False);
 
             writer3DM.OutputOrdinates = Ordinates.XY;
             Assert.That(writer3DM.OutputOrdinates, Is.EqualTo(Ordinates.XY));

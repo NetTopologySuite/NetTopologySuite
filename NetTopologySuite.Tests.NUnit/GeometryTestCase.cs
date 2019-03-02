@@ -104,98 +104,57 @@ namespace NetTopologySuite.Tests.NUnit
 
         /// <summary>
         /// Gets a <see cref="WKTReader"/> to read geometries from WKT with expected ordinates.
-        /// If <paramref name="ordinateFlags"/> is <see cref="Ordinates.XYM"/>, measure ordinate
-        /// values will be saved at <see cref="Ordinates.Ordinate2"/> index.
         /// </summary>
-        /// <param name="ordinateFlags">a bit-pattern describing the ordinates expected.</param>
+        /// <param name="ordinateFlags">a set of expected ordinates.</param>
         /// <returns>A <see cref="WKTReader"/>.</returns>
         public static WKTReader GetWKTReader(Ordinates ordinateFlags)
         {
-            return GetWKTReader(ordinateFlags, true);
+            return GetWKTReader(ordinateFlags, new PrecisionModel());
         }
 
         /// <summary>
         /// Gets a <see cref="WKTReader"/> to read geometries from WKT with expected ordinates.
         /// </summary>
-        /// <param name="ordinateFlags">a bit-pattern describing the ordinates expected.</param>
-        /// <param name="measureToZ">a flag indicating that measure values should be stored as z-ordinate values.</param>
-        /// <returns>A <see cref="WKTReader"/>.</returns>
-        public static WKTReader GetWKTReader(Ordinates ordinateFlags, bool measureToZ)
-        {
-            return GetWKTReader(ordinateFlags, measureToZ, new PrecisionModel());
-        }
-
-        /// <summary>
-        /// Gets a <see cref="WKTReader"/> to read geometries from WKT with expected ordinates.
-        /// If <paramref name="ordinateFlags"/> is <see cref="Ordinates.XYM"/>, measure ordinate
-        /// values will be saved at <see cref="Ordinates.Ordinate2"/> index.
-        /// </summary>
-        /// <param name="ordinateFlags">a bit-pattern describing the ordinates expected.</param>
+        /// <param name="ordinateFlags">a set of expected ordinates.</param>
         /// <param name="scale">a scale value to create a <see cref="IPrecisionModel"/>.</param>
         /// <returns>A <see cref="WKTReader"/>.</returns>
         public static WKTReader GetWKTReader(Ordinates ordinateFlags, double scale)
         {
-            return GetWKTReader(ordinateFlags, true, new PrecisionModel(scale));
+            return GetWKTReader(ordinateFlags, new PrecisionModel(scale));
         }
 
         /// <summary>
         /// Gets a <see cref="WKTReader"/> to read geometries from WKT with expected ordinates.
         /// </summary>
-        /// <param name="ordinateFlags">a bit-pattern describing the ordinates expected.</param>
-        /// <param name="measureToZ">a flag indicating that measure values should be stored as z-ordinate values.</param>
-        /// <param name="scale">a scale value to create a <see cref="IPrecisionModel"/>.</param>
-        /// <returns>A <see cref="WKTReader"/>.</returns>
-        public static WKTReader GetWKTReader(Ordinates ordinateFlags, bool measureToZ, double scale)
-        {
-            return GetWKTReader(ordinateFlags, measureToZ, new PrecisionModel(scale));
-        }
-
-        /// <summary>
-        /// Gets a <see cref="WKTReader"/> to read geometries from WKT with expected ordinates.
-        /// If <paramref name="ordinateFlags"/> is <see cref="Ordinates.XYM"/>, measure ordinate
-        /// values will be saved at <see cref="Ordinates.Ordinate2"/> index.
-        /// </summary>
-        /// <param name="ordinateFlags">a bit-pattern describing the ordinates expected.</param>
+        /// <param name="ordinateFlags">a set of expected ordinates.</param>
         /// <param name="precisionModel">a precision model.</param>
         /// <returns>A <see cref="WKTReader"/>.</returns>
         public static WKTReader GetWKTReader(Ordinates ordinateFlags, IPrecisionModel precisionModel)
         {
-            return GetWKTReader(ordinateFlags, true, precisionModel);
-        }
-
-        /// <summary>
-        /// Gets a <see cref="WKTReader"/> to read geometries from WKT with expected ordinates.
-        /// </summary>
-        /// <param name="ordinateFlags">a bit-pattern describing the ordinates expected.</param>
-        /// <param name="measureToZ">a flag indicating that measure values should be stored as z-ordinate values.</param>
-        /// <param name="precisionModel">a precision model.</param>
-        /// <returns>A <see cref="WKTReader"/>.</returns>
-        public static WKTReader GetWKTReader(Ordinates ordinateFlags, bool measureToZ, IPrecisionModel precisionModel)
-        {
-            switch (ordinateFlags & Ordinates.XYZM)
+            ordinateFlags |= Ordinates.XY;
+            if ((ordinateFlags & Ordinates.XY) == ordinateFlags)
             {
-                case Ordinates.XY:
-                    return new WKTReader(new GeometryFactory(precisionModel, 0, CoordinateArraySequenceFactory.Instance))
-                    {
-                        IsOldNtsCoordinateSyntaxAllowed = false,
-                    };
-
-                case Ordinates.XYZ:
-                    return new WKTReader(new GeometryFactory(precisionModel, 0, CoordinateArraySequenceFactory.Instance));
-
-                case Ordinates.XYM:
-                    return new WKTReader(new GeometryFactory(precisionModel, 0, measureToZ
-                        ? (ICoordinateSequenceFactory)CoordinateArraySequenceFactory.Instance
-                        : PackedCoordinateSequenceFactory.DoubleFactory))
-                    {
-                        IsOldNtsCoordinateSyntaxAllowed = false,
-                        MeasureToZ = measureToZ,
-                    };
-
-                default:
-                    // note: anything without both X and Y will go here too, just like JTS.
-                    return new WKTReader(new GeometryFactory(precisionModel, 0, PackedCoordinateSequenceFactory.DoubleFactory));
+                return new WKTReader(new GeometryFactory(precisionModel, 0, CoordinateArraySequenceFactory.Instance))
+                {
+                    IsOldNtsCoordinateSyntaxAllowed = false,
+                };
             }
+
+            // note: XYZM will go through here too, just like in JTS.
+            if (ordinateFlags.HasFlag(Ordinates.Z))
+            {
+                return new WKTReader(new GeometryFactory(precisionModel, 0, CoordinateArraySequenceFactory.Instance));
+            }
+
+            if (ordinateFlags.HasFlag(Ordinates.M))
+            {
+                return new WKTReader(new GeometryFactory(precisionModel, 0, PackedCoordinateSequenceFactory.DoubleFactory))
+                {
+                    IsOldNtsCoordinateSyntaxAllowed = false,
+                };
+            }
+
+            return new WKTReader(new GeometryFactory(precisionModel, 0, CoordinateArraySequenceFactory.Instance));
         }
 
         /// <summary>
@@ -320,27 +279,12 @@ namespace NetTopologySuite.Tests.NUnit
         /// <returns>a <see cref="ICoordinateSequenceFactory"/>.</returns>
         public static ICoordinateSequenceFactory GetCSFactory(Ordinates ordinateFlags)
         {
-            return GetCSFactory(ordinateFlags, false);
-        }
-
-        /// <summary>
-        /// Gets a <see cref="ICoordinateSequenceFactory"/> that can create sequences for ordinates
-        /// defined in the provided bit pattern.
-        /// </summary>
-        /// <param name="ordinateFlags">a bit-pattern of ordinates.</param>
-        /// <param name="zToMeasure">a flag indicating that z-ordinate values should be stored as m-ordinate values.</param>
-        /// <returns>a <see cref="ICoordinateSequenceFactory"/>.</returns>
-        public static ICoordinateSequenceFactory GetCSFactory(Ordinates ordinateFlags, bool zToMeasure)
-        {
-            switch (ordinateFlags & Ordinates.XYZM)
+            if (ordinateFlags.HasFlag(Ordinates.M))
             {
-                case Ordinates.XYZM:
-                case Ordinates.XYM when zToMeasure:
-                    return PackedCoordinateSequenceFactory.DoubleFactory;
-
-                default:
-                    return CoordinateArraySequenceFactory.Instance;
+                return PackedCoordinateSequenceFactory.DoubleFactory;
             }
+
+            return CoordinateArraySequenceFactory.Instance;
         }
 
         protected internal static IEqualityComparer<IGeometry> EqualityComparer => new GeometryEqualityComparer();

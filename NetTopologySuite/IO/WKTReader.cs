@@ -46,11 +46,10 @@ namespace NetTopologySuite.IO
         private static readonly System.Globalization.CultureInfo InvariantCulture =
             System.Globalization.CultureInfo.InvariantCulture;
         private static readonly string NaNString = double.NaN.ToString(InvariantCulture); /*"NaN"*/
-        private static readonly ICoordinateSequenceFactory CoordinateSequenceFactoryXYZM = PackedCoordinateSequenceFactory.DoubleFactory;
+        private static readonly ICoordinateSequenceFactory CoordinateSequenceFactoryXYZM = CoordinateArraySequenceFactory.Instance;
 
         private bool _isAllowOldNtsCoordinateSyntax = true;
         private bool _isAllowOldNtsMultipointSyntax = true;
-        private bool _measureToZ;
 
         /// <summary>
         /// Creates a <c>WKTReader</c> that creates objects using a basic GeometryFactory.
@@ -88,16 +87,6 @@ namespace NetTopologySuite.IO
         {
             get => _isAllowOldNtsMultipointSyntax;
             set => _isAllowOldNtsMultipointSyntax = value;
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether or not <code>GEOMETRY M</code> WKT will return
-        /// geometries with sequences that have a dimension of 3.
-        /// </summary>
-        public bool MeasureToZ
-        {
-            get => _measureToZ;
-            set => _measureToZ = value;
         }
 
         /// <summary>
@@ -239,26 +228,20 @@ namespace NetTopologySuite.IO
             }
 
             // create a sequence for one coordinate
-            var sequence = _coordinateSequencefactory.Create(1, this.ToDimension(ordinateFlags));
+            int offsetM = ordinateFlags.HasFlag(Ordinates.Z) ? 1 : 0;
+            var sequence = _coordinateSequencefactory.Create(1, this.ToDimension(ordinateFlags), ordinateFlags.HasFlag(Ordinates.M) ? 1 : 0);
             sequence.SetOrdinate(0, Ordinate.X, _precisionModel.MakePrecise(GetNextNumber(tokens)));
             sequence.SetOrdinate(0, Ordinate.Y, _precisionModel.MakePrecise(GetNextNumber(tokens)));
 
             // additionally read other vertices
-            if ((ordinateFlags & Ordinates.Z) == Ordinates.Z)
+            if (ordinateFlags.HasFlag(Ordinates.Z))
             {
                 sequence.SetOrdinate(0, Ordinate.Z, GetNextNumber(tokens));
             }
 
-            if ((ordinateFlags & Ordinates.M) == Ordinates.M)
+            if (ordinateFlags.HasFlag(Ordinates.M))
             {
-                if (((ordinateFlags & Ordinates.Z) == 0) && _measureToZ)
-                {
-                    sequence.SetOrdinate(0, Ordinate.Ordinate2, GetNextNumber(tokens));
-                }
-                else
-                {
-                    sequence.SetOrdinate(0, Ordinate.M, GetNextNumber(tokens));
-                }
+                sequence.SetOrdinate(0, Ordinate.Z + offsetM, GetNextNumber(tokens));
             }
 
             if (ordinateFlags == Ordinates.XY && _isAllowOldNtsCoordinateSyntax && IsNumberNext(tokens))
@@ -333,19 +316,19 @@ namespace NetTopologySuite.IO
         private int ToDimension(Ordinates ordinateFlags)
         {
             int dimension = 2;
-            if ((ordinateFlags & Ordinates.Z) == Ordinates.Z)
+            if (ordinateFlags.HasFlag(Ordinates.Z))
             {
-                dimension = 3;
+                dimension++;
             }
 
-            if ((ordinateFlags & Ordinates.Z) == Ordinates.Z)
+            if (ordinateFlags.HasFlag(Ordinates.M))
             {
-                dimension = _measureToZ ? dimension + 1 : 4;
+                dimension++;
             }
 
-            if (dimension < 3 && _isAllowOldNtsCoordinateSyntax)
+            if (dimension == 2 && _isAllowOldNtsCoordinateSyntax)
             {
-                dimension = 3;
+                dimension++;
             }
 
             return dimension;
@@ -371,33 +354,41 @@ namespace NetTopologySuite.IO
                 return sequences[0];
             }
 
-            if (ordinateFlags == Ordinates.XY && _isAllowOldNtsCoordinateSyntax)
+            Ordinates mergeOrdinates;
+            if (_isAllowOldNtsCoordinateSyntax && ordinateFlags == Ordinates.XY)
             {
-                ordinateFlags |= Ordinates.Z;
+                mergeOrdinates = ordinateFlags;
+                foreach (var seq in sequences)
+                {
+                    if (seq.HasZ)
+                    {
+                        mergeOrdinates |= Ordinates.Z;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                mergeOrdinates = ordinateFlags;
             }
 
             // create and fill the result sequence
-            var sequence = _coordinateSequencefactory.Create(sequences.Count, this.ToDimension(ordinateFlags));
+            var sequence = _coordinateSequencefactory.Create(sequences.Count, this.ToDimension(mergeOrdinates), mergeOrdinates.HasFlag(Ordinates.M) ? 1 : 0);
+
+            var offsetM = Ordinate.Z + (mergeOrdinates.HasFlag(Ordinates.Z) ? 1 : 0);
             for (int i = 0; i < sequences.Count; i++)
             {
                 var item = sequences[i];
                 sequence.SetOrdinate(i, Ordinate.X, item.GetOrdinate(0, Ordinate.X));
                 sequence.SetOrdinate(i, Ordinate.Y, item.GetOrdinate(0, Ordinate.Y));
-                if ((ordinateFlags & Ordinates.Z) == Ordinates.Z)
+                if (mergeOrdinates.HasFlag(Ordinates.Z))
                 {
                     sequence.SetOrdinate(i, Ordinate.Z, item.GetOrdinate(0, Ordinate.Z));
                 }
 
-                if ((ordinateFlags & Ordinates.M) == Ordinates.M)
+                if (mergeOrdinates.HasFlag(Ordinates.M))
                 {
-                    if (((ordinateFlags & Ordinates.Z) == 0) && _measureToZ)
-                    {
-                        sequence.SetOrdinate(i, Ordinate.Ordinate2, item.GetOrdinate(0, Ordinate.Z));
-                    }
-                    else
-                    {
-                        sequence.SetOrdinate(i, Ordinate.M, item.GetOrdinate(0, Ordinate.M));
-                    }
+                    sequence.SetOrdinate(i, offsetM, item.GetOrdinate(0, offsetM));
                 }
             }
 

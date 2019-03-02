@@ -161,17 +161,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         private class CheckOrdinatesFilter : ICoordinateSequenceFilter
         {
-            private readonly Ordinates[] _ordinateFlag =
-            {
-                Ordinates.X,
-                Ordinates.Y,
-                Ordinates.Z,
-                Ordinates.M
-            };
-
             private readonly Ordinates _checkOrdinateFlags;
-            private readonly int _numOrdinates;
-
             private Ordinates _outputOrdinates;
 
             /// <summary>
@@ -180,49 +170,28 @@ namespace NetTopologySuite.IO
             /// <param name="checkOrdinateFlags">
             /// The index for the ordinates to test.
             /// </param>
-            public CheckOrdinatesFilter(Ordinates checkOrdinateFlags, bool zIsMeasure)
+            public CheckOrdinatesFilter(Ordinates checkOrdinateFlags)
             {
-                // verify zIsMeasure.
-                if (checkOrdinateFlags.HasFlag(Ordinates.Z))
-                {
-                    zIsMeasure = false;
-                }
-
-                // On zIsMeasure we need to adjust the ordinate flag array.
-                if (zIsMeasure)
-                {
-                    _ordinateFlag[2] = Ordinates.M;
-                    _ordinateFlag[3] = 0;
-                }
-
                 _outputOrdinates = Ordinates.XY;
                 _checkOrdinateFlags = checkOrdinateFlags;
-
-                // get number of ordinates to test
-                int numOrdinates = 2;
-                if (checkOrdinateFlags.HasFlag(Ordinates.Z))
-                {
-                    numOrdinates = 3;
-                }
-
-                if (checkOrdinateFlags.HasFlag(Ordinates.M))
-                {
-                    numOrdinates = zIsMeasure ? 3 : 4;
-                }
-
-                _numOrdinates = numOrdinates;
             }
 
             /// <inheritdoc />
             public void Filter(ICoordinateSequence seq, int i)
             {
-                int numOrdinates = Math.Min(_numOrdinates, seq.Dimension);
-                for (int j = 2; j < numOrdinates; j++)
+                if (_checkOrdinateFlags.HasFlag(Ordinates.Z) && !_outputOrdinates.HasFlag(Ordinates.Z))
                 {
-                    double val = seq.GetOrdinate(i, (Ordinate)j);
-                    if (!double.IsNaN(val))
+                    if (!double.IsNaN(seq.GetZ(i)))
                     {
-                        _outputOrdinates |= _ordinateFlag[j];
+                        _outputOrdinates |= Ordinates.Z;
+                    }
+                }
+
+                if (_checkOrdinateFlags.HasFlag(Ordinates.M) && !_outputOrdinates.HasFlag(Ordinates.M))
+                {
+                    if (!double.IsNaN(seq.GetM(i)))
+                    {
+                        _outputOrdinates |= Ordinates.M;
                     }
                 }
             }
@@ -308,71 +277,20 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Gets or sets a flag indicating that the <see cref="Coordinate.Z"/> value should be
-        /// interpreted as a measure value.  This way <code>GEOMETRY M</code> can be written.
-        /// </summary>
-        public bool ZIsMeasure
-        {
-            get
-            {
-                return _outputDimension == 3 &&
-                       _outputOrdinates == Ordinates.XYM;
-            }
-
-            set
-            {
-                // if we only output 2 dimensions, there is no need to
-                // check which other ordinate holds a measure value!
-                if (_outputDimension == 2)
-                {
-                    return;
-                }
-
-                // if we want to output four dimensions anyway, bail out
-                if (_outputDimension == 4)
-                {
-                    return;
-                }
-
-                _outputOrdinates = value
-                    ? Ordinates.XYM
-                    : Ordinates.XYZ;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a bit-pattern defining which ordinates should be written.  It is one of the
-        /// following values:
+        /// Gets or sets the <see cref="Ordinates"/> to be written.  Possible members are:
         /// <list type="bullet">
-        /// <item><description><see cref="Ordinates.XY"/></description></item>
-        /// <item><description><see cref="Ordinates.XYZ"/></description></item>
-        /// <item><description><see cref="Ordinates.XYM"/></description></item>
-        /// <item><description><see cref="Ordinates.XYZM"/></description></item>
+        /// <item><description><see cref="Ordinates.X"/></description></item>
+        /// <item><description><see cref="Ordinates.Y"/></description></item>
+        /// <item><description><see cref="Ordinates.Z"/></description></item>
+        /// <item><description><see cref="Ordinates.M"/></description></item>
         /// </list>
-        /// <see cref="Ordinates.XY"/> is always assumed and not particularly checked for.
+        /// Values of <see cref="Ordinates.X"/> and <see cref="Ordinates.Y"/> are always assumed and
+        /// not particularly checked for.
         /// </summary>
         public Ordinates OutputOrdinates
         {
             get => _outputOrdinates;
-            set
-            {
-                switch (_outputDimension)
-                {
-                    case 2:
-                        _outputOrdinates = Ordinates.XY;
-                        break;
-
-                    case 3:
-                        _outputOrdinates =
-                            (value & Ordinates.XYZ) |
-                            (value & Ordinates.XYM);
-                        break;
-
-                    default:
-                        _outputOrdinates = value & Ordinates.XYZM;
-                        break;
-                }
-            }
+            set => _outputOrdinates = Ordinates.XY | (value & Ordinates.XYZM);
         }
 
         /// <summary>
@@ -533,7 +451,7 @@ namespace NetTopologySuite.IO
         private void AppendGeometryTaggedText(IGeometry geometry, bool useFormatting, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
             // evaluate the ordinates actually present in the geometry
-            var cof = new CheckOrdinatesFilter(_outputOrdinates, ZIsMeasure);
+            var cof = new CheckOrdinatesFilter(_outputOrdinates);
             geometry.Apply(cof);
 
             // Append the WKT
@@ -736,40 +654,24 @@ namespace NetTopologySuite.IO
         {
             writer.Write(WriteNumber(seq.GetX(i), formatter, format, useMaxPrecision) + " " + WriteNumber(seq.GetY(i), formatter, format, useMaxPrecision));
 
-            if (outputOrdinates == Ordinates.XY)
+            if (outputOrdinates.HasFlag(Ordinates.Z))
             {
-                return;
-            }
-
-            // we have three dimensions, either z- or measure-ordinate
-            if (outputOrdinates == Ordinates.XYZ ||
-                outputOrdinates == Ordinates.XYM)
-            {
-                double val = (outputOrdinates == Ordinates.XYM && seq.Dimension > 3)
-                    ? seq.GetOrdinate(i, Ordinate.M)
-                    : seq.GetOrdinate(i, Ordinate.Z);
-                if (!double.IsNaN(val))
+                double z = seq.GetZ(i);
+                if (!double.IsNaN(z))
                 {
                     writer.Write(" ");
-                    writer.Write(WriteNumber(val, formatter, format, useMaxPrecision));
+                    writer.Write(WriteNumber(seq.GetZ(i), formatter, format, useMaxPrecision));
                 }
-
-                return;
+                else
+                {
+                    writer.Write(" NaN");
+                }
             }
 
-            // we have 4 dimensions!
-            double z = seq.GetOrdinate(i, Ordinate.Z);
-            double m = seq.GetOrdinate(i, Ordinate.M);
-            if (!double.IsNaN(z) | !double.IsNaN(m))
+            if (outputOrdinates.HasFlag(Ordinates.M))
             {
                 writer.Write(" ");
-                writer.Write(WriteNumber(z, formatter, format, useMaxPrecision));
-            }
-
-            if (!double.IsNaN(m))
-            {
-                writer.Write(" ");
-                writer.Write(WriteNumber(m, formatter, format, useMaxPrecision));
+                writer.Write(WriteNumber(seq.GetM(i), formatter, format, useMaxPrecision));
             }
         }
 
@@ -807,18 +709,18 @@ namespace NetTopologySuite.IO
         /// <list type="bullet">
         /// <item>
         /// <description>
-        /// append 'Z' if in <paramref name="outputOrdinates"/> the <see cref="Ordinates.Z"/> bit is set.
+        /// append 'Z' if in <paramref name="outputOrdinates"/> the <see cref="Ordinates.Z"/> value is included.
         /// </description>
         /// </item>
         /// <item>
         /// <description>
-        /// append 'M' if in <paramref name="outputOrdinates"/> the <see cref="Ordinates.M"/> bit is set.
+        /// append 'M' if in <paramref name="outputOrdinates"/> the <see cref="Ordinates.M"/> value is included.
         /// </description>
         /// </item>
         /// <item>
         /// <description>
-        /// append 'ZM' if in <paramref name="outputOrdinates"/> the <see cref="Ordinates.Z"/> bit and
-        /// <see cref="Ordinates.M"/> bit are set.
+        /// append 'ZM' if in <paramref name="outputOrdinates"/> the <see cref="Ordinates.Z"/> and
+        /// <see cref="Ordinates.M"/> values are included.
         /// </description>
         /// </item>
         /// </list>
