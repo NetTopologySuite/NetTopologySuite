@@ -26,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             _geometryFactory = new GeometryFactory(_csFactory);
             _reader = new WKTReader(_geometryFactory);
 
-            _writer = new WKTWriter(4);
+            _writer = new WKTWriter(4) { OutputOrdinates = Ordinates.XY };
         }
 
         [TestAttribute]
