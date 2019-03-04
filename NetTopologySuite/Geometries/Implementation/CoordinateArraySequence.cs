@@ -203,16 +203,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="coord">A Coordinate to receive the value.</param>
         public void GetCoordinate(int index, Coordinate coord)
         {
-            coord.X = Coordinates[index].X;
-            coord.Y = Coordinates[index].Y;
-            if (HasZ)
-            {
-                coord.Z = Coordinates[index].Z;
-            }
-            if (HasM)
-            {
-                coord.M = Coordinates[index].M;
-            }
+            coord.CoordinateValue = Coordinates[index];
         }
 
         /// <summary>
