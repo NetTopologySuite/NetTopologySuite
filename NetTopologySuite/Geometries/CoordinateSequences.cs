@@ -12,7 +12,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Reverses the coordinates in a sequence in-place.
         /// </summary>
-        /// <param name="seq"></param>
+        /// <param name="seq">The coordinate sequence to reverse.</param>
         public static void Reverse(ICoordinateSequence seq)
         {
             int last = seq.Count - 1;
