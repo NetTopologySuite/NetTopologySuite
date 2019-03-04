@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.ExceptionServices;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
@@ -53,7 +54,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         {
             IGeometry result = null;
             bool isSuccess = false;
-            Exception savedException = null;
+            ExceptionDispatchInfo savedException = null;
             try
             {
                 // try basic operation with input geometries
@@ -66,7 +67,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             }
             catch (Exception ex)
             {
-                savedException = ex;
+                savedException = ExceptionDispatchInfo.Capture(ex);
                 // Ignore this exception, since the operation will be rerun
             }
             if (!isSuccess)
@@ -79,7 +80,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
                 }
                 catch (Exception)
                 {
-                    throw savedException;
+                    savedException.Throw();
                 }
             }
             return result;

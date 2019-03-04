@@ -38,7 +38,7 @@ namespace NetTopologySuite.Index.KdTree
         /// <param name="data">A data objects to associate with this node</param>
         public KdNode(Coordinate p, T data)
         {
-            _p = new Coordinate(p);
+            _p = p.Copy();
             this.Left = null;
             this.Right = null;
             _count = 1;

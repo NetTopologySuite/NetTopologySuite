@@ -342,11 +342,11 @@ namespace NetTopologySuite.Tests.NUnit
         {
             Coordinate[] coordinates =
                 {
-                    new Coordinate(10, 10, 0),
-                    new Coordinate(10, 20, 0),
-                    new Coordinate(20, 20, 0),
-                    new Coordinate(20, 15, 0),
-                    new Coordinate(10, 10, 0)
+                    new CoordinateZ(10, 10, 0),
+                    new CoordinateZ(10, 20, 0),
+                    new CoordinateZ(20, 20, 0),
+                    new CoordinateZ(20, 15, 0),
+                    new CoordinateZ(10, 10, 0)
                 };
             var linearRing = geometryFactory.CreateLinearRing(coordinates);
             Assert.IsTrue(linearRing.IsSimple);
@@ -496,8 +496,8 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(!c1.Equals(c2));
             Assert.AreEqual(new Coordinate(), new Coordinate(0, 0));
             Assert.AreEqual(new Coordinate(3, 5), new Coordinate(3, 5));
-            Assert.AreEqual(new Coordinate(3, 5, double.NaN), new Coordinate(3, 5, double.NaN));
-            Assert.IsTrue(new Coordinate(3, 5, 0).Equals(new Coordinate(3, 5, double.NaN)));
+            Assert.AreEqual(new CoordinateZ(3, 5, double.NaN), new CoordinateZ(3, 5, double.NaN));
+            Assert.IsTrue(new CoordinateZ(3, 5, 0).Equals(new CoordinateZ(3, 5, double.NaN)));
         }
 
         [TestAttribute]

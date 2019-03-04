@@ -11,9 +11,7 @@ namespace NetTopologySuite.Geometries
     /// parties that change them are actually changing the
     /// DefaultCoordinateSequence's underlying data.
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     [Obsolete("No longer used.")]
     public class DefaultCoordinateSequence : ICoordinateSequence
     {
@@ -57,9 +55,19 @@ namespace NetTopologySuite.Geometries
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
         /// </summary>
         /// <value></value>
-        public int Dimension => 3;
+        public int Dimension => 2;
+
+        /// <inheritdoc />
+        public int Measures => 0;
+
+        public bool HasZ => false;
+
+        public bool HasM => false;
 
         public Ordinates Ordinates => Ordinates.XYZ;
+
+        /// <inheritdoc />
+        public Coordinate CreateCoordinate() => Coordinates.Create(Dimension, Measures);
 
         /// <summary>
         /// Returns the coordinate at specified index.
@@ -77,7 +85,7 @@ namespace NetTopologySuite.Geometries
         /// <return>The copy of the coordinate specified.</return>
         public Coordinate GetCoordinateCopy(int i)
         {
-            return new Coordinate(_coordinates[i]);
+            return _coordinates[i].Copy();
         }
 
         /// <summary>
@@ -114,6 +122,45 @@ namespace NetTopologySuite.Geometries
         public double GetY(int index)
         {
             return _coordinates[index].Y;
+        }
+
+        /// <summary>
+        /// Returns ordinate Z of the specified coordinate if available.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns>
+        /// The value of the Z ordinate in the index'th coordinate, or Double.NaN if not defined.
+        /// </returns>
+        public double GetZ(int index)
+        {
+            if (Dimension - Measures > 2)
+            {
+                return GetOrdinate(index, Ordinate.Z);
+            }
+            else
+            {
+                return double.NaN;
+            }
+        }
+
+        /// <summary>
+        /// Returns ordinate M of the specified coordinate if available.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns>
+        /// The value of the M ordinate in the index'th coordinate, or Double.NaN if not defined.
+        /// </returns>
+        public double GetM(int index)
+        {
+            if (Dimension > 2 && Measures > 0)
+            {
+                int mIndex = Dimension - Dimension;
+                return GetOrdinate(index, (Ordinate)mIndex);
+            }
+            else
+            {
+                return Coordinate.NullOrdinate;
+            }
         }
 
         /// <summary>

@@ -49,6 +49,9 @@ namespace NetTopologySuite.Samples.Geometries
             _coordinates = CopyInternal(copyCoords);
         }
 
+        /// <inheritdoc />
+        public Coordinate CreateCoordinate() => new ExtendedCoordinate();
+
         /// <summary>
         /// Returns (possibly a copy of) the ith Coordinate in this collection.
         /// Whether or not the Coordinate returned is the actual underlying
@@ -92,6 +95,10 @@ namespace NetTopologySuite.Samples.Geometries
 
             return new ExtendedCoordinateSequence(cloneCoordinates);
         }
+
+        public bool HasZ => true;
+
+        public bool HasM => true;
 
         public Ordinates Ordinates => Ordinates.XYZM;
 
@@ -143,7 +150,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// <returns></returns>
         public Coordinate GetCoordinateCopy(int index)
         {
-            return new Coordinate(_coordinates[index]);
+            return _coordinates[index].Copy();
         }
 
         /// <summary>
@@ -158,10 +165,7 @@ namespace NetTopologySuite.Samples.Geometries
             coord.X = exc.X;
             coord.Y = exc.Y;
             coord.Z = exc.Z;
-
-            var exCoord = coord as ExtendedCoordinate;
-            if (exCoord != null)
-                exCoord.M = exc.M;
+            coord.M = exc.M;
         }
 
         /// <summary>
@@ -186,6 +190,18 @@ namespace NetTopologySuite.Samples.Geometries
         public double GetY(int index)
         {
             return _coordinates[index].Y;
+        }
+
+        /// <inheritdoc />
+        public double GetZ(int index)
+        {
+            return _coordinates[index].Z;
+        }
+
+        /// <inheritdoc />
+        public double GetM(int index)
+        {
+            return _coordinates[index].M;
         }
 
         /// <summary>
@@ -273,5 +289,8 @@ namespace NetTopologySuite.Samples.Geometries
         /// </summary>
         /// <value></value>
         public int Dimension => 4;
+
+        /// <inheritdoc />
+        public int Measures => 1;
     }
 }

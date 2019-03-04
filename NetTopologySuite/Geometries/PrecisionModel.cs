@@ -49,9 +49,7 @@ namespace NetTopologySuite.Geometries
     /// NTS binary methods currently do not handle inputs which have different precision models.
     /// The precision model of any constructed geometric value is undefined.
     /// </remarks>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public class PrecisionModel : IPrecisionModel
     {
         /// <summary>
@@ -289,7 +287,7 @@ namespace NetTopologySuite.Geometries
         [Obsolete("Use MakePrecise instead")]
         public Coordinate ToInternal(Coordinate cexternal)
         {
-            var cinternal = new Coordinate(cexternal);
+            var cinternal = cexternal.Copy();
             MakePrecise(cinternal);
             return cinternal;
         }
@@ -305,7 +303,7 @@ namespace NetTopologySuite.Geometries
         [Obsolete("No longer needed, since internal representation is same as external representation")]
         public Coordinate ToExternal(Coordinate cinternal)
         {
-            var cexternal = new Coordinate(cinternal);
+            var cexternal = cinternal.Copy();
             return cexternal;
         }
 

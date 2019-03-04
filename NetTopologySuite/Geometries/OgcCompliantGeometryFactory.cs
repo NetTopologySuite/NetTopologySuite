@@ -61,8 +61,8 @@ namespace NetTopologySuite.Geometries
         {
             if (coordinates != null && Orientation.IsCCW(coordinates) != ccw)
             {
-                //CoordinateSequences.Reverse(coordinates);
-                coordinates = coordinates.Reversed();
+                coordinates = coordinates.Copy();
+                CoordinateSequences.Reverse(coordinates);
             }
             return CreateLinearRing(coordinates);
         }

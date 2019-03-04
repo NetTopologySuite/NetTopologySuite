@@ -244,7 +244,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="intIndex"></param>
         public void AddIntersection(LineIntersector li, int segmentIndex, int geomIndex, int intIndex)
         {
-            var intPt = new Coordinate(li.GetIntersection(intIndex));
+            var intPt = li.GetIntersection(intIndex).Copy();
             int normalizedSegmentIndex = segmentIndex;
             double dist = li.GetEdgeDistance(geomIndex, intIndex);
 

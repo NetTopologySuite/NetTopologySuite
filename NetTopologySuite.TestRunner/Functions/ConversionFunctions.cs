@@ -12,7 +12,7 @@ namespace Open.Topology.TestRunner.Functions
         {
             var geoms = FunctionsUtil.BuildGeometry(g1, g2);
             return FunctionsUtil.GetFactoryOrDefault(new[] { g1, g2 })
-                .CreateMultiPoint(geoms.Coordinates);
+                .CreateMultiPointFromCoords(geoms.Coordinates);
         }
 
         public static IGeometry ToLines(IGeometry g1, IGeometry g2)

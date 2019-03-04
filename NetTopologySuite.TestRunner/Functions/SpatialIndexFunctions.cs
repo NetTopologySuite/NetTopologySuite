@@ -14,7 +14,7 @@ namespace Open.Topology.TestRunner.Functions
             var index = BuildKdTree(pts, tolerance);
             var result = index.Query(query.EnvelopeInternal);
             var resultCoords = KdTree<object>.ToCoordinates(result);
-            return pts.Factory.CreateMultiPoint(resultCoords);
+            return pts.Factory.CreateMultiPointFromCoords(resultCoords);
         }
 
         public static IGeometry KdTreeQueryRepeated(IGeometry pts, IGeometry queryEnv, double tolerance)
@@ -22,7 +22,7 @@ namespace Open.Topology.TestRunner.Functions
             var index = BuildKdTree(pts, tolerance);
             var result = index.Query(queryEnv.EnvelopeInternal);
             var resultCoords = KdTree<object>.ToCoordinates(result, true);
-            return pts.Factory.CreateMultiPoint(resultCoords);
+            return pts.Factory.CreateMultiPointFromCoords(resultCoords);
         }
 
         private static KdTree<object> BuildKdTree(IGeometry geom, double tolerance)

@@ -46,7 +46,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="pt">The point to add.</param>
         public void AddPt(Coordinate pt)
         {
-            var bufPt = new Coordinate(pt);
+            var bufPt = pt.Copy();
             _precisionModel.MakePrecise(bufPt);
             // don't add duplicate (or near-duplicate) points
             if (IsDuplicate(bufPt))
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Operation.Buffer
         public void CloseRing()
         {
             if (_ptList.Count < 1) return;
-            var startPt = new Coordinate(_ptList[0]);
+            var startPt = _ptList[0].Copy();
             var lastPt = _ptList[_ptList.Count - 1];
             /*Coordinate last2Pt = null;
               if (ptList.Count >= 2)

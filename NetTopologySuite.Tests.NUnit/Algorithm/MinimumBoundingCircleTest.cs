@@ -78,7 +78,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             var mbc = new MinimumBoundingCircle(reader.Read(wkt));
             var exPts = mbc.GetExtremalPoints();
-            IGeometry actual = geometryFactory.CreateMultiPoint(exPts);
+            IGeometry actual = geometryFactory.CreateMultiPointFromCoords(exPts);
             double actualRadius = mbc.GetRadius();
             var actualCentre = mbc.GetCentre();
             //Console.WriteLine("   Centre = " + actualCentre + "   Radius = " + actualRadius);

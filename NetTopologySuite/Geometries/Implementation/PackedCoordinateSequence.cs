@@ -1,7 +1,5 @@
 using System;
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
 using System.Runtime.Serialization;
-#endif
 using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries.Implementation
@@ -10,38 +8,60 @@ namespace NetTopologySuite.Geometries.Implementation
     /// A <c>CoordinateSequence</c> implementation based on a packed arrays.
     /// A <c>CoordinateSequence</c> implementation based on a packed arrays.
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public abstract class PackedCoordinateSequence : ICoordinateSequence
     {
         /// <summary>
         /// A soft reference to the Coordinate[] representation of this sequence.
         /// Makes repeated coordinate array accesses more efficient.
         /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
         [NonSerialized]
-#endif
         protected WeakReference CoordRef;
 
         /// <summary>
-        /// The dimensions of the coordinates hold in the packed array
+        /// The dimensions of the coordinates held in the packed array
         /// </summary>
         private int _dimension;
+
+        /// <summary>
+        /// The number of measures of the coordinates held in the packed array.
+        /// </summary>
+        private int _measures;
 
         /// <summary>
         /// The ordinates
         /// </summary>
         private Ordinates _ordinates;
 
-        private static Ordinates DimensionToOrdinate(int dimension)
+        protected PackedCoordinateSequence(int dimension, int measures)
         {
+            if (dimension - measures < 2)
+            {
+                throw new ArgumentException("Must have at least 2 spatial dimensions");
+            }
+
+            _dimension = dimension;
+            _measures = measures;
+            _ordinates = DimensionToOrdinate(_dimension, _measures);
+        }
+
+        internal static Ordinates DimensionToOrdinate(int dimension, int measures)
+        {
+            if (dimension > 3 && measures == 0)
+            {
+                // the result will be incorrect.  however, JTS would be fine with it, and integer
+                // ordinate indexes will be "correct"...ish..., so don't throw a fit over it here.
+                ////throw new NotSupportedException("result would have the Ordinates.M flag, but GetM() would fail!");
+            }
+
             switch (dimension)
             {
                 case 2:
                     return Ordinates.XY;
-                case 3:
+                case 3 when measures == 0:
                     return Ordinates.XYZ;
+                case 3:
+                    return Ordinates.XYM;
                 case 4:
                     return Ordinates.XYZM;
                 default:
@@ -62,9 +82,26 @@ namespace NetTopologySuite.Geometries.Implementation
             protected set
             {
                 _dimension = value;
-                _ordinates = DimensionToOrdinate(_dimension);
+                _ordinates = DimensionToOrdinate(_dimension, _measures);
             }
         }
+
+        /// <inheritdoc />
+        public int Measures
+        {
+            get => _measures;
+            protected set
+            {
+                _measures = value;
+                _ordinates = DimensionToOrdinate(_dimension, _measures);
+            }
+        }
+
+        /// <inheritdoc />
+        public bool HasZ => Dimension - Measures > 2;
+
+        /// <inheritdoc />
+        public bool HasM => Dimension > 2 && Measures > 0;
 
         public Ordinates Ordinates => _ordinates;
 
@@ -73,6 +110,9 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <value></value>
         public abstract int Count { get; }
+
+        /// <inheritdoc />
+        public Coordinate CreateCoordinate() => Coordinates.Create(Dimension, Measures);
 
         /// <summary>
         /// Returns (possibly a copy of) the ith Coordinate in this collection.
@@ -118,6 +158,15 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             c.X = GetOrdinate(i, Ordinate.X);
             c.Y = GetOrdinate(i, Ordinate.Y);
+            if (HasZ)
+            {
+                c.Z = GetZ(i);
+            }
+
+            if (HasM)
+            {
+                c.M = GetM(i);
+            }
         }
 
         /// <summary>
@@ -188,10 +237,50 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
+        /// Returns ordinate Z of the specified coordinate if available.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns>
+        /// The value of the Z ordinate in the index'th coordinate, or Double.NaN if not defined.
+        /// </returns>
+        public double GetZ(int index)
+        {
+            if (HasZ)
+            {
+                return GetOrdinate(index, Ordinate.Z);
+            }
+            else
+            {
+                return double.NaN;
+            }
+        }
+
+        /// <summary>
+        /// Returns ordinate M of the specified coordinate if available.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns>
+        /// The value of the M ordinate in the index'th coordinate, or Double.NaN if not defined.
+        /// </returns>
+        public double GetM(int index)
+        {
+            if (HasM)
+            {
+                int mIndex = Dimension - Measures;
+                return GetOrdinate(index, (Ordinate)mIndex);
+            }
+            else
+            {
+                return Coordinate.NullOrdinate;
+            }
+        }
+
+        /// <summary>
         /// Returns the ordinate of a coordinate in this sequence.
         /// Ordinate indices 0 and 1 are assumed to be X and Y.
         /// Ordinate indices greater than 1 have user-defined semantics
-        /// (for instance, they may contain other dimensions or measure values).
+        /// (for instance, they may contain other dimensions or measure
+        /// values as described by <see cref="Dimension"/> and <see cref="Measures"/>).
         /// </summary>
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
@@ -268,21 +357,17 @@ namespace NetTopologySuite.Geometries.Implementation
 
         public abstract ICoordinateSequence Reversed();
 
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
         [OnDeserialized]
         private void OnDeserialization(StreamingContext context)
         {
             CoordRef = null;
         }
-#endif
     }
 
     /// <summary>
     /// Packed coordinate sequence implementation based on doubles.
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public class PackedDoubleCoordinateSequence : PackedCoordinateSequence
     {
         /// <summary>
@@ -294,17 +379,15 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
         /// </summary>
         /// <param name="coords"></param>
-        /// <param name="dimensions"></param>
-        public PackedDoubleCoordinateSequence(double[] coords, int dimensions)
+        /// <param name="dimension"></param>
+        /// <param name="measures"></param>
+        public PackedDoubleCoordinateSequence(double[] coords, int dimension, int measures)
+            : base(dimension, measures)
         {
-            if (dimensions < 2)
-                throw new ArgumentException("Must have at least 2 dimensions");
-
-            if (coords.Length % dimensions != 0)
+            if (coords.Length % dimension != 0)
                 throw new ArgumentException("Packed array does not contain " +
                     "an integral number of coordinates");
 
-            Dimension = dimensions;
             _coords = coords;
         }
 
@@ -312,11 +395,12 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
         /// </summary>
         /// <param name="coordinates"></param>
-        /// <param name="dimensions"></param>
-        public PackedDoubleCoordinateSequence(float[] coordinates, int dimensions)
+        /// <param name="dimension"></param>
+        /// <param name="measures"></param>
+        public PackedDoubleCoordinateSequence(float[] coordinates, int dimension, int measures)
+            : base(dimension, measures)
         {
             _coords = new double[coordinates.Length];
-            Dimension = dimensions;
             for (int i = 0; i < coordinates.Length; i++)
                 _coords[i] = coordinates[i];
         }
@@ -327,10 +411,21 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="coordinates"></param>
         /// <param name="dimension"></param>
         public PackedDoubleCoordinateSequence(Coordinate[] coordinates, int dimension)
+            : this(coordinates, dimension, 0)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
+        /// </summary>
+        /// <param name="coordinates"></param>
+        /// <param name="dimension"></param>
+        /// <param name="measures"></param>
+        public PackedDoubleCoordinateSequence(Coordinate[] coordinates, int dimension, int measures)
+            : base(dimension, measures)
         {
             if (coordinates == null)
                 coordinates = new Coordinate[0];
-            Dimension = dimension;
 
             _coords = new double[coordinates.Length * Dimension];
             for (int i = 0; i < coordinates.Length; i++)
@@ -339,7 +434,9 @@ namespace NetTopologySuite.Geometries.Implementation
                 if (Dimension >= 2)
                     _coords[i * Dimension + 1] = coordinates[i].Y;
                 if (Dimension >= 3)
-                    _coords[i * Dimension + 2] = coordinates[i].Z;
+                    _coords[i * Dimension + 2] = coordinates[i][Ordinate.Ordinate2]; // Z or M
+                if (Dimension >= 4)
+                    _coords[i * Dimension + 3] = coordinates[i][Ordinate.M]; // M
             }
         }
 
@@ -347,16 +444,17 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
         /// </summary>
         /// <param name="coordinates"></param>
-        public PackedDoubleCoordinateSequence(Coordinate[] coordinates) : this(coordinates, 3) { }
+        public PackedDoubleCoordinateSequence(Coordinate[] coordinates) : this(coordinates, 3, 0) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
         /// </summary>
         /// <param name="size"></param>
         /// <param name="dimension"></param>
-        public PackedDoubleCoordinateSequence(int size, int dimension)
+        /// <param name="measures"></param>
+        public PackedDoubleCoordinateSequence(int size, int dimension, int measures)
+            : base(dimension, measures)
         {
-            Dimension = dimension;
             _coords = new double[size * Dimension];
         }
 
@@ -370,8 +468,29 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             double x = _coords[index * Dimension];
             double y = _coords[index * Dimension + 1];
-            double z = Dimension == 2 ? Coordinate.NullOrdinate : _coords[index * Dimension + 2];
-            return new Coordinate(x, y, z);
+            if (Dimension == 2 && Measures == 0)
+            {
+                return new Coordinate(x, y);
+            }
+            else if (Dimension == 3 && Measures == 0)
+            {
+                double z = _coords[index * Dimension + 2];
+                return new CoordinateZ(x, y, z);
+            }
+            else if (Dimension == 3 && Measures == 1)
+            {
+                double m = _coords[index * Dimension + 2];
+                return new CoordinateM(x, y, m);
+            }
+            else if (Dimension == 4 && Measures == 1)
+            {
+                double z = _coords[index * Dimension + 2];
+                double m = _coords[index * Dimension + 3];
+                return new CoordinateZM(x, y, z, m);
+            }
+
+            // note: JTS's "Coordinate" is our "CoordinateZ".
+            return new CoordinateZ(x, y);
         }
 
         /// <summary>
@@ -407,7 +526,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             double[] clone = new double[_coords.Length];
             Array.Copy(_coords, clone, _coords.Length);
-            return new PackedDoubleCoordinateSequence(clone, Dimension);
+            return new PackedDoubleCoordinateSequence(clone, Dimension, Measures);
         }
 
         /// <summary>
@@ -469,16 +588,14 @@ namespace NetTopologySuite.Geometries.Implementation
             {
                 Buffer.BlockCopy(_coords, i * dim * sizeof(double), coords, --j * dim * sizeof(double), dim * sizeof(double));
             }
-            return new PackedDoubleCoordinateSequence(coords, dim);
+            return new PackedDoubleCoordinateSequence(coords, dim, Measures);
         }
     }
 
     /// <summary>
     /// Packed coordinate sequence implementation based on floats.
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public class PackedFloatCoordinateSequence : PackedCoordinateSequence
     {
         /// <summary>
@@ -490,17 +607,15 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Initializes a new instance of the <see cref="PackedFloatCoordinateSequence"/> class.
         /// </summary>
         /// <param name="coords"></param>
-        /// <param name="dimensions"></param>
-        public PackedFloatCoordinateSequence(float[] coords, int dimensions)
+        /// <param name="dimension"></param>
+        /// <param name="measures"></param>
+        public PackedFloatCoordinateSequence(float[] coords, int dimension, int measures)
+            : base(dimension, measures)
         {
-            if (dimensions < 2)
-                throw new ArgumentException("Must have at least 2 dimensions");
-
-            if (coords.Length % dimensions != 0)
+            if (coords.Length % dimension != 0)
                 throw new ArgumentException("Packed array does not contain " +
                     "an integral number of coordinates");
 
-            Dimension = dimensions;
             _coords = coords;
         }
 
@@ -508,11 +623,12 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Initializes a new instance of the <see cref="PackedFloatCoordinateSequence"/> class.
         /// </summary>
         /// <param name="coordinates"></param>
-        /// <param name="dimensions"></param>
-        public PackedFloatCoordinateSequence(double[] coordinates, int dimensions)
+        /// <param name="dimension"></param>
+        /// <param name="measures"></param>
+        public PackedFloatCoordinateSequence(double[] coordinates, int dimension, int measures)
+            : base(dimension, measures)
         {
             _coords = new float[coordinates.Length];
-            Dimension = dimensions;
             for (int i = 0; i < coordinates.Length; i++)
                 _coords[i] = (float) coordinates[i];
         }
@@ -523,10 +639,21 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="coordinates"></param>
         /// <param name="dimension"></param>
         public PackedFloatCoordinateSequence(Coordinate[] coordinates, int dimension)
+            : this(coordinates, dimension, 0)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PackedFloatCoordinateSequence"/> class.
+        /// </summary>
+        /// <param name="coordinates"></param>
+        /// <param name="dimension"></param>
+        /// <param name="measures"></param>
+        public PackedFloatCoordinateSequence(Coordinate[] coordinates, int dimension, int measures)
+            : base(dimension, measures)
         {
             if (coordinates == null)
                 coordinates = new Coordinate[0];
-            Dimension = dimension;
 
             _coords = new float[coordinates.Length * Dimension];
             for (int i = 0; i < coordinates.Length; i++)
@@ -544,9 +671,10 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="size"></param>
         /// <param name="dimension"></param>
-        public PackedFloatCoordinateSequence(int size, int dimension)
+        /// <param name="measures"></param>
+        public PackedFloatCoordinateSequence(int size, int dimension, int measures)
+            : base(dimension, measures)
         {
-            Dimension = dimension;
             _coords = new float[size * Dimension];
         }
 
@@ -560,8 +688,29 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             double x = _coords[index * Dimension];
             double y = _coords[index * Dimension + 1];
-            double z = Dimension == 2 ? 0.0 : _coords[index * Dimension + 2];
-            return new Coordinate(x, y, z);
+            if (Dimension == 2 && Measures == 0)
+            {
+                return new Coordinate(x, y);
+            }
+            else if (Dimension == 3 && Measures == 0)
+            {
+                double z = _coords[index * Dimension + 2];
+                return new CoordinateZ(x, y, z);
+            }
+            else if (Dimension == 3 && Measures == 1)
+            {
+                double m = _coords[index * Dimension + 2];
+                return new CoordinateM(x, y, m);
+            }
+            else if (Dimension == 4 && Measures == 1)
+            {
+                double z = _coords[index * Dimension + 2];
+                double m = _coords[index * Dimension + 3];
+                return new CoordinateZM(x, y, z, m);
+            }
+
+            // note: JTS's "Coordinate" is our "CoordinateZ".
+            return new CoordinateZ(x, y);
         }
 
         /// <summary>
@@ -597,7 +746,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             float[] clone = new float[_coords.Length];
             Array.Copy(_coords, clone, _coords.Length);
-            return new PackedFloatCoordinateSequence(clone, Dimension);
+            return new PackedFloatCoordinateSequence(clone, Dimension, Measures);
         }
 
         /// <summary>
@@ -658,7 +807,7 @@ namespace NetTopologySuite.Geometries.Implementation
             {
                 Buffer.BlockCopy(_coords, i * dim * sizeof(float), coords, --j * dim * sizeof(float), dim * sizeof(float));
             }
-            return new PackedDoubleCoordinateSequence(coords, dim);
+            return new PackedDoubleCoordinateSequence(coords, dim, Measures);
         }
 
     }

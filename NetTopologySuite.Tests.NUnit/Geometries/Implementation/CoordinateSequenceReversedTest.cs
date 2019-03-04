@@ -27,7 +27,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         public void TestPackedDoubleCoordinateSequence()
         {
             var csf = new NetTopologySuite.Geometries.Implementation.PackedDoubleCoordinateSequence(
-                new[] { 0d, 0d, 1d, 4d, 10d, 10d, 2d, 3d, 10d, 0d, 3d, 2d, 0d, 0d, 4d, 1d}, 4);
+                new[] { 0d, 0d, 1d, 4d, 10d, 10d, 2d, 3d, 10d, 0d, 3d, 2d, 0d, 0d, 4d, 1d}, 4, 1);
             var csr = csf.Reversed();
             DoTest(csf, csr);
         }
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         public void TestPackedFloatCoordinateSequence()
         {
             var csf = new NetTopologySuite.Geometries.Implementation.PackedFloatCoordinateSequence(
-                new[] { 0f, 0f, 1f, 4f, 10f, 10f, 2f, 3f, 10f, 0f, 3f, 2f, 0d, 0d, 4d, 1d }, 4);
+                new[] { 0f, 0f, 1f, 4f, 10f, 10f, 2f, 3f, 10f, 0f, 3f, 2f, 0d, 0d, 4d, 1d }, 4, 1);
             var csr = csf.Reversed();
             DoTest(csf, csr);
         }

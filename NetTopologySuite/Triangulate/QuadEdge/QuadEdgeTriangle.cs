@@ -238,7 +238,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             {
                 pts[i] = _edge[i].Orig.Coordinate;
             }
-            pts[3] = new Coordinate(pts[0]);
+            pts[3] = pts[0].Copy();
             return pts;
         }
 

@@ -1,9 +1,10 @@
 language: csharp
-mono: latest
-dotnet: 2.1.105
-dist: trusty
+mono: none
+sudo: false
+dotnet: 2.2
+dist: xenial
 script:
-- dotnet msbuild NetTopologySuite.sln /m "/t:Restore;Build" /p:Configuration=Release "/p:FrameworkPathOverride=$(dirname $(which mono))/../lib/mono/4.5/" /v:minimal /p:WarningLevel=3
+- dotnet msbuild NetTopologySuite.sln /m "/t:Restore;Build" /p:Configuration=Release /v:minimal /p:WarningLevel=3
 - dotnet test NetTopologySuite.Tests.NUnit --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)' --no-build --no-restore -c Release
 - dotnet test NetTopologySuite.Samples.Console --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)' --no-build --no-restore -c Release
 - dotnet test NetTopologySuite.Tests.Vivid.XUnit --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)' --no-build --no-restore -c Release

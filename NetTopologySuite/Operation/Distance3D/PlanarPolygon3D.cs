@@ -61,9 +61,9 @@ namespace NetTopologySuite.Operation.Distance3D
         private static Vector3D AverageNormal(ICoordinateSequence seq)
         {
             int n = seq.Count;
-            var sum = new Coordinate(0, 0, 0);
-            var p1 = new Coordinate(0, 0, 0);
-            var p2 = new Coordinate(0, 0, 0);
+            var sum = new CoordinateZ(0, 0, 0);
+            var p1 = new CoordinateZ(0, 0, 0);
+            var p2 = new CoordinateZ(0, 0, 0);
             for (int i = 0; i < n - 1; i++)
             {
                 seq.GetCoordinate(i, p1);
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Operation.Distance3D
          */
         private static Coordinate AveragePoint(ICoordinateSequence seq)
         {
-            var a = new Coordinate(0, 0, 0);
+            var a = new CoordinateZ(0, 0, 0);
             int n = seq.Count;
             for (int i = 0; i < n; i++)
             {

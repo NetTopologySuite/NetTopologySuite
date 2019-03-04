@@ -31,9 +31,7 @@ namespace NetTopologySuite.Geometries
     /// (i.e. effectively split the polygon into two pieces).</item>
     /// </list>
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public class Polygon : Geometry, IPolygon
     {
         /// <summary>

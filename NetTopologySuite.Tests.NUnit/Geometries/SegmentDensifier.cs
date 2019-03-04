@@ -29,7 +29,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var p0 = new Coordinate();
             var p1 = new Coordinate();
             seq.GetCoordinate(0, p0);
-            newCoords.Add(new Coordinate(p0));
+            newCoords.Add(p0.Copy());
 
             for (int i = 0; i < seq.Count - 1; i++)
             {
@@ -57,7 +57,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                                                 p0.Y + addedPtFrac * dely);
                 newCoords.Add(pt, false);
             }
-            newCoords.Add(new Coordinate(p1), false);
+            newCoords.Add(p1.Copy(), false);
         }
     }
 }

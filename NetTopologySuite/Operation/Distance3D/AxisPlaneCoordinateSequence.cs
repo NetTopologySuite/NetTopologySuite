@@ -66,7 +66,17 @@ namespace NetTopologySuite.Operation.Distance3D
 
         public int Dimension => 2;
 
+        /// <inheritdoc />
+        public int Measures => 0;
+
+        public bool HasZ => false;
+
+        public bool HasM => false;
+
         public Ordinates Ordinates => _seq.Ordinates;
+
+        /// <inheritdoc />
+        public Coordinate CreateCoordinate() => new CoordinateZ();
 
         public Coordinate GetCoordinate(int i)
         {
@@ -75,7 +85,7 @@ namespace NetTopologySuite.Operation.Distance3D
 
         public Coordinate GetCoordinateCopy(int i)
         {
-            return new Coordinate(GetX(i), GetY(i), GetZ(i));
+            return new CoordinateZ(GetX(i), GetY(i), GetZ(i));
         }
 
         public void GetCoordinate(int index, Coordinate coord)
@@ -98,6 +108,11 @@ namespace NetTopologySuite.Operation.Distance3D
         public double GetZ(int index)
         {
             return GetOrdinate(index, Ordinate.Z);
+        }
+
+        public double GetM(int index)
+        {
+            return double.NaN;
         }
 
         public double GetOrdinate(int index, Ordinate ordinateIndex)

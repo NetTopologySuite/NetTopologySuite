@@ -68,7 +68,7 @@ namespace NetTopologySuite.Samples.Technique
                 }
             }
             var endPts = endPtList.ToArray();
-            return GeometryFactory.Default.CreateMultiPoint(endPts);
+            return GeometryFactory.Default.CreateMultiPointFromCoords(endPts);
         }
     }
 }

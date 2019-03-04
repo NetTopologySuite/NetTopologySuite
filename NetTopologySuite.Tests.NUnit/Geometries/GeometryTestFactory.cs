@@ -42,7 +42,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 double y = maxy - i * segLen;
                 pts[ipt++] = new Coordinate(x, y);
             }
-            pts[ipt++] = new Coordinate(pts[0]);
+            pts[ipt++] = pts[0].Copy();
 
             return pts;
         }

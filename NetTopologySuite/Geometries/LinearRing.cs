@@ -19,9 +19,7 @@ namespace NetTopologySuite.Geometries
     /// If these conditions are not met, the constructors throw
     /// an <see cref="ArgumentException"/></para>
     /// </remarks>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public class LinearRing : LineString, ILinearRing
     {
         /// <summary>
@@ -92,7 +90,8 @@ namespace NetTopologySuite.Geometries
 
         public override IGeometry Reverse()
         {
-            var sequence = CoordinateSequence.Reversed();
+            var sequence = CoordinateSequence.Copy();
+            CoordinateSequences.Reverse(sequence);
             return Factory.CreateLinearRing(sequence);
         }
 

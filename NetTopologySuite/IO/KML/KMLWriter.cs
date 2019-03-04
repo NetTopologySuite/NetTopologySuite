@@ -178,7 +178,7 @@ namespace NetTopologySuite.IO.KML
                 ? new PrecisionModel(PrecisionModels.Floating)
                 : new PrecisionModel(precision);
             _formatter = WKTWriter.CreateFormatter(precisionModel);
-            string digits = WKTWriter.StringOfChar('#', _formatter.NumberDecimalDigits);
+            string digits = new string('#', _formatter.NumberDecimalDigits);
             _format = string.Format("0.{0}", digits);
         }
 
@@ -234,7 +234,8 @@ namespace NetTopologySuite.IO.KML
         {
             if (LinePrefix != null)
                 sb.Append(LinePrefix);
-            sb.Append(WKTWriter.StringOfChar(' ', IndentSize * level));
+            if (level > 0)
+                sb.Append(new string(' ', IndentSize * level));
             sb.Append(text);
         }
 

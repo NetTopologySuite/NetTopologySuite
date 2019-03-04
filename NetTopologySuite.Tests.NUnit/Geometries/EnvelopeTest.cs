@@ -223,7 +223,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
             var env = input.EnvelopeInternal;
             var envGeomActual = geometryFactory.ToGeometry(env);
-            bool isEqual = envGeomActual.Equals(envGeomExpected);
+            bool isEqual = envGeomActual.EqualsTopologically(envGeomExpected);
             Assert.IsTrue(isEqual);
         }
 

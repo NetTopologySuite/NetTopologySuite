@@ -86,7 +86,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 double y = curveRadius * Math.Sin(ang) + centreY;
                 pts[iPt++] = CreateCoord(x, y);
             }
-            pts[iPt] = new Coordinate(pts[0]);
+            pts[iPt] = pts[0].Copy();
 
             var ring = GeomFact.CreateLinearRing(pts);
             var poly = GeomFact.CreatePolygon(ring);

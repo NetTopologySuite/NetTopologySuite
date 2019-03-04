@@ -120,9 +120,7 @@ namespace NetTopologySuite.Geometries
     /// Geometries can be used effectively in .Net collections.
     /// </para>
     /// </remarks>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public abstract class Geometry : IGeometry
     {
         /// <summary>
@@ -1259,7 +1257,7 @@ namespace NetTopologySuite.Geometries
         /// To represent these arcs using linear geometry they must be approximated with line segments.
         /// The buffer geometry is constructed using 8 segments per quadrant to approximate
         /// the circular arcs.</para>
-        /// <para>The end cap style is <c>BufferStyle.CapRound</c>.</para>
+        /// <para>The end cap style is <c>EndCapStyle.Round</c>.</para>
         /// <para>
         /// The buffer operation always returns a polygonal result. The negative or
         /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.
@@ -1281,43 +1279,6 @@ namespace NetTopologySuite.Geometries
         public IGeometry Buffer(double distance)
         {
             return BufferOp.Buffer(this, distance);
-        }
-
-        /// <summary>
-        /// Computes a buffer region around this <c>Geometry</c> having the given width.
-        /// The buffer of a Geometry is the Minkowski sum or difference of the geometry
-        /// with a disc of radius <c>Abs(distance)</c>.
-        /// </summary>
-        /// <remarks>
-        /// <para>The end cap style specifies the buffer geometry that will be
-        /// created at the ends of linestrings.  The styles provided are:
-        /// <ul>
-        /// <li><see cref="BufferStyle.CapRound" /> - (default) a semi-circle</li>
-        /// <li><see cref="BufferStyle.CapButt" /> - a straight line perpendicular to the end segment</li>
-        /// <li><see cref="BufferStyle.CapSquare" /> - a half-square</li>
-        /// </ul></para>
-        /// <para>The buffer operation always returns a polygonal result. The negative or
-        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.</para>
-        /// </remarks>
-        /// <param name="distance">
-        /// The width of the buffer, interpreted according to the
-        /// <c>PrecisionModel</c> of the <c>Geometry</c>.
-        /// </param>
-        /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
-        /// <returns>
-        /// a polygonal geometry representing the buffer region (which may be empty)
-        /// </returns>
-        /// <exception cref="TopologyException">If a robustness error occurs</exception>
-        /// <seealso cref="Buffer(double)"/>
-        /// <seealso cref="Buffer(double, EndCapStyle)"/>
-        /// <seealso cref="Buffer(double, IBufferParameters)"/>
-        /// <seealso cref="Buffer(double, int)"/>
-        /// <seealso cref="Buffer(double, int, BufferStyle)"/>
-        /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
-        [Obsolete]
-        public IGeometry Buffer(double distance, BufferStyle endCapStyle)
-        {
-            return BufferOp.Buffer(this, distance, BufferParameters.DefaultQuadrantSegments, endCapStyle);
         }
 
         /// <summary>
@@ -1352,7 +1313,7 @@ namespace NetTopologySuite.Geometries
         public IGeometry Buffer(double distance, EndCapStyle endCapStyle)
         {
             var para = new BufferParameters { EndCapStyle = endCapStyle };
-            return BufferOp.Buffer(this, distance, para);//BufferParameters.DefaultQuadrantSegments, (BufferStyle)endCapStyle);
+            return BufferOp.Buffer(this, distance, para);
         }
 
         /// <summary>
@@ -1389,53 +1350,6 @@ namespace NetTopologySuite.Geometries
         public IGeometry Buffer(double distance, int quadrantSegments)
         {
             return BufferOp.Buffer(this, distance, quadrantSegments);
-        }
-
-        /// <summary>
-        /// Computes a buffer region around this <c>Geometry</c> having the given
-        /// width and with a specified number of segments used to approximate curves.
-        /// The buffer of a Geometry is the Minkowski sum of the Geometry with
-        /// a disc of radius <c>distance</c>.  Curves in the buffer polygon are
-        /// approximated with line segments.  This method allows specifying the
-        /// accuracy of that approximation.
-        /// </summary>
-        /// <remarks><para>Mathematically-exact buffer area boundaries can contain circular arcs.
-        /// To represent these arcs using linear geometry they must be approximated with line segments.
-        /// The <c>quadrantSegments</c> argument allows controlling the accuracy of
-        /// the approximation by specifying the number of line segments used to
-        /// represent a quadrant of a circle</para>
-        /// <para>The end cap style specifies the buffer geometry that will be
-        /// created at the ends of linestrings.  The styles provided are:
-        /// <ul>
-        /// <li><see cref="BufferStyle.CapRound" /> - (default) a semi-circle</li>
-        /// <li><see cref="BufferStyle.CapButt" /> - a straight line perpendicular to the end segment</li>
-        /// <li><see cref="BufferStyle.CapSquare" /> - a half-square</li>
-        /// </ul></para>
-        /// <para>The buffer operation always returns a polygonal result. The negative or
-        /// zero-distance buffer of lines and points is always an empty <see cref="IPolygonal"/>.
-        /// This is also the result for the buffers of degenerate (zero-area) polygons.
-        /// </para>
-        /// </remarks>
-        /// <param name="distance">
-        /// The width of the buffer, interpreted according to the
-        /// <c>PrecisionModel</c> of the <c>Geometry</c>.
-        /// </param>
-        /// <param name="quadrantSegments">The number of segments to use to approximate a quadrant of a circle.</param>
-        /// <param name="endCapStyle">Cap Style to use for compute buffer.</param>
-        /// <returns>
-        /// a polygonal geometry representing the buffer region (which may be empty)
-        /// </returns>
-        /// <exception cref="TopologyException">If a robustness error occurs</exception>
-        /// <seealso cref="Buffer(double)"/>
-        /// <seealso cref="Buffer(double, BufferStyle)"/>
-        /// <seealso cref="Buffer(double, EndCapStyle)"/>
-        /// <seealso cref="Buffer(double, IBufferParameters)"/>
-        /// <seealso cref="Buffer(double, int)"/>
-        /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
-        [Obsolete]
-        public IGeometry Buffer(double distance, int quadrantSegments, BufferStyle endCapStyle)
-        {
-            return BufferOp.Buffer(this, distance, quadrantSegments, endCapStyle);
         }
 
         /// <summary>
@@ -1519,10 +1433,8 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         /// <exception cref="TopologyException">If a robustness error occurs</exception>
         /// <seealso cref="Buffer(double)"/>
-        ///// <seealso cref="Buffer(double, BufferStyle)"/>
         /// <seealso cref="Buffer(double, EndCapStyle)"/>
         /// <seealso cref="Buffer(double, int)"/>
-        ///// <seealso cref="Buffer(double, int, BufferStyle)"/>
         /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
         public IGeometry Buffer(double distance, IBufferParameters bufferParameters)
         {

@@ -222,8 +222,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             var l2 = (LineString)_reader.Read(wkt2);
             var pt = new[]
                      {
-                         new Coordinate(l1.Coordinates[0]), new Coordinate(l1.Coordinates[1]),
-                         new Coordinate(l2.Coordinates[0]), new Coordinate(l2.Coordinates[1])
+                         l1.Coordinates[0].Copy(), l1.Coordinates[1].Copy(),
+                         l2.Coordinates[0].Copy(), l2.Coordinates[1].Copy()
                      };
             CheckIntersection(pt, expectedIntersectionNum, intPt, distanceTolerance);
         }
@@ -237,8 +237,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             var l2 = (LineString)_reader.Read(wkt2);
             var pt = new[]
                      {
-                         new Coordinate(l1.Coordinates[0]), new Coordinate(l1.Coordinates[1]),
-                         new Coordinate(l2.Coordinates[0]), new Coordinate(l2.Coordinates[1])
+                         l1.Coordinates[0].Copy(), l1.Coordinates[1].Copy(),
+                         l2.Coordinates[0].Copy(), l2.Coordinates[1].Copy()
                      };
             var g = _reader.Read(expectedWKT);
             var intPt = g.Coordinates;
@@ -326,7 +326,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             var savePt = new Coordinate[4];
             for (int i = 0; i < 4; i++)
             {
-                savePt[i] = new Coordinate(pt[i]);
+                savePt[i] = pt[i].Copy();
             }
 
             LineIntersector li = new RobustLineIntersector();

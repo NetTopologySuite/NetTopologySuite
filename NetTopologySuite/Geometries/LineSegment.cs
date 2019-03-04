@@ -4,10 +4,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using BitConverter = System.BitConverter;
 
-#if !HAS_SYSTEM_APPLICATIONEXCEPTION
-using ApplicationException = System.Exception;
-#endif
-
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
@@ -20,9 +16,7 @@ namespace NetTopologySuite.Geometries
     /// object as a way of computing segment properties on the
     /// segments defined by arrays or lists of <c>Coordinate</c>s.
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public class LineSegment : IComparable<LineSegment>
     {
         private Coordinate _p0, _p1;
@@ -394,7 +388,7 @@ namespace NetTopologySuite.Geometries
         public Coordinate Project(Coordinate p)
         {
             if (p.Equals(_p0) || p.Equals(_p1))
-                return new Coordinate(p);
+                return p.Copy();
 
             double r = ProjectionFactor(p);
             var coord = new Coordinate { X = _p0.X + r * (_p1.X - _p0.X), Y = _p0.Y + r * (_p1.Y - _p0.Y) };

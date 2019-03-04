@@ -65,8 +65,8 @@ namespace NetTopologySuite.Precision
             if (candidateValue < _minClearance)
             {
                 _minClearance = candidateValue;
-                _minClearancePts[0] = new Coordinate(p0);
-                _minClearancePts[1] = new Coordinate(p1);
+                _minClearancePts[0] = p0.Copy();
+                _minClearancePts[1] = p1.Copy();
             }
         }
 
@@ -76,9 +76,9 @@ namespace NetTopologySuite.Precision
             if (candidateValue < _minClearance)
             {
                 _minClearance = candidateValue;
-                _minClearancePts[0] = new Coordinate(p);
+                _minClearancePts[0] = p.Copy();
                 var seg = new LineSegment(seg0, seg1);
-                _minClearancePts[1] = new Coordinate(seg.ClosestPoint(p));
+                _minClearancePts[1] = seg.ClosestPoint(p).Copy();
             }
         }
 

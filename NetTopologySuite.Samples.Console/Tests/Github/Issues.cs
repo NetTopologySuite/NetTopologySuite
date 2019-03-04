@@ -257,7 +257,9 @@ namespace NetTopologySuite.Samples.Tests.Github
             var gpr = new NetTopologySuite.Precision.GeometryPrecisionReducer(new PrecisionModel(1e10));
             var poly1 = gpr.Reduce(poly);
             var poly2 = poly.Buffer(0);
-            var shell = poly.Factory.CreatePolygon(((IPolygon)poly).Shell.CoordinateSequence.Reversed()).Buffer(0);
+            var shellCoords = ((IPolygon)poly).Shell.CoordinateSequence.Copy();
+            CoordinateSequences.Reverse(shellCoords);
+            var shell = poly.Factory.CreatePolygon(shellCoords).Buffer(0);
 
             ToImage(0, poly, poly1, poly2);
 

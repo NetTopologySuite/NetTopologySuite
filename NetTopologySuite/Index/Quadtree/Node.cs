@@ -9,9 +9,7 @@ namespace NetTopologySuite.Index.Quadtree
     /// items which have a spatial extent corresponding to the node's position
     /// in the quadtree.
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public class Node<T> : NodeBase<T>
     {
         /// <summary>

@@ -3,10 +3,6 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 
-#if !HAS_SYSTEM_ICLONEABLE
-using ICloneable = GeoAPI.ICloneable;
-#endif
-
 namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>
@@ -63,7 +59,7 @@ namespace NetTopologySuite.LinearReferencing
             double y = (p1.Y - p0.Y) * fraction + p0.Y;
             // interpolate Z value. If either input Z is NaN, result z will be NaN as well.
             double z = (p1.Z - p0.Z) * fraction + p0.Z;
-            return new Coordinate(x, y, z);
+            return new CoordinateZ(x, y, z);
         }
 
         private int _componentIndex;

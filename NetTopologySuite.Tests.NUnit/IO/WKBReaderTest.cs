@@ -1,7 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
 using NetTopologySuite.Tests.NUnit.TestData;
 using NUnit.Framework;
@@ -91,8 +94,15 @@ namespace NetTopologySuite.Tests.NUnit.IO
             var wkbReader = new WKBReader();
             var g2 = wkbReader.Read(wkb);
 
-            var reader = new WKTReader();
-            var expected = reader.Read(expectedWKT);
+            // JTS deviation: our default reader doesn't do Z by default, so in addition to XYM and
+            // XYZM, we also need to use a special reader for XYZ.
+            var useReader = new WKTReader();
+            if (Regex.IsMatch(expectedWKT, "(Z|(Z?M)) ?\\("))
+            {
+                useReader = new WKTReader(NtsGeometryServices.Instance.CreateGeometryFactory(PackedCoordinateSequenceFactory.DoubleFactory));
+            }
+
+            var expected = useReader.Read(expectedWKT);
 
             bool isEqual = (expected.CompareTo(g2 /*, Comp2*/) == 0);
             Assert.IsTrue(isEqual);

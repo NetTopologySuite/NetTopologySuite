@@ -65,8 +65,8 @@ namespace NetTopologySuite.Algorithm
         {
             var counter = new RayCrossingCounter(p);
 
-            var p1 = new Coordinate();
-            var p2 = new Coordinate();
+            var p1 = ring.CreateCoordinate();
+            var p2 = ring.CreateCoordinate();
             int count = ring.Count;
             for (int i = 1; i < count; i++)
             {

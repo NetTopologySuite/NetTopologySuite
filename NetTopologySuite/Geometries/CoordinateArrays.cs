@@ -12,6 +12,44 @@ namespace NetTopologySuite.Geometries
     public static class CoordinateArrays
     {
         /// <summary>
+        /// Determine dimension based on subclass of <see cref="Coordinate"/>.
+        /// </summary>
+        /// <param name="pts">pts supplied coordinates</param>
+        /// <returns>number of ordinates recorded</returns>
+        public static int Dimension(Coordinate[] pts)
+        {
+            if (pts == null || pts.Length == 0)
+            {
+                return 2; // unknown, assume default
+            }
+            int dimension = 0;
+            foreach (var coordinate in pts)
+            {
+                dimension = Math.Max(dimension, Coordinates.Dimension(coordinate));
+            }
+            return dimension;
+        }
+
+        /// <summary>
+        /// Determine number of measures based on subclass of <see cref="Coordinate"/>.
+        /// </summary>
+        /// <param name="pts">supplied coordinates</param>
+        /// <returns>number of measures recorded</returns>
+        public static int Measures(Coordinate[] pts)
+        {
+            if (pts == null || pts.Length == 0)
+            {
+                return 0; // unknown, assume default
+            }
+            int measures = 0;
+            foreach (var coordinate in pts)
+            {
+                measures = Math.Max(measures, Coordinates.Measures(coordinate));
+            }
+            return measures;
+        }
+
+        /// <summary>
         /// Tests whether an array of <see cref="Coordinate"/>s forms a ring, by checking length and closure.
         /// Self-intersection is not checked.
         /// </summary>
@@ -131,7 +169,7 @@ namespace NetTopologySuite.Geometries
             var copy = new Coordinate[coordinates.Length];
             for (int i = 0; i < coordinates.Length; i++)
             {
-                var c = new Coordinate(coordinates[i]);
+                var c = coordinates[i].Copy();
                 copy[i] = c;
             }
             return copy;
@@ -150,7 +188,7 @@ namespace NetTopologySuite.Geometries
         {
             for (int i = 0; i < length; i++)
             {
-                var c = new Coordinate(src[srcStart + i]);
+                var c = src[srcStart + i].Copy();
                 dest[destStart + i] = c;
             }
         }

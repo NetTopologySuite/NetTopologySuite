@@ -15,10 +15,8 @@ namespace NetTopologySuite.IO
     /// </author>
     public class WKTFileReader
     {
-#if FEATURE_FILE_IO
         private const int MaxLookahead = 2048;
         private readonly FileInfo _file;
-#endif
 
         private TextReader _reader;
         private readonly WKTReader _wktReader;
@@ -30,7 +28,6 @@ namespace NetTopologySuite.IO
             Limit = -1;
         }
 
-#if FEATURE_FILE_IO
         /// <summary>
         /// Creates a new <see cref="WKTFileReader" /> given the <paramref name="file" /> to read from and a <see cref="WKTReader" /> to use to parse the geometries.
         /// </summary>
@@ -51,7 +48,7 @@ namespace NetTopologySuite.IO
             : this(new FileInfo(filename), wktReader)
         {
         }
-#endif
+
         /// <summary>
         /// Creates a new <see cref="WKTFileReader" />, given a <see cref="Stream"/> to read from.
         /// </summary>
@@ -98,19 +95,12 @@ namespace NetTopologySuite.IO
         {
             _count = 0;
 
-#if FEATURE_FILE_IO
             if (_file != null)
                 _reader =  new StreamReader(new FileStream(_file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read, MaxLookahead));
-#endif
-            try
+
+            using (_reader)
             {
                 return Read(_reader);
-            }
-            finally
-            {
-#if FEATURE_FILE_IO
-                _reader.Dispose();
-#endif
             }
         }
 
@@ -118,8 +108,7 @@ namespace NetTopologySuite.IO
         {
             var geoms = new List<IGeometry>();
             var tokens = _wktReader.Tokenizer(bufferedReader);
-            tokens.MoveNext();
-            while (!IsAtEndOfTokens(tokens.Current) && !IsAtLimit(geoms))
+            while (!IsAtEndOfTokens(tokens.NextToken(false)) && !IsAtLimit(geoms))
             {
                 var g = _wktReader.ReadGeometryTaggedText(tokens);
                 if (_count >= Offset)

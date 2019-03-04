@@ -95,7 +95,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
             var actualGeometry = reader.Read("MULTIPOINT (0 0, 5 1, 10 0)").ConvexHull();
             var expectedGeometry = reader.Read("POLYGON ((0 0, 5 1, 10 0, 0 0))");
-            Assert.IsTrue(actualGeometry.Equals(expectedGeometry));
+            Assert.IsTrue(actualGeometry.EqualsTopologically(expectedGeometry));
         }
 
         // TJackson - Not included in NTS because there is no longer a ToCoordinateArray method on ConvexHull

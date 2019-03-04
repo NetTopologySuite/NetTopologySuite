@@ -69,7 +69,7 @@ namespace NetTopologySuite.Precision
         {
             if (_commonCoord.X == 0.0 && _commonCoord.Y == 0.0)
                 return geom;
-            var invCoord = new Coordinate(_commonCoord);
+            var invCoord = _commonCoord.Copy();
             invCoord.X = -invCoord.X;
             invCoord.Y = -invCoord.Y;
             var trans = new Translater(invCoord);

@@ -205,7 +205,7 @@ namespace NetTopologySuite.Operation.Predicate
                 return;
 
             // test each corner of rectangle for inclusion
-            var rectPt = new Coordinate();
+            var rectPt = _rectSeq.CreateCoordinate();
             for (int i = 0; i < 4; i++)
             {
                 _rectSeq.GetCoordinate(i, rectPt);
@@ -291,8 +291,11 @@ namespace NetTopologySuite.Operation.Predicate
             var seq1 = testLine.CoordinateSequence;
             for (int j = 1; j < seq1.Count; j++)
             {
-                seq1.GetCoordinate(j - 1, _p0);
-                seq1.GetCoordinate(j, _p1);
+                _p0.X = seq1.GetX(j - 1);
+                _p0.Y = seq1.GetY(j - 1);
+
+                _p1.X = seq1.GetX(j);
+                _p1.Y = seq1.GetY(j);
 
                 if (!_rectIntersector.Intersects(_p0, _p1)) continue;
                 Intersects = true;

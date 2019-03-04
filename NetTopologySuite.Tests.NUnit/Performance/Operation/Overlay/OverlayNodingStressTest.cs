@@ -156,7 +156,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
                     new Coordinate(0,0)
             };
             // close polygon
-            pts[4] = new Coordinate(pts[0]);
+            pts[4] = pts[0].Copy();
             var poly = _fact.CreatePolygon(_fact.CreateLinearRing(pts), null);
             return poly;
         }

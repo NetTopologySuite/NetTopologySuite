@@ -16,9 +16,7 @@ namespace NetTopologySuite.Geometries
     /// In particular, they are not rounded to the supplied <c>PrecisionModel</c>.
     /// It is assumed that input Coordinates meet the given precision.
     /// </remarks>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public class GeometryFactory : IGeometryFactory
     {
         /// <summary>
@@ -506,7 +504,7 @@ namespace NetTopologySuite.Geometries
             var points = new List<IPoint>();
             for (int i = 0; i < coordinates.Count; i++)
             {
-                var seq = CoordinateSequenceFactory.Create(1, coordinates.Ordinates);
+                var seq = CoordinateSequenceFactory.Create(1, coordinates.Dimension, coordinates.Measures);
                 CoordinateSequences.Copy(coordinates, i, seq, 0, 1);
                 points.Add(CreatePoint(seq));
             }

@@ -52,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         [TestAttribute]
         public void TestCloneDimension4()
         {
-            var s1 = CoordinateArraySequenceFactory.Instance.Create(2, 4);
+            var s1 = CoordinateArraySequenceFactory.Instance.Create(2, 4, 1);
             s1.SetOrdinate(0, Ordinate.X, 1);
             s1.SetOrdinate(0, Ordinate.Y, 2);
             s1.SetOrdinate(0, Ordinate.Z, 10);

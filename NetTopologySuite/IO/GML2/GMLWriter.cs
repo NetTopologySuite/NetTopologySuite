@@ -53,9 +53,7 @@ namespace NetTopologySuite.IO.GML2
         {
             var settings = new XmlWriterSettings()
             {
-#if HAS_SYSTEM_XML_NAMESPACEHANDLING
                 NamespaceHandling = NamespaceHandling.OmitDuplicates,
-#endif
                 Indent = true,
                 OmitXmlDeclaration = true,
             };

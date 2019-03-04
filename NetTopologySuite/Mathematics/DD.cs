@@ -64,9 +64,7 @@ namespace NetTopologySuite.Mathematics
     /// </list>
     /// </summary>
     /// <author>Martin Davis</author>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public struct DD : IComparable, IComparable<DD> /*, IFormattable*/
     {
 

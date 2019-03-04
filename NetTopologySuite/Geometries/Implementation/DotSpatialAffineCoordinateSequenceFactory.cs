@@ -5,9 +5,7 @@ namespace NetTopologySuite.Geometries.Implementation
     /// <summary>
     /// A coordinate sequence factory class that creates DotSpatial's Shape/ShapeRange like coordinate sequences.
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public class DotSpatialAffineCoordinateSequenceFactory : ICoordinateSequenceFactory
     {
         private static DotSpatialAffineCoordinateSequenceFactory _instance;
@@ -74,6 +72,18 @@ namespace NetTopologySuite.Geometries.Implementation
         {
 
             return new DotSpatialAffineCoordinateSequence(size, Ordinates & OrdinatesUtility.DimensionToOrdinates(dimension));
+        }
+
+        /// <inheritdoc />
+        public ICoordinateSequence Create(int size, int dimension, int measures)
+        {
+            var ordinates = OrdinatesUtility.DimensionToOrdinates(dimension);
+            if (dimension == 3 && measures == 1)
+            {
+                ordinates = Ordinates.XYM;
+            }
+
+            return new DotSpatialAffineCoordinateSequence(size, Ordinates & ordinates);
         }
 
         /// <summary>

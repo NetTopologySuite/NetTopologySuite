@@ -1,6 +1,7 @@
 using System;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
@@ -12,9 +13,10 @@ namespace NetTopologySuite.Tests.NUnit.IO
     /// <version>1.7</version>
     public class WKTWriterTest
     {
-        private readonly IGeometryFactory _factory = new GeometryFactory(new PrecisionModel(1), 0);
+        private readonly IGeometryFactory _factory = new GeometryFactory(new PrecisionModel(1), 0, PackedCoordinateSequenceFactory.DoubleFactory);
         private readonly WKTWriter _writer = new WKTWriter();
         private readonly WKTWriter _writer3D = new WKTWriter(3);
+        private readonly WKTWriter _writer2DM = new WKTWriter(3) { OutputOrdinates = Ordinates.XYM };
 
         [TestAttribute]
         public void TestWritePoint()
@@ -28,9 +30,9 @@ namespace NetTopologySuite.Tests.NUnit.IO
         {
             Coordinate[] coordinates =
             {
-                new Coordinate(10, 10, 0),
-                new Coordinate(20, 20, 0),
-                new Coordinate(30, 40, 0)
+                new CoordinateZ(10, 10, 0),
+                new CoordinateZ(20, 20, 0),
+                new CoordinateZ(30, 40, 0)
             };
             var lineString = _factory.CreateLineString(coordinates);
             Assert.AreEqual("LINESTRING (10 10, 20 20, 30 40)", _writer.Write(lineString));
@@ -41,11 +43,11 @@ namespace NetTopologySuite.Tests.NUnit.IO
         {
             Coordinate[] coordinates =
             {
-                new Coordinate(10, 10, 0),
-                new Coordinate(10, 20, 0),
-                new Coordinate(20, 20, 0),
-                new Coordinate(20, 15, 0),
-                new Coordinate(10, 10, 0)
+                new CoordinateZ(10, 10, 0),
+                new CoordinateZ(10, 20, 0),
+                new CoordinateZ(20, 20, 0),
+                new CoordinateZ(20, 15, 0),
+                new CoordinateZ(10, 10, 0)
             };
             var linearRing = _factory.CreateLinearRing(coordinates);
             var polygon = _factory.CreatePolygon(linearRing, new LinearRing[] { });
@@ -57,8 +59,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
         {
             IPoint[] points =
             {
-                _factory.CreatePoint(new Coordinate(10, 10, 0)),
-                _factory.CreatePoint(new Coordinate(20, 20, 0))
+                _factory.CreatePoint(new CoordinateZ(10, 10, 0)),
+                _factory.CreatePoint(new CoordinateZ(20, 20, 0))
             };
             var multiPoint = _factory.CreateMultiPoint(points);
             Assert.AreEqual("MULTIPOINT ((10 10), (20 20))", _writer.Write(multiPoint));
@@ -69,14 +71,14 @@ namespace NetTopologySuite.Tests.NUnit.IO
         {
             Coordinate[] coordinates1 =
             {
-                new Coordinate(10, 10, 0),
-                new Coordinate(20, 20, 0)
+                new CoordinateZ(10, 10, 0),
+                new CoordinateZ(20, 20, 0)
             };
             var lineString1 = _factory.CreateLineString(coordinates1);
             Coordinate[] coordinates2 =
             {
-                new Coordinate(15, 15, 0),
-                new Coordinate(30, 15, 0)
+                new CoordinateZ(15, 15, 0),
+                new CoordinateZ(30, 15, 0)
             };
             var lineString2 = _factory.CreateLineString(coordinates2);
             ILineString[] lineStrings = { lineString1, lineString2 };
@@ -91,20 +93,20 @@ namespace NetTopologySuite.Tests.NUnit.IO
         {
             Coordinate[] coordinates1 =
             {
-                new Coordinate(10, 10, 0),
-                new Coordinate(10, 20, 0),
-                new Coordinate(20, 20, 0),
-                new Coordinate(20, 15, 0),
-                new Coordinate(10, 10, 0)
+                new CoordinateZ(10, 10, 0),
+                new CoordinateZ(10, 20, 0),
+                new CoordinateZ(20, 20, 0),
+                new CoordinateZ(20, 15, 0),
+                new CoordinateZ(10, 10, 0)
             };
             var linearRing1 = _factory.CreateLinearRing(coordinates1);
             var polygon1 = _factory.CreatePolygon(linearRing1, new LinearRing[] { });
             Coordinate[] coordinates2 =
             {
-                new Coordinate(60, 60, 0),
-                new Coordinate(70, 70, 0),
-                new Coordinate(80, 60, 0),
-                new Coordinate(60, 60, 0)
+                new CoordinateZ(60, 60, 0),
+                new CoordinateZ(70, 70, 0),
+                new CoordinateZ(80, 60, 0),
+                new CoordinateZ(60, 60, 0)
             };
             var linearRing2 = _factory.CreateLinearRing(coordinates2);
             var polygon2 = _factory.CreatePolygon(linearRing2, new LinearRing[] { });
@@ -122,8 +124,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
             var point2 = _factory.CreatePoint(new Coordinate(30, 30));
             Coordinate[] coordinates =
             {
-                new Coordinate(15, 15, 0),
-                new Coordinate(20, 20, 0)
+                new CoordinateZ(15, 15, 0),
+                new CoordinateZ(20, 20, 0)
             };
             var lineString1 = _factory.CreateLineString(coordinates);
             IGeometry[] geometries = { point1, point2, lineString1 };
@@ -181,19 +183,44 @@ namespace NetTopologySuite.Tests.NUnit.IO
         public void TestWrite3D()
         {
             IGeometryFactory geometryFactory = new GeometryFactory();
-            var point = geometryFactory.CreatePoint(new Coordinate(1, 1, 1));
+            var point = geometryFactory.CreatePoint(new CoordinateZ(1, 1, 1));
             string wkt = _writer3D.Write(point);
-            Assert.AreEqual("POINT (1 1 1)", wkt);
+            Assert.AreEqual("POINT Z(1 1 1)", wkt);
+            wkt = _writer2DM.Write(point);
+            Assert.AreEqual("POINT (1 1)", wkt);
         }
         [TestAttribute]
-        public void testWrite3D_withNaN()
+        public void TestWrite3D_withNaN()
         {
             IGeometryFactory geometryFactory = new GeometryFactory();
             Coordinate[] coordinates = { new Coordinate(1, 1),
-                                 new Coordinate(2, 2, 2) };
+                                 new CoordinateZ(2, 2, 2) };
             var line = geometryFactory.CreateLineString(coordinates);
             string wkt = _writer3D.Write(line);
-            Assert.AreEqual("LINESTRING (1 1, 2 2 2)", wkt);
+            Assert.AreEqual("LINESTRING Z(1 1 NaN, 2 2 2)", wkt);
+            wkt = _writer2DM.Write(line);
+            Assert.AreEqual("LINESTRING (1 1, 2 2)", wkt);
+        }
+
+        [Test]
+        public void TestProperties()
+        {
+            Assert.That(_writer.OutputOrdinates, Is.EqualTo(Ordinates.XY));
+            Assert.That(_writer3D.OutputOrdinates, Is.EqualTo(Ordinates.XYZ));
+            Assert.That(_writer2DM.OutputOrdinates, Is.EqualTo(Ordinates.XYM));
+
+            var gf = new GeometryFactory(PackedCoordinateSequenceFactory.DoubleFactory);
+            var writer3DM = new WKTWriter(4);
+            Assert.That(writer3DM.OutputOrdinates, Is.EqualTo(Ordinates.XYZM));
+
+            writer3DM.OutputOrdinates = Ordinates.XY;
+            Assert.That(writer3DM.OutputOrdinates, Is.EqualTo(Ordinates.XY));
+            writer3DM.OutputOrdinates = Ordinates.XYZ;
+            Assert.That(writer3DM.OutputOrdinates, Is.EqualTo(Ordinates.XYZ));
+            writer3DM.OutputOrdinates = Ordinates.XYM;
+            Assert.That(writer3DM.OutputOrdinates, Is.EqualTo(Ordinates.XYM));
+            writer3DM.OutputOrdinates = Ordinates.XYZM;
+            Assert.That(writer3DM.OutputOrdinates, Is.EqualTo(Ordinates.XYZM));
         }
     }
 }

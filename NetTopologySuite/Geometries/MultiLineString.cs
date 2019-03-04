@@ -11,9 +11,7 @@ namespace NetTopologySuite.Geometries
     /// <para/>
     /// Any collection of <c>LineString</c>s is a valid <c>MultiLineString</c>.
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public class MultiLineString : GeometryCollection, IMultiLineString
     {
         /// <summary>
@@ -139,12 +137,6 @@ namespace NetTopologySuite.Geometries
             for (int i = 0; i < Geometries.Length; i++)
                 revLines[nLines - 1 - i] = (ILineString) Geometries[i].Reverse();
             return Factory.CreateMultiLineString(revLines);
-        }
-
-        IMultiLineString IMultiLineString.Reverse()
-        {
-            return (IMultiLineString) Reverse();
-
         }
 
         /// <inheritdoc cref="Geometry.CopyInternal"/>>

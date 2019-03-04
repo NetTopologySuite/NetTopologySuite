@@ -71,7 +71,7 @@ namespace Open.Topology.TestRunner.Functions
         public static IGeometry FindNodePoints(IGeometry geom)
         {
             var intPts = FastNodingValidator.ComputeIntersections(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
-            return FunctionsUtil.GetFactoryOrDefault((IGeometry)null).CreateMultiPoint(CoordinateArrays.ToCoordinateArray(intPts));
+            return FunctionsUtil.GetFactoryOrDefault((IGeometry)null).CreateMultiPointFromCoords(CoordinateArrays.ToCoordinateArray(intPts));
         }
 
         public static int InteriorIntersectionCount(IGeometry geom)

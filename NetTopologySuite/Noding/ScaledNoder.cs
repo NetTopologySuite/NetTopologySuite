@@ -114,9 +114,9 @@ namespace NetTopologySuite.Noding
         {
             var roundPts = new Coordinate[pts.Length];
             for (int i = 0; i < pts.Length; i++)
-                roundPts[i] = new Coordinate(Math.Round((pts[i].X - _offsetX) * _scaleFactor),
-                                             Math.Round((pts[i].Y - _offsetY) * _scaleFactor),
-                                             pts[i].Z);
+                roundPts[i] = new CoordinateZ(Math.Round((pts[i].X - _offsetX) * _scaleFactor),
+                                              Math.Round((pts[i].Y - _offsetY) * _scaleFactor),
+                                              pts[i].Z);
             var roundPtsNoDup = CoordinateArrays.RemoveRepeatedPoints(roundPts);
             return roundPtsNoDup;
         }
@@ -134,8 +134,8 @@ namespace NetTopologySuite.Noding
 
             if (pts.Length == 2)
             {
-                p0 = new Coordinate(pts[0]);
-                p1 = new Coordinate(pts[1]);
+                p0 = pts[0].Copy();
+                p1 = pts[1].Copy();
             }
 
             for (int i = 0; i < pts.Length; i++)

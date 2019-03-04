@@ -48,8 +48,8 @@ namespace NetTopologySuite.Algorithm
         public static bool IsOnLine(Coordinate p, ICoordinateSequence line)
         {
             var lineIntersector = new RobustLineIntersector();
-            var p0 = new Coordinate();
-            var p1 = new Coordinate();
+            var p0 = line.CreateCoordinate();
+            var p1 = p0.Copy();
             int n = line.Count;
             for (int i = 1; i < n; i++)
             {

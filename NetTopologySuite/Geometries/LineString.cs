@@ -23,9 +23,7 @@ namespace NetTopologySuite.Geometries
     /// If these conditions are not met, the constructors throw an <see cref="ArgumentException"/>.
     /// </para>
     /// </remarks>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public class LineString : Geometry, ILineString
     {
 
@@ -239,18 +237,10 @@ namespace NetTopologySuite.Geometries
         /// <returns>A <see cref="LineString" /> with coordinates in the reverse order.</returns>
         public override IGeometry Reverse()
         {
-            /*
-            var seq = (ICoordinateSequence)_points.Copy();
+            var seq = _points.Copy();
             CoordinateSequences.Reverse(seq);
-             */
-            var seq = _points.Reversed();
             return Factory.CreateLineString(seq);
         }
-
-        //ILineString ILineString.Reverse()
-        //{
-        //    return (ILineString)Reverse();
-        //}
 
         /// <summary>
         /// Returns true if the given point is a vertex of this <c>LineString</c>.

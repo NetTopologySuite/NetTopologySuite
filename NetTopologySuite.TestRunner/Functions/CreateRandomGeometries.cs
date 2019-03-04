@@ -102,9 +102,9 @@ namespace Open.Topology.TestRunner.Functions
                 double y = baseY + env.Height * HaltonOrdinate(i + 1, basej);
                 var p = new Coordinate(x, y);
                 if (env.Contains(p))
-                    pts[i++] = new Coordinate(p);
+                    pts[i++] = p.Copy();
             }
-            return FunctionsUtil.GetFactoryOrDefault(g).CreateMultiPoint(pts);
+            return FunctionsUtil.GetFactoryOrDefault(g).CreateMultiPointFromCoords(pts);
         }
 
         private static double HaltonOrdinate(int index, int basis)

@@ -61,7 +61,7 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
                 new Coordinate(400,400),
                 new Coordinate(500,500)
             };
-            _multiPoint = Factory.CreateMultiPoint(coordinates);
+            _multiPoint = Factory.CreateMultiPointFromCoords(coordinates);
 
             _writer = new GMLWriter();
             _reader = new GMLReader();

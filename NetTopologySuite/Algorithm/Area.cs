@@ -85,22 +85,19 @@ namespace NetTopologySuite.Algorithm
              * Based on the Shoelace formula.
              * http://en.wikipedia.org/wiki/Shoelace_formula
              */
-            var p0 = new Coordinate();
-            var p1 = new Coordinate();
-            var p2 = new Coordinate();
-            ring.GetCoordinate(0, p1);
-            ring.GetCoordinate(1, p2);
+            var p1 = ring.GetCoordinateCopy(0);
+            var p2 = ring.GetCoordinateCopy(1);
             double x0 = p1.X;
             p2.X -= x0;
             double sum = 0.0;
             for (int i = 1; i < n - 1; i++)
             {
-                p0.Y = p1.Y;
+                double p0Y = p1.Y;
                 p1.X = p2.X;
                 p1.Y = p2.Y;
                 ring.GetCoordinate(i + 1, p2);
                 p2.X -= x0;
-                sum += p1.X * (p0.Y - p2.Y);
+                sum += p1.X * (p0Y - p2.Y);
             }
             return sum / 2.0;
         }

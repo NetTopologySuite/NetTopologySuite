@@ -113,8 +113,8 @@ namespace NetTopologySuite.Operation.Predicate
         private bool IsLineStringContainedInBoundary(ILineString line)
         {
             var seq = line.CoordinateSequence;
-            var p0 = new Coordinate();
-            var p1 = new Coordinate();
+            var p0 = seq.CreateCoordinate();
+            var p1 = p0.Copy();
             for (int i = 0; i < seq.Count - 1; i++)
             {
                 seq.GetCoordinate(i, p0);

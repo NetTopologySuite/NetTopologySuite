@@ -1,5 +1,3 @@
-#define LikeJTS
-
 using System;
 using System.Globalization;
 using System.IO;
@@ -32,13 +30,9 @@ namespace NetTopologySuite.IO
         /// <returns>The WKT</returns>
         public static string ToPoint(Coordinate p0)
         {
-#if LikeJTS
-            return string.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", p0.X, p0.Y);
-#else
-            if (double.IsNaN(p0.Z))
-                return String.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", p0.X, p0.Y);
-            return String.Format(CultureInfo.InvariantCulture, "POINT({0} {1} {2})", p0.X, p0.Y, p0.Z);
-#endif
+            // legacy note: JTS's version never checks Z or M, so the things that call this aren't
+            // expecting to see them.  the "actual" code to write points handles Z / M just fine.
+            return "POINT ( " + p0.X.ToString("G17") + " " + p0.Y.ToString("G17") + " )";
         }
 
         /// <summary>
@@ -48,6 +42,8 @@ namespace NetTopologySuite.IO
         /// <returns>The WKT</returns>
         public static string ToLineString(ICoordinateSequence seq)
         {
+            // legacy note: JTS's version never checks Z or M, so the things that call this aren't
+            // expecting to see them.  the "actual" code to write lines handles Z / M just fine.
             var buf = new StringBuilder();
             buf.Append("LINESTRING");
             if (seq.Count == 0)
@@ -59,7 +55,7 @@ namespace NetTopologySuite.IO
                 {
                     if (i > 0)
                         buf.Append(", ");
-                    buf.Append(string.Format(CultureInfo.InvariantCulture, "{0} {1}", seq.GetX(i), seq.GetY(i)));
+                    buf.Append(seq.GetX(i).ToString("G17") + " " + seq.GetY(i).ToString("G17"));
               }
               buf.Append(")");
             }
@@ -76,6 +72,8 @@ namespace NetTopologySuite.IO
          */
         public static string ToLineString(Coordinate[] coord)
         {
+            // legacy note: JTS's version never checks Z or M, so the things that call this aren't
+            // expecting to see them.  the "actual" code to write lines handles Z / M just fine.
             var buf = new StringBuilder();
             buf.Append("LINESTRING ");
             if (coord.Length == 0)
@@ -87,7 +85,7 @@ namespace NetTopologySuite.IO
                 {
                     if (i > 0)
                         buf.Append(", ");
-                    buf.Append(coord[i].X + " " + coord[i].Y);
+                    buf.Append(coord[i].X.ToString("G17") + " " + coord[i].Y.ToString("G17"));
                 }
                 buf.Append(")");
             }
@@ -102,13 +100,9 @@ namespace NetTopologySuite.IO
         /// <returns>The WKT</returns>
         public static string ToLineString(Coordinate p0, Coordinate p1)
         {
-#if LikeJTS
-            return string.Format(CultureInfo.InvariantCulture, "LINESTRING({0:R} {1:R}, {2:R} {3:R})", p0.X, p0.Y, p1.X, p1.Y);
-#else
-            if (double.IsNaN(p0.Z))
-                return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1}, {2} {3})", p0.X, p0.Y, p1.X, p1.Y);
-            return String.Format(CultureInfo.InvariantCulture, "LINESTRING({0} {1} {2}, {3} {4} {5})", p0.X, p0.Y, p0.Z, p1.X, p1.Y, p1.Z);
-#endif
+            // legacy note: JTS's version never checks Z or M, so the things that call this aren't
+            // expecting to see them.  the "actual" code to write lines handles Z / M just fine.
+            return "LINESTRING ( " + p0.X.ToString("G17") + " " + p0.Y.ToString("G17") + ", " + p1.X.ToString("G17") + " " + p1.Y.ToString("G17") + " )";
         }
 
         /// <summary>
@@ -147,7 +141,7 @@ namespace NetTopologySuite.IO
         /// <param name="ch">The character to repeat.</param>
         /// <param name="count">The number of times to repeat the character.</param>
         /// <returns>A <c>string</c> of characters.</returns>
-        public static string StringOfChar(char ch, int count)
+        private static string StringOfChar(char ch, int count)
         {
             var buf = new StringBuilder();
             for (int i = 0; i < count; i++)
@@ -155,24 +149,92 @@ namespace NetTopologySuite.IO
             return buf.ToString();
         }
 
-        private readonly int _outputDimension = 2;
+        /// <summary>
+        /// A filter implementation to test if a coordinate sequence actually has meaningful values
+        /// for an ordinate bit-pattern
+        /// </summary>
+        private class CheckOrdinatesFilter : ICoordinateSequenceFilter
+        {
+            private readonly Ordinates _checkOrdinateFlags;
+            private Ordinates _outputOrdinates;
 
-        private const string MaxPrecisionFormat = "{0:R}";
-        private NumberFormatInfo _formatter;
-        private string _format;
+            /// <summary>
+            /// Initializes a new instance of the <see cref="CheckOrdinatesFilter"/> flag.
+            /// </summary>
+            /// <param name="checkOrdinateFlags">
+            /// The index for the ordinates to test.
+            /// </param>
+            public CheckOrdinatesFilter(Ordinates checkOrdinateFlags)
+            {
+                _outputOrdinates = Ordinates.XY;
+                _checkOrdinateFlags = checkOrdinateFlags;
+            }
+
+            /// <inheritdoc />
+            public void Filter(ICoordinateSequence seq, int i)
+            {
+                if (_checkOrdinateFlags.HasFlag(Ordinates.Z) && !_outputOrdinates.HasFlag(Ordinates.Z))
+                {
+                    if (!double.IsNaN(seq.GetZ(i)))
+                    {
+                        _outputOrdinates |= Ordinates.Z;
+                    }
+                }
+
+                if (_checkOrdinateFlags.HasFlag(Ordinates.M) && !_outputOrdinates.HasFlag(Ordinates.M))
+                {
+                    if (!double.IsNaN(seq.GetM(i)))
+                    {
+                        _outputOrdinates |= Ordinates.M;
+                    }
+                }
+            }
+
+            /// <inheritdoc />
+            public bool GeometryChanged => false;
+
+            /// <inheritdoc />
+            public bool Done => _outputOrdinates == _checkOrdinateFlags;
+
+            /// <summary>
+            /// Gets the evaluated ordinate bit-pattern of ordinates with valid values masked by
+            /// <see cref="_checkOrdinateFlags"/>.
+            /// </summary>
+            public Ordinates OutputOrdinates => _outputOrdinates;
+        }
+
+        private Ordinates _outputOrdinates;
+        private readonly int _outputDimension;
+
+        private IPrecisionModel _precisionModel;
         private bool _isFormatted;
-        private bool _useFormating;
-        private bool _useMaxPrecision;
         private int _coordsPerLine = -1;
-        private string _indentTabStr = "  ";
+        private string _indentTabStr;
+        //private bool _zIsMeasure;
 
-        public WKTWriter() { }
+        public WKTWriter() : this(2) { }
 
         public WKTWriter(int outputDimension)
         {
-            if (outputDimension < 2 || outputDimension > 3)
-                throw new ArgumentException("Output dimension must be in the range [2, 3]", "outputDimension");
+            this.Tab = 2;
+            if (outputDimension < 2 || outputDimension > 4)
+                throw new ArgumentException("Output dimension must be in the range [2, 4]", "outputDimension");
             _outputDimension = outputDimension;
+
+            switch (outputDimension)
+            {
+                case 2:
+                    _outputOrdinates = Ordinates.XY;
+                    break;
+
+                case 3:
+                    _outputOrdinates = Ordinates.XY | Ordinates.Ordinate2;
+                    break;
+
+                case 4:
+                    _outputOrdinates = Ordinates.XYZM;
+                    break;
+            }
         }
 
         /// <summary>
@@ -207,6 +269,39 @@ namespace NetTopologySuite.IO
             }
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="Ordinates"/> to be written.  Possible members are:
+        /// <list type="bullet">
+        /// <item><description><see cref="Ordinates.X"/></description></item>
+        /// <item><description><see cref="Ordinates.Y"/></description></item>
+        /// <item><description><see cref="Ordinates.Z"/></description></item>
+        /// <item><description><see cref="Ordinates.M"/></description></item>
+        /// </list>
+        /// Values of <see cref="Ordinates.X"/> and <see cref="Ordinates.Y"/> are always assumed and
+        /// not particularly checked for.
+        /// </summary>
+        public Ordinates OutputOrdinates
+        {
+            get => _outputOrdinates;
+            set => _outputOrdinates = Ordinates.XY | (value & Ordinates.XYZM);
+        }
+
+        /// <summary>
+        /// Gets or sets a <see cref="IPrecisionModel"/> that should be used on the ordinates written.
+        /// <para>
+        /// If none/<see langword="null"/> is assigned, the precision model of the
+        /// <see cref="IGeometry.Factory"/> is used.
+        /// </para>
+        /// <para>
+        /// Note: The precision model is applied to all ordinate values, not just x and y.
+        /// </para>
+        /// </summary>
+        public IPrecisionModel PrecisionModel
+        {
+            get => _precisionModel;
+            set => _precisionModel = value;
+        }
+
         public bool EmitSRID { get; set; }
 
         public bool EmitZ{ get; set; }
@@ -222,7 +317,18 @@ namespace NetTopologySuite.IO
         {
             var sb = new StringBuilder();
             var sw = new StringWriter(sb);
-            TryWrite(geometry, sw);
+
+            // determine the precision model
+            var pm = _precisionModel ?? geometry.Factory.PrecisionModel;
+
+            try
+            {
+                WriteFormatted(geometry, false, sw, pm);
+            }
+            catch (IOException)
+            {
+                Assert.ShouldNeverReachHere();
+            }
             return sb.ToString();
         }
 
@@ -234,14 +340,13 @@ namespace NetTopologySuite.IO
         public void Write(IGeometry geometry, Stream stream)
         {
             var sw = new StreamWriter(stream);
-            TryWrite(geometry, sw);
-        }
 
-        private void TryWrite(IGeometry geometry, TextWriter sw)
-        {
+            // determine the precision model
+            var pm = _precisionModel ?? geometry.Factory.PrecisionModel;
+
             try
             {
-                WriteFormatted(geometry, _isFormatted, sw);
+                WriteFormatted(geometry, _isFormatted, sw, pm);
             }
             catch (IOException)
             {
@@ -257,7 +362,10 @@ namespace NetTopologySuite.IO
         /// <returns>A "Geometry Tagged Text" string (see the OpenGIS Simple Features Specification)</returns>
         public virtual void Write(IGeometry geometry, TextWriter writer)
         {
-            WriteFormatted(geometry, _isFormatted, writer);
+            // determine the precision model
+            var pm = _precisionModel ?? geometry.Factory.PrecisionModel;
+
+            WriteFormatted(geometry, _isFormatted, writer, pm);
         }
 
         /// <summary>
@@ -274,7 +382,7 @@ namespace NetTopologySuite.IO
             var sw = new StringWriter();
             try
             {
-                WriteFormatted(geometry, true, sw);
+                WriteFormatted(geometry, true, sw, _precisionModel);
             }
             catch (IOException)
             {
@@ -295,7 +403,7 @@ namespace NetTopologySuite.IO
         /// </returns>
         public virtual void WriteFormatted(IGeometry geometry, TextWriter writer)
         {
-            WriteFormatted(geometry, true, writer);
+            WriteFormatted(geometry, true, writer, _precisionModel);
         }
 
         /// <summary>
@@ -308,72 +416,107 @@ namespace NetTopologySuite.IO
         /// A "Geometry Tagged Text" string (see the OpenGIS Simple
         /// Features Specification).
         /// </returns>
-        private void WriteFormatted(IGeometry geometry, bool useFormatting, TextWriter writer)
+        private void WriteFormatted(IGeometry geometry, bool useFormatting, TextWriter writer, IPrecisionModel precisionModel)
         {
             if (geometry == null)
                 throw new ArgumentNullException("geometry");
 
-            _useFormating = useFormatting;
-            // Enable maxPrecision (via {0:R} formatter) in WriteNumber method
-            var precisionModel = geometry.Factory.PrecisionModel;
-            _useMaxPrecision = precisionModel.PrecisionModelType == PrecisionModels.Floating;
+            // ensure we have a precision model
+            precisionModel = precisionModel ?? geometry.PrecisionModel;
 
-            _formatter = CreateFormatter(geometry.PrecisionModel);
-            _format = "0." + StringOfChar('#', _formatter.NumberDecimalDigits);
-            AppendGeometryTaggedText(geometry, 0, writer);
+            // create the formatter
+            bool useMaxPrecision = precisionModel.PrecisionModelType == PrecisionModels.Floating;
+            var formatter = CreateFormatter(precisionModel);
+            string format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
 
-            // Disable maxPrecision as default setting
-            _useMaxPrecision = false;
+            // append the WKT
+            AppendGeometryTaggedText(geometry, useFormatting, writer, formatter, format, useMaxPrecision);
         }
 
         /// <summary>
-        /// Converts a <c>Geometry</c> to &lt;Geometry Tagged Text format,
-        /// then appends it to the writer.
+        /// Converts a <see cref="IGeometry"/> to &lt;Geometry Tagged Text&gt; format, then appends
+        /// it to the writer.
         /// </summary>
-        /// <param name="geometry">/he <c>Geometry</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="writer">/he output writer to append to.</param>
-        private void AppendGeometryTaggedText(IGeometry geometry, int level, TextWriter writer)
+        /// <param name="geometry">the <see cref="IGeometry"/> to process.</param>
+        /// <param name="useFormatting">flag indicating that the output should be formatted.</param>
+        /// <param name="writer">the output writer to append to.</param>
+        /// <param name="formatter">the <see cref="IFormatProvider"/> to use to convert from a precise coordinate to an external coordinate.</param>
+        private void AppendGeometryTaggedText(IGeometry geometry, bool useFormatting, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
-            Indent(level, writer);
+            // evaluate the ordinates actually present in the geometry
+            var cof = new CheckOrdinatesFilter(_outputOrdinates);
+            geometry.Apply(cof);
 
-            if (geometry is IPoint)
+            // Append the WKT
+            AppendGeometryTaggedText(geometry, cof.OutputOrdinates, useFormatting, 0, writer, formatter, format, useMaxPrecision);
+        }
+
+        /// <summary>
+        /// Converts a <see cref="IGeometry"/> to &lt;Geometry Tagged Text&gt; format, then appends
+        /// it to the writer.
+        /// </summary>
+        /// <param name="geometry">the <see cref="IGeometry"/> to process.</param>
+        /// <param name="useFormatting">flag indicating that the output should be formatted.</param>
+        /// <param name="writer">the output writer to append to.</param>
+        /// <param name="formatter">the <see cref="IFormatProvider"/> to use to convert from a precise coordinate to an external coordinate.</param>
+        private void AppendGeometryTaggedText(IGeometry geometry, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
+        {
+            Indent(useFormatting, level, writer);
+
+            switch (geometry)
             {
-                var point = (IPoint)geometry;
-                AppendPointTaggedText(point.Coordinate, level, writer, point.PrecisionModel);
+                case IPoint point:
+                    AppendPointTaggedText(point, outputOrdinates, useFormatting, level, writer, formatter, format, useMaxPrecision);
+                    break;
+
+                case ILinearRing linearRing:
+                    AppendLinearRingTaggedText(linearRing, outputOrdinates, useFormatting, level, writer, formatter, format, useMaxPrecision);
+                    break;
+
+                case ILineString lineString:
+                    AppendLineStringTaggedText(lineString, outputOrdinates, useFormatting, level, writer, formatter, format, useMaxPrecision);
+                    break;
+
+                case IPolygon polygon:
+                    AppendPolygonTaggedText(polygon, outputOrdinates, useFormatting, level, writer, formatter, format, useMaxPrecision);
+                    break;
+
+                case IMultiPoint multiPoint:
+                    AppendMultiPointTaggedText(multiPoint, outputOrdinates, useFormatting, level, writer, formatter, format, useMaxPrecision);
+                    break;
+
+                case IMultiLineString multiLineString:
+                    AppendMultiLineStringTaggedText(multiLineString, outputOrdinates, useFormatting, level, writer, formatter, format, useMaxPrecision);
+                    break;
+
+                case IMultiPolygon multiPolygon:
+                    AppendMultiPolygonTaggedText(multiPolygon, outputOrdinates, useFormatting, level, writer, formatter, format, useMaxPrecision);
+                    break;
+
+                case IGeometryCollection geometryCollection:
+                    AppendGeometryCollectionTaggedText(geometryCollection, outputOrdinates, useFormatting, level, writer, formatter, format, useMaxPrecision);
+                    break;
+
+                default:
+                    Assert.ShouldNeverReachHere("Unsupported Geometry implementation:" + geometry.GetType());
+                    break;
             }
-            else if (geometry is ILinearRing)
-                AppendLinearRingTaggedText((ILinearRing) geometry, level, writer);
-            else if (geometry is ILineString)
-                AppendLineStringTaggedText((ILineString) geometry, level, writer);
-            else if (geometry is IPolygon)
-                AppendPolygonTaggedText((IPolygon) geometry, level, writer);
-            else if (geometry is IMultiPoint)
-                AppendMultiPointTaggedText((IMultiPoint) geometry, level, writer);
-            else if (geometry is IMultiLineString)
-                AppendMultiLineStringTaggedText((IMultiLineString) geometry, level, writer);
-            else if (geometry is IMultiPolygon)
-                AppendMultiPolygonTaggedText((IMultiPolygon) geometry, level, writer);
-            else if (geometry is IGeometryCollection)
-                AppendGeometryCollectionTaggedText((IGeometryCollection) geometry, level, writer);
-            else Assert.ShouldNeverReachHere("Unsupported Geometry implementation:" + geometry.GetType());
         }
 
         /// <summary>
         /// Converts a <c>Coordinate</c> to Point Tagged Text format,
         /// then appends it to the writer.
         /// </summary>
-        /// <param name="coordinate">The <c>Coordinate</c> to process.</param>
-        /// <param name="level"></param>
+        /// <param name="point">The <c>IPoint</c> to process.</param>
+        /// <param name="useFormatting">flag indicating that the output should be formatted</param>
+        /// <param name="level">the indentation level</param>
         /// <param name="writer">The output writer to append to.</param>
-        /// <param name="precisionModel">
-        /// The <c>PrecisionModel</c> to use to convert
-        /// from a precise coordinate to an external coordinate.
-        /// </param>
-        private void AppendPointTaggedText(Coordinate coordinate, int level, TextWriter writer, IPrecisionModel precisionModel)
+        /// <param name="formatter">the formatter to use when writing numbers</param>
+        private void AppendPointTaggedText(IPoint point, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
             writer.Write("POINT ");
-            AppendPointText(coordinate, level, writer, precisionModel);
+            AppendOrdinateText(outputOrdinates, writer);
+            AppendSequenceText(point.CoordinateSequence, outputOrdinates, useFormatting, level, false, writer, formatter, format, useMaxPrecision);
         }
 
         /// <summary>
@@ -381,12 +524,15 @@ namespace NetTopologySuite.IO
         /// format, then appends it to the writer.
         /// </summary>
         /// <param name="lineString">The <c>LineString</c> to process.</param>
-        /// <param name="level"></param>
+        /// <param name="useFormatting">flag indicating that the output should be formatted</param>
+        /// <param name="level">the indentation level</param>
         /// <param name="writer">The output writer to append to.</param>
-        private void AppendLineStringTaggedText(ILineString lineString, int level, TextWriter writer)
+        /// <param name="formatter">the formatter to use when writing numbers</param>
+        private void AppendLineStringTaggedText(ILineString lineString, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
             writer.Write("LINESTRING ");
-            AppendLineStringText(lineString, level, false, writer);
+            AppendOrdinateText(outputOrdinates, writer);
+            AppendSequenceText(lineString.CoordinateSequence, outputOrdinates, useFormatting, level, false, writer, formatter, format, useMaxPrecision);
         }
 
         /// <summary>
@@ -394,12 +540,15 @@ namespace NetTopologySuite.IO
         /// format, then appends it to the writer.
         /// </summary>
         /// <param name="linearRing">The <c>LinearRing</c> to process.</param>
-        /// <param name="level"></param>
+        /// <param name="useFormatting">flag indicating that the output should be formatted</param>
+        /// <param name="level">the indentation level</param>
         /// <param name="writer">The output writer to append to.</param>
-        private void AppendLinearRingTaggedText(ILinearRing linearRing, int level, TextWriter writer)
+        /// <param name="formatter">the formatter to use when writing numbers</param>
+        private void AppendLinearRingTaggedText(ILinearRing linearRing, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
             writer.Write("LINEARRING ");
-            AppendLineStringText(linearRing, level, false, writer);
+            AppendOrdinateText(outputOrdinates, writer);
+            AppendSequenceText(linearRing.CoordinateSequence, outputOrdinates, useFormatting, level, false, writer, formatter, format, useMaxPrecision);
         }
 
         /// <summary>
@@ -407,12 +556,15 @@ namespace NetTopologySuite.IO
         /// then appends it to the writer.
         /// </summary>
         /// <param name="polygon">The <c>Polygon</c> to process.</param>
-        /// <param name="level"></param>
+        /// <param name="useFormatting">flag indicating that the output should be formatted</param>
+        /// <param name="level">the indentation level</param>
         /// <param name="writer">The output writer to append to.</param>
-        private void AppendPolygonTaggedText(IPolygon polygon, int level, TextWriter writer)
+        /// <param name="formatter">the formatter to use when writing numbers</param>
+        private void AppendPolygonTaggedText(IPolygon polygon, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
             writer.Write("POLYGON ");
-            AppendPolygonText(polygon, level, false, writer);
+            AppendOrdinateText(outputOrdinates, writer);
+            AppendPolygonText(polygon, outputOrdinates, useFormatting, level, false, writer, formatter, format, useMaxPrecision);
         }
 
         /// <summary>
@@ -420,12 +572,15 @@ namespace NetTopologySuite.IO
         /// format, then appends it to the writer.
         /// </summary>
         /// <param name="multipoint">The <c>MultiPoint</c> to process.</param>
-        /// <param name="level"></param>
+        /// <param name="useFormatting">flag indicating that the output should be formatted</param>
+        /// <param name="level">the indentation level</param>
         /// <param name="writer">The output writer to append to.</param>
-        private void AppendMultiPointTaggedText(IMultiPoint multipoint, int level, TextWriter writer)
+        /// <param name="formatter">the formatter to use when writing numbers</param>
+        private void AppendMultiPointTaggedText(IMultiPoint multipoint, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
             writer.Write("MULTIPOINT ");
-            AppendMultiPointText(multipoint, level, writer);
+            AppendOrdinateText(outputOrdinates, writer);
+            AppendMultiPointText(multipoint, outputOrdinates, useFormatting, level, writer, formatter, format, useMaxPrecision);
         }
 
         /// <summary>
@@ -433,12 +588,15 @@ namespace NetTopologySuite.IO
         /// Text format, then appends it to the writer.
         /// </summary>
         /// <param name="multiLineString">The <c>MultiLineString</c> to process.</param>
-        /// <param name="level"></param>
+        /// <param name="useFormatting">flag indicating that the output should be formatted</param>
+        /// <param name="level">the indentation level</param>
         /// <param name="writer">The output writer to append to.</param>
-        private void AppendMultiLineStringTaggedText(IMultiLineString multiLineString, int level, TextWriter writer)
+        /// <param name="formatter">the formatter to use when writing numbers</param>
+        private void AppendMultiLineStringTaggedText(IMultiLineString multiLineString, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
             writer.Write("MULTILINESTRING ");
-            AppendMultiLineStringText(multiLineString, level, false, writer);
+            AppendOrdinateText(outputOrdinates, writer);
+            AppendMultiLineStringText(multiLineString, outputOrdinates, useFormatting, level, /*false, */writer, formatter, format, useMaxPrecision);
         }
 
         /// <summary>
@@ -446,12 +604,15 @@ namespace NetTopologySuite.IO
         /// format, then appends it to the writer.
         /// </summary>
         /// <param name="multiPolygon">The <c>MultiPolygon</c> to process.</param>
-        /// <param name="level"></param>
+        /// <param name="useFormatting">flag indicating that the output should be formatted</param>
+        /// <param name="level">the indentation level</param>
         /// <param name="writer">The output writer to append to.</param>
-        private void AppendMultiPolygonTaggedText(IMultiPolygon multiPolygon, int level, TextWriter writer)
+        /// <param name="formatter">the formatter to use when writing numbers</param>
+        private void AppendMultiPolygonTaggedText(IMultiPolygon multiPolygon, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
             writer.Write("MULTIPOLYGON ");
-            AppendMultiPolygonText(multiPolygon, level, writer);
+            AppendOrdinateText(outputOrdinates, writer);
+            AppendMultiPolygonText(multiPolygon, outputOrdinates, useFormatting, level, /*false, */writer, formatter, format, useMaxPrecision);
         }
 
         /// <summary>
@@ -459,72 +620,51 @@ namespace NetTopologySuite.IO
         /// Tagged Text format, then appends it to the writer.
         /// </summary>
         /// <param name="geometryCollection">The <c>GeometryCollection</c> to process.</param>
-        /// <param name="level"></param>
+        /// <param name="useFormatting">flag indicating that the output should be formatted</param>
+        /// <param name="level">the indentation level</param>
         /// <param name="writer">The output writer to append to.</param>
-        private void AppendGeometryCollectionTaggedText(IGeometryCollection geometryCollection, int level, TextWriter writer)
+        /// <param name="formatter">the formatter to use when writing numbers</param>
+        private void AppendGeometryCollectionTaggedText(IGeometryCollection geometryCollection, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
             writer.Write("GEOMETRYCOLLECTION ");
-            AppendGeometryCollectionText(geometryCollection, level, writer);
+            AppendOrdinateText(outputOrdinates, writer);
+            AppendGeometryCollectionText(geometryCollection, outputOrdinates, useFormatting, level, writer, formatter, format, useMaxPrecision);
         }
 
         /// <summary>
-        /// Converts a <c>Coordinate</c> to Point Text format, then
-        /// appends it to the writer.
+        /// Appends the i'th coordinate from the sequence to the writer
+        /// <para>
+        /// If the <paramref name="seq"/> has coordinates that are <see cref="double.IsNaN">NaN</see>,
+        /// these are not written, even though <see cref="_outputDimension"/> suggests this.
+        /// </para>
         /// </summary>
-        /// <param name="coordinate">The <c>Coordinate</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="writer">The output writer to append to.</param>
-        /// <param name="precisionModel">
-        /// The <c>PrecisionModel</c> to use to convert
-        /// from a precise coordinate to an external coordinate.
-        /// </param>
-        private void AppendPointText(Coordinate coordinate, int level, TextWriter writer, IPrecisionModel precisionModel)
-        {
-            if (coordinate == null)
-                writer.Write("EMPTY");
-            else
-            {
-                writer.Write("(");
-                AppendCoordinate(coordinate, writer, precisionModel);
-                writer.Write(")");
-            }
-        }
-
-        /// <summary>Appends the i'th coordinate from the sequence to the writer</summary>
         /// <param name="seq">the <see cref="ICoordinateSequence"/> to process</param>
         /// <param name="i">the index of the coordinate to write</param>
         /// <param name="writer">writer the output writer to append to</param>
+        /// <param name="formatter">the formatter to use for writing ordinate values</param>
         /// <exception cref="IOException"></exception>
-        private void AppendCoordinate(ICoordinateSequence seq, int i, TextWriter writer)
+        private void AppendCoordinate(ICoordinateSequence seq, Ordinates outputOrdinates, int i, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
-            writer.Write(WriteNumber(seq.GetX(i)) + " " + WriteNumber(seq.GetY(i)));
-            if (_outputDimension >= 3 && seq.Dimension >= 3)
+            writer.Write(WriteNumber(seq.GetX(i), formatter, format, useMaxPrecision) + " " + WriteNumber(seq.GetY(i), formatter, format, useMaxPrecision));
+
+            if (outputOrdinates.HasFlag(Ordinates.Z))
             {
-                double z = seq.GetOrdinate(i, Ordinate.Z);
+                double z = seq.GetZ(i);
                 if (!double.IsNaN(z))
                 {
                     writer.Write(" ");
-                    writer.Write(WriteNumber(z));
+                    writer.Write(WriteNumber(seq.GetZ(i), formatter, format, useMaxPrecision));
+                }
+                else
+                {
+                    writer.Write(" NaN");
                 }
             }
-        }
 
-        /// <summary>
-        /// Converts a <c>Coordinate</c> to Point format, then appends
-        /// it to the writer.
-        /// </summary>
-        /// <param name="coordinate">The <c>Coordinate</c> to process.</param>
-        /// <param name="writer">The output writer to append to.</param>
-        /// <param name="precisionModel">
-        /// The <c>PrecisionModel</c> to use to convert
-        /// from a precise coordinate to an external coordinate.
-        /// </param>
-        private void AppendCoordinate(Coordinate coordinate, TextWriter writer, IPrecisionModel precisionModel)
-        {
-            writer.Write(WriteNumber(coordinate.X) + " " + WriteNumber(coordinate.Y));
-            if (_outputDimension >= 3 && !double.IsNaN(coordinate.Z))
+            if (outputOrdinates.HasFlag(Ordinates.M))
             {
-                writer.Write(" " + WriteNumber(coordinate.Z));
+                writer.Write(" ");
+                writer.Write(WriteNumber(seq.GetM(i), formatter, format, useMaxPrecision));
             }
         }
 
@@ -535,30 +675,76 @@ namespace NetTopologySuite.IO
         /// <returns>
         /// The <see cref="double" /> as a <see cref="string" />.
         /// </returns>
-        private string WriteNumber(double d)
+        private static string WriteNumber(double d, IFormatProvider formatProvider, string format, bool useMaxPrecision)
         {
-            string standard = d.ToString(_format, _formatter);
-            if (!_useMaxPrecision) {
+            string standard = d.ToString(format, formatProvider);
+            if (!useMaxPrecision)
+            {
                 return standard;
-}
+            }
             try
             {
-                double converted = Convert.ToDouble(standard, _formatter);
-                // check if some precision is lost during text conversion: if so, use {0:R} formatter
+                double converted = Convert.ToDouble(standard, formatProvider);
+                // check if some precision is lost during text conversion: if so, use G17
                 if (converted == d)
                     return standard;
-                return string.Format(_formatter, MaxPrecisionFormat, d);
             }
             catch (OverflowException ex)
             {
-                // Use MaxPrecisionFormat anyway
-                return string.Format(_formatter, MaxPrecisionFormat, d);
+            }
+
+            return d.ToString("G17", formatProvider);
+        }
+
+        /// <summary>
+        /// Appends additional ordinate information. This function may
+        /// <list type="bullet">
+        /// <item>
+        /// <description>
+        /// append 'Z' if in <paramref name="outputOrdinates"/> the <see cref="Ordinates.Z"/> value is included.
+        /// </description>
+        /// </item>
+        /// <item>
+        /// <description>
+        /// append 'M' if in <paramref name="outputOrdinates"/> the <see cref="Ordinates.M"/> value is included.
+        /// </description>
+        /// </item>
+        /// <item>
+        /// <description>
+        /// append 'ZM' if in <paramref name="outputOrdinates"/> the <see cref="Ordinates.Z"/> and
+        /// <see cref="Ordinates.M"/> values are included.
+        /// </description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <param name="outputOrdinates">a bit-pattern of ordinates to write.</param>
+        /// <param name="writer">the output writer to append to.</param>
+        /// <exception cref="IOException">if an error occurs while using the writer.</exception>
+        private void AppendOrdinateText(Ordinates outputOrdinates, TextWriter writer)
+        {
+            if (outputOrdinates.HasFlag(Ordinates.Z))
+            {
+                writer.Write('Z');
+            }
+
+            if (outputOrdinates.HasFlag(Ordinates.M))
+            {
+                writer.Write('M');
             }
         }
 
-        /// <summary>Converts a <see cref="ICoordinateSequence"/> to &lt;LineString Text&gt; format, then appends it to the writer</summary>
-        /// <exception cref="IOException"></exception>
-        private void AppendSequenceText(ICoordinateSequence seq, int level, bool doIndent, TextWriter writer)
+        /// <summary>
+        /// Appends all members of a <see cref="ICoordinateSequence"/> to the stream. Each
+        /// <see cref="Coordinate"/> is separated from another using a colon, the ordinates of a
+        /// <see cref="Coordinate"/> are separated by a space.
+        /// </summary>
+        /// <param name="seq">the <see cref="ICoordinateSequence"/> to process.</param>
+        /// <param name="useFormatting">flag indicating that.</param>
+        /// <param name="level">the indentation level.</param>
+        /// <param name="indentFirst">flag indicating that the first <see cref="Coordinate"/> of the sequence should be indented for better visibility.</param>
+        /// <param name="writer">the output writer to append to.</param>
+        /// <param name="formatter">the formatter to use for writing ordinate values.</param>
+        private void AppendSequenceText(ICoordinateSequence seq, Ordinates outputOrdinates, bool useFormatting, int level, bool indentFirst, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
             if (seq.Count == 0)
             {
@@ -566,7 +752,7 @@ namespace NetTopologySuite.IO
             }
             else
             {
-                if (doIndent) Indent(level, writer);
+                if (indentFirst) Indent(useFormatting, level, writer);
                 writer.Write("(");
                 for (int i = 0; i < seq.Count; i++)
                 {
@@ -576,43 +762,10 @@ namespace NetTopologySuite.IO
                         if (_coordsPerLine > 0
                             && i%_coordsPerLine == 0)
                         {
-                            Indent(level + 1, writer);
+                            Indent(useFormatting, level + 1, writer);
                         }
                     }
-                    AppendCoordinate(seq, i, writer);
-                }
-                writer.Write(")");
-            }
-        }
-
-        /// <summary>
-        /// Converts a <c>LineString</c> to &lt;LineString Text format, then
-        /// appends it to the writer.
-        /// </summary>
-        /// <param name="lineString">The <c>LineString</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="doIndent"></param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendLineStringText(ILineString lineString, int level, bool doIndent, TextWriter writer)
-        {
-            if (lineString.IsEmpty)
-                writer.Write("EMPTY");
-            else
-            {
-                if (doIndent) Indent(level, writer);
-                writer.Write("(");
-                for (int i = 0; i < lineString.NumPoints; i++)
-                {
-                    if (i > 0)
-                    {
-                        writer.Write(", ");
-                        if (_coordsPerLine > 0
-                            && i % _coordsPerLine == 0)
-                        {
-                            Indent(level + 1, writer);
-                        }
-                    }
-                    AppendCoordinate(lineString.GetCoordinateN(i), writer, lineString.PrecisionModel);
+                    AppendCoordinate(seq, outputOrdinates, i, writer, formatter, format, useMaxPrecision);
                 }
                 writer.Write(")");
             }
@@ -623,22 +776,26 @@ namespace NetTopologySuite.IO
         /// appends it to the writer.
         /// </summary>
         /// <param name="polygon">The <c>Polygon</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="indentFirst"></param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendPolygonText(IPolygon polygon, int level, bool indentFirst, TextWriter writer)
+        /// <param name="useFormatting">flag indicating that.</param>
+        /// <param name="level">the indentation level.</param>
+        /// <param name="indentFirst">flag indicating that the first <see cref="Coordinate"/> of the sequence should be indented for better visibility.</param>
+        /// <param name="writer">the output writer to append to.</param>
+        /// <param name="formatter">the formatter to use for writing ordinate values.</param>
+        private void AppendPolygonText(IPolygon polygon, Ordinates outputOrdinates, bool useFormatting, int level, bool indentFirst, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
             if (polygon.IsEmpty)
                 writer.Write("EMPTY");
             else
             {
-                if (indentFirst) Indent(level, writer);
+                if (indentFirst) Indent(useFormatting, level, writer);
                 writer.Write("(");
-                AppendLineStringText(polygon.ExteriorRing, level, false, writer);
+                AppendSequenceText(polygon.ExteriorRing.CoordinateSequence, outputOrdinates,
+                    useFormatting, level, false, writer, formatter, format, useMaxPrecision);
                 for (int i = 0; i < polygon.NumInteriorRings; i++)
                 {
                     writer.Write(", ");
-                    AppendLineStringText(polygon.GetInteriorRingN(i), level + 1, true, writer);
+                    AppendSequenceText(polygon.GetInteriorRingN(i).CoordinateSequence, outputOrdinates,
+                        useFormatting, level + 1, true, writer, formatter, format, useMaxPrecision);
                 }
                 writer.Write(")");
             }
@@ -649,9 +806,11 @@ namespace NetTopologySuite.IO
         /// appends it to the writer.
         /// </summary>
         /// <param name="multiPoint">The <c>MultiPoint</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendMultiPointText(IMultiPoint multiPoint, int level, TextWriter writer)
+        /// <param name="useFormatting">flag indicating that.</param>
+        /// <param name="level">the indentation level.</param>
+        /// <param name="writer">the output writer to append to.</param>
+        /// <param name="formatter">the formatter to use for writing ordinate values.</param>
+        private void AppendMultiPointText(IMultiPoint multiPoint, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
             if (multiPoint.IsEmpty)
                 writer.Write("EMPTY");
@@ -663,11 +822,10 @@ namespace NetTopologySuite.IO
                     if (i > 0)
                     {
                         writer.Write(", ");
-                        IndentCoords(i, level + 1, writer);
+                        IndentCoords(useFormatting, i, level + 1, writer);
                     }
-                    writer.Write("(");
-                    AppendCoordinate((multiPoint.GetGeometryN(i)).Coordinate, writer, multiPoint.PrecisionModel);
-                    writer.Write(")");
+                    AppendSequenceText(((IPoint)multiPoint.GetGeometryN(i)).CoordinateSequence,
+                        outputOrdinates, useFormatting, level, false, writer, formatter, format, useMaxPrecision);
                 }
                 writer.Write(")");
             }
@@ -678,17 +836,18 @@ namespace NetTopologySuite.IO
         /// format, then appends it to the writer.
         /// </summary>
         /// <param name="multiLineString">The <c>MultiLineString</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="indentFirst"></param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendMultiLineStringText(IMultiLineString multiLineString, int level, bool indentFirst, TextWriter writer)
+        /// <param name="useFormatting">flag indicating that.</param>
+        /// <param name="level">the indentation level.</param>
+        /// <param name="writer">the output writer to append to.</param>
+        /// <param name="formatter">the formatter to use for writing ordinate values.</param>
+        private void AppendMultiLineStringText(IMultiLineString multiLineString, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
             if (multiLineString.IsEmpty)
                 writer.Write("EMPTY");
             else
             {
                 int level2 = level;
-                bool doIndent = indentFirst;
+                bool doIndent = false;
                 writer.Write("(");
                 for (int i = 0; i < multiLineString.NumGeometries; i++)
                 {
@@ -698,7 +857,8 @@ namespace NetTopologySuite.IO
                         level2 = level + 1;
                         doIndent = true;
                     }
-                    AppendLineStringText((ILineString) multiLineString.GetGeometryN(i), level2, doIndent, writer);
+                    AppendSequenceText(((ILineString) multiLineString.GetGeometryN(i)).CoordinateSequence,
+                        outputOrdinates, useFormatting, level2, doIndent, writer, formatter, format, useMaxPrecision);
                 }
                 writer.Write(")");
             }
@@ -709,9 +869,11 @@ namespace NetTopologySuite.IO
         /// then appends it to the writer.
         /// </summary>
         /// <param name="multiPolygon">The <c>MultiPolygon</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendMultiPolygonText(IMultiPolygon multiPolygon, int level, TextWriter writer)
+        /// <param name="useFormatting">flag indicating that.</param>
+        /// <param name="level">the indentation level.</param>
+        /// <param name="writer">the output writer to append to.</param>
+        /// <param name="formatter">the formatter to use for writing ordinate values.</param>
+        private void AppendMultiPolygonText(IMultiPolygon multiPolygon, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
             if (multiPolygon.IsEmpty)
                 writer.Write("EMPTY");
@@ -728,7 +890,7 @@ namespace NetTopologySuite.IO
                         level2 = level + 1;
                         doIndent = true;
                     }
-                    AppendPolygonText((IPolygon) multiPolygon.GetGeometryN(i), level2, doIndent, writer);
+                    AppendPolygonText((IPolygon) multiPolygon.GetGeometryN(i), outputOrdinates, useFormatting, level2, doIndent, writer, formatter, format, useMaxPrecision);
                 }
                 writer.Write(")");
             }
@@ -739,9 +901,12 @@ namespace NetTopologySuite.IO
         /// format, then appends it to the writer.
         /// </summary>
         /// <param name="geometryCollection">The <c>GeometryCollection</c> to process.</param>
-        /// <param name="level"></param>
-        /// <param name="writer">The output writer to append to.</param>
-        private void AppendGeometryCollectionText(IGeometryCollection geometryCollection, int level, TextWriter writer)
+        /// <param name="useFormatting">flag indicating that.</param>
+        /// <param name="level">the indentation level.</param>
+        /// <param name="indentFirst">flag indicating that the first <see cref="Coordinate"/> of the sequence should be indented for better visibility.</param>
+        /// <param name="writer">the output writer to append to.</param>
+        /// <param name="formatter">the formatter to use for writing ordinate values.</param>
+        private void AppendGeometryCollectionText(IGeometryCollection geometryCollection, Ordinates outputOrdinates, bool useFormatting, int level, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
             if (geometryCollection.IsEmpty)
                 writer.Write("EMPTY");
@@ -756,34 +921,22 @@ namespace NetTopologySuite.IO
                         writer.Write(", ");
                         level2 = level + 1;
                     }
-                    AppendGeometryTaggedText(geometryCollection.GetGeometryN(i), level2, writer);
+                    AppendGeometryTaggedText(geometryCollection.GetGeometryN(i), outputOrdinates, useFormatting, level2, writer, formatter, format, useMaxPrecision);
                 }
                 writer.Write(")");
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="coordIndex"></param>
-        /// <param name="level"></param>
-        /// <param name="writer"></param>
-        /// <exception cref="IOException"></exception>
-        private void IndentCoords(int coordIndex,  int level, TextWriter writer)
+        private void IndentCoords(bool useFormatting, int coordIndex, int level, TextWriter writer)
         {
             if (_coordsPerLine <= 0 || coordIndex % _coordsPerLine != 0)
                 return;
-            Indent(level, writer);
-    }
+            Indent(useFormatting, level, writer);
+        }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="level"></param>
-        /// <param name="writer"></param>
-        private void Indent(int level, TextWriter writer)
+        private void Indent(bool useFormatting, int level, TextWriter writer)
         {
-            if (!_useFormating || level <= 0) return;
+            if (!useFormatting || level <= 0) return;
             writer.Write("\n");
             for (int i = 0; i < level; i++)
                 writer.Write(_indentTabStr);
