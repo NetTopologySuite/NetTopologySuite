@@ -16,13 +16,24 @@ namespace NetTopologySuite.Operation
     /// <author>Martin Davis</author>
     public class BoundaryOp
     {
-
+        /// <summary>
+        /// Computes a geometry representing the boundary of a geometry.
+        /// </summary>
+        /// <param name="g">The input geometry.</param>
+        /// <returns>The computed boundary.</returns>
         public static IGeometry GetBoundary(IGeometry g)
         {
             var bop = new BoundaryOp(g);
             return bop.GetBoundary();
         }
 
+        /// <summary>
+        /// Computes a geometry representing the boundary of a geometry,
+        /// using an explicit <see cref="IBoundaryNodeRule"/>.
+        /// </summary>
+        /// <param name="g">The input geometry.</param>
+        /// <param name="bnRule">The Boundary Node Rule to use.</param>
+        /// <returns>The computed boundary.</returns>
         public static IGeometry GetBoundary(IGeometry g, IBoundaryNodeRule bnRule)
         {
             var bop = new BoundaryOp(g, bnRule);
@@ -33,11 +44,20 @@ namespace NetTopologySuite.Operation
         private readonly IGeometryFactory _geomFact;
         private readonly IBoundaryNodeRule _bnRule;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BoundaryOp"/> class for the given geometry.
+        /// </summary>
+        /// <param name="geom">The input geometry.</param>
         public BoundaryOp(IGeometry geom)
             : this(geom, BoundaryNodeRules.Mod2BoundaryRule)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BoundaryOp"/> class for the given geometry.
+        /// </summary>
+        /// <param name="geom">The input geometry.</param>
+        /// <param name="bnRule">Tthe Boundary Node Rule to use.</param>
         public BoundaryOp(IGeometry geom, IBoundaryNodeRule bnRule)
         {
             _geom = geom;
@@ -45,6 +65,10 @@ namespace NetTopologySuite.Operation
             _bnRule = bnRule;
         }
 
+        /// <summary>
+        /// Gets the computed boundary.
+        /// </summary>
+        /// <returns>The boundary geometry.</returns>
         public IGeometry GetBoundary()
         {
             if (_geom is ILineString) return BoundaryLineString((ILineString)_geom);

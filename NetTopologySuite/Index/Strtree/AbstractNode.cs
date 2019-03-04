@@ -88,7 +88,7 @@ namespace NetTopologySuite.Index.Strtree
         /// Adds either an AbstractNode, or if this is a leaf node, a data object
         /// (wrapped in an ItemBoundable).
         /// </summary>
-        /// <param name="childBoundable"></param>
+        /// <param name="childBoundable">The child to add.</param>
         public void AddChildBoundable(IBoundable<T, TItem> childBoundable)
         {
             Assert.IsTrue(_bounds == null);

@@ -138,8 +138,16 @@ namespace NetTopologySuite.Index.Strtree
         /// For a pair which is not a leaf
         /// (i.e. has at least one composite boundable)
         /// computes a list of new pairs
-        /// from the expansion of the larger boundable.
+        /// from the expansion of the larger boundable
+        /// with distance less than minDistance
+        /// and adds them to a priority queue.
         /// </summary>
+        /// <param name="priQ">
+        /// The priority queue to add the new pairs to.
+        /// </param>
+        /// <param name="minDistance">
+        /// The limit on the distance between added pairs.
+        /// </param>
         public void ExpandToQueue(PriorityQueue<BoundablePair<TItem>> priQ, double minDistance)
         {
             bool isComp1 = IsComposite(_boundable1);

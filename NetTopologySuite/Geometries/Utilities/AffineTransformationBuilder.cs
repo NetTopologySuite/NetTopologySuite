@@ -74,10 +74,8 @@ namespace NetTopologySuite.Geometries.Utilities
         /// or <c>null</c> if the control vectors do not determine a well-defined transformation.
         /// </summary>
         /// <returns>
-        /// <list>
-        /// <item>An affine transformation</item>
-        /// <item><c>null</c> if the control vectors do not determine a well-defined transformation.</item>
-        /// </list>
+        /// An affine transformation, or <see langword="null"/> if the control vectors do not
+        /// determine a well-defined transformation.
         /// </returns>
         public AffineTransformation GetTransformation()
         {
@@ -118,7 +116,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// for the given right-hand side vector.
         /// </summary>
         /// <param name="b">The vector for the right-hand side of the system</param>
-        /// <returns>The solution vector, if it can be determinated, otherwise null</returns>
+        /// <returns>The solution vector, or <see langword="null"/> if no solution could be determined.</returns>
         private double[] Solve(double[] b)
         {
             double[][] a = new double[3][];

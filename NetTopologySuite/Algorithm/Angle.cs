@@ -45,8 +45,8 @@ namespace NetTopologySuite.Algorithm
         /// Returns the angle of the vector from p0 to p1, relative to the positive X-axis.
         /// </summary>
         /// <remarks>The angle is normalized to be in the range [ -Pi, Pi ].</remarks>
-        /// <param name="p0">The start-point</param>
-        /// <param name="p1">The end-point</param>
+        /// <param name="p0">The initial point of the vector.</param>
+        /// <param name="p1">The terminal point of the vector.</param>
         /// <returns>The normalized angle (in radians) that p0-p1 makes with the positive X-axis</returns>
         public static double Angle(Coordinate p0, Coordinate p1)
         {
@@ -56,12 +56,12 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Returns the angle that the vector from (0,0) to p, relative to the positive X-axis.
+        /// Returns the angle of the vector from (0,0) to p, relative to the positive X-axis.
         /// </summary>
         /// <remarks>
         /// The angle is normalized to be in the range ( -Pi, Pi ].
         /// </remarks>
-        /// <param name="p">The point</param>
+        /// <param name="p">The terminal point of the vector.</param>
         /// <returns>The normalized angle (in radians) that (0,0)-p makes with the positive X-axis.</returns>
         public static double Angle(Coordinate p)
         {
@@ -78,6 +78,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p0">An endpoint of the angle</param>
         /// <param name="p1">The base of the angle</param>
         /// <param name="p2">Another endpoint of the angle</param>
+        /// <returns><see langword="true"/> if the angle is acute.</returns>
         public static bool IsAcute(Coordinate p0, Coordinate p1, Coordinate p2)
         {
             // relies on fact that A dot B is positive iff A ang B is acute
@@ -99,6 +100,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p0">An endpoint of the angle</param>
         /// <param name="p1">The base of the angle</param>
         /// <param name="p2">Another endpoint of the angle</param>
+        /// <returns><see langword="true"/> if the angle is obtuse.</returns>
         public static bool IsObtuse(Coordinate p0, Coordinate p1, Coordinate p2)
         {
             // relies on fact that A dot B is negative iff A ang B is obtuse
