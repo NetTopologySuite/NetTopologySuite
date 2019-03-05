@@ -1,18 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
     <TargetFramework>netstandard2.0</TargetFramework>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(SolutionDir)nts.snk</AssemblyOriginatorKeyFile>
     <NoWarn>659,168,1587</NoWarn>
   </PropertyGroup>
 
   <Import Project="$(SolutionDir)NetTopologySuite.Common.props" />
-
-  <ItemGroup>
-    <Compile Include="$(SolutionDir)SharedAssemblyVersion.cs" Link="Properties\SharedAssemblyVersion.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="$(SolutionDir)nts.snk" Link="nts.snk" />
