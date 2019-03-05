@@ -32,7 +32,7 @@ namespace NetTopologySuite.IO
         {
             // legacy note: JTS's version never checks Z or M, so the things that call this aren't
             // expecting to see them.  the "actual" code to write points handles Z / M just fine.
-            return "POINT ( " + p0.X.ToString("G17") + " " + p0.Y.ToString("G17") + " )";
+            return "POINT ( " + p0.X.ToString("G17", CultureInfo.InvariantCulture) + " " + p0.Y.ToString("G17", CultureInfo.InvariantCulture) + " )";
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace NetTopologySuite.IO
                 {
                     if (i > 0)
                         buf.Append(", ");
-                    buf.Append(seq.GetX(i).ToString("G17") + " " + seq.GetY(i).ToString("G17"));
+                    buf.Append(seq.GetX(i).ToString("G17", CultureInfo.InvariantCulture) + " " + seq.GetY(i).ToString("G17", CultureInfo.InvariantCulture));
               }
               buf.Append(")");
             }
@@ -85,7 +85,7 @@ namespace NetTopologySuite.IO
                 {
                     if (i > 0)
                         buf.Append(", ");
-                    buf.Append(coord[i].X.ToString("G17") + " " + coord[i].Y.ToString("G17"));
+                    buf.Append(coord[i].X.ToString("G17", CultureInfo.InvariantCulture) + " " + coord[i].Y.ToString("G17", CultureInfo.InvariantCulture));
                 }
                 buf.Append(")");
             }
@@ -102,7 +102,7 @@ namespace NetTopologySuite.IO
         {
             // legacy note: JTS's version never checks Z or M, so the things that call this aren't
             // expecting to see them.  the "actual" code to write lines handles Z / M just fine.
-            return "LINESTRING ( " + p0.X.ToString("G17") + " " + p0.Y.ToString("G17") + ", " + p1.X.ToString("G17") + " " + p1.Y.ToString("G17") + " )";
+            return "LINESTRING ( " + p0.X.ToString("G17", CultureInfo.InvariantCulture) + " " + p0.Y.ToString("G17", CultureInfo.InvariantCulture) + ", " + p1.X.ToString("G17", CultureInfo.InvariantCulture) + " " + p1.Y.ToString("G17", CultureInfo.InvariantCulture) + " )";
         }
 
         /// <summary>

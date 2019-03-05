@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
@@ -17,6 +18,28 @@ namespace NetTopologySuite.Tests.NUnit.IO
         private readonly WKTWriter _writer = new WKTWriter();
         private readonly WKTWriter _writer3D = new WKTWriter(3);
         private readonly WKTWriter _writer2DM = new WKTWriter(3) { OutputOrdinates = Ordinates.XYM };
+
+        private CultureInfo overriddenCurrentCulture;
+
+        [SetUp]
+        public void SetCurrentCulture()
+        {
+            this.overriddenCurrentCulture = CultureInfo.CurrentCulture;
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("pt-BR");
+        }
+
+        [TearDown]
+        public void ResetCurrentCulture()
+        {
+            CultureInfo.CurrentCulture = this.overriddenCurrentCulture;
+        }
+
+        [Test]
+        public void TestWritePointWithDecimals()
+        {
+            var point = _factory.CreatePoint(new Coordinate(10.5, 10.5));
+            Assert.AreEqual("POINT (10.5 10.5)", _writer.Write(point));
+        }
 
         [TestAttribute]
         public void TestWritePoint()

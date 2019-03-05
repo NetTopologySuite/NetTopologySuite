@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using GeoAPI.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
@@ -8,9 +9,24 @@ namespace NetTopologySuite.Tests.NUnit.IO
     [TestFixture]
     public class WKTWriterStaticFnTest
     {
+        private CultureInfo overriddenCurrentCulture;
+
         private Random _rnd = new Random(13);
 
         private WKTReader _reader = new WKTReader() { IsOldNtsCoordinateSyntaxAllowed = false };
+
+        [SetUp]
+        public void SetCurrentCulture()
+        {
+            this.overriddenCurrentCulture = CultureInfo.CurrentCulture;
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("pt-BR");
+        }
+
+        [TearDown]
+        public void ResetCurrentCulture()
+        {
+            CultureInfo.CurrentCulture = this.overriddenCurrentCulture;
+        }
 
         [Test]
         public void TestStaticToPoint()
