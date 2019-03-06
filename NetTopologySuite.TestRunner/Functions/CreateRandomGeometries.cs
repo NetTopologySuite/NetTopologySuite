@@ -78,6 +78,9 @@ namespace Open.Topology.TestRunner.Functions
             return geomFact.BuildGeometry(pts.ToArray());
         }
 
+        /// <summary>
+        /// Create Halton points using bases 2 and 3.
+        /// </summary>
         public static IGeometry HaltonPoints(IGeometry g, int nPts)
         {
             return HaltonPointsWithBases(g, nPts, 2, 3);
