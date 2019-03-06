@@ -55,5 +55,16 @@ namespace Open.Topology.TestRunner.Functions
             var dist = new DiscreteHausdorffDistance(a, b);
             return dist.OrientedDistance();
         }
+
+        public static double DistanceIndexed(IGeometry a, IGeometry b)
+        {
+            return IndexedFacetDistance.Distance(a, b);
+        }
+
+        public static IGeometry NeastPointsIndexed(IGeometry a, IGeometry b)
+        {
+            var pts = IndexedFacetDistance.NearestPoints(a, b);
+            return a.Factory.CreateLineString(pts);
+        }
     }
 }

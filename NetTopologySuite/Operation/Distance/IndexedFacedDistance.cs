@@ -10,25 +10,26 @@ namespace NetTopologySuite.Operation.Distance
     /// using a Branch-and-Bound algorithm.
     /// The Branch-and-Bound algorithm operates over a
     /// traversal of R-trees built
-    /// on the target and possibly also the query geometries.
+    /// on the target and the query geometries.
     /// <para>
     /// This approach provides the following benefits:
     /// <list type="Bullet">
     /// <item>
-    /// Performance is improved due to the effects of the R-tree index
+    /// Performance is dramatically improved due to the use of the
+    /// R-tree index
     /// and the pruning due to the Branch-and-Bound approach
     /// </item><item>
-    /// The spatial index on the target geometry can be cached
-    /// to allow reuse in an incremental query situation.</item>
+    /// The spatial index on the target geometry is cached
+    /// which allow reuse in an repeated query situation.</item>
     /// </list>
-    /// Using this technique can be much more performant
-    /// than using <see cref="IGeometry.Distance(IGeometry)"/>
+    /// Using this technique is usually much more performant
+    /// than using the brute-force <see cref="IGeometry.Distance(IGeometry)"/>
     /// when one or both input geometries are large,
     /// or when evaluating many distance computations against
     /// a single geometry.
     /// </para>
     /// </summary>
-    /// <remarks>This class is not thread-safe.</remarks>
+    /// <remarks>This class is thread-safe.</remarks>
     /// <author>
     /// Martin Davis
     /// </author>
@@ -48,7 +49,13 @@ namespace NetTopologySuite.Operation.Distance
         public static double Distance(IGeometry g1, IGeometry g2)
         {
             var dist = new IndexedFacetDistance(g1);
-            return dist.GetDistance(g2);
+            return dist.Distance(g2);
+        }
+
+        public static Coordinate[] NearestPoints(IGeometry g1, IGeometry g2)
+        {
+            var dist = new IndexedFacetDistance(g1);
+            return dist.NearestPoints(g2);
         }
 
         private readonly STRtree<FacetSequence> _cachedTree;
@@ -66,7 +73,7 @@ namespace NetTopologySuite.Operation.Distance
         /// this is equivalent to computing the conventional distance.
         /// </para><para>
         /// In the case of <see cref="IPolygonal"/> inputs, this is equivalent
-        /// to computing the distance to the polygons boundaries.
+        /// to computing the distance to the polygon boundaries.
         /// </para>
         /// </remarks>
         /// <param name="g1">A Geometry, which may be of any type.</param>
@@ -80,16 +87,39 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         /// <param name="g">The geometry to compute the distance to.</param>
         /// <returns>The computed distance</returns>
-        public double GetDistance(IGeometry g)
+        public double Distance(IGeometry g)
         {
             var tree2 = FacetSequenceTreeBuilder.BuildSTRtree(g);
             var obj = _cachedTree.NearestNeighbour(tree2, new FacetSequenceDistance());
-            return FacetDistance(obj);
+            var fs1 = obj[0];
+            var fs2 = obj[1];
+            return fs1.Distance(fs2);
         }
 
-        private static double FacetDistance(FacetSequence[] obj)
+        /// <summary>
+        /// Computes the nearest locations on the base geometry
+        /// and the given geometry.
+        /// </summary>
+        /// <param name="g">Ihe geometry to compute the nearest location to.</param>
+        /// <returns>The nearest locations.</returns>
+        public GeometryLocation[] NearestLocations(IGeometry g)
         {
-            return obj[0].Distance(obj[1]);
+            var tree2 = FacetSequenceTreeBuilder.BuildSTRtree(g);
+            var obj = _cachedTree.NearestNeighbour(tree2, new FacetSequenceDistance());
+            var fs1 = obj[0];
+            var fs2 = obj[1];
+            return fs1.NearestLocations(fs2);
+        }
+
+        /// <summary>
+        /// Computes the nearest locations on the target geometry
+        /// and the given geometry.
+        /// </summary>
+        /// <param name="g">Ihe geometry to compute the nearest point to.</param>
+        /// <returns>The nearest points.</returns>
+        public Coordinate[] NearestPoints(IGeometry g)
+        {
+            return Array.ConvertAll(NearestLocations(g), loc => loc.Coordinate);
         }
 
         /**

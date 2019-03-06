@@ -1,4 +1,6 @@
+using System.Globalization;
 using GeoAPI.Geometries;
+using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Operation.Distance
 {
@@ -65,5 +67,11 @@ namespace NetTopologySuite.Operation.Distance
         /// Tests whether this location represents a point inside an area geometry.
         /// </summary>
         public bool IsInsideArea => _segIndex == InsideArea;
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"{_component.GeometryType}[{_segIndex.ToString(CultureInfo.InvariantCulture)}]-{WKTWriter.ToPoint(_pt)}";
+        }
     }
 }

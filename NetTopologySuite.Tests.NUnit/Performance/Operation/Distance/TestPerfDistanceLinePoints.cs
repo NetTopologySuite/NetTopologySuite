@@ -112,7 +112,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
             {
                 if (USE_INDEXED_DIST)
                 {
-                    double dist = bbd.GetDistance(pts[i]);
+                    double dist = bbd.Distance(pts[i]);
                     //        double dist = bbd.getDistanceWithin(pts[i].getCoordinate(), 100000);
                 }
                 else

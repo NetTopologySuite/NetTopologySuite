@@ -162,33 +162,42 @@ namespace NetTopologySuite.Index.Strtree
             {
                 if (_boundable1.Bounds.Area > _boundable2.Bounds.Area)
                 {
-                    Expand(_boundable1, _boundable2, priQ, minDistance);
+                    Expand(_boundable1, _boundable2, false, priQ, minDistance);
                     return;
                 }
-                Expand(_boundable2, _boundable1, priQ, minDistance);
+                Expand(_boundable2, _boundable1, true, priQ, minDistance);
                 return;
             }
             if (isComp1)
             {
-                Expand(_boundable1, _boundable2, priQ, minDistance);
+                Expand(_boundable1, _boundable2, false, priQ, minDistance);
                 return;
             }
             if (isComp2)
             {
-                Expand(_boundable2, _boundable1, priQ, minDistance);
+                Expand(_boundable2, _boundable1, true, priQ, minDistance);
                 return;
             }
 
             throw new ArgumentException("neither boundable is composite");
         }
 
-        private void Expand(IBoundable<Envelope, TItem> bndComposite, IBoundable<Envelope, TItem> bndOther,
+        private void Expand(IBoundable<Envelope, TItem> bndComposite, IBoundable<Envelope, TItem> bndOther, bool isFlipped,
                             PriorityQueue<BoundablePair<TItem>> priQ, double minDistance)
         {
             var children = ((AbstractNode<Envelope, TItem>)bndComposite).ChildBoundables;
             foreach (var child in children)
             {
-                var bp = new BoundablePair<TItem>(child, bndOther, _itemDistance);
+                BoundablePair<TItem> bp;
+                if (isFlipped)
+                {
+                    bp = new BoundablePair<TItem>(bndOther, child, _itemDistance);
+                }
+                else
+                {
+                    bp = new BoundablePair<TItem>(child, bndOther, _itemDistance);
+                }
+
                 // only add to queue if this pair might contain the closest points
                 // MD - it's actually faster to construct the object rather than called distance(child, bndOther)!
                 if (bp.Distance < minDistance)
