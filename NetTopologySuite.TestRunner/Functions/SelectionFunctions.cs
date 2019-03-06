@@ -51,6 +51,11 @@ namespace Open.Topology.TestRunner.Functions
             return Select(a, mask.Within);
         }
 
+        public static IGeometry InteriorPointWithin(IGeometry a, IGeometry mask)
+        {
+            return Select(a, g => g.InteriorPoint.Within(mask));
+        }
+
         private static IGeometry Select(IGeometry geom, Func<IGeometry, bool> predicate)
         {
             var selected = new List<IGeometry>();
