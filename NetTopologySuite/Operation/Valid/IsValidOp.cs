@@ -343,6 +343,11 @@ namespace NetTopologySuite.Operation.Valid
         /// <param name="ring"></param>
         private void CheckClosedRing(ILinearRing ring)
         {
+            if (ring.IsEmpty)
+            {
+                return;
+            }
+
             if (!ring.IsClosed)
                 _validErr = new TopologyValidationError(TopologyValidationErrors.RingNotClosed,
                     ring.GetCoordinateN(0));
@@ -436,6 +441,7 @@ namespace NetTopologySuite.Operation.Valid
         private void CheckHolesInShell(IPolygon p, GeometryGraph graph)
         {
             var shell = p.Shell;
+            bool isShellEmpty = shell.IsEmpty;
 
             //IPointInRing pir = new MCPointInRing(shell);
             var pir = new IndexedPointInAreaLocator(shell);
@@ -443,6 +449,11 @@ namespace NetTopologySuite.Operation.Valid
             for (int i = 0; i < p.NumInteriorRings; i++)
             {
                 var hole = p.Holes[i];
+                if (hole.IsEmpty)
+                {
+                    continue;
+                }
+
                 var holePt = FindPointNotNode(hole.Coordinates, shell, graph);
 
                 /*
@@ -453,7 +464,7 @@ namespace NetTopologySuite.Operation.Valid
                 if (holePt == null)
                     return;
 
-                bool outside = Location.Exterior == pir.Locate(holePt);
+                bool outside = isShellEmpty || Location.Exterior == pir.Locate(holePt);
                 if(outside)
                 {
                     _validErr = new TopologyValidationError(TopologyValidationErrors.HoleOutsideShell, holePt);
@@ -476,7 +487,15 @@ namespace NetTopologySuite.Operation.Valid
         {
             var nestedTester = new IndexedNestedRingTester(graph);
             foreach (var innerHole in p.Holes)
+            {
+                if (innerHole.IsEmpty)
+                {
+                    continue;
+                }
+
                 nestedTester.Add(innerHole);
+            }
+
             bool isNonNested = nestedTester.IsNonNested();
             if (!isNonNested)
                 _validErr = new TopologyValidationError(TopologyValidationErrors.NestedHoles,
@@ -522,6 +541,11 @@ namespace NetTopologySuite.Operation.Valid
             var shellPts = shell.Coordinates;
             // test if shell is inside polygon shell
             var polyShell = p.Shell;
+            if (polyShell.IsEmpty)
+            {
+                return;
+            }
+
             var polyPts = polyShell.Coordinates;
             var shellPt = FindPointNotNode(shellPts, polyShell, graph);
             // if no point could be found, we can assume that the shell is outside the polygon

@@ -698,7 +698,7 @@ namespace NetTopologySuite.IO
 
             int srid;
             string type = GetNextWord(tokens);
-            if (type == "SRID")
+            if (type.Equals("SRID", StringComparison.OrdinalIgnoreCase))
             {
                 srid = Convert.ToInt32(GetNextNumber(tokens));
                 type = GetNextWord(tokens);
@@ -756,21 +756,21 @@ namespace NetTopologySuite.IO
             var factory = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, srid,
                 csFactory);
 
-            if (type.StartsWith("POINT"))
+            if (type.StartsWith("POINT", StringComparison.OrdinalIgnoreCase))
                 returned = ReadPointText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith("LINESTRING"))
+            else if (type.StartsWith("LINESTRING", StringComparison.OrdinalIgnoreCase))
                 returned = ReadLineStringText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith("LINEARRING"))
+            else if (type.StartsWith("LINEARRING", StringComparison.OrdinalIgnoreCase))
                 returned = ReadLinearRingText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith("POLYGON"))
+            else if (type.StartsWith("POLYGON", StringComparison.OrdinalIgnoreCase))
                 returned = ReadPolygonText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith("MULTIPOINT"))
+            else if (type.StartsWith("MULTIPOINT", StringComparison.OrdinalIgnoreCase))
                 returned = ReadMultiPointText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith("MULTILINESTRING"))
+            else if (type.StartsWith("MULTILINESTRING", StringComparison.OrdinalIgnoreCase))
                 returned = ReadMultiLineStringText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith("MULTIPOLYGON"))
+            else if (type.StartsWith("MULTIPOLYGON", StringComparison.OrdinalIgnoreCase))
                 returned = ReadMultiPolygonText(tokens, factory, ordinateFlags);
-            else if (type.StartsWith("GEOMETRYCOLLECTION"))
+            else if (type.StartsWith("GEOMETRYCOLLECTION", StringComparison.OrdinalIgnoreCase))
                 returned = ReadGeometryCollectionText(tokens, factory, ordinateFlags);
             else throw new GeoAPI.IO.ParseException("Unknown type: " + type);
 
