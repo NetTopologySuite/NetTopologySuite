@@ -39,7 +39,7 @@ namespace NetTopologySuite.Samples.Geometries
 
         }
 
-        public IEnumerable<IGeometry> BuildConcentricBuffers(Coordinate coord)
+        private static IEnumerable<IGeometry> BuildConcentricBuffers(Coordinate coord)
         {
             var center = GeometryFactory.Floating.CreatePoint(coord);
             IPolygon lastPolygon = null;

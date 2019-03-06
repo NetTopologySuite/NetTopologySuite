@@ -157,7 +157,7 @@ namespace NetTopologySuite.Operation
             if (g1.IsEmpty)
                 return OverlayOp.CreateEmptyResult(SpatialFunction.Difference, g1, g2, Factory);
             if (g2 == null || g2.IsEmpty)
-                return g2.Copy();
+                return g1.Copy();
 
             if (g1.OgcGeometryType == OgcGeometryType.GeometryCollection ||
                 g2.OgcGeometryType == OgcGeometryType.GeometryCollection)
