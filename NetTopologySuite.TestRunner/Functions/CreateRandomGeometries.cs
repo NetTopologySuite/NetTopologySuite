@@ -86,6 +86,9 @@ namespace Open.Topology.TestRunner.Functions
             return HaltonPointsWithBases(g, nPts, 2, 3);
         }
 
+        /// <summary>
+        /// Create Halton points using bases 5 and 7.
+        /// </summary>
         public static IGeometry HaltonPoints57(IGeometry g, int nPts)
         {
             return HaltonPointsWithBases(g, nPts, 5, 7);
