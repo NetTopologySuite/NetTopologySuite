@@ -84,7 +84,7 @@ namespace NetTopologySuite.Operation
             {
                 length += Algorithm.Length.OfLine(p.ExteriorRing.CoordinateSequence);
                 for (int i = 0; i < p.NumInteriorRings; i++)
-                    length -= Algorithm.Length.OfLine(p.GetInteriorRingN(i).CoordinateSequence);
+                    length += Algorithm.Length.OfLine(p.GetInteriorRingN(i).CoordinateSequence);
                 return length;
             }
             else if (geom is ILineString l)

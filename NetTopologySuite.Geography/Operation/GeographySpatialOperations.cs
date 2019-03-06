@@ -41,7 +41,7 @@ namespace NetTopologySuite.Operation
 
             var pt = (LatLon)g1.EnvelopeInternal.Centre;
             GetTransformation(pt, out var mt, out var factory);
-            g1Out = GeometryTransform.TransformGeometry(factory, g1.Copy(), mt);
+            g1Out = GeometryTransform.TransformGeometry(factory, g1, mt);
         }
 
         protected override void PrepareInput(IGeometry g1, IGeometry g2, out IGeometry g1Out, out IGeometry g2Out)
@@ -51,8 +51,8 @@ namespace NetTopologySuite.Operation
 
             var pt = (LatLon)g1.EnvelopeInternal.ExpandedBy(g2.EnvelopeInternal).Centre;
             GetTransformation(pt, out var mt, out var factory);
-            g1Out = GeometryTransform.TransformGeometry(factory, g1.Copy(), mt);
-            g2Out = GeometryTransform.TransformGeometry(factory, g2.Copy(), mt);
+            g1Out = GeometryTransform.TransformGeometry(factory, g1, mt);
+            g2Out = GeometryTransform.TransformGeometry(factory, g2, mt);
         }
 
 
@@ -83,7 +83,6 @@ namespace NetTopologySuite.Operation
         protected override IGeometry CreateResult(IGeometry geometry)
         {
             var mts = _transforms[Tuple.Create(geometry.SRID, Factory.SRID)];
-            // no need to call geometry.Copy() here because we don't want the original anyway.
             return GeometryTransform.TransformGeometry(Factory, geometry, mts);
         }
 
@@ -113,7 +112,7 @@ namespace NetTopologySuite.Operation
                 {
                     length += Algorithm.LatLonLength.OfLine(p.ExteriorRing.CoordinateSequence);
                     for (int i = 0; i < p.NumInteriorRings; i++)
-                        length -= Algorithm.LatLonLength.OfLine(p.GetInteriorRingN(i).CoordinateSequence);
+                        length += Algorithm.LatLonLength.OfLine(p.GetInteriorRingN(i).CoordinateSequence);
                     return length;
                 }
                 case ILineString l:

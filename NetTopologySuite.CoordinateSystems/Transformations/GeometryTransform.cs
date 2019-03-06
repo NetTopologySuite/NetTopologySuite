@@ -79,7 +79,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
         {
             try
             {
-                var transformed = transform.Transform(p.CoordinateSequence);
+                var transformed = transform.Transform(p.CoordinateSequence.Copy());
                 return factory.CreatePoint(transformed);
             }
             catch { return null; }
@@ -97,7 +97,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
         {
             try
             {
-                var coordSequence = transform.Transform(l.CoordinateSequence);
+                var coordSequence = transform.Transform(l.CoordinateSequence.Copy());
                 return factory.CreateLineString(coordSequence);
             }
             catch { return null; }
@@ -115,7 +115,7 @@ namespace NetTopologySuite.CoordinateSystems.Transformations
         {
             try
             {
-                var coordSequence = transform.Transform(r.CoordinateSequence);
+                var coordSequence = transform.Transform(r.CoordinateSequence.Copy());
                 return factory.CreateLinearRing(coordSequence);
             }
             catch { return null; }

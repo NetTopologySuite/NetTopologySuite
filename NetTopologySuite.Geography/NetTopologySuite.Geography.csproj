@@ -4,9 +4,10 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <RootNamespace>NetTopologySuite</RootNamespace>
     <ApplicationIcon />
-    <OutputType>Library</OutputType>
     <StartupObject />
   </PropertyGroup>
+
+  <Import Project="$(SolutionDir)NetTopologySuite.Common.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\NetTopologySuite.CoordinateSystems\NetTopologySuite.CoordinateSystems.csproj" />
