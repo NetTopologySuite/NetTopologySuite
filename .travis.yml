@@ -8,3 +8,4 @@ script:
 - dotnet test NetTopologySuite.Tests.NUnit --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)' --no-build --no-restore -c Release
 - dotnet test NetTopologySuite.Samples.Console --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)' --no-build --no-restore -c Release
 - dotnet test NetTopologySuite.Tests.Vivid.XUnit --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)' --no-build --no-restore -c Release
+- dotnet test NetTopologySuite.Geography --no-build --no-restore -c Release

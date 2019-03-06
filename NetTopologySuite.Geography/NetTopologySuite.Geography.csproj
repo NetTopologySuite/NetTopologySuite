@@ -1,7 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(SolutionDir)nts.snk</AssemblyOriginatorKeyFile>
     <RootNamespace>NetTopologySuite</RootNamespace>
     <ApplicationIcon />
     <StartupObject />
@@ -10,8 +13,8 @@
   <Import Project="$(SolutionDir)NetTopologySuite.Common.props" />
 
   <ItemGroup>
-    <ProjectReference Include="..\NetTopologySuite.CoordinateSystems\NetTopologySuite.CoordinateSystems.csproj" />
-    <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.CoordinateSystems\NetTopologySuite.CoordinateSystems.csproj" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" />
   </ItemGroup>
 
   <ItemGroup>
