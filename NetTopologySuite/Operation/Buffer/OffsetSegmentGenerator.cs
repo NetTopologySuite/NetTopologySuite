@@ -499,7 +499,6 @@ namespace NetTopologySuite.Operation.Buffer
             var basePt = _seg0.P1;
 
             double ang0 = AngleUtility.Angle(basePt, _seg0.P0);
-            //var ang1 = AngleUtility.Angle(basePt, _seg1.P1);
 
             // oriented angle between segments
             double angDiff = AngleUtility.AngleBetweenOriented(_seg0.P0, basePt, _seg1.P1);

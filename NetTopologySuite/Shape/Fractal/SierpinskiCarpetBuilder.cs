@@ -45,8 +45,6 @@ namespace NetTopologySuite.Shape.Fractal
             if (n < 0) return;
             int n2 = n - 1;
             double widthThird = width/3.0;
-            //var widthTwoThirds = width*2.0/3.0;
-            //var widthNinth = width/9.0;
 
             AddHoles(n2, originX,                originY,                widthThird, holeList);
             AddHoles(n2, originX + widthThird,   originY,                widthThird, holeList);

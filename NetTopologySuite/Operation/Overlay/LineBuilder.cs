@@ -152,6 +152,7 @@ namespace NetTopologySuite.Operation.Overlay
         {
             foreach (var e in _lineEdgesList)
             {
+                // var label = e.Label;
                 var line = _geometryFactory.CreateLineString(e.Coordinates);
                 _resultLineList.Add(line);
                 e.InResult = true;

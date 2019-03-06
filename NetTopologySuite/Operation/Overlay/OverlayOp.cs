@@ -449,7 +449,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// </summary>
         private void LabelIncompleteNodes()
         {
-            //int nodeCount = 0;
+            // int nodeCount = 0;
             var ni = _graph.Nodes.GetEnumerator();
             while (ni.MoveNext())
             {
@@ -457,7 +457,7 @@ namespace NetTopologySuite.Operation.Overlay
                 var label = n.Label;
                 if (n.IsIsolated)
                 {
-                    //nodeCount++;
+                    // nodeCount++;
                     if (label.IsNull(0))
                          LabelIncompleteNode(n, 0);
                     else LabelIncompleteNode(n, 1);

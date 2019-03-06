@@ -94,11 +94,6 @@ namespace NetTopologySuite.Operation.Buffer
 
             var startPt = _ptList[0].Copy();
             var lastPt = _ptList[_ptList.Count - 1];
-            /*
-            Coordinate last2Pt = null;
-            if (ptList.Count >= 2)
-                last2Pt = ptList[ptList.Count - 2];
-            */
             if (startPt.Equals(lastPt)) return;
             _ptList.Add(startPt);
         }
