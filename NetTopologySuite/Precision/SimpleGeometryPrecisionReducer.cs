@@ -148,7 +148,7 @@ namespace NetTopologySuite.Precision
                 if (_container._removeCollapsed)
                     collapsedCoords = null;
 
-                // return null or orginal length coordinate array
+                // return null or original length coordinate array
                 if (noRepeatedCoords.Length < minLength)
                     return collapsedCoords;
 

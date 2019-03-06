@@ -67,7 +67,7 @@ namespace NetTopologySuite.Geometries.Utilities
             int iPt = 0;
             for (int i = 0; i < NumPoints; i++)
             {
-                // the fraction of the way thru the current arm - in [0,1]
+                // the fraction of the way through the current arm - in [0,1]
                 double ptArcFrac = (i / (double)NumPoints) * NumArms;
                 double armAngFrac = ptArcFrac - Math.Floor(ptArcFrac);
 

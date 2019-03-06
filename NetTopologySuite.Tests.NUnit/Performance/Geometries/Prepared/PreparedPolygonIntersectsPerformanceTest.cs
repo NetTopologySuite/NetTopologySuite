@@ -146,7 +146,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
 
         private static int TestOriginal(IGeometry g, IEnumerable<IGeometry> lines)
         {
-            Console.WriteLine("Using orginal JTS algorithm");
+            Console.WriteLine("Using original JTS algorithm");
             int count = 0;
             foreach (var line in lines)
             {
