@@ -30,7 +30,7 @@
 
   <ItemGroup>
     <PackageReference Include="GeoAPI" Version="$(GeoAPIPackageReferenceVersion)" />
-    <PackageReference Include="ProjNET4GeoAPI" Version="1.4.0-pre001" />
+    <PackageReference Include="ProjNET4GeoAPI" Version="2.0.0-pre018" />
 
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="NUnit" Version="3.10.1" />

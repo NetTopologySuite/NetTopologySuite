@@ -212,11 +212,11 @@ namespace NetTopologySuite.Geometries
 
         public override OgcGeometryType OgcGeometryType => OgcGeometryType.LineString;
 
-        /// <summary>
-        /// Returns the length of this <c>LineString</c>
-        /// </summary>
-        /// <returns>The length of the polygon.</returns>
-        public override double Length => Algorithm.Length.OfLine(_points);
+        ///// <summary>
+        ///// Returns the length of this <c>LineString</c>
+        ///// </summary>
+        ///// <returns>The length of the polygon.</returns>
+        //public override double Length => Algorithm.Length.OfLine(_points);
 
         ///// <summary>
         /////

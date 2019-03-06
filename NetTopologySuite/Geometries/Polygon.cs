@@ -288,37 +288,37 @@ namespace NetTopologySuite.Geometries
 
         public override OgcGeometryType OgcGeometryType => OgcGeometryType.Polygon;
 
-        /// <summary>
-        /// Returns the area of this <c>Polygon</c>
-        /// </summary>
-        /// <returns></returns>
-        public override double Area
-        {
-            get
-            {
-                double area = 0.0;
-                area += Algorithm.Area.OfRing(_shell.CoordinateSequence);
-                for (int i = 0; i < _holes.Length; i++)
-                    area -= Algorithm.Area.OfRing(_holes[i].CoordinateSequence);
-                return area;
-            }
-        }
+        ///// <summary>
+        ///// Returns the area of this <c>Polygon</c>
+        ///// </summary>
+        ///// <returns></returns>
+        //public override double Area
+        //{
+        //    get
+        //    {
+        //        double area = 0.0;
+        //        area += Algorithm.Area.OfRing(_shell.CoordinateSequence);
+        //        for (int i = 0; i < _holes.Length; i++)
+        //            area -= Algorithm.Area.OfRing(_holes[i].CoordinateSequence);
+        //        return area;
+        //    }
+        //}
 
-        /// <summary>
-        /// Returns the perimeter of this <c>Polygon</c>.
-        /// </summary>
-        /// <returns></returns>
-        public override double Length
-        {
-            get
-            {
-                double len = 0.0;
-                len += _shell.Length;
-                for (int i = 0; i < _holes.Length; i++)
-                    len += _holes[i].Length;
-                return len;
-            }
-        }
+        ///// <summary>
+        ///// Returns the perimeter of this <c>Polygon</c>.
+        ///// </summary>
+        ///// <returns></returns>
+        //public override double Length
+        //{
+        //    get
+        //    {
+        //        double len = 0.0;
+        //        len += _shell.Length;
+        //        for (int i = 0; i < _holes.Length; i++)
+        //            len += _holes[i].Length;
+        //        return len;
+        //    }
+        //}
 
         /// <summary>
         ///

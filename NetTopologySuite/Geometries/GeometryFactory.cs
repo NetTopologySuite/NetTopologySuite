@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Operation;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Geometries
@@ -17,7 +19,7 @@ namespace NetTopologySuite.Geometries
     /// It is assumed that input Coordinates meet the given precision.
     /// </remarks>
     [Serializable]
-    public class GeometryFactory : IGeometryFactory
+    public class GeometryFactory : IGeometryFactoryEx
     {
         /// <summary>
         /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" />
@@ -45,6 +47,14 @@ namespace NetTopologySuite.Geometries
         public static readonly IGeometryFactory Fixed = new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed));
 
         private readonly IPrecisionModel _precisionModel;
+
+        [NonSerialized]
+        private ISpatialOperations _spatialOperations;
+        protected ISpatialOperations SpatialOperations
+        {
+            get => _spatialOperations;
+            set => _spatialOperations = value;
+        }
 
         /// <summary>
         /// Returns the PrecisionModel that Geometries created by this factory
@@ -87,14 +97,16 @@ namespace NetTopologySuite.Geometries
             _precisionModel = precisionModel;
             _coordinateSequenceFactory = coordinateSequenceFactory;
             _srid = srid;
+
+            SpatialOperations = new SpatialOperations(this);
         }
 
-        /// <summary>
-        /// Constructs a GeometryFactory that generates Geometries having the given
-        /// CoordinateSequence implementation, a double-precision floating PrecisionModel and a
-        /// spatial-reference ID of 0.
-        /// </summary>
-        public GeometryFactory(ICoordinateSequenceFactory coordinateSequenceFactory) :
+    /// <summary>
+    /// Constructs a GeometryFactory that generates Geometries having the given
+    /// CoordinateSequence implementation, a double-precision floating PrecisionModel and a
+    /// spatial-reference ID of 0.
+    /// </summary>
+    public GeometryFactory(ICoordinateSequenceFactory coordinateSequenceFactory) :
             this(new PrecisionModel(), 0, coordinateSequenceFactory) { }
 
         /// <summary>
@@ -670,9 +682,21 @@ namespace NetTopologySuite.Geometries
             return editor.Edit(g, operation);
         }
 
-        private static ICoordinateSequenceFactory GetDefaultCoordinateSequenceFactory()
+        protected static ICoordinateSequenceFactory GetDefaultCoordinateSequenceFactory()
         {
             return CoordinateArraySequenceFactory.Instance;
         }
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext sc)
+        {
+            _spatialOperations = new SpatialOperations(this);
+        }
+
+        ISpatialOperations IGeometryFactoryEx.SpatialOperations
+        {
+            get { return SpatialOperations; }
+        }
+
     }
 }
