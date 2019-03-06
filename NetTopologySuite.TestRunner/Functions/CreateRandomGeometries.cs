@@ -94,6 +94,11 @@ namespace Open.Topology.TestRunner.Functions
             return HaltonPointsWithBases(g, nPts, 5, 7);
         }
 
+        /// <summary>
+        /// Create Halton points using provided bases.
+        /// </summary>
+        /// <param name="basei">Base 1</param>
+        /// <param name="basej">Base 2</param>
         public static IGeometry HaltonPointsWithBases(IGeometry g, int nPts, int basei, int basej)
         {
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
