@@ -61,10 +61,25 @@ namespace Open.Topology.TestRunner.Functions
             return IndexedFacetDistance.Distance(a, b);
         }
 
-        public static IGeometry NeastPointsIndexed(IGeometry a, IGeometry b)
+        public static IGeometry NearestPointsIndexed(IGeometry a, IGeometry b)
         {
             var pts = IndexedFacetDistance.NearestPoints(a, b);
             return a.Factory.CreateLineString(pts);
+        }
+
+        public static IGeometry NearestPointsIndexedAll(IGeometry a, IGeometry b)
+        {
+            var ifd = new IndexedFacetDistance(a);
+
+            int n = b.NumGeometries;
+            var lines = new ILineString[n];
+            for (int i = 0; i < n; i++)
+            {
+                var pts = ifd.NearestPoints(b.GetGeometryN(i));
+                lines[i] = a.Factory.CreateLineString(pts);
+            }
+
+            return a.Factory.CreateMultiLineString(lines);
         }
     }
 }
