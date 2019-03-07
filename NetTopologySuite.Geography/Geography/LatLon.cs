@@ -15,7 +15,7 @@ namespace NetTopologySuite.Geography
         {
             if (lat < -90 || lat > 90)
                 throw new ArgumentException("latitude outside of valid range", nameof(lat));
-            if (lon < -180 || lat > 180)
+            if (lon < -180 || lon > 180)
                 throw new ArgumentException("longitude outside of valid range", nameof(lon));
 
             Lat = lat;

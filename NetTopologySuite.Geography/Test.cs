@@ -728,11 +728,11 @@ namespace NetTopologySuite.Geography
 
             var f = GeographyFactory.WGS84;
 
-            Assert.That(f.CreateGeoPoint(new LatLon(-91, 10)), Throws.ArgumentException);
-            Assert.That(f.CreateGeoPoint(new LatLon(91, 10)), Throws.ArgumentException);
-            Assert.That(f.CreateGeoPoint(new LatLon(5.7, -181)), Throws.ArgumentException);
-            Assert.That(f.CreateGeoPoint(new LatLon(5.7, 181)), Throws.ArgumentException);
-            Assert.That(f.CreateGeoPoint(new Coordinate(181, 5.7)), Throws.ArgumentException);
+            Assert.That(() => f.CreateGeoPoint(new LatLon(-91, 10)), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => f.CreateGeoPoint(new LatLon(91, 10)), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => f.CreateGeoPoint(new LatLon(5.7, -181)), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => f.CreateGeoPoint(new LatLon(5.7, 181)), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => f.CreateGeoPoint(new Coordinate(181, 5.7)), Throws.TypeOf<ArgumentException>());
 
             // Aurich
             var ptAurich = f.CreateGeoPoint(new LatLon(53.47084, 7.48467));
