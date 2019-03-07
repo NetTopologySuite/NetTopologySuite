@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
     <TargetFramework>netcoreapp2.0</TargetFramework>
@@ -15,10 +16,6 @@
   <Import Project="$(SolutionDir)NetTopologySuite.Common.props" />
 
   <ItemGroup>
-    <Compile Include="$(SolutionDir)SharedAssemblyVersion.cs" Link="Properties\SharedAssemblyVersion.cs" />
-
-    <None Include="$(SolutionDir)nts.snk" Link="nts.snk" />
-
     <EmbeddedResource Include="TestData\*" Exclude="*.cs" />
   </ItemGroup>
 
@@ -35,4 +32,5 @@
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.Lab\NetTopologySuite.Lab.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.CoordinateSystems\NetTopologySuite.CoordinateSystems.csproj" />
   </ItemGroup>
+
 </Project>

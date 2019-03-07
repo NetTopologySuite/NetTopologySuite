@@ -1,18 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
     <TargetFramework>netstandard2.0</TargetFramework>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(SolutionDir)nts.snk</AssemblyOriginatorKeyFile>
     <NoWarn>659,168,1587</NoWarn>
   </PropertyGroup>
 
   <Import Project="$(SolutionDir)NetTopologySuite.Common.props" />
 
-  <ItemGroup>
-    <Compile Include="$(SolutionDir)SharedAssemblyVersion.cs" Link="Properties\SharedAssemblyVersion.cs" />
-  </ItemGroup>
+  <PropertyGroup Label="Assembly Info">
+    <AssemblyTitle>NetTopologySuite</AssemblyTitle>
+    <Description>A .NET library for GIS operations, direct porting of JTS Topology Suite $(JTSCompatibilityLevel) library</Description>
+  </PropertyGroup>
 
   <ItemGroup>
     <None Include="$(SolutionDir)nts.snk" Link="nts.snk" />
@@ -25,4 +26,5 @@
     <PackageReference Include="ModuleInit.Fody" Version="1.8.0" PrivateAssets="All" />
     <PackageReference Include="Fody" Version="3.0.3" PrivateAssets="All" />
   </ItemGroup>
+
 </Project>

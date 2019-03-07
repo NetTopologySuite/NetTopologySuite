@@ -2,13 +2,48 @@
 <Project>
 
   <PropertyGroup>
-    <OutputPath>$(SolutionDir)$(Configuration)\$(Platform)</OutputPath>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <OutputPath>$(MSBuildThisFileDirectory)$(Configuration)\$(Platform)</OutputPath>
     <DocumentationFile>$(OutputPath)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
 
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RestoreAdditionalProjectSources>$(RestoreAdditionalProjectSources);https://www.myget.org/F/nettopologysuite/api/v3/index.json</RestoreAdditionalProjectSources>
 
     <GeoAPIPackageReferenceVersion>2.0.0-nuget005</GeoAPIPackageReferenceVersion>
+
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)nts.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Version numbers">
+    <!-- The highest released version of JTS that we intend our behavior to be compatible with. -->
+    <JTSCompatibilityLevel>1.16.0</JTSCompatibilityLevel>
+
+    <!-- MAJOR, MINOR, and PATCH are defined according to SemVer 2.0.0. -->
+    <NtsMajorVersion>2</NtsMajorVersion>
+    <NtsMinorVersion>0</NtsMinorVersion>
+    <NtsPatchVersion>0</NtsPatchVersion>
+
+    <Version>$(NtsMajorVersion).$(NtsMinorVersion).$(NtsPatchVersion)</Version>
+
+    <NtsBuildNumber Condition=" '$(NtsBuildNumber)' == '' And '$(TRAVIS_BUILD_NUMBER)' != '' ">$(TRAVIS_BUILD_NUMBER)</NtsBuildNumber>
+    <NtsBuildNumber Condition=" '$(NtsBuildNumber)' == '' And '$(APPVEYOR_BUILD_NUMBER)' != '' ">$(APPVEYOR_BUILD_NUMBER)</NtsBuildNumber>
+    <NtsBuildNumber Condition=" '$(NtsBuildNumber)' == '' And '$(BUILD_NUMBER)' != '' ">$(BUILD_NUMBER)</NtsBuildNumber>
+    <NtsBuildNumber Condition=" '$(NtsBuildNumber)' == '' ">0</NtsBuildNumber>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Assembly Info">
+    <!-- See https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/versioning -->
+    <AssemblyVersion>$(NtsMajorVersion).0.0.0</AssemblyVersion>
+    <AssemblyFileVersion>$(NtsMajorVersion).$(NtsMinorVersion).$(NtsPatchVersion).$(NtsBuildNumber)</AssemblyFileVersion>
+    <InformationalVersion>$(NtsMajorVersion).$(NtsMinorVersion).$(NtsPatchVersion) (compatible with JTS $(JTSCompatibilityLevel))</InformationalVersion>
+
+    <Company>NetTopologySuite Team</Company>
+
+    <CopyrightPeople>$(Company)</CopyrightPeople>
+    <CopyrightPeople>$(CopyrightPeople), Diego Guidi</CopyrightPeople>
+    <CopyrightPeople>$(CopyrightPeople), John Diss (www.newgrove.com)</CopyrightPeople>
+    <CopyrightPeople>$(CopyrightPeople), Felix Obermaier (www.ivv-aachen.de)</CopyrightPeople>
+    <CopyrightPeople>$(CopyrightPeople), Todd Jackson</CopyrightPeople>
+    <Copyright>Copyright © 2006 - $([System.DateTime]::UtcNow.Year) $(CopyrightPeople)</Copyright>
   </PropertyGroup>
 
 </Project>

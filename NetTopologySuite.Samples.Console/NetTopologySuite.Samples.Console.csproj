@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
     <TargetFramework>netcoreapp2.0</TargetFramework>
@@ -16,16 +17,10 @@
   <Import Project="$(SolutionDir)NetTopologySuite.Common.props" />
 
   <ItemGroup>
-    <Compile Include="$(SolutionDir)SharedAssemblyVersion.cs" Link="Properties\SharedAssemblyVersion.cs" />
-
     <Compile Include="$(SolutionDir)NetTopologySuite.Tests.NUnit\TestData\EmbeddedResourceManager.cs" Link="Tests\Various\EmbeddedResourceManager.cs" />
     <Compile Include="$(SolutionDir)NetTopologySuite.Tests.NUnit\GeometryTestCase.cs" Link="Tests\GeometryTestCase.cs" />
 
-    <EmbeddedResource Include="Tests\Various\cant-read-file1.gml" />
-    <EmbeddedResource Include="Tests\Various\cant-read-file2.gml" />
-    <EmbeddedResource Include="Tests\Various\cant-read-file3.gml" />
-    <EmbeddedResource Include="Tests\Various\cant-read-file4.gml" />
-    <EmbeddedResource Include="Tests\Various\read-ok-file.gml" />
+    <EmbeddedResource Include="Tests\Various\*.gml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,4 +37,5 @@
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.Lab\NetTopologySuite.Lab.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.CoordinateSystems\NetTopologySuite.CoordinateSystems.csproj" />
   </ItemGroup>
+
 </Project>
