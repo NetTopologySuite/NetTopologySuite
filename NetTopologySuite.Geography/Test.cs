@@ -721,5 +721,26 @@ namespace NetTopologySuite.Geography
             Assert.That(rInA.Length, Is.LessThan(r.Length));
 
         }
+
+        [Test]
+        public void TestCreateGeoPoint()
+        {
+
+            var f = GeographyFactory.WGS84;
+
+            Assert.That(f.CreateGeoPoint(new LatLon(-91, 10)), Throws.ArgumentException);
+            Assert.That(f.CreateGeoPoint(new LatLon(91, 10)), Throws.ArgumentException);
+            Assert.That(f.CreateGeoPoint(new LatLon(5.7, -181)), Throws.ArgumentException);
+            Assert.That(f.CreateGeoPoint(new LatLon(5.7, 181)), Throws.ArgumentException);
+            Assert.That(f.CreateGeoPoint(new Coordinate(181, 5.7)), Throws.ArgumentException);
+
+            // Aurich
+            var ptAurich = f.CreateGeoPoint(new LatLon(53.47084, 7.48467));
+
+            // Emden
+            var ptEmden = f.CreateGeoPoint(new LatLon(53.35975, 7.20642));
+
+        }
+
     }
 }
