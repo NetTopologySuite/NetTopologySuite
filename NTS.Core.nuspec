@@ -26,46 +26,7 @@
       <frameworkAssembly assemblyName="System.Xml.Linq" targetFramework="net35-client,net40-client,net403-client,net45" />
     </frameworkAssemblies>
     <dependencies>
-      <!-- traditional .NET framework targets -->
-      <group targetFramework=".NETFramework3.5-Client">
-        <dependency id="GeoAPI.Core" version="[$geoapiversion$, 2.0.0-A)" />
-      </group>
-
-      <group targetFramework=".NETFramework4.0-Client">
-        <dependency id="GeoAPI.Core" version="[$geoapiversion$, 2.0.0-A)" />
-      </group>
-
-      <group targetFramework=".NETFramework4.0.3-Client">
-        <dependency id="GeoAPI.Core" version="[$geoapiversion$, 2.0.0-A)" />
-      </group>
-
-      <group targetFramework=".NETFramework4.5">
-        <dependency id="GeoAPI.Core" version="[$geoapiversion$, 2.0.0-A)" />
-      </group>
-
-      <!-- .NET Standard targets -->
-      <group targetFramework=".NETStandard1.0">
-        <dependency id="GeoAPI.Core" version="[$geoapiversion$, 2.0.0-A)" />
-        <dependency id="System.Diagnostics.Debug" version="[4.3.0, )" />
-        <dependency id="System.Linq" version="[4.3.0, )" />
-        <dependency id="System.Text.RegularExpressions" version="[4.3.0, )" />
-        <dependency id="System.Xml.ReaderWriter" version="[4.3.0, )" />
-        <dependency id="System.Xml.XDocument" version="[4.3.0, )" />
-      </group>
-
-      <group targetFramework=".NETStandard1.3">
-        <dependency id="GeoAPI.Core" version="[$geoapiversion$, 2.0.0-A)" />
-        <dependency id="System.Diagnostics.Debug" version="[4.3.0, )" />
-        <dependency id="System.IO.FileSystem" version="[4.3.0, )" />
-        <dependency id="System.Linq" version="[4.3.0, )" />
-        <dependency id="System.Text.RegularExpressions" version="[4.3.0, )" />
-        <dependency id="System.Xml.ReaderWriter" version="[4.3.0, )" />
-        <dependency id="System.Xml.XDocument" version="[4.3.0, )" />
-      </group>
-
-      <group targetFramework=".NETStandard2.0">
-        <dependency id="GeoAPI.Core" version="[$geoapiversion$, 2.0.0-A)" />
-      </group>
+      <dependency id="GeoAPI.Core" version="[$geoapiversion$, 3.0.0-A)" />
     </dependencies>
   </metadata>
   <files>
