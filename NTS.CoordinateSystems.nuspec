@@ -17,6 +17,7 @@
     <tags>NTS Topology OGC SFS</tags>
     <copyright>Copyright 2007-2018</copyright>
     <language>en-US</language>
+    <!--
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System" targetFramework="net35-client,net40-client,net403-client,net45" />
       <frameworkAssembly assemblyName="System.Xml" targetFramework="net35-client,net40-client,net403-client,net45" />
@@ -25,13 +26,13 @@
 
       <frameworkAssembly assemblyName="System.Xml.Linq" targetFramework="net35-client,net40-client,net403-client,net45" />
     </frameworkAssemblies>
+    -->
     <dependencies>
       <dependency id="GeoAPI.CoordinateSystems" version="[$geoapiversion$, 3.0.0-A)" />
     </dependencies>
   </metadata>
   <files>
     <file src="NetTopologySuite.Common.props" target="src" />
-    <file src="SharedAssemblyVersion.cs" target="src" />
     <file src="NetTopologySuite.CoordinateSystems\**" exclude="NetTopologySuite.CoordinateSystems\obj\**" target="src\NetTopologySuite.CoordinateSystems" />
 
     <file src="Release\AnyCPU\**\NetTopologySuite.CoordinateSystems.deps.json" target="lib" />
