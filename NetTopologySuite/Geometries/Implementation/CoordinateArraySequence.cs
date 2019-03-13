@@ -65,12 +65,16 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="dimension">The dimension of the coordinates</param>
         public CoordinateArraySequence(Coordinate[] coordinates, int dimension, int measures)
         {
-            Coordinates = coordinates;
             _dimension = dimension;
             _measures = measures;
             if (coordinates == null)
+            {
                 Coordinates = new Coordinate[0];
-            EnforceArrayConsistency(Coordinates);
+            }
+            else
+            {
+                Coordinates = EnforceArrayConsistency(coordinates);
+            }
         }
 
         /// <summary>
@@ -132,26 +136,48 @@ namespace NetTopologySuite.Geometries.Implementation
 
         /// <summary>
         /// Ensure array contents of the same type, making use of <see cref="CreateCoordinate"/> as needed.
+        /// <para>
+        /// A new array will be created if needed to return a consistent result.
+        /// </para>
         /// </summary>
-        /// <param name="array">array is modified in place as needed</param>
-        protected void EnforceArrayConsistency(Coordinate[] array)
+        /// <param name="array">array containing consistent coordinate instances</param>
+        protected Coordinate[] EnforceArrayConsistency(Coordinate[] array)
         {
             var sample = CreateCoordinate();
             var type = sample.GetType();
+            bool isConsistent = true;
             for (int i = 0; i < array.Length; i++)
             {
                 var coordinate = array[i];
-                if (coordinate == null)
+                if (coordinate != null && coordinate.GetType() != type)
                 {
-                    array[i] = CreateCoordinate();
+                    isConsistent = false;
+                    break;
                 }
-                else if (coordinate.GetType() != type)
+            }
+
+            if (isConsistent)
+            {
+                return array;
+            }
+
+            var copy = (Coordinate[])Array.CreateInstance(type, array.Length);
+            for (int i = 0; i < copy.Length; i++)
+            {
+                var coordinate = array[i];
+                if (coordinate != null && coordinate.GetType() != type)
                 {
                     var duplicate = CreateCoordinate();
                     duplicate.CoordinateValue = coordinate;
-                    array[i] = duplicate;
+                    copy[i] = duplicate;
+                }
+                else
+                {
+                    copy[i] = coordinate;
                 }
             }
+
+            return copy;
         }
 
         /// <summary>
