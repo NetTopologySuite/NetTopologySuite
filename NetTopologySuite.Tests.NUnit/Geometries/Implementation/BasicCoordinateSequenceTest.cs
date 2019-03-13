@@ -1,4 +1,5 @@
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NUnit.Framework;
 
@@ -66,6 +67,26 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.IsTrue(s1.Dimension == s2.Dimension);
             Assert.IsTrue(s1.GetCoordinate(0).Equals(s2.GetCoordinate(0)));
             Assert.IsTrue(s1.GetCoordinate(0) != s2.GetCoordinate(0));
+        }
+
+        /// <summary>
+        /// A simple test that using CoordinateM works
+        /// for creation and running a basic function.
+        /// </summary>
+        [Test]
+        public void TestLengthWithXYM()
+        {
+            CoordinateM[] coords =
+            {
+                new CoordinateM(1, 1, 1),
+                new CoordinateM(2, 1, 2),
+            };
+
+            var factory = new GeometryFactory();
+            var line = factory.CreateLineString(coords);
+
+            double len = line.Length;
+            Assert.That(len, Is.EqualTo(1));
         }
     }
 }
