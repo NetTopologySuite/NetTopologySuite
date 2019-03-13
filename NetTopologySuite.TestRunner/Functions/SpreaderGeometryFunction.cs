@@ -15,7 +15,7 @@ namespace Open.Topology.TestRunner.Functions
 
         public string Category => _fun.Category;
 
-        public string Name => _fun.Name;
+        public string Name => $"{_fun.Name}-Each";
 
         public string[] ParameterNames => _fun.ParameterNames;
 
