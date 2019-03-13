@@ -34,6 +34,13 @@ namespace Open.Topology.TestRunner.Functions
             {
                 var elt = geom.GetGeometryN(i);
                 var result = (IGeometry)_fun.Invoke(elt, args);
+
+                // can't include null results
+                if (result == null)
+                {
+                    continue;
+                }
+
                 ////FunctionsUtil.showIndicator(result);
                 results[i] = result;
             }
