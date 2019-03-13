@@ -1,6 +1,7 @@
 ﻿using System;
 
 using GeoAPI.Geometries;
+using NetTopologySuite.Geometries.Utilities;
 
 namespace Open.Topology.TestRunner.Functions
 {
@@ -29,6 +30,7 @@ namespace Open.Topology.TestRunner.Functions
 
         public object Invoke(IGeometry geom, object[] args)
         {
+#if false
             var results = new IGeometry[geom.NumGeometries];
             for (int i = 0; i < results.Length; i++)
             {
@@ -46,6 +48,9 @@ namespace Open.Topology.TestRunner.Functions
             }
 
             return geom.Factory.CreateGeometryCollection(results);
+#else
+            return GeometryMapper.Map(geom, g => (IGeometry)_fun.Invoke(g, args));
+#endif
         }
     }
 }
