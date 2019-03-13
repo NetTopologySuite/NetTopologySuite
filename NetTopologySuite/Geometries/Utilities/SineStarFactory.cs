@@ -14,6 +14,29 @@ namespace NetTopologySuite.Geometries.Utilities
     public class SineStarFactory : GeometricShapeFactory
     {
         /// <summary>
+        /// Creates a sine star with the given parameters.
+        /// </summary>
+        /// <param name="origin">The origin point.</param>
+        /// <param name="size">The size of the star.</param>
+        /// <param name="nPts">The number of points in the star.</param>
+        /// <param name="nArms">The number of arms to generate.</param>
+        /// <param name="armLengthRatio">The arm length ratio.</param>
+        /// <returns>A sine star shape.</returns>
+        public static IGeometry Create(Coordinate origin, double size, int nPts, int nArms, double armLengthRatio)
+        {
+            var gsf = new SineStarFactory
+            {
+                Centre = origin,
+                Size = size,
+                NumPoints = nPts,
+                ArmLengthRatio = armLengthRatio,
+                NumArms = nArms,
+            };
+            var poly = gsf.CreateSineStar();
+            return poly;
+        }
+
+        /// <summary>
         /// Creates a factory which will create sine stars using the default <see cref="IGeometryFactory"/>
         /// </summary>
         public SineStarFactory()
@@ -37,7 +60,8 @@ namespace NetTopologySuite.Geometries.Utilities
         public int NumArms { get; set; }
 
         /// <summary>
-        /// Sets the ration of the length of each arm to the distance from the tip of the arm to the centre of the star.
+        /// Gets or sets the ratio of the length of each arm to the radius of the star.
+        /// A smaller number makes the arms shorter.
         /// </summary>
         /// <remarks>Value should be between 0.0 and 1.0</remarks>
         public double ArmLengthRatio { get; set; }
