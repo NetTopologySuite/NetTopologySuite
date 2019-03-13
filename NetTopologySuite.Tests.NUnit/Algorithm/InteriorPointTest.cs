@@ -9,16 +9,19 @@ using NetTopologySuite.Tests.NUnit.TestData;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
-    public class InteriorPointTest
+    public class InteriorPointTest : GeometryTestCase
     {
-        [TestAttribute]
-        public void TestAll()
+        [Test]
+        public void TestPolygonZeroArea()
         {
-            string name = "NetTopologySuite.Tests.NUnit.TestData.europe.wkt";
-            var stream = EmbeddedResourceManager.GetResourceStream(name);
-            CheckInteriorPointFile(stream, name);
-            name = "NetTopologySuite.Tests.NUnit.TestData.africa.wkt";
-            stream = EmbeddedResourceManager.GetResourceStream(name);
+            CheckInteriorPoint(Read("POLYGON ((10 10, 10 10, 10 10, 10 10))"), new Coordinate(10, 10));
+        }
+
+        [TestCase("europe.wkt")]
+        ////[TestCase("africa.wkt")]
+        public void TestAll(string name)
+        {
+            var stream = EmbeddedResourceManager.GetResourceStream($"NetTopologySuite.Tests.NUnit.TestData.{name}");
             CheckInteriorPointFile(stream, name);
         }
 
@@ -52,6 +55,12 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             var ip = g.InteriorPoint;
             Assert.IsTrue(g.Contains(ip));
+        }
+
+        private static void CheckInteriorPoint(IGeometry g, Coordinate expectedPt)
+        {
+            var ip = g.InteriorPoint;
+            Assert.That(ip.Coordinate, Is.EqualTo(expectedPt));
         }
     }
 }

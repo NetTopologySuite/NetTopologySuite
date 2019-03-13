@@ -14,6 +14,21 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public class InteriorPointLine
     {
+        /// <summary>
+        /// Computes an interior point for the
+        /// linear components of a Geometry.
+        /// </summary>
+        /// <param name="geom">The geometry to compute.</param>
+        /// <returns>
+        /// The computed interior point,
+        /// or <see langword="null"/> if the geometry has no linear components.
+        /// </returns>
+        public static Coordinate GetInteriorPoint(IGeometry geom)
+        {
+            var intPt = new InteriorPointLine(geom);
+            return intPt.InteriorPoint;
+        }
+
         private readonly Coordinate _centroid;
         private double _minDistance = double.MaxValue;
         private Coordinate _interiorPoint;

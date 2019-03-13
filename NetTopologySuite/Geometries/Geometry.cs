@@ -471,27 +471,7 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                if (IsEmpty)
-                    return Factory.CreatePoint();
-
-                Coordinate interiorPt = null;
-                var dim = Dimension;
-                if (dim == Dimension.Point)
-                {
-                    var intPt = new InteriorPointPoint(this);
-                    interiorPt = intPt.InteriorPoint;
-                }
-                else if (dim == Dimension.Curve)
-                {
-                    var intPt = new InteriorPointLine(this);
-                    interiorPt = intPt.InteriorPoint;
-                }
-                else
-                {
-                    var intPt = new InteriorPointArea(this);
-                    interiorPt = intPt.InteriorPoint;
-                }
-                return CreatePointFromInternalCoord(interiorPt, this);
+                return Algorithm.InteriorPoint.GetInteriorPoint(this);
             }
         }
 
