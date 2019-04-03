@@ -75,7 +75,6 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns></returns>
         public IGeometry ExtractLine(double startIndex, double endIndex)
         {
-            var lil = new LocationIndexedLine(_linearGeom);
             double startIndex2 = ClampIndex(startIndex);
             double endIndex2 = ClampIndex(endIndex);
             // if extracted line is zero-length, resolve start lower as well to ensure they are equal

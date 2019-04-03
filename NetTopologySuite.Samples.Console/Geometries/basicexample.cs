@@ -27,6 +27,13 @@ namespace NetTopologySuite.Samples.Geometries
             // compute the intersection of the two geometries
             var g3 = g1.Intersection(g2);
             Console.WriteLine("G1 intersection G2: " + g3);
+
+            // create a point
+            var point = new GeometryFactory().CreatePoint(new Coordinate(1, 1));
+            Console.WriteLine("Point Geometry: " + point);
+
+            // compute whether point is on g1
+            Console.WriteLine("Point within g1: " + g1.Contains(point));
         }
     }
 }

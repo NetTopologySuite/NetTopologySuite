@@ -153,6 +153,11 @@ namespace NetTopologySuite.Operation.Valid
         /// <param name="graph"></param>
         private void VisitInteriorRing(ILineString ring, PlanarGraph graph)
         {
+            if (ring.IsEmpty)
+            {
+                return;
+            }
+
             var pts = ring.Coordinates;
             var pt0 = pts[0];
             /*

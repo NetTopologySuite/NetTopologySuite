@@ -52,18 +52,18 @@ namespace NetTopologySuite.Operation.Distance
                                 if (geom is ILineString)
                                 {
                                     seq = ((ILineString) geom).CoordinateSequence;
-                                    AddFacetSequences(seq, sections);
+                                    AddFacetSequences(geom, seq, sections);
                                 }
                                 else if (geom is IPoint)
                                 {
                                     seq = ((IPoint) geom).CoordinateSequence;
-                                    AddFacetSequences(seq, sections);
+                                    AddFacetSequences(geom, seq, sections);
                                 }
                             }));
             return sections;
         }
 
-        private static void AddFacetSequences(ICoordinateSequence pts, List<FacetSequence> sections)
+        private static void AddFacetSequences(IGeometry geom, ICoordinateSequence pts, List<FacetSequence> sections)
         {
             int i = 0;
             int size = pts.Count;
@@ -74,7 +74,7 @@ namespace NetTopologySuite.Operation.Distance
                 // section
                 if (end >= size - 1)
                     end = size;
-                var sect = new FacetSequence(pts, i, end);
+                var sect = new FacetSequence(geom, pts, i, end);
                 sections.Add(sect);
                 i = i + FacetSequenceSize;
             }

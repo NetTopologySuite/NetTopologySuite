@@ -41,7 +41,7 @@ namespace NetTopologySuite.Precision
             {
                 var cbo = new CommonBitsOp(true);
                 var resultEP = cbo.Intersection(geom0, geom1);
-                // check that result is a valid point after the reshift to orginal precision
+                // check that result is a valid point after the reshift to original precision
                 if (!resultEP.IsValid)
                     throw originalEx;
                 return resultEP;
@@ -79,7 +79,7 @@ namespace NetTopologySuite.Precision
             {
                 var cbo = new CommonBitsOp(true);
                 var resultEP = cbo.Union(geom0, geom1);
-                // check that result is a valid point after the reshift to orginal precision
+                // check that result is a valid point after the reshift to original precision
                 if (!resultEP.IsValid)
                     throw originalEx;
                 return resultEP;
@@ -117,7 +117,7 @@ namespace NetTopologySuite.Precision
             {
                 var cbo = new CommonBitsOp(true);
                 var resultEP = cbo.Difference(geom0, geom1);
-                // check that result is a valid point after the reshift to orginal precision
+                // check that result is a valid point after the reshift to original precision
                 if (!resultEP.IsValid)
                     throw originalEx;
                 return resultEP;
@@ -155,7 +155,7 @@ namespace NetTopologySuite.Precision
             {
                 var cbo = new CommonBitsOp(true);
                 var resultEP = cbo.SymDifference(geom0, geom1);
-                // check that result is a valid point after the reshift to orginal precision
+                // check that result is a valid point after the reshift to original precision
                 if (!resultEP.IsValid)
                     throw originalEx;
                 return resultEP;
@@ -196,7 +196,7 @@ namespace NetTopologySuite.Precision
             {
                 var cbo = new CommonBitsOp(true);
                 var resultEP = cbo.Buffer(geom, distance);
-                // check that result is a valid point after the reshift to orginal precision
+                // check that result is a valid point after the reshift to original precision
                 if (!resultEP.IsValid)
                     throw originalEx;
                 return resultEP;

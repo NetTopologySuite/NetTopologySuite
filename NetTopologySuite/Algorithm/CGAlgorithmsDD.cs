@@ -139,7 +139,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p2">Another point of 1st segment</param>
         /// <param name="q1">A point of 2nd segment</param>
         /// <param name="q2">Another point of 2nd segment</param>
-        /// <returns></returns>
+        /// <returns>An intersection point if one exists.</returns>
         public static Coordinate Intersection(
             Coordinate p1, Coordinate p2,
             Coordinate q1, Coordinate q2)

@@ -129,15 +129,6 @@ namespace NetTopologySuite.Noding
 
         private void Rescale(Coordinate[] pts)
         {
-            Coordinate p0 = null;
-            Coordinate p1 = null;
-
-            if (pts.Length == 2)
-            {
-                p0 = pts[0].Copy();
-                p1 = pts[1].Copy();
-            }
-
             for (int i = 0; i < pts.Length; i++)
             {
                 pts[i].X = pts[i].X / _scaleFactor + _offsetX;

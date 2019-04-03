@@ -282,7 +282,6 @@ namespace NetTopologySuite.Operation
             var endPoints = new SortedDictionary<Coordinate, EndpointInfo>();
             foreach (var e in graph.Edges)
             {
-                //int maxSegmentIndex = e.MaximumSegmentIndex;
                 bool isClosed = e.IsClosed;
                 var p0 = e.GetCoordinate(0);
                 AddEndpoint(endPoints, p0, isClosed);

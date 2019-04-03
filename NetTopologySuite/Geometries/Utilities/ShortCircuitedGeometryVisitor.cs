@@ -39,9 +39,13 @@ namespace NetTopologySuite.Geometries.Utilities
         protected abstract void Visit(IGeometry element);
 
         /// <summary>
-        ///
+        /// Reports whether visiting components can be terminated.
+        /// Once this method returns <see langword="true"/>, it must
+        /// continue to return <see langword="true"/> on every subsequent call.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// <see langword="true"/> if visiting can be terminated.
+        /// </returns>
         protected abstract bool IsDone();
     }
 }

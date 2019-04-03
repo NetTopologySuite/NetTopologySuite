@@ -146,13 +146,15 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             var coord1 = new CoordinateZ(1.0, 1.0, 1.0);
             var coord2 = new Coordinate(2.0, 2.0);
             var coord3 = new CoordinateM(3.0, 3.0, 3.0);
-            var array = new Coordinate[] { coord1, coord2, coord3 };
+
+            var array = new Coordinate[] { coord1, coord2, coord3, null };
             var seq = factory.Create(array);
             Assert.That(seq.Dimension, Is.EqualTo(3));
             Assert.That(seq.Measures, Is.EqualTo(1));
             Assert.That(seq.GetCoordinate(0), Is.EqualTo(coord1));
             Assert.That(seq.GetCoordinate(1), Is.EqualTo(coord2));
             Assert.That(seq.GetCoordinate(2), Is.EqualTo(coord3));
+            Assert.That(seq.GetCoordinate(3), Is.Null);
         }
 
         private static void InitProgression(ICoordinateSequence seq)

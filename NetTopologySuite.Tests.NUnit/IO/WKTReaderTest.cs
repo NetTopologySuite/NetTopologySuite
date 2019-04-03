@@ -65,7 +65,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
             // act
             var pt2D = (IPoint)this.reader2D.Read("POINT (10 10)");
-            var pt2DE = (IPoint)this.reader2D.Read("POINT EMPTY");
+            var pt2DE = (IPoint)this.reader2D.Read("Point EMPTY");
             var pt3D = (IPoint)this.reader3D.Read("POINT Z(10 10 10)");
             var pt2DM = (IPoint)this.reader2DM.Read("POINT M(10 10 11)");
             var pt3DM = (IPoint)this.reader3DM.Read("POINT ZM(10 10 10 11)");
@@ -91,7 +91,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
             // act
             var ls2D = (ILineString)this.reader2D.Read("LINESTRING (10 10, 20 20, 30 40)");
-            var ls2DE = (ILineString)this.reader2D.Read("LINESTRING EMPTY");
+            var ls2DE = (ILineString)this.reader2D.Read("LineString EMPTY");
             var ls3D = (ILineString)this.reader3D.Read("LINESTRING Z(10 10 10, 20 20 10, 30 40 10)");
             var ls2DM = (ILineString)this.reader2DM.Read("LINESTRING M(10 10 11, 20 20 11, 30 40 11)");
             var ls3DM = (ILineString)this.reader3DM.Read("LINESTRING ZM(10 10 10 11, 20 20 10 11, 30 40 10 11)");
@@ -117,7 +117,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
             // act
             var ls2D = (ILineString)this.reader2D.Read("LINEARRING (10 10, 20 20, 30 40, 10 10)");
-            var ls2DE = (ILineString)this.reader2D.Read("LINEARRING EMPTY");
+            var ls2DE = (ILineString)this.reader2D.Read("LinearRing EMPTY");
             var ls3D = (ILineString)this.reader3D.Read("LINEARRING Z(10 10 10, 20 20 10, 30 40 10, 10 10 10)");
             var ls2DM = (ILineString)this.reader2DM.Read("LINEARRING M(10 10 11, 20 20 11, 30 40 11, 10 10 11)");
             var ls3DM = (ILineString)this.reader3DM.Read("LINEARRING ZM(10 10 10 11, 20 20 10 11, 30 40 10 11, 10 10 10 11)");
@@ -174,7 +174,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 (IPolygon)rdr.Read("POLYGON ((10 10, 10 20, 20 20, 20 15, 10 10), (11 11, 12 11, 12 12, 12 11, 11 11))"),
                 (IPolygon)rdr.Read("POLYGON ((10 10, 10 20, 20 20, 20 15, 10 10), (11 11, 12 11, 12 12, 12 11, 11 11), (11 19, 11 18, 12 18, 12 19, 11 19))"),
             };
-            var poly2DE = (IPolygon)rdr.Read("POLYGON EMPTY");
+            var poly2DE = (IPolygon)rdr.Read("Polygon EMPTY");
             rdr = this.reader3D;
             IPolygon[] poly3D =
             {
@@ -247,7 +247,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             // act
             var rdr = this.reader2D;
             var mP2D = (IMultiPoint)rdr.Read("MULTIPOINT ((10 10), (20 20))");
-            var mP2DE = (IMultiPoint)rdr.Read("MULTIPOINT EMPTY");
+            var mP2DE = (IMultiPoint)rdr.Read("MultiPoint EMPTY");
             rdr = this.reader3D;
             var mP3D = (IMultiPoint)rdr.Read("MULTIPOINT Z((10 10 10), (20 20 10))");
             rdr = this.reader2DM;
@@ -301,7 +301,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             // act
             var rdr = this.reader2D;
             var mLs2D = (IMultiLineString)rdr.Read("MULTILINESTRING ((10 10, 20 20), (15 15, 30 15))");
-            var mLs2DE = (IMultiLineString)rdr.Read("MULTILINESTRING EMPTY");
+            var mLs2DE = (IMultiLineString)rdr.Read("MultiLineString EMPTY");
             rdr = this.reader3D;
             var mLs3D = (IMultiLineString)rdr.Read("MULTILINESTRING Z((10 10 10, 20 20 10), (15 15 10, 30 15 10))");
             rdr = this.reader2DM;
@@ -363,7 +363,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 (IMultiPolygon)rdr.Read("MULTIPOLYGON (((10 10, 10 20, 20 20, 20 15, 10 10), (11 11, 12 11, 12 12, 12 11, 11 11)))"),
                 (IMultiPolygon)rdr.Read("MULTIPOLYGON (((10 10, 10 20, 20 20, 20 15, 10 10), (11 11, 12 11, 12 12, 12 11, 11 11)), ((60 60, 70 70, 80 60, 60 60)))"),
             };
-            var poly2DE = (IMultiPolygon)rdr.Read("MULTIPOLYGON EMPTY");
+            var poly2DE = (IMultiPolygon)rdr.Read("MultiPolygon EMPTY");
             rdr = this.reader3D;
             IMultiPolygon[] poly3D =
             {
@@ -432,7 +432,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             var gc0 = (IGeometryCollection)rdr.Read("GEOMETRYCOLLECTION (POINT (10 10), POINT (30 30), LINESTRING (15 15, 20 20))");
             var gc1 = (IGeometryCollection)rdr.Read("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING EMPTY, LINESTRING (15 15, 20 20))");
             var gc2 = (IGeometryCollection)rdr.Read("GEOMETRYCOLLECTION (POINT (10 10), LINEARRING (10 10, 20 20, 30 40, 10 10), LINESTRING (15 15, 20 20))");
-            var gc3 = (IGeometryCollection)rdr.Read("GEOMETRYCOLLECTION EMPTY");
+            var gc3 = (IGeometryCollection)rdr.Read("GeometryCollection EMPTY");
 
             // assert
             Assert.That(CheckEqual(css[0], ((IPoint)gc0.GetGeometryN(0)).CoordinateSequence));

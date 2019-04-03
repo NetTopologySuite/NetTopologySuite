@@ -7,6 +7,9 @@ namespace Open.Topology.TestRunner.Functions
 {
     public static class AffineTransformationFunctions
     {
+        /// <summary>
+        /// Transforms a geometry using one to three control vectors.
+        /// </summary>
         public static IGeometry TransformByVectors(IGeometry g, IGeometry control)
         {
             int nControl = control.NumGeometries;
@@ -24,6 +27,9 @@ namespace Open.Topology.TestRunner.Functions
             return trans.Transform(g);
         }
 
+        /// <summary>
+        /// Transforms a geometry by mapping envelope baseline to target vector.
+        /// </summary>
         public static IGeometry TransformByBaseline(IGeometry g, IGeometry destBaseline)
         {
             var env = g.EnvelopeInternal;

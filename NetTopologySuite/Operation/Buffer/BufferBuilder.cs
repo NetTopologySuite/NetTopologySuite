@@ -43,7 +43,10 @@ namespace NetTopologySuite.Operation.Buffer
         private PlanarGraph _graph;
         private readonly EdgeList _edgeList = new EdgeList();
 
-        /// <summary>Creates a new BufferBuilder</summary>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BufferBuilder"/> class using the given parameters.
+        /// </summary>
+        /// <param name="bufParams">The buffer parameters to use.</param>
         public BufferBuilder(IBufferParameters bufParams)
         {
             _bufParams = bufParams;

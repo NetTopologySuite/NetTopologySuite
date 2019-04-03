@@ -843,7 +843,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation Rotate(double sinTheta, double cosTheta, double x, double y)
         {
-            Compose(RotationInstance(sinTheta, cosTheta));
+            Compose(RotationInstance(sinTheta, cosTheta, x, y));
             return this;
         }
 

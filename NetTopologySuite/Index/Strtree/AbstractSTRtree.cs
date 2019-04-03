@@ -145,6 +145,9 @@ namespace NetTopologySuite.Index.Strtree
             return CreateHigherLevels(parentBoundables, level + 1);
         }
 
+        /// <summary>
+        /// Gets the root node of the tree.
+        /// </summary>
         public AbstractNode<T, TItem> Root
         {
             get
@@ -152,11 +155,11 @@ namespace NetTopologySuite.Index.Strtree
                 Build();
                 return _root;
             }
-            set => _root = value;
+            protected set => _root = value;
         }
 
         /// <summary>
-        /// Returns the maximum number of child nodes that a node may have.
+        /// Gets the maximum number of child nodes that a node may have.
         /// </summary>
         public int NodeCapacity => _nodeCapacity;
 
