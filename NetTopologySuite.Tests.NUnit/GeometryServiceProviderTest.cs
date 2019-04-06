@@ -9,28 +9,12 @@ namespace NetTopologySuite.Tests.NUnit
     public class GeometryServiceProviderTest
     {
         [Test]
-        public void TestUninitialized()
-        {
-            var nts = new NtsGeometryServices();
-            var ntsFromAbstract = GeometryServiceProvider.Instance;
-
-            Assert.IsNotNull(ntsFromAbstract);
-            Assert.IsNotNull(ntsFromAbstract.DefaultCoordinateSequenceFactory);
-            Assert.IsNotNull(ntsFromAbstract.DefaultPrecisionModel);
-
-            Assert.IsTrue(nts.DefaultCoordinateSequenceFactory == ntsFromAbstract.DefaultCoordinateSequenceFactory);
-            Assert.IsTrue(nts.DefaultPrecisionModel.Equals(ntsFromAbstract.DefaultPrecisionModel));
-        }
-
-        [Test]
         public void TestInitialized()
         {
             var nts =
                 new NtsGeometryServices(
                     NetTopologySuite.Geometries.Implementation.DotSpatialAffineCoordinateSequenceFactory.Instance,
                     new PrecisionModel(10d), 4326);
-
-            Assert.Throws<ArgumentNullException>(() => GeometryServiceProvider.Instance = null);
 
             var factory = nts.CreateGeometryFactory();
 
@@ -65,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit
 
                 WaitHandle.WaitAll(waitHandles);
                 Console.WriteLine("\nDone!");
-                Assert.LessOrEqual(srids.Length * precisionModels.Length, ((NtsGeometryServices)GeometryServiceProvider.Instance).NumFactories,
+                Assert.LessOrEqual(srids.Length * precisionModels.Length, ((NtsGeometryServices)NtsGeometryServices.Instance).NumFactories,
                     "Too many factories created!");
                 Assert.IsTrue(true);
             }
@@ -91,7 +75,7 @@ namespace NetTopologySuite.Tests.NUnit
                 int srid = srids[rnd.Next(0, srids.Length)];
                 var precisionModel = precisionModels[rnd.Next(0, precisionModels.Length)];
 
-                var factory = GeometryServiceProvider.Instance.CreateGeometryFactory(precisionModel, srid);
+                var factory = NtsGeometryServices.Instance.CreateGeometryFactory(precisionModel, srid);
                 if (verbose)
                 {
                     Console.WriteLine("Thread_{0}: SRID: {1}; PM({2}, {3})", Thread.CurrentThread.ManagedThreadId,

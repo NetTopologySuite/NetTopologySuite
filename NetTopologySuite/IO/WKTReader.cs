@@ -52,7 +52,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Creates a <c>WKTReader</c> that creates objects using a basic GeometryFactory.
         /// </summary>
-        public WKTReader() : this(GeometryServiceProvider.Instance.CreateGeometryFactory()) { }
+        public WKTReader() : this(NtsGeometryServices.Instance.CreateGeometryFactory()) { }
 
         /// <summary>
         /// Creates a <c>WKTReader</c> that creates objects using the given
@@ -92,7 +92,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         public IGeometryFactory Factory
         {
-            get => GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, DefaultSRID, _coordinateSequencefactory);
+            get => NtsGeometryServices.Instance.CreateGeometryFactory(_precisionModel, DefaultSRID, _coordinateSequencefactory);
             set
             {
                 if (value != null)
@@ -751,7 +751,7 @@ namespace NetTopologySuite.IO
             // differently than JTS's, so this is actually how we have to do it to match the output
             // from JTS (which could hypothetically return a collection whose inner elements have
             // different SRIDs than the collection itself if that's how it's specified).
-            var factory = GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, srid,
+            var factory = NtsGeometryServices.Instance.CreateGeometryFactory(_precisionModel, srid,
                 csFactory);
 
             if (type.StartsWith("POINT", StringComparison.OrdinalIgnoreCase))

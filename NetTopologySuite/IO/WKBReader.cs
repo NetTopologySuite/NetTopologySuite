@@ -93,7 +93,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Initialize reader with a standard <see cref="IGeometryFactory"/>.
         /// </summary>
-        public WKBReader() : this(GeometryServiceProvider.Instance) { }
+        public WKBReader() : this(NtsGeometryServices.Instance) { }
 
         /// <summary>
         /// Initialize reader with the given <c>GeometryFactory</c>.
@@ -102,7 +102,7 @@ namespace NetTopologySuite.IO
         [Obsolete]
         public WKBReader(IGeometryFactory factory)
         {
-            _geometryServices = GeometryServiceProvider.Instance;
+            _geometryServices = NtsGeometryServices.Instance;
 
             _factory = factory;
             _sequenceFactory = factory.CoordinateSequenceFactory;
@@ -114,7 +114,7 @@ namespace NetTopologySuite.IO
 
         public WKBReader(IGeometryServices services)
         {
-            services = services ?? GeometryServiceProvider.Instance;
+            services = services ?? NtsGeometryServices.Instance;
             _geometryServices = services;
             _precisionModel = services.DefaultPrecisionModel;
             _sequenceFactory = services.DefaultCoordinateSequenceFactory;

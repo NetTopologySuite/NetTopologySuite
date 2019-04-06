@@ -160,7 +160,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
         public void DoTestThreading()
         {
-            var services = GeometryServiceProvider.Instance;
+            var services = NtsGeometryServices.Instance;
             services.CreateGeometryFactory();
             int before = ((NtsGeometryServices) services).NumFactories;
 

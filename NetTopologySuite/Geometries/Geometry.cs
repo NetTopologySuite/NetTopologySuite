@@ -201,7 +201,7 @@ namespace NetTopologySuite.Geometries
                 _srid = value;
 
                 // Adjust the geometry factory
-                _factory = GeometryServiceProvider.Instance.CreateGeometryFactory(
+                _factory = NtsGeometryServices.Instance.CreateGeometryFactory(
                     _factory.PrecisionModel, value, _factory.CoordinateSequenceFactory);
 
                 var collection = this as IGeometryCollection;

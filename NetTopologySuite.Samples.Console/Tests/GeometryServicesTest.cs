@@ -8,7 +8,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Tests
         [Test]
         public void TestCreateWithSameParametersReturnsSameInstance()
         {
-            var s = GeometryServiceProvider.Instance;
+            var s = NtsGeometryServices.Instance;
 
             var gf1 = s.CreateGeometryFactory();
             var gf2 = s.CreateGeometryFactory();
@@ -44,7 +44,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Tests
         [Test]
         public void TestCreateWithDifferentParametersReturnsDifferentInstance()
         {
-            var s = GeometryServiceProvider.Instance;
+            var s = NtsGeometryServices.Instance;
 
             var gf1 = s.CreateGeometryFactory(31466);
             var gf2 = s.CreateGeometryFactory(31467);
