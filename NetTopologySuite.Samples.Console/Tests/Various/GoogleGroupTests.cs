@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Diagnostics;
-using GeoAPI.CoordinateSystems.Transformations;
 using NetTopologySuite.Triangulate;
 using NetTopologySuite.Triangulate.QuadEdge;
 using NUnit.Framework;
@@ -381,30 +380,6 @@ namespace NetTopologySuite.Tests.Various
 
             var union = coll.Buffer(0.0);
             Assert.IsNotNull(union);
-        }
-
-        /// <summary>
-        /// Asher 16-04-2012
-        /// https://groups.google.com/forum/#!msg/nettopologysuite/6ymt34Ycfk8/dF5wTsEAsaIJ
-        /// </summary>
-        [Test]
-        [Category("FailureCase")] // please enable this test once we can reference a version of ProjNet4GeoAPI that's on the new GeoAPI.
-        public void CanTransformPolygon()
-        {
-            var transform = new ProjNet.CoordinateSystems.Transformations.CoordinateTransformationFactory()
-                .CreateFromCoordinateSystems(
-                    ProjNet.CoordinateSystems.GeographicCoordinateSystem.WGS84,
-                    ProjNet.CoordinateSystems.GeographicCoordinateSystem.WGS84);
-
-            IGeometry original = new Polygon(new LinearRing(new Coordinate[]{
-                new Coordinate(-77.5, 38.5),new Coordinate(-77.1, 38.5),new Coordinate(-77.1, 38.1),new Coordinate(-77.5, 38.5)}));
-
-            var transformed = NetTopologySuite.CoordinateSystems.Transformations.GeometryTransform.TransformGeometry(
-                    GeometryFactory.Default, original, transform.MathTransform);
-
-            Assert.NotNull(transformed);
-            Assert.IsTrue(transformed.IsValid);
-            Assert.AreEqual(original, transformed);
         }
 
         [Test]

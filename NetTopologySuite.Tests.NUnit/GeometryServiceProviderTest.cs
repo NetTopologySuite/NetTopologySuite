@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using GeoAPI;
-using GeoAPI.CoordinateSystems;
 using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
@@ -106,20 +105,5 @@ namespace NetTopologySuite.Tests.NUnit
             Console.WriteLine("Thread_{0} finished workitem {1}!", Thread.CurrentThread.ManagedThreadId, workItemId);
             wh.Set();
         }
-
-        #region ProjNet
-
-        //private static void RunTestWkt(ICoordinateSystemServices<ICoordinateSystem> csp, int srid)
-        //{
-        //    var wkt = csp.GetCoordinateSystemInitializationString("EPSG", srid);
-        //    wkt = wkt.Replace(",", ", ");
-        //    Console.WriteLine(wkt);
-
-        //    var cs = csp.GetCoordinateSytem(wkt);
-        //    Assert.IsNotNull(cs);
-        //    Console.WriteLine(cs.WKT);
-        //}
-
-        #endregion ProjNet
     }
 }
