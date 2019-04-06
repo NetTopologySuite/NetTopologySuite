@@ -141,10 +141,6 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                 poly.Apply(lineExtracter);
             }
             return g.Factory.BuildGeometry(polys);
-            /*
-            return g.Factory.BuildGeometry(new List<IGeometry>(
-                GeoAPI.DataStructures.Caster.Cast<IGeometry>(polys)));
-             */
         }
 
         /// <summary>

@@ -6,7 +6,8 @@ namespace NetTopologySuite
     public class NetTopologySuiteBootstrapper
     {
         /// <summary>
-        /// Method to register NTS as GeoAPI implementation to use.
+        /// Method to register <see cref="NtsGeometryServices"/> as the provider for
+        /// <see cref="GeometryServiceProvider.Instance"/>.
         /// </summary>
         public static void Bootstrap()
         {

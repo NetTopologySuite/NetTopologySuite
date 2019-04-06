@@ -12,14 +12,14 @@ namespace NetTopologySuite.Tests.NUnit
         public void TestUninitialized()
         {
             var nts = new NtsGeometryServices();
-            var ntsFromGeoApi = GeometryServiceProvider.Instance;
+            var ntsFromAbstract = GeometryServiceProvider.Instance;
 
-            Assert.IsNotNull(ntsFromGeoApi);
-            Assert.IsNotNull(ntsFromGeoApi.DefaultCoordinateSequenceFactory);
-            Assert.IsNotNull(ntsFromGeoApi.DefaultPrecisionModel);
+            Assert.IsNotNull(ntsFromAbstract);
+            Assert.IsNotNull(ntsFromAbstract.DefaultCoordinateSequenceFactory);
+            Assert.IsNotNull(ntsFromAbstract.DefaultPrecisionModel);
 
-            Assert.IsTrue(nts.DefaultCoordinateSequenceFactory == ntsFromGeoApi.DefaultCoordinateSequenceFactory);
-            Assert.IsTrue(nts.DefaultPrecisionModel.Equals(ntsFromGeoApi.DefaultPrecisionModel));
+            Assert.IsTrue(nts.DefaultCoordinateSequenceFactory == ntsFromAbstract.DefaultCoordinateSequenceFactory);
+            Assert.IsTrue(nts.DefaultPrecisionModel.Equals(ntsFromAbstract.DefaultPrecisionModel));
         }
 
         [Test]

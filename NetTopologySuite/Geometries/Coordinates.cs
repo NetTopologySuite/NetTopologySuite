@@ -51,7 +51,7 @@
         public static int Dimension(Coordinate coordinate)
         {
             // NTS-specific note: be VERY CAREFUL with methods that rely on checking the types of
-            // Coordinate objects when compared to JTS: GeoAPI offers the same four types (with
+            // Coordinate objects when compared to JTS: NTS offers the same four types (with
             // slightly different names), but with a substantially different hierarchy relationship.
             var type = coordinate?.GetType();
             if (type == typeof(Coordinate))
@@ -87,7 +87,7 @@
         public static int Measures(Coordinate cooordinate)
         {
             // NTS-specific note: be VERY CAREFUL with methods that rely on checking the types of
-            // Coordinate objects when compared to JTS: GeoAPI offers the same four types (with
+            // Coordinate objects when compared to JTS: NTS offers the same four types (with
             // slightly different names), but with a substantially different hierarchy relationship.
             var type = cooordinate?.GetType();
             if (type == typeof(CoordinateM) || type == typeof(CoordinateZM))

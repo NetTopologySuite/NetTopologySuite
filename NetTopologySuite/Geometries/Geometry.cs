@@ -514,7 +514,7 @@ namespace NetTopologySuite.Geometries
         /// of a Geometry is a set of Geometries of the next lower dimension."
         /// </summary>
         /// <returns>The closure of the combinatorial boundary of this <c>Geometry</c>.</returns>
-        /// NOTE: make abstract, remove setter and change geoapi
+        /// NOTE: make abstract and remove setter
         public virtual IGeometry Boundary { get; set; }
 
         /*private Dimensions boundaryDimension;*/
@@ -527,7 +527,7 @@ namespace NetTopologySuite.Geometries
         /// interface, whether or not this object is the empty point. Returns
         /// <c>Dimension.False</c> if the boundary is the empty point.
         /// </returns>
-        /// NOTE: make abstract, remove setter and change geoapi
+        /// NOTE: make abstract and remove setter
         public virtual Dimension BoundaryDimension { get; set; }
 
         /// <summary>
