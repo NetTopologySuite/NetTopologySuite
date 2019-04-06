@@ -61,6 +61,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         [Test]
+        public void TestIntersects()
+        {
+            CheckIntersectsPermuted(1, 1, 2, 2, 2, 2, 3, 3, true);
+            CheckIntersectsPermuted(1, 1, 2, 2, 3, 3, 4, 4, false);
+        }
+
+        [Test]
         public void TestIntersectsEmpty()
         {
             Assert.IsTrue(!new Envelope(-5, 5, -5, 5).Intersects(new Envelope()));
@@ -193,6 +200,19 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         [Test]
+        public void TestCopyMethod()
+        {
+            var e1 = new Envelope(1, 2, 3, 4);
+            var e2 = e1.Copy();
+            Assert.AreEqual(1, e2.MinX, 1E-5);
+            Assert.AreEqual(2, e2.MaxX, 1E-5);
+            Assert.AreEqual(3, e2.MinY, 1E-5);
+            Assert.AreEqual(4, e2.MaxY, 1E-5);
+
+            Assert.That(ReferenceEquals(e1, e2), Is.False);
+        }
+
+        [Test]
         public void TestGeometryFactoryCreateEnvelope()
         {
             checkExpectedEnvelopeGeometry("POINT (0 0)");
@@ -242,6 +262,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(-expected == env2.CompareTo(env1), "-expected == env2.CompareTo(env1)" );
         }
 
+
         [Test]
         public void TestToString()
         {
@@ -272,7 +293,33 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         private static void TestParse(string envString, Envelope env)
         {
             var envFromString = Envelope.Parse(envString);
-            Assert.IsTrue(env.Equals(envFromString));
+            Assert.IsTrue(env.Equals(envFromString),"{0} != {1}", env, envFromString);
         }
+
+
+        private void CheckIntersectsPermuted(double a1x, double a1y, double a2x, double a2y, double b1x, double b1y, double b2x, double b2y, bool expected)
+        {
+            CheckIntersects(a1x, a1y, a2x, a2y, b1x, b1y, b2x, b2y, expected);
+            CheckIntersects(a1x, a2y, a2x, a1y, b1x, b1y, b2x, b2y, expected);
+            CheckIntersects(a1x, a1y, a2x, a2y, b1x, b2y, b2x, b1y, expected);
+            CheckIntersects(a1x, a2y, a2x, a1y, b1x, b2y, b2x, b1y, expected);
+        }
+
+        private void CheckIntersects(double a1x, double a1y, double a2x, double a2y, double b1x, double b1y, double b2x, double b2y, bool expected)
+        {
+            var a = new Envelope(a1x, a2x, a1y, a2y);
+            var b = new Envelope(b1x, b2x, b1y, b2y);
+            Assert.AreEqual(expected, a.Intersects(b));
+
+            var a1 = new Coordinate(a1x, a1y);
+            var a2 = new Coordinate(a2x, a2y);
+            var b1 = new Coordinate(b1x, b1y);
+            var b2 = new Coordinate(b2x, b2y);
+            Assert.AreEqual(expected, Envelope.Intersects(a1, a2, b1, b2));
+
+            Assert.AreEqual(expected, a.Intersects(b1, b2));
+        }
+
+
     }
 }
