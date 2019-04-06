@@ -20,8 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GeoAPI.Core" Version="$(GeoAPIPackageReferenceVersion)" />
-
     <!-- We use ModuleInit.Fody to automatically initialize GeometryServiceProvider when loaded. -->
     <PackageReference Include="ModuleInit.Fody" Version="1.8.0" PrivateAssets="All" />
     <PackageReference Include="Fody" Version="3.0.3" PrivateAssets="All" />

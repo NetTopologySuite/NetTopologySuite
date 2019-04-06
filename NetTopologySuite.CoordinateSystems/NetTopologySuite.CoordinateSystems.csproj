@@ -14,8 +14,4 @@
     <None Include="$(SolutionDir)nts.snk" Link="nts.snk" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="GeoAPI.CoordinateSystems" Version="$(GeoAPIPackageReferenceVersion)" />
-  </ItemGroup>
-
 </Project>

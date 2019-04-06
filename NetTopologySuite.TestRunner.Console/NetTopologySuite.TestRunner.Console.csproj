@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GeoAPI" Version="$(GeoAPIPackageReferenceVersion)" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.TestRunner\NetTopologySuite.TestRunner.csproj" />
   </ItemGroup>
 
