@@ -2,8 +2,6 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using GeoAPI.Geometries;
-using GeoAPI.IO;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 

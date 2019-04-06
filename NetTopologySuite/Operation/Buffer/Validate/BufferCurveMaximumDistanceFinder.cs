@@ -1,5 +1,3 @@
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm.Distance;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Buffer.Validate

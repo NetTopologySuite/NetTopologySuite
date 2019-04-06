@@ -1,10 +1,9 @@
-﻿using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Index.KdTree
 {
     /// <summary>
-    /// A node of a <see cref="NetTopologySuite.Index.KdTree.KdTree{T}"/>, which represents one or more points in the same location.
+    /// A node of a <see cref="KdTree.KdTree{T}"/>, which represents one or more points in the same location.
     /// </summary>
     /// <typeparam name="T">The type of the object</typeparam>
     /// <author>dskea</author>

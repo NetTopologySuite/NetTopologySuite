@@ -1,5 +1,5 @@
 ﻿using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using Open.Topology.TestRunner.Functions;
 using Open.Topology.TestRunner.Result;
 

@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Overlay;
 using NUnit.Framework;

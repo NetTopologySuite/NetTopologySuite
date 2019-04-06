@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
@@ -254,7 +253,7 @@ namespace NetTopologySuite.Samples.Tests.Github
 8 -4.889,  4 -5.049,  1.4749999999994841 -5.15))");
 
             //act
-            var gpr = new NetTopologySuite.Precision.GeometryPrecisionReducer(new PrecisionModel(1e10));
+            var gpr = new GeometryPrecisionReducer(new PrecisionModel(1e10));
             var poly1 = gpr.Reduce(poly);
             var poly2 = poly.Buffer(0);
             var shellCoords = ((IPolygon)poly).Shell.CoordinateSequence.Copy();
@@ -346,7 +345,7 @@ namespace NetTopologySuite.Samples.Tests.Github
             var polygon = wktreader.Read("POLYGON((14.7119 201.6703, 74.2154 201.6703, 74.2154 166.6391, 14.7119 166.6391, 14.7119 201.6703))");
 
             Assert.IsTrue(polygon.IsValid);
-            var vdb = new NetTopologySuite.Triangulate.VoronoiDiagramBuilder();
+            var vdb = new Triangulate.VoronoiDiagramBuilder();
             vdb.SetSites(polygon);
             IGeometry result = null;
             Assert.DoesNotThrow(() => result= vdb.GetDiagram(polygon.Factory));
@@ -582,7 +581,7 @@ namespace NetTopologySuite.Samples.Tests.Github
             // Arrange
             var geom = new WKTReader(new GeometryFactory(new PrecisionModel(1000))).Read(wkt);
 
-            var op = new NetTopologySuite.Operation.Polygonize.Polygonizer();
+            var op = new Polygonizer();
             op.Add(geom);
 
             // Act

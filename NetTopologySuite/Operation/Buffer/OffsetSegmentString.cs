@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using GeoAPI.Geometries;
+﻿using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Buffer

@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Strtree;
-using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Operation.Valid
 {

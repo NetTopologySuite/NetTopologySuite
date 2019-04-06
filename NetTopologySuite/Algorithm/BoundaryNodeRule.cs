@@ -1,4 +1,4 @@
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation;
 using NetTopologySuite.Operation.Relate;
 
@@ -107,7 +107,7 @@ namespace NetTopologySuite.Algorithm
         /// parent geometry.
         /// This corresponds to the "intuitive" topological definition
         /// of boundary.
-        /// Under this rule <see cref="NetTopologySuite.Geometries.LinearRing" />s have a non-empty boundary
+        /// Under this rule <see cref="LinearRing" />s have a non-empty boundary
         /// (the common endpoint of the underlying LineString).
         /// </summary>
         /// <remarks>

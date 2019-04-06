@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
-using GeoAPI;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class GeometryServiceProviderTest
     {
-        [TestAttribute]
+        [Test]
         public void TestUninitialized()
         {
             var nts = new NtsGeometryServices();
@@ -25,7 +22,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(nts.DefaultPrecisionModel.Equals(ntsFromGeoApi.DefaultPrecisionModel));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestInitialized()
         {
             var nts =
@@ -43,7 +40,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.AreEqual(nts.DefaultCoordinateSequenceFactory, factory.CoordinateSequenceFactory);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestThreading()
         {
             try

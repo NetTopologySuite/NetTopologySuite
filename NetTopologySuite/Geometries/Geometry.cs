@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
-using GeoAPI.Geometries;
-using GeoAPI.Operation.Buffer;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
@@ -203,7 +201,7 @@ namespace NetTopologySuite.Geometries
                 _srid = value;
 
                 // Adjust the geometry factory
-                _factory = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(
+                _factory = GeometryServiceProvider.Instance.CreateGeometryFactory(
                     _factory.PrecisionModel, value, _factory.CoordinateSequenceFactory);
 
                 var collection = this as IGeometryCollection;
@@ -548,11 +546,11 @@ namespace NetTopologySuite.Geometries
         /// <returns>
         /// A Geometry representing the envelope of this Geometry
         /// </returns>
-        /// <seealso cref="IGeometryFactory.ToGeometry(GeoAPI.Geometries.Envelope)"/>
+        /// <seealso cref="IGeometryFactory.ToGeometry(Geometries.Envelope)"/>
         public IGeometry Envelope => Factory.ToGeometry(EnvelopeInternal);
 
         /// <summary>
-        /// Gets an <see cref="GeoAPI.Geometries.Envelope"/> containing
+        /// Gets an <see cref="Geometries.Envelope"/> containing
         /// the minimum and maximum x and y values in this <c>Geometry</c>.
         /// If the geometry is empty, an empty <c>Envelope</c>
         /// is returned.
@@ -588,7 +586,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <remarks>
         /// When this method is called the geometry will flush
-        /// and/or update any derived information it has cached (such as its <see cref="GeoAPI.Geometries.Envelope"/> ).
+        /// and/or update any derived information it has cached (such as its <see cref="Geometries.Envelope"/> ).
         /// The operation is applied to all component Geometries.
         /// </remarks>
         public void GeometryChanged()
@@ -2142,7 +2140,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="self">The geometry to encode</param>
         /// <param name="writer">The writer to use</param>
         /// <returns>An array of <see cref="byte"/>s, that represent <paramref name="self"/></returns>
-        public static byte[] AsBinary(this IGeometry self, GeoAPI.IO.IBinaryGeometryWriter writer)
+        public static byte[] AsBinary(this IGeometry self, IBinaryGeometryWriter writer)
         {
             return writer == null
                 ? self.AsBinary()

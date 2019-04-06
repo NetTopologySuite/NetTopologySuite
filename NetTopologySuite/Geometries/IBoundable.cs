@@ -1,4 +1,4 @@
-﻿namespace GeoAPI.Geometries
+﻿namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// A spatial object in an AbstractSTRtree.

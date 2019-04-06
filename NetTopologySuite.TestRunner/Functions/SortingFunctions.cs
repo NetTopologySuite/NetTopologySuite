@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace Open.Topology.TestRunner.Functions
 {

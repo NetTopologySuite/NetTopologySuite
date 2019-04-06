@@ -1,5 +1,4 @@
 ﻿using System;
-using GeoAPI.Geometries;
 namespace NetTopologySuite.Geometries.Implementation
 {
     /// <summary>
@@ -92,8 +91,8 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="size">The number of coordinates.</param>
         /// <param name="ordinates">
-        /// The ordinates each coordinate has. <see cref="GeoAPI.Geometries.Ordinates.XY"/> is fix,
-        /// <see cref="GeoAPI.Geometries.Ordinates.Z"/> and <see cref="GeoAPI.Geometries.Ordinates.M"/> can be set.
+        /// The ordinates each coordinate has. <see cref="Geometries.Ordinates.XY"/> is fix,
+        /// <see cref="Geometries.Ordinates.Z"/> and <see cref="Geometries.Ordinates.M"/> can be set.
         /// </param>
         /// <returns>A coordinate sequence.</returns>
         public ICoordinateSequence Create(int size, Ordinates ordinates)

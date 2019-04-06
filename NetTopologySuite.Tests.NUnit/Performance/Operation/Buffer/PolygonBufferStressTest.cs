@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using GeoAPI.Geometries;
-using NUnit.Framework;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 {
@@ -32,8 +31,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 
         private bool _testFailed;
 
-        [TestAttribute]
-        [CategoryAttribute("Stress")]
+        [Test]
+        [Category("Stress")]
         public void Test()
         {
             //String geomStr;

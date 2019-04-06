@@ -1,6 +1,4 @@
-using System;
 using System.Globalization;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
@@ -41,14 +39,14 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual("POINT (10.5 10.5)", _writer.Write(point));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestWritePoint()
         {
             var point = _factory.CreatePoint(new Coordinate(10, 10));
             Assert.AreEqual("POINT (10 10)", _writer.Write(point));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestWriteLineString()
         {
             Coordinate[] coordinates =
@@ -61,7 +59,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual("LINESTRING (10 10, 20 20, 30 40)", _writer.Write(lineString));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestWritePolygon()
         {
             Coordinate[] coordinates =
@@ -77,7 +75,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual("POLYGON ((10 10, 10 20, 20 20, 20 15, 10 10))", _writer.Write(polygon));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestWriteMultiPoint()
         {
             IPoint[] points =
@@ -89,7 +87,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual("MULTIPOINT ((10 10), (20 20))", _writer.Write(multiPoint));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestWriteMultiLineString()
         {
             Coordinate[] coordinates1 =
@@ -111,7 +109,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 _writer.Write(multiLineString));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestWriteMultiPolygon()
         {
             Coordinate[] coordinates1 =
@@ -140,7 +138,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 _writer.Write(multiPolygon));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestWriteGeometryCollection()
         {
             var point1 = _factory.CreatePoint(new Coordinate(10, 10));
@@ -163,7 +161,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         /// </summary>
         /// <seealso href="https://code.google.com/p/nettopologysuite/issues/detail?id=171"/>
         /// <seealso href="http://stackoverflow.com/questions/2105096/why-is-tostring-rounding-my-double-value"/>
-        [TestAttribute]
+        [Test]
         public void TestWriteLargeNumbers1()
         {
             IPrecisionModel precisionModel = new PrecisionModel(1E9);
@@ -176,7 +174,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual("POINT (123456789012346000 10000000000)", actual);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestWriteLargeNumbers2()
         {
             IPrecisionModel precisionModel = new PrecisionModel(1E9);
@@ -190,7 +188,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         /// </summary>
         /// <seealso href="https://code.google.com/p/nettopologysuite/issues/detail?id=171"/>
         /// <seealso href="http://stackoverflow.com/questions/2105096/why-is-tostring-rounding-my-double-value"/>
-        [TestAttribute]
+        [Test]
         public void TestWriteLargeNumbers3()
         {
             IPrecisionModel precisionModel = new PrecisionModel(1E9);
@@ -202,7 +200,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.AreEqual("POINT (123456789012346000000000000000000 10000000000)", point1.AsText());
         }
 
-        [TestAttribute]
+        [Test]
         public void TestWrite3D()
         {
             IGeometryFactory geometryFactory = new GeometryFactory();
@@ -212,7 +210,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             wkt = _writer2DM.Write(point);
             Assert.AreEqual("POINT (1 1)", wkt);
         }
-        [TestAttribute]
+        [Test]
         public void TestWrite3D_withNaN()
         {
             IGeometryFactory geometryFactory = new GeometryFactory();

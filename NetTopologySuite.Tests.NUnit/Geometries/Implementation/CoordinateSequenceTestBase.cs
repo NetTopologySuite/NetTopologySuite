@@ -1,5 +1,4 @@
-using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;
 
@@ -9,14 +8,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
     /// General test cases for CoordinateSequences.
     /// Subclasses can set the factory to test different kinds of CoordinateSequences.
     /// </summary>
-    [TestFixtureAttribute]
+    [TestFixture]
     public abstract class CoordinateSequenceTestBase
     {
         protected const int Size = 100;
 
         protected abstract ICoordinateSequenceFactory CsFactory { get; }
 
-        [TestAttribute]
+        [Test]
         public void TestZeroLength()
         {
             var seq = CsFactory.Create(0, 3);
@@ -26,7 +25,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.IsTrue(seq2.Count == 0);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestCreateBySizeAndModify()
         {
             var coords = CreateArray(Size);
@@ -44,7 +43,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 
         // TODO: This test was marked as virtual to allow PackedCoordinateSequenceTest to override the assert value
         // The method should not be marked as virtual, and should be altered when the correct PackedCoordinateSequence.GetCoordinate result is migrated to NTS
-        [TestAttribute]
+        [Test]
         public virtual void Test2DZOrdinate()
         {
             var coords = CreateArray(Size);
@@ -63,7 +62,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             }
         }
 
-        [TestAttribute]
+        [Test]
         public void TestCreateByInit()
         {
             var coords = CreateArray(Size);
@@ -71,7 +70,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.IsTrue(IsEqual(seq, coords));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestCreateByInitAndCopy()
         {
             var coords = CreateArray(Size);

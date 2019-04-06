@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
@@ -478,7 +477,7 @@ namespace NetTopologySuite.GeometriesGraph
                 // lazily init point locator
                 if (_areaPtLocator == null)
                 {
-                    _areaPtLocator = new NetTopologySuite.Algorithm.Locate.IndexedPointInAreaLocator(_parentGeom);
+                    _areaPtLocator = new IndexedPointInAreaLocator(_parentGeom);
                 }
                 return _areaPtLocator.Locate(pt);
             }

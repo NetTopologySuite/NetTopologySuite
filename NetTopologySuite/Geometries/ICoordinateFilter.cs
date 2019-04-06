@@ -1,4 +1,4 @@
-namespace GeoAPI.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// An interface for classes which use the values of the coordinates in a <see cref="IGeometry"/>. 

@@ -1,6 +1,4 @@
-using System;
-
-namespace GeoAPI.Geometries
+namespace NetTopologySuite.Geometries
 {
     public interface IMultiLineString : IMultiCurve, ILineal
     {

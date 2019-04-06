@@ -1,4 +1,4 @@
-﻿using GeoAPI.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.LinearReferencing;
 
 namespace Open.Topology.TestRunner.Functions

@@ -1,6 +1,4 @@
-﻿using GeoAPI.Geometries;
-
-namespace GeoAPI.Geometries
+﻿namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Interface for a coordinate buffer

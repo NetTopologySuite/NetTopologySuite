@@ -17,7 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
     /// The time to run the method is printed for each one.
     /// </summary>
     /// <author>Martin Davis</author>
-    [TestFixtureAttribute]
+    [TestFixture]
     public abstract class PerformanceTestCase
     {
         private readonly string _name;
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
             _name = name;
         }
 
-        [TestAttribute]
+        [Test]
         public void Test()
         {
             TestInternal();

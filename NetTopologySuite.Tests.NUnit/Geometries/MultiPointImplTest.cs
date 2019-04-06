@@ -1,14 +1,10 @@
-using System;
-using System.Diagnostics;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class MultiPointImplTest
     {
         private IPrecisionModel precisionModel;
@@ -23,8 +19,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         // TODO: Enable when #isSimple implemented
-        [TestAttribute]
-        [IgnoreAttribute("Enable when IsSimple implemented")]
+        [Test]
+        [Ignore("Enable when IsSimple implemented")]
         public void TestIsSimple1()
         {
             //    MultiPoint m = (MultiPoint) reader.read("MULTIPOINT(1.111 2.222, 3.333 4.444, 5.555 6.666)");
@@ -32,15 +28,15 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         // TODO: Enable when #isSimple implemented
-        [TestAttribute]
-        [IgnoreAttribute("Enable when IsSimple implemented")]
+        [Test]
+        [Ignore("Enable when IsSimple implemented")]
         public void TestIsSimple2()
         {
             //    MultiPoint m = (MultiPoint) reader.read("MULTIPOINT(1.111 2.222, 3.333 4.444, 3.333 4.444)");
             //    Assert.IsTrue(! m.isSimple());
         }
 
-        [TestAttribute]
+        [Test]
         public void TestGetGeometryN()  {
             var m = (MultiPoint) reader.Read("MULTIPOINT(1.111 2.222, 3.333 4.444, 3.333 4.444)");
             var g = m.GetGeometryN(1);
@@ -54,7 +50,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(4.444, externalCoordinate.Y, 1E-10);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestGetEnvelope()
         {
             var m = (MultiPoint)reader.Read("MULTIPOINT(1.111 2.222, 3.333 4.444, 3.333 4.444)");
@@ -65,7 +61,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(4.444, e.MaxY, 1E-10);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestEquals()
         {
             var m1 = (MultiPoint)reader.Read("MULTIPOINT(5 6, 7 8, 9 10)");
@@ -74,7 +70,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(m1.Equals((object)m2));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestEquals2()
         {
             var m1 = (MultiPoint)reader.Read("MULTIPOINT (20.564 46.3493254, 45 32, 23 54)");

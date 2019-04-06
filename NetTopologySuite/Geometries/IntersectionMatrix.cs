@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace GeoAPI.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>  
     /// Models a <b>Dimensionally Extended Nine-Intersection Model (DE-9IM)</b> matrix. 
@@ -160,7 +160,7 @@ namespace GeoAPI.Geometries
         /// </returns>
         public static bool Matches(string actualDimensionSymbols, string requiredDimensionSymbols)
         {
-            IntersectionMatrix m = new IntersectionMatrix(actualDimensionSymbols);
+            var m = new IntersectionMatrix(actualDimensionSymbols);
             return m.Matches(requiredDimensionSymbols);
         }
 
@@ -542,7 +542,7 @@ namespace GeoAPI.Geometries
         /// <returns>This <see cref="IntersectionMatrix" /> as a convenience,</returns>
         public IntersectionMatrix Transpose()
         {
-            Dimension temp = _matrix[1, 0];
+            var temp = _matrix[1, 0];
             _matrix[1, 0] = _matrix[0, 1];
             _matrix[0, 1] = temp;
 
@@ -566,7 +566,7 @@ namespace GeoAPI.Geometries
         /// </returns>
         public override string ToString()
         {
-            StringBuilder buf = new StringBuilder("123456789");
+            var buf = new StringBuilder("123456789");
             for (int ai = 0; ai < 3; ai++)
                 for (int bi = 0; bi < 3; bi++)
                     buf[3 * ai + bi] = DimensionUtility.ToDimensionSymbol(_matrix[ai, bi]);

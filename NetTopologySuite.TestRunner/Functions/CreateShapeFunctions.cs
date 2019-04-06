@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using GeoAPI.Geometries;
-using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 
 namespace Open.Topology.TestRunner.Functions

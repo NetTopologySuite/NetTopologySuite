@@ -1,4 +1,4 @@
-namespace GeoAPI.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// <c>GeometryCollection</c> classes support the concept of

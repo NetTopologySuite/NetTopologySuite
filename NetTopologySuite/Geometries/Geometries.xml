@@ -6,7 +6,7 @@
   <members>
     <member name="N:NetTopologySuite.Geometries">
       <summary>
-        Contains the <see cref="T:GeoAPI.Geometries.IGeometry">Geometry</see> interface hierarchy and supporting classes.
+        Contains the <see cref="T:NetTopologySuite.Geometries.IGeometry">Geometry</see> interface hierarchy and supporting classes.
       </summary>
       <remarks>
         <para>

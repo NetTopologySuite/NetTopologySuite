@@ -1,4 +1,4 @@
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Algorithm
     public class RayCrossingCounter
     {
         /// <summary>
-        /// Determines the <see cref="GeoAPI.Geometries.Location"/> of a point in a ring.
+        /// Determines the <see cref="Geometries.Location"/> of a point in a ring.
         /// This method is an exemplar of how to use this class.
         /// </summary>
         /// <param name="p">The point to test</param>
@@ -56,7 +56,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Determines the <see cref="GeoAPI.Geometries.Location"/> of a point in a ring.
+        /// Determines the <see cref="Geometries.Location"/> of a point in a ring.
         /// </summary>
         /// <param name="p">The point to test</param>
         /// <param name="ring">A coordinate sequence forming a ring</param>
@@ -173,7 +173,7 @@ namespace NetTopologySuite.Algorithm
         public bool IsOnSegment => _isPointOnSegment;
 
         /// <summary>
-        /// Gets the <see cref="GeoAPI.Geometries.Location"/> of the point relative to  the ring, polygon
+        /// Gets the <see cref="Geometries.Location"/> of the point relative to  the ring, polygon
         /// or multipolygon from which the processed segments were provided.
         /// </summary>
         /// <remarks>

@@ -1,6 +1,4 @@
 using System;
-using GeoAPI.Geometries;
-using GeoAPI.Geometries.Prepared;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Prepared;
 using NetTopologySuite.Geometries.Utilities;
@@ -26,8 +24,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
         bool testFailed = false;
 
-        [TestAttribute]
-        [CategoryAttribute("Stress")]
+        [Test]
+        [Category("Stress")]
         public void Test()
         {
             Run(1000);

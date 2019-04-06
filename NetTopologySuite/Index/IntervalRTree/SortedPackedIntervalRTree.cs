@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 #if NTSREPORT
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 #endif
 

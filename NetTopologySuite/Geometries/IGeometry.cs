@@ -1,7 +1,7 @@
 using System;
-using GeoAPI.Operation.Buffer;
+using NetTopologySuite.Operation.Buffer;
 
-namespace GeoAPI.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>  
     /// Interface for basic implementation of <c>Geometry</c>.

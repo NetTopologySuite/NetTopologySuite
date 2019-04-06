@@ -2,11 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Union;
-using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
 {

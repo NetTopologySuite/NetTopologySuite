@@ -1,4 +1,3 @@
-using GeoAPI.Geometries;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.Various

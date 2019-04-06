@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
-using NUnit.Framework;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Polygonize;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Operation.Poligonize
 {

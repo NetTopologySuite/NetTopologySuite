@@ -1,6 +1,6 @@
 using System;
 
-namespace GeoAPI.Geometries
+namespace NetTopologySuite.Geometries
 {
     ///<summary>
     /// An interface for classes which process the coordinates in a <see cref="ICoordinateSequence"/>. 
@@ -13,7 +13,7 @@ namespace GeoAPI.Geometries
     /// <c>CoordinateSequenceFilter</c> to each 
     /// <see cref="ICoordinateSequence"/>s they contain. 
     /// <para/>
-    /// For maximum efficiency, the execution of filters can be short-circuited by using the <see cref="ICoordinateSequenceFilter.Done"/> property.
+    /// For maximum efficiency, the execution of filters can be short-circuited by using the <see cref="Done"/> property.
     ///</summary>
     ///<see cref="IGeometry.Apply(ICoordinateSequenceFilter)"/>
     ///<remarks>

@@ -1,5 +1,3 @@
-using System;
-
 namespace NetTopologySuite.Utilities
 {
     /// <summary>

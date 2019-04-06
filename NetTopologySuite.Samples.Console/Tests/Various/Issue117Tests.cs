@@ -1,8 +1,8 @@
 ﻿using System.IO;
-using GeoAPI.Geometries;
-using NUnit.Framework;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.IO.GML2;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.Various
 {

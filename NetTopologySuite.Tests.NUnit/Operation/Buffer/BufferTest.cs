@@ -1,13 +1,12 @@
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class BufferTest
     {
-        [TestAttribute]
+        [Test]
         public void TestMultiLineStringDepthFailure()
         {
             new BufferValidator(
@@ -17,7 +16,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiLineStringSeparateBuffersFloating()
         {
             new BufferValidator(
@@ -28,7 +27,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiLineString2BuffersTouchToMakeHoleFloating()
         {
             new BufferValidator(
@@ -39,7 +38,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiLineString3HoleVanishesFloating()
         {
             new BufferValidator(
@@ -50,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiLineString4ReallyBigDistanceFloating()
         {
             new BufferValidator(
@@ -63,7 +62,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 
         }
 
-        [TestAttribute, Ignore("This test needs to be investigated in JTS to see why the result is failing.  The expectation is that the buffer is empty, but it isn't")]
+        [Test, Ignore("This test needs to be investigated in JTS to see why the result is failing.  The expectation is that the buffer is empty, but it isn't")]
         public void TestMultiLineStringSeparateBuffersFloatingSingle()
         {
             new BufferValidator(
@@ -77,7 +76,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 
         }
 
-        [TestAttribute, Ignore("This test needs to be investigated in JTS to see why the result is failing.  The expectation is that there are no holes in the buffer, but there are")]
+        [Test, Ignore("This test needs to be investigated in JTS to see why the result is failing.  The expectation is that there are no holes in the buffer, but there are")]
         public void TestMultiLineString2BuffersTouchToMakeHoleFloatingSingle()
         {
             new BufferValidator(
@@ -90,7 +89,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             .Test();
         }
 
-        [TestAttribute, Ignore("This test needs to be investigated in JTS to see why the result is failing.  The expectation is that the buffer is empty, but it isn't")]
+        [Test, Ignore("This test needs to be investigated in JTS to see why the result is failing.  The expectation is that the buffer is empty, but it isn't")]
         public void TestMultiLineString3HoleVanishesFloatingSingle()
         {
             new BufferValidator(
@@ -102,7 +101,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiLineString4ReallyBigDistanceFloatingSingle()
         {
             new BufferValidator(
@@ -114,7 +113,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestPolygonMultipleHoles()
         {
             new BufferValidator(
@@ -126,7 +125,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test1()
         {
             new BufferValidator(
@@ -136,7 +135,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test2()
         {
             new BufferValidator(
@@ -146,7 +145,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test1a()
         {
             new BufferValidator(
@@ -156,7 +155,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test2a()
         {
             new BufferValidator(
@@ -166,7 +165,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test3()
         {
             new BufferValidator(
@@ -175,7 +174,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test4()
         {
             new BufferValidator(
@@ -184,7 +183,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test5()
         {
             new BufferValidator(
@@ -193,7 +192,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test6()
         {
             new BufferValidator(
@@ -202,7 +201,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test7()
         {
             new BufferValidator(
@@ -211,7 +210,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test8()
         {
             new BufferValidator(
@@ -220,7 +219,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test9()
         {
             new BufferValidator(
@@ -229,7 +228,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test10()
         {
             new BufferValidator(
@@ -238,7 +237,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test11()
         {
             new BufferValidator(
@@ -247,7 +246,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test12()
         {
             new BufferValidator(
@@ -256,7 +255,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test13()
         {
             new BufferValidator(
@@ -265,7 +264,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test14()
         {
             new BufferValidator(
@@ -274,7 +273,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test15()
         {
             new BufferValidator(
@@ -283,7 +282,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test16()
         {
             new BufferValidator(
@@ -292,7 +291,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test17()
         {
             new BufferValidator(
@@ -301,7 +300,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test18()
         {
             new BufferValidator(
@@ -310,7 +309,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test19()
         {
             new BufferValidator(
@@ -319,7 +318,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test20()
         {
             new BufferValidator(
@@ -328,7 +327,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test21()
         {
             new BufferValidator(
@@ -337,7 +336,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test22()
         {
             new BufferValidator(
@@ -346,7 +345,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test23()
         {
             new BufferValidator(
@@ -355,7 +354,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test24()
         {
             new BufferValidator(
@@ -364,7 +363,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test25()
         {
             new BufferValidator(
@@ -373,7 +372,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test26()
         {
             new BufferValidator(
@@ -382,7 +381,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test27()
         {
             new BufferValidator(
@@ -391,7 +390,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test28()
         {
             new BufferValidator(
@@ -400,7 +399,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test29()
         {
             new BufferValidator(
@@ -409,7 +408,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test30()
         {
             new BufferValidator(
@@ -418,7 +417,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test31()
         {
             new BufferValidator(
@@ -427,7 +426,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                 .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test32()
         {
             new BufferValidator(
@@ -436,7 +435,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test33()
         {
             //Get side location conflict in #contains, but the geometry is invalid
@@ -455,7 +454,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             //      .Test();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test34()
         {
             new BufferValidator(
@@ -464,7 +463,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test35()
         {
             new BufferValidator(
@@ -473,7 +472,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test36()
         {
             new BufferValidator(
@@ -482,7 +481,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test37()
         {
             new BufferValidator(
@@ -491,7 +490,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test38()
         {
             new BufferValidator(
@@ -500,7 +499,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void Test39()
         {
             new BufferValidator(
@@ -512,7 +511,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
         /// <summary>
         /// The #testFloatingPrecisionN tests were taken from bufferError-dist 100.jml
         /// </summary>
-        [TestAttribute]
+        [Test]
         public void TestFloatingPrecision1()
         {
             new BufferValidator(
@@ -521,7 +520,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestFloatingPrecision2()
         {
             new BufferValidator(
@@ -530,7 +529,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestFloatingPrecision3()
         {
             new BufferValidator(
@@ -539,7 +538,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestFloatingPrecision4()
         {
             new BufferValidator(
@@ -548,7 +547,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestFloatingPrecision5()
         {
             new BufferValidator(
@@ -557,7 +556,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestFloatingPrecision6()
         {
             new BufferValidator(
@@ -566,7 +565,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestFloatingPrecision7()
         {
             new BufferValidator(
@@ -575,7 +574,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestFloatingPrecision8()
         {
             new BufferValidator(
@@ -584,7 +583,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestFloatingPrecision9()
         {
             new BufferValidator(
@@ -593,7 +592,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestFloatingPrecision10()
         {
             new BufferValidator(
@@ -602,7 +601,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestFloatingPrecision11()
         {
             new BufferValidator(
@@ -611,7 +610,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestFloatingPrecision12()
         {
             new BufferValidator(
@@ -620,7 +619,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestFloatingPrecision13()
         {
             new BufferValidator(
@@ -629,7 +628,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestFloatingPrecision14()
         {
             new BufferValidator(

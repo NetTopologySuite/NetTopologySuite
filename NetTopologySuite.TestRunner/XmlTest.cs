@@ -1,8 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using GeoAPI.Geometries;
-using GeoAPI.Operation.Buffer;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Buffer;
 using Open.Topology.TestRunner.Operations;

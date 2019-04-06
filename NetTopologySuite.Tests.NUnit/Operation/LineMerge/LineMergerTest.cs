@@ -1,20 +1,17 @@
-using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
-using NUnit.Framework;
 using NetTopologySuite.Operation.Linemerge;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class LineMergerTest
     {
         private static WKTReader reader = new WKTReader();
 
-        [TestAttribute]
+        [Test]
         public void Test1()
         {
             DoTest(new string[] {
@@ -23,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
               }, new string[] { "LINESTRING (120 120, 180 140, 200 180, 240 180)" });
         }
 
-        [TestAttribute]
+        [Test]
         public void Test2()
         {
             DoTest(new string[]{"LINESTRING (120 300, 80 340)",
@@ -39,21 +36,21 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
               "LINESTRING (40 320, 60 320, 80 340, 120 300, 140 320, 160 320)"});
         }
 
-        [TestAttribute]
+        [Test]
         public void Test3()
         {
             DoTest(new string[] { "LINESTRING (0 0, 100 100)", "LINESTRING (0 100, 100 0)" },
               new string[] { "LINESTRING (0 0, 100 100)", "LINESTRING (0 100, 100 0)" });
         }
 
-        [TestAttribute]
+        [Test]
         public void Test4()
         {
             DoTest(new string[] { "LINESTRING EMPTY", "LINESTRING EMPTY" },
               new string[] { });
         }
 
-        [TestAttribute]
+        [Test]
         public void Test5()
         {
             DoTest(new string[] { },
@@ -115,7 +112,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
                 {
                     geometries.Add(reader.Read(geomWkt));
                 }
-                catch (GeoAPI.IO.ParseException e)
+                catch (ParseException e)
                 {
                     NetTopologySuite.Utilities.Assert.ShouldNeverReachHere();
                 }

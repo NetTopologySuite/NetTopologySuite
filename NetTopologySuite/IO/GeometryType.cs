@@ -1,7 +1,7 @@
 using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GeoAPI.IO
+namespace NetTopologySuite.IO
 {
     /// <summary>
     /// Lightweight class that handles OGC Geometry type declaration

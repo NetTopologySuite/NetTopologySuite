@@ -1,6 +1,6 @@
 using System;
 
-namespace GeoAPI.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Provides constants representing the dimensions of a point, a curve and a surface.

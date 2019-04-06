@@ -1,8 +1,6 @@
 ﻿//#define ReaderWriterLockSlim
 using System;
 using System.Collections.Generic;
-using GeoAPI;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 

@@ -1,4 +1,4 @@
-namespace GeoAPI.Geometries
+namespace NetTopologySuite.Geometries
 {
     public interface ILineString : ICurve, ILineal
     {

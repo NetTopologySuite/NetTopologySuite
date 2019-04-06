@@ -1,4 +1,4 @@
-﻿namespace GeoAPI.Geometries
+﻿namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Interface describing objects that can expand themselves by objects of type <typeparamref name="T"/>.

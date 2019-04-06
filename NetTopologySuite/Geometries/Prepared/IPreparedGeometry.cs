@@ -1,4 +1,4 @@
-namespace GeoAPI.Geometries.Prepared
+namespace NetTopologySuite.Geometries.Prepared
 {
 
     ///<summary>

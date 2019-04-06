@@ -1,4 +1,4 @@
-﻿namespace GeoAPI.Operation.Buffer
+﻿namespace NetTopologySuite.Operation.Buffer
 {
     ///<summary>
     /// End cap style constants

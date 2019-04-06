@@ -1,8 +1,8 @@
 using System;
-using GeoAPI.Geometries;
-using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
+using IList = System.Collections.Generic.IList<object>;
 
 namespace NetTopologySuite.Index.Strtree
 {

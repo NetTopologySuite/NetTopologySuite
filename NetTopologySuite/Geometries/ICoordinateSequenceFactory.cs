@@ -1,4 +1,4 @@
-namespace GeoAPI.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// An object that knows how to build a particular implementation of
@@ -71,7 +71,7 @@ namespace GeoAPI.Geometries
         /// </summary>        
         /// <param name="size">The number of coordinates.</param>
         /// <param name="ordinates">
-        /// The ordinates each coordinate has. <see cref="GeoAPI.Geometries.Ordinates.XY"/> is fix, <see cref="GeoAPI.Geometries.Ordinates.Z"/> and <see cref="GeoAPI.Geometries.Ordinates.M"/> can be set.
+        /// The ordinates each coordinate has. <see cref="Geometries.Ordinates.XY"/> is fix, <see cref="Geometries.Ordinates.Z"/> and <see cref="Geometries.Ordinates.M"/> can be set.
         /// </param>
         /// <returns>A coordinate sequence.</returns>
         ICoordinateSequence Create(int size, Ordinates ordinates);

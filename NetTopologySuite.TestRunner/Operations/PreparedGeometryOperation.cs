@@ -1,6 +1,5 @@
 ﻿using System;
-using GeoAPI.Geometries;
-using GeoAPI.Geometries.Prepared;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Prepared;
 using Open.Topology.TestRunner.Result;
 

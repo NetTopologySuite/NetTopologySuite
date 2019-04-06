@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using GeoAPI.Geometries;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Geometries

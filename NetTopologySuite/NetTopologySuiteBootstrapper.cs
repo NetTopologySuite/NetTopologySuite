@@ -1,4 +1,4 @@
-namespace GeoAPI
+namespace NetTopologySuite
 {
     /// <summary>
     /// A utility class to register NTS as <see cref="GeometryServiceProvider.Instance"/>.
@@ -10,7 +10,7 @@ namespace GeoAPI
         /// </summary>
         public static void Bootstrap()
         {
-            GeometryServiceProvider.Instance = NetTopologySuite.NtsGeometryServices.Instance;
+            GeometryServiceProvider.Instance = NtsGeometryServices.Instance;
         }
     }
 }

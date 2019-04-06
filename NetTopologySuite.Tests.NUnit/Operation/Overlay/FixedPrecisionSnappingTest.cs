@@ -1,13 +1,10 @@
-using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class FixedPrecisionSnappingTest
     {
         PrecisionModel pm;
@@ -21,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
             rdr = new WKTReader(fact);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestTriangles()
         {
             var a = rdr.Read("POLYGON ((545 317, 617 379, 581 321, 545 317))");

@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Text;
 
-namespace GeoAPI.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Defines a rectangular region of the 2D coordinate plane.
@@ -810,10 +810,10 @@ namespace GeoAPI.Geometries
                 return new Envelope();
             }
             return new Envelope(_minX, _maxX, _minY, _maxY);
-        }        
-        
+        }
+
         /// <summary>
-        /// Method to parse an envelope from its <see cref="Envelope.ToString"/> value
+        /// Method to parse an envelope from its <see cref="ToString"/> value
         /// </summary>
         /// <param name="envelope">The envelope string</param>
         /// <returns>The envelope</returns>

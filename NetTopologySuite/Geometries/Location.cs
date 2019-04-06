@@ -1,6 +1,6 @@
 using System;
 
-namespace GeoAPI.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// The location of a <see cref="Coordinate"/> relative to a <see cref="IGeometry"/>

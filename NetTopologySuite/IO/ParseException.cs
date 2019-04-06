@@ -1,6 +1,6 @@
 using System;
 
-namespace GeoAPI.IO
+namespace NetTopologySuite.IO
 {
     /// <summary>
     /// Thrown by a <c>WKTReader</c> when a parsing problem occurs.

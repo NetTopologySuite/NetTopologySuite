@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
 {
-public class TestDataBuilder
+    public class TestDataBuilder
 {
   private IGeometryFactory _geomFact = new GeometryFactory();
 

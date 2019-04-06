@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using GeoAPI.Geometries;
-using NUnit.Framework;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Tests.NUnit.TestData;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {

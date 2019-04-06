@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Text;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
-using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class CoordinateSequencesTest
     {
 
@@ -18,7 +16,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             new[]{63.76,77.35},new[]{45.26,85.15},new[]{51.71,50.38},new[]{92.16,19.85},new[]{64.18,27.7}, new[]{64.74,65.1},
             new[]{80.07,13.55},new[]{55.54,94.07}};
         
-        [TestAttribute]
+        [Test]
         public void TestCopyToLargerDim()
         {
             var csFactory = new PackedCoordinateSequenceFactory();
@@ -28,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(CoordinateSequences.IsEqual(cs2D, cs3D));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestCopyToSmallerDim()
         {
             var csFactory = new PackedCoordinateSequenceFactory();
@@ -39,7 +37,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
 
-        [TestAttribute]
+        [Test]
         public void TestScrollRing()
         {
             Console.WriteLine("Testing scrolling of closed ring");
@@ -51,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             DoTestScrollRing(PackedCoordinateSequenceFactory.FloatFactory, 4);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestScroll()
         {
             Console.WriteLine("Testing scrolling of circular string");
@@ -63,7 +61,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             DoTestScroll(PackedCoordinateSequenceFactory.FloatFactory, 4);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestIndexOf()
         {
             Console.WriteLine("Testing indexOf");
@@ -72,7 +70,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             DoTestIndexOf(PackedCoordinateSequenceFactory.FloatFactory, 7);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMinCoordinateIndex()
         {
             Console.WriteLine("Testing minCoordinateIndex");
@@ -81,7 +79,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             DoTestMinCoordinateIndex(PackedCoordinateSequenceFactory.FloatFactory, 7);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestIsRing()
         {
             Console.WriteLine("Testing isRing");
@@ -90,7 +88,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             DoTestIsRing(PackedCoordinateSequenceFactory.FloatFactory, 7);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestCopy()
         {
             Console.WriteLine("Testing copy");
@@ -99,7 +97,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             DoTestCopy(PackedCoordinateSequenceFactory.FloatFactory, 7);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestReverse()
         {
             Console.WriteLine("Testing reverse");
@@ -120,7 +118,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
          *
          * @deprecated only use to update {@link this.ordinateValues}
          */
-        [TestAttribute, Ignore("")]
+        [Test, Ignore("")]
         [Obsolete]
         public void TestCreateRandomOrdinates()
         {

@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
-using NUnit.Framework;
 using NetTopologySuite.Operation.Buffer.Validate;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 {
@@ -196,7 +195,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
                         // 10/29/2003]
                         _buffer = _wktReader.Read("POINT EMPTY");
                     }
-                    catch (GeoAPI.IO.ParseException e)
+                    catch (ParseException e)
                     {
                         NetTopologySuite.Utilities.Assert.ShouldNeverReachHere();
                     }

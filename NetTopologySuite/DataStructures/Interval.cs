@@ -1,9 +1,9 @@
 ﻿#define picky
 using System;
 using System.Globalization;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GeoAPI.DataStructures
+namespace NetTopologySuite.DataStructures
 {
     /// <summary>
     /// Structure for a closed 1-dimensional &#x211d;-interval
@@ -246,7 +246,7 @@ namespace GeoAPI.DataStructures
         }
 
         /// <summary>
-        /// Creates an interval with the range &#x211d;[<see cref="Interval.Min"/>,<see cref="Interval.Max"/>].
+        /// Creates an interval with the range &#x211d;[<see cref="Min"/>,<see cref="Max"/>].
         /// </summary>
         /// <param name="interval">The template interval</param>
         /// <returns>An <see cref="Interval"/></returns>

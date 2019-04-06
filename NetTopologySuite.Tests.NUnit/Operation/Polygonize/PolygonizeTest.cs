@@ -1,23 +1,19 @@
-using System;
-using System.Collections.Generic;
-using GeoAPI.Geometries;
-using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Polygonize;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Polygonize
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class PolygonizeTest : GeometryTestCase
     {
-        [TestAttribute]
+        [Test]
         public void Test1()
         {
             CheckPolygonize(new string[] { "LINESTRING EMPTY", "LINESTRING EMPTY" },
               new string[] { });
         }
 
-        [TestAttribute]
+        [Test]
         public void Test2()
         {
             CheckPolygonize(new string[]{

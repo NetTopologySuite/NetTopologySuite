@@ -1,6 +1,4 @@
-﻿using GeoAPI.Geometries;
-
-namespace NetTopologySuite.Geometries
+﻿namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Useful utility functions for handling Coordinate objects.

@@ -1,4 +1,3 @@
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Tests.NUnit.Utilities;
@@ -6,10 +5,10 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.IO
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class SerializabilityTest
     {
-        [TestAttribute]
+        [Test]
         public void TestSerializable()
         {
             var fact = new GeometryFactory();

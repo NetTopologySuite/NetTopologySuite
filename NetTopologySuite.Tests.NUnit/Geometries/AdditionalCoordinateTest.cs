@@ -1,8 +1,8 @@
 ﻿using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
-namespace GeoAPI.Tests.Geometries
+namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     public class AdditionalCoordinateTest
     {

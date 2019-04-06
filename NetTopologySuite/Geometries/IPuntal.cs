@@ -1,4 +1,4 @@
-namespace GeoAPI.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Interface to identify all <c>IGeometry</c> subclasses that have a <c>Dimension</c> of <see cref="Dimension.Point"/>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GeoAPI.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Flags for Ordinate values

@@ -1,50 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO.GML2;
 using NetTopologySuite.Tests.NUnit.TestData;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.IO.GML2
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class GMLReaderTest
     {
-        [TestAttribute]
+        [Test]
         public void TestPointRead()
         {
             DoTest(typeof(IPoint));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestLineStringRead()
         {
             DoTest(typeof(ILineString));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestPolygonRead()
         {
             DoTest(typeof(IPolygon));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiPointRead()
         {
             DoTest(typeof(IMultiPoint));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiLineStringRead()
         {
             DoTest(typeof(IMultiLineString));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiPolygonRead()
         {
             DoTest(typeof(IMultiPolygon));

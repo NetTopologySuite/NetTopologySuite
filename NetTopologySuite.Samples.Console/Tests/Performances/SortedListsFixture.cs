@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime;
-using GeoAPI.Geometries;
-using GeoAPI.Operation.Buffer;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Buffer;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.Performances

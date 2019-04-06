@@ -1,14 +1,13 @@
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class BasicCoordinateSequenceTest
     {
-        [TestAttribute]
+        [Test]
         public void TestClone()
         {
             var s1 = CoordinateArraySequenceFactory.Instance.Create(
@@ -18,7 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.IsTrue(s1.GetCoordinate(0) != s2.GetCoordinate(0));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestCloneDimension2()
         {
             var s1 = CoordinateArraySequenceFactory.Instance.Create(2, 2);
@@ -33,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.IsTrue(s1.GetCoordinate(0) != s2.GetCoordinate(0));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestCloneDimension3()
         {
             var s1 = CoordinateArraySequenceFactory.Instance.Create(2, 3);
@@ -50,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.IsTrue(s1.GetCoordinate(0) != s2.GetCoordinate(0));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestCloneDimension4()
         {
             var s1 = CoordinateArraySequenceFactory.Instance.Create(2, 4, 1);

@@ -1,5 +1,5 @@
-﻿using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
+﻿using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     public class NonRobustRayCrossingCounter
     {
         /// <summary>
-        /// Determines the <see cref="GeoAPI.Geometries.Location"/> of a point in a ring.
+        /// Determines the <see cref="NetTopologySuite.Geometries.Location"/> of a point in a ring.
         /// This method is an exemplar of how to use this class.
         /// </summary>
         /// <param name="p">The point to test</param>
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
 
         /// <summary>
-        /// Determines the <see cref="GeoAPI.Geometries.Location"/> of a point in a ring.
+        /// Determines the <see cref="NetTopologySuite.Geometries.Location"/> of a point in a ring.
         /// </summary>
         /// <param name="p">The point to test</param>
         /// <param name="ring">A coordinate sequence forming a ring</param>
@@ -176,7 +176,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         public bool IsOnSegment => _isPointOnSegment;
 
         /// <summary>
-        /// Gets the <see cref="GeoAPI.Geometries.Location"/> of the point relative to
+        /// Gets the <see cref="NetTopologySuite.Geometries.Location"/> of the point relative to
         /// the ring, polygon or multipolygon from which the processed
         /// segments were provided.
         /// </summary>

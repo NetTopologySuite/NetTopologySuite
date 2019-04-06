@@ -1,4 +1,3 @@
-using System;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
@@ -131,7 +130,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// Gets the primary edge of this quadedge and its <tt>sym</tt>.
         /// The primary edge is the one for which the origin
         /// and destination coordinates are ordered
-        /// according to the standard <see cref="GeoAPI.Geometries.Coordinate"/> ordering
+        /// according to the standard <see cref="Coordinate"/> ordering
         /// </summary>
         /// <returns>the primary quadedge</returns>
         public QuadEdge GetPrimary()

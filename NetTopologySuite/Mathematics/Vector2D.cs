@@ -1,7 +1,6 @@
-﻿using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
+﻿using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
-
 using ICloneable = System.ICloneable;
 
 namespace NetTopologySuite.Mathematics

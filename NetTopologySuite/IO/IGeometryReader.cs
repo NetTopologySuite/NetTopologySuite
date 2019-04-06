@@ -1,7 +1,7 @@
 ﻿using System.IO;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
-namespace GeoAPI.IO
+namespace NetTopologySuite.IO
 {
     /// <summary>
     /// Interface for input/parsing of <see cref="IGeometry"/> instances.

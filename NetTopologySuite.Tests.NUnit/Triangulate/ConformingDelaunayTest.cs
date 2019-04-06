@@ -1,5 +1,4 @@
-﻿using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Triangulate;
 using NUnit.Framework;
@@ -9,10 +8,10 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
     /// <summary>
     /// Tests Delaunay Triangulation classes
     /// </summary>
-    [TestFixtureAttribute]
+    [TestFixture]
     public class ConformingDelaunayTest
     {
-        [TestAttribute]
+        [Test]
         public void TestRandom()
         {
             const string wkt = "MULTIPOINT ((90 290), (120 250), (280 250), (200 200), (220 290), (170 320), (110 180), (70 140), (180 110), (210 80), (250 120))";

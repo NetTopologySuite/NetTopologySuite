@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
      *
      */
 
-    [CategoryAttribute("Stress")]
+    [Category("Stress")]
     public class InCirclePerf
     {
 
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         private readonly Coordinate _pc = new Coordinate(687957.58, 7460721);
         private readonly Coordinate _pp = new Coordinate(687958.13, 7460720.99);
 
-        [TestAttribute]
+        [Test]
         public void Test()
         {
             Console.WriteLine("InCircle perf");

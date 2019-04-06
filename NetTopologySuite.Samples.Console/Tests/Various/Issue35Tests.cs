@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Match;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;

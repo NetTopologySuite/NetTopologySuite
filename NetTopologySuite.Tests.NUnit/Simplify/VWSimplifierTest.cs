@@ -1,9 +1,8 @@
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;

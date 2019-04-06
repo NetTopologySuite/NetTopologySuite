@@ -1,10 +1,10 @@
-﻿using GeoAPI.DataStructures;
+﻿using NetTopologySuite.DataStructures;
 using NUnit.Framework;
 
-namespace GeoAPI.Tests.DataStructures
+namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     [TestFixture]
-    public class IntervalTest
+    public class IntervalTest_FromGeoAPI
     {
         [Test]
         public void TestIntersectsBasic()

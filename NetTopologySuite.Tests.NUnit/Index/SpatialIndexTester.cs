@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
-using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Tests.NUnit.Index
 {

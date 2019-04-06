@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace GeoAPI.Geometries
+namespace NetTopologySuite.Geometries
 {
     public interface IGeometryCollection : IGeometry, IEnumerable<IGeometry>
     {        

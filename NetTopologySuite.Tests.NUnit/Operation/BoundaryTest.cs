@@ -1,5 +1,4 @@
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
@@ -22,7 +21,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
         /// For testing only.
         /// </summary>
         /// <exception cref="Exception" />
-        [TestAttribute]
+        [Test]
         public void Test1()
         {
             string a = "MULTILINESTRING ((0 0, 10 10), (10 10, 20 20))";
@@ -31,7 +30,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
                             "POINT (10 10)");
         }
 
-        [TestAttribute]
+        [Test]
         public void Test2LinesTouchAtEndpoint2()
         {
             string a = "MULTILINESTRING ((0 0, 10 10), (10 10, 20 20))";
@@ -49,7 +48,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
             RunBoundaryTest(a, BoundaryNodeRules.MultivalentEndpointBoundaryRule,
                             "POINT (10 10)");
         }
-        [TestAttribute]
+        [Test]
         public void Test3LinesTouchAtEndpoint2()
         {
             string a = "MULTILINESTRING ((0 0, 10 10), (10 10, 20 20), (10 10, 10 20))";
@@ -67,7 +66,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
             RunBoundaryTest(a, BoundaryNodeRules.MultivalentEndpointBoundaryRule,
                             "POINT (10 10)");
         }
-        [TestAttribute]
+        [Test]
         public void TestMultiLineStringWithRingTouchAtEndpoint()
         {
             string a = "MULTILINESTRING ((100 100, 20 20, 200 20, 100 100), (100 200, 100 100))";
@@ -79,7 +78,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
             RunBoundaryTest(a, BoundaryNodeRules.EndpointBoundaryRule,
                             "MULTIPOINT ((100 100), (100 200))");
         }
-        [TestAttribute]
+        [Test]
         public void TestRing()
         {
             string a = "LINESTRING (100 100, 20 20, 200 20, 100 100)";

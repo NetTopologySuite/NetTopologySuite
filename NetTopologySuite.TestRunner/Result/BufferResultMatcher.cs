@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Distance;
+using NetTopologySuite.Geometries;
 
 namespace Open.Topology.TestRunner.Result
 {

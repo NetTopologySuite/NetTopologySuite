@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
-using GeoAPI.Geometries;
-using NUnit.Framework;
 using NetTopologySuite.Geometries;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance
 {
     public class AreaPrecisionPerfTest
     {
-        [TestAttribute]
-        [CategoryAttribute("Stress")]
+        [Test]
+        [Category("Stress")]
         public void TestAreaPrecisionPerformance()
         {
 

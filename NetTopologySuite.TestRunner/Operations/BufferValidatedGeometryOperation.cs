@@ -1,7 +1,7 @@
 ﻿using System;
-using GeoAPI.Geometries;
-using GeoAPI.Operation.Buffer;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+using NetTopologySuite.Operation.Buffer;
 using NetTopologySuite.Operation.Buffer.Validate;
 using NetTopologySuite.Utilities;
 using Open.Topology.TestRunner.Result;

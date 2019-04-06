@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace GeoAPI.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Static utility functions for dealing with <see cref="Ordinates"/> and dimension

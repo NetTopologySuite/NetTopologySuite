@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
-using NUnit.Framework;
 using NetTopologySuite.Index.KdTree;
 using NetTopologySuite.Tests.NUnit.Utilities;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Index.KdTree
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Noding
 {
@@ -8,7 +8,7 @@ namespace NetTopologySuite.Noding
     /// Finds <b>interior</b> intersections
     /// between line segments in <see cref="NodedSegmentString"/>s,
     /// and adds them as nodes
-    /// using <see cref="NodedSegmentString.AddIntersection(NetTopologySuite.Algorithm.LineIntersector,int,int,int)"/>.
+    /// using <see cref="NodedSegmentString.AddIntersection(LineIntersector,int,int,int)"/>.
     /// This class is used primarily for Snap-Rounding.
     /// For general-purpose noding, use <see cref="IntersectionAdder"/>.
     /// </summary>

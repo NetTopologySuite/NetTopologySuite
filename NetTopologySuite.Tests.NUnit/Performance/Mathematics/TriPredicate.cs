@@ -1,5 +1,4 @@
 ﻿using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
@@ -65,7 +64,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
 
         /// <summary>
         /// Tests if a point is inside the circle defined by the points a, b, c.
-        /// The computation uses <see cref="NetTopologySuite.Mathematics.DD"/> arithmetic for robustness.
+        /// The computation uses <see cref="DD"/> arithmetic for robustness.
         /// </summary>
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
@@ -103,7 +102,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
 
         /// <summary>
         /// Tests if a point is inside the circle defined by the points a, b, c.
-        /// The computation uses <see cref="NetTopologySuite.Mathematics.DD"/> arithmetic for robustness.
+        /// The computation uses <see cref="DD"/> arithmetic for robustness.
         /// </summary>
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
@@ -127,7 +126,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
 
         /// <summary>
         /// Tests if a point is inside the circle defined by the points a, b, c.
-        /// The computation uses <see cref="NetTopologySuite.Mathematics.DD"/> arithmetic for robustness.
+        /// The computation uses <see cref="DD"/> arithmetic for robustness.
         /// </summary>
         /// <param name="a">A vertex of the triangle</param>
         /// <param name="b">A vertex of the triangle</param>
@@ -228,8 +227,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
                                                 Coordinate p)
         {
             bool nonRobustInCircle = IsInCircle(a, b, c, p);
-            bool isInCircleDD = TriPredicate.IsInCircleDD(a, b, c, p);
-            bool isInCircleCC = TriPredicate.IsInCircleCC(a, b, c, p);
+            bool isInCircleDD = IsInCircleDD(a, b, c, p);
+            bool isInCircleCC = IsInCircleCC(a, b, c, p);
 
             var circumCentre = Triangle.Circumcentre(a, b, c);
             Console.WriteLine("p radius diff a = "

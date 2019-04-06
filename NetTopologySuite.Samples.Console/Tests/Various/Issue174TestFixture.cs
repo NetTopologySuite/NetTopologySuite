@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Reflection;
-using GeoAPI.Geometries;
-using NetTopologySuite.IO;
 using NetTopologySuite.Triangulate;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;

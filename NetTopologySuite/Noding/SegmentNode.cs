@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Noding
 {
@@ -41,7 +41,7 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// Gets the <see cref="GeoAPI.Geometries.Coordinate"/> giving the location of this node.
+        /// Gets the <see cref="Geometries.Coordinate"/> giving the location of this node.
         /// </summary>
         public Coordinate Coordinate => Coord;
 

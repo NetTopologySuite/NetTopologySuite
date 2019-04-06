@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using GeoAPI.Geometries;
-using NUnit.Framework;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Prepared;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
 {
@@ -24,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             _builder = new TestDataBuilder(_fact);
         }
 
-        [TestAttribute]
+        [Test]
         public void Test()
         {
             Test(5);

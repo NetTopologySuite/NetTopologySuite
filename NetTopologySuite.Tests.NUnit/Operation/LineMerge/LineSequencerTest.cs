@@ -1,24 +1,23 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
-using NUnit.Framework;
 using NetTopologySuite.Operation.Linemerge;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
 {
     /// <summary>
     /// LineSequencer tests
     /// </summary>
-    [TestFixtureAttribute]
+    [TestFixture]
     public class LineSequencerTest
     {
         private static readonly WKTReader Rdr =
             new WKTReader();
             //new WKTReader(new GeometryFactory(new PrecisionModel(PrecisionModels.Fixed)));
 
-        [TestAttribute]
+        [Test]
         public void TestSimple()
         {
             string[] wkt = {
@@ -31,7 +30,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             RunLineSequencer(wkt, result);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestSimpleLoop()
         {
             string[] wkt = {
@@ -43,7 +42,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             RunLineSequencer(wkt, result);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestSimpleBigLoop()
         {
             string[] wkt = {
@@ -57,7 +56,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             RunLineSequencer(wkt, result);
         }
 
-        [TestAttribute /*, Ignore("Degenerate loop")*/]
+        [Test /*, Ignore("Degenerate loop")*/]
         public void Test2SimpleLoops()
         {
             string[] wkt = {
@@ -71,7 +70,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             RunLineSequencer(wkt, result);
         }
 
-        [TestAttribute]
+        [Test]
         public void Test2SimpleLoops2()
         {
             string[] wkt = {
@@ -85,7 +84,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             RunLineSequencer(wkt, result);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestWide8WithTail()
         {
             string[] wkt = {
@@ -103,7 +102,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             RunLineSequencer(wkt, result);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestSimpleLoopWithTail()
         {
             string[] wkt = {
@@ -116,7 +115,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             RunLineSequencer(wkt, result);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestLineWithRing()
         {
             string[] wkt = {
@@ -130,7 +129,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             RunLineSequencer(wkt, result);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultipleGraphsWithRing()
         {
             string[] wkt = {
@@ -146,7 +145,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             RunLineSequencer(wkt, result);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultipleGraphsWithMultipeRings()
         {
             string[] wkt = {
@@ -165,7 +164,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
 
         // isSequenced tests ==========================================================
 
-        [TestAttribute]
+        [Test]
         public void TestLineSequence()
         {
             string wkt =
@@ -173,7 +172,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             RunIsSequenced(wkt, true);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestSplitLineSequence()
         {
             string wkt =
@@ -181,7 +180,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             RunIsSequenced(wkt, true);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestBadLineSequence()
         {
             string wkt =

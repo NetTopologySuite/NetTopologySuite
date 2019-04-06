@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Polygonize
 {
@@ -167,14 +167,14 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <returns>A geometry containing the polygons</returns>
         public IGeometry GetGeometry()
         {
-            if (_geomFactory == null) _geomFactory = new Geometries.GeometryFactory();
+            if (_geomFactory == null) _geomFactory = new GeometryFactory();
             Polygonize();
             if (_extractOnlyPolygonal)
             {
                 return _geomFactory.BuildGeometry(_polyList);
             }
             // result may not be valid Polygonal, so return as a GeometryCollection
-            return _geomFactory.CreateGeometryCollection(Geometries.GeometryFactory.ToGeometryArray(_polyList));
+            return _geomFactory.CreateGeometryCollection(GeometryFactory.ToGeometryArray(_polyList));
         }
 
         /// <summary>

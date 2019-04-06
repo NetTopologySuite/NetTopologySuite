@@ -1,7 +1,6 @@
-using System;
 using System.Collections.Generic;
 
-namespace GeoAPI.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Supplies a set of utility methods for building Geometry objects 

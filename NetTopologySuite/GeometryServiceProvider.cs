@@ -1,8 +1,6 @@
 ﻿using System;
 
-using NetTopologySuite;
-
-namespace GeoAPI
+namespace NetTopologySuite
 {
     /// <summary>
     /// Static class that provides access to a  <see cref="IGeometryServices"/> class.

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 

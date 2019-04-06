@@ -1,6 +1,4 @@
-using GeoAPI.Operation.Buffer;
-
-namespace GeoAPI.Operation.Buffer
+namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
     /// An interface for classes that control the parameters for the buffer building process
@@ -35,9 +33,9 @@ namespace GeoAPI.Operation.Buffer
         ///</summary>
         /// <remarks>
         /// <para>
-        /// The styles supported are <see cref="GeoAPI.Operation.Buffer.EndCapStyle.Round"/>, <see cref="GeoAPI.Operation.Buffer.EndCapStyle.Flat"/>, and <see cref="GeoAPI.Operation.Buffer.EndCapStyle.Square"/>.
+        /// The styles supported are <see cref="Buffer.EndCapStyle.Round"/>, <see cref="Buffer.EndCapStyle.Flat"/>, and <see cref="Buffer.EndCapStyle.Square"/>.
         /// </para>
-        /// <para>The default is <see cref="GeoAPI.Operation.Buffer.EndCapStyle.Round"/>.</para>
+        /// <para>The default is <see cref="Buffer.EndCapStyle.Round"/>.</para>
         /// </remarks>
         EndCapStyle EndCapStyle { get; set; }
 
@@ -45,7 +43,7 @@ namespace GeoAPI.Operation.Buffer
         /// Gets/Sets the join style for outside (reflex) corners between line segments.
         ///</summary>
         /// <remarks>
-        /// <para>Allowable values are <see cref="GeoAPI.Operation.Buffer.JoinStyle.Round"/> (which is the default), <see cref="GeoAPI.Operation.Buffer.JoinStyle.Mitre"/> and <see cref="GeoAPI.Operation.Buffer.JoinStyle.Bevel"/></para>
+        /// <para>Allowable values are <see cref="Buffer.JoinStyle.Round"/> (which is the default), <see cref="Buffer.JoinStyle.Mitre"/> and <see cref="Buffer.JoinStyle.Bevel"/></para>
         /// </remarks>
         JoinStyle JoinStyle { get; set; }
 
@@ -78,7 +76,7 @@ namespace GeoAPI.Operation.Buffer
         /// The single-sided buffer of point geometries is  the same as the regular buffer.
         /// </para><para>
         /// The End Cap Style for single-sided buffers is always ignored,
-        /// and forced to the equivalent of <see cref="GeoAPI.Operation.Buffer.EndCapStyle.Flat"/>.
+        /// and forced to the equivalent of <see cref="Buffer.EndCapStyle.Flat"/>.
         /// </para>
         /// </summary>
         bool IsSingleSided { get; set; }

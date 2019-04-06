@@ -1,9 +1,8 @@
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
 using NetTopologySuite.Utilities;
-using NetTopologySuite.Geometries.Utilities;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 {

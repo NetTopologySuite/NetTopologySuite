@@ -1,5 +1,5 @@
 using System.Globalization;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Operation.Distance

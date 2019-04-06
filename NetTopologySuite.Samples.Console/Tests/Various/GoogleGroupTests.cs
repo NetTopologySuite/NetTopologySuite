@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Diagnostics;
+using NetTopologySuite.Precision;
 using NetTopologySuite.Triangulate;
 using NetTopologySuite.Triangulate.QuadEdge;
 using NUnit.Framework;
-using NetTopologySuite.Densify;
-using NetTopologySuite.LinearReferencing;
-using NetTopologySuite.Precision;
 
 namespace NetTopologySuite.Tests.Various
 {
     using Geometries;
-    using Samples.SimpleTests;
     using NetTopologySuite.IO;
-    using GeoAPI.Geometries;
+    using Samples.SimpleTests;
 
     [TestFixture]
     public class GoogleGroupTests : BaseSamples

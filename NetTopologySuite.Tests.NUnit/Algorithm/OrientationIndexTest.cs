@@ -1,28 +1,27 @@
-﻿using System;
-using GeoAPI.Geometries;
-using NUnit.Framework;
-using NetTopologySuite.Algorithm;
+﻿using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
 
-/**
- * Tests CGAlgorithms.computeOrientation
- * @version 1.7
- */
-    [TestFixtureAttribute]
+    /**
+     * Tests CGAlgorithms.computeOrientation
+     * @version 1.7
+     */
+    [TestFixture]
     public class OrientationIndexTest
 {
 
   private static WKTReader reader = new WKTReader();
   //private CGAlgorithms rcga = new CGAlgorithms();
-        [TestAttribute]
+        [Test]
   public void TestCCW()
   {
     Assert.IsTrue(IsAllOrientationsEqual(GetCoordinates("LINESTRING ( 0 0, 0 1, 1 1)")));
   }
-  [TestAttribute]
+  [Test]
   public void TestCCW2()
   {
     // experimental case - can't make it fail

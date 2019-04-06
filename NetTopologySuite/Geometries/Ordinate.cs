@@ -1,4 +1,4 @@
-﻿namespace GeoAPI.Geometries
+﻿namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Standard ordinate index values.

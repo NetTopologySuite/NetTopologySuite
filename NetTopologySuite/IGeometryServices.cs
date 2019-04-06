@@ -1,6 +1,6 @@
-﻿using GeoAPI.Geometries;
+﻿using NetTopologySuite.Geometries;
 
-namespace GeoAPI
+namespace NetTopologySuite
 {
     /// <summary>
     /// An interface for classes that offer access to geometry creating facilities.

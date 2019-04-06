@@ -1,17 +1,16 @@
 using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
-using Coordinate=GeoAPI.Geometries.Coordinate;
 
-namespace GeoAPI.Tests.Geometries
+namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     [TestFixture]
-    public class EnvelopeTest
+    public class EnvelopeTest_FromGeoAPI
     {
         [Test]
         public void TestEverything()
         {
-            Envelope e1 = new Envelope();
+            var e1 = new Envelope();
             Assert.IsTrue(e1.IsNull);
             Assert.AreEqual(0, e1.Width, 1E-3);
             Assert.AreEqual(0, e1.Height, 1E-3);
@@ -29,7 +28,7 @@ namespace GeoAPI.Tests.Geometries
             Assert.AreEqual(100, e1.Width, 1E-3);
             Assert.IsTrue(!e1.IsNull);
 
-            Envelope e2 = new Envelope(499, 500, 500, 501);
+            var e2 = new Envelope(499, 500, 500, 501);
             Assert.IsTrue(!e1.Contains(e2));
             Assert.IsTrue(!e1.Intersects(e2));
             e1.ExpandToInclude(e2);
@@ -40,11 +39,11 @@ namespace GeoAPI.Tests.Geometries
             Assert.AreEqual(100, e1.MinX, 1E-3);
             Assert.AreEqual(101, e1.MinY, 1E-3);
 
-            Envelope e3 = new Envelope(300, 700, 300, 700);
+            var e3 = new Envelope(300, 700, 300, 700);
             Assert.IsTrue(!e1.Contains(e3));
             Assert.IsTrue(e1.Intersects(e3));
 
-            Envelope e4 = new Envelope(300, 301, 300, 301);
+            var e4 = new Envelope(300, 301, 300, 301);
             Assert.IsTrue(e1.Contains(e4));
             Assert.IsTrue(e1.Intersects(e4));
         }
@@ -99,7 +98,7 @@ namespace GeoAPI.Tests.Geometries
             Assert.AreEqual(0, new Envelope().Height, 0);
             Assert.AreEqual(0, new Envelope().Width, 0);
             Assert.AreEqual(new Envelope(), new Envelope());
-            Envelope e = new Envelope(100, 101, 100, 101);
+            var e = new Envelope(100, 101, 100, 101);
             e.Init(new Envelope());
             Assert.AreEqual(new Envelope(), e);
         }
@@ -107,7 +106,7 @@ namespace GeoAPI.Tests.Geometries
         [Test]
         public void TestSetToNull()
         {
-            Envelope e1 = new Envelope();
+            var e1 = new Envelope();
             Assert.IsTrue(e1.IsNull);
             e1.ExpandToInclude(5, 5);
             Assert.IsTrue(!e1.IsNull);
@@ -118,12 +117,12 @@ namespace GeoAPI.Tests.Geometries
         [Test]
         public void TestEquals()
         {
-            Envelope e1 = new Envelope(1, 2, 3, 4);
-            Envelope e2 = new Envelope(1, 2, 3, 4);
+            var e1 = new Envelope(1, 2, 3, 4);
+            var e2 = new Envelope(1, 2, 3, 4);
             Assert.AreEqual(e1, e2);
             Assert.AreEqual(e1.GetHashCode(), e2.GetHashCode());
 
-            Envelope e3 = new Envelope(1, 2, 3, 5);
+            var e3 = new Envelope(1, 2, 3, 5);
             Assert.IsTrue(!e1.Equals(e3));
             Assert.IsTrue(e1.GetHashCode() != e3.GetHashCode());
             e1.SetToNull();
@@ -145,8 +144,8 @@ namespace GeoAPI.Tests.Geometries
         [Test]
         public void TestCopyConstructor()
         {
-            Envelope e1 = new Envelope(1, 2, 3, 4);
-            Envelope e2 = new Envelope(e1);
+            var e1 = new Envelope(1, 2, 3, 4);
+            var e2 = new Envelope(e1);
             Assert.AreEqual(1, e2.MinX, 1E-5);
             Assert.AreEqual(2, e2.MaxX, 1E-5);
             Assert.AreEqual(3, e2.MinY, 1E-5);
@@ -156,8 +155,8 @@ namespace GeoAPI.Tests.Geometries
         [Test]
         public void TestCopyMethod()
         {
-            Envelope e1 = new Envelope(1, 2, 3, 4);
-            Envelope e2 = e1.Copy();
+            var e1 = new Envelope(1, 2, 3, 4);
+            var e2 = e1.Copy();
             Assert.AreEqual(1, e2.MinX, 1E-5);
             Assert.AreEqual(2, e2.MaxX, 1E-5);
             Assert.AreEqual(3, e2.MinY, 1E-5);
@@ -195,7 +194,7 @@ namespace GeoAPI.Tests.Geometries
 
         private static void TestToString(Envelope env, string envString)
         {
-            var toString = env.ToString();
+            string toString = env.ToString();
             Assert.AreEqual(envString, toString);
         }
 

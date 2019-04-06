@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using GeoAPI.Geometries;
-using NUnit.Framework;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Precision;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class RectangleIntersectsPerformanceTest
     {
         private const int MaxIter = 10;
@@ -17,7 +16,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
         private static readonly PrecisionModel Pm = new PrecisionModel();
         private static readonly IGeometryFactory Fact = new GeometryFactory(Pm, 0);
 
-        [TestAttribute]
+        [Test]
         public void Test()
         {
             Test(500);

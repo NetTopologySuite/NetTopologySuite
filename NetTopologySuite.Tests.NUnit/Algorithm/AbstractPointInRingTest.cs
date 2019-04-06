@@ -1,20 +1,19 @@
-﻿using System;
-using GeoAPI.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public abstract class AbstractPointInRingTest : GeometryTestCase
     {
-        [TestAttribute]
+        [Test]
         public void TestBox()
         {
             RunPtInRing(Location.Interior, new Coordinate(10, 10),
                 "POLYGON ((0 0, 0 20, 20 20, 20 0, 0 0))");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestComplexRing()
         {
             RunPtInRing(Location.Interior, new Coordinate(0, 0),
@@ -24,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         public static string Comb =
             "POLYGON ((0 0, 0 10, 4 5, 6 10, 7 5, 9 10, 10 5, 13 5, 15 10, 16 3, 17 10, 18 3, 25 10, 30 10, 30 0, 15 0, 14 5, 13 0, 9 0, 8 5, 6 0, 0 0))";
 
-        [TestAttribute]
+        [Test]
         public void TestComb()
         {
             RunPtInRing(Location.Boundary, new Coordinate(0, 0), Comb);

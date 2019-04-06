@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Mathematics
 {

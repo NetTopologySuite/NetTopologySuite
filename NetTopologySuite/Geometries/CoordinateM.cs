@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace GeoAPI.Geometries
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// A lightweight class used to store coordinates on the 2-dimensional Cartesian plane
@@ -27,7 +27,7 @@ namespace GeoAPI.Geometries
     /// <para/>
     /// Implementations may optionally support Z-ordinate and M-measure values
     /// as appropriate for a <see cref="ICoordinateSequence"/>. Use of <see cref="CoordinateZ.Z"/>
-    /// and <see cref="M"/> setters or <see cref="P:GeoAPI.Geometries.CoordinateM.this[Ordinate]" /> indexer are recommended.
+    /// and <see cref="M"/> setters or <see cref="P:NetTopologySuite.Geometries.CoordinateM.this[Ordinate]" /> indexer are recommended.
     /// </remarks>
     [Serializable]
 #pragma warning disable 612,618

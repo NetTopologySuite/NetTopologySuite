@@ -1,6 +1,4 @@
 using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
@@ -10,14 +8,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     /*
      * Test named predicate short-circuits
      */
-    [TestFixtureAttribute]
+    [TestFixture]
     public class LineSegmentTest
     {
         WKTReader rdr = new WKTReader();
 
         private static double ROOT2 = Math.Sqrt(2);
 
-        [TestAttribute]
+        [Test]
         public void TestProjectionFactor()
         {
             // zero-length line
@@ -29,7 +27,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         }
 
-        [TestAttribute]
+        [Test]
         public void TestOffset()
         {
             CheckOffset(0, 0, 10, 10, 0.0, ROOT2, -1, 1);
@@ -65,7 +63,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             return true;
         }
 
-        [TestAttribute]
+        [Test]
         public void TestOrientationIndexCoordinate()
         {
             var seg = new LineSegment(0, 0, 10, 10);
@@ -81,7 +79,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             CheckOrientationIndex(seg, -2, -2.0000001, -1);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestOrientationIndexSegment()
         {
             var seg = new LineSegment(100, 100, 110, 110);

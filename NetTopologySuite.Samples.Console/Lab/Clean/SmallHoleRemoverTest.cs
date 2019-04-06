@@ -1,7 +1,4 @@
-﻿using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.IO;
-using NetTopologySuite.Tests.NUnit;
+﻿using NetTopologySuite.Tests.NUnit;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Lab.Clean

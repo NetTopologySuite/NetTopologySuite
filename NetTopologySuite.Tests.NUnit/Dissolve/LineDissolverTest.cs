@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using GeoAPI.Geometries;
+﻿using System.Collections.Generic;
 using NetTopologySuite.Dissolve;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Dissolve
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class LineDissolverTest
     {
-        [TestAttribute]
+        [Test]
         public void TestDebug()
         {
             //TestSingleLine();
             TestIsolatedRing();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestSingleSegmentLine()
         {
             CheckDissolve(
@@ -24,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "LINESTRING (0 0, 1 1)");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestTwoSegmentLine()
         {
             CheckDissolve(
@@ -32,7 +31,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "LINESTRING (0 0, 1 1, 2 2)");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestOverlappingTwoSegmentLines()
         {
             CheckDissolve(
@@ -40,7 +39,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "LINESTRING (0 0, 1 1, 2 2, 3 3)");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestOverlappingLines3()
         {
             CheckDissolve(
@@ -53,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "MULTILINESTRING ((0 0, 1 1, 2 2), (2 0, 2 2), (2 2, 3 3))");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestDivergingLines()
         {
             CheckDissolve(
@@ -61,7 +60,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "MULTILINESTRING ((0 0, 1 0), (1 0, 2 0), (1 0, 2 1, 2 0), (2 0, 3 0))");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestLollipop()
         {
             CheckDissolve(
@@ -69,7 +68,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "MULTILINESTRING ((0 0, 1 0), (1 0, 2 0, 2 1, 1 0))");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestDisjointLines()
         {
             CheckDissolve(
@@ -77,7 +76,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "MULTILINESTRING ((0 0, 1 0, 2 1), (10 0, 11 0, 12 0))");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestSingleLine()
         {
             CheckDissolve(
@@ -85,7 +84,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "LINESTRING (0 0, 1 0, 2 1)");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestOneSegmentY()
         {
             CheckDissolve(
@@ -93,7 +92,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "MULTILINESTRING ((0 0, 1 1), (1 1, 2 2), (1 1, 1 2))");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestTwoSegmentY()
         {
             CheckDissolve(
@@ -101,7 +100,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "MULTILINESTRING ((10 20, 10 10), (10 10, 9 9, 0 0), (10 10, 11 11, 20 20))");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestIsolatedRing()
         {
             CheckDissolve(
@@ -109,7 +108,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "LINESTRING (0 0, 1 1, 1 0, 0 0)");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestIsolateRingFromMultipleLineStrings()
         {
             CheckDissolve(
@@ -118,7 +117,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
         }
 
         // Shows that rings with incident lines are created with the correct node point.
-        [TestAttribute]
+        [Test]
         public void TestRingWithTail()
         {
             CheckDissolve(
@@ -126,7 +125,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
                 "MULTILINESTRING ((1 0, 0 0, 0 1, 1 1, 1 0), (1 0, 2 0))");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestZeroLengthStartSegment()
         {
             CheckDissolve(

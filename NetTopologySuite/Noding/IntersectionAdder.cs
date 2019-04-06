@@ -1,5 +1,4 @@
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 
@@ -8,7 +7,7 @@ namespace NetTopologySuite.Noding
     /// <summary>
     /// Computes the possible intersections between two line segments in <see cref="ISegmentString" />s
     /// and adds them to each string
-    /// using <see cref="NodedSegmentString.AddIntersection(NetTopologySuite.Algorithm.LineIntersector,int,int,int)"/>.
+    /// using <see cref="NodedSegmentString.AddIntersection(Algorithm.LineIntersector,int,int,int)"/>.
     /// </summary>
     public class IntersectionAdder : ISegmentIntersector
     {

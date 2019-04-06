@@ -1,4 +1,4 @@
-namespace GeoAPI.IO
+namespace NetTopologySuite.IO
 {
     /// <summary>
     /// Byte order
