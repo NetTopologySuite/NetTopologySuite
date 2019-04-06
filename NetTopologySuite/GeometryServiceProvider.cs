@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Threading;
+
+using NetTopologySuite;
 
 namespace GeoAPI
 {
@@ -8,7 +9,7 @@ namespace GeoAPI
     /// </summary>
     public static class GeometryServiceProvider
     {
-        private static volatile IGeometryServices s_instance;
+        private static volatile IGeometryServices s_instance = NtsGeometryServices.Instance;
 
         /// <summary>
         /// Gets or sets the <see cref="IGeometryServices"/> instance.
@@ -21,7 +22,7 @@ namespace GeoAPI
         /// </exception>
         public static IGeometryServices Instance
         {
-            get => s_instance ?? throw new InvalidOperationException("Cannot use GeometryServiceProvider without an assigned IGeometryServices class");
+            get => s_instance;
             set => s_instance = value ?? throw new ArgumentNullException(nameof(value));
         }
 
@@ -44,7 +45,8 @@ namespace GeoAPI
                 throw new ArgumentNullException(nameof(instance));
             }
 
-            return Interlocked.CompareExchange(ref s_instance, null, instance) == null;
+            // we always "set it directly" now, so this method is effectively a no-op.
+            return false;
         }
     }
 }
