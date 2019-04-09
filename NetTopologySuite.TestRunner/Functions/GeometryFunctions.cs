@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Overlay.Snap;
 
 namespace Open.Topology.TestRunner.Functions

@@ -1,5 +1,4 @@
 ﻿using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 
@@ -116,8 +115,8 @@ namespace NetTopologySuite.Densify
                 ICoordinateSequence coords, IGeometry parent)
             {
                 var inputPts = coords.ToCoordinateArray();
-                var newPts = Densifier
-                    .DensifyPoints(inputPts, _distanceTolerance, parent.PrecisionModel);
+                var newPts =
+                    DensifyPoints(inputPts, _distanceTolerance, parent.PrecisionModel);
                 // prevent creation of invalid LineStrings
                 if (parent is ILineString && newPts.Length == 1)
                 {

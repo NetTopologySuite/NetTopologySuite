@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Triangulate;
 using NetTopologySuite.Utilities;
 using NUnit.Framework;
@@ -10,7 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
 {
     public class DelaunayPerformanceTest
     {
-        [TestAttribute]
+        [Test]
         public void RunShortTests()
         {
             Run(10);
@@ -22,8 +22,8 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             Run(30000);
         }
 
-        [TestAttribute]
-        [CategoryAttribute("LongRunning")]
+        [Test]
+        [Category("LongRunning")]
         public void RunLongerTests()
         {
             Run(100000);
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             Run(300000);
         }
 
-        [TestAttribute, Ignore("These take very long ... If you have time, go ahead!")]
+        [Test, Ignore("These take very long ... If you have time, go ahead!")]
         public void RunVeryLongTests()
         {
             Run(1000000);

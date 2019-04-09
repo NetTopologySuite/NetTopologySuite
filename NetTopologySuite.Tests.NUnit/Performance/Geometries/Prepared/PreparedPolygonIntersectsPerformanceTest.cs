@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using GeoAPI.Geometries;
-using NUnit.Framework;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Prepared;
 using NetTopologySuite.Geometries.Utilities;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class PreparedPolygonIntersectsPerformanceTest
     {
         private const int MaxIter = 10;
@@ -21,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
         private static readonly IPrecisionModel Pm = new PrecisionModel();
         private static readonly IGeometryFactory Fact = new GeometryFactory(Pm, 0);
 
-        [TestAttribute, CategoryAttribute("LongRunning"), Explicit("takes ages to complete")]
+        [Test, Category("LongRunning"), Explicit("takes ages to complete")]
         public void Test()
         {
             Test(5);

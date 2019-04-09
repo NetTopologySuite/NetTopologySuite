@@ -1,4 +1,4 @@
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
@@ -10,7 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         private static Dimension L = Dimension.Curve;
         private static Dimension P = Dimension.Point;
 
-        [TestAttribute]
+        [Test]
         public void TestToString()
         {
             var i = new IntersectionMatrix();
@@ -21,7 +21,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual("012*TF012", c.ToString());
         }
 
-        [TestAttribute]
+        [Test]
         public void TestTranspose()
         {
             var x = new IntersectionMatrix("012*TF012");
@@ -35,7 +35,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual("012*TF012", x.ToString());
         }
 
-        [TestAttribute]
+        [Test]
         public void TestIsDisjoint()
         {
             Assert.IsTrue((new IntersectionMatrix("FF*FF****")).IsDisjoint());
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(!(new IntersectionMatrix("*F*FF****")).IsDisjoint());
         }
 
-        [TestAttribute]
+        [Test]
         public void TestIsTouches()
         {
             Assert.IsTrue((new IntersectionMatrix("FT*******")).IsTouches(P,A));
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(!(new IntersectionMatrix("FT*******")).IsTouches(P, P));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestIsIntersects()
         {
             Assert.IsTrue(! (new IntersectionMatrix("FF*FF****")).IsIntersects());
@@ -59,7 +59,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue((new IntersectionMatrix("*F*FF****")).IsIntersects());
         }
 
-        [TestAttribute]
+        [Test]
         public void TestIsCrosses()
         {
             Assert.IsTrue((new IntersectionMatrix("TFTFFFFFF")).IsCrosses(P,L));
@@ -70,21 +70,21 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(!(new IntersectionMatrix("1FFFFFFFF")).IsCrosses(L, L));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestIsWithin()
         {
             Assert.IsTrue((new IntersectionMatrix("T0F00F000")).IsWithin());
             Assert.IsTrue(!(new IntersectionMatrix("T00000FF0")).IsWithin());
         }
 
-        [TestAttribute]
+        [Test]
         public void TestIsContains()
         {
             Assert.IsTrue(! (new IntersectionMatrix("T0F00F000")).IsContains());
             Assert.IsTrue((new IntersectionMatrix("T00000FF0")).IsContains());
         }
 
-        [TestAttribute]
+        [Test]
         public void TestIsOverlaps()
         {
             Assert.IsTrue((new IntersectionMatrix("2*2***2**")).IsOverlaps(P,P));
@@ -98,7 +98,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(!(new IntersectionMatrix("2FFF1FFF2")).IsOverlaps(A, A));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestIsEquals() {
             Assert.IsTrue((new IntersectionMatrix("0FFFFFFF2")).IsEquals(P,P));
             Assert.IsTrue((new IntersectionMatrix("1FFF0FFF2")).IsEquals(L, L));

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Threading;
-using GeoAPI.Geometries;
-using GeoAPI.Geometries.Prepared;
-using NUnit.Framework;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Prepared;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
 {
@@ -57,7 +55,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
                 };
         }
 
-        [TestAttribute]
+        [Test]
         public void TestIntersectsThreadSafe()
         {
             ThreadTestRunner.Run(new PreparedGeometryThreadSafeTest());

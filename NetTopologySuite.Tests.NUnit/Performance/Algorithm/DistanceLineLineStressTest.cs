@@ -1,14 +1,14 @@
 ﻿using System;
-using GeoAPI.Geometries;
-using NUnit.Framework;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 {
     public class DistanceLineLineStressTest
     {
-        [TestAttribute]
-        [CategoryAttribute("Stress")]
+        [Test]
+        [Category("Stress")]
         public void TestRandomDisjointCollinearSegments()
         {
             int n = 1000000;

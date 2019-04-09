@@ -11,7 +11,6 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>
       The NTS Topology Suite is an API for modelling and manipulating 2-dimensional linear geometry. It provides numerous geometric predicates and functions. NTS conforms to the Simple Features Specification.
-      This package references GeoAPI.
     </description>
     <summary>NTS Topology Suite is a direct-port of all the functionalities offered by JTS Topology Suite</summary>
     <tags>NTS Topology OGC SFS</tags>

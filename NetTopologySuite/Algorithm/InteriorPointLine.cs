@@ -1,5 +1,3 @@
-using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm

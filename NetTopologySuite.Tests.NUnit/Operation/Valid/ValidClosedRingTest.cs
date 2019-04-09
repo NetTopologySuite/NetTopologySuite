@@ -1,6 +1,4 @@
 using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Valid;
@@ -14,12 +12,12 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
     /// </summary>
     /// <author>Martin Davis</author>
     /// <version>1.7</version
-    [TestFixtureAttribute]
+    [TestFixture]
     public class ValidClosedRingTest
     {
         private static WKTReader rdr = new WKTReader();
 
-        [TestAttribute]
+        [Test]
         public void TestBadLinearRing()
         {
             var ring = (LinearRing) FromWKT("LINEARRING (0 0, 0 10, 10 10, 10 0, 0 0)");
@@ -27,14 +25,14 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             CheckIsValid(ring, false);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestGoodLinearRing()
         {
             var ring = (LinearRing) FromWKT("LINEARRING (0 0, 0 10, 10 10, 10 0, 0 0)");
             CheckIsValid(ring, true);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestBadPolygonShell()
         {
             var poly = (Polygon) FromWKT("POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))");
@@ -42,7 +40,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             CheckIsValid(poly, false);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestBadPolygonHole()
         {
             var poly = (Polygon) FromWKT("POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0), (1 1, 2 1, 2 2, 1 2, 1 1) ))");
@@ -50,14 +48,14 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             CheckIsValid(poly, false);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestGoodPolygon()
         {
             var poly = (Polygon) FromWKT("POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))");
             CheckIsValid(poly, true);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestBadGeometryCollection()
         {
             var gc = (GeometryCollection) FromWKT("GEOMETRYCOLLECTION ( POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0), (1 1, 2 1, 2 2, 1 2, 1 1) )), POINT(0 0) )");

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Overlay.Snap;
 
 namespace NetTopologySuite.Operation.Overlay.Validate

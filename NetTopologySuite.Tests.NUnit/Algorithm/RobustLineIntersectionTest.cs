@@ -1,5 +1,3 @@
-using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
@@ -7,7 +5,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class RobustLineIntersectionTest
     {
         private readonly WKTReader _reader = new WKTReader();
@@ -21,7 +19,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// chooses the one which is closest to the other segment.
         /// This works in all known failure cases.
         /// </summary>
-        [TestAttribute]
+        [Test]
         public void TestCentralEndpointHeuristicFailure()
         {
             CheckIntersection(
@@ -32,7 +30,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 0);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestCentralEndpointHeuristicFailure2()
         {
             CheckIntersection(
@@ -50,7 +48,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         ///
         /// MD 8 Mar 2013
         /// </summary>
-        [TestAttribute]
+        [Test]
         public void TestRoundedPointsNotAltered()
         {
             CheckInputNotAltered(
@@ -66,7 +64,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// Fails using original JTS DeVillers determine orientation test.
         /// Succeeds using DD and Shewchuk orientation
         /// </remarks>
-        [TestAttribute]
+        [Test]
         public void TestTomasFa_1()
         {
             CheckIntersectionNone(
@@ -81,7 +79,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// Fails using original JTS DeVillers determine orientation test.
         /// Succeeds using DD and Shewchuk orientation
         /// </remarks>
-        [TestAttribute]
+        [Test]
         public void TestTomasFa_2()
         {
             CheckIntersectionNone(
@@ -93,7 +91,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// Test involving two non-almost-parallel lines.
         /// Does not seem to cause problems with basic line inersection algorithm.
         /// </summary>
-        [TestAttribute]
+        [Test]
         public void TestLeduc_1()
         {
             CheckIntersection(
@@ -108,7 +106,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         * Test from strk which is bad in GEOS (2009-04-14).
         */
 
-        [TestAttribute]
+        [Test]
         public void TestGEOS_1()
         {
             CheckIntersection(
@@ -123,7 +121,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         * Test from strk which is bad in GEOS (2009-04-14).
         */
 
-        [TestAttribute]
+        [Test]
         public void TestGEOS_2()
         {
             CheckIntersection(

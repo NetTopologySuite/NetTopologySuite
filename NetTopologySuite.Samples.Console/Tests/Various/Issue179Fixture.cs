@@ -1,5 +1,4 @@
-using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.Various
@@ -17,7 +16,7 @@ namespace NetTopologySuite.Tests.Various
             Assert.That(clone, Is.Not.Null);
             Assert.That(clone.IsNull, Is.True);
             Assert.That(clone, Is.EqualTo(clone));
-            Assert.That(object.ReferenceEquals(envelope, clone), Is.False);
+            Assert.That(ReferenceEquals(envelope, clone), Is.False);
         }
     }
 }

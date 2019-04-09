@@ -2,8 +2,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.Various
 {
-    using GeoAPI.Geometries;
-    using Geometries;
+    using NetTopologySuite.Geometries;
     using NetTopologySuite.IO;
 
     [TestFixture]

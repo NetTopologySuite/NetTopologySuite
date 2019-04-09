@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Utilities;
 
@@ -236,7 +234,7 @@ namespace NetTopologySuite.Geometries
         /// interface, whether or not this object is the empty point. Returns
         /// <c>Dimension.False</c> if the boundary is the empty point.
         /// </returns>
-        /// NOTE: make abstract, remove setter and change geoapi
+        /// NOTE: make abstract and remove setter
         public override Dimension BoundaryDimension => Dimension.Curve;
 
         /// <summary>

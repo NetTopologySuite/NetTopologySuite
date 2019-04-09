@@ -1,7 +1,6 @@
-﻿using GeoAPI.Geometries;
-using NUnit.Framework;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Tests.Various
 {

@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using GeoAPI.Geometries;
-using GeoAPI.IO;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.Utilities;
@@ -43,8 +41,8 @@ namespace NetTopologySuite.IO
         private ICoordinateSequenceFactory _coordinateSequencefactory;
         private IPrecisionModel _precisionModel;
 
-        private static readonly System.Globalization.CultureInfo InvariantCulture =
-            System.Globalization.CultureInfo.InvariantCulture;
+        private static readonly CultureInfo InvariantCulture =
+            CultureInfo.InvariantCulture;
         private static readonly string NaNString = double.NaN.ToString(InvariantCulture); /*"NaN"*/
         private static readonly ICoordinateSequenceFactory CoordinateSequenceFactoryXYZM = CoordinateArraySequenceFactory.Instance;
 
@@ -54,7 +52,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Creates a <c>WKTReader</c> that creates objects using a basic GeometryFactory.
         /// </summary>
-        public WKTReader() : this(GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory()) { }
+        public WKTReader() : this(NtsGeometryServices.Instance.CreateGeometryFactory()) { }
 
         /// <summary>
         /// Creates a <c>WKTReader</c> that creates objects using the given
@@ -94,7 +92,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         public IGeometryFactory Factory
         {
-            get => GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, DefaultSRID, _coordinateSequencefactory);
+            get => NtsGeometryServices.Instance.CreateGeometryFactory(_precisionModel, DefaultSRID, _coordinateSequencefactory);
             set
             {
                 if (value != null)
@@ -172,7 +170,7 @@ namespace NetTopologySuite.IO
             }
             catch (IOException e)
             {
-                throw new GeoAPI.IO.ParseException(e.ToString());
+                throw new ParseException(e.ToString());
             }
         }
 
@@ -217,7 +215,7 @@ namespace NetTopologySuite.IO
         /// <param name="tryParen">a value indicating if a starting <code>"("</code> should be probed.</param>
         /// <returns>a <see cref="ICoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
         /// <exception cref="IOException">if an I/O error occurs.</exception>
-        /// <exception cref="GeoAPI.IO.ParseException">if an unexpected token was encountered.</exception>
+        /// <exception cref="ParseException">if an unexpected token was encountered.</exception>
         private ICoordinateSequence GetCoordinate(TokenStream tokens, Ordinates ordinateFlags, bool tryParen)
         {
             bool opened = false;
@@ -270,7 +268,7 @@ namespace NetTopologySuite.IO
         /// <param name="ordinateFlags">a bit-mask defining the ordinates to read.</param>
         /// <returns>a <see cref="ICoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
         /// <exception cref="IOException">if an I/O error occurs.</exception>
-        /// <exception cref="GeoAPI.IO.ParseException">if an unexpected token was encountered.</exception>
+        /// <exception cref="ParseException">if an unexpected token was encountered.</exception>
         private ICoordinateSequence GetCoordinateSequence(TokenStream tokens, Ordinates ordinateFlags)
         {
             return this.GetCoordinateSequence(tokens, ordinateFlags, false);
@@ -289,7 +287,7 @@ namespace NetTopologySuite.IO
         /// <param name="tryParen">a value indicating if a starting <code>"("</code> should be probed for each coordinate.</param>
         /// <returns>a <see cref="ICoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
         /// <exception cref="IOException">if an I/O error occurs.</exception>
-        /// <exception cref="GeoAPI.IO.ParseException">if an unexpected token was encountered.</exception>
+        /// <exception cref="ParseException">if an unexpected token was encountered.</exception>
         private ICoordinateSequence GetCoordinateSequence(TokenStream tokens, Ordinates ordinateFlags, bool tryParen)
         {
             if (GetNextEmptyOrOpener(tokens) == "EMPTY")
@@ -438,7 +436,7 @@ namespace NetTopologySuite.IO
         /// </param>
         /// <returns>the next array of <c>Coordinate</c>s in the stream.</returns>
         /// <exception cref="IOException">if an I/O error occurs.</exception>
-        /// <exception cref="GeoAPI.IO.ParseException">if an unexpected token was encountered</exception>
+        /// <exception cref="ParseException">if an unexpected token was encountered</exception>
         [Obsolete("in favor of functions returning ICoordinateSequences.")]
         private Coordinate GetPreciseCoordinate(TokenStream tokens, bool skipExtraParenthesis, ref bool hasZ)
         {
@@ -511,7 +509,7 @@ namespace NetTopologySuite.IO
         /// format. The next token must be a number.
         /// </param>
         /// <returns>The next number in the stream.</returns>
-        /// <exception cref="GeoAPI.IO.ParseException">if the next token is not a valid number</exception>
+        /// <exception cref="ParseException">if the next token is not a valid number</exception>
         private static double GetNextNumber(TokenStream tokens)
         {
             var token = tokens.NextToken(true);
@@ -528,10 +526,10 @@ namespace NetTopologySuite.IO
                         return val;
                     }
 
-                    throw new GeoAPI.IO.ParseException($"Invalid number: {wordToken.StringValue}");
+                    throw new ParseException($"Invalid number: {wordToken.StringValue}");
 
                 default:
-                    throw new GeoAPI.IO.ParseException($"Expected number but found {token?.ToDebugString() ?? "the end of input"}");
+                    throw new ParseException($"Expected number but found {token?.ToDebugString() ?? "the end of input"}");
             }
         }
 
@@ -566,7 +564,7 @@ namespace NetTopologySuite.IO
 
             if (nextWord.Equals("EMPTY") || nextWord.Equals("("))
                 return nextWord;
-            throw new GeoAPI.IO.ParseException("Expected 'EMPTY' or '(' but encountered '" + nextWord + "'");
+            throw new ParseException("Expected 'EMPTY' or '(' but encountered '" + nextWord + "'");
         }
 
         /// <summary>
@@ -576,7 +574,7 @@ namespace NetTopologySuite.IO
         /// <param name="tokens">tokenizer over a stream of text in Well-known Text</param>
         /// <returns>the next EMPTY or L_PAREN in the stream as uppercase text.</returns>
         /// <exception cref="IOException">if an I/O error occurs</exception>
-        /// <exception cref="GeoAPI.IO.ParseException">if the next token is not EMPTY or L_PAREN</exception>
+        /// <exception cref="ParseException">if the next token is not EMPTY or L_PAREN</exception>
         private static Ordinates GetNextOrdinateFlags(TokenStream tokens)
         {
             string nextWord = LookAheadWord(tokens);
@@ -603,7 +601,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="tokens">tokenizer over a stream of text in Well-known Text format. The next token must be a word.</param>
         /// <returns>the next word in the stream as uppercase text</returns>
-        /// <exception cref="GeoAPI.IO.ParseException">if the next token is not a word</exception>
+        /// <exception cref="ParseException">if the next token is not a word</exception>
         /// <exception cref="IOException">if an I/O error occurs</exception>
         private static string LookAheadWord(TokenStream tokens)
         {
@@ -626,7 +624,7 @@ namespace NetTopologySuite.IO
             if (nextWord.Equals(",") || nextWord.Equals(")"))
                 return nextWord;
 
-            throw new GeoAPI.IO.ParseException("Expected ')' or ',' but encountered '" + nextWord
+            throw new ParseException("Expected ')' or ',' but encountered '" + nextWord
                 + "'");
         }
 
@@ -644,7 +642,7 @@ namespace NetTopologySuite.IO
             string nextWord = GetNextWord(tokens);
             if (nextWord.Equals(")"))
                 return nextWord;
-            throw new GeoAPI.IO.ParseException("Expected ')' but encountered '" + nextWord + "'");
+            throw new ParseException("Expected ')' but encountered '" + nextWord + "'");
         }
 
         /// <summary>
@@ -675,7 +673,7 @@ namespace NetTopologySuite.IO
                     return charToken.StringValue;
 
                 default:
-                    throw new GeoAPI.IO.ParseException($"Expected a word but encountered {token?.ToDebugString() ?? "the end of input"}");
+                    throw new ParseException($"Expected a word but encountered {token?.ToDebugString() ?? "the end of input"}");
             }
         }
 
@@ -733,7 +731,7 @@ namespace NetTopologySuite.IO
             {
                 return null;
             }
-            catch (GeoAPI.IO.ParseException)
+            catch (ParseException)
             {
                 return null;
             }
@@ -753,7 +751,7 @@ namespace NetTopologySuite.IO
             // differently than JTS's, so this is actually how we have to do it to match the output
             // from JTS (which could hypothetically return a collection whose inner elements have
             // different SRIDs than the collection itself if that's how it's specified).
-            var factory = GeoAPI.GeometryServiceProvider.Instance.CreateGeometryFactory(_precisionModel, srid,
+            var factory = NtsGeometryServices.Instance.CreateGeometryFactory(_precisionModel, srid,
                 csFactory);
 
             if (type.StartsWith("POINT", StringComparison.OrdinalIgnoreCase))
@@ -772,7 +770,7 @@ namespace NetTopologySuite.IO
                 returned = ReadMultiPolygonText(tokens, factory, ordinateFlags);
             else if (type.StartsWith("GEOMETRYCOLLECTION", StringComparison.OrdinalIgnoreCase))
                 returned = ReadGeometryCollectionText(tokens, factory, ordinateFlags);
-            else throw new GeoAPI.IO.ParseException("Unknown type: " + type);
+            else throw new ParseException("Unknown type: " + type);
 
             if (returned == null)
                 throw new NullReferenceException("Error reading geometry");

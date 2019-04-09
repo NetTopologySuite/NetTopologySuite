@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using GeoAPI.IO;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO
@@ -10,11 +9,11 @@ namespace NetTopologySuite.IO
     /// </summary>
     /// <remarks>
     /// While <see cref="BiEndianBinaryReader" /> extends <see cref="BinaryReader" />
-    /// adding methods for reading integer values (<see cref="BiEndianBinaryReader.ReadInt32" />)
-    /// and double values (<see cref="BiEndianBinaryReader.ReadDouble" />) in the specified format,
+    /// adding methods for reading integer values (<see cref="ReadInt32" />)
+    /// and double values (<see cref="ReadDouble" />) in the specified format,
     /// this implementation overrides methods, such <see cref="BinaryReader.ReadInt32" />
     /// and <see cref="BinaryReader.ReadDouble" /> and more,
-    /// for reading values in the specified by <see cref="BiEndianBinaryReader.Endianess"/> format.
+    /// for reading values in the specified by <see cref="Endianess"/> format.
     /// </remarks>
     public class BiEndianBinaryReader : BinaryReader
     {

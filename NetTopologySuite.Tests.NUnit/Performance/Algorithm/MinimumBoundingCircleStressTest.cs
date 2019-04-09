@@ -1,5 +1,4 @@
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
@@ -12,8 +11,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         private readonly GeometryFactory _geomFact = new GeometryFactory();
         private readonly Random random = new Random();
 
-        [TestAttribute]
-        [CategoryAttribute("Stress")]
+        [Test]
+        [Category("Stress")]
         public void TestStressRun()
         {
             int count = 100;

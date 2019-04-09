@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
 {
@@ -294,7 +293,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="indexOfFirstCoordinate">The index of the coordinate to make first</param>
         public static void Scroll(ICoordinateSequence seq, int indexOfFirstCoordinate)
         {
-            Scroll(seq, indexOfFirstCoordinate, CoordinateSequences.IsRing(seq));
+            Scroll(seq, indexOfFirstCoordinate, IsRing(seq));
         }
 
         /// <summary>

@@ -1,6 +1,3 @@
-using GeoAPI.Geometries;
-using GeoAPI.Geometries.Prepared;
-
 namespace NetTopologySuite.Geometries.Prepared
 {
     /// <summary>

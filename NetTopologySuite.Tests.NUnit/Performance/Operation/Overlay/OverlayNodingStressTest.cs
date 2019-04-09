@@ -1,5 +1,4 @@
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Overlay.Snap;
 using NUnit.Framework;
@@ -21,8 +20,8 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
 {
-    [TestFixtureAttribute]
-    [CategoryAttribute("Stress")]
+    [TestFixture]
+    [Category("Stress")]
     public class OverlayNodingStressTest
     {
         private static int ITER_LIMIT = 10000;
@@ -41,7 +40,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
             return r;
         }
 
-        [TestAttribute, Explicit("takes ages to complete")]
+        [Test, Explicit("takes ages to complete")]
         public void TestNoding()
         {
             int iterLimit = ITER_LIMIT;

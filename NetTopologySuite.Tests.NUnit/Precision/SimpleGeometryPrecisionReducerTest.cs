@@ -1,6 +1,3 @@
-using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Precision;
@@ -8,7 +5,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Precision
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class SimpleGeometryPrecisionReducerTest
     {
         private PrecisionModel pmFloat;
@@ -32,7 +29,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             reducerKeepCollapse.RemoveCollapsedComponents = false;
         }
 
-        [TestAttribute]
+        [Test]
         public void TestSquare()
         {
             var g = reader.Read("POLYGON (( 0 0, 0 1.4, 1.4 1.4, 1.4 0, 0 0 ))");
@@ -41,7 +38,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             Assert.IsTrue(gReduce.EqualsExact(g2));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestTinySquareCollapse()
         {
             var g = reader.Read("POLYGON (( 0 0, 0 .4, .4 .4, .4 0, 0 0 ))");
@@ -50,7 +47,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             Assert.IsTrue(gReduce.EqualsExact(g2));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestSquareCollapse()
         {
             var g = reader.Read("POLYGON (( 0 0, 0 1.4, .4 .4, .4 0, 0 0 ))");
@@ -59,7 +56,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             Assert.IsTrue(gReduce.EqualsExact(g2));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestSquareKeepCollapse()
         {
             var g = reader.Read("POLYGON (( 0 0, 0 1.4, .4 .4, .4 0, 0 0 ))");
@@ -68,7 +65,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             Assert.IsTrue(gReduce.EqualsExact(g2));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestLine()
         {
             var g = reader.Read("LINESTRING ( 0 0, 0 1.4 )");
@@ -77,7 +74,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             Assert.IsTrue(gReduce.EqualsExact(g2));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestLineRemoveCollapse()
         {
             var g = reader.Read("LINESTRING ( 0 0, 0 .4 )");
@@ -86,7 +83,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             Assert.IsTrue(gReduce.EqualsExact(g2));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestLineKeepCollapse()
         {
             var g = reader.Read("LINESTRING ( 0 0, 0 .4 )");

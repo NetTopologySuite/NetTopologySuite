@@ -2,7 +2,7 @@ namespace NetTopologySuite.Algorithm
 {
     using System;
     using System.Text;
-    using GeoAPI.Geometries;
+    using NetTopologySuite.Geometries;
     using Utilities;
 
     /// <summary>

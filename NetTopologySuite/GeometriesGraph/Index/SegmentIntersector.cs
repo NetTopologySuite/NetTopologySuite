@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.GeometriesGraph.Index
 {
@@ -19,7 +19,7 @@ namespace NetTopologySuite.GeometriesGraph.Index
         /// <returns></returns>
         public static bool IsAdjacentSegments(int i1, int i2)
         {
-            return System.Math.Abs(i1 - i2) == 1;
+            return Math.Abs(i1 - i2) == 1;
         }
 
         /*

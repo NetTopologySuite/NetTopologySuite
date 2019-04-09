@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
-using GeoAPI.Geometries;
 using MiscUtil.Conversion;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;

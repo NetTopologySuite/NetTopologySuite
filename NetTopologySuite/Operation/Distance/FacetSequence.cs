@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using GeoAPI.Geometries;
+﻿using System.Text;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 

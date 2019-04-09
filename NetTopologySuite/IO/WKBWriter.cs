@@ -1,8 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
-using GeoAPI.Geometries;
-using GeoAPI.IO;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO

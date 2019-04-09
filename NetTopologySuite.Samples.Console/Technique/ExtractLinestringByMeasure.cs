@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeoAPI.DataStructures;
-using GeoAPI.Geometries;
+using NetTopologySuite.DataStructures;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NUnit.Framework;

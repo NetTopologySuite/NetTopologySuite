@@ -1,6 +1,4 @@
-﻿using GeoAPI.Geometries;
-
-namespace NetTopologySuite.Geometries
+﻿namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Delegate function declaration to handle filter operation

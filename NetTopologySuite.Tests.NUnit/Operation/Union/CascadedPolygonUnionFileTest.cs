@@ -12,16 +12,16 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
     /// <author>mbdavis</author>
     public class CascadedPolygonUnionFileTest
     {
-        [TestAttribute]
-        [CategoryAttribute("LongRunning")]
+        [Test]
+        [Category("LongRunning")]
         public void TestAfrica()
         {
             var africa = EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.africa.wkt");
             RunTest(africa, CascadedPolygonUnionTester.MinSimilarityMeaure);
         }
 
-        [TestAttribute]
-        [CategoryAttribute("LongRunning")]
+        [Test]
+        [Category("LongRunning")]
         [Explicit("takes ages to complete")]
         public void TestEurope()
         {

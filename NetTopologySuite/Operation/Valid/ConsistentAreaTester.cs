@@ -1,8 +1,7 @@
 using System.Collections;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
-using NetTopologySuite.GeometriesGraph.Index;
 using NetTopologySuite.Operation.Relate;
 
 namespace NetTopologySuite.Operation.Valid

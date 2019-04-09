@@ -1,5 +1,5 @@
 ﻿using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Algorithm
@@ -26,9 +26,9 @@ namespace NetTopologySuite.Algorithm
         {
             // check for zero-length segments
             if (A.Equals(B))
-                return DistanceComputer.PointToSegment(A, C, D);
+                return PointToSegment(A, C, D);
             if (C.Equals(D))
-                return DistanceComputer.PointToSegment(D, A, B);
+                return PointToSegment(D, A, B);
 
             // AB and CD are line segments
             /*
@@ -87,10 +87,10 @@ namespace NetTopologySuite.Algorithm
             if (noIntersection)
             {
                 return MathUtil.Min(
-                      DistanceComputer.PointToSegment(A, C, D),
-                      DistanceComputer.PointToSegment(B, C, D),
-                      DistanceComputer.PointToSegment(C, A, B),
-                      DistanceComputer.PointToSegment(D, A, B));
+                      PointToSegment(A, C, D),
+                      PointToSegment(B, C, D),
+                      PointToSegment(C, A, B),
+                      PointToSegment(D, A, B));
             }
             // segments intersect
             return 0.0;
@@ -111,7 +111,7 @@ namespace NetTopologySuite.Algorithm
             double minDistance = p.Distance(line[0]);
             for (int i = 0; i < line.Length - 1; i++)
             {
-                double dist = DistanceComputer.PointToSegment(p, line[i], line[i + 1]);
+                double dist = PointToSegment(p, line[i], line[i + 1]);
                 if (dist < minDistance)
                 {
                     minDistance = dist;
@@ -137,7 +137,7 @@ namespace NetTopologySuite.Algorithm
             for (int i = 1; i < line.Count - 1; i++)
             {
                 var currentEnd = line.GetCoordinate(i);
-                double dist = DistanceComputer.PointToSegment(p, lastStart, currentEnd);
+                double dist = PointToSegment(p, lastStart, currentEnd);
                 if (dist < minDistance) minDistance = dist;
                 lastStart = currentEnd;
             }

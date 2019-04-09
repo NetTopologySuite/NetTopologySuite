@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
@@ -115,8 +114,8 @@ namespace NetTopologySuite.Operation.Polygonize
             {
                 edges.Add(de);
                 de = de.Next;
-                Utilities.Assert.IsTrue(de != null, "found null DE in ring");
-                Utilities.Assert.IsTrue(de == startDE || !de.IsInRing, "found DE already in ring");
+                Assert.IsTrue(de != null, "found null DE in ring");
+                Assert.IsTrue(de == startDE || !de.IsInRing, "found DE already in ring");
             } while (de != startDE);
             return edges;
         }
@@ -153,8 +152,8 @@ namespace NetTopologySuite.Operation.Polygonize
                 Add(de);
                 de.Ring = this;
                 de = de.Next;
-                Utilities.Assert.IsTrue(de != null, "found null DE in ring");
-                Utilities.Assert.IsTrue(de == startDE || !de.IsInRing, "found DE already in ring");
+                Assert.IsTrue(de != null, "found null DE in ring");
+                Assert.IsTrue(de == startDE || !de.IsInRing, "found DE already in ring");
             } while (de != startDE);
         }
 

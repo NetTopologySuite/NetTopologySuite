@@ -1,6 +1,4 @@
-﻿using System;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.Hull;
+﻿using NetTopologySuite.Hull;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Hull

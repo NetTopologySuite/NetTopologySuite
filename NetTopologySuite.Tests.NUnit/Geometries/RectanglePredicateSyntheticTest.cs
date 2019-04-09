@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
@@ -12,7 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
      * Test spatial predicate optimizations for rectangles by
      * synthesizing an exhaustive set of test cases.
      */
-    [TestFixtureAttribute]
+    [TestFixture]
     public class RectanglePredicateSyntheticTest
     {
         private WKTReader rdr = new WKTReader();
@@ -34,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             rect = fact.ToGeometry(rectEnv);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestLines()
         {
             //Console.WriteLine(rect);
@@ -46,7 +44,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             }
         }
 
-        [TestAttribute]
+        [Test]
         public void TestDenseLines()
         {
             //Console.WriteLine(rect);
@@ -61,7 +59,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             }
         }
 
-        [TestAttribute]
+        [Test]
         public void TestPolygons()
         {
             var testGeoms = getTestGeometries();

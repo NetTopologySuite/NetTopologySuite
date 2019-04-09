@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
-using GeoAPI.IO;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
@@ -20,84 +18,84 @@ namespace NetTopologySuite.Tests.NUnit.IO
         private static readonly GeometryFactory GeomFactory = new GeometryFactory();
         private static readonly WKTReader Rdr = new WKTReader(GeomFactory);
 
-        [TestAttribute]
+        [Test]
         public void BigEndianTest()
         {
             var g = (Geometry)Rdr.Read("POINT(0 0)");
             RunGeometry(g, 2, ByteOrder.BigEndian, false, 100);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestFirst()
         {
             RunWKBTest("MULTIPOINT ((0 0), (1 4), (100 200))");
         }
-        [TestAttribute]
+        [Test]
         public void TestPointPcs()
         {
             RunWKBTestPackedCoordinate("POINT (1 2)");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestPoint()
         {
             RunWKBTest("POINT (1 2)");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestLineString()
         {
             RunWKBTest("LINESTRING (1 2, 10 20, 100 200)");
         }
-        [TestAttribute]
+        [Test]
         public void TestPolygon()
         {
             RunWKBTest("POLYGON ((0 0, 100 0, 100 100, 0 100, 0 0))");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestPolygonWithHole()
         {
             RunWKBTest("POLYGON ((0 0, 100 0, 100 100, 0 100, 0 0), (1 1, 1 10, 10 10, 10 1, 1 1) )");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiPoint()
         {
             RunWKBTest("MULTIPOINT ((0 0), (1 4), (100 200))");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiLineString()
         {
             RunWKBTest("MULTILINESTRING ((0 0, 1 10), (10 10, 20 30), (123 123, 456 789))");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiPolygon()
         {
             RunWKBTest("MULTIPOLYGON ( ((0 0, 100 0, 100 100, 0 100, 0 0), (1 1, 1 10, 10 10, 10 1, 1 1) ), ((200 200, 200 250, 250 250, 250 200, 200 200)) )");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestGeometryCollection()
         {
             RunWKBTest("GEOMETRYCOLLECTION ( POINT ( 1 1), LINESTRING (0 0, 10 10), POLYGON ((0 0, 100 0, 100 100, 0 100, 0 0)) )");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestNestedGeometryCollection()
         {
             RunWKBTest("GEOMETRYCOLLECTION ( POINT (20 20), GEOMETRYCOLLECTION ( POINT ( 1 1), LINESTRING (0 0, 10 10), POLYGON ((0 0, 100 0, 100 100, 0 100, 0 0)) ) )");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestLineStringEmpty()
         {
             RunWKBTest("LINESTRING EMPTY");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestBigPolygon()
         {
             var shapeFactory = new GeometricShapeFactory(GeomFactory);
@@ -108,31 +106,31 @@ namespace NetTopologySuite.Tests.NUnit.IO
             RunWKBTest(geom, 2, false);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestPolygonEmpty()
         {
             RunWKBTest("POLYGON EMPTY");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiPointEmpty()
         {
             RunWKBTest("MULTIPOINT EMPTY");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiLineStringEmpty()
         {
             RunWKBTest("MULTILINESTRING EMPTY");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiPolygonEmpty()
         {
             RunWKBTest("MULTIPOLYGON EMPTY");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestGeometryCollectionEmpty()
         {
             RunWKBTest("GEOMETRYCOLLECTION EMPTY");

@@ -1,5 +1,5 @@
-﻿using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm.Distance;
+﻿using NetTopologySuite.Algorithm.Distance;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Distance;
 
 namespace Open.Topology.TestRunner.Functions

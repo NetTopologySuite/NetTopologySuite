@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Diagnostics;
-using GeoAPI.Geometries;
-using NUnit.Framework;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class RectangleLineIntersectorTest
     {
 
-        [TestAttribute]
+        [Test]
         public void Test300Points()
         {
             var test = new RectangleLineIntersectorValidator();
@@ -19,8 +18,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(test.Validate());
         }
 
-        [TestAttribute]
-        [CategoryAttribute("Stress")]
+        [Test]
+        [Category("Stress")]
         public void TestPerformance()
         {
             var test = new RectangleLineIntersectorValidator();

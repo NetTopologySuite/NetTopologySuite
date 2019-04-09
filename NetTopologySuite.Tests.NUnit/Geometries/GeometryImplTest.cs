@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class GeometryImplTest
     {
         private IPrecisionModel precisionModel;
@@ -24,7 +22,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             readerFloat = new WKTReader();
         }
 
-        [TestAttribute]
+        [Test]
         public void TestComparable()
         {
             var point = reader.Read("POINT EMPTY");
@@ -65,7 +63,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 Assert.That(ReferenceEquals(geometries[i], geometriesExpectedOrder[i]), Is.True);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestPolygonRelate()
         {
             var bigPolygon = reader.Read(
@@ -75,7 +73,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(bigPolygon.Contains(smallPolygon));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestEmptyGeometryCentroid()
         {
             Assert.IsTrue(reader.Read("POINT EMPTY").IsEmpty);
@@ -88,19 +86,19 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(reader.Read("MULTIPOINT EMPTY").IsEmpty);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestNoOutgoingDirEdgeFound()
         {
             doTestFromCommcast2003AtYahooDotCa(reader);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestOutOfMemoryError()
         {
             doTestFromCommcast2003AtYahooDotCa(new WKTReader());
         }
 
-        [TestAttribute]
+        [Test]
         public void TestDepthMismatchAssertionFailedException()
         {
             //register@robmeek.com reported an assertion failure
@@ -145,7 +143,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(equalsHash, a.GetHashCode() == b.GetHashCode());
         }
 
-        [TestAttribute]
+        [Test]
         public void TestInvalidateEnvelope()
         {
             var g = reader.Read("POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
@@ -164,7 +162,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             }
         }
 
-        [TestAttribute]
+        [Test]
         public void TestEquals1()
         {
             var polygon1 = reader.Read(
@@ -174,7 +172,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(polygon1.EqualsTopologically(polygon2));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestEqualsWithNull()
         {
             var polygon = reader.Read("POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
@@ -234,7 +232,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(3, hashSet2.Count);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestEqualsExactForLinearRings()
         {
             var x = geometryFactory.CreateLinearRing(new Coordinate[] {
@@ -265,7 +263,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         //          somethingNotEqualButSameClass);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestEqualsExactForLineStrings()
         {
             var x = geometryFactory.CreateLineString(new Coordinate[] {
@@ -295,7 +293,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 anotherSameClassButEmpty, collectionFactory2);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestEqualsExactForPoints()
         {
             var x = geometryFactory.CreatePoint(new Coordinate(100, 100));
@@ -312,7 +310,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 anotherSameClassButEmpty, collectionFactory);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestEqualsExactForPolygons()
         {
             var x = (Polygon) reader.Read(
@@ -331,7 +329,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 anotherSameClassButEmpty, collectionFactory);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestEqualsExactForGeometryCollections()
         {
             IGeometry polygon1 = (Polygon) reader.Read(

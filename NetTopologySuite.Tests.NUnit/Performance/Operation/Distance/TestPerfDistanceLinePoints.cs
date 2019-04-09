@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using GeoAPI.Geometries;
-using NUnit.Framework;
 using NetTopologySuite.Densify;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Distance;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
 {
@@ -32,7 +29,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
 
         private bool verbose = true;
 
-        [TestAttribute, CategoryAttribute("Stress")]
+        [Test, Category("Stress")]
         public void Test()
         {
 

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Dissolve;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Operation.Linemerge;
 

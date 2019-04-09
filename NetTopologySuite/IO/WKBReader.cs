@@ -1,8 +1,5 @@
 using System;
 using System.IO;
-using GeoAPI;
-using GeoAPI.Geometries;
-using GeoAPI.IO;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.IO
@@ -96,7 +93,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Initialize reader with a standard <see cref="IGeometryFactory"/>.
         /// </summary>
-        public WKBReader() : this(GeometryServiceProvider.Instance) { }
+        public WKBReader() : this(NtsGeometryServices.Instance) { }
 
         /// <summary>
         /// Initialize reader with the given <c>GeometryFactory</c>.
@@ -105,7 +102,7 @@ namespace NetTopologySuite.IO
         [Obsolete]
         public WKBReader(IGeometryFactory factory)
         {
-            _geometryServices = GeometryServiceProvider.Instance;
+            _geometryServices = NtsGeometryServices.Instance;
 
             _factory = factory;
             _sequenceFactory = factory.CoordinateSequenceFactory;
@@ -117,7 +114,7 @@ namespace NetTopologySuite.IO
 
         public WKBReader(IGeometryServices services)
         {
-            services = services ?? GeometryServiceProvider.Instance;
+            services = services ?? NtsGeometryServices.Instance;
             _geometryServices = services;
             _precisionModel = services.DefaultPrecisionModel;
             _sequenceFactory = services.DefaultCoordinateSequenceFactory;
@@ -131,7 +128,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="data">The byte array to read from</param>
         /// <returns>The geometry read</returns>
-        /// <exception cref="GeoAPI.IO.ParseException"> if the WKB data is ill-formed.</exception>
+        /// <exception cref="ParseException"> if the WKB data is ill-formed.</exception>
         public IGeometry Read(byte[] data)
         {
             using (Stream stream = new MemoryStream(data))
@@ -143,7 +140,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="stream">The stream to read from</param>
         /// <returns>The geometry read</returns>
-        /// <exception cref="GeoAPI.IO.ParseException"> if the WKB data is ill-formed.</exception>
+        /// <exception cref="ParseException"> if the WKB data is ill-formed.</exception>
         public virtual IGeometry Read(Stream stream)
         {
             using (var reader = new BiEndianBinaryReader(stream))
@@ -218,7 +215,7 @@ namespace NetTopologySuite.IO
         {
             var byteOrder = (ByteOrder)reader.ReadByte();
             if (_isStrict && byteOrder != ByteOrder.BigEndian && byteOrder != ByteOrder.LittleEndian)
-                throw new GeoAPI.IO.ParseException($"Unknown geometry byte order (not LittleEndian or BigEndian): {byteOrder}");
+                throw new ParseException($"Unknown geometry byte order (not LittleEndian or BigEndian): {byteOrder}");
 
             ((BiEndianBinaryReader)reader).Endianess = byteOrder;
         }

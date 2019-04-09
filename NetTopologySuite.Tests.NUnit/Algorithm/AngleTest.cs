@@ -1,17 +1,16 @@
 ﻿using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class AngleTest
     {
         private const double Tolerance = 1E-5;
 
-        [TestAttribute]
+        [Test]
         public void TestAngle()
         {
             Assert.AreEqual(AngleUtility.Angle(new Coordinate(10, 0)), 0.0, Tolerance);
@@ -22,7 +21,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.AreEqual(AngleUtility.Angle(new Coordinate(-10, -0.1)), -3.131592986903128, Tolerance);
             Assert.AreEqual(AngleUtility.Angle(new Coordinate(-10, -10)), -0.75 * Math.PI, Tolerance);
         }
-        [TestAttribute]
+        [Test]
         public void TestIsAcute()
         {
             Assert.AreEqual(AngleUtility.IsAcute(new Coordinate(10, 0), new Coordinate(0, 0), new Coordinate(5, 10)), true);
@@ -34,7 +33,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.AreEqual(AngleUtility.IsAcute(new Coordinate(10, 0), new Coordinate(0, 0), new Coordinate(-5, -10)), false);
 
         }
-        [TestAttribute]
+        [Test]
         public void TestNormalizePositive()
         {
             Assert.AreEqual(AngleUtility.NormalizePositive(0.0), 0.0, Tolerance);
@@ -57,7 +56,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         }
 
-        [TestAttribute]
+        [Test]
         public void TestNormalize()
         {
             Assert.AreEqual(AngleUtility.Normalize(0.0), 0.0, Tolerance);

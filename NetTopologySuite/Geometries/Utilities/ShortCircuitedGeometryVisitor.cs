@@ -1,5 +1,3 @@
-using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>

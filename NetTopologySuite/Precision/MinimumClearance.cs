@@ -1,6 +1,4 @@
-﻿using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
+﻿using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.Strtree;
 using NetTopologySuite.Operation.Distance;
@@ -60,7 +58,7 @@ namespace NetTopologySuite.Precision
     /// <see cref="GetDistance()"/> and <see cref="GetLine()"/>.
     /// <para/>
     /// The computation of Minimum Clearance utilizes
-    /// the <see cref="STRtree{TItem}.NearestNeighbour(IItemDistance{GeoAPI.Geometries.Envelope,TItem})"/>
+    /// the <see cref="STRtree{TItem}.NearestNeighbour(IItemDistance{Envelope,TItem})"/>
     /// method to provide good performance even for
     /// large inputs.
     /// <para/>

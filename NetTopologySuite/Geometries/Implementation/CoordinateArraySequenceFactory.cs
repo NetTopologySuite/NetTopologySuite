@@ -1,7 +1,7 @@
 namespace NetTopologySuite.Geometries.Implementation
 {
     using System;
-    using GeoAPI.Geometries;
+    using NetTopologySuite.Geometries;
 
     /// <summary>
     /// Creates CoordinateSequences represented as an array of Coordinates.

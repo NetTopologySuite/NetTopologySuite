@@ -1,8 +1,4 @@
-using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 using NetTopologySuite.Noding;
 using NUnit.Framework;
 
@@ -11,10 +7,10 @@ namespace NetTopologySuite.Tests.NUnit.Noding
     /// <summary>
     /// Test IntersectionSegment#compareNodePosition
     /// </summary>
-    [TestFixtureAttribute]
+    [TestFixture]
     public class SegmentPointComparatorTest
     {
-        [TestAttribute]
+        [Test]
         public void TestOctant0()
         {
             checkNodePosition(Octants.Zero, 1, 1, 2, 2, -1);

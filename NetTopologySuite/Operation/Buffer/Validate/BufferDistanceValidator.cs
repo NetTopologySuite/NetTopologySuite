@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Distance;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Distance;
@@ -141,10 +141,6 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                 poly.Apply(lineExtracter);
             }
             return g.Factory.BuildGeometry(polys);
-            /*
-            return g.Factory.BuildGeometry(new List<IGeometry>(
-                GeoAPI.DataStructures.Caster.Cast<IGeometry>(polys)));
-             */
         }
 
         /// <summary>

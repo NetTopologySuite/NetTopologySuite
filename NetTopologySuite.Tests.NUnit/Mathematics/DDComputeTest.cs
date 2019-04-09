@@ -1,6 +1,6 @@
 using System;
-using NUnit.Framework;
 using NetTopologySuite.Mathematics;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Mathematics
 {
@@ -11,7 +11,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
     /// <author>Martin Davis</author>
     public class DDComputeTest
     {
-        [TestAttribute]
+        [Test]
         public void TestEByTaylorSeries()
         {
             //System.Console.WriteLine("--------------------------------");
@@ -46,7 +46,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             return s;
         }
 
-        [TestAttribute]
+        [Test]
         public void TestPiByMachin()
         {
             //System.Console.WriteLine("--------------------------------");

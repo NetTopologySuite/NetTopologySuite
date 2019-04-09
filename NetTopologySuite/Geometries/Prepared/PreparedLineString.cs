@@ -1,4 +1,3 @@
-using GeoAPI.Geometries;
 using NetTopologySuite.Noding;
 
 namespace NetTopologySuite.Geometries.Prepared

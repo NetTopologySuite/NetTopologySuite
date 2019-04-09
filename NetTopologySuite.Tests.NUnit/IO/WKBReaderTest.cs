@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
@@ -15,10 +13,10 @@ namespace NetTopologySuite.Tests.NUnit.IO
     /// Tests for reading WKB.
     /// </summary>
     /// <author>Martin Davis</author>
-    [TestFixtureAttribute]
+    [TestFixture]
     public class WKBReaderTest
     {
-        [TestAttribute]
+        [Test]
         public void TestPolygonEmpty()
         {
             var reader = new WKTReader();
@@ -26,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             CheckWkbGeometry(geom.AsBinary(), "POLYGON EMPTY");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestShortPolygons()
         {
             // one point
@@ -38,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 "POLYGON ((100 200, 100 200, 100 200, 100 200))");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestSinglePointLineString()
         {
             CheckWkbGeometry("00000000020000000140590000000000004069000000000000",
@@ -52,7 +50,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         /// geometry in a multi-geometry, it has a start marker of 0x69.
         /// Endianness is determined by the endian value of the multigeometry.
         /// </summary>
-        [TestAttribute]
+        [Test]
         public void TestSpatialiteMultiGeometry()
         {
             //multipolygon
@@ -76,7 +74,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 "GEOMETRYCOLLECTION(POINT(4 6),LINESTRING(4 6,7 10))");
         }
 
-        [TestAttribute, Ignore("Not yet implemented satisfactorily.")]
+        [Test, Ignore("Not yet implemented satisfactorily.")]
         public void TestIllFormedWKB()
         {
             // WKB is missing LinearRing entry
@@ -109,7 +107,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
         }
 
-        [TestAttribute]
+        [Test]
         public void TestBase64TextFiles()
         {
             // taken from: https://raw.githubusercontent.com/SharpMap/SharpMap/5289522c26e77584eaa95428c1bd2202ff18a340/UnitTests/TestData/Base%2064.txt
@@ -128,7 +126,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         {
             using (var sr = new StreamReader(file))
             {
-                return System.Convert.FromBase64String(sr.ReadToEnd());
+                return Convert.FromBase64String(sr.ReadToEnd());
             }
         }
     }

@@ -1,13 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Match;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
-using NetTopologySuite.Noding;
-using NetTopologySuite.Operation.Buffer;
 using NetTopologySuite.Operation.Polygonize;
 using NUnit.Framework;
 

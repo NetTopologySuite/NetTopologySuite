@@ -1,5 +1,4 @@
 using System;
-using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries.Utilities
 {
@@ -487,7 +486,7 @@ namespace NetTopologySuite.Geometries.Utilities
             }
             double dx = x1 - x0;
             double dy = y1 - y0;
-            double d = System.Math.Sqrt(dx * dx + dy * dy);
+            double d = Math.Sqrt(dx * dx + dy * dy);
             double sin = dy / d;
             double cos = dx / d;
             double cs2 = 2 * sin * cos;
@@ -517,7 +516,7 @@ namespace NetTopologySuite.Geometries.Utilities
             // rotate vector to positive x axis direction
             double dx = x1 - x0;
             double dy = y1 - y0;
-            double d = System.Math.Sqrt(dx * dx + dy * dy);
+            double d = Math.Sqrt(dx * dx + dy * dy);
             double sin = dy / d;
             double cos = dx / d;
             Rotate(-sin, cos);
@@ -570,7 +569,7 @@ namespace NetTopologySuite.Geometries.Utilities
             }
 
             // rotate vector to positive x axis direction
-            double d = System.Math.Sqrt(x * x + y * y);
+            double d = Math.Sqrt(x * x + y * y);
             double sin = y / d;
             double cos = x / d;
             Rotate(-sin, cos);
@@ -600,7 +599,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation SetToRotation(double theta)
         {
-            SetToRotation(System.Math.Sin(theta), System.Math.Cos(theta));
+            SetToRotation(Math.Sin(theta), Math.Cos(theta));
             return this;
         }
 
@@ -649,7 +648,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation SetToRotation(double theta, double x, double y)
         {
-            SetToRotation(System.Math.Sin(theta), System.Math.Cos(theta), x, y);
+            SetToRotation(Math.Sin(theta), Math.Cos(theta), x, y);
             return this;
         }
 

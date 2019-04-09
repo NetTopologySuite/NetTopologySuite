@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Samples.SimpleTests;

@@ -1,5 +1,4 @@
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NUnit.Framework;
@@ -11,7 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
     {
         protected override ICoordinateSequenceFactory CsFactory => new PackedCoordinateSequenceFactory();
 
-        [TestAttribute]
+        [Test]
         public void TestMultiPointDim4()
         {
             var gf = new GeometryFactory(new PackedCoordinateSequenceFactory());

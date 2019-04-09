@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Geometries
@@ -194,10 +193,10 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Converts the given <see cref="System.Collections.ICollection" /> of
+        /// Converts the given <see cref="ICollection" /> of
         /// <see cref="Coordinate" />s into a <see cref="Coordinate" /> array.
         /// </summary>
-        /// <param name="coordList"><see cref="System.Collections.ICollection" /> of coordinates.</param>
+        /// <param name="coordList"><see cref="ICollection" /> of coordinates.</param>
         /// <returns></returns>
         /// <exception cref="InvalidCastException">
         /// If <paramref name="coordList"/> contains not only <see cref="Coordinate" />s.
@@ -392,13 +391,13 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Returns <c>true</c> if the two arrays are identical, both <c>null</c>, or pointwise
-        /// equal, using a user-defined <see cref="System.Collections.IComparer" />
+        /// equal, using a user-defined <see cref="IComparer" />
         /// for <see cref="Coordinate" />s.
         /// </summary>
         /// <param name="coord1">An array of <see cref="Coordinate" />s.</param>
         /// <param name="coord2">Another array of <see cref="Coordinate" />s.</param>
         /// <param name="coordinateComparer">
-        /// A <see cref="System.Collections.IComparer" /> for <see cref="Coordinate" />s.
+        /// A <see cref="IComparer" /> for <see cref="Coordinate" />s.
         /// </param>
         /// <returns></returns>
         public static bool Equals(Coordinate[] coord1, Coordinate[] coord2,

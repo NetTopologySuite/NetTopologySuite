@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Utilities;
@@ -29,7 +28,7 @@ namespace NetTopologySuite.Geometries
         /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" />
         /// <c> == </c> <see cref="PrecisionModels.Floating" />.
         /// </summary>
-        /// <remarks>A shortcut for <see cref="GeometryFactory.Default" />.</remarks>
+        /// <remarks>A shortcut for <see cref="Default" />.</remarks>
         public static readonly IGeometryFactory Floating = Default;
 
         /// <summary>

@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Union;
 using NUnit.Framework;
@@ -16,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
     {
         readonly GeometryFactory _geomFact = new GeometryFactory();
 
-        [TestAttribute]
+        [Test]
         public void TestBoxes()
         {
             RunTest(GeometryUtils.ReadWKT(
@@ -28,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
                     CascadedPolygonUnionTester.MinSimilarityMeaure);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestDiscs1()
         {
             var geoms = CreateDiscs(5, 0.7);
@@ -39,7 +37,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
                     CascadedPolygonUnionTester.MinSimilarityMeaure);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestDiscs2()
         {
             var geoms = CreateDiscs(5, 0.55);

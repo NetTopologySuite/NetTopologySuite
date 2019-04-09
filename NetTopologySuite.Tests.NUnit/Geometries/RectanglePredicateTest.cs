@@ -1,6 +1,3 @@
-using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
@@ -10,13 +7,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     /*
      * Test spatial predicate optimizations for rectangles.
      */
-    [TestFixtureAttribute]
+    [TestFixture]
     public class RectanglePredicateTest
     {
         private WKTReader rdr = new WKTReader();
         private GeometryFactory fact = new GeometryFactory();
 
-        [TestAttribute]
+        [Test]
         public void TestShortAngleOnBoundary()
         {
             string[] onBoundary =
@@ -25,7 +22,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             RunRectanglePred(onBoundary);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestAngleOnBoundary()
         {
             string[] onBoundary =

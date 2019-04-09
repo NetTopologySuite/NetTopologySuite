@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.ExceptionServices;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Overlay.Snap

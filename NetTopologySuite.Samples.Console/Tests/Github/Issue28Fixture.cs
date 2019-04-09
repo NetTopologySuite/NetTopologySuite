@@ -1,9 +1,7 @@
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Distance;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
-using NetTopologySuite.Planargraph;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Tests.Github

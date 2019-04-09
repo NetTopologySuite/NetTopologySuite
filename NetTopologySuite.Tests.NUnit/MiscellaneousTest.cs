@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
-using NUnit.Framework;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 
 namespace NetTopologySuite.Tests.NUnit
@@ -15,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit
         private static readonly IGeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
         private static WKTReader reader = new WKTReader(geometryFactory);
 
-        [TestAttribute]
+        [Test]
         public void TestEnvelopeCloned()
         {
             var a = reader.Read("LINESTRING(0 0, 10 10)");
@@ -25,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(!ReferenceEquals(a.EnvelopeInternal, b.EnvelopeInternal));
         }
 
-        [TestAttribute]
+        [Test]
         public void testCreateEmptyGeometry()
         {
             Assert.IsTrue(geometryFactory.CreatePoint((Coordinate) null).IsEmpty);
@@ -91,7 +90,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.AreEqual(0, (geometryFactory.CreateMultiPoint((Point[]) null)).Coordinates.Length);
         }
 
-        [TestAttribute]
+        [Test]
         public void testBoundaryOfEmptyGeometry()
         {
             Assert.IsTrue(geometryFactory.CreatePoint((Coordinate) null).Boundary.GetType() ==
@@ -119,7 +118,7 @@ namespace NetTopologySuite.Tests.NUnit
             }
         }
 
-        [TestAttribute]
+        [Test]
         public void testToPointArray()
         {
             var list = new List<IGeometry>();
@@ -145,7 +144,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.AreEqual(new Coordinate(20, 20), coordinates[9]);
         }
 
-        [TestAttribute]
+        [Test]
         public void testEmptyPoint()
         {
             var p = geometryFactory.CreatePoint((Coordinate) null);
@@ -173,7 +172,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.AreEqual("POINT EMPTY", p.AsText());
         }
 
-        [TestAttribute]
+        [Test]
         public void testEmptyLineString()
         {
             var l = geometryFactory.CreateLineString((Coordinate[]) null);
@@ -189,7 +188,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(!l.IsRing);
         }
 
-        [TestAttribute]
+        [Test]
         public void testEmptyLinearRing()
         {
             var l = geometryFactory.CreateLinearRing((ICoordinateSequence) null);
@@ -202,7 +201,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(l.IsRing);
         }
 
-        [TestAttribute]
+        [Test]
         public void testEmptyPolygon()
         {
             var p = geometryFactory.CreatePolygon(null, null);
@@ -211,7 +210,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(p.IsSimple);
         }
 
-        [TestAttribute]
+        [Test]
         public void testEmptyGeometryCollection()
         {
             var g = geometryFactory.CreateGeometryCollection(null);
@@ -220,7 +219,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(g.IsSimple);
         }
 
-        [TestAttribute]
+        [Test]
         public void testEmptyMultiPoint()
         {
             var g = geometryFactory.CreateMultiPoint((Point[]) null);
@@ -232,7 +231,7 @@ namespace NetTopologySuite.Tests.NUnit
             //    Assert.IsTrue(g.IsSimple);
         }
 
-        [TestAttribute]
+        [Test]
         public void testEmptyMultiLineString()
         {
             var g = geometryFactory.CreateMultiLineString(null);
@@ -245,7 +244,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(!g.IsClosed);
         }
 
-        [TestAttribute]
+        [Test]
         public void testEmptyMultiPolygon()
         {
             var g = geometryFactory.CreateMultiPolygon(null);
@@ -254,21 +253,21 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(g.IsSimple);
         }
 
-        [TestAttribute]
+        [Test]
         public void testGetGeometryType()
         {
             var g = geometryFactory.CreateMultiPolygon(null);
             Assert.AreEqual("MultiPolygon", g.GeometryType);
         }
 
-        [TestAttribute]
+        [Test]
         public void testMultiPolygonIsSimple1()
         {
             var g = reader.Read("MULTIPOLYGON (((10 10, 10 20, 20 20, 20 15, 10 10)), ((60 60, 70 70, 80 60, 60 60)))");
             Assert.IsTrue(g.IsSimple);
         }
 
-        [TestAttribute]
+        [Test]
         public void testPointIsSimple()
         {
             var g = reader.Read("POINT (10 10)");
@@ -289,7 +288,7 @@ namespace NetTopologySuite.Tests.NUnit
         //    Assert.IsTrue(g.IsSimple);
         //  }
 
-        [TestAttribute]
+        [Test]
         public void testMultiPointBoundary()
         {
             var g = reader.Read("MULTIPOINT(10 10, 20 20, 30 30)");
@@ -312,7 +311,7 @@ namespace NetTopologySuite.Tests.NUnit
         //    Assert.IsTrue(g.IsSimple);
         //  }
 
-        [TestAttribute]
+        [Test]
         public void testLineStringBoundary1()
         {
             var g = (LineString) reader.Read("LINESTRING(10 10, 20 10, 15 20)");
@@ -322,7 +321,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(boundary.GetGeometryN(1).Equals(g.EndPoint));
         }
 
-        [TestAttribute]
+        [Test]
         public void testLineStringBoundary2()
         {
             var g = (LineString) reader.Read("LINESTRING(10 10, 20 10, 15 20, 10 10)");
@@ -337,7 +336,7 @@ namespace NetTopologySuite.Tests.NUnit
         //    Assert.IsTrue(! g.IsSimple);
         //  }
 
-        [TestAttribute]
+        [Test]
         public void testLinearRingIsSimple()
         {
             Coordinate[] coordinates =
@@ -352,14 +351,14 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(linearRing.IsSimple);
         }
 
-        [TestAttribute]
+        [Test]
         public void testPolygonIsSimple()
         {
             var g = reader.Read("POLYGON((10 10, 10 20, 202 0, 20 15, 10 10))");
             Assert.IsTrue(g.IsSimple);
         }
 
-        [TestAttribute]
+        [Test]
         public void testPolygonBoundary()
         {
             var g = reader.Read("POLYGON("
@@ -371,7 +370,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(b.EqualsExact(g.Boundary));
         }
 
-        [TestAttribute]
+        [Test]
         public void testMultiPolygonBoundary1()
         {
             var g = reader.Read("MULTIPOLYGON("
@@ -385,7 +384,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(b.EqualsExact(g.Boundary));
         }
 
-        [TestAttribute]
+        [Test]
         public void testMultiPolygonIsSimple2()
         {
             var g = reader.Read("MULTIPOLYGON("
@@ -428,7 +427,7 @@ namespace NetTopologySuite.Tests.NUnit
         //    Assert.IsTrue(! g.IsSimple);
         //  }
 
-        [TestAttribute]
+        [Test]
         public void testMultiLineStringBoundary1()
         {
             var g = reader.Read("MULTILINESTRING("
@@ -438,7 +437,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(m.EqualsExact(g.Boundary));
         }
 
-        [TestAttribute]
+        [Test]
         public void testMultiLineStringBoundary2()
         {
             var g = reader.Read("MULTILINESTRING("
@@ -478,7 +477,7 @@ namespace NetTopologySuite.Tests.NUnit
         //    Assert.AreEqual(b, g.Boundary);
         //  }
 
-        [TestAttribute]
+        [Test]
         public void testCoordinateNaN()
         {
             var c1 = new Coordinate();
@@ -500,7 +499,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(new CoordinateZ(3, 5, 0).Equals(new CoordinateZ(3, 5, double.NaN)));
         }
 
-        [TestAttribute]
+        [Test]
         public void testPredicatesReturnFalseForEmptyGeometries()
         {
             var p1 = new GeometryFactory().CreatePoint((Coordinate) null);

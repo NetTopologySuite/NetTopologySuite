@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using GeoAPI.Geometries;
 using NetTopologySuite.Dissolve;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Operation.Linemerge;
 using NetTopologySuite.Tests.NUnit.TestData;
@@ -11,10 +11,10 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
 {
-    [TestFixtureAttribute, CategoryAttribute("Stress")]
+    [TestFixture, Category("Stress")]
     public class LineDissolveStressTest
     {
-        [TestAttribute, Ignore("takes ages to complete")]
+        [Test, Ignore("takes ages to complete")]
         public void Test()
         {
             Trace.WriteLine("Loading data...");

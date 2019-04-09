@@ -6,7 +6,6 @@ using System.Collections.Generic;
 #if UseWorker
 using System.Threading;
 #endif
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Index.Strtree;

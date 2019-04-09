@@ -1,8 +1,8 @@
 using System;
 using System.IO;
 using System.Text;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph.Index;
 
 namespace NetTopologySuite.GeometriesGraph

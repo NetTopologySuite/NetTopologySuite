@@ -1,6 +1,5 @@
-﻿using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Dissolve;
+﻿using NetTopologySuite.Dissolve;
+using NetTopologySuite.Geometries;
 
 namespace Open.Topology.TestRunner.Functions
 {

@@ -6,8 +6,7 @@ namespace NetTopologySuite.Tests.Various
     using System;
     using System.Diagnostics;
     using System.Globalization;
-    using GeoAPI.Geometries;
-    using Geometries;
+    using NetTopologySuite.Geometries;
     using NetTopologySuite.IO;
     using Noding;
 

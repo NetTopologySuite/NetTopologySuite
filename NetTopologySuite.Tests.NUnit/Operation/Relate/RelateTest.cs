@@ -1,9 +1,7 @@
-﻿using System;
-using GeoAPI.Geometries;
-using NUnit.Framework;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Relate;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Relate
 {
@@ -27,7 +25,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
          * @throws Exception
          */
 
-        [TestAttribute]
+        [Test]
         [Ignore("Known to fail")]
         public void TestContainsIncorrectIntersectionMatrix()
         {

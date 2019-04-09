@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.KdTree;
 using NetTopologySuite.Index.Quadtree;
 using NetTopologySuite.Index.Strtree;

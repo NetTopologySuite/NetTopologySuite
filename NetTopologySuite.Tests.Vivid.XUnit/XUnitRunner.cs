@@ -2,9 +2,9 @@
 {
     using System;
     using System.IO;
-    using Open.Topology.TestRunner;
     //using Xunit;
     using NUnit.Framework;
+    using Open.Topology.TestRunner;
 
     /// <summary>
     /// A class designed to allow debugging of individual tests from within the vivid set

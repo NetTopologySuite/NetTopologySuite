@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.GeometriesGraph;
-using NetTopologySuite.GeometriesGraph.Index;
 
 namespace NetTopologySuite.Operation
 {
@@ -26,7 +25,7 @@ namespace NetTopologySuite.Operation
     /// (Note: this means that <tt>IsSimple</tt> cannot be used to test
     /// for (invalid) self-intersections in <tt>Polygon</tt>s.
     /// In order to check if a <tt>Polygonal</tt> geometry has self-intersections,
-    /// use <see cref="NetTopologySuite.Geometries.Geometry.IsValid()" />).</item>
+    /// use <see cref="Geometry.IsValid()" />).</item>
     /// <item><b><see cref="ILineal"/></b> geometries are simple if and only if they do <i>not</i> self-intersect at interior points
     /// (i.e. points other than boundary points).
     /// This is equivalent to saying that no two linear components satisfy the SFS <see cref="IGeometry.Touches(IGeometry)"/>

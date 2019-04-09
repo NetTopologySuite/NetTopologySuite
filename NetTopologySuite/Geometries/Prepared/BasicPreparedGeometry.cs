@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using GeoAPI.Geometries;
-using GeoAPI.Geometries.Prepared;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries.Utilities;
 

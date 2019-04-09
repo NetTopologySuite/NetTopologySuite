@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Strtree;
 using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;
+using AbstractNode = NetTopologySuite.Index.Strtree.AbstractNode<NetTopologySuite.Geometries.Envelope, object>;
 using STRtree = NetTopologySuite.Index.Strtree.STRtree<object>;
-using AbstractNode = NetTopologySuite.Index.Strtree.AbstractNode<GeoAPI.Geometries.Envelope, object>;
 namespace NetTopologySuite.Tests.NUnit.Index.Strtree
 {
     public class STRtreeTest

@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
-using GeoAPI.Operation.Buffer;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
@@ -517,7 +515,7 @@ namespace NetTopologySuite.Operation.Buffer
             int sideSign = side == Positions.Left ? 1 : -1;
             double dx = seg.P1.X - seg.P0.X;
             double dy = seg.P1.Y - seg.P0.Y;
-            double len = System.Math.Sqrt(dx * dx + dy * dy);
+            double len = Math.Sqrt(dx * dx + dy * dy);
             // u is the vector that is the length of the offset, in the direction of the segment
             double ux = sideSign * distance * dx / len;
             double uy = sideSign * distance * dy / len;

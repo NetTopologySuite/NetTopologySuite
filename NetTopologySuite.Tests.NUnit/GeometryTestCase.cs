@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
@@ -59,7 +58,7 @@ namespace NetTopologySuite.Tests.NUnit
             {
                 return reader.Read(wkt);
             }
-            catch (GeoAPI.IO.ParseException e)
+            catch (ParseException e)
             {
                 throw new AssertionException(e.Message, e);
             }
@@ -76,7 +75,7 @@ namespace NetTopologySuite.Tests.NUnit
             {
                 return reader.Read(wkt);
             }
-            catch (GeoAPI.IO.ParseException e)
+            catch (ParseException e)
             {
                 throw new AssertionException(e.Message, e);
             }

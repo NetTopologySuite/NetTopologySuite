@@ -1,6 +1,5 @@
-using System;
 using System.Diagnostics;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Buffer.Validate
 {

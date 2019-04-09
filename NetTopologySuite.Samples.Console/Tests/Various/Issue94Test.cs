@@ -2,9 +2,7 @@
 
 namespace NetTopologySuite.Tests.Various
 {
-    using System;
-    using GeoAPI.Geometries;
-    using Geometries;
+    using NetTopologySuite.Geometries;
 
     [TestFixture]
     public class Issue94Test

@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using System.Xml;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.IO.GML2;

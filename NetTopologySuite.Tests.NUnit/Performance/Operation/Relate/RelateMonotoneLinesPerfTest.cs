@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using GeoAPI.Geometries;
 using NetTopologySuite.Densify;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Tests.NUnit.Utilities;

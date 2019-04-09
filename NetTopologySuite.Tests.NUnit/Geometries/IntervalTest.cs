@@ -1,12 +1,12 @@
-﻿using GeoAPI.DataStructures;
+﻿using NetTopologySuite.DataStructures;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class IntervalTest
     {
-        [TestAttribute]
+        [Test]
         public void TestIntersectsBasic()
         {
             Assert.IsTrue(Interval.Create(5, 10).Overlaps(Interval.Create(7, 12)));
@@ -17,7 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(Interval.Create(10, 12).Overlaps(Interval.Create(5, 10)));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestIntersectsZeroWidthInterval()
         {
             Assert.IsTrue(Interval.Create(10).Overlaps(Interval.Create(7, 12)));
@@ -28,20 +28,20 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(Interval.Create(10, 12).Overlaps(Interval.Create(10)));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestCopyConstructor()
         {
             Assert.IsTrue(IntervalsAreEqual(Interval.Create(3, 4), Interval.Create(3, 4)));
             Assert.IsTrue(IntervalsAreEqual(Interval.Create(3, 4), Interval.Create(Interval.Create(3, 4))));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestCentre()
         {
             Assert.AreEqual(6.5, Interval.Create(4, 9).Centre, 1E-10);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestExpandToInclude()
         {
             var expected = Interval.Create(3, 8);

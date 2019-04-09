@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using GeoAPI.Geometries;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Geometries.Utilities

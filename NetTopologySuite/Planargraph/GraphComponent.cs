@@ -20,11 +20,11 @@ namespace NetTopologySuite.Planargraph
         #region Static
 
         /// <summary>
-        /// Sets the <see cref="GraphComponent.Visited" /> state
+        /// Sets the <see cref="Visited" /> state
         /// for all <see cref="GraphComponent" />s in an <see cref="IEnumerator" />.
         /// </summary>
         /// <param name="i">A <see cref="IEnumerator" /> to scan.</param>
-        /// <param name="visited">The state to set the <see cref="GraphComponent.Visited" /> flag to.</param>
+        /// <param name="visited">The state to set the <see cref="Visited" /> flag to.</param>
         public static void SetVisited(IEnumerator i, bool visited)
         {
             while (i.MoveNext())
@@ -35,11 +35,11 @@ namespace NetTopologySuite.Planargraph
         }
 
         /// <summary>
-        /// Sets the <see cref="GraphComponent.Marked" /> state
+        /// Sets the <see cref="Marked" /> state
         /// for all <see cref="GraphComponent" />s in an <see cref="IEnumerator" />.
         /// </summary>
         /// <param name="i">A <see cref="IEnumerator" /> to scan.</param>
-        /// <param name="marked">The state to set the <see cref="GraphComponent.Marked" /> flag to.</param>
+        /// <param name="marked">The state to set the <see cref="Marked" /> flag to.</param>
         public static void SetMarked(IEnumerator i, bool marked)
         {
             while (i.MoveNext())
@@ -52,10 +52,10 @@ namespace NetTopologySuite.Planargraph
         /// <summary>
         /// Finds the first <see cref="GraphComponent" />
         /// in a <see cref="IEnumerator" /> set
-        /// which has the specified <see cref="GraphComponent.Visited" /> state.
+        /// which has the specified <see cref="Visited" /> state.
         /// </summary>
         /// <param name="i">A <see cref="IEnumerator" /> to scan.</param>
-        /// <param name="visitedState">The <see cref="GraphComponent.Visited" /> state to test.</param>
+        /// <param name="visitedState">The <see cref="Visited" /> state to test.</param>
         /// <returns>The first <see cref="GraphComponent" /> found, or <c>null</c> if none found.</returns>
         public static GraphComponent GetComponentWithVisitedState(IEnumerator i, bool visitedState)
         {

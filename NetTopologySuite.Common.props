@@ -8,8 +8,6 @@
 
     <RestoreAdditionalProjectSources>$(RestoreAdditionalProjectSources);https://www.myget.org/F/nettopologysuite/api/v3/index.json</RestoreAdditionalProjectSources>
 
-    <GeoAPIPackageReferenceVersion>2.0.0-nuget005</GeoAPIPackageReferenceVersion>
-
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)nts.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
