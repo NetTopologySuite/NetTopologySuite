@@ -6,7 +6,7 @@ namespace NetTopologySuite.Geometries.Prepared
 {
     /// <summary>
     /// A prepared version for <see cref="IPolygonal"/> geometries.
-    /// This class supports both <see cref="IPolygon"/>s and <see cref="IMultiPolygon"/>s.
+    /// This class supports both <see cref="Polygon"/>s and <see cref="MultiPolygon"/>s.
     /// <para>This class does <b>not</b> support MultiPolygons which are non-valid
     /// (e.g. with overlapping elements).
     /// </para>
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Geometries.Prepared
         private volatile IPointOnGeometryLocator _pia;
 
         public PreparedPolygon(IPolygonal poly)
-            : base((IGeometry)poly)
+            : base((Geometry)poly)
         {
             _isRectangle = Geometry.IsRectangle;
         }
@@ -68,7 +68,7 @@ namespace NetTopologySuite.Geometries.Prepared
             }
         }
 
-        public override bool Intersects(IGeometry g)
+        public override bool Intersects(Geometry g)
         {
             // envelope test
             if (!EnvelopesIntersect(g)) return false;
@@ -76,13 +76,13 @@ namespace NetTopologySuite.Geometries.Prepared
             // optimization for rectangles
             if (_isRectangle)
             {
-                return RectangleIntersects.Intersects((IPolygon)Geometry, g);
+                return RectangleIntersects.Intersects((Polygon)Geometry, g);
             }
 
             return PreparedPolygonIntersects.Intersects(this, g);
         }
 
-        public override bool Contains(IGeometry g)
+        public override bool Contains(Geometry g)
         {
             // short-circuit test
             if (!EnvelopeCovers(g))
@@ -91,13 +91,13 @@ namespace NetTopologySuite.Geometries.Prepared
             // optimization for rectangles
             if (_isRectangle)
             {
-                return RectangleContains.Contains((IPolygon)Geometry, g);
+                return RectangleContains.Contains((Polygon)Geometry, g);
             }
 
             return PreparedPolygonContains.Contains(this, g);
         }
 
-        public override bool ContainsProperly(IGeometry g)
+        public override bool ContainsProperly(Geometry g)
         {
             // short-circuit test
             if (!EnvelopeCovers(g))
@@ -105,7 +105,7 @@ namespace NetTopologySuite.Geometries.Prepared
             return PreparedPolygonContainsProperly.ContainsProperly(this, g);
         }
 
-        public override bool Covers(IGeometry g)
+        public override bool Covers(Geometry g)
         {
             // short-circuit test
             if (!EnvelopeCovers(g))

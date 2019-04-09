@@ -22,7 +22,7 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         /// <param name="g"></param>
         /// <returns></returns>
-        public static STRtree<FacetSequence> BuildSTRtree(IGeometry g)
+        public static STRtree<FacetSequence> BuildSTRtree(Geometry g)
 // ReSharper restore InconsistentNaming
         {
             var tree = new STRtree<FacetSequence>(STRtreeNodeCapacity);
@@ -40,29 +40,29 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         /// <param name="g">The geometry</param>
         /// <returns>A list of <see cref="FacetSequence"/>s</returns>
-        private static List<FacetSequence> ComputeFacetSequences(IGeometry g)
+        private static List<FacetSequence> ComputeFacetSequences(Geometry g)
         {
             var sections = new List<FacetSequence>();
 
             g.Apply(new GeometryComponentFilter(
-                        delegate(IGeometry geom)
+                        delegate(Geometry geom)
                             {
                                 ICoordinateSequence seq;
-                                if (geom is ILineString)
+                                if (geom is LineString)
                                 {
-                                    seq = ((ILineString) geom).CoordinateSequence;
+                                    seq = ((LineString) geom).CoordinateSequence;
                                     AddFacetSequences(geom, seq, sections);
                                 }
-                                else if (geom is IPoint)
+                                else if (geom is Point)
                                 {
-                                    seq = ((IPoint) geom).CoordinateSequence;
+                                    seq = ((Point) geom).CoordinateSequence;
                                     AddFacetSequences(geom, seq, sections);
                                 }
                             }));
             return sections;
         }
 
-        private static void AddFacetSequences(IGeometry geom, ICoordinateSequence pts, List<FacetSequence> sections)
+        private static void AddFacetSequences(Geometry geom, ICoordinateSequence pts, List<FacetSequence> sections)
         {
             int i = 0;
             int size = pts.Count;

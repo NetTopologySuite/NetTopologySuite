@@ -9,13 +9,13 @@ namespace NetTopologySuite.Operation.Linemerge
     /// </summary>
     public class LineMergeEdge : Edge
     {
-        private readonly ILineString line;
+        private readonly LineString line;
 
         /// <summary>
         /// Constructs a LineMergeEdge with vertices given by the specified LineString.
         /// </summary>
         /// <param name="line"></param>
-        public LineMergeEdge(ILineString line)
+        public LineMergeEdge(LineString line)
         {
             this.line = line;
         }
@@ -23,6 +23,6 @@ namespace NetTopologySuite.Operation.Linemerge
         /// <summary>
         /// Returns the LineString specifying the vertices of this edge.
         /// </summary>
-        public ILineString Line => line;
+        public LineString Line => line;
     }
 }

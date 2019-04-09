@@ -6,21 +6,21 @@ namespace Open.Topology.TestRunner.Functions
 {
     public class BoundaryFunctions
     {
-        public static IGeometry boundary(IGeometry g) { return g.Boundary; }
+        public static Geometry boundary(Geometry g) { return g.Boundary; }
 
-        public static IGeometry boundaryMod2(IGeometry g)
+        public static Geometry boundaryMod2(Geometry g)
         {
             return BoundaryOp.GetBoundary(g, BoundaryNodeRules.Mod2BoundaryRule);
         }
-        public static IGeometry boundaryEndpoint(IGeometry g)
+        public static Geometry boundaryEndpoint(Geometry g)
         {
             return BoundaryOp.GetBoundary(g, BoundaryNodeRules.EndpointBoundaryRule);
         }
-        public static IGeometry boundaryMonoValentEnd(IGeometry g)
+        public static Geometry boundaryMonoValentEnd(Geometry g)
         {
             return BoundaryOp.GetBoundary(g, BoundaryNodeRules.MonoValentEndpointBoundaryRule);
         }
-        public static IGeometry boundaryMultiValentEnd(IGeometry g)
+        public static Geometry boundaryMultiValentEnd(Geometry g)
         {
             return BoundaryOp.GetBoundary(g, BoundaryNodeRules.MultivalentEndpointBoundaryRule);
         }

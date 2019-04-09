@@ -19,14 +19,14 @@ namespace NetTopologySuite.Algorithm
         /// If the point is not of dimension 0 it does not contribute to the centroid.
         /// </summary>
         /// <param name="geom">The point to add.</param>
-        public void Add(IGeometry geom)
+        public void Add(Geometry geom)
         {
-            if (geom is IPoint)
+            if (geom is Point)
                 Add(geom.Coordinate);
 
-            else if(geom is IGeometryCollection)
+            else if(geom is GeometryCollection)
             {
-                var gc = (IGeometryCollection) geom;
+                var gc = (GeometryCollection) geom;
                 foreach (var geometry in gc.Geometries)
                 {
                     Add(geometry);

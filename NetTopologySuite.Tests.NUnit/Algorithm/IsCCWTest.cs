@@ -43,10 +43,10 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         private ICoordinateSequence GetCoordinateSequence(string wkt)
         {
             var geom = reader.Read(wkt);
-            if (!(geom is IPolygon))
+            if (!(geom is Polygon))
                 throw new ArgumentException($"{nameof(wkt)} must be of Polygon");
 
-            var poly = (IPolygon) geom;
+            var poly = (Polygon) geom;
             return poly.ExteriorRing.CoordinateSequence;
         }
     }

@@ -11,67 +11,67 @@ namespace Open.Topology.TestRunner.Functions
     /// <author>Martin Davis</author>
     public static class GeometryFunctions
     {
-        public static double Length(IGeometry g) { return g.Length; }
-        public static double Area(IGeometry g) { return g.Area; }
+        public static double Length(Geometry g) { return g.Length; }
+        public static double Area(Geometry g) { return g.Area; }
 
-        public static bool IsCCW(IGeometry g)
+        public static bool IsCCW(Geometry g)
         {
             ICoordinateSequence pts = null;
-            if (g is IPolygon)
-                pts = ((IPolygon)g).ExteriorRing.CoordinateSequence;
-            else if (g is ILineString && ((ILineString)g).IsClosed)
-                pts = ((ILineString)g).CoordinateSequence;
+            if (g is Polygon)
+                pts = ((Polygon)g).ExteriorRing.CoordinateSequence;
+            else if (g is LineString && ((LineString)g).IsClosed)
+                pts = ((LineString)g).CoordinateSequence;
             if (pts == null)
                 return false;
             return Orientation.IsCCW(pts);
         }
 
-        public static bool IsSimple(IGeometry g) { return g.IsSimple; }
-        public static bool IsValid(IGeometry g) { return g.IsValid; }
-        public static bool IsRectangle(IGeometry g) { return g.IsRectangle; }
-        public static bool IsClosed(IGeometry g)
+        public static bool IsSimple(Geometry g) { return g.IsSimple; }
+        public static bool IsValid(Geometry g) { return g.IsValid; }
+        public static bool IsRectangle(Geometry g) { return g.IsRectangle; }
+        public static bool IsClosed(Geometry g)
         {
-            if (g is ILineString)
-                return ((ILineString)g).IsClosed;
-            if (g is IMultiLineString)
-                return ((IMultiLineString)g).IsClosed;
+            if (g is LineString)
+                return ((LineString)g).IsClosed;
+            if (g is MultiLineString)
+                return ((MultiLineString)g).IsClosed;
             // other geometry types are defined to be closed
             return true;
         }
 
-        public static IGeometry Envelope(IGeometry g) { return g.Envelope; }
-        public static IGeometry Reverse(IGeometry g) { return g.Reverse(); }
-        public static IGeometry Normalize(IGeometry g)
+        public static Geometry Envelope(Geometry g) { return g.Envelope; }
+        public static Geometry Reverse(Geometry g) { return g.Reverse(); }
+        public static Geometry Normalize(Geometry g)
         {
-            var gNorm = (IGeometry)g.Copy();
+            var gNorm = (Geometry)g.Copy();
             gNorm.Normalize();
             return gNorm;
         }
 
-        public static IGeometry Snap(IGeometry g, IGeometry g2, double distance)
+        public static Geometry Snap(Geometry g, Geometry g2, double distance)
         {
             var snapped = GeometrySnapper.Snap(g, g2, distance);
             return snapped[0];
         }
 
-        public static IGeometry GetGeometryN(IGeometry g, int i)
+        public static Geometry GetGeometryN(Geometry g, int i)
         {
             return g.GetGeometryN(i);
         }
 
-        public static IGeometry GetPolygonShell(IGeometry g)
+        public static Geometry GetPolygonShell(Geometry g)
         {
-            if (g is IPolygon)
+            if (g is Polygon)
             {
-                var shell = (ILinearRing)((IPolygon)g).ExteriorRing;
+                var shell = (LinearRing)((Polygon)g).ExteriorRing;
                 return g.Factory.CreatePolygon(shell, null);
             }
-            if (g is IMultiPolygon)
+            if (g is MultiPolygon)
             {
-                var poly = new IPolygon[g.NumGeometries];
+                var poly = new Polygon[g.NumGeometries];
                 for (int i = 0; i < g.NumGeometries; i++)
                 {
-                    var shell = (ILinearRing)((IPolygon)g.GetGeometryN(i)).ExteriorRing;
+                    var shell = (LinearRing)((Polygon)g.GetGeometryN(i)).ExteriorRing;
                     poly[i] = g.Factory.CreatePolygon(shell, null);
                 }
                 return g.Factory.CreateMultiPolygon(poly);
@@ -81,52 +81,52 @@ namespace Open.Topology.TestRunner.Functions
 
         private class InternalGeometryFilterImpl : IGeometryFilter
         {
-            private readonly IList<IGeometry> _holePolys;
+            private readonly IList<Geometry> _holePolys;
 
-            public InternalGeometryFilterImpl(IList<IGeometry> holePolys)
+            public InternalGeometryFilterImpl(IList<Geometry> holePolys)
             {
                 _holePolys = holePolys;
             }
 
-            public void Filter(IGeometry geom)
+            public void Filter(Geometry geom)
             {
-                if (!(geom is IPolygon))
+                if (!(geom is Polygon))
                     return;
-                var poly = (IPolygon)geom;
+                var poly = (Polygon)geom;
                 for (int i = 0; i < poly.NumInteriorRings; i++)
                 {
-                    var hole = geom.Factory.CreatePolygon((ILinearRing)poly.GetInteriorRingN(i), null);
+                    var hole = geom.Factory.CreatePolygon((LinearRing)poly.GetInteriorRingN(i), null);
                     _holePolys.Add(hole);
                 }
             }
         }
-        public static IGeometry GetPolygonHoles(IGeometry geom)
+        public static Geometry GetPolygonHoles(Geometry geom)
         {
-            IList<IGeometry> holePolys = new List<IGeometry>();
+            IList<Geometry> holePolys = new List<Geometry>();
             geom.Apply(new InternalGeometryFilterImpl(holePolys));
             return geom.Factory.BuildGeometry(holePolys);
         }
 
-        public static IGeometry GetPolygonHoleN(IGeometry g, int i)
+        public static Geometry GetPolygonHoleN(Geometry g, int i)
         {
-            if (g is IPolygon)
+            if (g is Polygon)
             {
-                var ring = (ILinearRing)((IPolygon)g).GetInteriorRingN(i);
+                var ring = (LinearRing)((Polygon)g).GetInteriorRingN(i);
                 return ring;
             }
             return null;
         }
 
-        public static IGeometry ConvertToPolygon(IGeometry g)
+        public static Geometry ConvertToPolygon(Geometry g)
         {
-            if (g is IPolygon)
+            if (g is Polygon)
                 return g;
             // TODO: ensure ring is valid
             var ring = g.Factory.CreateLinearRing(g.Coordinates);
             return g.Factory.CreatePolygon(ring, null);
         }
 
-        public static IGeometry GetCoordinates(IGeometry g)
+        public static Geometry GetCoordinates(Geometry g)
         {
             var pts = g.Coordinates;
             return g.Factory.CreateMultiPointFromCoords(pts);

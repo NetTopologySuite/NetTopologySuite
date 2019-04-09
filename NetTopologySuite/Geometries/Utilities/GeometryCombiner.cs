@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
-    /// Combines <see cref="IGeometry"/>s to produce a <see cref="IGeometryCollection"/> of the most appropriate type.
+    /// Combines <see cref="Geometry"/>s to produce a <see cref="GeometryCollection"/> of the most appropriate type.
     /// </summary>
     /// <remarks>
     /// <para>Input geometries which are already collections will have their elements extracted first.</para>
@@ -11,13 +11,13 @@ namespace NetTopologySuite.Geometries.Utilities
     /// (The only case where invalidity is possible is where <see cref="IPolygonal"/> geometries are combined and result in a self-intersection).</para>
     /// </remarks>
     /// <author>mbdavis</author>
-    /// <seealso cref="IGeometryFactory.BuildGeometry"/>
+    /// <seealso cref="GeometryFactory.BuildGeometry"/>
     public class GeometryCombiner
     {
         /// <summary>Combines a collection of geometries.</summary>
         /// <param name="geoms">The geometries to combine</param>
         /// <returns>The combined geometry</returns>
-        public static IGeometry Combine(ICollection<IGeometry> geoms)
+        public static Geometry Combine(ICollection<Geometry> geoms)
         {
             var combiner = new GeometryCombiner(geoms);
             return combiner.Combine();
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="g0">A geometry to combine</param>
         /// <param name="g1">A geometry to combine</param>
         /// <returns>The combined geometry</returns>
-        public static IGeometry Combine(IGeometry g0, IGeometry g1)
+        public static Geometry Combine(Geometry g0, Geometry g1)
         {
             var combiner = new GeometryCombiner(CreateList(g0, g1));
             return combiner.Combine();
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="g1">A geometry to combine</param>
         /// <param name="g2">A geometry to combine</param>
         /// <returns>The combined geometry</returns>
-        public static IGeometry Combine(IGeometry g0, IGeometry g1, IGeometry g2)
+        public static Geometry Combine(Geometry g0, Geometry g1, Geometry g2)
         {
             var combiner = new GeometryCombiner(CreateList(g0, g1, g2));
             return combiner.Combine();
@@ -54,9 +54,9 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="obj0"></param>
         /// <param name="obj1"></param>
         /// <returns>A list from two geometries</returns>
-        private static List<IGeometry> CreateList(IGeometry obj0, IGeometry obj1)
+        private static List<Geometry> CreateList(Geometry obj0, Geometry obj1)
         {
-            return new List<IGeometry> {obj0, obj1};
+            return new List<Geometry> {obj0, obj1};
         }
 
         /// <summary>
@@ -66,25 +66,25 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="obj1"></param>
         /// <param name="obj2"></param>
         /// <returns>A list from three geometries</returns>
-        private static List<IGeometry> CreateList(IGeometry obj0, IGeometry obj1, IGeometry obj2)
+        private static List<Geometry> CreateList(Geometry obj0, Geometry obj1, Geometry obj2)
         {
-            return new List<IGeometry> {obj0, obj1, obj2};
+            return new List<Geometry> {obj0, obj1, obj2};
         }
 
-        private readonly IGeometryFactory _geomFactory;
+        private readonly GeometryFactory _geomFactory;
 
         /// <summary>
         /// Value indicating whether empty geometries should be skipped
         /// </summary>
         public static bool SkipEmpty { get; set; }
 
-        private readonly ICollection<IGeometry> _inputGeoms;
+        private readonly ICollection<Geometry> _inputGeoms;
 
         /// <summary>
         /// Creates a new combiner for a collection of geometries
         /// </summary>
         /// <param name="geoms">The geometries to combine</param>
-        public GeometryCombiner(ICollection<IGeometry> geoms)
+        public GeometryCombiner(ICollection<Geometry> geoms)
         {
             _geomFactory = ExtractFactory(geoms);
             _inputGeoms = geoms;
@@ -95,7 +95,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="geoms"></param>
         /// <returns>a GeometryFactory</returns>
-        public static IGeometryFactory ExtractFactory(ICollection<IGeometry> geoms)
+        public static GeometryFactory ExtractFactory(ICollection<Geometry> geoms)
         {
             if (geoms.Count == 0)
                 return null;
@@ -107,13 +107,13 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Computes the combination of the input geometries to produce the most appropriate <see cref="IGeometry"/> or <see cref="IGeometryCollection"/>
+        /// Computes the combination of the input geometries to produce the most appropriate <see cref="Geometry"/> or <see cref="GeometryCollection"/>
         /// </summary>
         /// <returns>A Geometry which is the combination of the inputs</returns>
         /// <returns></returns>
-        public IGeometry Combine()
+        public Geometry Combine()
         {
-            var elems = new List<IGeometry>();
+            var elems = new List<Geometry>();
             foreach (var geom in _inputGeoms)
                 ExtractElements(geom, elems);
 
@@ -122,7 +122,7 @@ namespace NetTopologySuite.Geometries.Utilities
             return _geomFactory.BuildGeometry(elems);
         }
 
-        private static void ExtractElements(IGeometry geom, ICollection<IGeometry> elems)
+        private static void ExtractElements(Geometry geom, ICollection<Geometry> elems)
         {
             if (geom == null)
                 return;

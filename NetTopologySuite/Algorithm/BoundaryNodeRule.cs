@@ -19,7 +19,7 @@ namespace NetTopologySuite.Algorithm
     /// and respect the supplied rule when computing the results of the operation.
     /// <para/>
     /// An example use case for a non-SFS-standard Boundary Node Rule is
-    /// that of checking that a set of <see cref="ILineString"/>s have
+    /// that of checking that a set of <see cref="LineString"/>s have
     /// valid linear network topology, when turn-arounds are represented
     /// as closed rings.  In this situation, the entry road to the
     /// turn-around is only valid when it touches the turn-around ring
@@ -84,8 +84,8 @@ namespace NetTopologySuite.Algorithm
         /// boundary of a lineal geometry iff
         /// the point lies on the boundary of an odd number
         /// of components.
-        /// Under this rule <see cref="ILinearRing"/>s and closed
-        /// <see cref="ILineString"/>s have an empty boundary.
+        /// Under this rule <see cref="LinearRing"/>s and closed
+        /// <see cref="LineString"/>s have an empty boundary.
         /// </summary>
         /// <remarks>
         /// This is the rule specified by the <i>OGC SFS</i>,
@@ -133,7 +133,7 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// A <see cref="IBoundaryNodeRule"/> which determines that only
         /// endpoints with valency greater than 1 are on the boundary.
-        /// This corresponds to the boundary of a <see cref="IMultiLineString"/>
+        /// This corresponds to the boundary of a <see cref="MultiLineString"/>
         /// being all the "attached" endpoints, but not
         /// the "unattached" ones.
         /// </summary>
@@ -149,7 +149,7 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// A <see cref="IBoundaryNodeRule"/> which determines that only
         /// endpoints with valency of exactly 1 are on the boundary.
-        /// This corresponds to the boundary of a <see cref="IMultiLineString"/>
+        /// This corresponds to the boundary of a <see cref="MultiLineString"/>
         /// being all the "unattached" endpoints.
         /// </summary>
         /// <author>Martin Davis</author>

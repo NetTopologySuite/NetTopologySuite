@@ -6,13 +6,13 @@ using NetTopologySuite.Operation.Distance;
 namespace NetTopologySuite.Operation.Distance3D
 {
     /// <summary>
-    /// Find two points on two  3D <see cref="IGeometry"/>s which lie within a given distance,
+    /// Find two points on two  3D <see cref="Geometry"/>s which lie within a given distance,
     /// or else are the nearest points on the geometries (in which case this also
     /// provides the distance between the geometries).
     /// <para/>
     /// 3D geometries have vertex Z ordinates defined.
-    /// 3D <see cref="IPolygon"/>s are assumed to lie in a single plane (which is enforced if not actually the case).
-    /// 3D <see cref="ILineString"/>s and <see cref="IPoint"/>s may have any configuration.
+    /// 3D <see cref="Polygon"/>s are assumed to lie in a single plane (which is enforced if not actually the case).
+    /// 3D <see cref="LineString"/>s and <see cref="Point"/>s may have any configuration.
     /// <para/>
     /// The distance computation also finds a pair of points in the input geometries
     /// which have the minimum distance between them. If a point lies in the interior
@@ -29,10 +29,10 @@ namespace NetTopologySuite.Operation.Distance3D
         /// <summary>
         /// Compute the distance between the nearest points of two geometries.
         /// </summary>
-        /// <param name="g0">A <see cref="IGeometry">geometry</see></param>
-        /// <param name="g1">A <see cref="IGeometry">geometry</see></param>
+        /// <param name="g0">A <see cref="Geometry">geometry</see></param>
+        /// <param name="g1">A <see cref="Geometry">geometry</see></param>
         /// <returns>The distance between the geometries</returns>
-        public static double Distance(IGeometry g0, IGeometry g1)
+        public static double Distance(Geometry g0, Geometry g1)
         {
             var distOp = new Distance3DOp(g0, g1);
             return distOp.Distance();
@@ -41,11 +41,11 @@ namespace NetTopologySuite.Operation.Distance3D
         /// <summary>
         /// Test whether two geometries lie within a given distance of each other.
         /// </summary>
-        /// <param name="g0">A <see cref="IGeometry">geometry</see></param>
-        /// <param name="g1">A <see cref="IGeometry">geometry</see></param>
+        /// <param name="g0">A <see cref="Geometry">geometry</see></param>
+        /// <param name="g1">A <see cref="Geometry">geometry</see></param>
         /// <param name="distance">The distance to test</param>
         /// <returns><value>true</value> if <c>g0.distance(g1) &lt;= <paramref name="distance"/></c></returns>
-        public static bool IsWithinDistance(IGeometry g0, IGeometry g1,
+        public static bool IsWithinDistance(Geometry g0, Geometry g1,
                                             double distance)
         {
             var distOp = new Distance3DOp(g0, g1, distance);
@@ -56,17 +56,17 @@ namespace NetTopologySuite.Operation.Distance3D
         /// Compute the the nearest points of two geometries. The points are
         /// presented in the same order as the input Geometries.
         /// </summary>
-        /// <param name="g0">A <see cref="IGeometry">geometry</see></param>
-        /// <param name="g1">A <see cref="IGeometry">geometry</see></param>
+        /// <param name="g0">A <see cref="Geometry">geometry</see></param>
+        /// <param name="g1">A <see cref="Geometry">geometry</see></param>
         /// <returns>The nearest points in the geometries</returns>
-        public static Coordinate[] NearestPoints(IGeometry g0, IGeometry g1)
+        public static Coordinate[] NearestPoints(Geometry g0, Geometry g1)
         {
             var distOp = new Distance3DOp(g0, g1);
             return distOp.NearestPoints();
         }
 
         // input
-        private readonly IGeometry[] _geom;
+        private readonly Geometry[] _geom;
         private readonly double _terminateDistance;
         // working
         private GeometryLocation[] _minDistanceLocation;
@@ -79,7 +79,7 @@ namespace NetTopologySuite.Operation.Distance3D
         /// </summary>
         /// <param name="g0">A geometry</param>
         /// <param name="g1">A geometry</param>
-        public Distance3DOp(IGeometry g0, IGeometry g1)
+        public Distance3DOp(Geometry g0, Geometry g1)
             : this(g0, g1, 0.0)
         {
         }
@@ -91,9 +91,9 @@ namespace NetTopologySuite.Operation.Distance3D
         /// <param name="g0">A geometry</param>
         /// <param name="g1">A geometry</param>
         /// <param name="terminateDistance">The distance on which to terminate the search</param>
-        public Distance3DOp(IGeometry g0, IGeometry g1, double terminateDistance)
+        public Distance3DOp(Geometry g0, Geometry g1, double terminateDistance)
         {
-            _geom = new IGeometry[2];
+            _geom = new Geometry[2];
             _geom[0] = g0;
             _geom[1] = g1;
             _terminateDistance = terminateDistance;
@@ -191,9 +191,9 @@ namespace NetTopologySuite.Operation.Distance3D
             return 0;
         }
 
-        private void ComputeMinDistanceMultiMulti(IGeometry g0, IGeometry g1, bool flip)
+        private void ComputeMinDistanceMultiMulti(Geometry g0, Geometry g1, bool flip)
         {
-            if (g0 is IGeometryCollection)
+            if (g0 is GeometryCollection)
             {
                 int n = g0.NumGeometries;
                 for (int i = 0; i < n; i++)
@@ -210,7 +210,7 @@ namespace NetTopologySuite.Operation.Distance3D
                     return;
 
                 // compute planar polygon only once for efficiency
-                if (g0 is IPolygon)
+                if (g0 is Polygon)
                 {
                     ComputeMinDistanceOneMulti(PolyPlane(g0), g1, flip);
                 }
@@ -219,9 +219,9 @@ namespace NetTopologySuite.Operation.Distance3D
             }
         }
 
-        private void ComputeMinDistanceOneMulti(IGeometry g0, IGeometry g1, bool flip)
+        private void ComputeMinDistanceOneMulti(Geometry g0, Geometry g1, bool flip)
         {
-            if (g1 is IGeometryCollection)
+            if (g1 is GeometryCollection)
             {
                 int n = g1.NumGeometries;
                 for (int i = 0; i < n; i++)
@@ -237,9 +237,9 @@ namespace NetTopologySuite.Operation.Distance3D
             }
         }
 
-        private void ComputeMinDistanceOneMulti(PlanarPolygon3D poly, IGeometry geom, bool flip)
+        private void ComputeMinDistanceOneMulti(PlanarPolygon3D poly, Geometry geom, bool flip)
         {
-            if (geom is IGeometryCollection)
+            if (geom is GeometryCollection)
             {
                 int n = geom.NumGeometries;
                 for (int i = 0; i < n; i++)
@@ -251,19 +251,19 @@ namespace NetTopologySuite.Operation.Distance3D
             }
             else
             {
-                if (geom is IPoint)
+                if (geom is Point)
                 {
-                    ComputeMinDistancePolygonPoint(poly, (IPoint)geom, flip);
+                    ComputeMinDistancePolygonPoint(poly, (Point)geom, flip);
                     return;
                 }
-                if (geom is ILineString)
+                if (geom is LineString)
                 {
-                    ComputeMinDistancePolygonLine(poly, (ILineString)geom, flip);
+                    ComputeMinDistancePolygonLine(poly, (LineString)geom, flip);
                     return;
                 }
-                if (geom is IPolygon)
+                if (geom is Polygon)
                 {
-                    ComputeMinDistancePolygonPolygon(poly, (IPolygon)geom, flip);
+                    ComputeMinDistancePolygonPolygon(poly, (Polygon)geom, flip);
                     //return;
                 }
             }
@@ -272,64 +272,64 @@ namespace NetTopologySuite.Operation.Distance3D
         /// <summary>
         /// Convenience method to create a Plane3DPolygon
         /// </summary>
-        private static PlanarPolygon3D PolyPlane(IGeometry poly)
+        private static PlanarPolygon3D PolyPlane(Geometry poly)
         {
-            return new PlanarPolygon3D((IPolygon)poly);
+            return new PlanarPolygon3D((Polygon)poly);
         }
 
-        private void ComputeMinDistance(IGeometry g0, IGeometry g1, bool flip)
+        private void ComputeMinDistance(Geometry g0, Geometry g1, bool flip)
         {
-            if (g0 is IPoint)
+            if (g0 is Point)
             {
-                if (g1 is IPoint)
+                if (g1 is Point)
                 {
-                    ComputeMinDistancePointPoint((IPoint)g0, (IPoint)g1, flip);
+                    ComputeMinDistancePointPoint((Point)g0, (Point)g1, flip);
                     return;
                 }
-                if (g1 is ILineString)
+                if (g1 is LineString)
                 {
-                    ComputeMinDistanceLinePoint((ILineString)g1, (IPoint)g0, !flip);
+                    ComputeMinDistanceLinePoint((LineString)g1, (Point)g0, !flip);
                     return;
                 }
-                if (g1 is IPolygon)
+                if (g1 is Polygon)
                 {
-                    ComputeMinDistancePolygonPoint(PolyPlane(g1), (IPoint)g0, !flip);
+                    ComputeMinDistancePolygonPoint(PolyPlane(g1), (Point)g0, !flip);
                     return;
                 }
             }
-            if (g0 is ILineString)
+            if (g0 is LineString)
             {
-                if (g1 is IPoint)
+                if (g1 is Point)
                 {
-                    ComputeMinDistanceLinePoint((ILineString)g0, (IPoint)g1, flip);
+                    ComputeMinDistanceLinePoint((LineString)g0, (Point)g1, flip);
                     return;
                 }
-                if (g1 is ILineString)
+                if (g1 is LineString)
                 {
-                    ComputeMinDistanceLineLine((ILineString)g0, (ILineString)g1, flip);
+                    ComputeMinDistanceLineLine((LineString)g0, (LineString)g1, flip);
                     return;
                 }
-                if (g1 is IPolygon)
+                if (g1 is Polygon)
                 {
-                    ComputeMinDistancePolygonLine(PolyPlane(g1), (ILineString)g0, !flip);
+                    ComputeMinDistancePolygonLine(PolyPlane(g1), (LineString)g0, !flip);
                     return;
                 }
             }
-            if (g0 is IPolygon)
+            if (g0 is Polygon)
             {
-                if (g1 is IPoint)
+                if (g1 is Point)
                 {
-                    ComputeMinDistancePolygonPoint(PolyPlane(g0), (IPoint)g1, flip);
+                    ComputeMinDistancePolygonPoint(PolyPlane(g0), (Point)g1, flip);
                     return;
                 }
-                if (g1 is ILineString)
+                if (g1 is LineString)
                 {
-                    ComputeMinDistancePolygonLine(PolyPlane(g0), (ILineString)g1, flip);
+                    ComputeMinDistancePolygonLine(PolyPlane(g0), (LineString)g1, flip);
                     return;
                 }
-                if (g1 is IPolygon)
+                if (g1 is Polygon)
                 {
-                    ComputeMinDistancePolygonPolygon(PolyPlane(g0), (IPolygon)g1, flip);
+                    ComputeMinDistancePolygonPolygon(PolyPlane(g0), (Polygon)g1, flip);
                     //return;
                 }
             }
@@ -350,7 +350,7 @@ namespace NetTopologySuite.Operation.Distance3D
         /// passing through the holes of A.
         /// The polygons intersect,
         /// but A's shell does not intersect B, and B's shell does not intersect A.</remarks>
-        private void ComputeMinDistancePolygonPolygon(PlanarPolygon3D poly0, IPolygon poly1,
+        private void ComputeMinDistancePolygonPolygon(PlanarPolygon3D poly0, Polygon poly1,
                                                       bool flip)
         {
             ComputeMinDistancePolygonRings(poly0, poly1, flip);
@@ -360,7 +360,7 @@ namespace NetTopologySuite.Operation.Distance3D
         }
 
         /// <summary>Compute distance between a polygon and the rings of another.</summary>
-        private void ComputeMinDistancePolygonRings(PlanarPolygon3D poly, IPolygon ringPoly,
+        private void ComputeMinDistancePolygonRings(PlanarPolygon3D poly, Polygon ringPoly,
                                                     bool flip)
         {
             // compute shell ring
@@ -375,7 +375,7 @@ namespace NetTopologySuite.Operation.Distance3D
             }
         }
 
-        private void ComputeMinDistancePolygonLine(PlanarPolygon3D poly, ILineString line,
+        private void ComputeMinDistancePolygonLine(PlanarPolygon3D poly, LineString line,
                                                    bool flip)
         {
 
@@ -402,7 +402,7 @@ namespace NetTopologySuite.Operation.Distance3D
             }
         }
 
-        private static Coordinate Intersection(PlanarPolygon3D poly, ILineString line)
+        private static Coordinate Intersection(PlanarPolygon3D poly, LineString line)
         {
             var seq = line.CoordinateSequence;
             if (seq.Count == 0)
@@ -447,7 +447,7 @@ namespace NetTopologySuite.Operation.Distance3D
             return null;
         }
 
-        private void ComputeMinDistancePolygonPoint(PlanarPolygon3D polyPlane, IPoint point,
+        private void ComputeMinDistancePolygonPoint(PlanarPolygon3D polyPlane, Point point,
                                                     bool flip)
         {
             var pt = point.Coordinate;
@@ -480,7 +480,7 @@ namespace NetTopologySuite.Operation.Distance3D
             ComputeMinDistanceLinePoint(shell, point, flip);
         }
 
-        private void ComputeMinDistanceLineLine(ILineString line0, ILineString line1,
+        private void ComputeMinDistanceLineLine(LineString line0, LineString line1,
                                                 bool flip)
         {
             var coord0 = line0.Coordinates;
@@ -510,7 +510,7 @@ namespace NetTopologySuite.Operation.Distance3D
             }
         }
 
-        private void ComputeMinDistanceLinePoint(ILineString line, IPoint point,
+        private void ComputeMinDistanceLinePoint(LineString line, Point point,
                                                  bool flip)
         {
             var lineCoord = line.Coordinates;
@@ -533,7 +533,7 @@ namespace NetTopologySuite.Operation.Distance3D
             }
         }
 
-        private void ComputeMinDistancePointPoint(IPoint point0, IPoint point1, bool flip)
+        private void ComputeMinDistancePointPoint(Point point0, Point point1, bool flip)
         {
             double dist = CGAlgorithms3D.Distance(
                 point0.Coordinate,

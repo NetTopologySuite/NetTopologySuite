@@ -4,7 +4,7 @@ namespace NetTopologySuite.Precision
 {
     /// <summary>
     /// Removes common most-significant mantissa bits
-    /// from one or more <see cref="IGeometry"/>s.
+    /// from one or more <see cref="Geometry"/>s.
     /// <para/>
     /// The CommonBitsRemover "scavenges" precision
     /// which is "wasted" by a large displacement of the geometry
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Precision
         /// geometries.
         /// </summary>
         /// <param name="geom">A Geometry to test for common bits.</param>
-        public void Add(IGeometry geom)
+        public void Add(Geometry geom)
         {
             geom.Apply(_ccFilter);
             _commonCoord = _ccFilter.CommonCoordinate;
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Precision
         /// </summary>
         /// <param name="geom">The Geometry from which to remove the common coordinate bits.</param>
         /// <returns>The shifted Geometry.</returns>
-        public IGeometry RemoveCommonBits(IGeometry geom)
+        public Geometry RemoveCommonBits(Geometry geom)
         {
             if (_commonCoord.X == 0.0 && _commonCoord.Y == 0.0)
                 return geom;
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Precision
         /// The coordinates of the Geometry are changed.
         /// </summary>
         /// <param name="geom">The Geometry to which to add the common coordinate bits.</param>
-        public void AddCommonBits(IGeometry geom)
+        public void AddCommonBits(Geometry geom)
         {
             var trans = new Translater(_commonCoord);
             geom.Apply(trans);

@@ -23,16 +23,16 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
 
     public class SplitPolygonExample
     {
-        internal static IGeometry SplitPolygon(IGeometry polygon, IGeometry line)
+        internal static Geometry SplitPolygon(Geometry polygon, Geometry line)
         {
             var nodedLinework = polygon.Boundary.Union(line);
             var polygons = Polygonize(nodedLinework);
 
             // only keep polygons which are inside the input
-            var output = new List<IGeometry>();
+            var output = new List<Geometry>();
             for (int i = 0; i < polygons.NumGeometries; i++)
             {
-                var candpoly = (IPolygon)polygons.GetGeometryN(i);
+                var candpoly = (Polygon)polygons.GetGeometryN(i);
                 if (polygon.Contains(candpoly.InteriorPoint))
                     output.Add(candpoly);
             }
@@ -47,23 +47,23 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
             return polygon.Factory.BuildGeometry(output);
         }
 
-        internal static IGeometry Polygonize(IGeometry geometry)
+        internal static Geometry Polygonize(Geometry geometry)
         {
             var lines = LineStringExtracter.GetLines(geometry);
             var polygonizer = new Polygonizer(false);
             polygonizer.Add(lines);
-            var polys = new List<IGeometry>(polygonizer.GetPolygons());
+            var polys = new List<Geometry>(polygonizer.GetPolygons());
 
             var polyArray = GeometryFactory.ToGeometryArray(polys);
             return geometry.Factory.BuildGeometry(polyArray);
         }
 
         /*
-        internal static IGeometry PolygonizeForClip(IGeometry geometry, IPreparedGeometry clip)
+        internal static Geometry PolygonizeForClip(Geometry geometry, IPreparedGeometry clip)
         {
             var lines = LineStringExtracter.GetLines(geometry);
-            var clippedLines = new List<IGeometry>();
-            foreach (ILineString line in lines)
+            var clippedLines = new List<Geometry>();
+            foreach (LineString line in lines)
             {
                 if (clip.Contains(line))
                     clippedLines.Add(line);
@@ -76,9 +76,9 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
         }
          */
 
-        internal static IGeometry ClipPolygon(IGeometry polygon, IPolygonal clipPolygonal)
+        internal static Geometry ClipPolygon(Geometry polygon, IPolygonal clipPolygonal)
         {
-            var clipPolygon = (IGeometry) clipPolygonal;
+            var clipPolygon = (Geometry) clipPolygonal;
             var nodedLinework = polygon.Boundary.Union(clipPolygon.Boundary);
             var polygons = Polygonize(nodedLinework);
 
@@ -88,10 +88,10 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
                 */
 
             // only keep polygons which are inside the input
-            var output = new List<IGeometry>();
+            var output = new List<Geometry>();
             for (int i = 0; i < polygons.NumGeometries; i++)
             {
-                var candpoly = (IPolygon) polygons.GetGeometryN(i);
+                var candpoly = (Polygon) polygons.GetGeometryN(i);
                 var interiorPoint = candpoly.InteriorPoint;
                 if (polygon.Contains(interiorPoint) &&
                     /*prepClipPolygon.Contains(candpoly)*/
@@ -202,7 +202,7 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
             DoSplitTest(geom1, geom2Wkt, resultWkt);
         }
 
-        private static void DoSplitTest(IGeometry geom1, string geom2Wkt, string resultWkt = null)
+        private static void DoSplitTest(Geometry geom1, string geom2Wkt, string resultWkt = null)
         {
             Console.WriteLine("with\n{0}", geom2Wkt);
 
@@ -220,7 +220,7 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
                     "result.EqualsTopologically(expected)");
             }
         }
-        private static void ToImage(IGeometry geom1, IGeometry geom2, IGeometry geom3)
+        private static void ToImage(Geometry geom1, Geometry geom2, Geometry geom3)
         {
             //var gpw = new Windows.Forms.GraphicsPathWriter();
 

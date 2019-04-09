@@ -7,8 +7,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class MultiPointImplTest
     {
-        private IPrecisionModel precisionModel;
-        private IGeometryFactory geometryFactory;
+        private PrecisionModel precisionModel;
+        private GeometryFactory geometryFactory;
         WKTReader reader;
 
         public MultiPointImplTest()

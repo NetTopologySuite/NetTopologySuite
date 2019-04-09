@@ -32,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         void CheckOnLine(double x, double y, string wktLine, bool expected)
         {
-            var line = (ILineString) Read(wktLine);
+            var line = (LineString) Read(wktLine);
 
             Assert.AreEqual(expected, PointLocation.IsOnLine(new Coordinate(x, y), line.Coordinates));
             Assert.AreEqual(expected, PointLocation.IsOnLine(new Coordinate(x, y), line.CoordinateSequence));

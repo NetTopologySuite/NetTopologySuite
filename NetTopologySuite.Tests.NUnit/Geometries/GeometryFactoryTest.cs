@@ -8,8 +8,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class GeometryFactoryTest
     {
-        private readonly static IPrecisionModel PrecModel = new PrecisionModel();
-        private readonly static IGeometryFactory Factory = new GeometryFactory(PrecModel, 0);
+        private readonly static PrecisionModel PrecModel = new PrecisionModel();
+        private readonly static GeometryFactory Factory = new GeometryFactory(PrecModel, 0);
         private readonly WKTReader _reader = new WKTReader(Factory);
 
         [Test]
@@ -30,7 +30,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestDeepCopy()
         {
-            var g = (IPoint)Read("POINT ( 10 10) ");
+            var g = (Point)Read("POINT ( 10 10) ");
             var g2 = Factory.CreateGeometry(g);
             g.CoordinateSequence.SetOrdinate(0, 0, 99);
             Assert.IsTrue(!g.EqualsExact(g2));
@@ -49,11 +49,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             mpSeq.SetOrdinate(0, Ordinate.Y, -2);
 
             var g = gf.CreatePoint(mpSeq);
-            var geometryN = (IPoint)g.GetGeometryN(0);
+            var geometryN = (Point)g.GetGeometryN(0);
             var gSeq = geometryN.CoordinateSequence;
             Assert.AreEqual(2, gSeq.Dimension);
 
-            var g2 = (IPoint)Factory.CreateGeometry(g);
+            var g2 = (Point)Factory.CreateGeometry(g);
             var g2Seq = g2.CoordinateSequence;
             Assert.AreEqual(2, g2Seq.Dimension);
         }
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(g.EqualsExact(g2));
         }
 
-        private IGeometry Read(string wkt)
+        private Geometry Read(string wkt)
         {
             return _reader.Read(wkt);
         }

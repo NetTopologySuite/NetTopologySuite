@@ -19,8 +19,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         private static int NumberOfArms = 20;
         private static double ArmRatio = 0.3;
 
-        private IGeometry _sineStar;
-        private IGeometry _sinePolyCrinkly;
+        private Geometry _sineStar;
+        private Geometry _sinePolyCrinkly;
 
         public InteriorPointAreaPerfTest()
             : base(nameof(InteriorPointAreaPerfTest))

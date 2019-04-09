@@ -15,7 +15,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// </summary>
         /// <param name="g">A polygonal geometry</param>
         /// <returns>Coordinate of the geometry's centroid</returns>
-        private static Coordinate AreaWeightedCentroid(IGeometry g)
+        private static Coordinate AreaWeightedCentroid(Geometry g)
         {
             double totalArea = g.Area;
             double cx = 0d;

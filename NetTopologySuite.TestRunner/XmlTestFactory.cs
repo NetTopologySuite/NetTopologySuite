@@ -329,7 +329,7 @@ namespace Open.Topology.TestRunner
 
         protected bool ParseGeometry(Target targetType, string targetText, XmlTest xmlTestItem)
         {
-            IGeometry geom;
+            Geometry geom;
             try
             {
                 geom = _objReader.Read(targetText);

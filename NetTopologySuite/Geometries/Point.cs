@@ -14,14 +14,14 @@ namespace NetTopologySuite.Geometries
     /// </summary>
     ///
     [Serializable]
-    public class Point : Geometry, IPoint
+    public class Point : Geometry, IPuntal
     {
         private static readonly Coordinate EmptyCoordinate = null;
 
         /// <summary>
         /// Represents an empty <c>Point</c>.
         /// </summary>
-        public static readonly IPoint Empty = new GeometryFactory().CreatePoint(EmptyCoordinate);
+        public static readonly Point Empty = new GeometryFactory().CreatePoint(EmptyCoordinate);
 
         /// <summary>
         /// The <c>Coordinate</c> wrapped by this <c>Point</c>.
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Geometries
         /// or <c>null</c> to create the empty point.
         /// </param>
         /// <param name="factory"></param>
-        public Point(ICoordinateSequence coordinates, IGeometryFactory factory) : base(factory)
+        public Point(ICoordinateSequence coordinates, GeometryFactory factory) : base(factory)
         {
             if (coordinates == null)
                 coordinates = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
@@ -153,7 +153,7 @@ namespace NetTopologySuite.Geometries
         ///Zero-dimensional geometries have no boundary by definition,
         ///so an empty GeometryCollection is returned.
         /// </summary>
-        public override IGeometry Boundary => Factory.CreateGeometryCollection();
+        public override Geometry Boundary => Factory.CreateGeometryCollection();
 
         /// <summary>
         ///
@@ -179,7 +179,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance)
+        public override bool EqualsExact(Geometry other, double tolerance)
         {
             if (!IsEquivalentClass(other))
                 return false;
@@ -241,15 +241,15 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <inheritdoc cref="Geometry.CopyInternal"/>>
-        protected override IGeometry CopyInternal()
+        protected override Geometry CopyInternal()
         {
             var coordinates = _coordinates.Copy();
             return new Point(coordinates, Factory);
         }
 
-        public override IGeometry Reverse()
+        public override Geometry Reverse()
         {
-            return (IGeometry)Copy();
+            return (Geometry)Copy();
         }
 
         /// <summary>
@@ -276,7 +276,7 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         protected internal override int CompareToSameClass(object other, IComparer<ICoordinateSequence> comparer)
         {
-            return comparer.Compare(CoordinateSequence, ((IPoint) other).CoordinateSequence);
+            return comparer.Compare(CoordinateSequence, ((Point) other).CoordinateSequence);
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */

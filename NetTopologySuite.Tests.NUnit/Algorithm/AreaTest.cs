@@ -27,7 +27,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         void CheckAreaOfRing(string wkt, double expectedArea)
         {
-            var ring = (ILinearRing) Read(wkt);
+            var ring = (LinearRing) Read(wkt);
 
             var ringPts = ring.Coordinates;
             double actual1 = Area.OfRing(ringPts);
@@ -40,7 +40,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         void CheckAreaOfRingSigned(string wkt, double expectedArea)
         {
-            var ring = (ILinearRing) Read(wkt);
+            var ring = (LinearRing) Read(wkt);
 
             var ringPts = ring.Coordinates;
             double actual1 = Area.OfRingSigned(ringPts);

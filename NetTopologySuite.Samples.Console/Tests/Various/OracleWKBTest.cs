@@ -39,7 +39,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void OracleWKBBigEndianReadTest()
         {
-            IGeometry result = null;
+            Geometry result = null;
             using (Stream stream = new FileStream(blobFile, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 var wkbreader = new WKBReader();
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Samples.Tests.Various
                                                                                 new Coordinate(180,180),
                                                                                 new Coordinate(120,180),
                                                                                 new Coordinate(120,120), });
-            var polygon = Factory.CreatePolygon(shell, new ILinearRing[] { hole, });
+            var polygon = Factory.CreatePolygon(shell, new LinearRing[] { hole, });
             var writer = new WKBWriter(ByteOrder.BigEndian);
             byte[] bytes = writer.Write(polygon);
             Assert.IsNotNull(bytes);

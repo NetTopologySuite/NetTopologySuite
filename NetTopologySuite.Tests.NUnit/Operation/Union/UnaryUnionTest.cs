@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
 
         private void DoTest(string[] inputWKT, string expectedWKT)
         {
-            IGeometry result;
+            Geometry result;
             var geoms = GeometryUtils.ReadWKT(inputWKT);
             if (geoms.Count == 0)
             {

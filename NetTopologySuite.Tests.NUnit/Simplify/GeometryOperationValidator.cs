@@ -11,11 +11,11 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
     public class GeometryOperationValidator
     {
         private readonly WKTReader _reader = new WKTReader();
-        private readonly IGeometry[] _ioGeometry;
+        private readonly Geometry[] _ioGeometry;
         private bool _expectedSameStructure;
         private string _wktExpected;
 
-        public GeometryOperationValidator(IGeometry[] ioGeometry)
+        public GeometryOperationValidator(Geometry[] ioGeometry)
         {
             _ioGeometry = ioGeometry;
         }

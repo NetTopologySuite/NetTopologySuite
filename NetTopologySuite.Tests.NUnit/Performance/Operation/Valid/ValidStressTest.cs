@@ -52,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
             checkValid("StarCross " + geom.GeometryType + "   (size = " + size + ")", geom);
         }
 
-        private void checkValid(string name, IGeometry g)
+        private void checkValid(string name, Geometry g)
         {
             System.Console.WriteLine("Running " + name);
             var sw = new Stopwatch();
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
 
     internal class StarCross
     {
-        public static IPolygon Star(Envelope env, int nSeg, IGeometryFactory geomFact)
+        public static Polygon Star(Envelope env, int nSeg, GeometryFactory geomFact)
         {
             var pts = new Coordinate[nSeg + 1];
             var centre = env.Centre;
@@ -93,17 +93,17 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Valid
     internal class Comb
     {
 
-        public static IMultiPolygon CrossedComb(Envelope env, int size, GeometryFactory geomFact)
+        public static MultiPolygon CrossedComb(Envelope env, int size, GeometryFactory geomFact)
         {
             var comb1 = CreateComb(env, size, geomFact);
             var centre = env.Centre;
             var trans = AffineTransformation.RotationInstance(0.5 * System.Math.PI, centre.X, centre.Y);
-            var comb2 = (IPolygon)trans.Transform(comb1);
+            var comb2 = (Polygon)trans.Transform(comb1);
             var mp = geomFact.CreateMultiPolygon(new [] { comb1, comb2 });
             return mp;
         }
 
-        private static IPolygon CreateComb(Envelope env, int nArms, IGeometryFactory geomFact)
+        private static Polygon CreateComb(Envelope env, int nArms, GeometryFactory geomFact)
         {
             int npts = 4 * (nArms - 1) + 2 + 2 + 1;
             var pts = new Coordinate[npts];

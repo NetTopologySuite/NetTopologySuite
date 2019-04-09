@@ -137,7 +137,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             RunOffsetTest("MULTILINESTRING ((0 0, 10 0), (10 0, 20 0))", "POINT(20 0)", 1.0, "POINT (20 1)");
         }
 
-        protected IGeometry Read(string wkt)
+        protected Geometry Read(string wkt)
         {
             try
             {
@@ -157,7 +157,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             CheckExpected(result, subLineStr);
         }
 
-        protected void CheckExpected(IGeometry result, string expected)
+        protected void CheckExpected(Geometry result, string expected)
         {
             var subLine = Read(expected);
             bool isEqual = result.EqualsExact(subLine, 1.0e-5);
@@ -166,7 +166,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             Assert.IsTrue(isEqual);
         }
 
-        protected abstract IGeometry IndicesOfThenExtract(IGeometry input, IGeometry subLine);
+        protected abstract Geometry IndicesOfThenExtract(Geometry input, Geometry subLine);
         /*
         // example of indicesOfThenLocate method
         private Geometry indicesOfThenLocate(LineString input, LineString subLine)
@@ -187,7 +187,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             Assert.IsTrue(resultOk);
         }
 
-        protected abstract bool IndexOfAfterCheck(IGeometry input, Coordinate testPt);
+        protected abstract bool IndexOfAfterCheck(Geometry input, Coordinate testPt);
 
         private const double ToleranceDist = 0.001;
 
@@ -206,6 +206,6 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             Assert.IsTrue(isOk);
         }
 
-        protected abstract Coordinate ExtractOffsetAt(IGeometry input, Coordinate testPt, double offsetDistance);
+        protected abstract Coordinate ExtractOffsetAt(Geometry input, Coordinate testPt, double offsetDistance);
     }
 }

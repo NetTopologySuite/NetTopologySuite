@@ -189,9 +189,9 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
     {
         private static readonly WKTReader Rdr = new WKTReader();
 
-        public static IGeometry[] GetResult(string wkt, double tolerance)
+        public static Geometry[] GetResult(string wkt, double tolerance)
         {
-            var ioGeom = new IGeometry[2];
+            var ioGeom = new Geometry[2];
             ioGeom[0] = Rdr.Read(wkt);
             ioGeom[1] = DouglasPeuckerSimplifier.Simplify(ioGeom[0], tolerance);
             //System.Console.WriteLine(ioGeom[1]);

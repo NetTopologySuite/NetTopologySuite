@@ -5,12 +5,12 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Operation
 {
     /// <summary>
-    /// Computes the boundary of a <see cref="IGeometry"/>.
+    /// Computes the boundary of a <see cref="Geometry"/>.
     /// Allows specifying the <see cref="IBoundaryNodeRule"/> to be used.
-    /// This operation will always return a <see cref="IGeometry"/> of the appropriate
+    /// This operation will always return a <see cref="Geometry"/> of the appropriate
     /// dimension for the boundary (even if the input geometry is empty).
     /// The boundary of zero-dimensional geometries (Points) is
-    /// always the empty <see cref="IGeometryCollection"/>.
+    /// always the empty <see cref="GeometryCollection"/>.
     /// </summary>
     /// <author>Martin Davis</author>
     public class BoundaryOp
@@ -20,7 +20,7 @@ namespace NetTopologySuite.Operation
         /// </summary>
         /// <param name="g">The input geometry.</param>
         /// <returns>The computed boundary.</returns>
-        public static IGeometry GetBoundary(IGeometry g)
+        public static Geometry GetBoundary(Geometry g)
         {
             var bop = new BoundaryOp(g);
             return bop.GetBoundary();
@@ -33,21 +33,21 @@ namespace NetTopologySuite.Operation
         /// <param name="g">The input geometry.</param>
         /// <param name="bnRule">The Boundary Node Rule to use.</param>
         /// <returns>The computed boundary.</returns>
-        public static IGeometry GetBoundary(IGeometry g, IBoundaryNodeRule bnRule)
+        public static Geometry GetBoundary(Geometry g, IBoundaryNodeRule bnRule)
         {
             var bop = new BoundaryOp(g, bnRule);
             return bop.GetBoundary();
         }
 
-        private readonly IGeometry _geom;
-        private readonly IGeometryFactory _geomFact;
+        private readonly Geometry _geom;
+        private readonly GeometryFactory _geomFact;
         private readonly IBoundaryNodeRule _bnRule;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BoundaryOp"/> class for the given geometry.
         /// </summary>
         /// <param name="geom">The input geometry.</param>
-        public BoundaryOp(IGeometry geom)
+        public BoundaryOp(Geometry geom)
             : this(geom, BoundaryNodeRules.Mod2BoundaryRule)
         {
         }
@@ -57,7 +57,7 @@ namespace NetTopologySuite.Operation
         /// </summary>
         /// <param name="geom">The input geometry.</param>
         /// <param name="bnRule">Tthe Boundary Node Rule to use.</param>
-        public BoundaryOp(IGeometry geom, IBoundaryNodeRule bnRule)
+        public BoundaryOp(Geometry geom, IBoundaryNodeRule bnRule)
         {
             _geom = geom;
             _geomFact = geom.Factory;
@@ -68,19 +68,19 @@ namespace NetTopologySuite.Operation
         /// Gets the computed boundary.
         /// </summary>
         /// <returns>The boundary geometry.</returns>
-        public IGeometry GetBoundary()
+        public Geometry GetBoundary()
         {
-            if (_geom is ILineString) return BoundaryLineString((ILineString)_geom);
-            if (_geom is IMultiLineString) return BoundaryMultiLineString((IMultiLineString)_geom);
+            if (_geom is LineString) return BoundaryLineString((LineString)_geom);
+            if (_geom is MultiLineString) return BoundaryMultiLineString((MultiLineString)_geom);
             return _geom.Boundary;
         }
 
-        private IMultiPoint GetEmptyMultiPoint()
+        private MultiPoint GetEmptyMultiPoint()
         {
             return _geomFact.CreateMultiPoint();
         }
 
-        private IGeometry BoundaryMultiLineString(IMultiLineString mLine)
+        private Geometry BoundaryMultiLineString(MultiLineString mLine)
         {
             if (_geom.IsEmpty)
             {
@@ -114,13 +114,13 @@ namespace NetTopologySuite.Operation
         private IDictionary<Coordinate, Counter> _endpointMap;
         //private Map endpointMap;
 
-        private Coordinate[] ComputeBoundaryCoordinates(IMultiLineString mLine)
+        private Coordinate[] ComputeBoundaryCoordinates(MultiLineString mLine)
         {
             var bdyPts = new List<Coordinate>();
             _endpointMap = new SortedDictionary<Coordinate, Counter>();
             for (int i = 0; i < mLine.NumGeometries; i++)
             {
-                var line = (ILineString)mLine.GetGeometryN(i);
+                var line = (LineString)mLine.GetGeometryN(i);
                 if (line.NumPoints == 0)
                     continue;
                 AddEndpoint(line.GetCoordinateN(0));
@@ -151,7 +151,7 @@ namespace NetTopologySuite.Operation
             counter.Count++;
         }
 
-        private IGeometry BoundaryLineString(ILineString line)
+        private Geometry BoundaryLineString(LineString line)
         {
             if (_geom.IsEmpty)
             {

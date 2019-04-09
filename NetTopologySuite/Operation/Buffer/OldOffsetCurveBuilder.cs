@@ -7,7 +7,7 @@ using NetTopologySuite.GeometriesGraph;
 namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
-    /// Computes the raw offset curve for a single <see cref="IGeometry"/> component (ring, line or point).
+    /// Computes the raw offset curve for a single <see cref="Geometry"/> component (ring, line or point).
     /// </summary>
     /// <remarks>
     /// A raw offset curve line is not noded - it may contain self-intersections (and usually will).
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Operation.Buffer
         private const int MAX_CLOSING_SEG_FRACTION = 80;
 
         private double _distance;
-        private readonly IPrecisionModel _precisionModel;
+        private readonly PrecisionModel _precisionModel;
 
         private readonly IBufferParameters _bufParams;
 
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Operation.Buffer
         private readonly LineIntersector _li;
 
         public OldOffsetCurveBuilder(
-                      IPrecisionModel precisionModel,
+                      PrecisionModel precisionModel,
                       IBufferParameters bufParams
                       )
         {

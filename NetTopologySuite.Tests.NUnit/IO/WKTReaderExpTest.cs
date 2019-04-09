@@ -11,7 +11,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
     [TestFixture]
     public class WKTReaderExpTest
     {
-        private IGeometryFactory fact;
+        private GeometryFactory fact;
         private WKTReader rdr;
 
         public WKTReaderExpTest()

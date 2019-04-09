@@ -21,7 +21,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="nArms">The number of arms to generate.</param>
         /// <param name="armLengthRatio">The arm length ratio.</param>
         /// <returns>A sine star shape.</returns>
-        public static IGeometry Create(Coordinate origin, double size, int nPts, int nArms, double armLengthRatio)
+        public static Geometry Create(Coordinate origin, double size, int nPts, int nArms, double armLengthRatio)
         {
             var gsf = new SineStarFactory
             {
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Creates a factory which will create sine stars using the default <see cref="IGeometryFactory"/>
+        /// Creates a factory which will create sine stars using the default <see cref="GeometryFactory"/>
         /// </summary>
         public SineStarFactory()
             : this(new GeometryFactory())
@@ -45,10 +45,10 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Creates a factory which will create sine stars using the given <see cref="IGeometryFactory"/>
+        /// Creates a factory which will create sine stars using the given <see cref="GeometryFactory"/>
         /// </summary>
         /// <param name="geomFact">The factory to use</param>
-        public SineStarFactory(IGeometryFactory geomFact)
+        public SineStarFactory(GeometryFactory geomFact)
             : base(geomFact)
         {
             NumArms = 8;
@@ -69,7 +69,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// Generates the geometry for the sine star
         /// </summary>
         /// <returns>The geometry representing the sine star</returns>
-        public IGeometry CreateSineStar()
+        public Geometry CreateSineStar()
         {
             var env = Envelope;
             double radius = env.Width / 2.0;

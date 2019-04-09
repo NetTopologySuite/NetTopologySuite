@@ -28,7 +28,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
         private static int BATCH_SIZE = 20;
         private static double MAX_DISPLACEMENT = 60;
 
-        private IGeometry _baseAccum;
+        private Geometry _baseAccum;
         private int _geomCount;
 
         private readonly Random _rnd = new Random((int)(Math.PI * 10e5));
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
                 );
         }
 
-        public IGeometry[] GenerateGeometryStar(double angle1, double angle2)
+        public Geometry[] GenerateGeometryStar(double angle1, double angle2)
         {
             var rrFact = new RotatedRectangleFactory();
             var rr1 = rrFact.CreateRectangle(100, 20, angle1);
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
             return new[] { star, rr1 };
         }
 
-        public IGeometry[] GenerateGeometryAccum(double angle1, double angle2)
+        public Geometry[] GenerateGeometryAccum(double angle1, double angle2)
         {
             var rrFact = new RotatedRectangleFactory();
             double basex = angle2 * MAX_DISPLACEMENT - (MAX_DISPLACEMENT / 2);
@@ -99,7 +99,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
             return new[] { _baseAccum, rr1 };
         }
 
-        public void CheckIntersection(IGeometry baseGeom, IGeometry testGeom)
+        public void CheckIntersection(Geometry baseGeom, Geometry testGeom)
         {
             // this line can be used to test for the presence of noding failures for
             // non-tricky cases
@@ -131,14 +131,14 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Overlay
     internal class RotatedRectangleFactory
     {
         private const double PiOver2 = Math.PI/2;
-        private readonly IGeometryFactory _fact = new GeometryFactory();
+        private readonly GeometryFactory _fact = new GeometryFactory();
 
-        public IPolygon CreateRectangle(double length, double width, double angle)
+        public Polygon CreateRectangle(double length, double width, double angle)
         {
             return CreateRectangle(length, width, angle, new Coordinate(0, 0));
         }
 
-        public IPolygon CreateRectangle(double length, double width, double angle, Coordinate baseCoord)
+        public Polygon CreateRectangle(double length, double width, double angle, Coordinate baseCoord)
         {
             double posx = length / 2 * Math.Cos(angle);
             double posy = length / 2 * Math.Sin(angle);

@@ -355,8 +355,8 @@ public class Distance3DOpTest
 
     private void CheckDistance(string wkt1, string wkt2, double expectedDistance, double tolerance)
     {
-        IGeometry g1;
-        IGeometry g2;
+        Geometry g1;
+        Geometry g2;
         try {
             g1 = Rdr.Read(wkt1);
         }
@@ -376,7 +376,7 @@ public class Distance3DOpTest
         CheckDistance(g2, g1, expectedDistance, tolerance);
     }
 
-    private void CheckDistance(IGeometry g1, IGeometry g2, double expectedDistance, double tolerance)
+    private void CheckDistance(Geometry g1, Geometry g2, double expectedDistance, double tolerance)
     {
         var distOp = new Distance3DOp(g1, g2);
             double dist = distOp.Distance();

@@ -9,12 +9,12 @@ namespace Open.Topology.TestRunner.Functions
 {
     public static class BufferFunctions
     {
-        public static IGeometry Buffer(IGeometry g, double distance)
+        public static Geometry Buffer(Geometry g, double distance)
         {
             return g.Buffer(distance);
         }
 
-        public static IGeometry BufferWithParams(IGeometry g, double? distance,
+        public static Geometry BufferWithParams(Geometry g, double? distance,
                                                  int? quadrantSegments, int? capStyle, int? joinStyle,
                                                  double? mitreLimit)
         {
@@ -30,7 +30,7 @@ namespace Open.Topology.TestRunner.Functions
             return BufferOp.Buffer(g, dist, bufParams);
         }
 
-        public static IGeometry BufferWithSimplify(IGeometry g, double? distance,
+        public static Geometry BufferWithSimplify(Geometry g, double? distance,
             double? simplifyFactor)
         {
             double dist = 0;
@@ -42,12 +42,12 @@ namespace Open.Topology.TestRunner.Functions
             return BufferOp.Buffer(g, dist, bufParams);
         }
 
-        public static IGeometry BufferOffsetCurve(IGeometry g, double distance)
+        public static Geometry BufferOffsetCurve(Geometry g, double distance)
         {
             return BuildCurveSet(g, distance, new BufferParameters());
         }
 
-        public static IGeometry BufferOffsetCurveWithParams(IGeometry g, double? distance,
+        public static Geometry BufferOffsetCurveWithParams(Geometry g, double? distance,
             int? quadrantSegments, int? capStyle, int? joinStyle,
             double? mitreLimit)
         {
@@ -63,14 +63,14 @@ namespace Open.Topology.TestRunner.Functions
             return BuildCurveSet(g, dist, bufParams);
         }
 
-        private static IGeometry BuildCurveSet(IGeometry g, double dist, IBufferParameters bufParams)
+        private static Geometry BuildCurveSet(Geometry g, double dist, IBufferParameters bufParams)
         {
             // --- now construct curve
             var ocb = new OffsetCurveBuilder(g.Factory.PrecisionModel, bufParams);
             var ocsb = new OffsetCurveSetBuilder(g, dist, ocb);
             var curves = ocsb.GetCurves();
 
-            var lines = new List<IGeometry>();
+            var lines = new List<Geometry>();
             foreach (var ss in curves)
             {
                 var pts = ss.Coordinates;
@@ -80,16 +80,16 @@ namespace Open.Topology.TestRunner.Functions
             return curve;
         }
 
-        public static IGeometry BufferLineSimplifier(Geometry g, double distance)
+        public static Geometry BufferLineSimplifier(Geometry g, double distance)
         {
             return BuildBufferLineSimplifiedSet(g, distance);
         }
 
-        private static IGeometry BuildBufferLineSimplifiedSet(Geometry g, double distance)
+        private static Geometry BuildBufferLineSimplifiedSet(Geometry g, double distance)
         {
-            var simpLines = new List<IGeometry>();
+            var simpLines = new List<Geometry>();
 
-            var lines = new List<IGeometry>();
+            var lines = new List<Geometry>();
             LinearComponentExtracter.GetLines(g, lines);
             foreach (var line in lines)
             {
@@ -100,7 +100,7 @@ namespace Open.Topology.TestRunner.Functions
             return simpGeom;
         }
 
-        public static IGeometry BufferValidated(IGeometry g, double distance)
+        public static Geometry BufferValidated(Geometry g, double distance)
         {
             var buf = g.Buffer(distance);
             string errMsg = BufferResultValidator.IsValidMessage(g, distance, buf);
@@ -109,7 +109,7 @@ namespace Open.Topology.TestRunner.Functions
             return buf;
         }
 
-        public static IGeometry BufferValidatedGeom(IGeometry g, double distance)
+        public static Geometry BufferValidatedGeom(Geometry g, double distance)
         {
             var buf = g.Buffer(distance);
             var validator = new BufferResultValidator(g, distance, buf);
@@ -117,7 +117,7 @@ namespace Open.Topology.TestRunner.Functions
             return validator.ErrorIndicator;
         }
 
-        public static IGeometry SingleSidedBufferCurve(IGeometry geom, double distance)
+        public static Geometry SingleSidedBufferCurve(Geometry geom, double distance)
         {
             IBufferParameters bufParam = new BufferParameters();
             bufParam.IsSingleSided = true;
@@ -129,13 +129,13 @@ namespace Open.Topology.TestRunner.Functions
             return curve;
         }
 
-        public static IGeometry SingleSidedBuffer(IGeometry geom, double distance)
+        public static Geometry SingleSidedBuffer(Geometry geom, double distance)
         {
             IBufferParameters bufParams = new BufferParameters { IsSingleSided = true };
             return BufferOp.Buffer(geom, distance, bufParams);
         }
 
-        public static IGeometry BufferEach(IGeometry g, double distance)
+        public static Geometry BufferEach(Geometry g, double distance)
         {
             return GeometryMapper.Map(g, gin => gin.Buffer(distance));
         }

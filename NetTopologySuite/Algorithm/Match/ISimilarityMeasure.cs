@@ -17,11 +17,11 @@ namespace NetTopologySuite.Algorithm.Match
     {
 
         /// <summary>
-        /// Function to measure the similarity between two <see cref="IGeometry"/>s.
+        /// Function to measure the similarity between two <see cref="Geometry"/>s.
         /// </summary>
         /// <param name="g1">A geometry</param>
         /// <param name="g2">A geometry</param>
-        /// <returns>The similarity value between two <see cref="IGeometry"/>s</returns>
-        double Measure(IGeometry g1, IGeometry g2);
+        /// <returns>The similarity value between two <see cref="Geometry"/>s</returns>
+        double Measure(Geometry g1, Geometry g2);
     }
 }

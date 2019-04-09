@@ -14,58 +14,58 @@ namespace NetTopologySuite.IO.GML2
     /// </summary>
     public class GMLReader
     {
-        private readonly IGeometryFactory _factory;
+        private readonly GeometryFactory _factory;
 
         /// <summary>
-        /// <see cref="IGeometry"/> builder.
+        /// <see cref="Geometry"/> builder.
         /// </summary>
-        protected IGeometryFactory Factory => _factory;
+        protected GeometryFactory Factory => _factory;
 
         /// <summary>
-        /// Initialize reader with a standard <see cref="IGeometryFactory"/>.
+        /// Initialize reader with a standard <see cref="GeometryFactory"/>.
         /// </summary>
         public GMLReader() : this(GeometryFactory.Default) { }
 
         /// <summary>
-        /// Initialize reader with the given <see cref="IGeometryFactory"/>.
+        /// Initialize reader with the given <see cref="GeometryFactory"/>.
         /// </summary>
-        public GMLReader(IGeometryFactory factory)
+        public GMLReader(GeometryFactory factory)
         {
             _factory = factory;
         }
 
         /// <summary>
-        /// Read a GML document and returns relative <see cref="IGeometry"/>.
+        /// Read a GML document and returns relative <see cref="Geometry"/>.
         /// </summary>
         /// <param name="document"></param>
         /// <returns></returns>
-        public IGeometry Read(XmlDocument document)
+        public Geometry Read(XmlDocument document)
         {
             return Read(document.InnerXml);
         }
 
         /// <summary>
-        /// Read a GML document and returns relative <see cref="IGeometry"/>.
+        /// Read a GML document and returns relative <see cref="Geometry"/>.
         /// </summary>
         /// <param name="document"></param>
         /// <returns></returns>
-        public IGeometry Read(XDocument document)
+        public Geometry Read(XDocument document)
         {
             var reader = document.CreateReader();
             return Read(reader);
         }
 
-        public IGeometry Read(string xmlText)
+        public Geometry Read(string xmlText)
         {
             return Read(new StringReader(xmlText));
         }
 
-        public IGeometry Read(StringReader stringReader)
+        public Geometry Read(StringReader stringReader)
         {
             return Read(XmlReader.Create(stringReader));
         }
 
-        public IGeometry Read(XmlReader reader)
+        public Geometry Read(XmlReader reader)
         {
             if (reader.NodeType == XmlNodeType.EndElement)
                 throw new ArgumentException("EndElement node type cannot be read by GMLReader.");
@@ -173,7 +173,7 @@ namespace NetTopologySuite.IO.GML2
             return coordinates;
         }
 
-        protected IPoint ReadPoint(XmlReader reader)
+        protected Point ReadPoint(XmlReader reader)
         {
             string numOrdinatesText = reader.GetAttribute("srsDimension");
             while (reader.Read())
@@ -209,7 +209,7 @@ namespace NetTopologySuite.IO.GML2
             throw new ArgumentException("ShouldNeverReachHere!");
         }
 
-        protected ILineString ReadLineString(XmlReader reader)
+        protected LineString ReadLineString(XmlReader reader)
         {
             var coordinates = new List<Coordinate>();
             while (reader.Read())
@@ -260,15 +260,15 @@ namespace NetTopologySuite.IO.GML2
             throw new ArgumentException("ShouldNeverReachHere!");
         }
 
-        protected ILinearRing ReadLinearRing(XmlReader reader)
+        protected LinearRing ReadLinearRing(XmlReader reader)
         {
             return Factory.CreateLinearRing(ReadLineString(reader).Coordinates);
         }
 
-        protected IPolygon ReadPolygon(XmlReader reader)
+        protected Polygon ReadPolygon(XmlReader reader)
         {
-            ILinearRing exterior = null;
-            var interiors = new List<ILinearRing>();
+            LinearRing exterior = null;
+            var interiors = new List<LinearRing>();
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -293,9 +293,9 @@ namespace NetTopologySuite.IO.GML2
             throw new ArgumentException("ShouldNeverReachHere!");
         }
 
-        protected IMultiPoint ReadMultiPoint(XmlReader reader)
+        protected MultiPoint ReadMultiPoint(XmlReader reader)
         {
-            var points = new List<IPoint>();
+            var points = new List<Point>();
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -316,9 +316,9 @@ namespace NetTopologySuite.IO.GML2
             throw new ArgumentException("ShouldNeverReachHere!");
         }
 
-        protected IMultiLineString ReadMultiLineString(XmlReader reader)
+        protected MultiLineString ReadMultiLineString(XmlReader reader)
         {
-            var lines = new List<ILineString>();
+            var lines = new List<LineString>();
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -339,9 +339,9 @@ namespace NetTopologySuite.IO.GML2
             throw new ArgumentException("ShouldNeverReachHere!");
         }
 
-        protected IMultiPolygon ReadMultiPolygon(XmlReader reader)
+        protected MultiPolygon ReadMultiPolygon(XmlReader reader)
         {
-            var polygons = new List<IPolygon>();
+            var polygons = new List<Polygon>();
             while (reader.Read())
             {
                 switch (reader.NodeType)
@@ -362,9 +362,9 @@ namespace NetTopologySuite.IO.GML2
             throw new ArgumentException("ShouldNeverReachHere!");
         }
 
-        protected IGeometryCollection ReadGeometryCollection(XmlReader reader)
+        protected GeometryCollection ReadGeometryCollection(XmlReader reader)
         {
-            var collection = new List<IGeometry>();
+            var collection = new List<Geometry>();
             while (reader.Read())
             {
                 switch (reader.NodeType)

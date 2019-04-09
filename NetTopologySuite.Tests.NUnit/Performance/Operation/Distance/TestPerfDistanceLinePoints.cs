@@ -75,7 +75,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
         }
         */
 
-        private void Test(IGeometry[] pts, IGeometry target)
+        private void Test(Geometry[] pts, Geometry target)
         {
             if (verbose)
                 Console.WriteLine("Query points = " + pts.Length
@@ -100,7 +100,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
             }
         }
 
-        private static void ComputeDistance(IGeometry[] pts, IGeometry geom)
+        private static void ComputeDistance(Geometry[] pts, Geometry geom)
         {
             IndexedFacetDistance bbd = null;
             if (USE_INDEXED_DIST)
@@ -119,22 +119,22 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
             }
         }
 
-        private static IGeometry CreateDiagonalCircles(double extent, int nSegs)
+        private static Geometry CreateDiagonalCircles(double extent, int nSegs)
         {
-            var circles = new IPolygon[nSegs];
+            var circles = new Polygon[nSegs];
             double inc = extent/nSegs;
             for (int i = 0; i < nSegs; i++)
             {
                 double ord = i*inc;
                 var p = new Coordinate(ord, ord);
                 var pt = geomFact.CreatePoint(p);
-                circles[i] = (IPolygon) pt.Buffer(inc/2);
+                circles[i] = (Polygon) pt.Buffer(inc/2);
             }
             return geomFact.CreateMultiPolygon(circles);
 
         }
 
-        private IGeometry CreateLine(double extent, int nSegs)
+        private Geometry CreateLine(double extent, int nSegs)
         {
             var pts =
                 new Coordinate[]
@@ -151,7 +151,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
 
         }
 
-        private IGeometry CreateDiagonalLine(double extent, int nSegs)
+        private Geometry CreateDiagonalLine(double extent, int nSegs)
         {
             var pts = new Coordinate[nSegs + 1];
             pts[0] = new Coordinate(0, 0);
@@ -164,9 +164,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
             return geomFact.CreateLineString(pts);
         }
 
-        private static IGeometry[] CreatePoints(Envelope extent, int nPtsSide)
+        private static Geometry[] CreatePoints(Envelope extent, int nPtsSide)
         {
-            var pts = new IGeometry[nPtsSide*nPtsSide];
+            var pts = new Geometry[nPtsSide*nPtsSide];
             int index = 0;
             double xinc = extent.Width/nPtsSide;
             double yinc = extent.Height/nPtsSide;
@@ -184,13 +184,13 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
         }
 
         /*
-        private static IGeometry LoadData(String file)
+        private static Geometry LoadData(String file)
         {
             var geoms = LoadWKT(file);
             return geomFact.BuildGeometry(geoms);
         }
 
-        private static IList<IGeometry> LoadWKT(String filename)
+        private static IList<Geometry> LoadWKT(String filename)
         {
             var rdr = new WKTReader(geomFact);
             var fileRdr = new WKTFileReader(filename, rdr);

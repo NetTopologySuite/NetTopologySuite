@@ -28,7 +28,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         private void CheckOnLine(double x, double y, string wktLine, bool expected)
         {
-            var line = (ILineString)this.Read(wktLine);
+            var line = (LineString)this.Read(wktLine);
             Assert.That(PointLocation.IsOnLine(new Coordinate(x, y), line.Coordinates), Is.EqualTo(expected));
             Assert.That(PointLocation.IsOnLine(new Coordinate(x, y), line.CoordinateSequence), Is.EqualTo(expected));
         }

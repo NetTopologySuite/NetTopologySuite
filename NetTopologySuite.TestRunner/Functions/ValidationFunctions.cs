@@ -12,9 +12,9 @@ namespace Open.Topology.TestRunner.Functions
         /// </summary>
         /// <param name="g"></param>
         /// <returns>the invalid locations, if any</returns>
-        public static IGeometry InvalidLocations(IGeometry g)
+        public static Geometry InvalidLocations(Geometry g)
         {
-            var invalidLoc = new List<IPoint>();
+            var invalidLoc = new List<Point>();
             for (int i = 0; i < g.NumGeometries; i++)
             {
                 var geom = g.GetGeometryN(i);
@@ -28,9 +28,9 @@ namespace Open.Topology.TestRunner.Functions
             return g.Factory.BuildGeometry(invalidLoc.ToArray());
         }
 
-        public static IGeometry InvalidGeoms(IGeometry g)
+        public static Geometry InvalidGeoms(Geometry g)
         {
-            var invalidGeoms = new List<IGeometry>();
+            var invalidGeoms = new List<Geometry>();
             for (int i = 0; i < g.NumGeometries; i++)
             {
                 var geom = g.GetGeometryN(i);

@@ -3,7 +3,7 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Operation.Overlay.Snap
 {
     /// <summary>
-    /// Snaps the vertices and segments of a <see cref="ILineString"/>
+    /// Snaps the vertices and segments of a <see cref="LineString"/>
     ///  to a set of target snap vertices.
     /// A snap distance tolerance is used to control where snapping is performed.
     /// <para/>The implementation handles empty geometry and empty snap vertex sets.
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// </summary>
         /// <param name="srcLine">A LineString to snap (may be empty)</param>
         /// <param name="snapTolerance">the snap tolerance to use</param>
-        public LineStringSnapper(ILineString srcLine, double snapTolerance) :
+        public LineStringSnapper(LineString srcLine, double snapTolerance) :
             this(srcLine.Coordinates, snapTolerance) { }
 
         /// <summary>

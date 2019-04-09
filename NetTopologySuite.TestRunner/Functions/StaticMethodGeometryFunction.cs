@@ -15,7 +15,7 @@ namespace Open.Topology.TestRunner.Functions
         public static StaticMethodGeometryFunction CreateFunction(MethodInfo method)
         {
             var pi = method.GetParameters();
-            Debug.Assert(typeof(IGeometry).IsAssignableFrom(pi[0].GetType()));
+            Debug.Assert(typeof(Geometry).IsAssignableFrom(pi[0].GetType()));
 
             var clz = method.DeclaringType;
 
@@ -66,7 +66,7 @@ namespace Open.Topology.TestRunner.Functions
             this.method = method;
         }
 
-        public override object Invoke(IGeometry g, object[] arg)
+        public override object Invoke(Geometry g, object[] arg)
         {
             return Invoke(method, null, CreateFullArgs(g, arg));
         }
@@ -77,7 +77,7 @@ namespace Open.Topology.TestRunner.Functions
         /// <param name="g"></param>
         /// <param name="arg"></param>
         /// <returns></returns>
-        private static object[] CreateFullArgs(IGeometry g, object[] arg)
+        private static object[] CreateFullArgs(Geometry g, object[] arg)
         {
             int fullArgLen = 1;
             if (arg != null)

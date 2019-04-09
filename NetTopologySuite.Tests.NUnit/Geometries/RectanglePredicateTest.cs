@@ -38,7 +38,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             RunRectanglePred(rect, b);
         }
 
-        private void RunRectanglePred(IGeometry rect, IGeometry testGeom)
+        private void RunRectanglePred(Geometry rect, Geometry testGeom)
         {
             bool intersectsValue = rect.Intersects(testGeom);
             bool relateIntersectsValue = rect.Relate(testGeom).IsIntersects();

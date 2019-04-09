@@ -9,13 +9,13 @@ namespace NetTopologySuite.Geometries
     /// Filters can be
     /// used to implement operations such as coordinate transformations, centroid and
     /// envelope computation, and many other functions.
-    /// <see cref="IGeometry"/> classes support the concept of applying a
+    /// <see cref="Geometry"/> classes support the concept of applying a
     /// <c>CoordinateSequenceFilter</c> to each 
     /// <see cref="ICoordinateSequence"/>s they contain. 
     /// <para/>
     /// For maximum efficiency, the execution of filters can be short-circuited by using the <see cref="Done"/> property.
     ///</summary>
-    ///<see cref="IGeometry.Apply(ICoordinateSequenceFilter)"/>
+    ///<see cref="Geometry.Apply(ICoordinateSequenceFilter)"/>
     ///<remarks>
     /// <c>CoordinateSequenceFilter</c> is an example of the Gang-of-Four Visitor pattern.
     /// <para><b>Note</b>: In general, it is preferable to treat Geometrys as immutable. 
@@ -27,7 +27,7 @@ namespace NetTopologySuite.Geometries
     /// </para>
     ///</remarks>
     /// <author>Martin Davis</author>
-    /// <seealso cref="IGeometry.Apply(ICoordinateFilter)"/>
+    /// <seealso cref="Geometry.Apply(ICoordinateFilter)"/>
     /// <seealso cref="T:NetTopologySuite.Geometries.Utilities.GeometryTransformer"/> 
     /// <see cref="T:NetTopologySuite.Geometries.Utilities.GeometryEditor"/> 
     public interface ICoordinateSequenceFilter
@@ -50,7 +50,7 @@ namespace NetTopologySuite.Geometries
 
         ///<summary>
         /// Reports whether the execution of this filter has modified the coordinates of the geometry.
-        /// If so, <see cref="IGeometry.GeometryChanged()"/> will be executed
+        /// If so, <see cref="Geometry.GeometryChanged()"/> will be executed
         /// after this filter has finished being executed.
         /// </summary>
         /// <remarks>Most filters can simply return a constant value reflecting whether they are able to change the coordinates.</remarks>

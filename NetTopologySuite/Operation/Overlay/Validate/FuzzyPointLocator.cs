@@ -18,13 +18,13 @@ namespace NetTopologySuite.Operation.Overlay.Validate
     /// <author>Martin Davis</author>
     public class FuzzyPointLocator
     {
-        private readonly IGeometry _g;
+        private readonly Geometry _g;
         private readonly double _boundaryDistanceTolerance;
-        private readonly IMultiLineString _linework;
+        private readonly MultiLineString _linework;
         private readonly PointLocator _ptLocator = new PointLocator();
         private readonly LineSegment _seg = new LineSegment();
 
-        public FuzzyPointLocator(IGeometry g, double boundaryDistanceTolerance)
+        public FuzzyPointLocator(Geometry g, double boundaryDistanceTolerance)
         {
             _g = g;
             _boundaryDistanceTolerance = boundaryDistanceTolerance;
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         /// </summary>
         /// <param name="g">The geometry from which to extract</param>
         /// <returns>A lineal geometry containing the extracted linework</returns>
-        private static IMultiLineString ExtractLinework(IGeometry g)
+        private static MultiLineString ExtractLinework(Geometry g)
         {
             var extracter = new PolygonalLineworkExtracter();
             g.Apply(extracter);
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         {
             for (int i = 0; i < _linework.NumGeometries; i++)
             {
-                var line = (ILineString)_linework.GetGeometryN(i);
+                var line = (LineString)_linework.GetGeometryN(i);
                 var seq = line.CoordinateSequence;
                 for (int j = 0; j < seq.Count - 1; j++)
                 {
@@ -80,26 +80,26 @@ namespace NetTopologySuite.Operation.Overlay.Validate
     }
 
     /// <summary>
-    /// Extracts the LineStrings in the boundaries of all the polygonal elements in the target <see cref="IGeometry"/>.
+    /// Extracts the LineStrings in the boundaries of all the polygonal elements in the target <see cref="Geometry"/>.
     /// </summary>
     /// <author>Martin Davis</author>
     class PolygonalLineworkExtracter : IGeometryFilter
     {
-        private readonly List<ILineString> _linework;
+        private readonly List<LineString> _linework;
 
         public PolygonalLineworkExtracter()
         {
-            _linework = new List<ILineString>();
+            _linework = new List<LineString>();
         }
 
         /// <summary>
         /// Filters out all linework for polygonal elements
         /// </summary>
-        public void Filter(IGeometry g)
+        public void Filter(Geometry g)
         {
-            if (g is IPolygon)
+            if (g is Polygon)
             {
-                var poly = (IPolygon)g;
+                var poly = (Polygon)g;
                 _linework.Add(poly.ExteriorRing);
                 for (int i = 0; i < poly.NumInteriorRings; i++)
                 {
@@ -111,6 +111,6 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         /// <summary>
         /// Gets the list of polygonal linework.
         /// </summary>
-        public List<ILineString> Linework => _linework;
+        public List<LineString> Linework => _linework;
     }
 }

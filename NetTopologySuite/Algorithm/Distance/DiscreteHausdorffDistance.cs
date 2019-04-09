@@ -6,7 +6,7 @@ namespace NetTopologySuite.Algorithm.Distance
     /// <summary>
     /// An algorithm for computing a distance metric
     /// which is an approximation to the Hausdorff Distance
-    /// based on a discretization of the input <see cref="IGeometry"/>.
+    /// based on a discretization of the input <see cref="Geometry"/>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -53,33 +53,33 @@ namespace NetTopologySuite.Algorithm.Distance
     public class DiscreteHausdorffDistance
     {
         /// <summary>
-        /// Computes the Discrete Hausdorff Distance of two <see cref="IGeometry"/>s.
+        /// Computes the Discrete Hausdorff Distance of two <see cref="Geometry"/>s.
         /// </summary>
         /// <param name="g0">A geometry</param>
         /// <param name="g1">A geometry</param>
         /// <returns>The Discrete Hausdorff Distance</returns>
-        public static double Distance(IGeometry g0, IGeometry g1)
+        public static double Distance(Geometry g0, Geometry g1)
         {
             var dist = new DiscreteHausdorffDistance(g0, g1);
             return dist.Distance();
         }
 
         /// <summary>
-        /// Computes the Discrete Hausdorff Distance of two <see cref="IGeometry"/>s.
+        /// Computes the Discrete Hausdorff Distance of two <see cref="Geometry"/>s.
         /// </summary>
         /// <param name="g0">A geometry</param>
         /// <param name="g1">A geometry</param>
         /// <param name="densifyFraction">The densify fraction. A value of 0 indicates, that no densification should take place</param>
         /// <returns>The Discrete Hausdorff Distance</returns>
-        public static double Distance(IGeometry g0, IGeometry g1, double densifyFraction)
+        public static double Distance(Geometry g0, Geometry g1, double densifyFraction)
         {
             var dist = new DiscreteHausdorffDistance(g0, g1);
             dist.DensifyFraction = densifyFraction;
             return dist.Distance();
         }
 
-        private readonly IGeometry _g0;
-        private readonly IGeometry _g1;
+        private readonly Geometry _g0;
+        private readonly Geometry _g1;
         private readonly PointPairDistance _ptDist = new PointPairDistance();
         /**
          * Value of 0.0 indicates that no densification should take place
@@ -91,7 +91,7 @@ namespace NetTopologySuite.Algorithm.Distance
         /// </summary>
         /// <param name="g0">A geometry</param>
         /// <param name="g1">Another geometry</param>
-        public DiscreteHausdorffDistance(IGeometry g0, IGeometry g1)
+        public DiscreteHausdorffDistance(Geometry g0, Geometry g1)
         {
             _g0 = g0;
             _g1 = g1;
@@ -132,13 +132,13 @@ namespace NetTopologySuite.Algorithm.Distance
 
         public Coordinate[] Coordinates => _ptDist.Coordinates;
 
-        private void Compute(IGeometry g0, IGeometry g1)
+        private void Compute(Geometry g0, Geometry g1)
         {
             ComputeOrientedDistance(g0, g1, _ptDist);
             ComputeOrientedDistance(g1, g0, _ptDist);
         }
 
-        private void ComputeOrientedDistance(IGeometry discreteGeom, IGeometry geom, PointPairDistance ptDist)
+        private void ComputeOrientedDistance(Geometry discreteGeom, Geometry geom, PointPairDistance ptDist)
         {
             var distFilter = new MaxPointDistanceFilter(geom);
             discreteGeom.Apply(distFilter);
@@ -159,9 +159,9 @@ namespace NetTopologySuite.Algorithm.Distance
             private readonly PointPairDistance _maxPtDist = new PointPairDistance();
             private readonly PointPairDistance _minPtDist = new PointPairDistance();
             //private EuclideanDistanceToPoint euclideanDist = new EuclideanDistanceToPoint();
-            private readonly IGeometry _geom;
+            private readonly Geometry _geom;
 
-            public MaxPointDistanceFilter(IGeometry geom)
+            public MaxPointDistanceFilter(Geometry geom)
             {
                 _geom = geom;
             }
@@ -181,10 +181,10 @@ namespace NetTopologySuite.Algorithm.Distance
         {
             private readonly PointPairDistance _maxPtDist = new PointPairDistance();
             private readonly PointPairDistance _minPtDist = new PointPairDistance();
-            private readonly IGeometry _geom;
+            private readonly Geometry _geom;
             private readonly int _numSubSegs;
 
-            public MaxDensifiedByFractionDistanceFilter(IGeometry geom, double fraction)
+            public MaxDensifiedByFractionDistanceFilter(Geometry geom, double fraction)
             {
                 _geom = geom;
                 _numSubSegs = (int)Math.Round(1.0 / fraction, MidpointRounding.ToEven); //see Java's Math.rint

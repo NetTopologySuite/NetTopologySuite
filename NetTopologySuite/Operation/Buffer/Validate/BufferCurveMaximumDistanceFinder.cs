@@ -17,15 +17,15 @@ namespace NetTopologySuite.Operation.Buffer.Validate
     /// <author>mbdavis</author>
     public class BufferCurveMaximumDistanceFinder
     {
-        private readonly IGeometry _inputGeom;
+        private readonly Geometry _inputGeom;
         private readonly PointPairDistance _maxPtDist = new PointPairDistance();
 
-        public BufferCurveMaximumDistanceFinder(IGeometry inputGeom)
+        public BufferCurveMaximumDistanceFinder(Geometry inputGeom)
         {
             _inputGeom = inputGeom;
         }
 
-        public double FindDistance(IGeometry bufferCurve)
+        public double FindDistance(Geometry bufferCurve)
         {
             ComputeMaxVertexDistance(bufferCurve);
             computeMaxMidpointDistance(bufferCurve);
@@ -34,14 +34,14 @@ namespace NetTopologySuite.Operation.Buffer.Validate
 
         public PointPairDistance DistancePoints => _maxPtDist;
 
-        private void ComputeMaxVertexDistance(IGeometry curve)
+        private void ComputeMaxVertexDistance(Geometry curve)
         {
             var distFilter = new MaxPointDistanceFilter(_inputGeom);
             curve.Apply(distFilter);
             _maxPtDist.SetMaximum(distFilter.MaxPointDistance);
         }
 
-        private void computeMaxMidpointDistance(IGeometry curve)
+        private void computeMaxMidpointDistance(Geometry curve)
         {
             var distFilter = new MaxMidpointDistanceFilter(_inputGeom);
             curve.Apply(distFilter);
@@ -52,9 +52,9 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         {
             private readonly PointPairDistance maxPtDist = new PointPairDistance();
             private readonly PointPairDistance minPtDist = new PointPairDistance();
-            private readonly IGeometry geom;
+            private readonly Geometry geom;
 
-            public MaxPointDistanceFilter(IGeometry geom)
+            public MaxPointDistanceFilter(Geometry geom)
             {
                 this.geom = geom;
             }
@@ -74,9 +74,9 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         {
             private readonly PointPairDistance maxPtDist = new PointPairDistance();
             private readonly PointPairDistance minPtDist = new PointPairDistance();
-            private readonly IGeometry geom;
+            private readonly Geometry geom;
 
-            public MaxMidpointDistanceFilter(IGeometry geom)
+            public MaxMidpointDistanceFilter(Geometry geom)
             {
                 this.geom = geom;
             }

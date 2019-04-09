@@ -382,7 +382,7 @@ namespace NetTopologySuite.Tests.Various
             var mp1 = Reader.Read(@"MULTIPOLYGON (((30 20, 10 40, 45 40, 30 20)),((15 5, 40 10, 10 20, 5 10, 15 5)))");
             var mp2 = Reader.Read(@"MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)),((20 35, 45 20, 30 5, 10 10, 10 30, 20 35),(30 20, 20 25, 20 15, 30 20)))");
 
-            IGeometry diff = null;
+            Geometry diff = null;
             Assert.DoesNotThrow(() => diff = mp1.Difference(mp2));
             Assert.IsNotNull(diff);
             Console.WriteLine("1-2:\n{0}", diff.AsText());
@@ -435,7 +435,7 @@ namespace NetTopologySuite.Tests.Various
 
             //Console.WriteLine();
 
-            IGeometryCollection diag = null;
+            GeometryCollection diag = null;
             //Assert.DoesNotThrow(() => diag = qes.GetVoronoiDiagram(GeometryFactory.Default));
             //Assert.IsNotNull(diag);
 
@@ -467,7 +467,7 @@ namespace NetTopologySuite.Tests.Various
             var reader = new WKTReader();
             var geom = reader.Read(wkt);
             Assert.That(geom, Is.Not.Null);
-            Assert.That(geom, Is.InstanceOf<IPolygon>());
+            Assert.That(geom, Is.InstanceOf<Polygon>());
             Assert.That(geom.IsValid, Is.False);
 
             var valid = geom.Buffer(0);
@@ -682,7 +682,7 @@ namespace NetTopologySuite.Tests.Various
 636167.79101204267 6154298.2703853333)))";
             var polygon1 = /*(MultiPolygon)*/new WKTReader().Read(pol1String);
             var polygon2 = /*(MultiPolygon)*/new WKTReader().Read(pol2String);
-            IGeometry result = null;
+            Geometry result = null;
             while (true)
             try
             {
@@ -719,27 +719,27 @@ namespace NetTopologySuite.Tests.Various
 
         }
 
-        private static IGeometry InsertTopologyExceptionPoint(Coordinate coordinate, IGeometry polygon1)
+        private static Geometry InsertTopologyExceptionPoint(Coordinate coordinate, Geometry polygon1)
         {
-            var p1 = (IMultiPolygon) polygon1;
-            var res = new IPolygon[polygon1.NumGeometries];
+            var p1 = (MultiPolygon) polygon1;
+            var res = new Polygon[polygon1.NumGeometries];
             for (int i = 0; i < polygon1.NumGeometries; i++)
             {
-                res[i] = InsertTopologyExceptionPoint(coordinate, (IPolygon) polygon1.GetGeometryN(i));
+                res[i] = InsertTopologyExceptionPoint(coordinate, (Polygon) polygon1.GetGeometryN(i));
             }
             return polygon1.Factory.CreateMultiPolygon(res);
         }
 
-        private static IPolygon InsertTopologyExceptionPoint(Coordinate coordinate, IPolygon polygon)
+        private static Polygon InsertTopologyExceptionPoint(Coordinate coordinate, Polygon polygon)
         {
-            var shell = InsertTopologyExceptionPoint(coordinate, (ILinearRing)polygon.ExteriorRing);
-            var holes = new ILinearRing[polygon.NumInteriorRings];
+            var shell = InsertTopologyExceptionPoint(coordinate, (LinearRing)polygon.ExteriorRing);
+            var holes = new LinearRing[polygon.NumInteriorRings];
             for (int i = 0; i < polygon.NumInteriorRings; i++)
-                holes[i] = InsertTopologyExceptionPoint(coordinate, (ILinearRing) polygon.GetInteriorRingN(i));
+                holes[i] = InsertTopologyExceptionPoint(coordinate, (LinearRing) polygon.GetInteriorRingN(i));
             return polygon.Factory.CreatePolygon(shell, holes);
         }
 
-        private static ILinearRing InsertTopologyExceptionPoint(Coordinate coordinate, ILinearRing ring)
+        private static LinearRing InsertTopologyExceptionPoint(Coordinate coordinate, LinearRing ring)
         {
             if (ring.Distance(ring.Factory.CreatePoint(coordinate)) > 1e-7)
                 return ring;

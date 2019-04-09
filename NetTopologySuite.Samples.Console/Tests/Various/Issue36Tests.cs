@@ -11,7 +11,7 @@ namespace NetTopologySuite.Tests.Various
     [TestFixture]
     public class Issue36Tests
     {
-        private readonly IGeometryFactory factory = GeometryFactory.Default;
+        private readonly GeometryFactory factory = GeometryFactory.Default;
 
         private WKTReader reader;
 

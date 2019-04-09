@@ -4,8 +4,8 @@ using NetTopologySuite.Geometries.Utilities;
 namespace NetTopologySuite.Precision
 {
     /// <summary>
-    /// Reduces the precision of a <see cref="IGeometry"/>
-    /// according to the supplied <see cref="IPrecisionModel"/>,
+    /// Reduces the precision of a <see cref="Geometry"/>
+    /// according to the supplied <see cref="PrecisionModel"/>,
     /// ensuring that the result is topologically valid.
     /// </summary>
     public class GeometryPrecisionReducer
@@ -20,7 +20,7 @@ namespace NetTopologySuite.Precision
         /// <param name="g">The geometry to reduce</param>
         /// <param name="precModel">The precision model to use</param>
         /// <returns>The reduced geometry</returns>
-        public static IGeometry Reduce(IGeometry g, IPrecisionModel precModel)
+        public static Geometry Reduce(Geometry g, PrecisionModel precModel)
         {
             var reducer = new GeometryPrecisionReducer(precModel);
             return reducer.Reduce(g);
@@ -36,19 +36,19 @@ namespace NetTopologySuite.Precision
         /// <param name="g">The geometry to reduce</param>
         /// <param name="precModel">The precision model to use</param>
         /// <returns>The reduced geometry</returns>
-        public static IGeometry ReducePointwise(IGeometry g, IPrecisionModel precModel)
+        public static Geometry ReducePointwise(Geometry g, PrecisionModel precModel)
         {
             var reducer = new GeometryPrecisionReducer(precModel);
             reducer.Pointwise = true;
             return reducer.Reduce(g);
         }
 
-        private readonly IPrecisionModel _targetPrecModel;
+        private readonly PrecisionModel _targetPrecModel;
         private bool _removeCollapsed = true;
         private bool _changePrecisionModel;
         private bool _isPointwise;
 
-        public GeometryPrecisionReducer(IPrecisionModel pm)
+        public GeometryPrecisionReducer(PrecisionModel pm)
         {
             _targetPrecModel = pm;
         }
@@ -65,8 +65,8 @@ namespace NetTopologySuite.Precision
         }
 
         /// <summary>
-        /// Gets or sets whether the <see cref = "IPrecisionModel"/> of the new reduced Geometry
-        /// will be changed to be the <see cref="IPrecisionModel"/> supplied to
+        /// Gets or sets whether the <see cref = "PrecisionModel"/> of the new reduced Geometry
+        /// will be changed to be the <see cref="PrecisionModel"/> supplied to
         /// specify the precision reduction.
         /// <para/>
         /// The default is to <b>not</b> change the precision model
@@ -91,7 +91,7 @@ namespace NetTopologySuite.Precision
             set => _isPointwise = value;
         }
 
-        public IGeometry Reduce(IGeometry geom)
+        public Geometry Reduce(Geometry geom)
         {
             var reducePointwise = ReducePointwise(geom);
             if (_isPointwise)
@@ -109,7 +109,7 @@ namespace NetTopologySuite.Precision
             return FixPolygonalTopology(reducePointwise);
         }
 
-        private IGeometry ReducePointwise(IGeometry geom)
+        private Geometry ReducePointwise(Geometry geom)
         {
             GeometryEditor geomEdit;
             if (_changePrecisionModel)
@@ -135,7 +135,7 @@ namespace NetTopologySuite.Precision
             return reduceGeom;
         }
 
-        private IGeometry FixPolygonalTopology(IGeometry geom)
+        private Geometry FixPolygonalTopology(Geometry geom)
         {
             /**
              * If precision model was *not* changed, need to flip
@@ -165,14 +165,14 @@ namespace NetTopologySuite.Precision
         /// <param name="geom">The geometry to duplicate</param>
         /// <param name="pm">The precision model to use</param>
         /// <returns>The geometry value with a new precision model</returns>
-        private static IGeometry ChangePrecModel(IGeometry geom, IPrecisionModel pm)
+        private static Geometry ChangePrecModel(Geometry geom, PrecisionModel pm)
         {
             var geomEditor = CreateEditor(geom.Factory, pm);
             // this operation changes the PM for the entire geometry tree
             return geomEditor.Edit(geom, new GeometryEditor.NoOpGeometryOperation());
         }
 
-        private static GeometryEditor CreateEditor(IGeometryFactory geomFactory, IPrecisionModel newPrecModel)
+        private static GeometryEditor CreateEditor(GeometryFactory geomFactory, PrecisionModel newPrecModel)
         {
             // no need to change if precision model is the same
             if (geomFactory.PrecisionModel == newPrecModel)
@@ -184,7 +184,7 @@ namespace NetTopologySuite.Precision
             return geomEdit;
         }
 
-        private static IGeometryFactory CreateFactory(IGeometryFactory inputFactory, IPrecisionModel pm)
+        private static GeometryFactory CreateFactory(GeometryFactory inputFactory, PrecisionModel pm)
         {
             var newFactory
             = new GeometryFactory(pm,

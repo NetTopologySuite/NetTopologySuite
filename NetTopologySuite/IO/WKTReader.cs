@@ -39,7 +39,7 @@ namespace NetTopologySuite.IO
     public class WKTReader : ITextGeometryReader
     {
         private ICoordinateSequenceFactory _coordinateSequencefactory;
-        private IPrecisionModel _precisionModel;
+        private PrecisionModel _precisionModel;
 
         private static readonly CultureInfo InvariantCulture =
             CultureInfo.InvariantCulture;
@@ -59,7 +59,7 @@ namespace NetTopologySuite.IO
         /// <c>GeometryFactory</c>.
         /// </summary>
         /// <param name="geometryFactory">The factory used to create <c>Geometry</c>s.</param>
-        public WKTReader(IGeometryFactory geometryFactory)
+        public WKTReader(GeometryFactory geometryFactory)
         {
             _coordinateSequencefactory = geometryFactory.CoordinateSequenceFactory;
             _precisionModel = geometryFactory.PrecisionModel;
@@ -90,7 +90,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Gets or sets the factory to create geometries
         /// </summary>
-        public IGeometryFactory Factory
+        public GeometryFactory Factory
         {
             get => NtsGeometryServices.Instance.CreateGeometryFactory(_precisionModel, DefaultSRID, _coordinateSequencefactory);
             set
@@ -119,7 +119,7 @@ namespace NetTopologySuite.IO
         /// <returns>
         /// A <c>Geometry</c> specified by <c>wellKnownText</c>
         /// </returns>
-        public IGeometry Read(string wellKnownText)
+        public Geometry Read(string wellKnownText)
         {
             using (var reader = new StringReader(wellKnownText))
             {
@@ -137,7 +137,7 @@ namespace NetTopologySuite.IO
         /// <returns>
         /// A <c>Geometry</c> specified by <c>wellKnownText</c>
         /// </returns>
-        public IGeometry Read(Stream stream)
+        public Geometry Read(Stream stream)
         {
             using (var reader = new StreamReader(stream))
             {
@@ -154,7 +154,7 @@ namespace NetTopologySuite.IO
         /// </param>
         /// <returns>A <c>Geometry</c> read from <c>reader</c>.
         /// </returns>
-        public IGeometry Read(TextReader reader)
+        public Geometry Read(TextReader reader)
         {
             /*
             var tokens = Tokenize(reader);
@@ -206,7 +206,7 @@ namespace NetTopologySuite.IO
         /// Reads a <c>Coordinate</c> from a stream using the given <see cref="StreamTokenizer"/>.
         /// <para>
         /// All ordinate values are read, but -depending on the <see cref="ICoordinateSequenceFactory"/>
-        /// of the underlying <see cref="IGeometryFactory"/>- not necessarily all can be handled.
+        /// of the underlying <see cref="GeometryFactory"/>- not necessarily all can be handled.
         /// Those are silently dropped.
         /// </para>
         /// </summary>
@@ -260,7 +260,7 @@ namespace NetTopologySuite.IO
         /// Reads a <c>Coordinate</c> from a stream using the given <see cref="StreamTokenizer"/>.
         /// <para>
         /// All ordinate values are read, but -depending on the <see cref="ICoordinateSequenceFactory"/>
-        /// of the underlying <see cref="IGeometryFactory"/>- not necessarily all can be handled.
+        /// of the underlying <see cref="GeometryFactory"/>- not necessarily all can be handled.
         /// Those are silently dropped.
         /// </para>
         /// </summary>
@@ -278,7 +278,7 @@ namespace NetTopologySuite.IO
         /// Reads a <c>CoordinateSequence</c> from a stream using the given <see cref="StreamTokenizer"/>.
         /// <para>
         /// All ordinate values are read, but -depending on the <see cref="ICoordinateSequenceFactory"/>
-        /// of the underlying <see cref="IGeometryFactory"/>- not necessarily all can be handled.
+        /// of the underlying <see cref="GeometryFactory"/>- not necessarily all can be handled.
         /// Those are silently dropped.
         /// </para>
         /// </summary>
@@ -686,13 +686,13 @@ namespace NetTopologySuite.IO
         /// </param>
         /// <returns>A <c>Geometry</c> specified by the next token
         /// in the stream.</returns>
-        internal IGeometry ReadGeometryTaggedText(TokenStream tokens)
+        internal Geometry ReadGeometryTaggedText(TokenStream tokens)
         {
             /*
              * A new different implementation by Marc Jacquin:
              * this code manages also SRID values.
              */
-            IGeometry returned;
+            Geometry returned;
 
             int srid;
             string type = GetNextWord(tokens);
@@ -788,7 +788,7 @@ namespace NetTopologySuite.IO
         /// <param name="factory"> </param>
         /// <returns>A <c>Point</c> specified by the next token in
         /// the stream.</returns>
-        private IPoint ReadPointText(TokenStream tokens, IGeometryFactory factory, Ordinates ordinateFlags)
+        private Point ReadPointText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
             var point = factory.CreatePoint(GetCoordinateSequence(tokens, ordinateFlags));
             return point;
@@ -805,7 +805,7 @@ namespace NetTopologySuite.IO
         /// <returns>
         /// A <c>LineString</c> specified by the next
         /// token in the stream.</returns>
-        private ILineString ReadLineStringText(TokenStream tokens, IGeometryFactory factory, Ordinates ordinateFlags)
+        private LineString ReadLineStringText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
             return factory.CreateLineString(GetCoordinateSequence(tokens, ordinateFlags));
         }
@@ -820,7 +820,7 @@ namespace NetTopologySuite.IO
         /// <param name="factory"> </param>
         /// <returns>A <c>LinearRing</c> specified by the next
         /// token in the stream.</returns>
-        private ILinearRing ReadLinearRingText(TokenStream tokens, IGeometryFactory factory, Ordinates ordinateFlags)
+        private LinearRing ReadLinearRingText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
             return factory.CreateLinearRing(GetCoordinateSequence(tokens, ordinateFlags));
         }
@@ -836,7 +836,7 @@ namespace NetTopologySuite.IO
         /// <returns>
         /// A <c>MultiPoint</c> specified by the next
         /// token in the stream.</returns>
-        private IMultiPoint ReadMultiPointText(TokenStream tokens, IGeometryFactory factory, Ordinates ordinateFlags)
+        private MultiPoint ReadMultiPointText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
             return factory.CreateMultiPoint(
                 GetCoordinateSequence(tokens, ordinateFlags, _isAllowOldNtsMultipointSyntax));
@@ -854,13 +854,13 @@ namespace NetTopologySuite.IO
         /// A <c>Polygon</c> specified by the next token
         /// in the stream.
         /// </returns>
-        private IPolygon ReadPolygonText(TokenStream tokens, IGeometryFactory factory, Ordinates ordinateFlags)
+        private Polygon ReadPolygonText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY"))
                 return factory.CreatePolygon();
 
-            var holes = new List<ILinearRing>();
+            var holes = new List<LinearRing>();
             var shell = ReadLinearRingText(tokens, factory, ordinateFlags);
             nextToken = GetNextCloserOrComma(tokens);
             while (nextToken.Equals(","))
@@ -883,13 +883,13 @@ namespace NetTopologySuite.IO
         /// <returns>
         /// A <c>MultiLineString</c> specified by the
         /// next token in the stream.</returns>
-        private IMultiLineString ReadMultiLineStringText(TokenStream tokens, IGeometryFactory factory, Ordinates ordinateFlags)
+        private MultiLineString ReadMultiLineStringText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY"))
                 return factory.CreateMultiLineString();
 
-            var lineStrings = new List<ILineString>();
+            var lineStrings = new List<LineString>();
             do
             {
                 var lineString = ReadLineStringText(tokens, factory, ordinateFlags);
@@ -912,13 +912,13 @@ namespace NetTopologySuite.IO
         /// A <c>MultiPolygon</c> specified by the next
         /// token in the stream, or if if the coordinates used to create the
         /// <c>Polygon</c> shells and holes do not form closed linestrings.</returns>
-        private IMultiPolygon ReadMultiPolygonText(TokenStream tokens, IGeometryFactory factory, Ordinates ordinateFlags)
+        private MultiPolygon ReadMultiPolygonText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY"))
                 return factory.CreateMultiPolygon();
 
-            var polygons = new List<IPolygon>();
+            var polygons = new List<Polygon>();
             do
             {
                 var polygon = ReadPolygonText(tokens, factory, ordinateFlags);
@@ -942,13 +942,13 @@ namespace NetTopologySuite.IO
         /// <returns>
         /// A <c>GeometryCollection</c> specified by the
         /// next token in the stream.</returns>
-        private IGeometryCollection ReadGeometryCollectionText(TokenStream tokens, IGeometryFactory factory, Ordinates ordinateFlags)
+        private GeometryCollection ReadGeometryCollectionText(TokenStream tokens, GeometryFactory factory, Ordinates ordinateFlags)
         {
             string nextToken = GetNextEmptyOrOpener(tokens);
             if (nextToken.Equals("EMPTY"))
                 return factory.CreateGeometryCollection();
 
-            var geometries = new List<IGeometry>();
+            var geometries = new List<Geometry>();
             do
             {
                 var geometry = ReadGeometryTaggedText(tokens);

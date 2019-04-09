@@ -12,21 +12,21 @@ namespace NetTopologySuite.Operation.Union
     /// <author>mbdavis</author>
     public class UnionInteracting
     {
-        public static IGeometry Union(IGeometry g0, IGeometry g1)
+        public static Geometry Union(Geometry g0, Geometry g1)
         {
             var uue = new UnionInteracting(g0, g1);
             return uue.Union();
         }
 
-        private readonly IGeometryFactory _geomFactory;
+        private readonly GeometryFactory _geomFactory;
 
-        private readonly IGeometry _g0;
-        private readonly IGeometry _g1;
+        private readonly Geometry _g0;
+        private readonly Geometry _g1;
 
         private readonly bool[] _interacts0;
         private readonly bool[] _interacts1;
 
-        public UnionInteracting(IGeometry g0, IGeometry g1)
+        public UnionInteracting(Geometry g0, Geometry g1)
         {
             _g0 = g0;
             _g1 = g1;
@@ -35,7 +35,7 @@ namespace NetTopologySuite.Operation.Union
             _interacts1 = new bool[g1.NumGeometries];
         }
 
-        public IGeometry Union()
+        public Geometry Union()
         {
             ComputeInteracting();
 
@@ -54,10 +54,10 @@ namespace NetTopologySuite.Operation.Union
 
         }
 
-        private IGeometry BufferUnion(IGeometry g0, IGeometry g1)
+        private Geometry BufferUnion(Geometry g0, Geometry g1)
         {
             var factory = g0.Factory;
-            var gColl = factory.CreateGeometryCollection(new IGeometry[] { g0, g1 });
+            var gColl = factory.CreateGeometryCollection(new Geometry[] { g0, g1 });
             var unionAll = gColl.Buffer(0.0);
             return unionAll;
         }
@@ -71,7 +71,7 @@ namespace NetTopologySuite.Operation.Union
             }
         }
 
-        private bool ComputeInteracting(IGeometry elem0)
+        private bool ComputeInteracting(Geometry elem0)
         {
             bool interactsWithAny = false;
             for (int i = 0; i < _g1.NumGeometries; i++)
@@ -85,10 +85,10 @@ namespace NetTopologySuite.Operation.Union
             return interactsWithAny;
         }
 
-        private IGeometry ExtractElements(IGeometry geom,
+        private Geometry ExtractElements(Geometry geom,
               bool[] interacts, bool isInteracting)
         {
-            var extractedGeoms = new List<IGeometry>();
+            var extractedGeoms = new List<Geometry>();
             for (int i = 0; i < geom.NumGeometries; i++)
             {
                 var elem = geom.GetGeometryN(i);

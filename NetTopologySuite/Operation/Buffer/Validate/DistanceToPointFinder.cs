@@ -8,17 +8,17 @@ namespace NetTopologySuite.Operation.Buffer.Validate
     /// </summary>
     public static class DistanceToPointFinder
     {
-        public static void ComputeDistance(IGeometry geom, Coordinate pt, PointPairDistance ptDist)
+        public static void ComputeDistance(Geometry geom, Coordinate pt, PointPairDistance ptDist)
         {
-            if (geom is ILineString)
+            if (geom is LineString)
             {
-                ComputeDistance((ILineString)geom, pt, ptDist);
+                ComputeDistance((LineString)geom, pt, ptDist);
             }
-            else if (geom is IPolygon)
+            else if (geom is Polygon)
             {
-                ComputeDistance((IPolygon)geom, pt, ptDist);
+                ComputeDistance((Polygon)geom, pt, ptDist);
             }
-            else if (geom is IGeometryCollection)
+            else if (geom is GeometryCollection)
             {
                 var gc = (GeometryCollection)geom;
                 for (int i = 0; i < gc.NumGeometries; i++)
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             }
         }
 
-        public static void ComputeDistance(ILineString line, Coordinate pt, PointPairDistance ptDist)
+        public static void ComputeDistance(LineString line, Coordinate pt, PointPairDistance ptDist)
         {
             var coords = line.Coordinates;
             var tempSegment = new LineSegment();
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             ptDist.SetMinimum(closestPt, pt);
         }
 
-        public static void ComputeDistance(IPolygon poly, Coordinate pt, PointPairDistance ptDist)
+        public static void ComputeDistance(Polygon poly, Coordinate pt, PointPairDistance ptDist)
         {
             ComputeDistance(poly.ExteriorRing, pt, ptDist);
             for (int i = 0; i < poly.NumInteriorRings; i++)

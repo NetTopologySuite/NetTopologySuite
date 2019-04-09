@@ -16,9 +16,9 @@ namespace NetTopologySuite.Operation.Valid
     public class QuadtreeNestedRingTester
     {
         private readonly GeometryGraph _graph;  // used to find non-node vertices
-        private readonly IList<ILinearRing> _rings = new List<ILinearRing>();
+        private readonly IList<LinearRing> _rings = new List<LinearRing>();
         private readonly Envelope _totalEnv = new Envelope();
-        private ISpatialIndex<ILinearRing> _quadtree;
+        private ISpatialIndex<LinearRing> _quadtree;
         private Coordinate _nestedPt;
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Operation.Valid
         ///
         /// </summary>
         /// <param name="ring"></param>
-        public void Add(ILinearRing ring)
+        public void Add(LinearRing ring)
         {
             _rings.Add(ring);
             _totalEnv.ExpandToInclude(ring.EnvelopeInternal);
@@ -87,7 +87,7 @@ namespace NetTopologySuite.Operation.Valid
         /// </summary>
         private void BuildQuadtree()
         {
-            _quadtree = new Quadtree<ILinearRing>();
+            _quadtree = new Quadtree<LinearRing>();
 
             for (int i = 0; i < _rings.Count; i++)
             {

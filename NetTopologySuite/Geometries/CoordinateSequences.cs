@@ -76,14 +76,14 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Tests whether a <see cref="ICoordinateSequence"/> forms a valid <see cref="ILinearRing"/>,
+        /// Tests whether a <see cref="ICoordinateSequence"/> forms a valid <see cref="LinearRing"/>,
         /// by checking the sequence length and closure
         /// (whether the first and last points are identical in 2D).
         /// Self-intersection is not checked.
         /// </summary>
         /// <param name="seq">The sequence to test</param>
         /// <returns>True if the sequence is a ring</returns>
-        /// <seealso cref="ILinearRing"/>
+        /// <seealso cref="LinearRing"/>
         public static bool IsRing(ICoordinateSequence seq)
         {
             int n = seq.Count;

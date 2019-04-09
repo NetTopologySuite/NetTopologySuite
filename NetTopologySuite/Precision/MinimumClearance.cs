@@ -6,7 +6,7 @@ using NetTopologySuite.Operation.Distance;
 namespace NetTopologySuite.Precision
 {
     /// <summary>
-    /// Computes the Minimum Clearance of a <see cref="IGeometry"/>.
+    /// Computes the Minimum Clearance of a <see cref="Geometry"/>.
     /// <para/>
     /// The <b>Minimum Clearance</b> is a measure of
     /// what magnitude of perturbation of
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Precision
     /// <center><img src="DocFiles/minClearance.png"/></center>
     /// <para/>
     /// If G has only a single vertex (i.e. is a
-    /// <see cref="IPoint"/>), the value of the minimum clearance
+    /// <see cref="Point"/>), the value of the minimum clearance
     /// is <see cref="double.MaxValue"/>.
     /// <para/>
     /// If G is a <see cref="IPuntal"/> or <see cref="ILineal"/> geometry,
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Precision
     /// according to the constructive definition.
     /// <para/>
     /// It is possible for no Minimum Clearance to exist.
-    /// For instance, a <see cref="IMultiPoint"/> with all members identical
+    /// For instance, a <see cref="MultiPoint"/> with all members identical
     /// has no Minimum Clearance
     /// (i.e. no amount of perturbation will cause
     /// the member points to become non-identical).
@@ -62,7 +62,7 @@ namespace NetTopologySuite.Precision
     /// method to provide good performance even for
     /// large inputs.
     /// <para/>
-    /// An interesting note is that for the case of <see cref="IMultiPoint"/>s,
+    /// An interesting note is that for the case of <see cref="MultiPoint"/>s,
     /// the computed Minimum Clearance line
     /// effectively determines the Nearest Neighbours in the collection.
     /// <h3>References</h3>
@@ -85,7 +85,7 @@ namespace NetTopologySuite.Precision
         /// </summary>
         /// <param name="g">The input geometry</param>
         /// <returns>The minimum clearance</returns>
-        public static double GetDistance(IGeometry g)
+        public static double GetDistance(Geometry g)
         {
             var rp = new MinimumClearance(g);
             return rp.GetDistance();
@@ -99,13 +99,13 @@ namespace NetTopologySuite.Precision
         /// <param name="g">The input geometry</param>
         /// <returns>The value of the minimum clearance distance<br/>
         /// or <c>LINESTRING EMPTY</c> if no minimum clearance distance exists.</returns>
-        public static IGeometry GetLine(IGeometry g)
+        public static Geometry GetLine(Geometry g)
         {
             var rp = new MinimumClearance(g);
             return rp.GetLine();
         }
 
-        private readonly IGeometry _inputGeom;
+        private readonly Geometry _inputGeom;
         private double _minClearance;
         private Coordinate[] _minClearancePts;
 
@@ -113,7 +113,7 @@ namespace NetTopologySuite.Precision
         /// Creates an object to compute the Minimum Clearance for the given Geometry
         /// </summary>
         /// <param name="geom">The input geometry</param>
-        public MinimumClearance(IGeometry geom)
+        public MinimumClearance(Geometry geom)
         {
             _inputGeom = geom;
         }
@@ -143,7 +143,7 @@ namespace NetTopologySuite.Precision
         /// </summary>
         /// <returns>The value of the minimum clearance distance, <br/>
         /// or <c>LINESTRING EMPTY</c> if no minimum clearance distance exists.</returns>
-        public ILineString GetLine()
+        public LineString GetLine()
         {
             Compute();
             // return empty line string if no min pts where found

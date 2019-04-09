@@ -18,7 +18,7 @@ namespace Open.Topology.TestRunner.Functions
         public static bool IsBinaryGeomFunction(IGeometryFunction func)
         {
             return func.ParameterTypes.Length >= 1
-                   && func.ParameterTypes[0] == typeof(IGeometry);
+                   && func.ParameterTypes[0] == typeof(Geometry);
         }
 
         protected string category;
@@ -54,7 +54,7 @@ namespace Open.Topology.TestRunner.Functions
 
         public Type ReturnType => returnType;
 
-        public bool IsBinary => parameterTypes.Length > 0 && parameterTypes[0] is IGeometry;
+        public bool IsBinary => parameterTypes.Length > 0 && parameterTypes[0] is Geometry;
 
         public string Signature
         {
@@ -87,7 +87,7 @@ namespace Open.Topology.TestRunner.Functions
             return (int)args[index];
         }
 
-        public abstract object Invoke(IGeometry geom, object[] args);
+        public abstract object Invoke(Geometry geom, object[] args);
 
         /// <summary>
         /// Two functions are the same if they have the

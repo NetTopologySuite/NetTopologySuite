@@ -32,7 +32,7 @@ namespace NetTopologySuite.Noding
         /// Initializes a new instance of the <see cref="IteratedNoder"/> class.
         /// </summary>
         /// <param name="pm"></param>
-        public IteratedNoder(IPrecisionModel pm)
+        public IteratedNoder(PrecisionModel pm)
         {
             _li = new RobustLineIntersector {PrecisionModel = pm};
         }

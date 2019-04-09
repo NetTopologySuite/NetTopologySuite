@@ -19,7 +19,7 @@ namespace NetTopologySuite.Geometries
     /// an <see cref="ArgumentException"/></para>
     /// </remarks>
     [Serializable]
-    public class LinearRing : LineString, ILinearRing
+    public class LinearRing : LineString
     {
         /// <summary>
         /// The minimum number of vertices allowed in a valid non-empty ring (= 4).
@@ -35,7 +35,7 @@ namespace NetTopologySuite.Geometries
         /// or <c>null</c> to create the empty geometry.</param>
         /// <param name="factory">The factory that creates this <c>LinearRing</c></param>
         /// <exception cref="ArgumentException">If the ring is not closed, or has too few points</exception>
-        public LinearRing(ICoordinateSequence points, IGeometryFactory factory)
+        public LinearRing(ICoordinateSequence points, GeometryFactory factory)
             : base(points, factory)
         {
             ValidateConstruction();
@@ -82,12 +82,12 @@ namespace NetTopologySuite.Geometries
         public override string GeometryType => "LinearRing";
 
         /// <inheritdoc cref="Geometry.CopyInternal"/>>
-        protected override IGeometry CopyInternal()
+        protected override Geometry CopyInternal()
         {
             return new LinearRing(CoordinateSequence.Copy(), Factory);
         }
 
-        public override IGeometry Reverse()
+        public override Geometry Reverse()
         {
             var sequence = CoordinateSequence.Copy();
             CoordinateSequences.Reverse(sequence);

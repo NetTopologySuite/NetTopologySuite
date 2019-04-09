@@ -9,7 +9,7 @@ namespace NetTopologySuite.Triangulate
     /// <summary>
     /// A utility class which creates Voronoi Diagrams
     /// from collections of points.
-    /// The diagram is returned as a <see cref="IGeometryCollection"/> of <see cref="Polygon"/>s,
+    /// The diagram is returned as a <see cref="GeometryCollection"/> of <see cref="Polygon"/>s,
     /// representing the faces of the Voronoi diagram.
     /// /// The faces are clipped to the larger of:
     /// <list type="bullet">
@@ -38,7 +38,7 @@ namespace NetTopologySuite.Triangulate
         /// All vertices of the given geometry will be used as sites.
         /// </summary>
         /// <param name="geom">geom the geometry from which the sites will be extracted.</param>
-        public void SetSites(IGeometry geom)
+        public void SetSites(Geometry geom)
         {
             // remove any duplicate points (they will cause the triangulation to fail)
             _siteCoords = DelaunayTriangulationBuilder.ExtractUniqueCoordinates(geom);
@@ -106,16 +106,16 @@ namespace NetTopologySuite.Triangulate
         }
 
         /// <summary>
-        /// Gets the faces of the computed diagram as a <see cref="IGeometryCollection"/>
+        /// Gets the faces of the computed diagram as a <see cref="GeometryCollection"/>
         /// of <see cref="Polygon"/>s, clipped as specified.
         /// <para/>
-        /// The <see cref="IGeometry.UserData"/> attribute of each face <see cref="IPolygon"/> is set to
+        /// The <see cref="Geometry.UserData"/> attribute of each face <see cref="Polygon"/> is set to
         /// the <c>Coordinate</c> of the corresponding input site.
         /// This allows using a <see cref="IDictionary{TKey,TValue}"/> to link faces to data associated with sites.
         /// </summary>
         /// <param name="geomFact">the geometry factory to use to create the output</param>
-        /// <returns>a <see cref="IGeometryCollection"/> containing the face <see cref="IPolygon"/>s of the diagram</returns>
-        public IGeometryCollection GetDiagram(IGeometryFactory geomFact)
+        /// <returns>a <see cref="GeometryCollection"/> containing the face <see cref="Polygon"/>s of the diagram</returns>
+        public GeometryCollection GetDiagram(GeometryFactory geomFact)
         {
             Create();
             var polys = _subdiv.GetVoronoiDiagram(geomFact);
@@ -124,14 +124,14 @@ namespace NetTopologySuite.Triangulate
             return ClipGeometryCollection(polys, _diagramEnv);
         }
 
-        private static IGeometryCollection ClipGeometryCollection(IGeometryCollection geom, Envelope clipEnv)
+        private static GeometryCollection ClipGeometryCollection(GeometryCollection geom, Envelope clipEnv)
         {
             var clipPoly = geom.Factory.ToGeometry(clipEnv);
-            var clipped = new List<IGeometry>();
+            var clipped = new List<Geometry>();
             for (int i = 0; i < geom.NumGeometries; i++)
             {
                 var g = geom.GetGeometryN(i);
-                IGeometry result = null;
+                Geometry result = null;
                 // don't clip unless necessary
                 if (clipEnv.Contains(g.EnvelopeInternal))
                     result = g;

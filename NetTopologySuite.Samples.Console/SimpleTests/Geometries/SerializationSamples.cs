@@ -15,10 +15,10 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
         private IFormatter serializer = null;
 
         private Coordinate[] coordinates = null;
-        private IPoint point = null;
-        private ILineString line = null;
-        private IPolygon polygon = null;
-        private IMultiPoint multiPoint = null;
+        private Point point = null;
+        private LineString line = null;
+        private Polygon polygon = null;
+        private MultiPoint multiPoint = null;
 
         public SerializationSamples() : base()
         {
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
         ///
         /// </summary>
         /// <param name="geom"></param>
-        private void TestSerialization(IGeometry geom)
+        private void TestSerialization(Geometry geom)
         {
             using (Stream stream = File.OpenWrite(filepath))
                 serializer.Serialize(stream, geom);

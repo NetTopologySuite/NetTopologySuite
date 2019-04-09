@@ -2,14 +2,14 @@ namespace NetTopologySuite.Geometries.Prepared
 {
 
     ///<summary>
-    /// An interface for classes which prepare <see cref="IGeometry"/>s 
+    /// An interface for classes which prepare <see cref="Geometry"/>s 
     /// in order to optimize the performance of repeated calls to specific geometric operations.
     ///</summary>
     /// <remarks>
     /// <para>
     /// A given implementation may provide optimized implementations 
     /// for only some of the specified methods, and delegate the remaining
-    /// methods to the original <see cref="IGeometry"/> operations.
+    /// methods to the original <see cref="Geometry"/> operations.
     /// </para>
     /// <para>
     /// An implementation may also only optimize certain situations, and delegate others.
@@ -25,20 +25,20 @@ namespace NetTopologySuite.Geometries.Prepared
     public interface IPreparedGeometry
     {
         ///<summary>
-        /// Gets the original <see cref="IGeometry"/> which has been prepared.
+        /// Gets the original <see cref="Geometry"/> which has been prepared.
         ///</summary>
-        IGeometry Geometry { get; }
+        Geometry Geometry { get; }
 
         ///<summary>
-        /// Tests whether the base <see cref="IGeometry"/> contains a given geometry.
+        /// Tests whether the base <see cref="Geometry"/> contains a given geometry.
         ///</summary>
         /// <param name="geom">The Geometry to test</param>
         /// <returns>true if this Geometry contains the given Geometry</returns>
-        /// <see cref="IGeometry.Contains(IGeometry)"/>
-        bool Contains(IGeometry geom);
+        /// <see cref="Geometry.Contains(Geometry)"/>
+        bool Contains(Geometry geom);
 
         ///<summary>
-        /// Tests whether the base <see cref="IGeometry"/> contains a given geometry.
+        /// Tests whether the base <see cref="Geometry"/> contains a given geometry.
         ///</summary>
         /// <remarks>
         /// <para>
@@ -61,78 +61,78 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </remarks>
         /// <param name="geom">The geometry to test</param>
         /// <returns>true if this geometry properly contains the given geometry</returns>
-        //// <see cref="IGeometry.ContainsProperly(IGeometry)"/>
-        bool ContainsProperly(IGeometry geom);
+        //// <see cref="Geometry.ContainsProperly(Geometry)"/>
+        bool ContainsProperly(Geometry geom);
 
         ///<summary>
-        /// Tests whether the base <see cref="IGeometry"/> is covered by a given geometry.
+        /// Tests whether the base <see cref="Geometry"/> is covered by a given geometry.
         ///</summary>
         /// <param name="geom">The geometry to test</param>
         /// <returns>true if this geometry is covered by the given geometry</returns>
-        /// <see cref="IGeometry.CoveredBy(IGeometry)"/>
-        bool CoveredBy(IGeometry geom);
+        /// <see cref="Geometry.CoveredBy(Geometry)"/>
+        bool CoveredBy(Geometry geom);
 
         ///<summary>
-        /// Tests whether the base <see cref="IGeometry"/> covers a given geometry.
+        /// Tests whether the base <see cref="Geometry"/> covers a given geometry.
         ///</summary>
         /// <param name="geom">The geometry to test</param>
         /// <returns>true if this geometry covers the given geometry</returns>
-        /// <see cref="IGeometry.Covers(IGeometry)"/>
-        bool Covers(IGeometry geom);
+        /// <see cref="Geometry.Covers(Geometry)"/>
+        bool Covers(Geometry geom);
 
         ///<summary>
-        /// Tests whether the base <see cref="IGeometry"/> crosses a given geometry.
+        /// Tests whether the base <see cref="Geometry"/> crosses a given geometry.
         ///</summary>
         /// <param name="geom">The geometry to test</param>
         /// <returns>true if this geometry crosses the given geometry</returns>
-        /// <see cref="IGeometry.Crosses(IGeometry)"/>
-        bool Crosses(IGeometry geom);
+        /// <see cref="Geometry.Crosses(Geometry)"/>
+        bool Crosses(Geometry geom);
 
         ///<summary>
-        /// Tests whether the base <see cref="IGeometry"/> is disjoint from given geometry.
+        /// Tests whether the base <see cref="Geometry"/> is disjoint from given geometry.
         ///</summary>
         /// <remarks>
-       	/// This method supports <see cref="IGeometryCollection"/>s as input
+       	/// This method supports <see cref="GeometryCollection"/>s as input
        	/// </remarks>
         /// <param name="geom">The geometry to test</param>
         /// <returns>true if this geometry is disjoint from the given geometry</returns>
-        /// <see cref="IGeometry.Disjoint(IGeometry)"/>
-        bool Disjoint(IGeometry geom);
+        /// <see cref="Geometry.Disjoint(Geometry)"/>
+        bool Disjoint(Geometry geom);
 
         ///<summary>
-        /// Tests whether the base <see cref="IGeometry"/> intersects a given geometry.
+        /// Tests whether the base <see cref="Geometry"/> intersects a given geometry.
         ///</summary>
         /// <remarks>
-        /// This method supports <see cref="IGeometryCollection"/>s as input
+        /// This method supports <see cref="GeometryCollection"/>s as input
         /// </remarks>
         /// <param name="geom">The geometry to test</param>
         /// <returns>true if this geometry intersects the given geometry</returns>
-        /// <see cref="IGeometry.Intersects(IGeometry)"/>
-        bool Intersects(IGeometry geom);
+        /// <see cref="Geometry.Intersects(Geometry)"/>
+        bool Intersects(Geometry geom);
 
         ///<summary>
-        /// Tests whether the base <see cref="IGeometry"/> overlaps a given geometry.
+        /// Tests whether the base <see cref="Geometry"/> overlaps a given geometry.
         ///</summary>
         /// <param name="geom">The geometry to test</param>
         /// <returns>true if this geometry overlaps the given geometry</returns>
-        /// <see cref="IGeometry.Overlaps(IGeometry)"/>
-        bool Overlaps(IGeometry geom);
+        /// <see cref="Geometry.Overlaps(Geometry)"/>
+        bool Overlaps(Geometry geom);
 
         ///<summary>
-        /// Tests whether the base <see cref="IGeometry"/> touches a given geometry.
+        /// Tests whether the base <see cref="Geometry"/> touches a given geometry.
         ///</summary>
         /// <param name="geom">The geometry to test</param>
         /// <returns>true if this geometry touches the given geometry</returns>
-        /// <see cref="IGeometry.Touches(IGeometry)"/>
-        bool Touches(IGeometry geom);
+        /// <see cref="Geometry.Touches(Geometry)"/>
+        bool Touches(Geometry geom);
 
         ///<summary>
-        /// Tests whether the base <see cref="IGeometry"/> is within a given geometry.
+        /// Tests whether the base <see cref="Geometry"/> is within a given geometry.
         ///</summary>
         /// <param name="geom">The geometry to test</param>
         /// <returns>true if this geometry is within the given geometry</returns>
-        /// <see cref="IGeometry.Within(IGeometry)"/>
-        bool Within(IGeometry geom);
+        /// <see cref="Geometry.Within(Geometry)"/>
+        bool Within(Geometry geom);
 
     }
 }

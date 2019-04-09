@@ -7,8 +7,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     public class PointInAreaStressTester
     {
-        private readonly IGeometryFactory _geomFactory;
-        private readonly IGeometry _area;
+        private readonly GeometryFactory _geomFactory;
+        private readonly Geometry _area;
         private bool _ignoreBoundaryResults = true;
 
         private int _numPts = 10000;
@@ -16,7 +16,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         private IPointOnGeometryLocator _pia2;
         private readonly int[] _locationCount = new int[3];
 
-        public PointInAreaStressTester(IGeometryFactory geomFactory, IGeometry area)
+        public PointInAreaStressTester(GeometryFactory geomFactory, Geometry area)
         {
             _geomFactory = geomFactory;
             _area = area;

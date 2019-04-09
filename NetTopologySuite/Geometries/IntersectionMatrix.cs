@@ -9,7 +9,7 @@ namespace NetTopologySuite.Geometries
     /// <remarks>
     /// <para>
     /// DE-9IM matrices (such as "212FF1FF2")
-    /// specify the topological relationship between two <see cref="IGeometry"/>s. 
+    /// specify the topological relationship between two <see cref="Geometry"/>s. 
     /// This class can also represent matrix patterns (such as "T*T******")
     /// which are used for matching instances of DE-9IM matrices.
     /// </para>
@@ -169,11 +169,11 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="row">
         /// The row of this <see cref="IntersectionMatrix" />,
-        /// indicating the interior, boundary or exterior of the first <see cref="IGeometry"/>
+        /// indicating the interior, boundary or exterior of the first <see cref="Geometry"/>
         /// </param>
         /// <param name="column">
         /// The column of this <see cref="IntersectionMatrix" />,
-        /// indicating the interior, boundary or exterior of the second <see cref="IGeometry"/>
+        /// indicating the interior, boundary or exterior of the second <see cref="Geometry"/>
         /// </param>
         /// <param name="dimensionValue">The new value of the element</param>        
         public void Set(Location row, Location column, Dimension dimensionValue)
@@ -204,11 +204,11 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="row">
         /// The row of this <see cref="IntersectionMatrix" />, 
-        /// indicating the interior, boundary or exterior of the first <see cref="IGeometry"/>.
+        /// indicating the interior, boundary or exterior of the first <see cref="Geometry"/>.
         /// </param>
         /// <param name="column">
         /// The column of this <see cref="IntersectionMatrix" />, 
-        /// indicating the interior, boundary or exterior of the second <see cref="IGeometry"/>.
+        /// indicating the interior, boundary or exterior of the second <see cref="Geometry"/>.
         /// </param>
         /// <param name="minimumDimensionValue">
         /// The dimension value with which to compare the
@@ -274,11 +274,11 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="row">
         /// The row of this <see cref="IntersectionMatrix" />, indicating
-        /// the interior, boundary or exterior of the first <see cref="IGeometry"/>.
+        /// the interior, boundary or exterior of the first <see cref="Geometry"/>.
         /// </param>
         /// <param name="column">
         /// The column of this <see cref="IntersectionMatrix" />,
-        /// indicating the interior, boundary or exterior of the second <see cref="IGeometry"/>.
+        /// indicating the interior, boundary or exterior of the second <see cref="Geometry"/>.
         /// </param>
         /// <returns>The dimension value at the given matrix position.</returns>
         public Dimension Get(Location row, Location column)
@@ -305,7 +305,7 @@ namespace NetTopologySuite.Geometries
         /// Returns <c>true</c> if this <see cref="IntersectionMatrix" /> is FF*FF****.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if the two <see cref="IGeometry"/>'s related by
+        /// <c>true</c> if the two <see cref="Geometry"/>'s related by
         /// this <see cref="IntersectionMatrix" /> are disjoint.
         /// </returns>
         public bool IsDisjoint()
@@ -321,7 +321,7 @@ namespace NetTopologySuite.Geometries
         /// Returns <c>true</c> if <c>isDisjoint</c> returns false.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if the two <see cref="IGeometry"/>'s related by
+        /// <c>true</c> if the two <see cref="Geometry"/>'s related by
         /// this <see cref="IntersectionMatrix" /> intersect.
         /// </returns>
         public bool IsIntersects()
@@ -333,12 +333,12 @@ namespace NetTopologySuite.Geometries
         /// Returns <c>true</c> if this <see cref="IntersectionMatrix" /> is
         /// FT*******, F**T***** or F***T****.
         /// </summary>
-        /// <param name="dimensionOfGeometryA">The dimension of the first <see cref="IGeometry"/>.</param>
-        /// <param name="dimensionOfGeometryB">The dimension of the second <see cref="IGeometry"/>.</param>
+        /// <param name="dimensionOfGeometryA">The dimension of the first <see cref="Geometry"/>.</param>
+        /// <param name="dimensionOfGeometryB">The dimension of the second <see cref="Geometry"/>.</param>
         /// <returns>
-        /// <c>true</c> if the two <see cref="IGeometry"/>
+        /// <c>true</c> if the two <see cref="Geometry"/>
         /// s related by this <see cref="IntersectionMatrix" /> touch; Returns false
-        /// if both <see cref="IGeometry"/>s are points.
+        /// if both <see cref="Geometry"/>s are points.
         /// </returns>
         public bool IsTouches(Dimension dimensionOfGeometryA, Dimension dimensionOfGeometryB)
         {
@@ -364,12 +364,12 @@ namespace NetTopologySuite.Geometries
         ///  T*T****** (for a point and a curve, a point and an area or a line
         /// and an area) 0******** (for two curves).
         /// </summary>
-        /// <param name="dimensionOfGeometryA">The dimension of the first <see cref="IGeometry"/>.</param>
-        /// <param name="dimensionOfGeometryB">The dimension of the second <see cref="IGeometry"/>.</param>
+        /// <param name="dimensionOfGeometryA">The dimension of the first <see cref="Geometry"/>.</param>
+        /// <param name="dimensionOfGeometryB">The dimension of the second <see cref="Geometry"/>.</param>
         /// <returns>
-        /// <c>true</c> if the two <see cref="IGeometry"/>
+        /// <c>true</c> if the two <see cref="Geometry"/>
         /// s related by this <see cref="IntersectionMatrix" /> cross. For this
-        /// function to return <c>true</c>, the <see cref="IGeometry"/>s must
+        /// function to return <c>true</c>, the <see cref="Geometry"/>s must
         /// be a point and a curve; a point and a surface; two curves; or a curve
         /// and a surface.
         /// </returns>
@@ -397,7 +397,7 @@ namespace NetTopologySuite.Geometries
         /// Returns <c>true</c> if this <see cref="IntersectionMatrix" /> is
         /// T*F**F***.
         /// </summary>
-        /// <returns><c>true</c> if the first <see cref="IGeometry"/> is within the second.</returns>
+        /// <returns><c>true</c> if the first <see cref="Geometry"/> is within the second.</returns>
         public bool IsWithin()
         {
             return IsTrue(_matrix[(int)Location.Interior, (int)Location.Interior]) &&
@@ -409,7 +409,7 @@ namespace NetTopologySuite.Geometries
         /// Returns <c>true</c> if this <see cref="IntersectionMatrix" /> is
         /// T*****FF*.
         /// </summary>
-        /// <returns><c>true</c> if the first <see cref="IGeometry"/> contains the second.</returns>
+        /// <returns><c>true</c> if the first <see cref="Geometry"/> contains the second.</returns>
         public bool IsContains()
         {
             return IsTrue(_matrix[(int)Location.Interior, (int)Location.Interior]) &&
@@ -421,7 +421,7 @@ namespace NetTopologySuite.Geometries
         /// Returns <c>true</c> if this <see cref="IntersectionMatrix" /> is <c>T*****FF*</c>
         /// or <c>*T****FF*</c> or <c>***T**FF*</c> or <c>****T*FF*</c>.
         /// </summary>
-        /// <returns><c>true</c> if the first <see cref="IGeometry"/> covers the second</returns>
+        /// <returns><c>true</c> if the first <see cref="Geometry"/> covers the second</returns>
         public bool IsCovers()
         {
             bool hasPointInCommon = IsTrue(_matrix[(int)Location.Interior, (int)Location.Interior])
@@ -438,7 +438,7 @@ namespace NetTopologySuite.Geometries
         /// Returns <c>true</c> if this <see cref="IntersectionMatrix" /> is <c>T*F**F***</c>
         /// or <c>*TF**F***</c> or <c>**FT*F***</c> or <c>**F*TF***</c>
         /// </summary>
-        /// <returns><c>true</c> if the first <see cref="IGeometry"/> is covered by the second</returns>
+        /// <returns><c>true</c> if the first <see cref="Geometry"/> is covered by the second</returns>
         public bool IsCoveredBy()
         {
             bool hasPointInCommon = Matches(_matrix[(int)Location.Interior, (int)Location.Interior], 'T')
@@ -463,12 +463,12 @@ namespace NetTopologySuite.Geometries
         /// two identical <tt>POINT</tt>s are not equal, which is not desirable behaviour.
         /// The pattern used here has been corrected to compute equality in this situation.
         /// </summary>
-        /// <param name="dimensionOfGeometryA">The dimension of the first <see cref="IGeometry"/>.</param>
-        /// <param name="dimensionOfGeometryB">The dimension of the second <see cref="IGeometry"/>.</param>
+        /// <param name="dimensionOfGeometryA">The dimension of the first <see cref="Geometry"/>.</param>
+        /// <param name="dimensionOfGeometryB">The dimension of the second <see cref="Geometry"/>.</param>
         /// <returns>
-        /// <c>true</c> if the two <see cref="IGeometry"/>s
+        /// <c>true</c> if the two <see cref="Geometry"/>s
         /// related by this <see cref="IntersectionMatrix" /> are equal; the
-        /// <see cref="IGeometry"/>s must have the same dimension to be equal.
+        /// <see cref="Geometry"/>s must have the same dimension to be equal.
         /// </returns>
         public bool IsEquals(Dimension dimensionOfGeometryA, Dimension dimensionOfGeometryB)
         {
@@ -487,12 +487,12 @@ namespace NetTopologySuite.Geometries
         ///  T*T***T** (for two points or two surfaces)
         ///  1*T***T** (for two curves).
         /// </summary>
-        /// <param name="dimensionOfGeometryA">The dimension of the first <see cref="IGeometry"/>.</param>
-        /// <param name="dimensionOfGeometryB">The dimension of the second <see cref="IGeometry"/>.</param>
+        /// <param name="dimensionOfGeometryA">The dimension of the first <see cref="Geometry"/>.</param>
+        /// <param name="dimensionOfGeometryB">The dimension of the second <see cref="Geometry"/>.</param>
         /// <returns>
-        /// <c>true</c> if the two <see cref="IGeometry"/>
+        /// <c>true</c> if the two <see cref="Geometry"/>
         /// s related by this <see cref="IntersectionMatrix" /> overlap. For this
-        /// function to return <c>true</c>, the <see cref="IGeometry"/>s must
+        /// function to return <c>true</c>, the <see cref="Geometry"/>s must
         /// be two points, two curves or two surfaces.
         /// </returns>
         public bool IsOverlaps(Dimension dimensionOfGeometryA, Dimension dimensionOfGeometryB)

@@ -18,25 +18,25 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="linearGeom"></param>
         /// <param name="inputPt"></param>
         /// <returns></returns>
-        public static LinearLocation IndexOf(IGeometry linearGeom, Coordinate inputPt)
+        public static LinearLocation IndexOf(Geometry linearGeom, Coordinate inputPt)
         {
             var locater = new LocationIndexOfPoint(linearGeom);
             return locater.IndexOf(inputPt);
         }
 
-        public static LinearLocation IndexOfAfter(IGeometry linearGeom, Coordinate inputPt, LinearLocation minIndex)
+        public static LinearLocation IndexOfAfter(Geometry linearGeom, Coordinate inputPt, LinearLocation minIndex)
         {
             var locater = new LocationIndexOfPoint(linearGeom);
             return locater.IndexOfAfter(inputPt, minIndex);
         }
 
-        private readonly IGeometry _linearGeom;
+        private readonly Geometry _linearGeom;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocationIndexOfPoint"/> class.
         /// </summary>
         /// <param name="linearGeom">A linear geometry.</param>
-        public LocationIndexOfPoint(IGeometry linearGeom)
+        public LocationIndexOfPoint(Geometry linearGeom)
         {
             _linearGeom = linearGeom;
         }

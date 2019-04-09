@@ -5,8 +5,8 @@ using NetTopologySuite.Geometries.Utilities;
 namespace NetTopologySuite.Noding.Snapround
 {
     /// <summary>
-    /// Nodes the linework in a list of <see cref="IGeometry"/>s using Snap-Rounding
-    /// to a given <see cref="IPrecisionModel"/>.
+    /// Nodes the linework in a list of <see cref="Geometry"/>s using Snap-Rounding
+    /// to a given <see cref="PrecisionModel"/>.
     /// <para>
     /// The input coordinates are expected to be rounded
     /// to the given precision model.
@@ -21,15 +21,15 @@ namespace NetTopologySuite.Noding.Snapround
     /// </para></summary>
     public class GeometryNoder
     {
-        private IGeometryFactory _geomFact;
-        private readonly IPrecisionModel _pm;
+        private GeometryFactory _geomFact;
+        private readonly PrecisionModel _pm;
         //private bool isValidityChecked = false;
 
         /// <summary>
-        /// Creates a new noder which snap-rounds to a grid specified by the given <see cref="IPrecisionModel"/>
+        /// Creates a new noder which snap-rounds to a grid specified by the given <see cref="PrecisionModel"/>
         /// </summary>
         /// <param name="pm">The precision model for the grid to snap-round to.</param>
-        public GeometryNoder(IPrecisionModel pm)
+        public GeometryNoder(PrecisionModel pm)
         {
             _pm = pm;
         }
@@ -44,7 +44,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// </summary>
         /// <param name="geoms">A collection of Geometrys of any type</param>
         /// <returns>A list of LineStrings representing the noded linework of the input</returns>
-        public IList<ILineString> Node(ICollection<IGeometry> geoms)
+        public IList<LineString> Node(ICollection<Geometry> geoms)
         {
             // get geometry factory
             foreach (var g in geoms)
@@ -69,9 +69,9 @@ namespace NetTopologySuite.Noding.Snapround
             return ToLineStrings(nodedLines);
         }
 
-        private IList<ILineString> ToLineStrings(IEnumerable<ISegmentString> segStrings)
+        private IList<LineString> ToLineStrings(IEnumerable<ISegmentString> segStrings)
         {
-            var lines = new List<ILineString>();
+            var lines = new List<LineString>();
             foreach (var ss in segStrings)
             {
                 // skip collapsed lines
@@ -82,9 +82,9 @@ namespace NetTopologySuite.Noding.Snapround
             return lines;
         }
 
-        private static IEnumerable<IGeometry> ExtractLines(IEnumerable<IGeometry> geoms)
+        private static IEnumerable<Geometry> ExtractLines(IEnumerable<Geometry> geoms)
         {
-            var lines = new List<IGeometry>();
+            var lines = new List<Geometry>();
             var lce = new LinearComponentExtracter(lines);
             foreach (var geom in geoms)
             {
@@ -93,10 +93,10 @@ namespace NetTopologySuite.Noding.Snapround
             return lines;
         }
 
-        private static IList<ISegmentString> ToSegmentStrings(IEnumerable<IGeometry> lines)
+        private static IList<ISegmentString> ToSegmentStrings(IEnumerable<Geometry> lines)
         {
             var segStrings = new List<ISegmentString>();
-            foreach (ILineString line in lines)
+            foreach (LineString line in lines)
             {
                 segStrings.Add(new NodedSegmentString(line.Coordinates, null));
             }

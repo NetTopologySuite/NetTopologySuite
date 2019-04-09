@@ -20,7 +20,7 @@ namespace NetTopologySuite.Triangulate
     {
         private readonly IDictionary<Coordinate, object> _coordDataMap = new SortedDictionary<Coordinate, object>();
 
-        public void LoadSourceGeometries(IGeometry geoms)
+        public void LoadSourceGeometries(Geometry geoms)
         {
             for (int i = 0; i < geoms.NumGeometries; i++)
             {
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Triangulate
             }
         }
 
-        public void LoadSourceGeometries(ICollection<IGeometry> geoms)
+        public void LoadSourceGeometries(ICollection<Geometry> geoms)
         {
             foreach (var geom in geoms)
             {
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Triangulate
             }
         }
 
-        public void LoadSourceGeometries(IGeometryCollection geomColl)
+        public void LoadSourceGeometries(GeometryCollection geomColl)
         {
             for (int i = 0; i < geomColl.NumGeometries; i++)
             {
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Triangulate
         /// the output data object to be written back into the component.
         /// </summary>
         /// <param name="targetGeom" />
-        public void TransferData(IGeometry targetGeom)
+        public void TransferData(Geometry targetGeom)
         {
             for (int i = 0; i < targetGeom.NumGeometries; i++)
             {

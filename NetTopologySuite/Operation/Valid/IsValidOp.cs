@@ -44,7 +44,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <param name="searchRing"></param>
         /// <param name="graph"></param>
         /// <returns>The point found, or <c>null</c> if none found.</returns>
-        public static Coordinate FindPointNotNode(Coordinate[] testCoords, ILinearRing searchRing, GeometryGraph graph)
+        public static Coordinate FindPointNotNode(Coordinate[] testCoords, LinearRing searchRing, GeometryGraph graph)
         {
             // find edge corresponding to searchRing.
             var searchEdge = graph.FindEdge(searchRing);
@@ -57,7 +57,7 @@ namespace NetTopologySuite.Operation.Valid
             return null;
         }
 
-        private readonly IGeometry _parentGeometry;  // the base Geometry to be validated
+        private readonly Geometry _parentGeometry;  // the base Geometry to be validated
 
         /**
          * If the following condition is TRUE JTS will validate inverted shells and exverted holes (the ESRI SDE model).
@@ -69,7 +69,7 @@ namespace NetTopologySuite.Operation.Valid
         ///
         /// </summary>
         /// <param name="parentGeometry"></param>
-        public IsValidOp(IGeometry parentGeometry)
+        public IsValidOp(Geometry parentGeometry)
         {
             _parentGeometry = parentGeometry;
         }
@@ -137,26 +137,26 @@ namespace NetTopologySuite.Operation.Valid
         ///
         /// </summary>
         /// <param name="g"></param>
-        private void CheckValid(IGeometry g)
+        private void CheckValid(Geometry g)
         {
             _validErr = null;
 
             if (g.IsEmpty) return;
 
-            if (g is IPoint)
-                CheckValid((IPoint) g);
-            else if (g is IMultiPoint)
-                CheckValid((IMultiPoint) g);
-            else if (g is ILinearRing) // LineString also handles LinearRings
-                CheckValid((ILinearRing) g);
-            else if (g is ILineString)
-                CheckValid((ILineString) g);
-            else if (g is IPolygon)
-                CheckValid((IPolygon) g);
-            else if (g is IMultiPolygon)
-                CheckValid((IMultiPolygon) g);
-            else if (g is IGeometryCollection)
-                CheckValid((IGeometryCollection) g);
+            if (g is Point)
+                CheckValid((Point) g);
+            else if (g is MultiPoint)
+                CheckValid((MultiPoint) g);
+            else if (g is LinearRing) // LineString also handles LinearRings
+                CheckValid((LinearRing) g);
+            else if (g is LineString)
+                CheckValid((LineString) g);
+            else if (g is Polygon)
+                CheckValid((Polygon) g);
+            else if (g is MultiPolygon)
+                CheckValid((MultiPolygon) g);
+            else if (g is GeometryCollection)
+                CheckValid((GeometryCollection) g);
             else throw new NotSupportedException(g.GetType().FullName);
         }
 
@@ -164,7 +164,7 @@ namespace NetTopologySuite.Operation.Valid
         /// Checks validity of a Point.
         /// </summary>
         /// <param name="g"></param>
-        private void CheckValid(IPoint g)
+        private void CheckValid(Point g)
         {
             CheckInvalidCoordinates(g.Coordinates);
         }
@@ -173,7 +173,7 @@ namespace NetTopologySuite.Operation.Valid
         /// Checks validity of a MultiPoint.
         /// </summary>
         /// <param name="g"></param>
-        private void CheckValid(IMultiPoint g)
+        private void CheckValid(MultiPoint g)
         {
             CheckInvalidCoordinates(g.Coordinates);
         }
@@ -183,7 +183,7 @@ namespace NetTopologySuite.Operation.Valid
         /// Almost anything goes for lineStrings!
         /// </summary>
         /// <param name="g"></param>
-        private void CheckValid(ILineString g)
+        private void CheckValid(LineString g)
         {
             CheckInvalidCoordinates(g.Coordinates);
             if (_validErr != null) return;
@@ -195,7 +195,7 @@ namespace NetTopologySuite.Operation.Valid
         /// Checks validity of a LinearRing.
         /// </summary>
         /// <param name="g"></param>
-        private void CheckValid(ILinearRing g)
+        private void CheckValid(LinearRing g)
         {
             CheckInvalidCoordinates(g.Coordinates);
             if (_validErr != null) return;
@@ -214,7 +214,7 @@ namespace NetTopologySuite.Operation.Valid
         /// Checks the validity of a polygon and sets the validErr flag.
         /// </summary>
         /// <param name="g"></param>
-        private void CheckValid(IPolygon g)
+        private void CheckValid(Polygon g)
         {
             CheckInvalidCoordinates(g);
             if (_validErr != null) return;
@@ -242,9 +242,9 @@ namespace NetTopologySuite.Operation.Valid
         ///
         /// </summary>
         /// <param name="g"></param>
-        private void CheckValid(IMultiPolygon g)
+        private void CheckValid(MultiPolygon g)
         {
-            foreach(IPolygon p in g.Geometries)
+            foreach(Polygon p in g.Geometries)
             {
                 CheckInvalidCoordinates(p);
                 if (_validErr != null) return;
@@ -262,12 +262,12 @@ namespace NetTopologySuite.Operation.Valid
                 CheckNoSelfIntersectingRings(graph);
                 if (_validErr != null) return;
             }
-            foreach(IPolygon p in g.Geometries)
+            foreach(Polygon p in g.Geometries)
             {
                 CheckHolesInShell(p, graph);
                 if (_validErr != null) return;
             }
-            foreach (IPolygon p in g.Geometries)
+            foreach (Polygon p in g.Geometries)
             {
                 CheckHolesNotNested(p, graph);
                 if (_validErr != null) return;
@@ -281,7 +281,7 @@ namespace NetTopologySuite.Operation.Valid
         ///
         /// </summary>
         /// <param name="gc"></param>
-        private void CheckValid(IGeometryCollection gc)
+        private void CheckValid(GeometryCollection gc)
         {
             foreach(var g in gc.Geometries)
             {
@@ -310,7 +310,7 @@ namespace NetTopologySuite.Operation.Valid
         ///
         /// </summary>
         /// <param name="poly"></param>
-        private void CheckInvalidCoordinates(IPolygon poly)
+        private void CheckInvalidCoordinates(Polygon poly)
         {
             CheckInvalidCoordinates(poly.ExteriorRing.Coordinates);
             if (_validErr != null) return;
@@ -325,7 +325,7 @@ namespace NetTopologySuite.Operation.Valid
         ///
         /// </summary>
         /// <param name="poly"></param>
-        private void CheckClosedRings(IPolygon poly)
+        private void CheckClosedRings(Polygon poly)
         {
             CheckClosedRing(poly.Shell);
             if (_validErr != null) return;
@@ -340,7 +340,7 @@ namespace NetTopologySuite.Operation.Valid
         ///
         /// </summary>
         /// <param name="ring"></param>
-        private void CheckClosedRing(ILinearRing ring)
+        private void CheckClosedRing(LinearRing ring)
         {
             if (ring.IsEmpty)
             {
@@ -437,7 +437,7 @@ namespace NetTopologySuite.Operation.Valid
         /// </summary>
         /// <param name="p">The polygon to be tested for hole inclusion.</param>
         /// <param name="graph">A GeometryGraph incorporating the polygon.</param>
-        private void CheckHolesInShell(IPolygon p, GeometryGraph graph)
+        private void CheckHolesInShell(Polygon p, GeometryGraph graph)
         {
             var shell = p.Shell;
             bool isShellEmpty = shell.IsEmpty;
@@ -482,7 +482,7 @@ namespace NetTopologySuite.Operation.Valid
         /// They are not identical
         /// (checked by <c>checkRelateConsistency</c>).
         /// </summary>
-        private void CheckHolesNotNested(IPolygon p, GeometryGraph graph)
+        private void CheckHolesNotNested(Polygon p, GeometryGraph graph)
         {
             var nestedTester = new IndexedNestedRingTester(graph);
             foreach (var innerHole in p.Holes)
@@ -510,17 +510,17 @@ namespace NetTopologySuite.Operation.Valid
         /// This routine relies on the fact that while polygon shells may touch at one or
         /// more vertices, they cannot touch at ALL vertices.
         /// </summary>
-        private void CheckShellsNotNested(IMultiPolygon mp, GeometryGraph graph)
+        private void CheckShellsNotNested(MultiPolygon mp, GeometryGraph graph)
         {
             for (int i = 0; i < mp.NumGeometries; i++)
             {
-                var p = (IPolygon) mp.GetGeometryN(i);
+                var p = (Polygon) mp.GetGeometryN(i);
                 var shell = p.Shell;
                 for (int j = 0; j < mp.NumGeometries; j++)
                 {
                     if (i == j)
                         continue;
-                    var p2 = (IPolygon) mp.GetGeometryN(j);
+                    var p2 = (Polygon) mp.GetGeometryN(j);
                     CheckShellNotNested(shell, p2, graph);
                     if (_validErr != null) return;
                 }
@@ -535,7 +535,7 @@ namespace NetTopologySuite.Operation.Valid
         /// E.g. they cannot partially overlap (this has been previously checked by
         /// <c>CheckRelateConsistency</c>).
         /// </summary>
-        private void CheckShellNotNested(ILinearRing shell, IPolygon p, GeometryGraph graph)
+        private void CheckShellNotNested(LinearRing shell, Polygon p, GeometryGraph graph)
         {
             var shellPts = shell.Coordinates;
             // test if shell is inside polygon shell
@@ -586,7 +586,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <c>null</c> if the shell is properly contained, or
         /// a Coordinate which is not inside the hole if it is not.
         /// </returns>
-        private Coordinate CheckShellInsideHole(ILinearRing shell, ILinearRing hole, GeometryGraph graph)
+        private Coordinate CheckShellInsideHole(LinearRing shell, LinearRing hole, GeometryGraph graph)
         {
             var shellPts = shell.Coordinates;
             var holePts = hole.Coordinates;

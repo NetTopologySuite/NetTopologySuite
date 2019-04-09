@@ -815,15 +815,15 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <summary>
-        /// Gets the geometry for the edges in the subdivision as a <see cref="IMultiLineString"/>
+        /// Gets the geometry for the edges in the subdivision as a <see cref="MultiLineString"/>
         /// containing 2-point lines.
         /// </summary>
         /// <param name="geomFact">the GeometryFactory to use</param>
-        /// <returns>a IMultiLineString</returns>
-        public IMultiLineString GetEdges(IGeometryFactory geomFact)
+        /// <returns>a MultiLineString</returns>
+        public MultiLineString GetEdges(GeometryFactory geomFact)
         {
             var quadEdges = GetPrimaryEdges(false);
-            ILineString[] edges = new LineString[quadEdges.Count];
+            LineString[] edges = new LineString[quadEdges.Count];
             int i = 0;
             foreach (var qe in quadEdges)
             {
@@ -834,15 +834,15 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         }
 
         /// <summary>
-        /// Gets the geometry for the triangles in a triangulated subdivision as a <see cref="IGeometryCollection"/>
-        /// of triangular <see cref="IPolygon"/>s.
+        /// Gets the geometry for the triangles in a triangulated subdivision as a <see cref="GeometryCollection"/>
+        /// of triangular <see cref="Polygon"/>s.
         /// </summary>
         /// <param name="geomFact">the GeometryFactory to use</param>
         /// <returns>a GeometryCollection of triangular Polygons</returns>
-        public IGeometryCollection GetTriangles(IGeometryFactory geomFact)
+        public GeometryCollection GetTriangles(GeometryFactory geomFact)
         {
             var triPtsList = GetTriangleCoordinates(false);
-            IPolygon[] tris = new Polygon[triPtsList.Count];
+            Polygon[] tris = new Polygon[triPtsList.Count];
             int i = 0;
             foreach (var triPt in triPtsList)
             {
@@ -854,7 +854,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
 
         /// <summary>
         /// Gets the cells in the Voronoi diagram for this triangulation.
-        /// The cells are returned as a <see cref="IGeometryCollection" /> of <see cref="IPolygon"/>s
+        /// The cells are returned as a <see cref="GeometryCollection" /> of <see cref="Polygon"/>s
         /// </summary>
         /// <remarks>
         /// The userData of each polygon is set to be the <see cref="Coordinate" />
@@ -863,14 +863,14 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// </remarks>
         /// <param name="geomFact">a geometry factory</param>
         /// <returns>a GeometryCollection of Polygons</returns>
-        public IGeometryCollection GetVoronoiDiagram(IGeometryFactory geomFact)
+        public GeometryCollection GetVoronoiDiagram(GeometryFactory geomFact)
         {
             var vorCells = GetVoronoiCellPolygons(geomFact);
             return geomFact.CreateGeometryCollection(GeometryFactory.ToGeometryArray(vorCells));
         }
 
         /// <summary>
-        /// Gets a List of <see cref="IPolygon"/>s for the Voronoi cells
+        /// Gets a List of <see cref="Polygon"/>s for the Voronoi cells
         /// of this triangulation.
         /// </summary>
         /// <remarks>
@@ -880,7 +880,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// </remarks>
         /// <param name="geomFact">a geometry factory</param>
         /// <returns>a List of Polygons</returns>
-        public IList<IGeometry> GetVoronoiCellPolygons(IGeometryFactory geomFact)
+        public IList<Geometry> GetVoronoiCellPolygons(GeometryFactory geomFact)
         {
             /*
              * Compute circumcentres of triangles as vertices for dual edges.
@@ -890,7 +890,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
              */
             VisitTriangles(new TriangleCircumcentreVisitor(), true);
 
-            var cells = new List<IGeometry>();
+            var cells = new List<Geometry>();
             var edges = GetVertexUniqueEdges(false);
             foreach (var qe in edges)
             {
@@ -911,7 +911,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="qe">a quadedge originating at the cell site</param>
         /// <param name="geomFact">a factory for building the polygon</param>
         /// <returns>a polygon indicating the cell extent</returns>
-        public IPolygon GetVoronoiCellPolygon(QuadEdge qe, IGeometryFactory geomFact)
+        public Polygon GetVoronoiCellPolygon(QuadEdge qe, GeometryFactory geomFact)
         {
             var cellPts = new List<Coordinate>();
             var startQE = qe;

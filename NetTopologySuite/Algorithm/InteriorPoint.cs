@@ -3,7 +3,7 @@
 namespace NetTopologySuite.Algorithm
 {
     /// <summary>
-    /// Computes an interior point of a <see cref="IGeometry"/>.
+    /// Computes an interior point of a <see cref="Geometry"/>.
     /// An interior point is guaranteed to lie in the interior of the Geometry,
     /// if it possible to calculate such a point exactly.
     /// Otherwise, the point may lie on the boundary of the geometry.
@@ -13,7 +13,7 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public static class InteriorPoint
     {
-        public static IPoint GetInteriorPoint(IGeometry geom)
+        public static Point GetInteriorPoint(Geometry geom)
         {
             var factory = geom.Factory;
 
@@ -41,12 +41,12 @@ namespace NetTopologySuite.Algorithm
             return CreatePointPrecise(factory, interiorPt);
         }
 
-        private static IPoint CreatePointEmpty(IGeometryFactory factory)
+        private static Point CreatePointEmpty(GeometryFactory factory)
         {
             return factory.CreatePoint();
         }
 
-        private static IPoint CreatePointPrecise(IGeometryFactory factory, Coordinate coord)
+        private static Point CreatePointPrecise(GeometryFactory factory, Coordinate coord)
         {
             factory.PrecisionModel.MakePrecise(coord);
             return factory.CreatePoint(coord);

@@ -10,15 +10,15 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
     {
         XmlReader _xmlreader;
         private XmlDocument _document;
-        IGeometry _result;
+        Geometry _result;
 
         private readonly GMLWriter _writer;
         private readonly GMLReader _reader;
 
-        private readonly IPoint _point;
-        private readonly ILineString _line;
-        private readonly IPolygon _polygon;
-        private readonly IMultiPoint _multiPoint;
+        private readonly Point _point;
+        private readonly LineString _line;
+        private readonly Polygon _polygon;
+        private readonly MultiPoint _multiPoint;
 
         public GMLTesting()
         {
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
                 new Coordinate(120,120)
             };
             var linearRing = Factory.CreateLinearRing(coordinates);
-            ILinearRing[] holes = { Factory.CreateLinearRing(interior1)};
+            LinearRing[] holes = { Factory.CreateLinearRing(interior1)};
             _polygon = Factory.CreatePolygon(linearRing, holes);
 
             coordinates = new[]
@@ -116,7 +116,7 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
             _result = _reader.Read(_document);
             Debug.Assert(multiPolygon.EqualsExact(_result), "ERROR!");
 
-            IGeometry[] geometries = { _point, _line, _polygon, _multiPoint, multiLineString, multiPolygon};
+            Geometry[] geometries = { _point, _line, _polygon, _multiPoint, multiLineString, multiPolygon};
             var geometryCollection = Factory.CreateGeometryCollection(geometries);
             _xmlreader = _writer.Write(geometryCollection);
             _document = new XmlDocument();

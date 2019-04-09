@@ -7,16 +7,16 @@ namespace NetTopologySuite.Hull
 {
     public class ConcaveHull
     {
-        private readonly IGeometry _geom;
+        private readonly Geometry _geom;
         private readonly double _tolerance;
 
-        public ConcaveHull(IGeometry geom, double tolerance)
+        public ConcaveHull(Geometry geom, double tolerance)
         {
             _geom = geom;
             _tolerance = tolerance;
         }
 
-        public IGeometry GetResult()
+        public Geometry GetResult()
         {
             var subdiv = BuildDelaunay();
             var tris = ExtractTriangles(subdiv);

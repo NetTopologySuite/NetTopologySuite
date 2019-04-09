@@ -3,7 +3,7 @@ using System;
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
-    /// The location of a <see cref="Coordinate"/> relative to a <see cref="IGeometry"/>
+    /// The location of a <see cref="Coordinate"/> relative to a <see cref="Geometry"/>
     /// </summary>
     public enum Location
     {

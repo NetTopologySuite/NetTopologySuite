@@ -32,7 +32,7 @@ namespace NetTopologySuite.IO
     }
     
     /// <summary>
-    /// Interface for binary output of <see cref="IGeometry"/> instances.
+    /// Interface for binary output of <see cref="Geometry"/> instances.
     /// </summary>
     /// <typeparam name="TSink">The type of the output to produce.</typeparam>
     public interface IGeometryWriter<TSink> : IGeometryIOSettings
@@ -42,18 +42,18 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry">The geometry</param>
         /// <returns>The binary representation of <paramref name="geometry"/></returns>
-        TSink Write(IGeometry geometry);
+        TSink Write(Geometry geometry);
 
         /// <summary>
         /// Writes a binary representation of a given geometry.
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="stream"></param>
-        void Write(IGeometry geometry, Stream stream);
+        void Write(Geometry geometry, Stream stream);
     }
 
     /// <summary>
-    /// Interface for binary output of <see cref="IGeometry"/> instances.
+    /// Interface for binary output of <see cref="Geometry"/> instances.
     /// </summary>
     public interface IBinaryGeometryWriter : IGeometryWriter<byte[]>
     {
@@ -64,7 +64,7 @@ namespace NetTopologySuite.IO
     }
     
     /// <summary>
-    /// Interface for textual output of <see cref="IGeometry"/> instances.
+    /// Interface for textual output of <see cref="Geometry"/> instances.
     /// </summary>
     public interface ITextGeometryWriter : IGeometryWriter<string>
     {

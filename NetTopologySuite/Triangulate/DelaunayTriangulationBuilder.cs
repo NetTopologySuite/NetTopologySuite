@@ -14,11 +14,11 @@ namespace NetTopologySuite.Triangulate
     public class DelaunayTriangulationBuilder
     {
         /// <summary>
-        /// Extracts the unique <see cref="Coordinate"/>s from the given <see cref="IGeometry"/>.
+        /// Extracts the unique <see cref="Coordinate"/>s from the given <see cref="Geometry"/>.
         /// </summary>
         /// <param name="geom">the geometry to extract from</param>
         /// <returns>a List of the unique Coordinates</returns>
-        public static CoordinateList ExtractUniqueCoordinates(IGeometry geom)
+        public static CoordinateList ExtractUniqueCoordinates(Geometry geom)
         {
             if (geom == null)
                 return new CoordinateList();
@@ -74,7 +74,7 @@ namespace NetTopologySuite.Triangulate
         /// All vertices of the given geometry will be used as sites.
         /// </summary>
         /// <param name="geom">the geometry from which the sites will be extracted.</param>
-        public void SetSites(IGeometry geom)
+        public void SetSites(Geometry geom)
         {
             // remove any duplicate points (they will cause the triangulation to fail)
             _siteCoords = ExtractUniqueCoordinates(geom);
@@ -124,23 +124,23 @@ namespace NetTopologySuite.Triangulate
         }
 
         /// <summary>
-        /// Gets the edges of the computed triangulation as a <see cref="IMultiLineString"/>.
+        /// Gets the edges of the computed triangulation as a <see cref="MultiLineString"/>.
         /// </summary>
         /// <param name="geomFact">the geometry factory to use to create the output</param>
         /// <returns>the edges of the triangulation</returns>
-        public IMultiLineString GetEdges(IGeometryFactory geomFact)
+        public MultiLineString GetEdges(GeometryFactory geomFact)
         {
             Create();
             return _subdiv.GetEdges(geomFact);
         }
 
         /// <summary>
-        /// Gets the faces of the computed triangulation as a <see cref="IGeometryCollection"/>
+        /// Gets the faces of the computed triangulation as a <see cref="GeometryCollection"/>
         /// of <see cref="Polygon"/>.
         /// </summary>
         /// <param name="geomFact">the geometry factory to use to create the output</param>
         /// <returns>the faces of the triangulation</returns>
-        public IGeometryCollection GetTriangles(IGeometryFactory geomFact)
+        public GeometryCollection GetTriangles(GeometryFactory geomFact)
         {
             Create();
             return _subdiv.GetTriangles(geomFact);

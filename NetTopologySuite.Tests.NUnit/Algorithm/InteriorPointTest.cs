@@ -37,7 +37,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             CheckInteriorPoint(name, polys);
         }
 
-        private static void CheckInteriorPoint(string name, IEnumerable<IGeometry> geoms)
+        private static void CheckInteriorPoint(string name, IEnumerable<Geometry> geoms)
         {
             Console.WriteLine(name);
             var sw = new Stopwatch();
@@ -51,13 +51,13 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             //Console.WriteLine("\n {0}ms\n", sw.ElapsedMilliseconds);
         }
 
-        private static void CheckInteriorPoint(IGeometry g)
+        private static void CheckInteriorPoint(Geometry g)
         {
             var ip = g.InteriorPoint;
             Assert.IsTrue(g.Contains(ip));
         }
 
-        private static void CheckInteriorPoint(IGeometry g, Coordinate expectedPt)
+        private static void CheckInteriorPoint(Geometry g, Coordinate expectedPt)
         {
             var ip = g.InteriorPoint;
             Assert.That(ip.Coordinate, Is.EqualTo(expectedPt));

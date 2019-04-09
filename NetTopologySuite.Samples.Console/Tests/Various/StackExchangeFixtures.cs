@@ -21,12 +21,12 @@ namespace NetTopologySuite.Samples.Tests.Various
             var ls1 = reader.Read(ls1Wkt);
             Assert.That(ls1, Is.Not.Null);
             Assert.That(ls1.IsValid, Is.True);
-            Assert.That(ls1, Is.InstanceOf<ILineString>());
+            Assert.That(ls1, Is.InstanceOf<LineString>());
 
             var ls2 = reader.Read(ls2Wkt);
             Assert.That(ls2, Is.Not.Null);
             Assert.That(ls2.IsValid, Is.True);
-            Assert.That(ls2, Is.InstanceOf<ILineString>());
+            Assert.That(ls2, Is.InstanceOf<LineString>());
 
             var intersection = ls1.Intersection(ls2);
             Assert.That(intersection, Is.Not.Null);

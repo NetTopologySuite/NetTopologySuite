@@ -8,9 +8,9 @@ namespace NetTopologySuite.IO.KML
 {
     /// <summary>
     /// Writes a formatted string containing the KML representation
-    /// of a JTS <see cref="IGeometry"/>.
+    /// of a JTS <see cref="Geometry"/>.
     /// The output is KML fragments which can be substituted
-    /// wherever the KML <see cref="IGeometry"/> abstract
+    /// wherever the KML <see cref="Geometry"/> abstract
     /// element can be used.
     /// </summary>
     /// <remarks>
@@ -48,7 +48,7 @@ namespace NetTopologySuite.IO.KML
         /// <param name="geometry">the geometry to write</param>
         /// <param name="z">the Z value to use</param>
         /// <returns>a string containing the KML geometry representation</returns>
-        public static string WriteGeometry(IGeometry geometry, double z)
+        public static string WriteGeometry(Geometry geometry, double z)
         {
             var writer = new KMLWriter { Z = z };
             return writer.Write(geometry);
@@ -75,7 +75,7 @@ namespace NetTopologySuite.IO.KML
         /// <param name="extrude">the extrude flag to write</param>
         /// <param name="altitudeMode">the altitude model code to write</param>
         /// <returns>a string containing the KML geometry representation</returns>
-        public static string WriteGeometry(IGeometry geometry, double z, int precision,
+        public static string WriteGeometry(Geometry geometry, double z, int precision,
             bool extrude, string altitudeMode)
         {
             var writer = new KMLWriter
@@ -182,11 +182,11 @@ namespace NetTopologySuite.IO.KML
         }
 
         /// <summary>
-        /// Writes a <see cref="IGeometry"/> in KML format as a string.
+        /// Writes a <see cref="Geometry"/> in KML format as a string.
         /// </summary>
         /// <param name="geom">the geometry to write</param>
         /// <returns>a string containing the KML geometry representation</returns>
-        public string Write(IGeometry geom)
+        public string Write(Geometry geom)
         {
             var sb = new StringBuilder();
             Write(geom, sb);
@@ -194,38 +194,38 @@ namespace NetTopologySuite.IO.KML
         }
 
         /// <summary>
-        /// Writes the KML representation of a <see cref="IGeometry"/> to a <see cref="TextWriter"/>.
+        /// Writes the KML representation of a <see cref="Geometry"/> to a <see cref="TextWriter"/>.
         /// </summary>
         /// <param name="geom">the geometry to write</param>
         /// <param name="writer">the writer to write to</param>
-        public void Write(IGeometry geom, TextWriter writer)
+        public void Write(Geometry geom, TextWriter writer)
         {
             string kml = Write(geom);
             writer.Write(kml);
         }
 
         /// <summary>
-        /// Appends the KML representation of a <see cref="IGeometry"/> to a <see cref="StringBuilder"/>.
+        /// Appends the KML representation of a <see cref="Geometry"/> to a <see cref="StringBuilder"/>.
         /// </summary>
         /// <param name="geom">the geometry to write</param>
         /// <param name="sb">the buffer to write into</param>
-        public void Write(IGeometry geom, StringBuilder sb)
+        public void Write(Geometry geom, StringBuilder sb)
         {
             WriteGeometry(geom, 0, sb);
         }
 
-        private void WriteGeometry(IGeometry g, int level, StringBuilder sb)
+        private void WriteGeometry(Geometry g, int level, StringBuilder sb)
         {
-            if (g is IPoint)
-                WritePoint(g as IPoint, level, sb);
-            else if (g is ILinearRing)
-                WriteLinearRing(g as ILinearRing, level, sb, true);
-            else if (g is ILineString)
-                WriteLineString(g as ILineString, level, sb);
-            else if (g is IPolygon)
-                WritePolygon(g as IPolygon, level, sb);
-            else if (g is IGeometryCollection)
-                WriteGeometryCollection(g as IGeometryCollection, level, sb);
+            if (g is Point)
+                WritePoint(g as Point, level, sb);
+            else if (g is LinearRing)
+                WriteLinearRing(g as LinearRing, level, sb, true);
+            else if (g is LineString)
+                WriteLineString(g as LineString, level, sb);
+            else if (g is Polygon)
+                WritePolygon(g as Polygon, level, sb);
+            else if (g is GeometryCollection)
+                WriteGeometryCollection(g as GeometryCollection, level, sb);
             else throw new ArgumentException(string.Format("Geometry type not supported: {0}", g.GeometryType));
         }
 
@@ -260,7 +260,7 @@ namespace NetTopologySuite.IO.KML
             }
         }
 
-        private void WritePoint(IPoint p, int level,
+        private void WritePoint(Point p, int level,
             StringBuilder sb)
         {
             // <Point><coordinates>...</coordinates></Point>
@@ -270,7 +270,7 @@ namespace NetTopologySuite.IO.KML
             StartLine("</Point>\n", level, sb);
         }
 
-        private void WriteLineString(ILineString ls, int level,
+        private void WriteLineString(LineString ls, int level,
             StringBuilder sb)
         {
             // <LineString><coordinates>...</coordinates></LineString>
@@ -280,7 +280,7 @@ namespace NetTopologySuite.IO.KML
             StartLine("</LineString>\n", level, sb);
         }
 
-        private void WriteLinearRing(ILinearRing lr, int level,
+        private void WriteLinearRing(LinearRing lr, int level,
             StringBuilder sb, bool writeModifiers)
         {
             // <LinearRing><coordinates>...</coordinates></LinearRing>
@@ -291,27 +291,27 @@ namespace NetTopologySuite.IO.KML
             StartLine("</LinearRing>\n", level, sb);
         }
 
-        private void WritePolygon(IPolygon p, int level,
+        private void WritePolygon(Polygon p, int level,
             StringBuilder sb)
         {
             StartLine(GeometryTag("Polygon") + "\n", level, sb);
             WriteModifiers(level, sb);
 
             StartLine("  <outerBoundaryIs>\n", level, sb);
-            WriteLinearRing((ILinearRing)p.ExteriorRing, level + 1, sb, false);
+            WriteLinearRing((LinearRing)p.ExteriorRing, level + 1, sb, false);
             StartLine("  </outerBoundaryIs>\n", level, sb);
 
             for (int t = 0; t < p.NumInteriorRings; t++)
             {
                 StartLine("  <innerBoundaryIs>\n", level, sb);
-                WriteLinearRing((ILinearRing)p.GetInteriorRingN(t), level + 1, sb, false);
+                WriteLinearRing((LinearRing)p.GetInteriorRingN(t), level + 1, sb, false);
                 StartLine("  </innerBoundaryIs>\n", level, sb);
             }
 
             StartLine("</Polygon>\n", level, sb);
         }
 
-        private void WriteGeometryCollection(IGeometryCollection gc, int level,
+        private void WriteGeometryCollection(GeometryCollection gc, int level,
             StringBuilder sb)
         {
             StartLine("<MultiGeometry>\n", level, sb);

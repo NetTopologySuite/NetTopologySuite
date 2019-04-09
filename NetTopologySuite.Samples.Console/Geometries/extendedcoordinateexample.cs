@@ -21,19 +21,19 @@ namespace NetTopologySuite.Samples.Geometries
 
             var fact = new GeometryFactory(ExtendedCoordinateSequenceFactory.Instance());
 
-            IGeometry g1 = fact.CreatePolygon(fact.CreateLinearRing(seq1), null);
-            IGeometry g2 = fact.CreatePolygon(fact.CreateLinearRing(seq2), null);
+            Geometry g1 = fact.CreatePolygon(fact.CreateLinearRing(seq1), null);
+            Geometry g2 = fact.CreatePolygon(fact.CreateLinearRing(seq2), null);
 
             Console.WriteLine("WKT for g1: " + g1);
-            Console.WriteLine("Internal rep for g1: " + ((IPolygon) g1).ExteriorRing.CoordinateSequence);
+            Console.WriteLine("Internal rep for g1: " + ((Polygon) g1).ExteriorRing.CoordinateSequence);
 
             Console.WriteLine("WKT for g2: " + g2);
-            Console.WriteLine("Internal rep for g2: " + ((IPolygon)g2).ExteriorRing.CoordinateSequence);
+            Console.WriteLine("Internal rep for g2: " + ((Polygon)g2).ExteriorRing.CoordinateSequence);
 
             var gInt = g1.Intersection(g2);
 
             Console.WriteLine("WKT for gInt: " + gInt);
-            Console.WriteLine("Internal rep for gInt: " + ((IPolygon)gInt).ExteriorRing.CoordinateSequence);
+            Console.WriteLine("Internal rep for gInt: " + ((Polygon)gInt).ExteriorRing.CoordinateSequence);
         }
 
         public ExtendedCoordinateExample() { }

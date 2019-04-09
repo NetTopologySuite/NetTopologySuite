@@ -6,22 +6,22 @@ namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
     /// Computes the raw offset curve for a
-    /// single <see cref="IGeometry"/> component (ring, line or point).
+    /// single <see cref="Geometry"/> component (ring, line or point).
     /// A raw offset curve line is not noded -
     /// it may contain self-intersections (and usually will).
     /// The final buffer polygon is computed by forming a topological graph
     /// of all the noded raw curves and tracing outside contours.
     /// The points in the raw curve are rounded
-    /// to a given <see cref="IPrecisionModel"/>.
+    /// to a given <see cref="PrecisionModel"/>.
     /// </summary>
     public class OffsetCurveBuilder
     {
         private double _distance;
-        private readonly IPrecisionModel _precisionModel;
+        private readonly PrecisionModel _precisionModel;
         private readonly IBufferParameters _bufParams;
 
         public OffsetCurveBuilder(
-            IPrecisionModel precisionModel,
+            PrecisionModel precisionModel,
             IBufferParameters bufParams
             )
         {

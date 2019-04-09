@@ -118,7 +118,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         {
             byte[] wkb = ConvertBase64(file);
             var wkbReader = new WKBReader();
-            IGeometry geom = null;
+            Geometry geom = null;
             Assert.DoesNotThrow(() => geom = wkbReader.Read(wkb));
         }
 

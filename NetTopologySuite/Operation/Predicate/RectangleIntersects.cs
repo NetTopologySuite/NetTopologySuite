@@ -8,10 +8,10 @@ namespace NetTopologySuite.Operation.Predicate
 {
     /// <summary>I
     /// Implementation of the <tt>Intersects</tt> spatial predicate
-    /// optimized for the case where one <see cref="IGeometry"/> is a rectangle.
+    /// optimized for the case where one <see cref="Geometry"/> is a rectangle.
     /// </summary>
     /// <remarks>
-    /// This class works for all input geometries, including <see cref="IGeometryCollection"/>s.
+    /// This class works for all input geometries, including <see cref="GeometryCollection"/>s.
     /// <para/>
     /// As a further optimization, this class can be used in batch style
     /// to test many geometries against a single rectangle.
@@ -32,20 +32,20 @@ namespace NetTopologySuite.Operation.Predicate
         /// <param name="rectangle">A rectangular polygon</param>
         /// <param name="b">A geometry of any kind</param>
         /// <returns><c>true</c> if the geometries intersect.</returns>
-        public static bool Intersects(IPolygon rectangle, IGeometry b)
+        public static bool Intersects(Polygon rectangle, Geometry b)
         {
             var rp = new RectangleIntersects(rectangle);
             return rp.Intersects(b);
         }
 
-        private readonly IPolygon _rectangle;
+        private readonly Polygon _rectangle;
         private readonly Envelope _rectEnv;
 
         /// <summary>
         /// Create a new intersects computer for a rectangle.
         /// </summary>
         /// <param name="rectangle">A rectangular polygon.</param>
-        public RectangleIntersects(IPolygon rectangle)
+        public RectangleIntersects(Polygon rectangle)
         {
             _rectangle = rectangle;
             _rectEnv = rectangle.EnvelopeInternal;
@@ -57,7 +57,7 @@ namespace NetTopologySuite.Operation.Predicate
         /// <param name="geom">The Geometry to test (may be of any type)</param>
         /// <returns><value>true</value> if an intersection must occur
         /// or <value>false</value> if no conclusion about intersection can be made</returns>
-        public bool Intersects(IGeometry geom)
+        public bool Intersects(Geometry geom)
         {
             if (!_rectEnv.Intersects(geom.EnvelopeInternal))
                 return false;
@@ -118,7 +118,7 @@ namespace NetTopologySuite.Operation.Predicate
         ///
         /// </summary>
         /// <param name="element"></param>
-        protected override void Visit(IGeometry element)
+        protected override void Visit(Geometry element)
         {
             var elementEnv = element.EnvelopeInternal;
 
@@ -176,7 +176,7 @@ namespace NetTopologySuite.Operation.Predicate
         ///
         /// </summary>
         /// <param name="rectangle"></param>
-        public GeometryContainsPointVisitor(IPolygon rectangle)
+        public GeometryContainsPointVisitor(Polygon rectangle)
         {
             _rectSeq = rectangle.ExteriorRing.CoordinateSequence;
             _rectEnv = rectangle.EnvelopeInternal;
@@ -195,9 +195,9 @@ namespace NetTopologySuite.Operation.Predicate
         ///
         /// </summary>
         /// <param name="geom"></param>
-        protected override void Visit(IGeometry geom)
+        protected override void Visit(Geometry geom)
         {
-            if (!(geom is IPolygon))
+            if (!(geom is Polygon))
                 return;
 
             var elementEnv = geom.EnvelopeInternal;
@@ -213,7 +213,7 @@ namespace NetTopologySuite.Operation.Predicate
                     continue;
 
                 // check rect point in poly (rect is known not to touch polygon at this point)
-                if (SimplePointInAreaLocator.ContainsPointInPolygon(rectPt, (IPolygon) geom))
+                if (SimplePointInAreaLocator.ContainsPointInPolygon(rectPt, (Polygon) geom))
                 {
                     ContainsPoint = true;
                     return;
@@ -247,7 +247,7 @@ namespace NetTopologySuite.Operation.Predicate
         /// Creates a visitor for checking rectangle intersection with segments
         /// </summary>
         /// <param name="rectangle">the query rectangle </param>
-        public RectangleIntersectsSegmentVisitor(IPolygon rectangle)
+        public RectangleIntersectsSegmentVisitor(Polygon rectangle)
         {
             _rectEnv = rectangle.EnvelopeInternal;
             _rectIntersector = new RectangleLineIntersector(_rectEnv);
@@ -258,7 +258,7 @@ namespace NetTopologySuite.Operation.Predicate
         /// false if no segment intersection exists</returns>
         public bool Intersects { get; private set; }
 
-        protected override void Visit(IGeometry geom)
+        protected override void Visit(Geometry geom)
         {
             /**
              * It may be the case that the rectangle and the
@@ -276,9 +276,9 @@ namespace NetTopologySuite.Operation.Predicate
             CheckIntersectionWithLineStrings(lines);
         }
 
-        private void CheckIntersectionWithLineStrings(IEnumerable<IGeometry> lines)
+        private void CheckIntersectionWithLineStrings(IEnumerable<Geometry> lines)
         {
-            foreach (ILineString testLine in lines)
+            foreach (LineString testLine in lines)
             {
                 CheckIntersectionWithSegments(testLine);
                 if (Intersects)
@@ -286,7 +286,7 @@ namespace NetTopologySuite.Operation.Predicate
             }
         }
 
-        private void CheckIntersectionWithSegments(ICurve testLine)
+        private void CheckIntersectionWithSegments(LineString testLine)
         {
             var seq1 = testLine.CoordinateSequence;
             for (int j = 1; j < seq1.Count; j++)

@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
         private const int MaxIter = 10;
 
         private static readonly PrecisionModel Pm = new PrecisionModel();
-        private static readonly IGeometryFactory Fact = new GeometryFactory(Pm, 0);
+        private static readonly GeometryFactory Fact = new GeometryFactory(Pm, 0);
 
         [Test]
         public void Test()
@@ -42,13 +42,13 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
             TestRectangles(target, 100);
         }
 
-        private static void TestRectangles(IGeometry target, int nRect)
+        private static void TestRectangles(Geometry target, int nRect)
         {
             var rects = CreateRectangles(target.EnvelopeInternal, nRect);
             Test(rects, target);
         }
 
-        private static void Test(ICollection<IGeometry> rect, IGeometry g)
+        private static void Test(ICollection<Geometry> rect, Geometry g)
         {
             Console.WriteLine("Target # pts: " + g.NumPoints
                               + "  -- # Rectangles: " + rect.Count
@@ -74,13 +74,13 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
         /// The rectangles
         /// At least nRect rectangles are created.
         /// </summary>
-        private static IGeometry[] CreateRectangles(Envelope env, int nRect)
+        private static Geometry[] CreateRectangles(Envelope env, int nRect)
         {
             int nSide = 1 + (int) Math.Sqrt(nRect);
             double dx = env.Width/nSide;
             double dy = env.Height/nSide;
 
-            var rectList = new List<IGeometry>();
+            var rectList = new List<Geometry>();
             for (int i = 0; i < nSide; i++)
             {
                 for (int j = 0; j < nSide; j++)
@@ -97,7 +97,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Predicate
             return GeometryFactory.ToGeometryArray(rectList);
         }
 
-        private static IGeometry CreateSineStar(Coordinate origin, double size, int nPts)
+        private static Geometry CreateSineStar(Coordinate origin, double size, int nPts)
         {
             var gsf = new SineStarFactory
                           {Centre = origin, Size = size, NumPoints = nPts, ArmLengthRatio = 2, NumArms = 20};

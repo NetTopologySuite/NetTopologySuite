@@ -6,8 +6,8 @@ namespace NetTopologySuite.Dissolve
 {
     /// <summary>
     /// Dissolves the linear components
-    /// from a collection of <see cref="IGeometry"/>s.
-    /// into a set of maximal-length <see cref="ILineString"/>s
+    /// from a collection of <see cref="Geometry"/>s.
+    /// into a set of maximal-length <see cref="LineString"/>s
     /// in which every unique segment appears once only.
     /// The output linestrings run between node vertices
     /// of the input, which are vertices which have
@@ -33,17 +33,17 @@ namespace NetTopologySuite.Dissolve
         /// </summary>
         /// <param name="g">the geometry to dissolve</param>
         /// <returns>the dissolved lines</returns>
-        public static IGeometry Dissolve(IGeometry g)
+        public static Geometry Dissolve(Geometry g)
         {
             var d = new LineDissolver();
             d.Add(g);
             return d.GetResult();
         }
 
-        private IGeometry _result;
-        private IGeometryFactory _factory;
+        private Geometry _result;
+        private GeometryFactory _factory;
         private readonly DissolveEdgeGraph _graph;
-        private readonly IList<IGeometry> _lines = new List<IGeometry>();
+        private readonly IList<Geometry> _lines = new List<Geometry>();
 
         public LineDissolver()
         {
@@ -51,18 +51,18 @@ namespace NetTopologySuite.Dissolve
         }
 
         /// <summary>
-        /// Adds a <see cref="IGeometry"/> to be dissolved.
+        /// Adds a <see cref="Geometry"/> to be dissolved.
         /// Any number of geometries may be added by calling this method multiple times.
         /// Any type of Geometry may be added.  The constituent linework will be
         /// extracted to be dissolved.
         /// </summary>
         /// <param name="geometry">geometry to be line-merged</param>
-        public void Add(IGeometry geometry)
+        public void Add(Geometry geometry)
         {
             geometry.Apply(new GeometryComponentFilter(c =>
             {
-                if (c is ILineString)
-                    Add(c as ILineString);
+                if (c is LineString)
+                    Add(c as LineString);
             }));
         }
 
@@ -72,13 +72,13 @@ namespace NetTopologySuite.Dissolve
         /// extracted.
         /// </summary>
         /// <param name="geometries">the geometries to be line-merged</param>
-        public void Add(IEnumerable<IGeometry> geometries)
+        public void Add(IEnumerable<Geometry> geometries)
         {
             foreach (var geometry in geometries)
                 Add(geometry);
         }
 
-        private void Add(ILineString lineString)
+        private void Add(LineString lineString)
         {
             if (_factory == null)
                 _factory = lineString.Factory;
@@ -102,10 +102,10 @@ namespace NetTopologySuite.Dissolve
         }
 
         /// <summary>
-        /// Gets the dissolved result as a <see cref="IMultiLineString"/>.
+        /// Gets the dissolved result as a <see cref="MultiLineString"/>.
         /// </summary>
         /// <returns>the dissolved lines</returns>
-        public IGeometry GetResult()
+        public Geometry GetResult()
         {
             if (_result == null)
                 ComputeResult();

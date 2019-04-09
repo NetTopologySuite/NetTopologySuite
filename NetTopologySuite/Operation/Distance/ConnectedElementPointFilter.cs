@@ -38,9 +38,9 @@ namespace NetTopologySuite.Operation.Distance
         ///
         /// </summary>
         /// <param name="geom"></param>
-        public void Filter(IGeometry geom)
+        public void Filter(Geometry geom)
         {
-            if (geom is IPoint || geom is ILineString || geom is IPolygon)
+            if (geom is Point || geom is LineString || geom is Polygon)
                 _pts.Add(geom.Coordinate);
         }
     }

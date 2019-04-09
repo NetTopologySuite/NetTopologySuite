@@ -5,7 +5,7 @@ namespace Open.Topology.TestRunner.Functions
 {
     /// <summary>
     /// A reification of a function which can be executed on a
-    /// <see cref="IGeometry"/>, possibly with other arguments.
+    /// <see cref="Geometry"/>, possibly with other arguments.
     /// The function may return a Geometry or a scalar value.
     /// </summary>
     /// <author>Martin Davis</author>
@@ -53,6 +53,6 @@ namespace Open.Topology.TestRunner.Functions
         /// <param name="geom">The target geometry</param>
         /// <param name="args">The other arguments to the function</param>
         /// <returns>The value computed by the function</returns>
-        object Invoke(IGeometry geom, object[] args);
+        object Invoke(Geometry geom, object[] args);
     }
 }

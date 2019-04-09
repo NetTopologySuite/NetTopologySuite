@@ -30,7 +30,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             builder.SetSites(sites);
 
             var subdiv = builder.GetSubdivision();
-            IGeometry result = subdiv.GetVoronoiDiagram(GeometryFactory.Default);
+            Geometry result = subdiv.GetVoronoiDiagram(GeometryFactory.Default);
             Assert.IsNotNull(result);
 
             var expectedEdges = reader.Read(expectedWKT);

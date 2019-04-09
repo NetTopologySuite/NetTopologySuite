@@ -18,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             CheckCopy(Read(GeometryTestData.WKT_GC));
         }
 
-        private void CheckCopy(IGeometry g)
+        private void CheckCopy(Geometry g)
         {
             int SRID = 123;
             g.SRID = SRID;

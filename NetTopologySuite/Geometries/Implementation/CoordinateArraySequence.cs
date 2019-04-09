@@ -5,7 +5,7 @@ namespace NetTopologySuite.Geometries.Implementation
 {
     /// <summary>
     /// A <see cref="ICoordinateSequence"/> backed by an array of <see cref="Coordinate"/>s.
-    /// This is the implementation that <see cref="IGeometry"/>s use by default.
+    /// This is the implementation that <see cref="Geometry"/>s use by default.
     /// <para/>
     /// Coordinates returned by <see cref="ToCoordinateArray"/>, <see cref="GetCoordinate(int)"/> and <see cref="GetCoordinate(int, Coordinate)"/> are live --
     /// modifications to them are actually changing the

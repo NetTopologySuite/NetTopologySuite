@@ -9,7 +9,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
     public class SameStructureTester
     {
 
-        public static bool IsSameStructure(IGeometry g1, IGeometry g2)
+        public static bool IsSameStructure(Geometry g1, Geometry g2)
         {
             if (g1.GetType() != g2.GetType())
                 return false;

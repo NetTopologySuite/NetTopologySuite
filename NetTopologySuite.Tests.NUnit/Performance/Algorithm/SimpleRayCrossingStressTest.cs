@@ -36,9 +36,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 
         class SimpleRayCrossingPointInAreaLocator : IPointOnGeometryLocator
         {
-            private IGeometry geom;
+            private Geometry geom;
 
-            public SimpleRayCrossingPointInAreaLocator(IGeometry geom)
+            public SimpleRayCrossingPointInAreaLocator(Geometry geom)
             {
                 this.geom = geom;
             }

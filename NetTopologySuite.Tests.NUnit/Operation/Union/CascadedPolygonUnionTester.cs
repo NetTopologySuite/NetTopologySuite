@@ -15,7 +15,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
     {
         public static double MinSimilarityMeaure = 0.999999;
 
-        public bool Test(IList<IGeometry> geoms, double minimumMeasure)
+        public bool Test(IList<Geometry> geoms, double minimumMeasure)
         {
             //System.Console.WriteLine("Computing Iterated union ");
             var union1 = UnionIterated(geoms);
@@ -54,9 +54,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
           Assert.IsTrue(isSameWithinTolerance);
         }
       */
-        public IGeometry UnionIterated(IList<IGeometry> geoms)
+        public Geometry UnionIterated(IList<Geometry> geoms)
         {
-            IGeometry unionAll = null;
+            Geometry unionAll = null;
             int count = 0;
             foreach (var geom in geoms)
             {
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
             return unionAll;
         }
 
-        public IGeometry UnionCascaded(IList<IGeometry> geoms)
+        public Geometry UnionCascaded(IList<Geometry> geoms)
         {
             return CascadedPolygonUnion.Union(geoms);
         }

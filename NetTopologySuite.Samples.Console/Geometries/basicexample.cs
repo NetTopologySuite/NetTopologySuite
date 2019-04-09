@@ -20,7 +20,7 @@ namespace NetTopologySuite.Samples.Geometries
             var coordinates = new [] { new Coordinate(0, 0),
                 new Coordinate(10, 10), new Coordinate(20, 20) };
             // use the default factory, which gives full double-precision
-            IGeometry g2 = new GeometryFactory().CreateLineString(coordinates);
+            Geometry g2 = new GeometryFactory().CreateLineString(coordinates);
             Console.WriteLine("Geometry 2: " + g2);
 
             // compute the intersection of the two geometries

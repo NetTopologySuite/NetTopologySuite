@@ -12,25 +12,25 @@ namespace NetTopologySuite.Geometries.Prepared
     public class PreparedGeometryFactory
     {
         /// <summary>
-        /// Creates a new <see cref="IPreparedGeometry"/> appropriate for the argument <see cref="IGeometry"/>.
+        /// Creates a new <see cref="IPreparedGeometry"/> appropriate for the argument <see cref="Geometry"/>.
         /// </summary>
         /// <param name="geom">The geometry to prepare</param>
         /// <returns>
         /// the prepared geometry
         /// </returns>
-        public static IPreparedGeometry Prepare(IGeometry geom)
+        public static IPreparedGeometry Prepare(Geometry geom)
         {
             return (new PreparedGeometryFactory()).Create(geom);
         }
 
         /// <summary>
-        /// Creates a new <see cref="IPreparedGeometry"/> appropriate for the argument <see cref="IGeometry"/>.
+        /// Creates a new <see cref="IPreparedGeometry"/> appropriate for the argument <see cref="Geometry"/>.
         /// </summary>
         /// <param name="geom">The geometry to prepare</param>
         /// <returns>
         /// the prepared geometry
         /// </returns>
-        public IPreparedGeometry Create(IGeometry geom)
+        public IPreparedGeometry Create(Geometry geom)
         {
             if (geom is IPolygonal)
                 return new PreparedPolygon((IPolygonal)geom);

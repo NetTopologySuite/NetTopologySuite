@@ -68,12 +68,12 @@ namespace Open.Topology.TestRunner.Operations
         /// <param name="args">The arguments to the operation (which may be typed as Strings)</param>
         /// <returns>The result</returns>
         /// <exception cref="Exception">If some error was encountered trying to find or process the operation</exception>
-        public IResult Invoke(XmlTestType opName, IGeometry geometry, object[] args)
+        public IResult Invoke(XmlTestType opName, Geometry geometry, object[] args)
         {
             return Invoke(opName.ToString(), geometry, args);
         }
 
-        public IResult Invoke(string opName, IGeometry geometry, object[] args)
+        public IResult Invoke(string opName, Geometry geometry, object[] args)
         {
             var opCode = OverlayOpCode(opName);
 
@@ -99,9 +99,9 @@ namespace Open.Topology.TestRunner.Operations
         /// Invokes an overlay op, optionally using snapping,
         /// and optionally validating the result.
         /// </summary>
-        public IResult InvokeValidatedOverlayOp(SpatialFunction opCode, IGeometry g0, object[] args)
+        public IResult InvokeValidatedOverlayOp(SpatialFunction opCode, Geometry g0, object[] args)
         {
-            var g1 = (IGeometry) args[0];
+            var g1 = (Geometry) args[0];
 
             var result = InvokeGeometryOverlayMethod(opCode, g0, g1);
 
@@ -121,7 +121,7 @@ namespace Open.Topology.TestRunner.Operations
             return new GeometryResult(result);
         }
 
-        private static void Validate(SpatialFunction opCode, IGeometry g0, IGeometry g1, IGeometry result)
+        private static void Validate(SpatialFunction opCode, Geometry g0, Geometry g1, Geometry result)
         {
             var validator = new OverlayResultValidator(g0, g1, result);
             // check if computed result is valid
@@ -135,7 +135,7 @@ namespace Open.Topology.TestRunner.Operations
 
         private const double AreaDiffTol = 5.0;
 
-        private static void AreaValidate(IGeometry g0, IGeometry g1)
+        private static void AreaValidate(Geometry g0, Geometry g1)
         {
             double areaDiff = AreaDiff(g0, g1);
             // System.out.println("Area diff = " + areaDiff);
@@ -146,7 +146,7 @@ namespace Open.Topology.TestRunner.Operations
             }
         }
 
-        public static double AreaDiff(IGeometry g0, IGeometry g1)
+        public static double AreaDiff(Geometry g0, Geometry g1)
         {
             double areaA = g0.Area;
             double areaAdiffB = g0.Difference(g1).Area;
@@ -160,7 +160,7 @@ namespace Open.Topology.TestRunner.Operations
             throw new Exception(msg);
         }
 
-        public static IGeometry InvokeGeometryOverlayMethod(SpatialFunction opCode, IGeometry g0, IGeometry g1)
+        public static Geometry InvokeGeometryOverlayMethod(SpatialFunction opCode, Geometry g0, Geometry g1)
         {
             switch (opCode)
             {

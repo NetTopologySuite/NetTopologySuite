@@ -17,9 +17,9 @@ namespace NetTopologySuite.Operation.Valid
     public class IndexedNestedRingTester
     {
         private readonly GeometryGraph _graph;  // used to find non-node vertices
-        private readonly IList<ILineString> _rings = new List<ILineString>();
+        private readonly IList<LineString> _rings = new List<LineString>();
         private readonly Envelope _totalEnv = new Envelope();
-        private ISpatialIndex<ILineString> _index;
+        private ISpatialIndex<LineString> _index;
         private Coordinate _nestedPt;
 
         public IndexedNestedRingTester(GeometryGraph graph)
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Operation.Valid
 
         public Coordinate NestedPoint => _nestedPt;
 
-        public void Add(ILinearRing ring)
+        public void Add(LinearRing ring)
         {
             _rings.Add(ring);
             _totalEnv.ExpandToInclude(ring.EnvelopeInternal);
@@ -41,13 +41,13 @@ namespace NetTopologySuite.Operation.Valid
 
             for (int i = 0; i < _rings.Count; i++)
             {
-                var innerRing = (ILinearRing)_rings[i];
+                var innerRing = (LinearRing)_rings[i];
                 var innerRingPts = innerRing.Coordinates;
 
                 var results = _index.Query(innerRing.EnvelopeInternal);
                 for (int j = 0; j < results.Count; j++)
                 {
-                    var searchRing = (ILinearRing)results[j];
+                    var searchRing = (LinearRing)results[j];
                     var searchRingPts = searchRing.Coordinates;
 
                     if (innerRing == searchRing)
@@ -85,11 +85,11 @@ namespace NetTopologySuite.Operation.Valid
 
         private void BuildIndex()
         {
-            _index = new STRtree<ILineString>();
+            _index = new STRtree<LineString>();
 
             for (int i = 0; i < _rings.Count; i++)
             {
-                var ring = (ILinearRing)_rings[i];
+                var ring = (LinearRing)_rings[i];
                 var env = ring.EnvelopeInternal;
                 _index.Insert(env, ring);
             }

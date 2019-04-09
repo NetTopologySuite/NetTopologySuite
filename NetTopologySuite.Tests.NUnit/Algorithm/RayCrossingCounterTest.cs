@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             var geom = reader.Read(wkt);
             Assert.AreEqual(expectedLoc, RayCrossingCounter.LocatePointInRing(pt, geom.Coordinates));
-            var poly = geom as IPolygon;
+            var poly = geom as Polygon;
             if (poly == null)
                 return;
 

@@ -5,15 +5,15 @@ namespace NetTopologySuite.EdgeRay
 {
     public class EdgeRayArea
     {
-        public static double GetArea(IGeometry geom)
+        public static double GetArea(Geometry geom)
         {
             var area = new EdgeRayArea(geom);
             return area.Area;
         }
 
-        private readonly IGeometry _geom;
+        private readonly Geometry _geom;
 
-        public EdgeRayArea(IGeometry geom)
+        public EdgeRayArea(Geometry geom)
         {
             _geom = geom;
         }
@@ -22,7 +22,7 @@ namespace NetTopologySuite.EdgeRay
         {
             get
             {
-                var poly = (IPolygon)_geom;
+                var poly = (Polygon)_geom;
                 var seq = poly.ExteriorRing.CoordinateSequence;
                 bool isCW = !Orientation.IsCCW(seq);
 

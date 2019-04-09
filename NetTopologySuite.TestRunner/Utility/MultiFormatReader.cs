@@ -4,7 +4,7 @@ using NetTopologySuite.IO;
 namespace Open.Topology.TestRunner.Utility
 {
     /// <summary>
-    /// Reads a <seealso cref="IGeometry"/> from a string which is in either WKT or WKBHex format
+    /// Reads a <seealso cref="Geometry"/> from a string which is in either WKT or WKBHex format
     /// </summary>
     public class MultiFormatReader
     {
@@ -32,7 +32,7 @@ namespace Open.Topology.TestRunner.Utility
         //private GeometryFactory _geomFactory;
         private readonly WKTReader _wktReader;
         private readonly WKBReader _wkbReader;
-        private readonly IGeometryFactory _factory;
+        private readonly GeometryFactory _factory;
 
         public MultiFormatReader()
             : this(new GeometryFactory())
@@ -52,7 +52,7 @@ namespace Open.Topology.TestRunner.Utility
         /// <param name="geomStr"></param>
         /// <returns></returns>
         /// <exception cref="ParseException"></exception>
-        public IGeometry Read(string geomStr)
+        public Geometry Read(string geomStr)
         {
             string trimStr = geomStr.Trim();
             if (IsHex(trimStr, MaxCharsToCheck))

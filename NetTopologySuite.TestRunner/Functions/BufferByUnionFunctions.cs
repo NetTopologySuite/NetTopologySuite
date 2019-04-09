@@ -7,19 +7,19 @@ namespace Open.Topology.TestRunner.Functions
 {
     public static class BufferByUnionFunctions
     {
-        public static IGeometry ComponentBuffers(IGeometry g, double distance)
+        public static Geometry ComponentBuffers(Geometry g, double distance)
         {
-            var bufs = new List<IGeometry>();
-            foreach (var comp in new GeometryCollectionEnumerator((IGeometryCollection)g))
+            var bufs = new List<Geometry>();
+            foreach (var comp in new GeometryCollectionEnumerator((GeometryCollection)g))
             {
-                if (comp is IGeometryCollection) continue;
+                if (comp is GeometryCollection) continue;
                 bufs.Add(comp.Buffer(distance));
             }
             return FunctionsUtil.GetFactoryOrDefault(g)
                 .CreateGeometryCollection(GeometryFactory.ToGeometryArray(bufs));
         }
 
-        public static IGeometry BufferByComponents(IGeometry g, double distance)
+        public static Geometry BufferByComponents(Geometry g, double distance)
         {
             return ComponentBuffers(g, distance).Union();
         }
@@ -31,7 +31,7 @@ namespace Open.Topology.TestRunner.Functions
         /// <param name="g"></param>
         /// <param name="distance"></param>
         /// <returns>The buffer geometry</returns>
-        public static IGeometry BufferBySegments(IGeometry g, double distance)
+        public static Geometry BufferBySegments(Geometry g, double distance)
         {
             var segs = LineHandlingFunctions.ExtractSegments(g);
             double posDist = Math.Abs(distance);
@@ -41,7 +41,7 @@ namespace Open.Topology.TestRunner.Functions
             return g.Union(segBuf);
         }
 
-        public static IGeometry BufferByChains(IGeometry g, double distance, int maxChainSize)
+        public static Geometry BufferByChains(Geometry g, double distance, int maxChainSize)
         {
             if (maxChainSize <= 0)
                 throw new ArgumentOutOfRangeException("maxChainSize", "Maximum Chain Size must be specified as an input parameter");

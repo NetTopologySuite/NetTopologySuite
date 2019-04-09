@@ -130,17 +130,17 @@ namespace NetTopologySuite.Operation.Valid
         /// </summary>
         /// <param name="g"></param>
         /// <param name="graph"></param>
-        private void VisitShellInteriors(IGeometry g, PlanarGraph graph)
+        private void VisitShellInteriors(Geometry g, PlanarGraph graph)
         {
-            if (g is IPolygon)
+            if (g is Polygon)
             {
-                var p = (IPolygon) g;
+                var p = (Polygon) g;
                 VisitInteriorRing(p.Shell, graph);
             }
-            if (g is IMultiPolygon)
+            if (g is MultiPolygon)
             {
-                var mp = (IMultiPolygon) g;
-                foreach (IPolygon p in mp.Geometries)
+                var mp = (MultiPolygon) g;
+                foreach (Polygon p in mp.Geometries)
                     VisitInteriorRing(p.Shell, graph);
             }
         }
@@ -150,7 +150,7 @@ namespace NetTopologySuite.Operation.Valid
         /// </summary>
         /// <param name="ring"></param>
         /// <param name="graph"></param>
-        private void VisitInteriorRing(ILineString ring, PlanarGraph graph)
+        private void VisitInteriorRing(LineString ring, PlanarGraph graph)
         {
             if (ring.IsEmpty)
             {

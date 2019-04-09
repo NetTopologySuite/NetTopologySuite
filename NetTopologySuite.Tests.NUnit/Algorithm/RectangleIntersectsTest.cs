@@ -40,7 +40,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     /// <author>Martin Davis</author>
     internal class RectangleLineIntersectorValidator
     {
-        private readonly IGeometryFactory _geomFact = new GeometryFactory();
+        private readonly GeometryFactory _geomFact = new GeometryFactory();
 
         private double baseX;
         private double baseY;

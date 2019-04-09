@@ -31,7 +31,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>
         /// true if all components of the argument are contained in the target geometry
         /// </returns>
-        protected bool IsAllTestComponentsInTarget(IGeometry testGeom)
+        protected bool IsAllTestComponentsInTarget(Geometry testGeom)
         {
             var coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
             foreach (var p in coords)
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <remarks>Handles both linear and point components.</remarks>
         /// <param name="testGeom">A geometry to test</param>
         /// <returns>true if all components of the argument are contained in the target geometry interior</returns>
-        protected bool IsAllTestComponentsInTargetInterior(IGeometry testGeom)
+        protected bool IsAllTestComponentsInTargetInterior(Geometry testGeom)
         {
             var coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
             foreach (var p in coords)
@@ -67,7 +67,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <remarks>Handles test geometries with both linear and point components.</remarks>
         /// <param name="testGeom">A geometry to test</param>
         /// <returns>true if any component of the argument intersects the prepared area geometry</returns>
-        protected bool IsAnyTestComponentInTarget(IGeometry testGeom)
+        protected bool IsAnyTestComponentInTarget(Geometry testGeom)
         {
             var coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
             foreach (var p in coords)
@@ -85,7 +85,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <remarks>Handles test geometries with both linear and point components.</remarks>
         /// <param name="testGeom">A geometry to test</param>
         /// <returns>true if any component of the argument intersects the prepared area geometry interior</returns>
-        protected bool IsAnyTestComponentInTargetInterior(IGeometry testGeom)
+        protected bool IsAnyTestComponentInTargetInterior(Geometry testGeom)
         {
             var coords = ComponentCoordinateExtracter.GetCoordinates(testGeom);
             foreach (var p in coords)
@@ -103,7 +103,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <param name="testGeom">The test geometry</param>
         /// <param name="targetRepPts">The representative points of the target geometry</param>
         /// <returns>true if any component intersects the areal test geometry</returns>
-        protected bool IsAnyTargetComponentInAreaTest(IGeometry testGeom, IList<Coordinate> targetRepPts)
+        protected bool IsAnyTargetComponentInAreaTest(Geometry testGeom, IList<Coordinate> targetRepPts)
         {
             var piaLoc = new SimplePointInAreaLocator(testGeom);
             foreach (var p in targetRepPts)

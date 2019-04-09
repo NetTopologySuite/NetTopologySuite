@@ -9,8 +9,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     //[Ignore("The Minimum Bounding Circle logic does not look to have been included in NTS as yet")]
     public class MinimumBoundingCircleTest
     {
-        private IPrecisionModel precisionModel;
-        private IGeometryFactory geometryFactory;
+        private PrecisionModel precisionModel;
+        private GeometryFactory geometryFactory;
         WKTReader reader;
 
         public MinimumBoundingCircleTest()
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             var mbc = new MinimumBoundingCircle(reader.Read(wkt));
             var exPts = mbc.GetExtremalPoints();
-            IGeometry actual = geometryFactory.CreateMultiPointFromCoords(exPts);
+            Geometry actual = geometryFactory.CreateMultiPointFromCoords(exPts);
             double actualRadius = mbc.GetRadius();
             var actualCentre = mbc.GetCentre();
             //Console.WriteLine("   Centre = " + actualCentre + "   Radius = " + actualRadius);

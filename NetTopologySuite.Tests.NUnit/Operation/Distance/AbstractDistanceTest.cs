@@ -8,8 +8,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Distance
     [TestFixture]
     public abstract class AbstractDistanceTest : GeometryTestCase
     {
-        private readonly IPrecisionModel _precisionModel;
-        private readonly IGeometryFactory _geometryFactory;
+        private readonly PrecisionModel _precisionModel;
+        private readonly GeometryFactory _geometryFactory;
         private readonly WKTReader _reader;
 
         protected AbstractDistanceTest()
@@ -39,8 +39,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Distance
             g2 = _reader.Read("POLYGON ((160 240, 120 240, 120 160, 180 100, 160 240))");
             Assert.That(g1.Distance(g2), Is.Zero.Within(1E-5));
 
-            var l1 = (ILineString)_reader.Read("LINESTRING(10 10, 20 20, 30 40)");
-            var l2 = (ILineString)_reader.Read("LINESTRING(10 10, 20 20, 30 40)");
+            var l1 = (LineString)_reader.Read("LINESTRING(10 10, 20 20, 30 40)");
+            var l2 = (LineString)_reader.Read("LINESTRING(10 10, 20 20, 30 40)");
             Assert.That(l1.Distance(l2), Is.Zero.Within(1E-5));
         }
 
@@ -80,6 +80,6 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Distance
             Assert.That(nearestPoints[1].Y, Is.EqualTo(p1Y).Within(Tolerance));
         }
 
-        protected abstract Coordinate[] NearestPoints(IGeometry g1, IGeometry g2);
+        protected abstract Coordinate[] NearestPoints(Geometry g1, Geometry g2);
     }
 }

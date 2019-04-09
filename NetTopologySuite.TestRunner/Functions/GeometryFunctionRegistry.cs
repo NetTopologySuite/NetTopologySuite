@@ -42,7 +42,7 @@ namespace Open.Topology.TestRunner.Functions
 
         public static bool HasGeometryResult(IGeometryFunction func)
         {
-            return typeof(IGeometry).IsAssignableFrom(func.ReturnType);
+            return typeof(Geometry).IsAssignableFrom(func.ReturnType);
         }
 
         public IList<IGeometryFunction> GetScalarFunctions()

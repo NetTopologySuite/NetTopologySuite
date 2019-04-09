@@ -22,19 +22,19 @@ namespace NetTopologySuite.Samples.Lab.Clean
         /// </summary>
         /// <param name="geom">The geometry to clean</param>
         /// <returns>The geometry with invalid holes removed</returns>
-        public static IGeometry Clean(IGeometry geom)
+        public static Geometry Clean(Geometry geom)
         {
             var pihr = new InvalidHoleRemover(geom);
             return pihr.GetResult();
         }
 
-        private readonly IGeometry _geom;
+        private readonly Geometry _geom;
 
         /// <summary>
         /// Creates a new invalid hole remover instance.
         /// </summary>
         /// <param name="geom">The geometry to process</param>
-        public InvalidHoleRemover(IGeometry geom)
+        public InvalidHoleRemover(Geometry geom)
         {
             _geom = geom;
         }
@@ -43,18 +43,18 @@ namespace NetTopologySuite.Samples.Lab.Clean
         /// Gets the cleaned geometry.
         /// </summary>
         /// <returns>The geometry with invalid holes removed.</returns>
-        public IGeometry GetResult()
+        public Geometry GetResult()
         {
             return GeometryMapper.Map(_geom, new InvalidHoleRemoverMapOp());
         }
 
         private class InvalidHoleRemoverMapOp : GeometryMapper.IMapOp
         {
-            public IGeometry Map(IGeometry geom)
+            public Geometry Map(Geometry geom)
             {
-                if (geom is IPolygon)
+                if (geom is Polygon)
                 {
-                    var poly = (IPolygon)geom;
+                    var poly = (Polygon)geom;
                     return PolygonInvalidHoleRemover.Clean(poly);
                 }
                 return geom;
@@ -63,29 +63,29 @@ namespace NetTopologySuite.Samples.Lab.Clean
 
         private class PolygonInvalidHoleRemover
         {
-            public static IPolygon Clean(IPolygon poly)
+            public static Polygon Clean(Polygon poly)
             {
                 var pihr = new PolygonInvalidHoleRemover(poly);
                 return pihr.GetResult();
             }
 
-            private readonly IPolygon _poly;
+            private readonly Polygon _poly;
 
-            private PolygonInvalidHoleRemover(IPolygon poly)
+            private PolygonInvalidHoleRemover(Polygon poly)
             {
                 _poly = poly;
             }
 
-            private IPolygon GetResult()
+            private Polygon GetResult()
             {
                 var gf = _poly.Factory;
-                var shell = (ILinearRing)_poly.ExteriorRing;
+                var shell = (LinearRing)_poly.ExteriorRing;
                 var shellPrep = PreparedGeometryFactory.Prepare(gf.CreatePolygon(shell));
 
-                IList<IGeometry> holes = new List<IGeometry>();
+                IList<Geometry> holes = new List<Geometry>();
                 for (int i = 0; i < _poly.NumInteriorRings; i++)
                 {
-                    IGeometry hole = _poly.GetInteriorRingN(i);
+                    Geometry hole = _poly.GetInteriorRingN(i);
                     if (shellPrep.Covers(hole))
                         holes.Add(hole);
                 }

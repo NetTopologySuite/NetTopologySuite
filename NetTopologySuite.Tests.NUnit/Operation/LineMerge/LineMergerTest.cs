@@ -76,8 +76,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             Compare(ToGeometries(expectedOutputWKT), lineMerger.GetMergedLineStrings(), compareDirections);
         }
 
-        public static void Compare(IList<IGeometry> expectedGeometries,
-            IList<IGeometry> actualGeometries, bool compareDirections)
+        public static void Compare(IList<Geometry> expectedGeometries,
+            IList<Geometry> actualGeometries, bool compareDirections)
         {
             Assert.AreEqual(expectedGeometries.Count, actualGeometries.Count, "Geometry count, " + actualGeometries);
             foreach (var expectedGeometry in expectedGeometries)
@@ -86,7 +86,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             }
         }
 
-        private static bool Contains(IList<IGeometry> geometries, IGeometry g, bool exact)
+        private static bool Contains(IList<Geometry> geometries, Geometry g, bool exact)
         {
             foreach (var element in geometries)
             {
@@ -103,9 +103,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             return false;
         }
 
-        public static IList<IGeometry> ToGeometries(string[] inputWKT)
+        public static IList<Geometry> ToGeometries(string[] inputWKT)
         {
-            var geometries = new List<IGeometry>();
+            var geometries = new List<Geometry>();
             foreach (string geomWkt in inputWKT)
             {
                 try

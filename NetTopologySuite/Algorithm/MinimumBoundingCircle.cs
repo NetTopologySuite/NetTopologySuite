@@ -5,7 +5,7 @@ using NetTopologySuite.Utilities;
 namespace NetTopologySuite.Algorithm
 {
     /// <summary>
-    /// Computes the <b>Minimum Bounding Circle</b> (MBC) for the points in a <see cref="IGeometry"/>.
+    /// Computes the <b>Minimum Bounding Circle</b> (MBC) for the points in a <see cref="Geometry"/>.
     /// The MBC is the smallest circle which <tt>cover</tt>s all the input points
     /// (this is also sometimes known as the <b>Smallest Enclosing Circle</b>).
     /// This is equivalent to computing the Maximum Diameter of the input point set.
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Algorithm
     /// </list>
     /// </para>
     /// <para>
-    /// The class can also output a <see cref="IGeometry"/> which approximates the
+    /// The class can also output a <see cref="Geometry"/> which approximates the
     /// shape of the MBC (although as an approximation it is <b>not</b>
     /// guaranteed to <tt>cover</tt> all the input points.)</para>
     /// </remarks>
@@ -41,7 +41,7 @@ namespace NetTopologySuite.Algorithm
          * the article "An Easy Bounding Circle" in <i>Graphic Gems II</i>.
          */
 
-        private readonly IGeometry _input;
+        private readonly Geometry _input;
         private Coordinate[] _extremalPts;
         private Coordinate _centre;
         private double _radius;
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Algorithm
         /// point set defined by the vertices of the given geometry.
         /// </summary>
         /// <param name="geom">The geometry to use to obtain the point set </param>
-        public MinimumBoundingCircle(IGeometry geom)
+        public MinimumBoundingCircle(Geometry geom)
         {
             _input = geom;
         }
@@ -68,7 +68,7 @@ namespace NetTopologySuite.Algorithm
         /// </para>
         /// </remarks>
         /// <returns>A Geometry representing the Minimum Bounding Circle.</returns>
-        public IGeometry GetCircle()
+        public Geometry GetCircle()
         {
             //TODO: ensure the output circle contains the external points.
             //TODO: or maybe even ensure that the returned geometry contains ALL the input points?
@@ -91,7 +91,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>A LineString between the two farthest points of the input</returns>
         /// <returns>An empty LineString if the input is empty</returns>
         /// <returns>A Point if the input is a point</returns>
-        public IGeometry GetFarthestPoints()
+        public Geometry GetFarthestPoints()
         {
             Compute();
             switch (_extremalPts.Length)
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Algorithm
         /// <item>a Point if the input is a point</item>
         /// </list>
         /// </returns>
-        public IGeometry GetDiameter()
+        public Geometry GetDiameter()
         {
             Compute();
             switch (_extremalPts.Length)

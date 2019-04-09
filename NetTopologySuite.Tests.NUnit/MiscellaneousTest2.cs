@@ -13,8 +13,8 @@ namespace NetTopologySuite.Tests.NUnit
     public class MiscellaneousTest2
     {
 
-        private static readonly IPrecisionModel precisionModel = new PrecisionModel(1);
-        private static readonly IGeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
+        private static readonly PrecisionModel precisionModel = new PrecisionModel(1);
+        private static readonly GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
         private static readonly WKTReader reader = new WKTReader(geometryFactory);
 
         [Test]
@@ -108,10 +108,10 @@ namespace NetTopologySuite.Tests.NUnit
         }
         [Test]
         public void testNoding()  {
-            var a = (ILineString)reader.Read("LINESTRING(0 0, 100 100)");
-            var b = (ILineString)reader.Read("LINESTRING(0 100, 100 0)");
-            var lineStrings = new List<ILineString>(new[] {a, b});
-            var nodedLineStrings = (IGeometry)lineStrings[0];
+            var a = (LineString)reader.Read("LINESTRING(0 0, 100 100)");
+            var b = (LineString)reader.Read("LINESTRING(0 100, 100 0)");
+            var lineStrings = new List<LineString>(new[] {a, b});
+            var nodedLineStrings = (Geometry)lineStrings[0];
             for (int i = 1; i < lineStrings.Count; i++) {
                 nodedLineStrings = nodedLineStrings.Union(lineStrings[i]);
             }

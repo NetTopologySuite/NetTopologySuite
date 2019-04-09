@@ -6,7 +6,7 @@ namespace Open.Topology.TestRunner.Functions
 {
     public static class CGAlgorithmFunctions
     {
-        public static int OrientationIndex(IGeometry segment, IGeometry ptGeom)
+        public static int OrientationIndex(Geometry segment, Geometry ptGeom)
         {
             if (segment.NumPoints != 2 || ptGeom.NumPoints != 1)
             {
@@ -19,7 +19,7 @@ namespace Open.Topology.TestRunner.Functions
             return index;
         }
 
-        public static int OrientationIndexDd(IGeometry segment, IGeometry ptGeom)
+        public static int OrientationIndexDd(Geometry segment, Geometry ptGeom)
         {
             if (segment.NumPoints != 2 || ptGeom.NumPoints != 1)
             {
@@ -32,7 +32,7 @@ namespace Open.Topology.TestRunner.Functions
             return index;
         }
 
-        public static bool SegmentIntersects(IGeometry g1, IGeometry g2)
+        public static bool SegmentIntersects(Geometry g1, Geometry g2)
         {
             var pt1 = g1.Coordinates;
             var pt2 = g2.Coordinates;
@@ -41,7 +41,7 @@ namespace Open.Topology.TestRunner.Functions
             return ri.HasIntersection;
         }
 
-        public static IGeometry SegmentIntersection(IGeometry g1, IGeometry g2)
+        public static Geometry SegmentIntersection(Geometry g1, Geometry g2)
         {
             var pt1 = g1.Coordinates;
             var pt2 = g2.Coordinates;
@@ -66,7 +66,7 @@ namespace Open.Topology.TestRunner.Functions
             return null;
         }
 
-        public static IGeometry SegmentIntersectionDd(IGeometry g1, IGeometry g2)
+        public static Geometry SegmentIntersectionDd(Geometry g1, Geometry g2)
         {
             var pt1 = g1.Coordinates;
             var pt2 = g2.Coordinates;
