@@ -1430,7 +1430,6 @@ namespace NetTopologySuite.Geometries
             return (new ConvexHull(this)).GetConvexHull();
         }
 
-        /// <inheritdoc />
         /// <summary>
         ///  Computes a new geometry which has all component coordinate sequences
         ///  in reverse order (opposite orientation) to this one.
