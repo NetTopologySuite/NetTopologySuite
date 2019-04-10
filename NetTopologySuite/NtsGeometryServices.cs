@@ -245,12 +245,7 @@ namespace NetTopologySuite
         /// <returns>The precision model</returns>
         public PrecisionModel CreatePrecisionModel(PrecisionModel precisionModel)
         {
-            if (precisionModel is PrecisionModel)
-                return new PrecisionModel((PrecisionModel)precisionModel);
-
-            if (!precisionModel.IsFloating)
-                return new PrecisionModel(precisionModel.Scale);
-            return new PrecisionModel(precisionModel.PrecisionModelType);
+            return new PrecisionModel(precisionModel);
         }
 
         /// <summary>
