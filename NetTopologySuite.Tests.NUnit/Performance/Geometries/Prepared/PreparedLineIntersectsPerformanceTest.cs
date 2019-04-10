@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
         private const int NumLines = 50000;
         private const int NumLinePts = 10;
 
-        private readonly IGeometryFactory _fact;
+        private readonly GeometryFactory _fact;
         private readonly TestDataBuilder _builder;
 
         public PreparedLineIntersectsPerformanceTest()
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             Test(target, lines);
         }
 
-        public void Test(IGeometry g, IList<IGeometry> lines)
+        public void Test(Geometry g, IList<Geometry> lines)
         {
             Console.WriteLine("AOI # pts: " + g.NumPoints
                               + "      # lines: " + lines.Count
@@ -75,7 +75,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             Console.WriteLine("Finished in " + sw.ElapsedMilliseconds);
         }
 
-        public static int testOriginal(IGeometry g, IEnumerable<IGeometry> lines)
+        public static int testOriginal(Geometry g, IEnumerable<Geometry> lines)
         {
             Console.WriteLine("Using original JTS algorithm");
             int count = 0;
@@ -87,7 +87,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             return count;
         }
 
-        public static int testPrepGeomCached(IGeometry g, IEnumerable<IGeometry> lines)
+        public static int testPrepGeomCached(Geometry g, IEnumerable<Geometry> lines)
         {
             Console.WriteLine("Using cached Prepared Geometry");
             var pgFact = new PreparedGeometryFactory();
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
          * @return the count
          */
 
-        public static int testPrepGeomNotCached(IGeometry g, IEnumerable<IGeometry> lines)
+        public static int testPrepGeomNotCached(Geometry g, IEnumerable<Geometry> lines)
         {
             Console.WriteLine("Using NON-CACHED Prepared Geometry");
             var pgFact = new PreparedGeometryFactory();

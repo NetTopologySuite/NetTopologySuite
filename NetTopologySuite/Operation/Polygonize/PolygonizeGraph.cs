@@ -65,13 +65,13 @@ namespace NetTopologySuite.Operation.Polygonize
             }
         }
 
-        private readonly IGeometryFactory _factory;
+        private readonly GeometryFactory _factory;
 
         /// <summary>
         /// Create a new polygonization graph.
         /// </summary>
         /// <param name="factory"></param>
-        public PolygonizeGraph(IGeometryFactory factory)
+        public PolygonizeGraph(GeometryFactory factory)
         {
             _factory = factory;
         }
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// Add a <c>LineString</c> forming an edge of the polygon graph.
         /// </summary>
         /// <param name="line">The line to add.</param>
-        public void AddEdge(ILineString line)
+        public void AddEdge(LineString line)
         {
             if (line.IsEmpty)
                 return;
@@ -239,7 +239,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// Finds and removes all cut edges from the graph.
         /// </summary>
         /// <returns>A list of the <c>LineString</c>s forming the removed cut edges.</returns>
-        public IList<ILineString> DeleteCutEdges()
+        public IList<LineString> DeleteCutEdges()
         {
             ComputeNextCWEdges();
             // label the current set of edgerings
@@ -248,7 +248,7 @@ namespace NetTopologySuite.Operation.Polygonize
             * Cut Edges are edges where both dirEdges have the same label.
             * Delete them, and record them
             */
-            var cutLines = new List<ILineString>();
+            var cutLines = new List<LineString>();
             foreach (PolygonizeDirectedEdge de in dirEdges)
             {
                 if (de.IsMarked) continue;
@@ -381,11 +381,11 @@ namespace NetTopologySuite.Operation.Polygonize
         /// In order to handle large recursion depths efficiently,
         /// an explicit recursion stack is used.
         /// </summary>
-        /// <returns>A List containing the <see cref="ILineString"/>s that formed dangles.</returns>
-        public ICollection<ILineString> DeleteDangles()
+        /// <returns>A List containing the <see cref="LineString"/>s that formed dangles.</returns>
+        public ICollection<LineString> DeleteDangles()
         {
             var nodesToRemove = FindNodesOfDegree(1);
-            var dangleLines = new HashSet<ILineString>();
+            var dangleLines = new HashSet<LineString>();
             var nodeStack = new Stack<Node>();
             foreach (var node in nodesToRemove)
                 nodeStack.Push(node);
@@ -414,9 +414,9 @@ namespace NetTopologySuite.Operation.Polygonize
                 }
             }
 
-            var dangleArray = new ILineString[dangleLines.Count];
+            var dangleArray = new LineString[dangleLines.Count];
             dangleLines.CopyTo(dangleArray, 0);
-            return new ReadOnlyCollection<ILineString>(dangleArray);
+            return new ReadOnlyCollection<LineString>(dangleArray);
                 //new ArrayList(dangleLines.CastPlatform());
         }
 

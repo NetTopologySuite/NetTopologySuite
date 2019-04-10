@@ -14,6 +14,6 @@ namespace NetTopologySuite.Geometries
         /// Performs an operation with or on <c>geom</c>.
         /// </summary>
         /// <param name="geom">A <c>Geometry</c> to which the filter is applied.</param>
-        void Filter(IGeometry geom);
+        void Filter(Geometry geom);
     }
 }

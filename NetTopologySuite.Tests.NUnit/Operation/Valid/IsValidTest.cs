@@ -24,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         {
             var badCoord = new Coordinate(1.0, double.NaN);
             Coordinate[] pts = { new Coordinate(0.0, 0.0), badCoord };
-            IGeometry line = geometryFactory.CreateLineString(pts);
+            Geometry line = geometryFactory.CreateLineString(pts);
             var isValidOp = new IsValidOp(line);
             bool valid = isValidOp.IsValid;
             var err = isValidOp.ValidationError;

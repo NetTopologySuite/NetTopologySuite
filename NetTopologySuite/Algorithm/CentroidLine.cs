@@ -20,14 +20,14 @@ namespace NetTopologySuite.Algorithm
         /// If the geometry has no linear components it does not contribute to the centroid.
         /// </summary>
         /// <param name="geom">The point to add.</param>
-        public void Add(IGeometry geom)
+        public void Add(Geometry geom)
         {
-            if (geom is ILineString)
+            if (geom is LineString)
                 Add(geom.Coordinates);
 
-            else if (geom is IPolygon)
+            else if (geom is Polygon)
             {
-                var poly = (IPolygon) geom;
+                var poly = (Polygon) geom;
                 // add linear components of a polygon
                 Add(poly.ExteriorRing.Coordinates);
                 for (int i = 0; i < poly.NumInteriorRings; i++)
@@ -36,9 +36,9 @@ namespace NetTopologySuite.Algorithm
                 }
             }
 
-            else if (geom is IGeometryCollection)
+            else if (geom is GeometryCollection)
             {
-                var gc = (IGeometryCollection)geom;
+                var gc = (GeometryCollection)geom;
                 foreach (var geometry in gc.Geometries)
                     Add(geometry);
             }

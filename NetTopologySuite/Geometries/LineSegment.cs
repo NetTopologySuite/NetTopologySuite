@@ -547,7 +547,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="geomFactory">the geometry factory to use</param>
         /// <returns>A LineString with the same geometry as this segment</returns>
-        public ILineString ToGeometry(IGeometryFactory geomFactory)
+        public LineString ToGeometry(GeometryFactory geomFactory)
         {
             return geomFactory.CreateLineString(new[] { _p0, _p1 });
         }

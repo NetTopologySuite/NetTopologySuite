@@ -11,8 +11,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     /// <author>mbdavis</author>
     public class PerturbedGridPolygonBuilder
     {
-        private readonly IGeometryFactory _geomFactory;
-        private readonly IPrecisionModel _precisionModel;
+        private readonly GeometryFactory _geomFactory;
+        private readonly PrecisionModel _precisionModel;
         private const double GridWidth = 1000;
         private int _numLines = 10;
         private double _lineWidth = 20;
@@ -20,11 +20,11 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         private int _seed;
         private Random _rand;
 
-        private IGeometry _grid;
+        private Geometry _grid;
 
         public bool Verbose { get; set; }
 
-        public PerturbedGridPolygonBuilder(IGeometryFactory geomFactory)
+        public PerturbedGridPolygonBuilder(GeometryFactory geomFactory)
         {
             _geomFactory = geomFactory;
             _precisionModel = geomFactory.PrecisionModel;
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             set => _lineWidth = value;
         }
 
-        public IGeometry Geometry
+        public Geometry Geometry
         {
             get
             {
@@ -59,9 +59,9 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             }
         }
 
-        private IGeometry BuildGrid()
+        private Geometry BuildGrid()
         {
-            var lines = new ILineString[_numLines * 2];
+            var lines = new LineString[_numLines * 2];
             int index = 0;
 
             for (int i = 0; i < _numLines; i++)

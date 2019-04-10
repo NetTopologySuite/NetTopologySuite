@@ -11,7 +11,7 @@ namespace NetTopologySuite.Noding
     /// </summary>
     public class NodingValidator
     {
-        private static readonly IGeometryFactory Factory = new GeometryFactory();
+        private static readonly GeometryFactory Factory = new GeometryFactory();
 
         private readonly LineIntersector _li = new RobustLineIntersector();
         private readonly IList<ISegmentString> _segStrings;

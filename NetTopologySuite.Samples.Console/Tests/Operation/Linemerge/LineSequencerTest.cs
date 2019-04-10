@@ -234,9 +234,9 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
             catch(Exception ex) { Debug.WriteLine(ex.ToString()); throw ex; }
         }
 
-        private static IEnumerable<IGeometry> FromWKT(string[] wkts)
+        private static IEnumerable<Geometry> FromWKT(string[] wkts)
         {
-            IList<IGeometry> geomList = new List<IGeometry>();
+            IList<Geometry> geomList = new List<Geometry>();
             foreach (string wkt in wkts)
             {
                 try

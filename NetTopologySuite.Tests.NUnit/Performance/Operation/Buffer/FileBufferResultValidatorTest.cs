@@ -62,7 +62,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             //RunAll(polys, 1000.0);
         }
 
-        void RunAll(ICollection<IGeometry> geoms, double dist)
+        void RunAll(ICollection<Geometry> geoms, double dist)
         {
             //var sw = new Stopwatch();
             //sw.Start();
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             //System.Console.WriteLine("  " + sw.Elapsed.TotalMilliseconds + " milliseconds");
         }
 
-        static void RunBuffer(IGeometry g, double dist)
+        static void RunBuffer(Geometry g, double dist)
         {
             var buf = g.Buffer(dist);
             var validator = new BufferResultValidator(g, dist, buf);

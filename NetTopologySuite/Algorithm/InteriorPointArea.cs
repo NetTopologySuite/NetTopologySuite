@@ -73,7 +73,7 @@ namespace NetTopologySuite.Algorithm
         /// The computed interior point,
         /// or <see langword="null"/> if the geometry has no polygonal components.
         /// </returns>
-        public static Coordinate GetInteriorPoint(IGeometry geom)
+        public static Coordinate GetInteriorPoint(Geometry geom)
         {
             var intPt = new InteriorPointArea(geom);
             return intPt.InteriorPoint;
@@ -98,7 +98,7 @@ namespace NetTopologySuite.Algorithm
         /// for an areal geometry.
         /// </summary>
         /// <param name="g">An areal geometry</param>
-        public InteriorPointArea(IGeometry g)
+        public InteriorPointArea(Geometry g)
         {
             Process(g);
         }
@@ -115,18 +115,18 @@ namespace NetTopologySuite.Algorithm
         /// all component polygons.
         /// </summary>
         /// <param name="geom">The geometry to process.</param>
-        private void Process(IGeometry geom)
+        private void Process(Geometry geom)
         {
             if (geom.IsEmpty)
             {
                 return;
             }
 
-            if (geom is IPolygon polygon)
+            if (geom is Polygon polygon)
             {
                 ProcessPolygon(polygon);
             }
-            else if (geom is IGeometryCollection gc)
+            else if (geom is GeometryCollection gc)
             {
                 foreach (var geometry in gc.Geometries)
                 {
@@ -141,7 +141,7 @@ namespace NetTopologySuite.Algorithm
         /// if appropriate.
         /// </summary>
         /// <param name="polygon">The polygon to process.</param>
-        private void ProcessPolygon(IPolygon polygon)
+        private void ProcessPolygon(Polygon polygon)
         {
             var intPtPoly = new InteriorPointPolygon(polygon);
             intPtPoly.Process();
@@ -154,13 +154,13 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Computes an interior point in a single <see cref="IPolygon"/>,
+        /// Computes an interior point in a single <see cref="Polygon"/>,
         /// as well as the width of the scan-line section it occurs in
         /// to allow choosing the widest section occurrence.
         /// </summary>
         private class InteriorPointPolygon
         {
-            private readonly IPolygon _polygon;
+            private readonly Polygon _polygon;
             private readonly double _interiorPointY;
             private readonly List<double> _crossings = new List<double>();
 
@@ -171,7 +171,7 @@ namespace NetTopologySuite.Algorithm
             /// Initializes a new instance of the <see cref="InteriorPointPolygon"/> class.
             /// </summary>
             /// <param name="polygon">The polygon to test.</param>
-            public InteriorPointPolygon(IPolygon polygon)
+            public InteriorPointPolygon(Polygon polygon)
             {
                 _polygon = polygon;
                 _interiorPointY = ScanLineYOrdinateFinder.GetScanLineY(polygon);
@@ -202,16 +202,16 @@ namespace NetTopologySuite.Algorithm
 
                 // set default interior point in case polygon has zero area
                 _interiorPoint = new Coordinate(_polygon.Coordinate);
-                ScanRing((ILinearRing)_polygon.ExteriorRing);
+                ScanRing((LinearRing)_polygon.ExteriorRing);
                 for (int i = 0; i < _polygon.NumInteriorRings; i++)
                 {
-                    ScanRing((ILinearRing)_polygon.GetInteriorRingN(i));
+                    ScanRing((LinearRing)_polygon.GetInteriorRingN(i));
                 }
 
                 FindBestMidpoint(_crossings);
             }
 
-            private void ScanRing(ILinearRing ring)
+            private void ScanRing(LinearRing ring)
             {
                 // skip rings which don't cross scan line
                 if (!IntersectsHorizontalLine(ring.EnvelopeInternal, _interiorPointY))
@@ -440,19 +440,19 @@ namespace NetTopologySuite.Algorithm
         /// <author>Martin Davis</author>
         private class ScanLineYOrdinateFinder
         {
-            public static double GetScanLineY(IPolygon poly)
+            public static double GetScanLineY(Polygon poly)
             {
                 var finder = new ScanLineYOrdinateFinder(poly);
                 return finder.GetScanLineY();
             }
 
-            private readonly IPolygon _poly;
+            private readonly Polygon _poly;
 
             private readonly double _centreY;
             private double _hiY;// = double.MaxValue;
             private double _loY;// = -double.MaxValue;
 
-            private ScanLineYOrdinateFinder(IPolygon poly)
+            private ScanLineYOrdinateFinder(Polygon poly)
             {
                 _poly = poly;
 
@@ -474,7 +474,7 @@ namespace NetTopologySuite.Algorithm
                 return scanLineY;
             }
 
-            private void Process(ILineString line)
+            private void Process(LineString line)
             {
                 var seq = line.CoordinateSequence;
                 for (int i = 0; i < seq.Count; i++)

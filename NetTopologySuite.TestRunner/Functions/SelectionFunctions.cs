@@ -6,59 +6,59 @@ namespace Open.Topology.TestRunner.Functions
 {
     public static class SelectionFunctions
     {
-        public static IGeometry Intersects(IGeometry a, IGeometry mask)
+        public static Geometry Intersects(Geometry a, Geometry mask)
         {
             return Select(a, mask.Intersects);
         }
 
-        public static IGeometry Covers(IGeometry a, IGeometry mask)
+        public static Geometry Covers(Geometry a, Geometry mask)
         {
             return Select(a, mask.Covers);
         }
 
-        public static IGeometry CoveredBy(IGeometry a, IGeometry mask)
+        public static Geometry CoveredBy(Geometry a, Geometry mask)
         {
             return Select(a, mask.CoveredBy);
         }
 
-        public static IGeometry Disjoint(IGeometry a, IGeometry mask)
+        public static Geometry Disjoint(Geometry a, Geometry mask)
         {
             return Select(a, mask.Disjoint);
         }
 
-        public static IGeometry Valid(IGeometry a)
+        public static Geometry Valid(Geometry a)
         {
             return Select(a, g => g.IsValid);
         }
 
-        public static IGeometry Invalid(IGeometry a)
+        public static Geometry Invalid(Geometry a)
         {
             return Select(a, g => !g.IsValid);
         }
 
-        public static IGeometry AreaGreater(IGeometry a, double minArea)
+        public static Geometry AreaGreater(Geometry a, double minArea)
         {
             return Select(a, g => g.Area > minArea);
         }
 
-        public static IGeometry AreaZero(IGeometry a)
+        public static Geometry AreaZero(Geometry a)
         {
             return Select(a, g => g.Area == 0d);
         }
 
-        public static IGeometry Within(IGeometry a, IGeometry mask)
+        public static Geometry Within(Geometry a, Geometry mask)
         {
             return Select(a, mask.Within);
         }
 
-        public static IGeometry InteriorPointWithin(IGeometry a, IGeometry mask)
+        public static Geometry InteriorPointWithin(Geometry a, Geometry mask)
         {
             return Select(a, g => g.InteriorPoint.Within(mask));
         }
 
-        private static IGeometry Select(IGeometry geom, Func<IGeometry, bool> predicate)
+        private static Geometry Select(Geometry geom, Func<Geometry, bool> predicate)
         {
-            var selected = new List<IGeometry>();
+            var selected = new List<Geometry>();
             for (int i = 0; i < geom.NumGeometries; i++)
             {
                 var g = geom.GetGeometryN(i);
@@ -70,9 +70,9 @@ namespace Open.Topology.TestRunner.Functions
             return geom.Factory.BuildGeometry(selected);
         }
 
-        public static IGeometry FirstNComponents(IGeometry g, int n)
+        public static Geometry FirstNComponents(Geometry g, int n)
         {
-            var comp = new List<IGeometry>();
+            var comp = new List<Geometry>();
             for (int i = 0; i < g.NumGeometries && i < n; i++)
             {
                 comp.Add(g.GetGeometryN(i));

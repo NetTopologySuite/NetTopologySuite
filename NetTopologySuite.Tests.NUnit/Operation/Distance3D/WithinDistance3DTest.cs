@@ -243,8 +243,8 @@ public class WithinDistance3DTest
 
     private void CheckWithinDistance(string wkt1, string wkt2, double distance, bool expectedResult)
     {
-        IGeometry g1;
-        IGeometry g2;
+        Geometry g1;
+        Geometry g2;
         try {
             g1 = Rdr.Read(wkt1);
         }
@@ -262,7 +262,7 @@ public class WithinDistance3DTest
         CheckWithinDistance(g2, g1, distance, expectedResult);
     }
 
-    private static void CheckWithinDistance(IGeometry g1, IGeometry g2, double distance, bool expectedResult)
+    private static void CheckWithinDistance(Geometry g1, Geometry g2, double distance, bool expectedResult)
     {
             bool isWithinDist = Distance3DOp.IsWithinDistance(g1, g2, distance);
         Assert.AreEqual(expectedResult, isWithinDist);

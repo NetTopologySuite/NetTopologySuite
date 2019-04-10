@@ -9,8 +9,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class GeometryImplTest
     {
-        private IPrecisionModel precisionModel;
-        private IGeometryFactory geometryFactory;
+        private PrecisionModel precisionModel;
+        private GeometryFactory geometryFactory;
         WKTReader reader;
         WKTReader readerFloat;
 
@@ -129,12 +129,12 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var differentSecond = reader.Read(
                     "POLYGON ((0 0, 0 99, 50 50, 50 0, 0 0))");
             DoTestEquals(g, same, true, true, true, true);
-            DoTestEquals(g, differentStart, true, true, false, true);  // NTS casts from object to IGeometry if possible, so changed a equalsObject to be true not false
+            DoTestEquals(g, differentStart, true, true, false, true);  // NTS casts from object to Geometry if possible, so changed a equalsObject to be true not false
             DoTestEquals(g, differentFourth, false, false, false, false);
             DoTestEquals(g, differentSecond, false, false, false, false);
         }
 
-        private void DoTestEquals(IGeometry a, IGeometry b, bool equalsGeometry,
+        private void DoTestEquals(Geometry a, Geometry b, bool equalsGeometry,
             bool equalsObject, bool equalsExact, bool equalsHash)
         {
             Assert.AreEqual(equalsGeometry, a.Equals(b));
@@ -208,9 +208,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var rotatedRing1Poly = geometryFactory.CreatePolygon(rotatedRing1);
             var rotatedRing2Poly = geometryFactory.CreatePolygon(rotatedRing2);
 
-            // IGeometry equality in hash-based collections should be based on
+            // Geometry equality in hash-based collections should be based on
             // EqualsExact semantics, as it is in JTS.
-            var hashSet1 = new HashSet<IGeometry>
+            var hashSet1 = new HashSet<Geometry>
             {
                 exactEqualRing1Poly,
                 exactEqualRing2Poly,
@@ -220,8 +220,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
             Assert.AreEqual(3, hashSet1.Count);
 
-            // same as IPolygon equality.
-            var hashSet2 = new HashSet<IPolygon>
+            // same as Polygon equality.
+            var hashSet2 = new HashSet<Polygon>
             {
                 exactEqualRing1Poly,
                 exactEqualRing2Poly,
@@ -332,17 +332,17 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestEqualsExactForGeometryCollections()
         {
-            IGeometry polygon1 = (Polygon) reader.Read(
+            Geometry polygon1 = (Polygon) reader.Read(
                     "POLYGON ((0 0, 0 50, 50 50, 50 0, 0 0))");
-            IGeometry polygon2 = (Polygon) reader.Read(
+            Geometry polygon2 = (Polygon) reader.Read(
                     "POLYGON ((50 50, 50 0, 0 0, 0 50, 50 50))");
-            var x = geometryFactory.CreateGeometryCollection(new IGeometry[] {
+            var x = geometryFactory.CreateGeometryCollection(new Geometry[] {
                         polygon1, polygon2
                     });
-            var somethingExactlyEqual = geometryFactory.CreateGeometryCollection(new IGeometry[] {
+            var somethingExactlyEqual = geometryFactory.CreateGeometryCollection(new Geometry[] {
                         polygon1, polygon2
                     });
-            var somethingNotEqualButSameClass = geometryFactory.CreateGeometryCollection(new IGeometry[] {
+            var somethingNotEqualButSameClass = geometryFactory.CreateGeometryCollection(new Geometry[] {
                         polygon2
                     });
             var sameClassButEmpty = geometryFactory.CreateGeometryCollection(null);
@@ -401,14 +401,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(gc2.Intersects(gc1));
         }
 
-        private void DoTestEqualsExact(IGeometry x,
-            IGeometry somethingExactlyEqual,
-            IGeometry somethingNotEqualButSameClass,
-            IGeometry sameClassButEmpty,
-            IGeometry anotherSameClassButEmpty,
+        private void DoTestEqualsExact(Geometry x,
+            Geometry somethingExactlyEqual,
+            Geometry somethingNotEqualButSameClass,
+            Geometry sameClassButEmpty,
+            Geometry anotherSameClassButEmpty,
             ICollectionFactory collectionFactory)
         {
-            IGeometry emptyDifferentClass;
+            Geometry emptyDifferentClass;
 
             if (x is Point) {
                 emptyDifferentClass = geometryFactory.CreateGeometryCollection(null);
@@ -416,10 +416,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 emptyDifferentClass = geometryFactory.CreatePoint((Coordinate)null);
             }
 
-            IGeometry somethingEqualButNotExactly = geometryFactory.CreateGeometryCollection(new IGeometry[] { x });
+            Geometry somethingEqualButNotExactly = geometryFactory.CreateGeometryCollection(new Geometry[] { x });
 
             DoTestEqualsExact(x, somethingExactlyEqual,
-                collectionFactory.CreateCollection(new IGeometry[] { x }, geometryFactory),
+                collectionFactory.CreateCollection(new Geometry[] { x }, geometryFactory),
                 somethingNotEqualButSameClass);
 
             DoTestEqualsExact(sameClassButEmpty, anotherSameClassButEmpty,
@@ -432,19 +432,19 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 sameClassButEmpty, sameClassButEmpty);
 
             DoTestEqualsExact(collectionFactory.CreateCollection(
-                    new IGeometry[] { x, x }, geometryFactory),
+                    new Geometry[] { x, x }, geometryFactory),
                 collectionFactory.CreateCollection(
-                    new IGeometry[] { x, somethingExactlyEqual }, geometryFactory),
+                    new Geometry[] { x, somethingExactlyEqual }, geometryFactory),
                 somethingEqualButNotExactly,
                 collectionFactory.CreateCollection(
-                    new IGeometry[] { x, somethingNotEqualButSameClass }, geometryFactory));
+                    new Geometry[] { x, somethingNotEqualButSameClass }, geometryFactory));
         }
 
-        private void DoTestEqualsExact(IGeometry x,
-            IGeometry somethingExactlyEqual,
-            IGeometry somethingEqualButNotExactly,
-            IGeometry somethingNotEqualButSameClass)  {
-            IGeometry differentClass;
+        private void DoTestEqualsExact(Geometry x,
+            Geometry somethingExactlyEqual,
+            Geometry somethingEqualButNotExactly,
+            Geometry somethingNotEqualButSameClass)  {
+            Geometry differentClass;
 
             if (x is Point) {
                 differentClass = reader.Read(
@@ -465,33 +465,33 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         private interface ICollectionFactory {
-            IGeometry CreateCollection(IGeometry[] geometries, IGeometryFactory geometryFactory);
+            Geometry CreateCollection(Geometry[] geometries, GeometryFactory geometryFactory);
         }
 
         class GeometryCollectionFactory : ICollectionFactory
         {
-            public IGeometry CreateCollection(IGeometry[] geometries, IGeometryFactory geometryFactory) {
+            public Geometry CreateCollection(Geometry[] geometries, GeometryFactory geometryFactory) {
                 return geometryFactory.CreateGeometryCollection(geometries);
             }
         }
 
         class PointCollectionFactory : ICollectionFactory
         {
-            public IGeometry CreateCollection(IGeometry[] geometries, IGeometryFactory geometryFactory) {
+            public Geometry CreateCollection(Geometry[] geometries, GeometryFactory geometryFactory) {
                 return geometryFactory.CreateMultiPoint(GeometryFactory.ToPointArray(geometries));
             }
         }
 
         class LineCollectionFactory : ICollectionFactory
         {
-            public IGeometry CreateCollection(IGeometry[] geometries, IGeometryFactory geometryFactory) {
+            public Geometry CreateCollection(Geometry[] geometries, GeometryFactory geometryFactory) {
                 return geometryFactory.CreateMultiLineString(GeometryFactory.ToLineStringArray(geometries));
             }
         }
 
         class PolygonCollectionFactory : ICollectionFactory
         {
-            public IGeometry CreateCollection(IGeometry[] geometries, IGeometryFactory geometryFactory) {
+            public Geometry CreateCollection(Geometry[] geometries, GeometryFactory geometryFactory) {
                 return geometryFactory.CreateMultiPolygon(GeometryFactory.ToPolygonArray(geometries));
             }
         }

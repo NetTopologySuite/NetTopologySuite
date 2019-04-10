@@ -5,7 +5,7 @@ using NetTopologySuite.Geometries.Utilities;
 namespace NetTopologySuite.Simplify
 {
     /// <summary>
-    /// Simplifies a <see cref="IGeometry"/> using the Douglas-Peucker algorithm.
+    /// Simplifies a <see cref="Geometry"/> using the Douglas-Peucker algorithm.
     /// </summary>
     /// <remarks>
     /// Ensures that any polygonal geometries returned are valid.
@@ -34,14 +34,14 @@ namespace NetTopologySuite.Simplify
         /// <param name="geom">The geometry to simplify.</param>
         /// <param name="distanceTolerance">The tolerance to use.</param>
         /// <returns>A simplified version of the geometry.</returns>
-        public static IGeometry Simplify(IGeometry geom, double distanceTolerance)
+        public static Geometry Simplify(Geometry geom, double distanceTolerance)
         {
             var tss = new DouglasPeuckerSimplifier(geom);
             tss.DistanceTolerance = distanceTolerance;
             return tss.GetResultGeometry();
         }
 
-        private readonly IGeometry _inputGeom;
+        private readonly Geometry _inputGeom;
         private double _distanceTolerance;
         private bool _isEnsureValidTopology = true;
 
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Simplify
         /// Creates a simplifier for a given geometry.
         /// </summary>
         /// <param name="inputGeom">The geometry to simplify.</param>
-        public DouglasPeuckerSimplifier(IGeometry inputGeom)
+        public DouglasPeuckerSimplifier(Geometry inputGeom)
         {
             _inputGeom = inputGeom;
         }
@@ -96,11 +96,11 @@ namespace NetTopologySuite.Simplify
         /// Gets the simplified geometry.
         /// </summary>
         /// <returns>The simplified geometry.</returns>
-        public IGeometry GetResultGeometry()
+        public Geometry GetResultGeometry()
         {
             // empty input produces an empty result
             if (_inputGeom.IsEmpty)
-                return (IGeometry)_inputGeom.Copy();
+                return (Geometry)_inputGeom.Copy();
 
             var transformer = new DPTransformer(this, EnsureValidTopology);
             return transformer.Transform(_inputGeom);
@@ -120,8 +120,8 @@ namespace NetTopologySuite.Simplify
                 _ensureValidTopology = ensureValidTopology;
             }
 
-            /// <inheritdoc cref="GeometryTransformer.TransformCoordinates(ICoordinateSequence, IGeometry)"/>
-            protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
+            /// <inheritdoc cref="GeometryTransformer.TransformCoordinates(ICoordinateSequence, Geometry)"/>
+            protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, Geometry parent)
             {
                 var inputPts = coords.ToCoordinateArray();
                 var newPts = inputPts.Length == 0
@@ -137,7 +137,7 @@ namespace NetTopologySuite.Simplify
             /// <param name="geom">The geometry to transform</param>
             /// <param name="parent">The parent geometry</param>
             /// <returns></returns>
-            protected override IGeometry TransformPolygon(IPolygon geom, IGeometry parent)
+            protected override Geometry TransformPolygon(Polygon geom, Geometry parent)
             {
                 // empty geometries are simply removed
                 if (geom.IsEmpty)
@@ -145,7 +145,7 @@ namespace NetTopologySuite.Simplify
 
                 var rawGeom = base.TransformPolygon(geom, parent);
                 // don't try and correct if the parent is going to do this
-                if (parent is IMultiPolygon)
+                if (parent is MultiPolygon)
                     return rawGeom;
                 return CreateValidArea(rawGeom);
             }
@@ -154,18 +154,18 @@ namespace NetTopologySuite.Simplify
             /// Simplifies a LinearRing.  If the simplification results in a degenerate ring, remove the component.
             /// </summary>
             /// <returns>null if the simplification results in a degenerate ring</returns>
-            protected override IGeometry TransformLinearRing(ILinearRing geom, IGeometry parent)
+            protected override Geometry TransformLinearRing(LinearRing geom, Geometry parent)
             {
-                bool removeDegenerateRings = parent is IPolygon;
+                bool removeDegenerateRings = parent is Polygon;
                 var simpResult = base.TransformLinearRing(geom, parent);
 
-                if (removeDegenerateRings && !(simpResult is ILinearRing))
+                if (removeDegenerateRings && !(simpResult is LinearRing))
                     return null;
                 return simpResult;
             }
 
-            /// <inheritdoc cref="GeometryTransformer.TransformMultiPolygon(IMultiPolygon, IGeometry)"/>
-            protected override IGeometry TransformMultiPolygon(IMultiPolygon geom, IGeometry parent)
+            /// <inheritdoc cref="GeometryTransformer.TransformMultiPolygon(MultiPolygon, Geometry)"/>
+            protected override Geometry TransformMultiPolygon(MultiPolygon geom, Geometry parent)
             {
                 var roughGeom = base.TransformMultiPolygon(geom, parent);
                 return CreateValidArea(roughGeom);
@@ -183,7 +183,7 @@ namespace NetTopologySuite.Simplify
             /// </summary>
             /// <param name="rawAreaGeom">An area point possibly containing self-intersections.</param>
             /// <returns>A valid area point.</returns>
-            private IGeometry CreateValidArea(IGeometry rawAreaGeom)
+            private Geometry CreateValidArea(Geometry rawAreaGeom)
             {
                 if (_ensureValidTopology)
                     return rawAreaGeom.Buffer(0.0);

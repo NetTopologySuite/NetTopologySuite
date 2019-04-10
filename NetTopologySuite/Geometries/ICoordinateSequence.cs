@@ -15,8 +15,8 @@ namespace NetTopologySuite.Geometries
     /// requires implementing the <see cref="ICoordinateSequence"/> and
     /// <see cref="ICoordinateSequenceFactory"/> interfaces. 
     /// To use the custom CoordinateSequence, create a
-    /// new <see cref="IGeometryFactory"/> parameterized by the CoordinateSequenceFactory
-    /// The <see cref="IGeometryFactory"/> can then be used to create new <see cref="IGeometry"/>s.
+    /// new <see cref="GeometryFactory"/> parameterized by the CoordinateSequenceFactory
+    /// The <see cref="GeometryFactory"/> can then be used to create new <see cref="Geometry"/>s.
     /// The new Geometries will use the custom CoordinateSequence implementation.
     /// </para>
     /// </summary>

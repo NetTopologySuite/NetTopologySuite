@@ -40,17 +40,17 @@ namespace NetTopologySuite.Algorithm
         /// If the point has no area it does not contribute to the centroid.
         /// </summary>
         /// <param name="geom">The point to add.</param>
-        public void Add(IGeometry geom)
+        public void Add(Geometry geom)
         {
-            if (geom is IPolygon)
+            if (geom is Polygon)
             {
-                var poly = (IPolygon) geom;
+                var poly = (Polygon) geom;
                 BasePoint = poly.ExteriorRing.GetCoordinateN(0);
                 Add(poly);
             }
-            else if (geom is IGeometryCollection)
+            else if (geom is GeometryCollection)
             {
-                var gc = (IGeometryCollection) geom;
+                var gc = (GeometryCollection) geom;
                 for (int i = 0; i < gc.NumGeometries; i++)
                 {
                     Add(gc.GetGeometryN(i));
@@ -113,7 +113,7 @@ namespace NetTopologySuite.Algorithm
         ///
         /// </summary>
         /// <param name="poly"></param>
-        private void Add(IPolygon poly)
+        private void Add(Polygon poly)
         {
             AddShell(poly.ExteriorRing.Coordinates);
             foreach (var ls in poly.InteriorRings)

@@ -6,46 +6,46 @@ namespace Open.Topology.TestRunner.Functions
 {
     public static class OverlayFunctions
     {
-        public static IGeometry Intersection(IGeometry a, IGeometry b)
+        public static Geometry Intersection(Geometry a, Geometry b)
         {
             return a.Intersection(b);
         }
 
-        public static IGeometry Union(IGeometry a, IGeometry b)
+        public static Geometry Union(Geometry a, Geometry b)
         {
             return a.Union(b);
         }
 
-        public static IGeometry SymDifference(IGeometry a, IGeometry b)
+        public static Geometry SymDifference(Geometry a, Geometry b)
         {
             return a.SymmetricDifference(b);
         }
 
-        public static IGeometry Difference(IGeometry a, IGeometry b)
+        public static Geometry Difference(Geometry a, Geometry b)
         {
             return a.Difference(b);
         }
 
-        public static IGeometry DifferenceBa(IGeometry a, IGeometry b)
+        public static Geometry DifferenceBa(Geometry a, Geometry b)
         {
             return b.Difference(a);
         }
 
-        public static IGeometry UnaryUnion(IGeometry a)
+        public static Geometry UnaryUnion(Geometry a)
         {
             return a.Union();
         }
 
-        public static IGeometry UnionUsingGeometryCollection(IGeometry a, IGeometry b)
+        public static Geometry UnionUsingGeometryCollection(Geometry a, Geometry b)
         {
             var gc = a.Factory.CreateGeometryCollection(
                 new[] { a, b });
             return gc.Union();
         }
 
-        public static IGeometry Clip(IGeometry a, IGeometry mask)
+        public static Geometry Clip(Geometry a, Geometry mask)
         {
-            var geoms = new List<IGeometry>();
+            var geoms = new List<Geometry>();
             for (int i = 0; i < a.NumGeometries; i++)
             {
                 var clip = a.GetGeometryN(i).Intersection(mask);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
-    /// Extracts a single representative <see cref="Coordinate"/> from each connected component of a <see cref="IGeometry"/>.
+    /// Extracts a single representative <see cref="Coordinate"/> from each connected component of a <see cref="Geometry"/>.
     /// </summary>
     /// <version>1.9</version>
     public class ComponentCoordinateExtracter : IGeometryComponentFilter
@@ -16,7 +16,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="geom">The Geometry from which to extract</param>
         /// <returns>A list of Coordinates</returns>
-        public static List<Coordinate> GetCoordinates(IGeometry geom)
+        public static List<Coordinate> GetCoordinates(Geometry geom)
         {
             var coords = new List<Coordinate>();
             geom.Apply(new ComponentCoordinateExtracter(coords));
@@ -33,11 +33,11 @@ namespace NetTopologySuite.Geometries.Utilities
             _coords = coords;
         }
 
-        public void Filter(IGeometry geom)
+        public void Filter(Geometry geom)
         {
             // add coordinates from connected components
-            if (geom is ILineString
-                || geom is IPoint)
+            if (geom is LineString
+                || geom is Point)
                 _coords.Add(geom.Coordinate);
         }
     }

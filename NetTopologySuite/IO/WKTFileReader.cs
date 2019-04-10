@@ -6,7 +6,7 @@ using RTools_NTS.Util;
 namespace NetTopologySuite.IO
 {
     /// <summary>
-    /// Reads a sequence of <see cref="IGeometry"/>s in WKT format from a text file.
+    /// Reads a sequence of <see cref="Geometry"/>s in WKT format from a text file.
     /// </summary>
     /// <remarks>The geometries in the file may be separated by any amount of whitespace and newlines.</remarks>
     /// <author>
@@ -90,7 +90,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
         /// <exception cref="ParseException">Thrown if an error occurred reading a geometry</exception>
         /// <returns>The list of geometries read</returns>
-        public IList<IGeometry> Read()
+        public IList<Geometry> Read()
         {
             _count = 0;
 
@@ -103,9 +103,9 @@ namespace NetTopologySuite.IO
             }
         }
 
-        private IList<IGeometry> Read(TextReader bufferedReader)
+        private IList<Geometry> Read(TextReader bufferedReader)
         {
-            var geoms = new List<IGeometry>();
+            var geoms = new List<Geometry>();
             var tokens = _wktReader.Tokenizer(bufferedReader);
             while (!IsAtEndOfTokens(tokens.NextToken(false)) && !IsAtLimit(geoms))
             {
@@ -118,7 +118,7 @@ namespace NetTopologySuite.IO
             /*
             while (!IsAtEndOfFile(bufferedReader) && !IsAtLimit(geoms))
             {
-                IGeometry g = _wktReader.Read(bufferedReader);
+                Geometry g = _wktReader.Read(bufferedReader);
                 if (_count >= Offset)
                     geoms.Add(g);
                 _count++;
@@ -127,7 +127,7 @@ namespace NetTopologySuite.IO
             return geoms;
         }
 
-        private bool IsAtLimit(IList<IGeometry> geoms)
+        private bool IsAtLimit(IList<Geometry> geoms)
         {
             if (Limit < 0) return false;
             if (geoms.Count < Limit) return false;

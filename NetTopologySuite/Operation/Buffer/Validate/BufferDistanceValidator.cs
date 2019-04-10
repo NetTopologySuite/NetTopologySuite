@@ -33,9 +33,9 @@ namespace NetTopologySuite.Operation.Buffer.Validate
          */
         private const double MaxDistanceDiffFrac = .012;
 
-        private readonly IGeometry _input;
+        private readonly Geometry _input;
         private readonly double _bufDistance;
-        private readonly IGeometry _result;
+        private readonly Geometry _result;
 
         private double _minValidDistance;
         private double _maxValidDistance;
@@ -46,9 +46,9 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         private bool _isValid = true;
         private string _errMsg;
         private Coordinate _errorLocation;
-        private IGeometry _errorIndicator;
+        private Geometry _errorIndicator;
 
-        public BufferDistanceValidator(IGeometry input, double bufDistance, IGeometry result)
+        public BufferDistanceValidator(Geometry input, double bufDistance, Geometry result)
         {
             _input = input;
             _bufDistance = bufDistance;
@@ -101,7 +101,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// </summary>
         /// <returns>A geometric error indicator
         /// or <value>null</value>, if no error was found</returns>
-        public IGeometry ErrorIndicator => _errorIndicator;
+        public Geometry ErrorIndicator => _errorIndicator;
 
         private void CheckPositiveValid()
         {
@@ -117,9 +117,9 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             // Assert: only polygonal inputs can be checked for negative buffers
 
             // MD - could generalize this to handle GCs too
-            if (!(_input is IPolygon
-                    || _input is IMultiPolygon
-                    || _input is IGeometryCollection
+            if (!(_input is Polygon
+                    || _input is MultiPolygon
+                    || _input is GeometryCollection
                     ))
             {
                 return;
@@ -131,9 +131,9 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             CheckMaximumDistance(inputCurve, _result, _maxValidDistance);
         }
 
-        private static IGeometry GetPolygonLines(IGeometry g)
+        private static Geometry GetPolygonLines(Geometry g)
         {
-            var lines = new List<IGeometry>();
+            var lines = new List<Geometry>();
             var lineExtracter = new LinearComponentExtracter(lines);
             var polys = PolygonExtracter.GetPolygons(g);
             foreach (var poly in polys)
@@ -149,7 +149,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// <param name="g1">A geometry</param>
         /// <param name="g2">A geometry</param>
         /// <param name="minDist">The minimum distance the geometries should be separated by</param>
-        private void CheckMinimumDistance(IGeometry g1, IGeometry g2, double minDist)
+        private void CheckMinimumDistance(Geometry g1, Geometry g2, double minDist)
         {
             var distOp = new DistanceOp(g1, g2, minDist);
             _minDistanceFound = distOp.Distance();
@@ -177,7 +177,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// <param name="input">A geometry</param>
         /// <param name="bufCurve">A geometry</param>
         /// <param name="maxDist">The maximum distance that a buffer result can be from the input</param>
-        private void CheckMaximumDistance(IGeometry input, IGeometry bufCurve, double maxDist)
+        private void CheckMaximumDistance(Geometry input, Geometry bufCurve, double maxDist)
         {
             //    BufferCurveMaximumDistanceFinder maxDistFinder = new BufferCurveMaximumDistanceFinder(input);
             //    maxDistanceFound = maxDistFinder.findDistance(bufCurve);

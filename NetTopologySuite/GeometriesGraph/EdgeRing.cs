@@ -19,7 +19,7 @@ namespace NetTopologySuite.GeometriesGraph
         private readonly List<DirectedEdge> _edges = new List<DirectedEdge>();  // the DirectedEdges making up this EdgeRing
         private readonly List<Coordinate> _pts = new List<Coordinate>();
         private readonly Label _label = new Label(Location.Null); // label stores the locations of each point on the face surrounded by this ring
-        private ILinearRing _ring;  // the ring created for this EdgeRing
+        private LinearRing _ring;  // the ring created for this EdgeRing
         private bool _isHole;
         private EdgeRing _shell;   // if non-null, the ring is a hole and this EdgeRing is its containing shell
         private readonly List<EdgeRing> _holes = new List<EdgeRing>(); // a list of EdgeRings which are holes in this EdgeRing
@@ -27,16 +27,16 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        private readonly IGeometryFactory _geometryFactory;
+        private readonly GeometryFactory _geometryFactory;
 
-        protected IGeometryFactory GeometryFactory => _geometryFactory;
+        protected GeometryFactory GeometryFactory => _geometryFactory;
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="start"></param>
         /// <param name="geometryFactory"></param>
-        protected EdgeRing(DirectedEdge start, IGeometryFactory geometryFactory)
+        protected EdgeRing(DirectedEdge start, GeometryFactory geometryFactory)
         {
             _geometryFactory = geometryFactory;
             ComputePoints(start);
@@ -66,7 +66,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public ILinearRing LinearRing => _ring;
+        public LinearRing LinearRing => _ring;
 
         /// <summary>
         ///
@@ -106,9 +106,9 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geometryFactory"></param>
         /// <returns></returns>
-        public IPolygon ToPolygon(IGeometryFactory geometryFactory)
+        public Polygon ToPolygon(GeometryFactory geometryFactory)
         {
-            var holeLR = new ILinearRing[_holes.Count];
+            var holeLR = new LinearRing[_holes.Count];
             for (int i = 0; i < _holes.Count; i++)
                 holeLR[i] = _holes[i].LinearRing;
             var poly = geometryFactory.CreatePolygon(LinearRing, holeLR);

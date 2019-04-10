@@ -50,7 +50,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             builder.Constraints = constraints;
 
             var geomFact = GeometryFactory.Default;
-            IGeometry result = computeTriangles ? builder.GetTriangles(geomFact) : builder.GetEdges(geomFact);
+            Geometry result = computeTriangles ? builder.GetTriangles(geomFact) : builder.GetEdges(geomFact);
             Assert.IsNotNull(result);
 
             var expectedEdges = reader.Read(expectedWKT);

@@ -9,7 +9,7 @@ namespace Open.Topology.TestRunner.Functions
 {
     public class SpatialIndexFunctions
     {
-        public static IGeometry KdTreeQuery(IGeometry pts, IGeometry query, double tolerance)
+        public static Geometry KdTreeQuery(Geometry pts, Geometry query, double tolerance)
         {
             var index = BuildKdTree(pts, tolerance);
             var result = index.Query(query.EnvelopeInternal);
@@ -17,7 +17,7 @@ namespace Open.Topology.TestRunner.Functions
             return pts.Factory.CreateMultiPointFromCoords(resultCoords);
         }
 
-        public static IGeometry KdTreeQueryRepeated(IGeometry pts, IGeometry queryEnv, double tolerance)
+        public static Geometry KdTreeQueryRepeated(Geometry pts, Geometry queryEnv, double tolerance)
         {
             var index = BuildKdTree(pts, tolerance);
             var result = index.Query(queryEnv.EnvelopeInternal);
@@ -25,7 +25,7 @@ namespace Open.Topology.TestRunner.Functions
             return pts.Factory.CreateMultiPointFromCoords(resultCoords);
         }
 
-        private static KdTree<object> BuildKdTree(IGeometry geom, double tolerance)
+        private static KdTree<object> BuildKdTree(Geometry geom, double tolerance)
         {
             var index = new KdTree<object>(tolerance);
             var pt = geom.Coordinates;
@@ -38,32 +38,32 @@ namespace Open.Topology.TestRunner.Functions
 
         private class DelegateGeometryFilter : IGeometryFilter
         {
-            public Action<IGeometry> DoFilter { get; set; }
+            public Action<Geometry> DoFilter { get; set; }
 
-            public void Filter(IGeometry geom)
+            public void Filter(Geometry geom)
             {
                 DoFilter(geom);
             }
         }
 
-        public static IGeometry STRtreeBounds(IGeometry geoms)
+        public static Geometry STRtreeBounds(Geometry geoms)
         {
             var index = BuildSTRtree(geoms);
-            var bounds = new List<IGeometry>();
+            var bounds = new List<Geometry>();
             addBounds(index.Root, bounds, geoms.Factory);
             return geoms.Factory.BuildGeometry(bounds);
         }
 
-        private static void addBounds(IBoundable<Envelope, IGeometry> bnd, List<IGeometry>  bounds,
-            IGeometryFactory factory)
+        private static void addBounds(IBoundable<Envelope, Geometry> bnd, List<Geometry>  bounds,
+            GeometryFactory factory)
         {
             // don't include bounds of leaf nodes
-            if (!(bnd is AbstractNode<Envelope, IGeometry>)) return;
+            if (!(bnd is AbstractNode<Envelope, Geometry>)) return;
 
             var env = (Envelope)bnd.Bounds;
             bounds.Add(factory.ToGeometry(env));
-            if (bnd is AbstractNode<Envelope, IGeometry>) {
-                var node = (AbstractNode<Envelope, IGeometry>)bnd;
+            if (bnd is AbstractNode<Envelope, Geometry>) {
+                var node = (AbstractNode<Envelope, Geometry>)bnd;
                 var children = node.ChildBoundables;
                 foreach (var child in children)
                 {
@@ -72,22 +72,22 @@ namespace Open.Topology.TestRunner.Functions
             }
         }
 
-        public static IGeometry STRtreeQuery(IGeometry geoms, IGeometry queryEnv)
+        public static Geometry STRtreeQuery(Geometry geoms, Geometry queryEnv)
         {
             var index = BuildSTRtree(geoms);
             var result = index.Query(queryEnv.EnvelopeInternal);
             return geoms.Factory.BuildGeometry(result);
         }
 
-        private static STRtree<IGeometry> BuildSTRtree(IGeometry geom)
+        private static STRtree<Geometry> BuildSTRtree(Geometry geom)
         {
-            var index = new STRtree<IGeometry>();
+            var index = new STRtree<Geometry>();
             geom.Apply(new DelegateGeometryFilter
             {
-                DoFilter = delegate(IGeometry tmpGeometry)
+                DoFilter = delegate(Geometry tmpGeometry)
                 {
                     // only insert atomic geometries
-                    if (tmpGeometry is IGeometryCollection) return;
+                    if (tmpGeometry is GeometryCollection) return;
                     index.Insert(tmpGeometry.EnvelopeInternal, tmpGeometry);
                 }
             });
@@ -95,22 +95,22 @@ namespace Open.Topology.TestRunner.Functions
             return index;
         }
 
-        public static IGeometry QuadTreeQuery(IGeometry geoms, IGeometry queryEnv)
+        public static Geometry QuadTreeQuery(Geometry geoms, Geometry queryEnv)
         {
             var index = BuildQuadtree(geoms);
             var result = index.Query(queryEnv.EnvelopeInternal);
             return geoms.Factory.BuildGeometry(result);
         }
 
-        private static Quadtree<IGeometry> BuildQuadtree(IGeometry geom)
+        private static Quadtree<Geometry> BuildQuadtree(Geometry geom)
         {
-            var index = new Quadtree<IGeometry>();
+            var index = new Quadtree<Geometry>();
             geom.Apply(new DelegateGeometryFilter()
             {
-                DoFilter = delegate(IGeometry tmpGeometry)
+                DoFilter = delegate(Geometry tmpGeometry)
                 {
                     // only insert atomic geometries
-                    if (tmpGeometry is IGeometryCollection) return;
+                    if (tmpGeometry is GeometryCollection) return;
                     index.Insert(tmpGeometry.EnvelopeInternal, tmpGeometry);
                 }
             });

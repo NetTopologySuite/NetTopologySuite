@@ -3,7 +3,7 @@
 namespace NetTopologySuite.Algorithm.Match
 {
     /// <summary>
-    /// Measures the degree of similarity between two <see cref="IGeometry"/>s
+    /// Measures the degree of similarity between two <see cref="Geometry"/>s
     /// using the area of intersection between the geometries.
     /// The measure is normalized to lie in the range [0, 1].
     /// Higher measures indicate a great degree of similarity.
@@ -30,7 +30,7 @@ namespace NetTopologySuite.Algorithm.Match
         /// <returns>
         /// The value of the similarity measure, in [0.0, 1.0].
         /// </returns>
-        public double Measure(IGeometry g1, IGeometry g2)
+        public double Measure(Geometry g1, Geometry g2)
         {
             double areaInt = g1.Intersection(g2).Area;
             double areaUnion = g1.Union(g2).Area;

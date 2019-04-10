@@ -5,26 +5,26 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Operation.Distance
 {
     /// <summary>
-    /// Represents a sequence of facets (points or line segments) of a <see cref="IGeometry"/>
+    /// Represents a sequence of facets (points or line segments) of a <see cref="Geometry"/>
     /// specified by a subsequence of a <see cref="ICoordinateSequence"/>.
     /// </summary>
     /// <author>Martin Davis</author>
     public class FacetSequence
     {
-        private readonly IGeometry _geom;
+        private readonly Geometry _geom;
         private readonly ICoordinateSequence _pts;
         private readonly int _start;
         private readonly int _end;
 
         /// <summary>
         /// Creates a new sequence of facets based on a <see cref="ICoordinateSequence"/>
-        /// contained in the given <see cref="IGeometry"/>.
+        /// contained in the given <see cref="Geometry"/>.
         /// </summary>
         /// <param name="geom">The geometry containing the facets.</param>
         /// <param name="pts">The sequence containing the facet points.</param>
         /// <param name="start">The index of the start point.</param>
         /// <param name="end">The index of the end point.</param>
-        public FacetSequence(IGeometry geom, ICoordinateSequence pts, int start, int end)
+        public FacetSequence(Geometry geom, ICoordinateSequence pts, int start, int end)
         {
             _geom = geom;
             _pts = pts;

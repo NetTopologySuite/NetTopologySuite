@@ -8,8 +8,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     [TestFixture]
     public class MinimumDiameterTest
     {
-        private IPrecisionModel precisionModel;
-        private IGeometryFactory geometryFactory;
+        private PrecisionModel precisionModel;
+        private GeometryFactory geometryFactory;
         WKTReader reader;
 
         public MinimumDiameterTest()

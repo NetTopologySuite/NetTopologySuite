@@ -10,12 +10,12 @@ namespace NetTopologySuite.Geometries
     /// Any collection of <c>LineString</c>s is a valid <c>MultiLineString</c>.
     /// </summary>
     [Serializable]
-    public class MultiLineString : GeometryCollection, IMultiLineString
+    public class MultiLineString : GeometryCollection, ILineal
     {
         /// <summary>
         /// Represents an empty <c>MultiLineString</c>.
         /// </summary>
-        public new static readonly IMultiLineString Empty = new GeometryFactory().CreateMultiLineString(null);
+        public new static readonly MultiLineString Empty = new GeometryFactory().CreateMultiLineString(null);
 
         /// <summary>
         /// Constructs a <c>MultiLineString</c>.
@@ -27,7 +27,7 @@ namespace NetTopologySuite.Geometries
         /// but not <c>null</c>s.
         /// </param>
         /// <param name="factory"></param>
-        public MultiLineString(ILineString[] lineStrings, IGeometryFactory factory)
+        public MultiLineString(LineString[] lineStrings, GeometryFactory factory)
             : base(lineStrings, factory) { }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public MultiLineString(ILineString[] lineStrings) : this(lineStrings, DefaultFactory) { }
+        public MultiLineString(LineString[] lineStrings) : this(lineStrings, DefaultFactory) { }
 
         /// <summary>
         /// Gets a value to sort the geometry
@@ -92,7 +92,7 @@ namespace NetTopologySuite.Geometries
                 if (IsEmpty)
                     return false;
                 for (int i = 0; i < Geometries.Length; i++)
-                    if (!((ILineString) Geometries[i]).IsClosed)
+                    if (!((LineString) Geometries[i]).IsClosed)
                         return false;
                 return true;
             }
@@ -106,11 +106,11 @@ namespace NetTopologySuite.Geometries
         //{
         //    get
         //    {
-        //        return (new IsSimpleOp()).IsSimple((IMultiLineString) this);
+        //        return (new IsSimpleOp()).IsSimple((MultiLineString) this);
         //    }
         //}
 
-        public override IGeometry Boundary => (new BoundaryOp(this)).GetBoundary();
+        public override Geometry Boundary => (new BoundaryOp(this)).GetBoundary();
         //{
         //    get
         //    {
@@ -128,21 +128,21 @@ namespace NetTopologySuite.Geometries
         /// and the order of their coordinate sequences are reversed.
         /// </summary>
         /// <returns>a <see cref="MultiLineString" /> in the reverse order.</returns>
-        public override IGeometry Reverse()
+        public override Geometry Reverse()
         {
             int nLines = Geometries.Length;
-            var revLines = new ILineString[nLines];
+            var revLines = new LineString[nLines];
             for (int i = 0; i < Geometries.Length; i++)
-                revLines[nLines - 1 - i] = (ILineString) Geometries[i].Reverse();
+                revLines[nLines - 1 - i] = (LineString) Geometries[i].Reverse();
             return Factory.CreateMultiLineString(revLines);
         }
 
         /// <inheritdoc cref="Geometry.CopyInternal"/>>
-        protected override IGeometry CopyInternal()
+        protected override Geometry CopyInternal()
         {
-            var lineStrings = new ILineString[NumGeometries];
+            var lineStrings = new LineString[NumGeometries];
             for (int i = 0; i < lineStrings.Length; i++)
-                lineStrings[i] = (ILineString)GetGeometryN(i).Copy();
+                lineStrings[i] = (LineString)GetGeometryN(i).Copy();
 
             return new MultiLineString(lineStrings, Factory);
         }
@@ -153,7 +153,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance)
+        public override bool EqualsExact(Geometry other, double tolerance)
         {
             if (!IsEquivalentClass(other))
                 return false;

@@ -6,17 +6,17 @@ namespace NetTopologySuite.EdgeRay
 {
     public class EdgeRayIntersectionArea
     {
-        public static double GetArea(IGeometry geom0, IGeometry geom1)
+        public static double GetArea(Geometry geom0, Geometry geom1)
         {
             var area = new EdgeRayIntersectionArea(geom0, geom1);
             return area.Area;
         }
 
-        private IGeometry _geomA;
-        private IGeometry _geomB;
+        private Geometry _geomA;
+        private Geometry _geomB;
         double _area;
 
-        public EdgeRayIntersectionArea(IGeometry geom0, IGeometry geom1)
+        public EdgeRayIntersectionArea(Geometry geom0, Geometry geom1)
         {
             _geomA = geom0;
             _geomB = geom1;
@@ -108,7 +108,7 @@ namespace NetTopologySuite.EdgeRay
             }
         }
 
-        private void AddResultVertices(IGeometry geom0, IGeometry geom1)
+        private void AddResultVertices(Geometry geom0, Geometry geom1)
         {
             /*
              * Compute rays originating at vertices inside the resultant
@@ -130,9 +130,9 @@ namespace NetTopologySuite.EdgeRay
             }
         }
 
-        private ICoordinateSequence GetVertices(IGeometry geom)
+        private ICoordinateSequence GetVertices(Geometry geom)
         {
-            var poly = (IPolygon)geom;
+            var poly = (Polygon)geom;
             var seq = poly.ExteriorRing.CoordinateSequence;
             return seq;
         }

@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance
                 coordinates[nrVertices] = coordinates[0];
 
                 var g1 = new GeometryFactory().CreateLinearRing(coordinates);
-                var holes = new ILinearRing[] {};
+                var holes = new LinearRing[] {};
                 var polygon = (Polygon) new GeometryFactory().CreatePolygon(g1, holes);
                 //Console.WriteLine(polygon);
 

@@ -8,7 +8,7 @@ namespace NetTopologySuite.EdgeGraph
     /// </summary>
     public class EdgeGraphBuilder
     {
-        public static EdgeGraph Build(IEnumerable<IGeometry> geoms)
+        public static EdgeGraph Build(IEnumerable<Geometry> geoms)
         {
             var builder = new EdgeGraphBuilder();
             builder.Add(geoms);
@@ -30,28 +30,28 @@ namespace NetTopologySuite.EdgeGraph
         /// Any dimension of Geometry may be added; the constituent edges are extracted.
         /// </summary>
         /// <param name="geometry">geometry to be added</param>
-        public void Add(IGeometry geometry)
+        public void Add(Geometry geometry)
         {
             geometry.Apply(new GeometryComponentFilter(c =>
             {
-                if (c is ILineString)
-                    Add(c as ILineString);
+                if (c is LineString)
+                    Add(c as LineString);
             }));
         }
 
         /// <summary>
-        ///  Adds the edges in a collection of <see cref="IGeometry"/>s to the graph.
+        ///  Adds the edges in a collection of <see cref="Geometry"/>s to the graph.
         /// May be called multiple times.
-        /// Any dimension of <see cref="IGeometry"/> may be added.
+        /// Any dimension of <see cref="Geometry"/> may be added.
         /// </summary>
         /// <param name="geometries">the geometries to be added</param>
-        public void Add(IEnumerable<IGeometry> geometries)
+        public void Add(IEnumerable<Geometry> geometries)
         {
             foreach (var geometry in geometries)
                 Add(geometry);
         }
 
-        private void Add(ILineString lineString)
+        private void Add(LineString lineString)
         {
             var seq = lineString.CoordinateSequence;
             for (int i = 1; i < seq.Count; i++)

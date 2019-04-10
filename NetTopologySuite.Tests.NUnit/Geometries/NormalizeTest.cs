@@ -8,8 +8,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class NormalizeTest
     {
-        private IPrecisionModel precisionModel;
-        private IGeometryFactory geometryFactory;
+        private PrecisionModel precisionModel;
+        private GeometryFactory geometryFactory;
         WKTReader reader;
 
         public NormalizeTest()
@@ -123,8 +123,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestNormalizeStringNoSideEffect()
         {
-            var l = (ILineString) reader.Read("LINESTRING (200 240, 140 160, 80 160, 160 80, 80 80)");
-            var refL = (ILineString) reader.Read("LINESTRING (200 240, 140 160)");
+            var l = (LineString) reader.Read("LINESTRING (200 240, 140 160, 80 160, 160 80, 80 80)");
+            var refL = (LineString) reader.Read("LINESTRING (200 240, 140 160)");
             var seg = l.Factory.CreateLineString(new Coordinate[] { l.GetCoordinateN(0), l.GetCoordinateN(1) });
             Assert.That(refL.EqualsExact(seg), Is.True);
             l.Normalize();
@@ -193,7 +193,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, actualValue);
         }
 
-        private void AssertAreEqualExact(IGeometry expectedValue, IGeometry actualValue)
+        private void AssertAreEqualExact(Geometry expectedValue, Geometry actualValue)
         {
             Assert.IsTrue(actualValue.EqualsExact(expectedValue), "Expected " + expectedValue + " but encountered " + actualValue);
         }
@@ -206,7 +206,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var geom = pcsReader.Read("LINESTRING (100 100, 0 0)");
             geom.Normalize();
             // force PackedCoordinateSequence to be copied with empty coordinate cache
-            var clone = (IGeometry) geom.Copy();
+            var clone = (Geometry) geom.Copy();
             AssertAreEqualExact(geom, clone);
         }
 

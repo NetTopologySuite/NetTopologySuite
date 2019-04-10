@@ -44,7 +44,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             PreciseCoordinateTester(pm1, -9.5, -9.5, -9, -9);
         }
 
-        private static void PreciseCoordinateTester(IPrecisionModel pm,
+        private static void PreciseCoordinateTester(PrecisionModel pm,
             double x1, double y1,
             double x2, double y2)
         {

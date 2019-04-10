@@ -21,7 +21,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// </para>
     /// <para>
     /// The buffer operation always returns a polygonal result.
-    /// The negative or zero-distance buffer of lines and points is always an empty <see cref="IPolygon" />.
+    /// The negative or zero-distance buffer of lines and points is always an empty <see cref="Polygon" />.
     /// </para>
     /// <para>
     /// Since true buffer curves may contain circular arcs,
@@ -86,7 +86,7 @@ namespace NetTopologySuite.Operation.Buffer
         ///          the precision determined by the computed scale factor</param>
         ///
         /// <returns> a scale factor for the buffer computation</returns>
-        private static double PrecisionScaleFactor(IGeometry g,
+        private static double PrecisionScaleFactor(Geometry g,
             double distance,
           int maxPrecisionDigits)
         {
@@ -131,7 +131,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="g"> the geometry to buffer</param>
         /// <param name="distance"> the buffer distance</param>
         /// <returns> the buffer of the input geometry</returns>
-        public static IGeometry Buffer(IGeometry g, double distance)
+        public static Geometry Buffer(Geometry g, double distance)
         {
             var gBuf = new BufferOp(g);
             var geomBuf = gBuf.GetResultGeometry(distance);
@@ -148,7 +148,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="distance"> the buffer distance</param>
         /// <param name="parameters"> the buffer parameters to use</param>
         /// <returns> the buffer of the input geometry</returns>
-        public static IGeometry Buffer(IGeometry g, double distance, IBufferParameters parameters)
+        public static Geometry Buffer(Geometry g, double distance, IBufferParameters parameters)
         {
             var bufOp = new BufferOp(g, parameters);
             var geomBuf = bufOp.GetResultGeometry(distance);
@@ -163,7 +163,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="distance"> the buffer distance</param>
         /// <param name="quadrantSegments"> the number of segments used to approximate a quarter circle</param>
         /// <returns> the buffer of the input geometry</returns>
-        public static IGeometry Buffer(IGeometry g, double distance, int quadrantSegments)
+        public static Geometry Buffer(Geometry g, double distance, int quadrantSegments)
         {
             var bufOp = new BufferOp(g);
             bufOp.QuadrantSegments = quadrantSegments;
@@ -171,19 +171,19 @@ namespace NetTopologySuite.Operation.Buffer
             return geomBuf;
         }
 
-        private readonly IGeometry _argGeom;
+        private readonly Geometry _argGeom;
         private double _distance;
 
         private readonly IBufferParameters _bufParams = new BufferParameters();
 
-        private IGeometry _resultGeometry;
+        private Geometry _resultGeometry;
         private Exception _saveException;   // debugging only
 
         /// <summary>
         /// Initializes a buffer computation for the given geometry
         /// </summary>
         /// <param name="g"> the geometry to buffer</param>
-        public BufferOp(IGeometry g)
+        public BufferOp(Geometry g)
         {
             _argGeom = g;
         }
@@ -194,7 +194,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <param name="g"> the geometry to buffer</param>
         /// <param name="bufParams"> the buffer parameters to use</param>
-        public BufferOp(IGeometry g, IBufferParameters bufParams)
+        public BufferOp(Geometry g, IBufferParameters bufParams)
         {
             _argGeom = g;
             _bufParams = bufParams;
@@ -214,7 +214,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <param name="distance"> the buffer distance</param>
         /// <returns> the buffer of the input geometry</returns>
-        public IGeometry GetResultGeometry(double distance)
+        public Geometry GetResultGeometry(double distance)
         {
             _distance = distance;
             ComputeGeometry();
@@ -282,7 +282,7 @@ namespace NetTopologySuite.Operation.Buffer
             BufferFixedPrecision(fixedPrecModel);
         }
 
-        private void BufferFixedPrecision(IPrecisionModel fixedPrecModel)
+        private void BufferFixedPrecision(PrecisionModel fixedPrecModel)
         {
             var noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)),
                                           fixedPrecModel.Scale);

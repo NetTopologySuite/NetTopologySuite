@@ -4,7 +4,7 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Algorithm
 {
     /// <summary>
-    /// Computes the minimum diameter of a <see cref="IGeometry"/>.
+    /// Computes the minimum diameter of a <see cref="Geometry"/>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="geom">The geometry</param>
         /// <returns>The minimum rectangle enclosing the geometry</returns>
-        public static IGeometry GetMinimumRectangle(IGeometry geom)
+        public static Geometry GetMinimumRectangle(Geometry geom)
         {
             return (new MinimumDiameter(geom)).GetMinimumRectangle();
         }
@@ -47,12 +47,12 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="geom">The geometry</param>
         /// <returns>The length of the minimum diameter of the geometry</returns>
-        public static IGeometry GetMinimumDiameter(Geometry geom)
+        public static Geometry GetMinimumDiameter(Geometry geom)
         {
             return (new MinimumDiameter(geom)).Diameter;
         }
 
-        private readonly IGeometry _inputGeom;
+        private readonly Geometry _inputGeom;
         private readonly bool _isConvex;
 
         private Coordinate[] _convexHullPts;
@@ -62,10 +62,10 @@ namespace NetTopologySuite.Algorithm
         private double _minWidth;
 
         /// <summary>
-        /// Compute a minimum diameter for a given <see cref="IGeometry"/>.
+        /// Compute a minimum diameter for a given <see cref="Geometry"/>.
         /// </summary>
         /// <param name="inputGeom">a Geometry.</param>
-        public MinimumDiameter(IGeometry inputGeom)
+        public MinimumDiameter(Geometry inputGeom)
             : this(inputGeom, false) { }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="inputGeom">a Geometry which is convex.</param>
         /// <param name="isConvex"><c>true</c> if the input point is convex.</param>
-        public MinimumDiameter(IGeometry inputGeom, bool isConvex)
+        public MinimumDiameter(Geometry inputGeom, bool isConvex)
         {
             _inputGeom = inputGeom;
             _isConvex = isConvex;
@@ -113,7 +113,7 @@ namespace NetTopologySuite.Algorithm
         /// Gets the segment forming the base of the minimum diameter.
         /// </summary>
         /// <returns>The segment forming the base of the minimum diameter.</returns>
-        public ILineString SupportingSegment
+        public LineString SupportingSegment
         {
             get
             {
@@ -126,7 +126,7 @@ namespace NetTopologySuite.Algorithm
         /// Gets a <c>LineString</c> which is a minimum diameter.
         /// </summary>
         /// <returns>A <c>LineString</c> which is a minimum diameter.</returns>
-        public ILineString Diameter
+        public LineString Diameter
         {
             get
             {
@@ -165,10 +165,10 @@ namespace NetTopologySuite.Algorithm
         ///
         /// </summary>
         /// <param name="convexGeom"></param>
-        private void ComputeWidthConvex(IGeometry convexGeom)
+        private void ComputeWidthConvex(Geometry convexGeom)
         {
-            if (convexGeom is IPolygon)
-                _convexHullPts = ((IPolygon) convexGeom).ExteriorRing.Coordinates;
+            if (convexGeom is Polygon)
+                _convexHullPts = ((Polygon) convexGeom).ExteriorRing.Coordinates;
             else
                 _convexHullPts = convexGeom.Coordinates;
 
@@ -265,19 +265,19 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Gets the minimum rectangular <see cref="IPolygon"/> which encloses the input geometry.
+        /// Gets the minimum rectangular <see cref="Polygon"/> which encloses the input geometry.
         /// </summary>
         /// <remarks>
         /// <para>
         /// The rectangle has width equal to the minimum diameter, and a longer length.
-        /// If the convex hull of the input is degenerate (a line or point) a <see cref="ILineString"/> or <see cref="IPoint"/> is returned.
+        /// If the convex hull of the input is degenerate (a line or point) a <see cref="LineString"/> or <see cref="Point"/> is returned.
         /// </para>
         /// <para>
         /// The minimum rectangle can be used as an extremely generalized representation for the given geometry.
         /// </para>
         /// </remarks>
         /// <returns>The minimum rectangle enclosing the input (or a line or point if degenerate)</returns>
-        public IGeometry GetMinimumRectangle()
+        public Geometry GetMinimumRectangle()
         {
             ComputeMinimumDiameter();
 

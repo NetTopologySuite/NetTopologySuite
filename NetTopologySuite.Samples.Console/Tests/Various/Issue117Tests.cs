@@ -22,7 +22,7 @@ namespace NetTopologySuite.Tests.Various
             }
         }
 
-        private static string GetGeometryUsingNTS(IGeometry geometry)
+        private static string GetGeometryUsingNTS(Geometry geometry)
         {
             var gmlWriter = new GMLWriter();
             var ms = new MemoryStream();

@@ -15,7 +15,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         void CheckLengthOfLine(string wkt, double expectedLen)
         {
-            var ring = (ILineString) Read(wkt);
+            var ring = (LineString) Read(wkt);
 
             var pts = ring.CoordinateSequence;
             double actual = Length.OfLine(pts);

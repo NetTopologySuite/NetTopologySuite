@@ -17,8 +17,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
         private const int NumLines = 10000;
         private const int NumLinePts = 100;
 
-        private static readonly IPrecisionModel Pm = new PrecisionModel();
-        private static readonly IGeometryFactory Fact = new GeometryFactory(Pm, 0);
+        private static readonly PrecisionModel Pm = new PrecisionModel();
+        private static readonly GeometryFactory Fact = new GeometryFactory(Pm, 0);
 
         [Test, Category("LongRunning"), Explicit("takes ages to complete")]
         public void Test()
@@ -47,7 +47,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             Test(target, lines);
         }
 
-        private static IGeometry CreateCircle(Coordinate origin, double size, int nPts)
+        private static Geometry CreateCircle(Coordinate origin, double size, int nPts)
         {
             var gsf = new NetTopologySuite.Utilities.GeometricShapeFactory();
             gsf.Centre = origin;
@@ -59,7 +59,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             return circle;
         }
 
-        private static IGeometry CreateSineStar(Coordinate origin, double size, int nPts)
+        private static Geometry CreateSineStar(Coordinate origin, double size, int nPts)
         {
             var gsf = new SineStarFactory();
             gsf.Centre = origin;
@@ -71,11 +71,11 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             return poly;
         }
 
-        private static IList<IGeometry> CreateLines(Envelope env, int nItems, double size, int nPts)
+        private static IList<Geometry> CreateLines(Envelope env, int nItems, double size, int nPts)
         {
             int nCells = (int) Math.Sqrt(nItems);
 
-            var geoms = new List<IGeometry>();
+            var geoms = new List<Geometry>();
             double width = env.Width;
             double xInc = width/nCells;
             double yInc = width/nCells;
@@ -93,7 +93,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             return geoms;
         }
 
-        private static IGeometry CreateLine(Coordinate @base, double size, int nPts)
+        private static Geometry CreateLine(Coordinate @base, double size, int nPts)
         {
             var gsf = new SineStarFactory();
             gsf.Centre = @base;
@@ -104,7 +104,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             return circle.Boundary;
         }
 
-        private static void Test(IGeometry g, ICollection<IGeometry> lines)
+        private static void Test(Geometry g, ICollection<Geometry> lines)
         {
             Console.WriteLine("AOI # pts: " + g.NumPoints
                               + "      # lines: " + lines.Count
@@ -143,7 +143,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             Console.WriteLine("Finished in \n\tPG NonCached: {0}\n\tPG Cached   : {1}\n\told JTS Algo: {2}", time1, time2, time3);
         }
 
-        private static int TestOriginal(IGeometry g, IEnumerable<IGeometry> lines)
+        private static int TestOriginal(Geometry g, IEnumerable<Geometry> lines)
         {
             Console.WriteLine("Using original JTS algorithm");
             int count = 0;
@@ -155,7 +155,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             return count;
         }
 
-        private static int TestPrepGeomCached(IGeometry g, IEnumerable<IGeometry> lines)
+        private static int TestPrepGeomCached(Geometry g, IEnumerable<Geometry> lines)
         {
             Console.WriteLine("Using cached Prepared Geometry");
             var pgFact = new PreparedGeometryFactory();
@@ -180,7 +180,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
         /// <param name="g">The polygonal test geometry</param>
         /// <param name="lines">The lines to test for intersection with <paramref name="g"/></param>
         /// <returns>The count</returns>
-        private static int TestPrepGeomNotCached(IGeometry g, IEnumerable<IGeometry> lines)
+        private static int TestPrepGeomNotCached(Geometry g, IEnumerable<Geometry> lines)
         {
             Console.WriteLine("Using NON-CACHED Prepared Geometry");
             var pgFact = new PreparedGeometryFactory();

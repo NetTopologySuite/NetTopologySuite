@@ -6,15 +6,15 @@ namespace NetTopologySuite.SnapRound
 {
     internal class GeometryCoordinateReplacer : GeometryEditorEx.CoordinateSequenceOperation
     {
-        private readonly IDictionary<IGeometry, Coordinate[]> _geometryLinesMap;
+        private readonly IDictionary<Geometry, Coordinate[]> _geometryLinesMap;
 
-        public GeometryCoordinateReplacer(IDictionary<IGeometry, Coordinate[]> linesMap)
+        public GeometryCoordinateReplacer(IDictionary<Geometry, Coordinate[]> linesMap)
         {
             this._geometryLinesMap = linesMap;
         }
 
         public override ICoordinateSequence Edit(ICoordinateSequence coordSeq,
-            IGeometry geometry, IGeometryFactory targetFactory)
+            Geometry geometry, GeometryFactory targetFactory)
         {
             if (_geometryLinesMap.ContainsKey(geometry))
             {
@@ -29,7 +29,7 @@ namespace NetTopologySuite.SnapRound
             return coordSeq;
         }
 
-        private static bool IsValidSize(Coordinate[] pts, IGeometry geom)
+        private static bool IsValidSize(Coordinate[] pts, Geometry geom)
         {
             if (pts.Length == 0)
                 return true;
@@ -39,7 +39,7 @@ namespace NetTopologySuite.SnapRound
             return true;
         }
 
-        private static int MinimumNonEmptyCoordinatesSize(IGeometry geom)
+        private static int MinimumNonEmptyCoordinatesSize(Geometry geom)
         {
             if (geom is LinearRing)
                 return 4;

@@ -25,12 +25,12 @@ namespace Open.Topology.TestRunner.Operations
         Type GetReturnType(XmlTestType opName);
 
         /// <summary>
-        /// Invokes an operation on a <see cref="IGeometry"/>.
+        /// Invokes an operation on a <see cref="Geometry"/>.
         /// </summary>
         /// <param name="opName">The name of the operation</param>
         /// <param name="geometry">The geometry to process</param>
         /// <param name="args">The arguments to the operation (which may be typed as Strings)</param>
         /// <exception cref="Exception">If some error was encountered trying to find or process the operation</exception>
-        IResult Invoke(XmlTestType opName, IGeometry geometry, object[] args);
+        IResult Invoke(XmlTestType opName, Geometry geometry, object[] args);
     }
 }

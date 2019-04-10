@@ -52,7 +52,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="FileNotFoundException">Thrown if the filename specified does not exist</exception>
         /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
         /// <exception cref="ParseException">Thrown if an error occurred reading a geometry</exception>
-        public ICollection<IGeometry> Read(string file)
+        public ICollection<Geometry> Read(string file)
         {
             if (string.IsNullOrEmpty(file))
                 throw new ArgumentNullException("file");
@@ -74,7 +74,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="ArgumentException">Thrown if passed stream is not readable or seekable</exception>
         /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
         /// <exception cref="ParseException">Thrown if an error occured reading a geometry</exception>
-        public ICollection<IGeometry> Read(Stream stream)
+        public ICollection<Geometry> Read(Stream stream)
         {
             if (stream == null)
                 throw new ArgumentNullException("stream");
@@ -99,9 +99,9 @@ namespace NetTopologySuite.IO
         /// <param name="streamReader">The stream reader to use.</param>
         /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
         /// <exception cref="ParseException">Thrown if an error occured reading a geometry</exception>
-        private ICollection<IGeometry> Read(StreamReader streamReader)
+        private ICollection<Geometry> Read(StreamReader streamReader)
         {
-            var geoms = new List<IGeometry>();
+            var geoms = new List<Geometry>();
             int count = 0;
             while (!IsAtEndOfFile(streamReader) && !IsAtLimit(geoms))
             {
@@ -121,7 +121,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geoms">A collection of already read geometries</param>
         /// <returns><value>true</value> if <see cref="Limit"/> number of geometries has been read.</returns>
-        private bool IsAtLimit(ICollection<IGeometry> geoms)
+        private bool IsAtLimit(ICollection<Geometry> geoms)
         {
             if (Limit < 0)
                 return false;

@@ -4,7 +4,7 @@ namespace NetTopologySuite.Geometries.Prepared
 {
     /// <summary>
     /// Computes the <i>intersects</i> spatial relationship predicate
-    /// for <see cref="PreparedPolygon"/>s relative to all other <see cref="IGeometry"/> classes.
+    /// for <see cref="PreparedPolygon"/>s relative to all other <see cref="Geometry"/> classes.
     /// </summary>
     /// <remarks>Uses short-circuit tests and indexing to improve performance.</remarks>
     /// <author>Martin Davis</author>
@@ -12,12 +12,12 @@ namespace NetTopologySuite.Geometries.Prepared
     {
         /// <summary>
         /// Computes the intersects predicate between a <see cref="PreparedPolygon"/>
-        /// and a <see cref="IGeometry"/>.
+        /// and a <see cref="Geometry"/>.
         /// </summary>
         /// <param name="prep">The prepared polygon</param>
         /// <param name="geom">A test geometry</param>
         /// <returns>true if the polygon intersects the geometry</returns>
-        public static bool Intersects(PreparedPolygon prep, IGeometry geom)
+        public static bool Intersects(PreparedPolygon prep, Geometry geom)
         {
             var polyInt = new PreparedPolygonIntersects(prep);
             return polyInt.Intersects(geom);
@@ -35,7 +35,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </summary>
         /// <param name="geom">The test geometry</param>
         /// <returns>true if the test geometry intersects</returns>
-        public bool Intersects(IGeometry geom)
+        public bool Intersects(Geometry geom)
         {
             /*
              * Do point-in-poly tests first, since they are cheaper and may result

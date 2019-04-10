@@ -5,7 +5,7 @@ namespace NetTopologySuite.Geometries.Prepared
     /// <summary>
     /// A base class containing the logic for computes the <i>contains</i>
     /// and <i>covers</i> spatial relationship predicates
-    /// for a <see cref="PreparedPolygon"/> relative to all other <see cref="IGeometry"/> classes.
+    /// for a <see cref="PreparedPolygon"/> relative to all other <see cref="Geometry"/> classes.
     /// Uses short-circuit tests and indexing to improve performance.
     /// </summary>
     /// <remarks>
@@ -54,7 +54,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </summary>
         /// <param name="geom">the test geometry</param>
         /// <returns>true if the test geometry is contained</returns>
-        protected bool Eval(IGeometry geom)
+        protected bool Eval(Geometry geom)
         {
             /*
              * Do point-in-poly tests first, since they are cheaper and may result
@@ -147,7 +147,7 @@ namespace NetTopologySuite.Geometries.Prepared
             return true;
         }
 
-        private bool IsProperIntersectionImpliesNotContainedSituation(IGeometry testGeom)
+        private bool IsProperIntersectionImpliesNotContainedSituation(Geometry testGeom)
         {
             /*
              * If the test geometry is polygonal we have the A/A situation.
@@ -172,18 +172,18 @@ namespace NetTopologySuite.Geometries.Prepared
         /// Tests whether a geometry consists of a single polygon with no holes.
         /// </summary>
         /// <returns>True if the geometry is a single polygon with no holes</returns>
-        private static bool IsSingleShell(IGeometry geom)
+        private static bool IsSingleShell(Geometry geom)
         {
             // handles single-element MultiPolygons, as well as Polygons
             if (geom.NumGeometries != 1) return false;
 
-            var poly = (IPolygon)geom.GetGeometryN(0);
+            var poly = (Polygon)geom.GetGeometryN(0);
             int numHoles = poly.NumInteriorRings;
             if (numHoles == 0) return true;
             return false;
         }
 
-        private void FindAndClassifyIntersections(IGeometry geom)
+        private void FindAndClassifyIntersections(Geometry geom)
         {
             var lineSegStr = SegmentStringUtil.ExtractSegmentStrings(geom);
 
@@ -202,6 +202,6 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </summary>
         /// <param name="geom">The test geometry</param>
         /// <returns>true if this prepared polygon has the relationship with the test geometry</returns>
-        protected abstract bool FullTopologicalPredicate(IGeometry geom);
+        protected abstract bool FullTopologicalPredicate(Geometry geom);
     }
 }

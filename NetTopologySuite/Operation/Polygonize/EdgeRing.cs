@@ -120,15 +120,15 @@ namespace NetTopologySuite.Operation.Polygonize
             return edges;
         }
 
-        private readonly IGeometryFactory _factory;
+        private readonly GeometryFactory _factory;
         private readonly List<DirectedEdge> _deList = new List<DirectedEdge>();
         private DirectedEdge lowestEdge = null;
 
         // cache the following data for efficiency
-        private ILinearRing _ring;
+        private LinearRing _ring;
 
         private Coordinate[] _ringPts;
-        private List<ILinearRing> _holes;
+        private List<LinearRing> _holes;
         private EdgeRing _shell;
         private bool _isHole;
         private bool _isProcessed;
@@ -139,7 +139,7 @@ namespace NetTopologySuite.Operation.Polygonize
         ///
         /// </summary>
         /// <param name="factory"></param>
-        public EdgeRing(IGeometryFactory factory)
+        public EdgeRing(GeometryFactory factory)
         {
             _factory = factory;
         }
@@ -190,37 +190,37 @@ namespace NetTopologySuite.Operation.Polygonize
         /// Adds a hole to the polygon formed by this ring.
         /// </summary>
         /// <param name="hole">The LinearRing forming the hole.</param>
-        public void AddHole(ILinearRing hole)
+        public void AddHole(LinearRing hole)
         {
             if (_holes == null)
-                _holes = new List<ILinearRing>();
+                _holes = new List<LinearRing>();
             _holes.Add(hole);
         }
 
         /// <summary>
         /// Adds a hole to the polygon formed by this ring.
         /// </summary>
-        /// <param name="holeER">the <see cref="ILinearRing"/> forming the hole.</param>
+        /// <param name="holeER">the <see cref="LinearRing"/> forming the hole.</param>
         public void AddHole(EdgeRing holeER)
         {
             holeER.Shell = this;
             var hole = holeER.Ring;
             if (_holes == null)
-                _holes = new List<ILinearRing>();
+                _holes = new List<LinearRing>();
             _holes.Add(hole);
         }
 
         /// <summary>
         /// Computes and returns the Polygon formed by this ring and any contained holes.
         /// </summary>
-        public IPolygon Polygon
+        public Polygon Polygon
         {
             get
             {
-                ILinearRing[] holeLR = null;
+                LinearRing[] holeLR = null;
                 if (_holes != null)
                 {
-                    holeLR = new ILinearRing[_holes.Count];
+                    holeLR = new LinearRing[_holes.Count];
                     for (int i = 0; i < _holes.Count; i++)
                         holeLR[i] = _holes[i];
                 }
@@ -230,7 +230,7 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// Tests if the <see cref="ILinearRing" /> ring formed by this edge ring is topologically valid.
+        /// Tests if the <see cref="LinearRing" /> ring formed by this edge ring is topologically valid.
         /// </summary>
         /// <return>true if the ring is valid.</return>
         public bool IsValid
@@ -287,7 +287,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// as a valid point, when it has been detected that the ring is topologically
         /// invalid.
         /// </summary>
-        public ILineString LineString
+        public LineString LineString
         {
             get
             {
@@ -302,7 +302,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// creating it (such as a topology problem). Details of problems are written to
         /// standard output.
         /// </summary>
-        public ILinearRing Ring
+        public LinearRing Ring
         {
             get
             {

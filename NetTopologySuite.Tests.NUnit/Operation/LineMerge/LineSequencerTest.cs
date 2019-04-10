@@ -224,9 +224,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             Assert.IsTrue(isSequenced == expected);
         }
 
-        private static List<IGeometry> FromWKT(string[] wkts)
+        private static List<Geometry> FromWKT(string[] wkts)
         {
-            var geomList = new List<IGeometry>();
+            var geomList = new List<Geometry>();
             foreach (string wkt in wkts)
             {
                 try

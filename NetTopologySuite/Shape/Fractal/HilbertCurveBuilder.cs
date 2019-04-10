@@ -3,17 +3,17 @@
 namespace NetTopologySuite.Shape.Fractal
 {
     /// <summary>
-    /// Generates a <see cref="ILineString"/> representing the Hilbert Curve
+    /// Generates a <see cref="LineString"/> representing the Hilbert Curve
     /// at a given level.
     /// </summary>
     public class HilbertCurveBuilder : GeometricShapeBuilder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="HilbertCurveBuilder"/> class
-        /// using the provided <see cref="IGeometryFactory"/>.
+        /// using the provided <see cref="GeometryFactory"/>.
         /// </summary>
         /// <param name="geomFactory">The geometry factory to use.</param>
-        public HilbertCurveBuilder(IGeometryFactory geomFactory)
+        public HilbertCurveBuilder(GeometryFactory geomFactory)
             : base(geomFactory)
         {
             // use a null extent to indicate no transformation
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Shape.Fractal
         }
 
         /// <inheritdoc />
-        public override IGeometry GetGeometry()
+        public override Geometry GetGeometry()
         {
             int level = Level;
             int nPts = HilbertCode.Size(level);

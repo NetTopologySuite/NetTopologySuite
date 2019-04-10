@@ -68,7 +68,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         private OffsetSegmentString _segList;
         private double _distance;
-        private readonly IPrecisionModel _precisionModel;
+        private readonly PrecisionModel _precisionModel;
         private readonly IBufferParameters _bufParams;
         private readonly LineIntersector _li;
 
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Operation.Buffer
         private Positions _side = Positions.On;
         private bool _hasNarrowConcaveAngle;
 
-        public OffsetSegmentGenerator(IPrecisionModel precisionModel,
+        public OffsetSegmentGenerator(PrecisionModel precisionModel,
             IBufferParameters bufParams, double distance)
         {
             _precisionModel = precisionModel;

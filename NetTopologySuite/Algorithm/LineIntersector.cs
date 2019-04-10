@@ -155,7 +155,7 @@ namespace NetTopologySuite.Algorithm
         /// If MakePrecise is true, computed intersection coordinates will be made precise
         /// using <c>Coordinate.MakePrecise</c>.
         /// </summary>
-        private IPrecisionModel _precisionModel;
+        private PrecisionModel _precisionModel;
 
         protected LineIntersector()
         {
@@ -175,7 +175,7 @@ namespace NetTopologySuite.Algorithm
         /// Force computed intersection to be rounded to a given precision model
         /// </summary>
         [Obsolete("Use PrecisionModel instead")]
-        public IPrecisionModel MakePrecise
+        public PrecisionModel MakePrecise
         {
             set => _precisionModel = value;
         }
@@ -184,7 +184,7 @@ namespace NetTopologySuite.Algorithm
         /// Force computed intersection to be rounded to a given precision model.
         /// No getter is provided, because the precision model is not required to be specified.
         /// </summary>
-        public IPrecisionModel PrecisionModel
+        public PrecisionModel PrecisionModel
         {
             get => _precisionModel;
             set => _precisionModel = value;

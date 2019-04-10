@@ -4,7 +4,7 @@ namespace NetTopologySuite.Operation.Buffer
 {
     public static class BufferFunctions
     {
-        public static IGeometry BufferVariableWidth(ILineString line, double startWidth, double endWidth)
+        public static Geometry BufferVariableWidth(LineString line, double startWidth, double endWidth)
         {
             return VariableWidthBuffer.Buffer(line, startWidth, endWidth);
         }

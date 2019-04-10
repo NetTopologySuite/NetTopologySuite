@@ -4,10 +4,10 @@ namespace NetTopologySuite.Precision
 {
     /// <summary>
     /// Reduces the precision of the <see cref="Coordinate"/>s in a
-    /// <see cref="ICoordinateSequence"/> to match the supplied <see cref="IPrecisionModel"/>.
+    /// <see cref="ICoordinateSequence"/> to match the supplied <see cref="PrecisionModel"/>.
     /// </summary>
     /// <remarks>
-    /// Uses <see cref="IPrecisionModel.MakePrecise(double)"/>.
+    /// Uses <see cref="PrecisionModel.MakePrecise(double)"/>.
     /// The input is modified in-place, so
     /// it should be cloned beforehand if the
     /// original should not be modified.
@@ -15,13 +15,13 @@ namespace NetTopologySuite.Precision
     /// <author>mbdavis</author>
     public class CoordinatePrecisionReducerFilter : ICoordinateSequenceFilter
     {
-        private readonly IPrecisionModel _precModel;
+        private readonly PrecisionModel _precModel;
 
         /// <summary>
         /// Creates a new precision reducer filter.
         /// </summary>
         /// <param name="precModel">The PrecisionModel to use</param>
-        public CoordinatePrecisionReducerFilter(IPrecisionModel precModel)
+        public CoordinatePrecisionReducerFilter(PrecisionModel precModel)
         {
             _precModel = precModel;
         }

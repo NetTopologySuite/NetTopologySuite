@@ -6,7 +6,7 @@ namespace NetTopologySuite.Geometries.Prepared
 {
     /// <summary>
     /// Computes the <i>intersects</i> spatial relationship predicate
-    /// for a target <see cref="PreparedLineString"/> relative to other <see cref="IGeometry"/> classes.
+    /// for a target <see cref="PreparedLineString"/> relative to other <see cref="Geometry"/> classes.
     /// </summary>
     /// <remarks>
     /// Uses short-circuit tests and indexing to improve performance.
@@ -16,12 +16,12 @@ namespace NetTopologySuite.Geometries.Prepared
     {
         /// <summary>
         /// Computes the intersects predicate between a <see cref="PreparedLineString"/>
-        /// and a <see cref="IGeometry"/>.
+        /// and a <see cref="Geometry"/>.
         /// </summary>
         /// <param name="prep">The prepared linestring</param>
         /// <param name="geom">A test geometry</param>
         /// <returns>true if the linestring intersects the geometry</returns>
-        public static bool Intersects(PreparedLineString prep, IGeometry geom)
+        public static bool Intersects(PreparedLineString prep, Geometry geom)
         {
             var op = new PreparedLineStringIntersects(prep);
             return op.Intersects(geom);
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </summary>
         /// <param name="geom">The test geometry</param>
         /// <returns>true if the test geometry intersects</returns>
-        public bool Intersects(IGeometry geom)
+        public bool Intersects(Geometry geom)
         {
             /*
              * If any segments intersect, obviously intersects = true
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </remarks>
         /// <param name="testGeom">A Puntal geometry to test</param>
         /// <returns>true if any point of the argument intersects the prepared geometry</returns>
-        protected bool IsAnyTestPointInTarget(IGeometry testGeom)
+        protected bool IsAnyTestPointInTarget(Geometry testGeom)
         {
             /*
              * This could be optimized by using the segment index on the lineal target.

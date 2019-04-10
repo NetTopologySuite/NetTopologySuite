@@ -5,7 +5,7 @@ namespace NetTopologySuite.Algorithm
 {
 
     /// <summary>
-    /// Computes the centroid of a <see cref="IGeometry"/> of any dimension.
+    /// Computes the centroid of a <see cref="Geometry"/> of any dimension.
     /// If the geometry is nominally of higher dimension,
     /// but has lower <i>effective</i> dimension
     /// (i.e. contains only components
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns>
         /// The centroid point, or null if the geometry is empty
         /// </returns>
-        public static Coordinate GetCentroid(IGeometry geom)
+        public static Coordinate GetCentroid(Geometry geom)
         {
             var cent = new Centroid(geom);
             return cent.GetCentroid();
@@ -77,36 +77,36 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// Creates a new instance for computing the centroid of a geometry
         /// </summary>
-        public Centroid(IGeometry geom)
+        public Centroid(Geometry geom)
         {
             _areaBasePt = null;
             Add(geom);
         }
 
         /// <summary>
-        /// Adds a <see cref="IGeometry"/> to the centroid total.
+        /// Adds a <see cref="Geometry"/> to the centroid total.
         /// </summary>
-        /// <param name="geom">>The <see cref="IGeometry"/> to add.</param>
-        private void Add(IGeometry geom)
+        /// <param name="geom">>The <see cref="Geometry"/> to add.</param>
+        private void Add(Geometry geom)
         {
             if (geom.IsEmpty)
                 return;
-            if (geom is IPoint)
+            if (geom is Point)
             {
                 AddPoint(geom.Coordinate);
             }
-            else if (geom is ILineString)
+            else if (geom is LineString)
             {
                 AddLineSegments(geom.Coordinates);
             }
-            else if (geom is IPolygon)
+            else if (geom is Polygon)
             {
-                var poly = (IPolygon)geom;
+                var poly = (Polygon)geom;
                 Add(poly);
             }
-            else if (geom is IGeometryCollection)
+            else if (geom is GeometryCollection)
             {
-                var gc = (IGeometryCollection)geom;
+                var gc = (GeometryCollection)geom;
                 for (int i = 0; i < gc.NumGeometries; i++)
                 {
                     Add(gc.GetGeometryN(i));
@@ -157,7 +157,7 @@ namespace NetTopologySuite.Algorithm
             _areaBasePt = basePt;
         }
 
-        private void Add(IPolygon poly)
+        private void Add(Polygon poly)
         {
             AddShell(poly.ExteriorRing.Coordinates);
             for (int i = 0; i < poly.NumInteriorRings; i++)

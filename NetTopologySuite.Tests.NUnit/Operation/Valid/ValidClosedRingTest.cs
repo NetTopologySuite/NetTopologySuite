@@ -71,9 +71,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             Assert.IsTrue(isValid == expected);
         }
 
-        IGeometry FromWKT(string wkt)
+        Geometry FromWKT(string wkt)
         {
-            IGeometry geom = null;
+            Geometry geom = null;
             try
             {
                 geom = rdr.Read(wkt);

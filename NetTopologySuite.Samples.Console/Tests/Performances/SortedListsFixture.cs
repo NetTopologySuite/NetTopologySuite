@@ -36,7 +36,7 @@ namespace NetTopologySuite.Tests.Performances
             //Console.ReadKey(true);
         }
 
-        private void Benchmark(IPolygon poly)
+        private void Benchmark(Polygon poly)
         {
             var start = DateTime.Now;
             bool valid = poly.IsValid;
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.Performances
         public void BenchmarkPolygons()
         {
             var factory = GeometryFactory.Default;
-            var holes = new List<ILinearRing>(100);
+            var holes = new List<LinearRing>(100);
             var shell = CreateRing(0, 0, 20, 10000);
             Benchmark(factory.CreatePolygon(shell, holes.ToArray()));
             for (int i = 0; i < 100; i += 5)
@@ -59,11 +59,11 @@ namespace NetTopologySuite.Tests.Performances
             }
         }
 
-        public ILinearRing CreateRing(double x, double y, double radius, int points)
+        public LinearRing CreateRing(double x, double y, double radius, int points)
         {
             var factory = GeometryFactory.Default;
             var point = factory.CreatePoint(new Coordinate(x, y));
-            IPolygon poly = (Polygon) point.Buffer(radius, points, EndCapStyle.Round);
+            Polygon poly = (Polygon) point.Buffer(radius, points, EndCapStyle.Round);
             return poly.Shell;
         }
     }

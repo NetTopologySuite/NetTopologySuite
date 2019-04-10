@@ -13,14 +13,14 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public class ConvexHull
     {
-        private readonly IGeometryFactory _geomFactory;
+        private readonly GeometryFactory _geomFactory;
         private readonly Coordinate[] _inputPts;
 
         /// <summary>
         /// Create a new convex hull construction for the input <c>Geometry</c>.
         /// </summary>
         /// <param name="geometry"></param>
-        public ConvexHull(IGeometry geometry)
+        public ConvexHull(Geometry geometry)
             : this(ExtractCoordinates(geometry), geometry.Factory) { }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="pts"></param>
         /// <param name="geomFactory"></param>
-        public ConvexHull(Coordinate[] pts, IGeometryFactory geomFactory)
+        public ConvexHull(Coordinate[] pts, GeometryFactory geomFactory)
         {
             // _inputPts = pts;
             _inputPts = UniqueCoordinateArrayFilter.FilterCoordinates(pts);
@@ -40,7 +40,7 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="geom"></param>
         /// <returns></returns>
-        private static Coordinate[] ExtractCoordinates(IGeometry geom)
+        private static Coordinate[] ExtractCoordinates(Geometry geom)
         {
             var filter = new UniqueCoordinateArrayFilter();
             geom.Apply(filter);
@@ -59,7 +59,7 @@ namespace NetTopologySuite.Algorithm
         /// 1 point, a <c>Point</c>;
         /// 0 points, an empty <c>GeometryCollection</c>.
         /// </returns>
-        public IGeometry GetConvexHull()
+        public Geometry GetConvexHull()
         {
             if (_inputPts.Length == 0)
                 return _geomFactory.CreateGeometryCollection();
@@ -323,7 +323,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="coordinates"> The vertices of a linear ring, which may or may not be flattened (i.e. vertices collinear).</param>
         /// <returns>A 2-vertex <c>LineString</c> if the vertices are collinear;
         /// otherwise, a <c>Polygon</c> with unnecessary (collinear) vertices removed. </returns>
-        private IGeometry LineOrPolygon(Coordinate[] coordinates)
+        private Geometry LineOrPolygon(Coordinate[] coordinates)
         {
             coordinates = CleanRing(coordinates);
             if (coordinates.Length == 3)

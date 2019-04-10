@@ -64,7 +64,7 @@ namespace NetTopologySuite.Tests.NUnit
         {
             object[] parameters = (object[]) info;
             int[] srids = (int[]) parameters[0];
-            var precisionModels = (IPrecisionModel[]) parameters[1];
+            var precisionModels = (PrecisionModel[]) parameters[1];
             var wh = (AutoResetEvent) parameters[2];
             int workItemId = (int) parameters[3];
             bool verbose = (bool) parameters[4];

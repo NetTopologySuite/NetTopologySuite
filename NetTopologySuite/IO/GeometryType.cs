@@ -23,7 +23,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry">The geometry.</param>
         /// <param name="ordinates">The ordinates flag.</param>
-        public GeometryType(IGeometry geometry, Ordinates ordinates)
+        public GeometryType(Geometry geometry, Ordinates ordinates)
             : this(geometry.OgcGeometryType, ordinates, geometry.SRID >= 0)
         {
         }

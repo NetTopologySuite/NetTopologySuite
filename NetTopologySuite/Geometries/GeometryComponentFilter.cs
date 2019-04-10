@@ -4,7 +4,7 @@
     /// Delegate function declaration to handle filter operation
     /// </summary>
     /// <param name="geom">The geometry to filter</param>
-    public delegate void FilterMethod(IGeometry geom);
+    public delegate void FilterMethod(Geometry geom);
 
     /// <summary>
     /// An <see cref="IGeometryComponentFilter"/> implementation that applies filtering with the provided <see cref="FilterMethod"/>
@@ -23,7 +23,7 @@
             _do = filterMethod;
         }
 
-        public void Filter(IGeometry geom)
+        public void Filter(Geometry geom)
         {
             _do(geom);
         }

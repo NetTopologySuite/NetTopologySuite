@@ -54,7 +54,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 }
 
                 string toLineStringText = WKTWriter.ToLineString(cs);
-                var cd = ((ILineString)_reader.Read(toLineStringText)).CoordinateSequence;
+                var cd = ((LineString)_reader.Read(toLineStringText)).CoordinateSequence;
                 Assert.That(cd.Count, Is.EqualTo(cs.Count));
                 for (int j = 0; j < cs.Count; j++)
                 {

@@ -26,7 +26,7 @@ namespace NetTopologySuite.Precision
         /// with collapses removed and keeping the geometry precision model the same.
         /// </summary>
         /// <returns>The reduced geometry</returns>
-        public static IGeometry Reduce(IGeometry g, PrecisionModel precModel)
+        public static Geometry Reduce(Geometry g, PrecisionModel precModel)
         {
             var reducer = new SimpleGeometryPrecisionReducer(precModel);
             return reducer.Reduce(g);
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Precision
         /// </summary>
         /// <param name="geom"></param>
         /// <returns></returns>
-        public IGeometry Reduce(IGeometry geom)
+        public Geometry Reduce(Geometry geom)
         {
             GeometryEditor geomEdit;
             if (_changePrecisionModel)
@@ -109,7 +109,7 @@ namespace NetTopologySuite.Precision
             /// <param name="coordinates"></param>
             /// <param name="geom"></param>
             /// <returns></returns>
-            public override Coordinate[] Edit(Coordinate[] coordinates, IGeometry geom)
+            public override Coordinate[] Edit(Coordinate[] coordinates, Geometry geom)
             {
                 if (coordinates.Length == 0)
                     return null;
@@ -138,9 +138,9 @@ namespace NetTopologySuite.Precision
                 * (This may create an invalid point - the client must handle this.)
                 */
                 int minLength = 0;
-                if (geom is ILineString)
+                if (geom is LineString)
                     minLength = 2;
-                if (geom is ILinearRing)
+                if (geom is LinearRing)
                     minLength = 4;
 
                 var collapsedCoords = reducedCoords;

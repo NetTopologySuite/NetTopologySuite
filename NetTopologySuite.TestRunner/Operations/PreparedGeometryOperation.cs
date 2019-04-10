@@ -63,12 +63,12 @@ namespace Open.Topology.TestRunner.Operations
         /// <returns>The result</returns>
         /// <exception cref="Exception"></exception>
         /// <seealso cref="IGeometryOperation.Invoke"/>
-        public IResult Invoke(XmlTestType opName, IGeometry geometry, object[] args)
+        public IResult Invoke(XmlTestType opName, Geometry geometry, object[] args)
         {
             return Invoke(opName.ToString(), geometry, args);
         }
 
-        public IResult Invoke(string opName, IGeometry geometry, object[] args)
+        public IResult Invoke(string opName, Geometry geometry, object[] args)
         {
             if (! IsPreparedOp(opName))
             {
@@ -77,9 +77,9 @@ namespace Open.Topology.TestRunner.Operations
             return InvokePreparedOp(opName, geometry, args);
         }
 
-        private static IResult InvokePreparedOp(string opName, IGeometry geometry, object[] args)
+        private static IResult InvokePreparedOp(string opName, Geometry geometry, object[] args)
         {
-            var g2 = (IGeometry) args[0];
+            var g2 = (Geometry) args[0];
             if (opName.Equals("intersects", StringComparison.InvariantCultureIgnoreCase))
             {
                 return new BooleanResult(PreparedGeometryOp.Intersects(geometry, g2));
@@ -101,25 +101,25 @@ namespace Open.Topology.TestRunner.Operations
 
         internal static class PreparedGeometryOp
         {
-            public static bool Intersects(IGeometry g1, IGeometry g2)
+            public static bool Intersects(Geometry g1, Geometry g2)
             {
                 var prepGeom = PreparedGeometryFactory.Prepare(g1);
                 return prepGeom.Intersects(g2);
             }
 
-            public static bool Contains(IGeometry g1, IGeometry g2)
+            public static bool Contains(Geometry g1, Geometry g2)
             {
                 var prepGeom = PreparedGeometryFactory.Prepare(g1);
                 return prepGeom.Contains(g2);
             }
 
-            public static bool ContainsProperly(IGeometry g1, IGeometry g2)
+            public static bool ContainsProperly(Geometry g1, Geometry g2)
             {
                 var prepGeom = PreparedGeometryFactory.Prepare(g1);
                 return prepGeom.ContainsProperly(g2);
             }
 
-            public static bool Covers(IGeometry g1, IGeometry g2)
+            public static bool Covers(Geometry g1, Geometry g2)
             {
                 var prepGeom = PreparedGeometryFactory.Prepare(g1);
                 return prepGeom.Covers(g2);

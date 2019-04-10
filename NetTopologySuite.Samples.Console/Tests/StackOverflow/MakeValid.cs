@@ -65,9 +65,9 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
         /// </summary>
         /// <param name="geom">The geometry to be fixed</param>
         /// <returns>The fixed geometry</returns>
-        public static IGeometry Validate(this IGeometry geom)
+        public static Geometry Validate(this Geometry geom)
         {
-            if (geom is IPolygon)
+            if (geom is Polygon)
             {
                 if (geom.IsValid)
                 {
@@ -75,11 +75,11 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
                     return geom; // If the polygon is valid just return it
                 }
                 var polygonizer = new Polygonizer();
-                AddPolygon((IPolygon)geom, polygonizer);
+                AddPolygon((Polygon)geom, polygonizer);
                 return ToPolygonGeometry(polygonizer.GetPolygons(), geom.Factory);
             }
 
-            if (geom is IMultiPolygon)
+            if (geom is MultiPolygon)
             {
                 if (geom.IsValid)
                 {
@@ -89,7 +89,7 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
                 var polygonizer = new Polygonizer();
                 for (int n = geom.NumGeometries; n-- > 0;)
                 {
-                    AddPolygon((IPolygon)geom.GetGeometryN(n), polygonizer);
+                    AddPolygon((Polygon)geom.GetGeometryN(n), polygonizer);
                 }
                 return ToPolygonGeometry(polygonizer.GetPolygons(), geom.Factory);
             }
@@ -105,7 +105,7 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
         /// </summary>
         /// <param name="polygon">The polygon from which to extract the line strings</param>
         /// <param name="polygonizer">The polygonizer</param>
-        static void AddPolygon(IPolygon polygon, Polygonizer polygonizer)
+        static void AddPolygon(Polygon polygon, Polygonizer polygonizer)
         {
             AddLineString(polygon.ExteriorRing, polygonizer);
             for (int n = polygon.NumInteriorRings; n-- > 0;)
@@ -119,9 +119,9 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
         /// </summary>
         /// <param name="lineString">The line string</param>
         /// <param name="polygonizer">The polygonizer</param>
-        static void AddLineString(ILineString lineString, Polygonizer polygonizer)
+        static void AddLineString(LineString lineString, Polygonizer polygonizer)
         {
-            if (lineString is ILinearRing)
+            if (lineString is LinearRing)
             { // LinearRings are treated differently to line strings : we need a LineString NOT a LinearRing
                 lineString = lineString.Factory.CreateLineString(lineString.CoordinateSequence);
             }
@@ -138,9 +138,9 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
         /// Get a geometry from a collection of polygons.
         /// </summary>
         /// <param name="polygons"></param>
-        /// <param name="factory">Factory to create <see cref="IMultiPolygon"/>s</param>
+        /// <param name="factory">Factory to create <see cref="MultiPolygon"/>s</param>
         /// <returns><c>null</c> if there were no polygons, the polygon if there was only one, or a MultiPolygon containing all polygons otherwise</returns>
-        static IGeometry ToPolygonGeometry(ICollection<IGeometry> polygons, IGeometryFactory factory)
+        static Geometry ToPolygonGeometry(ICollection<Geometry> polygons, GeometryFactory factory)
         {
             switch (polygons.Count)
             {
@@ -150,7 +150,7 @@ namespace NetTopologySuite.Samples.Tests.StackOverflow
                     return polygons.First(); // single polygon - no need to wrap
                 default:
                     //polygons may still overlap! Need to sym difference them
-                    IGeometry ret = (IPolygon)polygons.First().Copy();
+                    Geometry ret = (Polygon)polygons.First().Copy();
                     foreach (var polygon in polygons.Skip(1))
                         ret = ret.SymmetricDifference(polygon);
                     return ret;

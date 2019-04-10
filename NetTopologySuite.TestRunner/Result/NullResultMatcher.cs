@@ -11,14 +11,14 @@ namespace Open.Topology.TestRunner.Result
     {
         ///<inheritdoc/>
         ///<remarks>Always reports a match.</remarks>
-        public bool IsMatch(IGeometry geom, string opName, object[] args,
+        public bool IsMatch(Geometry geom, string opName, object[] args,
                             TResult actualResult, TResult expectedResult,
                             double tolerance)
         {
             return true;
         }
 
-        public bool IsMatch(IGeometry geom, string opName, object[] args, IResult actualResult, IResult expectedResult, double tolerance)
+        public bool IsMatch(Geometry geom, string opName, object[] args, IResult actualResult, IResult expectedResult, double tolerance)
         {
             return true;
         }

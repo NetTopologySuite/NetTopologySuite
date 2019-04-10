@@ -314,7 +314,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             var polygonizer = new Polygonizer();
             foreach (string wkt in wkts)
             {
-                var geom = (ILineString) reader.Read(wkt);
+                var geom = (LineString) reader.Read(wkt);
                 Assert.IsNotNull(geom);
                 Assert.IsTrue(geom.IsValid);
                 Assert.AreEqual(geom.Factory.PrecisionModel, GeometryFactory.Fixed.PrecisionModel);

@@ -9,15 +9,15 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestGeometryCollection()
         {
-            var g = (IGeometryCollection)Read(
+            var g = (GeometryCollection)Read(
                   "GEOMETRYCOLLECTION (GEOMETRYCOLLECTION (POINT (10 10)))");
             var i = new GeometryCollectionEnumerator(g);
             Assert.IsTrue(i.MoveNext());
-            Assert.IsTrue(i.Current is IGeometryCollection);
+            Assert.IsTrue(i.Current is GeometryCollection);
             Assert.IsTrue(i.MoveNext());
-            Assert.IsTrue(i.Current is IGeometryCollection);
+            Assert.IsTrue(i.Current is GeometryCollection);
             Assert.IsTrue(i.MoveNext());
-            Assert.IsTrue(i.Current is IPoint);
+            Assert.IsTrue(i.Current is Point);
             Assert.IsTrue(!i.MoveNext());
         }
 
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         public void TestRepeatedAccess(string wkt)
         {
             var geom = Read(wkt);
-            if (!(geom is IGeometryCollection gc))
+            if (!(geom is GeometryCollection gc))
                 return;
 
             using (var it = gc.GetEnumerator())
@@ -48,13 +48,13 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestAtomic()
         {
-            var g = (IPolygon)Read("POLYGON ((1 9, 9 9, 9 1, 1 1, 1 9))");
+            var g = (Polygon)Read("POLYGON ((1 9, 9 9, 9 1, 1 1, 1 9))");
             var i = new GeometryCollectionEnumerator(g);
             Assert.IsTrue(i.MoveNext());
             var current = i.Current;
-            Assert.IsTrue(i.Current is IPolygon);
+            Assert.IsTrue(i.Current is Polygon);
             Assert.DoesNotThrow(() => current = i.Current);
-            Assert.IsTrue(i.Current is IPolygon);
+            Assert.IsTrue(i.Current is Polygon);
 
             Assert.IsTrue(!i.MoveNext());
         }

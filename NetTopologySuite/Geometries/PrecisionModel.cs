@@ -49,15 +49,15 @@ namespace NetTopologySuite.Geometries
     /// The precision model of any constructed geometric value is undefined.
     /// </remarks>
     [Serializable]
-    public class PrecisionModel : IPrecisionModel
+    public class PrecisionModel: IComparable, IComparable<PrecisionModel>
     {
         /// <summary>
-        /// Determines which of two <see cref="IPrecisionModel"/>s is the most precise
+        /// Determines which of two <see cref="PrecisionModel"/>s is the most precise
         /// </summary>
         /// <param name="pm1">A precision model</param>
         /// <param name="pm2">A precision model</param>
         /// <returns>The PrecisionModel which is most precise</returns>
-        public static IPrecisionModel MostPrecise(IPrecisionModel pm1, IPrecisionModel pm2)
+        public static PrecisionModel MostPrecise(PrecisionModel pm1, PrecisionModel pm2)
         {
             if (pm1.CompareTo(pm2) >= 0)
                 return pm1;
@@ -396,10 +396,10 @@ namespace NetTopologySuite.Geometries
             if (other == null)
                 return false;
 
-            if (!(other is IPrecisionModel))
+            if (!(other is PrecisionModel))
                 return false;
 
-            return Equals((IPrecisionModel)other);
+            return Equals((PrecisionModel)other);
         }
 
         /// <summary>
@@ -407,7 +407,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="otherPrecisionModel"></param>
         /// <returns></returns>
-        public bool Equals(IPrecisionModel otherPrecisionModel)
+        public bool Equals(PrecisionModel otherPrecisionModel)
         {
             return _modelType == otherPrecisionModel.PrecisionModelType &&
                     _scale == otherPrecisionModel.Scale;
@@ -453,7 +453,7 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public int CompareTo(object o)
         {
-            return CompareTo((IPrecisionModel)o);
+            return CompareTo((PrecisionModel)o);
         }
 
         /// <summary>
@@ -461,7 +461,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public int CompareTo(IPrecisionModel other)
+        public int CompareTo(PrecisionModel other)
         {
             int sigDigits = MaximumSignificantDigits;
             int otherSigDigits = other.MaximumSignificantDigits;

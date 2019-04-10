@@ -10,6 +10,6 @@ namespace Open.Topology.TestRunner.Operations
     public interface IGeometryMatcher
     {
         double Tolerance { get; set; }
-        bool Match(IGeometry a, IGeometry b);
+        bool Match(Geometry a, Geometry b);
     }
 }

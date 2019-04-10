@@ -24,13 +24,13 @@ namespace NetTopologySuite.LinearReferencing
             return loc.SegmentIndex;
         }
 
-        private readonly IGeometry _linearGeom;
+        private readonly Geometry _linearGeom;
         private readonly int _numLines;
 
         /// <summary>
         /// Invariant: currentLine &lt;&gt; null if the iterator is pointing at a valid coordinate
         /// </summary>
-        private ILineString _currentLine;
+        private LineString _currentLine;
         private int _componentIndex;
         private int _vertexIndex;
 
@@ -49,7 +49,7 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="linearGeom">The linear geometry to iterate over.</param>
         /// <exception cref="ArgumentException"> if <paramref name="linearGeom"/> is not <see cref="ILineal"/></exception>
-        public LinearIterator(IGeometry linearGeom) : this(linearGeom, 0, 0) { }
+        public LinearIterator(Geometry linearGeom) : this(linearGeom, 0, 0) { }
 
         /// <summary>
         /// Creates an iterator starting at a <see cref="LinearLocation" /> on a linear <see cref="Geometry" />.
@@ -57,7 +57,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="linearGeom">The linear geometry to iterate over.</param>
         /// <param name="start">The location to start at.</param>
         /// <exception cref="ArgumentException"> if <paramref name="linearGeom"/> is not <see cref="ILineal"/></exception>
-        public LinearIterator(IGeometry linearGeom, LinearLocation start) :
+        public LinearIterator(Geometry linearGeom, LinearLocation start) :
             this(linearGeom, start.ComponentIndex, SegmentEndVertexIndex(start)) { }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="componentIndex">The component to start at.</param>
         /// <param name="vertexIndex">The vertex to start at.</param>
         /// <exception cref="ArgumentException"> if <paramref name="linearGeom"/> is not <see cref="ILineal"/></exception>
-        public LinearIterator(IGeometry linearGeom, int componentIndex, int vertexIndex)
+        public LinearIterator(Geometry linearGeom, int componentIndex, int vertexIndex)
         {
             if (!(linearGeom is ILineal))
                 throw new ArgumentException("Lineal geometry is required.");
@@ -91,7 +91,7 @@ namespace NetTopologySuite.LinearReferencing
                 _currentLine = null;
                 return;
             }
-            _currentLine = (ILineString)_linearGeom.GetGeometryN(_componentIndex);
+            _currentLine = (LineString)_linearGeom.GetGeometryN(_componentIndex);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace NetTopologySuite.LinearReferencing
 
         /// <summary>
         /// Checks whether the iterator cursor is pointing to the
-        /// endpoint of a component <see cref="ILineString"/>.
+        /// endpoint of a component <see cref="LineString"/>.
         /// </summary>
         public bool IsEndOfLine
         {
@@ -157,7 +157,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <summary>
         /// Gets the <see cref="LineString" /> component the iterator is current at.
         /// </summary>
-        public ILineString Line => _currentLine;
+        public LineString Line => _currentLine;
 
         /// <summary>
         /// Gets the first <see cref="Coordinate" /> of the current segment
@@ -361,7 +361,7 @@ namespace NetTopologySuite.LinearReferencing
         //    /// <summary>
         //    /// Gets the <see cref="LineString" /> component the iterator is current at.
         //    /// </summary>
-        //    public ILineString Line
+        //    public LineString Line
         //    {
         //        get
         //        {

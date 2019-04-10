@@ -102,7 +102,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             shapeFactory.Base = new Coordinate(0, 0);
             shapeFactory.Size = 1000;
             shapeFactory.NumPoints = 1000;
-            IGeometry geom = shapeFactory.CreateRectangle();
+            Geometry geom = shapeFactory.CreateRectangle();
             RunWKBTest(geom, 2, false);
         }
 
@@ -167,38 +167,38 @@ namespace NetTopologySuite.Tests.NUnit.IO
             RunWKBTest(g, 3, false);
         }
 
-        private static IGeometry SetDimension(IGeometry p0, int dimension)
+        private static Geometry SetDimension(Geometry p0, int dimension)
         {
-            if (p0 is IGeometryCollection)
+            if (p0 is GeometryCollection)
             {
-                var tmp = new List<IGeometry>();
+                var tmp = new List<Geometry>();
                 for (int i = 0; i < p0.NumGeometries; i++)
                     tmp.Add(SetDimension(p0.GetGeometryN(i), dimension));
                 return p0.Factory.BuildGeometry(tmp);
             }
             var fact = p0.Factory.CoordinateSequenceFactory;
-            if (p0 is IPoint)
+            if (p0 is Point)
             {
-                return p0.Factory.CreatePoint(SetDimension(fact, ((IPoint) p0).CoordinateSequence, dimension));
+                return p0.Factory.CreatePoint(SetDimension(fact, ((Point) p0).CoordinateSequence, dimension));
             }
-            if (p0 is ILineString)
+            if (p0 is LineString)
             {
-                return p0.Factory.CreateLineString(SetDimension(fact, ((ILineString) p0).CoordinateSequence, dimension));
+                return p0.Factory.CreateLineString(SetDimension(fact, ((LineString) p0).CoordinateSequence, dimension));
             }
-            if (p0 is IPolygon)
+            if (p0 is Polygon)
             {
-                var p = (IPolygon) p0;
+                var p = (Polygon) p0;
                 var er =
-                    p0.Factory.CreateLinearRing(SetDimension(fact, ((ILinearRing) p.ExteriorRing).CoordinateSequence,
+                    p0.Factory.CreateLinearRing(SetDimension(fact, ((LinearRing) p.ExteriorRing).CoordinateSequence,
                         dimension));
-                ILinearRing[] ir = null;
+                LinearRing[] ir = null;
                 if (p.NumInteriorRings > 0)
                 {
-                    ir = new ILinearRing[p.NumInteriorRings];
+                    ir = new LinearRing[p.NumInteriorRings];
                     for (int i = 0; i < p.NumInteriorRings; i++)
                         ir[i] =
                             p0.Factory.CreateLinearRing(SetDimension(fact,
-                                ((ILinearRing) p.GetInteriorRingN(i)).CoordinateSequence,
+                                ((LinearRing) p.GetInteriorRingN(i)).CoordinateSequence,
                                 dimension));
                 }
                 return p.Factory.CreatePolygon(er, ir);
@@ -223,7 +223,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             return res;
         }
 
-        private void RunWKBTest(IGeometry g, int dimension, bool toHex)
+        private void RunWKBTest(Geometry g, int dimension, bool toHex)
         {
             if (dimension > 2)
             {
@@ -234,7 +234,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             RunWKBTest(g, dimension, ByteOrder.BigEndian, toHex);
         }
 
-        private void RunWKBTest(IGeometry g, int dimension, ByteOrder byteOrder, bool toHex)
+        private void RunWKBTest(Geometry g, int dimension, ByteOrder byteOrder, bool toHex)
         {
             RunGeometry((Geometry)g, dimension, byteOrder, toHex, 100);
             RunGeometry((Geometry)g, dimension, byteOrder, toHex, 0);
@@ -242,7 +242,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             RunGeometry((Geometry)g, dimension, byteOrder, toHex, -1);
         }
 
-        private static void SetOrdinate2(IGeometry g)
+        private static void SetOrdinate2(Geometry g)
         {
             g.Apply(new AverageOrdinate2Filter());
         }

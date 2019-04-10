@@ -1,7 +1,7 @@
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
-    /// A visitor to <see cref="IGeometry"/> elements which  components, which
+    /// A visitor to <see cref="Geometry"/> elements which  components, which
     /// allows short-circuiting when a defined condition holds.
     /// </summary>
     public abstract class ShortCircuitedGeometryVisitor
@@ -12,12 +12,12 @@ namespace NetTopologySuite.Geometries.Utilities
         ///
         /// </summary>
         /// <param name="geom"></param>
-        public void ApplyTo(IGeometry geom)
+        public void ApplyTo(Geometry geom)
         {
             for (int i = 0; i < geom.NumGeometries && ! _isDone; i++)
             {
                 var element = geom.GetGeometryN(i);
-                if (!(element is IGeometryCollection))
+                if (!(element is GeometryCollection))
                 {
                     Visit(element);
                     if (IsDone())
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Geometries.Utilities
         ///
         /// </summary>
         /// <param name="element"></param>
-        protected abstract void Visit(IGeometry element);
+        protected abstract void Visit(Geometry element);
 
         /// <summary>
         /// Reports whether visiting components can be terminated.

@@ -34,7 +34,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
             Trace.WriteLine("Test terminated");
         }
 
-        private void RunDissolverWorld(IList<IGeometry> data)
+        private void RunDissolverWorld(IList<Geometry> data)
         {
             var dis = new LineDissolver();
             dis.Add(data);
@@ -44,7 +44,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
             // Trace.WriteLine(String.Format("Result: {0}", result));
         }
 
-        private void RunBruteForceWorld(IList<IGeometry> data)
+        private void RunBruteForceWorld(IList<Geometry> data)
         {
             var result = DissolveLines(data);
             Trace.WriteLine("RunBruteForceWorld");
@@ -52,13 +52,13 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
             // Trace.WriteLine(String.Format("Result: {0}", result));
         }
 
-        private IGeometry DissolveLines(IList<IGeometry> lines)
+        private Geometry DissolveLines(IList<Geometry> lines)
         {
             var linesGeom = ExtractLines(lines);
             return DissolveLines(linesGeom);
         }
 
-        private static IGeometry DissolveLines(IGeometry lines)
+        private static Geometry DissolveLines(Geometry lines)
         {
             var dissolved = lines.Union();
             var merger = new LineMerger();
@@ -68,10 +68,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
             return merged;
         }
 
-        private static IGeometry ExtractLines(ICollection<IGeometry> geoms)
+        private static Geometry ExtractLines(ICollection<Geometry> geoms)
         {
-            IGeometryFactory factory = null;
-            var lines = new List<IGeometry>();
+            GeometryFactory factory = null;
+            var lines = new List<Geometry>();
             foreach (var g in geoms)
             {
                 if (factory == null)

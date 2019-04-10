@@ -4,13 +4,13 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Simplify
 {
     /// <summary>
-    /// Represents a <see cref="ILineString"/> which can be modified to a simplified shape.
+    /// Represents a <see cref="LineString"/> which can be modified to a simplified shape.
     /// This class provides an attribute which specifies the minimum allowable length
     /// for the modified result.
     /// </summary>
     public class TaggedLineString
     {
-        private readonly ILineString _parentLine;
+        private readonly LineString _parentLine;
         private TaggedLineSegment[] _segs;
         private readonly IList<LineSegment> _resultSegs = new List<LineSegment>();
         private readonly int _minimumSize;
@@ -19,14 +19,14 @@ namespace NetTopologySuite.Simplify
         ///
         /// </summary>
         /// <param name="parentLine"></param>
-        public TaggedLineString(ILineString parentLine) : this(parentLine, 2) { }
+        public TaggedLineString(LineString parentLine) : this(parentLine, 2) { }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="parentLine"></param>
         /// <param name="minimumSize"></param>
-        public TaggedLineString(ILineString parentLine, int minimumSize)
+        public TaggedLineString(LineString parentLine, int minimumSize)
         {
             _parentLine = parentLine;
             _minimumSize = minimumSize;
@@ -41,7 +41,7 @@ namespace NetTopologySuite.Simplify
         /// <summary>
         ///
         /// </summary>
-        public ILineString Parent => _parentLine;
+        public LineString Parent => _parentLine;
 
         /// <summary>
         ///
@@ -107,7 +107,7 @@ namespace NetTopologySuite.Simplify
         ///
         /// </summary>
         /// <returns></returns>
-        public ILineString AsLineString()
+        public LineString AsLineString()
         {
             var coordinates = ExtractCoordinates(_resultSegs);
             return _parentLine.Factory.CreateLineString(coordinates);
@@ -117,7 +117,7 @@ namespace NetTopologySuite.Simplify
         ///
         /// </summary>
         /// <returns></returns>
-        public ILinearRing AsLinearRing()
+        public LinearRing AsLinearRing()
         {
             var coordinates = ExtractCoordinates(_resultSegs);
             return _parentLine.Factory.CreateLinearRing(coordinates);

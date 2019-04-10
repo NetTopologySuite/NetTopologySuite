@@ -12,7 +12,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
     /// <version>1.7</version>
     public class WKTWriterTest
     {
-        private readonly IGeometryFactory _factory = new GeometryFactory(new PrecisionModel(1), 0, PackedCoordinateSequenceFactory.DoubleFactory);
+        private readonly GeometryFactory _factory = new GeometryFactory(new PrecisionModel(1), 0, PackedCoordinateSequenceFactory.DoubleFactory);
         private readonly WKTWriter _writer = new WKTWriter();
         private readonly WKTWriter _writer3D = new WKTWriter(3);
         private readonly WKTWriter _writer2DM = new WKTWriter(3) { OutputOrdinates = Ordinates.XYM };
@@ -78,7 +78,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [Test]
         public void TestWriteMultiPoint()
         {
-            IPoint[] points =
+            Point[] points =
             {
                 _factory.CreatePoint(new CoordinateZ(10, 10, 0)),
                 _factory.CreatePoint(new CoordinateZ(20, 20, 0))
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 new CoordinateZ(30, 15, 0)
             };
             var lineString2 = _factory.CreateLineString(coordinates2);
-            ILineString[] lineStrings = { lineString1, lineString2 };
+            LineString[] lineStrings = { lineString1, lineString2 };
             var multiLineString = _factory.CreateMultiLineString(lineStrings);
             Assert.AreEqual(
                 "MULTILINESTRING ((10 10, 20 20), (15 15, 30 15))",
@@ -131,7 +131,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             };
             var linearRing2 = _factory.CreateLinearRing(coordinates2);
             var polygon2 = _factory.CreatePolygon(linearRing2, new LinearRing[] { });
-            IPolygon[] polygons = { polygon1, polygon2 };
+            Polygon[] polygons = { polygon1, polygon2 };
             var multiPolygon = _factory.CreateMultiPolygon(polygons);
             Assert.AreEqual(
                 "MULTIPOLYGON (((10 10, 10 20, 20 20, 20 15, 10 10)), ((60 60, 70 70, 80 60, 60 60)))",
@@ -149,7 +149,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 new CoordinateZ(20, 20, 0)
             };
             var lineString1 = _factory.CreateLineString(coordinates);
-            IGeometry[] geometries = { point1, point2, lineString1 };
+            Geometry[] geometries = { point1, point2, lineString1 };
             var geometryCollection = _factory.CreateGeometryCollection(geometries);
             Assert.AreEqual(
                 "GEOMETRYCOLLECTION (POINT (10 10), POINT (30 30), LINESTRING (15 15, 20 20))",
@@ -164,8 +164,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [Test]
         public void TestWriteLargeNumbers1()
         {
-            IPrecisionModel precisionModel = new PrecisionModel(1E9);
-            IGeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
+            PrecisionModel precisionModel = new PrecisionModel(1E9);
+            GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
             var point1 = geometryFactory.CreatePoint(new Coordinate(123456789012345678d, 10E9));
             Assert.AreEqual(123456789012345680d, point1.X);
             Assert.AreEqual(10000000000d, point1.Y);
@@ -177,8 +177,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [Test]
         public void TestWriteLargeNumbers2()
         {
-            IPrecisionModel precisionModel = new PrecisionModel(1E9);
-            IGeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
+            PrecisionModel precisionModel = new PrecisionModel(1E9);
+            GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
             var point1 = geometryFactory.CreatePoint(new Coordinate(1234d, 10E9));
             Assert.AreEqual("POINT (1234 10000000000)", point1.AsText());
         }
@@ -191,8 +191,8 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [Test]
         public void TestWriteLargeNumbers3()
         {
-            IPrecisionModel precisionModel = new PrecisionModel(1E9);
-            IGeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
+            PrecisionModel precisionModel = new PrecisionModel(1E9);
+            GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
             var point1 = geometryFactory.CreatePoint(new Coordinate(123456789012345678000000E9d, 10E9));
             Assert.AreEqual(123456789012345690000000000000000d, point1.X);
             Assert.AreEqual(10000000000d, point1.Y);
@@ -203,7 +203,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [Test]
         public void TestWrite3D()
         {
-            IGeometryFactory geometryFactory = new GeometryFactory();
+            GeometryFactory geometryFactory = new GeometryFactory();
             var point = geometryFactory.CreatePoint(new CoordinateZ(1, 1, 1));
             string wkt = _writer3D.Write(point);
             Assert.AreEqual("POINT Z(1 1 1)", wkt);
@@ -213,7 +213,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         [Test]
         public void TestWrite3D_withNaN()
         {
-            IGeometryFactory geometryFactory = new GeometryFactory();
+            GeometryFactory geometryFactory = new GeometryFactory();
             Coordinate[] coordinates = { new Coordinate(1, 1),
                                  new CoordinateZ(2, 2, 2) };
             var line = geometryFactory.CreateLineString(coordinates);

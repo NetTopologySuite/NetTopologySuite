@@ -16,7 +16,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             this.inputLine = line;
         }
 
-        public IGeometry Densify(double segLength)
+        public Geometry Densify(double segLength)
         {
             newCoords = new CoordinateList();
 

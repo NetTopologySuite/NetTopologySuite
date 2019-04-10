@@ -11,8 +11,8 @@ namespace NetTopologySuite.Geometries
     /// <c>dimension</c> = 3 and <c>measures</c> = 0.
     /// </para>
     /// </summary><remarks>
-    /// It is distinct from <see cref="IPoint"/>, which is a subclass of <see cref="IGeometry"/>.
-    /// Unlike objects of type <see cref="IPoint"/> (which contain additional
+    /// It is distinct from <see cref="Point"/>, which is a subclass of <see cref="Geometry"/>.
+    /// Unlike objects of type <see cref="Point"/> (which contain additional
     /// information such as an envelope, a precision model, and spatial reference
     /// system information), a <c>CoordinateZ</c> only contains ordinate values
     /// and properties.

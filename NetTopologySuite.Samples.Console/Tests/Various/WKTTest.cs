@@ -40,7 +40,7 @@ namespace NetTopologySuite.Samples.Tests.Various
 
         private void TestFormatting(Coordinate c)
         {
-            IGeometry point = GeometryFactory.Floating.CreatePoint(c);
+            Geometry point = GeometryFactory.Floating.CreatePoint(c);
             string result = writer.Write(point);
             Debug.WriteLine(result);
             var geom = new WKTReader(GeometryFactory.Floating).Read(result);
@@ -75,7 +75,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.IsTrue(mp1.EqualsExact(mp2));
         }
 
-        private static void TestValid(IGeometry geom)
+        private static void TestValid(Geometry geom)
         {
             if (!geom.IsValid)
             {
@@ -129,7 +129,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.IsTrue(ex.GetType() == typeof(TopologyException));
         }
 
-        private Exception TryOverlay(IGeometry g1, IGeometry g2)
+        private Exception TryOverlay(Geometry g1, Geometry g2)
         {
             Exception ex = null;
             try

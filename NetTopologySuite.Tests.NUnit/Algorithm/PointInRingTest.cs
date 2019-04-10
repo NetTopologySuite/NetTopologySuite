@@ -19,7 +19,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             var geom = reader.Read(wkt);
             bool expected = expectedLoc == Location.Interior;
             Assert.AreEqual(expected, PointLocation.IsInRing(pt, geom.Coordinates));
-            var poly = geom as IPolygon;
+            var poly = geom as Polygon;
             if (poly == null)
                 return;
 

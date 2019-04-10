@@ -42,7 +42,7 @@ namespace NetTopologySuite.Samples.Tests.Github
         [Test(Description = "GitHub issue request #114")]
         public void Should_Find_Correct_Number_Of_Polygons_From_Lines()
         {
-            var paths = new List<IGeometry>();
+            var paths = new List<Geometry>();
             var factory = GeometryFactory.Default;
 
             for (int x = 1; x < 10; x++)
@@ -256,7 +256,7 @@ namespace NetTopologySuite.Samples.Tests.Github
             var gpr = new GeometryPrecisionReducer(new PrecisionModel(1e10));
             var poly1 = gpr.Reduce(poly);
             var poly2 = poly.Buffer(0);
-            var shellCoords = ((IPolygon)poly).Shell.CoordinateSequence.Copy();
+            var shellCoords = ((Polygon)poly).Shell.CoordinateSequence.Copy();
             CoordinateSequences.Reverse(shellCoords);
             var shell = poly.Factory.CreatePolygon(shellCoords).Buffer(0);
 
@@ -347,7 +347,7 @@ namespace NetTopologySuite.Samples.Tests.Github
             Assert.IsTrue(polygon.IsValid);
             var vdb = new Triangulate.VoronoiDiagramBuilder();
             vdb.SetSites(polygon);
-            IGeometry result = null;
+            Geometry result = null;
             Assert.DoesNotThrow(() => result= vdb.GetDiagram(polygon.Factory));
             Assert.IsNotNull(result);
         }
@@ -359,7 +359,7 @@ namespace NetTopologySuite.Samples.Tests.Github
             var g1 = reader.Read("MULTIPOLYGON (((30 20, 45 40, 10 40, 30 20)),((15 5, 40 10, 10 20, 5 10, 15 5)))");
             var g2 = reader.Read("MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)),((20 35, 10 30, 10 10, 30 5, 45 20, 20 35),(30 20, 20 15, 20 25, 30 20)))");
 
-            IGeometry res = null;
+            Geometry res = null;
             //                                                                                     |
             //                                                             Some cruel scale factor V
             Assert.DoesNotThrow(() => res = SnapRoundOverlayFunctions.SnappedIntersection(g1, g2, 0.1));
@@ -471,10 +471,10 @@ namespace NetTopologySuite.Samples.Tests.Github
             ToImage(141, null, null, gu);
             ToImage(141, null, null, geom2.Difference(geom1));
 
-            bool isCCW = Orientation.IsCCW(((IPolygon) gu.GetGeometryN(0)).ExteriorRing.CoordinateSequence);
+            bool isCCW = Orientation.IsCCW(((Polygon) gu.GetGeometryN(0)).ExteriorRing.CoordinateSequence);
             for (int i = 1; i < gu.NumGeometries; i++)
             {
-                var p = (IPolygon) gu.GetGeometryN(1);
+                var p = (Polygon) gu.GetGeometryN(1);
                 Assert.That(Orientation.IsCCW(p.ExteriorRing.CoordinateSequence), Is.EqualTo(isCCW));
             }
             Console.WriteLine("Orientation CCW = {0}", isCCW);
@@ -522,7 +522,7 @@ namespace NetTopologySuite.Samples.Tests.Github
             var ll = lip.IndexOf(coordinateToAdd);
             if (!ll.IsVertex)
             {
-                var cl = (ILineString) closestLine;
+                var cl = (LineString) closestLine;
                 var cls = cl.Factory.CoordinateSequenceFactory.Create(cl.CoordinateSequence.Count + 1, cl.CoordinateSequence.Ordinates);
                 CoordinateSequences.Copy(cl.CoordinateSequence, 0, cls, 0, ll.SegmentIndex+1);
                 cls.SetOrdinate(ll.SegmentIndex+1, Ordinate.X, coordinateToAdd.X);
@@ -4430,7 +4430,7 @@ namespace NetTopologySuite.Samples.Tests.Github
   POLYGON((-75.9992071582174 27.5, -76 27.5, -76 27.7299386,
     -75.9988058 27.7299386, -75.9992071582174 27.5)))";
             var geom = new WKTReader().Read(WKT);
-            IGeometry buffer0 = null;
+            Geometry buffer0 = null;
             Assert.DoesNotThrow(() => buffer0 = geom.Buffer(0));
             Assert.NotNull(buffer0);
             Assert.That(buffer0.IsValid, Is.True);
@@ -4438,7 +4438,7 @@ namespace NetTopologySuite.Samples.Tests.Github
 
         #region utility
 
-        static void ToImage(int nr, IGeometry geom1, IGeometry geom2, IGeometry geom3)
+        static void ToImage(int nr, Geometry geom1, Geometry geom2, Geometry geom3)
         {
 
             //var gpw = new Windows.Forms.GraphicsPathWriter();

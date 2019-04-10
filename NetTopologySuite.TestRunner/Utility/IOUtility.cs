@@ -7,7 +7,7 @@ namespace Open.Topology.TestRunner.Utility
 {
     public class IOUtility
     {
-        //public static IGeometry ReadGeometriesFromFile(String filename, IGeometryFactory geomFact)
+        //public static Geometry ReadGeometriesFromFile(String filename, GeometryFactory geomFact)
         //{
         //    var ext = Path.GetExtension(filename);
         //    if (string.Equals(ext, ".shp", StringComparison.CurrentCultureIgnoreCase))
@@ -17,19 +17,19 @@ namespace Open.Topology.TestRunner.Utility
         //    return ReadGeometriesFromWktFile(filename, geomFact);
         //}
 
-        //private static IGeometry ReadGeometriesFromShapefile(String filename, IGeometryFactory geomFact)
+        //private static Geometry ReadGeometriesFromShapefile(String filename, GeometryFactory geomFact)
         //{
         //    var shpfile = new ShapefileReader(filename, geomFact);
         //    var result = shpfile.ReadAll();
         //    return result;
         //}
 
-        private static IGeometry ReadGeometryFromWKBHexFile(string filename, IGeometryFactory geomFact)
+        private static Geometry ReadGeometryFromWKBHexFile(string filename, GeometryFactory geomFact)
         {
             return ReadGeometryFromWkbHexString(File.OpenText(filename).ReadToEnd(), geomFact);
         }
 
-        private static IGeometry ReadGeometryFromWkbHexString(string wkbHexFile, IGeometryFactory geomFact)
+        private static Geometry ReadGeometryFromWkbHexString(string wkbHexFile, GeometryFactory geomFact)
         {
             var reader = new WKBReader();
             string wkbHex = CleanHex(wkbHexFile);
@@ -41,7 +41,7 @@ namespace Open.Topology.TestRunner.Utility
             return System.Text.RegularExpressions.Regex.Replace(hexStuff, "[^0123456789ABCDEFabcdef]", "");
         }
 
-        private static IGeometry ReadGeometriesFromWktFile(string filename, IGeometryFactory geomFact)
+        private static Geometry ReadGeometriesFromWktFile(string filename, GeometryFactory geomFact)
         {
             return ReadGeometriesFromWktString(File.OpenText(filename).ReadToEnd(), geomFact);
         }
@@ -56,7 +56,7 @@ namespace Open.Topology.TestRunner.Utility
          * @throws IOException
          */
 
-        public static IGeometry ReadGeometriesFromWktString(string wkt, IGeometryFactory geomFact)
+        public static Geometry ReadGeometriesFromWktString(string wkt, GeometryFactory geomFact)
         {
             var reader = new WKTReader(geomFact);
             var fileReader = new WKTFileReader(new StringReader(wkt), reader);
@@ -68,11 +68,11 @@ namespace Open.Topology.TestRunner.Utility
             return geomFact.CreateGeometryCollection(GeometryFactory.ToGeometryArray(geomList));
         }
 
-        public static IGeometry ReadGeometriesFromWkbHexString(string wkb, IGeometryFactory geomFact)
+        public static Geometry ReadGeometriesFromWkbHexString(string wkb, GeometryFactory geomFact)
         {
             var reader = new WKBReader(geomFact);
             var fileReader = new WKBHexFileReader(reader);
-            var geomList = new List<IGeometry>();
+            var geomList = new List<Geometry>();
             using (var ms = new MemoryStream())
             {
                 new StreamWriter(ms).Write(wkb);

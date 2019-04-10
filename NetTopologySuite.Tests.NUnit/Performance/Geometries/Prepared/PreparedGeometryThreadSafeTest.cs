@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
     public class PreparedGeometryThreadSafeTest : ThreadTestCase
     {
         private int nPts = 100000;
-        private readonly IGeometryFactory _factory = new GeometryFactory(new PrecisionModel(1.0));
+        private readonly GeometryFactory _factory = new GeometryFactory(new PrecisionModel(1.0));
         private int _numberOfTests = 20;
         private IPreparedGeometry _preparedGeometry;
 
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
             WaitHandles = new WaitHandle[ThreadTestRunner.DefaultThreadCount];
         }
 
-        private IGeometry CreateSineStar(Coordinate origin, double size, int numberOfPoints)
+        private Geometry CreateSineStar(Coordinate origin, double size, int numberOfPoints)
         {
             var gsf = new NetTopologySuite.Geometries.Utilities.SineStarFactory(_factory)
                 {Centre = origin, Size = size, NumPoints = numberOfPoints, ArmLengthRatio = 0.1, NumArms = 20};

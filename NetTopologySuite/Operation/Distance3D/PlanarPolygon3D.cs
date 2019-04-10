@@ -7,7 +7,7 @@ namespace NetTopologySuite.Operation.Distance3D
     /// <summary>
     /// Models a polygon lying in a plane in 3-dimensional Cartesian space.
     /// The polygon representation is supplied
-    /// by a <see cref="IPolygon"/>,
+    /// by a <see cref="Polygon"/>,
     /// containing coordinates with XYZ ordinates.
     /// 3D polygons are assumed to lie in a single plane.
     /// The plane best fitting the polygon coordinates is
@@ -18,10 +18,10 @@ namespace NetTopologySuite.Operation.Distance3D
     {
 
         private readonly Plane3D _plane;
-        private readonly IPolygon _poly;
+        private readonly Polygon _poly;
         private readonly Plane _facingPlane = Mathematics.Plane.Undefined;
 
-        public PlanarPolygon3D(IPolygon poly)
+        public PlanarPolygon3D(Polygon poly)
         {
             _poly = poly;
             _plane = FindBestFitPlane(poly);
@@ -40,7 +40,7 @@ namespace NetTopologySuite.Operation.Distance3D
         /// </summary>
         /// <param name="poly">The polygon to determine the plane for</param>
         /// <returns>The best-fit plane</returns>
-        private static Plane3D FindBestFitPlane(IPolygon poly)
+        private static Plane3D FindBestFitPlane(Polygon poly)
         {
             var seq = poly.ExteriorRing.CoordinateSequence;
             var basePt = AveragePoint(seq);
@@ -106,7 +106,7 @@ namespace NetTopologySuite.Operation.Distance3D
 
         public Plane3D Plane => _plane;
 
-        public IPolygon Polygon => _poly;
+        public Polygon Polygon => _poly;
 
         public bool Intersects(Coordinate intPt)
         {
@@ -121,7 +121,7 @@ namespace NetTopologySuite.Operation.Distance3D
             return true;
         }
 
-        private Location Locate(Coordinate pt, ILineString ring)
+        private Location Locate(Coordinate pt, LineString ring)
         {
             var seq = ring.CoordinateSequence;
             var seqProj = Project(seq, _facingPlane);
@@ -129,7 +129,7 @@ namespace NetTopologySuite.Operation.Distance3D
             return RayCrossingCounter.LocatePointInRing(ptProj, seqProj);
         }
 
-        public bool Intersects(Coordinate pt, ILineString ring)
+        public bool Intersects(Coordinate pt, LineString ring)
         {
             var seq = ring.CoordinateSequence;
             var seqProj = Project(seq, _facingPlane);

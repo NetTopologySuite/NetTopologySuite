@@ -46,8 +46,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
             return pts;
         }
-        public static IPolygon CreateCircle(
-                              IGeometryFactory fact,
+        public static Polygon CreateCircle(
+                              GeometryFactory fact,
                               double basex,
                               double basey,
                               double size,
@@ -89,8 +89,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             return pts;
         }
 
-        public static IPolygon CreateBox(
-            IGeometryFactory fact,
+        public static Polygon CreateBox(
+            GeometryFactory fact,
                               double minx, double miny,
                               int nSide,
                               double segLen)
@@ -148,8 +148,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             return pts;
         }
 
-        public static IPolygon CreateSineStar(
-                              IGeometryFactory fact,
+        public static Polygon CreateSineStar(
+                              GeometryFactory fact,
                               double basex,
                               double basey,
                               double size,

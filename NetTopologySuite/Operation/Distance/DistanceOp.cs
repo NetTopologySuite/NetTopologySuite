@@ -26,7 +26,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="g0">A <c>Geometry</c>.</param>
         /// <param name="g1">Another <c>Geometry</c>.</param>
         /// <returns>The distance between the geometries.</returns>
-        public static double Distance(IGeometry g0, IGeometry g1)
+        public static double Distance(Geometry g0, Geometry g1)
         {
             var distOp = new DistanceOp(g0, g1);
             return distOp.Distance();
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="g1"></param>
         /// <param name="distance"></param>
         /// <returns></returns>
-        public static bool IsWithinDistance(IGeometry g0, IGeometry g1, double distance)
+        public static bool IsWithinDistance(Geometry g0, Geometry g1, double distance)
         {
             var distOp = new DistanceOp(g0, g1, distance);
             return distOp.Distance() <= distance;
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="g0">A <c>Geometry</c>.</param>
         /// <param name="g1">Another <c>Geometry</c>.</param>
         /// <returns>The closest points in the geometries.</returns>
-        public static Coordinate[] NearestPoints(IGeometry g0, IGeometry g1)
+        public static Coordinate[] NearestPoints(Geometry g0, Geometry g1)
         {
             var distOp = new DistanceOp(g0, g1);
             return distOp.NearestPoints();
@@ -66,13 +66,13 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="g1">Another <c>Geometry</c>.</param>
         /// <returns>The closest points in the geometries.</returns>
         [Obsolete("Renamed to NearestPoints")]
-        public static Coordinate[] ClosestPoints(IGeometry g0, IGeometry g1)
+        public static Coordinate[] ClosestPoints(Geometry g0, Geometry g1)
         {
             return NearestPoints(g0, g1);
         }
 
         private readonly PointLocator _ptLocator = new PointLocator();
-        private readonly IGeometry[] _geom;
+        private readonly Geometry[] _geom;
         private GeometryLocation[] _minDistanceLocation;
         private double _minDistance = double.MaxValue;
         private readonly double _terminateDistance;
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         /// <param name="g0"></param>
         /// <param name="g1"></param>
-        public DistanceOp(IGeometry g0, IGeometry g1)
+        public DistanceOp(Geometry g0, Geometry g1)
         : this(g0, g1, 0) { }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="g0"></param>
         /// <param name="g1"></param>
         /// <param name="terminateDistance">The distance on which to terminate the search.</param>
-        public DistanceOp(IGeometry g0, IGeometry g1, double terminateDistance)
+        public DistanceOp(Geometry g0, Geometry g1, double terminateDistance)
         {
             _geom = new[] { g0, g1 };
             _terminateDistance = terminateDistance;
@@ -220,7 +220,7 @@ namespace NetTopologySuite.Operation.Distance
             // test if either geometry has a vertex inside the other
 
             /*
-            IList<IPolygon> polys1 = PolygonExtracter.GetPolygons(_geom[1]);
+            IList<Polygon> polys1 = PolygonExtracter.GetPolygons(_geom[1]);
             if (polys1.Count > 0)
             {
                 IList<GeometryLocation> insideLocs0 = ConnectedElementLocationFilter.GetLocations(_geom[0]);
@@ -233,7 +233,7 @@ namespace NetTopologySuite.Operation.Distance
                 }
             }
 
-            IList<IPolygon> polys0 = PolygonExtracter.GetPolygons(_geom[0]);
+            IList<Polygon> polys0 = PolygonExtracter.GetPolygons(_geom[0]);
             if (polys0.Count > 0)
             {
                 IList<GeometryLocation> insideLocs1 = ConnectedElementLocationFilter.GetLocations(_geom[1]);
@@ -270,12 +270,12 @@ namespace NetTopologySuite.Operation.Distance
             }
         }
 
-        private void ComputeContainmentDistance(IList<GeometryLocation> locs, ICollection<IGeometry> polys, GeometryLocation[] locPtPoly)
+        private void ComputeContainmentDistance(IList<GeometryLocation> locs, ICollection<Geometry> polys, GeometryLocation[] locPtPoly)
         {
             for (int i = 0; i < locs.Count; i++)
             {
                 var loc = locs[i];
-                foreach (IPolygon t in polys)
+                foreach (Polygon t in polys)
                 {
                     ComputeContainmentDistance(loc, t, locPtPoly);
                     if (_minDistance <= _terminateDistance) return;
@@ -284,7 +284,7 @@ namespace NetTopologySuite.Operation.Distance
         }
 
         private void ComputeContainmentDistance(GeometryLocation ptLoc,
-            IPolygon poly,
+            Polygon poly,
             GeometryLocation[] locPtPoly)
         {
             var pt = ptLoc.Coordinate;
@@ -304,11 +304,11 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="locs"></param>
         /// <param name="polys"></param>
         /// <param name="locPtPoly"></param>
-        private void ComputeInside(IEnumerable<GeometryLocation> locs, IEnumerable<IPolygon> polys, GeometryLocation[] locPtPoly)
+        private void ComputeInside(IEnumerable<GeometryLocation> locs, IEnumerable<Polygon> polys, GeometryLocation[] locPtPoly)
         {
             foreach (GeometryLocation loc in locs)
             {
-                foreach (IPolygon poly in polys)
+                foreach (Polygon poly in polys)
                 {
                     ComputeInside(loc, poly, locPtPoly);
                     if (_minDistance <= _terminateDistance)
@@ -323,7 +323,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="ptLoc"></param>
         /// <param name="poly"></param>
         /// <param name="locPtPoly"></param>
-        private void ComputeInside(GeometryLocation ptLoc, IPolygon poly, GeometryLocation[] locPtPoly)
+        private void ComputeInside(GeometryLocation ptLoc, Polygon poly, GeometryLocation[] locPtPoly)
         {
             Coordinate pt = ptLoc.Coordinate;
             // if pt is not in exterior, distance to geom is 0
@@ -385,11 +385,11 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="lines0"></param>
         /// <param name="lines1"></param>
         /// <param name="locGeom"></param>
-        private void ComputeMinDistanceLines(IEnumerable<IGeometry> lines0, ICollection<IGeometry> lines1, GeometryLocation[] locGeom)
+        private void ComputeMinDistanceLines(IEnumerable<Geometry> lines0, ICollection<Geometry> lines1, GeometryLocation[] locGeom)
         {
-            foreach (ILineString line0 in lines0)
+            foreach (LineString line0 in lines0)
             {
-                foreach (ILineString line1 in lines1)
+                foreach (LineString line1 in lines1)
                 {
                     ComputeMinDistance(line0, line1, locGeom);
                     if (_minDistance <= _terminateDistance) return;
@@ -403,11 +403,11 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="points0"></param>
         /// <param name="points1"></param>
         /// <param name="locGeom"></param>
-        private void ComputeMinDistancePoints(IEnumerable<IGeometry> points0, ICollection<IGeometry> points1, GeometryLocation[] locGeom)
+        private void ComputeMinDistancePoints(IEnumerable<Geometry> points0, ICollection<Geometry> points1, GeometryLocation[] locGeom)
         {
-            foreach (IPoint pt0 in points0)
+            foreach (Point pt0 in points0)
             {
-                foreach (IPoint pt1 in points1)
+                foreach (Point pt1 in points1)
                 {
                     double dist = pt0.Coordinate.Distance(pt1.Coordinate);
                     if (dist < _minDistance)
@@ -427,11 +427,11 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="lines"></param>
         /// <param name="points"></param>
         /// <param name="locGeom"></param>
-        private void ComputeMinDistanceLinesPoints(IEnumerable<IGeometry> lines, ICollection<IGeometry> points, GeometryLocation[] locGeom)
+        private void ComputeMinDistanceLinesPoints(IEnumerable<Geometry> lines, ICollection<Geometry> points, GeometryLocation[] locGeom)
         {
-            foreach (ILineString line in lines)
+            foreach (LineString line in lines)
             {
-                foreach (IPoint pt in points)
+                foreach (Point pt in points)
                 {
                     ComputeMinDistance(line, pt, locGeom);
                     if (_minDistance <= _terminateDistance) return;
@@ -445,7 +445,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="line0"></param>
         /// <param name="line1"></param>
         /// <param name="locGeom"></param>
-        private void ComputeMinDistance(ILineString line0, ILineString line1, GeometryLocation[] locGeom)
+        private void ComputeMinDistance(LineString line0, LineString line1, GeometryLocation[] locGeom)
         {
             if (line0.EnvelopeInternal.Distance(line1.EnvelopeInternal) > _minDistance)
                 return;
@@ -479,7 +479,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="line"></param>
         /// <param name="pt"></param>
         /// <param name="locGeom"></param>
-        private void ComputeMinDistance(ILineString line, IPoint pt, GeometryLocation[] locGeom)
+        private void ComputeMinDistance(LineString line, Point pt, GeometryLocation[] locGeom)
         {
             if (line.EnvelopeInternal.Distance(pt.EnvelopeInternal) > _minDistance) return;
             var coord0 = line.Coordinates;

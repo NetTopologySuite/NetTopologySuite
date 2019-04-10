@@ -98,20 +98,20 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
         {
             {
                 const double scale = 2.0E10;
-                IPrecisionModel precisionModel = new PrecisionModel(scale);
-                IGeometryFactory geometryFactory = new GeometryFactory(precisionModel);
+                PrecisionModel precisionModel = new PrecisionModel(scale);
+                GeometryFactory geometryFactory = new GeometryFactory(precisionModel);
 
                 var reader = new WKTReader(geometryFactory);
-                var lineStringA = (ILineString)
+                var lineStringA = (LineString)
                     reader.Read("LINESTRING (-93.40178610435 -235.5437531975, -401.24229900825 403.69365857925)");
-                var lineStringB = (ILineString)
+                var lineStringB = (LineString)
                     reader.Read("LINESTRING (-50.0134121926 -145.44686640725, -357.8539250965 493.7905453695)");
-                var lineStringC = (ILineString)
+                var lineStringC = (LineString)
                     reader.Read("LINESTRING (-193.8964147753 -30.64653554935, -186.68866383205 -34.1176054623)");
 
-                var middlePoint = (IPoint) reader.Read("POINT (-203.93366864454998 174.171839481125)");
+                var middlePoint = (Point) reader.Read("POINT (-203.93366864454998 174.171839481125)");
 
-                var lineStrings = new List<ILineString>();
+                var lineStrings = new List<LineString>();
                 lineStrings.Add(lineStringA);
                 lineStrings.Add(lineStringB);
                 lineStrings.Add(lineStringC);
@@ -165,9 +165,9 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
 
         }
 
-        ICollection<IGeometry> FromWKT(string[] wkts)
+        ICollection<Geometry> FromWKT(string[] wkts)
         {
-            ICollection<IGeometry> geomList = new List<IGeometry>();
+            ICollection<Geometry> geomList = new List<Geometry>();
             for (int i = 0; i < wkts.Length; i++)
             {
                 try {
@@ -180,7 +180,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             return geomList;
         }
 
-        private static bool IsSnapped(IList<ILineString> lines, double tol)
+        private static bool IsSnapped(IList<LineString> lines, double tol)
         {
             for (int i = 0; i < lines.Count; i++)
             {
@@ -195,7 +195,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
             return true;
         }
 
-        private static bool IsSnapped(Coordinate v, IList<ILineString> lines)
+        private static bool IsSnapped(Coordinate v, IList<LineString> lines)
         {
             for (int i = 0; i < lines.Count ; i++)
             {

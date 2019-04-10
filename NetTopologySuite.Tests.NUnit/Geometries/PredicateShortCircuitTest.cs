@@ -46,7 +46,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             DoPredicates(b, a);
         }
 
-        public void DoPredicates(IGeometry a, IGeometry b)
+        public void DoPredicates(Geometry a, Geometry b)
         {
             Assert.IsTrue(a.Contains(b) == a.Relate(b).IsContains());
             Assert.IsTrue(a.Crosses(b) == a.Relate(b).IsCrosses(a.Dimension, b.Dimension));

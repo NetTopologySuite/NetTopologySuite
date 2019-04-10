@@ -8,7 +8,7 @@ using NetTopologySuite.GeometriesGraph;
 namespace NetTopologySuite.Operation
 {
     /// <summary>
-    /// Tests whether a <see cref="IGeometry"/> is simple.
+    /// Tests whether a <see cref="Geometry"/> is simple.
     /// In general, the SFS specification of simplicity
     /// follows the rule:
     /// <list type="Bullet">
@@ -18,7 +18,7 @@ namespace NetTopologySuite.Operation
     /// </list>
     /// </summary>
     /// <remarks>
-    /// Simplicity is defined for each <see cref="IGeometry"/>} subclass as follows:
+    /// Simplicity is defined for each <see cref="Geometry"/>} subclass as follows:
     /// <list type="Bullet">
     /// <item>Valid <see cref="IPolygonal"/> geometries are simple by definition, so
     /// <c>IsSimple</c> trivially returns true.<br/>
@@ -28,11 +28,11 @@ namespace NetTopologySuite.Operation
     /// use <see cref="Geometry.IsValid()" />).</item>
     /// <item><b><see cref="ILineal"/></b> geometries are simple if and only if they do <i>not</i> self-intersect at interior points
     /// (i.e. points other than boundary points).
-    /// This is equivalent to saying that no two linear components satisfy the SFS <see cref="IGeometry.Touches(IGeometry)"/>
+    /// This is equivalent to saying that no two linear components satisfy the SFS <see cref="Geometry.Touches(Geometry)"/>
     /// predicate.</item>
     /// <item><b>Zero-dimensional (<see cref="IPuntal"/>)</b> geometries are simple if and only if they have no
     /// repeated points.</item>
-    /// <item><b>Empty</b> <see cref="IGeometry"/>s are <i>always</i> simple by definition.</item>
+    /// <item><b>Empty</b> <see cref="Geometry"/>s are <i>always</i> simple by definition.</item>
     /// </list>
     /// For <see cref="ILineal"/> geometries the evaluation of simplicity
     /// can be customized by supplying a <see cref="IBoundaryNodeRule"/>
@@ -48,14 +48,14 @@ namespace NetTopologySuite.Operation
     /// </remarks>
     public class IsSimpleOp
     {
-        private readonly IGeometry _inputGeom;
+        private readonly Geometry _inputGeom;
         private readonly bool _isClosedEndpointsInInterior = true;
         private Coordinate _nonSimpleLocation;
 
         /// <summary>
         /// Creates a simplicity checker using the default SFS Mod-2 Boundary Node Rule
         /// </summary>
-        [Obsolete("Use IsSimpleOp(IGeometry geom)")]
+        [Obsolete("Use IsSimpleOp(Geometry geom)")]
         public IsSimpleOp()
         {
         }
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Operation
         /// Creates a simplicity checker using the default SFS Mod-2 Boundary Node Rule
         /// </summary>
         /// <param name="geom">The geometry to test</param>
-        public IsSimpleOp(IGeometry geom)
+        public IsSimpleOp(Geometry geom)
         {
             _inputGeom = geom;
         }
@@ -74,7 +74,7 @@ namespace NetTopologySuite.Operation
         /// </summary>
         /// <param name="geom">The geometry to test</param>
         /// <param name="boundaryNodeRule">The rule to use</param>
-        public IsSimpleOp(IGeometry geom, IBoundaryNodeRule boundaryNodeRule)
+        public IsSimpleOp(Geometry geom, IBoundaryNodeRule boundaryNodeRule)
         {
             _inputGeom = geom;
             _isClosedEndpointsInInterior = !boundaryNodeRule.IsInBoundary(2);
@@ -90,15 +90,15 @@ namespace NetTopologySuite.Operation
             return ComputeSimple(_inputGeom);
         }
 
-        private bool ComputeSimple(IGeometry geom)
+        private bool ComputeSimple(Geometry geom)
         {
             _nonSimpleLocation = null;
             if (geom.IsEmpty) return true;
-            if (geom is ILineString) return IsSimpleLinearGeometry(geom);
-            if (geom is IMultiLineString) return IsSimpleLinearGeometry(geom);
-            if (geom is IMultiPoint) return IsSimpleMultiPoint((IMultiPoint) geom);
+            if (geom is LineString) return IsSimpleLinearGeometry(geom);
+            if (geom is MultiLineString) return IsSimpleLinearGeometry(geom);
+            if (geom is MultiPoint) return IsSimpleMultiPoint((MultiPoint) geom);
             if (geom is IPolygonal) return IsSimplePolygonal(geom);
-            if (geom is IGeometryCollection) return IsSimpleGeometryCollection(geom);
+            if (geom is GeometryCollection) return IsSimpleGeometryCollection(geom);
             // all other geometry types are simple by definition
             return true;
         }
@@ -113,23 +113,23 @@ namespace NetTopologySuite.Operation
         public Coordinate NonSimpleLocation => _nonSimpleLocation;
 
         /// <summary>
-        /// Reports whether a <see cref="ILineString"/> is simple.
+        /// Reports whether a <see cref="LineString"/> is simple.
         /// </summary>
         /// <param name="geom">The lineal geometry to test</param>
         /// <returns>True if the geometry is simple</returns>
         [Obsolete("Use IsSimple()")]
-        public bool IsSimple(ILineString geom)
+        public bool IsSimple(LineString geom)
         {
             return IsSimpleLinearGeometry(geom);
         }
 
         /// <summary>
-        /// Reports whether a <see cref="IMultiLineString"/> is simple.
+        /// Reports whether a <see cref="MultiLineString"/> is simple.
         /// </summary>
         /// <param name="geom">The lineal geometry to test</param>
         /// <returns>True if the geometry is simple</returns>
         [Obsolete("Use IsSimple()")]
-        public bool IsSimple(IMultiLineString geom)
+        public bool IsSimple(MultiLineString geom)
         {
             return IsSimpleLinearGeometry(geom);
         }
@@ -138,12 +138,12 @@ namespace NetTopologySuite.Operation
         /// A MultiPoint is simple if it has no repeated points.
         /// </summary>
         [Obsolete("Use IsSimple()")]
-        public bool IsSimple(IMultiPoint mp)
+        public bool IsSimple(MultiPoint mp)
         {
             return IsSimpleMultiPoint(mp);
         }
 
-        private bool IsSimpleMultiPoint(IMultiPoint mp)
+        private bool IsSimpleMultiPoint(MultiPoint mp)
         {
             if (mp.IsEmpty)
                 return true;
@@ -151,7 +151,7 @@ namespace NetTopologySuite.Operation
             var points = new HashSet<Coordinate>();
             for (int i = 0; i < mp.NumGeometries; i++)
             {
-                var pt = (IPoint)mp.GetGeometryN(i);
+                var pt = (Point)mp.GetGeometryN(i);
                 var p = pt.Coordinate;
                 if (points.Contains(p))
                 {
@@ -170,10 +170,10 @@ namespace NetTopologySuite.Operation
         /// </summary>
         /// <param name="geom">A Polygonal geometry</param>
         /// <returns><c>true</c> if the geometry is simple</returns>
-        private bool IsSimplePolygonal(IGeometry geom)
+        private bool IsSimplePolygonal(Geometry geom)
         {
             var rings = LinearComponentExtracter.GetLines(geom);
-            foreach (ILinearRing ring in rings)
+            foreach (LinearRing ring in rings)
             {
                 if (!IsSimpleLinearGeometry(ring))
                     return false;
@@ -185,7 +185,7 @@ namespace NetTopologySuite.Operation
         /// simple iff all components are simple.</summary>
         /// <param name="geom">A GeometryCollection</param>
         /// <returns><c>true</c> if the geometry is simple</returns>
-        private bool IsSimpleGeometryCollection(IGeometry geom)
+        private bool IsSimpleGeometryCollection(Geometry geom)
         {
             for (int i = 0; i < geom.NumGeometries; i++)
             {
@@ -196,7 +196,7 @@ namespace NetTopologySuite.Operation
             return true;
         }
 
-        private bool IsSimpleLinearGeometry(IGeometry geom)
+        private bool IsSimpleLinearGeometry(Geometry geom)
         {
             if (geom.IsEmpty)
                 return true;

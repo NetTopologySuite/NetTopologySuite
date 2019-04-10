@@ -31,9 +31,9 @@ namespace NetTopologySuite.Samples.Tests.Github
             Assert.That(actual, Is.EqualTo(expected));
             Assert.That(actual.OgcGeometryType, Is.EqualTo(expected.OgcGeometryType));
 
-            // WKBReader reads "ILinearRing" geometries as ILineString
-            Assert.That(expected, Is.InstanceOf<ILinearRing>());
-            Assert.That(actual, Is.InstanceOf<ILineString>());
+            // WKBReader reads "LinearRing" geometries as LineString
+            Assert.That(expected, Is.InstanceOf<LinearRing>());
+            Assert.That(actual, Is.InstanceOf<LineString>());
             Assert.That(actual.GeometryType, Is.Not.EqualTo(expected.GeometryType));
         }
     }

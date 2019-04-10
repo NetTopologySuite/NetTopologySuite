@@ -17,23 +17,23 @@ namespace NetTopologySuite.Precision
     /// <author>Martin Davis</author>
     public class SimpleMinimumClearance
     {
-        public static double GetDistance(IGeometry g)
+        public static double GetDistance(Geometry g)
         {
             var rp = new SimpleMinimumClearance(g);
             return rp.GetDistance();
         }
 
-        public static IGeometry GetLine(IGeometry g)
+        public static Geometry GetLine(Geometry g)
         {
             var rp = new SimpleMinimumClearance(g);
             return rp.GetLine();
         }
 
-        private readonly IGeometry _inputGeom;
+        private readonly Geometry _inputGeom;
         private double _minClearance;
         private Coordinate[] _minClearancePts;
 
-        public SimpleMinimumClearance(IGeometry geom)
+        public SimpleMinimumClearance(Geometry geom)
         {
             _inputGeom = geom;
         }
@@ -44,7 +44,7 @@ namespace NetTopologySuite.Precision
             return _minClearance;
         }
 
-        public ILineString GetLine()
+        public LineString GetLine()
         {
             Compute();
             return _inputGeom.Factory.CreateLineString(_minClearancePts);
@@ -83,9 +83,9 @@ namespace NetTopologySuite.Precision
         private class VertexCoordinateFilter : ICoordinateFilter
         {
             private readonly SimpleMinimumClearance _smc;
-            private readonly IGeometry _inputGeometry;
+            private readonly Geometry _inputGeometry;
 
-            public VertexCoordinateFilter(SimpleMinimumClearance smc, IGeometry inputGeometry)
+            public VertexCoordinateFilter(SimpleMinimumClearance smc, Geometry inputGeometry)
             {
                 _smc = smc;
                 _inputGeometry = inputGeometry;

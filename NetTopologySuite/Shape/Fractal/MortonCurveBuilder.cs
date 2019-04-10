@@ -3,7 +3,7 @@
 namespace NetTopologySuite.Shape.Fractal
 {
     /// <summary>
-    /// Generates a <see cref="ILineString"/> representing the Morton Curve
+    /// Generates a <see cref="LineString"/> representing the Morton Curve
     /// at a given level.
     /// </summary>
     public class MortonCurveBuilder : GeometricShapeBuilder
@@ -13,10 +13,10 @@ namespace NetTopologySuite.Shape.Fractal
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MortonCurveBuilder"/> class
-        /// using the provided <see cref="IGeometryFactory"/>.
+        /// using the provided <see cref="GeometryFactory"/>.
         /// </summary>
         /// <param name="geomFactory">The geometry factory to use.</param>
-        public MortonCurveBuilder(IGeometryFactory geomFactory)
+        public MortonCurveBuilder(GeometryFactory geomFactory)
             : base(geomFactory)
         {
             // use a null extent to indicate no transformation
@@ -35,7 +35,7 @@ namespace NetTopologySuite.Shape.Fractal
         }
 
         /// <inheritdoc />
-        public override IGeometry GetGeometry()
+        public override Geometry GetGeometry()
         {
             int level = Level;
             int nPts = HilbertCode.Size(level);

@@ -13,11 +13,11 @@ namespace NetTopologySuite.Operation.Overlay
     public class LineBuilder
     {
         private readonly OverlayOp _op;
-        private readonly IGeometryFactory _geometryFactory;
+        private readonly GeometryFactory _geometryFactory;
         private readonly PointLocator _ptLocator;
 
         private readonly List<Edge> _lineEdgesList = new List<Edge>();
-        private readonly List<IGeometry> _resultLineList = new List<IGeometry>();
+        private readonly List<Geometry> _resultLineList = new List<Geometry>();
 
         /// <summary>
         ///
@@ -25,7 +25,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="op"></param>
         /// <param name="geometryFactory"></param>
         /// <param name="ptLocator"></param>
-        public LineBuilder(OverlayOp op, IGeometryFactory geometryFactory, PointLocator ptLocator)
+        public LineBuilder(OverlayOp op, GeometryFactory geometryFactory, PointLocator ptLocator)
         {
             _op = op;
             _geometryFactory = geometryFactory;
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <returns>
         /// A list of the LineStrings in the result of the specified overlay operation.
         /// </returns>
-        public IList<IGeometry> Build(SpatialFunction opCode)
+        public IList<Geometry> Build(SpatialFunction opCode)
         {
             FindCoveredLineEdges();
             CollectLines(opCode);

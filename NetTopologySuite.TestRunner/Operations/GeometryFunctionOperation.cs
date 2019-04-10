@@ -7,7 +7,7 @@ namespace Open.Topology.TestRunner.Operations
 {/// <summary>
     /// Invokes a function from registry
     ///  or a Geometry method determined by a named operation with a list of arguments,
-    ///  the first of which is a <see cref="IGeometry"/>.
+    ///  the first of which is a <see cref="Geometry"/>.
     ///  This class allows overriding Geometry methods
     ///  or augmenting them
     ///  with functions defined in a <see cref="GeometryFunctionRegistry"/>.
@@ -40,7 +40,7 @@ namespace Open.Topology.TestRunner.Operations
             return func.ReturnType;
         }
 
-        public IResult Invoke(XmlTestType opName, IGeometry geometry, object[] args)
+        public IResult Invoke(XmlTestType opName, Geometry geometry, object[] args)
         {
             var func = registry.Find(opName.ToString(), args.Length);
             if (func == null)
@@ -49,13 +49,13 @@ namespace Open.Topology.TestRunner.Operations
             return Invoke(func, geometry, args);
         }
 
-        private IResult Invoke(IGeometryFunction func, IGeometry geometry, object[] args)
+        private IResult Invoke(IGeometryFunction func, Geometry geometry, object[] args)
         {
             object[] actualArgs = argConverter.Convert(func.ParameterTypes, args);
             if (func.ReturnType == typeof(bool))
                 return new BooleanResult((bool)func.Invoke(geometry, actualArgs));
-            if (typeof(IGeometry).IsAssignableFrom(func.ReturnType))
-                return new GeometryResult((IGeometry)func.Invoke(geometry, actualArgs));
+            if (typeof(Geometry).IsAssignableFrom(func.ReturnType))
+                return new GeometryResult((Geometry)func.Invoke(geometry, actualArgs));
             if (func.ReturnType == typeof(double))
                 return new DoubleResult((double)func.Invoke(geometry, actualArgs));
             if (func.ReturnType == typeof(int))

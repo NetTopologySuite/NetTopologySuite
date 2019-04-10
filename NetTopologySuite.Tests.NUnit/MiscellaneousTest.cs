@@ -10,8 +10,8 @@ namespace NetTopologySuite.Tests.NUnit
     public class MiscellaneousTest
     {
 
-        private static readonly IPrecisionModel precisionModel = new PrecisionModel(1);
-        private static readonly IGeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
+        private static readonly PrecisionModel precisionModel = new PrecisionModel(1);
+        private static readonly GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
         private static WKTReader reader = new WKTReader(geometryFactory);
 
         [Test]
@@ -20,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit
             var a = reader.Read("LINESTRING(0 0, 10 10)");
             //Envelope is lazily initialized [Jon Aquino]
             var aenv = a.EnvelopeInternal;
-            var b = (IGeometry) a.Copy();
+            var b = (Geometry) a.Copy();
             Assert.IsTrue(!ReferenceEquals(a.EnvelopeInternal, b.EnvelopeInternal));
         }
 
@@ -110,7 +110,7 @@ namespace NetTopologySuite.Tests.NUnit
                           typeof (GeometryCollection));
             try
             {
-                var b = geometryFactory.CreateGeometryCollection(new IGeometry[] {}).Boundary;
+                var b = geometryFactory.CreateGeometryCollection(new Geometry[] {}).Boundary;
                 Assert.IsTrue(false);
             }
             catch (ArgumentException e)
@@ -121,7 +121,7 @@ namespace NetTopologySuite.Tests.NUnit
         [Test]
         public void testToPointArray()
         {
-            var list = new List<IGeometry>();
+            var list = new List<Geometry>();
             list.Add(geometryFactory.CreatePoint(new Coordinate(0, 0)));
             list.Add(geometryFactory.CreatePoint(new Coordinate(10, 0)));
             list.Add(geometryFactory.CreatePoint(new Coordinate(10, 10)));
@@ -315,8 +315,8 @@ namespace NetTopologySuite.Tests.NUnit
         public void testLineStringBoundary1()
         {
             var g = (LineString) reader.Read("LINESTRING(10 10, 20 10, 15 20)");
-            Assert.IsTrue(g.Boundary is IMultiPoint);
-            var boundary = (IMultiPoint) g.Boundary;
+            Assert.IsTrue(g.Boundary is MultiPoint);
+            var boundary = (MultiPoint) g.Boundary;
             Assert.IsTrue(boundary.GetGeometryN(0).Equals(g.StartPoint));
             Assert.IsTrue(boundary.GetGeometryN(1).Equals(g.EndPoint));
         }

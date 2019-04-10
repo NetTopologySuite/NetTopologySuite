@@ -13,7 +13,7 @@ namespace NetTopologySuite.Samples.LinearReferencing
     /// </summary>
     public class LinearReferencingExample
     {
-        private static IGeometryFactory fact = GeometryFactory.Fixed;
+        private static GeometryFactory fact = GeometryFactory.Fixed;
         private static WKTReader rdr = new WKTReader(fact);
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace NetTopologySuite.Samples.LinearReferencing
 
         }
 
-IGeometry InsertPoint(IGeometry geom, Coordinate point)
+Geometry InsertPoint(Geometry geom, Coordinate point)
 {
     if (!(geom is ILineal))
         throw new InvalidOperationException();
@@ -87,7 +87,7 @@ IGeometry InsertPoint(IGeometry geom, Coordinate point)
     var lil = new LocationIndexedLine(geom);
     var ll = lil.Project(point);
 
-    var element = (ILineString) geom.GetGeometryN(ll.ComponentIndex);
+    var element = (LineString) geom.GetGeometryN(ll.ComponentIndex);
     var oldSeq = element.CoordinateSequence;
     var newSeq = element.Factory.CoordinateSequenceFactory.Create(
         oldSeq.Count + 1, oldSeq.Dimension);
@@ -114,7 +114,7 @@ IGeometry InsertPoint(IGeometry geom, Coordinate point)
         CoordinateSequences.Copy(oldSeq, ll.SegmentIndex + 1, newSeq, ll.SegmentIndex + 2, newSeq.Count - 2 - ll.SegmentIndex);
     }
 
-    var lines = new List<IGeometry>();
+    var lines = new List<Geometry>();
     LineStringExtracter.GetLines(geom, lines);
     lines[ll.ComponentIndex] = geom.Factory.CreateLineString(newSeq);
     if (lines.Count == 1)

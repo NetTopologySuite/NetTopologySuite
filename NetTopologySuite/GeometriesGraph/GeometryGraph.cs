@@ -36,14 +36,14 @@ namespace NetTopologySuite.GeometriesGraph
                 ? Location.Boundary : Location.Interior;
         }
 
-        private readonly IGeometry _parentGeom;
+        private readonly Geometry _parentGeom;
 
         /// <summary>
         /// The lineEdgeMap is a map of the linestring components of the
         /// parentGeometry to the edges which are derived from them.
         /// This is used to efficiently perform findEdge queries
         /// </summary>
-        private readonly IDictionary<ILineString, Edge> _lineEdgeMap = new Dictionary<ILineString, Edge>();
+        private readonly IDictionary<LineString, Edge> _lineEdgeMap = new Dictionary<LineString, Edge>();
 
         private readonly IBoundaryNodeRule _boundaryNodeRule;
 
@@ -77,7 +77,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="argIndex"></param>
         /// <param name="parentGeom"></param>
-        public GeometryGraph(int argIndex, IGeometry parentGeom)
+        public GeometryGraph(int argIndex, Geometry parentGeom)
             : this(argIndex, parentGeom, BoundaryNodeRules.OgcSfsBoundaryRule)
         {
         }
@@ -88,7 +88,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="argIndex"></param>
         /// <param name="parentGeom"></param>
         /// <param name="boundaryNodeRule"></param>
-        public GeometryGraph(int argIndex, IGeometry parentGeom, IBoundaryNodeRule boundaryNodeRule)
+        public GeometryGraph(int argIndex, Geometry parentGeom, IBoundaryNodeRule boundaryNodeRule)
         {
             _argIndex = argIndex;
             _boundaryNodeRule = boundaryNodeRule;
@@ -110,7 +110,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public IGeometry Geometry => _parentGeom;
+        public Geometry Geometry => _parentGeom;
 
         /// <summary>
         /// Gets the <see cref="IBoundaryNodeRule"/> used with this geometry graph.
@@ -151,7 +151,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="line"></param>
         /// <returns></returns>
-        public Edge FindEdge(ILineString line)
+        public Edge FindEdge(LineString line)
         {
             return _lineEdgeMap[line];
         }
@@ -172,31 +172,31 @@ namespace NetTopologySuite.GeometriesGraph
         ///
         /// </summary>
         /// <param name="g"></param>
-        private void Add(IGeometry g)
+        private void Add(Geometry g)
         {
             if (g.IsEmpty)
                 return;
 
             // check if this Geometry should obey the Boundary Determination Rule
             // all collections except MultiPolygons obey the rule
-            if (g is IMultiPolygon)
+            if (g is MultiPolygon)
                 _useBoundaryDeterminationRule = false;
 
-            if (g is IPolygon)
-                AddPolygon((IPolygon)g);
+            if (g is Polygon)
+                AddPolygon((Polygon)g);
             // LineString also handles LinearRings
-            else if (g is ILineString)
-                AddLineString((ILineString)g);
-            else if (g is IPoint)
-                AddPoint((IPoint)g);
-            else if (g is IMultiPoint)
-                AddCollection((IMultiPoint)g);
-            else if (g is IMultiLineString)
-                AddCollection((IMultiLineString)g);
-            else if (g is IMultiPolygon)
-                AddCollection((IMultiPolygon)g);
-            else if (g is IGeometryCollection)
-                AddCollection((IGeometryCollection)g);
+            else if (g is LineString)
+                AddLineString((LineString)g);
+            else if (g is Point)
+                AddPoint((Point)g);
+            else if (g is MultiPoint)
+                AddCollection((MultiPoint)g);
+            else if (g is MultiLineString)
+                AddCollection((MultiLineString)g);
+            else if (g is MultiPolygon)
+                AddCollection((MultiPolygon)g);
+            else if (g is GeometryCollection)
+                AddCollection((GeometryCollection)g);
             else
                 throw new NotSupportedException(g.GetType().FullName);
         }
@@ -205,7 +205,7 @@ namespace NetTopologySuite.GeometriesGraph
         ///
         /// </summary>
         /// <param name="gc"></param>
-        private void AddCollection(IGeometryCollection gc)
+        private void AddCollection(GeometryCollection gc)
         {
             for (int i = 0; i < gc.NumGeometries; i++)
             {
@@ -218,7 +218,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// Add a Point to the graph.
         /// </summary>
         /// <param name="p"></param>
-        private void AddPoint(IPoint p)
+        private void AddPoint(Point p)
         {
             var coord = p.Coordinate;
             InsertPoint(_argIndex, coord, Location.Interior);
@@ -233,7 +233,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="lr"></param>
         /// <param name="cwLeft"></param>
         /// <param name="cwRight"></param>
-        private void AddPolygonRing(ILinearRing lr, Location cwLeft, Location cwRight)
+        private void AddPolygonRing(LinearRing lr, Location cwLeft, Location cwRight)
         {
             // don't bother adding empty holes
             if (lr.IsEmpty)
@@ -264,7 +264,7 @@ namespace NetTopologySuite.GeometriesGraph
         ///
         /// </summary>
         /// <param name="p"></param>
-        private void AddPolygon(IPolygon p)
+        private void AddPolygon(Polygon p)
         {
             AddPolygonRing(p.Shell, Location.Exterior, Location.Interior);
 
@@ -282,7 +282,7 @@ namespace NetTopologySuite.GeometriesGraph
         ///
         /// </summary>
         /// <param name="line"></param>
-        private void AddLineString(ILineString line)
+        private void AddLineString(LineString line)
         {
             var coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
             if (coord.Length < 2)
@@ -359,9 +359,9 @@ namespace NetTopologySuite.GeometriesGraph
             si.IsDoneIfProperInt = isDoneIfProperInt;
             var esi = CreateEdgeSetIntersector();
             // optimize intersection search for valid Polygons and LinearRings
-            bool isRings = _parentGeom is ILinearRing
-                          || _parentGeom is IPolygon
-                          || _parentGeom is IMultiPolygon;
+            bool isRings = _parentGeom is LinearRing
+                          || _parentGeom is Polygon
+                          || _parentGeom is MultiPolygon;
             bool computeAllSegments = computeRingSelfNodes || !isRings;
             esi.ComputeIntersections(Edges, si, computeAllSegments);
 

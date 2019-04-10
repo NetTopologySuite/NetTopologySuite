@@ -28,14 +28,14 @@ namespace Open.Topology.TestRunner.Functions
 
         public bool IsBinary => _fun.IsBinary;
 
-        public object Invoke(IGeometry geom, object[] args)
+        public object Invoke(Geometry geom, object[] args)
         {
 #if false
-            var results = new IGeometry[geom.NumGeometries];
+            var results = new Geometry[geom.NumGeometries];
             for (int i = 0; i < results.Length; i++)
             {
                 var elt = geom.GetGeometryN(i);
-                var result = (IGeometry)_fun.Invoke(elt, args);
+                var result = (Geometry)_fun.Invoke(elt, args);
 
                 // can't include null results
                 if (result == null)
@@ -49,7 +49,7 @@ namespace Open.Topology.TestRunner.Functions
 
             return geom.Factory.CreateGeometryCollection(results);
 #else
-            return GeometryMapper.Map(geom, g => (IGeometry)_fun.Invoke(g, args));
+            return GeometryMapper.Map(geom, g => (Geometry)_fun.Invoke(g, args));
 #endif
         }
     }

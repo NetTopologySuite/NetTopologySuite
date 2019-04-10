@@ -5,7 +5,7 @@ namespace Open.Topology.TestRunner.Functions
 {
     public static class DissolveFunctions
     {
-        public static IGeometry Dissolve(IGeometry geom)
+        public static Geometry Dissolve(Geometry geom)
         {
             return LineDissolver.Dissolve(geom);
         }

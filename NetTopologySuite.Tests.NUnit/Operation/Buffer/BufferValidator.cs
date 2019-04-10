@@ -44,10 +44,10 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             }
         }
 
-        private IGeometry _original;
+        private Geometry _original;
         private readonly double _bufferDistance;
         private readonly Dictionary<string, TestCase> _nameToTestMap = new Dictionary<string, TestCase>();
-        private IGeometry _buffer;
+        private Geometry _buffer;
         private const int QuadrantSegments1 = 100;
         private const int QuadrantSegments2 = 50;
         private readonly string _wkt;
@@ -56,7 +56,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 
         //public BufferValidator()
         //{
-        //    IGeometry g =
+        //    Geometry g =
         //        new WKTReader().Read(
         //        "MULTILINESTRING (( 635074.5418406526 6184832.4888257105, 635074.5681951842 6184832.571842485, 635074.6472587794 6184832.575795664 ), ( 635074.6657069515 6184832.53889932, 635074.6933792098 6184832.451929366, 635074.5642420045 6184832.474330718 ))");
         //    Console.WriteLine(g);
@@ -144,17 +144,17 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             return this;
         }
 
-        private static bool HasHoles(IGeometry buffer)
+        private static bool HasHoles(Geometry buffer)
         {
             if (buffer.IsEmpty)
             {
                 return false;
             }
-            var polygon = buffer as IPolygon;
+            var polygon = buffer as Polygon;
             if (polygon != null)
                 return polygon.NumInteriorRings > 0;
 
-            var multiPolygon = (IMultiPolygon) buffer;
+            var multiPolygon = (MultiPolygon) buffer;
             for (int i = 0; i < multiPolygon.NumGeometries; i++)
             {
                 if (HasHoles(multiPolygon.GetGeometryN(i)))
@@ -165,7 +165,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             return false;
         }
 
-        private IGeometry GetOriginal()
+        private Geometry GetOriginal()
         {
             return _original ?? (_original = _wktReader.Read(_wkt));
         }
@@ -182,7 +182,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             return this;
         }
 
-        private IGeometry GetBuffer()
+        private Geometry GetBuffer()
         {
             if (_buffer == null)
             {
@@ -254,7 +254,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
             return this;
         }
 
-        private static bool Contains(IGeometry a, IGeometry b)
+        private static bool Contains(Geometry a, Geometry b)
         {
             //JTS doesn't currently handle empty geometries correctly [Jon Aquino
             // 10/29/2003]

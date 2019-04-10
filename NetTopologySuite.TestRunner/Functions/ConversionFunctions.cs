@@ -7,41 +7,41 @@ namespace Open.Topology.TestRunner.Functions
 {
     public static class ConversionFunctions
     {
-        public static IGeometry ToPoints(IGeometry g1, IGeometry g2)
+        public static Geometry ToPoints(Geometry g1, Geometry g2)
         {
             var geoms = FunctionsUtil.BuildGeometry(g1, g2);
             return FunctionsUtil.GetFactoryOrDefault(new[] { g1, g2 })
                 .CreateMultiPointFromCoords(geoms.Coordinates);
         }
 
-        public static IGeometry ToLines(IGeometry g1, IGeometry g2)
+        public static Geometry ToLines(Geometry g1, Geometry g2)
         {
             var geoms = FunctionsUtil.BuildGeometry(g1, g2);
             return FunctionsUtil.GetFactoryOrDefault(new[] { g1, g2 })
                 .BuildGeometry(LinearComponentExtracter.GetLines(geoms));
         }
 
-        public static IGeometry ToGeometryCollection(IGeometry g, IGeometry g2)
+        public static Geometry ToGeometryCollection(Geometry g, Geometry g2)
         {
 
-            var atomicGeoms = new List<IGeometry>();
+            var atomicGeoms = new List<Geometry>();
             if (g != null) AddComponents(g, atomicGeoms);
             if (g2 != null) AddComponents(g2, atomicGeoms);
             return g.Factory.CreateGeometryCollection(
                 GeometryFactory.ToGeometryArray(atomicGeoms));
         }
 
-        private static void AddComponents(IGeometry g, List<IGeometry> atomicGeoms)
+        private static void AddComponents(Geometry g, List<Geometry> atomicGeoms)
         {
-            if (!(g is IGeometryCollection))
+            if (!(g is GeometryCollection))
             {
                 atomicGeoms.Add(g);
                 return;
             }
 
-            foreach (var gi in (IGeometryCollection)g)
+            foreach (var gi in (GeometryCollection)g)
             {
-                if (!(gi is IGeometryCollection))
+                if (!(gi is GeometryCollection))
                     atomicGeoms.Add(gi);
             }
         }

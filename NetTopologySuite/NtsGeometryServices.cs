@@ -51,11 +51,11 @@ namespace NetTopologySuite
         #region Key
         private struct GeometryFactoryKey
         {
-            private readonly IPrecisionModel _precisionModel;
+            private readonly PrecisionModel _precisionModel;
             private readonly ICoordinateSequenceFactory _factory;
             private readonly int _srid;
 
-            public GeometryFactoryKey(IPrecisionModel precisionModel, ICoordinateSequenceFactory factory, int srid)
+            public GeometryFactoryKey(PrecisionModel precisionModel, ICoordinateSequenceFactory factory, int srid)
             {
                 _precisionModel = precisionModel;
                 _factory = factory;
@@ -188,7 +188,7 @@ namespace NetTopologySuite
         #endregion
 
         private readonly object _factoriesLock = new object();
-        private readonly SaveDictionary<GeometryFactoryKey, IGeometryFactory> _factories = new SaveDictionary<GeometryFactoryKey, IGeometryFactory>();
+        private readonly SaveDictionary<GeometryFactoryKey, GeometryFactory> _factories = new SaveDictionary<GeometryFactoryKey, GeometryFactory>();
 
         /// <summary>
         /// Creates an instance of this class, using the <see cref="CoordinateArraySequenceFactory"/> as default and a <see cref="PrecisionModels.Floating"/> precision model. No <see cref="DefaultSRID"/> is specified
@@ -200,13 +200,13 @@ namespace NetTopologySuite
         }
 
         /// <summary>
-        /// Creates an instance of this class, using the provided <see cref="ICoordinateSequenceFactory"/>, <see cref="IPrecisionModel"/> and spatial reference Id (<paramref name="srid"/>.
+        /// Creates an instance of this class, using the provided <see cref="ICoordinateSequenceFactory"/>, <see cref="PrecisionModel"/> and spatial reference Id (<paramref name="srid"/>.
         /// </summary>
         /// <param name="coordinateSequenceFactory">The coordinate sequence factory to use.</param>
         /// <param name="precisionModel">The precision model.</param>
         /// <param name="srid">The default spatial reference ID</param>
         public NtsGeometryServices(ICoordinateSequenceFactory coordinateSequenceFactory,
-            IPrecisionModel precisionModel, int srid)
+            PrecisionModel precisionModel, int srid)
         {
             DefaultCoordinateSequenceFactory = coordinateSequenceFactory;
             DefaultPrecisionModel = precisionModel;
@@ -228,13 +228,13 @@ namespace NetTopologySuite
         /// <summary>
         /// Gets or sets the default precision model
         /// </summary>
-        public IPrecisionModel DefaultPrecisionModel { get; private set; }
+        public PrecisionModel DefaultPrecisionModel { get; private set; }
 
         /// <summary>
         /// Creates a precision model based on given precision model type
         /// </summary>
         /// <returns>The precision model type</returns>
-        public IPrecisionModel CreatePrecisionModel(PrecisionModels modelType)
+        public PrecisionModel CreatePrecisionModel(PrecisionModels modelType)
         {
             return new PrecisionModel(modelType);
         }
@@ -243,14 +243,9 @@ namespace NetTopologySuite
         /// Creates a precision model based on given precision model.
         /// </summary>
         /// <returns>The precision model</returns>
-        public IPrecisionModel CreatePrecisionModel(IPrecisionModel precisionModel)
+        public PrecisionModel CreatePrecisionModel(PrecisionModel precisionModel)
         {
-            if (precisionModel is PrecisionModel)
-                return new PrecisionModel((PrecisionModel)precisionModel);
-
-            if (!precisionModel.IsFloating)
-                return new PrecisionModel(precisionModel.Scale);
-            return new PrecisionModel(precisionModel.PrecisionModelType);
+            return new PrecisionModel(precisionModel);
         }
 
         /// <summary>
@@ -258,17 +253,17 @@ namespace NetTopologySuite
         /// </summary>
         /// <param name="scale">The scale factor</param>
         /// <returns>The precision model.</returns>
-        public IPrecisionModel CreatePrecisionModel(double scale)
+        public PrecisionModel CreatePrecisionModel(double scale)
         {
             return new PrecisionModel(scale);
         }
 
-        public IGeometryFactory CreateGeometryFactory()
+        public GeometryFactory CreateGeometryFactory()
         {
             return CreateGeometryFactory(DefaultSRID);
         }
 
-        public IGeometryFactory CreateGeometryFactory(int srid)
+        public GeometryFactory CreateGeometryFactory(int srid)
         {
             return CreateGeometryFactory(DefaultPrecisionModel, srid, DefaultCoordinateSequenceFactory);
         }
@@ -287,22 +282,22 @@ namespace NetTopologySuite
             }
         }
 
-        public IGeometryFactory CreateGeometryFactory(ICoordinateSequenceFactory coordinateSequenceFactory)
+        public GeometryFactory CreateGeometryFactory(ICoordinateSequenceFactory coordinateSequenceFactory)
         {
             return CreateGeometryFactory(DefaultPrecisionModel, DefaultSRID, coordinateSequenceFactory);
         }
 
-        public IGeometryFactory CreateGeometryFactory(IPrecisionModel precisionModel)
+        public GeometryFactory CreateGeometryFactory(PrecisionModel precisionModel)
         {
             return CreateGeometryFactory(precisionModel, DefaultSRID, DefaultCoordinateSequenceFactory);
         }
 
-        public IGeometryFactory CreateGeometryFactory(IPrecisionModel precisionModel, int srid)
+        public GeometryFactory CreateGeometryFactory(PrecisionModel precisionModel, int srid)
         {
             return CreateGeometryFactory(precisionModel, srid, DefaultCoordinateSequenceFactory);
         }
 
-        public IGeometryFactory CreateGeometryFactory(IPrecisionModel precisionModel, int srid, ICoordinateSequenceFactory coordinateSequenceFactory)
+        public GeometryFactory CreateGeometryFactory(PrecisionModel precisionModel, int srid, ICoordinateSequenceFactory coordinateSequenceFactory)
         {
             if (precisionModel == null)
                 throw new ArgumentNullException("precisionModel");
@@ -310,7 +305,7 @@ namespace NetTopologySuite
                 throw new ArgumentNullException("coordinateSequenceFactory");
 
             var gfkey = new GeometryFactoryKey(precisionModel, coordinateSequenceFactory, srid);
-            IGeometryFactory factory;
+            GeometryFactory factory;
             if (!_factories.TryGetValue(gfkey, out factory))
             {
                 if (!_factories.TryGetValue(gfkey, out factory))

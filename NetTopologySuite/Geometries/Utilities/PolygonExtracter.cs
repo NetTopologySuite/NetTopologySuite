@@ -3,24 +3,24 @@ using System.Collections.Generic;
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
-    /// Extracts all the <see cref="IPolygon"/> elements from a <see cref="IGeometry"/>.
+    /// Extracts all the <see cref="Polygon"/> elements from a <see cref="Geometry"/>.
     /// </summary>
     /// <see cref="GeometryExtracter"/>
     public class PolygonExtracter : IGeometryFilter
     {
         /// <summary>
-        /// Extracts the <see cref="IPolygon"/> elements from a single <see cref="IGeometry"/> and adds them to the provided <see cref="IList{IPolygon}"/>.
+        /// Extracts the <see cref="Polygon"/> elements from a single <see cref="Geometry"/> and adds them to the provided <see cref="IList{Polygon}"/>.
         /// </summary>
         /// <param name="geom">The geometry from which to extract</param>
         /// <param name="list">The list to add the extracted elements to</param>
         /// <returns></returns>
-        public static IList<IGeometry> GetPolygons(IGeometry geom, IList<IGeometry> list)
+        public static IList<Geometry> GetPolygons(Geometry geom, IList<Geometry> list)
         {
-            if (geom is IPolygon)
+            if (geom is Polygon)
             {
                 list.Add(geom);
             }
-            else if (geom is IGeometryCollection)
+            else if (geom is GeometryCollection)
             {
                 geom.Apply(new PolygonExtracter(list));
             }
@@ -30,21 +30,21 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Extracts the <see cref="IPolygon"/> elements from a single <see cref="IGeometry"/> and returns them in a <see cref="IList{IPolygon}"/>.
+        /// Extracts the <see cref="Polygon"/> elements from a single <see cref="Geometry"/> and returns them in a <see cref="IList{Polygon}"/>.
         /// </summary>
         /// <param name="geom">The geometry from which to extract</param>
-        public static IList<IGeometry> GetPolygons(IGeometry geom)
+        public static IList<Geometry> GetPolygons(Geometry geom)
         {
-            return GetPolygons(geom, new List<IGeometry>());
+            return GetPolygons(geom, new List<Geometry>());
         }
 
-        private readonly IList<IGeometry> _comps;
+        private readonly IList<Geometry> _comps;
 
         /// <summary>
         /// Constructs a PolygonExtracterFilter with a list in which to store Polygons found.
         /// </summary>
         /// <param name="comps"></param>
-        public PolygonExtracter(IList<IGeometry> comps)
+        public PolygonExtracter(IList<Geometry> comps)
         {
             _comps = comps;
         }
@@ -53,9 +53,9 @@ namespace NetTopologySuite.Geometries.Utilities
         ///
         /// </summary>
         /// <param name="geom"></param>
-        public void Filter(IGeometry geom)
+        public void Filter(Geometry geom)
         {
-            if (geom is IPolygon)
+            if (geom is Polygon)
                 _comps.Add(geom);
         }
     }

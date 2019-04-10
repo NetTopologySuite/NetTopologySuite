@@ -7,7 +7,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// </summary>
     /// <remarks>
     /// <para>
-    /// It can be used to transform a <see cref="Coordinate"/> or <see cref="IGeometry"/>.
+    /// It can be used to transform a <see cref="Coordinate"/> or <see cref="Geometry"/>.
     /// An affine transformation is a mapping of the 2D plane into itself
     /// via a series of transformations of the following basic types:
     /// <ul>
@@ -971,11 +971,11 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Creates a new <see cref="IGeometry"/> which is the result of this transformation applied to the input Geometry.
+        /// Creates a new <see cref="Geometry"/> which is the result of this transformation applied to the input Geometry.
         /// </summary>
         /// <param name="g">A <c>Geometry</c></param>
         /// <returns>The transformed Geometry</returns>
-        public IGeometry Transform(IGeometry g)
+        public Geometry Transform(Geometry g)
         {
             var g2 = g.Copy();
             g2.Apply(this);

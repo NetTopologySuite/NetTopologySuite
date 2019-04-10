@@ -13,8 +13,8 @@ namespace NetTopologySuite.SnapRound
         /// <param name="geom">A Geometry containing linework to node</param>
         /// <param name="scaleFactor">The precision model scale factor to use</param>
         /// <returns>The noded, snap-rounded linework</returns>
-        public static IGeometry SnapRoundLines(
-            IGeometry geom, double scaleFactor)
+        public static Geometry SnapRoundLines(
+            Geometry geom, double scaleFactor)
         {
             var pm = new PrecisionModel(scaleFactor);
             var gsr = new GeometrySnapRounder(pm);
@@ -23,8 +23,8 @@ namespace NetTopologySuite.SnapRound
             return snapped;
         }
 
-        public static IGeometry SnapRound(
-            IGeometry geomA, IGeometry geomB,
+        public static Geometry SnapRound(
+            Geometry geomA, Geometry geomB,
             double scaleFactor)
         {
             var pm = new PrecisionModel(scaleFactor);
@@ -33,7 +33,7 @@ namespace NetTopologySuite.SnapRound
 
             if (geomB != null)
             {
-                geom = geomA.Factory.CreateGeometryCollection(new IGeometry[] { geomA, geomB });
+                geom = geomA.Factory.CreateGeometryCollection(new Geometry[] { geomA, geomB });
             }
 
             var gsr = new GeometrySnapRounder(pm);

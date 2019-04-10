@@ -23,13 +23,13 @@ namespace NetTopologySuite.Geometries
     /// </para>
     /// </remarks>
     [Serializable]
-    public class LineString : Geometry, ILineString
+    public class LineString : Geometry, ILineal
     {
 
         /// <summary>
         /// Represents an empty <c>LineString</c>.
         /// </summary>
-        public static readonly ILineString Empty = new GeometryFactory().CreateLineString(new Coordinate[] { });
+        public static readonly LineString Empty = new GeometryFactory().CreateLineString(new Coordinate[] { });
 
         /// <summary>
         /// The points of this <c>LineString</c>.
@@ -59,7 +59,7 @@ namespace NetTopologySuite.Geometries
         /// </param>
         /// <param name="factory"></param>
         /// <exception cref="ArgumentException">If too few points are provided</exception>
-        public LineString(ICoordinateSequence points, IGeometryFactory factory)
+        public LineString(ICoordinateSequence points, GeometryFactory factory)
             : base(factory)
         {
             if (points == null)
@@ -154,7 +154,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public IPoint GetPointN(int n)
+        public Point GetPointN(int n)
         {
             return Factory.CreatePoint(_points.GetCoordinate(n));
         }
@@ -162,7 +162,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public IPoint StartPoint
+        public Point StartPoint
         {
             get
             {
@@ -175,7 +175,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public IPoint EndPoint
+        public Point EndPoint
         {
             get
             {
@@ -228,13 +228,13 @@ namespace NetTopologySuite.Geometries
         //    }
         //}
 
-        public override IGeometry Boundary => (new BoundaryOp(this)).GetBoundary();
+        public override Geometry Boundary => (new BoundaryOp(this)).GetBoundary();
 
         /// <summary>
         /// Creates a <see cref="LineString" /> whose coordinates are in the reverse order of this objects.
         /// </summary>
         /// <returns>A <see cref="LineString" /> with coordinates in the reverse order.</returns>
-        public override IGeometry Reverse()
+        public override Geometry Reverse()
         {
             var seq = _points.Copy();
             CoordinateSequences.Reverse(seq);
@@ -295,12 +295,12 @@ namespace NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance)
+        public override bool EqualsExact(Geometry other, double tolerance)
         {
             if (!IsEquivalentClass(other))
                 return false;
 
-            var otherLineString = (ILineString)other;
+            var otherLineString = (LineString)other;
             if (_points.Count != otherLineString.NumPoints)
                 return false;
 
@@ -364,7 +364,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <inheritdoc cref="Geometry.CopyInternal"/>>
-        protected override IGeometry CopyInternal()
+        protected override Geometry CopyInternal()
 
         {
             var points = _points.Copy();
@@ -395,9 +395,9 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        protected override bool IsEquivalentClass(IGeometry other)
+        protected override bool IsEquivalentClass(Geometry other)
         {
-            return other is ILineString;
+            return other is LineString;
         }
 
         /// <summary>
@@ -407,9 +407,9 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         protected internal override int CompareToSameClass(object o)
         {
-            Assert.IsTrue(o is ILineString);
+            Assert.IsTrue(o is LineString);
 
-            var line = (ILineString)o;
+            var line = (LineString)o;
             // MD - optimized implementation
             int i = 0;
             int j = 0;
@@ -430,7 +430,7 @@ namespace NetTopologySuite.Geometries
 
         protected internal override int CompareToSameClass(object o, IComparer<ICoordinateSequence> comp)
         {
-            Assert.IsTrue(o is ILineString);
+            Assert.IsTrue(o is LineString);
             var line = (LineString)o;
             return comp.Compare(_points, line.CoordinateSequence);
         }

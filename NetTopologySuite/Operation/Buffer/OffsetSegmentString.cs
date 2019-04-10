@@ -12,7 +12,7 @@ namespace NetTopologySuite.Operation.Buffer
     internal class OffsetSegmentString
     {
         private readonly List<Coordinate> _ptList;
-        private IPrecisionModel _precisionModel;
+        private PrecisionModel _precisionModel;
 
         /**
          * The distance below which two adjacent points on the curve
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Operation.Buffer
             _ptList = new List<Coordinate>();
         }
 
-        public IPrecisionModel PrecisionModel
+        public PrecisionModel PrecisionModel
         {
             get => _precisionModel;
             set => _precisionModel = value;

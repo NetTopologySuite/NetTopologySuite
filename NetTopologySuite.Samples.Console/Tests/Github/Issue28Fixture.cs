@@ -17,7 +17,7 @@ namespace NetTopologySuite.Samples.Tests.Github
             Assert.IsFalse(failed);
         }
 
-        private static bool TestWktWkb(int number, IGeometryFactory factory, string wkt, string wkb)
+        private static bool TestWktWkb(int number, GeometryFactory factory, string wkt, string wkb)
         {
             var r = new WKTReader(factory);
             var wktGeom = r.Read(wkt);

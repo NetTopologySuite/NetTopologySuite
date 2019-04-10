@@ -12,7 +12,7 @@ namespace NetTopologySuite.Simplify
     /// relationship.
     /// <para/>
     /// If the input is a polygonal geometry
-    /// (<see cref="IPolygon"/> or <see cref="IMultiPolygon"/>):
+    /// (<see cref="Polygon"/> or <see cref="MultiPolygon"/>):
     /// <list type="Bullet">
     /// <item>The result has the same number of shells and holes as the input,
     ///  with the same topological structure</item>
@@ -61,22 +61,22 @@ namespace NetTopologySuite.Simplify
         /// <param name="geom"></param>
         /// <param name="distanceTolerance"></param>
         /// <returns></returns>
-        public static IGeometry Simplify(IGeometry geom, double distanceTolerance)
+        public static Geometry Simplify(Geometry geom, double distanceTolerance)
         {
             var tss = new TopologyPreservingSimplifier(geom);
             tss.DistanceTolerance = distanceTolerance;
             return tss.GetResultGeometry();
         }
 
-        private readonly IGeometry _inputGeom;
+        private readonly Geometry _inputGeom;
         private readonly TaggedLinesSimplifier _lineSimplifier = new TaggedLinesSimplifier();
-        private Dictionary<ILineString, TaggedLineString> _lineStringMap;
+        private Dictionary<LineString, TaggedLineString> _lineStringMap;
 
         /// <summary>
         /// Creates an instance of this class for the provided <paramref name="inputGeom"/> geometry
         /// </summary>
         /// <param name="inputGeom">The geometry to simplify</param>
-        public TopologyPreservingSimplifier(IGeometry inputGeom)
+        public TopologyPreservingSimplifier(Geometry inputGeom)
         {
             _inputGeom = inputGeom;
         }
@@ -96,13 +96,13 @@ namespace NetTopologySuite.Simplify
         ///
         /// </summary>
         /// <returns></returns>
-        public IGeometry GetResultGeometry()
+        public Geometry GetResultGeometry()
         {
             // empty input produces an empty result
             if (_inputGeom.IsEmpty)
-                return (IGeometry)_inputGeom.Copy();
+                return (Geometry)_inputGeom.Copy();
 
-            _lineStringMap = new Dictionary<ILineString, TaggedLineString>();
+            _lineStringMap = new Dictionary<LineString, TaggedLineString>();
             var filter = new LineStringMapBuilderFilter(this);
             _inputGeom.Apply(filter);
             _lineSimplifier.Simplify(_lineStringMap.Values);
@@ -123,15 +123,15 @@ namespace NetTopologySuite.Simplify
                 _container = container;
             }
 
-            /// <inheritdoc cref="GeometryTransformer.TransformCoordinates(ICoordinateSequence, IGeometry)"/>>
-            protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
+            /// <inheritdoc cref="GeometryTransformer.TransformCoordinates(ICoordinateSequence, Geometry)"/>>
+            protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, Geometry parent)
             {
                 // for empty coordinate sequences return null
                 if (coords.Count == 0)
                     return null;
 
                 // for linear components (including rings), simplify the LineString
-                var s = parent as ILineString;
+                var s = parent as LineString;
                 if (s != null)
                 {
                     var taggedLine = _container._lineStringMap[s];
@@ -145,7 +145,7 @@ namespace NetTopologySuite.Simplify
         /// <summary>
         /// A filter to add linear geometries to the LineString map
         /// with the appropriate minimum size constraint.
-        /// Closed <see cref="ILineString"/>s (including <see cref="ILinearRing"/>s
+        /// Closed <see cref="LineString"/>s (including <see cref="LinearRing"/>s
         /// have a minimum output size constraint of 4,
         /// to ensure the output is valid.
         /// For all other LineStrings, the minimum size is 2 points.
@@ -164,9 +164,9 @@ namespace NetTopologySuite.Simplify
             /// Filters linear geometries.
             /// </summary>
             /// <param name="geom">A geometry of any type</param>
-            public void Filter(IGeometry geom)
+            public void Filter(Geometry geom)
             {
-                var line = geom as ILineString;
+                var line = geom as LineString;
                 if (line == null)
                     return;
                 if (line.IsEmpty)

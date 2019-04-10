@@ -128,7 +128,7 @@ namespace NetTopologySuite.Tests.NUnit.Precision
             AssertEqualsExactAndHasSameFactory(gReduce, g2);
         }
 
-        private static void AssertEqualsExactAndHasSameFactory(IGeometry a, IGeometry b)
+        private static void AssertEqualsExactAndHasSameFactory(Geometry a, Geometry b)
         {
             Assert.IsTrue(a.EqualsExact(b));
             Assert.IsTrue(a.Factory == b.Factory);

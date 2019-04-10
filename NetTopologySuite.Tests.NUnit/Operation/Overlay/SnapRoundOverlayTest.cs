@@ -100,7 +100,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
                 Debug.WriteLine(geom2.AsText());
             }
 
-            IGeometry result = null;
+            Geometry result = null;
             try
             {
                 result = geom1.Intersection(geom2);
@@ -114,7 +114,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Overlay
             ToImage(number, geom1, geom2, result);
         }
 
-        static void ToImage(int nr, IGeometry geom1, IGeometry geom2, IGeometry geom3)
+        static void ToImage(int nr, Geometry geom1, Geometry geom2, Geometry geom3)
         {
 
             //var gpw = new Windows.Forms.GraphicsPathWriter();

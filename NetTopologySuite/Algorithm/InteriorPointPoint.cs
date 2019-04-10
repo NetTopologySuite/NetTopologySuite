@@ -18,7 +18,7 @@ namespace NetTopologySuite.Algorithm
         /// The computed interior point,
         /// or <see langword="null"/> if the geometry has no puntal components.
         /// </returns>
-        public static Coordinate GetInteriorPoint(IGeometry geom)
+        public static Coordinate GetInteriorPoint(Geometry geom)
         {
             var intPt = new InteriorPointPoint(geom);
             return intPt.InteriorPoint;
@@ -32,7 +32,7 @@ namespace NetTopologySuite.Algorithm
         ///
         /// </summary>
         /// <param name="g"></param>
-        public InteriorPointPoint(IGeometry g)
+        public InteriorPointPoint(Geometry g)
         {
             _centroid = g.Centroid.Coordinate;
             Add(g);
@@ -43,13 +43,13 @@ namespace NetTopologySuite.Algorithm
         /// If a Geometry is not of dimension 0 it is not tested.
         /// </summary>
         /// <param name="geom">The point to add.</param>
-        private void Add(IGeometry geom)
+        private void Add(Geometry geom)
         {
-            if (geom is IPoint)
+            if (geom is Point)
                 Add(geom.Coordinate);
-            else if (geom is IGeometryCollection)
+            else if (geom is GeometryCollection)
             {
-                var gc = (IGeometryCollection) geom;
+                var gc = (GeometryCollection) geom;
                 foreach (var geometry in gc.Geometries)
                     Add(geometry);
             }

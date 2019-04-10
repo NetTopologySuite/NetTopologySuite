@@ -145,7 +145,7 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
             CheckDissolve(geoms, expected);
         }
 
-        private void CheckDissolve(IEnumerable<IGeometry> geoms, IGeometry expected)
+        private void CheckDissolve(IEnumerable<Geometry> geoms, Geometry expected)
         {
             var d = new LineDissolver();
             d.Add(geoms);

@@ -6,7 +6,7 @@ namespace NetTopologySuite.Index.Quadtree
     /// <summary>
     /// A Quadtree is a spatial index structure for efficient range querying
     /// of items bounded by 2D rectangles.<br/>
-    /// <see cref="IGeometry"/>s can be indexed by using their <see cref="Envelope"/>s.<br/>
+    /// <see cref="Geometry"/>s can be indexed by using their <see cref="Envelope"/>s.<br/>
     /// Any type of object can also be indexed, as long as it has an extent that can be
     /// represented by an <see cref="Envelope"/>.
     /// <para/>

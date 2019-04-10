@@ -6,7 +6,7 @@ namespace NetTopologySuite.Operation.Distance
 {
     /// <summary>
     /// Computes the distance between the facets (segments and vertices)
-    /// of two <see cref="IGeometry"/>s
+    /// of two <see cref="Geometry"/>s
     /// using a Branch-and-Bound algorithm.
     /// The Branch-and-Bound algorithm operates over a
     /// traversal of R-trees built
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Operation.Distance
     /// which allow reuse in an repeated query situation.</item>
     /// </list>
     /// Using this technique is usually much more performant
-    /// than using the brute-force <see cref="IGeometry.Distance(IGeometry)"/>
+    /// than using the brute-force <see cref="Geometry.Distance(Geometry)"/>
     /// when one or both input geometries are large,
     /// or when evaluating many distance computations against
     /// a single geometry.
@@ -46,13 +46,13 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="g1">A geometry</param>
         /// <param name="g2">A geometry</param>
         /// <returns>The distance between the two geometries</returns>
-        public static double Distance(IGeometry g1, IGeometry g2)
+        public static double Distance(Geometry g1, Geometry g2)
         {
             var dist = new IndexedFacetDistance(g1);
             return dist.Distance(g2);
         }
 
-        public static Coordinate[] NearestPoints(IGeometry g1, IGeometry g2)
+        public static Coordinate[] NearestPoints(Geometry g1, Geometry g2)
         {
             var dist = new IndexedFacetDistance(g1);
             return dist.NearestPoints(g2);
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Operation.Distance
         private readonly STRtree<FacetSequence> _cachedTree;
 
         /// <summary>
-        /// Creates a new distance-finding instance for a given target <see cref="IGeometry"/>.
+        /// Creates a new distance-finding instance for a given target <see cref="Geometry"/>.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Operation.Distance
         /// </para>
         /// </remarks>
         /// <param name="g1">A Geometry, which may be of any type.</param>
-        public IndexedFacetDistance(IGeometry g1)
+        public IndexedFacetDistance(Geometry g1)
         {
             _cachedTree = FacetSequenceTreeBuilder.BuildSTRtree(g1);
         }
@@ -87,7 +87,7 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         /// <param name="g">The geometry to compute the distance to.</param>
         /// <returns>The computed distance</returns>
-        public double Distance(IGeometry g)
+        public double Distance(Geometry g)
         {
             var tree2 = FacetSequenceTreeBuilder.BuildSTRtree(g);
             var obj = _cachedTree.NearestNeighbour(tree2, new FacetSequenceDistance());
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         /// <param name="g">Ihe geometry to compute the nearest location to.</param>
         /// <returns>The nearest locations.</returns>
-        public GeometryLocation[] NearestLocations(IGeometry g)
+        public GeometryLocation[] NearestLocations(Geometry g)
         {
             var tree2 = FacetSequenceTreeBuilder.BuildSTRtree(g);
             var obj = _cachedTree.NearestNeighbour(tree2, new FacetSequenceDistance());
@@ -117,7 +117,7 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         /// <param name="g">Ihe geometry to compute the nearest point to.</param>
         /// <returns>The nearest points.</returns>
-        public Coordinate[] NearestPoints(IGeometry g)
+        public Coordinate[] NearestPoints(Geometry g)
         {
             return Array.ConvertAll(NearestLocations(g), loc => loc.Coordinate);
         }

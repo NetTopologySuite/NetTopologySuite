@@ -8,13 +8,13 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit
 {
     /// <summary>
-    ///  A base class for IGeometry tests which provides various utility methods.
+    ///  A base class for Geometry tests which provides various utility methods.
     /// </summary>
     /// <author>Martin Davis</author>
     public abstract class GeometryTestCase
     {
         readonly WKTReader _reader = new WKTReader();
-        private readonly IGeometryFactory _geomFactory = new GeometryFactory();
+        private readonly GeometryFactory _geomFactory = new GeometryFactory();
 
         protected GeometryTestCase()
         {
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit
             _reader = new WKTReader(_geomFactory);
         }
 
-        protected void CheckEqual(IGeometry expected, IGeometry actual)
+        protected void CheckEqual(Geometry expected, Geometry actual)
         {
             var actualNorm = actual.Normalized();
             var expectedNorm = expected.Normalized();
@@ -35,23 +35,23 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.That(equal, Is.True, string.Format("\nExpected = {0}\nactual   = {1}", expected, actual));
         }
 
-        protected void CheckEqual(ICollection<IGeometry> expected, ICollection<IGeometry> actual)
+        protected void CheckEqual(ICollection<Geometry> expected, ICollection<Geometry> actual)
         {
             CheckEqual(ToGeometryCollection(expected), ToGeometryCollection(actual));
         }
 
-        private IGeometryCollection ToGeometryCollection(ICollection<IGeometry> geoms)
+        private GeometryCollection ToGeometryCollection(ICollection<Geometry> geoms)
         {
             return _geomFactory.CreateGeometryCollection(GeometryFactory.ToGeometryArray(geoms));
         }
 
         /// <summary>
-        /// Reads a <see cref="IGeometry"/> from a WKT string using a custom <see cref="IGeometryFactory"/>.
+        /// Reads a <see cref="Geometry"/> from a WKT string using a custom <see cref="GeometryFactory"/>.
         /// </summary>
         /// <param name="geomFactory">The custom factory to use</param>
         /// <param name="wkt">The WKT string</param>
         /// <returns>The geometry read</returns>
-        protected static IGeometry Read(IGeometryFactory geomFactory, string wkt)
+        protected static Geometry Read(GeometryFactory geomFactory, string wkt)
         {
             var reader = new WKTReader(geomFactory);
             try
@@ -64,12 +64,12 @@ namespace NetTopologySuite.Tests.NUnit
             }
         }
 
-        protected IGeometry Read(string wkt)
+        protected Geometry Read(string wkt)
         {
             return Read(_reader, wkt);
         }
 
-        public static IGeometry Read(WKTReader reader, string wkt)
+        public static Geometry Read(WKTReader reader, string wkt)
         {
             try
             {
@@ -81,9 +81,9 @@ namespace NetTopologySuite.Tests.NUnit
             }
         }
 
-        protected List<IGeometry> ReadList(string[] wkt)
+        protected List<Geometry> ReadList(string[] wkt)
         {
-            var geometries = new List<IGeometry>(wkt.Length);
+            var geometries = new List<Geometry>(wkt.Length);
             for (int i = 0; i < wkt.Length; i++)
             {
                 geometries.Add(Read(wkt[i]));
@@ -91,9 +91,9 @@ namespace NetTopologySuite.Tests.NUnit
             return geometries;
         }
 
-        public static List<IGeometry> ReadList(WKTReader reader, string[] wkt)
+        public static List<Geometry> ReadList(WKTReader reader, string[] wkt)
         {
-            var geometries = new List<IGeometry>(wkt.Length);
+            var geometries = new List<Geometry>(wkt.Length);
             for (int i = 0; i < wkt.Length; i++)
             {
                 geometries.Add(Read(reader, wkt[i]));
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Tests.NUnit
         /// Gets a <see cref="WKTReader"/> to read geometries from WKT with expected ordinates.
         /// </summary>
         /// <param name="ordinateFlags">a set of expected ordinates.</param>
-        /// <param name="scale">a scale value to create a <see cref="IPrecisionModel"/>.</param>
+        /// <param name="scale">a scale value to create a <see cref="PrecisionModel"/>.</param>
         /// <returns>A <see cref="WKTReader"/>.</returns>
         public static WKTReader GetWKTReader(Ordinates ordinateFlags, double scale)
         {
@@ -128,7 +128,7 @@ namespace NetTopologySuite.Tests.NUnit
         /// <param name="ordinateFlags">a set of expected ordinates.</param>
         /// <param name="precisionModel">a precision model.</param>
         /// <returns>A <see cref="WKTReader"/>.</returns>
-        public static WKTReader GetWKTReader(Ordinates ordinateFlags, IPrecisionModel precisionModel)
+        public static WKTReader GetWKTReader(Ordinates ordinateFlags, PrecisionModel precisionModel)
         {
             ordinateFlags |= Ordinates.XY;
             if ((ordinateFlags & Ordinates.XY) == ordinateFlags)
@@ -286,11 +286,11 @@ namespace NetTopologySuite.Tests.NUnit
             return CoordinateArraySequenceFactory.Instance;
         }
 
-        protected internal static IEqualityComparer<IGeometry> EqualityComparer => new GeometryEqualityComparer();
+        protected internal static IEqualityComparer<Geometry> EqualityComparer => new GeometryEqualityComparer();
 
-        private class GeometryEqualityComparer : IEqualityComparer<IGeometry>
+        private class GeometryEqualityComparer : IEqualityComparer<Geometry>
         {
-            public bool Equals(IGeometry x, IGeometry y)
+            public bool Equals(Geometry x, Geometry y)
             {
                 if (x == null && y != null)
                     return false;
@@ -299,7 +299,7 @@ namespace NetTopologySuite.Tests.NUnit
                 return x.EqualsExact(y);
             }
 
-            public int GetHashCode(IGeometry obj)
+            public int GetHashCode(Geometry obj)
             {
                 return obj.GetHashCode();
             }

@@ -74,7 +74,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return PointLocation.IsInRing(pt, ring);
         }
 
-        public static IGeometry ToPolygon(Vertex[] v)
+        public static Geometry ToPolygon(Vertex[] v)
         {
             var ringPts = new[]
                               {
@@ -89,7 +89,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return tri;
         }
 
-        public static IGeometry ToPolygon(QuadEdge[] e)
+        public static Geometry ToPolygon(QuadEdge[] e)
         {
             var ringPts = new[]
                               {
@@ -246,7 +246,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             return PointLocation.IsInRing(pt, ring);
         }
 
-        public IGeometry GetGeometry(GeometryFactory fact)
+        public Geometry GetGeometry(GeometryFactory fact)
         {
             var ring = fact.CreateLinearRing(GetCoordinates());
             var tri = fact.CreatePolygon(ring);

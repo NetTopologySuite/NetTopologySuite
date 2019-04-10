@@ -8,8 +8,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class LineStringImplTest
     {
-        private IPrecisionModel precisionModel;
-        private IGeometryFactory geometryFactory;
+        private PrecisionModel precisionModel;
+        private GeometryFactory geometryFactory;
         WKTReader reader;
 
         public LineStringImplTest()
@@ -127,11 +127,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(r.IsClosed);
 
             var m = geometryFactory.CreateMultiLineString(
-                  new ILineString[] { l, r });
+                  new LineString[] { l, r });
             Assert.IsTrue(!m.IsClosed);
 
             var m2 = geometryFactory.CreateMultiLineString(
-                  new ILineString[] { r });
+                  new LineString[] { r });
             Assert.IsTrue(!m2.IsClosed);
         }
 

@@ -14,14 +14,14 @@ namespace NetTopologySuite.LinearReferencing
     /// </summary>
     public class LengthIndexedLine
     {
-        private readonly IGeometry _linearGeom;
+        private readonly Geometry _linearGeom;
 
         /// <summary>
-        /// Constructs an object which allows a linear <see cref="IGeometry" />
+        /// Constructs an object which allows a linear <see cref="Geometry" />
         /// to be linearly referenced using length as an index.
         /// </summary>
         /// <param name="linearGeom">The linear geometry to reference along.</param>
-        public LengthIndexedLine(IGeometry linearGeom)
+        public LengthIndexedLine(Geometry linearGeom)
         {
             _linearGeom = linearGeom;
         }
@@ -72,7 +72,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="startIndex"></param>
         /// <param name="endIndex"></param>
         /// <returns></returns>
-        public IGeometry ExtractLine(double startIndex, double endIndex)
+        public Geometry ExtractLine(double startIndex, double endIndex)
         {
             double startIndex2 = ClampIndex(startIndex);
             double endIndex2 = ClampIndex(endIndex);
@@ -151,7 +151,7 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="subLine">A subLine of the line.</param>
         /// <returns>A pair of indices for the start and end of the subline..</returns>
-        public double[] IndicesOf(IGeometry subLine)
+        public double[] IndicesOf(Geometry subLine)
         {
             var locIndex = LocationIndexOfLine.IndicesOf(_linearGeom, subLine);
             double[] index =

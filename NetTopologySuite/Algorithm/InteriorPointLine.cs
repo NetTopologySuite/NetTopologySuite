@@ -21,7 +21,7 @@ namespace NetTopologySuite.Algorithm
         /// The computed interior point,
         /// or <see langword="null"/> if the geometry has no linear components.
         /// </returns>
-        public static Coordinate GetInteriorPoint(IGeometry geom)
+        public static Coordinate GetInteriorPoint(Geometry geom)
         {
             var intPt = new InteriorPointLine(geom);
             return intPt.InteriorPoint;
@@ -35,7 +35,7 @@ namespace NetTopologySuite.Algorithm
         ///
         /// </summary>
         /// <param name="g"></param>
-        public InteriorPointLine(IGeometry g)
+        public InteriorPointLine(Geometry g)
         {
             _centroid = g.Centroid.Coordinate;
             AddInterior(g);
@@ -55,13 +55,13 @@ namespace NetTopologySuite.Algorithm
         /// If a Geometry is not of dimension 1 it is not tested.
         /// </summary>
         /// <param name="geom">The point to add.</param>
-        private void AddInterior(IGeometry geom)
+        private void AddInterior(Geometry geom)
         {
-            if(geom is ILineString)
+            if(geom is LineString)
                 AddInterior(geom.Coordinates);
-            else if(geom is IGeometryCollection)
+            else if(geom is GeometryCollection)
             {
-                var gc = (IGeometryCollection) geom;
+                var gc = (GeometryCollection) geom;
                 foreach (var geometry in gc.Geometries)
                     AddInterior(geometry);
             }
@@ -84,13 +84,13 @@ namespace NetTopologySuite.Algorithm
         /// If a Geometry is not of dimension 1 it is not tested.
         /// </summary>
         /// <param name="geom">The point to add.</param>
-        private void AddEndpoints(IGeometry geom)
+        private void AddEndpoints(Geometry geom)
         {
-            if(geom is ILineString)
+            if(geom is LineString)
                 AddEndpoints(geom.Coordinates);
-            else if(geom is IGeometryCollection)
+            else if(geom is GeometryCollection)
             {
-                var gc = (IGeometryCollection) geom;
+                var gc = (GeometryCollection) geom;
                 foreach (var geometry in gc.Geometries)
                     AddEndpoints(geometry);
             }

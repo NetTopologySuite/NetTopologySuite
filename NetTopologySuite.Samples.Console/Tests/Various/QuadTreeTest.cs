@@ -10,9 +10,9 @@ namespace NetTopologySuite.Tests.Various
         [Test, Ignore("It is a known limitation to Quadtree implementation that more items are being returned than the ones actually intersecting.")]
         public void TestQuadTree()
         {
-            var qtree = new Index.Quadtree.Quadtree<IPoint>();
+            var qtree = new Index.Quadtree.Quadtree<Point>();
             var ptBuilder = new Shape.Random.RandomPointsInGridBuilder { Extent = new Envelope(-500, 500, -500, 500), NumPoints = 600000, GutterFraction = 0.1d };
-            var mp = (IMultiPoint)ptBuilder.GetGeometry();
+            var mp = (MultiPoint)ptBuilder.GetGeometry();
 
             foreach (var coord in mp.Coordinates)
             {

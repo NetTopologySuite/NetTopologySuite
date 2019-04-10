@@ -23,7 +23,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="start"></param>
         /// <param name="geometryFactory"></param>
-        public MaximalEdgeRing(DirectedEdge start, IGeometryFactory geometryFactory)
+        public MaximalEdgeRing(DirectedEdge start, GeometryFactory geometryFactory)
             : base(start, geometryFactory) { }
 
         /// <summary>

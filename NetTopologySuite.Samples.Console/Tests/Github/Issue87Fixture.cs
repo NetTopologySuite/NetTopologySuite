@@ -36,12 +36,12 @@ namespace NetTopologySuite.Samples.Tests.Github
         public void TestIssue87()
         {
             var wktReader = new WKTReader();
-            var lines = new List<IGeometry>(_wkts.Length);
+            var lines = new List<Geometry>(_wkts.Length);
             lines.AddRange(_wkts.Select(wkt => wktReader.Read(wkt))/*.Where(g => g.Length > 0 )*/);
             var polygonizer = new NetTopologySuite.Operation.Polygonize.Polygonizer();
             polygonizer.Add(lines);
 
-            IGeometry res;
+            Geometry res;
             Assert.DoesNotThrow( () =>  res = polygonizer.GetGeometry());
         }
     }

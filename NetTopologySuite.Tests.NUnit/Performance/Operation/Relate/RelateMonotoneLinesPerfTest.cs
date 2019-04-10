@@ -37,8 +37,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Relate
             PerformanceTestRunner.Run(typeof(RelateMonotoneLinesPerfTest));
         }
 
-        private ILineString _line1;
-        private ILineString _line2;
+        private LineString _line1;
+        private LineString _line2;
 
         public override void StartRun(int runSize)
         {
@@ -50,11 +50,11 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Relate
             _line1.Intersects(_line2);
         }
 
-        private static ILineString CreateLine(string wkt, int nVertices)
+        private static LineString CreateLine(string wkt, int nVertices)
         {
             double distanceTolerance = 100.0/nVertices;
             var line = IOUtil.Read(wkt);
-            var lineDense = (ILineString) Densifier.Densify(line, distanceTolerance);
+            var lineDense = (LineString) Densifier.Densify(line, distanceTolerance);
             return lineDense;
         }
 

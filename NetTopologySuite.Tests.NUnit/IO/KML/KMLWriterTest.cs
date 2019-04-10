@@ -140,7 +140,7 @@ namespace NetTopologySuite.Tests.NUnit.IO.KML
             CheckEqual(writer, geom, expected);
         }
 
-        private void CheckEqual(KMLWriter writer, IGeometry geom, string expected)
+        private void CheckEqual(KMLWriter writer, Geometry geom, string expected)
         {
             string actual = writer.Write(geom);
             string actualNorm = normalizeKML(actual);

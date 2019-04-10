@@ -1,7 +1,7 @@
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
-    /// An interface for classes which use the values of the coordinates in a <see cref="IGeometry"/>. 
+    /// An interface for classes which use the values of the coordinates in a <see cref="Geometry"/>. 
     /// Coordinate filters can be used to implement centroid and
     /// envelope computation, and many other functions.<para/>
     /// <c>ICoordinateFilter</c> is
@@ -12,7 +12,7 @@ namespace NetTopologySuite.Geometries
     /// In particular, modified values may not be preserved if the target Geometry uses a non-default <see cref="ICoordinateSequence"/>.
     /// If in-place mutation is required, use <see cref="ICoordinateSequenceFilter"/>.
     /// </summary>
-    /// <seealso cref="IGeometry.Apply(ICoordinateFilter)"/>
+    /// <seealso cref="Geometry.Apply(ICoordinateFilter)"/>
     /// <seealso cref="ICoordinateSequenceFilter"/>
     public interface ICoordinateFilter
     {

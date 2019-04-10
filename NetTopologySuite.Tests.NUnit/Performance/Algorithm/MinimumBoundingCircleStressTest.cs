@@ -26,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         private void Run(int nPts)
         {
             var randPts = CreateRandomPoints(nPts);
-            IGeometry mp = _geomFact.CreateMultiPoint(randPts);
+            Geometry mp = _geomFact.CreateMultiPoint(randPts);
             var mbc = new MinimumBoundingCircle(mp);
             var centre = mbc.GetCentre();
             double radius = mbc.GetRadius();

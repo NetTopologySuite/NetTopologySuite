@@ -67,7 +67,7 @@ taken to solve it.";
             var ls1 = factory.CreateLineString(new Coordinate[] { new Coordinate(0, 0), new Coordinate(50, 50) });
             var ls2 = factory.CreateLineString(new Coordinate[] { new Coordinate(10, value), new Coordinate(10, -value) });
             var result = ls1.Intersection(ls2);
-            IGeometry expected = factory.CreatePoint(new Coordinate(10, 10));
+            Geometry expected = factory.CreatePoint(new Coordinate(10, 10));
             Assert.That(result, Is.EqualTo(expected));
         }
     }

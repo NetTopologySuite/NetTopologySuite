@@ -17,11 +17,11 @@ namespace NetTopologySuite.Samples.Operation.Linemerge
             reader = new WKTReader();
         }
 
-        virtual internal IList<IGeometry> Data
+        virtual internal IList<Geometry> Data
         {
             get
             {
-                IList<IGeometry> lines = new List<IGeometry>();
+                IList<Geometry> lines = new List<Geometry>();
                 lines.Add(Read("LINESTRING (220 160, 240 150, 270 150, 290 170)"));
                 lines.Add(Read("LINESTRING (60 210, 30 190, 30 160)"));
                 lines.Add(Read("LINESTRING (70 430, 100 430, 120 420, 140 400)"));
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Samples.Operation.Linemerge
                 Console.WriteLine(obj);
         }
 
-        internal virtual IGeometry Read(string lineWKT)
+        internal virtual Geometry Read(string lineWKT)
         {
             try
             {

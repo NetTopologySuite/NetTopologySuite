@@ -5,7 +5,7 @@ using System.Linq;
 namespace NetTopologySuite.Geometries.Utilities
 {
     /// <summary>
-    /// A class which supports creating new <see cref="IGeometry"/>s
+    /// A class which supports creating new <see cref="Geometry"/>s
     /// which are modifications of existing ones,
     /// maintaining the same type structure.
     /// </summary>
@@ -42,7 +42,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// </para>
     /// <para>
     /// This class supports creating an edited Geometry
-    /// using a different <see cref="IGeometryFactory"/> via the <see cref="GeometryEditor(IGeometryFactory)"/>
+    /// using a different <see cref="GeometryFactory"/> via the <see cref="GeometryEditor(GeometryFactory)"/>
     /// constructor.
     /// Examples of situations where this is required is if the geometry is
     /// transformed to a new SRID and/or a new PrecisionModel.</para>
@@ -51,13 +51,13 @@ namespace NetTopologySuite.Geometries.Utilities
     /// <list type="Bullet">
     /// <item>The resulting Geometry is not checked for validity.
     /// If validity needs to be enforced, the new Geometry's
-    /// <see cref="IGeometry.IsValid"/> method should be called.</item>
+    /// <see cref="Geometry.IsValid"/> method should be called.</item>
     /// <item>By default the UserData of the input geometry is not copied to the result. </item>
     /// </list>
     /// </para>
     /// </remarks>
     /// <seealso cref="GeometryTransformer"/>
-    /// <seealso cref="IGeometry.IsValid"/>
+    /// <seealso cref="Geometry.IsValid"/>
     public class GeometryEditor
     {
         /// <summary>
@@ -66,22 +66,22 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <remarks>
         /// If <tt>null</tt> the GeometryFactory of the input is used.
         /// </remarks>
-        private IGeometryFactory _factory;
+        private GeometryFactory _factory;
 
         private bool _isUserDataCopied;
 
         /// <summary>
         /// Creates a new GeometryEditor object which will create
-        /// edited <see cref="IGeometry"/> with the same <see cref="IGeometryFactory"/> as the input Geometry.
+        /// edited <see cref="Geometry"/> with the same <see cref="GeometryFactory"/> as the input Geometry.
         /// </summary>
         public GeometryEditor() { }
 
         /// <summary>
         /// Creates a new GeometryEditor object which will create
-        /// edited <see cref="IGeometry"/>s with the given <see cref="IGeometryFactory"/>.
+        /// edited <see cref="Geometry"/>s with the given <see cref="GeometryFactory"/>.
         /// </summary>
         /// <param name="factory">The GeometryFactory to create the edited Geometry with.</param>
-        public GeometryEditor(IGeometryFactory factory)
+        public GeometryEditor(GeometryFactory factory)
         {
             _factory = factory;
         }
@@ -104,7 +104,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="geometry">The Geometry to edit.</param>
         /// <param name="operation">The edit operation to carry out.</param>
         /// <returns>A new <c>Geometry</c> which is the result of the editing (which may be empty).</returns>
-        public IGeometry Edit(IGeometry geometry, IGeometryEditorOperation operation)
+        public Geometry Edit(Geometry geometry, IGeometryEditorOperation operation)
         {
             // if client did not supply a GeometryFactory, use the one from the input Geometry
             if (_factory == null)
@@ -118,23 +118,23 @@ namespace NetTopologySuite.Geometries.Utilities
             return result;
         }
 
-        private IGeometry EditInternal(IGeometry geometry, IGeometryEditorOperation operation)
+        private Geometry EditInternal(Geometry geometry, IGeometryEditorOperation operation)
         {
-            if (geometry is IGeometryCollection)
-                return EditGeometryCollection((IGeometryCollection)geometry, operation);
-            if (geometry is IPolygon)
-                return EditPolygon((IPolygon)geometry, operation);
-            if (geometry is IPoint)
+            if (geometry is GeometryCollection)
+                return EditGeometryCollection((GeometryCollection)geometry, operation);
+            if (geometry is Polygon)
+                return EditPolygon((Polygon)geometry, operation);
+            if (geometry is Point)
                 return operation.Edit(geometry, _factory);
-            if (geometry is ILineString)
+            if (geometry is LineString)
                 return operation.Edit(geometry, _factory);
             NetTopologySuite.Utilities.Assert.ShouldNeverReachHere("Unsupported Geometry classes should be caught in the GeometryEditorOperation.");
             return null;
         }
 
-        private IPolygon EditPolygon(IPolygon polygon, IGeometryEditorOperation operation)
+        private Polygon EditPolygon(Polygon polygon, IGeometryEditorOperation operation)
         {
-            var newPolygon = (IPolygon)operation.Edit(polygon, _factory);
+            var newPolygon = (Polygon)operation.Edit(polygon, _factory);
             // create one if needed
             if (newPolygon == null)
                 newPolygon = _factory.CreatePolygon();
@@ -142,15 +142,15 @@ namespace NetTopologySuite.Geometries.Utilities
                 //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
                 return newPolygon;
 
-            var shell = (ILinearRing)Edit(newPolygon.ExteriorRing, operation);
+            var shell = (LinearRing)Edit(newPolygon.ExteriorRing, operation);
             if (shell == null || shell.IsEmpty)
                 //RemoveSelectedPlugIn relies on this behaviour. [Jon Aquino]
                 return _factory.CreatePolygon();
 
-            var holes = new List<ILinearRing>();
+            var holes = new List<LinearRing>();
             for (int i = 0; i < newPolygon.NumInteriorRings; i++)
             {
-                var hole = (ILinearRing)Edit(newPolygon.GetInteriorRingN(i), operation);
+                var hole = (LinearRing)Edit(newPolygon.GetInteriorRingN(i), operation);
                 if (hole == null || hole.IsEmpty) continue;
                 holes.Add(hole);
             }
@@ -158,14 +158,14 @@ namespace NetTopologySuite.Geometries.Utilities
             return _factory.CreatePolygon(shell, holes.ToArray());
         }
 
-        private IGeometryCollection EditGeometryCollection(IGeometryCollection collection, IGeometryEditorOperation operation)
+        private GeometryCollection EditGeometryCollection(GeometryCollection collection, IGeometryEditorOperation operation)
         {
             // first edit the entire collection
             // MD - not sure why this is done - could just check original collection?
-            var collectionForType = (IGeometryCollection)operation.Edit(collection, _factory);
+            var collectionForType = (GeometryCollection)operation.Edit(collection, _factory);
 
             // edit the component geometries
-            var geometries = new List<IGeometry>();
+            var geometries = new List<Geometry>();
             for (int i = 0; i < collectionForType.NumGeometries; i++)
             {
                 var geometry = Edit(collectionForType.GetGeometryN(i), operation);
@@ -173,14 +173,14 @@ namespace NetTopologySuite.Geometries.Utilities
                 geometries.Add(geometry);
             }
 
-            if (collectionForType is IMultiPoint)
-                return _factory.CreateMultiPoint(geometries.Cast<IPoint>().ToArray());
+            if (collectionForType is MultiPoint)
+                return _factory.CreateMultiPoint(geometries.Cast<Point>().ToArray());
 
-            if (collectionForType is IMultiLineString)
-                return _factory.CreateMultiLineString(geometries.Cast<ILineString>().ToArray());
+            if (collectionForType is MultiLineString)
+                return _factory.CreateMultiLineString(geometries.Cast<LineString>().ToArray());
 
-            if (collectionForType is IMultiPolygon)
-                return _factory.CreateMultiPolygon(geometries.Cast<IPolygon>().ToArray());
+            if (collectionForType is MultiPolygon)
+                return _factory.CreateMultiPolygon(geometries.Cast<Polygon>().ToArray());
 
             return _factory.CreateGeometryCollection(geometries.ToArray());
         }
@@ -202,14 +202,14 @@ namespace NetTopologySuite.Geometries.Utilities
             /// </param>
             /// <returns>A new Geometry which is a modification of the input Geometry.</returns>
             /// <returns><value>null</value> if the Geometry is to be deleted completely</returns>
-            IGeometry Edit(IGeometry geometry, IGeometryFactory factory);
+            Geometry Edit(Geometry geometry, GeometryFactory factory);
         }
 
         /// <summary>
         /// A GeometryEditorOperation which does not modify
         /// the input geometry.
         /// This can be used for simple changes of
-        /// <see cref="IGeometryFactory"/> (including PrecisionModel and SRID).
+        /// <see cref="GeometryFactory"/> (including PrecisionModel and SRID).
         /// </summary>
         /// <author>mbdavis</author>
         public class NoOpGeometryOperation : IGeometryEditorOperation
@@ -218,7 +218,7 @@ namespace NetTopologySuite.Geometries.Utilities
             {
             }
 
-            public IGeometry Edit(IGeometry geometry, IGeometryFactory factory)
+            public Geometry Edit(Geometry geometry, GeometryFactory factory)
             {
                 return geometry;
             }
@@ -236,12 +236,12 @@ namespace NetTopologySuite.Geometries.Utilities
             /// <param name="geometry"></param>
             /// <param name="factory"></param>
             /// <returns></returns>
-            public IGeometry Edit(IGeometry geometry, IGeometryFactory factory)
+            public Geometry Edit(Geometry geometry, GeometryFactory factory)
             {
-                if (geometry is ILinearRing)
+                if (geometry is LinearRing)
                     return factory.CreateLinearRing(Edit(geometry.Coordinates, geometry));
 
-                if (geometry is ILineString)
+                if (geometry is LineString)
                     return factory.CreateLineString(Edit(geometry.Coordinates, geometry));
 
                 if (geometry is Point)
@@ -259,12 +259,12 @@ namespace NetTopologySuite.Geometries.Utilities
             /// <param name="coordinates">The coordinate array to operate on.</param>
             /// <param name="geometry">The point containing the coordinate list.</param>
             /// <returns>An edited coordinate array (which may be the same as the input).</returns>
-            public abstract Coordinate[] Edit(Coordinate[] coordinates, IGeometry geometry);
+            public abstract Coordinate[] Edit(Coordinate[] coordinates, Geometry geometry);
         }
 
         /// <summary>
         /// A <see cref="IGeometryEditorOperation"/> which edits the <see cref="ICoordinateSequence"/>
-        /// of a <see cref="IGeometry"/>.
+        /// of a <see cref="Geometry"/>.
         /// <para/>
         /// Operates on Geometry subclasses which contains a single coordinate list.
         /// </summary>
@@ -275,21 +275,21 @@ namespace NetTopologySuite.Geometries.Utilities
             {
             }
 
-            public CoordinateSequenceOperation(Func<ICoordinateSequence, IGeometry, ICoordinateSequence> editSequence)
+            public CoordinateSequenceOperation(Func<ICoordinateSequence, Geometry, ICoordinateSequence> editSequence)
             {
                 EditSequence = editSequence;
             }
 
-            public IGeometry Edit(IGeometry geometry, IGeometryFactory factory)
+            public Geometry Edit(Geometry geometry, GeometryFactory factory)
             {
-                var linearRing = geometry as ILinearRing;
+                var linearRing = geometry as LinearRing;
                 if (linearRing != null)
                 {
                     return factory.CreateLinearRing(EditSequence(
                         (linearRing).CoordinateSequence, geometry));
                 }
 
-                var lineString = geometry as ILineString;
+                var lineString = geometry as LineString;
                 if (lineString != null)
                 {
                     return factory.CreateLineString(EditSequence(
@@ -297,7 +297,7 @@ namespace NetTopologySuite.Geometries.Utilities
                         geometry));
                 }
 
-                var point = geometry as IPoint;
+                var point = geometry as Point;
                 if (point != null)
                 {
                     return factory.CreatePoint(EditSequence(
@@ -308,12 +308,12 @@ namespace NetTopologySuite.Geometries.Utilities
             }
 
             /// <summary>
-            /// Edits a <see cref="ICoordinateSequence"/> from a <see cref="IGeometry"/>.
+            /// Edits a <see cref="ICoordinateSequence"/> from a <see cref="Geometry"/>.
             /// </summary>
             ///// <param name="coordSeq">The coordinate array to operate on</param>
             ///// <param name="geometry">The geometry containing the coordinate list</param>
             /// <returns>An edited coordinate sequence (which may be the same as the input)</returns>
-            protected Func<ICoordinateSequence, IGeometry, ICoordinateSequence> EditSequence { get; set; }
+            protected Func<ICoordinateSequence, Geometry, ICoordinateSequence> EditSequence { get; set; }
         }
 
     }

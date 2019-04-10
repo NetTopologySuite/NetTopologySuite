@@ -12,19 +12,19 @@ namespace NetTopologySuite.Densify
     /// </summary>
     /// <remarks>
     /// <para>Densified polygonal geometries are guaranteed to be topologically correct.</para>
-    /// <para>The coordinates created during densification respect the input geometry's <see cref="IPrecisionModel"/>.</para>
+    /// <para>The coordinates created during densification respect the input geometry's <see cref="PrecisionModel"/>.</para>
     /// <para><b>Note:</b> At some future point this class will offer a variety of densification strategies.</para>
     /// </remarks>
     /// <author>Martin Davis</author>
     public class Densifier
     {
         /// <summary>
-        /// Densifies a geometry using a given distance tolerance, and respecting the input geometry's <see cref="IPrecisionModel"/>.
+        /// Densifies a geometry using a given distance tolerance, and respecting the input geometry's <see cref="PrecisionModel"/>.
         /// </summary>
         /// <param name="geom">The geometry densify</param>
         /// <param name="distanceTolerance">The distance tolerance (<see cref="DistanceTolerance"/>)</param>
         /// <returns>The densified geometry</returns>
-        public static IGeometry Densify(IGeometry geom, double distanceTolerance)
+        public static Geometry Densify(Geometry geom, double distanceTolerance)
         {
             var densifier = new Densifier(geom) {DistanceTolerance = distanceTolerance};
             return densifier.GetResultGeometry();
@@ -38,7 +38,7 @@ namespace NetTopologySuite.Densify
         /// <param name="precModel">The precision model to apply on the new coordinates</param>
         /// <returns>The densified coordinate sequence</returns>
         private static Coordinate[] DensifyPoints(Coordinate[] pts,
-                                                   double distanceTolerance, IPrecisionModel precModel)
+                                                   double distanceTolerance, PrecisionModel precModel)
         {
             var seg = new LineSegment();
             var coordList = new CoordinateList();
@@ -65,12 +65,12 @@ namespace NetTopologySuite.Densify
             return coordList.ToCoordinateArray();
         }
 
-        private readonly IGeometry _inputGeom;
+        private readonly Geometry _inputGeom;
         private double _distanceTolerance;
 
         /// <summary>Creates a new densifier instance</summary>
         /// <param name="inputGeom">The geometry to densify</param>
-        public Densifier(IGeometry inputGeom)
+        public Densifier(Geometry inputGeom)
         {
             _inputGeom = inputGeom;
         }
@@ -97,7 +97,7 @@ namespace NetTopologySuite.Densify
         /// Gets the densified geometry.
         /// </summary>
         /// <returns>The densified geometry</returns>
-        public IGeometry GetResultGeometry()
+        public Geometry GetResultGeometry()
         {
             return (new DensifyTransformer(_distanceTolerance)).Transform(_inputGeom);
         }
@@ -112,31 +112,31 @@ namespace NetTopologySuite.Densify
             }
 
             protected override ICoordinateSequence TransformCoordinates(
-                ICoordinateSequence coords, IGeometry parent)
+                ICoordinateSequence coords, Geometry parent)
             {
                 var inputPts = coords.ToCoordinateArray();
                 var newPts =
                     DensifyPoints(inputPts, _distanceTolerance, parent.PrecisionModel);
                 // prevent creation of invalid LineStrings
-                if (parent is ILineString && newPts.Length == 1)
+                if (parent is LineString && newPts.Length == 1)
                 {
                     newPts = new Coordinate[0];
                 }
                 return Factory.CoordinateSequenceFactory.Create(newPts);
             }
 
-            protected override IGeometry TransformPolygon(IPolygon geom, IGeometry parent)
+            protected override Geometry TransformPolygon(Polygon geom, Geometry parent)
             {
                 var roughGeom = base.TransformPolygon(geom, parent);
                 // don't try and correct if the parent is going to do this
-                if (parent is IMultiPolygon)
+                if (parent is MultiPolygon)
                 {
                     return roughGeom;
                 }
                 return CreateValidArea(roughGeom);
             }
 
-            protected override IGeometry TransformMultiPolygon(IMultiPolygon geom, IGeometry parent)
+            protected override Geometry TransformMultiPolygon(MultiPolygon geom, Geometry parent)
             {
                 var roughGeom = base.TransformMultiPolygon(geom, parent);
                 return CreateValidArea(roughGeom);
@@ -152,7 +152,7 @@ namespace NetTopologySuite.Densify
             /// </summary>
             /// <param name="roughAreaGeom">An area geometry possibly containing self-intersections</param>
             /// <returns>A valid area geometry</returns>
-            private static IGeometry CreateValidArea(IGeometry roughAreaGeom)
+            private static Geometry CreateValidArea(Geometry roughAreaGeom)
             {
                 return roughAreaGeom.Buffer(0.0);
             }

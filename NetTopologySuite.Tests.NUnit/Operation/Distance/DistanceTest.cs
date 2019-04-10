@@ -10,7 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Distance
     [TestFixture]
     public class DistanceTest : AbstractDistanceTest
     {
-        protected override Coordinate[] NearestPoints(IGeometry g1, IGeometry g2)
+        protected override Coordinate[] NearestPoints(Geometry g1, Geometry g2)
         {
             return new DistanceOp(g1, g2).NearestPoints();
         }

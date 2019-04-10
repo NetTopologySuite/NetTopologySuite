@@ -11,7 +11,7 @@ namespace NetTopologySuite.Operation.Buffer
     public class OffsetCurveVertexList
     {
         private readonly List<Coordinate> _ptList;
-        private IPrecisionModel _precisionModel;
+        private PrecisionModel _precisionModel;
 
         private double _minimimVertexDistance;
 
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <summary>
         /// Gets/Sets the precision model to use when adding new points.
         /// </summary>
-        public IPrecisionModel PrecisionModel { get => _precisionModel;
+        public PrecisionModel PrecisionModel { get => _precisionModel;
             set => _precisionModel = value;
         }
 

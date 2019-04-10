@@ -5,7 +5,7 @@ namespace Open.Topology.TestRunner.Functions
 {
     public static class SortingFunctions
     {
-        public static IGeometry SortByLength(IGeometry g)
+        public static Geometry SortByLength(Geometry g)
         {
             var geoms = Components(g);
             geoms.Sort(new GeometryLengthComparator());
@@ -18,15 +18,15 @@ namespace Open.Topology.TestRunner.Functions
             return g.Factory.BuildGeometry(geoms);
         }
 
-        private class GeometryLengthComparator : IComparer<IGeometry>
+        private class GeometryLengthComparator : IComparer<Geometry>
         {
-            public int Compare(IGeometry g1, IGeometry g2)
+            public int Compare(Geometry g1, Geometry g2)
             {
                 return g1.CompareTo(g2);
             }
         }
 
-        public static IGeometry SortByArea(IGeometry g)
+        public static Geometry SortByArea(Geometry g)
         {
             var geoms = Components(g);
             geoms.Sort(new GeometryAreaComparator());
@@ -39,17 +39,17 @@ namespace Open.Topology.TestRunner.Functions
             return g.Factory.BuildGeometry(geoms);
         }
 
-        private class GeometryAreaComparator : IComparer<IGeometry>
+        private class GeometryAreaComparator : IComparer<Geometry>
         {
-            public int Compare(IGeometry g1, IGeometry g2)
+            public int Compare(Geometry g1, Geometry g2)
             {
                 return g1.Area.CompareTo(g2.Area);
             }
         }
 
-        private static List<IGeometry> Components(IGeometry g)
+        private static List<Geometry> Components(Geometry g)
         {
-            var comp = new List<IGeometry>();
+            var comp = new List<Geometry>();
             for (int i = 0; i < g.NumGeometries; i++)
             {
                 comp.Add(g.GetGeometryN(i));

@@ -8,12 +8,12 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     [TestFixture]
     public class ConvexHullTest
     {
-        private readonly IGeometryFactory _geometryFactory;
+        private readonly GeometryFactory _geometryFactory;
         private readonly WKTReader _reader;
 
         public ConvexHullTest()
         {
-            IPrecisionModel precisionModel = new PrecisionModel(1000);
+            PrecisionModel precisionModel = new PrecisionModel(1000);
             _geometryFactory = new GeometryFactory(precisionModel, 0);
             _reader = new WKTReader(_geometryFactory);
         }

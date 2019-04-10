@@ -9,9 +9,9 @@ namespace Open.Topology.TestRunner.Functions
     {
         private static readonly int DEFAULT_POINTSIZE = 100;
 
-        public static IGeometry Grid(IGeometry g, int nCells)
+        public static Geometry Grid(Geometry g, int nCells)
         {
-            var geoms = new List<IGeometry>();
+            var geoms = new List<Geometry>();
 
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
             var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
@@ -36,27 +36,27 @@ namespace Open.Topology.TestRunner.Functions
             return geomFact.BuildGeometry(geoms);
         }
 
-        public static IGeometry Supercircle3(IGeometry g, int nPts)
+        public static Geometry Supercircle3(Geometry g, int nPts)
         {
             return Supercircle(g, nPts, 3);
         }
 
-        public static IGeometry Squircle(IGeometry g, int nPts)
+        public static Geometry Squircle(Geometry g, int nPts)
         {
             return Supercircle(g, nPts, 4);
         }
 
-        public static IGeometry Supercircle5(IGeometry g, int nPts)
+        public static Geometry Supercircle5(Geometry g, int nPts)
         {
             return Supercircle(g, nPts, 5);
         }
 
-        public static IGeometry SupercirclePoint5(IGeometry g, int nPts)
+        public static Geometry SupercirclePoint5(Geometry g, int nPts)
         {
             return Supercircle(g, nPts, 0.5);
         }
 
-        public static IGeometry Supercircle(IGeometry g, int nPts, double pow)
+        public static Geometry Supercircle(Geometry g, int nPts, double pow)
         {
             var gsf = new GeometricShapeFactory();
             gsf.NumPoints = nPts;

@@ -9,7 +9,7 @@ namespace NetTopologySuite.Tests.Various
     {
         private const double distance = 0.01;
         private const int segments = 1; // Using 8 segments all works
-        private readonly IGeometryFactory factory = GeometryFactory.Default;
+        private readonly GeometryFactory factory = GeometryFactory.Default;
 
         private WKTReader reader;
 

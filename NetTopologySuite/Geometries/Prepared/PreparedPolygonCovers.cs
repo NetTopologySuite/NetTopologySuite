@@ -1,7 +1,7 @@
 namespace NetTopologySuite.Geometries.Prepared
 {
     /// <summary>
-    /// Computes the <c>Covers</c> spatial relationship predicate for a <see cref="PreparedPolygon"/> relative to all other <see cref="IGeometry"/> classes.
+    /// Computes the <c>Covers</c> spatial relationship predicate for a <see cref="PreparedPolygon"/> relative to all other <see cref="Geometry"/> classes.
     /// </summary>
     /// <remarks>
     /// Uses short-circuit tests and indexing to improve performance.
@@ -13,12 +13,12 @@ namespace NetTopologySuite.Geometries.Prepared
     internal class PreparedPolygonCovers : AbstractPreparedPolygonContains
     {
         /// <summary>
-        /// Computes the <c>Covers</c> spatial relationship predicate for a <see cref="PreparedPolygon"/> relative to all other <see cref="IGeometry"/> classes.
+        /// Computes the <c>Covers</c> spatial relationship predicate for a <see cref="PreparedPolygon"/> relative to all other <see cref="Geometry"/> classes.
         /// </summary>
         /// <param name="prep">The prepared polygon</param>
         /// <param name="geom">A test geometry</param>
         /// <returns>true if the polygon covers the geometry</returns>
-        public static bool Covers(PreparedPolygon prep, IGeometry geom)
+        public static bool Covers(PreparedPolygon prep, Geometry geom)
         {
             var polyInt = new PreparedPolygonCovers(prep);
             return polyInt.Covers(geom);
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </summary>
         /// <param name="geom">The test geometry</param>
         /// <returns>true if the test geometry is covered</returns>
-        public bool Covers(IGeometry geom)
+        public bool Covers(Geometry geom)
         {
             return Eval(geom);
         }
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </summary>
         /// <param name="geom">The test geometry</param>
         /// <returns>true if this prepared polygon covers the test geometry</returns>
-        protected override bool FullTopologicalPredicate(IGeometry geom)
+        protected override bool FullTopologicalPredicate(Geometry geom)
         {
             bool result = prepPoly.Geometry.Covers(geom);
             return result;

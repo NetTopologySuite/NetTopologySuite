@@ -30,23 +30,23 @@ namespace NetTopologySuite.Geometries
     /// </list>
     /// </summary>
     [Serializable]
-    public class Polygon : Geometry, IPolygon
+    public class Polygon : Geometry, IPolygonal
     {
         /// <summary>
         /// Represents an empty <c>Polygon</c>.
         /// </summary>
-        public static readonly IPolygon Empty = new GeometryFactory().CreatePolygon();
+        public static readonly Polygon Empty = new GeometryFactory().CreatePolygon();
 
         /// <summary>
         /// The exterior boundary, or <c>null</c> if this <c>Polygon</c>
         /// is the empty point.
         /// </summary>
-        private ILinearRing _shell;
+        private LinearRing _shell;
 
         /// <summary>
         /// The interior boundaries, if any.
         /// </summary>
-        private ILinearRing[] _holes;
+        private LinearRing[] _holes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Polygon"/> class.
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public Polygon(ILinearRing shell, ILinearRing[] holes) : this(shell, holes, DefaultFactory) { }
+        public Polygon(LinearRing shell, LinearRing[] holes) : this(shell, holes, DefaultFactory) { }
 
         /// <summary>
         /// Constructs a <c>Polygon</c> with the given exterior boundary and
@@ -82,15 +82,15 @@ namespace NetTopologySuite.Geometries
         /// point is to be created.
         /// </param>
         /// <param name="factory"></param>
-        public Polygon(ILinearRing shell, ILinearRing[] holes, IGeometryFactory factory) : base(factory)
+        public Polygon(LinearRing shell, LinearRing[] holes, GeometryFactory factory) : base(factory)
         {
             if (shell == null)
                 shell = Factory.CreateLinearRing();
             if (holes == null)
-                holes = new ILinearRing[] { };
-            if (HasNullElements(CollectionUtil.Cast<ILinearRing, object>(holes)))
+                holes = new LinearRing[] { };
+            if (HasNullElements(CollectionUtil.Cast<LinearRing, object>(holes)))
                 throw new ArgumentException("holes must not contain null elements");
-            if (shell.IsEmpty && HasNonEmptyElements(CollectionUtil.Cast<ILinearRing, IGeometry>(holes)))
+            if (shell.IsEmpty && HasNonEmptyElements(CollectionUtil.Cast<LinearRing, Geometry>(holes)))
                 throw new ArgumentException("shell is empty but holes are not");
 
             _shell = shell;
@@ -128,11 +128,11 @@ namespace NetTopologySuite.Geometries
         /// Use the <see cref="ICoordinateSequence.SetOrdinate"/> method
         /// (possibly on the components) to modify the underlying data.
         /// If the coordinates are modified,
-        /// <see cref="IGeometry.GeometryChanged"/> must be called afterwards.
+        /// <see cref="Geometry.GeometryChanged"/> must be called afterwards.
         /// </para>
         /// </remarks>
         /// <returns>The vertices of this <c>Geometry</c>.</returns>
-        /// <seealso cref="IGeometry.GeometryChanged"/>
+        /// <seealso cref="Geometry.GeometryChanged"/>
         /// <seealso cref="ICoordinateSequence.SetOrdinate"/>
         public override Coordinate[] Coordinates
         {
@@ -256,7 +256,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public ILineString ExteriorRing => _shell;
+        public LineString ExteriorRing => _shell;
 
         /// <summary>
         ///
@@ -266,14 +266,14 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public ILineString[] InteriorRings => CollectionUtil.Cast<ILinearRing, ILineString>(_holes);
+        public LineString[] InteriorRings => CollectionUtil.Cast<LinearRing, LineString>(_holes);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public ILineString GetInteriorRingN(int n)
+        public LineString GetInteriorRingN(int n)
         {
             return _holes[n];
         }
@@ -321,21 +321,21 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public override IGeometry Boundary
+        public override Geometry Boundary
         {
             get
             {
                 if (IsEmpty)
                     return Factory.CreateMultiLineString();
 
-                var rings = new ILinearRing[_holes.Length + 1];
+                var rings = new LinearRing[_holes.Length + 1];
                 rings[0] = _shell;
                 for (int i = 0; i < _holes.Length; i++)
                     rings[i + 1] = _holes[i];
                 // create LineString or MultiLineString as appropriate
                 if (rings.Length <= 1)
                     return Factory.CreateLinearRing(rings[0].CoordinateSequence);
-                return Factory.CreateMultiLineString(CollectionUtil.Cast<ILinearRing, ILineString>(rings));
+                return Factory.CreateMultiLineString(CollectionUtil.Cast<LinearRing, LineString>(rings));
             }
         }
 
@@ -354,12 +354,12 @@ namespace NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance)
+        public override bool EqualsExact(Geometry other, double tolerance)
         {
             if (!IsEquivalentClass(other))
                 return false;
 
-            var otherPolygon = (IPolygon) other;
+            var otherPolygon = (Polygon) other;
             var thisShell = _shell;
             var otherPolygonShell = otherPolygon.Shell;
             if (!thisShell.EqualsExact(otherPolygonShell, tolerance))
@@ -432,10 +432,10 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <inheritdoc cref="Geometry.CopyInternal"/>>
-        protected override IGeometry CopyInternal()
+        protected override Geometry CopyInternal()
         {
             var shellCopy = (LinearRing) _shell.Copy();
-            var holesCopy = new ILinearRing[_holes.Length];
+            var holesCopy = new LinearRing[_holes.Length];
             for (int i = 0; i < _holes.Length; i++)
                 holesCopy[i] = (LinearRing) _holes[i].Copy();
             return new Polygon(shellCopy, holesCopy, Factory);
@@ -457,7 +457,7 @@ namespace NetTopologySuite.Geometries
         ///
         /// </summary>
         /// <returns></returns>
-        public override IGeometry ConvexHull()
+        public override Geometry ConvexHull()
         {
             return ExteriorRing.ConvexHull();
         }
@@ -481,7 +481,7 @@ namespace NetTopologySuite.Geometries
         protected internal override int CompareToSameClass(object o)
         {
             var thisShell = (LinearRing) _shell;
-            var otherShell = ((IPolygon) o).Shell;
+            var otherShell = ((Polygon) o).Shell;
             return thisShell.CompareToSameClass(otherShell);
         }
 
@@ -493,7 +493,7 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         protected internal override int CompareToSameClass(object other, IComparer<ICoordinateSequence> comparer)
         {
-            var poly = (IPolygon)other;
+            var poly = (Polygon)other;
 
             var thisShell = (LinearRing)_shell;
             var otherShell = (LinearRing)poly.Shell;
@@ -516,14 +516,14 @@ namespace NetTopologySuite.Geometries
             return 0;
         }
 
-        private static ILinearRing Normalized(ILinearRing ring, bool clockwise)
+        private static LinearRing Normalized(LinearRing ring, bool clockwise)
         {
-            var res = (ILinearRing)ring.Copy();
+            var res = (LinearRing)ring.Copy();
             Normalize(res, clockwise);
             return res;
         }
         
-        private static void Normalize(ILinearRing ring, bool clockwise)
+        private static void Normalize(LinearRing ring, bool clockwise)
         {
             if (ring.IsEmpty)
                 return;
@@ -582,12 +582,12 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        public override IGeometry Reverse()
+        public override Geometry Reverse()
         {
-            var shell = (ILinearRing)_shell.Reverse();
-            var holes = new ILinearRing[_holes.Length];
+            var shell = (LinearRing)_shell.Reverse();
+            var holes = new LinearRing[_holes.Length];
             for (int i = 0; i < _holes.Length; i++)
-                holes[i] = (ILinearRing)_holes[i].Reverse();
+                holes[i] = (LinearRing)_holes[i].Reverse();
             return new Polygon(shell, holes, Factory);
         }
 
@@ -602,7 +602,7 @@ namespace NetTopologySuite.Geometries
         /// polygon is to be created.
         /// </param>
         /// <param name="factory"></param>
-        public Polygon(ILinearRing shell, IGeometryFactory factory) : this(shell, null, factory) { }
+        public Polygon(LinearRing shell, GeometryFactory factory) : this(shell, null, factory) { }
 
         /// <summary>
         /// Constructs a <c>Polygon</c> with the given exterior boundary.
@@ -612,12 +612,12 @@ namespace NetTopologySuite.Geometries
         /// or <c>null</c> or an empty <c>LinearRing</c> if the empty
         /// polygon is to be created.
         /// </param>
-        public Polygon(ILinearRing shell) : this(shell, null, DefaultFactory) { }
+        public Polygon(LinearRing shell) : this(shell, null, DefaultFactory) { }
 
         /// <summary>
         ///
         /// </summary>
-        public ILinearRing Shell
+        public LinearRing Shell
         {
             get => _shell;
             private set => _shell = value;
@@ -626,7 +626,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public ILinearRing[] Holes
+        public LinearRing[] Holes
         {
             get => _holes;
             private set => _holes = value;

@@ -13,7 +13,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// </summary>
     public class OffsetCurveSetBuilder
     {
-        private readonly IGeometry _inputGeom;
+        private readonly Geometry _inputGeom;
         private readonly double _distance;
         private readonly OffsetCurveBuilder _curveBuilder;
 
@@ -25,7 +25,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="inputGeom"></param>
         /// <param name="distance"></param>
         /// <param name="curveBuilder"></param>
-        public OffsetCurveSetBuilder(IGeometry inputGeom, double distance, OffsetCurveBuilder curveBuilder)
+        public OffsetCurveSetBuilder(Geometry inputGeom, double distance, OffsetCurveBuilder curveBuilder)
         {
             _inputGeom = inputGeom;
             _distance = distance;
@@ -67,23 +67,23 @@ namespace NetTopologySuite.Operation.Buffer
         ///
         /// </summary>
         /// <param name="g"></param>
-        private void Add(IGeometry g)
+        private void Add(Geometry g)
         {
             if (g.IsEmpty) return;
-            if (g is IPolygon)
-                AddPolygon((IPolygon)g);
+            if (g is Polygon)
+                AddPolygon((Polygon)g);
             // LineString also handles LinearRings
-            else if (g is ILineString)
+            else if (g is LineString)
                 AddLineString(g);
-            else if (g is IPoint)
+            else if (g is Point)
                 AddPoint(g);
-            else if (g is IMultiPoint)
+            else if (g is MultiPoint)
                 AddCollection(g);
-            else if (g is IMultiLineString)
+            else if (g is MultiLineString)
                 AddCollection(g);
-            else if (g is IMultiPolygon)
+            else if (g is MultiPolygon)
                 AddCollection(g);
-            else if (g is IGeometryCollection)
+            else if (g is GeometryCollection)
                 AddCollection(g);
             else throw new NotSupportedException(g.GetType().FullName);
         }
@@ -92,7 +92,7 @@ namespace NetTopologySuite.Operation.Buffer
         ///
         /// </summary>
         /// <param name="gc"></param>
-        private void AddCollection(IGeometry gc)
+        private void AddCollection(Geometry gc)
         {
             for (int i = 0; i < gc.NumGeometries; i++)
             {
@@ -105,7 +105,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// Add a Point to the graph.
         /// </summary>
         /// <param name="p"></param>
-        private void AddPoint(IGeometry p)
+        private void AddPoint(Geometry p)
         {
             // a zero or negative width buffer of a line/point is empty
             if (_distance <= 0.0)
@@ -119,7 +119,7 @@ namespace NetTopologySuite.Operation.Buffer
         ///
         /// </summary>
         /// <param name="line"></param>
-        private void AddLineString(IGeometry line)
+        private void AddLineString(Geometry line)
         {
             // a zero or negative width buffer of a line/point is empty
             if (_distance <= 0.0 && !_curveBuilder.BufferParameters.IsSingleSided)
@@ -133,7 +133,7 @@ namespace NetTopologySuite.Operation.Buffer
         ///
         /// </summary>
         /// <param name="p"></param>
-        private void AddPolygon(IPolygon p)
+        private void AddPolygon(Polygon p)
         {
             double offsetDistance = _distance;
             var offsetSide = Positions.Left;
@@ -158,7 +158,7 @@ namespace NetTopologySuite.Operation.Buffer
 
             for (int i = 0; i < p.NumInteriorRings; i++)
             {
-                var hole = (ILinearRing)p.GetInteriorRingN(i);
+                var hole = (LinearRing)p.GetInteriorRingN(i);
                 var holeCoord = CoordinateArrays.RemoveRepeatedPoints(hole.Coordinates);
 
                 // optimization - don't bother computing buffer for this hole

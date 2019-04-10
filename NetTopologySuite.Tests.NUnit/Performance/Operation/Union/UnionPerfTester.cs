@@ -15,13 +15,13 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
         public const int BUFFER0 = 3;
         public const int ORDERED = 4;
 
-        public static void run(string testName, int testType, IList<IGeometry> polys)
+        public static void run(string testName, int testType, IList<Geometry> polys)
         {
             var test = new UnionPerfTester(polys);
             test.run(testName, testType);
         }
 
-        public static void runAll(IList<IGeometry> polys)
+        public static void runAll(IList<Geometry> polys)
         {
             var test = new UnionPerfTester(polys);
             test.runAll();
@@ -29,11 +29,11 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
 
         private const int MAX_ITER = 1;
 
-        private readonly IGeometryFactory _factory = new GeometryFactory();
+        private readonly GeometryFactory _factory = new GeometryFactory();
 
-        private readonly IList<IGeometry> _polys;
+        private readonly IList<Geometry> _polys;
 
-        public UnionPerfTester(IList<IGeometry> polys)
+        public UnionPerfTester(IList<Geometry> polys)
         {
             _polys = polys;
         }
@@ -56,7 +56,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
             var sw = new Stopwatch();
             for (int i = 0; i < MAX_ITER; i++)
             {
-                IGeometry union = null;
+                Geometry union = null;
                 switch (testType)
                 {
                     case CASCADED:
@@ -76,22 +76,22 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
             Console.WriteLine("Finished in " + sw.ElapsedMilliseconds);
         }
 
-        private void printFormatted(IGeometry geom)
+        private void printFormatted(Geometry geom)
         {
             var writer = new WKTWriter();
             Console.WriteLine(writer.WriteFormatted(geom));
         }
 
-        public IGeometry unionAllSimple(IList<IGeometry> geoms)
+        public Geometry unionAllSimple(IList<Geometry> geoms)
         {
-            IGeometry unionAll = null;
+            Geometry unionAll = null;
             int count = 0;
             foreach (var geom in geoms)
             {
 
                 if (unionAll == null)
                 {
-                    unionAll = (IGeometry) geom.Copy();
+                    unionAll = (Geometry) geom.Copy();
                 }
                 else
                 {
@@ -108,7 +108,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
             return unionAll;
         }
 
-        public IGeometry unionAllBuffer(IList<IGeometry> geoms)
+        public Geometry unionAllBuffer(IList<Geometry> geoms)
         {
 
             var gColl = _factory.BuildGeometry(geoms);
@@ -116,7 +116,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
             return unionAll;
         }
 
-        public IGeometry unionCascaded(IList<IGeometry> geoms)
+        public Geometry unionCascaded(IList<Geometry> geoms)
         {
             return CascadedPolygonUnion.Union(geoms);
         }
@@ -130,9 +130,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Union
                 {
                     printItemEnvelopes((IList) o);
                 }
-                else if (o is IGeometry)
+                else if (o is Geometry)
                 {
-                    itemEnv.ExpandToInclude(((IGeometry) o).EnvelopeInternal);
+                    itemEnv.ExpandToInclude(((Geometry) o).EnvelopeInternal);
                 }
             }
             Console.WriteLine(_factory.ToGeometry(itemEnv).ToString());

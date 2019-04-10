@@ -20,53 +20,53 @@ namespace NetTopologySuite
         /// <summary>
         /// Gets or sets the default precision model
         /// </summary>
-        IPrecisionModel DefaultPrecisionModel { get; }
+        PrecisionModel DefaultPrecisionModel { get; }
 
         /// <summary>
         /// Creates a precision model based on given precision model type
         /// </summary>
         /// <returns>The precision model type</returns>
-        IPrecisionModel CreatePrecisionModel(PrecisionModels modelType);
+        PrecisionModel CreatePrecisionModel(PrecisionModels modelType);
 
         /// <summary>
         /// Creates a precision model based on given precision model.
         /// </summary>
         /// <returns>The precision model</returns>
-        IPrecisionModel CreatePrecisionModel(IPrecisionModel modelType);
+        PrecisionModel CreatePrecisionModel(PrecisionModel modelType);
 
         /// <summary>
         /// Creates a precision model based on the given scale factor.
         /// </summary>
         /// <param name="scale">The scale factor</param>
         /// <returns>The precision model.</returns>
-        IPrecisionModel CreatePrecisionModel(double scale);
+        PrecisionModel CreatePrecisionModel(double scale);
 
         /// <summary>
         /// Creates a new geometry factory, using <see cref="DefaultPrecisionModel"/>, <see cref="DefaultSRID"/> and <see cref="DefaultCoordinateSequenceFactory"/>.
         /// </summary>
         /// <returns>The geometry factory</returns>
-        IGeometryFactory CreateGeometryFactory();
+        GeometryFactory CreateGeometryFactory();
         
         /// <summary>
         /// Creates a geometry fractory using <see cref="DefaultPrecisionModel"/> and <see cref="DefaultCoordinateSequenceFactory"/>.
         /// </summary>
         /// <param name="srid"></param>
         /// <returns>The geometry factory</returns>
-        IGeometryFactory CreateGeometryFactory(int srid);
+        GeometryFactory CreateGeometryFactory(int srid);
 
         /// <summary>
         /// Creates a geometry factory using the given <paramref name="coordinateSequenceFactory"/> along with <see cref="DefaultPrecisionModel"/> and <see cref="DefaultSRID"/>.
         /// </summary>
         /// <param name="coordinateSequenceFactory">The coordinate sequence factory to use.</param>
         /// <returns>The geometry factory.</returns>
-        IGeometryFactory CreateGeometryFactory(ICoordinateSequenceFactory coordinateSequenceFactory);
+        GeometryFactory CreateGeometryFactory(ICoordinateSequenceFactory coordinateSequenceFactory);
 
         /// <summary>
         /// Creates a geometry factory using the given <paramref name="precisionModel"/> along with <see cref="DefaultCoordinateSequenceFactory"/> and <see cref="DefaultSRID"/>.
         /// </summary>
         /// <param name="precisionModel">The coordinate sequence factory to use.</param>
         /// <returns>The geometry factory.</returns>
-        IGeometryFactory CreateGeometryFactory(IPrecisionModel precisionModel);
+        GeometryFactory CreateGeometryFactory(PrecisionModel precisionModel);
 
         /// <summary>
         /// Creates a geometry factory using the given <paramref name="precisionModel"/> along with <see cref="DefaultCoordinateSequenceFactory"/> and <see cref="DefaultSRID"/>.
@@ -74,7 +74,7 @@ namespace NetTopologySuite
         /// <param name="precisionModel">The coordinate sequence factory to use.</param>
         /// <param name="srid">The spatial reference id.</param>
         /// <returns>The geometry factory.</returns>
-        IGeometryFactory CreateGeometryFactory(IPrecisionModel precisionModel, int srid);
+        GeometryFactory CreateGeometryFactory(PrecisionModel precisionModel, int srid);
 
         /// <summary>
         /// Creates a geometry factory using the given <paramref name="precisionModel"/>,
@@ -84,7 +84,7 @@ namespace NetTopologySuite
         /// <param name="srid">The spatial reference id.</param>
         /// <param name="coordinateSequenceFactory">The coordinate sequence factory.</param>
         /// <returns>The geometry factory.</returns>
-        IGeometryFactory CreateGeometryFactory(IPrecisionModel precisionModel, int srid,
+        GeometryFactory CreateGeometryFactory(PrecisionModel precisionModel, int srid,
                                                ICoordinateSequenceFactory coordinateSequenceFactory);
 
         /// <summary>
