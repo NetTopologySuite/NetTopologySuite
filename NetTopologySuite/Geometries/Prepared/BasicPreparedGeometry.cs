@@ -136,7 +136,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if this geometry is covered by the given geometry</returns>
         /// <see cref="Geometry.CoveredBy(Geometry)"/>
         /// <remarks>Default implementation.</remarks>
-        public bool CoveredBy(Geometry g)
+        public virtual bool CoveredBy(Geometry g)
         {
             return _baseGeom.CoveredBy(g);
         }
@@ -160,7 +160,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if this geometry crosses the given geometry</returns>
         /// <see cref="Geometry.Crosses(Geometry)"/>
         /// <remarks>Default implementation.</remarks>
-        public bool Crosses(Geometry g)
+        public virtual bool Crosses(Geometry g)
         {
             return _baseGeom.Crosses(g);
         }
@@ -171,7 +171,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry is disjoint from the given geometry</returns>
         /// <see cref="Geometry.Disjoint(Geometry)"/>
-        /// <remarks>Default implementation.</remarks>
+        /// <remarks>Standard implementation for all geometries.</remarks>
         public bool Disjoint(Geometry g)
         {
             return !Intersects(g);
@@ -196,7 +196,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if this geometry overlaps the given geometry</returns>
         /// <see cref="Geometry.Overlaps(Geometry)"/>
         /// <remarks>Default implementation.</remarks>
-        public bool Overlaps(Geometry g)
+        public virtual bool Overlaps(Geometry g)
         {
             return _baseGeom.Overlaps(g);
         }
@@ -208,7 +208,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if this geometry touches the given geometry</returns>
         /// <see cref="Geometry.Touches(Geometry)"/>
         /// <remarks>Default implementation.</remarks>
-        public bool Touches(Geometry g)
+        public virtual bool Touches(Geometry g)
         {
             return _baseGeom.Touches(g);
         }
@@ -220,7 +220,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <returns>true if this geometry is within the given geometry</returns>
         /// <see cref="Geometry.Within(Geometry)"/>
         /// <remarks>Default implementation.</remarks>
-        public bool Within(Geometry g)
+        public virtual bool Within(Geometry g)
         {
             return _baseGeom.Within(g);
         }
