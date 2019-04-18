@@ -1251,7 +1251,7 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         /// <exception cref="TopologyException">If a robustness error occurs</exception>
         /// <seealso cref="Buffer(double, EndCapStyle)"/>
-        /// <seealso cref="Buffer(double, IBufferParameters)"/>
+        /// <seealso cref="Buffer(double, BufferParameters)"/>
         /// <seealso cref="Buffer(double, int)"/>
         /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
         public Geometry Buffer(double distance)
@@ -1285,7 +1285,7 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         /// <exception cref="TopologyException">If a robustness error occurs</exception>
         /// <seealso cref="Buffer(double)"/>
-        /// <seealso cref="Buffer(double, IBufferParameters)"/>
+        /// <seealso cref="Buffer(double, BufferParameters)"/>
         /// <seealso cref="Buffer(double, int)"/>
         /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
         public Geometry Buffer(double distance, EndCapStyle endCapStyle)
@@ -1323,7 +1323,7 @@ namespace NetTopologySuite.Geometries
         /// <exception cref="TopologyException">If a robustness error occurs</exception>
         /// <seealso cref="Buffer(double)"/>
         /// <seealso cref="Buffer(double, EndCapStyle)"/>
-        /// <seealso cref="Buffer(double, IBufferParameters)"/>
+        /// <seealso cref="Buffer(double, BufferParameters)"/>
         /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
         public Geometry Buffer(double distance, int quadrantSegments)
         {
@@ -1367,7 +1367,7 @@ namespace NetTopologySuite.Geometries
         /// <exception cref="TopologyException">If a robustness error occurs</exception>
         /// <seealso cref="Buffer(double)"/>
         /// <seealso cref="Buffer(double, EndCapStyle)"/>
-        /// <seealso cref="Buffer(double, IBufferParameters)"/>
+        /// <seealso cref="Buffer(double, BufferParameters)"/>
         /// <seealso cref="Buffer(double, int)"/>
         public Geometry Buffer(double distance, int quadrantSegments, EndCapStyle endCapStyle)
         {
@@ -1414,7 +1414,7 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="Buffer(double, EndCapStyle)"/>
         /// <seealso cref="Buffer(double, int)"/>
         /// <seealso cref="Buffer(double, int, EndCapStyle)"/>
-        public Geometry Buffer(double distance, IBufferParameters bufferParameters)
+        public Geometry Buffer(double distance, BufferParameters bufferParameters)
         {
             return BufferOp.Buffer(this, distance, bufferParameters);
         }

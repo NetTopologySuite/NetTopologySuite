@@ -33,7 +33,7 @@ namespace NetTopologySuite.Operation.Buffer
                 return -1;
             return 0;
         }
-        private readonly IBufferParameters _bufParams;
+        private readonly BufferParameters _bufParams;
 
         private PrecisionModel _workingPrecisionModel;
         private INoder _workingNoder;
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// Initializes a new instance of the <see cref="BufferBuilder"/> class using the given parameters.
         /// </summary>
         /// <param name="bufParams">The buffer parameters to use.</param>
-        public BufferBuilder(IBufferParameters bufParams)
+        public BufferBuilder(BufferParameters bufParams)
         {
             _bufParams = bufParams;
         }
