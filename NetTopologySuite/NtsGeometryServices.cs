@@ -9,9 +9,9 @@ namespace NetTopologySuite
     /// <summary>
     /// A geometry service provider class
     /// </summary>
-    public class NtsGeometryServices : IGeometryServices
+    public class NtsGeometryServices
     {
-        private static volatile IGeometryServices _instance;
+        private static volatile NtsGeometryServices _instance;
 
         private static readonly object LockObject1 = new object();
         private static readonly object LockObject2 = new object();
@@ -19,7 +19,7 @@ namespace NetTopologySuite
         /// <summary>
         /// Gets or sets the current instance
         /// </summary>
-        public static IGeometryServices Instance
+        public static NtsGeometryServices Instance
         {
             get
             {
@@ -213,8 +213,6 @@ namespace NetTopologySuite
             DefaultSRID = srid;
         }
 
-        #region Implementation of IGeometryServices
-
         /// <summary>
         /// Gets the default spatial reference id
         /// </summary>
@@ -268,20 +266,6 @@ namespace NetTopologySuite
             return CreateGeometryFactory(DefaultPrecisionModel, srid, DefaultCoordinateSequenceFactory);
         }
 
-        public void ReadConfiguration()
-        {
-            lock (LockObject1)
-            {
-            }
-        }
-
-        public void WriteConfiguration()
-        {
-            lock (LockObject2)
-            {
-            }
-        }
-
         public GeometryFactory CreateGeometryFactory(ICoordinateSequenceFactory coordinateSequenceFactory)
         {
             return CreateGeometryFactory(DefaultPrecisionModel, DefaultSRID, coordinateSequenceFactory);
@@ -316,8 +300,6 @@ namespace NetTopologySuite
             }
             return factory;
         }
-
-        #endregion Implementation of IGeometryServices
 
         //    #region Implementation of ISerializable
 

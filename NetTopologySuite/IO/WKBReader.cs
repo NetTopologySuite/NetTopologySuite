@@ -77,7 +77,7 @@ namespace NetTopologySuite.IO
         private readonly ICoordinateSequenceFactory _sequenceFactory;
         private readonly PrecisionModel _precisionModel;
 
-        private readonly IGeometryServices _geometryServices;
+        private readonly NtsGeometryServices _geometryServices;
         /**
          * true if structurally invalid input should be reported rather than repaired.
          * At some point this could be made client-controllable.
@@ -112,7 +112,7 @@ namespace NetTopologySuite.IO
             HandleOrdinates = AllowedOrdinates;
         }
 
-        public WKBReader(IGeometryServices services)
+        public WKBReader(NtsGeometryServices services)
         {
             services = services ?? NtsGeometryServices.Instance;
             _geometryServices = services;
