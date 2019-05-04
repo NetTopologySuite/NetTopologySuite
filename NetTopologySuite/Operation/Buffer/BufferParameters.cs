@@ -15,9 +15,8 @@ namespace NetTopologySuite.Operation.Buffer
     /// <item>whether the buffer is single-sided</item>
     /// </list>
     /// </summary>
-    /// <seealso cref="IBufferParameters"/>
     /// <author>Martin Davis</author>
-    public class BufferParameters : IBufferParameters
+    public class BufferParameters
     {
         /// <summary>
         /// The default number of facets into which to divide a fillet of 90 degrees.

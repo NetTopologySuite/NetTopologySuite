@@ -18,11 +18,11 @@ namespace NetTopologySuite.Operation.Buffer
     {
         private double _distance;
         private readonly PrecisionModel _precisionModel;
-        private readonly IBufferParameters _bufParams;
+        private readonly BufferParameters _bufParams;
 
         public OffsetCurveBuilder(
             PrecisionModel precisionModel,
-            IBufferParameters bufParams
+            BufferParameters bufParams
             )
         {
             _precisionModel = precisionModel;
@@ -32,7 +32,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <summary>
         /// Gets the buffer parameters being used to generate the curve.
         /// </summary>
-        public IBufferParameters BufferParameters => _bufParams;
+        public BufferParameters BufferParameters => _bufParams;
 
         /// <summary>
         /// This method handles single points as well as LineStrings.

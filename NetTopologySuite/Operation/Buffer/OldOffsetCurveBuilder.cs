@@ -53,7 +53,7 @@ namespace NetTopologySuite.Operation.Buffer
         private double _distance;
         private readonly PrecisionModel _precisionModel;
 
-        private readonly IBufferParameters _bufParams;
+        private readonly BufferParameters _bufParams;
 
         /**
          * The Closing Segment Factor controls how long
@@ -78,7 +78,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         public OldOffsetCurveBuilder(
                       PrecisionModel precisionModel,
-                      IBufferParameters bufParams
+                      BufferParameters bufParams
                       )
         {
             _precisionModel = precisionModel;

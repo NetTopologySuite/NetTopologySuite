@@ -28,11 +28,11 @@ namespace NetTopologySuite.Operation.Buffer
     /// computed buffer polygons are only approximations to the true geometry.
     /// The user can control the accuracy of the approximation by specifying
     /// the number of linear segments used to approximate arcs.
-    /// This is specified via <see cref="IBufferParameters.QuadrantSegments"/>
+    /// This is specified via <see cref="BufferParameters.QuadrantSegments"/>
     /// or <see cref="QuadrantSegments"/>.
     /// </para>
     /// <para>
-    /// The <see cref="IBufferParameters.EndCapStyle"/> of a linear buffer may be specified.
+    /// The <see cref="BufferParameters.EndCapStyle"/> of a linear buffer may be specified.
     /// The following end cap styles are supported:
     /// <ul>
     /// <li><see cref="EndCapStyle.Round" /> - the usual round end caps</li>
@@ -41,11 +41,11 @@ namespace NetTopologySuite.Operation.Buffer
     /// </ul>
     /// </para>
     /// <para>
-    /// The <see cref="IBufferParameters.JoinStyle"/> of the corners in a buffer may be specified.
+    /// The <see cref="BufferParameters.JoinStyle"/> of the corners in a buffer may be specified.
     /// The following join styles are supported:
     /// <ul>
     /// <li><see cref="JoinStyle.Round" /> - the usual round join</li>
-    /// <li><see cref="JoinStyle.Mitre" /> - corners are "sharp" (up to a <see cref="IBufferParameters.MitreLimit"/> distance limit})</li>
+    /// <li><see cref="JoinStyle.Mitre" /> - corners are "sharp" (up to a <see cref="BufferParameters.MitreLimit"/> distance limit})</li>
     /// <li><see cref="JoinStyle.Bevel" /> - corners are beveled (clipped off)</li>
     /// </ul>
     /// </para>
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// The buffer algorithm can perform simplification on the input to increase performance.
     /// The simplification is performed a way that always increases the buffer area
     /// (so that the simplified input covers the original input).
-    /// The degree of simplification can be specified with <see cref="IBufferParameters.SimplifyFactor"/>,
+    /// The degree of simplification can be specified with <see cref="BufferParameters.SimplifyFactor"/>,
     /// with a <see cref="BufferParameters.DefaultSimplifyFactor"/> used otherwise.
     /// Note that if the buffer distance is zero then so is the computed simplify tolerance,
     /// no matter what the simplify factor.
@@ -148,7 +148,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="distance"> the buffer distance</param>
         /// <param name="parameters"> the buffer parameters to use</param>
         /// <returns> the buffer of the input geometry</returns>
-        public static Geometry Buffer(Geometry g, double distance, IBufferParameters parameters)
+        public static Geometry Buffer(Geometry g, double distance, BufferParameters parameters)
         {
             var bufOp = new BufferOp(g, parameters);
             var geomBuf = bufOp.GetResultGeometry(distance);
@@ -174,7 +174,7 @@ namespace NetTopologySuite.Operation.Buffer
         private readonly Geometry _argGeom;
         private double _distance;
 
-        private readonly IBufferParameters _bufParams = new BufferParameters();
+        private readonly BufferParameters _bufParams = new BufferParameters();
 
         private Geometry _resultGeometry;
         private Exception _saveException;   // debugging only
@@ -194,7 +194,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <param name="g"> the geometry to buffer</param>
         /// <param name="bufParams"> the buffer parameters to use</param>
-        public BufferOp(Geometry g, IBufferParameters bufParams)
+        public BufferOp(Geometry g, BufferParameters bufParams)
         {
             _argGeom = g;
             _bufParams = bufParams;
