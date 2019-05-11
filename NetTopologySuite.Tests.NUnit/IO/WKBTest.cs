@@ -252,7 +252,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
         static readonly CoordinateSequenceComparator Comp2 = new CoordinateSequenceComparator(2);
         static readonly CoordinateSequenceComparator Comp3 = new CoordinateSequenceComparator(3);
-        readonly WKBReader _wkbReader = new WKBReader(GeomFactory);
+        readonly WKBReader _wkbReader = new WKBReader();
 
         void RunGeometry(Geometry g, int dimension, ByteOrder byteOrder, bool toHex, int srid)
         {

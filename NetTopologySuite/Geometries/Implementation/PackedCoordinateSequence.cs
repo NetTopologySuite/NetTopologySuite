@@ -335,15 +335,6 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns></returns>
         protected abstract Coordinate GetCoordinateInternal(int index);
 
-        /// <summary>
-        /// Creates a new object that is a copy of the current instance.
-        /// </summary>
-        /// <returns>
-        /// A new object that is a copy of this instance.
-        /// </returns>
-        [Obsolete("Use Copy()")]
-        public abstract object Clone();
-
         public abstract ICoordinateSequence Copy();
 
         /// <summary>
@@ -506,19 +497,6 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <value></value>
         public override int Count => _coords.Length / Dimension;
-
-        /// <summary>
-        /// Creates a new object that is a copy of the current instance.
-        /// </summary>
-        /// <returns>
-        /// A new object that is a copy of this instance.
-        /// </returns>
-        [Obsolete]
-        public override object Clone()
-        {
-            return Copy();
-
-        }
 
         /// <inheritdoc cref="ICoordinateSequence.Copy"/>
         public override ICoordinateSequence Copy()
@@ -726,19 +704,6 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <value></value>
         public override int Count => _coords.Length / Dimension;
-
-        /// <summary>
-        /// Creates a new object that is a copy of the current instance.
-        /// </summary>
-        /// <returns>
-        /// A new object that is a copy of this instance.
-        /// </returns>
-        [Obsolete]
-        public override object Clone()
-        {
-            return Copy();
-
-        }
 
         /// <inheritdoc cref="ICoordinateSequence.Copy"/>
         public override ICoordinateSequence Copy()

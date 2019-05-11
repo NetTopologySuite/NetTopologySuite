@@ -107,7 +107,6 @@ namespace NetTopologySuite.Geometries
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         /// <exception cref="ArgumentException">If the ring is not closed, or has too few points</exception>
-        //[Obsolete("Use GeometryFactory instead")]
         public LinearRing(Coordinate[] points) :
             this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
 

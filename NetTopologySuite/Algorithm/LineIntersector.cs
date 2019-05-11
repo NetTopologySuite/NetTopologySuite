@@ -36,28 +36,6 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public abstract class LineIntersector
     {
-        #region obsolete
-        /**
-          * These are deprecated, due to ambiguous naming
-          */
-
-        /// <summary>
-        /// Indicates that line segments do not intersect
-        /// </summary>
-        [Obsolete("Ambiguous naming, use NoIntersection")]
-        public const int DontIntersect = 0;
-        /// <summary>
-        /// Indicates that line segments intersect in a single point
-        /// </summary>
-        [Obsolete("Ambiguous naming, use PointIntersection")]
-        public const int DoIntersect = 1;
-        /// <summary>
-        /// Indicates that line segments intersect in a line segment
-        /// </summary>
-        [Obsolete("Ambiguous naming, use CollinearIntersection")]
-        public const int Collinear = 2;
-        #endregion
-
         /// <summary>
         /// Indicates that line segments do not intersect
         /// </summary>
@@ -169,15 +147,6 @@ namespace NetTopologySuite.Algorithm
             //Pa = this.IntersectionPoint[0];
             //Pb = this.IntersectionPoint[1];
             Result = 0;
-        }
-
-        /// <summary>
-        /// Force computed intersection to be rounded to a given precision model
-        /// </summary>
-        [Obsolete("Use PrecisionModel instead")]
-        public PrecisionModel MakePrecise
-        {
-            set => _precisionModel = value;
         }
 
         /// <summary>

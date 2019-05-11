@@ -139,12 +139,6 @@ namespace NetTopologySuite.Operation.Distance3D
             throw new NotSupportedException();
         }
 
-        [Obsolete]
-        public object Clone()
-        {
-            return Copy();
-        }
-
         public ICoordinateSequence Copy()
         {
             throw new NotSupportedException();

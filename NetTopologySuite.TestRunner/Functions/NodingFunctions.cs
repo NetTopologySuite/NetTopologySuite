@@ -16,7 +16,7 @@ namespace Open.Topology.TestRunner.Functions
         {
             var pm = new PrecisionModel(scaleFactor);
 
-            var roundedGeom = SimpleGeometryPrecisionReducer.Reduce(geom, pm);
+            var roundedGeom = GeometryPrecisionReducer.Reduce(geom, pm);
 
             var geomList = new List<Geometry>();
             geomList.Add(roundedGeom);

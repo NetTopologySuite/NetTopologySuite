@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Geometries;
+﻿using NetTopologySuite;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
 namespace Open.Topology.TestRunner.Utility
@@ -31,8 +32,7 @@ namespace Open.Topology.TestRunner.Utility
 
         //private GeometryFactory _geomFactory;
         private readonly WKTReader _wktReader;
-        private readonly WKBReader _wkbReader;
-        private readonly GeometryFactory _factory;
+        private readonly NtsGeometryServices _services;
 
         public MultiFormatReader()
             : this(new GeometryFactory())
@@ -42,8 +42,7 @@ namespace Open.Topology.TestRunner.Utility
         public MultiFormatReader(GeometryFactory geomFactory)
         {
             _wktReader = new WKTReader(geomFactory);
-            _wkbReader = new WKBReader(geomFactory);
-            _factory = geomFactory;
+            _services = new NtsGeometryServices(geomFactory.CoordinateSequenceFactory, geomFactory.PrecisionModel, geomFactory.SRID);
         }
 
         /// <summary>
@@ -56,7 +55,7 @@ namespace Open.Topology.TestRunner.Utility
         {
             string trimStr = geomStr.Trim();
             if (IsHex(trimStr, MaxCharsToCheck))
-                return IOUtility.ReadGeometriesFromWkbHexString(trimStr, _factory);
+                return IOUtility.ReadGeometriesFromWkbHexString(trimStr, _services);
             return _wktReader.Read(trimStr);
         }
     }

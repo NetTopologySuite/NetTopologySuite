@@ -248,18 +248,6 @@ namespace NetTopologySuite.Mathematics
         */
 
         /// <summary>
-        /// Returns a <see cref="DD"/> whose value is <c>(this + <paramref name="y"/>)</c>
-        /// </summary>
-        /// <param name="y">The addende</param>"/>
-        /// <returns><c>(this + <paramref name="y"/>)</c></returns>
-        [Obsolete("Use operator +")]
-        public DD Add(DD y)
-        {
-            return this + y;
-            //return Copy(this).SelfAdd(y);
-        }
-
-        /// <summary>
         /// Returns the sum of <paramref name="lhs"/> and <paramref name="rhs"/>.
         /// </summary>
         /// <param name="lhs">The left hand side</param>
@@ -317,17 +305,6 @@ namespace NetTopologySuite.Mathematics
             return lhs + new DD(-rhs, 0);
         }
 
-        /// <summary>
-        /// Returns a <see cref="DD"/> whose value is <tt>(this + y)</tt>.
-        /// </summary>
-        /// <param name="y">The addend</param>
-        /// <returns><tt>(this + y)</tt></returns>
-        [Obsolete("Use Operator +")]
-        public DD Add(double y)
-        {
-            return this+y;
-        }
-
         //public DD SelfAdd(DD y)
         //{
         //    return SelfAdd(y._hi, y._lo);
@@ -369,28 +346,6 @@ namespace NetTopologySuite.Mathematics
         //    return this;
         //}
 
-        /// <summary>
-        /// Computes a new <see cref="DD"/> object whose value is <tt>(this - y)</tt>.
-        /// </summary>
-        /// <param name="y">The subtrahend</param>
-        /// <returns><tt>(this - y)</tt></returns>
-        [Obsolete("Use operator -")]
-        public DD Subtract(DD y)
-        {
-            return Add(y.Negate());
-        }
-
-        /// <summary>
-        /// Computes a new <see cref="DD"/> object whose value is <tt>(this - y)</tt>.
-        /// </summary>
-        /// <param name="y">The subtrahend</param>
-        /// <returns><tt>(this - y)</tt></returns>
-        [Obsolete("Use operator -")]
-        public DD Subtract(double y)
-        {
-            return Add(-y);
-        }
-
         ///**
         // * Subtracts the argument from the value of <tt>this</tt>.
         // * To prevent altering constants,
@@ -431,33 +386,6 @@ namespace NetTopologySuite.Mathematics
         {
             if (IsNaN(this)) return this;
             return new DD(-_hi, -_lo);
-        }
-
-        /**
-         * Returns a new DoubleDouble whose value is <tt>(this * y)</tt>.
-         *
-         * @param y the multiplicand
-         * @return <tt>(this * y)</tt>
-         */
-
-        [Obsolete("Use *-operator instead")]
-        public DD Multiply(DD y)
-        {
-            return this*y;
-            //return Copy(this).SelfMultiply(y);
-        }
-
-        /**
-         * Returns a new DoubleDouble whose value is <tt>(this * y)</tt>.
-         *
-         * @param y the multiplicand
-         * @return <tt>(this * y)</tt>
-         */
-        [Obsolete("Use *-operator instead")]
-        public DD Multiply(double y)
-        {
-            return this*y;
-            //return Copy(this).SelfMultiply(y, 0.0);
         }
 
         ///**
@@ -562,17 +490,6 @@ namespace NetTopologySuite.Mathematics
             double zhi = u;
             double zlo = (C - u) + c;
             return new DD(zhi, zlo);
-        }
-
-        /// <summary>
-        /// Computes a new <see cref="DD"/> whose value is <tt>(this / y)</tt>.
-        /// </summary>
-        /// <param name="y">The divisor</param>
-        /// <returns>A new <see cref="DD"/> with the value <c>(this / y)</c></returns>
-        [Obsolete("Use /-operator instead")]
-        public DD Divide(double y)
-        {
-            return this/y;
         }
 
         ///// <summary>

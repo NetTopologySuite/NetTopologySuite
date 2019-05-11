@@ -117,28 +117,7 @@ namespace NetTopologySuite.Geometries
         /// which are rounded to the grid defined by the scale factor.
         /// </summary>
         /// <param name="scale">
-        /// Amount by which to multiply a coordinate after subtracting
-        /// the offset, to obtain a precise coordinate
-        /// </param>
-        /// <param name="offsetX">Not used.</param>
-        /// <param name="offsetY">Not used.</param>
-        [Obsolete("Offsets are no longer supported, since internal representation is rounded floating point")]
-// ReSharper disable UnusedParameter.Local
-        public PrecisionModel(double scale, double offsetX, double offsetY)
-// ReSharper restore UnusedParameter.Local
-        {
-            _modelType = PrecisionModels.Fixed;
-            _scale = scale;
-        }
-
-        /// <summary>
-        /// Creates a <c>PrecisionModel</c> that specifies Fixed precision.
-        /// Fixed-precision coordinates are represented as precise internal coordinates,
-        /// which are rounded to the grid defined by the scale factor.
-        /// </summary>
-        /// <param name="scale">
-        /// Amount by which to multiply a coordinate after subtracting
-        /// the offset, to obtain a precise coordinate.
+        /// Amount by which to multiply a coordinate, to obtain a precise coordinate.
         /// </param>
         public PrecisionModel(double scale)
         {
@@ -230,96 +209,6 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <returns></returns>
         public PrecisionModels PrecisionModelType => _modelType;
-
-        /// <summary>
-        /// Returns the x-offset used to obtain a precise coordinate.
-        /// </summary>
-        /// <returns>
-        /// The amount by which to subtract the x-coordinate before
-        /// multiplying by the scale.
-        /// </returns>
-        [Obsolete("Offsets are no longer used")]
-        public double OffsetX => 0;
-
-        /// <summary>
-        /// Returns the y-offset used to obtain a precise coordinate.
-        /// </summary>
-        /// <returns>
-        /// The amount by which to subtract the y-coordinate before
-        /// multiplying by the scale
-        /// </returns>
-        [Obsolete("Offsets are no longer used")]
-        public double OffsetY => 0;
-
-        /// <summary>
-        /// Sets <c>internal</c> to the precise representation of <c>external</c>.
-        /// </summary>
-        /// <param name="cexternal">The original coordinate.</param>
-        /// <param name="cinternal">
-        /// The coordinate whose values will be changed to the
-        /// precise representation of <c>external</c>.
-        /// </param>
-        [Obsolete("Use MakePrecise instead")]
-        public void ToInternal(Coordinate cexternal, Coordinate cinternal)
-        {
-            if (IsFloating)
-            {
-                cinternal.X = cexternal.X;
-                cinternal.Y = cexternal.Y;
-            }
-            else
-            {
-                cinternal.X = MakePrecise(cexternal.X);
-                cinternal.Y = MakePrecise(cexternal.Y);
-            }
-            cinternal.Z = cexternal.Z;
-        }
-
-        /// <summary>
-        /// Returns the precise representation of <c>external</c>.
-        /// </summary>
-        /// <param name="cexternal">The original coordinate.</param>
-        /// <returns>
-        /// The coordinate whose values will be changed to the precise
-        /// representation of <c>external</c>
-        /// </returns>
-        [Obsolete("Use MakePrecise instead")]
-        public Coordinate ToInternal(Coordinate cexternal)
-        {
-            var cinternal = cexternal.Copy();
-            MakePrecise(cinternal);
-            return cinternal;
-        }
-
-        /// <summary>
-        /// Returns the external representation of <c>internal</c>.
-        /// </summary>
-        /// <param name="cinternal">The original coordinate.</param>
-        /// <returns>
-        /// The coordinate whose values will be changed to the
-        /// external representation of <c>internal</c>.
-        /// </returns>
-        [Obsolete("No longer needed, since internal representation is same as external representation")]
-        public Coordinate ToExternal(Coordinate cinternal)
-        {
-            var cexternal = cinternal.Copy();
-            return cexternal;
-        }
-
-        /// <summary>
-        /// Sets <c>external</c> to the external representation of <c>internal</c>.
-        /// </summary>
-        /// <param name="cinternal">The original coordinate.</param>
-        /// <param name="cexternal">
-        /// The coordinate whose values will be changed to the
-        /// external representation of <c>internal</c>.
-        /// </param>
-        [Obsolete("No longer needed, since internal representation is same as external representation")]
-        public void ToExternal(Coordinate cinternal, Coordinate cexternal)
-        {
-            cexternal.X = cinternal.X;
-            cexternal.Y = cinternal.Y;
-        }
 
         /// <summary>
         /// Rounds a numeric value to the PrecisionModel grid.

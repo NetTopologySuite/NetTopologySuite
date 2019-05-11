@@ -360,17 +360,6 @@ namespace NetTopologySuite.Geometries
                  _geometries[i].Apply(filter);
         }
 
-        /// <summary>
-        /// Creates and returns a full copy of this <see cref="GeometryCollection"/> object.
-        /// (including all coordinates contained by it).
-        /// </summary>
-        /// <returns>A copy of this instance</returns>
-        [Obsolete("Use Copy()")]
-        public override object Clone()
-        {
-            return Copy();
-        }
-
         /// <inheritdoc cref="Geometry.CopyInternal"/>>
         protected override Geometry CopyInternal()
         {

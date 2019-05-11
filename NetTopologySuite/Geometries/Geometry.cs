@@ -1155,9 +1155,6 @@ namespace NetTopologySuite.Geometries
             ////
         }
 
-        //[Obsolete]
-        //internal abstract int GetHashCodeInternal(int baseValue, Func<int, int> operation);
-
         /// <summary>
         /// Returns the Well-known Text representation of this <c>Geometry</c>.
         /// For a definition of the Well-known Text format, see the OpenGIS Simple
@@ -1733,22 +1730,6 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="filter">The filter to apply to this <c>Geometry</c>.</param>
         public abstract void Apply(IGeometryComponentFilter filter);
-
-        /// <summary>
-        /// Creates and returns a full copy of this <see cref="Geometry"/> object
-        /// (including all coordinates contained by it).
-        /// Subclasses are responsible for implementing this method and copying
-        /// their internal data.
-        /// </summary>
-        /// <returns>A clone of this instance</returns>
-        [Obsolete("Use Copy()")]
-        public virtual object Clone()
-        {
-            var clone = (Geometry)MemberwiseClone();
-            if (clone._envelope != null)
-                clone._envelope = new Envelope(clone._envelope);
-            return clone;
-        }
 
         /// <summary>
         /// Creates a deep copy of this <see cref="Geometry"/> object.

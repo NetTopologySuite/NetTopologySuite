@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using NetTopologySuite.Geometries;
@@ -353,16 +352,6 @@ namespace NetTopologySuite.Noding
             if (_nodeIt.MoveNext())
                  _nextNode = (SegmentNode) _nodeIt.Current;
             else _nextNode = null;
-        }
-
-        /// <summary>
-        /// Not implemented.
-        /// </summary>
-        /// <exception cref="NotSupportedException">This method is not implemented.</exception>
-        [Obsolete("Not implemented!")]
-        public void Remove()
-        {
-            throw new NotSupportedException(GetType().Name);
         }
 
         /// <summary>

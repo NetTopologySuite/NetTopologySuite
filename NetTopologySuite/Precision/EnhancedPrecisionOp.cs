@@ -165,46 +165,5 @@ namespace NetTopologySuite.Precision
                 throw originalEx;
             }
         }
-
-        /// <summary>
-        /// Computes the buffer of a <c>Geometry</c>, using enhanced precision.
-        /// This method should no longer be necessary, since the buffer algorithm
-        /// now is highly robust.
-        /// </summary>
-        /// <param name="geom">The first Geometry.</param>
-        /// <param name="distance">The buffer distance.</param>
-        /// <returns>The Geometry representing the buffer of the input Geometry.</returns>
-        [Obsolete("This method should no longer be necessary, since the buffer algorithm now is highly robust.")]
-        public static Geometry Buffer(Geometry geom, double distance)
-        {
-            ApplicationException originalEx;
-            try
-            {
-                var result = geom.Buffer(distance);
-                return result;
-            }
-            catch (ApplicationException ex)
-            {
-                originalEx = ex;
-            }
-            /*
-             * If we are here, the original op encountered a precision problem
-             * (or some other problem).  Retry the operation with
-             * enhanced precision to see if it succeeds
-             */
-            try
-            {
-                var cbo = new CommonBitsOp(true);
-                var resultEP = cbo.Buffer(geom, distance);
-                // check that result is a valid point after the reshift to original precision
-                if (!resultEP.IsValid)
-                    throw originalEx;
-                return resultEP;
-            }
-            catch (ApplicationException)
-            {
-                throw originalEx;
-            }
-        }
     }
 }

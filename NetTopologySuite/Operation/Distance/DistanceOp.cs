@@ -58,19 +58,6 @@ namespace NetTopologySuite.Operation.Distance
             return distOp.NearestPoints();
         }
 
-        /// <summary>
-        /// Compute the the closest points of two geometries.
-        /// The points are presented in the same order as the input Geometries.
-        /// </summary>
-        /// <param name="g0">A <c>Geometry</c>.</param>
-        /// <param name="g1">Another <c>Geometry</c>.</param>
-        /// <returns>The closest points in the geometries.</returns>
-        [Obsolete("Renamed to NearestPoints")]
-        public static Coordinate[] ClosestPoints(Geometry g0, Geometry g1)
-        {
-            return NearestPoints(g0, g1);
-        }
-
         private readonly PointLocator _ptLocator = new PointLocator();
         private readonly Geometry[] _geom;
         private GeometryLocation[] _minDistanceLocation;
@@ -113,28 +100,6 @@ namespace NetTopologySuite.Operation.Distance
                 return 0.0;
             ComputeMinDistance();
             return _minDistance;
-        }
-
-        /// <summary>
-        /// Report the coordinates of the closest points in the input geometries.
-        /// The points are presented in the same order as the input Geometries.
-        /// </summary>
-        /// <returns>A pair of <c>Coordinate</c>s of the closest points.</returns>
-        [Obsolete("Renamed to NearestPoints")]
-        public Coordinate[] ClosestPoints()
-        {
-            return NearestPoints();
-        }
-
-        /// <summary>
-        /// Report the locations of the closest points in the input geometries.
-        /// The locations are presented in the same order as the input Geometries.
-        /// </summary>
-        /// <returns>A pair of <see cref="GeometryLocation"/>s for the closest points.</returns>
-        [Obsolete("Renamed to NearestLocations")]
-        public GeometryLocation[] ClosestLocations()
-        {
-            return NearestLocations();
         }
 
         /// <summary>

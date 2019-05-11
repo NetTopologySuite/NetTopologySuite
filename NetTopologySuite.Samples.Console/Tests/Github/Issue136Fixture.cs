@@ -1,4 +1,3 @@
-using System;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
@@ -8,18 +7,6 @@ namespace NetTopologySuite.Samples.Tests.Github
     [TestFixture]
     public class Issue136Fixture
     {
-        [Test]
-        public void linestring_angle_value_ignores_orientation()
-        {
-            var lineString1 = new LineString(new[] { new Coordinate(1, 1), new Coordinate(2, 2) });
-            var lineString2 = new LineString(new[] { new Coordinate(2, 2), new Coordinate(1, 1) });
-            double angle1 = lineString1.Angle;
-            double angle2 = lineString2.Angle;
-            Assert.AreEqual(angle1, angle2);
-            Assert.IsTrue(Math.Abs(angle1 - 45d) < 0.001);
-            Assert.IsTrue(Math.Abs(angle2 - 45d) < 0.001);
-        }
-
         [Test]
         public void angle_utility_handles_orientation()
         {

@@ -59,45 +59,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
             Coordinate p)
         {
             //checkRobustInCircle(a, b, c, p);
-            return IsInCircleDD(a, b, c, p);
-        }
-
-        /// <summary>
-        /// Tests if a point is inside the circle defined by the points a, b, c.
-        /// The computation uses <see cref="DD"/> arithmetic for robustness.
-        /// </summary>
-        /// <param name="a">A vertex of the triangle</param>
-        /// <param name="b">A vertex of the triangle</param>
-        /// <param name="c">A vertex of the triangle</param>
-        /// <param name="p">The point to test</param>
-        /// <returns><value>true</value> if this point is inside the circle defined by the points a, b, c</returns>
-        [Obsolete]
-        public static bool IsInCircleDD(
-            Coordinate a, Coordinate b, Coordinate c,
-            Coordinate p)
-        {
-            var px = new DD(p.X);
-            var py = new DD(p.Y);
-            var ax = new DD(a.X);
-            var ay = new DD(a.Y);
-            var bx = new DD(b.X);
-            var by = new DD(b.Y);
-            var cx = new DD(c.X);
-            var cy = new DD(c.Y);
-
-            var aTerm = (ax.Multiply(ax).Add(ay.Multiply(ay)))
-                .Multiply(TriAreaDD(bx, by, cx, cy, px, py));
-            var bTerm = (bx.Multiply(bx).Add(by.Multiply(by)))
-                .Multiply(TriAreaDD(ax, ay, cx, cy, px, py));
-            var cTerm = (cx.Multiply(cx).Add(cy.Multiply(cy)))
-                .Multiply(TriAreaDD(ax, ay, bx, by, px, py));
-            var pTerm = (px.Multiply(px).Add(py.Multiply(py)))
-                .Multiply(TriAreaDD(ax, ay, bx, by, cx, cy));
-
-            var sum = aTerm.Subtract(bTerm).Add(cTerm).Subtract(pTerm);
-            bool isInCircle = sum.ToDoubleValue() > 0;
-
-            return isInCircle;
+            return IsInCircleDD2(a, b, c, p);
         }
 
         /// <summary>
@@ -158,26 +120,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
             return isInCircle;
         }
 
-        /// <summary>
-        /// Computes twice the area of the oriented triangle (a, b, c), i.e., the area
-        /// is positive if the triangle is oriented counterclockwise.
-        /// The computation uses <see cref="DD"/> arithmetic for robustness.
-        /// </summary>
-        /// <param name="ax">The x ordinate of a vertex of the triangle</param>
-        /// <param name="ay">The y ordinate of a vertex of the triangle</param>
-        /// <param name="bx">The x ordinate of a vertex of the triangle</param>
-        /// <param name="by">The y ordinate of a vertex of the triangle</param>
-        /// <param name="cx">The x ordinate of a vertex of the triangle</param>
-        /// <param name="cy">The y ordinate of a vertex of the triangle</param>
-        /// <returns>Twice the area of the oriented triangle</returns>
-        [Obsolete]
-        public static DD TriAreaDD(DD ax, DD ay,
-                                   DD bx, DD by, DD cx, DD cy)
-        {
-            return (bx.Subtract(ax).Multiply(cy.Subtract(ay)).Subtract(by.Subtract(ay)
-                                                                         .Multiply(cx.Subtract(ax))));
-        }
-
         public static DD TriAreaDD2(
             Coordinate a, Coordinate b, Coordinate c)
         {
@@ -227,7 +169,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
                                                 Coordinate p)
         {
             bool nonRobustInCircle = IsInCircle(a, b, c, p);
-            bool isInCircleDD = IsInCircleDD(a, b, c, p);
+            bool isInCircleDD = IsInCircleDD2(a, b, c, p);
             bool isInCircleCC = IsInCircleCC(a, b, c, p);
 
             var circumCentre = Triangle.Circumcentre(a, b, c);

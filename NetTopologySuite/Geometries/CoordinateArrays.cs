@@ -193,24 +193,6 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Converts the given <see cref="ICollection" /> of
-        /// <see cref="Coordinate" />s into a <see cref="Coordinate" /> array.
-        /// </summary>
-        /// <param name="coordList"><see cref="ICollection" /> of coordinates.</param>
-        /// <returns></returns>
-        /// <exception cref="InvalidCastException">
-        /// If <paramref name="coordList"/> contains not only <see cref="Coordinate" />s.
-        /// </exception>
-        [Obsolete("Use generic method instead")]
-        public static Coordinate[] ToCoordinateArray(ICollection coordList)
-        {
-            var tempList = new List<Coordinate>(coordList.Count);
-            foreach (Coordinate coord in coordList)
-                tempList.Add(coord);
-            return tempList.ToArray();
-        }
-
-        /// <summary>
         /// Converts the given <see cref="ICollection{T}" /> of
         /// <see cref="Coordinate" />s into a <see cref="Coordinate" /> array.
         /// </summary>

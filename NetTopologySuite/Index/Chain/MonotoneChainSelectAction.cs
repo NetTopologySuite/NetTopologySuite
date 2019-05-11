@@ -8,12 +8,6 @@ namespace NetTopologySuite.Index.Chain
     /// </summary>
     public class MonotoneChainSelectAction
     {
-        ///// <summary>
-        ///// These envelopes are used during the MonotoneChain search process.
-        ///// </summary>
-        //[Obsolete()]
-        //public Envelope TempEnv1 = new Envelope();
-
         /// <summary>
         ///
         /// </summary>

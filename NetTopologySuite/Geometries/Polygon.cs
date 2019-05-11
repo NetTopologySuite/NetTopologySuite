@@ -420,17 +420,6 @@ namespace NetTopologySuite.Geometries
                 _holes[i].Apply(filter);
         }
 
-        /// <summary>
-        /// Creates and returns a full copy of this object.
-        /// (including all coordinates contained by it).
-        /// </summary>
-        /// <returns>A copy of this instance</returns>
-        [Obsolete("Use Copy()")]
-        public override object Clone()
-        {
-            return Copy();
-        }
-
         /// <inheritdoc cref="Geometry.CopyInternal"/>>
         protected override Geometry CopyInternal()
         {
@@ -440,18 +429,6 @@ namespace NetTopologySuite.Geometries
                 holesCopy[i] = (LinearRing) _holes[i].Copy();
             return new Polygon(shellCopy, holesCopy, Factory);
         }
-
-        //[Obsolete]
-        //internal override int GetHashCodeInternal(int baseValue, Func<int, int> operation)
-        //{
-        //    if (!IsEmpty)
-        //    {
-        //        baseValue = _shell.CoordinateSequence.GetHashCode(baseValue, operation);
-        //        foreach(var ring in _holes)
-        //            baseValue = ring.CoordinateSequence.GetHashCode(baseValue, operation);
-        //    }
-        //    return baseValue;
-        //}
 
         /// <summary>
         ///

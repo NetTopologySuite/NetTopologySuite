@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 
@@ -27,17 +25,6 @@ namespace NetTopologySuite.Operation.Overlay
             _geometryFactory = geometryFactory;
             //_ptLocator = ptLocator;
         }
-
-        /// <summary>
-        /// Creates an instance of this class
-        /// </summary>
-        /// <param name="op">The operation</param>
-        /// <param name="geometryFactory">The geometry factory</param>
-        /// <param name="ptLocator">The point locator</param>
-        [Obsolete("point locator no longer used!")]
-        public PointBuilder(OverlayOp op, GeometryFactory geometryFactory, PointLocator ptLocator = null)
-            :this(op,geometryFactory)
-        { }
 
         /// <summary>
         /// Computes the Point geometries which will appear in the result,

@@ -316,16 +316,6 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// Creates a deep copy of the object.
-        /// </summary>
-        /// <returns>The deep copy.</returns>
-        [Obsolete]
-        public virtual object Clone()
-        {
-            return Copy();
-
-        }
-        /// <summary>
         /// Creates a deep copy of the <c>CoordinateArraySequence</c>.
         /// </summary>
         /// <returns>The deep copy.</returns>

@@ -21,7 +21,7 @@ namespace NetTopologySuite.Samples.Tests.Github
         {
             var r = new WKTReader(factory);
             var wktGeom = r.Read(wkt);
-            var s = new WKBReader(factory);
+            var s = new WKBReader(new NtsGeometryServices(factory.CoordinateSequenceFactory, factory.PrecisionModel, factory.SRID));
             var wkbGeom = s.Read(WKBReader.HexToBytes(wkb));
 
             try

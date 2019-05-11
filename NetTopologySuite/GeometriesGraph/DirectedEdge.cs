@@ -256,25 +256,6 @@ namespace NetTopologySuite.GeometriesGraph
         }
 
         /// <summary>
-        /// Set both edge depths.  One depth for a given side is provided.  The other is
-        /// computed depending on the Location transition and the depthDelta of the edge.
-        /// </summary>
-        /// <param name="depth"></param>
-        /// <param name="position"></param>
-        [Obsolete("Use SetEdgeDepths instead")]
-        public void OLDSetEdgeDepths(Positions position, int depth)
-        {
-            int depthDelta = Edge.DepthDelta;
-            var loc = Label.GetLocation(0, position);
-            var oppositePos = Position.Opposite(position);
-            var oppositeLoc = Label.GetLocation(0, oppositePos);
-            int delta = Math.Abs(depthDelta) * DepthFactor(loc, oppositeLoc);
-            int oppositeDepth = depth + delta;
-            SetDepth(position, depth);
-            SetDepth(oppositePos, oppositeDepth);
-        }
-
-        /// <summary>
         ///
         /// </summary>
         /// <param name="outstream"></param>

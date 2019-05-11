@@ -55,7 +55,7 @@ namespace NetTopologySuite.Samples.Tests.Github
 
         private static Geometry FromWkb(string wkb, Geometry clip = null)
         {
-            var reader = new WKBReader(GeometryFactory.Default);
+            var reader = new WKBReader();
             byte[] bytes = WKBReader.HexToBytes(wkb);
             var geom =  reader.Read(bytes);
             if (clip != null)

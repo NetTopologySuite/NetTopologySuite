@@ -10,7 +10,7 @@ namespace NetTopologySuite.LinearReferencing
     /// Various methods are provided to manipulate the location value
     /// and query the geometry it references.
     /// </summary>
-    public class LinearLocation : IComparable<LinearLocation>, IComparable, ICloneable
+    public class LinearLocation : IComparable<LinearLocation>, IComparable
     {
         /// <summary>
         /// Gets a location which refers to the end of a linear <see cref="Geometry" />.
@@ -483,16 +483,6 @@ namespace NetTopologySuite.LinearReferencing
             if (_segmentIndex < nseg)
                 return this;
             return new LinearLocation(_componentIndex, nseg, 1.0, false);
-        }
-
-        /// <summary>
-        /// Copies this location.
-        /// </summary>
-        /// <returns>A copy of this location.</returns>
-        [Obsolete("Use Copy()")]
-        public object Clone()
-        {
-            return Copy();
         }
 
         public LinearLocation Copy()

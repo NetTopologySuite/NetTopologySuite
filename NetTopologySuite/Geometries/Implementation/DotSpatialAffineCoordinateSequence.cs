@@ -189,13 +189,6 @@ namespace NetTopologySuite.Geometries.Implementation
             _ordinates = Ordinates.XYZM;
         }
 
-        [Obsolete]
-        public object Clone()
-        {
-            return Copy();
-
-        }
-
         /// <inheritdoc cref="ICoordinateSequence.Copy"/>
         public ICoordinateSequence Copy()
         {

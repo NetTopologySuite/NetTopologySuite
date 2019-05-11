@@ -1,4 +1,3 @@
-using System;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
@@ -80,36 +79,6 @@ namespace NetTopologySuite.Algorithm
         private double _x;
         private double _y;
         private double _w;
-
-        /// <summary>
-        /// Direct access to x private field
-        /// </summary>
-        [Obsolete("This is a simple access to x private field: use GetX() instead.")]
-        protected double X
-        {
-            get => _x;
-            set => _x = value;
-        }
-
-        /// <summary>
-        /// Direct access to y private field
-        /// </summary>
-        [Obsolete("This is a simple access to y private field: use GetY() instead.")]
-        protected double Y
-        {
-            get => _y;
-            set => _y = value;
-        }
-
-        /// <summary>
-        /// Direct access to w private field
-        /// </summary>
-        [Obsolete("This is a simple access to w private field: how do you use this field for?...")]
-        protected double W
-        {
-            get => _w;
-            set => _w = value;
-        }
 
         /// <summary>
         ///

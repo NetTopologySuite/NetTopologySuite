@@ -92,9 +92,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void TestMaximumPrecisionDigitsFormatting()
         {
-            var factory = GeometryFactory.Default;
-
-            var wkbreader = new WKBReader(factory);
+            var wkbreader = new WKBReader();
             var wkb1 = wkbreader.Read(test00_Geom0_WkbByteArray);
             Assert.IsNotNull(wkb1);
             TestValid(wkb1);
@@ -112,7 +110,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             string tos2 = writer.Write(wkb2);
             Assert.IsNotNull(tos2);
 
-            var reader = new WKTReader(factory);
+            var reader = new WKTReader();
             var wkt1 = reader.Read(tos1);
             Assert.IsNotNull(wkt1);
             Assert.IsTrue(wkt1.IsValid);

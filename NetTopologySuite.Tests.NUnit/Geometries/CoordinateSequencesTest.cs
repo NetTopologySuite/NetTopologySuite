@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NUnit.Framework;
@@ -106,42 +105,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             DoTestReverse(PackedCoordinateSequenceFactory.FloatFactory, 7);
         }
 
-        /**
-         * Method used to create a {@link this.ordinateValues}.
-         * Usage: remove first 't' and run as unit test.
-         * Note: When parameters are changed, some unit tests may need to be
-         * changed, too. <p>
-         * This is especially true for the (@link testMinCoordinateIndex) test,
-         * which assumes that the coordinates in the sequence are all within an
-         * envelope of [Env(10, 100, 10, 100)].
-         * </p>.
-         *
-         * @deprecated only use to update {@link this.ordinateValues}
-         */
-        [Test, Ignore("")]
-        [Obsolete]
-        public void TestCreateRandomOrdinates()
-        {
-            var sequence = CreateRandomTestSequence(CoordinateArraySequenceFactory.Instance, 20,
-                    2, new Random(7),
-                    new Envelope(10, 100, 10, 100), new PrecisionModel(100));
-
-            var ordinates = new StringBuilder("\tprivate static readonly double[][] ordinateValues = {");
-            for (int i = 0; i < sequence.Count; i++)
-            {
-                if (i % 6 == 0) ordinates.Append("\n\t\t");
-                ordinates.Append("new[]{");
-                ordinates.Append(sequence.GetOrdinate(i, Ordinate.X));
-                ordinates.Append(',');
-                ordinates.Append(sequence.GetOrdinate(i, Ordinate.Y));
-                if (i < sequence.Count - 1) ordinates.Append("},"); else ordinates.Append('}');
-            }
-            ordinates.Append("};");
-
-            Console.WriteLine(ordinates.ToString());
-            Assert.IsTrue(true);
-        }
-
         private static ICoordinateSequence CreateSequenceFromOrdinates(ICoordinateSequenceFactory csFactory, int dim)
         {
             var sequence = csFactory.Create(ordinateValues.Length, dim);
@@ -163,23 +126,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             return cs;
         }
 
-
-        /**
-         * Deprecated only use to update in conjunction with <see cref="TestCreateRandomOrdinates" />
-         */
-        [Obsolete]
-        private static ICoordinateSequence CreateRandomTestSequence(ICoordinateSequenceFactory csFactory, int size, int dim,
-                                                         Random rnd, Envelope range, PrecisionModel pm)
-        {
-            var cs = csFactory.Create(size, dim);
-            for (int i = 0; i < size; i++)
-            {
-                cs.SetOrdinate(i, Ordinate.X, pm.MakePrecise(range.Width * rnd.NextDouble() + range.MinX));
-                cs.SetOrdinate(i, Ordinate.Y, pm.MakePrecise(range.Height * rnd.NextDouble() + range.MinY));
-            }
-
-            return FillNonPlanarDimensions(cs);
-        }
 
         private static void DoTestReverse(ICoordinateSequenceFactory factory, int dimension)
         {

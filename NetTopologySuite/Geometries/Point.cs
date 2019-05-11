@@ -229,17 +229,6 @@ namespace NetTopologySuite.Geometries
             filter.Filter(this);
         }
 
-        /// <summary>
-        /// Creates and returns a full copy of this object.
-        /// (including all coordinates contained by it).
-        /// </summary>
-        /// <returns>A copy of this instance</returns>
-        [Obsolete("Use Copy()")]
-        public override object Clone()
-        {
-            return Copy();
-        }
-
         /// <inheritdoc cref="Geometry.CopyInternal"/>>
         protected override Geometry CopyInternal()
         {

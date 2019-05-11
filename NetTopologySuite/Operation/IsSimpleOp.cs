@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
@@ -55,14 +54,6 @@ namespace NetTopologySuite.Operation
         /// <summary>
         /// Creates a simplicity checker using the default SFS Mod-2 Boundary Node Rule
         /// </summary>
-        [Obsolete("Use IsSimpleOp(Geometry geom)")]
-        public IsSimpleOp()
-        {
-        }
-
-        /// <summary>
-        /// Creates a simplicity checker using the default SFS Mod-2 Boundary Node Rule
-        /// </summary>
         /// <param name="geom">The geometry to test</param>
         public IsSimpleOp(Geometry geom)
         {
@@ -111,37 +102,6 @@ namespace NetTopologySuite.Operation
         /// <returns> a coordinate for the location of the non-boundary self-intersection
         /// or <value>null</value> if the geometry is simple</returns>
         public Coordinate NonSimpleLocation => _nonSimpleLocation;
-
-        /// <summary>
-        /// Reports whether a <see cref="LineString"/> is simple.
-        /// </summary>
-        /// <param name="geom">The lineal geometry to test</param>
-        /// <returns>True if the geometry is simple</returns>
-        [Obsolete("Use IsSimple()")]
-        public bool IsSimple(LineString geom)
-        {
-            return IsSimpleLinearGeometry(geom);
-        }
-
-        /// <summary>
-        /// Reports whether a <see cref="MultiLineString"/> is simple.
-        /// </summary>
-        /// <param name="geom">The lineal geometry to test</param>
-        /// <returns>True if the geometry is simple</returns>
-        [Obsolete("Use IsSimple()")]
-        public bool IsSimple(MultiLineString geom)
-        {
-            return IsSimpleLinearGeometry(geom);
-        }
-
-        /// <summary>
-        /// A MultiPoint is simple if it has no repeated points.
-        /// </summary>
-        [Obsolete("Use IsSimple()")]
-        public bool IsSimple(MultiPoint mp)
-        {
-            return IsSimpleMultiPoint(mp);
-        }
 
         private bool IsSimpleMultiPoint(MultiPoint mp)
         {

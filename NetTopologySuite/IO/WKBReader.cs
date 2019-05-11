@@ -72,8 +72,6 @@ namespace NetTopologySuite.IO
             throw new ArgumentException("Invalid hex digit: " + hex);
         }
 
-        [Obsolete]
-        private readonly GeometryFactory _factory;
         private readonly ICoordinateSequenceFactory _sequenceFactory;
         private readonly PrecisionModel _precisionModel;
 
@@ -85,32 +83,9 @@ namespace NetTopologySuite.IO
         private bool _isStrict;
 
         /// <summary>
-        /// The <see cref="Geometry"/> builder.
-        /// </summary>
-        [Obsolete]
-        protected GeometryFactory Factory => _factory;
-
-        /// <summary>
-        /// Initialize reader with a standard <see cref="GeometryFactory"/>.
+        /// Initialize reader with a standard <see cref="NtsGeometryServices"/>.
         /// </summary>
         public WKBReader() : this(NtsGeometryServices.Instance) { }
-
-        /// <summary>
-        /// Initialize reader with the given <c>GeometryFactory</c>.
-        /// </summary>
-        /// <param name="factory"></param>
-        [Obsolete]
-        public WKBReader(GeometryFactory factory)
-        {
-            _geometryServices = NtsGeometryServices.Instance;
-
-            _factory = factory;
-            _sequenceFactory = factory.CoordinateSequenceFactory;
-            _precisionModel = factory.PrecisionModel;
-
-            HandleSRID = true;
-            HandleOrdinates = AllowedOrdinates;
-        }
 
         public WKBReader(NtsGeometryServices services)
         {

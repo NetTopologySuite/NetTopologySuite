@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
@@ -68,9 +69,9 @@ namespace Open.Topology.TestRunner.Utility
             return geomFact.CreateGeometryCollection(GeometryFactory.ToGeometryArray(geomList));
         }
 
-        public static Geometry ReadGeometriesFromWkbHexString(string wkb, GeometryFactory geomFact)
+        public static Geometry ReadGeometriesFromWkbHexString(string wkb, NtsGeometryServices services)
         {
-            var reader = new WKBReader(geomFact);
+            var reader = new WKBReader(services);
             var fileReader = new WKBHexFileReader(reader);
             var geomList = new List<Geometry>();
             using (var ms = new MemoryStream())
@@ -82,7 +83,7 @@ namespace Open.Topology.TestRunner.Utility
             if (geomList.Count == 1)
                 return geomList[1];
 
-            return geomFact.CreateGeometryCollection(GeometryFactory.ToGeometryArray(geomList));
+            return services.CreateGeometryFactory().CreateGeometryCollection(GeometryFactory.ToGeometryArray(geomList));
         }
     }
 }

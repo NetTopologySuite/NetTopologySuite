@@ -10,7 +10,6 @@ namespace NetTopologySuite.Noding
     /// Wraps a <see cref="INoder" /> and transforms its input into the integer domain.
     /// This is intended for use with Snap-Rounding noders,
     /// which typically are only intended to work in the integer domain.
-    /// Offsets can be provided to increase the number of digits of available precision.
     /// <para>
     /// Clients should be aware that rescaling can involve loss of precision,
     /// which can cause zero-length line segments to be created.
@@ -22,8 +21,6 @@ namespace NetTopologySuite.Noding
     {
         private readonly INoder _noder;
         private readonly double _scaleFactor;
-        private readonly double _offsetX;
-        private readonly double _offsetY;
         private readonly bool _isScaled;
 
         /// <summary>
@@ -37,24 +34,6 @@ namespace NetTopologySuite.Noding
             _scaleFactor = scaleFactor;
             // no need to scale if input precision is already integral
             _isScaled = !IsIntegerPrecision;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="noder"></param>
-        /// <param name="scaleFactor"></param>
-        /// <param name="offsetX"></param>
-        /// <param name="offsetY"></param>
-        [Obsolete("Do not use offsetX and offsetY")]
-        public ScaledNoder(INoder noder, double scaleFactor, double offsetX, double offsetY)
-        {
-            _noder = noder;
-            _scaleFactor = scaleFactor;
-            _offsetX = offsetX;
-            _offsetY = offsetY;
-            // no need to scale if input precision is already integral
-            _isScaled = ! IsIntegerPrecision;
         }
 
         /// <summary>
@@ -112,8 +91,8 @@ namespace NetTopologySuite.Noding
         {
             var roundPts = new Coordinate[pts.Length];
             for (int i = 0; i < pts.Length; i++)
-                roundPts[i] = new CoordinateZ(Math.Round((pts[i].X - _offsetX) * _scaleFactor),
-                                              Math.Round((pts[i].Y - _offsetY) * _scaleFactor),
+                roundPts[i] = new CoordinateZ(Math.Round(pts[i].X * _scaleFactor),
+                                              Math.Round(pts[i].Y * _scaleFactor),
                                               pts[i].Z);
             var roundPtsNoDup = CoordinateArrays.RemoveRepeatedPoints(roundPts);
             return roundPtsNoDup;
@@ -129,8 +108,8 @@ namespace NetTopologySuite.Noding
         {
             for (int i = 0; i < pts.Length; i++)
             {
-                pts[i].X = pts[i].X / _scaleFactor + _offsetX;
-                pts[i].Y = pts[i].Y / _scaleFactor + _offsetY;
+                pts[i].X = pts[i].X / _scaleFactor;
+                pts[i].Y = pts[i].Y / _scaleFactor;
             }
 
 #if DEBUG

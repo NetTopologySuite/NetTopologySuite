@@ -9,12 +9,6 @@ namespace NetTopologySuite.IO
     /// <typeparam name="TSource">The type of the source to read from.</typeparam>
     public interface IGeometryReader<TSource> : IGeometryIOSettings
     {
-        ///// <summary>
-        ///// Gets or sets the geometry factory used to create the parsed geometries
-        ///// </summary>
-        //[Obsolete]
-        //GeometryFactory Factory { get; set; }
-
         /*
         /// <summary>
         /// Gets the coordinate sequence factory

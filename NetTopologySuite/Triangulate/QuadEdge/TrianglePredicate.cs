@@ -1,8 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.Geometries.Implementation;
-using NetTopologySuite.IO;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Triangulate.QuadEdge
@@ -126,69 +122,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// the triangle with vertices a, b, c (oriented counter-clockwise).
         /// </summary>
         /// <remarks>
-        /// The computation uses <see cref="DD"/> arithmetic for robustness.
-        /// </remarks>
-        /// <param name="a">A vertex of the triangle</param>
-        /// <param name="b">A vertex of the triangle</param>
-        /// <param name="c">A vertex of the triangle</param>
-        /// <param name="p">The point to test</param>
-        /// <returns>true if this point is inside the circle defined by the points a, b, c</returns>
-        [Obsolete]
-        public static bool IsInCircleDDSlow(
-            Coordinate a, Coordinate b, Coordinate c,
-            Coordinate p)
-        {
-            var px = DD.ValueOf(p.X);
-            var py = DD.ValueOf(p.Y);
-            var ax = DD.ValueOf(a.X);
-            var ay = DD.ValueOf(a.Y);
-            var bx = DD.ValueOf(b.X);
-            var by = DD.ValueOf(b.Y);
-            var cx = DD.ValueOf(c.X);
-            var cy = DD.ValueOf(c.Y);
-
-            var aTerm = (ax.Multiply(ax).Add(ay.Multiply(ay)))
-                .Multiply(TriAreaDDSlow(bx, by, cx, cy, px, py));
-            var bTerm = (bx.Multiply(bx).Add(by.Multiply(by)))
-                .Multiply(TriAreaDDSlow(ax, ay, cx, cy, px, py));
-            var cTerm = (cx.Multiply(cx).Add(cy.Multiply(cy)))
-                .Multiply(TriAreaDDSlow(ax, ay, bx, by, px, py));
-            var pTerm = (px.Multiply(px).Add(py.Multiply(py)))
-                .Multiply(TriAreaDDSlow(ax, ay, bx, by, cx, cy));
-
-            var sum = aTerm.Subtract(bTerm).Add(cTerm).Subtract(pTerm);
-            bool isInCircle = sum.ToDoubleValue() > 0;
-
-            return isInCircle;
-        }
-
-        /// <summary>
-        /// Computes twice the area of the oriented triangle (a, b, c), i.e., the area
-        /// is positive if the triangle is oriented counterclockwise.
-        /// </summary>
-        /// <remarks>
-        /// The computation uses {@link DD} arithmetic for robustness.
-        /// </remarks>
-        /// <param name="ax">x ordinate of a vertex of the triangle</param>
-        /// <param name="ay">y ordinate of a vertex of the triangle</param>
-        /// <param name="bx">x ordinate of a vertex of the triangle</param>
-        /// <param name="by">y ordinate of a vertex of the triangle</param>
-        /// <param name="cx">x ordinate of a vertex of the triangle</param>
-        /// <param name="cy">y ordinate of a vertex of the triangle</param>
-        /// <returns>The area of a triangle defined by the points a, b and c</returns>
-        [Obsolete]
-        private static DD TriAreaDDSlow(DD ax, DD ay,
-                                       DD bx, DD by, DD cx, DD cy)
-        {
-            return (bx.Subtract(ax).Multiply(cy.Subtract(ay)).Subtract(by.Subtract(ay)
-                                                                           .Multiply(cx.Subtract(ax))));
-        }
-
-        /// <summary>
-        /// Tests if a point is inside the circle defined by
-        /// the triangle with vertices a, b, c (oriented counter-clockwise).
-        /// </summary>
-        /// <remarks>
         /// The computation uses <see cref="DD"/> arithmetic for robustness, but a faster approach.
         /// </remarks>
         /// <param name="a">A vertex of the triangle</param>
@@ -291,39 +224,6 @@ namespace NetTopologySuite.Triangulate.QuadEdge
             double ccRadius = a.Distance(cc);
             double pRadiusDiff = p.Distance(cc) - ccRadius;
             return pRadiusDiff <= 0;
-        }
-
-        /// <summary>
-        /// Checks if the computed value for isInCircle is correct, using
-        /// double-double precision arithmetic.
-        /// </summary>
-        /// <param name="a">A vertex of the triangle</param>
-        /// <param name="b">A vertex of the triangle</param>
-        /// <param name="c">A vertex of the triangle</param>
-        /// <param name="p">The point to test</param>
-        [Obsolete]
-        private static void CheckRobustInCircle(Coordinate a, Coordinate b, Coordinate c,
-                                                Coordinate p)
-        {
-            bool nonRobustInCircle = IsInCircleNonRobust(a, b, c, p);
-            bool isInCircleDD = IsInCircleDDSlow(a, b, c, p);
-            bool isInCircleCC = IsInCircleCC(a, b, c, p);
-
-            var circumCentre = Triangle.Circumcentre(a, b, c);
-// ReSharper disable RedundantStringFormatCall
-            // String.Format needed to build 2.0 release!
-            Debug.WriteLine(string.Format("p radius diff a = {0}", Math.Abs(p.Distance(circumCentre) - a.Distance(circumCentre))/a.Distance(circumCentre)));
-            if (nonRobustInCircle != isInCircleDD || nonRobustInCircle != isInCircleCC)
-            {
-                Debug.WriteLine(string.Format("inCircle robustness failure (double result = {0}, DD result = {1}, CC result = {2})", nonRobustInCircle, isInCircleDD, isInCircleCC));
-                Debug.WriteLine(WKTWriter.ToLineString(new CoordinateArraySequence(new[] { a, b, c, p })));
-                Debug.WriteLine(string.Format("Circumcentre = {0} radius = {1}", WKTWriter.ToPoint(circumCentre), a.Distance(circumCentre)));
-                Debug.WriteLine(string.Format("p radius diff a = {0}", Math.Abs(p.Distance(circumCentre)/a.Distance(circumCentre) - 1)));
-                Debug.WriteLine(string.Format("p radius diff b = {0}", Math.Abs(p.Distance(circumCentre)/b.Distance(circumCentre) - 1)));
-                Debug.WriteLine(string.Format("p radius diff c = {0}", Math.Abs(p.Distance(circumCentre)/c.Distance(circumCentre) - 1)));
-                Debug.WriteLine("");
-            }
-// ReSharper restore RedundantStringFormatCall
         }
 
     }

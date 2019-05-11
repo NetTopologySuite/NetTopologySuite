@@ -17,7 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             //System.Console.WriteLine("--------------------------------");
             //System.Console.WriteLine("Computing e by Taylor series");
             var testE = ComputeEByTaylorSeries();
-            double err = Math.Abs(testE.Subtract(DD.E).ToDoubleValue());
+            double err = Math.Abs((testE - DD.E).ToDoubleValue());
             //System.Console.WriteLine("Difference from DoubleDouble.E = " + err);
             Assert.IsTrue(err < 64*DD.Epsilon);
         }
@@ -39,8 +39,8 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             {
                 i++;
                 n += 1.0;
-                t = t.Divide(DD.ValueOf(n));
-                s = s.Add(t);
+                t /= DD.ValueOf(n);
+                s += t;
                 Console.WriteLine(i + ": " + s);
             }
             return s;
@@ -52,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             //System.Console.WriteLine("--------------------------------");
             //System.Console.WriteLine("Computing Pi by Machin's rule");
             var testE = ComputePiByMachin();
-            double err = Math.Abs(testE.Subtract(DD.PI).ToDoubleValue());
+            double err = Math.Abs((testE - DD.PI).ToDoubleValue());
             //System.Console.WriteLine("Difference from DoubleDouble.PI = " + err);
             Assert.IsTrue(err < 8*DD.Epsilon);
         }
@@ -65,13 +65,13 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         /// <returns>An approximation to Pi</returns>
         private static DD ComputePiByMachin()
         {
-            var t1 = DD.ValueOf(1.0).Divide(DD.ValueOf(5.0));
-            var t2 = DD.ValueOf(1.0).Divide(DD.ValueOf(239.0));
+            var t1 = DD.ValueOf(1.0) / DD.ValueOf(5.0);
+            var t2 = DD.ValueOf(1.0) / DD.ValueOf(239.0);
 
-            var pi4 = (DD.ValueOf(4.0)
-                .Multiply(ArcTan(t1)))
-                .Subtract(ArcTan(t2));
-            var pi = DD.ValueOf(4.0).Multiply(pi4);
+            var pi4 = DD.ValueOf(4.0)
+                * ArcTan(t1)
+                - ArcTan(t2);
+            var pi = DD.ValueOf(4.0) * pi4;
             Console.WriteLine("Computed value = " + pi);
             return pi;
         }
@@ -95,10 +95,10 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             while (t.ToDoubleValue() > DD.Epsilon)
             {
                 k++;
-                at = sign < 0 ? at.Subtract(t.Divide(d)) : at.Add(t.Divide(d));
+                at = sign < 0 ? at - t / d : at + t / d;
 
-                d = d.Add(two);
-                t = t.Multiply(t2);
+                d += two;
+                t *= t2;
                 sign = -sign;
             }
             //System.Console.WriteLine("Computed DD.atan(): " + at

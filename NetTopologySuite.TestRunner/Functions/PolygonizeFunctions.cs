@@ -1,8 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Operation.Polygonize;
-using NetTopologySuite.Utilities;
 
 namespace Open.Topology.TestRunner.Functions
 {
@@ -36,7 +36,7 @@ namespace Open.Topology.TestRunner.Functions
             var polygonizer = new Polygonizer();
             polygonizer.Add(lines);
             var geom = polygonizer.GetDangles();
-            return g.Factory.BuildGeometry(CollectionUtil.Cast<LineString, Geometry>(geom));
+            return g.Factory.BuildGeometry(geom.ToArray<Geometry>());
         }
 
         public static Geometry PolygonizeCutEdges(Geometry g)
@@ -45,7 +45,7 @@ namespace Open.Topology.TestRunner.Functions
             var polygonizer = new Polygonizer();
             polygonizer.Add(lines);
             var geom = polygonizer.GetCutEdges();
-            return g.Factory.BuildGeometry(CollectionUtil.Cast<LineString, Geometry>(geom));
+            return g.Factory.BuildGeometry(geom.ToArray<Geometry>());
         }
 
         public static Geometry PolygonizeInvalidRingLines(Geometry g)
@@ -62,11 +62,11 @@ namespace Open.Topology.TestRunner.Functions
             var lines = LineStringExtracter.GetLines(g);
             var polygonizer = new Polygonizer();
             polygonizer.Add(lines);
-            var errs = new List<LineString>();
+            var errs = new List<Geometry>();
             errs.AddRange(polygonizer.GetDangles());
             errs.AddRange(polygonizer.GetCutEdges());
-            errs.AddRange(CollectionUtil.Cast<Geometry, LineString>(polygonizer.GetInvalidRingLines()));
-            return g.Factory.BuildGeometry(CollectionUtil.Cast<LineString, Geometry>(errs));
+            errs.AddRange(polygonizer.GetInvalidRingLines());
+            return g.Factory.BuildGeometry(errs);
         }
     }
 }

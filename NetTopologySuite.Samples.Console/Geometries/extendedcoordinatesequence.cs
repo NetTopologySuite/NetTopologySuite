@@ -13,14 +13,6 @@ namespace NetTopologySuite.Samples.Geometries
     /// </summary>
     public class ExtendedCoordinateSequence : ICoordinateSequence
     {
-        [Obsolete]
-        public static ExtendedCoordinate[] Copy(Coordinate[] coordinates)
-        {
-            var copy = new ExtendedCoordinate[coordinates.Length];
-            Array.Copy(CopyInternal(coordinates), copy, coordinates.Length);
-            return copy;
-        }
-
         private static Coordinate[] CopyInternal(Coordinate[] coordinates)
         {
             var copy = new Coordinate[coordinates.Length];
@@ -68,17 +60,6 @@ namespace NetTopologySuite.Samples.Geometries
             return _coordinates[i];
         }
 
-        /// <summary>
-        /// Creates a new object that is a copy of the current instance.
-        /// </summary>
-        /// <returns>
-        /// A new object that is a copy of this instance.
-        /// </returns>
-        [Obsolete("Use Copy()")]
-        public object Clone()
-        {
-            return Copy();
-        }
         /// <summary>
         /// Creates a new object that is a copy of the current instance.
         /// </summary>

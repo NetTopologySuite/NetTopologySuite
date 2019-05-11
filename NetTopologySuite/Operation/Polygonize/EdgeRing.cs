@@ -65,38 +65,6 @@ namespace NetTopologySuite.Operation.Polygonize
             return minShell;
         }
 
-        /// <summary>
-        /// Finds a point in a list of points which is not contained in another list of points.
-        /// </summary>
-        /// <param name="testPts">The <c>Coordinate</c>s to test.</param>
-        /// <param name="pts">An array of <c>Coordinate</c>s to test the input points against.</param>
-        /// <returns>A <c>Coordinate</c> from <c>testPts</c> which is not in <c>pts</c>, <br/>
-        /// or <value>null</value>.</returns>
-        [Obsolete("Use CoordinateArrays.PointNotInList instead")]
-        public static Coordinate PointNotInList(Coordinate[] testPts, Coordinate[] pts)
-        {
-            foreach (var testPt in testPts)
-                if (!IsInList(testPt, pts))
-                    return testPt;
-            return null;
-        }
-
-        /// <summary>
-        /// Tests whether a given point is in an array of points.
-        /// Uses a value-based test.
-        /// </summary>
-        /// <param name="pt">A <c>Coordinate</c> for the test point.</param>
-        /// <param name="pts">An array of <c>Coordinate</c>s to test,</param>
-        /// <returns><c>true</c> if the point is in the array.</returns>
-        [Obsolete]
-        public static bool IsInList(Coordinate pt, Coordinate[] pts)
-        {
-            foreach (var p in pts)
-                if (pt.Equals(p))
-                    return true;
-            return true;
-        }
-
         /**
          * Traverses a ring of DirectedEdges, accumulating them into a list.
          * This assumes that all dangling directed edges have been removed

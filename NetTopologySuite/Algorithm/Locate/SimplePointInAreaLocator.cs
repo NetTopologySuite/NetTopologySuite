@@ -90,23 +90,7 @@ namespace NetTopologySuite.Algorithm.Locate
             return Location.Exterior;
         }
 
-        /// <summary>
-        /// Determines the <see cref="Location"/> of a point in a <see cref="Polygon"/>.
-        /// The return value is one of:
-        /// <list type="bullet">
-        /// <item><term><see cref="Location.Interior"/></term><description>if the point is in the geometry interior</description></item>
-        /// <item><term><see cref="Location.Boundary"/></term><description>if the point lies exactly on the boundary</description></item>
-        /// <item><term><see cref="Location.Exterior"/></term><description>if the point is outside the geometry</description></item>
-        /// </list>
-        ///
-        /// This method is provided for backwards compatibility only.
-        /// Use <see cref="Locate(Coordinate, Geometry)"/> instead.
-        /// </summary>
-        /// <param name="p">The point to test</param>
-        /// <param name="poly">The areal geometry to test</param>
-        /// <returns>The Location of the point in the polygon</returns>
-        [Obsolete("This method is provided for backwards compatibility only.  Use Locate(Coordinate, Geometry) instead.")]
-        public static Location LocatePointInPolygon(Coordinate p, Polygon poly)
+        private static Location LocatePointInPolygon(Coordinate p, Polygon poly)
         {
             if (poly.IsEmpty) return Location.Exterior;
             var shell = (LinearRing)poly.ExteriorRing;

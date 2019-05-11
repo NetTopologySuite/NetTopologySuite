@@ -45,7 +45,6 @@ namespace NetTopologySuite.Geometries
         /// </remarks>
         /// <param name="points">The coordinates used for create this <see cref="LineString" />.</param>
         /// <exception cref="ArgumentException">If too few points are provided</exception>
-        //[Obsolete("Use GeometryFactory instead")]
         public LineString(Coordinate[] points) :
             this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory)
         { }
@@ -281,14 +280,6 @@ namespace NetTopologySuite.Geometries
             return new Envelope(minx, maxx, miny, maxy);
         }
 
-        //[Obsolete]
-        //internal override int GetHashCodeInternal(int baseValue, Func<int, int> operation)
-        //{
-        //    if (!IsEmpty)
-        //        baseValue = _points.GetHashCode(baseValue, operation);
-        //    return baseValue;
-        //}
-
         /// <summary>
         ///
         /// </summary>
@@ -350,17 +341,6 @@ namespace NetTopologySuite.Geometries
         public override void Apply(IGeometryComponentFilter filter)
         {
             filter.Filter(this);
-        }
-
-        /// <summary>
-        /// Creates and returns a full copy of this object.
-        /// (including all coordinates contained by it).
-        /// </summary>
-        /// <returns>A copy of this instance</returns>
-        [Obsolete("Use Copy()")]
-        public override object Clone()
-        {
-            return Copy();
         }
 
         /// <inheritdoc cref="Geometry.CopyInternal"/>>
@@ -457,31 +437,6 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <value></value>
         public int Count => _points.Count;
-
-        /// <summary>
-        /// Returns the value of the angle between the <see cref="StartPoint" />
-        /// and the <see cref="EndPoint" />.
-        /// </summary>
-        /// <remarks>
-        /// Use <see cref="AngleUtility"/> for a more precise computation.
-        /// </remarks>
-        [Obsolete("Use AngleUtility")]
-        public double Angle
-        {
-            get
-            {
-                double deltaX = EndPoint.X - StartPoint.X;
-                double deltaY = EndPoint.Y - StartPoint.Y;
-                double length = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
-                double angleRAD = Math.Asin(Math.Abs(EndPoint.Y - StartPoint.Y) / length);
-                double angle = (angleRAD * 180) / Math.PI;
-
-                if (((StartPoint.X < EndPoint.X) && (StartPoint.Y > EndPoint.Y)) ||
-                     ((StartPoint.X > EndPoint.X) && (StartPoint.Y < EndPoint.Y)))
-                    angle = 360 - angle;
-                return angle;
-            }
-        }
 
         /* END ADDED BY MPAUL42: monoGIS team */
     }

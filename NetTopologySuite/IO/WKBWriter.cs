@@ -18,14 +18,6 @@ namespace NetTopologySuite.IO
     {
         /// <summary>Converts a byte array to a hexadecimal string.</summary>
         /// <param name="bytes">A byte array</param>
-        [Obsolete("Use ToHex(byte[])")]
-        public static string BytesToHex(byte[] bytes)
-        {
-            return ToHex(bytes);
-        }
-
-        /// <summary>Converts a byte array to a hexadecimal string.</summary>
-        /// <param name="bytes">A byte array</param>
         public static string ToHex(byte[] bytes)
         {
             var buf = new StringBuilder(bytes.Length * 2);
@@ -45,65 +37,6 @@ namespace NetTopologySuite.IO
             if (n <= 9)
                 return (char)('0' + n);
             return (char)('A' + (n - 10));
-        }
-
-        /// <summary>
-        /// Gets or sets whether the <see cref="Geometry.SRID"/> value should be emitted
-        /// </summary>
-        [Obsolete("Use HandleSRID instead")]
-        public bool EmitSRID
-        {
-            get => HandleSRID;
-            set => HandleSRID = value;
-        }
-
-        private bool _emitZ;
-
-        /// <summary>
-        /// Gets or sets whether the <see cref="Coordinate.Z"/> values should be emitted
-        /// </summary>
-        [Obsolete("Use HandleOrdinates instead")]
-        public bool EmitZ
-        {
-            get => _emitZ;
-            set
-            {
-                if (value == _emitZ)
-                    return;
-                _emitZ = value;
-
-                if (value)
-                    HandleOrdinates |= Ordinates.Z;
-                else
-                    HandleOrdinates &= ~Ordinates.Z;
-
-                CalcCoordinateSize();
-            }
-        }
-
-        private bool _emitM;
-
-        /// <summary>
-        /// Gets or sets whether the <see cref="ICoordinate.M"/> values should be emitted
-        /// </summary>
-        [Obsolete("Use HandleOrdintes instead.")]
-        public bool EmitM
-        {
-            get => _emitM;
-            set
-            {
-                if (value == _emitM)
-                    return;
-
-                _emitM = value;
-
-                if (value)
-                    HandleOrdinates |= Ordinates.M;
-                else
-                    HandleOrdinates &= ~Ordinates.M;
-
-                CalcCoordinateSize();
-            }
         }
 
         /// <summary>
@@ -698,8 +631,6 @@ namespace NetTopologySuite.IO
                     return;
 
                 _handleOrdinates = value;
-                _emitZ = (value & Ordinates.Z) != 0;
-                _emitM = (value & Ordinates.M) != 0;
                 CalcCoordinateSize();
             }
         }

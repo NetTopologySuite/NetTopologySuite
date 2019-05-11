@@ -8,18 +8,6 @@ namespace NetTopologySuite.Index.Chain
     /// </summary>
     public class MonotoneChainOverlapAction
     {
-        ///// <summary>
-        ///// This envelope is used during the MonotoneChain search process.
-        ///// </summary>
-        //[Obsolete]
-        //public Envelope TempEnv1;// = new Envelope();
-
-        ///// <summary>
-        ///// This envelope is used during the MonotoneChain search process.
-        ///// </summary>
-        //[Obsolete]
-        //public Envelope TempEnv2;// = new Envelope();
-
         /// <summary>
         ///
         /// </summary>
