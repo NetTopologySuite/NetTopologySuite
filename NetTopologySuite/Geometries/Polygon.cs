@@ -385,7 +385,7 @@ namespace NetTopologySuite.Geometries
 
         public override void Apply(ICoordinateSequenceFilter filter)
         {
-            ((LinearRing)_shell).Apply(filter);
+            _shell.Apply(filter);
             if (!filter.Done)
             {
                 for (int i = 0; i < _holes.Length; i++)
@@ -457,7 +457,7 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         protected internal override int CompareToSameClass(object o)
         {
-            var thisShell = (LinearRing) _shell;
+            var thisShell = _shell;
             var otherShell = ((Polygon) o).Shell;
             return thisShell.CompareToSameClass(otherShell);
         }
@@ -472,8 +472,8 @@ namespace NetTopologySuite.Geometries
         {
             var poly = (Polygon)other;
 
-            var thisShell = (LinearRing)_shell;
-            var otherShell = (LinearRing)poly.Shell;
+            var thisShell = _shell;
+            var otherShell = poly.Shell;
             int shellComp = thisShell.CompareToSameClass(otherShell, comparer);
             if (shellComp != 0) return shellComp;
 

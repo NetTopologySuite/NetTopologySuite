@@ -362,7 +362,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <returns><c>true</c> if this <code>Geometry</code> is simple</returns>
         /// <seealso cref="IsValid"/>
-        public bool IsSimple
+        public virtual bool IsSimple
         {
             get
             {
@@ -393,7 +393,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>The distance between the geometries</returns>
         /// <returns>0 if either input geometry is empty</returns>
         /// <exception cref="ArgumentException">if g is null</exception>
-        public double Distance(Geometry g)
+        public virtual double Distance(Geometry g)
         {
             return DistanceOp.Distance(this, g);
         }
@@ -405,7 +405,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="geom">the Geometry to check the distance to.</param>
         /// <param name="distance">the distance value to compare.</param>
         /// <returns><c>true</c> if the geometries are less than <c>distance</c> apart.</returns>
-        public bool IsWithinDistance(Geometry geom, double distance)
+        public virtual bool IsWithinDistance(Geometry geom, double distance)
         {
             double envDist = EnvelopeInternal.Distance(geom.EnvelopeInternal);
             if (envDist > distance)
@@ -442,7 +442,7 @@ namespace NetTopologySuite.Geometries
         /// The centroid of an empty geometry is <c>POINT EMPTY</c>.
         /// </summary>
         /// <returns>A Point which is the centroid of this Geometry.</returns>
-        public Point Centroid
+        public virtual Point Centroid
         {
             get
             {
@@ -465,7 +465,7 @@ namespace NetTopologySuite.Geometries
         /// The interior point of an empty geometry is <c>POINT EMPTY</c>.
         /// </remarks>
         /// <returns>A <c>Point</c> which is in the interior of this Geometry.</returns>
-        public Point InteriorPoint
+        public virtual Point InteriorPoint
         {
             get
             {
@@ -607,10 +607,7 @@ namespace NetTopologySuite.Geometries
         /// <see cref="Intersects"/>
         public bool Disjoint(Geometry g)
         {
-            // short-circuit test
-            if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
-                return true;
-            return Relate(g).IsDisjoint();
+            return !Intersects(g);
         }
 
         /// <summary>
@@ -638,7 +635,7 @@ namespace NetTopologySuite.Geometries
         /// <c>true</c> if the two <c>Geometry</c>s touch;
         /// Returns false if both <c>Geometry</c>s are points.
         /// </returns>
-        public bool Touches(Geometry g)
+        public virtual bool Touches(Geometry g)
         {
             // short-circuit test
             if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
@@ -664,7 +661,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns><c>true</c> if the two <c>Geometry</c>s intersect.</returns>
         /// <see cref="Disjoint"/>
-        public bool Intersects(Geometry g)
+        public virtual bool Intersects(Geometry g)
         {
             // short-circuit test
             if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
@@ -691,7 +688,7 @@ namespace NetTopologySuite.Geometries
             if (g.IsRectangle)
                 return RectangleIntersects.Intersects((Polygon)g, this);
 
-            if (IsGeometryCollection || ((Geometry) g).IsGeometryCollection)
+            if (IsGeometryCollection || g.IsGeometryCollection)
             {
                 for (int i = 0; i < NumGeometries; i++)
                 {
@@ -733,7 +730,7 @@ namespace NetTopologySuite.Geometries
         /// </remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c></param>
         /// <returns><c>true</c> if the two <c>Geometry</c>s cross.</returns>
-        public bool Crosses(Geometry g)
+        public virtual bool Crosses(Geometry g)
         {
             // short-circuit test
             if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
@@ -797,7 +794,7 @@ namespace NetTopologySuite.Geometries
         /// <returns><c>true</c> if this <c>Geometry</c> contains <c>g</c></returns>
         /// <see cref="Within"/>
         /// <see cref="Covers"/>
-        public bool Contains(Geometry g)
+        public virtual bool Contains(Geometry g)
         {
             // optimization - lower dimension cannot contain areas
             if (g.Dimension == Dimension.Surface && Dimension < Dimension.Surface)
@@ -847,7 +844,7 @@ namespace NetTopologySuite.Geometries
         /// For this function to return <c>true</c>, the <c>Geometry</c>
         /// s must be two points, two curves or two surfaces.
         /// </returns>
-        public bool Overlaps(Geometry g)
+        public virtual bool Overlaps(Geometry g)
         {
             // short-circuit test
             if (!EnvelopeInternal.Intersects(g.EnvelopeInternal))
@@ -889,7 +886,7 @@ namespace NetTopologySuite.Geometries
         /// <returns><c>true</c> if this <c>Geometry</c> covers <paramref name="g" /></returns>
         /// <seealso cref="Contains" />
         /// <seealso cref="CoveredBy" />
-        public bool Covers(Geometry g)
+        public virtual bool Covers(Geometry g)
         {
             // optimization - lower dimension cannot cover areas
             if (g.Dimension == Dimension.Surface && Dimension < Dimension.Surface)
@@ -966,7 +963,7 @@ namespace NetTopologySuite.Geometries
         /// <returns><c>true</c> if the DE-9IM intersection
         /// matrix for the two <c>Geometry</c>s match <c>intersectionPattern</c></returns>
         /// <seealso cref="IntersectionMatrix"/>
-        public bool Relate(Geometry g, string intersectionPattern)
+        public virtual bool Relate(Geometry g, string intersectionPattern)
         {
             return Relate(g).Matches(intersectionPattern);
         }
@@ -979,7 +976,7 @@ namespace NetTopologySuite.Geometries
         /// A matrix describing the intersections of the interiors,
         /// boundaries and exteriors of the two <c>Geometry</c>s.
         /// </returns>
-        public IntersectionMatrix Relate(Geometry g)
+        public virtual IntersectionMatrix Relate(Geometry g)
         {
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(g);
@@ -1031,7 +1028,7 @@ namespace NetTopologySuite.Geometries
         /// </remarks>
         /// <param name="g">the <c>Geometry</c> with which to compare this <c>Geometry</c></param>
         /// <returns><c>true</c> if the two <code>Geometry</code>s are topologically equal</returns>
-        public bool EqualsTopologically(Geometry g)
+        public virtual bool EqualsTopologically(Geometry g)
         {
             // short-circuit test
             if (!EnvelopeInternal.Equals(g.EnvelopeInternal))
@@ -1532,7 +1529,7 @@ namespace NetTopologySuite.Geometries
             if (IsEmpty)
                 return OverlayOp.CreateEmptyResult(SpatialFunction.Difference, this, other, _factory);
             if (other == null || other.IsEmpty)
-                return (Geometry)Copy();
+                return Copy();
 
             CheckNotGeometryCollection(this);
             CheckNotGeometryCollection(other);
@@ -1562,8 +1559,8 @@ namespace NetTopologySuite.Geometries
                     return OverlayOp.CreateEmptyResult(SpatialFunction.SymDifference, this, other, _factory);
 
                 // special case: if either input is empty ==> result = other arg
-                if (other == null || other.IsEmpty) return (Geometry)Copy();
-                if (IsEmpty) return (Geometry)other.Copy();
+                if (other == null || other.IsEmpty) return Copy();
+                if (IsEmpty) return other.Copy();
             }
 
             CheckNotGeometryCollection(this);
@@ -1775,7 +1772,7 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="Normalize"/>
         public Geometry Normalized()
         {
-            var copy = (Geometry)Copy();
+            var copy = Copy();
             copy.Normalize();
             return copy;
         }
@@ -1929,7 +1926,7 @@ namespace NetTopologySuite.Geometries
         /// </exception>
         protected static void CheckNotGeometryCollection(Geometry g)
         {
-            if (((Geometry)g).IsGeometryCollection)
+            if (g.IsGeometryCollection)
                 throw new ArgumentException("Operation does not support GeometryCollection arguments");
         }
 

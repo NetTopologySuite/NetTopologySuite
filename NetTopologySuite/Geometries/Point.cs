@@ -238,7 +238,7 @@ namespace NetTopologySuite.Geometries
 
         public override Geometry Reverse()
         {
-            return (Geometry)Copy();
+            return Copy();
         }
 
         /// <summary>

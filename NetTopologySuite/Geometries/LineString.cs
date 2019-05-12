@@ -245,7 +245,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="pt">The <c>Coordinate</c> to check.</param>
         /// <returns><c>true</c> if <c>pt</c> is one of this <c>LineString</c>'s vertices.</returns>
-        public bool IsCoordinate(Coordinate pt)
+        public virtual bool IsCoordinate(Coordinate pt)
         {
             for (int i = 0; i < _points.Count; i++)
                 if (_points.GetCoordinate(i).Equals(pt))
