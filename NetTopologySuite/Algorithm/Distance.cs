@@ -131,15 +131,18 @@ namespace NetTopologySuite.Algorithm
             if (line.Count == 0)
                 throw new ArgumentException(
                     "Line array must contain at least one vertex");
-            // this handles the case of length = 1
+
             var lastStart = line.GetCoordinate(0);
+            var currentEnd = lastStart.Copy();
+
+            // this handles the case of length = 1
             double minDistance = p.Distance(lastStart);
-            for (int i = 1; i < line.Count - 1; i++)
+            for (int i = 1; i < line.Count; i++)
             {
-                var currentEnd = line.GetCoordinate(i);
+                line.GetCoordinate(i, currentEnd);
                 double dist = PointToSegment(p, lastStart, currentEnd);
                 if (dist < minDistance) minDistance = dist;
-                lastStart = currentEnd;
+                lastStart.CoordinateValue = currentEnd;
             }
             return minDistance;
         }
