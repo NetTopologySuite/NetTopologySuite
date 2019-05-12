@@ -478,8 +478,6 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public Point PointOnSurface => InteriorPoint;
 
-        private Dimension _dimension;
-
         /// <summary>
         /// Returns the dimension of this geometry.
         /// </summary>
@@ -498,13 +496,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>
         /// The topological dimensions of this geometry
         /// </returns>
-        public virtual Dimension Dimension
-        {
-            get => _dimension;
-            set => _dimension = value;
-        }
-
-        /*private Geometry boundary;*/
+        public abstract Dimension Dimension { get; }
 
         /// <summary>
         /// Returns the boundary, or an empty geometry of appropriate dimension
@@ -514,10 +506,7 @@ namespace NetTopologySuite.Geometries
         /// of a Geometry is a set of Geometries of the next lower dimension."
         /// </summary>
         /// <returns>The closure of the combinatorial boundary of this <c>Geometry</c>.</returns>
-        /// NOTE: make abstract and remove setter
-        public virtual Geometry Boundary { get; set; }
-
-        /*private Dimensions boundaryDimension;*/
+        public abstract Geometry Boundary { get; }
 
         /// <summary>
         /// Returns the dimension of this <c>Geometry</c>s inherent boundary.
@@ -527,8 +516,7 @@ namespace NetTopologySuite.Geometries
         /// interface, whether or not this object is the empty point. Returns
         /// <c>Dimension.False</c> if the boundary is the empty point.
         /// </returns>
-        /// NOTE: make abstract and remove setter
-        public virtual Dimension BoundaryDimension { get; set; }
+        public abstract Dimension BoundaryDimension { get; }
 
         /// <summary>
         /// Gets a geometry representing the envelope (bounding box) of this <c>Geometry</c>.
