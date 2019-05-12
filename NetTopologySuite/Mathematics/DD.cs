@@ -306,7 +306,7 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The difference of <paramref name="lhs"/> and <paramref name="rhs"/></returns>
         public static DD operator -(DD lhs, DD rhs)
         {
-            return lhs + rhs.Negate();
+            return lhs + (-rhs);
         }
         /// <summary>
         /// Returns the difference of <paramref name="lhs"/> and <paramref name="rhs"/>.
@@ -379,7 +379,7 @@ namespace NetTopologySuite.Mathematics
         [Obsolete("Use operator -")]
         public DD Subtract(DD y)
         {
-            return Add(y.Negate());
+            return Add(-y);
         }
 
         /// <summary>
@@ -429,10 +429,16 @@ namespace NetTopologySuite.Mathematics
         /// Returns a <see cref="DD"/> whose value is <c>-this</c>.
         /// </summary>
         /// <returns><c>-this</c></returns>
+        [Obsolete("Use operator -")]
         public DD Negate()
         {
-            if (IsNaN(this)) return this;
-            return new DD(-_hi, -_lo);
+            return -this;
+        }
+
+        public static DD operator-(DD val)
+        {
+            if (IsNaN(val)) return val;
+            return new DD(-val._hi, -val._lo);
         }
 
         /**
@@ -544,26 +550,10 @@ namespace NetTopologySuite.Mathematics
         /// </summary>
         /// <param name="y">The divisor</param>
         /// <returns>A new <see cref="DD"/> with the value <c>(this / y)</c></returns>
+        [Obsolete("Use /-operator instead")]
         public DD Divide(DD y)
         {
-            double hc, tc, hy, ty, C, c, U, u;
-            C = _hi/y._hi;
-            c = Split*C;
-            hc = c - C;
-            u = Split*y._hi;
-            hc = c - hc;
-            tc = C - hc;
-            hy = u - y._hi;
-            U = C*y._hi;
-            hy = u - hy;
-            ty = y._hi - hy;
-            u = (((hc*hy - U) + hc*ty) + tc*hy) + tc*ty;
-            c = ((((_hi - U) - u) + _lo) - C*y._lo)/y._hi;
-            u = C + c;
-
-            double zhi = u;
-            double zlo = (C - u) + c;
-            return new DD(zhi, zlo);
+            return this/y;
         }
 
         /// <summary>
@@ -825,7 +815,7 @@ namespace NetTopologySuite.Mathematics
         public DD Abs()
         {
             if (IsNaN(this)) return NaN;
-            return IsNegative ? Negate() : new DD(this);
+            return IsNegative ? -this : new DD(this);
         }
 
         /// <summary>
@@ -1426,7 +1416,7 @@ namespace NetTopologySuite.Mathematics
             else if (numDecPlaces > 0)
             {
                 var scale = Ten.Pow(numDecPlaces);
-                val2 = val.Divide(scale);
+                val2 = val / scale;
             }
             else if (numDecPlaces < 0)
             {
@@ -1436,7 +1426,7 @@ namespace NetTopologySuite.Mathematics
             // apply leading sign, if any
             if (isNegative)
             {
-                return val2.Negate();
+                return -val2;
             }
             return val2;
 

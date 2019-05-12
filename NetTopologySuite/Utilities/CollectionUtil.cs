@@ -8,6 +8,7 @@ namespace NetTopologySuite.Utilities
     /// Executes a transformation function on each element of a collection
     /// and returns the results in a new List.
     /// </summary>
+    [Obsolete("Use LINQ-to-Objects instead.")]
     public class CollectionUtil
     {
 
@@ -17,6 +18,7 @@ namespace NetTopologySuite.Utilities
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
+        [Obsolete("Use Func<T, T> instead.")]
         public delegate T FunctionDelegate<T>(T obj);
 
         /// <summary>
@@ -26,6 +28,7 @@ namespace NetTopologySuite.Utilities
         /// <typeparam name="TResult"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
+        [Obsolete("Use Func<T, TResult> instead.")]
         public delegate TResult FunctionDelegate< T,  TResult>(T obj);
 
         /// <summary>
@@ -114,6 +117,7 @@ namespace NetTopologySuite.Utilities
         /// <typeparam name="TOut"></typeparam>
         /// <param name="array">the source array</param>
         /// <returns>An array of objects</returns>
+        [Obsolete("Use 'array.Cast<TOut>().ToArray()' instead.")]
         public static TOut[] Cast<TIn,TOut>(TIn[] array)
         {
             var res = new TOut[array.Length];
