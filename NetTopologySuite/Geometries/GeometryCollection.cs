@@ -49,7 +49,7 @@ namespace NetTopologySuite.Geometries
         {
             if (geometries == null)
                 geometries = new Geometry[] { };
-            if (HasNullElements(CollectionUtil.Cast<Geometry, object>(geometries)))
+            if (HasNullElements(geometries))
                 throw new ArgumentException("geometries must not contain null elements");
             _geometries = geometries;
         }

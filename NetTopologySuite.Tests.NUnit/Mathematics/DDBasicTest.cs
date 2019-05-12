@@ -66,7 +66,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             CheckTrunc(DD.PI, DD.ValueOf(3));
             CheckTrunc(DD.ValueOf(999.999), DD.ValueOf(999));
 
-            CheckTrunc(DD.E.Negate(), DD.ValueOf(-2));
+            CheckTrunc(-DD.E, DD.ValueOf(-2));
             CheckTrunc(DD.ValueOf(-999.999), DD.ValueOf(-999));
         }
 
@@ -236,7 +236,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             // System.out.println("2ab+b^2 = " + sum);
 
             // this should equal b^2
-            var diff = (abProd - a2DD).Negate();
+            var diff = -(abProd - a2DD);
             // System.out.println("(a+b)^2 - a^2 = " + diff);
 
             var delta = diff - b2DD;

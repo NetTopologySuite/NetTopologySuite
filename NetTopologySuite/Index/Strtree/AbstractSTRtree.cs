@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 using IList = System.Collections.Generic.IList<object>;
@@ -107,9 +108,7 @@ namespace NetTopologySuite.Index.Strtree
             parentBoundables.Add(CreateNode(newLevel));
 
             // JTS does a stable sort here.  List<T>.Sort is not stable.
-            var sortedChildBoundables = CollectionUtil.StableSort(childBoundables, GetComparer());
-
-            foreach (var childBoundable in sortedChildBoundables)
+            foreach (var childBoundable in childBoundables.OrderBy(x => x, GetComparer()))
             {
                 if (LastNode(parentBoundables).ChildBoundables.Count == NodeCapacity)
                     parentBoundables.Add(CreateNode(newLevel));

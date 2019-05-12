@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NetTopologySuite.Algorithm;
-using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Geometries
 {
@@ -88,9 +88,9 @@ namespace NetTopologySuite.Geometries
                 shell = Factory.CreateLinearRing();
             if (holes == null)
                 holes = new LinearRing[] { };
-            if (HasNullElements(CollectionUtil.Cast<LinearRing, object>(holes)))
+            if (HasNullElements(holes))
                 throw new ArgumentException("holes must not contain null elements");
-            if (shell.IsEmpty && HasNonEmptyElements(CollectionUtil.Cast<LinearRing, Geometry>(holes)))
+            if (shell.IsEmpty && HasNonEmptyElements(holes))
                 throw new ArgumentException("shell is empty but holes are not");
 
             _shell = shell;
@@ -266,7 +266,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public LineString[] InteriorRings => CollectionUtil.Cast<LinearRing, LineString>(_holes);
+        public LineString[] InteriorRings => _holes.ToArray<LineString>();
 
         /// <summary>
         ///
@@ -328,14 +328,14 @@ namespace NetTopologySuite.Geometries
                 if (IsEmpty)
                     return Factory.CreateMultiLineString();
 
-                var rings = new LinearRing[_holes.Length + 1];
+                var rings = new LineString[_holes.Length + 1];
                 rings[0] = _shell;
                 for (int i = 0; i < _holes.Length; i++)
                     rings[i + 1] = _holes[i];
                 // create LineString or MultiLineString as appropriate
                 if (rings.Length <= 1)
                     return Factory.CreateLinearRing(rings[0].CoordinateSequence);
-                return Factory.CreateMultiLineString(CollectionUtil.Cast<LinearRing, LineString>(rings));
+                return Factory.CreateMultiLineString(rings);
             }
         }
 

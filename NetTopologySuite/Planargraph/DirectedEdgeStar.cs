@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Planargraph
 {
@@ -89,7 +89,7 @@ namespace NetTopologySuite.Planargraph
             if (!_sorted)
             {
                 // JTS does a stable sort here.  List<T>.Sort is not stable.
-                var inSortedOrder = new List<DirectedEdge>(CollectionUtil.StableSort(_outEdges));
+                var inSortedOrder = _outEdges.OrderBy(edge => edge).ToList();
                 _outEdges.Clear();
                 _outEdges.AddRange(inSortedOrder);
                 _sorted = true;

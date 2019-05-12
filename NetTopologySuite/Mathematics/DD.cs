@@ -378,16 +378,6 @@ namespace NetTopologySuite.Mathematics
         //    return SelfAdd(-y, 0.0);
         //}
 
-        /// <summary>
-        /// Returns a <see cref="DD"/> whose value is <c>-this</c>.
-        /// </summary>
-        /// <returns><c>-this</c></returns>
-        [Obsolete("Use operator -")]
-        public DD Negate()
-        {
-            return -this;
-        }
-
         public static DD operator-(DD val)
         {
             if (IsNaN(val)) return val;
@@ -471,16 +461,6 @@ namespace NetTopologySuite.Mathematics
             return this;
         }
         */
-        /// <summary>
-        /// Computes a new <see cref="DD"/> whose value is <tt>(this / y)</tt>.
-        /// </summary>
-        /// <param name="y">The divisor</param>
-        /// <returns>A new <see cref="DD"/> with the value <c>(this / y)</c></returns>
-        [Obsolete("Use /-operator instead")]
-        public DD Divide(DD y)
-        {
-            return this/y;
-        }
 
         ///// <summary>
         ///// Divides this object by the argument, returning <tt>this</tt>.

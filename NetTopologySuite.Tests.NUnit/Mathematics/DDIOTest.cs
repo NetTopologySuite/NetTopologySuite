@@ -120,7 +120,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             CheckParse("-1.05e10", -1.05E10, 1e-32);
 
             CheckParse("1.05e-10", DD.ValueOf(105.0) / DD.ValueOf(100.0) / DD.ValueOf(1.0E10), 1e-32);
-            CheckParse("-1.05e-10", (DD.ValueOf(105.0) / DD.ValueOf(100.0) / DD.ValueOf(1.0E10)).Negate(), 1e-32);
+            CheckParse("-1.05e-10", -(DD.ValueOf(105.0) / DD.ValueOf(100.0) / DD.ValueOf(1.0E10)), 1e-32);
         }
 
         private static void CheckParse(string str, double expectedVal, double errBound)
