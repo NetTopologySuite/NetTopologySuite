@@ -7,6 +7,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(SolutionDir)nts.snk</AssemblyOriginatorKeyFile>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <IsTestProject>true</IsTestProject>
 
     <!-- https://github.com/Microsoft/msbuild/issues/1310 -->
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

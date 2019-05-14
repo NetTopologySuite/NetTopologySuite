@@ -3,8 +3,46 @@ mono: none
 sudo: false
 dotnet: 2.2
 dist: xenial
+
+
 script:
-- dotnet msbuild NetTopologySuite.sln /m "/t:Restore;Build" /p:Configuration=Release /v:minimal /p:WarningLevel=3
-- dotnet test NetTopologySuite.Tests.NUnit --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)' --no-build --no-restore -c Release
-- dotnet test NetTopologySuite.Samples.Console --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)' --no-build --no-restore -c Release
-- dotnet test NetTopologySuite.Tests.Vivid.XUnit --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)' --no-build --no-restore -c Release
+  - dotnet build -c Release -v minimal -p:WarningLevel=3
+  - dotnet test  -c Release --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'
+  - dotnet pack  -c Release --no-build -p:NoWarn=NU5105
+
+
+deploy:
+
+
+  - on:
+      branch: master
+    provider: script
+    script:
+      - dotnet nuget push ./Release/AnyCPU/*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
+    skip_cleanup: true
+
+
+  - on:
+      branch: develop
+    provider: script
+    script:
+      - dotnet nuget push ./Release/AnyCPU/*.nupkg -s https://www.myget.org/F/nettopologysuite/api/v2/package -k $MYGET_API_KEY
+    skip_cleanup: true
+
+
+  - on:
+      tags: true
+    provider: releases
+    file:
+      - "./Release/AnyCPU/*.nupkg"
+      - "./Release/AnyCPU/*.snupkg"
+    draft: true
+    api_key:
+      secure: "ZwZwz20dUb8U060PLeKIJ3/qmcQF53VukzOoetkfxFVfs4CUfuDNPSk5ZvHpVCQUJpKKj4F4/MIFBuCQ9r1hy7HDv9I1mbB08B19gZQhiAtxf2/KKbNVWZFubBIX1RMbfFyTBvKkm07/SCyiY59r4GvXr4t8iSpo5ih3lThacj4="
+    skip_cleanup: true
+
+
+env:
+  global:
+  - secure: BzD1R2uMyGVdJu+cIpRhydfCWfIQSsi7/GwqE30j+95v2Hr3X8fq+5aRR1EFhk1C51zqGhNymp55zUCXvIpXKuHnWL3tSYpFWV6suhJ9D3WplSXUbBA8hqB7KCkhT54qHykhS4Uq6V4P+JxSCcjZpbj0IQ/uCuolamU9Osh3rl0=
+  - secure: Vir9iza9q2knZRs2g6oJCk3t0ZIAKiQD87CwCmNbHy0VGbQHf9ISTPHF0tcR0oSB1u2nwvyiY2wg7QHOouMHlM+mVXi3Bf8WXK2ckK2cFWhH+1wc39t3829LfeEzoFsojx/eReM61eEhlnDViPEKFOpJCWp3pRKxsZ5Dyo5JvrI=

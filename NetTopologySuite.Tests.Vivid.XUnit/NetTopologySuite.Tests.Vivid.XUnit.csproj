@@ -5,6 +5,7 @@
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <RootNamespace>NetTopologySuite.Tests.XUnit</RootNamespace>
+    <IsTestProject>true</IsTestProject>
 
     <!-- https://github.com/Microsoft/msbuild/issues/1310 -->
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
