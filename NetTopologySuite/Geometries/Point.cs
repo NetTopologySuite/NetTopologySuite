@@ -81,7 +81,10 @@ namespace NetTopologySuite.Geometries
             if ((_coordinates.Ordinates & ordinateFlag) != ordinateFlag)
                 return new[] {Coordinate.NullOrdinate};
 
-            return new [] { _coordinates.GetOrdinate(0, ordinate)};
+            double val = OrdinatesUtility.IndexOfOrdinateInSequence(ordinate, _coordinates) is int ordinateIndex
+                ? _coordinates.GetOrdinate(0, ordinateIndex)
+                : Coordinate.NullOrdinate;
+            return new [] { val };
         }
 
         /// <summary>
@@ -302,11 +305,17 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                if (Coordinate == null)
+                if (CoordinateSequence == null)
                     throw new ArgumentOutOfRangeException("Z called on empty Point");
-                return Coordinate.Z;
+                return CoordinateSequence.GetZ(0);
             }
-            set => Coordinate.Z = value;
+            set
+            {
+                if (OrdinatesUtility.IndexOfOrdinateInSequence(Ordinate.Z, CoordinateSequence) is int ordinateIndex)
+                {
+                    CoordinateSequence.SetOrdinate(0, ordinateIndex, value);
+                }
+            }
         }
 
         /* END ADDED BY MPAUL42: monoGIS team */
@@ -317,9 +326,15 @@ namespace NetTopologySuite.Geometries
             {
                 if (CoordinateSequence == null)
                     throw new ArgumentOutOfRangeException("M called on empty Point");
-                return CoordinateSequence.GetOrdinate(0, Ordinate.M);
+                return CoordinateSequence.GetM(0);
             }
-            set => CoordinateSequence.SetOrdinate(0, Ordinate.M, value);
+            set
+            {
+                if (OrdinatesUtility.IndexOfOrdinateInSequence(Ordinate.M, CoordinateSequence) is int ordinateIndex)
+                {
+                    CoordinateSequence.SetOrdinate(0, ordinateIndex, value);
+                }
+            }
         }
     }
 }

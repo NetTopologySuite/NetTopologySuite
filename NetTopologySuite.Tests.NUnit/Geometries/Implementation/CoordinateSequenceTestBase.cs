@@ -90,6 +90,51 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.IsTrue(IsEqual(seq2, coords));
         }
 
+        [TestCase(2, 0)] // XY
+        [TestCase(3, 0)] // XYZ
+        [TestCase(3, 1)] // XYM
+        [TestCase(4, 1)] // XYZM
+        public void NamedAndOrdinateGettersShouldBeConsistent(int dimension, int measures)
+        {
+            var seq = CsFactory.Create(1, dimension, measures);
+            for (int dim = 0; dim < dimension; dim++)
+            {
+                seq.SetOrdinate(0, dim, 10 + dim);
+            }
+
+            // we just set all the ordinate values to 10 plus their index.
+            double expectedX = 10;
+            double expectedY = 11;
+            double expectedZ = seq.HasZ ? 12 : Coordinate.NullOrdinate;
+            double expectedM = seq.HasM ? seq.HasZ ? 13 : 12 : Coordinate.NullOrdinate;
+
+            var c = seq.GetCoordinate(0);
+
+            // X
+            Assert.That(seq.GetX(0), Is.EqualTo(expectedX));
+            Assert.That(seq.GetOrdinate(0, Ordinate.X), Is.EqualTo(expectedX));
+            Assert.That(c.X, Is.EqualTo(expectedX));
+            Assert.That(c[Ordinate.X], Is.EqualTo(expectedX));
+
+            // Y
+            Assert.That(seq.GetY(0), Is.EqualTo(expectedY));
+            Assert.That(seq.GetOrdinate(0, Ordinate.Y), Is.EqualTo(expectedY));
+            Assert.That(c.Y, Is.EqualTo(expectedY));
+            Assert.That(c[Ordinate.Y], Is.EqualTo(expectedY));
+
+            // Z
+            Assert.That(seq.GetZ(0), Is.EqualTo(expectedZ));
+            Assert.That(seq.GetOrdinate(0, Ordinate.Z), Is.EqualTo(expectedZ));
+            Assert.That(c.Z, Is.EqualTo(expectedZ));
+            Assert.That(c[Ordinate.Z], Is.EqualTo(expectedZ));
+
+            // M
+            Assert.That(seq.GetM(0), Is.EqualTo(expectedM));
+            Assert.That(seq.GetOrdinate(0, Ordinate.M), Is.EqualTo(expectedM));
+            Assert.That(c.M, Is.EqualTo(expectedM));
+            Assert.That(c[Ordinate.M], Is.EqualTo(expectedM));
+        }
+
         // TODO: This private method was marked as protected to allow PackedCoordinateSequenceTest to override Test2DZOrdinate
         // The method should not be marked as protected, and should be altered when the correct PackedCoordinateSequence.GetCoordinate result is migrated to NTS
         protected Coordinate[] CreateArray(int size)
@@ -110,9 +155,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
                 if (!coord.Equals(seq.GetCoordinate(i)))
                     return false;
 
-                if (coord.X != seq.GetOrdinate(i, Ordinate.X))
+                if (coord.X != seq.GetOrdinate(i, 0))
                     return false;
-                if (coord.Y != seq.GetOrdinate(i, Ordinate.Y))
+                if (coord.Y != seq.GetOrdinate(i, 1))
                     return false;
                 if (seq.HasZ)
                 {
@@ -126,12 +171,12 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
                 }
                 if (seq.Dimension > 2)
                 {
-                    if (coord[Ordinate.Ordinate2] != seq.GetOrdinate(i, Ordinate.Ordinate2))
+                    if (coord[2] != seq.GetOrdinate(i, 2))
                         return false;
                 }
                 if (seq.Dimension > 3)
                 {
-                    if (coord[Ordinate.Ordinate3] != seq.GetOrdinate(i, Ordinate.Ordinate3))
+                    if (coord[3] != seq.GetOrdinate(i, 3))
                         return false;
                 }
             }
@@ -175,18 +220,18 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
                 }
 
                 // Ordinate indexed getters
-                if (!coords[i].X.Equals(seq.GetOrdinate(i, Ordinate.X)))
+                if (!coords[i].X.Equals(seq.GetOrdinate(i, 0)))
                     return false;
-                if (!coords[i].Y.Equals(seq.GetOrdinate(i, Ordinate.Y)))
+                if (!coords[i].Y.Equals(seq.GetOrdinate(i, 1)))
                     return false;
                 if (seq.Dimension > 2)
                 {
-                    if (!coords[i][Ordinate.Ordinate2].Equals(seq.GetOrdinate(i, Ordinate.Ordinate2)))
+                    if (!coords[i][2].Equals(seq.GetOrdinate(i, 2)))
                         return false;
                 }
                 if (seq.Dimension > 3)
                 {
-                    if (!coords[i][Ordinate.Ordinate3].Equals(seq.GetOrdinate(i, Ordinate.Ordinate3)))
+                    if (!coords[i][3].Equals(seq.GetOrdinate(i, 3)))
                         return false;
                 }
 

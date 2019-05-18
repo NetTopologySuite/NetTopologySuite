@@ -94,9 +94,9 @@ namespace NetTopologySuite.Operation.Distance3D
             int n = seq.Count;
             for (int i = 0; i < n; i++)
             {
-                a.X += seq.GetOrdinate(i, Ordinate.X);
-                a.Y += seq.GetOrdinate(i, Ordinate.Y);
-                a.Z += seq.GetOrdinate(i, Ordinate.Z);
+                a.X += seq.GetOrdinate(i, 0);
+                a.Y += seq.GetOrdinate(i, 1);
+                a.Z += seq.GetOrdinate(i, 2);
             }
             a.X /= n;
             a.Y /= n;

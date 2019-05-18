@@ -289,7 +289,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
     {
         public void Filter(Coordinate coord)
         {
-            coord[Ordinate.Ordinate2] = (coord.X + coord.Y) / 2;
+            coord[2] = (coord.X + coord.Y) / 2;
         }
     }
 

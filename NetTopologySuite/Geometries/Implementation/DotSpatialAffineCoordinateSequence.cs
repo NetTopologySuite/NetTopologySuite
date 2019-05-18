@@ -149,8 +149,8 @@ namespace NetTopologySuite.Geometries.Implementation
             {
                 _xy[j++] = coordSeq.GetX(i);
                 _xy[j++] = coordSeq.GetY(i);
-                if (_z != null) _z[i] = coordSeq.GetOrdinate(i, Ordinate.Z);
-                if (_m != null) _m[i] = coordSeq.GetOrdinate(i, Ordinate.M);
+                if (_z != null) _z[i] = coordSeq.GetZ(i);
+                if (_m != null) _m[i] = coordSeq.GetM(i);
             }
         }
 
@@ -251,39 +251,39 @@ namespace NetTopologySuite.Geometries.Implementation
             return _m?[index] ?? Coordinate.NullOrdinate;
         }
 
-        public double GetOrdinate(int index, Ordinate ordinate)
+        public double GetOrdinate(int index, int ordinateIndex)
         {
-            switch (ordinate)
+            switch (ordinateIndex)
             {
-                case Ordinate.X:
+                case 0:
                     return _xy[index * 2];
-                case Ordinate.Y:
+                case 1:
                     return _xy[index * 2 + 1];
-                case Ordinate.Ordinate2 when HasZ:
+                case 2 when HasZ:
                     return _z[index];
-                case Ordinate.Ordinate2:
-                case Ordinate.M:
+                case 2:
+                case 3:
                     return _m?[index] ?? Coordinate.NullOrdinate;
                 default:
                     throw new NotSupportedException();
             }
         }
 
-        public void SetOrdinate(int index, Ordinate ordinate, double value)
+        public void SetOrdinate(int index, int ordinateIndex, double value)
         {
-            switch (ordinate)
+            switch (ordinateIndex)
             {
-                case Ordinate.X:
+                case 0:
                     _xy[index * 2] = value;
                     break;
-                case Ordinate.Y:
+                case 1:
                     _xy[index * 2 + 1] = value;
                     break;
-                case Ordinate.Ordinate2 when HasZ:
+                case 2 when HasZ:
                     if (_z != null) _z[index] = value;
                     break;
-                case Ordinate.Ordinate2:
-                case Ordinate.M:
+                case 2:
+                case 3:
                     if (_m != null) _m[index] = value;
                     break;
                 default:

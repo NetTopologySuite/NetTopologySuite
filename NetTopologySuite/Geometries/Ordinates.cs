@@ -56,14 +56,6 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Flag for ordinate at index 2
         /// </summary>
-        Ordinate2 = 1 << Ordinate.Ordinate2,
-        /// <summary>
-        /// Flag for ordinate at index 2
-        /// </summary>
-        Ordinate3 = 1 << Ordinate.Ordinate3,
-        /// <summary>
-        /// Flag for ordinate at index 2
-        /// </summary>
         Ordinate4 = 1 << Ordinate.Ordinate4,
         /// <summary>
         /// Flag for ordinate at index 2

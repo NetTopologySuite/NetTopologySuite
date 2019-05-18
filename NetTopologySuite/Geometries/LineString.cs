@@ -426,9 +426,9 @@ namespace NetTopologySuite.Geometries
             get => _points.GetCoordinate(n);
             set
             {
-                _points.SetOrdinate(n, Ordinate.X, value.X);
-                _points.SetOrdinate(n, Ordinate.Y, value.Y);
-                _points.SetOrdinate(n, Ordinate.Z, value.Z);
+                _points.SetOrdinate(n, 0, value.X);
+                _points.SetOrdinate(n, 1, value.Y);
+                _points.SetOrdinate(n, 2, value.Z);
             }
         }
 

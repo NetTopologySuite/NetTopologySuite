@@ -50,15 +50,15 @@ namespace NetTopologySuite.Operation.Distance3D
             return new AxisPlaneCoordinateSequence(seq, YZIndex);
         }
 
-        private static readonly Ordinate[] XYIndex = new[] {Ordinate.X, Ordinate.Y};
-        private static readonly Ordinate[] XZIndex = new[] {Ordinate.X, Ordinate.Z};
-        private static readonly Ordinate[] YZIndex = new[] {Ordinate.Y, Ordinate.Z};
+        private static readonly int[] XYIndex = new[] {0, 1};
+        private static readonly int[] XZIndex = new[] {0, 2};
+        private static readonly int[] YZIndex = new[] {1, 2};
         // ReSharper restore InconsistentNaming
 
         private readonly ICoordinateSequence _seq;
-        private readonly Ordinate[] _indexMap;
+        private readonly int[] _indexMap;
 
-        private AxisPlaneCoordinateSequence(ICoordinateSequence seq, Ordinate[] indexMap)
+        private AxisPlaneCoordinateSequence(ICoordinateSequence seq, int[] indexMap)
         {
             _seq = seq;
             _indexMap = indexMap;
@@ -90,24 +90,24 @@ namespace NetTopologySuite.Operation.Distance3D
 
         public void GetCoordinate(int index, Coordinate coord)
         {
-            coord.X = GetOrdinate(index, Ordinate.X);
-            coord.Y = GetOrdinate(index, Ordinate.Y);
-            coord.Z = GetOrdinate(index, Ordinate.Z);
+            coord.X = GetOrdinate(index, 0);
+            coord.Y = GetOrdinate(index, 1);
+            coord.Z = GetOrdinate(index, 2);
         }
 
         public double GetX(int index)
         {
-            return GetOrdinate(index, Ordinate.X);
+            return GetOrdinate(index, 0);
         }
 
         public double GetY(int index)
         {
-            return GetOrdinate(index, Ordinate.Y);
+            return GetOrdinate(index, 1);
         }
 
         public double GetZ(int index)
         {
-            return GetOrdinate(index, Ordinate.Z);
+            return GetOrdinate(index, 2);
         }
 
         public double GetM(int index)
@@ -115,16 +115,16 @@ namespace NetTopologySuite.Operation.Distance3D
             return double.NaN;
         }
 
-        public double GetOrdinate(int index, Ordinate ordinateIndex)
+        public double GetOrdinate(int index, int ordinateIndex)
         {
             // Z ord is always 0
-            if (ordinateIndex > Ordinate.Y) return 0;
-            return _seq.GetOrdinate(index, _indexMap[(int) ordinateIndex]);
+            if (ordinateIndex > 1) return 0;
+            return _seq.GetOrdinate(index, _indexMap[ordinateIndex]);
         }
 
         public int Count => _seq.Count;
 
-        public void SetOrdinate(int index, Ordinate ordinateIndex, double value)
+        public void SetOrdinate(int index, int ordinateIndex, double value)
         {
             throw new NotSupportedException();
         }

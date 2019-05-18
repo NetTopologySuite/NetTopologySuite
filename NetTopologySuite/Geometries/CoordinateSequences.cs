@@ -33,9 +33,9 @@ namespace NetTopologySuite.Geometries
 
             for (int dim = 0; dim < seq.Dimension; dim++)
             {
-                double tmp = seq.GetOrdinate(i, (Ordinate)dim);
-                seq.SetOrdinate(i, (Ordinate)dim, seq.GetOrdinate(j, (Ordinate)dim));
-                seq.SetOrdinate(j, (Ordinate)dim, tmp);
+                double tmp = seq.GetOrdinate(i, dim);
+                seq.SetOrdinate(i, dim, seq.GetOrdinate(j, dim));
+                seq.SetOrdinate(j, dim, tmp);
             }
         }
 
@@ -69,9 +69,8 @@ namespace NetTopologySuite.Geometries
             int minDim = Math.Min(src.Dimension, dest.Dimension);
             for (int dim = 0; dim < minDim; dim++)
             {
-                var ordinate = (Ordinate)dim;
-                double value = src.GetOrdinate(srcPos, ordinate);
-                dest.SetOrdinate(destPos, ordinate, value);
+                double value = src.GetOrdinate(srcPos, dim);
+                dest.SetOrdinate(destPos, dim, value);
             }
         }
 
@@ -92,8 +91,8 @@ namespace NetTopologySuite.Geometries
             if (n <= 3)
                 return false;
             // test if closed
-            return seq.GetOrdinate(0, Ordinate.X) == seq.GetOrdinate(n - 1, Ordinate.X)
-                && seq.GetOrdinate(0, Ordinate.Y) == seq.GetOrdinate(n - 1, Ordinate.Y);
+            return seq.GetOrdinate(0, 0) == seq.GetOrdinate(n - 1, 0)
+                && seq.GetOrdinate(0, 1) == seq.GetOrdinate(n - 1, 1);
         }
 
         /// <summary>
@@ -116,8 +115,8 @@ namespace NetTopologySuite.Geometries
             if (n <= 3)
                 return CreateClosedRing(fact, seq, 4);
 
-            bool isClosed = seq.GetOrdinate(0, Ordinate.X) == seq.GetOrdinate(n - 1, Ordinate.X) &&
-                           seq.GetOrdinate(0, Ordinate.Y) == seq.GetOrdinate(n - 1, Ordinate.Y);
+            bool isClosed = seq.GetOrdinate(0, 0) == seq.GetOrdinate(n - 1, 0) &&
+                           seq.GetOrdinate(0, 1) == seq.GetOrdinate(n - 1, 1);
             if (isClosed) return seq;
             // make a new closed ring
             return CreateClosedRing(fact, seq, n + 1);
@@ -170,10 +169,9 @@ namespace NetTopologySuite.Geometries
             {
                 for (int d = 0; d < dim; d++)
                 {
-                    var ordinate = (Ordinate)d;
-                    double v1 = cs1.GetOrdinate(i, ordinate);
-                    double v2 = cs2.GetOrdinate(i, ordinate);
-                    if (cs1.GetOrdinate(i, ordinate) == cs2.GetOrdinate(i, ordinate))
+                    double v1 = cs1.GetOrdinate(i, d);
+                    double v2 = cs2.GetOrdinate(i, d);
+                    if (cs1.GetOrdinate(i, d) == cs2.GetOrdinate(i, d))
                         continue;
                     // special check for NaNs
                     if (double.IsNaN(v1) && double.IsNaN(v2))
@@ -207,7 +205,7 @@ namespace NetTopologySuite.Geometries
                 for (int d = 0; d < dim; d++)
                 {
                     if (d > 0) sb.Append(",");
-                    double ordinate = cs.GetOrdinate(i, (Ordinate)d);
+                    double ordinate = cs.GetOrdinate(i, d);
                     sb.Append(string.Format("{0:0.#}", ordinate));
                 }
             }
@@ -318,14 +316,14 @@ namespace NetTopologySuite.Geometries
             for (int j = 0; j < last; j++)
             {
                 for (int k = 0; k < seq.Dimension; k++)
-                    seq.SetOrdinate(j, (Ordinate)k, copy.GetOrdinate((indexOfFirstCoordinate + j) % last, (Ordinate)k));
+                    seq.SetOrdinate(j, k, copy.GetOrdinate((indexOfFirstCoordinate + j) % last, k));
             }
 
             // Fix the ring (first == last)
             if (ensureRing)
             {
                 for (int k = 0; k < seq.Dimension; k++)
-                    seq.SetOrdinate(last, (Ordinate)k, seq.GetOrdinate(0, (Ordinate)k));
+                    seq.SetOrdinate(last, k, seq.GetOrdinate(0, k));
             }
         }
 
@@ -342,8 +340,8 @@ namespace NetTopologySuite.Geometries
         {
             for (int i = 0; i < seq.Count; i++)
             {
-                if (coordinate.X == seq.GetOrdinate(i, Ordinate.X) &&
-                    coordinate.Y == seq.GetOrdinate(i, Ordinate.Y))
+                if (coordinate.X == seq.GetOrdinate(i, 0) &&
+                    coordinate.Y == seq.GetOrdinate(i, 1))
                 {
                     return i;
                 }

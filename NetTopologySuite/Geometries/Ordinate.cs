@@ -36,16 +36,6 @@
         M = 3,
 
         /// <summary>
-        /// Ordinate at index 2
-        /// </summary>
-        Ordinate2 = 2,
-
-        /// <summary>
-        /// Ordinate at index 3
-        /// </summary>
-        Ordinate3 = 3,
-
-        /// <summary>
         /// Ordinate at index 4
         /// </summary>
         Ordinate4 = 4,

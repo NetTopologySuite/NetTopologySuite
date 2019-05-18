@@ -273,8 +273,8 @@ namespace NetTopologySuite.IO
             double ordinateM = Coordinate.NullOrdinate;
 
             // test if zm-values are provided by sequence
-            bool getZ = (sequence.Ordinates & Ordinates.Z) == Ordinates.Z;
-            bool getM = (sequence.Ordinates & Ordinates.M) == Ordinates.M;
+            bool getZ = sequence.HasZ;
+            bool getM = sequence.HasM;
 
             // test if zm-values should be emitted
             bool writeZ = (HandleOrdinates & Ordinates.Z) == Ordinates.Z;
@@ -282,16 +282,16 @@ namespace NetTopologySuite.IO
 
             for (int index = 0; index < sequence.Count; index++)
             {
-                writer.Write(sequence.GetOrdinate(index, Ordinate.X));
-                writer.Write(sequence.GetOrdinate(index, Ordinate.Y));
+                writer.Write(sequence.GetOrdinate(index, 0));
+                writer.Write(sequence.GetOrdinate(index, 1));
                 if (writeZ)
                 {
-                    if (getZ) ordinateZ = sequence.GetOrdinate(index, Ordinate.Z);
+                    if (getZ) ordinateZ = sequence.GetZ(index);
                     writer.Write(ordinateZ);
                 }
                 if (writeM)
                 {
-                    if (getM) ordinateM = sequence.GetOrdinate(index, Ordinate.M);
+                    if (getM) ordinateM = sequence.GetM(index);
                     writer.Write(ordinateM);
                 }
             }
