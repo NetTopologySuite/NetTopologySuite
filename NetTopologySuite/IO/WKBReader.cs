@@ -252,8 +252,8 @@ namespace NetTopologySuite.IO
                 if (_precisionModel != null) x = _precisionModel.MakePrecise(x);
                 if (_precisionModel != null) y = _precisionModel.MakePrecise(y);
 
-                sequence.SetOrdinate(i, Ordinate.X, x);
-                sequence.SetOrdinate(i, Ordinate.Y, y);
+                sequence.SetOrdinate(i, 0, x);
+                sequence.SetOrdinate(i, 1, y);
 
                 switch (cs)
                 {
@@ -262,20 +262,20 @@ namespace NetTopologySuite.IO
                     case CoordinateSystem.XYZ:
                         double z = reader.ReadDouble();
                         if (HandleOrdinate(Ordinate.Z))
-                            sequence.SetOrdinate(i, Ordinate.Z, z);
+                            sequence.SetOrdinate(i, 2, z);
                         break;
                     case CoordinateSystem.XYM:
                         double m = reader.ReadDouble();
                         if (HandleOrdinate(Ordinate.M))
-                            sequence.SetOrdinate(i, Ordinate.Ordinate2, m);
+                            sequence.SetOrdinate(i, 2, m);
                         break;
                     case CoordinateSystem.XYZM:
                         z = reader.ReadDouble();
                         if (HandleOrdinate(Ordinate.Z))
-                            sequence.SetOrdinate(i, Ordinate.Z, z);
+                            sequence.SetOrdinate(i, 2, z);
                         m = reader.ReadDouble();
                         if (HandleOrdinate(Ordinate.M))
-                            sequence.SetOrdinate(i, Ordinate.M, m);
+                            sequence.SetOrdinate(i, 3, m);
                         break;
                     default:
                         throw new ArgumentException(string.Format("Coordinate system not supported: {0}", cs));

@@ -482,7 +482,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             {
                 for (int j = 0; j < dimension; j++)
                 {
-                    res.SetOrdinate(k, (Ordinate)j, ordinateValues[i + j]);
+                    res.SetOrdinate(k, j, ordinateValues[i + j]);
                 }
 
                 k++;

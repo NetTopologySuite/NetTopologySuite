@@ -136,10 +136,10 @@ namespace NetTopologySuite.Precision
             /// <param name="seq">The coordinate sequence</param>
             public void Filter(ICoordinateSequence seq, int i)
             {
-                double xp = seq.GetOrdinate(i, Ordinate.X) + _trans.X;
-                double yp = seq.GetOrdinate(i, Ordinate.Y) + _trans.Y;
-                seq.SetOrdinate(i, Ordinate.X, xp);
-                seq.SetOrdinate(i, Ordinate.Y, yp);
+                double xp = seq.GetOrdinate(i, 0) + _trans.X;
+                double yp = seq.GetOrdinate(i, 1) + _trans.Y;
+                seq.SetOrdinate(i, 0, xp);
+                seq.SetOrdinate(i, 1, yp);
             }
 
             public bool Done => false;

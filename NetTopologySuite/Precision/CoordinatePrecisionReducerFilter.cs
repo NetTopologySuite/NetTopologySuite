@@ -31,8 +31,8 @@ namespace NetTopologySuite.Precision
         /// </summary>
         public void Filter(ICoordinateSequence seq, int i)
         {
-            seq.SetOrdinate(i, Ordinate.X, _precModel.MakePrecise(seq.GetOrdinate(i, Ordinate.X)));
-            seq.SetOrdinate(i, Ordinate.Y, _precModel.MakePrecise(seq.GetOrdinate(i, Ordinate.Y)));
+            seq.SetOrdinate(i, 0, _precModel.MakePrecise(seq.GetOrdinate(i, 0)));
+            seq.SetOrdinate(i, 1, _precModel.MakePrecise(seq.GetOrdinate(i, 1)));
         }
 
         /// <summary>

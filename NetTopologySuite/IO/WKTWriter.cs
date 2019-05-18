@@ -226,7 +226,7 @@ namespace NetTopologySuite.IO
                     break;
 
                 case 3:
-                    _outputOrdinates = Ordinates.XY | Ordinates.Ordinate2;
+                    _outputOrdinates = Ordinates.XYZ;
                     break;
 
                 case 4:

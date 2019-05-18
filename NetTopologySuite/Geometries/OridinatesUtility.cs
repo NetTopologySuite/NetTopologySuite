@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace NetTopologySuite.Geometries
@@ -67,6 +68,92 @@ namespace NetTopologySuite.Geometries
                 result |= (Ordinates) (1 << ((int) ordinate));
             }
             return result;
+        }
+
+        /// <summary>
+        /// Converts an <see cref="Ordinate"/> value to the index of that ordinate within a
+        /// particular <see cref="ICoordinateSequence"/>, or <see langword="null"/> if the sequence
+        /// does not contain values for that ordinate.
+        /// <para>
+        /// Ordinate values greater than <see cref="Ordinate.M"/> are considered ambiguous and will
+        /// always map to <see langword="null"/>.
+        /// </para>
+        /// </summary>
+        /// <param name="ordinate">The <see cref="Ordinate"/> value to convert.</param>
+        /// <param name="seq">The <see cref="ICoordinateSequence"/> to look for.</param>
+        /// <returns>
+        /// The ordinate index to use to store / fetch the values of <paramref name="ordinate"/> in
+        /// <paramref name="seq"/>, or <see langword="null"/> if the ordinate is not present.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="seq"/> is <see langword="null"/>.
+        /// </exception>
+        public static int? IndexOfOrdinateInSequence(Ordinate ordinate, ICoordinateSequence seq)
+        {
+            if (seq is null)
+            {
+                throw new ArgumentNullException(nameof(seq));
+            }
+
+            switch (ordinate)
+            {
+                case Ordinate.X:
+                    return 0;
+
+                case Ordinate.Y:
+                    return 1;
+
+                case Ordinate.Z when seq.HasZ:
+                    return 2;
+
+                case Ordinate.M when seq.HasM:
+                    return seq.HasZ ? 3 : 2;
+
+                default:
+                    return null;
+            }
+        }
+
+        /// <summary>
+        /// Returns the ordinate of a coordinate in this sequence.
+        /// </summary>
+        /// <param name="seq">The <see cref="ICoordinateSequence"/> whose ordinate value to get.</param>
+        /// <param name="index">The coordinate index in the sequence.</param>
+        /// <param name="ordinate">The ordinate value to get.</param>
+        /// <returns>The ordinate value, or <see cref="Coordinate.NullOrdinate"/> if the sequence does not provide values for <paramref name="ordinate"/>"/></returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="seq"/> is <see langword="null"/>.
+        /// </exception>
+        public static double GetOrdinate(this ICoordinateSequence seq, int index, Ordinate ordinate)
+        {
+            if (seq is null)
+            {
+                throw new ArgumentNullException(nameof(seq));
+            }
+
+            return IndexOfOrdinateInSequence(ordinate, seq) is int ordinateIndex
+                ? seq.GetOrdinate(index, ordinateIndex)
+                : Coordinate.NullOrdinate;
+        }
+
+        /// <summary>
+        /// Sets the value for a given ordinate of a coordinate in this sequence.
+        /// </summary>
+        /// <param name="seq">The <see cref="ICoordinateSequence"/> whose ordinate value to set.</param>
+        /// <param name="index">The coordinate index in the sequence.</param>
+        /// <param name="ordinate">The ordinate value to set.</param>
+        /// <param name="value">The new ordinate value.</param>
+        public static void SetOrdinate(this ICoordinateSequence seq, int index, Ordinate ordinate, double value)
+        {
+            if (seq is null)
+            {
+                throw new ArgumentNullException(nameof(seq));
+            }
+
+            if (IndexOfOrdinateInSequence(ordinate, seq) is int ordinateIndex)
+            {
+                seq.SetOrdinate(index, ordinateIndex, value);
+            }
         }
     }
 }

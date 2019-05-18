@@ -9,8 +9,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     // of those same tests in a different way, as well as doing a special test for the indexer.
     public abstract class CoordinateBaseTest<T> where T : Coordinate
     {
-        protected Ordinate? ZIndex = null;
-        protected Ordinate? MIndex = null;
+        protected int? ZIndex = null;
+        protected int? MIndex = null;
 
         protected abstract T CreateCoordinate2D(double x, double y);
         protected abstract T CreateCoordinate2DM(double x, double y, double m = double.NaN);
@@ -20,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         protected abstract T CreateCoordinate();
 
-        protected void CheckIndexer(T coordinate, Ordinate index, double value)
+        protected void CheckIndexer(T coordinate, int index, double value)
         {
             double val = double.NaN;
             if (IsIndexValid(ref index))
@@ -29,41 +29,41 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 Assert.Throws<ArgumentOutOfRangeException>(() => val = coordinate[index]);
         }
 
-        protected void CheckGetter(Ordinate index, double expected, double actual)
+        protected void CheckGetter(int index, double expected, double actual)
         {
             expected = CorrectExpected(index, expected);
             Assert.AreEqual(expected, actual);
         }
 
-        private double CorrectExpected(Ordinate index, double expected)
+        private double CorrectExpected(int index, double expected)
         {
             if (!IsIndexValid(ref index))
                 return GetDefault(index);
             return expected;
         }
 
-        private double GetDefault(Ordinate index)
+        private double GetDefault(int index)
         {
             return double.NaN;
         }
 
-        protected bool IsIndexValid(ref Ordinate ordinate)
+        protected bool IsIndexValid(ref int ordinate)
         {
             switch (ordinate)
             {
-                case Ordinate.X:
-                case Ordinate.Y:
+                case 0:
+                case 1:
                     return true;
 
-                case Ordinate.Z when ZIndex.HasValue:
+                case 2 when ZIndex.HasValue:
                     ordinate = ZIndex.Value;
                     return true;
 
-                case Ordinate.Z when MIndex == Ordinate.Z:
-                    ordinate = Ordinate.Ordinate4; // just pick something way out there
+                case 2 when MIndex == 2:
+                    ordinate = 4; // just pick something way out there
                     return false;
 
-                case Ordinate.M when MIndex.HasValue:
+                case 3 when MIndex.HasValue:
                     ordinate = MIndex.Value;
                     return true;
 
@@ -78,8 +78,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             T c = CreateCoordinate3D(350.2, 4566.8, 5266.3);
             Assert.AreEqual(350.2, c.X);
             Assert.AreEqual(4566.8, c.Y);
-            CheckGetter(Ordinate.Z, 5266.3, c.Z);
-            CheckGetter(Ordinate.M, Coordinate.NullOrdinate, c.M);
+            CheckGetter(2, 5266.3, c.Z);
+            CheckGetter(3, Coordinate.NullOrdinate, c.M);
         }
 
         [Test]
@@ -88,8 +88,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             T c = CreateCoordinate2D(350.2, 4566.8);
             Assert.AreEqual(350.2, c.X);
             Assert.AreEqual(4566.8, c.Y);
-            CheckGetter(Ordinate.Z, Coordinate.NullOrdinate, c.Z);
-            CheckGetter(Ordinate.M, Coordinate.NullOrdinate, c.M);
+            CheckGetter(2, Coordinate.NullOrdinate, c.Z);
+            CheckGetter(3, Coordinate.NullOrdinate, c.M);
         }
 
         [Test]
@@ -98,8 +98,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             T c = CreateCoordinate();
             Assert.AreEqual(0d, c.X);
             Assert.AreEqual(0d, c.Y);
-            CheckGetter(Ordinate.Z, Coordinate.NullOrdinate, c.Z);
-            CheckGetter(Ordinate.M, Coordinate.NullOrdinate, c.M);
+            CheckGetter(2, Coordinate.NullOrdinate, c.Z);
+            CheckGetter(3, Coordinate.NullOrdinate, c.M);
         }
 
         [Test]
@@ -109,8 +109,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             T c = CreateCoordinate(orig);
             Assert.AreEqual(350.2, c.X);
             Assert.AreEqual(4566.8, c.Y);
-            CheckGetter(Ordinate.Z, 5266.3, c.Z);
-            CheckGetter(Ordinate.M, Coordinate.NullOrdinate, c.M);
+            CheckGetter(2, 5266.3, c.Z);
+            CheckGetter(3, Coordinate.NullOrdinate, c.M);
         }
 
         [Test]
@@ -122,8 +122,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
             Assert.AreEqual(350.2, c.X);
             Assert.AreEqual(4566.8, c.Y);
-            CheckGetter(Ordinate.Z, 5266.3, c.Z);
-            CheckGetter(Ordinate.M, Coordinate.NullOrdinate, c.M);
+            CheckGetter(2, 5266.3, c.Z);
+            CheckGetter(3, Coordinate.NullOrdinate, c.M);
 
             Assert.That(ReferenceEquals(orig, c), Is.False);
         }
@@ -139,66 +139,66 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
             Assert.AreEqual(c.X, 350.2);
             Assert.AreEqual(c.Y, 4566.8);
-            CheckGetter(Ordinate.Z, 5266.3, c.Z);
-            CheckGetter(Ordinate.M, Coordinate.NullOrdinate, c.M);
+            CheckGetter(2, 5266.3, c.Z);
+            CheckGetter(3, Coordinate.NullOrdinate, c.M);
         }
 
         [Test]
         public void TestGetOrdinate2D()
         {
             T c = CreateCoordinate2D(350.2, 4566.8);
-            Assert.AreEqual(c[Ordinate.X], 350.2);
-            Assert.AreEqual(c[Ordinate.Y], 4566.8);
-            CheckIndexer(c, Ordinate.Z, double.NaN);
-            CheckIndexer(c, Ordinate.M, double.NaN);
+            Assert.AreEqual(c[0], 350.2);
+            Assert.AreEqual(c[1], 4566.8);
+            CheckIndexer(c, 2, double.NaN);
+            CheckIndexer(c, 3, double.NaN);
         }
 
         [Test]
         public void TestGetOrdinate3D()
         {
             T c = CreateCoordinate3D(350.2, 4566.8, 5266.3);
-            Assert.AreEqual(c[Ordinate.X], 350.2);
-            Assert.AreEqual(c[Ordinate.Y], 4566.8);
-            CheckIndexer(c, Ordinate.Z, 5266.3);
-            CheckIndexer(c, Ordinate.M, double.NaN);
+            Assert.AreEqual(c[0], 350.2);
+            Assert.AreEqual(c[1], 4566.8);
+            CheckIndexer(c, 2, 5266.3);
+            CheckIndexer(c, 3, double.NaN);
         }
 
         [Test]
         public void TestGetOrdinate3DM()
         {
             T c = CreateCoordinate3DM(350.2, 4566.8, 5266.3, 6226.4);
-            Assert.AreEqual(c[Ordinate.X], 350.2);
-            Assert.AreEqual(c[Ordinate.Y], 4566.8);
-            CheckIndexer(c, Ordinate.Z, 5266.3);
-            CheckIndexer(c, Ordinate.M, 6226.4);
+            Assert.AreEqual(c[0], 350.2);
+            Assert.AreEqual(c[1], 4566.8);
+            CheckIndexer(c, 2, 5266.3);
+            CheckIndexer(c, 3, 6226.4);
         }
 
         [Test]
         public void TestGetOrdinate2DM()
         {
             T c = CreateCoordinate2DM(350.2, 4566.8, 6226.4);
-            Assert.AreEqual(c[Ordinate.X], 350.2);
-            Assert.AreEqual(c[Ordinate.Y], 4566.8);
-            CheckIndexer(c, Ordinate.Z, double.NaN);
-            CheckIndexer(c, Ordinate.M, 6226.4);
+            Assert.AreEqual(c[0], 350.2);
+            Assert.AreEqual(c[1], 4566.8);
+            CheckIndexer(c, 2, double.NaN);
+            CheckIndexer(c, 3, 6226.4);
         }
 
         [Test]
         public void TestSetOrdinate()
         {
             T c = CreateCoordinate();
-            c[Ordinate.X] = 111;
-            c[Ordinate.Y] = 222;
+            c[0] = 111;
+            c[1] = 222;
             if (ZIndex.HasValue)
                 c[ZIndex.Value] = 333;
 
             if (MIndex.HasValue)
                 c[MIndex.Value] = 444;
 
-            Assert.AreEqual(c[Ordinate.X], 111.0);
-            Assert.AreEqual(c[Ordinate.Y], 222.0);
-            CheckIndexer(c, Ordinate.Z, 333d);
-            CheckIndexer(c, Ordinate.M, 444d);
+            Assert.AreEqual(c[0], 111.0);
+            Assert.AreEqual(c[1], 222.0);
+            CheckIndexer(c, 2, 333d);
+            CheckIndexer(c, 3, 444d);
         }
 
         [Test]
@@ -296,26 +296,24 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
             if (ZIndex.HasValue)
             {
-                Assert.DoesNotThrow(() => c[ZIndex.Value] = 3);
+                Assert.DoesNotThrow(() => c[Ordinate.Z] = 3);
                 Assert.AreEqual(3d, c.Z);
                 Assert.AreEqual(c.Z, c[ZIndex.Value]);
+            }
+            else
+            {
+                Assert.Throws<InvalidOperationException>(() => c[Ordinate.Z] = 3);
             }
 
             if (MIndex.HasValue)
             {
-                Assert.DoesNotThrow(() => c[MIndex.Value] = 4);
+                Assert.DoesNotThrow(() => c[Ordinate.M] = 4);
                 Assert.AreEqual(4d, c.M);
                 Assert.AreEqual(4d, c[MIndex.Value]);
             }
-
-            if (ZIndex != Ordinate.Ordinate2 && MIndex != Ordinate.Ordinate2)
+            else
             {
-                Assert.Throws<ArgumentOutOfRangeException>(() => c[Ordinate.Ordinate2] = 3);
-            }
-
-            if (ZIndex != Ordinate.Ordinate3 && MIndex != Ordinate.Ordinate3)
-            {
-                Assert.Throws<ArgumentOutOfRangeException>(() => c[Ordinate.Ordinate3] = 4);
+                Assert.Throws<InvalidOperationException>(() => c[Ordinate.M] = 4);
             }
         }
     }
@@ -372,7 +370,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         public CoordinateMTest()
         {
             ZIndex = null;
-            MIndex = Ordinate.Ordinate2;
+            MIndex = 2;
         }
         protected override CoordinateM CreateCoordinate2D(double x, double y)
         {
@@ -415,7 +413,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     {
         public CoordinateZTest()
         {
-            ZIndex = Ordinate.Ordinate2;
+            ZIndex = 2;
             MIndex = null;
         }
 
@@ -491,8 +489,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     {
         public CoordinateZMTest()
         {
-            ZIndex = Ordinate.Ordinate2;
-            MIndex = Ordinate.Ordinate3;
+            ZIndex = 2;
+            MIndex = 3;
         }
 
         protected override CoordinateZM CreateCoordinate2D(double x, double y)

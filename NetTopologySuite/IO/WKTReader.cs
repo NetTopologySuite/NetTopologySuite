@@ -228,23 +228,23 @@ namespace NetTopologySuite.IO
             // create a sequence for one coordinate
             int offsetM = ordinateFlags.HasFlag(Ordinates.Z) ? 1 : 0;
             var sequence = _coordinateSequencefactory.Create(1, this.ToDimension(ordinateFlags), ordinateFlags.HasFlag(Ordinates.M) ? 1 : 0);
-            sequence.SetOrdinate(0, Ordinate.X, _precisionModel.MakePrecise(GetNextNumber(tokens)));
-            sequence.SetOrdinate(0, Ordinate.Y, _precisionModel.MakePrecise(GetNextNumber(tokens)));
+            sequence.SetOrdinate(0, 0, _precisionModel.MakePrecise(GetNextNumber(tokens)));
+            sequence.SetOrdinate(0, 1, _precisionModel.MakePrecise(GetNextNumber(tokens)));
 
             // additionally read other vertices
             if (ordinateFlags.HasFlag(Ordinates.Z))
             {
-                sequence.SetOrdinate(0, Ordinate.Z, GetNextNumber(tokens));
+                sequence.SetOrdinate(0, 2, GetNextNumber(tokens));
             }
 
             if (ordinateFlags.HasFlag(Ordinates.M))
             {
-                sequence.SetOrdinate(0, Ordinate.Z + offsetM, GetNextNumber(tokens));
+                sequence.SetOrdinate(0, 2 + offsetM, GetNextNumber(tokens));
             }
 
             if (ordinateFlags == Ordinates.XY && _isAllowOldNtsCoordinateSyntax && IsNumberNext(tokens))
             {
-                sequence.SetOrdinate(0, Ordinate.Z, GetNextNumber(tokens));
+                sequence.SetOrdinate(0, 2, GetNextNumber(tokens));
             }
 
             // read close token if it was opened here
@@ -373,15 +373,15 @@ namespace NetTopologySuite.IO
             // create and fill the result sequence
             var sequence = _coordinateSequencefactory.Create(sequences.Count, this.ToDimension(mergeOrdinates), mergeOrdinates.HasFlag(Ordinates.M) ? 1 : 0);
 
-            var offsetM = Ordinate.Z + (mergeOrdinates.HasFlag(Ordinates.Z) ? 1 : 0);
+            int offsetM = 2 + (mergeOrdinates.HasFlag(Ordinates.Z) ? 1 : 0);
             for (int i = 0; i < sequences.Count; i++)
             {
                 var item = sequences[i];
-                sequence.SetOrdinate(i, Ordinate.X, item.GetOrdinate(0, Ordinate.X));
-                sequence.SetOrdinate(i, Ordinate.Y, item.GetOrdinate(0, Ordinate.Y));
+                sequence.SetOrdinate(i, 0, item.GetOrdinate(0, 0));
+                sequence.SetOrdinate(i, 1, item.GetOrdinate(0, 1));
                 if (mergeOrdinates.HasFlag(Ordinates.Z))
                 {
-                    sequence.SetOrdinate(i, Ordinate.Z, item.GetOrdinate(0, Ordinate.Z));
+                    sequence.SetOrdinate(i, 2, item.GetOrdinate(0, 2));
                 }
 
                 if (mergeOrdinates.HasFlag(Ordinates.M))

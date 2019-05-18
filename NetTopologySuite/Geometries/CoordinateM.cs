@@ -27,7 +27,7 @@ namespace NetTopologySuite.Geometries
     /// <para/>
     /// Implementations may optionally support Z-ordinate and M-measure values
     /// as appropriate for a <see cref="ICoordinateSequence"/>. Use of <see cref="CoordinateZ.Z"/>
-    /// and <see cref="M"/> setters or <see cref="P:NetTopologySuite.Geometries.CoordinateM.this[Ordinate]" /> indexer are recommended.
+    /// and <see cref="M"/> setters or <see cref="P:NetTopologySuite.Geometries.CoordinateM.this[int]" /> indexer are recommended.
     /// </remarks>
     [Serializable]
 #pragma warning disable 612,618
@@ -70,33 +70,24 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Gets or sets the ordinate value for the given index.
-        /// <para>
-        /// Do not use <see cref="Ordinate.M"/> to try to get or set the value of <see cref="M"/>.
-        /// Use <see cref="Ordinate.Ordinate2"/> instead.
-        /// </para>
-        /// <para>
-        /// <see cref="Ordinate.M"/> is the "standard" name of <see cref="Ordinate.Ordinate3"/> in
-        /// the XYZM space.  Since this does not have Z, the "standard" names of everything after it
-        /// (i.e., M) shift down by 1.
-        /// </para>
         /// </summary>
         /// <remarks>
-        /// The base implementation supports <see cref="Ordinate.X"/>, <see cref="Ordinate.Y"/> and <see cref="Ordinate.Ordinate2"/> as values for the index.
+        /// The base implementation supports 0 (X), 1 (Y) and 2 (M) as values for the index.
         /// </remarks>
         /// <param name="ordinateIndex">The ordinate index</param>
         /// <returns>The ordinate value</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="ordinateIndex"/> is not in the valid range.</exception>
-        public override double this[Ordinate ordinateIndex]
+        public override double this[int ordinateIndex]
         {
             get
             {
                 switch (ordinateIndex)
                 {
-                    case Ordinate.X:
+                    case 0:
                         return X;
-                    case Ordinate.Y:
+                    case 1:
                         return Y;
-                    case Ordinate.Ordinate2:
+                    case 2:
                         return M;
                 }
                 throw new ArgumentOutOfRangeException(nameof(ordinateIndex));
@@ -105,13 +96,13 @@ namespace NetTopologySuite.Geometries
             {
                 switch (ordinateIndex)
                 {
-                    case Ordinate.X:
+                    case 0:
                         X = value;
                         return;
-                    case Ordinate.Y:
+                    case 1:
                         Y = value;
                         return;
-                    case Ordinate.Ordinate2:
+                    case 2:
                         M = value;
                         return;
                 }

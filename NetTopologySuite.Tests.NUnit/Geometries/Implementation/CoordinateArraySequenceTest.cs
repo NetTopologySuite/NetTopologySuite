@@ -163,7 +163,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             {
                 for (int ordinateIndex = 0; ordinateIndex < seq.Dimension; ordinateIndex++)
                 {
-                    seq.SetOrdinate(index, (Ordinate)ordinateIndex, index);
+                    seq.SetOrdinate(index, ordinateIndex, index);
                 }
             }
         }

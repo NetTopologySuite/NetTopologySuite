@@ -27,7 +27,7 @@ namespace NetTopologySuite.Geometries
     /// <para/>
     /// Implementations may optionally support Z-ordinate and M-measure values
     /// as appropriate for a <see cref="ICoordinateSequence"/>. Use of <see cref="Z"/>
-    /// and <see cref="Coordinate.M"/> setters or <see cref="P:NetTopologySuite.Geometries.CoordinateZ.this[Ordinate]" /> indexer are recommended.
+    /// and <see cref="Coordinate.M"/> setters or <see cref="P:NetTopologySuite.Geometries.CoordinateZ.this[int]" /> indexer are recommended.
     /// </remarks>
     [Serializable]
 #pragma warning disable 612,618
@@ -72,22 +72,22 @@ namespace NetTopologySuite.Geometries
         /// Gets or sets the ordinate value for the given index.
         /// </summary>
         /// <remarks>
-        /// The base implementation supports  <see cref="Ordinate.X"/>, <see cref="Ordinate.Y"/> and <see cref="Ordinate.Z"/> as values for the index.
+        /// The base implementation supports 0 (X), 1 (Y) and 2 (Z) as values for the index.
         /// </remarks>
         /// <param name="ordinateIndex">The ordinate index</param>
         /// <returns>The ordinate value</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="ordinateIndex"/> is not in the valid range.</exception>
-        public override double this[Ordinate ordinateIndex]
+        public override double this[int ordinateIndex]
         {
             get
             {
                 switch (ordinateIndex)
                 {
-                    case Ordinate.X:
+                    case 0:
                         return X;
-                    case Ordinate.Y:
+                    case 1:
                         return Y;
-                    case Ordinate.Z:
+                    case 2:
                         return Z;
                 }
                 throw new ArgumentOutOfRangeException(nameof(ordinateIndex));
@@ -96,13 +96,13 @@ namespace NetTopologySuite.Geometries
             {
                 switch (ordinateIndex)
                 {
-                    case Ordinate.X:
+                    case 0:
                         X = value;
                         return;
-                    case Ordinate.Y:
+                    case 1:
                         Y = value;
                         return;
-                    case Ordinate.Z:
+                    case 2:
                         Z = value;
                         return;
                 }

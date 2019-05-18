@@ -251,8 +251,8 @@ namespace NetTopologySuite.Tests.NUnit
             {
                 for (int j = 0; j < dimension; j++)
                 {
-                    double val1 = seq1.GetOrdinate(i, (Ordinate)j);
-                    double val2 = seq2.GetOrdinate(i, (Ordinate)j);
+                    double val1 = seq1.GetOrdinate(i, j);
+                    double val2 = seq2.GetOrdinate(i, j);
                     if (double.IsNaN(val1))
                     {
                         if (!double.IsNaN(val2))

@@ -191,7 +191,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(3d, c.Z);
             Assert.AreEqual(c.Z, c[Ordinate.Z]);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => c[Ordinate.M] = 4);
+            Assert.Throws<InvalidOperationException>(() => c[Ordinate.M] = 4);
         }
 
         [Test]

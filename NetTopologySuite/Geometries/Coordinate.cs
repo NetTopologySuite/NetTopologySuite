@@ -19,7 +19,7 @@ namespace NetTopologySuite.Geometries
     /// <para/>
     /// Implementations may optionally support Z-ordinate and M-measure values
     /// as appropriate for a <see cref="ICoordinateSequence"/>. Use of <see cref="Z"/>
-    /// and <see cref="M"/> setters or <see cref="P:NetTopologySuite.Geometries.Coordinate.this[Ordinate]" /> indexer are recommended.
+    /// and <see cref="M"/> setters or <see cref="P:NetTopologySuite.Geometries.Coordinate.this[int]" /> indexer are recommended.
     /// </remarks>
     [Serializable]
 #pragma warning disable 612,618
@@ -94,23 +94,78 @@ namespace NetTopologySuite.Geometries
         public Coordinate(Coordinate c) : this(c.X, c.Y) { }
 
         /// <summary>
+        /// Gets or sets the value for the given ordinate.
+        /// </summary>
+        /// <param name="ordinate">The ordinate.</param>
+        /// <returns>The ordinate value</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="ordinate"/> is not one of <see cref="Ordinate.X"/>, <see cref="Ordinate.Y"/>, <see cref="Ordinate.Z"/>, or <see cref="Ordinate.M"/>.</exception>
+        public double this[Ordinate ordinate]
+        {
+            get
+            {
+                switch (ordinate)
+                {
+                    case Ordinate.X:
+                        return X;
+
+                    case Ordinate.Y:
+                        return Y;
+
+                    case Ordinate.Z:
+                        return Z;
+
+                    case Ordinate.M:
+                        return M;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(ordinate), ordinate, "Coordinate instances only recognize X, Y, Z, and M ordinates.");
+                }
+            }
+
+            set
+            {
+                switch (ordinate)
+                {
+                    case Ordinate.X:
+                        X = value;
+                        break;
+
+                    case Ordinate.Y:
+                        Y = value;
+                        break;
+
+                    case Ordinate.Z:
+                        Z = value;
+                        break;
+
+                    case Ordinate.M:
+                        M = value;
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(ordinate), ordinate, "Coordinate instances only recognize X, Y, Z, and M ordinates.");
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the ordinate value for the given index.
         /// </summary>
         /// <remarks>
-        /// The base implementation supports <see cref="Ordinate.X"/> and <see cref="Ordinate.Y"/> as values for the index.
+        /// The base implementation supports 0 (X) and 1 (Y) as values for the index.
         /// </remarks>
         /// <param name="ordinateIndex">The ordinate index</param>
         /// <returns>The ordinate value</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="ordinateIndex"/> is not in the valid range.</exception>
-        public virtual double this[Ordinate ordinateIndex]
+        public virtual double this[int ordinateIndex]
         {
             get
             {
                 switch (ordinateIndex)
                 {
-                    case Ordinate.X:
+                    case 0:
                         return X;
-                    case Ordinate.Y:
+                    case 1:
                         return Y;
                 }
                 throw new ArgumentOutOfRangeException(nameof(ordinateIndex));
@@ -119,10 +174,10 @@ namespace NetTopologySuite.Geometries
             {
                 switch (ordinateIndex)
                 {
-                    case Ordinate.X:
+                    case 0:
                         X = value;
                         return;
-                    case Ordinate.Y:
+                    case 1:
                         Y = value;
                         return;
                 }

@@ -192,20 +192,20 @@ namespace NetTopologySuite.Samples.Geometries
         /// (for instance, they may contain other dimensions or measure values).
         /// </summary>
         /// <param name="index">The coordinate index in the sequence.</param>
-        /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
+        /// <param name="ordinateIndex">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <returns></returns>
-        public double GetOrdinate(int index, Ordinate ordinate)
+        public double GetOrdinate(int index, int ordinateIndex)
         {
             var exc = (ExtendedCoordinate) _coordinates[index];
-            switch (ordinate)
+            switch (ordinateIndex)
             {
-                case Ordinate.X:
+                case 0:
                     return exc.X;
-                case Ordinate.Y:
+                case 1:
                     return exc.Y;
-                case Ordinate.Z:
+                case 2:
                     return exc.Z;
-                case Ordinate.M:
+                case 3:
                     return exc.M;
                 default:
                     return double.NaN;
@@ -216,23 +216,23 @@ namespace NetTopologySuite.Samples.Geometries
         /// Sets the value for a given ordinate of a coordinate in this sequence.
         /// </summary>
         /// <param name="index">The coordinate index in the sequence.</param>
-        /// <param name="ordinate">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
+        /// <param name="ordinateIndex">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <param name="value">The new ordinate value.</param>
-        public void SetOrdinate(int index, Ordinate ordinate, double value)
+        public void SetOrdinate(int index, int ordinateIndex, double value)
         {
             var exc = (ExtendedCoordinate)_coordinates[index];
-            switch (ordinate)
+            switch (ordinateIndex)
             {
-                case Ordinate.X:
+                case 0:
                     exc.X = value;
                     break;
-                case Ordinate.Y:
+                case 1:
                     exc.Y = value;
                     break;
-                case Ordinate.Z:
+                case 2:
                     exc.Z = value;
                     break;
-                case Ordinate.M:
+                case 3:
                     exc.M = value;
                     break;
             }

@@ -85,8 +85,8 @@ namespace NetTopologySuite.Geometries
         {
             for (int d = 0; d < dimension; d++)
             {
-                double ord1 = s1.GetOrdinate(i, (Ordinate)d);
-                double ord2 = s2.GetOrdinate(i, (Ordinate)d);
+                double ord1 = s1.GetOrdinate(i, d);
+                double ord2 = s2.GetOrdinate(i, d);
                 int comp = Compare(ord1, ord2);
                 if (comp != 0) return comp;
             }
