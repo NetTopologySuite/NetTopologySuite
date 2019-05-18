@@ -15,26 +15,30 @@ namespace NetTopologySuite.Geometries
         /// <returns>The number of dimensions</returns>
         public static int OrdinatesToDimension(Ordinates ordinates)
         {
-            var ret = 2;
-            if ((ordinates & Ordinates.Z) != 0) ret++;
-            if ((ordinates & Ordinates.M) != 0) ret++;
+            // dimension should ALWAYS take X and Y into account.
+            ordinates |= Ordinates.XY;
 
-            return ret;
+            // unset flags one-by-one until all flags are unset.
+            // the number of times we did that is how many flags were initially set.
+            int flagsUnsetSoFar = 0;
+            while (ordinates != Ordinates.None)
+            {
+                ordinates &= (Ordinates)((int)ordinates - 1);
+
+                ++flagsUnsetSoFar;
+            }
+
+            return flagsUnsetSoFar;
         }
 
         /// <summary>
-        /// Translates a dimension value to an <see cref="Ordinates"/>-flag.
+        /// Translates the <paramref name="ordinates"/>-flag to a number of measures.
         /// </summary>
-        /// <remarks>The flag for <see cref="Ordinate.Z"/> is set first.</remarks>
-        /// <param name="dimension">The dimension.</param>
-        /// <returns>The ordinates-flag</returns>
-        public static Ordinates DimensionToOrdinates(int dimension)
+        /// <param name="ordinates">The ordinates flag</param>
+        /// <returns>The number of measures</returns>
+        public static int OrdinatesToMeasures(Ordinates ordinates)
         {
-            if (dimension == 3)
-                return Ordinates.XYZ;
-            if (dimension == 4)
-                return Ordinates.XYZM;
-            return Ordinates.XY;
+            return (int)(ordinates & Ordinates.M) >> (int)Ordinate.M;
         }
 
         /// <summary>

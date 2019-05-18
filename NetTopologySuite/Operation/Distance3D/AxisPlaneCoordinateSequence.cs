@@ -59,92 +59,80 @@ namespace NetTopologySuite.Operation.Distance3D
         private readonly int[] _indexMap;
 
         private AxisPlaneCoordinateSequence(CoordinateSequence seq, int[] indexMap)
+            : base(seq?.Count ?? 0, 2, 0)
         {
             _seq = seq;
             _indexMap = indexMap;
         }
 
-        public int Dimension => 2;
-
         /// <inheritdoc />
-        public int Measures => 0;
+        public override Coordinate CreateCoordinate() => new CoordinateZ();
 
-        public bool HasZ => false;
-
-        public bool HasM => false;
-
-        public Ordinates Ordinates => _seq.Ordinates;
-
-        /// <inheritdoc />
-        public Coordinate CreateCoordinate() => new CoordinateZ();
-
-        public Coordinate GetCoordinate(int i)
+        public override Coordinate GetCoordinate(int i)
         {
             return GetCoordinateCopy(i);
         }
 
-        public Coordinate GetCoordinateCopy(int i)
+        public override Coordinate GetCoordinateCopy(int i)
         {
             return new CoordinateZ(GetX(i), GetY(i), GetZ(i));
         }
 
-        public void GetCoordinate(int index, Coordinate coord)
+        public override void GetCoordinate(int index, Coordinate coord)
         {
             coord.X = GetOrdinate(index, 0);
             coord.Y = GetOrdinate(index, 1);
             coord.Z = GetOrdinate(index, 2);
         }
 
-        public double GetX(int index)
+        public override double GetX(int index)
         {
             return GetOrdinate(index, 0);
         }
 
-        public double GetY(int index)
+        public override double GetY(int index)
         {
             return GetOrdinate(index, 1);
         }
 
-        public double GetZ(int index)
+        public override double GetZ(int index)
         {
             return GetOrdinate(index, 2);
         }
 
-        public double GetM(int index)
+        public override double GetM(int index)
         {
             return double.NaN;
         }
 
-        public double GetOrdinate(int index, int ordinateIndex)
+        public override double GetOrdinate(int index, int ordinateIndex)
         {
             // Z ord is always 0
             if (ordinateIndex > 1) return 0;
             return _seq.GetOrdinate(index, _indexMap[ordinateIndex]);
         }
 
-        public int Count => _seq.Count;
-
-        public void SetOrdinate(int index, int ordinateIndex, double value)
+        public override void SetOrdinate(int index, int ordinateIndex, double value)
         {
             throw new NotSupportedException();
         }
 
-        public Coordinate[] ToCoordinateArray()
+        public override Coordinate[] ToCoordinateArray()
         {
             throw new NotSupportedException();
         }
 
-        public Envelope ExpandEnvelope(Envelope env)
+        public override Envelope ExpandEnvelope(Envelope env)
         {
             throw new NotSupportedException();
         }
 
-        public CoordinateSequence Copy()
+        public override CoordinateSequence Copy()
         {
             throw new NotSupportedException();
         }
 
-        public CoordinateSequence Reversed()
+        public override CoordinateSequence Reversed()
         {
             throw new NotSupportedException();
         }

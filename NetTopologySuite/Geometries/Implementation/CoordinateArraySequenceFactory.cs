@@ -69,9 +69,9 @@ namespace NetTopologySuite.Geometries.Implementation
 
         public CoordinateSequence Create(int size, Ordinates ordinates)
         {
-            return new CoordinateArraySequence(size, OrdinatesUtility.OrdinatesToDimension(ordinates));
+            return new CoordinateArraySequence(size, OrdinatesUtility.OrdinatesToDimension(ordinates), OrdinatesUtility.OrdinatesToMeasures(ordinates));
         }
 
-        public Ordinates Ordinates => Ordinates.XYZ;
+        public Ordinates Ordinates => Ordinates.XYZM;
     }
 }

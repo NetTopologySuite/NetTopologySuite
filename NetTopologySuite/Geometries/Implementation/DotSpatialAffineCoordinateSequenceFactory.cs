@@ -69,20 +69,13 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>A coordinate sequence</returns>
         public CoordinateSequence Create(int size, int dimension)
         {
-
-            return new DotSpatialAffineCoordinateSequence(size, Ordinates & OrdinatesUtility.DimensionToOrdinates(dimension));
+            return new DotSpatialAffineCoordinateSequence(size, dimension, 0);
         }
 
         /// <inheritdoc />
         public CoordinateSequence Create(int size, int dimension, int measures)
         {
-            var ordinates = OrdinatesUtility.DimensionToOrdinates(dimension);
-            if (dimension == 3 && measures == 1)
-            {
-                ordinates = Ordinates.XYM;
-            }
-
-            return new DotSpatialAffineCoordinateSequence(size, Ordinates & ordinates);
+            return new DotSpatialAffineCoordinateSequence(size, dimension, measures);
         }
 
         /// <summary>

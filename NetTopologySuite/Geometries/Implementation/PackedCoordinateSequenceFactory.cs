@@ -110,7 +110,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns></returns>
         public CoordinateSequence Create(int size, Ordinates ordinates)
         {
-            return Create(size, OrdinatesUtility.OrdinatesToDimension(ordinates));
+            return Create(size, OrdinatesUtility.OrdinatesToDimension(ordinates), OrdinatesUtility.OrdinatesToMeasures(ordinates));
         }
 
         // this is supposed to be the MAX ordinates that we can cope with, but we can actually cope
