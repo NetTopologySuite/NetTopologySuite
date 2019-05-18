@@ -1,3 +1,5 @@
+using System;
+
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
@@ -5,15 +7,43 @@ namespace NetTopologySuite.Geometries
     /// <c>CoordinateSequence</c> from an array of Coordinates.
     /// </summary>
     /// <seealso cref="CoordinateSequence" />
-    public interface CoordinateSequenceFactory
+    [Serializable]
+    public abstract class CoordinateSequenceFactory
     {
+        protected CoordinateSequenceFactory()
+            : this(unchecked((Ordinates)0xFFFFFFFF))
+        {
+        }
+
+        protected CoordinateSequenceFactory(Ordinates ordinates) => Ordinates = Ordinates.XY | ordinates;
+
+        /// <summary>
+        /// Gets the Ordinate flags that sequences created by this factory can maximal cope with.
+        /// </summary>
+        public Ordinates Ordinates { get; }
+
         /// <summary>
         /// Returns a <see cref="CoordinateSequence" /> based on the given array; 
         /// whether or not the array is copied is implementation-dependent.
         /// </summary>
         /// <param name="coordinates">A coordinates array, which may not be null nor contain null elements</param>
         /// <returns>A coordinate sequence.</returns>
-        CoordinateSequence Create(Coordinate[] coordinates);
+        public virtual CoordinateSequence Create(Coordinate[] coordinates)
+        {
+            var result = Create(coordinates?.Length ?? 0, CoordinateArrays.Dimension(coordinates), CoordinateArrays.Measures(coordinates));
+            if (coordinates != null)
+            {
+                for (int i = 0; i < coordinates.Length; i++)
+                {
+                    for (int dim = 0; dim < result.Dimension; dim++)
+                    {
+                        result.SetOrdinate(i, dim, coordinates[i][dim]);
+                    }
+                }
+            }
+
+            return result;
+        }
 
         /// <summary>
         /// Creates a <see cref="CoordinateSequence" />  which is a copy
@@ -22,7 +52,22 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordSeq"></param>
         /// <returns>A coordinate sequence</returns>
-        CoordinateSequence Create(CoordinateSequence coordSeq);
+        public virtual CoordinateSequence Create(CoordinateSequence coordSeq)
+        {
+            var result = Create(coordSeq?.Count ?? 0, coordSeq?.Dimension ?? 2, coordSeq?.Measures ?? 0);
+            if (coordSeq != null)
+            {
+                for (int i = 0; i < coordSeq.Count; i++)
+                {
+                    for (int dim = 0; dim < result.Dimension; dim++)
+                    {
+                        result.SetOrdinate(i, dim, coordSeq.GetOrdinate(i, dim));
+                    }
+                }
+            }
+
+            return result;
+        }
 
         /// <summary>
         /// Creates a <see cref="CoordinateSequence" /> of the specified size and dimension.
@@ -37,7 +82,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="dimension">the dimension of the coordinates in the sequence 
         /// (if user-specifiable, otherwise ignored)</param>
         /// <returns>A coordinate sequence</returns>
-        CoordinateSequence Create(int size, int dimension);
+        public CoordinateSequence Create(int size, int dimension) => Create(size, dimension, 0);
 
         /// <summary>
         /// Creates a <see cref="CoordinateSequence" /> of the specified size and dimension
@@ -51,7 +96,7 @@ namespace NetTopologySuite.Geometries
         /// <para/>
         /// A default implementation of this method could look like this:
         /// <code>
-        /// public CoordinateSequence Create(int size, int dimension, int measures)
+        /// public ICoordinateSequence Create(int size, int dimension, int measures)
         /// {
         ///     return create(size, dimension);
         /// }
@@ -62,8 +107,7 @@ namespace NetTopologySuite.Geometries
         /// otherwise ignored)</param>
         /// <param name="measures">The number of measures of the coordinates in the sequence (if user-specifiable,
         /// otherwise ignored)</param>
-        /// 
-        CoordinateSequence Create(int size, int dimension, int measures);
+        public abstract CoordinateSequence Create(int size, int dimension, int measures);
 
         /// <summary>
         /// Creates a <see cref="CoordinateSequence" /> of the specified size and ordinates.
@@ -74,11 +118,6 @@ namespace NetTopologySuite.Geometries
         /// The ordinates each coordinate has. <see cref="Geometries.Ordinates.XY"/> is fix, <see cref="Geometries.Ordinates.Z"/> and <see cref="Geometries.Ordinates.M"/> can be set.
         /// </param>
         /// <returns>A coordinate sequence.</returns>
-        CoordinateSequence Create(int size, Ordinates ordinates);
-
-        /// <summary>
-        /// Gets the Ordinate flags that sequences created by this factory can maximal cope with.
-        /// </summary>
-        Ordinates Ordinates { get; }
+        public virtual CoordinateSequence Create(int size, Ordinates ordinates) => Create(size, OrdinatesUtility.OrdinatesToDimension(ordinates & Ordinates), OrdinatesUtility.OrdinatesToMeasures(ordinates & Ordinates));
     }
 }

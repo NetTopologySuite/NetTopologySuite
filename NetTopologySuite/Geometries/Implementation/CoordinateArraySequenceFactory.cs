@@ -11,7 +11,7 @@ namespace NetTopologySuite.Geometries.Implementation
     {
         private static readonly CoordinateArraySequenceFactory instance = new CoordinateArraySequenceFactory();
 
-        private CoordinateArraySequenceFactory() { }
+        private CoordinateArraySequenceFactory() : base(Ordinates.XYZM) { }
 
         /// <summary>
         /// Returns the singleton instance of CoordinateArraySequenceFactory.
@@ -23,28 +23,17 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coordinates">the coordinates, which may not be null nor contain null elements.</param>
         /// <returns></returns>
-        public CoordinateSequence Create(Coordinate[] coordinates)
+        public override CoordinateSequence Create(Coordinate[] coordinates)
         {
             return new CoordinateArraySequence(coordinates);
         }
 
-        public CoordinateSequence Create(CoordinateSequence coordSeq)
+        public override CoordinateSequence Create(CoordinateSequence coordSeq)
         {
             return new CoordinateArraySequence(coordSeq);
         }
 
-        public CoordinateSequence Create(int size, int dimension)
-        {
-            if (dimension > 3)
-                dimension = 3;
-            // throw new ArgumentOutOfRangeException("dimension must <= 3");
-            // handle bogus dimension
-            if (dimension < 2)
-                dimension = 2;
-            return new CoordinateArraySequence(size, dimension);
-        }
-
-        public CoordinateSequence Create(int size, int dimension, int measures)
+        public override CoordinateSequence Create(int size, int dimension, int measures)
         {
             int spatial = dimension - measures;
 
@@ -67,11 +56,9 @@ namespace NetTopologySuite.Geometries.Implementation
             return new CoordinateArraySequence(size, spatial + measures, measures);
         }
 
-        public CoordinateSequence Create(int size, Ordinates ordinates)
+        public override CoordinateSequence Create(int size, Ordinates ordinates)
         {
-            return new CoordinateArraySequence(size, OrdinatesUtility.OrdinatesToDimension(ordinates), OrdinatesUtility.OrdinatesToMeasures(ordinates));
+            return new CoordinateArraySequence(size, OrdinatesUtility.OrdinatesToDimension(ordinates));
         }
-
-        public Ordinates Ordinates => Ordinates.XYZM;
     }
 }

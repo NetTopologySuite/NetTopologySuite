@@ -11,7 +11,7 @@ namespace NetTopologySuite.Samples.Geometries
     {
         private static ExtendedCoordinateSequenceFactory instance;
 
-        private ExtendedCoordinateSequenceFactory() { }
+        private ExtendedCoordinateSequenceFactory() : base(Ordinates.XYZM) { }
 
         /// <summary> Returns the singleton instance of ExtendedCoordinateSequenceFactory
         /// </summary>
@@ -24,34 +24,27 @@ namespace NetTopologySuite.Samples.Geometries
         /// directly if it is an instance of ExtendedCoordinate[]; otherwise it is
         /// copied.
         /// </summary>
-        public virtual CoordinateSequence Create(Coordinate[] coordinates)
+        public override CoordinateSequence Create(Coordinate[] coordinates)
         {
-            return coordinates is ExtendedCoordinate[] ?
-                new ExtendedCoordinateSequence((ExtendedCoordinate[]) coordinates) :
+            return coordinates is ExtendedCoordinate[]?
+                new ExtendedCoordinateSequence((ExtendedCoordinate[])coordinates) :
                 new ExtendedCoordinateSequence(coordinates);
         }
 
-        public CoordinateSequence Create(CoordinateSequence coordSeq)
+        public override CoordinateSequence Create(CoordinateSequence coordSeq)
         {
             throw new NotImplementedException();
         }
 
-        public CoordinateSequence Create(int size, int dimension)
+        public override CoordinateSequence Create(int size, int dimension, int measures)
         {
             throw new NotImplementedException();
         }
 
-        public CoordinateSequence Create(int size, int dimension, int measures)
+        public override CoordinateSequence Create(int size, Ordinates ordinates)
         {
             throw new NotImplementedException();
         }
-
-        public CoordinateSequence Create(int size, Ordinates ordinates)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Ordinates Ordinates => Ordinates.XYZM;
 
         static ExtendedCoordinateSequenceFactory()
         {
