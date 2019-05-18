@@ -52,10 +52,10 @@ namespace NetTopologySuite
         private struct GeometryFactoryKey
         {
             private readonly PrecisionModel _precisionModel;
-            private readonly ICoordinateSequenceFactory _factory;
+            private readonly CoordinateSequenceFactory _factory;
             private readonly int _srid;
 
-            public GeometryFactoryKey(PrecisionModel precisionModel, ICoordinateSequenceFactory factory, int srid)
+            public GeometryFactoryKey(PrecisionModel precisionModel, CoordinateSequenceFactory factory, int srid)
             {
                 _precisionModel = precisionModel;
                 _factory = factory;
@@ -200,12 +200,12 @@ namespace NetTopologySuite
         }
 
         /// <summary>
-        /// Creates an instance of this class, using the provided <see cref="ICoordinateSequenceFactory"/>, <see cref="PrecisionModel"/> and spatial reference Id (<paramref name="srid"/>.
+        /// Creates an instance of this class, using the provided <see cref="CoordinateSequenceFactory"/>, <see cref="PrecisionModel"/> and spatial reference Id (<paramref name="srid"/>.
         /// </summary>
         /// <param name="coordinateSequenceFactory">The coordinate sequence factory to use.</param>
         /// <param name="precisionModel">The precision model.</param>
         /// <param name="srid">The default spatial reference ID</param>
-        public NtsGeometryServices(ICoordinateSequenceFactory coordinateSequenceFactory,
+        public NtsGeometryServices(CoordinateSequenceFactory coordinateSequenceFactory,
             PrecisionModel precisionModel, int srid)
         {
             DefaultCoordinateSequenceFactory = coordinateSequenceFactory;
@@ -221,7 +221,7 @@ namespace NetTopologySuite
         /// <summary>
         /// Gets or sets the coordiate sequence factory to use
         /// </summary>
-        public ICoordinateSequenceFactory DefaultCoordinateSequenceFactory { get; private set; }
+        public CoordinateSequenceFactory DefaultCoordinateSequenceFactory { get; private set; }
 
         /// <summary>
         /// Gets or sets the default precision model
@@ -266,7 +266,7 @@ namespace NetTopologySuite
             return CreateGeometryFactory(DefaultPrecisionModel, srid, DefaultCoordinateSequenceFactory);
         }
 
-        public GeometryFactory CreateGeometryFactory(ICoordinateSequenceFactory coordinateSequenceFactory)
+        public GeometryFactory CreateGeometryFactory(CoordinateSequenceFactory coordinateSequenceFactory)
         {
             return CreateGeometryFactory(DefaultPrecisionModel, DefaultSRID, coordinateSequenceFactory);
         }
@@ -281,7 +281,7 @@ namespace NetTopologySuite
             return CreateGeometryFactory(precisionModel, srid, DefaultCoordinateSequenceFactory);
         }
 
-        public GeometryFactory CreateGeometryFactory(PrecisionModel precisionModel, int srid, ICoordinateSequenceFactory coordinateSequenceFactory)
+        public GeometryFactory CreateGeometryFactory(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory)
         {
             if (precisionModel == null)
                 throw new ArgumentNullException("precisionModel");
@@ -323,13 +323,13 @@ namespace NetTopologySuite
         //        }
         //        else
         //        {
-        //            DefaultCoordinateSequenceFactory = (ICoordinateSequenceFactory)
-        //                                        info.GetValue("csf", typeof (ICoordinateSequenceFactory));
+        //            DefaultCoordinateSequenceFactory = (CoordinateSequenceFactory)
+        //                                        info.GetValue("csf", typeof (CoordinateSequenceFactory));
         //        }
         //        /*_instance = this;*/
         //    }
 
-        //    private ICoordinateSequenceFactory Find(string csfAssembly, string csfName)
+        //    private CoordinateSequenceFactory Find(string csfAssembly, string csfName)
         //    {
         //        switch (csfName)
         //        {
@@ -375,7 +375,7 @@ namespace NetTopologySuite
         //            if (!(DefaultCoordinateSequenceFactory is ISerializable))
         //                throw new InvalidOperationException(string.Format("Cannot serialize '{0}'",
         //                                                                  DefaultCoordinateSequenceFactory.GetType().FullName));
-        //            info.AddValue("csf", DefaultCoordinateSequenceFactory, typeof(ICoordinateSequenceFactory));
+        //            info.AddValue("csf", DefaultCoordinateSequenceFactory, typeof(CoordinateSequenceFactory));
         //        }
         //    }
 

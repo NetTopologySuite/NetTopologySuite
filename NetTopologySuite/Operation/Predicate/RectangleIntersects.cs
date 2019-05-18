@@ -169,7 +169,7 @@ namespace NetTopologySuite.Operation.Predicate
     /// <author>Martin Davis</author>
     internal class GeometryContainsPointVisitor : ShortCircuitedGeometryVisitor
     {
-        private readonly ICoordinateSequence _rectSeq;
+        private readonly CoordinateSequence _rectSeq;
         private readonly Envelope _rectEnv;
 
         /// <summary>

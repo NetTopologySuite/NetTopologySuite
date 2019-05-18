@@ -7,7 +7,7 @@ namespace NetTopologySuite.Geometries.Implementation
     /// Creates CoordinateSequences represented as an array of Coordinates.
     /// </summary>
     [Serializable]
-    public sealed class CoordinateArraySequenceFactory : ICoordinateSequenceFactory
+    public sealed class CoordinateArraySequenceFactory : CoordinateSequenceFactory
     {
         private static readonly CoordinateArraySequenceFactory instance = new CoordinateArraySequenceFactory();
 
@@ -23,17 +23,17 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coordinates">the coordinates, which may not be null nor contain null elements.</param>
         /// <returns></returns>
-        public ICoordinateSequence Create(Coordinate[] coordinates)
+        public CoordinateSequence Create(Coordinate[] coordinates)
         {
             return new CoordinateArraySequence(coordinates);
         }
 
-        public ICoordinateSequence Create(ICoordinateSequence coordSeq)
+        public CoordinateSequence Create(CoordinateSequence coordSeq)
         {
             return new CoordinateArraySequence(coordSeq);
         }
 
-        public ICoordinateSequence Create(int size, int dimension)
+        public CoordinateSequence Create(int size, int dimension)
         {
             if (dimension > 3)
                 dimension = 3;
@@ -44,7 +44,7 @@ namespace NetTopologySuite.Geometries.Implementation
             return new CoordinateArraySequence(size, dimension);
         }
 
-        public ICoordinateSequence Create(int size, int dimension, int measures)
+        public CoordinateSequence Create(int size, int dimension, int measures)
         {
             int spatial = dimension - measures;
 
@@ -67,7 +67,7 @@ namespace NetTopologySuite.Geometries.Implementation
             return new CoordinateArraySequence(size, spatial + measures, measures);
         }
 
-        public ICoordinateSequence Create(int size, Ordinates ordinates)
+        public CoordinateSequence Create(int size, Ordinates ordinates)
         {
             return new CoordinateArraySequence(size, OrdinatesUtility.OrdinatesToDimension(ordinates));
         }

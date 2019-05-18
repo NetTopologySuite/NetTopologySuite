@@ -26,7 +26,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// The <c>Coordinate</c> wrapped by this <c>Point</c>.
         /// </summary>
-        private ICoordinateSequence _coordinates;
+        private CoordinateSequence _coordinates;
 
         /// <summary>
         /// Gets a value to sort the geometry
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public ICoordinateSequence CoordinateSequence => _coordinates;
+        public CoordinateSequence CoordinateSequence => _coordinates;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Point"/> class.
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Geometries
         /// or <c>null</c> to create the empty point.
         /// </param>
         /// <param name="factory"></param>
-        public Point(ICoordinateSequence coordinates, GeometryFactory factory) : base(factory)
+        public Point(CoordinateSequence coordinates, GeometryFactory factory) : base(factory)
         {
             if (coordinates == null)
                 coordinates = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
@@ -266,7 +266,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        protected internal override int CompareToSameClass(object other, IComparer<ICoordinateSequence> comparer)
+        protected internal override int CompareToSameClass(object other, IComparer<CoordinateSequence> comparer)
         {
             return comparer.Compare(CoordinateSequence, ((Point) other).CoordinateSequence);
         }

@@ -118,7 +118,7 @@ namespace NetTopologySuite.Tests.Various
             PerformTest(sequence);
         }
 
-        private static void PerformTest(ICoordinateSequence sequence)
+        private static void PerformTest(CoordinateSequence sequence)
         {
             if (sequence == null)
                 throw new ArgumentNullException("sequence");

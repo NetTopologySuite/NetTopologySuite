@@ -41,7 +41,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             DoTest(csf, csr);
         }
 
-        private static void DoTest(ICoordinateSequence forward, ICoordinateSequence reversed)
+        private static void DoTest(CoordinateSequence forward, CoordinateSequence reversed)
         {
             const double eps = 1e-12;
 

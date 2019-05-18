@@ -130,7 +130,7 @@ namespace NetTopologySuite.EdgeRay
             }
         }
 
-        private ICoordinateSequence GetVertices(Geometry geom)
+        private CoordinateSequence GetVertices(Geometry geom)
         {
             var poly = (Polygon)geom;
             var seq = poly.ExteriorRing.CoordinateSequence;

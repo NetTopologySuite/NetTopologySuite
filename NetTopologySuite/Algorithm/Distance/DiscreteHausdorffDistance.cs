@@ -190,7 +190,7 @@ namespace NetTopologySuite.Algorithm.Distance
                 _numSubSegs = (int)Math.Round(1.0 / fraction, MidpointRounding.ToEven); //see Java's Math.rint
             }
 
-            public void Filter(ICoordinateSequence seq, int index)
+            public void Filter(CoordinateSequence seq, int index)
             {
                 /**
                  * This logic also handles skipping Point geometries

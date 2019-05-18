@@ -34,11 +34,11 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Generates the WKT for a N-point <c>LineString</c> specified by a <see cref="ICoordinateSequence"/>.
+        /// Generates the WKT for a N-point <c>LineString</c> specified by a <see cref="CoordinateSequence"/>.
         /// </summary>
         /// <param name="seq">The sequence to write.</param>
         /// <returns>The WKT</returns>
-        public static string ToLineString(ICoordinateSequence seq)
+        public static string ToLineString(CoordinateSequence seq)
         {
             // legacy note: JTS's version never checks Z or M, so the things that call this aren't
             // expecting to see them.  the "actual" code to write lines handles Z / M just fine.
@@ -169,7 +169,7 @@ namespace NetTopologySuite.IO
             }
 
             /// <inheritdoc />
-            public void Filter(ICoordinateSequence seq, int i)
+            public void Filter(CoordinateSequence seq, int i)
             {
                 if (_checkOrdinateFlags.HasFlag(Ordinates.Z) && !_outputOrdinates.HasFlag(Ordinates.Z))
                 {
@@ -636,12 +636,12 @@ namespace NetTopologySuite.IO
         /// these are not written, even though <see cref="_outputDimension"/> suggests this.
         /// </para>
         /// </summary>
-        /// <param name="seq">the <see cref="ICoordinateSequence"/> to process</param>
+        /// <param name="seq">the <see cref="CoordinateSequence"/> to process</param>
         /// <param name="i">the index of the coordinate to write</param>
         /// <param name="writer">writer the output writer to append to</param>
         /// <param name="formatter">the formatter to use for writing ordinate values</param>
         /// <exception cref="IOException"></exception>
-        private void AppendCoordinate(ICoordinateSequence seq, Ordinates outputOrdinates, int i, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
+        private void AppendCoordinate(CoordinateSequence seq, Ordinates outputOrdinates, int i, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
             writer.Write(WriteNumber(seq.GetX(i), formatter, format, useMaxPrecision) + " " + WriteNumber(seq.GetY(i), formatter, format, useMaxPrecision));
 
@@ -732,17 +732,17 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Appends all members of a <see cref="ICoordinateSequence"/> to the stream. Each
+        /// Appends all members of a <see cref="CoordinateSequence"/> to the stream. Each
         /// <see cref="Coordinate"/> is separated from another using a colon, the ordinates of a
         /// <see cref="Coordinate"/> are separated by a space.
         /// </summary>
-        /// <param name="seq">the <see cref="ICoordinateSequence"/> to process.</param>
+        /// <param name="seq">the <see cref="CoordinateSequence"/> to process.</param>
         /// <param name="useFormatting">flag indicating that.</param>
         /// <param name="level">the indentation level.</param>
         /// <param name="indentFirst">flag indicating that the first <see cref="Coordinate"/> of the sequence should be indented for better visibility.</param>
         /// <param name="writer">the output writer to append to.</param>
         /// <param name="formatter">the formatter to use for writing ordinate values.</param>
-        private void AppendSequenceText(ICoordinateSequence seq, Ordinates outputOrdinates, bool useFormatting, int level, bool indentFirst, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
+        private void AppendSequenceText(CoordinateSequence seq, Ordinates outputOrdinates, bool useFormatting, int level, bool indentFirst, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
             if (seq.Count == 0)
             {

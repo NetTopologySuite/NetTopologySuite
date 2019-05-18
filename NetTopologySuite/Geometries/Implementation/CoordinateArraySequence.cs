@@ -4,7 +4,7 @@ using System.Text;
 namespace NetTopologySuite.Geometries.Implementation
 {
     /// <summary>
-    /// A <see cref="ICoordinateSequence"/> backed by an array of <see cref="Coordinate"/>s.
+    /// A <see cref="CoordinateSequence"/> backed by an array of <see cref="Coordinate"/>s.
     /// This is the implementation that <see cref="Geometry"/>s use by default.
     /// <para/>
     /// Coordinates returned by <see cref="ToCoordinateArray"/>, <see cref="GetCoordinate(int)"/> and <see cref="GetCoordinate(int, Coordinate)"/> are live --
@@ -16,7 +16,7 @@ namespace NetTopologySuite.Geometries.Implementation
     /// but the dimension is useful as metadata in some situations.
     /// </summary>
     [Serializable]
-    public class CoordinateArraySequence : ICoordinateSequence
+    public class CoordinateArraySequence : CoordinateSequence
     {
         protected Coordinate[] Coordinates;
 
@@ -114,10 +114,10 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// Creates a new sequence based on a deep copy of the given <see cref="ICoordinateSequence"/>.
+        /// Creates a new sequence based on a deep copy of the given <see cref="CoordinateSequence"/>.
         /// </summary>
         /// <param name="coordSeq">The coordinate sequence that will be copied</param>
-        public CoordinateArraySequence(ICoordinateSequence coordSeq)
+        public CoordinateArraySequence(CoordinateSequence coordSeq)
         {
             if (coordSeq == null)
             {
@@ -319,7 +319,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Creates a deep copy of the <c>CoordinateArraySequence</c>.
         /// </summary>
         /// <returns>The deep copy.</returns>
-        public virtual ICoordinateSequence Copy()
+        public virtual CoordinateSequence Copy()
         {
             var cloneCoordinates = GetClonedCoordinates();
             return new CoordinateArraySequence(cloneCoordinates, Dimension, Measures);
@@ -390,7 +390,7 @@ namespace NetTopologySuite.Geometries.Implementation
             return env;
         }
 
-        public ICoordinateSequence Reversed()
+        public CoordinateSequence Reversed()
         {
             var coordinates = new Coordinate[Count];
             for (int i = 0; i < Count; i++ )

@@ -34,7 +34,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// The points of this <c>LineString</c>.
         /// </summary>
-        private ICoordinateSequence _points;
+        private CoordinateSequence _points;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LineString"/> class.
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Geometries
         /// </param>
         /// <param name="factory"></param>
         /// <exception cref="ArgumentException">If too few points are provided</exception>
-        public LineString(ICoordinateSequence points, GeometryFactory factory)
+        public LineString(CoordinateSequence points, GeometryFactory factory)
             : base(factory)
         {
             if (points == null)
@@ -94,7 +94,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public ICoordinateSequence CoordinateSequence => _points;
+        public CoordinateSequence CoordinateSequence => _points;
 
         /// <summary>
         ///
@@ -408,7 +408,7 @@ namespace NetTopologySuite.Geometries
             return 0;
         }
 
-        protected internal override int CompareToSameClass(object o, IComparer<ICoordinateSequence> comp)
+        protected internal override int CompareToSameClass(object o, IComparer<CoordinateSequence> comp)
         {
             Assert.IsTrue(o is LineString);
             var line = (LineString)o;

@@ -207,7 +207,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             return null;
         }
 
-        private static ICoordinateSequence SetDimension(ICoordinateSequenceFactory fact, ICoordinateSequence seq,
+        private static CoordinateSequence SetDimension(CoordinateSequenceFactory fact, CoordinateSequence seq,
             int dimension)
         {
             if (seq.Dimension == dimension)

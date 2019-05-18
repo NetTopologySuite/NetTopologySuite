@@ -125,7 +125,7 @@ namespace NetTopologySuite.Geometries
         /// In general, the array cannot be assumed to be the actual internal
         /// storage for the vertices.  Thus modifying the array
         /// may not modify the geometry itself.
-        /// Use the <see cref="ICoordinateSequence.SetOrdinate"/> method
+        /// Use the <see cref="CoordinateSequence.SetOrdinate"/> method
         /// (possibly on the components) to modify the underlying data.
         /// If the coordinates are modified,
         /// <see cref="Geometry.GeometryChanged"/> must be called afterwards.
@@ -133,7 +133,7 @@ namespace NetTopologySuite.Geometries
         /// </remarks>
         /// <returns>The vertices of this <c>Geometry</c>.</returns>
         /// <seealso cref="Geometry.GeometryChanged"/>
-        /// <seealso cref="ICoordinateSequence.SetOrdinate"/>
+        /// <seealso cref="CoordinateSequence.SetOrdinate"/>
         public override Coordinate[] Coordinates
         {
             get
@@ -468,7 +468,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        protected internal override int CompareToSameClass(object other, IComparer<ICoordinateSequence> comparer)
+        protected internal override int CompareToSameClass(object other, IComparer<CoordinateSequence> comparer)
         {
             var poly = (Polygon)other;
 
@@ -615,7 +615,7 @@ namespace NetTopologySuite.Geometries
 
     public static class CoordinateSequenceEx
     {
-        public static int GetHashCode(this ICoordinateSequence sequence, int baseValue, Func<int, int> operation)
+        public static int GetHashCode(this CoordinateSequence sequence, int baseValue, Func<int, int> operation)
         {
             if (sequence!=null && sequence.Count > 0)
             {

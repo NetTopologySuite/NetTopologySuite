@@ -7,7 +7,7 @@ namespace NetTopologySuite.Samples.Geometries
     /// Creates ExtendedCoordinateSequenceFactory internally represented
     /// as an array of <c>ExtendedCoordinate</c>s.
     /// </summary>
-    public class ExtendedCoordinateSequenceFactory : ICoordinateSequenceFactory
+    public class ExtendedCoordinateSequenceFactory : CoordinateSequenceFactory
     {
         private static ExtendedCoordinateSequenceFactory instance;
 
@@ -24,29 +24,29 @@ namespace NetTopologySuite.Samples.Geometries
         /// directly if it is an instance of ExtendedCoordinate[]; otherwise it is
         /// copied.
         /// </summary>
-        public virtual ICoordinateSequence Create(Coordinate[] coordinates)
+        public virtual CoordinateSequence Create(Coordinate[] coordinates)
         {
             return coordinates is ExtendedCoordinate[] ?
                 new ExtendedCoordinateSequence((ExtendedCoordinate[]) coordinates) :
                 new ExtendedCoordinateSequence(coordinates);
         }
 
-        public ICoordinateSequence Create(ICoordinateSequence coordSeq)
+        public CoordinateSequence Create(CoordinateSequence coordSeq)
         {
             throw new NotImplementedException();
         }
 
-        public ICoordinateSequence Create(int size, int dimension)
+        public CoordinateSequence Create(int size, int dimension)
         {
             throw new NotImplementedException();
         }
 
-        public ICoordinateSequence Create(int size, int dimension, int measures)
+        public CoordinateSequence Create(int size, int dimension, int measures)
         {
             throw new NotImplementedException();
         }
 
-        public ICoordinateSequence Create(int size, Ordinates ordinates)
+        public CoordinateSequence Create(int size, Ordinates ordinates)
         {
             throw new NotImplementedException();
         }

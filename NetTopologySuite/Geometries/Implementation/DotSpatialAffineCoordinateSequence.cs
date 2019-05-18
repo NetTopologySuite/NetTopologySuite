@@ -8,7 +8,7 @@ namespace NetTopologySuite.Geometries.Implementation
     /// </summary>
     [Serializable]
     public class DotSpatialAffineCoordinateSequence :
-        ICoordinateSequence
+        CoordinateSequence
         //IMeasuredCoordinateSequence
     {
 
@@ -109,7 +109,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coordSeq">The coordinate sequence.</param>
         /// <param name="ordinates">The ordinates to copy</param>
-        public DotSpatialAffineCoordinateSequence(ICoordinateSequence coordSeq, Ordinates ordinates)
+        public DotSpatialAffineCoordinateSequence(CoordinateSequence coordSeq, Ordinates ordinates)
         {
             int count = coordSeq.Count;
 
@@ -189,8 +189,8 @@ namespace NetTopologySuite.Geometries.Implementation
             _ordinates = Ordinates.XYZM;
         }
 
-        /// <inheritdoc cref="ICoordinateSequence.Copy"/>
-        public ICoordinateSequence Copy()
+        /// <inheritdoc cref="CoordinateSequence.Copy"/>
+        public CoordinateSequence Copy()
         {
             return new DotSpatialAffineCoordinateSequence(this, Ordinates);
         }
@@ -346,7 +346,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Creates a reversed version of this coordinate sequence with cloned <see cref="Coordinate"/>s
         /// </summary>
         /// <returns>A reversed version of this sequence</returns>
-        public ICoordinateSequence Reversed()
+        public CoordinateSequence Reversed()
         {
             double[] xy = new double[_xy.Length];
 

@@ -81,7 +81,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
                 this.geom = geom;
             }
 
-            public void Filter(ICoordinateSequence seq, int index)
+            public void Filter(CoordinateSequence seq, int index)
             {
                 if (index == 0)
                     return;

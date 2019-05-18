@@ -403,7 +403,7 @@ namespace NetTopologySuite.Geometries
             return Compare(theseElements, otherElements);
         }
 
-        protected internal override int CompareToSameClass(object o, IComparer<ICoordinateSequence> comp)
+        protected internal override int CompareToSameClass(object o, IComparer<CoordinateSequence> comp)
         {
             var gc = (GeometryCollection) o;
 

@@ -111,8 +111,8 @@ namespace NetTopologySuite.Densify
                 _distanceTolerance = distanceTolerance;
             }
 
-            protected override ICoordinateSequence TransformCoordinates(
-                ICoordinateSequence coords, Geometry parent)
+            protected override CoordinateSequence TransformCoordinates(
+                CoordinateSequence coords, Geometry parent)
             {
                 var inputPts = coords.ToCoordinateArray();
                 var newPts =

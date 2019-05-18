@@ -47,7 +47,7 @@ namespace NetTopologySuite.Operation.Distance
             g.Apply(new GeometryComponentFilter(
                         delegate(Geometry geom)
                             {
-                                ICoordinateSequence seq;
+                                CoordinateSequence seq;
                                 if (geom is LineString)
                                 {
                                     seq = ((LineString) geom).CoordinateSequence;
@@ -62,7 +62,7 @@ namespace NetTopologySuite.Operation.Distance
             return sections;
         }
 
-        private static void AddFacetSequences(Geometry geom, ICoordinateSequence pts, List<FacetSequence> sections)
+        private static void AddFacetSequences(Geometry geom, CoordinateSequence pts, List<FacetSequence> sections)
         {
             int i = 0;
             int size = pts.Count;

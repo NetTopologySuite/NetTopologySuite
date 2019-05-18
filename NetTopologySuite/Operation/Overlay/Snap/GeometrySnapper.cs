@@ -235,7 +235,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <param name="coords"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, Geometry parent)
+        protected override CoordinateSequence TransformCoordinates(CoordinateSequence coords, Geometry parent)
         {
             var srcPts = coords.ToCoordinateArray();
             var newPts = SnapLine(srcPts, _snapPts);

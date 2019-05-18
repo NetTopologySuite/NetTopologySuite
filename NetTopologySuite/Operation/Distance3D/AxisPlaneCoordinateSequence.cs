@@ -4,7 +4,7 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Operation.Distance3D
 {
     /// <summary>
-    /// A <see cref="ICoordinateSequence"/> wrapper which
+    /// A <see cref="CoordinateSequence"/> wrapper which
     /// projects 3D coordinates into one of the
     /// three Cartesian axis planes,
     /// using the standard orthonormal projection
@@ -12,7 +12,7 @@ namespace NetTopologySuite.Operation.Distance3D
     /// The projected data is represented as 2D coordinates.
     /// </summary>
     /// <author>Martin Davis</author>
-    public class AxisPlaneCoordinateSequence : ICoordinateSequence
+    public class AxisPlaneCoordinateSequence : CoordinateSequence
     {
 
         // ReSharper disable InconsistentNaming
@@ -21,7 +21,7 @@ namespace NetTopologySuite.Operation.Distance3D
         /// </summary>
         /// <param name="seq">The sequence to be projected</param>
         /// <returns>A sequence which projects coordinates</returns>
-        public static ICoordinateSequence ProjectToXY(ICoordinateSequence seq)
+        public static CoordinateSequence ProjectToXY(CoordinateSequence seq)
         {
             /**
          * This is just a no-op, but return a wrapper
@@ -35,7 +35,7 @@ namespace NetTopologySuite.Operation.Distance3D
         /// </summary>
         /// <param name="seq">The sequence to be projected</param>
         /// <returns>A sequence which projects coordinates</returns>
-        public static ICoordinateSequence ProjectToXZ(ICoordinateSequence seq)
+        public static CoordinateSequence ProjectToXZ(CoordinateSequence seq)
         {
             return new AxisPlaneCoordinateSequence(seq, XZIndex);
         }
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Operation.Distance3D
         /// </summary>
         /// <param name="seq">The sequence to be projected</param>
         /// <returns>A sequence which projects coordinates</returns>
-        public static ICoordinateSequence ProjectToYZ(ICoordinateSequence seq)
+        public static CoordinateSequence ProjectToYZ(CoordinateSequence seq)
         {
             return new AxisPlaneCoordinateSequence(seq, YZIndex);
         }
@@ -55,10 +55,10 @@ namespace NetTopologySuite.Operation.Distance3D
         private static readonly int[] YZIndex = new[] {1, 2};
         // ReSharper restore InconsistentNaming
 
-        private readonly ICoordinateSequence _seq;
+        private readonly CoordinateSequence _seq;
         private readonly int[] _indexMap;
 
-        private AxisPlaneCoordinateSequence(ICoordinateSequence seq, int[] indexMap)
+        private AxisPlaneCoordinateSequence(CoordinateSequence seq, int[] indexMap)
         {
             _seq = seq;
             _indexMap = indexMap;
@@ -139,12 +139,12 @@ namespace NetTopologySuite.Operation.Distance3D
             throw new NotSupportedException();
         }
 
-        public ICoordinateSequence Copy()
+        public CoordinateSequence Copy()
         {
             throw new NotSupportedException();
         }
 
-        public ICoordinateSequence Reversed()
+        public CoordinateSequence Reversed()
         {
             throw new NotSupportedException();
         }

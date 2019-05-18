@@ -16,7 +16,7 @@ namespace Open.Topology.TestRunner.Functions
 
         public static bool IsCCW(Geometry g)
         {
-            ICoordinateSequence pts = null;
+            CoordinateSequence pts = null;
             if (g is Polygon)
                 pts = ((Polygon)g).ExteriorRing.CoordinateSequence;
             else if (g is LineString && ((LineString)g).IsClosed)

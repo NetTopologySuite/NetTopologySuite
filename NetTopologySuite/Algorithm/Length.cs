@@ -17,7 +17,7 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="pts">The points specifying the <c>LineString</c></param>
         /// <returns>The length of the <c>LineString</c></returns>
-        public static double OfLine(ICoordinateSequence pts)
+        public static double OfLine(CoordinateSequence pts)
         {
             // optimized for processing CoordinateSequences
             int n = pts.Count;

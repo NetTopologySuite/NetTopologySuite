@@ -72,7 +72,7 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Converts an <see cref="Ordinate"/> value to the index of that ordinate within a
-        /// particular <see cref="ICoordinateSequence"/>, or <see langword="null"/> if the sequence
+        /// particular <see cref="CoordinateSequence"/>, or <see langword="null"/> if the sequence
         /// does not contain values for that ordinate.
         /// <para>
         /// Ordinate values greater than <see cref="Ordinate.M"/> are considered ambiguous and will
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Geometries
         /// </para>
         /// </summary>
         /// <param name="ordinate">The <see cref="Ordinate"/> value to convert.</param>
-        /// <param name="seq">The <see cref="ICoordinateSequence"/> to look for.</param>
+        /// <param name="seq">The <see cref="CoordinateSequence"/> to look for.</param>
         /// <returns>
         /// The ordinate index to use to store / fetch the values of <paramref name="ordinate"/> in
         /// <paramref name="seq"/>, or <see langword="null"/> if the ordinate is not present.
@@ -88,7 +88,7 @@ namespace NetTopologySuite.Geometries
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="seq"/> is <see langword="null"/>.
         /// </exception>
-        public static int? IndexOfOrdinateInSequence(Ordinate ordinate, ICoordinateSequence seq)
+        public static int? IndexOfOrdinateInSequence(Ordinate ordinate, CoordinateSequence seq)
         {
             if (seq is null)
             {
@@ -117,14 +117,14 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Returns the ordinate of a coordinate in this sequence.
         /// </summary>
-        /// <param name="seq">The <see cref="ICoordinateSequence"/> whose ordinate value to get.</param>
+        /// <param name="seq">The <see cref="CoordinateSequence"/> whose ordinate value to get.</param>
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate value to get.</param>
         /// <returns>The ordinate value, or <see cref="Coordinate.NullOrdinate"/> if the sequence does not provide values for <paramref name="ordinate"/>"/></returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown when <paramref name="seq"/> is <see langword="null"/>.
         /// </exception>
-        public static double GetOrdinate(this ICoordinateSequence seq, int index, Ordinate ordinate)
+        public static double GetOrdinate(this CoordinateSequence seq, int index, Ordinate ordinate)
         {
             if (seq is null)
             {
@@ -139,11 +139,11 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Sets the value for a given ordinate of a coordinate in this sequence.
         /// </summary>
-        /// <param name="seq">The <see cref="ICoordinateSequence"/> whose ordinate value to set.</param>
+        /// <param name="seq">The <see cref="CoordinateSequence"/> whose ordinate value to set.</param>
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinate">The ordinate value to set.</param>
         /// <param name="value">The new ordinate value.</param>
-        public static void SetOrdinate(this ICoordinateSequence seq, int index, Ordinate ordinate, double value)
+        public static void SetOrdinate(this CoordinateSequence seq, int index, Ordinate ordinate, double value)
         {
             if (seq is null)
             {

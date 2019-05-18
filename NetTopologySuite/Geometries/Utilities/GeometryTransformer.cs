@@ -119,23 +119,23 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="coords">The coordinate array to copy.</param>
         /// <returns>A coordinate sequence for the array.</returns>
-        protected virtual ICoordinateSequence CreateCoordinateSequence(Coordinate[] coords)
+        protected virtual CoordinateSequence CreateCoordinateSequence(Coordinate[] coords)
         {
             return Factory.CoordinateSequenceFactory.Create(coords);
         }
 
         /// <summary>
-        /// Convenience method which provides a standard way of copying <see cref="ICoordinateSequence"/>s.
+        /// Convenience method which provides a standard way of copying <see cref="CoordinateSequence"/>s.
         /// </summary>
         /// <param name="seq">The sequence to copy.</param>
         /// <returns>A deep copy of the sequence.</returns>
-        protected virtual ICoordinateSequence Copy(ICoordinateSequence seq)
+        protected virtual CoordinateSequence Copy(CoordinateSequence seq)
         {
             return seq.Copy();
         }
 
         /// <summary>
-        /// Transforms a <see cref="ICoordinateSequence"/>.
+        /// Transforms a <see cref="CoordinateSequence"/>.
         /// This method should always return a valid coordinate list for
         /// the desired result type.  (E.g. a coordinate list for a LineString
         /// must have 0 or at least 2 points).
@@ -145,7 +145,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="coords">The coordinates to transform</param>
         /// <param name="parent">The parent geometry</param>
         /// <returns>The transformed coordinates</returns>
-        protected virtual ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, Geometry parent)
+        protected virtual CoordinateSequence TransformCoordinates(CoordinateSequence coords, Geometry parent)
         {
             return Copy(coords);
         }
@@ -199,7 +199,7 @@ namespace NetTopologySuite.Geometries.Utilities
         {
             var seq = TransformCoordinates(geom.CoordinateSequence, geom);
             if (seq == null)
-                return Factory.CreateLinearRing((ICoordinateSequence) null);
+                return Factory.CreateLinearRing((CoordinateSequence) null);
 
             int seqSize = seq.Count;
             // ensure a valid LinearRing

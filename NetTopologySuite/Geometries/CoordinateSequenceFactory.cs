@@ -2,31 +2,31 @@ namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// An object that knows how to build a particular implementation of
-    /// <c>ICoordinateSequence</c> from an array of Coordinates.
+    /// <c>CoordinateSequence</c> from an array of Coordinates.
     /// </summary>
-    /// <seealso cref="ICoordinateSequence" />
-    public interface ICoordinateSequenceFactory
+    /// <seealso cref="CoordinateSequence" />
+    public interface CoordinateSequenceFactory
     {
         /// <summary>
-        /// Returns a <see cref="ICoordinateSequence" /> based on the given array; 
+        /// Returns a <see cref="CoordinateSequence" /> based on the given array; 
         /// whether or not the array is copied is implementation-dependent.
         /// </summary>
         /// <param name="coordinates">A coordinates array, which may not be null nor contain null elements</param>
         /// <returns>A coordinate sequence.</returns>
-        ICoordinateSequence Create(Coordinate[] coordinates);
+        CoordinateSequence Create(Coordinate[] coordinates);
 
         /// <summary>
-        /// Creates a <see cref="ICoordinateSequence" />  which is a copy
-        /// of the given <see cref="ICoordinateSequence" />.
+        /// Creates a <see cref="CoordinateSequence" />  which is a copy
+        /// of the given <see cref="CoordinateSequence" />.
         /// This method must handle null arguments by creating an empty sequence.
         /// </summary>
         /// <param name="coordSeq"></param>
         /// <returns>A coordinate sequence</returns>
-        ICoordinateSequence Create(ICoordinateSequence coordSeq);
+        CoordinateSequence Create(CoordinateSequence coordSeq);
 
         /// <summary>
-        /// Creates a <see cref="ICoordinateSequence" /> of the specified size and dimension.
-        /// For this to be useful, the <see cref="ICoordinateSequence" /> implementation must be mutable.
+        /// Creates a <see cref="CoordinateSequence" /> of the specified size and dimension.
+        /// For this to be useful, the <see cref="CoordinateSequence" /> implementation must be mutable.
         /// </summary>
         /// <remarks>
         /// If the requested dimension is larger than the CoordinateSequence implementation
@@ -37,11 +37,11 @@ namespace NetTopologySuite.Geometries
         /// <param name="dimension">the dimension of the coordinates in the sequence 
         /// (if user-specifiable, otherwise ignored)</param>
         /// <returns>A coordinate sequence</returns>
-        ICoordinateSequence Create(int size, int dimension);
+        CoordinateSequence Create(int size, int dimension);
 
         /// <summary>
-        /// Creates a <see cref="ICoordinateSequence" /> of the specified size and dimension
-        /// with measure support. For this to be useful, the <see cref="ICoordinateSequence" />
+        /// Creates a <see cref="CoordinateSequence" /> of the specified size and dimension
+        /// with measure support. For this to be useful, the <see cref="CoordinateSequence" />
         /// implementation must be mutable.
         /// </summary>
         /// <remarks>
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Geometries
         /// <para/>
         /// A default implementation of this method could look like this:
         /// <code>
-        /// public ICoordinateSequence Create(int size, int dimension, int measures)
+        /// public CoordinateSequence Create(int size, int dimension, int measures)
         /// {
         ///     return create(size, dimension);
         /// }
@@ -63,18 +63,18 @@ namespace NetTopologySuite.Geometries
         /// <param name="measures">The number of measures of the coordinates in the sequence (if user-specifiable,
         /// otherwise ignored)</param>
         /// 
-        ICoordinateSequence Create(int size, int dimension, int measures);
+        CoordinateSequence Create(int size, int dimension, int measures);
 
         /// <summary>
-        /// Creates a <see cref="ICoordinateSequence" /> of the specified size and ordinates.
-        /// For this to be useful, the <see cref="ICoordinateSequence" /> implementation must be mutable.
+        /// Creates a <see cref="CoordinateSequence" /> of the specified size and ordinates.
+        /// For this to be useful, the <see cref="CoordinateSequence" /> implementation must be mutable.
         /// </summary>        
         /// <param name="size">The number of coordinates.</param>
         /// <param name="ordinates">
         /// The ordinates each coordinate has. <see cref="Geometries.Ordinates.XY"/> is fix, <see cref="Geometries.Ordinates.Z"/> and <see cref="Geometries.Ordinates.M"/> can be set.
         /// </param>
         /// <returns>A coordinate sequence.</returns>
-        ICoordinateSequence Create(int size, Ordinates ordinates);
+        CoordinateSequence Create(int size, Ordinates ordinates);
 
         /// <summary>
         /// Gets the Ordinate flags that sequences created by this factory can maximal cope with.

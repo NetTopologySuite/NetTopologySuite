@@ -7,7 +7,7 @@ namespace NetTopologySuite.Geometries.Implementation
     /// double or float, and defaults to double.
     /// </summary>
     [Serializable]
-    public class PackedCoordinateSequenceFactory : ICoordinateSequenceFactory
+    public class PackedCoordinateSequenceFactory : CoordinateSequenceFactory
     {
         /// <summary>
         ///
@@ -68,7 +68,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coordinates">Coordinates array, which may not be null nor contain null elements</param>
         /// <returns></returns>
-        public ICoordinateSequence Create(Coordinate[] coordinates)
+        public CoordinateSequence Create(Coordinate[] coordinates)
         {
             int dimension = 2;
             int measures = 0;
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coordSeq"></param>
         /// <returns></returns>
-        public ICoordinateSequence Create(ICoordinateSequence coordSeq)
+        public CoordinateSequence Create(CoordinateSequence coordSeq)
         {
             int dimension = coordSeq.Dimension;
             int measures = coordSeq.Measures;
@@ -100,15 +100,15 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// Creates a <see cref="ICoordinateSequence" /> of the specified size and ordinates.
-        /// For this to be useful, the <see cref="ICoordinateSequence" /> implementation must be mutable.
+        /// Creates a <see cref="CoordinateSequence" /> of the specified size and ordinates.
+        /// For this to be useful, the <see cref="CoordinateSequence" /> implementation must be mutable.
         /// </summary>
         /// <param name="size">The number of coordinates</param>
         /// <param name="ordinates">
         /// The ordinates each coordinate has. <see cref="Ordinates.XY"/> is fix, <see cref="Ordinates.Z"/> and <see cref="Ordinates.M"/> can be set.
         /// </param>
         /// <returns></returns>
-        public ICoordinateSequence Create(int size, Ordinates ordinates)
+        public CoordinateSequence Create(int size, Ordinates ordinates)
         {
             return Create(size, OrdinatesUtility.OrdinatesToDimension(ordinates));
         }
@@ -123,7 +123,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="packedCoordinates"></param>
         /// <param name="dimension"></param>
         /// <returns>Packaged coordinate seqeunce of the requested type</returns>
-        public ICoordinateSequence Create(double[] packedCoordinates, int dimension)
+        public CoordinateSequence Create(double[] packedCoordinates, int dimension)
         {
             return Create(packedCoordinates, dimension, 0);
         }
@@ -135,7 +135,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="dimension"></param>
         /// <param name="measures"></param>
         /// <returns>Packaged coordinate seqeunce of the requested type</returns>
-        public ICoordinateSequence Create(double[] packedCoordinates, int dimension, int measures)
+        public CoordinateSequence Create(double[] packedCoordinates, int dimension, int measures)
         {
             if (type == PackedType.Double)
                  return new PackedDoubleCoordinateSequence(packedCoordinates, dimension, measures);
@@ -148,7 +148,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="packedCoordinates"></param>
         /// <param name="dimension"></param>
         /// <returns>Packaged coordinate seqeunce of the requested type</returns>
-        public ICoordinateSequence Create(float[] packedCoordinates, int dimension)
+        public CoordinateSequence Create(float[] packedCoordinates, int dimension)
         {
             return Create(packedCoordinates, dimension, 0);
         }
@@ -160,7 +160,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="dimension"></param>
         /// <param name="measures"></param>
         /// <returns>Packaged coordinate seqeunce of the requested type</returns>
-        public ICoordinateSequence Create(float[] packedCoordinates, int dimension, int measures)
+        public CoordinateSequence Create(float[] packedCoordinates, int dimension, int measures)
         {
             if (type == PackedType.Double)
                  return new PackedDoubleCoordinateSequence(packedCoordinates, dimension, measures);
@@ -173,7 +173,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="size"></param>
         /// <param name="dimension"></param>
         /// <returns></returns>
-        public ICoordinateSequence Create(int size, int dimension)
+        public CoordinateSequence Create(int size, int dimension)
         {
             if (type == PackedType.Double)
                  return new PackedDoubleCoordinateSequence(size, dimension, 0);
@@ -181,7 +181,7 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <inheritdoc />
-        public ICoordinateSequence Create(int size, int dimension, int measures)
+        public CoordinateSequence Create(int size, int dimension, int measures)
         {
             if (type == PackedType.Double)
                 return new PackedDoubleCoordinateSequence(size, dimension, measures);

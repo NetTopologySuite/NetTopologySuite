@@ -263,7 +263,7 @@ namespace NetTopologySuite.IO
                 writer.Write(double.NaN);
         }
 
-        protected void Write(ICoordinateSequence sequence, bool emitSize, BinaryWriter writer)
+        protected void Write(CoordinateSequence sequence, bool emitSize, BinaryWriter writer)
         {
             if (emitSize)
                 writer.Write(sequence.Count);

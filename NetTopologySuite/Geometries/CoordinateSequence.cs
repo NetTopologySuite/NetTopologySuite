@@ -12,8 +12,8 @@ namespace NetTopologySuite.Geometries
     /// </para>
     /// <para>
     /// Implementing a custom coordinate storage structure
-    /// requires implementing the <see cref="ICoordinateSequence"/> and
-    /// <see cref="ICoordinateSequenceFactory"/> interfaces. 
+    /// requires implementing the <see cref="CoordinateSequence"/> and
+    /// <see cref="CoordinateSequenceFactory"/> interfaces. 
     /// To use the custom CoordinateSequence, create a
     /// new <see cref="GeometryFactory"/> parameterized by the CoordinateSequenceFactory
     /// The <see cref="GeometryFactory"/> can then be used to create new <see cref="Geometry"/>s.
@@ -26,7 +26,7 @@ namespace NetTopologySuite.Geometries
     ///// <seealso cref="NetTopologySuite.Geometries.Implementation.CoordinateArraySequenceFactory"/>
     ///// <seealso cref="NetTopologySuite.Geometries.Implementation.ExtendedCoordinateExample"/>
     ///// <seealso cref="NetTopologySuite.Geometries.Implementation.PackedCoordinateSequenceFactory"/>
-    public interface ICoordinateSequence 
+    public interface CoordinateSequence 
     {
         /// <summary>
         /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
@@ -242,6 +242,6 @@ namespace NetTopologySuite.Geometries
         /// Returns a deep copy of this collection.
         /// </summary>
         /// <returns>A copy of the coordinate sequence containing copies of all points</returns>
-        ICoordinateSequence Copy();
+        CoordinateSequence Copy();
     }
 }

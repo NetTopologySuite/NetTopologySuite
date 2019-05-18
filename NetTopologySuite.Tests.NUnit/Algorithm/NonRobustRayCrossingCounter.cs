@@ -54,7 +54,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         /// <param name="p">The point to test</param>
         /// <param name="ring">A coordinate sequence forming a ring</param>
         /// <returns>The location of the point in the ring</returns>
-        public static Location LocatePointInRing(Coordinate p, ICoordinateSequence ring)
+        public static Location LocatePointInRing(Coordinate p, CoordinateSequence ring)
         {
             var counter = new NonRobustRayCrossingCounter(p);
 

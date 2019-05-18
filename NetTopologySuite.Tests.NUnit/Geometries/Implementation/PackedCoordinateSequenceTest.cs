@@ -8,7 +8,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
     //Tests are exposed by CoordinateSequenceTestBase type
     public class PackedCoordinateSequenceTest : CoordinateSequenceTestBase
     {
-        protected override ICoordinateSequenceFactory CsFactory => new PackedCoordinateSequenceFactory();
+        protected override CoordinateSequenceFactory CsFactory => new PackedCoordinateSequenceFactory();
 
         [Test]
         public void TestMultiPointDim4()
@@ -33,7 +33,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         {
             var factory = CsFactory;
             var seq = factory.Create(5, 2);
-            ICoordinateSequence copy;
+            CoordinateSequence copy;
             Coordinate coord;
             Coordinate[] array;
 
@@ -115,7 +115,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.That(() => factory.Create(5, 2, 1), Throws.InstanceOf<ArgumentException>());
         }
 
-        private static void InitProgression(ICoordinateSequence seq)
+        private static void InitProgression(CoordinateSequence seq)
         {
             for (int index = 0; index < seq.Count; index++)
             {

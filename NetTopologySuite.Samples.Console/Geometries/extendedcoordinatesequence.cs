@@ -11,7 +11,7 @@ namespace NetTopologySuite.Samples.Geometries
     /// that change them are actually changing the ExtendedCoordinateSequence's
     /// underlying data.
     /// </summary>
-    public class ExtendedCoordinateSequence : ICoordinateSequence
+    public class ExtendedCoordinateSequence : CoordinateSequence
     {
         private static Coordinate[] CopyInternal(Coordinate[] coordinates)
         {
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public ICoordinateSequence Copy()
+        public CoordinateSequence Copy()
         {
             var cloneCoordinates = new ExtendedCoordinate[Count];
             for (int i = 0; i < _coordinates.Length; i++)
@@ -255,7 +255,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// Creates a reversed version of this coordinate sequence with cloned <see cref="Coordinate"/>s
         /// </summary>
         /// <returns>A reversed version of this sequence</returns>
-        public ICoordinateSequence Reversed()
+        public CoordinateSequence Reversed()
         {
             var coordinates = new ExtendedCoordinate[Count];
             for (int i = 0; i < Count; i++)

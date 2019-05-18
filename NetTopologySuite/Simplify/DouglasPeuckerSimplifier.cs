@@ -120,8 +120,8 @@ namespace NetTopologySuite.Simplify
                 _ensureValidTopology = ensureValidTopology;
             }
 
-            /// <inheritdoc cref="GeometryTransformer.TransformCoordinates(ICoordinateSequence, Geometry)"/>
-            protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, Geometry parent)
+            /// <inheritdoc cref="GeometryTransformer.TransformCoordinates(CoordinateSequence, Geometry)"/>
+            protected override CoordinateSequence TransformCoordinates(CoordinateSequence coords, Geometry parent)
             {
                 var inputPts = coords.ToCoordinateArray();
                 var newPts = inputPts.Length == 0

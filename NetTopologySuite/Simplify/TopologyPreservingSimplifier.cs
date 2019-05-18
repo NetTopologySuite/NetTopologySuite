@@ -123,8 +123,8 @@ namespace NetTopologySuite.Simplify
                 _container = container;
             }
 
-            /// <inheritdoc cref="GeometryTransformer.TransformCoordinates(ICoordinateSequence, Geometry)"/>>
-            protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, Geometry parent)
+            /// <inheritdoc cref="GeometryTransformer.TransformCoordinates(CoordinateSequence, Geometry)"/>>
+            protected override CoordinateSequence TransformCoordinates(CoordinateSequence coords, Geometry parent)
             {
                 // for empty coordinate sequences return null
                 if (coords.Count == 0)

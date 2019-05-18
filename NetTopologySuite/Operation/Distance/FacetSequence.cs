@@ -6,25 +6,25 @@ namespace NetTopologySuite.Operation.Distance
 {
     /// <summary>
     /// Represents a sequence of facets (points or line segments) of a <see cref="Geometry"/>
-    /// specified by a subsequence of a <see cref="ICoordinateSequence"/>.
+    /// specified by a subsequence of a <see cref="CoordinateSequence"/>.
     /// </summary>
     /// <author>Martin Davis</author>
     public class FacetSequence
     {
         private readonly Geometry _geom;
-        private readonly ICoordinateSequence _pts;
+        private readonly CoordinateSequence _pts;
         private readonly int _start;
         private readonly int _end;
 
         /// <summary>
-        /// Creates a new sequence of facets based on a <see cref="ICoordinateSequence"/>
+        /// Creates a new sequence of facets based on a <see cref="CoordinateSequence"/>
         /// contained in the given <see cref="Geometry"/>.
         /// </summary>
         /// <param name="geom">The geometry containing the facets.</param>
         /// <param name="pts">The sequence containing the facet points.</param>
         /// <param name="start">The index of the start point.</param>
         /// <param name="end">The index of the end point.</param>
-        public FacetSequence(Geometry geom, ICoordinateSequence pts, int start, int end)
+        public FacetSequence(Geometry geom, CoordinateSequence pts, int start, int end)
         {
             _geom = geom;
             _pts = pts;
@@ -32,12 +32,12 @@ namespace NetTopologySuite.Operation.Distance
             _end = end;
         }
         /// <summary>
-        /// Creates a new sequence of facets based on a <see cref="ICoordinateSequence"/>.
+        /// Creates a new sequence of facets based on a <see cref="CoordinateSequence"/>.
         /// </summary>
         /// <param name="pts">The sequence containing facet points.</param>
         /// <param name="start">The index of the start point</param>
         /// <param name="end">The index of the end point + 1</param>
-        public FacetSequence(ICoordinateSequence pts, int start, int end)
+        public FacetSequence(CoordinateSequence pts, int start, int end)
         {
             _pts = pts;
             _start = start;
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         /// <param name="pts">The sequence containing the facet point.</param>
         /// <param name="index">the index of the point</param>
-        public FacetSequence(ICoordinateSequence pts, int index)
+        public FacetSequence(CoordinateSequence pts, int index)
         {
             _pts = pts;
             _start = index;

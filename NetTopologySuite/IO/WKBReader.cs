@@ -72,7 +72,7 @@ namespace NetTopologySuite.IO
             throw new ArgumentException("Invalid hex digit: " + hex);
         }
 
-        private readonly ICoordinateSequenceFactory _sequenceFactory;
+        private readonly CoordinateSequenceFactory _sequenceFactory;
         private readonly PrecisionModel _precisionModel;
 
         private readonly NtsGeometryServices _geometryServices;
@@ -241,7 +241,7 @@ namespace NetTopologySuite.IO
         /// <param name="size">The number of ordinates</param>
         /// <param name="cs">The coordinate system</param>
         /// <returns>The read coordinate sequence.</returns>
-        protected ICoordinateSequence ReadCoordinateSequence(BinaryReader reader, int size, CoordinateSystem cs)
+        protected CoordinateSequence ReadCoordinateSequence(BinaryReader reader, int size, CoordinateSystem cs)
         {
             var sequence = _sequenceFactory.Create(size, ToOrdinates(cs));
             for (int i = 0; i < size; i++)
@@ -291,7 +291,7 @@ namespace NetTopologySuite.IO
         /// <param name="size">The number of ordinates</param>
         /// <param name="cs">The coordinate system</param>
         /// <returns>The read coordinate sequence.</returns>
-        protected ICoordinateSequence ReadCoordinateSequenceRing(BinaryReader reader, int size, CoordinateSystem cs)
+        protected CoordinateSequence ReadCoordinateSequenceRing(BinaryReader reader, int size, CoordinateSystem cs)
         {
             var seqence = ReadCoordinateSequence(reader, size, cs);
             if (_isStrict)
@@ -308,7 +308,7 @@ namespace NetTopologySuite.IO
         /// <param name="size">The number of ordinates</param>
         /// <param name="cs">The coordinate system</param>
         /// <returns>The read coordinate sequence.</returns>
-        protected ICoordinateSequence ReadCoordinateSequenceLineString(BinaryReader reader, int size, CoordinateSystem cs)
+        protected CoordinateSequence ReadCoordinateSequenceLineString(BinaryReader reader, int size, CoordinateSystem cs)
         {
             var seq = ReadCoordinateSequence(reader, size, cs);
             if (_isStrict) return seq;

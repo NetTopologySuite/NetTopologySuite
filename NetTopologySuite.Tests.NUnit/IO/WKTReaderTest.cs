@@ -138,26 +138,26 @@ namespace NetTopologySuite.Tests.NUnit.IO
             double[] ring1 = { 11, 11, 12, 11, 12, 12, 12, 11, 11, 11 };
             double[] ring2 = { 11, 19, 11, 18, 12, 18, 12, 19, 11, 19 };
 
-            ICoordinateSequence[] csPoly2D =
+            CoordinateSequence[] csPoly2D =
             {
                 CreateSequence(Ordinates.XY, shell),
                 CreateSequence(Ordinates.XY, ring1),
                 CreateSequence(Ordinates.XY, ring2),
             };
             var csPoly2DE = CreateSequence(Ordinates.XY, Array.Empty<double>());
-            ICoordinateSequence[] csPoly3D =
+            CoordinateSequence[] csPoly3D =
             {
                 CreateSequence(Ordinates.XYZ, shell),
                 CreateSequence(Ordinates.XYZ, ring1),
                 CreateSequence(Ordinates.XYZ, ring2),
             };
-            ICoordinateSequence[] csPoly2DM =
+            CoordinateSequence[] csPoly2DM =
             {
                 CreateSequence(Ordinates.XYM, shell),
                 CreateSequence(Ordinates.XYM, ring1),
                 CreateSequence(Ordinates.XYM, ring2),
             };
-            ICoordinateSequence[] csPoly3DM =
+            CoordinateSequence[] csPoly3DM =
             {
                 CreateSequence(Ordinates.XYZM, shell),
                 CreateSequence(Ordinates.XYZM, ring1),
@@ -221,22 +221,22 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 new double[] { 10, 10 },
                 new double[] { 20, 20 },
             };
-            ICoordinateSequence[] csMP2D =
+            CoordinateSequence[] csMP2D =
             {
                 CreateSequence(Ordinates.XY, coordinates[0]),
                 CreateSequence(Ordinates.XY, coordinates[1]),
             };
-            ICoordinateSequence[] csMP3D =
+            CoordinateSequence[] csMP3D =
             {
                 CreateSequence(Ordinates.XYZ, coordinates[0]),
                 CreateSequence(Ordinates.XYZ, coordinates[1]),
             };
-            ICoordinateSequence[] csMP2DM =
+            CoordinateSequence[] csMP2DM =
             {
                 CreateSequence(Ordinates.XYM, coordinates[0]),
                 CreateSequence(Ordinates.XYM, coordinates[1]),
             };
-            ICoordinateSequence[] csMP3DM =
+            CoordinateSequence[] csMP3DM =
             {
                 CreateSequence(Ordinates.XYZM, coordinates[0]),
                 CreateSequence(Ordinates.XYZM, coordinates[1]),
@@ -275,22 +275,22 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 new double[] { 10, 10, 20, 20 },
                 new double[] { 15, 15, 30, 15 },
             };
-            ICoordinateSequence[] csMls2D =
+            CoordinateSequence[] csMls2D =
             {
                 CreateSequence(Ordinates.XY, coordinates[0]),
                 CreateSequence(Ordinates.XY, coordinates[1]),
             };
-            ICoordinateSequence[] csMls3D =
+            CoordinateSequence[] csMls3D =
             {
                 CreateSequence(Ordinates.XYZ, coordinates[0]),
                 CreateSequence(Ordinates.XYZ, coordinates[1]),
             };
-            ICoordinateSequence[] csMls2DM =
+            CoordinateSequence[] csMls2DM =
             {
                 CreateSequence(Ordinates.XYM, coordinates[0]),
                 CreateSequence(Ordinates.XYM, coordinates[1]),
             };
-            ICoordinateSequence[] csMls3DM =
+            CoordinateSequence[] csMls3DM =
             {
                 CreateSequence(Ordinates.XYZM, coordinates[0]),
                 CreateSequence(Ordinates.XYZM, coordinates[1]),
@@ -328,25 +328,25 @@ namespace NetTopologySuite.Tests.NUnit.IO
             double[] ring1 = new double[] { 11, 11, 12, 11, 12, 12, 12, 11, 11, 11 };
             double[] shell2 = new double[] { 60, 60, 70, 70, 80, 60, 60, 60 };
 
-            ICoordinateSequence[] csPoly2D =
+            CoordinateSequence[] csPoly2D =
             {
                 CreateSequence(Ordinates.XY, shell1),
                 CreateSequence(Ordinates.XY, ring1),
                 CreateSequence(Ordinates.XY, shell2),
             };
-            ICoordinateSequence[] csPoly3D =
+            CoordinateSequence[] csPoly3D =
             {
                 CreateSequence(Ordinates.XYZ, shell1),
                 CreateSequence(Ordinates.XYZ, ring1),
                 CreateSequence(Ordinates.XYZ, shell2),
             };
-            ICoordinateSequence[] csPoly2DM =
+            CoordinateSequence[] csPoly2DM =
             {
                 CreateSequence(Ordinates.XYM, shell1),
                 CreateSequence(Ordinates.XYM, ring1),
                 CreateSequence(Ordinates.XYM, shell2),
             };
-            ICoordinateSequence[] csPoly3DM =
+            CoordinateSequence[] csPoly3DM =
             {
                 CreateSequence(Ordinates.XYZM, shell1),
                 CreateSequence(Ordinates.XYZM, ring1),
@@ -416,7 +416,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
                 new double[] { 10, 10, 20, 20, 30, 40, 10, 10 },
             };
 
-            ICoordinateSequence[] css =
+            CoordinateSequence[] css =
             {
                 CreateSequence(Ordinates.XY, coordinates[0]),
                 CreateSequence(Ordinates.XY, coordinates[1]),
@@ -457,7 +457,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.That(point1.GetOrdinate(0, Ordinate.Y), Is.EqualTo(point2.GetOrdinate(0, Ordinate.Y)).Within(1E-7));
         }
 
-        private static ICoordinateSequence CreateSequence(Ordinates ordinateFlags, double[] xy)
+        private static CoordinateSequence CreateSequence(Ordinates ordinateFlags, double[] xy)
         {
             // get the number of dimension to verify size of provided ordinate values array
             int dimension = RequiredDimension(ordinateFlags);

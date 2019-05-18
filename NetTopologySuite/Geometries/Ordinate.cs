@@ -20,8 +20,8 @@
         /// </summary>
         /// <remarks>
         /// This constant assumes <see cref="Ordinates.XYZM"/> coordinate sequence definition,
-        /// please check this assumption using <see cref="ICoordinateSequence.Dimension"/> and
-        /// <see cref="ICoordinateSequence.Measures"/> before use.
+        /// please check this assumption using <see cref="CoordinateSequence.Dimension"/> and
+        /// <see cref="CoordinateSequence.Measures"/> before use.
         /// </remarks>
         Z = 2,
 
@@ -30,8 +30,8 @@
         /// </summary>
         /// <remarks>
         /// This constant assumes <see cref="Ordinates.XYZM"/> coordinate sequence definition,
-        /// please check this assumption using <see cref="ICoordinateSequence.Dimension"/> and
-        /// <see cref="ICoordinateSequence.Measures"/> before use.
+        /// please check this assumption using <see cref="CoordinateSequence.Dimension"/> and
+        /// <see cref="CoordinateSequence.Measures"/> before use.
         /// </remarks>
         M = 3,
 

@@ -247,8 +247,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                         new Coordinate(0, 0), new Coordinate(100, 0),
                         new Coordinate(100, 555), new Coordinate(0, 0)
                     });
-            var sameClassButEmpty = geometryFactory.CreateLinearRing((ICoordinateSequence)null);
-            var anotherSameClassButEmpty = geometryFactory.CreateLinearRing((ICoordinateSequence)null);
+            var sameClassButEmpty = geometryFactory.CreateLinearRing((CoordinateSequence)null);
+            var anotherSameClassButEmpty = geometryFactory.CreateLinearRing((CoordinateSequence)null);
             var collectionFactory = new LineCollectionFactory();
 
             DoTestEqualsExact(x, somethingExactlyEqual,
