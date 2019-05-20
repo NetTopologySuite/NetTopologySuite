@@ -48,7 +48,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.AreEqual(forward.Count, reversed.Count, "Coordinate sequences don't have same size");
             Assert.AreEqual(forward.Ordinates, reversed.Ordinates, "Coordinate sequences don't serve same ordinate values");
 
-            var ordinates = OrdinatesUtility.ToOrdinateArray(forward.Ordinates);
+            var ordinates = ToOrdinateArray(forward.Ordinates);
             int j = forward.Count;
             for (int i = 0; i < forward.Count; i++)
             {
@@ -61,6 +61,22 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
                 Assert.IsFalse(ReferenceEquals(cf, cr), "Coordinate sequences deliver same coordinate instances");
                 Assert.IsTrue(cf.Equals(cr), "Coordinate sequences do not provide equal coordinates");
             }
+        }
+
+        private static Ordinate[] ToOrdinateArray(Ordinates ordinates)
+        {
+            var result = new Ordinate[OrdinatesUtility.OrdinatesToDimension(ordinates)];
+
+            int nextResultIndex = 0;
+            for (int i = 0; i < 32; i++)
+            {
+                if (ordinates.HasFlag((Ordinates)(1 << i)))
+                {
+                    result[nextResultIndex++] = (Ordinate)i;
+                }
+            }
+
+            return result;
         }
     }
 }

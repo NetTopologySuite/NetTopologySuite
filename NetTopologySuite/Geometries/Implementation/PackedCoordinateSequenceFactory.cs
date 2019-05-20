@@ -100,20 +100,6 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        /// Creates a <see cref="CoordinateSequence" /> of the specified size and ordinates.
-        /// For this to be useful, the <see cref="CoordinateSequence" /> implementation must be mutable.
-        /// </summary>
-        /// <param name="size">The number of coordinates</param>
-        /// <param name="ordinates">
-        /// The ordinates each coordinate has. <see cref="Ordinates.XY"/> is fix, <see cref="Ordinates.Z"/> and <see cref="Ordinates.M"/> can be set.
-        /// </param>
-        /// <returns></returns>
-        public override CoordinateSequence Create(int size, Ordinates ordinates)
-        {
-            return Create(size, OrdinatesUtility.OrdinatesToDimension(ordinates), ordinates.HasFlag(Ordinates.M) ? 1 : 0);
-        }
-
-        /// <summary>
         /// Create a packed coordinate sequence from the provided array. 
         /// </summary>
         /// <param name="packedCoordinates"></param>

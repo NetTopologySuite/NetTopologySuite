@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 
 namespace NetTopologySuite.Geometries
 {
@@ -32,8 +31,6 @@ namespace NetTopologySuite.Geometries
     [Serializable]
     public abstract class CoordinateSequence
     {
-        private readonly Ordinates? _ordinates;
-
         private readonly int _zIndex = -1;
 
         private readonly int _mIndex = -1;
@@ -68,7 +65,8 @@ namespace NetTopologySuite.Geometries
                 throw new ArgumentOutOfRangeException(nameof(measures), measures, "Must be non-negative");
             }
 
-            if (dimension - measures < 2)
+            Spatial = dimension - measures;
+            if (Spatial < 2)
             {
                 throw new ArgumentException("Must have at least two spatial dimensions.");
             }
@@ -77,40 +75,16 @@ namespace NetTopologySuite.Geometries
             Dimension = dimension;
             Measures = measures;
 
-            // Z is the first non-measure dimension after X and Y, if any.
-            if (dimension - measures > 2)
-            {
-                _zIndex = 2;
-            }
+            // Ordinates flags support only up to 16 spatial dimensions and 16 measures.  If we're
+            // given something with more, then we can still handle them perfectly fine (like JTS),
+            // just our Ordinate / Ordinates stuff will be limited to the first 16.
+            int spatialFlags = (1 << Math.Min(Spatial, 16)) - 1;
+            int measureFlags = (1 << Math.Min(measures, 16)) - 1;
+            Ordinates = (Ordinates)(spatialFlags | (measureFlags << 16));
 
-            if (measures > 0)
-            {
-                // JTS convention defines measures to immediately follow spatial dimensions.
-                _mIndex = dimension - measures;
-            }
-
-            // treat the Ordinates enum as safely as we can, and only set it for XY, XYZ, XYM, and
-            // XYZM sequences.  we can't unambiguously talk about any other kinds of sequences,
-            // especially (but not exclusively) those with measures > 1, because Ordinate.Ordinate4
-            // is not defined as either a spatial or measure dimension.
-            switch (dimension)
-            {
-                case 2:
-                    _ordinates = Ordinates.XY;
-                    break;
-
-                case 3 when measures == 0:
-                    _ordinates = Ordinates.XYZ;
-                    break;
-
-                case 3 when measures == 1:
-                    _ordinates = Ordinates.XYM;
-                    break;
-
-                case 4 when measures == 1:
-                    _ordinates = Ordinates.XYZM;
-                    break;
-            }
+            // cache indexes for these named ordinates.
+            TryGetOrdinateIndex(Ordinate.Z, out _zIndex);
+            TryGetOrdinateIndex(Ordinate.M, out _mIndex);
         }
 
         /// <summary>
@@ -138,34 +112,28 @@ namespace NetTopologySuite.Geometries
         public int Measures { get; }
 
         /// <summary>
+        /// Gets the number of non-measure dimensions included in <see cref="Dimension"/> for each
+        /// coordinate for this sequence.
+        /// <para>
+        /// Equivalent to <code>Dimension - Measures</code>.
+        /// </para>
+        /// </summary>
+        public int Spatial { get; }
+
+        /// <summary>
         /// Gets the kind of ordinates this sequence supplies.
         /// </summary>
-        public Ordinates Ordinates
-        {
-            get
-            {
-                if (!_ordinates.HasValue)
-                {
-                    ThrowForUnusualSequence();
-                }
-
-                return _ordinates.GetValueOrDefault();
-            }
-        }
+        public Ordinates Ordinates { get; }
 
         /// <summary>
         /// Gets a value indicating if <see cref="GetZ(int)"/> is supported.
         /// </summary>
         public bool HasZ => _zIndex >= 0;
 
-        public int ZOrdinateIndex => HasZ ? _zIndex : throw new InvalidOperationException("Z ordinate is not available.");
-
         /// <summary>
         /// Gets a value indicating if <see cref="GetM(int)"/> is supported.
         /// </summary>
         public bool HasM => _mIndex >= 0;
-
-        public int MOrdinateIndex => HasM ? _mIndex : throw new InvalidOperationException("M ordinate is not available.");
 
         /// <summary>
         /// Creates a coordinate for use in this sequence.
@@ -218,16 +186,9 @@ namespace NetTopologySuite.Geometries
                 throw new ArgumentNullException(nameof(coord));
             }
 
-            coord.X = GetX(index);
-            coord.Y = GetY(index);
-            if (HasZ)
+            for (int dim = 0; dim < Dimension; dim++)
             {
-                coord.Z = GetZ(index);
-            }
-
-            if (HasM)
-            {
-                coord.M = GetM(index);
+                coord[dim] = GetOrdinate(index, dim);
             }
         }
 
@@ -282,6 +243,19 @@ namespace NetTopologySuite.Geometries
         public abstract double GetOrdinate(int index, int ordinateIndex);
 
         /// <summary>
+        /// Returns the ordinate of a coordinate in this sequence.
+        /// </summary>
+        /// <param name="index">The coordinate index in the sequence.</param>
+        /// <param name="ordinate">The ordinate value to get.</param>
+        /// <returns>The ordinate value, or <see cref="Coordinate.NullOrdinate"/> if the sequence does not provide values for <paramref name="ordinate"/>"/></returns>
+        public double GetOrdinate(int index, Ordinate ordinate)
+        {
+            return TryGetOrdinateIndex(ordinate, out int ordinateIndex)
+                ? GetOrdinate(index, ordinateIndex)
+                : Coordinate.NullOrdinate;
+        }
+
+        /// <summary>
         /// Gets a value indicating the number of coordinates in this sequence.
         /// </summary>
         public int Count { get; }
@@ -296,6 +270,20 @@ namespace NetTopologySuite.Geometries
         /// <param name="ordinateIndex">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <param name="value">The new ordinate value.</param>
         public abstract void SetOrdinate(int index, int ordinateIndex, double value);
+
+        /// <summary>
+        /// Sets the value for a given ordinate of a coordinate in this sequence.
+        /// </summary>
+        /// <param name="index">The coordinate index in the sequence.</param>
+        /// <param name="ordinate">The ordinate value to set.</param>
+        /// <param name="value">The new ordinate value.</param>
+        public void SetOrdinate(int index, Ordinate ordinate, double value)
+        {
+            if (TryGetOrdinateIndex(ordinate, out int ordinateIndex))
+            {
+                SetOrdinate(index, ordinateIndex, value);
+            }
+        }
 
         /// <summary>
         /// Returns (possibly copies of) the Coordinates in this collection.
@@ -344,10 +332,51 @@ namespace NetTopologySuite.Geometries
         /// <returns>A copy of the coordinate sequence containing copies of all points</returns>
         public abstract CoordinateSequence Copy();
 
-        public virtual CoordinateSequence Reversed() => new ReversedCoordinateSequence(Copy() ?? throw new InvalidOperationException("Cannot reverse a coordinate sequence whose Copy() method returns null."));
+        public virtual CoordinateSequence Reversed()
+        {
+            var copy = Copy() ?? throw new InvalidOperationException("Cannot reverse a coordinate sequence whose Copy() method returns null.");
+            return new ReversedCoordinateSequence(copy);
+        }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private static void ThrowForUnusualSequence() => throw new InvalidOperationException("Ordinate(s) enum methods are only supported on XY, XYZ, XYM, and XYZM sequences.");
+        /// <summary>
+        /// Retrieves the index at which this sequence stores a particular <see cref="Ordinate"/>'s
+        /// values, if that ordinate is present in <see cref="Ordinates"/>.
+        /// </summary>
+        /// <param name="ordinate">
+        /// The <see cref="Ordinate"/> value whose index to retrieve.
+        /// </param>
+        /// <param name="ordinateIndex">
+        /// When this method returns, contains the index of the requested ordinate, if the ordinate
+        /// is present in this sequence; otherwise, -1.  This parameter is passed uninitialized.
+        /// </param>
+        /// <returns>
+        /// <see langword="true"/> if this sequence contains <paramref name="ordinate"/>; otherwise,
+        /// <see langword="false"/>.
+        /// </returns>
+        public bool TryGetOrdinateIndex(Ordinate ordinate, out int ordinateIndex)
+        {
+            // use uint instead of int for comparisons, in order to handle negatives more gracefully
+            if ((uint)ordinate < (uint)Ordinate.Measure1)
+            {
+                if ((uint)ordinate < (uint)Spatial)
+                {
+                    ordinateIndex = (int)ordinate;
+                    return true;
+                }
+            }
+            else
+            {
+                ordinate -= Ordinate.Measure1;
+                if ((uint)ordinate < (uint)Measures)
+                {
+                    ordinateIndex = (int)ordinate + Spatial;
+                    return true;
+                }
+            }
+
+            ordinateIndex = -1;
+            return false;
+        }
 
         [Serializable]
         private sealed class ReversedCoordinateSequence : CoordinateSequence

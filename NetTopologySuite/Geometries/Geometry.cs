@@ -2087,7 +2087,7 @@ namespace NetTopologySuite.Geometries
         protected static double[] CreateArray(CoordinateSequence sequence, Ordinate ordinate)
         {
             double[] result = new double[sequence.Count];
-            if (OrdinatesUtility.IndexOfOrdinateInSequence(ordinate, sequence) is int ordinateIndex)
+            if (sequence.TryGetOrdinateIndex(ordinate, out int ordinateIndex))
             {
                 for (int i = 0; i < result.Length; i++)
                     result[i] = sequence.GetOrdinate(i, ordinateIndex);

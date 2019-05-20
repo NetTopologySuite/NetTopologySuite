@@ -10,11 +10,19 @@ namespace NetTopologySuite.Geometries
     [Serializable]
     public abstract class CoordinateSequenceFactory
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CoordinateSequenceFactory"/> class.`
+        /// </summary>
         protected CoordinateSequenceFactory()
-            : this(unchecked((Ordinates)0xFFFFFFFF))
-        {
-        }
+            : this(Ordinates.AllOrdinates) { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CoordinateSequenceFactory"/> class.
+        /// </summary>
+        /// <param name="ordinates">
+        /// The maximum set of <see cref="Geometries.Ordinates"/> flags that this instance will be
+        /// able to create sequences for.
+        /// </param>
         protected CoordinateSequenceFactory(Ordinates ordinates) => Ordinates = Ordinates.XY | ordinates;
 
         /// <summary>
@@ -93,14 +101,6 @@ namespace NetTopologySuite.Geometries
         /// If the requested dimension or measures are larger than the CoordinateSequence implementation
         /// can provide, then a sequence of maximum possible dimension should be created.
         /// An error should not be thrown.
-        /// <para/>
-        /// A default implementation of this method could look like this:
-        /// <code>
-        /// public ICoordinateSequence Create(int size, int dimension, int measures)
-        /// {
-        ///     return create(size, dimension);
-        /// }
-        /// </code>
         /// </remarks>
         /// <param name="size">The number of coordinates in the sequence</param>
         /// <param name="dimension">The dimension of the coordinates in the sequence (if user-specifiable,
@@ -112,7 +112,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Creates a <see cref="CoordinateSequence" /> of the specified size and ordinates.
         /// For this to be useful, the <see cref="CoordinateSequence" /> implementation must be mutable.
-        /// </summary>        
+        /// </summary>
         /// <param name="size">The number of coordinates.</param>
         /// <param name="ordinates">
         /// The ordinates each coordinate has. <see cref="Geometries.Ordinates.XY"/> is fix, <see cref="Geometries.Ordinates.Z"/> and <see cref="Geometries.Ordinates.M"/> can be set.

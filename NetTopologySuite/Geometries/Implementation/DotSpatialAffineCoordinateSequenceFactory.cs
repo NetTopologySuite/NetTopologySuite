@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace NetTopologySuite.Geometries.Implementation
 {
     /// <summary>
@@ -7,16 +8,10 @@ namespace NetTopologySuite.Geometries.Implementation
     [Serializable]
     public class DotSpatialAffineCoordinateSequenceFactory : CoordinateSequenceFactory
     {
-        private static DotSpatialAffineCoordinateSequenceFactory _instance;
-        private static readonly object InstanceLock = new object();
-
-        private DotSpatialAffineCoordinateSequenceFactory()
-            : this(Ordinates.XYZM)
-        {
-        }
+        private DotSpatialAffineCoordinateSequenceFactory() : this(Ordinates.XYZM) { }
 
         public DotSpatialAffineCoordinateSequenceFactory(Ordinates ordinates)
-            : base(ordinates)
+            : base(ordinates & Ordinates.XYZM)
         {
         }
 
@@ -24,17 +19,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Returns the singleton instance of DotSpatialAffineCoordinateSequenceFactory.
         /// </summary>
         /// <returns></returns>
-        public static DotSpatialAffineCoordinateSequenceFactory Instance
-        {
-            get
-            {
-                lock (InstanceLock)
-                {
-                    return _instance ?? (_instance = new DotSpatialAffineCoordinateSequenceFactory());
-                }
-            }
-            set => _instance = value;
-        }
+        public static DotSpatialAffineCoordinateSequenceFactory Instance { get; } = new DotSpatialAffineCoordinateSequenceFactory();
 
         /// <summary>
         ///  Returns a CoordinateArraySequence based on the given array (the array is not copied).

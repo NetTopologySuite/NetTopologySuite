@@ -77,11 +77,11 @@ namespace NetTopologySuite.Geometries
             if (IsEmpty)
                 return new double[0];
 
-            var ordinateFlag = OrdinatesUtility.ToOrdinatesFlag(ordinate);
+            var ordinateFlag = (Ordinates)(1 << (int)ordinate);
             if ((_coordinates.Ordinates & ordinateFlag) != ordinateFlag)
                 return new[] {Coordinate.NullOrdinate};
 
-            double val = OrdinatesUtility.IndexOfOrdinateInSequence(ordinate, _coordinates) is int ordinateIndex
+            double val = _coordinates.TryGetOrdinateIndex(ordinate, out int ordinateIndex)
                 ? _coordinates.GetOrdinate(0, ordinateIndex)
                 : Coordinate.NullOrdinate;
             return new [] { val };
@@ -311,7 +311,7 @@ namespace NetTopologySuite.Geometries
             }
             set
             {
-                if (OrdinatesUtility.IndexOfOrdinateInSequence(Ordinate.Z, CoordinateSequence) is int ordinateIndex)
+                if (CoordinateSequence.TryGetOrdinateIndex(Ordinate.Z, out int ordinateIndex))
                 {
                     CoordinateSequence.SetOrdinate(0, ordinateIndex, value);
                 }
@@ -330,7 +330,7 @@ namespace NetTopologySuite.Geometries
             }
             set
             {
-                if (OrdinatesUtility.IndexOfOrdinateInSequence(Ordinate.M, CoordinateSequence) is int ordinateIndex)
+                if (CoordinateSequence.TryGetOrdinateIndex(Ordinate.M, out int ordinateIndex))
                 {
                     CoordinateSequence.SetOrdinate(0, ordinateIndex, value);
                 }

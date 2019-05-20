@@ -367,9 +367,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <inheritdoc cref="CoordinateSequence.Copy"/>
         public override CoordinateSequence Copy()
         {
-            double[] clone = new double[_coords.Length];
-            Array.Copy(_coords, clone, _coords.Length);
-            return new PackedDoubleCoordinateSequence(clone, Dimension, Measures);
+            return new PackedDoubleCoordinateSequence((double[])_coords.Clone(), Dimension, Measures);
         }
 
         /// <summary>
@@ -568,9 +566,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <inheritdoc cref="CoordinateSequence.Copy"/>
         public override CoordinateSequence Copy()
         {
-            float[] clone = new float[_coords.Length];
-            Array.Copy(_coords, clone, _coords.Length);
-            return new PackedFloatCoordinateSequence(clone, Dimension, Measures);
+            return new PackedFloatCoordinateSequence((float[])_coords.Clone(), Dimension, Measures);
         }
 
         /// <summary>

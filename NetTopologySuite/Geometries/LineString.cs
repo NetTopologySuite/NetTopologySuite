@@ -84,7 +84,7 @@ namespace NetTopologySuite.Geometries
             if (IsEmpty)
                 return new double[0];
 
-            var ordinateFlag = OrdinatesUtility.ToOrdinatesFlag(ordinate);
+            var ordinateFlag = (Ordinates)(1 << (int)ordinate);
             if ((_points.Ordinates & ordinateFlag) != ordinateFlag)
                 return CreateArray(_points.Count, Coordinate.NullOrdinate);
 

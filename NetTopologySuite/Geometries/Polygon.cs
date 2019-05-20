@@ -171,7 +171,7 @@ namespace NetTopologySuite.Geometries
             if (IsEmpty)
                 return new double[0];
 
-            var ordinateFlag = OrdinatesUtility.ToOrdinatesFlag(ordinate);
+            var ordinateFlag = (Ordinates)(1 << (int)ordinate);
             if ((_shell.CoordinateSequence.Ordinates & ordinateFlag) != ordinateFlag)
                 return CreateArray(NumPoints, Coordinate.NullOrdinate);
 

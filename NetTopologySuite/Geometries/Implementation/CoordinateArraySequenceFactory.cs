@@ -1,22 +1,19 @@
+using System;
+
 namespace NetTopologySuite.Geometries.Implementation
 {
-    using System;
-    using NetTopologySuite.Geometries;
-
     /// <summary>
     /// Creates CoordinateSequences represented as an array of Coordinates.
     /// </summary>
     [Serializable]
     public sealed class CoordinateArraySequenceFactory : CoordinateSequenceFactory
     {
-        private static readonly CoordinateArraySequenceFactory instance = new CoordinateArraySequenceFactory();
-
         private CoordinateArraySequenceFactory() : base(Ordinates.XYZM) { }
 
         /// <summary>
         /// Returns the singleton instance of CoordinateArraySequenceFactory.
         /// </summary>
-        public static CoordinateArraySequenceFactory Instance => instance;
+        public static CoordinateArraySequenceFactory Instance { get; } = new CoordinateArraySequenceFactory();
 
         /// <summary>
         ///  Returns a CoordinateArraySequence based on the given array (the array is not copied).
@@ -54,11 +51,6 @@ namespace NetTopologySuite.Geometries.Implementation
             }
 
             return new CoordinateArraySequence(size, spatial + measures, measures);
-        }
-
-        public override CoordinateSequence Create(int size, Ordinates ordinates)
-        {
-            return new CoordinateArraySequence(size, OrdinatesUtility.OrdinatesToDimension(ordinates));
         }
     }
 }

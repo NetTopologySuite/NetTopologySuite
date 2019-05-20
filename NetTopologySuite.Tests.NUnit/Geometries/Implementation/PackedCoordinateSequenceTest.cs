@@ -25,7 +25,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.AreEqual(4, pSeq.Dimension);
             Assert.AreEqual(Ordinates.XYZM, pSeq.Ordinates);
             for (int i = 0; i < 4; i++)
-                Assert.AreEqual(mpSeq.GetOrdinate(0, (Ordinate)i), pSeq.GetOrdinate(0, (Ordinate)i));
+                Assert.AreEqual(mpSeq.GetOrdinate(0, i), pSeq.GetOrdinate(0, i));
         }
 
         [Test]

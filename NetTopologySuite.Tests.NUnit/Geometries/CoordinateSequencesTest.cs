@@ -122,7 +122,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             // initialize with a data signature where coords look like [1, 10, 100, ...]
             for (int i = 0; i < size; i++)
                 for (int d = 0; d < dim; d++)
-                    cs.SetOrdinate(i, (Ordinate) d, i*Math.Pow(10, d));
+                    cs.SetOrdinate(i, d, i*Math.Pow(10, d));
             return cs;
         }
 
@@ -229,8 +229,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             }
 
             int minIndex = sequence.Count / 2;
-            sequence.SetOrdinate(minIndex, (Ordinate)0, 5);
-            sequence.SetOrdinate(minIndex, (Ordinate)1, 5);
+            sequence.SetOrdinate(minIndex, 0, 5);
+            sequence.SetOrdinate(minIndex, 1, 5);
 
             Assert.AreEqual(minIndex, CoordinateSequences.MinCoordinateIndex(sequence));
             Assert.AreEqual(minIndex, CoordinateSequences.MinCoordinateIndex(sequence, 2, sequence.Count - 2));
@@ -291,7 +291,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             // check additional ordinates
             for (int j = 2; j < dim; j++)
             {
-                Assert.AreEqual(seq1.GetOrdinate(pos1, (Ordinate)j), seq2.GetOrdinate(pos2, (Ordinate)j),
+                Assert.AreEqual(seq1.GetOrdinate(pos1, j), seq2.GetOrdinate(pos2, j),
                     "unexpected " + j + "-ordinate at pos " + pos2);
             }
         }
@@ -330,7 +330,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
             for (int i = 0; i < seq.Count; i++)
                 for (int j = 2; j < seq.Dimension; j++)
-                    seq.SetOrdinate(i, (Ordinate)j, i * Math.Pow(10, j - 1));
+                    seq.SetOrdinate(i, j, i * Math.Pow(10, j - 1));
 
             return seq;
         }
@@ -367,7 +367,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
                 // set other ordinate values to predictable values
                 for (int j = 2; j < dimension; j++)
-                    sequence.SetOrdinate(i, (Ordinate)j, Math.Pow(10, j - 1) * i);
+                    sequence.SetOrdinate(i, j, Math.Pow(10, j - 1) * i);
 
                 angle += angleStep;
                 angle %= angleCircle;

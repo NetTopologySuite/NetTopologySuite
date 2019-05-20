@@ -8,7 +8,7 @@ namespace NetTopologySuite.Samples.Geometries
         [STAThread]
         public static void main(string[] args)
         {
-            var seqFact = ExtendedCoordinateSequenceFactory.Instance();
+            var seqFact = ExtendedCoordinateSequenceFactory.Instance;
 
             var array1 = new ExtendedCoordinate[] { new ExtendedCoordinate(0, 0, 0, 91),
                 new ExtendedCoordinate(10, 0, 0, 92), new ExtendedCoordinate(10, 10, 0, 93),
@@ -19,7 +19,7 @@ namespace NetTopologySuite.Samples.Geometries
                 new ExtendedCoordinate(15, 5, 0, 92), new ExtendedCoordinate(15, 15, 0, 93),
                 new ExtendedCoordinate(5, 15, 0, 94), new ExtendedCoordinate(5, 5, 0, 91)});
 
-            var fact = new GeometryFactory(ExtendedCoordinateSequenceFactory.Instance());
+            var fact = new GeometryFactory(ExtendedCoordinateSequenceFactory.Instance);
 
             Geometry g1 = fact.CreatePolygon(fact.CreateLinearRing(seq1), null);
             Geometry g2 = fact.CreatePolygon(fact.CreateLinearRing(seq2), null);
