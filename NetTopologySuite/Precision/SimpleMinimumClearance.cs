@@ -108,7 +108,7 @@ namespace NetTopologySuite.Precision
                 _queryPt = queryPt;
             }
 
-            public void Filter(ICoordinateSequence seq, int i)
+            public void Filter(CoordinateSequence seq, int i)
             {
                 // compare to vertex
                 CheckVertexDistance(seq.GetCoordinate(i));

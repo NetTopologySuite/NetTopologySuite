@@ -11,7 +11,7 @@ namespace NetTopologySuite.Samples.Geometries
     /// that change them are actually changing the ExtendedCoordinateSequence's
     /// underlying data.
     /// </summary>
-    public class ExtendedCoordinateSequence : ICoordinateSequence
+    public class ExtendedCoordinateSequence : CoordinateSequence
     {
         private static Coordinate[] CopyInternal(Coordinate[] coordinates)
         {
@@ -27,6 +27,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// <summary> Copy constructor -- simply aliases the input array, for better performance.
         /// </summary>
         public ExtendedCoordinateSequence(ExtendedCoordinate[] coordinates)
+            : base(coordinates?.Length ?? 0, 4, 1)
         {
             _coordinates = new Coordinate[coordinates.Length];
             Array.Copy(coordinates, _coordinates, coordinates.Length);
@@ -37,12 +38,13 @@ namespace NetTopologySuite.Samples.Geometries
         /// of the Coordinates in the input array may be different from ExtendedCoordinate.
         /// </summary>
         public ExtendedCoordinateSequence(Coordinate[] copyCoords)
+            : base(copyCoords?.Length ?? 0, 4, 1)
         {
             _coordinates = CopyInternal(copyCoords);
         }
 
         /// <inheritdoc />
-        public Coordinate CreateCoordinate() => new ExtendedCoordinate();
+        public override Coordinate CreateCoordinate() => new ExtendedCoordinate();
 
         /// <summary>
         /// Returns (possibly a copy of) the ith Coordinate in this collection.
@@ -55,7 +57,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public Coordinate GetCoordinate(int i)
+        public override Coordinate GetCoordinate(int i)
         {
             return _coordinates[i];
         }
@@ -66,7 +68,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public ICoordinateSequence Copy()
+        public override CoordinateSequence Copy()
         {
             var cloneCoordinates = new ExtendedCoordinate[Count];
             for (int i = 0; i < _coordinates.Length; i++)
@@ -77,18 +79,6 @@ namespace NetTopologySuite.Samples.Geometries
             return new ExtendedCoordinateSequence(cloneCoordinates);
         }
 
-        public bool HasZ => true;
-
-        public bool HasM => true;
-
-        public Ordinates Ordinates => Ordinates.XYZM;
-
-        /// <summary>
-        /// Returns the number of coordinates in this sequence.
-        /// </summary>
-        /// <value></value>
-        public virtual int Count => _coordinates.Length;
-
         /// <summary>
         /// Returns (possibly copies of) the Coordinates in this collection.
         /// Whether or not the Coordinates returned are the actual underlying
@@ -98,7 +88,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// be built from scratch.
         /// </summary>
         /// <returns></returns>
-        public virtual Coordinate[] ToCoordinateArray()
+        public override Coordinate[] ToCoordinateArray()
         {
 
             return _coordinates;
@@ -129,7 +119,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// </summary>
         /// <param name="index">The index.</param>
         /// <returns></returns>
-        public Coordinate GetCoordinateCopy(int index)
+        public override Coordinate GetCoordinateCopy(int index)
         {
             return _coordinates[index].Copy();
         }
@@ -140,7 +130,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// </summary>
         /// <param name="index">The index of the coordinate to copy.</param>
         /// <param name="coord">A Coordinate to receive the value.</param>
-        public void GetCoordinate(int index, Coordinate coord)
+        public override void GetCoordinate(int index, Coordinate coord)
         {
             var exc = (ExtendedCoordinate) _coordinates[index];
             coord.X = exc.X;
@@ -156,7 +146,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// <returns>
         /// The value of the X ordinate in the index'th coordinate.
         /// </returns>
-        public double GetX(int index)
+        public override double GetX(int index)
         {
             return _coordinates[index].X;
         }
@@ -168,19 +158,19 @@ namespace NetTopologySuite.Samples.Geometries
         /// <returns>
         /// The value of the Y ordinate in the index'th coordinate.
         /// </returns>
-        public double GetY(int index)
+        public override double GetY(int index)
         {
             return _coordinates[index].Y;
         }
 
         /// <inheritdoc />
-        public double GetZ(int index)
+        public override double GetZ(int index)
         {
             return _coordinates[index].Z;
         }
 
         /// <inheritdoc />
-        public double GetM(int index)
+        public override double GetM(int index)
         {
             return _coordinates[index].M;
         }
@@ -194,7 +184,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinateIndex">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <returns></returns>
-        public double GetOrdinate(int index, int ordinateIndex)
+        public override double GetOrdinate(int index, int ordinateIndex)
         {
             var exc = (ExtendedCoordinate) _coordinates[index];
             switch (ordinateIndex)
@@ -218,7 +208,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// <param name="index">The coordinate index in the sequence.</param>
         /// <param name="ordinateIndex">The ordinate index in the coordinate (in range [0, dimension-1]).</param>
         /// <param name="value">The new ordinate value.</param>
-        public void SetOrdinate(int index, int ordinateIndex, double value)
+        public override void SetOrdinate(int index, int ordinateIndex, double value)
         {
             var exc = (ExtendedCoordinate)_coordinates[index];
             switch (ordinateIndex)
@@ -244,7 +234,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// </summary>
         /// <param name="env">The envelope to expand.</param>
         /// <returns>A reference to the expanded envelope.</returns>
-        public Envelope ExpandEnvelope(Envelope env)
+        public override Envelope ExpandEnvelope(Envelope env)
         {
             for (int i = 0; i < _coordinates.Length; i++)
                 env.ExpandToInclude(_coordinates[i]);
@@ -255,7 +245,7 @@ namespace NetTopologySuite.Samples.Geometries
         /// Creates a reversed version of this coordinate sequence with cloned <see cref="Coordinate"/>s
         /// </summary>
         /// <returns>A reversed version of this sequence</returns>
-        public ICoordinateSequence Reversed()
+        public override CoordinateSequence Reversed()
         {
             var coordinates = new ExtendedCoordinate[Count];
             for (int i = 0; i < Count; i++)
@@ -264,14 +254,5 @@ namespace NetTopologySuite.Samples.Geometries
             }
             return new ExtendedCoordinateSequence(coordinates);
         }
-
-        /// <summary>
-        /// Returns the dimension (number of ordinates in each coordinate) for this sequence.
-        /// </summary>
-        /// <value></value>
-        public int Dimension => 4;
-
-        /// <inheritdoc />
-        public int Measures => 1;
     }
 }

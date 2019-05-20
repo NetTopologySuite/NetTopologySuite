@@ -138,7 +138,7 @@ namespace NetTopologySuite.SnapRound
             return segStrings;
         }
 
-        private static Coordinate[] Round(ICoordinateSequence seq, PrecisionModel pm)
+        private static Coordinate[] Round(CoordinateSequence seq, PrecisionModel pm)
         {
             if (seq.Count == 0) return new Coordinate[0];
 

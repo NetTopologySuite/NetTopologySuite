@@ -263,7 +263,7 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// A <see cref="IGeometryEditorOperation"/> which edits the <see cref="ICoordinateSequence"/>
+        /// A <see cref="IGeometryEditorOperation"/> which edits the <see cref="CoordinateSequence"/>
         /// of a <see cref="Geometry"/>.
         /// <para/>
         /// Operates on Geometry subclasses which contains a single coordinate list.
@@ -275,7 +275,7 @@ namespace NetTopologySuite.Geometries.Utilities
             {
             }
 
-            public CoordinateSequenceOperation(Func<ICoordinateSequence, Geometry, ICoordinateSequence> editSequence)
+            public CoordinateSequenceOperation(Func<CoordinateSequence, Geometry, CoordinateSequence> editSequence)
             {
                 EditSequence = editSequence;
             }
@@ -308,12 +308,12 @@ namespace NetTopologySuite.Geometries.Utilities
             }
 
             /// <summary>
-            /// Edits a <see cref="ICoordinateSequence"/> from a <see cref="Geometry"/>.
+            /// Edits a <see cref="CoordinateSequence"/> from a <see cref="Geometry"/>.
             /// </summary>
             ///// <param name="coordSeq">The coordinate array to operate on</param>
             ///// <param name="geometry">The geometry containing the coordinate list</param>
             /// <returns>An edited coordinate sequence (which may be the same as the input)</returns>
-            protected Func<ICoordinateSequence, Geometry, ICoordinateSequence> EditSequence { get; set; }
+            protected Func<CoordinateSequence, Geometry, CoordinateSequence> EditSequence { get; set; }
         }
 
     }

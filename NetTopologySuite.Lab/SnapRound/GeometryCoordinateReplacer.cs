@@ -13,7 +13,7 @@ namespace NetTopologySuite.SnapRound
             this._geometryLinesMap = linesMap;
         }
 
-        public override ICoordinateSequence Edit(ICoordinateSequence coordSeq,
+        public override CoordinateSequence Edit(CoordinateSequence coordSeq,
             Geometry geometry, GeometryFactory targetFactory)
         {
             if (_geometryLinesMap.ContainsKey(geometry))

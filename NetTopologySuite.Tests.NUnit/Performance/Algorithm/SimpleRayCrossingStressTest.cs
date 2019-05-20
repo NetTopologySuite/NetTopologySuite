@@ -62,7 +62,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                     this.rcc = rcc;
                 }
 
-                public void Filter(ICoordinateSequence seq, int i)
+                public void Filter(CoordinateSequence seq, int i)
                 {
                     if (i == 0) return;
                     seq.GetCoordinate(i - 1, p0);

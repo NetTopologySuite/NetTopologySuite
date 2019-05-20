@@ -4,7 +4,7 @@ namespace NetTopologySuite.Precision
 {
     /// <summary>
     /// Reduces the precision of the <see cref="Coordinate"/>s in a
-    /// <see cref="ICoordinateSequence"/> to match the supplied <see cref="PrecisionModel"/>.
+    /// <see cref="CoordinateSequence"/> to match the supplied <see cref="PrecisionModel"/>.
     /// </summary>
     /// <remarks>
     /// Uses <see cref="PrecisionModel.MakePrecise(double)"/>.
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Precision
         /// <summary>
         /// Rounds the Coordinates in the sequence to match the PrecisionModel
         /// </summary>
-        public void Filter(ICoordinateSequence seq, int i)
+        public void Filter(CoordinateSequence seq, int i)
         {
             seq.SetOrdinate(i, 0, _precModel.MakePrecise(seq.GetOrdinate(i, 0)));
             seq.SetOrdinate(i, 1, _precModel.MakePrecise(seq.GetOrdinate(i, 1)));

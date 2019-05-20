@@ -38,13 +38,13 @@ namespace NetTopologySuite.IO
     /// </summary>
     public class WKTReader : ITextGeometryReader
     {
-        private ICoordinateSequenceFactory _coordinateSequencefactory;
+        private CoordinateSequenceFactory _coordinateSequencefactory;
         private PrecisionModel _precisionModel;
 
         private static readonly CultureInfo InvariantCulture =
             CultureInfo.InvariantCulture;
         private static readonly string NaNString = double.NaN.ToString(InvariantCulture); /*"NaN"*/
-        private static readonly ICoordinateSequenceFactory CoordinateSequenceFactoryXYZM = CoordinateArraySequenceFactory.Instance;
+        private static readonly CoordinateSequenceFactory CoordinateSequenceFactoryXYZM = CoordinateArraySequenceFactory.Instance;
 
         private bool _isAllowOldNtsCoordinateSyntax = true;
         private bool _isAllowOldNtsMultipointSyntax = true;
@@ -205,7 +205,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Reads a <c>Coordinate</c> from a stream using the given <see cref="StreamTokenizer"/>.
         /// <para>
-        /// All ordinate values are read, but -depending on the <see cref="ICoordinateSequenceFactory"/>
+        /// All ordinate values are read, but -depending on the <see cref="CoordinateSequenceFactory"/>
         /// of the underlying <see cref="GeometryFactory"/>- not necessarily all can be handled.
         /// Those are silently dropped.
         /// </para>
@@ -213,10 +213,10 @@ namespace NetTopologySuite.IO
         /// <param name="tokens">the tokenizer to use.</param>
         /// <param name="ordinateFlags">a bit-mask defining the ordinates to read.</param>
         /// <param name="tryParen">a value indicating if a starting <code>"("</code> should be probed.</param>
-        /// <returns>a <see cref="ICoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
+        /// <returns>a <see cref="CoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
         /// <exception cref="IOException">if an I/O error occurs.</exception>
         /// <exception cref="ParseException">if an unexpected token was encountered.</exception>
-        private ICoordinateSequence GetCoordinate(TokenStream tokens, Ordinates ordinateFlags, bool tryParen)
+        private CoordinateSequence GetCoordinate(TokenStream tokens, Ordinates ordinateFlags, bool tryParen)
         {
             bool opened = false;
             if (tryParen && IsOpenerNext(tokens))
@@ -259,17 +259,17 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Reads a <c>Coordinate</c> from a stream using the given <see cref="StreamTokenizer"/>.
         /// <para>
-        /// All ordinate values are read, but -depending on the <see cref="ICoordinateSequenceFactory"/>
+        /// All ordinate values are read, but -depending on the <see cref="CoordinateSequenceFactory"/>
         /// of the underlying <see cref="GeometryFactory"/>- not necessarily all can be handled.
         /// Those are silently dropped.
         /// </para>
         /// </summary>
         /// <param name="tokens">the tokenizer to use.</param>
         /// <param name="ordinateFlags">a bit-mask defining the ordinates to read.</param>
-        /// <returns>a <see cref="ICoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
+        /// <returns>a <see cref="CoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
         /// <exception cref="IOException">if an I/O error occurs.</exception>
         /// <exception cref="ParseException">if an unexpected token was encountered.</exception>
-        private ICoordinateSequence GetCoordinateSequence(TokenStream tokens, Ordinates ordinateFlags)
+        private CoordinateSequence GetCoordinateSequence(TokenStream tokens, Ordinates ordinateFlags)
         {
             return this.GetCoordinateSequence(tokens, ordinateFlags, false);
         }
@@ -277,7 +277,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Reads a <c>CoordinateSequence</c> from a stream using the given <see cref="StreamTokenizer"/>.
         /// <para>
-        /// All ordinate values are read, but -depending on the <see cref="ICoordinateSequenceFactory"/>
+        /// All ordinate values are read, but -depending on the <see cref="CoordinateSequenceFactory"/>
         /// of the underlying <see cref="GeometryFactory"/>- not necessarily all can be handled.
         /// Those are silently dropped.
         /// </para>
@@ -285,17 +285,17 @@ namespace NetTopologySuite.IO
         /// <param name="tokens">the tokenizer to use.</param>
         /// <param name="ordinateFlags">a bit-mask defining the ordinates to read.</param>
         /// <param name="tryParen">a value indicating if a starting <code>"("</code> should be probed for each coordinate.</param>
-        /// <returns>a <see cref="ICoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
+        /// <returns>a <see cref="CoordinateSequence"/> of length 1 containing the read ordinate values.</returns>
         /// <exception cref="IOException">if an I/O error occurs.</exception>
         /// <exception cref="ParseException">if an unexpected token was encountered.</exception>
-        private ICoordinateSequence GetCoordinateSequence(TokenStream tokens, Ordinates ordinateFlags, bool tryParen)
+        private CoordinateSequence GetCoordinateSequence(TokenStream tokens, Ordinates ordinateFlags, bool tryParen)
         {
             if (GetNextEmptyOrOpener(tokens) == "EMPTY")
             {
                 return _coordinateSequencefactory.Create(0, this.ToDimension(ordinateFlags));
             }
 
-            var coordinates = new List<ICoordinateSequence>();
+            var coordinates = new List<CoordinateSequence>();
             do
             {
                 coordinates.Add(this.GetCoordinate(tokens, ordinateFlags, tryParen));
@@ -333,13 +333,13 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Merges an array of one-coordinate-<see cref="ICoordinateSequence"/>s into one
-        /// <see cref="ICoordinateSequence"/>.
+        /// Merges an array of one-coordinate-<see cref="CoordinateSequence"/>s into one
+        /// <see cref="CoordinateSequence"/>.
         /// </summary>
         /// <param name="sequences">an array of coordinate sequences. Each sequence contains <b>exactly one</b> coordinate.</param>
         /// <param name="ordinateFlags">a bit-mask of required ordinates.</param>
         /// <returns>a coordinate sequence containing all coordinate.</returns>
-        private ICoordinateSequence MergeSequences(List<ICoordinateSequence> sequences, Ordinates ordinateFlags)
+        private CoordinateSequence MergeSequences(List<CoordinateSequence> sequences, Ordinates ordinateFlags)
         {
             // if the sequences array is empty or null create an empty sequence
             if (sequences == null || sequences.Count == 0)

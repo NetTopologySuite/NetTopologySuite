@@ -296,7 +296,7 @@ namespace NetTopologySuite.Geometries
         /// In general, the array cannot be assumed to be the actual internal
         /// storage for the vertices.  Thus modifying the array
         /// may not modify the geometry itself.
-        /// Use the <see cref="ICoordinateSequence.SetOrdinate"/> method
+        /// Use the <see cref="CoordinateSequence.SetOrdinate"/> method
         /// (possibly on the components) to modify the underlying data.
         /// If the coordinates are modified,
         /// <see cref="Geometry.GeometryChanged"/> must be called afterwards.
@@ -304,7 +304,7 @@ namespace NetTopologySuite.Geometries
         /// </remarks>
         /// <returns>The vertices of this <c>Geometry</c>.</returns>
         /// <seealso cref="Geometry.GeometryChanged"/>
-        /// <seealso cref="ICoordinateSequence.SetOrdinate"/>
+        /// <seealso cref="CoordinateSequence.SetOrdinate"/>
         public abstract Coordinate[] Coordinates { get; }
 
         /// <summary>
@@ -1686,7 +1686,7 @@ namespace NetTopologySuite.Geometries
         public abstract void Apply(ICoordinateFilter filter);
 
         /// <summary>
-        /// Performs an operation on the coordinates in this <c>Geometry</c>'s <see cref="ICoordinateSequence"/>s.
+        /// Performs an operation on the coordinates in this <c>Geometry</c>'s <see cref="CoordinateSequence"/>s.
         /// </summary>
         /// <remarks>
         /// If the filter reports that a coordinate value has been changed,
@@ -1855,7 +1855,7 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Returns whether this <c>Geometry</c> is greater than, equal to,
-        /// or less than another <c>Geometry</c>, using the given <see paramref="IComparer{ICoordinateSequence}"/>.</summary>
+        /// or less than another <c>Geometry</c>, using the given <see paramref="IComparer{CoordinateSequence}"/>.</summary>
         /// <remarks>
         /// If their classes are different, they are compared using the following
         /// ordering:
@@ -1874,14 +1874,14 @@ namespace NetTopologySuite.Geometries
         /// compared, etc.
         /// </remarks>
         /// <param name="o">A <c>Geometry</c> with which to compare this <c>Geometry</c></param>
-        /// <param name="comp">A <c>IComparer&lt;ICoordinateSequence&gt;</c></param>
+        /// <param name="comp">A <c>IComparer&lt;CoordinateSequence&gt;</c></param>
         /// <returns>
         /// A positive number, 0, or a negative number, depending on whether
         /// this object is greater than, equal to, or less than <c>o</c>, as
         /// defined in "Normal Form For Geometry" in the NTS Technical
         /// Specifications.
         /// </returns>
-        public int CompareTo(object o, IComparer<ICoordinateSequence> comp)
+        public int CompareTo(object o, IComparer<CoordinateSequence> comp)
         {
             var other = o as Geometry;
             if (other == null)
@@ -1981,7 +1981,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Returns whether this <c>Geometry</c> is greater than, equal to,
         /// or less than another <c>Geometry</c> of the same class.
-        /// using the given <see cref="IComparer{ICoordinateSequence}"/>.
+        /// using the given <see cref="IComparer{CoordinateSequence}"/>.
         /// </summary>
         /// <param name="o">A <c>Geometry</c> having the same class as this <c>Geometry</c></param>
         /// <param name="comp">The comparer</param>
@@ -1990,7 +1990,7 @@ namespace NetTopologySuite.Geometries
         ///      defined in "Normal Form For Geometry" in the JTS Technical
         ///      Specifications
         /// </returns>
-        protected internal abstract int CompareToSameClass(object o, IComparer<ICoordinateSequence> comp);
+        protected internal abstract int CompareToSameClass(object o, IComparer<CoordinateSequence> comp);
 
         /// <summary>
         /// Returns the first non-zero result of <c>CompareTo</c> encountered as
@@ -2084,10 +2084,10 @@ namespace NetTopologySuite.Geometries
             return result;
         }
 
-        protected static double[] CreateArray(ICoordinateSequence sequence, Ordinate ordinate)
+        protected static double[] CreateArray(CoordinateSequence sequence, Ordinate ordinate)
         {
             double[] result = new double[sequence.Count];
-            if (OrdinatesUtility.IndexOfOrdinateInSequence(ordinate, sequence) is int ordinateIndex)
+            if (sequence.TryGetOrdinateIndex(ordinate, out int ordinateIndex))
             {
                 for (int i = 0; i < result.Length; i++)
                     result[i] = sequence.GetOrdinate(i, ordinateIndex);

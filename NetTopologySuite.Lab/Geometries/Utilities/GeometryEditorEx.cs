@@ -175,7 +175,7 @@ namespace NetTopologySuite.Geometries.Utilities
             if (newGeom == null)
             {
                 // null return means create an empty one
-                newGeom = _targetFactory.CreatePoint((ICoordinateSequence)null);
+                newGeom = _targetFactory.CreatePoint((CoordinateSequence)null);
             }
             else if (newGeom == geom)
             {
@@ -191,7 +191,7 @@ namespace NetTopologySuite.Geometries.Utilities
             if (newGeom == null)
             {
                 // null return means create an empty one
-                newGeom = _targetFactory.CreateLineString((ICoordinateSequence)null);
+                newGeom = _targetFactory.CreateLineString((CoordinateSequence)null);
             }
             else if (newGeom == geom)
             {
@@ -207,7 +207,7 @@ namespace NetTopologySuite.Geometries.Utilities
             if (newGeom == null)
             {
                 // null return means create an empty one
-                newGeom = _targetFactory.CreateLinearRing((ICoordinateSequence)null);
+                newGeom = _targetFactory.CreateLinearRing((CoordinateSequence)null);
             }
             else if (newGeom == geom)
             {
@@ -350,7 +350,7 @@ namespace NetTopologySuite.Geometries.Utilities
 
         /// <summary>
         /// A <see cref="GeometryEditor.IGeometryEditorOperation"/> which edits
-        /// the <see cref="ICoordinateSequence"/>.
+        /// the <see cref="CoordinateSequence"/>.
         /// Operates on <see cref="Geometry"/> subclasses
         /// which contains a single coordinate list.
         /// </summary>
@@ -383,12 +383,12 @@ namespace NetTopologySuite.Geometries.Utilities
             }
 
             // <summary>
-            /// Edits a <see cref="ICoordinateSequence"/> from a <see cref="Geometry"/>.
+            /// Edits a <see cref="CoordinateSequence"/> from a <see cref="Geometry"/>.
             /// <param name="coordinateSequence">The coordinate array to operate on.</param>
             /// <param name="geometry">The geometry containing the coordinate list.</param>
             /// <param name="targetFactory"></param>
             /// <returns>An edited coordinate sequence (which may be the same as the input).</returns>
-            public abstract ICoordinateSequence Edit(ICoordinateSequence coordinateSequence,
+            public abstract CoordinateSequence Edit(CoordinateSequence coordinateSequence,
                 Geometry geometry, GeometryFactory targetFactory);
         }
     }

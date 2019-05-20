@@ -988,7 +988,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="seq"> a <code>CoordinateSequence</code></param>
         /// <param name="i"> the index of the coordinate to transform</param>
-        public void Transform(ICoordinateSequence seq, int i)
+        public void Transform(CoordinateSequence seq, int i)
         {
             double xp = _m00 * seq.GetOrdinate(i, 0) + _m01 * seq.GetOrdinate(i, 1) + _m02;
             double yp = _m10 * seq.GetOrdinate(i, 0) + _m11 * seq.GetOrdinate(i, 1) + _m12;
@@ -1001,7 +1001,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="seq">A <c>CoordinateSequence</c></param>
         /// <param name="i">The index of the coordinate to transform</param>
-        public void Filter(ICoordinateSequence seq, int i)
+        public void Filter(CoordinateSequence seq, int i)
         {
             Transform(seq, i);
         }

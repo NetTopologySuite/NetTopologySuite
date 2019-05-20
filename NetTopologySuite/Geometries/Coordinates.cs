@@ -40,7 +40,8 @@
                 return new CoordinateZM();
             }
 
-            return new CoordinateZ();
+            // JTS deviation: we can do better.
+            return new ExtraDimensionalCoordinate(dimension, measures);
         }
 
         /// <summary>
@@ -74,6 +75,11 @@
                 return 4;
             }
 
+            if (coordinate is ExtraDimensionalCoordinate extraDimensionalCoordinate)
+            {
+                return extraDimensionalCoordinate.Dimension;
+            }
+
             // JTS deviation: JTS's default is 3, but that's because its base Coordinate class has Z
             // stored on it.  our base class doesn't.
             return 2;
@@ -82,17 +88,22 @@
         /// <summary>
         /// Determine number of measures based on subclass of <see cref="Coordinate"/>.
         /// </summary>
-        /// <param name="cooordinate">supplied coordinate</param>
+        /// <param name="coordinate">supplied coordinate</param>
         /// <returns>number of measures recorded </returns>
-        public static int Measures(Coordinate cooordinate)
+        public static int Measures(Coordinate coordinate)
         {
             // NTS-specific note: be VERY CAREFUL with methods that rely on checking the types of
             // Coordinate objects when compared to JTS: NTS offers the same four types (with
             // slightly different names), but with a substantially different hierarchy relationship.
-            var type = cooordinate?.GetType();
+            var type = coordinate?.GetType();
             if (type == typeof(CoordinateM) || type == typeof(CoordinateZM))
             {
                 return 1;
+            }
+
+            if (coordinate is ExtraDimensionalCoordinate extraDimensionalCoordinate)
+            {
+                return extraDimensionalCoordinate.Measures;
             }
 
             return 0;

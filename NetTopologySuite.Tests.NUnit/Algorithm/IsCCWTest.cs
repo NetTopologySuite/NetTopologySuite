@@ -40,7 +40,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             return geom.Coordinates;
         }
 
-        private ICoordinateSequence GetCoordinateSequence(string wkt)
+        private CoordinateSequence GetCoordinateSequence(string wkt)
         {
             var geom = reader.Read(wkt);
             if (!(geom is Polygon))

@@ -11,7 +11,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
     [TestFixture]
     public class WKTReadWriteTest
     {
-        private readonly ICoordinateSequenceFactory _csFactory;
+        private readonly CoordinateSequenceFactory _csFactory;
         private readonly GeometryFactory _geometryFactory;
         private readonly WKTReader _reader;
 

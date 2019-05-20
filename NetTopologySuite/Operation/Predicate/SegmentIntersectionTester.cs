@@ -26,7 +26,7 @@ namespace NetTopologySuite.Operation.Predicate
         /// <param name="seq"></param>
         /// <param name="lines"></param>
         /// <returns></returns>
-        public bool HasIntersectionWithLineStrings(ICoordinateSequence seq, ICollection<Geometry> lines)
+        public bool HasIntersectionWithLineStrings(CoordinateSequence seq, ICollection<Geometry> lines)
         {
             foreach (LineString line in lines)
             {
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Operation.Predicate
         /// <param name="seq0"></param>
         /// <param name="seq1"></param>
         /// <returns></returns>
-        public bool HasIntersection(ICoordinateSequence seq0, ICoordinateSequence seq1)
+        public bool HasIntersection(CoordinateSequence seq0, CoordinateSequence seq1)
         {
             for (int i = 1; i < seq0.Count && ! _hasIntersection; i++)
             {

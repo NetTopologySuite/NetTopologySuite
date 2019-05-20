@@ -1,183 +1,194 @@
 ﻿namespace NetTopologySuite.Geometries
 {
     /// <summary>
-    /// Standard ordinate index values.
+    /// Identifies the different well-supported components of coordinate values.
+    /// <para>
+    /// All supported coordinates define values for at least the X and the Y components.
+    /// </para>
+    /// <para>
+    /// The first 16 spatial and 16 measure dimensions may also be accessed this way.
+    /// </para>
     /// </summary>
     public enum Ordinate
     {
         /// <summary>
-        /// Standard ordinate index value for, where X is 0
+        /// The 1st spatial dimension.
         /// </summary>
-        X = 0,
+        Spatial1,
 
         /// <summary>
-        /// Standard ordinate index value for, where Y is 1
+        /// The "X" ordinate.
         /// </summary>
-        Y = 1,
+        X = Spatial1,
 
         /// <summary>
-        /// Standard ordinate index value for, where Z is 2.
+        /// The 2nd spatial dimension.
         /// </summary>
-        /// <remarks>
-        /// This constant assumes <see cref="Ordinates.XYZM"/> coordinate sequence definition,
-        /// please check this assumption using <see cref="ICoordinateSequence.Dimension"/> and
-        /// <see cref="ICoordinateSequence.Measures"/> before use.
-        /// </remarks>
-        Z = 2,
+        Spatial2,
 
         /// <summary>
-        /// Standard ordinate index value for, where M is 3.
+        /// The "Y" ordinate.
         /// </summary>
-        /// <remarks>
-        /// This constant assumes <see cref="Ordinates.XYZM"/> coordinate sequence definition,
-        /// please check this assumption using <see cref="ICoordinateSequence.Dimension"/> and
-        /// <see cref="ICoordinateSequence.Measures"/> before use.
-        /// </remarks>
-        M = 3,
+        Y = Spatial2,
 
         /// <summary>
-        /// Ordinate at index 4
+        /// The 3rd spatial dimension.
         /// </summary>
-        Ordinate4 = 4,
+        Spatial3,
 
         /// <summary>
-        /// Ordinate at index 5
+        /// The "Z" ordinate.
         /// </summary>
-        Ordinate5 = 5,
+        Z = Spatial3,
 
         /// <summary>
-        /// Ordinate at index 6
+        /// The 4th spatial dimension.
         /// </summary>
-        Ordinate6 = 6,
+        Spatial4,
 
         /// <summary>
-        /// Ordinate at index 7
+        /// The 5th spatial dimension.
         /// </summary>
-        Ordinate7 = 7,
+        Spatial5,
 
         /// <summary>
-        /// Ordinate at index 8
+        /// The 6th spatial dimension.
         /// </summary>
-        Ordinate8 = 8,
+        Spatial6,
 
         /// <summary>
-        /// Ordinate at index 9
+        /// The 7th spatial dimension.
         /// </summary>
-        Ordinate9 = 9,
+        Spatial7,
 
         /// <summary>
-        /// Ordinate at index 10
+        /// The 8th spatial dimension.
         /// </summary>
-        Ordinate10 = 10,
+        Spatial8,
 
         /// <summary>
-        /// Ordinate at index 11
+        /// The 9th spatial dimension.
         /// </summary>
-        Ordinate11 = 11,
+        Spatial9,
 
         /// <summary>
-        /// Ordinate at index 12
+        /// The 10th spatial dimension.
         /// </summary>
-        Ordinate12 = 12,
+        Spatial10,
 
         /// <summary>
-        /// Ordinate at index 13
+        /// The 11th spatial dimension.
         /// </summary>
-        Ordinate13 = 13,
+        Spatial11,
 
         /// <summary>
-        /// Ordinate at index 14
+        /// The 12th spatial dimension.
         /// </summary>
-        Ordinate14 = 14,
+        Spatial12,
 
         /// <summary>
-        /// Ordinate at index 15
+        /// The 13th spatial dimension.
         /// </summary>
-        Ordinate15 = 15,
+        Spatial13,
 
         /// <summary>
-        /// Ordinate at index 16
+        /// The 14th spatial dimension.
         /// </summary>
-        Ordinate16 = 16,
+        Spatial14,
 
         /// <summary>
-        /// Ordinate at index 17
+        /// The 15th spatial dimension.
         /// </summary>
-        Ordinate17 = 17,
+        Spatial15,
 
         /// <summary>
-        /// Ordinate at index 18
+        /// The 16th spatial dimension.
         /// </summary>
-        Ordinate18 = 18,
+        Spatial16,
 
         /// <summary>
-        /// Ordinate at index 19
+        /// The 1st measure dimension.
         /// </summary>
-        Ordinate19 = 19,
+        Measure1,
 
         /// <summary>
-        /// Ordinate at index 20
+        /// The "M" ordinate.
         /// </summary>
-        Ordinate20 = 20,
+        M = Measure1,
 
         /// <summary>
-        /// Ordinate at index 21
+        /// The 2nd measure dimension.
         /// </summary>
-        Ordinate21 = 21,
+        Measure2,
 
         /// <summary>
-        /// Ordinate at index 22
+        /// The 3rd measure dimension.
         /// </summary>
-        Ordinate22 = 22,
+        Measure3,
 
         /// <summary>
-        /// Ordinate at index 23
+        /// The 4th measure dimension.
         /// </summary>
-        Ordinate23 = 23,
+        Measure4,
 
         /// <summary>
-        /// Ordinate at index 24
+        /// The 5th measure dimension.
         /// </summary>
-        Ordinate24 = 24,
+        Measure5,
 
         /// <summary>
-        /// Ordinate at index 25
+        /// The 6th measure dimension.
         /// </summary>
-        Ordinate25 = 25,
+        Measure6,
 
         /// <summary>
-        /// Ordinate at index 26
+        /// The 7th measure dimension.
         /// </summary>
-        Ordinate26 = 26,
+        Measure7,
 
         /// <summary>
-        /// Ordinate at index 27
+        /// The 8th measure dimension.
         /// </summary>
-        Ordinate27 = 27,
+        Measure8,
 
         /// <summary>
-        /// Ordinate at index 28
+        /// The 9th measure dimension.
         /// </summary>
-        Ordinate28 = 28,
+        Measure9,
 
         /// <summary>
-        /// Ordinate at index 29
+        /// The 10th measure dimension.
         /// </summary>
-        Ordinate29 = 29,
+        Measure10,
 
         /// <summary>
-        /// Ordinate at index 30
+        /// The 11th measure dimension.
         /// </summary>
-        Ordinate30 = 30,
+        Measure11,
 
         /// <summary>
-        /// Ordinate at index 31
+        /// The 12th measure dimension.
         /// </summary>
-        Ordinate31 = 31,
+        Measure12,
 
         /// <summary>
-        /// Ordinate at index 32
+        /// The 13th measure dimension.
         /// </summary>
-        Ordinate32 = 32,
+        Measure13,
+
+        /// <summary>
+        /// The 14th measure dimension.
+        /// </summary>
+        Measure14,
+
+        /// <summary>
+        /// The 15th measure dimension.
+        /// </summary>
+        Measure15,
+
+        /// <summary>
+        /// The 16th measure dimension.
+        /// </summary>
+        Measure16,
     }
 }

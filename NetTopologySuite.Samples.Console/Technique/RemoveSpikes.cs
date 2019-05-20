@@ -55,7 +55,7 @@ namespace NetTopologySuite.Samples.Technique
                     _spikeThreshold = spikeThreshold;
                 }
 
-                public void Filter(ICoordinateSequence seq, int i)
+                public void Filter(CoordinateSequence seq, int i)
                 {
                     if (seq == null)
                         throw new ArgumentNullException();
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Samples.Technique
                     _lastSegment = new LineSegment(seq.GetCoordinate(i), seq.GetCoordinate(i+1));
                 }
 
-                private static void FixSpike(ICoordinateSequence seq, int fixIndex, int fixWithIndex)
+                private static void FixSpike(CoordinateSequence seq, int fixIndex, int fixWithIndex)
                 {
                     seq.SetOrdinate(fixIndex, Ordinate.X, seq.GetOrdinate(fixWithIndex, Ordinate.X));
                     seq.SetOrdinate(fixIndex, Ordinate.Y, seq.GetOrdinate(fixWithIndex, Ordinate.Y));
@@ -120,7 +120,7 @@ namespace NetTopologySuite.Samples.Technique
                     Second = 1
                 }
 
-                private static bool IsClosed(ICoordinateSequence seq)
+                private static bool IsClosed(CoordinateSequence seq)
                 {
                     return seq.GetCoordinate(seq.Count - 1).Equals2D(seq.GetCoordinate(0));
                 }
@@ -230,7 +230,7 @@ namespace NetTopologySuite.Samples.Technique
                         : factory.CreateLineString(seq);
         }
         /*
-        private ICoordinateSequence RemoveSpikesFromSequence(ICoordinateSequence seq, ICoordinateSequenceFactory factory)
+        private CoordinateSequence RemoveSpikesFromSequence(CoordinateSequence seq, CoordinateSequenceFactory factory)
         {
             LineSegment s1, s2;
             var res = factory.Create(seq.Count, seq.Ordinates);
@@ -264,12 +264,12 @@ namespace NetTopologySuite.Samples.Technique
 
         }
 
-        private void CheckSpike(ICoordinateSequence seq, int si1, int si2)
+        private void CheckSpike(CoordinateSequence seq, int si1, int si2)
         {
 
         }
 
-        private void CheckSpike(ICoordinateSequence seq, int si1, int si2)
+        private void CheckSpike(CoordinateSequence seq, int si1, int si2)
         {
 
         }*/
@@ -281,7 +281,7 @@ namespace NetTopologySuite.Samples.Technique
             Second = 1
         }
 
-        private static bool IsClosed(ICoordinateSequence seq)
+        private static bool IsClosed(CoordinateSequence seq)
         {
             return seq.GetCoordinate(seq.Count - 1).Equals2D(seq.GetCoordinate(0));
         }

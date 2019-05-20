@@ -110,7 +110,7 @@ namespace NetTopologySuite.Simplify
                 _distanceTolerance = distanceTolerance;
             }
 
-            protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, Geometry parent)
+            protected override CoordinateSequence TransformCoordinates(CoordinateSequence coords, Geometry parent)
             {
                 var inputPts = coords.ToCoordinateArray();
                 Coordinate[] newPts;

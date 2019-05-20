@@ -166,7 +166,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="seq">The coordinate sequence</param>
         /// <returns>A reference to <c>this</c> octagonal envelope, expanded by <paramref name="seq"/></returns>
-        public OctagonalEnvelope ExpandToInclude(ICoordinateSequence seq)
+        public OctagonalEnvelope ExpandToInclude(CoordinateSequence seq)
         {
             for (int i = 0; i < seq.Count; i++)
             {

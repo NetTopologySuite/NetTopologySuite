@@ -13,7 +13,7 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Gets the coordinate sequence factory
         /// </summary>
-        ICoordinateSequenceFactory CoordinateSequenceFactory { get; }
+        CoordinateSequenceFactory CoordinateSequenceFactory { get; }
 
         /// <summary>
         /// Gets the precision model

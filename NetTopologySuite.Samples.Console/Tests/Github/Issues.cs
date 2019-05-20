@@ -286,8 +286,8 @@ namespace NetTopologySuite.Samples.Tests.Github
         [TestCase(Ordinates.XYZM)]
         public void GeometryFactory_CreatePoint_does_not_have_Measure_value(Ordinates ordinates)
         {
-            var csf = DotSpatialAffineCoordinateSequenceFactory.Instance = new DotSpatialAffineCoordinateSequenceFactory(ordinates);
-            var gf = new GeometryFactory(DotSpatialAffineCoordinateSequenceFactory.Instance);
+            var csf = new DotSpatialAffineCoordinateSequenceFactory(ordinates);
+            var gf = new GeometryFactory(csf);
             var cs1 = csf.Create(1, Ordinates.XYZM);
             Assert.That(cs1.Ordinates == ordinates);
 

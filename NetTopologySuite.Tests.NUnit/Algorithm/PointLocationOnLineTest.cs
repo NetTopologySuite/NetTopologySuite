@@ -6,7 +6,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     /// <summary>
     /// Tests <see cref="PointLocation.IsOnLine(Coordinate, Coordinate[])"/> and
-    /// <see cref="PointLocation.IsOnLine(Coordinate, ICoordinateSequence)"/>
+    /// <see cref="PointLocation.IsOnLine(Coordinate, CoordinateSequence)"/>
     /// </summary>
     /// <version>1.15</version>
     public class PointLocationOnLineTest : GeometryTestCase

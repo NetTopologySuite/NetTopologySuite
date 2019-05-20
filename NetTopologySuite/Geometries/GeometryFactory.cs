@@ -51,12 +51,12 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public PrecisionModel PrecisionModel => _precisionModel;
 
-        private readonly ICoordinateSequenceFactory _coordinateSequenceFactory;
+        private readonly CoordinateSequenceFactory _coordinateSequenceFactory;
 
         /// <summary>
         ///
         /// </summary>
-        public ICoordinateSequenceFactory CoordinateSequenceFactory => _coordinateSequenceFactory;
+        public CoordinateSequenceFactory CoordinateSequenceFactory => _coordinateSequenceFactory;
 
         private readonly int _srid;
 
@@ -81,7 +81,7 @@ namespace NetTopologySuite.Geometries
         /// Constructs a GeometryFactory that generates Geometries having the given
         /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
         /// </summary>
-        public GeometryFactory(PrecisionModel precisionModel, int srid, ICoordinateSequenceFactory coordinateSequenceFactory)
+        public GeometryFactory(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory)
         {
             _precisionModel = precisionModel;
             _coordinateSequenceFactory = coordinateSequenceFactory;
@@ -93,7 +93,7 @@ namespace NetTopologySuite.Geometries
         /// CoordinateSequence implementation, a double-precision floating PrecisionModel and a
         /// spatial-reference ID of 0.
         /// </summary>
-        public GeometryFactory(ICoordinateSequenceFactory coordinateSequenceFactory) :
+        public GeometryFactory(CoordinateSequenceFactory coordinateSequenceFactory) :
             this(new PrecisionModel(), 0, coordinateSequenceFactory) { }
 
         /// <summary>
@@ -259,7 +259,7 @@ namespace NetTopologySuite.Geometries
         {
             // null envelope - return empty point geometry
             if (envelope.IsNull)
-                return CreatePoint((ICoordinateSequence)null);
+                return CreatePoint((CoordinateSequence)null);
 
             // point?
             if (envelope.MinX == envelope.MaxX && envelope.MinY == envelope.MaxY)
@@ -316,7 +316,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">a CoordinateSequence (possibly empty), or null</param>
         /// <returns>A <see cref="Point"/> object</returns>
-        public Point CreatePoint(ICoordinateSequence coordinates)
+        public Point CreatePoint(CoordinateSequence coordinates)
         {
             return new Point(coordinates, this);
         }
@@ -345,7 +345,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">A CoordinateSequence (possibly empty), or null.</param>
         /// <returns>A <see cref="LineString"/> object</returns>
-        public LineString CreateLineString(ICoordinateSequence coordinates)
+        public LineString CreateLineString(CoordinateSequence coordinates)
         {
             return new LineString(coordinates, this);
         }
@@ -377,7 +377,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="coordinates">A CoordinateSequence (possibly empty), or null.</param>
         /// <returns>A <see cref="LinearRing"/> object</returns>
         /// <exception cref="ArgumentException"> If the ring is not closed, or has too few points</exception>
-        public LinearRing CreateLinearRing(ICoordinateSequence coordinates)
+        public LinearRing CreateLinearRing(CoordinateSequence coordinates)
         {
             return new LinearRing(coordinates, this);
         }
@@ -417,7 +417,7 @@ namespace NetTopologySuite.Geometries
         /// the empty geometry is to be created.</param>
         /// <returns>A <see cref="Polygon"/> object</returns>
         /// <exception cref="ArgumentException">If the boundary ring is invalid</exception>
-        public virtual Polygon CreatePolygon(ICoordinateSequence coordinates)
+        public virtual Polygon CreatePolygon(CoordinateSequence coordinates)
         {
             return CreatePolygon(CreateLinearRing(coordinates));
         }
@@ -483,7 +483,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">A CoordinateSequence (possibly empty), or <c>null</c>.</param>
         /// <returns>A <see cref="MultiPoint"/> object</returns>
-        public MultiPoint CreateMultiPoint(ICoordinateSequence coordinates)
+        public MultiPoint CreateMultiPoint(CoordinateSequence coordinates)
         {
             if (coordinates == null)
                 coordinates = CoordinateSequenceFactory.Create(new Coordinate[] { });
@@ -634,8 +634,8 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Creates a deep copy of the input <see cref="Geometry"/>.
-        /// The <see cref="ICoordinateSequenceFactory"/> defined for this factory
-        /// is used to copy the <see cref="ICoordinateSequence"/>s
+        /// The <see cref="Geometries.CoordinateSequenceFactory"/> defined for this factory
+        /// is used to copy the <see cref="CoordinateSequence"/>s
         /// of the input geometry.
         /// <para/>
         /// This is a convenient way to change the <tt>CoordinateSequence</tt>
@@ -657,7 +657,7 @@ namespace NetTopologySuite.Geometries
             return editor.Edit(g, operation);
         }
 
-        private static ICoordinateSequenceFactory GetDefaultCoordinateSequenceFactory()
+        private static CoordinateSequenceFactory GetDefaultCoordinateSequenceFactory()
         {
             return CoordinateArraySequenceFactory.Instance;
         }

@@ -27,7 +27,7 @@ namespace NetTopologySuite.Geometries
     /// only specific operations involving the Z- and/or M-ordinate.
     /// <para/>
     /// Implementations may optionally support Z-ordinate and M-measure values
-    /// as appropriate for a <see cref="ICoordinateSequence"/>. Use of <see cref="CoordinateZ.Z"/>
+    /// as appropriate for a <see cref="CoordinateSequence"/>. Use of <see cref="CoordinateZ.Z"/>
     /// and <see cref="M"/> setters or <see cref="P:NetTopologySuite.Geometries.CoordinateZM.this[int]" /> indexer are recommended.
     /// </remarks>
     [Serializable]

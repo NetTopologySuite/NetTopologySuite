@@ -126,7 +126,7 @@ Geometry InsertPoint(Geometry geom, Coordinate point)
 
     internal static class ICoordinateSequenceEx
     {
-        public static void SetCoordinate(this ICoordinateSequence self, int index, Coordinate coord)
+        public static void SetCoordinate(this CoordinateSequence self, int index, Coordinate coord)
         {
             self.SetOrdinate(index, Ordinate.X, coord.X);
             self.SetOrdinate(index, Ordinate.Y, coord.Y);

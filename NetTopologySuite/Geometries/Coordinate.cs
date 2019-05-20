@@ -18,7 +18,7 @@ namespace NetTopologySuite.Geometries
     /// and properties.
     /// <para/>
     /// Implementations may optionally support Z-ordinate and M-measure values
-    /// as appropriate for a <see cref="ICoordinateSequence"/>. Use of <see cref="Z"/>
+    /// as appropriate for a <see cref="CoordinateSequence"/>. Use of <see cref="Z"/>
     /// and <see cref="M"/> setters or <see cref="P:NetTopologySuite.Geometries.Coordinate.this[int]" /> indexer are recommended.
     /// </remarks>
     [Serializable]
@@ -99,7 +99,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="ordinate">The ordinate.</param>
         /// <returns>The ordinate value</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="ordinate"/> is not one of <see cref="Ordinate.X"/>, <see cref="Ordinate.Y"/>, <see cref="Ordinate.Z"/>, or <see cref="Ordinate.M"/>.</exception>
-        public double this[Ordinate ordinate]
+        public virtual double this[Ordinate ordinate]
         {
             get
             {
@@ -303,7 +303,7 @@ namespace NetTopologySuite.Geometries
         /// Create a copy of this <see cref="Coordinate"/>.
         /// </summary>
         /// <returns>A copy of this coordinate.</returns>
-        public Coordinate Copy()
+        public virtual Coordinate Copy()
         {
             return (Coordinate)MemberwiseClone();
         }

@@ -25,7 +25,7 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="ring">The coordinates forming the ring</param>
         /// <returns>The area of the ring</returns>
-        public static double OfRing(ICoordinateSequence ring)
+        public static double OfRing(CoordinateSequence ring)
         {
             return Math.Abs(OfRingSigned(ring));
         }
@@ -76,7 +76,7 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="ring">The coordinates forming the ring</param>
         /// <returns>The signed area of the ring</returns>
-        public static double OfRingSigned(ICoordinateSequence ring)
+        public static double OfRingSigned(CoordinateSequence ring)
         {
             int n = ring.Count;
             if (n < 3)

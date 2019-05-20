@@ -749,7 +749,7 @@ namespace NetTopologySuite.Tests.Various
             return ring.Factory.CreateLinearRing(seq);
         }
 
-        private static ICoordinateSequence InsertTopologyExceptionPoint(Coordinate coord, ICoordinateSequence seq, ICoordinateSequenceFactory factory)
+        private static CoordinateSequence InsertTopologyExceptionPoint(Coordinate coord, CoordinateSequence seq, CoordinateSequenceFactory factory)
         {
             var res = factory.Create(2*seq.Count , seq.Ordinates);
 

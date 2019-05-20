@@ -45,7 +45,7 @@ namespace NetTopologySuite.Algorithm
         /// <c>true</c> if the point is a vertex of the line or lies in the interior
         /// of a line segment in the line
         /// </returns>
-        public static bool IsOnLine(Coordinate p, ICoordinateSequence line)
+        public static bool IsOnLine(Coordinate p, CoordinateSequence line)
         {
             var lineIntersector = new RobustLineIntersector();
             var p0 = line.CreateCoordinate();
@@ -93,7 +93,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="ring">A <c>CoordinateSequence</c> representing the ring (which must have
         /// first point identical to last point)</param>
         /// <returns><c>true</c> if p is inside ring</returns>
-        public static bool IsInRing(Coordinate p, ICoordinateSequence ring)
+        public static bool IsInRing(Coordinate p, CoordinateSequence ring)
         {
             return LocateInRing(p, ring) != Location.Exterior;
         }
@@ -124,7 +124,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p">The point to check for ring inclusion</param>
         /// <param name="ring">A <c>CoordinateSequence</c> representing the ring (which must have
         /// first point identical to last point)</param>
-        public static Location LocateInRing(Coordinate p, ICoordinateSequence ring)
+        public static Location LocateInRing(Coordinate p, CoordinateSequence ring)
         {
             return RayCrossingCounter.LocatePointInRing(p, ring);
         }

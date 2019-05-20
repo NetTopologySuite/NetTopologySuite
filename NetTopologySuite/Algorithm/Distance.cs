@@ -126,7 +126,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p">A point</param>
         /// <param name="line">A sequence of contiguous line segments defined by their vertices</param>
         /// <returns>The minimum distance between the point and the line segments</returns>
-        public static double PointToSegmentString(Coordinate p, ICoordinateSequence line)
+        public static double PointToSegmentString(Coordinate p, CoordinateSequence line)
         {
             if (line.Count == 0)
                 throw new ArgumentException(

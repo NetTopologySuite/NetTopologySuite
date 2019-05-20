@@ -58,7 +58,7 @@ namespace NetTopologySuite.Operation.Distance3D
          * @param seq the sequence of coordinates for the polygon
          * @return a normal vector
          */
-        private static Vector3D AverageNormal(ICoordinateSequence seq)
+        private static Vector3D AverageNormal(CoordinateSequence seq)
         {
             int n = seq.Count;
             var sum = new CoordinateZ(0, 0, 0);
@@ -88,7 +88,7 @@ namespace NetTopologySuite.Operation.Distance3D
          * @param seq a coordinate sequence
          * @return a Coordinate with averaged ordinates
          */
-        private static Coordinate AveragePoint(ICoordinateSequence seq)
+        private static Coordinate AveragePoint(CoordinateSequence seq)
         {
             var a = new CoordinateZ(0, 0, 0);
             int n = seq.Count;
@@ -137,7 +137,7 @@ namespace NetTopologySuite.Operation.Distance3D
             return Location.Exterior != RayCrossingCounter.LocatePointInRing(ptProj, seqProj);
         }
 
-        private static ICoordinateSequence Project(ICoordinateSequence seq, Plane facingPlane)
+        private static CoordinateSequence Project(CoordinateSequence seq, Plane facingPlane)
         {
             switch (facingPlane)
             {

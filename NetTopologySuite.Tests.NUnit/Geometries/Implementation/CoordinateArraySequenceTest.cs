@@ -7,7 +7,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
     //Tests are exposed by CoordinateSequenceTestBase type
     public class CoordinateArraySequenceTest : CoordinateSequenceTestBase
     {
-        protected override ICoordinateSequenceFactory CsFactory => CoordinateArraySequenceFactory.Instance;
+        protected override CoordinateSequenceFactory CsFactory => CoordinateArraySequenceFactory.Instance;
 
         [Test]
         public void TestFactoryLimits()
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         {
             var factory = CsFactory;
             var seq = factory.Create(5, 2);
-            ICoordinateSequence copy;
+            CoordinateSequence copy;
             Coordinate coord;
             Coordinate[] array;
 
@@ -157,7 +157,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.That(seq.GetCoordinate(3), Is.Null);
         }
 
-        private static void InitProgression(ICoordinateSequence seq)
+        private static void InitProgression(CoordinateSequence seq)
         {
             for (int index = 0; index < seq.Count; index++)
             {

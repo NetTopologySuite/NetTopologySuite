@@ -207,7 +207,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             return null;
         }
 
-        private static ICoordinateSequence SetDimension(ICoordinateSequenceFactory fact, ICoordinateSequence seq,
+        private static CoordinateSequence SetDimension(CoordinateSequenceFactory fact, CoordinateSequence seq,
             int dimension)
         {
             if (seq.Dimension == dimension)
@@ -218,7 +218,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             for (int i = 0; i < seq.Count; i++)
             {
                 for (int j = 0; j < dimension; j++)
-                    res.SetOrdinate(i, (Ordinate)j, seq.GetOrdinate(i, (Ordinate)j));
+                    res.SetOrdinate(i, j, seq.GetOrdinate(i, j));
             }
             return res;
         }

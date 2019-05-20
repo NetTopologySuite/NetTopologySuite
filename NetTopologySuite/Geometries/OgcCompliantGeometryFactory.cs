@@ -23,7 +23,7 @@ namespace NetTopologySuite.Geometries
         /// <see cref="GeometryFactory.PrecisionModel"/>,
         /// but the specified <paramref name="factory"/>.
         /// </summary>
-        public OgcCompliantGeometryFactory(ICoordinateSequenceFactory factory)
+        public OgcCompliantGeometryFactory(CoordinateSequenceFactory factory)
             : base(factory)
         { }
 
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Geometries
             : base(pm, srid)
         { }
 
-        public OgcCompliantGeometryFactory(PrecisionModel pm, int srid, ICoordinateSequenceFactory factory)
+        public OgcCompliantGeometryFactory(PrecisionModel pm, int srid, CoordinateSequenceFactory factory)
             : base(pm, srid, factory)
         { }
 
@@ -56,7 +56,7 @@ namespace NetTopologySuite.Geometries
             return CreateLinearRing(coordinates);
         }
 
-        private LinearRing CreateLinearRing(ICoordinateSequence coordinates, bool ccw)
+        private LinearRing CreateLinearRing(CoordinateSequence coordinates, bool ccw)
         {
             if (coordinates != null && Orientation.IsCCW(coordinates) != ccw)
             {
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Geometries
         {
             // null envelope - return empty point geometry
             if (envelope.IsNull)
-                return CreatePoint((ICoordinateSequence)null);
+                return CreatePoint((CoordinateSequence)null);
 
             // point?
             if (envelope.MinX == envelope.MaxX && envelope.MinY == envelope.MaxY)
@@ -117,7 +117,7 @@ namespace NetTopologySuite.Geometries
         /// <remarks>
         /// The <see cref="Polygon.ExteriorRing"/> is guaranteed to be orientated counter-clockwise.
         /// </remarks>
-        public override Polygon CreatePolygon(ICoordinateSequence coordinates)
+        public override Polygon CreatePolygon(CoordinateSequence coordinates)
         {
             var ring = CreateLinearRing(coordinates, true);
             return base.CreatePolygon(ring);

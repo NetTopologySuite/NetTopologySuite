@@ -174,7 +174,7 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Computes whether a ring defined by an <see cref="ICoordinateSequence"/> is
+        /// Computes whether a ring defined by an <see cref="CoordinateSequence"/> is
         /// oriented counter-clockwise.
         /// <list type="Bullet">
         /// <item>The list of points is assumed to have the first and last points equal.</item>
@@ -187,7 +187,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="ring">A <c>CoordinateSequence</c>s forming a ring.</param>
         /// <returns><c>true</c> if the ring is oriented counter-clockwise.</returns>
         /// <exception cref="ArgumentException">Thrown if there are too few points to determine orientation (&lt; 4)</exception>
-        public static bool IsCCW(ICoordinateSequence ring)
+        public static bool IsCCW(CoordinateSequence ring)
         {
             // # of points without closing endpoint
             int nPts = ring.Count - 1;

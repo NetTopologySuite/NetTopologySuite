@@ -16,12 +16,22 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Flag for the x-ordinate 
         /// </summary>
-        X = 1,
+        X = 1 << Ordinate.X,
 
         /// <summary>
         /// Flag for the y-ordinate 
         /// </summary>
-        Y = 2,
+        Y = 1 << Ordinate.Y,
+
+        /// <summary>
+        /// Flag for the z-ordinate 
+        /// </summary>
+        Z = 1 << Ordinate.Z,
+
+        /// <summary>
+        /// Flag for the m-ordinate 
+        /// </summary>
+        M = 1 << Ordinate.M,
 
         /// <summary>
         /// Flag for both x- and y-ordinate
@@ -29,19 +39,9 @@ namespace NetTopologySuite.Geometries
         XY = X | Y,
 
         /// <summary>
-        /// Flag for the z-ordinate 
-        /// </summary>
-        Z = 4,
-
-        /// <summary>
         /// Flag for x-, y- and z-ordinate
         /// </summary>
         XYZ = XY | Z,
-
-        /// <summary>
-        /// Flag for the m-ordinate 
-        /// </summary>
-        M = 8,
 
         /// <summary>
         /// Flag for x-, y- and m-ordinate
@@ -54,120 +54,178 @@ namespace NetTopologySuite.Geometries
         XYZM = XYZ | M,
 
         /// <summary>
-        /// Flag for ordinate at index 2
+        /// Flag for the 1st spatial dimension.
         /// </summary>
-        Ordinate4 = 1 << Ordinate.Ordinate4,
+        Spatial1 = 1 << Ordinate.Spatial1,
+
         /// <summary>
-        /// Flag for ordinate at index 2
+        /// Flag for the 2nd spatial dimension.
         /// </summary>
-        Ordinate5 = 1 << Ordinate.Ordinate5,
+        Spatial2 = 1 << Ordinate.Spatial2,
+
         /// <summary>
-        /// Flag for ordinate at index 2
+        /// Flag for the 3rd spatial dimension.
         /// </summary>
-        Ordinate6 = 1 << Ordinate.Ordinate6,
+        Spatial3 = 1 << Ordinate.Spatial3,
+
         /// <summary>
-        /// Flag for ordinate at index 2
+        /// Flag for the 4th spatial dimension.
         /// </summary>
-        Ordinate7 = 1 << Ordinate.Ordinate7,
+        Spatial4 = 1 << Ordinate.Spatial4,
+
         /// <summary>
-        /// Flag for ordinate at index 2
+        /// Flag for the 5th spatial dimension.
         /// </summary>
-        Ordinate8 = 1 << Ordinate.Ordinate8,
+        Spatial5 = 1 << Ordinate.Spatial5,
+
         /// <summary>
-        /// Flag for ordinate at index 2
+        /// Flag for the 6th spatial dimension.
         /// </summary>
-        Ordinate9 = 1 << Ordinate.Ordinate9,
+        Spatial6 = 1 << Ordinate.Spatial6,
+
         /// <summary>
-        /// Flag for ordinate at index 10
+        /// Flag for the 7th spatial dimension.
         /// </summary>
-        Ordinate10 = 1 << Ordinate.Ordinate10,
+        Spatial7 = 1 << Ordinate.Spatial7,
+
         /// <summary>
-        /// Flag for ordinate at index 11
+        /// Flag for the 8th spatial dimension.
         /// </summary>
-        Ordinate11 = 1 << Ordinate.Ordinate11,
+        Spatial8 = 1 << Ordinate.Spatial8,
+
         /// <summary>
-        /// Flag for ordinate at index 12
+        /// Flag for the 9th spatial dimension.
         /// </summary>
-        Ordinate12 = 1 << Ordinate.Ordinate12,
+        Spatial9 = 1 << Ordinate.Spatial9,
+
         /// <summary>
-        /// Flag for ordinate at index 13
+        /// Flag for the 10th spatial dimension.
         /// </summary>
-        Ordinate13 = 1 << Ordinate.Ordinate13,
+        Spatial10 = 1 << Ordinate.Spatial10,
+
         /// <summary>
-        /// Flag for ordinate at index 14
+        /// Flag for the 11th spatial dimension.
         /// </summary>
-        Ordinate14 = 1 << Ordinate.Ordinate14,
+        Spatial11 = 1 << Ordinate.Spatial11,
+
         /// <summary>
-        /// Flag for ordinate at index 15
+        /// Flag for the 12th spatial dimension.
         /// </summary>
-        Ordinate15 = 1 << Ordinate.Ordinate15,
+        Spatial12 = 1 << Ordinate.Spatial12,
+
         /// <summary>
-        /// Flag for ordinate at index 16
+        /// Flag for the 13th spatial dimension.
         /// </summary>
-        Ordinate16 = 1 << Ordinate.Ordinate16,
+        Spatial13 = 1 << Ordinate.Spatial13,
+
         /// <summary>
-        /// Flag for ordinate at index 17
+        /// Flag for the 14th spatial dimension.
         /// </summary>
-        Ordinate17 = 1 << Ordinate.Ordinate17,
+        Spatial14 = 1 << Ordinate.Spatial14,
+
         /// <summary>
-        /// Flag for ordinate at index 18
+        /// Flag for the 15th spatial dimension.
         /// </summary>
-        Ordinate18 = 1 << Ordinate.Ordinate18,
+        Spatial15 = 1 << Ordinate.Spatial15,
+
         /// <summary>
-        /// Flag for ordinate at index 19
+        /// Flag for the 16th spatial dimension.
         /// </summary>
-        Ordinate19 = 1 << Ordinate.Ordinate19,
+        Spatial16 = 1 << Ordinate.Spatial16,
+
         /// <summary>
-        /// Flag for ordinate at index 20
+        /// Flags for all spatial ordinates.
         /// </summary>
-        Ordinate20 = 1 << Ordinate.Ordinate20,
+        AllSpatialOrdinates = Spatial1 | Spatial2 | Spatial3 | Spatial4 | Spatial5 | Spatial6 | Spatial7 | Spatial8 | Spatial9 | Spatial10 | Spatial11 | Spatial12 | Spatial13 | Spatial14 | Spatial15 | Spatial16,
+
         /// <summary>
-        /// Flag for ordinate at index 21
+        /// Flag for the 1st measure dimension.
         /// </summary>
-        Ordinate21 = 1 << Ordinate.Ordinate21,
+        Measure1 = 1 << Ordinate.Measure1,
+
         /// <summary>
-        /// Flag for ordinate at index 22
+        /// Flag for the 2nd measure dimension.
         /// </summary>
-        Ordinate22 = 1 << Ordinate.Ordinate22,
+        Measure2 = 1 << Ordinate.Measure2,
+
         /// <summary>
-        /// Flag for ordinate at index 23
+        /// Flag for the 3rd measure dimension.
         /// </summary>
-        Ordinate23 = 1 << Ordinate.Ordinate23,
+        Measure3 = 1 << Ordinate.Measure3,
+
         /// <summary>
-        /// Flag for ordinate at index 24
+        /// Flag for the 4th measure dimension.
         /// </summary>
-        Ordinate24 = 1 << Ordinate.Ordinate24,
+        Measure4 = 1 << Ordinate.Measure4,
+
         /// <summary>
-        /// Flag for ordinate at index 25
+        /// Flag for the 5th measure dimension.
         /// </summary>
-        Ordinate25 = 1 << Ordinate.Ordinate25,
+        Measure5 = 1 << Ordinate.Measure5,
+
         /// <summary>
-        /// Flag for ordinate at index 26
+        /// Flag for the 6th measure dimension.
         /// </summary>
-        Ordinate26 = 1 << Ordinate.Ordinate26,
+        Measure6 = 1 << Ordinate.Measure6,
+
         /// <summary>
-        /// Flag for ordinate at index 27
+        /// Flag for the 7th measure dimension.
         /// </summary>
-        Ordinate27 = 1 << Ordinate.Ordinate27,
+        Measure7 = 1 << Ordinate.Measure7,
+
         /// <summary>
-        /// Flag for ordinate at index 28
+        /// Flag for the 8th measure dimension.
         /// </summary>
-        Ordinate28 = 1 << Ordinate.Ordinate28,
+        Measure8 = 1 << Ordinate.Measure8,
+
         /// <summary>
-        /// Flag for ordinate at index 29
+        /// Flag for the 9th measure dimension.
         /// </summary>
-        Ordinate29 = 1 << Ordinate.Ordinate29,
+        Measure9 = 1 << Ordinate.Measure9,
+
         /// <summary>
-        /// Flag for ordinate at index 30
+        /// Flag for the 10th measure dimension.
         /// </summary>
-        Ordinate30 = 1 << Ordinate.Ordinate30,
+        Measure10 = 1 << Ordinate.Measure10,
+
         /// <summary>
-        /// Flag for ordinate at index 31
+        /// Flag for the 11th measure dimension.
         /// </summary>
-        Ordinate31 = 1 << Ordinate.Ordinate31,
+        Measure11 = 1 << Ordinate.Measure11,
+
         /// <summary>
-        /// Flag for ordinate at index 32
+        /// Flag for the 12th measure dimension.
         /// </summary>
-        Ordinate32 = 1 << Ordinate.Ordinate32,
+        Measure12 = 1 << Ordinate.Measure12,
+
+        /// <summary>
+        /// Flag for the 13th measure dimension.
+        /// </summary>
+        Measure13 = 1 << Ordinate.Measure13,
+
+        /// <summary>
+        /// Flag for the 14th measure dimension.
+        /// </summary>
+        Measure14 = 1 << Ordinate.Measure14,
+
+        /// <summary>
+        /// Flag for the 15th measure dimension.
+        /// </summary>
+        Measure15 = 1 << Ordinate.Measure15,
+
+        /// <summary>
+        /// Flag for the 16th measure dimension.
+        /// </summary>
+        Measure16 = 1 << Ordinate.Measure16,
+
+        /// <summary>
+        /// Flags for all non-spatial ordinates.
+        /// </summary>
+        AllMeasureOrdinates = Measure1 | Measure2 | Measure3 | Measure4 | Measure5 | Measure6 | Measure7 | Measure8 | Measure9 | Measure10 | Measure11 | Measure12 | Measure13 | Measure14 | Measure15 | Measure16,
+
+        /// <summary>
+        /// Flags for all recognized ordinates.
+        /// </summary>
+        AllOrdinates = AllSpatialOrdinates | AllMeasureOrdinates,
     }
 }

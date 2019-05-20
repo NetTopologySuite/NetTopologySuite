@@ -13,7 +13,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
     {
         protected const int Size = 100;
 
-        protected abstract ICoordinateSequenceFactory CsFactory { get; }
+        protected abstract CoordinateSequenceFactory CsFactory { get; }
 
         [Test]
         public void TestZeroLength()
@@ -86,7 +86,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             // throws exception if not serializable
             byte[] data = SerializationUtility.Serialize(seq);
             // check round-trip gives same data
-            var seq2 = SerializationUtility.Deserialize<ICoordinateSequence>(data);
+            var seq2 = SerializationUtility.Deserialize<CoordinateSequence>(data);
             Assert.IsTrue(IsEqual(seq2, coords));
         }
 
@@ -148,7 +148,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             return coords;
         }
 
-        protected bool IsAllCoordsEqual(ICoordinateSequence seq, Coordinate coord)
+        protected bool IsAllCoordsEqual(CoordinateSequence seq, Coordinate coord)
         {
             for (int i = 0; i < seq.Count; i++)
             {
@@ -190,7 +190,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         /// <param name="seq"></param>
         /// <param name="coords"></param>
         /// <returns></returns>
-        protected bool IsEqual(ICoordinateSequence seq, Coordinate[] coords)
+        protected bool IsEqual(CoordinateSequence seq, Coordinate[] coords)
         {
             if (seq.Count != coords.Length)
                 return false;

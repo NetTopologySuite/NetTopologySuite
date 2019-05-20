@@ -26,7 +26,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// The <c>Coordinate</c> wrapped by this <c>Point</c>.
         /// </summary>
-        private ICoordinateSequence _coordinates;
+        private CoordinateSequence _coordinates;
 
         /// <summary>
         /// Gets a value to sort the geometry
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public ICoordinateSequence CoordinateSequence => _coordinates;
+        public CoordinateSequence CoordinateSequence => _coordinates;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Point"/> class.
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Geometries
         /// or <c>null</c> to create the empty point.
         /// </param>
         /// <param name="factory"></param>
-        public Point(ICoordinateSequence coordinates, GeometryFactory factory) : base(factory)
+        public Point(CoordinateSequence coordinates, GeometryFactory factory) : base(factory)
         {
             if (coordinates == null)
                 coordinates = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
@@ -77,11 +77,11 @@ namespace NetTopologySuite.Geometries
             if (IsEmpty)
                 return new double[0];
 
-            var ordinateFlag = OrdinatesUtility.ToOrdinatesFlag(ordinate);
+            var ordinateFlag = (Ordinates)(1 << (int)ordinate);
             if ((_coordinates.Ordinates & ordinateFlag) != ordinateFlag)
                 return new[] {Coordinate.NullOrdinate};
 
-            double val = OrdinatesUtility.IndexOfOrdinateInSequence(ordinate, _coordinates) is int ordinateIndex
+            double val = _coordinates.TryGetOrdinateIndex(ordinate, out int ordinateIndex)
                 ? _coordinates.GetOrdinate(0, ordinateIndex)
                 : Coordinate.NullOrdinate;
             return new [] { val };
@@ -266,7 +266,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        protected internal override int CompareToSameClass(object other, IComparer<ICoordinateSequence> comparer)
+        protected internal override int CompareToSameClass(object other, IComparer<CoordinateSequence> comparer)
         {
             return comparer.Compare(CoordinateSequence, ((Point) other).CoordinateSequence);
         }
@@ -311,7 +311,7 @@ namespace NetTopologySuite.Geometries
             }
             set
             {
-                if (OrdinatesUtility.IndexOfOrdinateInSequence(Ordinate.Z, CoordinateSequence) is int ordinateIndex)
+                if (CoordinateSequence.TryGetOrdinateIndex(Ordinate.Z, out int ordinateIndex))
                 {
                     CoordinateSequence.SetOrdinate(0, ordinateIndex, value);
                 }
@@ -330,7 +330,7 @@ namespace NetTopologySuite.Geometries
             }
             set
             {
-                if (OrdinatesUtility.IndexOfOrdinateInSequence(Ordinate.M, CoordinateSequence) is int ordinateIndex)
+                if (CoordinateSequence.TryGetOrdinateIndex(Ordinate.M, out int ordinateIndex))
                 {
                     CoordinateSequence.SetOrdinate(0, ordinateIndex, value);
                 }

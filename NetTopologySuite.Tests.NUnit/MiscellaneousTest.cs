@@ -58,7 +58,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(geometryFactory.CreateMultiLineString(new LineString[] {}).Boundary.IsEmpty);
             Assert.IsTrue(geometryFactory.CreateMultiPoint(new Point[] {}).Boundary.IsEmpty);
 
-            Assert.IsTrue(geometryFactory.CreateLinearRing((ICoordinateSequence) null).IsEmpty);
+            Assert.IsTrue(geometryFactory.CreateLinearRing((CoordinateSequence) null).IsEmpty);
             Assert.IsTrue(geometryFactory.CreateLineString((Coordinate[]) null).IsEmpty);
             Assert.IsTrue(geometryFactory.CreatePolygon(null, null).IsEmpty);
             Assert.IsTrue(geometryFactory.CreateMultiPolygon(null).IsEmpty);
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.IsTrue(geometryFactory.CreateMultiPoint((Point[]) null).IsEmpty);
 
             Assert.AreEqual(-1, (int) (geometryFactory.CreatePoint((Coordinate) null)).BoundaryDimension);
-            Assert.AreEqual(-1, (int) (geometryFactory.CreateLinearRing((ICoordinateSequence) null)).BoundaryDimension);
+            Assert.AreEqual(-1, (int) (geometryFactory.CreateLinearRing((CoordinateSequence) null)).BoundaryDimension);
             Assert.AreEqual(0, (int) (geometryFactory.CreateLineString((Coordinate[]) null)).BoundaryDimension);
             Assert.AreEqual(1, (int) (geometryFactory.CreatePolygon(null, null)).BoundaryDimension);
             Assert.AreEqual(1, (int) (geometryFactory.CreateMultiPolygon(null)).BoundaryDimension);
@@ -74,7 +74,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.AreEqual(-1, (int) (geometryFactory.CreateMultiPoint((Point[]) null)).BoundaryDimension);
 
             Assert.AreEqual(0, (geometryFactory.CreatePoint((Coordinate) null)).NumPoints);
-            Assert.AreEqual(0, (geometryFactory.CreateLinearRing((ICoordinateSequence) null)).NumPoints);
+            Assert.AreEqual(0, (geometryFactory.CreateLinearRing((CoordinateSequence) null)).NumPoints);
             Assert.AreEqual(0, (geometryFactory.CreateLineString((Coordinate[]) null)).NumPoints);
             Assert.AreEqual(0, (geometryFactory.CreatePolygon(null, null)).NumPoints);
             Assert.AreEqual(0, (geometryFactory.CreateMultiPolygon(null)).NumPoints);
@@ -82,7 +82,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.AreEqual(0, (geometryFactory.CreateMultiPoint((Point[]) null)).NumPoints);
 
             Assert.AreEqual(0, (geometryFactory.CreatePoint((Coordinate) null)).Coordinates.Length);
-            Assert.AreEqual(0, (geometryFactory.CreateLinearRing((ICoordinateSequence) null)).Coordinates.Length);
+            Assert.AreEqual(0, (geometryFactory.CreateLinearRing((CoordinateSequence) null)).Coordinates.Length);
             Assert.AreEqual(0, (geometryFactory.CreateLineString((Coordinate[]) null)).Coordinates.Length);
             Assert.AreEqual(0, (geometryFactory.CreatePolygon(null, null)).Coordinates.Length);
             Assert.AreEqual(0, (geometryFactory.CreateMultiPolygon(null)).Coordinates.Length);
@@ -191,7 +191,7 @@ namespace NetTopologySuite.Tests.NUnit
         [Test]
         public void testEmptyLinearRing()
         {
-            var l = geometryFactory.CreateLinearRing((ICoordinateSequence) null);
+            var l = geometryFactory.CreateLinearRing((CoordinateSequence) null);
             Assert.AreEqual(1, (int) l.Dimension);
             Assert.AreEqual(new Envelope(), l.EnvelopeInternal);
             Assert.IsTrue(l.IsSimple);

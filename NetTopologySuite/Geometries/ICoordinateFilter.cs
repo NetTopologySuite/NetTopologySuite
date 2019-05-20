@@ -9,7 +9,7 @@ namespace NetTopologySuite.Geometries
     /// <para/>
     /// <b>Note</b>: it is not recommended to use these filters to mutate the coordinates.
     /// There is no guarantee that the coordinate is the actual object stored in the geometry.
-    /// In particular, modified values may not be preserved if the target Geometry uses a non-default <see cref="ICoordinateSequence"/>.
+    /// In particular, modified values may not be preserved if the target Geometry uses a non-default <see cref="CoordinateSequence"/>.
     /// If in-place mutation is required, use <see cref="ICoordinateSequenceFilter"/>.
     /// </summary>
     /// <seealso cref="Geometry.Apply(ICoordinateFilter)"/>

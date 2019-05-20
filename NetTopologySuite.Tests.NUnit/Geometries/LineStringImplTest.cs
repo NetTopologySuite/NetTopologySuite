@@ -122,7 +122,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(l.IsEmpty);
             Assert.IsTrue(!l.IsClosed);
 
-            var r = geometryFactory.CreateLinearRing((ICoordinateSequence)null);
+            var r = geometryFactory.CreateLinearRing((CoordinateSequence)null);
             Assert.IsTrue(r.IsEmpty);
             Assert.IsTrue(r.IsClosed);
 
