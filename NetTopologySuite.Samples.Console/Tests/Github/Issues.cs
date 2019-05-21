@@ -239,7 +239,6 @@ namespace NetTopologySuite.Samples.Tests.Github
         {
             //arrange
             var rdr = new WKTReader();
-            rdr.RepairRings = true;
             var poly = rdr.Read(
 @"POLYGON ((1.4749999999994841 -5.15,  30 -5.15,  48.9 -2,
 108.1997 -2,  130.25148787313435 0.75647348414179227,

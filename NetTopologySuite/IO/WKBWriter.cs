@@ -14,7 +14,7 @@ namespace NetTopologySuite.IO
     /// otherwise <see cref="Coordinate.Z" /> value is discarded and only X,Y are stored.
     /// </remarks>
     // Thanks to Roberto Acioli for Coordinate.Z patch
-    public class WKBWriter : IBinaryGeometryWriter
+    public class WKBWriter
     {
         /// <summary>Converts a byte array to a hexadecimal string.</summary>
         /// <param name="bytes">A byte array</param>
@@ -82,13 +82,13 @@ namespace NetTopologySuite.IO
 
             //Modify WKB Geometry type
             uint intGeometryType = (uint)geometryType & 0xff;
-            if ((HandleOrdinates & Ordinates.Z) == Ordinates.Z)
+            if (EmitZ)
             {
                 intGeometryType += 1000;
                 if (!Strict) intGeometryType |= 0x80000000;
             }
 
-            if ((HandleOrdinates & Ordinates.M) == Ordinates.M)
+            if (EmitM)
             {
                 intGeometryType += 2000;
                 if (!Strict) intGeometryType |= 0x40000000;
@@ -106,7 +106,7 @@ namespace NetTopologySuite.IO
                 writer.Write(geom.SRID);
         }
 
-        protected ByteOrder EncodingType;
+        public ByteOrder EncodingType { get; protected set; }
 
         /// <summary>
         /// Standard byte size for each complex point.
@@ -168,15 +168,8 @@ namespace NetTopologySuite.IO
             //Allow setting of HandleSRID
             if (handleSRID) _strict = false;
             HandleSRID = handleSRID;
-
-            var handleOrdinates = Ordinates.XY;
-            if (emitZ)
-                handleOrdinates |= Ordinates.Z;
-            if (emitM)
-                handleOrdinates |= Ordinates.M;
-
-            _handleOrdinates = handleOrdinates;
-            CalcCoordinateSize();
+            EmitZ = emitZ;
+            EmitM = emitM;
         }
 
         /// <summary>
@@ -256,9 +249,9 @@ namespace NetTopologySuite.IO
         {
             writer.Write(coordinate.X);
             writer.Write(coordinate.Y);
-            if ((HandleOrdinates & Ordinates.Z) == Ordinates.Z)
+            if (EmitZ)
                 writer.Write(coordinate.Z);
-            if ((HandleOrdinates & Ordinates.M) == Ordinates.M)
+            if (EmitM)
                 //NOTE: Implement
                 writer.Write(double.NaN);
         }
@@ -277,8 +270,8 @@ namespace NetTopologySuite.IO
             bool getM = sequence.HasM;
 
             // test if zm-values should be emitted
-            bool writeZ = (HandleOrdinates & Ordinates.Z) == Ordinates.Z;
-            bool writeM = (HandleOrdinates & Ordinates.M) == Ordinates.M;
+            bool writeZ = EmitZ;
+            bool writeM = EmitM;
 
             for (int index = 0; index < sequence.Count; index++)
             {
@@ -580,8 +573,8 @@ namespace NetTopologySuite.IO
         private void CalcCoordinateSize()
         {
             _coordinateSize = 16;
-            if ((HandleOrdinates & Ordinates.Z) == Ordinates.Z) _coordinateSize += 8;
-            if ((HandleOrdinates & Ordinates.M) == Ordinates.M) _coordinateSize += 8;
+            if (EmitZ) _coordinateSize += 8;
+            if (EmitM) _coordinateSize += 8;
         }
 
         /// <summary>
@@ -591,6 +584,7 @@ namespace NetTopologySuite.IO
         /// <item>0x40000000 flag if geometry's m-ordinate values are written</item>
         /// <item>0x20000000 flag if geometry's SRID value is written</item></list>
         /// </summary>
+        private bool _strict = true;
         public bool Strict
         {
             get => _strict;
@@ -602,8 +596,7 @@ namespace NetTopologySuite.IO
             }
         }
 
-        #region Implementation of IGeometryIOBase
-
+        private bool _handleSRID;
         public bool HandleSRID
         {
             get => _handleSRID;
@@ -615,36 +608,26 @@ namespace NetTopologySuite.IO
             }
         }
 
-        public Ordinates AllowedOrdinates => Ordinates.XYZM;
-
-        private Ordinates _handleOrdinates;
-        private bool _handleSRID;
-        private bool _strict = true;
-
-        public Ordinates HandleOrdinates
+        private bool _emitZ;
+        public bool EmitZ
         {
-            get => _handleOrdinates;
+            get => _emitZ;
             set
             {
-                value = Ordinates.XY | AllowedOrdinates & value;
-                if (value == _handleOrdinates)
-                    return;
-
-                _handleOrdinates = value;
+                _emitZ = value;
                 CalcCoordinateSize();
             }
         }
 
-        #endregion Implementation of IGeometryIOBase
-
-        #region Implementation of IBinaryGeometryWriter
-
-        public ByteOrder ByteOrder
+        private bool _emitM;
+        public bool EmitM
         {
-            get => EncodingType;
-            set { }
+            get => _emitM;
+            set
+            {
+                _emitM = value;
+                CalcCoordinateSize();
+            }
         }
-
-        #endregion Implementation of IBinaryGeometryWriter
     }
 }

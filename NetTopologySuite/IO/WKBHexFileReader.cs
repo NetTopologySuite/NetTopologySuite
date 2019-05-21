@@ -16,14 +16,14 @@ namespace NetTopologySuite.IO
     /// <author>Martin Davis</author>
     public class WKBHexFileReader
     {
-        private readonly IBinaryGeometryReader _wkbReader;
+        private readonly WKBReader _wkbReader;
 
         /// <summary>
         /// Creates a new <see cref="WKBHexFileReader"/> given the
         /// <see cref="WKBReader"/> to use to parse the geometries.
         /// </summary>
         /// <param name="wkbReader">The geometry reader to use</param>
-        public WKBHexFileReader(IBinaryGeometryReader wkbReader)
+        public WKBHexFileReader(WKBReader wkbReader)
         {
             if (wkbReader == null)
                 throw new ArgumentNullException("wkbReader");

@@ -13,7 +13,7 @@ namespace NetTopologySuite.IO
     /// too few points have vertices added,
     /// and non-closed rings are closed).
     /// s</remarks>
-    public class WKBReader : IBinaryGeometryReader
+    public class WKBReader
     {
         /// <summary>
         /// Converts a hexadecimal string to a byte array.
@@ -556,8 +556,6 @@ namespace NetTopologySuite.IO
             return factory.CreateGeometryCollection(geometries);
         }
 
-        #region Implementation of IGeometryIOSettings
-
         public bool HandleSRID { get; set; }
 
         public Ordinates AllowedOrdinates => Ordinates.XYZM & _sequenceFactory.Ordinates;
@@ -574,12 +572,12 @@ namespace NetTopologySuite.IO
             }
         }
 
-        #endregion Implementation of IGeometryIOSettings
-
         /// <summary>
         /// Gets or sets whether invalid linear rings should be fixed
         /// </summary>
-        public bool RepairRings { get => _isStrict;
+        public bool RepairRings
+        {
+            get => _isStrict;
             set => _isStrict = value;
         }
 

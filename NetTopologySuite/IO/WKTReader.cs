@@ -36,7 +36,7 @@ namespace NetTopologySuite.IO
     /// <see cref="WKTReader" /> reads also non-standard "LINEARRING" tags.
     /// </remarks>
     /// </summary>
-    public class WKTReader : ITextGeometryReader
+    public class WKTReader
     {
         private CoordinateSequenceFactory _coordinateSequencefactory;
         private PrecisionModel _precisionModel;
@@ -874,28 +874,5 @@ namespace NetTopologySuite.IO
 
             return factory.CreateGeometryCollection(geometries.ToArray());
         }
-
-        #region Implementation of IGeometryIOSettings
-
-        public bool HandleSRID
-        {
-            get => true;
-            set { }
-        }
-
-        public Ordinates AllowedOrdinates => Ordinates.XYZ;
-
-        public Ordinates HandleOrdinates
-        {
-            get => AllowedOrdinates;
-            set { }
-        }
-
-        /// <summary>
-        /// Gets or sets whether invalid linear rings should be fixed
-        /// </summary>
-        public bool RepairRings { get; set; }
-
-        #endregion
     }
 }

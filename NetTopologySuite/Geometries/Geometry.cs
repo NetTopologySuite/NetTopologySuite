@@ -2102,23 +2102,4 @@ namespace NetTopologySuite.Geometries
         }
 
     }
-
-    /// <summary>
-    /// Extension Methods for geometries
-    /// </summary>
-    public static class GeometryEx
-    {
-        /// <summary>
-        /// Function to encode <paramref name="self"/> to an array of <see cref="byte"/>s. If assigned, <paramref name="writer"/> is used.
-        /// </summary>
-        /// <param name="self">The geometry to encode</param>
-        /// <param name="writer">The writer to use</param>
-        /// <returns>An array of <see cref="byte"/>s, that represent <paramref name="self"/></returns>
-        public static byte[] AsBinary(this Geometry self, IBinaryGeometryWriter writer)
-        {
-            return writer == null
-                ? self.AsBinary()
-                : writer.Write(self);
-        }
-    }
 }

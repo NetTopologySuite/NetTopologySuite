@@ -19,7 +19,7 @@ namespace NetTopologySuite.IO
     /// not define a special tag for LinearRings. The standard tag to use is
     /// "LINESTRING".
     /// </summary>
-    public class WKTWriter : ITextGeometryWriter
+    public class WKTWriter
     {
         /// <summary>
         /// Generates the WKT for a <c>Point</c> specified by a <see cref="Coordinate"/>.
@@ -939,34 +939,5 @@ namespace NetTopologySuite.IO
             for (int i = 0; i < level; i++)
                 writer.Write(_indentTabStr);
         }
-
-        #region Implementation of IGeometryIOSettings
-
-        public bool HandleSRID
-        {
-            get => EmitSRID;
-            set => EmitSRID = value;
-        }
-
-        public Ordinates AllowedOrdinates => Ordinates.XYZM;
-
-        public Ordinates HandleOrdinates
-        {
-            get
-            {
-                var ret = Ordinates.XY;
-                if (EmitZ) ret |= Ordinates.Z;
-                if (EmitM) ret |= Ordinates.M;
-                return ret;
-            }
-            set
-            {
-                value &= AllowedOrdinates;
-                if ((value & Ordinates.Z) != 0) EmitZ = true;
-                if ((value & Ordinates.M) != 0) EmitM = true;
-            }
-        }
-
-        #endregion
     }
 }
