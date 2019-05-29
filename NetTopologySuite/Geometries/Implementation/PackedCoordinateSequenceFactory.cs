@@ -72,7 +72,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             int dimension = 2;
             int measures = 0;
-            if (coordinates != null && coordinates.Length > 1 && coordinates[0] != null)
+            if (coordinates != null && coordinates.Length > 0 && coordinates[0] != null)
             {
                 var first = coordinates[0];
                 dimension = Coordinates.Dimension(first);
