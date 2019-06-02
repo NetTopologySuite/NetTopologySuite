@@ -1005,6 +1005,11 @@ namespace NetTopologySuite.Geometries
         /// <returns><c>true</c> if the two <code>Geometry</code>s are topologically equal</returns>
         public virtual bool EqualsTopologically(Geometry g)
         {
+            if (g is null)
+            {
+                return false;
+            }
+
             // short-circuit test
             if (!EnvelopeInternal.Equals(g.EnvelopeInternal))
                 return false;
