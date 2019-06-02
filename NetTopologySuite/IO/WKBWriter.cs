@@ -252,8 +252,7 @@ namespace NetTopologySuite.IO
             if (EmitZ)
                 writer.Write(coordinate.Z);
             if (EmitM)
-                //NOTE: Implement
-                writer.Write(double.NaN);
+                writer.Write(coordinate.M);
         }
 
         protected void Write(CoordinateSequence sequence, bool emitSize, BinaryWriter writer)
