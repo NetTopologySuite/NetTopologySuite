@@ -82,13 +82,13 @@ namespace NetTopologySuite.IO
 
             //Modify WKB Geometry type
             uint intGeometryType = (uint)geometryType & 0xff;
-            if (EmitZ)
+            if ((HandleOrdinates & Ordinates.Z) == Ordinates.Z)
             {
                 intGeometryType += 1000;
                 if (!Strict) intGeometryType |= 0x80000000;
             }
 
-            if (EmitM)
+            if ((HandleOrdinates & Ordinates.M) == Ordinates.M)
             {
                 intGeometryType += 2000;
                 if (!Strict) intGeometryType |= 0x40000000;
@@ -168,8 +168,14 @@ namespace NetTopologySuite.IO
             //Allow setting of HandleSRID
             if (handleSRID) _strict = false;
             HandleSRID = handleSRID;
-            EmitZ = emitZ;
-            EmitM = emitM;
+
+            var handleOrdinates = Ordinates.XY;
+            if (emitZ)
+                handleOrdinates |= Ordinates.Z;
+            if (emitM)
+                handleOrdinates |= Ordinates.M;
+            _handleOrdinates = handleOrdinates;
+            CalcCoordinateSize();
         }
 
         /// <summary>
@@ -249,9 +255,9 @@ namespace NetTopologySuite.IO
         {
             writer.Write(coordinate.X);
             writer.Write(coordinate.Y);
-            if (EmitZ)
+            if ((HandleOrdinates & Ordinates.Z) == Ordinates.Z)
                 writer.Write(coordinate.Z);
-            if (EmitM)
+            if ((HandleOrdinates & Ordinates.M) == Ordinates.M)
                 writer.Write(coordinate.M);
         }
 
@@ -269,8 +275,8 @@ namespace NetTopologySuite.IO
             bool getM = sequence.HasM;
 
             // test if zm-values should be emitted
-            bool writeZ = EmitZ;
-            bool writeM = EmitM;
+            bool writeZ = (HandleOrdinates & Ordinates.Z) == Ordinates.Z;
+            bool writeM = (HandleOrdinates & Ordinates.M) == Ordinates.M;
 
             for (int index = 0; index < sequence.Count; index++)
             {
@@ -572,8 +578,8 @@ namespace NetTopologySuite.IO
         private void CalcCoordinateSize()
         {
             _coordinateSize = 16;
-            if (EmitZ) _coordinateSize += 8;
-            if (EmitM) _coordinateSize += 8;
+            if ((HandleOrdinates & Ordinates.Z) == Ordinates.Z) _coordinateSize += 8;
+            if ((HandleOrdinates & Ordinates.M) == Ordinates.M) _coordinateSize += 8;
         }
 
         /// <summary>
@@ -607,24 +613,40 @@ namespace NetTopologySuite.IO
             }
         }
 
-        private bool _emitZ;
-        public bool EmitZ
-        {
-            get => _emitZ;
-            set
-            {
-                _emitZ = value;
-                CalcCoordinateSize();
-            }
-        }
+        /// <summary>
+        /// Gets the <see cref="Ordinates"/> that this class can write.
+        /// </summary>
+        public static readonly Ordinates AllowedOrdinates = Ordinates.XYZM;
 
-        private bool _emitM;
-        public bool EmitM
+        private Ordinates _handleOrdinates;
+
+        /// <summary>
+        /// Gets or sets the maximum <see cref="Ordinates"/> to write out.
+        /// The default is equivalent to <see cref="AllowedOrdinates"/>.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The purpose of this property is to <b>restrict</b> what gets written out to ensure that,
+        /// e.g., Z values are never written out even if present on a geometry instance.  Ordinates
+        /// that are not present on a geometry instance will be omitted regardless of this value.
+        /// </para>
+        /// <para>
+        /// Flags not present in <see cref="AllowedOrdinates"/> are silently ignored.
+        /// </para>
+        /// <para>
+        /// <see cref="Ordinates.X"/> and <see cref="Ordinates.Y"/> are always present.
+        /// </para>
+        /// </remarks>
+        public Ordinates HandleOrdinates
         {
-            get => _emitM;
+            get => _handleOrdinates;
             set
             {
-                _emitM = value;
+                value = Ordinates.XY | AllowedOrdinates & value;
+                if (value == _handleOrdinates)
+                    return;
+
+                _handleOrdinates = value;
                 CalcCoordinateSize();
             }
         }
