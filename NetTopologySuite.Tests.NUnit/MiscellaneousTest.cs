@@ -317,8 +317,8 @@ namespace NetTopologySuite.Tests.NUnit
             var g = (LineString) reader.Read("LINESTRING(10 10, 20 10, 15 20)");
             Assert.IsTrue(g.Boundary is MultiPoint);
             var boundary = (MultiPoint) g.Boundary;
-            Assert.IsTrue(boundary.GetGeometryN(0).Equals(g.StartPoint));
-            Assert.IsTrue(boundary.GetGeometryN(1).Equals(g.EndPoint));
+            Assert.IsTrue(boundary.GetGeometryN(0).EqualsTopologically(g.StartPoint));
+            Assert.IsTrue(boundary.GetGeometryN(1).EqualsTopologically(g.EndPoint));
         }
 
         [Test]
@@ -504,7 +504,7 @@ namespace NetTopologySuite.Tests.NUnit
         {
             var p1 = new GeometryFactory().CreatePoint((Coordinate) null);
             var p2 = new GeometryFactory().CreatePoint(new Coordinate(5, 5));
-            Assert.AreEqual(false, p1.Equals(p2));
+            Assert.AreEqual(false, p1.EqualsTopologically(p2));
             Assert.AreEqual(true, p1.Disjoint(p2));
             Assert.AreEqual(false, p1.Intersects(p2));
             Assert.AreEqual(false, p1.Touches(p2));
@@ -513,7 +513,7 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.AreEqual(false, p1.Contains(p2));
             Assert.AreEqual(false, p1.Overlaps(p2));
 
-            Assert.AreEqual(false, p2.Equals(p1));
+            Assert.AreEqual(false, p2.EqualsTopologically(p1));
             Assert.AreEqual(true, p2.Disjoint(p1));
             Assert.AreEqual(false, p2.Intersects(p1));
             Assert.AreEqual(false, p2.Touches(p1));

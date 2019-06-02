@@ -51,7 +51,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(a.Contains(b) == a.Relate(b).IsContains());
             Assert.IsTrue(a.Crosses(b) == a.Relate(b).IsCrosses(a.Dimension, b.Dimension));
             Assert.IsTrue(a.Disjoint(b) == a.Relate(b).IsDisjoint());
-            Assert.IsTrue(a.Equals(b) == a.Relate(b).IsEquals(a.Dimension, b.Dimension));
+            Assert.IsTrue(a.EqualsTopologically(b) == a.Relate(b).IsEquals(a.Dimension, b.Dimension));
             Assert.IsTrue(a.Intersects(b) == a.Relate(b).IsIntersects());
             Assert.IsTrue(a.Overlaps(b) == a.Relate(b).IsOverlaps(a.Dimension, b.Dimension));
             Assert.IsTrue(a.Touches(b) == a.Relate(b).IsTouches(a.Dimension, b.Dimension));

@@ -77,7 +77,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var m2 = (MultiPoint)reader.Read("MULTIPOINT (20.564 46.3493254, 45 32, 23 54)");
 
             Assert.That(m1, Is.EqualTo(m2).Using(GeometryTestCase.EqualityComparer));
-            Assert.IsTrue(m1.Equals(m2));
+            Assert.IsTrue(m1.EqualsTopologically(m2));
         }
     }
 }

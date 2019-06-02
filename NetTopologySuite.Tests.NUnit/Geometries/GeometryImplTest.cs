@@ -137,7 +137,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         private void DoTestEquals(Geometry a, Geometry b, bool equalsGeometry,
             bool equalsObject, bool equalsExact, bool equalsHash)
         {
-            Assert.AreEqual(equalsGeometry, a.Equals(b));
+            Assert.AreEqual(equalsGeometry, a.EqualsTopologically(b));
             Assert.AreEqual(equalsObject, a.Equals((object) b));
             Assert.AreEqual(equalsExact, a.EqualsExact(b));
             Assert.AreEqual(equalsHash, a.GetHashCode() == b.GetHashCode());

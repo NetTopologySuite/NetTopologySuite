@@ -23,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var p1 = (Point)reader.Read("POINT(1.234 5.678)");
             var p2 = (Point)reader.Read("POINT(1.234 5.678)");
-            Assert.IsTrue(p1.Equals(p2));
+            Assert.IsTrue(p1.EqualsTopologically(p2));
         }
 
         [Test]
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var p1 = (Point)reader.Read("POINT(1.23 5.67)");
             var p2 = (Point)reader.Read("POINT(1.23 5.67)");
-            Assert.IsTrue(p1.Equals(p2));
+            Assert.IsTrue(p1.EqualsTopologically(p2));
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var p1 = (Point)reader.Read("POINT(1.235 5.678)");
             var p2 = (Point)reader.Read("POINT(1.234 5.678)");
-            Assert.IsTrue(!p1.Equals(p2));
+            Assert.IsTrue(!p1.EqualsTopologically(p2));
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var p1 = (Point)reader.Read("POINT(1.2334 5.678)");
             var p2 = (Point)reader.Read("POINT(1.2333 5.678)");
-            Assert.IsTrue(p1.Equals(p2));
+            Assert.IsTrue(p1.EqualsTopologically(p2));
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var p1 = (Point)reader.Read("POINT(1.2334 5.678)");
             var p2 = (Point)reader.Read("POINT(1.2335 5.678)");
-            Assert.IsTrue(!p1.Equals(p2));
+            Assert.IsTrue(!p1.EqualsTopologically(p2));
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var p1 = (Point)reader.Read("POINT(1.2324 5.678)");
             var p2 = (Point)reader.Read("POINT(1.2325 5.678)");
-            Assert.IsTrue(!p1.Equals(p2));
+            Assert.IsTrue(!p1.EqualsTopologically(p2));
         }
 
         [Test]
@@ -76,12 +76,12 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var p2 = (Point)reader.Read("POINT(-1.2325 5.678)");
             var p3 = (Point)reader.Read("POINT(-1.2324 5.678)");
 
-            Assert.IsTrue(!p1.Equals(p2));
-            Assert.IsTrue(p3.Equals(p2));
+            Assert.IsTrue(!p1.EqualsTopologically(p2));
+            Assert.IsTrue(p3.EqualsTopologically(p2));
 
-            Assert.IsTrue(p1.Equals(pLo));
-            Assert.IsTrue(p2.Equals(pHi));
-            Assert.IsTrue(p3.Equals(pHi));
+            Assert.IsTrue(p1.EqualsTopologically(pLo));
+            Assert.IsTrue(p2.EqualsTopologically(pHi));
+            Assert.IsTrue(p3.EqualsTopologically(pHi));
         }
 
         [Test]

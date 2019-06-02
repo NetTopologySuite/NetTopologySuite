@@ -73,7 +73,7 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
             _document.Load(_xmlreader);
             Write(_document.InnerXml);
             _result = _reader.Read(_document);
-            Debug.Assert(_point.Equals(_result), "ERROR!");
+            Debug.Assert(_point.EqualsTopologically(_result), "ERROR!");
 
             //string gml = document.InnerXml;
             //gml = gml.Replace("gml:", "");
@@ -84,21 +84,21 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
             _document.Load(_xmlreader);
             Write(_document.InnerXml);
             _result = _reader.Read(_document);
-            Debug.Assert(_line.Equals(_result), "ERROR!");
+            Debug.Assert(_line.EqualsTopologically(_result), "ERROR!");
 
             _xmlreader = _writer.Write(_polygon);
             _document = new XmlDocument();
             _document.Load(_xmlreader);
             Write(_document.InnerXml);
             _result = _reader.Read(_document);
-            Debug.Assert(_polygon.Equals(_result), "ERROR!");
+            Debug.Assert(_polygon.EqualsTopologically(_result), "ERROR!");
 
             _xmlreader = _writer.Write(_multiPoint);
             _document = new XmlDocument();
             _document.Load(_xmlreader);
             Write(_document);
             _result = _reader.Read(_document);
-            Debug.Assert(_multiPoint.Equals(_result), "ERROR!");
+            Debug.Assert(_multiPoint.EqualsTopologically(_result), "ERROR!");
 
             var multiLineString = new WKTReader().Read("MULTILINESTRING ((10 10, 20 20), (30 30, 40 40, 50 50, 70 80, 990 210), (2000.1 22, 457891.2334 3456.2, 33333 44444))") as MultiLineString;
             _xmlreader = _writer.Write(multiLineString);
@@ -106,7 +106,7 @@ namespace NetTopologySuite.Samples.SimpleTests.ShapeTests
             _document.Load(_xmlreader);
             Write(_document.InnerXml);
             _result = _reader.Read(_document);
-            Debug.Assert(multiLineString.Equals(_result), "ERROR!");
+            Debug.Assert(multiLineString.EqualsTopologically(_result), "ERROR!");
 
             var multiPolygon = new WKTReader().Read("MULTIPOLYGON (((10 10, 10 20, 20 20, 20 10, 10 10), (12 12, 18 12, 18 18, 12 18, 12 12), (14 14, 16 14, 16 16, 14 16, 14 14)), ((30 30, 30 40, 40 40, 40 30, 30 30), (32 32, 38 32, 38 38, 32 38, 32 32)))") as MultiPolygon;
             _xmlreader = _writer.Write(multiPolygon);

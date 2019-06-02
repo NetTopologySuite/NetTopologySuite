@@ -109,11 +109,8 @@ namespace NetTopologySuite.Geometries
     /// <see cref="EqualsTopologically(Geometry)"/> method.
     /// It implements the SFS definition of point-set equality
     /// defined in terms of the DE-9IM matrix.
-    /// To support the SFS naming convention, the method
-    /// <see cref="Equals(Geometry)"/> is also provided as a synonym.
-    /// However, due to the potential for confusion with <see cref="Equals(object)"/>
-    /// its use is discouraged.
-    /// <para/>
+    /// </para>
+    /// <para>
     /// Since <see cref="Equals(object)"/> and <see cref="GetHashCode"/> are overridden,
     /// Geometries can be used effectively in .Net collections.
     /// </para>
@@ -982,28 +979,6 @@ namespace NetTopologySuite.Geometries
             CheckNotGeometryCollection(g);
 
             return RelateOp.Relate(this, g);
-        }
-
-        /// <summary>
-        /// Tests whether this geometry is
-        /// topologically equal to the argument geometry.
-        /// <para/>
-        /// This method is included for backward compatibility reasons.
-        /// It has been superseded by the <seealso cref="EqualsTopologically"/> method,
-        /// which has been named to clearly denote its functionality.
-        /// <para/>
-        /// This method should <b>NOT</b> be confused with the method
-        /// <seealso cref="Equals(object)"/>, which implements
-        /// an exact equality comparison.
-        /// </summary>
-        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c></param>
-        /// <returns><c>true</c> if the two <c>Geometry</c>s are topologically equal.</returns>
-        /// <seealso cref="EqualsTopologically"/>
-        public bool Equals(Geometry g)
-        {
-            if (g == null)
-                return false;
-            return EqualsTopologically(g);
         }
 
         /// <summary>

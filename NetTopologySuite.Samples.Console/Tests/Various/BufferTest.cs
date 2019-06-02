@@ -99,7 +99,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             var result = geom.Buffer(0);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.IsValid);
-            Assert.IsTrue(GeometryCollection.Empty.Equals(result));
+            Assert.IsTrue(GeometryCollection.Empty.EqualsTopologically(result));
         }
     }
 }
