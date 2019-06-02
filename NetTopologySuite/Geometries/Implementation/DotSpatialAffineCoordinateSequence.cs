@@ -142,7 +142,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="z"></param>
         /// <param name="m"></param>
         public DotSpatialAffineCoordinateSequence(double[] xy, double[] z, double[] m)
-            : base(xy?.Length / 2 ?? 0, 2 + (z is null ? 1 : 0) + (m is null ? 1 : 0), m is null ? 1 : 0)
+            : base(xy?.Length / 2 ?? 0, 2 + (z is null ? 0 : 1) + (m is null ? 0 : 1), m is null ? 0 : 1)
         {
             _xy = xy;
             _z = z;
