@@ -27,8 +27,6 @@ deploy:
     provider: script
     script:
       - dotnet nuget push ./Release/AnyCPU/*.nupkg -s https://www.myget.org/F/nettopologysuite/api/v2/package -k $MYGET_API_KEY
-      # https://myget.uservoice.com/forums/135675-general/suggestions/36274102-
-      - dotnet nuget push ./Release/AnyCPU/*.snupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
     skip_cleanup: true
 
 
