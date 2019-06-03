@@ -83,7 +83,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             //Console.WriteLine("   Centre = " + actualCentre + "   Radius = " + actualRadius);
 
             var expected = reader.Read(expectedWKT);
-            bool isEqual = actual.EqualsTopologically(expected);
+            bool isEqual = actual.Equals(expected);
             // need this hack because apparently equals does not work for MULTIPOINT EMPTY
             if (actual.IsEmpty && expected.IsEmpty)
                 isEqual = true;

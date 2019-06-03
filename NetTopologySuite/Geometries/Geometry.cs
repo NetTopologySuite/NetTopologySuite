@@ -109,6 +109,10 @@ namespace NetTopologySuite.Geometries
     /// <see cref="EqualsTopologically(Geometry)"/> method.
     /// It implements the SFS definition of point-set equality
     /// defined in terms of the DE-9IM matrix.
+    /// To support the SFS naming convention, the method
+    /// <see cref="Equals(Geometry)"/> is also provided as a synonym.
+    /// However, due to the potential for confusion with <see cref="Equals(object)"/>
+    /// its use is discouraged.
     /// </para>
     /// <para>
     /// Since <see cref="Equals(object)"/> and <see cref="GetHashCode"/> are overridden,
@@ -982,6 +986,28 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Tests whether this geometry is
+        /// topologically equal to the argument geometry.
+        /// <para/>
+        /// This method is included for backward compatibility reasons.
+        /// It has been superseded by the <seealso cref="EqualsTopologically"/> method,
+        /// which has been named to clearly denote its functionality.
+        /// <para/>
+        /// This method should <b>NOT</b> be confused with the method
+        /// <seealso cref="Equals(object)"/>, which implements
+        /// an exact equality comparison.
+        /// </summary>
+        /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c></param>
+        /// <returns><c>true</c> if the two <c>Geometry</c>s are topologically equal.</returns>
+        /// <seealso cref="EqualsTopologically"/>
+        public bool Equals(Geometry g)
+        {
+            if (g == null)
+                return false;
+            return EqualsTopologically(g);
+        }
+
+        /// <summary>
         /// Tests whether this geometry is topologically equal to the argument geometry
         /// as defined by the SFS <c>Equals</c> predicate.
         /// </summary>
@@ -1005,11 +1031,6 @@ namespace NetTopologySuite.Geometries
         /// <returns><c>true</c> if the two <code>Geometry</code>s are topologically equal</returns>
         public virtual bool EqualsTopologically(Geometry g)
         {
-            if (g is null)
-            {
-                return false;
-            }
-
             // short-circuit test
             if (!EnvelopeInternal.Equals(g.EnvelopeInternal))
                 return false;

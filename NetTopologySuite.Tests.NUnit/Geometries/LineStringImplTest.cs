@@ -56,7 +56,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var l1 = (LineString)reader.Read("LINESTRING(1.111 2.222, 3.333 4.444)");
             var l2 = (LineString)reader.Read("LINESTRING(1.111 2.222, 3.333 4.444)");
-            Assert.IsTrue(l1.EqualsTopologically(l2));
+            Assert.IsTrue(l1.Equals(l2));
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var l1 = (LineString)reader.Read("LINESTRING(1.111 2.222, 3.333 4.444)");
             var l2 = (LineString)reader.Read("LINESTRING(3.333 4.444, 1.111 2.222)");
-            Assert.IsTrue(l1.EqualsTopologically(l2));
+            Assert.IsTrue(l1.Equals(l2));
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var l1 = (LineString)reader.Read("LINESTRING(1.111 2.222, 3.333 4.444)");
             var l2 = (LineString)reader.Read("LINESTRING(3.333 4.443, 1.111 2.222)");
-            Assert.IsTrue(!l1.EqualsTopologically(l2));
+            Assert.IsTrue(!l1.Equals(l2));
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var l1 = (LineString)reader.Read("LINESTRING(1.111 2.222, 3.333 4.444)");
             var l2 = (LineString)reader.Read("LINESTRING(3.333 4.4445, 1.111 2.222)");
-            Assert.IsTrue(!l1.EqualsTopologically(l2));
+            Assert.IsTrue(!l1.Equals(l2));
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var l1 = (LineString)reader.Read("LINESTRING(1.111 2.222, 3.333 4.444)");
             var l2 = (LineString)reader.Read("LINESTRING(3.333 4.4446, 1.111 2.222)");
-            Assert.IsTrue(!l1.EqualsTopologically(l2));
+            Assert.IsTrue(!l1.Equals(l2));
         }
 
         [Test]
@@ -96,7 +96,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var l1 = (LineString)reader.Read("LINESTRING(1.111 2.222, 3.333 4.444, 5.555 6.666)");
             var l2 = (LineString)reader.Read("LINESTRING(1.111 2.222, 3.333 4.444, 5.555 6.666)");
-            Assert.IsTrue(l1.EqualsTopologically(l2));
+            Assert.IsTrue(l1.Equals(l2));
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         {
             var l1 = (LineString)reader.Read("LINESTRING(1.111 2.222, 5.555 6.666, 3.333 4.444)");
             var l2 = (LineString)reader.Read("LINESTRING(1.111 2.222, 3.333 4.444, 5.555 6.666)");
-            Assert.IsTrue(!l1.EqualsTopologically(l2));
+            Assert.IsTrue(!l1.Equals(l2));
         }
 
         [Test]
@@ -148,7 +148,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1000), 0));
             var l1 = (MultiLineString)reader.Read("MULTILINESTRING((1732328800 519578384, 1732026179 519976285, 1731627364 519674014, 1731929984 519276112, 1732328800 519578384))");
             var l2 = (MultiLineString)reader.Read("MULTILINESTRING((1731627364 519674014, 1731929984 519276112, 1732328800 519578384, 1732026179 519976285, 1731627364 519674014))");
-            Assert.IsTrue(l1.EqualsTopologically(l2));
+            Assert.IsTrue(l1.Equals(l2));
         }
 
         [Test]
@@ -157,7 +157,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
             var l1 = (MultiLineString)reader.Read("MULTILINESTRING((1732328800 519578384, 1732026179 519976285, 1731627364 519674014, 1731929984 519276112, 1732328800 519578384))");
             var l2 = (MultiLineString)reader.Read("MULTILINESTRING((1731627364 519674014, 1731929984 519276112, 1732328800 519578384, 1732026179 519976285, 1731627364 519674014))");
-            Assert.IsTrue(l1.EqualsTopologically(l2));
+            Assert.IsTrue(l1.Equals(l2));
         }
 
         [Test]

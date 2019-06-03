@@ -94,7 +94,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
                 {
                     return true;
                 }
-                if (!exact && element.EqualsTopologically(g))
+                if (!exact && element.Equals(g))
                 {
                     return true;
                 }

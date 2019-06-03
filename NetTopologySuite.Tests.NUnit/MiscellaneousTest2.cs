@@ -118,7 +118,7 @@ namespace NetTopologySuite.Tests.NUnit
             var expected =
                 reader.Read("MULTILINESTRING ((0 0, 50 50), (50 50, 100 100), (0 100, 50 50), (50 50, 100 0))")
                     .Normalized();
-            Assert.IsTrue(expected.EqualsTopologically(nodedLineStrings.Normalized()));
+            Assert.IsTrue(expected.Equals(nodedLineStrings.Normalized()));
         }
         [Test]
         public void testQuickPolygonUnion()  {
