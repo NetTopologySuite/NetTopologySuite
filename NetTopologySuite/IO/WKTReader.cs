@@ -613,7 +613,19 @@ namespace NetTopologySuite.IO
             string type = GetNextWord(tokens);
             if (type.Equals("SRID", StringComparison.OrdinalIgnoreCase))
             {
+                var tok = tokens.NextToken(true);
+                if (!(tok is CharToken eq && ((char)eq.Object) == '='))
+                {
+                    return null;
+                }
+
                 srid = Convert.ToInt32(GetNextNumber(tokens));
+                tok = tokens.NextToken(true);
+                if (!(tok is CharToken semi && ((char)semi.Object) == ';'))
+                {
+                    return null;
+                }
+
                 type = GetNextWord(tokens);
 
                 //sridValue = tokens[2].ToString();

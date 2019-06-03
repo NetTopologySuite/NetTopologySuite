@@ -457,6 +457,19 @@ namespace NetTopologySuite.Tests.NUnit.IO
             Assert.That(point1.GetOrdinate(0, Ordinate.Y), Is.EqualTo(point2.GetOrdinate(0, Ordinate.Y)).Within(1E-7));
         }
 
+        [Test]
+        public void TestReadSRID()
+        {
+            // arrange
+            int srid = new Random().Next();
+
+            // act
+            var pt = reader2D.Read($"SRID={srid};POINT EMPTY");
+
+            // assert
+            Assert.That(pt.SRID, Is.EqualTo(srid));
+        }
+
         private static CoordinateSequence CreateSequence(Ordinates ordinateFlags, double[] xy)
         {
             // get the number of dimension to verify size of provided ordinate values array
