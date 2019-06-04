@@ -32,15 +32,27 @@ namespace NetTopologySuite.Geometries
         ///</summary>
         public const double NullOrdinate = double.NaN;
 
+        private protected double _x;
+
+        private protected double _y;
+
         /// <summary>
         /// Gets or sets the X-ordinate value.
         /// </summary>
-        public double X { get; set; }
+        public double X
+        {
+            get => _x;
+            set => _x = value;
+        }
 
         /// <summary>
         /// Gets or sets the Y-ordinate value.
         /// </summary>
-        public double Y { get; set; }
+        public double Y
+        {
+            get => _y;
+            set => _y = value;
+        }
 
         /// <summary>
         /// Gets or sets the Z-ordinate value, if supported.

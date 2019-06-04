@@ -5,7 +5,7 @@ namespace NetTopologySuite.Geometries
     [Serializable]
     internal sealed class ExtraDimensionalCoordinate : Coordinate
     {
-        private readonly double[] _values;
+        private readonly double[] _extraValues;
 
         public ExtraDimensionalCoordinate(int dimension, int measures)
         {
@@ -24,40 +24,42 @@ namespace NetTopologySuite.Geometries
                 throw new ArgumentException("Must have at least two spatial dimensions.");
             }
 
-            _values = new double[dimension];
+            _extraValues = new double[dimension - 2];
             Measures = measures;
         }
 
-        private ExtraDimensionalCoordinate(double[] values, int measures)
+        private ExtraDimensionalCoordinate(double x, double y, double[] extraValues, int measures)
         {
-            _values = values;
+            X = x;
+            Y = y;
+            _extraValues = extraValues;
             Measures = measures;
         }
 
-        public int Dimension => _values.Length;
+        public int Dimension => _extraValues.Length + 2;
 
         public int Measures { get; }
 
         public override double Z
         {
-            get => (Dimension - Measures > 2) ? _values[2] : NullOrdinate;
+            get => Dimension - Measures > 2 ? _extraValues[0] : NullOrdinate;
             set
             {
                 if (Dimension - Measures > 2)
                 {
-                    _values[2] = value;
+                    _extraValues[0] = value;
                 }
             }
         }
 
         public override double M
         {
-            get => Measures > 0 ? _values[Dimension - Measures] : NullOrdinate;
+            get => Measures > 0 ? _extraValues[_extraValues.Length - Measures] : NullOrdinate;
             set
             {
                 if (Measures > 0)
                 {
-                    _values[Dimension - Measures] = value;
+                    _extraValues[_extraValues.Length - Measures] = value;
                 }
             }
         }
@@ -70,12 +72,25 @@ namespace NetTopologySuite.Geometries
 
         private ref double OrdinateRef(int ordinateIndex)
         {
-            if ((uint)ordinateIndex < (uint)_values.Length)
+            if (ordinateIndex == 0)
             {
-                return ref _values[ordinateIndex];
+                return ref _x;
             }
 
-            throw new ArgumentOutOfRangeException(nameof(ordinateIndex), ordinateIndex, "Ordinate index is not present in this coordinate.");
+            if (ordinateIndex == 1)
+            {
+                return ref _y;
+            }
+
+            ordinateIndex -= 2;
+
+            // use uint instead of int for comparisons, in order to handle negatives more gracefully
+            if ((uint)ordinateIndex >= (uint)_extraValues.Length)
+            {
+                throw new ArgumentOutOfRangeException(nameof(ordinateIndex), ordinateIndex + 2, "Not present in this coordinate.");
+            }
+
+            return ref _extraValues[ordinateIndex];
         }
 
         public override double this[Ordinate ordinate]
@@ -86,13 +101,24 @@ namespace NetTopologySuite.Geometries
 
         private ref double OrdinateRef(Ordinate ordinate)
         {
-            // use uint instead of int for comparisons, in order to handle negatives more gracefully
+            if (ordinate == Ordinate.X)
+            {
+                return ref _x;
+            }
+
+            if (ordinate == Ordinate.Y)
+            {
+                return ref _y;
+            }
+
             int spatial = Dimension - Measures;
+
+            // use uint instead of int for comparisons, in order to handle negatives more gracefully
             if ((uint)ordinate < (uint)Ordinate.Measure1)
             {
                 if ((uint)ordinate < (uint)spatial)
                 {
-                    return ref _values[(int)ordinate];
+                    return ref _extraValues[(int)(ordinate - 2)];
                 }
             }
             else
@@ -100,11 +126,11 @@ namespace NetTopologySuite.Geometries
                 ordinate -= Ordinate.Measure1;
                 if ((uint)ordinate < (uint)Measures)
                 {
-                    return ref _values[(int)ordinate + spatial];
+                    return ref _extraValues[(int)(ordinate - 2) + spatial];
                 }
             }
 
-            throw new ArgumentOutOfRangeException(nameof(ordinate), ordinate, "Ordinate is not present in this coordinate.");
+            throw new ArgumentOutOfRangeException(nameof(ordinate), ordinate, "Not present in this coordinate.");
         }
 
         public override Coordinate CoordinateValue
@@ -112,13 +138,29 @@ namespace NetTopologySuite.Geometries
             get => this;
             set
             {
-                for (int dim = 0; dim < Dimension; dim++)
+                X = value.X;
+                Y = value.Y;
+
+                int maxInputDim = Coordinates.Dimension(value);
+                int maxOutputDim = Dimension;
+                if (maxInputDim > maxOutputDim)
                 {
-                    this[dim] = value[dim];
+                    maxInputDim = maxOutputDim;
+                }
+
+                int dim;
+                for (dim = 2; dim < maxInputDim; dim++)
+                {
+                    _extraValues[dim - 2] = value[dim];
+                }
+
+                for (; dim < maxOutputDim; dim++)
+                {
+                    _extraValues[dim - 2] = NullOrdinate;
                 }
             }
         }
 
-        public override Coordinate Copy() => new ExtraDimensionalCoordinate((double[])_values.Clone(), Measures);
+        public override Coordinate Copy() => new ExtraDimensionalCoordinate(X, Y, (double[])_extraValues.Clone(), Measures);
     }
 }
