@@ -1,45 +1,110 @@
 ﻿using System;
 
-using NetTopologySuite.Geometries.Implementation;
-
 namespace NetTopologySuite.Geometries
 {
     [Serializable]
     internal sealed class ExtraDimensionalCoordinate : Coordinate
     {
-        private readonly PackedDoubleCoordinateSequence _seq;
+        private readonly double[] _values;
 
         public ExtraDimensionalCoordinate(int dimension, int measures)
         {
-            _seq = new PackedDoubleCoordinateSequence(1, dimension, measures);
+            if (dimension < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(dimension), dimension, "Must be non-negative.");
+            }
+
+            if (measures < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(dimension), dimension, "Must be non-negative.");
+            }
+
+            if (dimension - measures < 2)
+            {
+                throw new ArgumentException("Must have at least two spatial dimensions.");
+            }
+
+            _values = new double[dimension];
+            Measures = measures;
         }
 
-        public int Dimension => _seq.Dimension;
+        private ExtraDimensionalCoordinate(double[] values, int measures)
+        {
+            _values = values;
+            Measures = measures;
+        }
 
-        public int Measures => _seq.Measures;
+        public int Dimension => _values.Length;
+
+        public int Measures { get; }
 
         public override double Z
         {
-            get => _seq.GetZ(0);
-            set => _seq.SetOrdinate(0, Ordinate.Z, value);
+            get => (Dimension - Measures > 2) ? _values[2] : NullOrdinate;
+            set
+            {
+                if (Dimension - Measures > 2)
+                {
+                    _values[2] = value;
+                }
+            }
         }
 
         public override double M
         {
-            get => _seq.GetM(0);
-            set => _seq.SetOrdinate(0, Ordinate.M, value);
+            get => Measures > 0 ? _values[Dimension - Measures] : NullOrdinate;
+            set
+            {
+                if (Measures > 0)
+                {
+                    _values[Dimension - Measures] = value;
+                }
+            }
         }
 
         public override double this[int ordinateIndex]
         {
-            get => _seq.GetOrdinate(0, ordinateIndex);
-            set => _seq.SetOrdinate(0, ordinateIndex, value);
+            get => OrdinateRef(ordinateIndex);
+            set => OrdinateRef(ordinateIndex) = value;
+        }
+
+        private ref double OrdinateRef(int ordinateIndex)
+        {
+            if ((uint)ordinateIndex < (uint)_values.Length)
+            {
+                return ref _values[ordinateIndex];
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(ordinateIndex), ordinateIndex, "Ordinate index is not present in this coordinate.");
         }
 
         public override double this[Ordinate ordinate]
         {
-            get => _seq.GetOrdinate(0, ordinate);
-            set => _seq.SetOrdinate(0, ordinate, value);
+            get => OrdinateRef(ordinate);
+            set => OrdinateRef(ordinate) = value;
+        }
+
+        private ref double OrdinateRef(Ordinate ordinate)
+        {
+            // use uint instead of int for comparisons, in order to handle negatives more gracefully
+            int spatial = Dimension - Measures;
+            if ((uint)ordinate < (uint)Ordinate.Measure1)
+            {
+                if ((uint)ordinate < (uint)spatial)
+                {
+                    return ref _values[(int)ordinate];
+                }
+            }
+            else
+            {
+                ordinate -= Ordinate.Measure1;
+                if ((uint)ordinate < (uint)Measures)
+                {
+                    return ref _values[(int)ordinate + spatial];
+                }
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(ordinate), ordinate, "Ordinate is not present in this coordinate.");
         }
 
         public override Coordinate CoordinateValue
@@ -47,18 +112,13 @@ namespace NetTopologySuite.Geometries
             get => this;
             set
             {
-                for (int dim = 0, max = Dimension; dim < max; dim++)
+                for (int dim = 0; dim < Dimension; dim++)
                 {
-                    _seq.SetOrdinate(0, dim, value[dim]);
+                    this[dim] = value[dim];
                 }
             }
         }
 
-        public override Coordinate Copy()
-        {
-            var result = new ExtraDimensionalCoordinate(Dimension, Measures);
-            result.CoordinateValue = this;
-            return result;
-        }
+        public override Coordinate Copy() => new ExtraDimensionalCoordinate((double[])_values.Clone(), Measures);
     }
 }
