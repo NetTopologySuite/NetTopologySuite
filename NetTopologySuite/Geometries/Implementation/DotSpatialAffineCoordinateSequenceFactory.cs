@@ -71,7 +71,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>A coordinate sequence</returns>
         public CoordinateSequence Create(double[] xy)
         {
-            return new DotSpatialAffineCoordinateSequence(xy, null);
+            return new DotSpatialAffineCoordinateSequence(xy, null, null);
         }
 
         /// <summary>
@@ -84,9 +84,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns>A coordinate sequence</returns>
         public CoordinateSequence Create(double[] xy, double[] zm, bool isMeasure = false)
         {
-            if (isMeasure)
-                return new DotSpatialAffineCoordinateSequence(xy, null, zm);
-            return new DotSpatialAffineCoordinateSequence(xy, zm);
+            return new DotSpatialAffineCoordinateSequence(xy, isMeasure ? null : zm, isMeasure ? zm : null);
         }
 
         /// <summary>

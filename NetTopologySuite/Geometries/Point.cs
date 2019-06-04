@@ -118,7 +118,12 @@ namespace NetTopologySuite.Geometries
                     throw new ArgumentOutOfRangeException("X called on empty Point");
                 return Coordinate.X;
             }
-            set => Coordinate.X = value;
+            set
+            {
+                if (CoordinateSequence.Count == 0)
+                    throw new ArgumentOutOfRangeException("X called on empty Point");
+                CoordinateSequence.SetX(0, value);
+            }
         }
 
         /// <summary>
@@ -132,7 +137,12 @@ namespace NetTopologySuite.Geometries
                     throw new ArgumentOutOfRangeException("Y called on empty Point");
                 return Coordinate.Y;
             }
-            set => Coordinate.Y = value;
+            set
+            {
+                if (CoordinateSequence.Count == 0)
+                    throw new ArgumentOutOfRangeException("Y called on empty Point");
+                CoordinateSequence.SetY(0, value);
+            }
         }
 
         /// <summary>
@@ -305,16 +315,15 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                if (CoordinateSequence == null)
+                if (CoordinateSequence.Count == 0)
                     throw new ArgumentOutOfRangeException("Z called on empty Point");
                 return CoordinateSequence.GetZ(0);
             }
             set
             {
-                if (CoordinateSequence.TryGetOrdinateIndex(Ordinate.Z, out int ordinateIndex))
-                {
-                    CoordinateSequence.SetOrdinate(0, ordinateIndex, value);
-                }
+                if (CoordinateSequence.Count == 0)
+                    throw new ArgumentOutOfRangeException("Z called on empty Point");
+                CoordinateSequence.SetZ(0, value);
             }
         }
 
@@ -324,16 +333,15 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                if (CoordinateSequence == null)
+                if (CoordinateSequence.Count == 0)
                     throw new ArgumentOutOfRangeException("M called on empty Point");
                 return CoordinateSequence.GetM(0);
             }
             set
             {
-                if (CoordinateSequence.TryGetOrdinateIndex(Ordinate.M, out int ordinateIndex))
-                {
-                    CoordinateSequence.SetOrdinate(0, ordinateIndex, value);
-                }
+                if (CoordinateSequence.Count == 0)
+                    throw new ArgumentOutOfRangeException("Z called on empty Point");
+                CoordinateSequence.SetM(0, value);
             }
         }
     }

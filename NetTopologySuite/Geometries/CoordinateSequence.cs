@@ -136,6 +136,26 @@ namespace NetTopologySuite.Geometries
         public bool HasM => _mIndex >= 0;
 
         /// <summary>
+        /// Gets the index of the Z ordinate (for use with <see cref="GetOrdinate(int, int)"/> or
+        /// <see cref="SetOrdinate(int, int, double)"/>), or -1 if <see cref="HasZ"/> is
+        /// <see langword="false"/>.
+        /// </summary>
+        /// <remarks>
+        /// It's just a cache for <see cref="TryGetOrdinateIndex"/> with <see cref="Ordinate.Z"/>.
+        /// </remarks>
+        public int ZOrdinateIndex => _zIndex;
+
+        /// <summary>
+        /// Gets the index of the M ordinate (for use with <see cref="GetOrdinate(int, int)"/> or
+        /// <see cref="SetOrdinate(int, int, double)"/>), or -1 if <see cref="HasM"/> is
+        /// <see langword="false"/>.
+        /// </summary>
+        /// <remarks>
+        /// It's just a cache for <see cref="TryGetOrdinateIndex"/> with <see cref="Ordinate.M"/>.
+        /// </remarks>
+        public int MOrdinateIndex => _mIndex;
+
+        /// <summary>
         /// Creates a coordinate for use in this sequence.
         /// </summary>
         /// <remarks>
@@ -225,6 +245,28 @@ namespace NetTopologySuite.Geometries
         /// <see cref="Coordinate.NullOrdinate"/> if not defined.
         /// </returns>
         public virtual double GetM(int index) => _mIndex < 0 ? Coordinate.NullOrdinate : GetOrdinate(index, _mIndex);
+
+        public virtual void SetX(int index, double value) => SetOrdinate(index, 0, value);
+
+        public virtual void SetY(int index, double value) => SetOrdinate(index, 1, value);
+
+        public virtual void SetZ(int index, double value)
+        {
+            int zIndex = _zIndex;
+            if (zIndex >= 0)
+            {
+                SetOrdinate(index, zIndex, value);
+            }
+        }
+
+        public virtual void SetM(int index, double value)
+        {
+            int mIndex = _mIndex;
+            if (mIndex >= 0)
+            {
+                SetOrdinate(index, mIndex, value);
+            }
+        }
 
         /// <summary>
         /// Returns the ordinate of a coordinate in this sequence.

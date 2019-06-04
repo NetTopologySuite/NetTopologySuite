@@ -183,28 +183,6 @@ namespace NetTopologySuite.Geometries.Implementation
             }
         }
 
-        /// <summary>
-        /// Sets the first ordinate of a coordinate in this sequence.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="value"></param>
-        public void SetX(int index, double value)
-        {
-            CoordRef = null;
-            SetOrdinate(index, 0, value);
-        }
-
-        /// <summary>
-        /// Sets the second ordinate of a coordinate in this sequence.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="value"></param>
-        public void SetY(int index, double value)
-        {
-            CoordRef = null;
-            SetOrdinate(index, 1, value);
-        }
-
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {

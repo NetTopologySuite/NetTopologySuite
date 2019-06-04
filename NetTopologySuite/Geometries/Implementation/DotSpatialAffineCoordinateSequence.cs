@@ -12,40 +12,66 @@ namespace NetTopologySuite.Geometries.Implementation
         CoordinateSequence
         //IMeasuredCoordinateSequence
     {
-
         private readonly double[] _xy;
         private readonly double[] _z;
         private readonly double[] _m;
 
         [NonSerialized]
-        private WeakReference _coordinateArrayRef;
+        private WeakReference<Coordinate[]> _coordinateArrayRef;
 
         /// <summary>
         /// Creates an instance of this class
         /// </summary>
         /// <param name="coordinates">The coordinates</param>
         /// <param name="ordinates"></param>
-        public DotSpatialAffineCoordinateSequence(IList<Coordinate> coordinates, Ordinates ordinates)
+        public DotSpatialAffineCoordinateSequence(IReadOnlyCollection<Coordinate> coordinates, Ordinates ordinates)
             : base(coordinates?.Count ?? 0, OrdinatesUtility.OrdinatesToDimension(ordinates & Ordinates.XYZM), OrdinatesUtility.OrdinatesToMeasures(ordinates & Ordinates.XYZM))
         {
             coordinates = coordinates ?? Array.Empty<Coordinate>();
 
             _xy = new double[2 * coordinates.Count];
             if (HasZ)
+            {
                 _z = new double[coordinates.Count];
+            }
+
             if (HasM)
+            {
                 _m = new double[coordinates.Count];
+            }
 
             var xy = MemoryMarshal.Cast<double, XYStruct>(_xy);
-            for (int i = 0; i < xy.Length; i++)
+            using (var coordinatesEnumerator = coordinates.GetEnumerator())
             {
-                var coordinate = coordinates[i];
+                for (int i = 0; i < xy.Length; i++)
+                {
+                    if (!coordinatesEnumerator.MoveNext())
+                    {
+                        ThrowForInconsistentCount();
+                    }
 
-                xy[i].X = coordinate.X;
-                xy[i].Y = coordinate.Y;
-                if (_z != null) _z[i] = coordinate.Z;
-                if (_m != null) _m[i] = coordinate.M;
+                    var coordinate = coordinatesEnumerator.Current;
+
+                    xy[i].X = coordinate.X;
+                    xy[i].Y = coordinate.Y;
+                    if (_z != null)
+                    {
+                        _z[i] = coordinate.Z;
+                    }
+
+                    if (_m != null)
+                    {
+                        _m[i] = coordinate.M;
+                    }
+                }
+
+                if (coordinatesEnumerator.MoveNext())
+                {
+                    ThrowForInconsistentCount();
+                }
             }
+
+            void ThrowForInconsistentCount() => throw new ArgumentException("IReadOnlyCollection<T>.Count is inconsistent with IEnumerable<T> implementation.", nameof(coordinates));
         }
 
         /// <summary>
@@ -55,14 +81,19 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <param name="dimension">The number of dimensions.</param>
         /// <param name="measures">The number of measures.</param>
         public DotSpatialAffineCoordinateSequence(int size, int dimension, int measures)
-            : base(size, dimension, measures)
+            : base(size, ClipDimension(dimension, measures > 1 ? 1 : measures), measures > 1 ? 1 : measures)
         {
             _xy = new double[2 * size];
 
             if (HasZ)
+            {
                 _z = NullOrdinateArray(size);
+            }
+
             if (HasM)
+            {
                 _m = NullOrdinateArray(size);
+            }
         }
 
         /// <summary>
@@ -76,9 +107,14 @@ namespace NetTopologySuite.Geometries.Implementation
             _xy = new double[2 * size];
 
             if (HasZ)
+            {
                 _z = NullOrdinateArray(size);
+            }
+
             if (HasM)
+            {
                 _m = NullOrdinateArray(size);
+            }
         }
 
         /// <summary>
@@ -91,29 +127,45 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             if (coordSeq is DotSpatialAffineCoordinateSequence dsCoordSeq)
             {
-                _xy = (double[])dsCoordSeq.XY.Clone();
+                _xy = (double[])dsCoordSeq._xy.Clone();
 
                 if (HasZ)
-                    _z = ((double[])dsCoordSeq.Z?.Clone()) ?? NullOrdinateArray(Count);
+                {
+                    _z = ((double[])dsCoordSeq._z?.Clone()) ?? NullOrdinateArray(Count);
+                }
 
                 if (HasM)
-                    _m = ((double[])dsCoordSeq.M?.Clone()) ?? NullOrdinateArray(Count);
+                {
+                    _m = ((double[])dsCoordSeq._m?.Clone()) ?? NullOrdinateArray(Count);
+                }
             }
             else
             {
                 _xy = new double[2 * Count];
                 if (HasZ)
+                {
                     _z = new double[Count];
+                }
+
                 if (HasM)
+                {
                     _m = new double[Count];
+                }
 
                 var xy = MemoryMarshal.Cast<double, XYStruct>(_xy);
                 for (int i = 0; i < xy.Length; i++)
                 {
                     xy[i].X = coordSeq.GetX(i);
                     xy[i].Y = coordSeq.GetY(i);
-                    if (_z != null) _z[i] = coordSeq.GetZ(i);
-                    if (_m != null) _m[i] = coordSeq.GetM(i);
+                    if (_z != null)
+                    {
+                        _z[i] = coordSeq.GetZ(i);
+                    }
+
+                    if (_m != null)
+                    {
+                        _m[i] = coordSeq.GetM(i);
+                    }
                 }
             }
         }
@@ -130,21 +182,11 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="xy"></param>
         /// <param name="z"></param>
-        public DotSpatialAffineCoordinateSequence(double[] xy, double[] z)
-            : this(xy, z, null)
-        {
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="xy"></param>
-        /// <param name="z"></param>
         /// <param name="m"></param>
         public DotSpatialAffineCoordinateSequence(double[] xy, double[] z, double[] m)
             : base(xy?.Length / 2 ?? 0, 2 + (z is null ? 0 : 1) + (m is null ? 0 : 1), m is null ? 0 : 1)
         {
-            _xy = xy;
+            _xy = xy ?? Array.Empty<double>();
             _z = z;
             _m = m;
         }
@@ -155,7 +197,7 @@ namespace NetTopologySuite.Geometries.Implementation
             return new DotSpatialAffineCoordinateSequence(this, Ordinates);
         }
 
-        public override Coordinate GetCoordinate(int i)
+        public override Coordinate GetCoordinateCopy(int i)
         {
             int j = 2 * i;
             return _z == null
@@ -167,30 +209,28 @@ namespace NetTopologySuite.Geometries.Implementation
                     : new CoordinateZM(_xy[j++], _xy[j], _z[i], _m[i]);
         }
 
-        public override Coordinate GetCoordinateCopy(int i)
-        {
-            return GetCoordinate(i);
-        }
-
         public override void GetCoordinate(int index, Coordinate coord)
         {
             coord.X = _xy[2 * index];
             coord.Y = _xy[2 * index + 1];
-            if (HasZ)
+            if (_z != null)
             {
                 coord.Z = _z[index];
             }
-            if (HasM)
+
+            if (_m != null)
             {
                 coord.M = _m[index];
             }
         }
 
+        /// <inheritdoc />
         public override double GetX(int index)
         {
             return _xy[2 * index];
         }
 
+        /// <inheritdoc />
         public override double GetY(int index)
         {
             return _xy[2 * index + 1];
@@ -208,44 +248,87 @@ namespace NetTopologySuite.Geometries.Implementation
             return _m?[index] ?? Coordinate.NullOrdinate;
         }
 
+        /// <inheritdoc />
+        public override void SetX(int index, double value)
+        {
+            _xy[2 * index] = value;
+        }
+
+        /// <inheritdoc />
+        public override void SetY(int index, double value)
+        {
+            _xy[2 * index + 1] = value;
+        }
+
+        /// <inheritdoc />
+        public override void SetZ(int index, double value)
+        {
+            if (_z != null)
+            {
+                _z[index] = value;
+            }
+        }
+
+        /// <inheritdoc />
+        public override void SetM(int index, double value)
+        {
+            if (_m != null)
+            {
+                _m[index] = value;
+            }
+        }
+
         public override double GetOrdinate(int index, int ordinateIndex)
         {
-            switch (ordinateIndex)
+            // if (ordinateIndex == 0 || ordinateIndex == 1)
+            if (ordinateIndex >> 1 == 0)
             {
-                case 0:
-                    return _xy[index * 2];
-                case 1:
-                    return _xy[index * 2 + 1];
-                case 2 when HasZ:
-                    return _z[index];
-                case 2:
-                case 3:
-                    return _m?[index] ?? Coordinate.NullOrdinate;
-                default:
-                    throw new NotSupportedException();
+                return _xy[index * 2 + ordinateIndex];
             }
+
+            if (ordinateIndex == ZOrdinateIndex)
+            {
+                return GetZ(index);
+            }
+
+            if (ordinateIndex == MOrdinateIndex)
+            {
+                return GetM(index);
+            }
+
+            return Coordinate.NullOrdinate;
         }
 
         public override void SetOrdinate(int index, int ordinateIndex, double value)
         {
-            switch (ordinateIndex)
+            // if (ordinateIndex == 0 || ordinateIndex == 1)
+            if (ordinateIndex >> 1 == 0)
             {
-                case 0:
-                    _xy[index * 2] = value;
-                    break;
-                case 1:
-                    _xy[index * 2 + 1] = value;
-                    break;
-                case 2 when HasZ:
-                    if (_z != null) _z[index] = value;
-                    break;
-                case 2:
-                case 3:
-                    if (_m != null) _m[index] = value;
-                    break;
-                default:
-                    throw new NotSupportedException();
+                _xy[index * 2 + ordinateIndex] = value;
             }
+            else if (ordinateIndex == ZOrdinateIndex)
+            {
+                if (_z == null)
+                {
+                    return;
+                }
+
+                _z[index] = value;
+            }
+            else if (ordinateIndex == MOrdinateIndex)
+            {
+                if (_m == null)
+                {
+                    return;
+                }
+
+                _m[index] = value;
+            }
+            else
+            {
+                return;
+            }
+
             _coordinateArrayRef = null;
         }
 
@@ -255,47 +338,67 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns></returns>
         private Coordinate[] GetCachedCoords()
         {
-            var localCoordinateArrayRef = _coordinateArrayRef;
-            if (localCoordinateArrayRef != null && localCoordinateArrayRef.IsAlive)
-            {
-                var arr = (Coordinate[])localCoordinateArrayRef.Target;
-                if (arr != null)
-                    return arr;
-
-                _coordinateArrayRef = null;
-                return null;
-            }
-            return null;
+            Coordinate[] array = null;
+            _coordinateArrayRef?.TryGetTarget(out array);
+            return array;
         }
 
         public override Coordinate[] ToCoordinateArray()
         {
             var ret = GetCachedCoords();
-            if (ret != null) return ret;
+            if (ret != null)
+            {
+                return ret;
+            }
 
-            int j = 0;
-            int count = Count;
-            ret = new Coordinate[count];
+            ret = new Coordinate[Count];
             if (_z != null)
             {
-                for (int i = 0; i < count; i++)
-                    ret[i] = new CoordinateZ(_xy[j++], _xy[j++], _z[i]);
+                if (_m != null)
+                {
+                    for (int i = 0, j = 0; i < ret.Length; i++)
+                    {
+                        ret[i] = new CoordinateZM(_xy[j++], _xy[j++], _z[i], _m[i]);
+                    }
+                }
+                else
+                {
+                    for (int i = 0, j = 0; i < ret.Length; i++)
+                    {
+                        ret[i] = new CoordinateZ(_xy[j++], _xy[j++], _z[i]);
+                    }
+                }
             }
             else
             {
-                for (int i = 0; i < count; i++)
-                    ret[i] = new Coordinate(_xy[j++], _xy[j++]);
+                if (_m != null)
+                {
+                    for (int i = 0, j = 0; i < ret.Length; i++)
+                    {
+                        ret[i] = new CoordinateM(_xy[j++], _xy[j++], _m[i]);
+                    }
+                }
+                else
+                {
+                    for (int i = 0, j = 0; i < ret.Length; i++)
+                    {
+                        ret[i] = new Coordinate(_xy[j++], _xy[j++]);
+                    }
+                }
             }
 
-            _coordinateArrayRef = new WeakReference(ret);
+            _coordinateArrayRef = new WeakReference<Coordinate[]>(ret);
             return ret;
         }
 
         public override Envelope ExpandEnvelope(Envelope env)
         {
-            int j = 0;
-            for (int i = 0; i < Count; i++)
-                env.ExpandToInclude(_xy[j++], _xy[j++]);
+            var xy = MemoryMarshal.Cast<double, XYStruct>(_xy);
+            for (int i = 0; i < xy.Length; i++)
+            {
+                env.ExpandToInclude(xy[i].X, xy[i].Y);
+            }
+
             return env;
         }
 
@@ -342,6 +445,22 @@ namespace NetTopologySuite.Geometries.Implementation
         public void ReleaseCoordinateArray()
         {
             _coordinateArrayRef = null;
+        }
+
+        private static int ClipDimension(int dimension, int measures)
+        {
+            if (measures < 0 || dimension < 0 || dimension - measures < 2)
+            {
+                // base will throw anyway.
+                return dimension;
+            }
+
+            if (dimension - measures > 3)
+            {
+                dimension = 3 + measures;
+            }
+
+            return dimension;
         }
 
         [StructLayout(LayoutKind.Sequential)]
