@@ -34,6 +34,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Tests.NUni
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTopologySuite.Lab", "NetTopologySuite.Lab\NetTopologySuite.Lab.csproj", "{D446FBA3-B6EA-4FEB-9615-D5FD5AEB3D23}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Reprojection.GDAL", "NetTopologySuite.Reprojection.GDAL\NetTopologySuite.Reprojection.GDAL.csproj", "{C00D7D5D-9CBA-463F-8E37-238CBDA9B8A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Reprojection.DotSpatial", "NetTopologySuite.Reprojection.DotSpatial\NetTopologySuite.Reprojection.DotSpatial.csproj", "{5912F674-7FB4-4968-943C-A975A1E0BAE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +72,14 @@ Global
 		{D446FBA3-B6EA-4FEB-9615-D5FD5AEB3D23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D446FBA3-B6EA-4FEB-9615-D5FD5AEB3D23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D446FBA3-B6EA-4FEB-9615-D5FD5AEB3D23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C00D7D5D-9CBA-463F-8E37-238CBDA9B8A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C00D7D5D-9CBA-463F-8E37-238CBDA9B8A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C00D7D5D-9CBA-463F-8E37-238CBDA9B8A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C00D7D5D-9CBA-463F-8E37-238CBDA9B8A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5912F674-7FB4-4968-943C-A975A1E0BAE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5912F674-7FB4-4968-943C-A975A1E0BAE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5912F674-7FB4-4968-943C-A975A1E0BAE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5912F674-7FB4-4968-943C-A975A1E0BAE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

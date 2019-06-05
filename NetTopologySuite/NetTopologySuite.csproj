@@ -6,6 +6,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <NoWarn>659,168,1587</NoWarn>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 
   <Import Project="$(SolutionDir)NetTopologySuite.Common.props" />
