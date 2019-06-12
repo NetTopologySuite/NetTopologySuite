@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace NetTopologySuite.Geometries.Utilities
 {
@@ -57,7 +58,7 @@ namespace NetTopologySuite.Geometries.Utilities
             return geom.Factory.BuildGeometry(mapped);
         }
 
-        public static ICollection<Geometry> Map(ICollection<Geometry> geoms, IMapOp op)
+        public static ReadOnlyCollection<Geometry> Map(IEnumerable<Geometry> geoms, IMapOp op)
         {
             var mapped = new List<Geometry>();
             foreach (var g in geoms)
@@ -66,7 +67,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 if (gr != null)
                     mapped.Add(gr);
             }
-            return mapped;
+            return mapped.AsReadOnly();
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using NetTopologySuite.Geometries;
 using RTools_NTS.Util;
@@ -52,7 +53,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="FileNotFoundException">Thrown if the filename specified does not exist</exception>
         /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
         /// <exception cref="ParseException">Thrown if an error occurred reading a geometry</exception>
-        public ICollection<Geometry> Read(string file)
+        public ReadOnlyCollection<Geometry> Read(string file)
         {
             if (string.IsNullOrEmpty(file))
                 throw new ArgumentNullException("file");
@@ -74,7 +75,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="ArgumentException">Thrown if passed stream is not readable or seekable</exception>
         /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
         /// <exception cref="ParseException">Thrown if an error occured reading a geometry</exception>
-        public ICollection<Geometry> Read(Stream stream)
+        public ReadOnlyCollection<Geometry> Read(Stream stream)
         {
             if (stream == null)
                 throw new ArgumentNullException("stream");
@@ -99,7 +100,7 @@ namespace NetTopologySuite.IO
         /// <param name="streamReader">The stream reader to use.</param>
         /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
         /// <exception cref="ParseException">Thrown if an error occured reading a geometry</exception>
-        private ICollection<Geometry> Read(StreamReader streamReader)
+        private ReadOnlyCollection<Geometry> Read(StreamReader streamReader)
         {
             var geoms = new List<Geometry>();
             int count = 0;
@@ -113,7 +114,7 @@ namespace NetTopologySuite.IO
                     geoms.Add(g);
                 count++;
             }
-            return geoms;
+            return geoms.AsReadOnly();
         }
 
         /// <summary>
@@ -121,7 +122,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geoms">A collection of already read geometries</param>
         /// <returns><value>true</value> if <see cref="Limit"/> number of geometries has been read.</returns>
-        private bool IsAtLimit(ICollection<Geometry> geoms)
+        private bool IsAtLimit(List<Geometry> geoms)
         {
             if (Limit < 0)
                 return false;

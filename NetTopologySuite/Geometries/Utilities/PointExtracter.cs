@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace NetTopologySuite.Geometries.Utilities
 {
@@ -9,12 +10,13 @@ namespace NetTopologySuite.Geometries.Utilities
     public class PointExtracter : IGeometryFilter
     {
         /// <summary>
-        /// Extracts the <see cref="Point"/> elements from a single <see cref="Geometry"/> and adds them to the provided <see cref="IList{Point}"/>.
+        /// Extracts the <see cref="Point"/> elements from a single <see cref="Geometry"/> and adds them to the provided <see cref="ICollection{Point}"/>.
         /// </summary>
         /// <param name="geom">The geometry from which to extract</param>
         /// <param name="list">The list to add the extracted elements to</param>
         /// <returns></returns>
-        public static ICollection<Geometry> GetPoints(Geometry geom, List<Geometry> list)
+        public static TCollection GetPoints<TCollection>(Geometry geom, TCollection list)
+            where TCollection : ICollection<Geometry>
         {
             if (geom is Point)
             {
@@ -33,18 +35,19 @@ namespace NetTopologySuite.Geometries.Utilities
         /// Extracts the <see cref="Point"/> elements from a single <see cref="Geometry"/> and returns them in a <see cref="IList{Point}"/>.
         /// </summary>
         /// <param name="geom">the geometry from which to extract</param>
-        public static ICollection<Geometry> GetPoints(Geometry geom)
+        public static ReadOnlyCollection<Geometry> GetPoints(Geometry geom)
         {
-            return GetPoints(geom, new List<Geometry>());
+            var points = GetPoints(geom, new List<Geometry>());
+            return points.AsReadOnly();
         }
 
-        private readonly List<Geometry> _pts;
+        private readonly ICollection<Geometry> _pts;
 
         /// <summary>
         /// Constructs a PointExtracterFilter with a list in which to store Points found.
         /// </summary>
         /// <param name="pts"></param>
-        public PointExtracter(List<Geometry> pts)
+        public PointExtracter(ICollection<Geometry> pts)
         {
             _pts = pts;
         }
