@@ -173,7 +173,7 @@ namespace NetTopologySuite.Algorithm
                 if (!PointLocation.IsInRing(pts[i], polyPts))
                     reducedSet.Add(pts[i]);
 
-            var reducedPts = CoordinateArrays.ToCoordinateArray((ICollection<Coordinate>)reducedSet);// new Coordinate[reducedSet.Count];
+            var reducedPts = CoordinateArrays.ToCoordinateArray(reducedSet);// new Coordinate[reducedSet.Count];
             Array.Sort(reducedPts);
 
             // ensure that computed array has at least 3 points (not necessarily unique)

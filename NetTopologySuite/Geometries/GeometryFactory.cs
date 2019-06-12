@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Utilities;
@@ -122,115 +123,87 @@ namespace NetTopologySuite.Geometries
         public GeometryFactory() : this(new PrecisionModel(), 0) { }
 
         /// <summary>
-        /// Converts the <c>ICollection</c> to an array.
+        /// Converts the <c>IEnumerable</c> to an array.
         /// </summary>
-        /// <param name="points">The <c>ICollection</c> of Points to convert.</param>
-        /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static Point[] ToPointArray(ICollection<Geometry> points)
+        /// <param name="points">The <c>IEnumerable</c> of Points to convert.</param>
+        /// <returns>The <c>IEnumerable</c> in array format.</returns>
+        public static Point[] ToPointArray(IEnumerable<Geometry> points)
         {
-            var list = new Point[points.Count];
-            int i = 0;
-            foreach (Point p in points)
-                list[i++] = p;
-            return list;
+            // PERF: these ToFooArray methods could use .Cast<T>() instead of
+            // .Select(geom => (T)geom), but the latter happens to be optimized
+            // for input types that carry length information so that the array
+            // can be allocated at the right size right away.
+            return points.Select(geom => (Point)geom).ToArray();
         }
 
         /// <summary>
-        /// Converts the <c>ICollection</c> to an array.
+        /// Converts the <c>IEnumerable</c> to an array.
         /// </summary>
-        /// <param name="geometries">The <c>ICollection</c> of <c>Geometry</c>'s to convert.</param>
-        /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static Geometry[] ToGeometryArray(ICollection<Geometry> geometries)
+        /// <param name="geometries">The <c>IEnumerable</c> of <c>Geometry</c>'s to convert.</param>
+        /// <returns>The <c>IEnumerable</c> in array format.</returns>
+        public static Geometry[] ToGeometryArray(IEnumerable<Geometry> geometries)
         {
-            var list = new Geometry[geometries.Count];
-            int i = 0;
-            foreach (var g in geometries)
-                list[i++] = g;
-            return list;
+            return geometries.ToArray();
         }
 
         /// <summary>
-        /// Converts the <c>ICollection</c> to an array.
+        /// Converts the <c>IEnumerable</c> to an array.
         /// </summary>
-        /// <param name="lineStrings">The <c>ICollection</c> of LineStrings to convert.</param>
-        /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static LineString[] ToLineStringArray(ICollection<Geometry> lineStrings)
+        /// <param name="lineStrings">The <c>IEnumerable</c> of LineStrings to convert.</param>
+        /// <returns>The <c>IEnumerable</c> in array format.</returns>
+        public static LineString[] ToLineStringArray(IEnumerable<Geometry> lineStrings)
         {
-            var list = new LineString[lineStrings.Count];
-            int i = 0;
-            foreach (LineString ls in lineStrings)
-                list[i++] = ls;
-            return list;
+            return lineStrings.Select(geom => (LineString)geom).ToArray();
         }
 
         /// <summary>
-        /// Converts the <c>ICollection</c> to an array.
+        /// Converts the <c>IEnumerable</c> to an array.
         /// </summary>
-        /// <param name="linearRings">The <c>ICollection</c> of LinearRings to convert.</param>
-        /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static LinearRing[] ToLinearRingArray(ICollection<Geometry> linearRings)
+        /// <param name="linearRings">The <c>IEnumerable</c> of LinearRings to convert.</param>
+        /// <returns>The <c>IEnumerable</c> in array format.</returns>
+        public static LinearRing[] ToLinearRingArray(IEnumerable<Geometry> linearRings)
         {
-            var list = new LinearRing[linearRings.Count];
-            int i = 0;
-            foreach (LinearRing lr in linearRings)
-                list[i++] = lr;
-            return list;
+            return linearRings.Select(geom => (LinearRing)geom).ToArray();
         }
 
         /// <summary>
-        /// Converts the <c>ICollection</c> to an array.
+        /// Converts the <c>IEnumerable</c> to an array.
         /// </summary>
-        /// <param name="polygons">The <c>ICollection</c> of Polygons to convert.</param>
-        /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static Polygon[] ToPolygonArray(ICollection<Geometry> polygons)
+        /// <param name="polygons">The <c>IEnumerable</c> of Polygons to convert.</param>
+        /// <returns>The <c>IEnumerable</c> in array format.</returns>
+        public static Polygon[] ToPolygonArray(IEnumerable<Geometry> polygons)
         {
-            var list = new Polygon[polygons.Count];
-            int i = 0;
-            foreach (Polygon p in polygons)
-                list[i++] = p;
-            return list;
+            return polygons.Select(geom => (Polygon)geom).ToArray();
         }
 
         /// <summary>
-        /// Converts the <c>ICollection</c> to an array.
+        /// Converts the <c>IEnumerable</c> to an array.
         /// </summary>
-        /// <param name="multiPoints">The <c>ICollection</c> of MultiPoints to convert.</param>
-        /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static MultiPoint[] ToMultiPointArray(ICollection<Geometry> multiPoints)
+        /// <param name="multiPoints">The <c>IEnumerable</c> of MultiPoints to convert.</param>
+        /// <returns>The <c>IEnumerable</c> in array format.</returns>
+        public static MultiPoint[] ToMultiPointArray(IEnumerable<Geometry> multiPoints)
         {
-            var list = new MultiPoint[multiPoints.Count];
-            int i = 0;
-            foreach (MultiPoint mp in multiPoints)
-                list[i++] = mp;
-            return list;
+            return multiPoints.Select(geom => (MultiPoint)geom).ToArray();
         }
 
         /// <summary>
-        /// Converts the <c>ICollection</c> to an array.
+        /// Converts the <c>IEnumerable</c> to an array.
         /// </summary>
-        /// <param name="multiLineStrings">The <c>ICollection</c> of MultiLineStrings to convert.</param>
-        /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static MultiLineString[] ToMultiLineStringArray(ICollection<Geometry> multiLineStrings)
+        /// <param name="multiLineStrings">The <c>IEnumerable</c> of MultiLineStrings to convert.</param>
+        /// <returns>The <c>IEnumerable</c> in array format.</returns>
+        public static MultiLineString[] ToMultiLineStringArray(IEnumerable<Geometry> multiLineStrings)
         {
-            var list = new MultiLineString[multiLineStrings.Count];
-            int i = 0;
-            foreach (MultiLineString mls in multiLineStrings)
-                list[i++] = mls;
-            return list;
+            return multiLineStrings.Select(geom => (MultiLineString)geom).ToArray();
         }
 
         /// <summary>
-        /// Converts the <c>ICollection</c> to an array.
+        /// Converts the <c>IEnumerable</c> to an array.
         /// </summary>
-        /// <param name="multiPolygons">The <c>ICollection</c> of MultiPolygons to convert.</param>
-        /// <returns>The <c>ICollection</c> in array format.</returns>
-        public static MultiPolygon[] ToMultiPolygonArray(ICollection<Geometry> multiPolygons)
+        /// <param name="multiPolygons">The <c>IEnumerable</c> of MultiPolygons to convert.</param>
+        /// <returns>The <c>IEnumerable</c> in array format.</returns>
+        public static MultiPolygon[] ToMultiPolygonArray(IEnumerable<Geometry> multiPolygons)
         {
-            var list = new MultiPolygon[multiPolygons.Count];
-            int i = 0;
-            foreach (MultiPolygon mp in multiPolygons)
-                list[i++] = mp;
-            return list;
+            return multiPolygons.Select(geom => (MultiPolygon)geom).ToArray();
         }
 
         /// <summary>
@@ -578,8 +551,10 @@ namespace NetTopologySuite.Geometries
         /// A <see cref="Geometry"/> of the "smallest", "most type-specific"
         /// class that can contain the elements of <c>geomList</c>.
         /// </returns>
-        public Geometry BuildGeometry(ICollection<Geometry> geomList)
+        public Geometry BuildGeometry(IEnumerable<Geometry> geomList)
         {
+            var geoms = new List<Geometry>();
+
             /**
              * Determine some facts about the geometries in the list
              */
@@ -590,6 +565,7 @@ namespace NetTopologySuite.Geometries
             Geometry geom0 = null;
             foreach (var geom in geomList)
             {
+                geoms.Add(geom);
                 if (geom == null) continue;
                 geom0 = geom;
 
@@ -612,21 +588,21 @@ namespace NetTopologySuite.Geometries
 
             // for heterogenous collection of geometries or if it contains a GeometryCollection, return a GeometryCollection
             if (isHeterogeneous || hasGeometryCollection)
-                return CreateGeometryCollection(ToGeometryArray(geomList));
+                return CreateGeometryCollection(geoms.ToArray());
 
             // at this point we know the collection is homogenous.
             // Determine the type of the result from the first Geometry in the list
             // this should always return a point, since otherwise an empty collection would have already been returned
-            bool isCollection = geomList.Count > 1;
+            bool isCollection = geoms.Count > 1;
 
             if (isCollection)
             {
                 if (geom0 is Polygon)
-                    return CreateMultiPolygon(ToPolygonArray(geomList));
+                    return CreateMultiPolygon(ToPolygonArray(geoms));
                 if (geom0 is LineString)
-                    return CreateMultiLineString(ToLineStringArray(geomList));
+                    return CreateMultiLineString(ToLineStringArray(geoms));
                 if (geom0 is Point)
-                    return CreateMultiPoint(ToPointArray(geomList));
+                    return CreateMultiPoint(ToPointArray(geoms));
                 Assert.ShouldNeverReachHere("Unhandled class: " + geom0.GetType().FullName);
             }
             return geom0;

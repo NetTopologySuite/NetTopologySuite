@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace NetTopologySuite.Noding
 {
@@ -8,15 +9,15 @@ namespace NetTopologySuite.Noding
     /// </summary>
     public class SimpleSegmentSetMutualIntersector : ISegmentSetMutualIntersector
     {
-        private readonly ICollection<ISegmentString> _baseBaseSegStrings;
+        private readonly ISegmentString[] _baseBaseSegStrings;
 
         /// <summary>
         /// Constructs a new intersector for a given set of <see cref="ISegmentString"/>s.
         /// </summary>
         /// <param name="baseSegStrings">The base segment strings to intersect</param>
-        public SimpleSegmentSetMutualIntersector(ICollection<ISegmentString> baseSegStrings)
+        public SimpleSegmentSetMutualIntersector(IEnumerable<ISegmentString> baseSegStrings)
         {
-            _baseBaseSegStrings = baseSegStrings;
+            _baseBaseSegStrings = baseSegStrings.ToArray();
         }
 
         /// <summary>
@@ -27,12 +28,13 @@ namespace NetTopologySuite.Noding
         /// <param name="segmentStrings">A collection of <see cref="ISegmentString"/>s to node</param>
         /// <param name="segmentIntersector">The intersection detector to either record intersection occurences
         /// or add intersection nodes to the input segment strings.</param>
-        public void Process(ICollection<ISegmentString> segmentStrings, ISegmentIntersector segmentIntersector)
+        public void Process(IEnumerable<ISegmentString> segmentStrings, ISegmentIntersector segmentIntersector)
         {
-
+            // don't iterate over the input more than once.
+            var segmentStringsArray = segmentStrings?.ToArray();
             foreach (var baseSegmentString in _baseBaseSegStrings)
             {
-                foreach (var segmentString in segmentStrings)
+                foreach (var segmentString in segmentStringsArray)
                 {
                     Intersect(baseSegmentString, segmentString, segmentIntersector);
                     if (segmentIntersector.IsDone)

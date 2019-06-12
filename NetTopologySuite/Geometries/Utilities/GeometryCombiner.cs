@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NetTopologySuite.Geometries.Utilities
 {
@@ -17,7 +18,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <summary>Combines a collection of geometries.</summary>
         /// <param name="geoms">The geometries to combine</param>
         /// <returns>The combined geometry</returns>
-        public static Geometry Combine(ICollection<Geometry> geoms)
+        public static Geometry Combine(IEnumerable<Geometry> geoms)
         {
             var combiner = new GeometryCombiner(geoms);
             return combiner.Combine();
@@ -71,22 +72,22 @@ namespace NetTopologySuite.Geometries.Utilities
             return new List<Geometry> {obj0, obj1, obj2};
         }
 
-        private readonly GeometryFactory _geomFactory;
-
         /// <summary>
         /// Value indicating whether empty geometries should be skipped
         /// </summary>
         public static bool SkipEmpty { get; set; }
 
-        private readonly ICollection<Geometry> _inputGeoms;
+        private readonly IEnumerable<Geometry> _inputGeoms;
 
         /// <summary>
         /// Creates a new combiner for a collection of geometries
         /// </summary>
         /// <param name="geoms">The geometries to combine</param>
-        public GeometryCombiner(ICollection<Geometry> geoms)
+        public GeometryCombiner(IEnumerable<Geometry> geoms)
         {
-            _geomFactory = ExtractFactory(geoms);
+            // DEVIATION: JTS uses ExtractFactory here, but if we wait to do so
+            // until we actually loop over it, then this can be IEnumerable<T>
+            // without having to iterate over it multiple times.
             _inputGeoms = geoms;
         }
 
@@ -95,15 +96,14 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="geoms"></param>
         /// <returns>a GeometryFactory</returns>
-        public static GeometryFactory ExtractFactory(ICollection<Geometry> geoms)
+        public static GeometryFactory ExtractFactory(IEnumerable<Geometry> geoms)
         {
-            if (geoms.Count == 0)
-                return null;
+            foreach (var geom in geoms)
+            {
+                return geom.Factory;
+            }
 
-            var geomenumerator = geoms.GetEnumerator();
-            geomenumerator.MoveNext();
-
-            return geomenumerator.Current.Factory;
+            return null;
         }
 
         /// <summary>
@@ -114,15 +114,26 @@ namespace NetTopologySuite.Geometries.Utilities
         public Geometry Combine()
         {
             var elems = new List<Geometry>();
+
+            bool first = true;
+            GeometryFactory geomFactory = null;
             foreach (var geom in _inputGeoms)
+            {
+                if (first)
+                {
+                    geomFactory = geom.Factory;
+                    first = false;
+                }
+
                 ExtractElements(geom, elems);
+            }
 
             if (elems.Count == 0)
-                return _geomFactory != null ? _geomFactory.CreateGeometryCollection() : null;
-            return _geomFactory.BuildGeometry(elems);
+                return geomFactory?.CreateGeometryCollection();
+            return geomFactory.BuildGeometry(elems);
         }
 
-        private static void ExtractElements(Geometry geom, ICollection<Geometry> elems)
+        private static void ExtractElements(Geometry geom, List<Geometry> elems)
         {
             if (geom == null)
                 return;

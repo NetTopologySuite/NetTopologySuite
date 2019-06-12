@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
@@ -23,11 +24,11 @@ namespace NetTopologySuite.Noding
         /// </summary>
         /// <param name="segStrings">A collection of NodedSegmentStrings</param>
         /// <returns>A collection of NodedSegmentStrings representing the substrings</returns>
-        public static IList<ISegmentString> GetNodedSubstrings(IList<ISegmentString> segStrings)
+        public static ReadOnlyCollection<ISegmentString> GetNodedSubstrings(IEnumerable<ISegmentString> segStrings)
         {
             var resultEdgelist = new List<ISegmentString>();
             GetNodedSubstrings(segStrings, resultEdgelist);
-            return resultEdgelist;
+            return resultEdgelist.AsReadOnly();
         }
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace NetTopologySuite.Noding
         /// </summary>
         /// <param name="segStrings">A collection of NodedSegmentStrings</param>
         /// <param name="resultEdgelist">A list which will collect the NodedSegmentStrings representing the substrings</param>
-        public static void GetNodedSubstrings(IList<ISegmentString> segStrings, IList<ISegmentString> resultEdgelist)
+        public static void GetNodedSubstrings(IEnumerable<ISegmentString> segStrings, ICollection<ISegmentString> resultEdgelist)
         {
             foreach (var obj in segStrings)
             {

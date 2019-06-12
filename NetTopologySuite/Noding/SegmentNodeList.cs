@@ -10,7 +10,7 @@ namespace NetTopologySuite.Noding
     /// </summary>
     public class SegmentNodeList : IEnumerable<object>
     {
-        private readonly IDictionary<SegmentNode, object> _nodeMap = new SortedDictionary<SegmentNode, object>();
+        private readonly SortedDictionary<SegmentNode, object> _nodeMap = new SortedDictionary<SegmentNode, object>();
         private readonly NodedSegmentString _edge;  // the parent edge
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Noding
         /// Returns an iterator of SegmentNodes.
         /// </summary>
         /// <returns>An iterator of SegmentNodes.</returns>
-        public IEnumerator<object>GetEnumerator()
+        public IEnumerator<object> GetEnumerator()
         {
             return _nodeMap.Values.GetEnumerator();
         }
@@ -99,7 +99,7 @@ namespace NetTopologySuite.Noding
         /// which are pre-existing in the vertex list.
         /// </summary>
         /// <param name="collapsedVertexIndexes"></param>
-        private void FindCollapsesFromExistingVertices(IList<int> collapsedVertexIndexes)
+        private void FindCollapsesFromExistingVertices(List<int> collapsedVertexIndexes)
         {
             for (int i = 0; i < _edge.Count - 2; i++)
             {
@@ -119,11 +119,9 @@ namespace NetTopologySuite.Noding
         /// the vertex must be added as a node as well.
         /// </summary>
         /// <param name="collapsedVertexIndexes"></param>
-        private void FindCollapsesFromInsertedNodes(IList<int> collapsedVertexIndexes)
+        private void FindCollapsesFromInsertedNodes(List<int> collapsedVertexIndexes)
         {
-            int[] collapsedVertexIndex = new int[1];
-
-            var ie = GetEnumerator();
+            var ie = _nodeMap.Values.GetEnumerator();
             ie.MoveNext();
 
             // there should always be at least two entries in the list, since the endpoints are nodes
@@ -131,9 +129,8 @@ namespace NetTopologySuite.Noding
             while (ie.MoveNext())
             {
                 var ei = (SegmentNode) ie.Current;
-                bool isCollapsed = FindCollapseIndex(eiPrev, ei, collapsedVertexIndex);
-                if (isCollapsed)
-                    collapsedVertexIndexes.Add(collapsedVertexIndex[0]);
+                if (FindCollapseIndex(eiPrev, ei, out int collapsedVertexIndex))
+                    collapsedVertexIndexes.Add(collapsedVertexIndex);
                 eiPrev = ei;
             }
         }
@@ -145,8 +142,10 @@ namespace NetTopologySuite.Noding
         /// <param name="ei1"></param>
         /// <param name="collapsedVertexIndex"></param>
         /// <returns></returns>
-        private static bool FindCollapseIndex(SegmentNode ei0, SegmentNode ei1, int[] collapsedVertexIndex)
+        private static bool FindCollapseIndex(SegmentNode ei0, SegmentNode ei1, out int collapsedVertexIndex)
         {
+            collapsedVertexIndex = 0;
+
             // only looking for equal nodes
             if (!ei0.Coord.Equals2D(ei1.Coord))
                 return false;
@@ -156,7 +155,7 @@ namespace NetTopologySuite.Noding
             // if there is a single vertex between the two equal nodes, this is a collapse
             if (numVerticesBetween == 1)
             {
-                collapsedVertexIndex[0] = ei0.SegmentIndex + 1;
+                collapsedVertexIndex = ei0.SegmentIndex + 1;
                 return true;
             }
             return false;
@@ -170,14 +169,14 @@ namespace NetTopologySuite.Noding
         /// for a set of <see cref="ISegmentString" />s).
         /// </summary>
         /// <param name="edgeList"></param>
-        public void AddSplitEdges(IList<ISegmentString> edgeList)
+        public void AddSplitEdges(ICollection<ISegmentString> edgeList)
         {
             // ensure that the list has entries for the first and last point of the edge
             AddEndpoints();
             AddCollapsedNodes();
 
             // there should always be at least two entries in the list, since the endpoints are nodes
-            var ie = GetEnumerator();
+            var ie = _nodeMap.Values.GetEnumerator();
             ie.MoveNext();
             var eiPrev = (SegmentNode) ie.Current;
             while (ie.MoveNext())
@@ -260,7 +259,7 @@ namespace NetTopologySuite.Noding
             // ensure that the list has entries for the first and last point of the edge
             AddEndpoints();
 
-            var it = GetEnumerator();
+            var it = _nodeMap.Values.GetEnumerator();
             it.MoveNext();
             // there should always be at least two entries in the list, since the endpoints are nodes
             var eiPrev = (SegmentNode)it.Current;

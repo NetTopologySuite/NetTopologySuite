@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace NetTopologySuite.Geometries.Utilities
 {
@@ -10,12 +11,13 @@ namespace NetTopologySuite.Geometries.Utilities
     {
         /// <summary>
         /// Extracts the <see cref="LineString"/> elements from a single <see cref="Geometry"/>
-        /// and adds them to the<see cref="List{LineString}"/>.
+        /// and adds them to the<see cref="ICollection{LineString}"/>.
         /// </summary>
         /// <param name="geom">The geometry from which to extract</param>
         /// <param name="lines">The list to add the extracted elements to</param>
         /// <returns>The <paramref name="lines"/> list argument</returns>
-        public static ICollection<Geometry> GetLines(Geometry geom, ICollection<Geometry> lines)
+        public static TCollection GetLines<TCollection>(Geometry geom, TCollection lines)
+            where TCollection : ICollection<Geometry>
         {
             if (geom is LineString)
             {
@@ -31,13 +33,14 @@ namespace NetTopologySuite.Geometries.Utilities
 
         /// <summary>
         /// Extracts the <see cref="LineString"/> elements from a single <see cref="Geometry"/>
-        /// and returns them in a <see cref="ICollection{LineString}"/>.
+        /// and returns them in a <see cref="List{LineString}"/>.
         /// </summary>
         /// <param name="geom">The geometry from which to extract</param>
         /// <returns>A list containing the linear elements</returns>
-        public static ICollection<Geometry> GetLines(Geometry geom)
+        public static ReadOnlyCollection<Geometry> GetLines(Geometry geom)
         {
-            return GetLines(geom, new List<Geometry>());
+            var lines = GetLines(geom, new List<Geometry>());
+            return lines.AsReadOnly();
         }
 
         /// <summary>

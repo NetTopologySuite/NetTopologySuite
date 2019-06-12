@@ -45,19 +45,19 @@ namespace NetTopologySuite.Operation.Union
     public class UnaryUnionOp
     {
         /// <summary>
-        /// Computes the geometric union of a <see cref="IList{Geometry}"/>
+        /// Computes the geometric union of a <see cref="IEnumerable{Geometry}"/>
         /// </summary>
         /// <param name="geoms">A collection of geometries</param>
         /// <returns>The union of the geometries,
         /// or <c>null</c> if the input is empty</returns>
-        public static Geometry Union(IList<Geometry> geoms)
+        public static Geometry Union(IEnumerable<Geometry> geoms)
         {
             var op = new UnaryUnionOp(geoms);
             return op.Union();
         }
 
         /// <summary>
-        /// Computes the geometric union of a <see cref="IList{Geometry}"/><para/>
+        /// Computes the geometric union of a <see cref="IEnumerable{Geometry}"/><para/>
         /// If no input geometries were provided but a <see cref="GeometryFactory"/> was provided,
         /// an empty <see cref="GeometryCollection"/> is returned.
         /// </summary>
@@ -65,7 +65,7 @@ namespace NetTopologySuite.Operation.Union
         /// <param name="geomFact">The geometry factory to use if the collection is empty</param>
         /// <returns>The union of the geometries
         /// or an empty GEOMETRYCOLLECTION</returns>
-        public static Geometry Union(IList<Geometry> geoms, GeometryFactory geomFact)
+        public static Geometry Union(IEnumerable<Geometry> geoms, GeometryFactory geomFact)
         {
             var op = new UnaryUnionOp(geoms, geomFact);
             return op.Union();

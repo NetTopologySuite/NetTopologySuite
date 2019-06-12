@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Geometries
@@ -193,17 +194,14 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Converts the given <see cref="ICollection{T}" /> of
+        /// Converts the given <see cref="IEnumerable{T}" /> of
         /// <see cref="Coordinate" />s into a <see cref="Coordinate" /> array.
         /// </summary>
-        /// <param name="coordList"><see cref="ICollection{T}"/> of coordinates.</param>
+        /// <param name="coordList"><see cref="IEnumerable{T}"/> of coordinates.</param>
         /// <returns></returns>
-        public static Coordinate[] ToCoordinateArray(ICollection<Coordinate> coordList)
+        public static Coordinate[] ToCoordinateArray(IEnumerable<Coordinate> coordList)
         {
-            var tempList = new List<Coordinate>(coordList.Count);
-            foreach (var coord in coordList)
-                tempList.Add(coord);
-            return tempList.ToArray();
+            return coordList.ToArray();
         }
 
         /// <summary>
