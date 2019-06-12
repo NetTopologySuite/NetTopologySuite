@@ -1,6 +1,11 @@
-﻿using NetTopologySuite.Algorithm;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
+using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
@@ -130,5 +135,28 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));
         }
 
+        [TestCaseSource(typeof(PointwiseGeometryAggregationTestCases))]
+        public void TestStaticAggregation(ICollection<Geometry> geoms)
+        {
+            var actual = ConvexHull.Create(geoms);
+
+            // JTS doesn't usually bother doing anything special about nulls,
+            // so our ports of their stuff will suffer the same.
+            geoms = geoms?.Where(g => g != null).ToArray() ?? Array.Empty<Geometry>();
+
+            var combinedGeometry = GeometryCombiner.Combine(geoms);
+
+            // JTS also doesn't fear giving us nulls back from its algorithms.
+            var expected = combinedGeometry?.ConvexHull();
+
+            if (expected?.IsEmpty == false)
+            {
+                Assert.That(expected.EqualsTopologically(actual));
+            }
+            else
+            {
+                Assert.That(actual.IsEmpty);
+            }
+        }
     }
 }
