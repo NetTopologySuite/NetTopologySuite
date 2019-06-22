@@ -156,16 +156,23 @@ namespace NetTopologySuite.IO
             private readonly Ordinates _checkOrdinateFlags;
             private Ordinates _outputOrdinates;
 
+            private readonly bool _alwaysEmitZWithM;
+
             /// <summary>
             /// Initializes a new instance of the <see cref="CheckOrdinatesFilter"/> flag.
             /// </summary>
             /// <param name="checkOrdinateFlags">
             /// The index for the ordinates to test.
             /// </param>
-            public CheckOrdinatesFilter(Ordinates checkOrdinateFlags)
+            /// <param name="alwaysEmitZWithM">
+            /// <see langword="true"/> if <see cref="Ordinates.M"/> implies
+            /// <see cref="Ordinates.Z"/>, <see langword="false"/> otherwise.
+            /// </param>
+            public CheckOrdinatesFilter(Ordinates checkOrdinateFlags, bool alwaysEmitZWithM)
             {
                 _outputOrdinates = Ordinates.XY;
                 _checkOrdinateFlags = checkOrdinateFlags;
+                _alwaysEmitZWithM = alwaysEmitZWithM;
             }
 
             /// <inheritdoc />
@@ -184,6 +191,10 @@ namespace NetTopologySuite.IO
                     if (!double.IsNaN(seq.GetM(i)))
                     {
                         _outputOrdinates |= Ordinates.M;
+                        if (_alwaysEmitZWithM)
+                        {
+                            _outputOrdinates |= Ordinates.Z;
+                        }
                     }
                 }
             }
@@ -210,9 +221,16 @@ namespace NetTopologySuite.IO
         private string _indentTabStr;
         //private bool _zIsMeasure;
 
-        public WKTWriter() : this(2) { }
+        // MSSQL overrides
+        private readonly bool _skipOrdinateToken;
+        private readonly bool _alwaysEmitZWithM;
+        private readonly string _missingOrdinateReplacementText = " NaN";
 
-        public WKTWriter(int outputDimension)
+        public WKTWriter() : this(2, false) { }
+
+        public WKTWriter(int outputDimension) : this(outputDimension, false) { }
+
+        private WKTWriter(int outputDimension, bool mssql)
         {
             this.Tab = 2;
             if (outputDimension < 2 || outputDimension > 4)
@@ -232,6 +250,13 @@ namespace NetTopologySuite.IO
                 case 4:
                     _outputOrdinates = Ordinates.XYZM;
                     break;
+            }
+
+            if (mssql)
+            {
+                _skipOrdinateToken = true;
+                _alwaysEmitZWithM = true;
+                _missingOrdinateReplacementText = " NULL";
             }
         }
 
@@ -305,6 +330,8 @@ namespace NetTopologySuite.IO
         public bool EmitZ{ get; set; }
 
         public bool EmitM{ get; set; }
+
+        public static WKTWriter ForMicrosoftSqlServer() => new WKTWriter(4, true);
 
         /// <summary>
         /// Converts a <c>Geometry</c> to its Well-known Text representation.
@@ -442,7 +469,7 @@ namespace NetTopologySuite.IO
         private void AppendGeometryTaggedText(Geometry geometry, bool useFormatting, TextWriter writer, IFormatProvider formatter, string format, bool useMaxPrecision)
         {
             // evaluate the ordinates actually present in the geometry
-            var cof = new CheckOrdinatesFilter(_outputOrdinates);
+            var cof = new CheckOrdinatesFilter(_outputOrdinates, _alwaysEmitZWithM);
             geometry.Apply(cof);
 
             // Append the WKT
@@ -655,7 +682,7 @@ namespace NetTopologySuite.IO
                 }
                 else
                 {
-                    writer.Write(" NaN");
+                    writer.Write(_missingOrdinateReplacementText);
                 }
             }
 
@@ -720,6 +747,11 @@ namespace NetTopologySuite.IO
         /// <exception cref="IOException">if an error occurs while using the writer.</exception>
         private void AppendOrdinateText(Ordinates outputOrdinates, TextWriter writer)
         {
+            if (_skipOrdinateToken)
+            {
+                return;
+            }
+
             if (outputOrdinates.HasFlag(Ordinates.Z))
             {
                 writer.Write('Z');

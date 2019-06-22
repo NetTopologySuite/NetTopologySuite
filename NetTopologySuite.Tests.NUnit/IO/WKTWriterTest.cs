@@ -243,5 +243,21 @@ namespace NetTopologySuite.Tests.NUnit.IO
             writer3DM.OutputOrdinates = Ordinates.XYZM;
             Assert.That(writer3DM.OutputOrdinates, Is.EqualTo(Ordinates.XYZM));
         }
+
+        [Test]
+        public void TestMicrosoftSqlServer()
+        {
+            var writer = WKTWriter.ForMicrosoftSqlServer();
+
+            var pt2D = GeometryFactory.Default.CreatePoint(new Coordinate(1, 2));
+            var pt3D = GeometryFactory.Default.CreatePoint(new CoordinateZ(1, 2, 3));
+            var pt2DM = GeometryFactory.Default.CreatePoint(new CoordinateM(1, 2, 4));
+            var pt3DM = GeometryFactory.Default.CreatePoint(new CoordinateZM(1, 2, 3, 4));
+
+            Assert.That(writer.Write(pt2D), Is.EqualTo("POINT (1 2)"));
+            Assert.That(writer.Write(pt3D), Is.EqualTo("POINT (1 2 3)"));
+            Assert.That(writer.Write(pt2DM), Is.EqualTo("POINT (1 2 NULL 4)"));
+            Assert.That(writer.Write(pt3DM), Is.EqualTo("POINT (1 2 3 4)"));
+        }
     }
 }
