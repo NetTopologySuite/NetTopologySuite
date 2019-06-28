@@ -3,6 +3,7 @@ using GeoAPI.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Operation.Linemerge;
 using NetTopologySuite.Operation.Overlay;
+using NetTopologySuite.Operation.Overlay.Snap;
 
 namespace NetTopologySuite.Operation.Union
 {
@@ -249,7 +250,7 @@ namespace NetTopologySuite.Operation.Union
         {
 
             var empty = _geomFact.CreatePoint();
-            return OverlayOp.Overlay(g0, empty, SpatialFunction.Union);
+            return SnapIfNeededOverlayOp.Overlay(g0, empty, SpatialFunction.Union);
         }
 
     }
