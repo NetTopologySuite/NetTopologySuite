@@ -6,7 +6,7 @@
     <title>NTS - Topology Suite</title>
     <authors>NetTopologySuite - Team</authors>
     <owners>NetTopologySuite - Team</owners>
-    <licenseUrl>https://opensource.org/licenses/BSD-3-Clause</licenseUrl>
+    <license type="expression">BSD-3-Clause</license>
     <projectUrl>https://github.com/NetTopologySuite/NetTopologySuite</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>

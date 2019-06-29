@@ -6,7 +6,7 @@
     <title>NTS - Topology Suite</title>
     <authors>NetTopologySuite - Team</authors>
     <owners>NetTopologySuite - Team</owners>
-    <licenseUrl>https://opensource.org/licenses/LGPL-2.1</licenseUrl>
+    <license type="expression">LGPL-2.1-or-later</license>
     <projectUrl>https://github.com/NetTopologySuite/NetTopologySuite</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>
