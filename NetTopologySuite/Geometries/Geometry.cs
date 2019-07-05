@@ -1697,6 +1697,19 @@ namespace NetTopologySuite.Geometries
         public abstract void Apply(ICoordinateSequenceFilter filter);
 
         /// <summary>
+        /// Performs an operation on this <c>Geometry</c>'s <see cref="CoordinateSequence"/>s.
+        /// </summary>
+        /// <remarks>
+        /// If the filter reports that a coordinate value has been changed,
+        /// <see cref="GeometryChanged"/> will be called automatically.
+        /// </remarks>
+        /// <param name="filter">The filter to apply</param>
+        public virtual void Apply(IEntireCoordinateSequenceFilter filter)
+        {
+            Apply(new EntireCoordinateSequenceFilterWrapper(filter));
+        }
+
+        /// <summary>
         /// Performs an operation with or on this <c>Geometry</c> and its
         /// subelement <c>Geometry</c>s (if any).
         /// Only GeometryCollections and subclasses
@@ -2102,5 +2115,24 @@ namespace NetTopologySuite.Geometries
             return result;
         }
 
+        private sealed class EntireCoordinateSequenceFilterWrapper : ICoordinateSequenceFilter
+        {
+            private readonly IEntireCoordinateSequenceFilter _inner;
+
+            public EntireCoordinateSequenceFilterWrapper(IEntireCoordinateSequenceFilter inner) =>
+                _inner = inner;
+
+            public bool Done => _inner.Done;
+
+            public bool GeometryChanged => _inner.GeometryChanged;
+
+            public void Filter(CoordinateSequence seq, int i)
+            {
+                if (i == 0)
+                {
+                    _inner.Filter(seq);
+                }
+            }
+        }
     }
 }

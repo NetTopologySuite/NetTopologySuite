@@ -1,4 +1,5 @@
 using System;
+using ProjNet.CoordinateSystems.Transformations;
 
 namespace NetTopologySuite.Geometries
 {
@@ -420,6 +421,47 @@ namespace NetTopologySuite.Geometries
             return false;
         }
 
+        /// <summary>
+        /// Applies a <see cref="MathTransform"/> to each coordinate in this sequence.
+        /// </summary>
+        /// <param name="transform">The <see cref="MathTransform"/> to apply.</param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="transform"/> is <see langword="null"/>.
+        /// </exception>
+        [CLSCompliant(false)]
+        public virtual void Apply(MathTransform transform)
+        {
+            if (transform is null)
+            {
+                throw new ArgumentNullException(nameof(transform));
+            }
+
+            if (HasZ)
+            {
+                for (int i = 0; i < Count; i++)
+                {
+                    double x = GetOrdinate(i, 0);
+                    double y = GetOrdinate(i, 1);
+                    double z = GetOrdinate(i, 2);
+                    transform.Transform(ref x, ref y, ref z);
+                    SetOrdinate(i, 0, x);
+                    SetOrdinate(i, 1, y);
+                    SetOrdinate(i, 2, z);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < Count; i++)
+                {
+                    double x = GetOrdinate(i, 0);
+                    double y = GetOrdinate(i, 1);
+                    transform.Transform(ref x, ref y);
+                    SetOrdinate(i, 0, x);
+                    SetOrdinate(i, 1, y);
+                }
+            }
+        }
+
         [Serializable]
         private sealed class ReversedCoordinateSequence : CoordinateSequence
         {
@@ -469,6 +511,8 @@ namespace NetTopologySuite.Geometries
             public override CoordinateSequence Copy() => new ReversedCoordinateSequence(_inner.Copy());
 
             public override CoordinateSequence Reversed() => _inner.Copy();
+
+            public override void Apply(MathTransform transform) => _inner.Apply(transform);
         }
     }
 }

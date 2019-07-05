@@ -36,6 +36,7 @@ This package references GeoAPI.</Description>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05" PrivateAssets="All" />
 
     <PackageReference Include="System.Memory" Version="4.5.3" />
+    <PackageReference Include="ProjNET" Version="2.0.0-*" />
   </ItemGroup>
 
 </Project>

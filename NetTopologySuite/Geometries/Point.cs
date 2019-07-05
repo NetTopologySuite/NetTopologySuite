@@ -224,6 +224,21 @@ namespace NetTopologySuite.Geometries
                 GeometryChanged();
         }
 
+        /// <inheritdoc />
+        public override void Apply(IEntireCoordinateSequenceFilter filter)
+        {
+            if (IsEmpty)
+            {
+                return;
+            }
+
+            filter.Filter(_coordinates);
+            if (filter.GeometryChanged)
+            {
+                GeometryChanged();
+            }
+        }
+
         /// <summary>
         ///
         /// </summary>

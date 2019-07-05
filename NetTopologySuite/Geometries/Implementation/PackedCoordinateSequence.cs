@@ -1,6 +1,8 @@
 using System;
 using System.Runtime.Serialization;
 
+using ProjNet.CoordinateSystems.Transformations;
+
 namespace NetTopologySuite.Geometries.Implementation
 {
     /// <summary>
@@ -409,6 +411,35 @@ namespace NetTopologySuite.Geometries.Implementation
             }
             return new PackedDoubleCoordinateSequence(coords, dim, Measures);
         }
+
+        /// <inheritdoc />
+        [CLSCompliant(false)]
+        public override void Apply(MathTransform transform)
+        {
+            if (transform is null)
+            {
+                throw new ArgumentNullException(nameof(transform));
+            }
+
+            if (_coords.Length == 0)
+            {
+                return;
+            }
+
+            var xs = new Span<double>(_coords, 0, _coords.Length);
+            var ys = new Span<double>(_coords, 1, _coords.Length - 1);
+            if (HasZ)
+            {
+                var zs = new Span<double>(_coords, 2, _coords.Length - 2);
+                transform.Transform(xs, ys, zs, Dimension, Dimension, Dimension);
+            }
+            else
+            {
+                transform.Transform(xs, ys, Dimension, Dimension);
+            }
+
+            CoordRef = null;
+        }
     }
 
     /// <summary>
@@ -608,5 +639,41 @@ namespace NetTopologySuite.Geometries.Implementation
             return new PackedDoubleCoordinateSequence(coords, dim, Measures);
         }
 
+        /// <inheritdoc />
+        [CLSCompliant(false)]
+        public override void Apply(MathTransform transform)
+        {
+            if (transform is null)
+            {
+                throw new ArgumentNullException(nameof(transform));
+            }
+
+            if (HasZ)
+            {
+                for (int i = 0; i < _coords.Length; i += Dimension)
+                {
+                    double x = _coords[i];
+                    double y = _coords[i + 1];
+                    double z = _coords[i + 2];
+                    transform.Transform(ref x, ref y, ref z);
+                    _coords[i] = (float)x;
+                    _coords[i + 1] = (float)y;
+                    _coords[i + 2] = (float)z;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < _coords.Length; i += Dimension)
+                {
+                    double x = _coords[i];
+                    double y = _coords[i + 1];
+                    transform.Transform(ref x, ref y);
+                    _coords[i] = (float)x;
+                    _coords[i + 1] = (float)y;
+                }
+            }
+
+            CoordRef = null;
+        }
     }
 }

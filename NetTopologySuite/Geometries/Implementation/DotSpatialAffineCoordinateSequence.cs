@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using ProjNet.CoordinateSystems.Transformations;
+using ProjNet.Geometries;
 
 namespace NetTopologySuite.Geometries.Implementation
 {
@@ -40,7 +42,7 @@ namespace NetTopologySuite.Geometries.Implementation
                 _m = new double[coordinates.Count];
             }
 
-            var xy = MemoryMarshal.Cast<double, XYStruct>(_xy);
+            var xy = MemoryMarshal.Cast<double, XY>(_xy);
             using (var coordinatesEnumerator = coordinates.GetEnumerator())
             {
                 for (int i = 0; i < xy.Length; i++)
@@ -152,7 +154,7 @@ namespace NetTopologySuite.Geometries.Implementation
                     _m = new double[Count];
                 }
 
-                var xy = MemoryMarshal.Cast<double, XYStruct>(_xy);
+                var xy = MemoryMarshal.Cast<double, XY>(_xy);
                 for (int i = 0; i < xy.Length; i++)
                 {
                     xy[i].X = coordSeq.GetX(i);
@@ -393,7 +395,7 @@ namespace NetTopologySuite.Geometries.Implementation
 
         public override Envelope ExpandEnvelope(Envelope env)
         {
-            var xy = MemoryMarshal.Cast<double, XYStruct>(_xy);
+            var xy = MemoryMarshal.Cast<double, XY>(_xy);
             for (int i = 0; i < xy.Length; i++)
             {
                 env.ExpandToInclude(xy[i].X, xy[i].Y);
@@ -409,7 +411,7 @@ namespace NetTopologySuite.Geometries.Implementation
         public override CoordinateSequence Reversed()
         {
             double[] xy = (double[])_xy.Clone();
-            MemoryMarshal.Cast<double, XYStruct>(xy).Reverse();
+            MemoryMarshal.Cast<double, XY>(xy).Reverse();
 
             double[] z = (double[])_z?.Clone();
             new Span<double>(z).Reverse();
@@ -447,6 +449,27 @@ namespace NetTopologySuite.Geometries.Implementation
             _coordinateArrayRef = null;
         }
 
+        /// <inheritdoc />
+        [CLSCompliant(false)]
+        public override void Apply(MathTransform transform)
+        {
+            if (transform is null)
+            {
+                throw new ArgumentNullException(nameof(transform));
+            }
+
+            if (_z is null)
+            {
+                transform.Transform(MemoryMarshal.Cast<double, XY>(_xy));
+            }
+            else
+            {
+                transform.Transform(MemoryMarshal.Cast<double, XY>(_xy), _z, 1);
+            }
+
+            _coordinateArrayRef = null;
+        }
+
         private static int ClipDimension(int dimension, int measures)
         {
             if (measures < 0 || dimension < 0 || dimension - measures < 2)
@@ -461,13 +484,6 @@ namespace NetTopologySuite.Geometries.Implementation
             }
 
             return dimension;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct XYStruct
-        {
-            public double X;
-            public double Y;
         }
     }
 }

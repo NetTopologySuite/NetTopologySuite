@@ -1,6 +1,8 @@
 using System;
 using System.Text;
 
+using ProjNet.CoordinateSystems.Transformations;
+
 namespace NetTopologySuite.Geometries.Implementation
 {
     /// <summary>
@@ -358,6 +360,41 @@ namespace NetTopologySuite.Geometries.Implementation
                 coordinates[Count - i - 1] = Coordinates[i].Copy();
             }
             return new CoordinateArraySequence(coordinates, Dimension);
+        }
+
+        /// <inheritdoc />
+        [CLSCompliant(false)]
+        public override void Apply(MathTransform transform)
+        {
+            if (transform is null)
+            {
+                throw new ArgumentNullException(nameof(transform));
+            }
+
+            if (HasZ)
+            {
+                foreach (var coord in Coordinates)
+                {
+                    double x = coord.X;
+                    double y = coord.Y;
+                    double z = coord.Z;
+                    transform.Transform(ref x, ref y, ref z);
+                    coord.X = x;
+                    coord.Y = y;
+                    coord.Z = z;
+                }
+            }
+            else
+            {
+                foreach (var coord in Coordinates)
+                {
+                    double x = coord.X;
+                    double y = coord.Y;
+                    transform.Transform(ref x, ref y);
+                    coord.X = x;
+                    coord.Y = y;
+                }
+            }
         }
 
         /// <summary>

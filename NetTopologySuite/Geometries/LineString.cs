@@ -325,6 +325,21 @@ namespace NetTopologySuite.Geometries
                 GeometryChanged();
         }
 
+        /// <inheritdoc />
+        public override void Apply(IEntireCoordinateSequenceFilter filter)
+        {
+            if (_points.Count == 0)
+            {
+                return;
+            }
+
+            filter.Filter(_points);
+            if (filter.GeometryChanged)
+            {
+                GeometryChanged();
+            }
+        }
+
         /// <summary>
         ///
         /// </summary>

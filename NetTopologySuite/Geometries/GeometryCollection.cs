@@ -328,7 +328,7 @@ namespace NetTopologySuite.Geometries
                 return;
             for (int i = 0; i < _geometries.Length; i++)
             {
-                ((Geometry)_geometries[i]).Apply(filter);
+                _geometries[i].Apply(filter);
                 if (filter.Done)
                 {
                     break;
@@ -336,6 +336,29 @@ namespace NetTopologySuite.Geometries
             }
             if (filter.GeometryChanged)
                 GeometryChanged();
+        }
+
+        /// <inheritdoc />
+        public override void Apply(IEntireCoordinateSequenceFilter filter)
+        {
+            if (_geometries.Length == 0)
+            {
+                return;
+            }
+
+            for (int i = 0; i < _geometries.Length; i++)
+            {
+                _geometries[i].Apply(filter);
+                if (filter.Done)
+                {
+                    break;
+                }
+            }
+
+            if (filter.GeometryChanged)
+            {
+                GeometryChanged();
+            }
         }
 
         /// <summary>

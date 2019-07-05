@@ -390,13 +390,40 @@ namespace NetTopologySuite.Geometries
             {
                 for (int i = 0; i < _holes.Length; i++)
                 {
-                    ((LinearRing)_holes[i]).Apply(filter);
+                    _holes[i].Apply(filter);
                     if (filter.Done)
+                    {
                         break;
+                    }
                 }
             }
+
             if (filter.GeometryChanged)
+            {
                 GeometryChanged();
+            }
+        }
+
+        /// <inheritdoc />
+        public override void Apply(IEntireCoordinateSequenceFilter filter)
+        {
+            _shell.Apply(filter);
+            if (!filter.Done)
+            {
+                for (int i = 0; i < _holes.Length; i++)
+                {
+                    _holes[i].Apply(filter);
+                    if (filter.Done)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (filter.GeometryChanged)
+            {
+                GeometryChanged();
+            }
         }
 
         /// <summary>

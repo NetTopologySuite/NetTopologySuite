@@ -6,8 +6,6 @@
     <OutputPath>$(MSBuildThisFileDirectory)$(Configuration)\$(Platform)</OutputPath>
     <DocumentationFile>$(OutputPath)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
 
-    <RestoreAdditionalProjectSources>$(RestoreAdditionalProjectSources);https://www.myget.org/F/nettopologysuite/api/v3/index.json</RestoreAdditionalProjectSources>
-
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)nts.snk</AssemblyOriginatorKeyFile>
 
     <Deterministic>true</Deterministic>

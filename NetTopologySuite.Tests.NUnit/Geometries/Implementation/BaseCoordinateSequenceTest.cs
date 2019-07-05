@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Tests.NUnit.Utilities;
 
 using NUnit.Framework;
 
@@ -236,6 +237,24 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
                     Assert.That(c1[dim], Is.EqualTo(expectedOrdinateValue));
                     Assert.That(c2[dim], Is.EqualTo(expectedOrdinateValue));
                     Assert.That(c3[dim], Is.EqualTo(expectedOrdinateValue));
+                }
+            }
+
+            TestMathTransform(cs);
+            TestMathTransform(reversed);
+            TestMathTransform(reversed2);
+            void TestMathTransform(CoordinateSequence seq)
+            {
+                var incremented = seq.Copy();
+                incremented.Apply(new IncrementingMathTransform());
+                for (int i = 0; i < count; i++)
+                {
+                    Assert.That(incremented.GetX(i), Is.EqualTo(seq.GetX(i) + 1));
+                    Assert.That(incremented.GetY(i), Is.EqualTo(seq.GetY(i) + 1));
+                    if (spatial > 2)
+                    {
+                        Assert.That(incremented.GetZ(i), Is.EqualTo(seq.GetZ(i) + 1));
+                    }
                 }
             }
         }
