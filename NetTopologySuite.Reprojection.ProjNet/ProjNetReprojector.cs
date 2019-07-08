@@ -23,7 +23,7 @@ namespace NetTopologySuite.Reprojection
 
         private sealed class ProjNetReprojectionFactory : ReprojectionFactory
         {
-            public override Reprojection Create(SpatialReference source, SpatialReference target, bool cache = false)
+            public override Reprojection Create(SpatialReference source, SpatialReference target)
             {
                 return new ProjNetReprojection(source, target);
             }

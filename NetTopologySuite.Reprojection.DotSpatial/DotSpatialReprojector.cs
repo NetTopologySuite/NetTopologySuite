@@ -24,7 +24,7 @@ namespace NetTopologySuite.Reprojection
 
         private sealed class DotSpatialReprojectionFactory : ReprojectionFactory
         {
-            public override Reprojection Create(SpatialReference source, SpatialReference target, bool cache = false)
+            public override Reprojection Create(SpatialReference source, SpatialReference target)
             {
                 return new DotSpatialReprojection(source, target);
             }

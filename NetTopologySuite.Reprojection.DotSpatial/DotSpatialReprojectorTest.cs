@@ -12,11 +12,11 @@ namespace NetTopologySuite.Reprojection
     [TestFixture((string) null)]
     [TestFixture("esriwkt")]
     [TestFixture("proj4")]
-    public class OsrReprojectorTest
+    public class DotSpatialReprojectorTest
     {
         private readonly ConsoleTraceListener _ctr = new ConsoleTraceListener();
 
-        public OsrReprojectorTest(string definitionKind)
+        public DotSpatialReprojectorTest(string definitionKind)
         {
             Reprojector.Instance = new DotSpatialReprojector(definitionKind);
         }
@@ -54,10 +54,10 @@ namespace NetTopologySuite.Reprojection
         [Test]
         public void TestOrig()
         {
-            var r = Reprojector.Instance = new Reprojector();
+            var r = Reprojector.Instance;
 
             var srFrom = r.SpatialReferenceFactory.GetSpatialReference(4326);
-            var srTo = r.SpatialReferenceFactory.GetSpatialReference(31466);
+            var srTo = r.SpatialReferenceFactory.GetSpatialReference(25832);
 
             var pt1 = srFrom.Factory.CreatePoint(new Coordinate(0, 0));
             Console.WriteLine(pt1);

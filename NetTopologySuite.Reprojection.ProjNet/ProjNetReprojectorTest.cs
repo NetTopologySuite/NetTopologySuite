@@ -35,10 +35,10 @@ namespace NetTopologySuite.Reprojection
         [Test]
         public void TestOrig()
         {
-            var r = Reprojector.Instance = new Reprojector();
+            var r = Reprojector.Instance;
 
             var srFrom = r.SpatialReferenceFactory.GetSpatialReference(4326);
-            var srTo = r.SpatialReferenceFactory.GetSpatialReference(31465);
+            var srTo = r.SpatialReferenceFactory.GetSpatialReference(25832);
 
             var pt1 = srFrom.Factory.CreatePoint(new Coordinate(0, 0));
             Console.WriteLine(pt1);

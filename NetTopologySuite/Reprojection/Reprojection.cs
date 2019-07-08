@@ -138,7 +138,7 @@ namespace NetTopologySuite.Reprojection
         private static void ShowNoopReprojection()
         {
             if (_noopReprojectionMessageShown) return;
-            System.Diagnostics.Trace.WriteLine("This Reprojector does not perform any reprojection!");
+            System.Diagnostics.Trace.WriteLine("This Reprojection does not perform any reprojection!");
             _noopReprojectionMessageShown = true;
         }
     }

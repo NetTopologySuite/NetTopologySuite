@@ -1,10 +1,9 @@
 ﻿using System;
 using NetTopologySuite.Geometries;
-using NUnit.Framework;
 
 namespace NetTopologySuite.Reprojection
 {
-    public class OsrReprojector : Reprojector, IDisposable
+    public class OsrReprojector : Reprojector
     {
         static OsrReprojector () { GdalConfiguration.ConfigureGdal(); }
 
@@ -29,12 +28,14 @@ namespace NetTopologySuite.Reprojection
         private OsrReprojector(SpatialReferenceFactory spatialReferenceFactory)
             : base(spatialReferenceFactory, new OsrReprojectionFactory()) { }
 
-        void IDisposable.Dispose()
-        {
-            if (ReprojectionFactory is IDisposable dr)
-                dr.Dispose();
-        }
 
+        private sealed class OsrReprojectionFactory : ReprojectionFactory
+        {
+            public override Reprojection Create(SpatialReference source, SpatialReference target)
+            {
+                return new OsrReprojection(source, target);
+            }
+        }
     }
 
     public class OsrReprojection : Reprojection, IDisposable
