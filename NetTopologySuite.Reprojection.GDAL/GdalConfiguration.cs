@@ -35,9 +35,9 @@ using System.Runtime.InteropServices;
 using Gdal = OSGeo.GDAL.Gdal;
 using Ogr = OSGeo.OGR.Ogr;
 
-namespace NetTopologySuite.Reprojection.GDAL
+namespace NetTopologySuite.Reprojection
 {
-    internal static partial class GdalConfiguration
+    public static partial class GdalConfiguration
     {
         private static volatile bool _configuredOgr;
         private static volatile bool _configuredGdal;

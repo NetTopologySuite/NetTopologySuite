@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Reprojection
 {
@@ -16,75 +11,156 @@ namespace NetTopologySuite.Reprojection
     /// </summary>
     public class Reprojector
     {
-        private static bool NoopReprojectionMessageShown = true;
-        private static string _definitionKind = "wkt";
-
         /// <summary>
         /// Gives access to the current Reprojector instance
         /// </summary>
         public static Reprojector Instance { get; set; } = new Reprojector();
 
         /// <summary>
-        /// Creates an instance of this class using the default <see cref="NetTopologySuite.Geometries.CoordinateSequenceFactory"/>
-        /// and <see cref="NetTopologySuite.Geometries.PrecisionModel"/> that are defined in <see cref="NtsGeometryServices.Instance"/>.
+        /// Gets a value indicating the spatial reference factory
+        /// </summary>
+        public SpatialReferenceFactory SpatialReferenceFactory { get; }
+
+        /// <summary>
+        /// Creates an instance of this class using the default <see cref="Geometries.CoordinateSequenceFactory"/>
+        /// and <see cref="Geometries.PrecisionModel"/> that are defined in <see cref="NtsGeometryServices.Instance"/>.
         /// </summary>
         public Reprojector()
             : this(NtsGeometryServices.Instance.DefaultCoordinateSequenceFactory, NtsGeometryServices.Instance.DefaultPrecisionModel)
         {
         }
 
+        /// <summary>
+        /// Creates an instance of this class using the given <see cref="Geometries.CoordinateSequenceFactory"/>
+        /// and the default <see cref="Geometries.PrecisionModel"/> that is defined in <see cref="NtsGeometryServices.Instance"/>.
+        /// </summary>
+        /// <param name="coordinateSequenceFactory">The factory used when creating <see cref="SpatialReference"/> objects.</param>
         public Reprojector(CoordinateSequenceFactory coordinateSequenceFactory)
             :this(coordinateSequenceFactory, NtsGeometryServices.Instance.DefaultPrecisionModel)
         {
         }
 
+        /// <summary>
+        /// Creates an instance of this class using the given <see cref="Geometries.PrecisionModel"/> and the default
+        /// <see cref="Geometries.CoordinateSequenceFactory"/> that is defined in <see cref="NtsGeometryServices.Instance"/>.
+        /// </summary>
+        /// <param name="precisionModel">The precision model used when creating <see cref="SpatialReference"/> objects.</param>
         public Reprojector(PrecisionModel precisionModel)
             : this(NtsGeometryServices.Instance.DefaultCoordinateSequenceFactory, precisionModel)
         {
         }
 
+        /// <summary>
+        /// Creates an instance of this class using the given <see cref="Geometries.PrecisionModel"/> and the default
+        /// <see cref="Geometries.CoordinateSequenceFactory"/> that is defined in <see cref="NtsGeometryServices.Instance"/>.
+        /// </summary>
+        /// <param name="coordinateSequenceFactory">The factory used when creating <see cref="SpatialReference"/> objects.</param>
+        /// <param name="precisionModel">The precision model used when creating <see cref="SpatialReference"/> objects.</param>
         public Reprojector(CoordinateSequenceFactory coordinateSequenceFactory, PrecisionModel precisionModel)
+            : this(new EpsgIoSpatialReferenceFactory(coordinateSequenceFactory, precisionModel, "wkt"))
         {
-            CoordinateSequenceFactory = coordinateSequenceFactory;
-            PrecisionModel = precisionModel;
+
         }
 
-        protected Dictionary<int, SpatialReference> SpatialReferences { get; } = new Dictionary<int, SpatialReference>();
-
-        protected CoordinateSequenceFactory CoordinateSequenceFactory { get; }
-
-        protected PrecisionModel PrecisionModel { get; }
-
-
-        public Geometry Reproject(Geometry geometry, SpatialReference from, SpatialReference to)
+        /// <summary>
+        /// Creates an instance of this class using the given <see cref="Geometries.PrecisionModel"/> and the default
+        /// <see cref="Geometries.CoordinateSequenceFactory"/> that is defined in <see cref="NtsGeometryServices.Instance"/>.
+        /// </summary>
+        /// <param name="spatialReferenceFactory">The factory used when creating <see cref="SpatialReference"/> objects.</param>
+        /// <param name="reprojectionFactory"></param>
+        public Reprojector(SpatialReferenceFactory spatialReferenceFactory, ReprojectionFactory reprojectionFactory = null)
         {
-            if (!CheckArguments(geometry, nameof(geometry), from, to, out var e))
+            ReprojectionFactory = reprojectionFactory ?? new ReprojectionFactory();
+            SpatialReferenceFactory = spatialReferenceFactory;
+        }
+
+        /// <summary>
+        /// Gets a value that can create <see cref="Reprojection"/>s for use with this <see cref="Reprojector"/> or for reuse.
+        /// </summary>
+        public ReprojectionFactory ReprojectionFactory { get; }
+
+        /// <summary>
+        /// Method to reproject a <see cref="Geometry"/> from one <see cref="SpatialReference"/> to another.
+        /// </summary>
+        /// <param name="geometry">The geometry</param>
+        /// <param name="toSRID">The id of the target spatial reference system.</param>
+        /// <returns></returns>
+        public Geometry Reproject(Geometry geometry, int toSRID)
+        {
+            if (toSRID == 0)
+                throw new ArgumentOutOfRangeException(nameof(toSRID));
+
+            var to = SpatialReferenceFactory.GetSpatialReference(toSRID);
+            return Reproject(geometry, to);
+        }
+
+        /// <summary>
+        /// Method to reproject a <see cref="Geometry"/> from one <see cref="SpatialReference"/> to another.
+        /// </summary>
+        /// <param name="geometry">The geometry</param>
+        /// <param name="toSRID">The id of the target spatial reference system.</param>
+        /// <returns></returns>
+        public async Task<Geometry> ReprojectAsync(Geometry geometry, int toSRID)
+        {
+            if (toSRID == 0)
+                throw new ArgumentOutOfRangeException(nameof(toSRID));
+
+            var to = await SpatialReferenceFactory.GetSpatialReferenceAsync(toSRID);
+            return await ReprojectAsync(geometry, to);
+        }
+        /// <summary>
+        /// Method to reproject a <see cref="Geometry"/> from one <see cref="SpatialReference"/> to another.
+        /// </summary>
+        /// <param name="geometry">The geometry</param>
+        /// <param name="to">The target spatial reference system.</param>
+        /// <returns>The reprojected geometry</returns>
+        public Geometry Reproject(Geometry geometry, SpatialReference to)
+        {
+            if (!CheckArguments(geometry, nameof(geometry), to, to, out var e))
                 throw e;
 
-            if (geometry is Point pnt)
-                return to.Factory.CreatePoint(Reproject(pnt.CoordinateSequence, from, to));
+            if (geometry.SRID == to.Factory.SRID)
+                return geometry;
 
-            if (geometry is LineString lnstrng)
-                return to.Factory.CreateLineString(Reproject(lnstrng.CoordinateSequence, from, to));
+            if (geometry.SRID == 0)
+                throw new ArgumentException();
 
-            if (geometry is Polygon plygn)
-            {
-                var ex = to.Factory.CreateLinearRing(Reproject(plygn.ExteriorRing.CoordinateSequence, from, to));
-                var hls = new LinearRing[plygn.NumInteriorRings];
-                for (int i = 0; i < hls.Length; i++)
-                    hls[i] = to.Factory.CreateLinearRing(Reproject(plygn.InteriorRings[i].CoordinateSequence, to, from));
-                return to.Factory.CreatePolygon(ex, hls);
-            }
+            var from = SpatialReferenceFactory.GetSpatialReference(geometry.SRID);
+            var reprojection = ReprojectionFactory.Create(from, to);
+            var res = reprojection.Apply(geometry);
 
-            if (geometry is GeometryCollection)
-            {
-                var res = new Geometry[geometry.NumGeometries];
-                for (int i = 0; i < res.Length; i++)
-                    res[i] = Reproject(geometry.GetGeometryN(i), from, to);
-                return to.Factory.BuildGeometry(res);
-            }
+            if (reprojection is IDisposable d)
+                d.Dispose();
 
-            throw new NotSupportedException($"Reprojecting geometries of '{geometry.OgcGeometryType}' is not supported.");
+            return res;
+        }
+
+        /// <summary>
+        /// Method to reproject a <see cref="Geometry"/> from one <see cref="SpatialReference"/> to another.
+        /// </summary>
+        /// <param name="geometry">The geometry</param>
+        /// <param name="to">The target spatial reference system.</param>
+        /// <returns>The reprojected geometry</returns>
+        public async Task<Geometry> ReprojectAsync(Geometry geometry, SpatialReference to)
+        {
+            if (!CheckArguments(geometry, nameof(geometry), to, to, out var e))
+                throw e;
+
+            if (geometry.SRID == to.Factory.SRID)
+                return geometry;
+
+            if (geometry.SRID == 0)
+                throw new ArgumentException();
+
+            var from = await SpatialReferenceFactory.GetSpatialReferenceAsync(geometry.SRID);
+
+            var reprojection = ReprojectionFactory.Create(from, to);
+            var res = await reprojection.ApplyAsync(geometry);
+
+            if (reprojection is IDisposable d)
+                d.Dispose();
+
+            return res;
         }
 
         public virtual Envelope Reproject(Envelope envelope, SpatialReference from, SpatialReference to)
@@ -92,8 +168,12 @@ namespace NetTopologySuite.Reprojection
             if (!CheckArguments(envelope, nameof(envelope), from, to, out var e))
                 throw e;
 
-            ShowNoopReprojection();
-            return envelope.Copy();
+            var reprojection = ReprojectionFactory.Create(from, to);
+            var res = reprojection.Apply(envelope);
+            if (reprojection is IDisposable d)
+                d.Dispose();
+
+            return res;
         }
 
         public virtual Coordinate Reproject(Coordinate coordinate, SpatialReference from, SpatialReference to)
@@ -101,75 +181,37 @@ namespace NetTopologySuite.Reprojection
             if (!CheckArguments(coordinate, nameof(coordinate), from, to, out var e))
                 throw e;
 
-            ShowNoopReprojection();
-            return coordinate.Copy();
-        }
+            var reprojection = ReprojectionFactory.Create(from, to);
+            var res = reprojection.Apply(coordinate);
+            if (reprojection is IDisposable d)
+                d.Dispose();
 
-        public virtual CoordinateSequence Reproject(CoordinateSequence coordinateSequence, SpatialReference from, SpatialReference to)
-        {
-            if (!CheckArguments(coordinateSequence, nameof(coordinateSequence), from, to, out var e))
-                throw e;
-
-            ShowNoopReprojection();
-            return coordinateSequence.Copy();
+            return res;
         }
 
 
-
+        /// <summary>
+        /// Utility function to check reprojection arguments for validity
+        /// </summary>
+        /// <param name="instance">The object that needs to be transformed</param>
+        /// <param name="instanceName">The parameter name of the <paramref name="instance"/></param>
+        /// <param name="from">The source spatial reference system</param>
+        /// <param name="to">The target spatial reference system</param>
+        /// <param name="e">An exception that indicates what is wrong with the arguments</param>
+        /// <returns><value>true</value> if all checks have passed.</returns>
         protected bool CheckArguments(object instance, string instanceName, SpatialReference from, SpatialReference to, out ArgumentException e)
         {
             e = null;
             if (instance == null)
                 e = new ArgumentNullException(instanceName);
 
-            if (CastSpatialReference<SpatialReference>(from) == null)
-                e = new ArgumentNullException(nameof(from));
+            if (string.IsNullOrWhiteSpace(from.DefinitionKind))
+                e = new ArgumentException(nameof(from));
 
-            if (CastSpatialReference<SpatialReference>(from) == null)
-                e = new ArgumentNullException(nameof(to));
+            if (string.IsNullOrWhiteSpace(to.DefinitionKind))
+                e = new ArgumentException(nameof(to));
 
             return e == null;
-        }
-
-        protected virtual T CastSpatialReference<T>(SpatialReference sr) where T:SpatialReference
-        {
-            return (T)sr;
-        }
-
-        public SpatialReferenceLookUp LookUp { get; set; } = new EpsgIoSpatialReferenceLookUp("wkt");
-
-        public SpatialReference GetSpatialReference(int srid)
-        {
-            if (SpatialReferences.TryGetValue(srid, out var sr))
-                return sr;
-
-            string definition = LookUp.GetDefinition(srid).Result;
-            if (string.IsNullOrWhiteSpace(definition))
-                throw new ArgumentException(nameof(srid));
-
-            sr = Create(definition, srid);
-            SpatialReferences[srid] = sr;
-
-            return sr;
-        }
-
-        /// <summary>
-        /// Method to create a spatial reference 
-        /// </summary>
-        /// <param name="definition"></param>
-        /// <param name="srid"></param>
-        /// <returns></returns>
-        protected virtual SpatialReference Create(string definition, int srid)
-        {
-            var gf = new GeometryFactory(PrecisionModel, srid, CoordinateSequenceFactory);
-            return new SpatialReference(definition, gf);
-        }
-
-        private static void ShowNoopReprojection()
-        {
-            if (NoopReprojectionMessageShown) return;
-            System.Diagnostics.Trace.WriteLine("This Reprojector does not perfrom any reprojection!");
-            NoopReprojectionMessageShown = true;
         }
     }
 }

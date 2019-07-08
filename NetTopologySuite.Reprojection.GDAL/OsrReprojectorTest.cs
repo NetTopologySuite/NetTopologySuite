@@ -21,7 +21,7 @@ namespace NetTopologySuite.Reprojection
                     break;
 
                 case "DotSpatialAffineCoordinateSequence":
-                    Reprojector.Instance = new OsrReprojector(new DotSpatialAffineCoordinateSequenceFactory(Ordinates.XYZM));
+                    Reprojector.Instance = new OsrReprojector(new DotSpatialAffineCoordinateSequenceFactory(Ordinates.XYZ));
                     break;
 
                 default:
@@ -36,16 +36,36 @@ namespace NetTopologySuite.Reprojection
         public void Test()
         {
             var r = Reprojector.Instance;
-            var srFrom = r.GetSpatialReference(4326);
-            var srTo = r.GetSpatialReference(25832);
+            var srFrom = r.SpatialReferenceFactory.GetSpatialReference(4326);
+            var srTo = r.SpatialReferenceFactory.GetSpatialReference(25832);
+
+            var pt1 = srFrom.Factory.CreatePoint(new Coordinate(6, 0));
+            Console.WriteLine(pt1);
+            var pt2 = r.Reproject(pt1, srTo);
+            Console.WriteLine(pt2);
+            var pt3 = r.Reproject(pt2, srFrom);
+            Console.WriteLine(pt3);
+
+            var reproj = r.ReprojectionFactory.Create(srFrom, srTo);
+            Console.WriteLine(reproj.Apply(pt1));
+        }
+
+        [Test]
+        public void TestOrig()
+        {
+            var r = Reprojector.Instance;
+            var srFrom = r.SpatialReferenceFactory.GetSpatialReference(4326);
+            var srTo = r.SpatialReferenceFactory.GetSpatialReference(31465);
 
             var pt1 = srFrom.Factory.CreatePoint(new Coordinate(0, 0));
             Console.WriteLine(pt1);
-            var pt2 = r.Reproject(pt1, srFrom, srTo);
+            var pt2 = r.Reproject(pt1, srTo);
             Console.WriteLine(pt2);
-            var pt3 = r.Reproject(pt2, srTo, srFrom);
+            var pt3 = r.Reproject(pt2, srFrom);
             Console.WriteLine(pt3);
 
+            var reproj = r.ReprojectionFactory.Create(srFrom, srTo);
+            Console.WriteLine(reproj.Apply(pt1));
         }
 
     }

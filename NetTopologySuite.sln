@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29025.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A11130E8-4942-432A-97B7-ADEEFB34A977}"
 	ProjectSection(SolutionItems) = preProject
@@ -37,6 +37,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Reprojection.GDAL", "NetTopologySuite.Reprojection.GDAL\NetTopologySuite.Reprojection.GDAL.csproj", "{C00D7D5D-9CBA-463F-8E37-238CBDA9B8A2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Reprojection.DotSpatial", "NetTopologySuite.Reprojection.DotSpatial\NetTopologySuite.Reprojection.DotSpatial.csproj", "{5912F674-7FB4-4968-943C-A975A1E0BAE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTopologySuite.Reprojection.ProjNet", "NetTopologySuite.Reprojection.ProjNet\NetTopologySuite.Reprojection.ProjNet.csproj", "{4976E7B9-F9C2-45C1-B87B-C6FF229AF26E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,6 +80,10 @@ Global
 		{5912F674-7FB4-4968-943C-A975A1E0BAE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5912F674-7FB4-4968-943C-A975A1E0BAE8}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{5912F674-7FB4-4968-943C-A975A1E0BAE8}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{4976E7B9-F9C2-45C1-B87B-C6FF229AF26E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4976E7B9-F9C2-45C1-B87B-C6FF229AF26E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4976E7B9-F9C2-45C1-B87B-C6FF229AF26E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4976E7B9-F9C2-45C1-B87B-C6FF229AF26E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -64,9 +64,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DotSpatialReprojection.cs" />
+    <Compile Include="DotSpatialReprojectionFactory.cs" />
     <Compile Include="DotSpatialReprojector.cs" />
     <Compile Include="DotSpatialReprojectorTest.cs" />
-    <Compile Include="DotSpatialSpatialReference.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
