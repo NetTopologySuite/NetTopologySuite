@@ -81,9 +81,6 @@ namespace RTools_NTS.Util
     /// This is separated from the StreamTokenizer so that common settings
     /// are easy to package and keep together.
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
-    [Serializable]
-#endif
     public class StreamTokenizerSettings
     {
         // ---------------------------------------------------------------------
@@ -1422,7 +1419,6 @@ namespace RTools_NTS.Util
             return(Tokenize(tokens));
         }
 
-#if FEATURE_FILE_IO
         /// <summary>
         /// Parse all tokens from the specified file, put
         /// them into the input ArrayList.
@@ -1481,7 +1477,6 @@ namespace RTools_NTS.Util
             }
             return(null);
         }
-#endif
 
         /// <summary>
         /// Parse all tokens from the specified string, put

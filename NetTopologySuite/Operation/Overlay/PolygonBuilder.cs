@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
@@ -13,14 +12,14 @@ namespace NetTopologySuite.Operation.Overlay
     /// </summary>
     public class PolygonBuilder
     {
-        private readonly IGeometryFactory _geometryFactory;
+        private readonly GeometryFactory _geometryFactory;
         private readonly List<EdgeRing> _shellList = new List<EdgeRing>();
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="geometryFactory"></param>
-        public PolygonBuilder(IGeometryFactory geometryFactory)
+        public PolygonBuilder(GeometryFactory geometryFactory)
         {
             _geometryFactory = geometryFactory;
         }
@@ -57,7 +56,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <summary>
         ///
         /// </summary>
-        public IList<IGeometry> Polygons
+        public IList<Geometry> Polygons
         {
             get
             {
@@ -272,9 +271,9 @@ namespace NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="shellList"></param>
         /// <returns></returns>
-        private IList<IGeometry> ComputePolygons(IEnumerable<EdgeRing> shellList)
+        private IList<Geometry> ComputePolygons(IEnumerable<EdgeRing> shellList)
         {
-            var resultPolyList = new List<IGeometry>();
+            var resultPolyList = new List<Geometry>();
             // add Polygons for all shells
             foreach (var er in shellList)
             {

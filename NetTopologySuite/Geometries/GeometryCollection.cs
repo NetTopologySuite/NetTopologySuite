@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Geometries
@@ -8,20 +7,18 @@ namespace NetTopologySuite.Geometries
     /// <summary>
     /// Basic implementation of <c>GeometryCollection</c>.
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
-    public class GeometryCollection : Geometry, IGeometryCollection
+    public class GeometryCollection : Geometry, IEnumerable<Geometry>
     {
         /// <summary>
         /// Represents an empty <c>GeometryCollection</c>.
         /// </summary>
-        public static readonly IGeometryCollection Empty = DefaultFactory.CreateGeometryCollection(null);
+        public static readonly GeometryCollection Empty = DefaultFactory.CreateGeometryCollection(null);
 
         /// <summary>
         /// Internal representation of this <c>GeometryCollection</c>.
         /// </summary>
-        private IGeometry[] _geometries;
+        private Geometry[] _geometries;
 
         /// <summary>
         ///
@@ -36,7 +33,7 @@ namespace NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public GeometryCollection(IGeometry[] geometries) : this(geometries, DefaultFactory) { }
+        public GeometryCollection(Geometry[] geometries) : this(geometries, DefaultFactory) { }
 
         /// <summary>
         ///
@@ -48,11 +45,11 @@ namespace NetTopologySuite.Geometries
         /// but not <c>null</c>s.
         /// </param>
         /// <param name="factory"></param>
-        public GeometryCollection(IGeometry[] geometries, IGeometryFactory factory) : base(factory)
+        public GeometryCollection(Geometry[] geometries, GeometryFactory factory) : base(factory)
         {
             if (geometries == null)
-                geometries = new IGeometry[] { };
-            if (HasNullElements(CollectionUtil.Cast<IGeometry, object>(geometries)))
+                geometries = new Geometry[] { };
+            if (HasNullElements(geometries))
                 throw new ArgumentException("geometries must not contain null elements");
             _geometries = geometries;
         }
@@ -170,7 +167,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public override IGeometry GetGeometryN(int n)
+        public override Geometry GetGeometryN(int n)
         {
             return _geometries[n];
         }
@@ -178,7 +175,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public IGeometry[] Geometries
+        public Geometry[] Geometries
         {
             get => _geometries;
             protected set => _geometries = value;
@@ -225,7 +222,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public override IGeometry Boundary
+        public override Geometry Boundary
         {
             get
             {
@@ -299,12 +296,12 @@ namespace NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance)
+        public override bool EqualsExact(Geometry other, double tolerance)
         {
             if (!IsEquivalentClass(other))
                 return false;
 
-            var otherCollection = (IGeometryCollection) other;
+            var otherCollection = (GeometryCollection) other;
             if (_geometries.Length != otherCollection.Geometries.Length)
                 return false;
 
@@ -363,21 +360,10 @@ namespace NetTopologySuite.Geometries
                  _geometries[i].Apply(filter);
         }
 
-        /// <summary>
-        /// Creates and returns a full copy of this <see cref="IGeometryCollection"/> object.
-        /// (including all coordinates contained by it).
-        /// </summary>
-        /// <returns>A copy of this instance</returns>
-        [Obsolete("Use Copy()")]
-        public override object Clone()
-        {
-            return Copy();
-        }
-
         /// <inheritdoc cref="Geometry.CopyInternal"/>>
-        protected override IGeometry CopyInternal()
+        protected override Geometry CopyInternal()
         {
-            var geometries = new IGeometry[_geometries.Length];
+            var geometries = new Geometry[_geometries.Length];
             for (int i = 0; i < _geometries.Length; i++)
                 geometries[i] = _geometries[i].Copy();
             return new GeometryCollection(geometries, Factory);
@@ -412,14 +398,14 @@ namespace NetTopologySuite.Geometries
         /// <returns></returns>
         protected internal override int CompareToSameClass(object o)
         {
-            var theseElements = new List<IGeometry>(_geometries);
-            var otherElements = new List<IGeometry>(((GeometryCollection) o)._geometries);
+            var theseElements = new List<Geometry>(_geometries);
+            var otherElements = new List<Geometry>(((GeometryCollection) o)._geometries);
             return Compare(theseElements, otherElements);
         }
 
-        protected internal override int CompareToSameClass(object o, IComparer<ICoordinateSequence> comp)
+        protected internal override int CompareToSameClass(object o, IComparer<CoordinateSequence> comp)
         {
-            var gc = (IGeometryCollection) o;
+            var gc = (GeometryCollection) o;
 
             int n1 = NumGeometries;
             int n2 = gc.NumGeometries;
@@ -461,7 +447,7 @@ namespace NetTopologySuite.Geometries
         /// this returns an IEnumerator over geometries composing GeometryCollection.
         /// </summary>
         /// <returns></returns>
-        public IEnumerator<IGeometry> GetEnumerator()
+        public IEnumerator<Geometry> GetEnumerator()
         {
             return new GeometryCollectionEnumerator(this);
         }
@@ -476,18 +462,18 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public IGeometry this[int i] => _geometries[i];
+        public Geometry this[int i] => _geometries[i];
 
         /// <summary>
-        /// Creates a <see cref="IGeometryCollection"/> with
+        /// Creates a <see cref="GeometryCollection"/> with
         /// every component reversed.
         /// The order of the components in the collection are not reversed.
         /// </summary>
-        /// <returns>A <see cref="IGeometryCollection"/></returns> in the reverse order
-        public override IGeometry Reverse()
+        /// <returns>A <see cref="GeometryCollection"/></returns> in the reverse order
+        public override Geometry Reverse()
         {
             int n = _geometries.Length;
-            var revGeoms = new IGeometry[n];
+            var revGeoms = new Geometry[n];
             for (int i = 0; i < _geometries.Length; i++)
             {
                 revGeoms[i] = _geometries[i].Reverse();

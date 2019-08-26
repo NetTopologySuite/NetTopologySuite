@@ -1,4 +1,3 @@
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
@@ -26,7 +25,7 @@ namespace NetTopologySuite.Samples.Tests.Github
             Assert.IsTrue(g2.IsValid);
             var ret = g1.Intersection(g2);
             Assert.IsNotNull(ret);
-            Assert.IsInstanceOf<ILineString>(ret);
+            Assert.IsInstanceOf<LineString>(ret);
             Assert.AreEqual("LINESTRING EMPTY", ret.ToString());
         }
     }

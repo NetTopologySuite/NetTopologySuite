@@ -1,17 +1,14 @@
-using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class GeometryCollectionImplTest
     {
-        private IPrecisionModel precisionModel;
-        private IGeometryFactory geometryFactory;
+        private PrecisionModel precisionModel;
+        private GeometryFactory geometryFactory;
         WKTReader reader;
 
         public GeometryCollectionImplTest()
@@ -21,14 +18,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             reader = new WKTReader(geometryFactory);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestGetDimension()
         {
             var g = (GeometryCollection)reader.Read("GEOMETRYCOLLECTION (POINT (10 10), POINT (30 30), LINESTRING (15 15, 20 20))");
             Assert.AreEqual(1, (int)g.Dimension);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestGetCoordinates()
         {
             var g = (GeometryCollection)reader.Read("GEOMETRYCOLLECTION (POINT (10 10), POINT (30 30), LINESTRING (15 15, 20 20))");
@@ -39,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(new Coordinate(20, 20), coordinates[3]);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestGeometryCollectionIterator()
         {
             var g = (GeometryCollection)reader.Read(
@@ -58,7 +55,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(i.Current is Point);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestGetLength()
         {
             var g = (GeometryCollection)new WKTReader().Read(

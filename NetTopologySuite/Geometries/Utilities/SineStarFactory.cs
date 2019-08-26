@@ -1,5 +1,4 @@
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Geometries.Utilities
@@ -14,7 +13,30 @@ namespace NetTopologySuite.Geometries.Utilities
     public class SineStarFactory : GeometricShapeFactory
     {
         /// <summary>
-        /// Creates a factory which will create sine stars using the default <see cref="IGeometryFactory"/>
+        /// Creates a sine star with the given parameters.
+        /// </summary>
+        /// <param name="origin">The origin point.</param>
+        /// <param name="size">The size of the star.</param>
+        /// <param name="nPts">The number of points in the star.</param>
+        /// <param name="nArms">The number of arms to generate.</param>
+        /// <param name="armLengthRatio">The arm length ratio.</param>
+        /// <returns>A sine star shape.</returns>
+        public static Geometry Create(Coordinate origin, double size, int nPts, int nArms, double armLengthRatio)
+        {
+            var gsf = new SineStarFactory
+            {
+                Centre = origin,
+                Size = size,
+                NumPoints = nPts,
+                ArmLengthRatio = armLengthRatio,
+                NumArms = nArms,
+            };
+            var poly = gsf.CreateSineStar();
+            return poly;
+        }
+
+        /// <summary>
+        /// Creates a factory which will create sine stars using the default <see cref="GeometryFactory"/>
         /// </summary>
         public SineStarFactory()
             : this(new GeometryFactory())
@@ -23,10 +45,10 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Creates a factory which will create sine stars using the given <see cref="IGeometryFactory"/>
+        /// Creates a factory which will create sine stars using the given <see cref="GeometryFactory"/>
         /// </summary>
         /// <param name="geomFact">The factory to use</param>
-        public SineStarFactory(IGeometryFactory geomFact)
+        public SineStarFactory(GeometryFactory geomFact)
             : base(geomFact)
         {
             NumArms = 8;
@@ -37,7 +59,8 @@ namespace NetTopologySuite.Geometries.Utilities
         public int NumArms { get; set; }
 
         /// <summary>
-        /// Sets the ration of the length of each arm to the distance from the tip of the arm to the centre of the star.
+        /// Gets or sets the ratio of the length of each arm to the radius of the star.
+        /// A smaller number makes the arms shorter.
         /// </summary>
         /// <remarks>Value should be between 0.0 and 1.0</remarks>
         public double ArmLengthRatio { get; set; }
@@ -46,7 +69,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// Generates the geometry for the sine star
         /// </summary>
         /// <returns>The geometry representing the sine star</returns>
-        public IGeometry CreateSineStar()
+        public Geometry CreateSineStar()
         {
             var env = Envelope;
             double radius = env.Width / 2.0;
@@ -67,7 +90,7 @@ namespace NetTopologySuite.Geometries.Utilities
             int iPt = 0;
             for (int i = 0; i < NumPoints; i++)
             {
-                // the fraction of the way thru the current arm - in [0,1]
+                // the fraction of the way through the current arm - in [0,1]
                 double ptArcFrac = (i / (double)NumPoints) * NumArms;
                 double armAngFrac = ptArcFrac - Math.Floor(ptArcFrac);
 
@@ -86,7 +109,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 double y = curveRadius * Math.Sin(ang) + centreY;
                 pts[iPt++] = CreateCoord(x, y);
             }
-            pts[iPt] = new Coordinate(pts[0]);
+            pts[iPt] = pts[0].Copy();
 
             var ring = GeomFact.CreateLinearRing(pts);
             var poly = GeomFact.CreatePolygon(ring);

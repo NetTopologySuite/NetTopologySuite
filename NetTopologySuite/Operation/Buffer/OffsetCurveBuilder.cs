@@ -1,6 +1,4 @@
 ﻿using System;
-using GeoAPI.Geometries;
-using GeoAPI.Operation.Buffer;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 
@@ -8,23 +6,23 @@ namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
     /// Computes the raw offset curve for a
-    /// single <see cref="IGeometry"/> component (ring, line or point).
+    /// single <see cref="Geometry"/> component (ring, line or point).
     /// A raw offset curve line is not noded -
     /// it may contain self-intersections (and usually will).
     /// The final buffer polygon is computed by forming a topological graph
     /// of all the noded raw curves and tracing outside contours.
     /// The points in the raw curve are rounded
-    /// to a given <see cref="IPrecisionModel"/>.
+    /// to a given <see cref="PrecisionModel"/>.
     /// </summary>
     public class OffsetCurveBuilder
     {
         private double _distance;
-        private readonly IPrecisionModel _precisionModel;
-        private readonly IBufferParameters _bufParams;
+        private readonly PrecisionModel _precisionModel;
+        private readonly BufferParameters _bufParams;
 
         public OffsetCurveBuilder(
-            IPrecisionModel precisionModel,
-            IBufferParameters bufParams
+            PrecisionModel precisionModel,
+            BufferParameters bufParams
             )
         {
             _precisionModel = precisionModel;
@@ -34,7 +32,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <summary>
         /// Gets the buffer parameters being used to generate the curve.
         /// </summary>
-        public IBufferParameters BufferParameters => _bufParams;
+        public BufferParameters BufferParameters => _bufParams;
 
         /// <summary>
         /// This method handles single points as well as LineStrings.
@@ -127,7 +125,7 @@ namespace NetTopologySuite.Operation.Buffer
             var copy = new Coordinate[pts.Length];
             for (int i = 0; i < copy.Length; i++)
             {
-                copy[i] = new Coordinate(pts[i]);
+                copy[i] = pts[i].Copy();
             }
             return copy;
         }

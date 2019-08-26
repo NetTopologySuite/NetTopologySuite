@@ -1,11 +1,9 @@
-using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Overlay.Snap
 {
     /// <summary>
-    /// Snaps the vertices and segments of a <see cref="ILineString"/>
+    /// Snaps the vertices and segments of a <see cref="LineString"/>
     ///  to a set of target snap vertices.
     /// A snap distance tolerance is used to control where snapping is performed.
     /// <para/>The implementation handles empty geometry and empty snap vertex sets.
@@ -25,7 +23,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// </summary>
         /// <param name="srcLine">A LineString to snap (may be empty)</param>
         /// <param name="snapTolerance">the snap tolerance to use</param>
-        public LineStringSnapper(ILineString srcLine, double snapTolerance) :
+        public LineStringSnapper(LineString srcLine, double snapTolerance) :
             this(srcLine.Coordinates, snapTolerance) { }
 
         /// <summary>
@@ -85,10 +83,10 @@ namespace NetTopologySuite.Operation.Overlay.Snap
                 if (snapVert != null)
                 {
                     // update src with snap pt
-                    srcCoords[i] = new Coordinate(snapVert);
+                    srcCoords[i] = snapVert.Copy();
                     // keep final closing point in synch (rings only)
                     if (i == 0 && _isClosed)
-                        srcCoords[srcCoords.Count - 1] = new Coordinate(snapVert);
+                        srcCoords[srcCoords.Count - 1] = snapVert.Copy();
                 }
             }
         }
@@ -147,7 +145,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
                  * Duplicate points are not added.
                  */
                 if (index >= 0)
-                    srcCoords.Add(index + 1, new Coordinate(snapPt), false);
+                    srcCoords.Add(index + 1, snapPt.Copy(), false);
             }
         }
 

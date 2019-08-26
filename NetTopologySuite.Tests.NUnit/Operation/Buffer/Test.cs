@@ -1,5 +1,4 @@
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
@@ -7,7 +6,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 {
     public class Test
     {
-        [TestAttribute]
+        [Test]
         public void Buffer()
         {
             var geom =

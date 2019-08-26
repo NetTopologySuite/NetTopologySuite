@@ -1,7 +1,7 @@
 //using System.Collections;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.GeometriesGraph.Index;
 using NetTopologySuite.Utilities;
@@ -336,7 +336,7 @@ namespace NetTopologySuite.Operation.Relate
         /// <param name="e"></param>
         /// <param name="targetIndex"></param>
         /// <param name="target"></param>
-        private void LabelIsolatedEdge(Edge e, int targetIndex, IGeometry target)
+        private void LabelIsolatedEdge(Edge e, int targetIndex, Geometry target)
         {
             // this won't work for GeometryCollections with both dim 2 and 1 geoms
             if (target.Dimension > 0)

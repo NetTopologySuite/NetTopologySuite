@@ -1,18 +1,16 @@
-using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Relate;
 using NUnit.Framework;
 
- /// <summary>
- /// Tests <see cref="Geometry.Relate" /> with different <see cref="BoundaryNodeRule" />s.
- /// </summary>
- /// <author>Martin Davis</author>
+/// <summary>
+/// Tests <see cref="Geometry.Relate" /> with different <see cref="BoundaryNodeRule" />s.
+/// </summary>
+/// <author>Martin Davis</author>
 namespace NetTopologySuite.Tests.NUnit.Operation.Relate
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class RelateBoundaryNodeRuleTest
     {
         private GeometryFactory fact;
@@ -24,7 +22,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             rdr = new WKTReader(fact);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiLineStringSelfIntTouchAtEndpoint()
         {
             string a = "MULTILINESTRING ((20 20, 100 100, 100 20, 20 100), (60 60, 60 140))";
@@ -34,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             RunRelateTest(a, b, BoundaryNodeRules.EndpointBoundaryRule, "FF1F00102");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestLineStringSelfIntTouchAtEndpoint()
         {
             string a = "LINESTRING (20 20, 100 100, 100 20, 20 100)";
@@ -45,7 +43,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             RunRelateTest(a, b, BoundaryNodeRules.EndpointBoundaryRule, "F01FF0102");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiLineStringTouchAtEndpoint()
         {
             string a = "MULTILINESTRING ((0 0, 10 10), (10 10, 20 20))";
@@ -59,7 +57,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             //    runRelateTest(a, b,  BoundaryNodeRule.MULTIVALENT_ENDPOINT_BOUNDARY_RULE,  "0F1FFF1F2"    );
         }
 
-        [TestAttribute]
+        [Test]
         public void TestLineRingTouchAtEndpoints()
         {
             string a = "LINESTRING (20 100, 20 220, 120 100, 20 100)";
@@ -73,7 +71,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Relate
             RunRelateTest(a, b, BoundaryNodeRules.MultivalentEndpointBoundaryRule, "0F1FFF1F2");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestLineRingTouchAtEndpointAndInterior()
         {
             string a = "LINESTRING (20 100, 20 220, 120 100, 20 100)";

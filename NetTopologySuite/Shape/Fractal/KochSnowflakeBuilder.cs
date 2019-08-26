@@ -1,5 +1,4 @@
 ﻿using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
 
@@ -9,7 +8,7 @@ namespace NetTopologySuite.Shape.Fractal
     {
         private readonly CoordinateList _coordList = new CoordinateList();
 
-        public KochSnowflakeBuilder(IGeometryFactory geomFactory)
+        public KochSnowflakeBuilder(GeometryFactory geomFactory)
             : base(geomFactory)
         {
         }
@@ -21,7 +20,7 @@ namespace NetTopologySuite.Shape.Fractal
             return (int)exp;
         }
 
-        public override IGeometry GetGeometry()
+        public override Geometry GetGeometry()
         {
             int level = RecursionLevelForSize(NumPoints);
             var baseLine = GetSquareBaseLine();

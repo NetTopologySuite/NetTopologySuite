@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -100,13 +100,13 @@ namespace NetTopologySuite.Algorithm
                 else if (p2.Equals2D(q1) || p2.Equals2D(q2))
                     IntersectionPoint[0] = p2;
                 else if (Pq1 == 0)
-                    IntersectionPoint[0] = new Coordinate(q1);
+                    IntersectionPoint[0] = q1.Copy();
                 else if (Pq2 == 0)
-                    IntersectionPoint[0] = new Coordinate(q2);
+                    IntersectionPoint[0] = q2.Copy();
                 else if (Qp1 == 0)
-                    IntersectionPoint[0] = new Coordinate(p1);
+                    IntersectionPoint[0] = p1.Copy();
                 else if (Qp2 == 0)
-                    IntersectionPoint[0] = new Coordinate(p2);
+                    IntersectionPoint[0] = p2.Copy();
             }
             else
             {
@@ -213,7 +213,7 @@ namespace NetTopologySuite.Algorithm
             {
                 // compute a safer result
                 // copy the coordinate, since it may be rounded later
-                intPt = new Coordinate(NearestEndpoint(p1, p2, q1, q2));
+                intPt = NearestEndpoint(p1, p2, q1, q2).Copy();
                 // intPt = CentralEndpointIntersector.GetIntersection(p1, p2, q1, q2);
                 // CheckDD(p1, p2, q1, q2, intPt);
             }
@@ -236,10 +236,10 @@ namespace NetTopologySuite.Algorithm
 
         private Coordinate IntersectionWithNormalization(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            var n1 = new Coordinate(p1);
-            var n2 = new Coordinate(p2);
-            var n3 = new Coordinate(q1);
-            var n4 = new Coordinate(q2);
+            var n1 = p1.Copy();
+            var n2 = p2.Copy();
+            var n3 = q1.Copy();
+            var n4 = q2.Copy();
             var normPt = new Coordinate();
             NormalizeToEnvCentre(n1, n2, n3, n4, normPt);
 

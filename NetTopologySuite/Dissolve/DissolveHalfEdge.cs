@@ -1,5 +1,5 @@
-﻿using GeoAPI.Geometries;
-using NetTopologySuite.EdgeGraph;
+﻿using NetTopologySuite.EdgeGraph;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Dissolve
 {

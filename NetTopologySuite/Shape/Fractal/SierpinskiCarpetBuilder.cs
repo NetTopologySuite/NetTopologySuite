@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Shape.Fractal
@@ -9,7 +8,7 @@ namespace NetTopologySuite.Shape.Fractal
     {
         //private CoordinateList coordList = new CoordinateList();
 
-        public SierpinskiCarpetBuilder(IGeometryFactory geomFactory)
+        public SierpinskiCarpetBuilder(GeometryFactory geomFactory)
             :base(geomFactory)
         {
         }
@@ -21,32 +20,30 @@ namespace NetTopologySuite.Shape.Fractal
             return (int) exp;
         }
 
-        public override IGeometry GetGeometry()
+        public override Geometry GetGeometry()
         {
             int level = RecursionLevelForSize(NumPoints);
             var baseLine = GetSquareBaseLine();
             var origin = baseLine.GetCoordinate(0);
             var holes = GetHoles(level, origin.X, origin.Y, Diameter);
-            var shell = (ILinearRing) ((IPolygon) GeomFactory.ToGeometry(GetSquareExtent())).ExteriorRing;
+            var shell = (LinearRing) ((Polygon) GeomFactory.ToGeometry(GetSquareExtent())).ExteriorRing;
             return GeomFactory.CreatePolygon(shell, holes);
         }
 
-        private ILinearRing[] GetHoles(int n, double originX, double originY, double width)
+        private LinearRing[] GetHoles(int n, double originX, double originY, double width)
         {
-            var holeList = new List<IGeometry>();
+            var holeList = new List<Geometry>();
 
             AddHoles(n, originX, originY, width, holeList);
 
             return GeometryFactory.ToLinearRingArray(holeList);
         }
 
-        private void AddHoles(int n, double originX, double originY, double width, ICollection<IGeometry> holeList)
+        private void AddHoles(int n, double originX, double originY, double width, ICollection<Geometry> holeList)
         {
             if (n < 0) return;
             int n2 = n - 1;
             double widthThird = width/3.0;
-            //var widthTwoThirds = width*2.0/3.0;
-            //var widthNinth = width/9.0;
 
             AddHoles(n2, originX,                originY,                widthThird, holeList);
             AddHoles(n2, originX + widthThird,   originY,                widthThird, holeList);
@@ -63,7 +60,7 @@ namespace NetTopologySuite.Shape.Fractal
             holeList.Add(CreateSquareHole(originX + widthThird, originY + widthThird, widthThird));
         }
 
-        private ILinearRing CreateSquareHole(double x, double y, double width)
+        private LinearRing CreateSquareHole(double x, double y, double width)
         {
             var pts = new[]
                           {

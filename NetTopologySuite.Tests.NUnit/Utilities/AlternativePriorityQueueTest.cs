@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using NUnit.Framework;
 using NetTopologySuite.Utilities;
+using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 
 namespace NetTopologySuite.Tests.NUnit.Utilities

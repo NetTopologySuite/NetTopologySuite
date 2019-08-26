@@ -1,9 +1,4 @@
-#if HAS_SYSTEM_APPLICATIONEXCEPTION
 using System;
-#else
-using ApplicationException = System.Exception;
-#endif
-using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
 {
@@ -41,7 +36,7 @@ namespace NetTopologySuite.Geometries
         public TopologyException(string msg, Coordinate pt)
             : base (MsgWithCoord(msg, pt))
         {
-            this.pt = new Coordinate(pt);
+            this.pt = pt.Copy();
         }
 
         /// <summary>

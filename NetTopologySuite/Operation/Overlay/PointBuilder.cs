@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 
 namespace NetTopologySuite.Operation.Overlay
@@ -12,8 +10,8 @@ namespace NetTopologySuite.Operation.Overlay
     public class PointBuilder
     {
         private readonly OverlayOp _op;
-        private readonly IGeometryFactory _geometryFactory;
-        private readonly List<IGeometry> _resultPointList = new List<IGeometry>();
+        private readonly GeometryFactory _geometryFactory;
+        private readonly List<Geometry> _resultPointList = new List<Geometry>();
         //private PointLocator _ptLocator;
 
         /// <summary>
@@ -21,23 +19,12 @@ namespace NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="op">The operation</param>
         /// <param name="geometryFactory">The geometry factory</param>
-        public PointBuilder(OverlayOp op, IGeometryFactory geometryFactory)
+        public PointBuilder(OverlayOp op, GeometryFactory geometryFactory)
         {
             _op = op;
             _geometryFactory = geometryFactory;
             //_ptLocator = ptLocator;
         }
-
-        /// <summary>
-        /// Creates an instance of this class
-        /// </summary>
-        /// <param name="op">The operation</param>
-        /// <param name="geometryFactory">The geometry factory</param>
-        /// <param name="ptLocator">The point locator</param>
-        [Obsolete("point locator no longer used!")]
-        public PointBuilder(OverlayOp op, IGeometryFactory geometryFactory, PointLocator ptLocator = null)
-            :this(op,geometryFactory)
-        { }
 
         /// <summary>
         /// Computes the Point geometries which will appear in the result,
@@ -47,7 +34,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <returns>
         /// A list of the Points in the result.
         /// </returns>
-        public IList<IGeometry> Build(SpatialFunction opCode)
+        public IList<Geometry> Build(SpatialFunction opCode)
         {
             ExtractNonCoveredResultNodes(opCode);
             /**
@@ -59,7 +46,7 @@ namespace NetTopologySuite.Operation.Overlay
         }
 
         /// <summary>
-        /// Determines nodes which are in the result, and creates <see cref="IPoint"/>s for them.
+        /// Determines nodes which are in the result, and creates <see cref="Point"/>s for them.
         /// </summary>
         /// <remarks>
         /// This method determines nodes which are candidates for the result via their

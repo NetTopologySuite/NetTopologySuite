@@ -1,6 +1,3 @@
-using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.LinearReferencing;
@@ -12,12 +9,12 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
     /// Tests methods involving only <see cref="LinearLocation" />s
     /// </summary>
     /// <author>Martin Davis</author>
-    [TestFixtureAttribute]
+    [TestFixture]
     public class LinearLocationTest
     {
         private WKTReader reader = new WKTReader();
 
-        [TestAttribute]
+        [Test]
         public void TestZeroLengthLineString()
         {
             var line = reader.Read("LINESTRING (10 0, 10 0)");
@@ -26,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             Assert.IsTrue(loc0.CompareTo(new LinearLocation(0, double.NaN)) == 0);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestRepeatedCoordsLineString()
         {
             var line = reader.Read("LINESTRING (10 0, 10 0, 20 0)");
@@ -35,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             Assert.IsTrue(loc0.CompareTo(new LinearLocation(1, 0.1)) == 0);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestSameSegmentLineString()
         {
             var line = reader.Read("LINESTRING (0 0, 10 0, 20 0, 30 0)");
@@ -73,7 +70,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             Assert.IsTrue(loc3.IsOnSameSegment(loc3));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestSameSegmentMultiLineString()
         {
             var line = reader.Read("MULTILINESTRING ((0 0, 10 0, 20 0), (20 0, 30 0))");
@@ -115,7 +112,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             Assert.IsTrue(loc3.IsOnSameSegment(loc3));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestGetSegmentMultiLineString()
         {
             var line = reader.Read("MULTILINESTRING ((0 0, 10 0, 20 0), (20 0, 30 0))");

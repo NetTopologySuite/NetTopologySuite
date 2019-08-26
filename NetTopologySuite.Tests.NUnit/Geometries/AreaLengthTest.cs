@@ -1,17 +1,14 @@
-using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class AreaLengthTest
     {
-        private IPrecisionModel precisionModel;
-        private IGeometryFactory geometryFactory;
+        private PrecisionModel precisionModel;
+        private GeometryFactory geometryFactory;
         WKTReader reader;
 
         public AreaLengthTest()
@@ -23,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         private static double TOLERANCE = 1E-5;
 
-        [TestAttribute]
+        [Test]
         public void TestLength()
         {
             checkLength("MULTIPOINT (220 140, 180 280)", 0.0);
@@ -33,7 +30,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             checkLength("POLYGON ((20 20, 40 20, 40 40, 20 40, 20 20), (25 35, 35 35, 35 25, 25 25, 25 35))", 120.0);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestArea()
         {
             checkArea("MULTIPOINT (220 140, 180 280)", 0.0);

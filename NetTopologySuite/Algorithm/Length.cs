@@ -1,5 +1,5 @@
 ﻿using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -17,7 +17,7 @@ namespace NetTopologySuite.Algorithm
         /// </summary>
         /// <param name="pts">The points specifying the <c>LineString</c></param>
         /// <returns>The length of the <c>LineString</c></returns>
-        public static double OfLine(ICoordinateSequence pts)
+        public static double OfLine(CoordinateSequence pts)
         {
             // optimized for processing CoordinateSequences
             int n = pts.Count;
@@ -26,8 +26,7 @@ namespace NetTopologySuite.Algorithm
 
             double len = 0.0;
 
-            var p = new Coordinate();
-            pts.GetCoordinate(0, p);
+            var p = pts.GetCoordinateCopy(0);
             double x0 = p.X;
             double y0 = p.Y;
 

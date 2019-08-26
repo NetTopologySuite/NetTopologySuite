@@ -1,6 +1,4 @@
 using System;
-using GeoAPI.Geometries;
-using GeoAPI.Geometries.Prepared;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Prepared;
 using NetTopologySuite.Geometries.Utilities;
@@ -11,7 +9,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 {
     ///<summary>
-    /// Stress tests <see cref="PreparedPolygon.Intersects(IGeometry)"/>
+    /// Stress tests <see cref="PreparedPolygon.Intersects(Geometry)"/>
     /// to confirm it finds intersections correctly.
     ///</summary>
     /// <author>Martin Davis</author>
@@ -26,8 +24,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
         bool testFailed = false;
 
-        [TestAttribute]
-        [CategoryAttribute("Stress")]
+        [Test]
+        [Category("Stress")]
         public void Test()
         {
             Run(1000);
@@ -42,19 +40,19 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             Test(poly);
         }
 
-        static IGeometry CreateCircle(Coordinate origin, double size, int nPts)
+        static Geometry CreateCircle(Coordinate origin, double size, int nPts)
         {
             var gsf = new GeometricShapeFactory();
             gsf.Centre = origin;
             gsf.Size = size;
             gsf.NumPoints = nPts;
-            IGeometry circle = gsf.CreateCircle();
+            Geometry circle = gsf.CreateCircle();
             // Polygon gRect = gsf.createRectangle();
             // Geometry g = gRect.getExteriorRing();
             return circle;
         }
 
-        static IGeometry CreateSineStar(Coordinate origin, double size, int nPts)
+        static Geometry CreateSineStar(Coordinate origin, double size, int nPts)
         {
             var gsf = new SineStarFactory();
             gsf.Centre = origin;
@@ -66,7 +64,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             return poly;
         }
 
-        static ILineString CreateTestLine(Envelope env, double size, int nPts)
+        static LineString CreateTestLine(Envelope env, double size, int nPts)
         {
             var rnd = new Random();
             double width = env.Width;
@@ -79,18 +77,18 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             return line;
         }
 
-        static ILineString CreateTestLine(Coordinate basePt, double size, int nPts)
+        static LineString CreateTestLine(Coordinate basePt, double size, int nPts)
         {
             var gsf = new GeometricShapeFactory();
             gsf.Centre = basePt;
             gsf.Size = size;
             gsf.NumPoints = nPts;
-            IGeometry circle = gsf.CreateCircle();
+            Geometry circle = gsf.CreateCircle();
             // System.out.println(circle);
-            return (ILineString)circle.Boundary;
+            return (LineString)circle.Boundary;
         }
 
-        public void Test(IGeometry g)
+        public void Test(Geometry g)
         {
             int count = 0;
             while (count < MAX_ITER)
@@ -104,7 +102,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
             }
         }
 
-        public void TestResultsEqual(IGeometry g, ILineString line)
+        public void TestResultsEqual(Geometry g, LineString line)
         {
             bool slowIntersects = g.Intersects(line);
 

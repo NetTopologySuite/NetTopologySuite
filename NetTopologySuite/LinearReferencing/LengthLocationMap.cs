@@ -1,4 +1,3 @@
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.LinearReferencing
@@ -22,7 +21,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="linearGeom">The linear geometry to use.</param>
         /// <param name="length">The length index of the location.</param>
         /// <returns>The <see cref="LinearLocation" /> for the length.</returns>
-        public static LinearLocation GetLocation(IGeometry linearGeom, double length)
+        public static LinearLocation GetLocation(Geometry linearGeom, double length)
         {
             var locater = new LengthLocationMap(linearGeom);
             return locater.GetLocation(length);
@@ -30,14 +29,14 @@ namespace NetTopologySuite.LinearReferencing
 
         /// <summary>
         /// Computes the <see cref="LinearLocation"/> for a
-        /// given length along a linear <see cref="IGeometry"/>,
+        /// given length along a linear <see cref="Geometry"/>,
         /// with control over how the location
         /// is resolved at component endpoints.
         /// </summary>
         /// <param name="linearGeom">The linear geometry to use</param>
         /// <param name="length">The length index of the location</param>
         /// <param name="resolveLower">If true lengths are resolved to the lowest possible index</param>
-        public static LinearLocation GetLocation(IGeometry linearGeom, double length, bool resolveLower)
+        public static LinearLocation GetLocation(Geometry linearGeom, double length, bool resolveLower)
         {
             var locater = new LengthLocationMap(linearGeom);
             return locater.GetLocation(length, resolveLower);
@@ -50,19 +49,19 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="linearGeom">The linear geometry to use.</param>
         /// <param name="loc">The <see cref="LinearLocation" /> index of the location.</param>
         /// <returns>The length for the <see cref="LinearLocation" />.</returns>
-        public static double GetLength(IGeometry linearGeom, LinearLocation loc)
+        public static double GetLength(Geometry linearGeom, LinearLocation loc)
         {
             var locater = new LengthLocationMap(linearGeom);
             return locater.GetLength(loc);
         }
 
-        private readonly IGeometry _linearGeom;
+        private readonly Geometry _linearGeom;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LengthLocationMap"/> class.
         /// </summary>
         /// <param name="linearGeom">A linear geometry.</param>
-        public LengthLocationMap(IGeometry linearGeom)
+        public LengthLocationMap(Geometry linearGeom)
         {
             _linearGeom = linearGeom;
         }

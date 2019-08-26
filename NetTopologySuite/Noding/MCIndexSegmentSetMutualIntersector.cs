@@ -62,7 +62,7 @@ namespace NetTopologySuite.Noding
         /// </summary>
         /// <param name="segmentStrings"></param>
         /// <param name="segmentIntersector"></param>
-        public void Process(ICollection<ISegmentString> segmentStrings, ISegmentIntersector segmentIntersector)
+        public void Process(IEnumerable<ISegmentString> segmentStrings, ISegmentIntersector segmentIntersector)
         {
             var monoChains = new List<MonotoneChain>();
             foreach (var segStr in segmentStrings)
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Noding
             }
         }
 
-        private void IntersectChains(IEnumerable<MonotoneChain> monoChains, ISegmentIntersector segmentIntersector)
+        private void IntersectChains(List<MonotoneChain> monoChains, ISegmentIntersector segmentIntersector)
         {
             var overlapAction = new SegmentOverlapAction(segmentIntersector);
 

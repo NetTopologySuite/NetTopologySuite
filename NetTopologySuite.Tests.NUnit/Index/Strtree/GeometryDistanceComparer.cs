@@ -11,7 +11,7 @@
  */
 
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Tests.NUnit.Index.Strtree
 {
@@ -19,28 +19,28 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
     /// <summary>
     /// The Class GeometryDistanceComparer.
     /// </summary>
-    public class GeometryDistanceComparer : IComparer<IGeometry>
+    public class GeometryDistanceComparer : IComparer<Geometry>
     {
 
         /// <summary>The normal order.</summary>
         private readonly bool _normalOrder;
 
         /// <summary>The query center.</summary>
-        private readonly IPoint _queryCenter;
+        private readonly Point _queryCenter;
 
         /// <summary>
         /// Instantiates a new Geometry distance comparator.
         /// </summary>
         /// <param name="queryCenter">The query center</param>
         /// <param name="normalOrder">A value of <c>true</c> means puts the least record at the head of this queue. peek() will get the least element. Vice versa.</param>
-        public GeometryDistanceComparer(IPoint queryCenter, bool normalOrder)
+        public GeometryDistanceComparer(Point queryCenter, bool normalOrder)
         {
             _queryCenter = queryCenter;
             _normalOrder = normalOrder;
         }
 
          /// <inheritdoc cref="IComparer{T}.Compare"/>
-        public int Compare(IGeometry g1, IGeometry g2)
+        public int Compare(Geometry g1, Geometry g2)
         {
             double distance1 = g1.EnvelopeInternal.Distance(this._queryCenter.EnvelopeInternal);
             double distance2 = g2.EnvelopeInternal.Distance(this._queryCenter.EnvelopeInternal);

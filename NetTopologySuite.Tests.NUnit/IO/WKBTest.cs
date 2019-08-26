@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
-using GeoAPI.IO;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
@@ -20,119 +18,119 @@ namespace NetTopologySuite.Tests.NUnit.IO
         private static readonly GeometryFactory GeomFactory = new GeometryFactory();
         private static readonly WKTReader Rdr = new WKTReader(GeomFactory);
 
-        [TestAttribute]
+        [Test]
         public void BigEndianTest()
         {
             var g = (Geometry)Rdr.Read("POINT(0 0)");
             RunGeometry(g, 2, ByteOrder.BigEndian, false, 100);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestFirst()
         {
             RunWKBTest("MULTIPOINT ((0 0), (1 4), (100 200))");
         }
-        [TestAttribute]
+        [Test]
         public void TestPointPcs()
         {
             RunWKBTestPackedCoordinate("POINT (1 2)");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestPoint()
         {
             RunWKBTest("POINT (1 2)");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestLineString()
         {
             RunWKBTest("LINESTRING (1 2, 10 20, 100 200)");
         }
-        [TestAttribute]
+        [Test]
         public void TestPolygon()
         {
             RunWKBTest("POLYGON ((0 0, 100 0, 100 100, 0 100, 0 0))");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestPolygonWithHole()
         {
             RunWKBTest("POLYGON ((0 0, 100 0, 100 100, 0 100, 0 0), (1 1, 1 10, 10 10, 10 1, 1 1) )");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiPoint()
         {
             RunWKBTest("MULTIPOINT ((0 0), (1 4), (100 200))");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiLineString()
         {
             RunWKBTest("MULTILINESTRING ((0 0, 1 10), (10 10, 20 30), (123 123, 456 789))");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiPolygon()
         {
             RunWKBTest("MULTIPOLYGON ( ((0 0, 100 0, 100 100, 0 100, 0 0), (1 1, 1 10, 10 10, 10 1, 1 1) ), ((200 200, 200 250, 250 250, 250 200, 200 200)) )");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestGeometryCollection()
         {
             RunWKBTest("GEOMETRYCOLLECTION ( POINT ( 1 1), LINESTRING (0 0, 10 10), POLYGON ((0 0, 100 0, 100 100, 0 100, 0 0)) )");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestNestedGeometryCollection()
         {
             RunWKBTest("GEOMETRYCOLLECTION ( POINT (20 20), GEOMETRYCOLLECTION ( POINT ( 1 1), LINESTRING (0 0, 10 10), POLYGON ((0 0, 100 0, 100 100, 0 100, 0 0)) ) )");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestLineStringEmpty()
         {
             RunWKBTest("LINESTRING EMPTY");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestBigPolygon()
         {
             var shapeFactory = new GeometricShapeFactory(GeomFactory);
             shapeFactory.Base = new Coordinate(0, 0);
             shapeFactory.Size = 1000;
             shapeFactory.NumPoints = 1000;
-            IGeometry geom = shapeFactory.CreateRectangle();
+            Geometry geom = shapeFactory.CreateRectangle();
             RunWKBTest(geom, 2, false);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestPolygonEmpty()
         {
             RunWKBTest("POLYGON EMPTY");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiPointEmpty()
         {
             RunWKBTest("MULTIPOINT EMPTY");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiLineStringEmpty()
         {
             RunWKBTest("MULTILINESTRING EMPTY");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiPolygonEmpty()
         {
             RunWKBTest("MULTIPOLYGON EMPTY");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestGeometryCollectionEmpty()
         {
             RunWKBTest("GEOMETRYCOLLECTION EMPTY");
@@ -147,7 +145,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
         private void RunWKBTestPackedCoordinate(string wkt)
         {
             var factory = new GeometryFactory(
-                new PackedCoordinateSequenceFactory(PackedCoordinateSequenceFactory.PackedType.Double, 2));
+                new PackedCoordinateSequenceFactory(PackedCoordinateSequenceFactory.PackedType.Double));
             var reader = new WKTReader(factory);
             var g = reader.Read(wkt);
 
@@ -169,38 +167,38 @@ namespace NetTopologySuite.Tests.NUnit.IO
             RunWKBTest(g, 3, false);
         }
 
-        private static IGeometry SetDimension(IGeometry p0, int dimension)
+        private static Geometry SetDimension(Geometry p0, int dimension)
         {
-            if (p0 is IGeometryCollection)
+            if (p0 is GeometryCollection)
             {
-                var tmp = new List<IGeometry>();
+                var tmp = new List<Geometry>();
                 for (int i = 0; i < p0.NumGeometries; i++)
                     tmp.Add(SetDimension(p0.GetGeometryN(i), dimension));
                 return p0.Factory.BuildGeometry(tmp);
             }
             var fact = p0.Factory.CoordinateSequenceFactory;
-            if (p0 is IPoint)
+            if (p0 is Point)
             {
-                return p0.Factory.CreatePoint(SetDimension(fact, ((IPoint) p0).CoordinateSequence, dimension));
+                return p0.Factory.CreatePoint(SetDimension(fact, ((Point) p0).CoordinateSequence, dimension));
             }
-            if (p0 is ILineString)
+            if (p0 is LineString)
             {
-                return p0.Factory.CreateLineString(SetDimension(fact, ((ILineString) p0).CoordinateSequence, dimension));
+                return p0.Factory.CreateLineString(SetDimension(fact, ((LineString) p0).CoordinateSequence, dimension));
             }
-            if (p0 is IPolygon)
+            if (p0 is Polygon)
             {
-                var p = (IPolygon) p0;
+                var p = (Polygon) p0;
                 var er =
-                    p0.Factory.CreateLinearRing(SetDimension(fact, ((ILinearRing) p.ExteriorRing).CoordinateSequence,
+                    p0.Factory.CreateLinearRing(SetDimension(fact, ((LinearRing) p.ExteriorRing).CoordinateSequence,
                         dimension));
-                ILinearRing[] ir = null;
+                LinearRing[] ir = null;
                 if (p.NumInteriorRings > 0)
                 {
-                    ir = new ILinearRing[p.NumInteriorRings];
+                    ir = new LinearRing[p.NumInteriorRings];
                     for (int i = 0; i < p.NumInteriorRings; i++)
                         ir[i] =
                             p0.Factory.CreateLinearRing(SetDimension(fact,
-                                ((ILinearRing) p.GetInteriorRingN(i)).CoordinateSequence,
+                                ((LinearRing) p.GetInteriorRingN(i)).CoordinateSequence,
                                 dimension));
                 }
                 return p.Factory.CreatePolygon(er, ir);
@@ -209,7 +207,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             return null;
         }
 
-        private static ICoordinateSequence SetDimension(ICoordinateSequenceFactory fact, ICoordinateSequence seq,
+        private static CoordinateSequence SetDimension(CoordinateSequenceFactory fact, CoordinateSequence seq,
             int dimension)
         {
             if (seq.Dimension == dimension)
@@ -220,19 +218,23 @@ namespace NetTopologySuite.Tests.NUnit.IO
             for (int i = 0; i < seq.Count; i++)
             {
                 for (int j = 0; j < dimension; j++)
-                    res.SetOrdinate(i, (Ordinate)j, seq.GetOrdinate(i, (Ordinate)j));
+                    res.SetOrdinate(i, j, seq.GetOrdinate(i, j));
             }
             return res;
         }
 
-        private void RunWKBTest(IGeometry g, int dimension, bool toHex)
+        private void RunWKBTest(Geometry g, int dimension, bool toHex)
         {
-            SetZ(g);
+            if (dimension > 2)
+            {
+                SetOrdinate2(g);
+            }
+
             RunWKBTest(g, dimension, ByteOrder.LittleEndian, toHex);
             RunWKBTest(g, dimension, ByteOrder.BigEndian, toHex);
         }
 
-        private void RunWKBTest(IGeometry g, int dimension, ByteOrder byteOrder, bool toHex)
+        private void RunWKBTest(Geometry g, int dimension, ByteOrder byteOrder, bool toHex)
         {
             RunGeometry((Geometry)g, dimension, byteOrder, toHex, 100);
             RunGeometry((Geometry)g, dimension, byteOrder, toHex, 0);
@@ -240,9 +242,9 @@ namespace NetTopologySuite.Tests.NUnit.IO
             RunGeometry((Geometry)g, dimension, byteOrder, toHex, -1);
         }
 
-        private static void SetZ(IGeometry g)
+        private static void SetOrdinate2(Geometry g)
         {
-            g.Apply(new AverageZFilter());
+            g.Apply(new AverageOrdinate2Filter());
         }
 
         //static Comparator comp2D = new Coordinate.DimensionalComparator();
@@ -250,7 +252,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
 
         static readonly CoordinateSequenceComparator Comp2 = new CoordinateSequenceComparator(2);
         static readonly CoordinateSequenceComparator Comp3 = new CoordinateSequenceComparator(3);
-        readonly WKBReader _wkbReader = new WKBReader(GeomFactory);
+        readonly WKBReader _wkbReader = new WKBReader();
 
         void RunGeometry(Geometry g, int dimension, ByteOrder byteOrder, bool toHex, int srid)
         {
@@ -283,11 +285,11 @@ namespace NetTopologySuite.Tests.NUnit.IO
         }
     }
 
-    class AverageZFilter : ICoordinateFilter
+    class AverageOrdinate2Filter : ICoordinateFilter
     {
         public void Filter(Coordinate coord)
         {
-            coord.Z = (coord.X + coord.Y) / 2;
+            coord[2] = (coord.X + coord.Y) / 2;
         }
     }
 

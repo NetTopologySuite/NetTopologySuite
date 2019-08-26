@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
-using NetTopologySuite.Utilities;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Technique
@@ -25,20 +23,20 @@ namespace NetTopologySuite.Samples.Technique
                 _spikeThreshold = spikeThreshold;
             }
 
-            public void Filter(IGeometry geom)
+            public void Filter(Geometry geom)
             {
-                if (geom is IPoint)
+                if (geom is Point)
                     return;
-                if (geom is ILineString)
+                if (geom is LineString)
                     geom.Apply(new SpikeFixSequenceFilter(_spikeThreshold));
-                if (geom is IPolygon)
+                if (geom is Polygon)
                 {
-                    var poly = (IPolygon) geom;
+                    var poly = (Polygon) geom;
                     poly.ExteriorRing.Apply(new SpikeFixSequenceFilter(_spikeThreshold));
                     for (int i = 0; i < poly.NumInteriorRings; i++)
                         poly.GetInteriorRingN(i).Apply(new SpikeFixSequenceFilter(_spikeThreshold));
                 }
-                if (geom is IGeometryCollection)
+                if (geom is GeometryCollection)
                 {
                     for (int i = 0; i < geom.NumGeometries; i++)
                         geom.GetGeometryN(i).Apply(new SpikeFixFilter(_spikeThreshold));
@@ -57,7 +55,7 @@ namespace NetTopologySuite.Samples.Technique
                     _spikeThreshold = spikeThreshold;
                 }
 
-                public void Filter(ICoordinateSequence seq, int i)
+                public void Filter(CoordinateSequence seq, int i)
                 {
                     if (seq == null)
                         throw new ArgumentNullException();
@@ -104,7 +102,7 @@ namespace NetTopologySuite.Samples.Technique
                     _lastSegment = new LineSegment(seq.GetCoordinate(i), seq.GetCoordinate(i+1));
                 }
 
-                private static void FixSpike(ICoordinateSequence seq, int fixIndex, int fixWithIndex)
+                private static void FixSpike(CoordinateSequence seq, int fixIndex, int fixWithIndex)
                 {
                     seq.SetOrdinate(fixIndex, Ordinate.X, seq.GetOrdinate(fixWithIndex, Ordinate.X));
                     seq.SetOrdinate(fixIndex, Ordinate.Y, seq.GetOrdinate(fixWithIndex, Ordinate.Y));
@@ -122,7 +120,7 @@ namespace NetTopologySuite.Samples.Technique
                     Second = 1
                 }
 
-                private static bool IsClosed(ICoordinateSequence seq)
+                private static bool IsClosed(CoordinateSequence seq)
                 {
                     return seq.GetCoordinate(seq.Count - 1).Equals2D(seq.GetCoordinate(0));
                 }
@@ -149,10 +147,10 @@ namespace NetTopologySuite.Samples.Technique
 
         public class SpikeRemovingUtility
         {
-            public static IGeometry RemoveSpikes(IGeometry geom, double spikeThreshold)
+            public static Geometry RemoveSpikes(Geometry geom, double spikeThreshold)
             {
                 var filter = new SpikeFixFilter(spikeThreshold);
-                var res = (IGeometry) geom.Copy();
+                var res = (Geometry) geom.Copy();
                 res.Apply(filter);
                 return res;
             }
@@ -189,30 +187,30 @@ namespace NetTopologySuite.Samples.Technique
             _spikeThreshold = spikeThreshold;
         }
 
-        public IGeometry Edit(IGeometry geom, IGeometryFactory factory)
+        public Geometry Edit(Geometry geom, GeometryFactory factory)
         {
             factory = factory ?? geom.Factory;
 
-            if (geom is IPoint)
-                return factory.CreatePoint(((IPoint) geom).CoordinateSequence);
+            if (geom is Point)
+                return factory.CreatePoint(((Point) geom).CoordinateSequence);
 
-            if (geom is ILineString)
+            if (geom is LineString)
             {
-                return RemoveSpikesFromLineString((ILineString) geom, factory);
+                return RemoveSpikesFromLineString((LineString) geom, factory);
             }
-            if (geom is IPolygon)
+            if (geom is Polygon)
             {
-                var poly = (IPolygon)geom;
+                var poly = (Polygon)geom;
                 var exteriorRing = RemoveSpikesFromLineString(poly.ExteriorRing, factory, true);
-                var interiorRings = new List<ILinearRing>(poly.NumInteriorRings);
+                var interiorRings = new List<LinearRing>(poly.NumInteriorRings);
                 for (int i = 0; i < poly.NumInteriorRings; i++)
-                    interiorRings.Add((ILinearRing)RemoveSpikesFromLineString(poly.GetInteriorRingN(i), factory, true));
-                return factory.CreatePolygon((ILinearRing)exteriorRing, interiorRings.ToArray());
+                    interiorRings.Add((LinearRing)RemoveSpikesFromLineString(poly.GetInteriorRingN(i), factory, true));
+                return factory.CreatePolygon((LinearRing)exteriorRing, interiorRings.ToArray());
             }
 
-            if (geom is IGeometryCollection)
+            if (geom is GeometryCollection)
             {
-                var lst = new List<IGeometry>();
+                var lst = new List<Geometry>();
                 for (int i = 0; i < geom.NumGeometries; i++)
                     lst.Add(Edit(geom.GetGeometryN(i), geom.Factory));
                 return factory.CreateGeometryCollection(lst.ToArray());
@@ -221,7 +219,7 @@ namespace NetTopologySuite.Samples.Technique
             return null;
         }
 
-        private ILineString RemoveSpikesFromLineString(ILineString geom, IGeometryFactory factory, bool ring = false)
+        private LineString RemoveSpikesFromLineString(LineString geom, GeometryFactory factory, bool ring = false)
         {
             var seq = geom.CoordinateSequence;
             if (geom.Length < 3)
@@ -232,7 +230,7 @@ namespace NetTopologySuite.Samples.Technique
                         : factory.CreateLineString(seq);
         }
         /*
-        private ICoordinateSequence RemoveSpikesFromSequence(ICoordinateSequence seq, ICoordinateSequenceFactory factory)
+        private CoordinateSequence RemoveSpikesFromSequence(CoordinateSequence seq, CoordinateSequenceFactory factory)
         {
             LineSegment s1, s2;
             var res = factory.Create(seq.Count, seq.Ordinates);
@@ -266,12 +264,12 @@ namespace NetTopologySuite.Samples.Technique
 
         }
 
-        private void CheckSpike(ICoordinateSequence seq, int si1, int si2)
+        private void CheckSpike(CoordinateSequence seq, int si1, int si2)
         {
 
         }
 
-        private void CheckSpike(ICoordinateSequence seq, int si1, int si2)
+        private void CheckSpike(CoordinateSequence seq, int si1, int si2)
         {
 
         }*/
@@ -283,7 +281,7 @@ namespace NetTopologySuite.Samples.Technique
             Second = 1
         }
 
-        private static bool IsClosed(ICoordinateSequence seq)
+        private static bool IsClosed(CoordinateSequence seq)
         {
             return seq.GetCoordinate(seq.Count - 1).Equals2D(seq.GetCoordinate(0));
         }

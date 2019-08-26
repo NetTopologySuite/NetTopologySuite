@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Index
@@ -12,9 +11,6 @@ namespace NetTopologySuite.Index
     /// secondary filter may consist of other tests besides intersection, such as
     /// testing other kinds of spatial relationships.
     /// </summary>
-    public interface ISpatialIndex : ISpatialIndex<object>
-    {}
-
     public interface ISpatialIndex<T>
     {
         /// <summary>

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using System.Linq;
+
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 
@@ -14,37 +15,80 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public class ConvexHull
     {
-        private readonly IGeometryFactory _geomFactory;
+        /// <summary>
+        /// Computes the convex hull for the given sequence of <see cref="Geometry"/> instances.
+        /// </summary>
+        /// <param name="geoms">
+        /// The <see cref="Geometry"/> instances whose convex hull to compute.
+        /// </param>
+        /// <returns>
+        /// The convex hull of <paramref name="geoms"/>.
+        /// </returns>
+        public static Geometry Create(IEnumerable<Geometry> geoms)
+        {
+            GeometryFactory factory = null;
+            var filter = new CustomUniqueCoordinateFilter();
+            foreach (var geom in geoms ?? Enumerable.Empty<Geometry>())
+            {
+                if (geom is null)
+                {
+                    continue;
+                }
+
+                if (factory is null)
+                {
+                    factory = geom.Factory;
+                }
+
+                geom.Apply(filter);
+            }
+
+            return new ConvexHull(filter.Coordinates, factory).GetConvexHull();
+        }
+
+        private readonly GeometryFactory _geomFactory;
         private readonly Coordinate[] _inputPts;
 
         /// <summary>
         /// Create a new convex hull construction for the input <c>Geometry</c>.
         /// </summary>
         /// <param name="geometry"></param>
-        public ConvexHull(IGeometry geometry)
-            : this(ExtractCoordinates(geometry), geometry.Factory) { }
+        public ConvexHull(Geometry geometry)
+            : this(ExtractCoordinates(geometry), geometry?.Factory) { }
 
         /// <summary>
         /// Create a new convex hull construction for the input <see cref="Coordinate" /> array.
         /// </summary>
         /// <param name="pts"></param>
         /// <param name="geomFactory"></param>
-        public ConvexHull(Coordinate[] pts, IGeometryFactory geomFactory)
+        public ConvexHull(IEnumerable<Coordinate> pts, GeometryFactory geomFactory)
         {
-            // _inputPts = pts;
-            _inputPts = UniqueCoordinateArrayFilter.FilterCoordinates(pts);
-            _geomFactory = geomFactory;
+            switch (pts)
+            {
+                case null:
+                    _inputPts = Array.Empty<Coordinate>();
+                    break;
+
+                case ISet<Coordinate> set:
+                    _inputPts = new Coordinate[set.Count];
+                    set.CopyTo(_inputPts, 0);
+                    break;
+
+                default:
+                    _inputPts = pts.Distinct().ToArray();
+                    break;
+            }
+
+            _geomFactory = geomFactory ?? NtsGeometryServices.Instance.CreateGeometryFactory();
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="geom"></param>
-        /// <returns></returns>
-        private static Coordinate[] ExtractCoordinates(IGeometry geom)
+        private static HashSet<Coordinate> ExtractCoordinates(Geometry geom)
         {
-            var filter = new UniqueCoordinateArrayFilter();
-            geom.Apply(filter);
+            // DEVIATION: UniqueCoordinateArrayFilter is expensive (until we port 5e01aea, anyway).
+            // Nobody actually needs the original input to be Coordinate[], and the original array
+            // could never be used as-is because we could never assume that it's unique.
+            var filter = new CustomUniqueCoordinateFilter();
+            geom?.Apply(filter);
             return filter.Coordinates;
         }
 
@@ -60,7 +104,7 @@ namespace NetTopologySuite.Algorithm
         /// 1 point, a <c>Point</c>;
         /// 0 points, an empty <c>GeometryCollection</c>.
         /// </returns>
-        public IGeometry GetConvexHull()
+        public Geometry GetConvexHull()
         {
             if (_inputPts.Length == 0)
                 return _geomFactory.CreateGeometryCollection();
@@ -129,7 +173,7 @@ namespace NetTopologySuite.Algorithm
                 if (!PointLocation.IsInRing(pts[i], polyPts))
                     reducedSet.Add(pts[i]);
 
-            var reducedPts = CoordinateArrays.ToCoordinateArray((ICollection<Coordinate>)reducedSet);// new Coordinate[reducedSet.Count];
+            var reducedPts = CoordinateArrays.ToCoordinateArray(reducedSet);// new Coordinate[reducedSet.Count];
             Array.Sort(reducedPts);
 
             // ensure that computed array has at least 3 points (not necessarily unique)
@@ -324,7 +368,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="coordinates"> The vertices of a linear ring, which may or may not be flattened (i.e. vertices collinear).</param>
         /// <returns>A 2-vertex <c>LineString</c> if the vertices are collinear;
         /// otherwise, a <c>Polygon</c> with unnecessary (collinear) vertices removed. </returns>
-        private IGeometry LineOrPolygon(Coordinate[] coordinates)
+        private Geometry LineOrPolygon(Coordinate[] coordinates)
         {
             coordinates = CleanRing(coordinates);
             if (coordinates.Length == 3)
@@ -416,6 +460,19 @@ namespace NetTopologySuite.Algorithm
                 if (op > oq)
                     return 1;
                 return 0;
+            }
+        }
+
+        private sealed class CustomUniqueCoordinateFilter : ICoordinateFilter
+        {
+            public HashSet<Coordinate> Coordinates { get; } = new HashSet<Coordinate>();
+
+            public void Filter(Coordinate coord)
+            {
+                if (!(coord is null))
+                {
+                    Coordinates.Add(coord);
+                }
             }
         }
     }

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-//using GeoAPI.DataStructures;
+//using NetTopologySuite.DataStructures;
 
 namespace NetTopologySuite.Index.Bintree
 {

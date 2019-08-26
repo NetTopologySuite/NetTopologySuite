@@ -1,5 +1,4 @@
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Samples.Geometries
@@ -27,7 +26,7 @@ namespace NetTopologySuite.Samples.Geometries
             var p2 = fact.CreatePoint(new Coordinate(1, 1));
             Console.WriteLine(p1);
 
-            var mpt = fact.CreateMultiPoint(new Coordinate[]{ new Coordinate(0, 0), new Coordinate(1, 1), });
+            var mpt = fact.CreateMultiPointFromCoords(new Coordinate[]{ new Coordinate(0, 0), new Coordinate(1, 1), });
             Console.WriteLine(mpt);
         }
     }

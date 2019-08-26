@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
@@ -70,7 +69,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                     start,
                     new Coordinate(RandomInt(sideLen), RandomInt(sideLen)),
                     new Coordinate(RandomInt(sideLen), RandomInt(sideLen)),
-                    new Coordinate(start)
+                    start.Copy()
                 };
                 CheckTriangleEdgePoints(triPts, numEdgePts);
             }

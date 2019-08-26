@@ -1,6 +1,3 @@
-using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
@@ -8,11 +5,11 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class NormalizeTest
     {
-        private IPrecisionModel precisionModel;
-        private IGeometryFactory geometryFactory;
+        private PrecisionModel precisionModel;
+        private GeometryFactory geometryFactory;
         WKTReader reader;
 
         public NormalizeTest()
@@ -22,7 +19,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             reader = new WKTReader(geometryFactory);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestNormalizePoint()
         {
             var point = (Point)reader.Read("POINT (30 30)");
@@ -30,7 +27,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(new Coordinate(30, 30), point.Coordinate);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestNormalizeEmptyPoint()
         {
             var point = (Point)reader.Read("POINT EMPTY");
@@ -38,7 +35,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(null, point.Coordinate);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestComparePoint()
         {
             var p1 = (Point)reader.Read("POINT (30 30)");
@@ -46,7 +43,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(p1.CompareTo(p2) < 0);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestCompareEmptyPoint()
         {
             var p1 = (Point)reader.Read("POINT (30 30)");
@@ -54,7 +51,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(p1.CompareTo(p2) > 0);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestNormalizeMultiPoint()
         {
             var m = (MultiPoint)reader.Read(
@@ -68,7 +65,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(!m.EqualsExact(unexpectedValue));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestNormalizeLineString1()
         {
             var l = (LineString)reader.Read(
@@ -79,7 +76,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, l);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestNormalizeLineString2()
         {
             var l = (LineString)reader.Read(
@@ -90,7 +87,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, l);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestNormalizeLineString3()
         {
             var l = (LineString)reader.Read(
@@ -101,7 +98,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, l);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestNormalizeLineString4()
         {
             var l = (LineString)reader.Read(
@@ -112,7 +109,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, l);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestNormalizeLineString5()
         {
             var l = (LineString)reader.Read(
@@ -126,15 +123,15 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestNormalizeStringNoSideEffect()
         {
-            var l = (ILineString) reader.Read("LINESTRING (200 240, 140 160, 80 160, 160 80, 80 80)");
-            var refL = (ILineString) reader.Read("LINESTRING (200 240, 140 160)");
+            var l = (LineString) reader.Read("LINESTRING (200 240, 140 160, 80 160, 160 80, 80 80)");
+            var refL = (LineString) reader.Read("LINESTRING (200 240, 140 160)");
             var seg = l.Factory.CreateLineString(new Coordinate[] { l.GetCoordinateN(0), l.GetCoordinateN(1) });
             Assert.That(refL.EqualsExact(seg), Is.True);
             l.Normalize();
             Assert.That(refL.EqualsExact(seg), Is.True);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestNormalizeEmptyLineString()
         {
             var l = (LineString)reader.Read("LINESTRING EMPTY");
@@ -143,7 +140,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, l);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestNormalizeEmptyPolygon()
         {
             var actualValue = (Polygon)reader.Read("POLYGON EMPTY");
@@ -152,7 +149,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, actualValue);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestNormalizePolygon1()
         {
             var actualValue = (Polygon)reader.Read(
@@ -163,7 +160,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, actualValue);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestNormalizeMultiLineString()
         {
             var actualValue = (MultiLineString)reader.Read(
@@ -174,7 +171,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, actualValue);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestNormalizeMultiPolygon()
         {
             var actualValue = (MultiPolygon)reader.Read(
@@ -185,7 +182,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, actualValue);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestNormalizeGeometryCollection()
         {
             var actualValue = (GeometryCollection)reader.Read(
@@ -196,12 +193,12 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             AssertAreEqualExact(expectedValue, actualValue);
         }
 
-        private void AssertAreEqualExact(IGeometry expectedValue, IGeometry actualValue)
+        private void AssertAreEqualExact(Geometry expectedValue, Geometry actualValue)
         {
             Assert.IsTrue(actualValue.EqualsExact(expectedValue), "Expected " + expectedValue + " but encountered " + actualValue);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestNormalizePackedCoordinateSequence()
         {
             var pcsFactory = new GeometryFactory(PackedCoordinateSequenceFactory.DoubleFactory);
@@ -209,7 +206,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             var geom = pcsReader.Read("LINESTRING (100 100, 0 0)");
             geom.Normalize();
             // force PackedCoordinateSequence to be copied with empty coordinate cache
-            var clone = (IGeometry) geom.Copy();
+            var clone = (Geometry) geom.Copy();
             AssertAreEqualExact(geom, clone);
         }
 

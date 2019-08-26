@@ -1,4 +1,4 @@
-﻿using GeoAPI.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 
 namespace NetTopologySuite.SnapRound
@@ -7,7 +7,7 @@ namespace NetTopologySuite.SnapRound
     {
         private static readonly PolygonCleanerTransformer Transformer = new PolygonCleanerTransformer();
 
-        public static IGeometry Clean(IGeometry geom)
+        public static Geometry Clean(Geometry geom)
         {
             return Transformer.Transform(geom);
         }
@@ -15,17 +15,17 @@ namespace NetTopologySuite.SnapRound
         public class PolygonCleanerTransformer : GeometryTransformer
         {
             /// <inheritdoc cref="GeometryTransformer.TransformPolygon"/>
-            protected override IGeometry TransformPolygon(IPolygon geom, IGeometry parent)
+            protected override Geometry TransformPolygon(Polygon geom, Geometry parent)
             {
                 // if parent is a MultiPolygon, let it do the cleaning
-                if (parent is IMultiPolygon) {
+                if (parent is MultiPolygon) {
                     return geom;
                 }
                 return CreateValidArea(geom);
             }
 
             /// <inheritdoc cref="GeometryTransformer.TransformMultiPolygon"/>
-            protected override IGeometry TransformMultiPolygon(IMultiPolygon geom, IGeometry parent)
+            protected override Geometry TransformMultiPolygon(MultiPolygon geom, Geometry parent)
             {
                 var roughGeom = base.TransformMultiPolygon(geom, parent);
                 return CreateValidArea(roughGeom);
@@ -39,7 +39,7 @@ namespace NetTopologySuite.SnapRound
             /// <returns>
             /// A valid area geometry
             /// </returns>
-            private IGeometry CreateValidArea(IGeometry area)
+            private Geometry CreateValidArea(Geometry area)
             {
                 if (area.IsValid) return area;
                 // TODO: this is slow and has potential errors (due to buffer robustness failure)

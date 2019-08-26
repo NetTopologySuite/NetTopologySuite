@@ -1,5 +1,3 @@
-using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
@@ -16,11 +14,11 @@ namespace NetTopologySuite.Samples.Tests.Github
             var factory = GeometryFactory.Default;
             var read = new WKTReader().Read(wkt);
             Assert.IsNotNull(read);
-            Assert.IsInstanceOf<IMultiPolygon>(read);
+            Assert.IsInstanceOf<MultiPolygon>(read);
 
             var built = factory.BuildGeometry(new[] { read });
             Assert.IsNotNull(built);
-            Assert.IsInstanceOf<IGeometryCollection>(built);
+            Assert.IsInstanceOf<GeometryCollection>(built);
             Assert.AreEqual(1, built.NumGeometries);
         }
     }

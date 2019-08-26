@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NUnit.Framework;
 

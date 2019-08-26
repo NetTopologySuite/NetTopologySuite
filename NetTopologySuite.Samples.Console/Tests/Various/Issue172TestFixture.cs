@@ -1,4 +1,4 @@
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
@@ -16,11 +16,11 @@ namespace NetTopologySuite.Samples.Tests.Various
             var geom = reader.Read(wkt);
             Assert.That(geom, Is.Not.Null);
             Assert.That(geom.IsValid, Is.True);
-            Assert.That(geom, Is.InstanceOf<IGeometryCollection>());
+            Assert.That(geom, Is.InstanceOf<GeometryCollection>());
             var res = geom.Union();
             Assert.That(res, Is.Not.Null);
             Assert.That(res.IsValid, Is.True);
-            Assert.That(res, Is.InstanceOf<IGeometryCollection>());
+            Assert.That(res, Is.InstanceOf<GeometryCollection>());
         }
     }
 }

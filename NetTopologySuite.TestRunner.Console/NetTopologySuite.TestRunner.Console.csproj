@@ -1,18 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <RootNamespace>NetTopologySuite</RootNamespace>
     <OutputType>Exe</OutputType>
     <ApplicationIcon>App.ico</ApplicationIcon>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <Import Project="$(SolutionDir)NetTopologySuite.Common.props" />
-
-  <ItemGroup>
-    <Compile Include="$(SolutionDir)SharedAssemblyVersion.cs" Link="Properties\SharedAssemblyVersion.cs" />
-  </ItemGroup>
 
   <ItemGroup Condition=" '$(RequiresFrameworkAssemblyReferences)' == 'true' ">
     <Reference Include="System" />
@@ -20,10 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GeoAPI" Version="$(GeoAPIPackageReferenceVersion)" />
+    <ProjectReference Include="$(SolutionDir)NetTopologySuite.TestRunner\NetTopologySuite.TestRunner.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\NetTopologySuite.TestRunner\NetTopologySuite.TestRunner.csproj" />
-  </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 ﻿using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
@@ -42,12 +42,12 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 double y = maxy - i * segLen;
                 pts[ipt++] = new Coordinate(x, y);
             }
-            pts[ipt++] = new Coordinate(pts[0]);
+            pts[ipt++] = pts[0].Copy();
 
             return pts;
         }
-        public static IPolygon CreateCircle(
-                              IGeometryFactory fact,
+        public static Polygon CreateCircle(
+                              GeometryFactory fact,
                               double basex,
                               double basey,
                               double size,
@@ -89,8 +89,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             return pts;
         }
 
-        public static IPolygon CreateBox(
-            IGeometryFactory fact,
+        public static Polygon CreateBox(
+            GeometryFactory fact,
                               double minx, double miny,
                               int nSide,
                               double segLen)
@@ -148,8 +148,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             return pts;
         }
 
-        public static IPolygon CreateSineStar(
-                              IGeometryFactory fact,
+        public static Polygon CreateSineStar(
+                              GeometryFactory fact,
                               double basex,
                               double basey,
                               double size,

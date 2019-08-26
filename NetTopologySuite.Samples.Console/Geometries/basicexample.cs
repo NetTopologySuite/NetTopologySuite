@@ -1,5 +1,4 @@
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
@@ -21,12 +20,19 @@ namespace NetTopologySuite.Samples.Geometries
             var coordinates = new [] { new Coordinate(0, 0),
                 new Coordinate(10, 10), new Coordinate(20, 20) };
             // use the default factory, which gives full double-precision
-            IGeometry g2 = new GeometryFactory().CreateLineString(coordinates);
+            Geometry g2 = new GeometryFactory().CreateLineString(coordinates);
             Console.WriteLine("Geometry 2: " + g2);
 
             // compute the intersection of the two geometries
             var g3 = g1.Intersection(g2);
             Console.WriteLine("G1 intersection G2: " + g3);
+
+            // create a point
+            var point = new GeometryFactory().CreatePoint(new Coordinate(1, 1));
+            Console.WriteLine("Point Geometry: " + point);
+
+            // compute whether point is on g1
+            Console.WriteLine("Point within g1: " + g1.Contains(point));
         }
     }
 }

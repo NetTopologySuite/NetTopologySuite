@@ -1,7 +1,5 @@
 ﻿namespace NetTopologySuite.Tests.XUnit
 {
-    using System;
-
     public abstract class RobustXUnitRunner : XUnitRunner
     {
         protected RobustXUnitRunner(string testFile) : base(testFile) { }

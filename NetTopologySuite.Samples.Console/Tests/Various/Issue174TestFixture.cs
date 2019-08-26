@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Reflection;
-using GeoAPI.Geometries;
-using NetTopologySuite.IO;
 using NetTopologySuite.Triangulate;
 using NUnit.Framework;
-using ProjNet.CoordinateSystems;
 using Assert = NUnit.Framework.Assert;
 
 namespace NetTopologySuite.Samples.Tests.Various
@@ -18,18 +14,6 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.IsNotNull(typeFromAssemblyToCheck, "Cannot determine assembly from null");
             var assembly = typeFromAssemblyToCheck.Assembly;
             StringAssert.DoesNotContain("PublicKeyToken=null", assembly.FullName, "Strongly named assembly should have a PublicKeyToken in fully qualified name");
-        }
-
-        [Test, Category("Issue174")]
-        public void ensure_GeoAPI_assembly_is_strongly_named()
-        {
-            AssertStronglyNamedAssembly(typeof(IGeometry));
-        }
-
-        [Test, Category("Issue174")]
-        public void ensure_ProjNet_assembly_is_strongly_named()
-        {
-            AssertStronglyNamedAssembly(typeof(Datum));
         }
 
         [Test, Category("Issue174")]

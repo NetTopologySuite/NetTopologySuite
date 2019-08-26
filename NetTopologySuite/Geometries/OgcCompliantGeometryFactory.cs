@@ -1,5 +1,4 @@
 ﻿using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 
 namespace NetTopologySuite.Geometries
@@ -24,7 +23,7 @@ namespace NetTopologySuite.Geometries
         /// <see cref="GeometryFactory.PrecisionModel"/>,
         /// but the specified <paramref name="factory"/>.
         /// </summary>
-        public OgcCompliantGeometryFactory(ICoordinateSequenceFactory factory)
+        public OgcCompliantGeometryFactory(CoordinateSequenceFactory factory)
             : base(factory)
         { }
 
@@ -32,48 +31,48 @@ namespace NetTopologySuite.Geometries
         /// values for <see cref="GeometryFactory.SRID"/>,
         /// <see cref="GeometryFactory.CoordinateSequenceFactory"/> but the
         /// specified <paramref name="pm"/>.
-        public OgcCompliantGeometryFactory(IPrecisionModel pm)
+        public OgcCompliantGeometryFactory(PrecisionModel pm)
             :base(pm)
         {}
 
-        public OgcCompliantGeometryFactory(IPrecisionModel pm, int srid)
+        public OgcCompliantGeometryFactory(PrecisionModel pm, int srid)
             : base(pm, srid)
         { }
 
-        public OgcCompliantGeometryFactory(IPrecisionModel pm, int srid, ICoordinateSequenceFactory factory)
+        public OgcCompliantGeometryFactory(PrecisionModel pm, int srid, CoordinateSequenceFactory factory)
             : base(pm, srid, factory)
         { }
 
         #region Private utility functions
-        private static ILinearRing ReverseRing(ILinearRing ring)
+        private static LinearRing ReverseRing(LinearRing ring)
         {
-            return (ILinearRing)ring.Reverse();
+            return (LinearRing)ring.Reverse();
         }
 
-        private ILinearRing CreateLinearRing(Coordinate[] coordinates, bool ccw)
+        private LinearRing CreateLinearRing(Coordinate[] coordinates, bool ccw)
         {
             if (coordinates != null && Orientation.IsCCW(coordinates) != ccw)
                 Array.Reverse(coordinates);
             return CreateLinearRing(coordinates);
         }
 
-        private ILinearRing CreateLinearRing(ICoordinateSequence coordinates, bool ccw)
+        private LinearRing CreateLinearRing(CoordinateSequence coordinates, bool ccw)
         {
             if (coordinates != null && Orientation.IsCCW(coordinates) != ccw)
             {
-                //CoordinateSequences.Reverse(coordinates);
-                coordinates = coordinates.Reversed();
+                coordinates = coordinates.Copy();
+                CoordinateSequences.Reverse(coordinates);
             }
             return CreateLinearRing(coordinates);
         }
         #endregion
 
         /// <inheritdoc/>
-        public override IGeometry ToGeometry(Envelope envelope)
+        public override Geometry ToGeometry(Envelope envelope)
         {
             // null envelope - return empty point geometry
             if (envelope.IsNull)
-                return CreatePoint((ICoordinateSequence)null);
+                return CreatePoint((CoordinateSequence)null);
 
             // point?
             if (envelope.MinX == envelope.MaxX && envelope.MinY == envelope.MaxY)
@@ -106,9 +105,9 @@ namespace NetTopologySuite.Geometries
 
         /// <inheritdoc/>
         /// <remarks>
-        /// The <see cref="IPolygon.ExteriorRing"/> is guaranteed to be orientated counter-clockwise.
+        /// The <see cref="Polygon.ExteriorRing"/> is guaranteed to be orientated counter-clockwise.
         /// </remarks>
-        public override IPolygon CreatePolygon(Coordinate[] coordinates)
+        public override Polygon CreatePolygon(Coordinate[] coordinates)
         {
             var ring = CreateLinearRing(coordinates, true);
             return base.CreatePolygon(ring);
@@ -116,9 +115,9 @@ namespace NetTopologySuite.Geometries
 
         /// <inheritdoc/>
         /// <remarks>
-        /// The <see cref="IPolygon.ExteriorRing"/> is guaranteed to be orientated counter-clockwise.
+        /// The <see cref="Polygon.ExteriorRing"/> is guaranteed to be orientated counter-clockwise.
         /// </remarks>
-        public override IPolygon CreatePolygon(ICoordinateSequence coordinates)
+        public override Polygon CreatePolygon(CoordinateSequence coordinates)
         {
             var ring = CreateLinearRing(coordinates, true);
             return base.CreatePolygon(ring);
@@ -126,19 +125,19 @@ namespace NetTopologySuite.Geometries
 
         /// <inheritdoc/>
         /// <remarks>
-        /// The <see cref="IPolygon.ExteriorRing"/> is guaranteed to be orientated counter-clockwise.
+        /// The <see cref="Polygon.ExteriorRing"/> is guaranteed to be orientated counter-clockwise.
         /// </remarks>
-        public override IPolygon CreatePolygon(ILinearRing shell)
+        public override Polygon CreatePolygon(LinearRing shell)
         {
             return CreatePolygon(shell, null);
         }
 
         /// <inheritdoc/>
         /// <remarks>
-        /// The <see cref="IPolygon.ExteriorRing"/> is guaranteed to be orientated counter-clockwise.
-        /// <br/>The <see cref="IPolygon.InteriorRings"/> are guaranteed to be orientated clockwise.
+        /// The <see cref="Polygon.ExteriorRing"/> is guaranteed to be orientated counter-clockwise.
+        /// <br/>The <see cref="Polygon.InteriorRings"/> are guaranteed to be orientated clockwise.
         /// </remarks>
-        public override IPolygon CreatePolygon(ILinearRing shell, ILinearRing[] holes)
+        public override Polygon CreatePolygon(LinearRing shell, LinearRing[] holes)
         {
             if (shell != null)
             {

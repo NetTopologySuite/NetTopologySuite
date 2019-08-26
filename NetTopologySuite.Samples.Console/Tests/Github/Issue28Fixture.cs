@@ -1,9 +1,7 @@
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Distance;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
-using NetTopologySuite.Planargraph;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Tests.Github
@@ -19,11 +17,11 @@ namespace NetTopologySuite.Samples.Tests.Github
             Assert.IsFalse(failed);
         }
 
-        private static bool TestWktWkb(int number, IGeometryFactory factory, string wkt, string wkb)
+        private static bool TestWktWkb(int number, GeometryFactory factory, string wkt, string wkb)
         {
             var r = new WKTReader(factory);
             var wktGeom = r.Read(wkt);
-            var s = new WKBReader(factory);
+            var s = new WKBReader(new NtsGeometryServices(factory.CoordinateSequenceFactory, factory.PrecisionModel, factory.SRID));
             var wkbGeom = s.Read(WKBReader.HexToBytes(wkb));
 
             try

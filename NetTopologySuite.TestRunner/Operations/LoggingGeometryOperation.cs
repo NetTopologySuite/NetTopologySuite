@@ -1,5 +1,5 @@
 ﻿using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using Open.Topology.TestRunner.Result;
 
 namespace Open.Topology.TestRunner.Operations
@@ -34,7 +34,7 @@ namespace Open.Topology.TestRunner.Operations
             _geomOp = geomOp;
         }
 
-        public IResult Invoke(XmlTestType opName, IGeometry geometry, object[] args)
+        public IResult Invoke(XmlTestType opName, Geometry geometry, object[] args)
         {
             Console.WriteLine("Operation <" + opName + ">");
             Console.WriteLine("Geometry: " + geometry);

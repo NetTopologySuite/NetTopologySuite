@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Index.Quadtree
 {
     /// <summary>
     /// The base class for nodes in a <c>Quadtree</c>.
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public abstract class NodeBase<T>
     {
         /// <summary>

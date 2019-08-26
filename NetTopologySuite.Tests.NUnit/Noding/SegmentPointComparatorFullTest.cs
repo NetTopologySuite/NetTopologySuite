@@ -1,8 +1,4 @@
-using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 using NetTopologySuite.Noding;
 using NUnit.Framework;
 
@@ -12,12 +8,12 @@ namespace NetTopologySuite.Tests.NUnit.Noding
     /// Test IntersectionSegment#compareNodePosition using an exhaustive set
     /// of test cases
     /// </summary>
-    [TestFixtureAttribute]
+    [TestFixture]
     public class SegmentPointComparatorFullTest
     {
         private PrecisionModel pm = new PrecisionModel(1.0);
 
-        [TestAttribute]
+        [Test]
         public void TestQuadrant0()
         {
             CheckSegment(100, 0);
@@ -27,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding
             CheckSegment(0, 100);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestQuadrant4()
         {
             CheckSegment(100, -50);
@@ -36,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding
             CheckSegment(0, -100);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestQuadrant1()
         {
             CheckSegment(-100, 0);
@@ -45,7 +41,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding
             CheckSegment(-100, 150);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestQuadrant2()
         {
             CheckSegment(-100, 0);

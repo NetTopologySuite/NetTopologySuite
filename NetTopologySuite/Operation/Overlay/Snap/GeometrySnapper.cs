@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 
 namespace NetTopologySuite.Operation.Overlay.Snap
 {
     /// <summary>
-    /// Snaps the vertices and segments of a <see cref="IGeometry"/>
+    /// Snaps the vertices and segments of a <see cref="Geometry"/>
     /// to another Geometry's vertices.
     /// A snap distance tolerance is used to control where snapping is performed.
     /// Snapping one geometry to another can improve
@@ -30,7 +30,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// </summary>
         /// <param name="g"></param>
         /// <returns>The estimated snap tolerance</returns>
-        public static double ComputeOverlaySnapTolerance(IGeometry g)
+        public static double ComputeOverlaySnapTolerance(Geometry g)
         {
             double snapTolerance = ComputeSizeBasedSnapTolerance(g);
 
@@ -58,7 +58,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// </summary>
         /// <param name="g"></param>
         /// <returns></returns>
-        public static double ComputeSizeBasedSnapTolerance(IGeometry g)
+        public static double ComputeSizeBasedSnapTolerance(Geometry g)
         {
             var env = g.EnvelopeInternal;
             double minDimension = Math.Min(env.Height, env.Width);
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <param name="g0"></param>
         /// <param name="g1"></param>
         /// <returns></returns>
-        public static double ComputeOverlaySnapTolerance(IGeometry g0, IGeometry g1)
+        public static double ComputeOverlaySnapTolerance(Geometry g0, Geometry g1)
         {
             return Math.Min(ComputeOverlaySnapTolerance(g0), ComputeOverlaySnapTolerance(g1));
         }
@@ -84,9 +84,9 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <param name="g1"></param>
         /// <param name="snapTolerance"></param>
         /// <returns></returns>
-        public static IGeometry[] Snap(IGeometry g0, IGeometry g1, double snapTolerance)
+        public static Geometry[] Snap(Geometry g0, Geometry g1, double snapTolerance)
         {
-            var snapGeom = new IGeometry[2];
+            var snapGeom = new Geometry[2];
 
             var snapper0 = new GeometrySnapper(g0);
             snapGeom[0] = snapper0.SnapTo(g1, snapTolerance);
@@ -109,32 +109,32 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <param name="geom">the geometry to snap</param>
         /// <param name="snapTolerance">the snapping tolerance</param>
         /// <param name="cleanResult">whether the result should be made valid</param>
-        /// <returns>a new snapped <see cref="IGeometry"/></returns>
-        public static IGeometry SnapToSelf(IGeometry geom, double snapTolerance, bool cleanResult)
+        /// <returns>a new snapped <see cref="Geometry"/></returns>
+        public static Geometry SnapToSelf(Geometry geom, double snapTolerance, bool cleanResult)
         {
             var snapper0 = new GeometrySnapper(geom);
             return snapper0.SnapToSelf(snapTolerance, cleanResult);
         }
 
-        private readonly IGeometry _srcGeom;
+        private readonly Geometry _srcGeom;
 
         /// <summary>
         /// Creates a new snapper acting on the given geometry
         /// </summary>
         /// <param name="g">the geometry to snap</param>
-        public GeometrySnapper(IGeometry g)
+        public GeometrySnapper(Geometry g)
         {
             _srcGeom = g;
         }
 
         /// <summary>
-        ///  Snaps the vertices in the component <see cref="ILineString" />s
+        ///  Snaps the vertices in the component <see cref="LineString" />s
         ///  of the source geometry to the vertices of the given snap geometry.
         /// </summary>
         /// <param name="g">a geometry to snap the source to</param>
         /// <param name="tolerance"></param>
         /// <returns>a new snapped Geometry</returns>
-        public IGeometry SnapTo(IGeometry g, double tolerance)
+        public Geometry SnapTo(Geometry g, double tolerance)
         {
             var snapPts = ExtractTargetCoordinates(g);
 
@@ -142,14 +142,14 @@ namespace NetTopologySuite.Operation.Overlay.Snap
             return snapTrans.Transform(_srcGeom);
         }
 
-        /// Snaps the vertices in the component <see cref="ILineString" />s
+        /// Snaps the vertices in the component <see cref="LineString" />s
         /// of the source geometry to the vertices of the same geometry.
         /// Allows optionally cleaning the result to ensure it is topologically valid
         /// (which fixes issues such as topology collapses in polygonal inputs).
         /// <param name="snapTolerance">The snapping tolerance</param>
         /// <param name="cleanResult">Whether the result should be made valid</param>
         /// <returns>The geometry snapped to itself</returns>
-        public IGeometry SnapToSelf(double snapTolerance, bool cleanResult)
+        public Geometry SnapToSelf(double snapTolerance, bool cleanResult)
         {
             var snapPts = ExtractTargetCoordinates(_srcGeom);
 
@@ -169,7 +169,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// </summary>
         /// <param name="g"></param>
         /// <returns></returns>
-        private Coordinate[] ExtractTargetCoordinates(IGeometry g)
+        private Coordinate[] ExtractTargetCoordinates(Geometry g)
         {
             // TODO: should do this more efficiently.  Use CoordSeq filter to get points, KDTree for uniqueness & queries
             var ptSet = new HashSet<Coordinate>(g.Coordinates);
@@ -235,7 +235,7 @@ namespace NetTopologySuite.Operation.Overlay.Snap
         /// <param name="coords"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        protected override ICoordinateSequence TransformCoordinates(ICoordinateSequence coords, IGeometry parent)
+        protected override CoordinateSequence TransformCoordinates(CoordinateSequence coords, Geometry parent)
         {
             var srcPts = coords.ToCoordinateArray();
             var newPts = SnapLine(srcPts, _snapPts);

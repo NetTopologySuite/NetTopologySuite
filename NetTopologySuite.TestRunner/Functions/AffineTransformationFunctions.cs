@@ -1,5 +1,4 @@
 ﻿using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 
@@ -7,7 +6,10 @@ namespace Open.Topology.TestRunner.Functions
 {
     public static class AffineTransformationFunctions
     {
-        public static IGeometry TransformByVectors(IGeometry g, IGeometry control)
+        /// <summary>
+        /// Transforms a geometry using one to three control vectors.
+        /// </summary>
+        public static Geometry TransformByVectors(Geometry g, Geometry control)
         {
             int nControl = control.NumGeometries;
             var src = new Coordinate[nControl];
@@ -24,7 +26,10 @@ namespace Open.Topology.TestRunner.Functions
             return trans.Transform(g);
         }
 
-        public static IGeometry TransformByBaseline(IGeometry g, IGeometry destBaseline)
+        /// <summary>
+        /// Transforms a geometry by mapping envelope baseline to target vector.
+        /// </summary>
+        public static Geometry TransformByBaseline(Geometry g, Geometry destBaseline)
         {
             var env = g.EnvelopeInternal;
             var src0 = new Coordinate(env.MinX, env.MinY);
@@ -37,52 +42,52 @@ namespace Open.Topology.TestRunner.Functions
             return trans.Transform(g);
         }
 
-        private static Coordinate EnvelopeCentre(IGeometry g)
+        private static Coordinate EnvelopeCentre(Geometry g)
         {
             return g.EnvelopeInternal.Centre;
         }
 
-        private static Coordinate EnvelopeLowerLeft(IGeometry g)
+        private static Coordinate EnvelopeLowerLeft(Geometry g)
         {
             var env = g.EnvelopeInternal;
             return new Coordinate(env.MinX, env.MinY);
         }
 
-        public static IGeometry Scale(IGeometry g, double scale)
+        public static Geometry Scale(Geometry g, double scale)
         {
             var centre = EnvelopeCentre(g);
             var trans = AffineTransformation.ScaleInstance(scale, scale, centre.X, centre.Y);
             return trans.Transform(g);
         }
 
-        public static IGeometry ReflectInX(IGeometry g)
+        public static Geometry ReflectInX(Geometry g)
         {
             var centre = EnvelopeCentre(g);
             var trans = AffineTransformation.ScaleInstance(1, -1, centre.X, centre.Y);
             return trans.Transform(g);
         }
 
-        public static IGeometry ReflectInY(IGeometry g)
+        public static Geometry ReflectInY(Geometry g)
         {
             var centre = EnvelopeCentre(g);
             var trans = AffineTransformation.ScaleInstance(-1, 1, centre.X, centre.Y);
             return trans.Transform(g);
         }
 
-        public static IGeometry Rotate(IGeometry g, double multipleOfPi)
+        public static Geometry Rotate(Geometry g, double multipleOfPi)
         {
             var centre = EnvelopeCentre(g);
             var trans = AffineTransformation.RotationInstance(multipleOfPi * Math.PI, centre.X, centre.Y);
             return trans.Transform(g);
         }
 
-        public static IGeometry TranslateCentreToOrigin(Geometry g)
+        public static Geometry TranslateCentreToOrigin(Geometry g)
         {
             var centre = EnvelopeCentre(g);
             var trans = AffineTransformation.TranslationInstance(-centre.X, -centre.Y);
             return trans.Transform(g);
         }
-        public static IGeometry TranslateToOrigin(IGeometry g)
+        public static Geometry TranslateToOrigin(Geometry g)
         {
             var lowerLeft = EnvelopeLowerLeft(g);
             var trans = AffineTransformation.TranslationInstance(-lowerLeft.X, -lowerLeft.Y);

@@ -1,5 +1,5 @@
 ﻿using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using Open.Topology.TestRunner.Result;
 
 namespace Open.Topology.TestRunner.Operations
@@ -51,19 +51,19 @@ namespace Open.Topology.TestRunner.Operations
         /// <param name="args">The arguments to the operation (which may be typed as Strings)</param>
         /// <returns>The result</returns>
         /// <exception cref="Exception">If some error was encountered trying to find or process the operation</exception>
-        public IResult Invoke(XmlTestType opName, IGeometry geometry, object[] args)
+        public IResult Invoke(XmlTestType opName, Geometry geometry, object[] args)
         {
             return Invoke(opName.ToString(), geometry, args);
         }
 
-        public IResult Invoke(string opName, IGeometry geometry, object[] args)
+        public IResult Invoke(string opName, Geometry geometry, object[] args)
         {
             RunTeeOp(opName, geometry, args);
 
             return _chainOp.Invoke(opName, geometry, args);
         }
 
-        protected abstract void RunTeeOp(string opName, IGeometry geometry, object[] args);
+        protected abstract void RunTeeOp(string opName, Geometry geometry, object[] args);
 
     }
 }

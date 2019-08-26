@@ -1,19 +1,18 @@
 using System;
 using System.Text;
-using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
-    /// Utility functions for manipulating <see cref="ICoordinateSequence" />s.
+    /// Utility functions for manipulating <see cref="CoordinateSequence" />s.
     /// </summary>
     public static class CoordinateSequences
     {
         /// <summary>
         /// Reverses the coordinates in a sequence in-place.
         /// </summary>
-        /// <param name="seq"></param>
-        public static void Reverse(ICoordinateSequence seq)
+        /// <param name="seq">The coordinate sequence to reverse.</param>
+        public static void Reverse(CoordinateSequence seq)
         {
             int last = seq.Count - 1;
             int mid = last / 2;
@@ -27,21 +26,21 @@ namespace NetTopologySuite.Geometries
         /// <param name="seq">seq the sequence to modify</param>
         /// <param name="i">the index of a coordinate to swap</param>
         /// <param name="j">the index of a coordinate to swap</param>
-        public static void Swap(ICoordinateSequence seq, int i, int j)
+        public static void Swap(CoordinateSequence seq, int i, int j)
         {
             if (i == j)
                 return;
 
             for (int dim = 0; dim < seq.Dimension; dim++)
             {
-                double tmp = seq.GetOrdinate(i, (Ordinate)dim);
-                seq.SetOrdinate(i, (Ordinate)dim, seq.GetOrdinate(j, (Ordinate)dim));
-                seq.SetOrdinate(j, (Ordinate)dim, tmp);
+                double tmp = seq.GetOrdinate(i, dim);
+                seq.SetOrdinate(i, dim, seq.GetOrdinate(j, dim));
+                seq.SetOrdinate(j, dim, tmp);
             }
         }
 
         /// <summary>
-        /// Copies a section of a <see cref="ICoordinateSequence"/> to another <see cref="ICoordinateSequence"/>.
+        /// Copies a section of a <see cref="CoordinateSequence"/> to another <see cref="CoordinateSequence"/>.
         /// The sequences may have different dimensions;
         /// in this case only the common dimensions are copied.
         /// </summary>
@@ -50,14 +49,14 @@ namespace NetTopologySuite.Geometries
         /// <param name="dest">The sequence to which the coordinates should be copied to</param>
         /// <param name="destPos">The starting index of the coordinates in <see paramref="dest"/></param>
         /// <param name="length">The number of coordinates to copy</param>
-        public static void Copy(ICoordinateSequence src, int srcPos, ICoordinateSequence dest, int destPos, int length)
+        public static void Copy(CoordinateSequence src, int srcPos, CoordinateSequence dest, int destPos, int length)
         {
             for (int i = 0; i < length; i++)
                 CopyCoord(src, srcPos + i, dest, destPos + i);
         }
 
         /// <summary>
-        /// Copies a coordinate of a <see cref="ICoordinateSequence"/> to another <see cref="ICoordinateSequence"/>.
+        /// Copies a coordinate of a <see cref="CoordinateSequence"/> to another <see cref="CoordinateSequence"/>.
         /// The sequences may have different dimensions;
         /// in this case only the common dimensions are copied.
         /// </summary>
@@ -65,27 +64,26 @@ namespace NetTopologySuite.Geometries
         /// <param name="srcPos">The index of the coordinate to copy</param>
         /// <param name="dest">The sequence to which the coordinate should be copied to</param>
         /// <param name="destPos">The index of the coordinate in <see paramref="dest"/></param>
-        public static void CopyCoord(ICoordinateSequence src, int srcPos, ICoordinateSequence dest, int destPos)
+        public static void CopyCoord(CoordinateSequence src, int srcPos, CoordinateSequence dest, int destPos)
         {
             int minDim = Math.Min(src.Dimension, dest.Dimension);
             for (int dim = 0; dim < minDim; dim++)
             {
-                var ordinate = (Ordinate)dim;
-                double value = src.GetOrdinate(srcPos, ordinate);
-                dest.SetOrdinate(destPos, ordinate, value);
+                double value = src.GetOrdinate(srcPos, dim);
+                dest.SetOrdinate(destPos, dim, value);
             }
         }
 
         /// <summary>
-        /// Tests whether a <see cref="ICoordinateSequence"/> forms a valid <see cref="ILinearRing"/>,
+        /// Tests whether a <see cref="CoordinateSequence"/> forms a valid <see cref="LinearRing"/>,
         /// by checking the sequence length and closure
         /// (whether the first and last points are identical in 2D).
         /// Self-intersection is not checked.
         /// </summary>
         /// <param name="seq">The sequence to test</param>
         /// <returns>True if the sequence is a ring</returns>
-        /// <seealso cref="ILinearRing"/>
-        public static bool IsRing(ICoordinateSequence seq)
+        /// <seealso cref="LinearRing"/>
+        public static bool IsRing(CoordinateSequence seq)
         {
             int n = seq.Count;
             if (n == 0) return true;
@@ -93,8 +91,8 @@ namespace NetTopologySuite.Geometries
             if (n <= 3)
                 return false;
             // test if closed
-            return seq.GetOrdinate(0, Ordinate.X) == seq.GetOrdinate(n - 1, Ordinate.X)
-                && seq.GetOrdinate(0, Ordinate.Y) == seq.GetOrdinate(n - 1, Ordinate.Y);
+            return seq.GetOrdinate(0, 0) == seq.GetOrdinate(n - 1, 0)
+                && seq.GetOrdinate(0, 1) == seq.GetOrdinate(n - 1, 1);
         }
 
         /// <summary>
@@ -108,7 +106,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="fact">The CoordinateSequenceFactory to use to create the new sequence</param>
         /// <param name="seq">The sequence to test</param>
         /// <returns>The original sequence, if it was a valid ring, or a new sequence which is valid.</returns>
-        public static ICoordinateSequence EnsureValidRing(ICoordinateSequenceFactory fact, ICoordinateSequence seq)
+        public static CoordinateSequence EnsureValidRing(CoordinateSequenceFactory fact, CoordinateSequence seq)
         {
             int n = seq.Count;
             // empty sequence is valid
@@ -117,14 +115,14 @@ namespace NetTopologySuite.Geometries
             if (n <= 3)
                 return CreateClosedRing(fact, seq, 4);
 
-            bool isClosed = seq.GetOrdinate(0, Ordinate.X) == seq.GetOrdinate(n - 1, Ordinate.X) &&
-                           seq.GetOrdinate(0, Ordinate.Y) == seq.GetOrdinate(n - 1, Ordinate.Y);
+            bool isClosed = seq.GetOrdinate(0, 0) == seq.GetOrdinate(n - 1, 0) &&
+                           seq.GetOrdinate(0, 1) == seq.GetOrdinate(n - 1, 1);
             if (isClosed) return seq;
             // make a new closed ring
             return CreateClosedRing(fact, seq, n + 1);
         }
 
-        private static ICoordinateSequence CreateClosedRing(ICoordinateSequenceFactory fact, ICoordinateSequence seq, int size)
+        private static CoordinateSequence CreateClosedRing(CoordinateSequenceFactory fact, CoordinateSequence seq, int size)
         {
             var newseq = fact.Create(size, seq.Dimension);
             int n = seq.Count;
@@ -135,7 +133,7 @@ namespace NetTopologySuite.Geometries
             return newseq;
         }
 
-        public static ICoordinateSequence Extend(ICoordinateSequenceFactory fact, ICoordinateSequence seq, int size)
+        public static CoordinateSequence Extend(CoordinateSequenceFactory fact, CoordinateSequence seq, int size)
         {
             var newseq = fact.Create(size, seq.Ordinates);
             int n = seq.Count;
@@ -150,7 +148,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Tests whether two <see cref="ICoordinateSequence"/>s are equal.
+        /// Tests whether two <see cref="CoordinateSequence"/>s are equal.
         /// To be equal, the sequences must be the same length.
         /// They do not need to be of the same dimension,
         /// but the ordinate values for the smallest dimension of the two
@@ -160,7 +158,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="cs1">a CoordinateSequence</param>
         /// <param name="cs2">a CoordinateSequence</param>
         /// <returns><c>true</c> if the sequences are equal in the common dimensions</returns>
-        public static bool IsEqual(ICoordinateSequence cs1, ICoordinateSequence cs2)
+        public static bool IsEqual(CoordinateSequence cs1, CoordinateSequence cs2)
         {
             int cs1Size = cs1.Count;
             int cs2Size = cs2.Count;
@@ -171,10 +169,9 @@ namespace NetTopologySuite.Geometries
             {
                 for (int d = 0; d < dim; d++)
                 {
-                    var ordinate = (Ordinate)d;
-                    double v1 = cs1.GetOrdinate(i, ordinate);
-                    double v2 = cs2.GetOrdinate(i, ordinate);
-                    if (cs1.GetOrdinate(i, ordinate) == cs2.GetOrdinate(i, ordinate))
+                    double v1 = cs1.GetOrdinate(i, d);
+                    double v2 = cs2.GetOrdinate(i, d);
+                    if (cs1.GetOrdinate(i, d) == cs2.GetOrdinate(i, d))
                         continue;
                     // special check for NaNs
                     if (double.IsNaN(v1) && double.IsNaN(v2))
@@ -186,7 +183,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Creates a string representation of a <see cref="ICoordinateSequence"/>.
+        /// Creates a string representation of a <see cref="CoordinateSequence"/>.
         /// The format is:
         /// <para>
         ///  ( ord0,ord1.. ord0,ord1,...  ... )
@@ -194,7 +191,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="cs">the sequence to output</param>
         /// <returns>the string representation of the sequence</returns>
-        public static string ToString(ICoordinateSequence cs)
+        public static string ToString(CoordinateSequence cs)
         {
             int size = cs.Count;
             if (size == 0)
@@ -208,7 +205,7 @@ namespace NetTopologySuite.Geometries
                 for (int d = 0; d < dim; d++)
                 {
                     if (d > 0) sb.Append(",");
-                    double ordinate = cs.GetOrdinate(i, (Ordinate)d);
+                    double ordinate = cs.GetOrdinate(i, d);
                     sb.Append(string.Format("{0:0.#}", ordinate));
                 }
             }
@@ -221,7 +218,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="seq">The coordinate sequence to search</param>
         /// <returns>The minimum coordinate in the sequence, found using <see cref="Coordinate.CompareTo(Coordinate)"/></returns>
-        public static Coordinate MinCoordinate(ICoordinateSequence seq)
+        public static Coordinate MinCoordinate(CoordinateSequence seq)
         {
             Coordinate minCoord = null;
             for (int i = 0; i < seq.Count; i++)
@@ -243,7 +240,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="from">The lower search index</param>
         /// <param name="to">The upper search index</param>
         /// <returns>The index of the minimum coordinate in the sequence, found using <see cref="Coordinate.CompareTo(Coordinate)"/></returns>
-        public static int MinCoordinateIndex(ICoordinateSequence seq)
+        public static int MinCoordinateIndex(CoordinateSequence seq)
         {
             return MinCoordinateIndex(seq, 0, seq.Count - 1);
         }
@@ -258,7 +255,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="from">The lower search index</param>
         /// <param name="to">The upper search index</param>
         /// <returns>The index of the minimum coordinate in the sequence, found using <see cref="Coordinate.CompareTo(Coordinate)"/></returns>
-        public static int MinCoordinateIndex(ICoordinateSequence seq, int from, int to)
+        public static int MinCoordinateIndex(CoordinateSequence seq, int from, int to)
         {
             int minCoordIndex = -1;
             Coordinate minCoord = null;
@@ -279,7 +276,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="seq">The coordinate sequence to rearrange</param>
         /// <param name="firstCoordinate">The coordinate to make first"></param>
-        public static void Scroll(ICoordinateSequence seq, Coordinate firstCoordinate)
+        public static void Scroll(CoordinateSequence seq, Coordinate firstCoordinate)
         {
             int i = IndexOf(firstCoordinate, seq);
             if (i <= 0) return;
@@ -292,9 +289,9 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="seq">The coordinate sequence to rearrange</param>
         /// <param name="indexOfFirstCoordinate">The index of the coordinate to make first</param>
-        public static void Scroll(ICoordinateSequence seq, int indexOfFirstCoordinate)
+        public static void Scroll(CoordinateSequence seq, int indexOfFirstCoordinate)
         {
-            Scroll(seq, indexOfFirstCoordinate, CoordinateSequences.IsRing(seq));
+            Scroll(seq, indexOfFirstCoordinate, IsRing(seq));
         }
 
         /// <summary>
@@ -304,7 +301,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="seq">The coordinate sequence to rearrange</param>
         /// <param name="indexOfFirstCoordinate">The index of the coordinate to make first</param>
         /// <param name="ensureRing">Makes sure that <paramref name="seq"/> will be a closed ring upon exit</param>
-        public static void Scroll(ICoordinateSequence seq, int indexOfFirstCoordinate, bool ensureRing)
+        public static void Scroll(CoordinateSequence seq, int indexOfFirstCoordinate, bool ensureRing)
         {
             int i = indexOfFirstCoordinate;
             if (i <= 0) return;
@@ -319,19 +316,19 @@ namespace NetTopologySuite.Geometries
             for (int j = 0; j < last; j++)
             {
                 for (int k = 0; k < seq.Dimension; k++)
-                    seq.SetOrdinate(j, (Ordinate)k, copy.GetOrdinate((indexOfFirstCoordinate + j) % last, (Ordinate)k));
+                    seq.SetOrdinate(j, k, copy.GetOrdinate((indexOfFirstCoordinate + j) % last, k));
             }
 
             // Fix the ring (first == last)
             if (ensureRing)
             {
                 for (int k = 0; k < seq.Dimension; k++)
-                    seq.SetOrdinate(last, (Ordinate)k, seq.GetOrdinate(0, (Ordinate)k));
+                    seq.SetOrdinate(last, k, seq.GetOrdinate(0, k));
             }
         }
 
         /// <summary>
-        /// Returns the index of <c>coordinate</c> in a <see cref="ICoordinateSequence"/>
+        /// Returns the index of <c>coordinate</c> in a <see cref="CoordinateSequence"/>
         /// The first position is 0; the second, 1; etc.
         /// </summary>
         /// <param name="coordinate">The <c>Coordinate</c> to search for</param>
@@ -339,12 +336,12 @@ namespace NetTopologySuite.Geometries
         /// <returns>
         /// The position of <c>coordinate</c>, or -1 if it is not found
         /// </returns>
-        public static int IndexOf(Coordinate coordinate, ICoordinateSequence seq)
+        public static int IndexOf(Coordinate coordinate, CoordinateSequence seq)
         {
             for (int i = 0; i < seq.Count; i++)
             {
-                if (coordinate.X == seq.GetOrdinate(i, Ordinate.X) &&
-                    coordinate.Y == seq.GetOrdinate(i, Ordinate.Y))
+                if (coordinate.X == seq.GetOrdinate(i, 0) &&
+                    coordinate.Y == seq.GetOrdinate(i, 1))
                 {
                     return i;
                 }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.GeometriesGraph;
 
 namespace NetTopologySuite.Operation.Relate

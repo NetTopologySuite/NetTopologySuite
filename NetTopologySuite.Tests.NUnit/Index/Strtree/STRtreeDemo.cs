@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.Strtree;
 
@@ -65,7 +64,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             bool first = true;
             foreach (var e in sourceEnvelopes)
             {
-                IGeometry g = factory.CreatePolygon(factory.CreateLinearRing(new Coordinate[] {
+                Geometry g = factory.CreatePolygon(factory.CreateLinearRing(new Coordinate[] {
                 new Coordinate(e.MinX, e.MinY), new Coordinate(e.MinX, e.MaxY),
                 new Coordinate(e.MaxX, e.MaxY), new Coordinate(e.MaxX, e.MinY),
                 new Coordinate(e.MinX, e.MinY) }), null);
@@ -92,7 +91,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             return envelopes;
         }
 
-        private static IPolygon RandomRectangle()
+        private static Polygon RandomRectangle()
         {
             var random = new Random();
 

@@ -1,5 +1,3 @@
-using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Valid
@@ -10,19 +8,6 @@ namespace NetTopologySuite.Operation.Valid
     /// </summary>
     public enum TopologyValidationErrors
     {
-        /// <summary>
-        /// Not used.
-        /// </summary>
-        [Obsolete("Not used")]
-        Error = 0,
-
-        /// <summary>
-        /// No longer used:
-        /// repeated points are considered valid as per the SFS.
-        /// </summary>
-        [Obsolete("No longer used: repeated points are considered valid as per the SFS")]
-        RepeatedPoint = 1,
-
         /// <summary>
         /// Indicates that a hole of a polygon lies partially
         /// or completely in the exterior of the shell.

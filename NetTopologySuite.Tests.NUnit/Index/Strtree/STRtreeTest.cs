@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Strtree;
 using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;
+using AbstractNode = NetTopologySuite.Index.Strtree.AbstractNode<NetTopologySuite.Geometries.Envelope, object>;
 using STRtree = NetTopologySuite.Index.Strtree.STRtree<object>;
-using AbstractNode = NetTopologySuite.Index.Strtree.AbstractNode<GeoAPI.Geometries.Envelope, object>;
 namespace NetTopologySuite.Tests.NUnit.Index.Strtree
 {
     public class STRtreeTest
@@ -108,7 +107,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         [Test]
         public void TestQuery()
         {
-            var geometries = new List<IGeometry>();
+            var geometries = new List<Geometry>();
             geometries.Add(_factory.CreateLineString(new Coordinate[]
                                                          {
                                                              new Coordinate(0, 0), new Coordinate(10, 10)
@@ -170,8 +169,8 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             var coordinate = new Coordinate(10.1, -10.1);
             var queryCenter = geometryFactory.CreatePoint(coordinate);
             int valueRange = 1000;
-            var testDataset = new List<IGeometry>();
-            var correctData = new List<IGeometry>();
+            var testDataset = new List<Geometry>();
+            var correctData = new List<Geometry>();
             var random = new Random();
             var distanceComparator = new GeometryDistanceComparer(queryCenter, true);
             /*
@@ -195,7 +194,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
                 correctData.Add(testDataset[i]);
             }
 
-            var strtree = new STRtree<IGeometry>();
+            var strtree = new STRtree<Geometry>();
             for (int i = 0; i < totalRecords; i++)
             {
                 strtree.Insert(testDataset[i].EnvelopeInternal, testDataset[i]);
@@ -208,7 +207,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
              * Issue the KNN query.
              */
             var testTopK = strtree.NearestNeighbour(queryCenter.EnvelopeInternal, queryCenter, new GeometryItemDistance(), topK);
-            var topKList = new List<IGeometry>(testTopK);
+            var topKList = new List<Geometry>(testTopK);
             topKList.Sort(distanceComparator);
             /*
              * Check the difference between correct result and test result. The difference should be 0.

@@ -1,71 +1,71 @@
 ﻿using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     public class CoordinateTest
     {
-        [TestAttribute]
+        [Test]
         public void TestConstructor3D()
         {
-            var c = new Coordinate(350.2, 4566.8, 5266.3);
+            var c = new CoordinateZ(350.2, 4566.8, 5266.3);
             Assert.AreEqual(c.X, 350.2);
             Assert.AreEqual(c.Y, 4566.8);
             Assert.AreEqual(c.Z, 5266.3);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestConstructor2D()
         {
-            var c = new Coordinate(350.2, 4566.8);
+            var c = new CoordinateZ(350.2, 4566.8);
             Assert.AreEqual(c.X, 350.2);
             Assert.AreEqual(c.Y, 4566.8);
             Assert.AreEqual(c.Z, Coordinate.NullOrdinate);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestDefaultConstructor()
         {
-            var c = new Coordinate();
+            var c = new CoordinateZ();
             Assert.AreEqual(c.X, 0.0);
             Assert.AreEqual(c.Y, 0.0);
             Assert.AreEqual(c.Z, Coordinate.NullOrdinate);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestCopyConstructor3D()
         {
-            var orig = new Coordinate(350.2, 4566.8, 5266.3);
-            var c = new Coordinate(orig);
+            var orig = new CoordinateZ(350.2, 4566.8, 5266.3);
+            var c = new CoordinateZ(orig);
             Assert.AreEqual(c.X, 350.2);
             Assert.AreEqual(c.Y, 4566.8);
             Assert.AreEqual(c.Z, 5266.3);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestSetCoordinate()
         {
-            var orig = new Coordinate(350.2, 4566.8, 5266.3);
-            var c = new Coordinate { CoordinateValue = orig };
+            var orig = new CoordinateZ(350.2, 4566.8, 5266.3);
+            var c = new CoordinateZ { CoordinateValue = orig };
             Assert.AreEqual(c.X, 350.2);
             Assert.AreEqual(c.Y, 4566.8);
             Assert.AreEqual(c.Z, 5266.3);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestGetOrdinate()
         {
-            var c = new Coordinate(350.2, 4566.8, 5266.3);
+            var c = new CoordinateZ(350.2, 4566.8, 5266.3);
             Assert.AreEqual(c[Ordinate.X], 350.2);
             Assert.AreEqual(c[Ordinate.Y], 4566.8);
             Assert.AreEqual(c[Ordinate.Z], 5266.3);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestSetOrdinate()
         {
-            var c = new Coordinate();
+            var c = new CoordinateZ();
             c[Ordinate.X] = 111;
             c[Ordinate.Y] = 222;
             c[Ordinate.Z] = 333;
@@ -74,66 +74,66 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(c[Ordinate.Z], 333.0);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestEquals()
         {
-            var c1 = new Coordinate(1, 2, 3);
+            var c1 = new CoordinateZ(1, 2, 3);
             const string s = "Not a coordinate";
             Assert.IsFalse(c1.Equals(s));
 
-            var c2 = new Coordinate(1, 2, 3);
+            var c2 = new CoordinateZ(1, 2, 3);
             Assert.IsTrue(c1.Equals2D(c2));
 
-            var c3 = new Coordinate(1, 22, 3);
+            var c3 = new CoordinateZ(1, 22, 3);
             Assert.IsFalse(c1.Equals2D(c3));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestEquals2D()
         {
-            var c1 = new Coordinate(1, 2, 3);
-            var c2 = new Coordinate(1, 2, 3);
+            var c1 = new CoordinateZ(1, 2, 3);
+            var c2 = new CoordinateZ(1, 2, 3);
             Assert.IsTrue(c1.Equals2D(c2));
 
-            var c3 = new Coordinate(1, 22, 3);
+            var c3 = new CoordinateZ(1, 22, 3);
             Assert.IsFalse(c1.Equals2D(c3));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestEquals3D()
         {
-            var c1 = new Coordinate(1, 2, 3);
-            var c2 = new Coordinate(1, 2, 3);
+            var c1 = new CoordinateZ(1, 2, 3);
+            var c2 = new CoordinateZ(1, 2, 3);
             Assert.IsTrue(c1.Equals3D(c2));
 
-            var c3 = new Coordinate(1, 22, 3);
+            var c3 = new CoordinateZ(1, 22, 3);
             Assert.IsFalse(c1.Equals3D(c3));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestEquals2DWithinTolerance()
         {
-            var c = new Coordinate(100.0, 200.0, 50.0);
-            var aBitOff = new Coordinate(100.1, 200.1, 50.0);
+            var c = new CoordinateZ(100.0, 200.0, 50.0);
+            var aBitOff = new CoordinateZ(100.1, 200.1, 50.0);
             Assert.IsTrue(c.Equals2D(aBitOff, 0.2));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestEqualsInZ()
         {
 
-            var c = new Coordinate(100.0, 200.0, 50.0);
-            var withSameZ = new Coordinate(100.1, 200.1, 50.1);
+            var c = new CoordinateZ(100.0, 200.0, 50.0);
+            var withSameZ = new CoordinateZ(100.1, 200.1, 50.1);
             Assert.IsTrue(c.EqualInZ(withSameZ, 0.2));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestCompareTo()
         {
-            var lowest = new Coordinate(10.0, 100.0, 50.0);
-            var highest = new Coordinate(20.0, 100.0, 50.0);
-            var equalToHighest = new Coordinate(20.0, 100.0, 50.0);
-            var higherStill = new Coordinate(20.0, 200.0, 50.0);
+            var lowest = new CoordinateZ(10.0, 100.0, 50.0);
+            var highest = new CoordinateZ(20.0, 100.0, 50.0);
+            var equalToHighest = new CoordinateZ(20.0, 100.0, 50.0);
+            var higherStill = new CoordinateZ(20.0, 200.0, 50.0);
 
             Assert.AreEqual(-1, lowest.CompareTo(highest));
             Assert.AreEqual(1, highest.CompareTo(lowest));
@@ -141,44 +141,44 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(0, highest.CompareTo(equalToHighest));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestToString()
         {
             const string expectedResult = "(100, 200, 50)";
-            string actualResult = new Coordinate(100, 200, 50).ToString();
+            string actualResult = new CoordinateZ(100, 200, 50).ToString();
             Assert.AreEqual(expectedResult, actualResult);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestClone()
         {
-            var c = new Coordinate(100.0, 200.0, 50.0);
-            var clone = (Coordinate)c.Copy();
+            var c = new CoordinateZ(100.0, 200.0, 50.0);
+            var clone = (CoordinateZ)c.Copy();
             Assert.IsTrue(c.Equals3D(clone));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestDistance()
         {
-            var coord1 = new Coordinate(0.0, 0.0, 0.0);
-            var coord2 = new Coordinate(100.0, 200.0, 50.0);
+            var coord1 = new CoordinateZ(0.0, 0.0, 0.0);
+            var coord2 = new CoordinateZ(100.0, 200.0, 50.0);
             double distance = coord1.Distance(coord2);
             Assert.AreEqual(distance, 223.60679774997897, 0.00001);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestDistance3D()
         {
-            var coord1 = new Coordinate(0.0, 0.0, 0.0);
-            var coord2 = new Coordinate(100.0, 200.0, 50.0);
+            var coord1 = new CoordinateZ(0.0, 0.0, 0.0);
+            var coord2 = new CoordinateZ(100.0, 200.0, 50.0);
             double distance = coord1.Distance3D(coord2);
             Assert.AreEqual(distance, 229.128784747792, 0.000001);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestSettingOrdinateValuesViaIndexer()
         {
-            var c = new Coordinate();
+            var c = new CoordinateZ();
             Assert.DoesNotThrow(() => c[Ordinate.X] = 1);
             Assert.AreEqual(1d, c.X);
             Assert.AreEqual(c.X, c[Ordinate.X]);
@@ -191,7 +191,76 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(3d, c.Z);
             Assert.AreEqual(c.Z, c[Ordinate.Z]);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => c[Ordinate.M] = 4);
+            Assert.Throws<InvalidOperationException>(() => c[Ordinate.M] = 4);
+        }
+
+        [Test]
+        public void TestCoordinateXY()
+        {
+            var xy = new Coordinate();
+            CheckZUnsupported(xy);
+            CheckMUnsupported(xy);
+
+            xy = new Coordinate(1.0, 1.0);   // 2D
+            var coord = new CoordinateZ(xy); // copy
+            Assert.That(coord, Is.EqualTo(xy));
+            Assert.That(coord.Z, Is.NaN);
+            Assert.That(coord.M, Is.NaN);
+
+            coord = new CoordinateZ(1.0, 1.0, 1.0); // 2.5d
+            xy = new Coordinate(coord); // copy
+            Assert.That(xy, Is.EqualTo(coord));
+        }
+
+        [Test]
+        public void TestCoordinateXYM()
+        {
+            var xym = new CoordinateM();
+            CheckZUnsupported(xym);
+
+            xym.M = 1.0;
+            Assert.That(xym.M, Is.EqualTo(1.0));
+
+            var coord = new CoordinateZ(xym); // copy
+            Assert.That(coord, Is.EqualTo(xym));
+            Assert.That(coord.Z, Is.NaN);
+            Assert.That(coord.M, Is.NaN);
+
+            coord = new CoordinateZ(1.0, 1.0, 1.0); // 2.5d
+            xym = new CoordinateM(coord); // copy
+            Assert.That(xym, Is.EqualTo(coord));
+        }
+
+        [Test]
+        public void TestCoordinateXYZM()
+        {
+            var xyzm = new CoordinateZM();
+            xyzm.Z = 1.0;
+            Assert.That(xyzm.Z, Is.EqualTo(1.0));
+            xyzm.M = 1.0;
+            Assert.That(xyzm.M, Is.EqualTo(1.0));
+
+            var coord = new CoordinateZ(xyzm); // copy
+            Assert.That(coord, Is.EqualTo(xyzm));
+            Assert.That(coord.Z, Is.EqualTo(1.0));
+            Assert.That(coord.M, Is.NaN);
+
+            coord = new CoordinateZ(1.0, 1.0, 1.0); // 2.5d
+            xyzm = new CoordinateZM(coord); // copy
+            Assert.That(xyzm, Is.EqualTo(coord));
+            Assert.That(xyzm.Z, Is.EqualTo(coord.Z).Within(0.000001));
+        }
+
+        private static void CheckZUnsupported(Coordinate coord)
+        {
+            Assert.That(() => coord.Z = 0, Throws.InvalidOperationException);
+            Assert.That(coord.Z, Is.NaN);
+        }
+
+        private static void CheckMUnsupported(Coordinate coord)
+        {
+            Assert.That(() => coord.M = 0, Throws.InvalidOperationException);
+            Assert.That(coord.M, Is.NaN);
         }
     }
 }

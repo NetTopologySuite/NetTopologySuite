@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
@@ -16,7 +15,7 @@ namespace NetTopologySuite.Operation.Valid
     public class SweeplineNestedRingTester
     {
         private readonly GeometryGraph graph;  // used to find non-node vertices
-        private readonly List<ILinearRing> rings = new List<ILinearRing>();
+        private readonly List<LinearRing> rings = new List<LinearRing>();
         private Envelope totalEnv = new Envelope();
         private SweepLineIndex sweepLine;
         private Coordinate nestedPt;
@@ -39,7 +38,7 @@ namespace NetTopologySuite.Operation.Valid
         ///
         /// </summary>
         /// <param name="ring"></param>
-        public void Add(ILinearRing ring)
+        public void Add(LinearRing ring)
         {
             rings.Add(ring);
         }
@@ -76,7 +75,7 @@ namespace NetTopologySuite.Operation.Valid
         /// <param name="innerRing"></param>
         /// <param name="searchRing"></param>
         /// <returns></returns>
-        private bool IsInside(ILinearRing innerRing, ILinearRing searchRing)
+        private bool IsInside(LinearRing innerRing, LinearRing searchRing)
         {
             var innerRingPts = innerRing.Coordinates;
             var searchRingPts = searchRing.Coordinates;
@@ -122,8 +121,8 @@ namespace NetTopologySuite.Operation.Valid
             /// <param name="s1"></param>
             public void Overlap(SweepLineInterval s0, SweepLineInterval s1)
             {
-                var innerRing = (ILinearRing) s0.Item;
-                var searchRing = (ILinearRing) s1.Item;
+                var innerRing = (LinearRing) s0.Item;
+                var searchRing = (LinearRing) s1.Item;
                 if (innerRing == searchRing)
                     return;
                 if (container.IsInside(innerRing, searchRing))

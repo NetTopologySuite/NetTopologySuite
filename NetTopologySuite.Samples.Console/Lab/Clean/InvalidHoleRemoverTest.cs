@@ -1,4 +1,4 @@
-﻿using GeoAPI.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Tests.NUnit;
 using NUnit.Framework;
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Samples.Lab.Clean
             CheckEqual(expected, actual);
         }
 
-        private IGeometry read(string wkt)
+        private Geometry read(string wkt)
         {
             var reader = new WKTReader();
             return reader.Read(wkt);

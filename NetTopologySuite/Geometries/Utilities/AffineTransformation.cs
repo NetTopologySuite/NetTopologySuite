@@ -1,8 +1,4 @@
 using System;
-using GeoAPI.Geometries;
-#if !HAS_SYSTEM_ICLONEABLE
-using ICloneable = GeoAPI.ICloneable;
-#endif
 
 namespace NetTopologySuite.Geometries.Utilities
 {
@@ -11,7 +7,7 @@ namespace NetTopologySuite.Geometries.Utilities
     /// </summary>
     /// <remarks>
     /// <para>
-    /// It can be used to transform a <see cref="Coordinate"/> or <see cref="IGeometry"/>.
+    /// It can be used to transform a <see cref="Coordinate"/> or <see cref="Geometry"/>.
     /// An affine transformation is a mapping of the 2D plane into itself
     /// via a series of transformations of the following basic types:
     /// <ul>
@@ -490,7 +486,7 @@ namespace NetTopologySuite.Geometries.Utilities
             }
             double dx = x1 - x0;
             double dy = y1 - y0;
-            double d = System.Math.Sqrt(dx * dx + dy * dy);
+            double d = Math.Sqrt(dx * dx + dy * dy);
             double sin = dy / d;
             double cos = dx / d;
             double cs2 = 2 * sin * cos;
@@ -520,7 +516,7 @@ namespace NetTopologySuite.Geometries.Utilities
             // rotate vector to positive x axis direction
             double dx = x1 - x0;
             double dy = y1 - y0;
-            double d = System.Math.Sqrt(dx * dx + dy * dy);
+            double d = Math.Sqrt(dx * dx + dy * dy);
             double sin = dy / d;
             double cos = dx / d;
             Rotate(-sin, cos);
@@ -573,7 +569,7 @@ namespace NetTopologySuite.Geometries.Utilities
             }
 
             // rotate vector to positive x axis direction
-            double d = System.Math.Sqrt(x * x + y * y);
+            double d = Math.Sqrt(x * x + y * y);
             double sin = y / d;
             double cos = x / d;
             Rotate(-sin, cos);
@@ -603,7 +599,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation SetToRotation(double theta)
         {
-            SetToRotation(System.Math.Sin(theta), System.Math.Cos(theta));
+            SetToRotation(Math.Sin(theta), Math.Cos(theta));
             return this;
         }
 
@@ -652,7 +648,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation SetToRotation(double theta, double x, double y)
         {
-            SetToRotation(System.Math.Sin(theta), System.Math.Cos(theta), x, y);
+            SetToRotation(Math.Sin(theta), Math.Cos(theta), x, y);
             return this;
         }
 
@@ -846,7 +842,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <returns> this transformation, with an updated matrix</returns>
         public AffineTransformation Rotate(double sinTheta, double cosTheta, double x, double y)
         {
-            Compose(RotationInstance(sinTheta, cosTheta));
+            Compose(RotationInstance(sinTheta, cosTheta, x, y));
             return this;
         }
 
@@ -975,11 +971,11 @@ namespace NetTopologySuite.Geometries.Utilities
         }
 
         /// <summary>
-        /// Creates a new <see cref="IGeometry"/> which is the result of this transformation applied to the input Geometry.
+        /// Creates a new <see cref="Geometry"/> which is the result of this transformation applied to the input Geometry.
         /// </summary>
         /// <param name="g">A <c>Geometry</c></param>
         /// <returns>The transformed Geometry</returns>
-        public IGeometry Transform(IGeometry g)
+        public Geometry Transform(Geometry g)
         {
             var g2 = g.Copy();
             g2.Apply(this);
@@ -992,12 +988,12 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="seq"> a <code>CoordinateSequence</code></param>
         /// <param name="i"> the index of the coordinate to transform</param>
-        public void Transform(ICoordinateSequence seq, int i)
+        public void Transform(CoordinateSequence seq, int i)
         {
-            double xp = _m00 * seq.GetOrdinate(i, Ordinate.X) + _m01 * seq.GetOrdinate(i, Ordinate.Y) + _m02;
-            double yp = _m10 * seq.GetOrdinate(i, Ordinate.X) + _m11 * seq.GetOrdinate(i, Ordinate.Y) + _m12;
-            seq.SetOrdinate(i, Ordinate.X, xp);
-            seq.SetOrdinate(i, Ordinate.Y, yp);
+            double xp = _m00 * seq.GetOrdinate(i, 0) + _m01 * seq.GetOrdinate(i, 1) + _m02;
+            double yp = _m10 * seq.GetOrdinate(i, 0) + _m11 * seq.GetOrdinate(i, 1) + _m12;
+            seq.SetOrdinate(i, 0, xp);
+            seq.SetOrdinate(i, 1, yp);
         }
 
         /// <summary>
@@ -1005,7 +1001,7 @@ namespace NetTopologySuite.Geometries.Utilities
         /// </summary>
         /// <param name="seq">A <c>CoordinateSequence</c></param>
         /// <param name="i">The index of the coordinate to transform</param>
-        public void Filter(ICoordinateSequence seq, int i)
+        public void Filter(CoordinateSequence seq, int i)
         {
             Transform(seq, i);
         }

@@ -65,7 +65,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             string gmlNode = xmlDoc.DocumentElement.FirstChild.NextSibling.FirstChild.LastChild.InnerXml;
             Console.WriteLine(gmlNode);
 
-            var gmlReader = new NetTopologySuite.IO.GML2.GMLReader();
+            var gmlReader = new IO.GML2.GMLReader();
             var geom = gmlReader.Read(gmlNode);
 
             Assert.IsNotNull(geom);

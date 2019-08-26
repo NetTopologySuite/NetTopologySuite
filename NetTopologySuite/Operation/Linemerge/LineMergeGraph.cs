@@ -1,4 +1,3 @@
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Planargraph;
 
@@ -16,7 +15,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// Adds an Edge, DirectedEdges, and Nodes for the given LineString representation
         /// of an edge.
         /// </summary>
-        public void AddEdge(ILineString lineString)
+        public void AddEdge(LineString lineString)
         {
             if (lineString.IsEmpty)
                 return;

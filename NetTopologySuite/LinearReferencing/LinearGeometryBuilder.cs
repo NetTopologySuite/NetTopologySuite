@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.LinearReferencing
@@ -11,8 +10,8 @@ namespace NetTopologySuite.LinearReferencing
     /// </summary>
     public class LinearGeometryBuilder
     {
-        private readonly IGeometryFactory _geomFact;
-        private readonly List<IGeometry> _lines = new List<IGeometry>();
+        private readonly GeometryFactory _geomFact;
+        private readonly List<Geometry> _lines = new List<Geometry>();
         private CoordinateList _coordList;
 
         private Coordinate _lastPt;
@@ -21,7 +20,7 @@ namespace NetTopologySuite.LinearReferencing
         /// Creates an instance of this class.
         /// </summary>
         /// <param name="geomFact">The geometry factory to use.</param>
-        public LinearGeometryBuilder(IGeometryFactory geomFact)
+        public LinearGeometryBuilder(GeometryFactory geomFact)
         {
             _geomFact = geomFact;
         }
@@ -85,7 +84,7 @@ namespace NetTopologySuite.LinearReferencing
                 pts = ValidCoordinateSequence(rawPts);
 
             _coordList = null;
-            ILineString line = null;
+            LineString line = null;
             try
             {
                 line = _geomFact.CreateLineString(pts);
@@ -119,7 +118,7 @@ namespace NetTopologySuite.LinearReferencing
         /// Builds and returns the <see cref="Geometry" />.
         /// </summary>
         /// <returns></returns>
-        public IGeometry GetGeometry()
+        public Geometry GetGeometry()
         {
             // end last line in case it was not done by user
             EndLine();

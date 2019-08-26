@@ -1,4 +1,3 @@
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Distance;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
@@ -49,14 +48,14 @@ namespace NetTopologySuite.Samples.Tests.Github
             Assert.DoesNotThrow(() => DoIntersection(FromWkb(Poly1Wkb, clip), FromWkb(Poly2Wkb, clip), clip));
         }
 
-        private static IGeometry FromWkt(string wkt)
+        private static Geometry FromWkt(string wkt)
         {
             return new WKTReader(GeometryFactory.Default).Read(wkt);
         }
 
-        private static IGeometry FromWkb(string wkb, IGeometry clip = null)
+        private static Geometry FromWkb(string wkb, Geometry clip = null)
         {
-            var reader = new WKBReader(GeometryFactory.Default);
+            var reader = new WKBReader();
             byte[] bytes = WKBReader.HexToBytes(wkb);
             var geom =  reader.Read(bytes);
             if (clip != null)
@@ -64,13 +63,13 @@ namespace NetTopologySuite.Samples.Tests.Github
             return geom;
         }
 
-        private static void DoIntersection(IGeometry poly1, IGeometry poly2, IGeometry clip = null)
+        private static void DoIntersection(Geometry poly1, Geometry poly2, Geometry clip = null)
         {
             Assert.IsTrue(poly1.IsValid);
-            Assert.IsTrue(poly1 is IPolygon);
+            Assert.IsTrue(poly1 is Polygon);
 
             Assert.IsTrue(poly2.IsValid);
-            Assert.IsTrue(poly2 is IPolygon);
+            Assert.IsTrue(poly2 is Polygon);
 
             var intersection = poly1.Intersection(poly2);
             Assert.IsNotNull(intersection);

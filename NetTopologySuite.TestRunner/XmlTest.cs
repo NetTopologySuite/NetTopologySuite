@@ -1,8 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using GeoAPI.Geometries;
-using GeoAPI.Operation.Buffer;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Buffer;
 using Open.Topology.TestRunner.Operations;
@@ -113,8 +111,8 @@ namespace Open.Topology.TestRunner
         private bool      _bSuccess;
         private object    _objResult;
 
-        private IGeometry  _objGeometryA;
-        private IGeometry  _objGeometryB;
+        private Geometry  _objGeometryA;
+        private Geometry  _objGeometryB;
 
         private object[]  _objArguments = new object[3];
         private object    _objArgument1;
@@ -171,14 +169,14 @@ namespace Open.Topology.TestRunner
 
         public bool Success => _bSuccess;
 
-        public IGeometry A
+        public Geometry A
         {
             get => _objGeometryA;
 
             set => _objGeometryA = value;
         }
 
-        public IGeometry B
+        public Geometry B
         {
             get => _objGeometryB;
 
@@ -275,8 +273,8 @@ namespace Open.Topology.TestRunner
                     expectedResult = new BooleanResult((bool)Result);
                 else if (returnType == typeof(double))
                     expectedResult = new DoubleResult((int)Result);
-                else if (returnType == typeof(IGeometry))
-                    expectedResult = new GeometryResult((IGeometry)Result);
+                else if (returnType == typeof(Geometry))
+                    expectedResult = new GeometryResult((Geometry)Result);
                 else
                 {
                     Debug.Assert(false);
@@ -430,7 +428,7 @@ namespace Open.Topology.TestRunner
                 return new EqualityResultMatcher<BooleanResult>();
             if (returnType == typeof(double))
                 return new EqualityResultMatcher<DoubleResult>();
-            if (returnType == typeof(IGeometry))
+            if (returnType == typeof(Geometry))
                 return new EqualityResultMatcher<GeometryResult>();
 
             Debug.Assert(false);
@@ -453,7 +451,7 @@ namespace Open.Topology.TestRunner
             if (o == null)
                 return null;
 
-            if (o is IGeometry)
+            if (o is Geometry)
                 return o;
 
             if (o is string)
@@ -562,7 +560,7 @@ namespace Open.Topology.TestRunner
         {
             var geoResult = (Geometry)_objResult;
             double dArg;
-            if (_objArgument1 is IGeometry)
+            if (_objArgument1 is Geometry)
                 double.TryParse((string)_objArgument2, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
             else
                 double.TryParse((string)_objArgument1, NumberStyles.Any, GetNumberFormatInfo(), out dArg);
@@ -798,7 +796,7 @@ namespace Open.Topology.TestRunner
 
         protected virtual bool TestDensify()
         {
-            var geoResult = _objResult as IGeometry;
+            var geoResult = _objResult as Geometry;
 
             double dArg = GetDoubleArgument();
 
@@ -814,7 +812,7 @@ namespace Open.Topology.TestRunner
 
         private double GetDoubleArgument()
         {
-            if (_objArgument1 is IGeometry)
+            if (_objArgument1 is Geometry)
                 return double.Parse((string) _objArgument2, NumberStyles.Any, GetNumberFormatInfo());
 
             return double.Parse((string)_objArgument1, NumberStyles.Any, GetNumberFormatInfo());
@@ -1706,7 +1704,7 @@ namespace Open.Topology.TestRunner
                 {
                     return _objGeometryA.EqualsNormalized(_objGeometryB);
                 }
-                var g = (IGeometry)_objArgument1;
+                var g = (Geometry)_objArgument1;
                 return _objGeometryA.EqualsNormalized(g) == bResult;
             }
             if (_objGeometryB != null)
@@ -1734,11 +1732,11 @@ namespace Open.Topology.TestRunner
 
         protected virtual bool TestMinClearanceLine()
         {
-            var gResult = (IGeometry)_objResult;
+            var gResult = (Geometry)_objResult;
             if (_bIsDefaultTarget && _objGeometryA != null)
             {
                 var c = new MinimumClearance(_objGeometryA);
-                IGeometry gClearance = c.GetLine();
+                Geometry gClearance = c.GetLine();
                 return gResult.EqualsNormalized(gClearance);
             }
             return false;

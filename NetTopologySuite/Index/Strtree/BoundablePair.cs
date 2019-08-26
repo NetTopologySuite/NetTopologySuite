@@ -1,5 +1,5 @@
 using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Index.Strtree
@@ -138,8 +138,16 @@ namespace NetTopologySuite.Index.Strtree
         /// For a pair which is not a leaf
         /// (i.e. has at least one composite boundable)
         /// computes a list of new pairs
-        /// from the expansion of the larger boundable.
+        /// from the expansion of the larger boundable
+        /// with distance less than minDistance
+        /// and adds them to a priority queue.
         /// </summary>
+        /// <param name="priQ">
+        /// The priority queue to add the new pairs to.
+        /// </param>
+        /// <param name="minDistance">
+        /// The limit on the distance between added pairs.
+        /// </param>
         public void ExpandToQueue(PriorityQueue<BoundablePair<TItem>> priQ, double minDistance)
         {
             bool isComp1 = IsComposite(_boundable1);
@@ -154,33 +162,42 @@ namespace NetTopologySuite.Index.Strtree
             {
                 if (_boundable1.Bounds.Area > _boundable2.Bounds.Area)
                 {
-                    Expand(_boundable1, _boundable2, priQ, minDistance);
+                    Expand(_boundable1, _boundable2, false, priQ, minDistance);
                     return;
                 }
-                Expand(_boundable2, _boundable1, priQ, minDistance);
+                Expand(_boundable2, _boundable1, true, priQ, minDistance);
                 return;
             }
             if (isComp1)
             {
-                Expand(_boundable1, _boundable2, priQ, minDistance);
+                Expand(_boundable1, _boundable2, false, priQ, minDistance);
                 return;
             }
             if (isComp2)
             {
-                Expand(_boundable2, _boundable1, priQ, minDistance);
+                Expand(_boundable2, _boundable1, true, priQ, minDistance);
                 return;
             }
 
             throw new ArgumentException("neither boundable is composite");
         }
 
-        private void Expand(IBoundable<Envelope, TItem> bndComposite, IBoundable<Envelope, TItem> bndOther,
+        private void Expand(IBoundable<Envelope, TItem> bndComposite, IBoundable<Envelope, TItem> bndOther, bool isFlipped,
                             PriorityQueue<BoundablePair<TItem>> priQ, double minDistance)
         {
             var children = ((AbstractNode<Envelope, TItem>)bndComposite).ChildBoundables;
             foreach (var child in children)
             {
-                var bp = new BoundablePair<TItem>(child, bndOther, _itemDistance);
+                BoundablePair<TItem> bp;
+                if (isFlipped)
+                {
+                    bp = new BoundablePair<TItem>(bndOther, child, _itemDistance);
+                }
+                else
+                {
+                    bp = new BoundablePair<TItem>(child, bndOther, _itemDistance);
+                }
+
                 // only add to queue if this pair might contain the closest points
                 // MD - it's actually faster to construct the object rather than called distance(child, bndOther)!
                 if (bp.Distance < minDistance)

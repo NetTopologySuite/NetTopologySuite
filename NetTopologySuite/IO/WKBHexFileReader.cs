@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
-using GeoAPI.Geometries;
-using GeoAPI.IO;
+using NetTopologySuite.Geometries;
 using RTools_NTS.Util;
 
 namespace NetTopologySuite.IO
@@ -17,14 +17,14 @@ namespace NetTopologySuite.IO
     /// <author>Martin Davis</author>
     public class WKBHexFileReader
     {
-        private readonly IBinaryGeometryReader _wkbReader;
+        private readonly WKBReader _wkbReader;
 
         /// <summary>
         /// Creates a new <see cref="WKBHexFileReader"/> given the
         /// <see cref="WKBReader"/> to use to parse the geometries.
         /// </summary>
         /// <param name="wkbReader">The geometry reader to use</param>
-        public WKBHexFileReader(IBinaryGeometryReader wkbReader)
+        public WKBHexFileReader(WKBReader wkbReader)
         {
             if (wkbReader == null)
                 throw new ArgumentNullException("wkbReader");
@@ -43,7 +43,6 @@ namespace NetTopologySuite.IO
         /// </summary>
         public int Offset { get; set; }
 
-#if FEATURE_FILE_IO
         /// <summary>
         /// Reads a sequence of geometries.<br/>
         /// If an <see cref="Offset"/> is specified, geometries read up to the offset count are skipped.
@@ -54,7 +53,7 @@ namespace NetTopologySuite.IO
         /// <exception cref="FileNotFoundException">Thrown if the filename specified does not exist</exception>
         /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
         /// <exception cref="ParseException">Thrown if an error occurred reading a geometry</exception>
-        public ICollection<IGeometry> Read(string file)
+        public ReadOnlyCollection<Geometry> Read(string file)
         {
             if (string.IsNullOrEmpty(file))
                 throw new ArgumentNullException("file");
@@ -65,7 +64,6 @@ namespace NetTopologySuite.IO
                 return Read(stream);
             }
         }
-#endif
 
         /// <summary>
         /// Reads a sequence of geometries.<br/>
@@ -76,8 +74,8 @@ namespace NetTopologySuite.IO
         /// <exception cref="ArgumentNullException">Thrown if no stream was passed</exception>
         /// <exception cref="ArgumentException">Thrown if passed stream is not readable or seekable</exception>
         /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
-        /// <exception cref="GeoAPI.IO.ParseException">Thrown if an error occured reading a geometry</exception>
-        public ICollection<IGeometry> Read(Stream stream)
+        /// <exception cref="ParseException">Thrown if an error occured reading a geometry</exception>
+        public ReadOnlyCollection<Geometry> Read(Stream stream)
         {
             if (stream == null)
                 throw new ArgumentNullException("stream");
@@ -101,10 +99,10 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="streamReader">The stream reader to use.</param>
         /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
-        /// <exception cref="GeoAPI.IO.ParseException">Thrown if an error occured reading a geometry</exception>
-        private ICollection<IGeometry> Read(StreamReader streamReader)
+        /// <exception cref="ParseException">Thrown if an error occured reading a geometry</exception>
+        private ReadOnlyCollection<Geometry> Read(StreamReader streamReader)
         {
-            var geoms = new List<IGeometry>();
+            var geoms = new List<Geometry>();
             int count = 0;
             while (!IsAtEndOfFile(streamReader) && !IsAtLimit(geoms))
             {
@@ -116,7 +114,7 @@ namespace NetTopologySuite.IO
                     geoms.Add(g);
                 count++;
             }
-            return geoms;
+            return geoms.AsReadOnly();
         }
 
         /// <summary>
@@ -124,7 +122,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geoms">A collection of already read geometries</param>
         /// <returns><value>true</value> if <see cref="Limit"/> number of geometries has been read.</returns>
-        private bool IsAtLimit(ICollection<IGeometry> geoms)
+        private bool IsAtLimit(List<Geometry> geoms)
         {
             if (Limit < 0)
                 return false;

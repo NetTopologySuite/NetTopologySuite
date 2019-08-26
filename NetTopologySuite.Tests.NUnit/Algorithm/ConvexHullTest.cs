@@ -1,25 +1,29 @@
-﻿using GeoAPI.Geometries;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
+using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class ConvexHullTest
     {
-        private readonly IGeometryFactory _geometryFactory;
+        private readonly GeometryFactory _geometryFactory;
         private readonly WKTReader _reader;
 
         public ConvexHullTest()
         {
-            IPrecisionModel precisionModel = new PrecisionModel(1000);
+            PrecisionModel precisionModel = new PrecisionModel(1000);
             _geometryFactory = new GeometryFactory(precisionModel, 0);
             _reader = new WKTReader(_geometryFactory);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestManyIdenticalPoints()
         {
             var pts = new Coordinate[100];
@@ -32,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(actualGeometry.EqualsExact(expectedGeometry));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestAllIdenticalPoints()
         {
             var pts = new Coordinate[100];
@@ -44,7 +48,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(expectedGeometry.EqualsExact(actualGeometry));
         }
 
-        [TestAttribute]
+        [Test]
         public void Test1()
         {
             var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
@@ -53,7 +57,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(convexHull.EqualsExact(lineString.ConvexHull()));
         }
 
-        [TestAttribute]
+        [Test]
         public void Test2()
         {
             var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
@@ -62,7 +66,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));
         }
 
-        [TestAttribute]
+        [Test]
         public void Test3()
         {
             var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
@@ -71,7 +75,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));
         }
 
-        [TestAttribute]
+        [Test]
         public void Test4()
         {
             var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
@@ -80,7 +84,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));
         }
 
-        [TestAttribute]
+        [Test]
         public void Test5()
         {
             var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
@@ -89,13 +93,13 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));
         }
 
-        [TestAttribute]
+        [Test]
         public void Test6()
         {
             var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
             var actualGeometry = reader.Read("MULTIPOINT (0 0, 5 1, 10 0)").ConvexHull();
             var expectedGeometry = reader.Read("POLYGON ((0 0, 5 1, 10 0, 0 0))");
-            Assert.IsTrue(actualGeometry.Equals(expectedGeometry));
+            Assert.IsTrue(actualGeometry.EqualsTopologically(expectedGeometry));
         }
 
         // TJackson - Not included in NTS because there is no longer a ToCoordinateArray method on ConvexHull
@@ -122,7 +126,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         //    }
         //}
 
-        [TestAttribute]
+        [Test]
         public void Test7()
         {
             var reader = new WKTReader(new GeometryFactory(new PrecisionModel(1), 0));
@@ -131,5 +135,28 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             Assert.IsTrue(convexHull.EqualsExact(geometry.ConvexHull()));
         }
 
+        [TestCaseSource(typeof(PointwiseGeometryAggregationTestCases))]
+        public void TestStaticAggregation(ICollection<Geometry> geoms)
+        {
+            var actual = ConvexHull.Create(geoms);
+
+            // JTS doesn't usually bother doing anything special about nulls,
+            // so our ports of their stuff will suffer the same.
+            geoms = geoms?.Where(g => g != null).ToArray() ?? Array.Empty<Geometry>();
+
+            var combinedGeometry = GeometryCombiner.Combine(geoms);
+
+            // JTS also doesn't fear giving us nulls back from its algorithms.
+            var expected = combinedGeometry?.ConvexHull();
+
+            if (expected?.IsEmpty == false)
+            {
+                Assert.That(expected.EqualsTopologically(actual));
+            }
+            else
+            {
+                Assert.That(actual.IsEmpty);
+            }
+        }
     }
 }

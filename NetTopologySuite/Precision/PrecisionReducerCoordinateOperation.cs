@@ -1,21 +1,20 @@
-﻿using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 
 namespace NetTopologySuite.Precision
 {
     public class PrecisionReducerCoordinateOperation : GeometryEditor.CoordinateOperation
     {
-        private readonly IPrecisionModel _targetPrecModel;
+        private readonly PrecisionModel _targetPrecModel;
         private readonly bool _removeCollapsed = true;
 
-        public PrecisionReducerCoordinateOperation(IPrecisionModel targetPrecModel, bool removeCollapsed)
+        public PrecisionReducerCoordinateOperation(PrecisionModel targetPrecModel, bool removeCollapsed)
         {
             _targetPrecModel = targetPrecModel;
             _removeCollapsed = removeCollapsed;
         }
 
-        public override Coordinate[] Edit(Coordinate[] coordinates, IGeometry geom)
+        public override Coordinate[] Edit(Coordinate[] coordinates, Geometry geom)
         {
             if (coordinates.Length == 0)
                 return null;
@@ -24,7 +23,7 @@ namespace NetTopologySuite.Precision
             // copy coordinates and reduce
             for (int i = 0; i < coordinates.Length; i++)
             {
-                var coord = new Coordinate(coordinates[i]);
+                var coord = coordinates[i].Copy();
                 _targetPrecModel.MakePrecise(coord);
                 reducedCoords[i] = coord;
             }
@@ -43,16 +42,16 @@ namespace NetTopologySuite.Precision
              * handle this.)
              */
             int minLength = 0;
-            if (geom is ILineString)
+            if (geom is LineString)
                 minLength = 2;
-            if (geom is ILinearRing)
+            if (geom is LinearRing)
                 minLength = LinearRing.MinimumValidSize;
 
             var collapsedCoords = reducedCoords;
             if (_removeCollapsed)
                 collapsedCoords = null;
 
-            // return null or orginal length coordinate array
+            // return null or original length coordinate array
             if (noRepeatedCoords.Length < minLength)
             {
                 return collapsedCoords;

@@ -1,6 +1,6 @@
 ﻿using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Samples.Lab.Clean
 {
@@ -15,7 +15,7 @@ namespace NetTopologySuite.Samples.Lab.Clean
                 _area = area;
             }
 
-            public bool Value(IGeometry geom)
+            public bool Value(Geometry geom)
             {
                 double holeArea = Math.Abs(Area.OfRingSigned(geom.Coordinates));
                 return holeArea <= _area;
@@ -27,7 +27,7 @@ namespace NetTopologySuite.Samples.Lab.Clean
         /// </summary>
         /// <param name="geom">The geometry to clean.</param>
         /// <param name="areaTolerance">The geometry with invalid holes removed.</param>
-        public static IGeometry Clean(IGeometry geom, double areaTolerance)
+        public static Geometry Clean(Geometry geom, double areaTolerance)
         {
             var remover = new HoleRemover(geom, new IsSmall(areaTolerance));
             return remover.GetResult();

@@ -1,12 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <RootNamespace>NetTopologySuite.Samples</RootNamespace>
     <OutputType>Exe</OutputType>
     <StartupObject>NetTopologySuite.Samples.SimpleTests.Program</StartupObject>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <IsTestProject>true</IsTestProject>
 
     <!-- https://github.com/Microsoft/msbuild/issues/1310 -->
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -16,22 +18,13 @@
   <Import Project="$(SolutionDir)NetTopologySuite.Common.props" />
 
   <ItemGroup>
-    <Compile Include="$(SolutionDir)SharedAssemblyVersion.cs" Link="Properties\SharedAssemblyVersion.cs" />
-
     <Compile Include="$(SolutionDir)NetTopologySuite.Tests.NUnit\TestData\EmbeddedResourceManager.cs" Link="Tests\Various\EmbeddedResourceManager.cs" />
     <Compile Include="$(SolutionDir)NetTopologySuite.Tests.NUnit\GeometryTestCase.cs" Link="Tests\GeometryTestCase.cs" />
 
-    <EmbeddedResource Include="Tests\Various\cant-read-file1.gml" />
-    <EmbeddedResource Include="Tests\Various\cant-read-file2.gml" />
-    <EmbeddedResource Include="Tests\Various\cant-read-file3.gml" />
-    <EmbeddedResource Include="Tests\Various\cant-read-file4.gml" />
-    <EmbeddedResource Include="Tests\Various\read-ok-file.gml" />
+    <EmbeddedResource Include="Tests\Various\*.gml" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GeoAPI" Version="$(GeoAPIPackageReferenceVersion)" />
-    <PackageReference Include="ProjNET4GeoAPI" Version="1.4.0-pre001" />
-
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="NUnit" Version="3.10.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
@@ -40,6 +33,6 @@
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" />
     <ProjectReference Include="$(SolutionDir)NetTopologySuite.Lab\NetTopologySuite.Lab.csproj" />
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite.CoordinateSystems\NetTopologySuite.CoordinateSystems.csproj" />
   </ItemGroup>
+
 </Project>

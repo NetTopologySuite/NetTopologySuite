@@ -31,9 +31,9 @@
  *     www.vividsolutions.com
  */
 
-using NUnit.Framework;
-using NetTopologySuite.Operation.Buffer;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Buffer;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 {

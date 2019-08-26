@@ -1,5 +1,4 @@
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Index;
@@ -17,7 +16,7 @@ namespace NetTopologySuite.Algorithm.Locate
     /// located on the geometry boundary or segments will
     /// return <see cref="Location.Boundary"/>.
     /// <para/>
-    /// <see cref="IPolygonal"/> and <see cref="ILinearRing"/> geometries are supported.
+    /// <see cref="IPolygonal"/> and <see cref="LinearRing"/> geometries are supported.
     /// <para/>
     /// Thread-safe and immutable.
     /// </summary>
@@ -27,19 +26,19 @@ namespace NetTopologySuite.Algorithm.Locate
         private readonly IntervalIndexedGeometry _index;
 
         /// <summary>
-        /// Creates a new locator for a given <see cref="IGeometry"/>.
-        /// <see cref="IPolygonal"/> and <see cref="ILinearRing"/> geometries are supported
+        /// Creates a new locator for a given <see cref="Geometry"/>.
+        /// <see cref="IPolygonal"/> and <see cref="LinearRing"/> geometries are supported
         /// </summary>
         /// <param name="g">The Geometry to locate in</param>
-        public IndexedPointInAreaLocator(IGeometry g)
+        public IndexedPointInAreaLocator(Geometry g)
         {
-            if (!(g is IPolygonal || g is ILinearRing))
+            if (!(g is IPolygonal || g is LinearRing))
                 throw new ArgumentException("Argument must be Polygonal");
             _index = new IntervalIndexedGeometry(g);
         }
 
         /// <summary>
-        /// Determines the <see cref="Location"/> of a point in an areal <see cref="IGeometry"/>.
+        /// Determines the <see cref="Location"/> of a point in an areal <see cref="Geometry"/>.
         /// </summary>
         /// <param name="p">The point to test</param>
         /// <returns>The location of the point in the geometry
@@ -92,15 +91,15 @@ namespace NetTopologySuite.Algorithm.Locate
         {
             private readonly SortedPackedIntervalRTree<LineSegment> _index = new SortedPackedIntervalRTree<LineSegment>();
 
-            public IntervalIndexedGeometry(IGeometry geom)
+            public IntervalIndexedGeometry(Geometry geom)
             {
                 Init(geom);
             }
 
-            private void Init(IGeometry geom)
+            private void Init(Geometry geom)
             {
                 var lines = LinearComponentExtracter.GetLines(geom);
-                foreach (ILineString line in lines)
+                foreach (LineString line in lines)
                 {
                     var pts = line.Coordinates;
                     AddLine(pts);

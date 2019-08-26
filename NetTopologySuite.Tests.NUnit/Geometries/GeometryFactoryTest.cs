@@ -1,20 +1,18 @@
-﻿using System;
-using GeoAPI.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
-using NUnit.Framework;
-using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class GeometryFactoryTest
     {
-        private readonly static IPrecisionModel PrecModel = new PrecisionModel();
-        private readonly static IGeometryFactory Factory = new GeometryFactory(PrecModel, 0);
+        private readonly static PrecisionModel PrecModel = new PrecisionModel();
+        private readonly static GeometryFactory Factory = new GeometryFactory(PrecModel, 0);
         private readonly WKTReader _reader = new WKTReader(Factory);
 
-        [TestAttribute]
+        [Test]
         public void TestCreateGeometry()
         {
             CheckCreateGeometryExact("POINT EMPTY");
@@ -29,10 +27,10 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 "GEOMETRYCOLLECTION (POLYGON ((100 200, 200 200, 200 100, 100 100, 100 200)), LINESTRING (250 100, 350 200), POINT (350 150))");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestDeepCopy()
         {
-            var g = (IPoint)Read("POINT ( 10 10) ");
+            var g = (Point)Read("POINT ( 10 10) ");
             var g2 = Factory.CreateGeometry(g);
             g.CoordinateSequence.SetOrdinate(0, 0, 99);
             Assert.IsTrue(!g.EqualsExact(g2));
@@ -42,7 +40,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         /// CoordinateArraySequences default their dimension to 3 unless explicitly told otherwise.
         /// This test ensures that GeometryFactory.CreateGeometry() recreates the input dimension properly.
         /// </summary>
-        [TestAttribute]
+        [Test]
         public void TestCopyGeometryWithNonDefaultDimension()
         {
             var gf = new GeometryFactory(CoordinateArraySequenceFactory.Instance);
@@ -51,11 +49,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             mpSeq.SetOrdinate(0, Ordinate.Y, -2);
 
             var g = gf.CreatePoint(mpSeq);
-            var geometryN = (IPoint)g.GetGeometryN(0);
+            var geometryN = (Point)g.GetGeometryN(0);
             var gSeq = geometryN.CoordinateSequence;
             Assert.AreEqual(2, gSeq.Dimension);
 
-            var g2 = (IPoint)Factory.CreateGeometry(g);
+            var g2 = (Point)Factory.CreateGeometry(g);
             var g2Seq = g2.CoordinateSequence;
             Assert.AreEqual(2, g2Seq.Dimension);
         }
@@ -67,7 +65,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(g.EqualsExact(g2));
         }
 
-        private IGeometry Read(string wkt)
+        private Geometry Read(string wkt)
         {
             return _reader.Read(wkt);
         }

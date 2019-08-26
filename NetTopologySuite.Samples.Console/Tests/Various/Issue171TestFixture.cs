@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
-using GeoAPI.Geometries;
 using MiscUtil.Conversion;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
@@ -19,7 +18,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             const string expected = "123456789012345680";
             const long l = 123456789012345680;
 
-            IPrecisionModel precisionModel = new PrecisionModel(1E9);
+            PrecisionModel precisionModel = new PrecisionModel(1E9);
             var formatter = CreateFormatter(precisionModel);
             string format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
             string actual = l.ToString(format, formatter);
@@ -32,7 +31,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             const string expected = "123456789012345680";
             const decimal m = 123456789012345680;
 
-            IPrecisionModel precisionModel = new PrecisionModel(1E9);
+            PrecisionModel precisionModel = new PrecisionModel(1E9);
             var formatter = CreateFormatter(precisionModel);
             string format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
             string actual = m.ToString(format, formatter);
@@ -50,7 +49,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             const string expected = "123456789012345680";
             const double d = 123456789012345680;
 
-            IPrecisionModel precisionModel = new PrecisionModel(1E9);
+            PrecisionModel precisionModel = new PrecisionModel(1E9);
             var formatter = CreateFormatter(precisionModel);
             string format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
             string actual = d.ToString(format, formatter);
@@ -109,7 +108,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             w.Stop();
             var usingDc = w.Elapsed;
 
-            IPrecisionModel precisionModel = new PrecisionModel(1E9);
+            PrecisionModel precisionModel = new PrecisionModel(1E9);
             var formatter = CreateFormatter(precisionModel);
             string format = "0." + StringOfChar('#', formatter.NumberDecimalDigits);
             w = Stopwatch.StartNew();
@@ -128,7 +127,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         }
 
         // same code used in WKTWriter
-        private static NumberFormatInfo CreateFormatter(IPrecisionModel precisionModel)
+        private static NumberFormatInfo CreateFormatter(PrecisionModel precisionModel)
         {
             int digits = precisionModel.MaximumSignificantDigits;
             int decimalPlaces = Math.Max(0, digits);

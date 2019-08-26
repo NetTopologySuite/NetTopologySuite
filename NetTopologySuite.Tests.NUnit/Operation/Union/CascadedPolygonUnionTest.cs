@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Union;
 using NUnit.Framework;
@@ -16,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
     {
         readonly GeometryFactory _geomFact = new GeometryFactory();
 
-        [TestAttribute]
+        [Test]
         public void TestBoxes()
         {
             RunTest(GeometryUtils.ReadWKT(
@@ -28,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
                     CascadedPolygonUnionTester.MinSimilarityMeaure);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestDiscs1()
         {
             var geoms = CreateDiscs(5, 0.7);
@@ -39,7 +37,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
                     CascadedPolygonUnionTester.MinSimilarityMeaure);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestDiscs2()
         {
             var geoms = CreateDiscs(5, 0.55);
@@ -54,20 +52,20 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
 
         private static CascadedPolygonUnionTester tester = new CascadedPolygonUnionTester();
 
-        private void RunTest(IList<IGeometry> geoms, double minimumMeasure)
+        private void RunTest(IList<Geometry> geoms, double minimumMeasure)
         {
             Assert.IsTrue(tester.Test(geoms, minimumMeasure));
         }
 
-        private IList<IGeometry> CreateDiscs(int num, double radius)
+        private IList<Geometry> CreateDiscs(int num, double radius)
         {
-            var geoms = new List<IGeometry>();
+            var geoms = new List<Geometry>();
             for (int i = 0; i < num; i++)
             {
                 for (int j = 0; j < num; j++)
                 {
                     var pt = new Coordinate(i, j);
-                    IGeometry ptGeom = _geomFact.CreatePoint(pt);
+                    Geometry ptGeom = _geomFact.CreatePoint(pt);
                     var disc = ptGeom.Buffer(radius);
                     geoms.Add(disc);
                 }

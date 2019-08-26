@@ -1,16 +1,12 @@
-using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class PrecisionModelTest
     {
-        [TestAttribute]
+        [Test]
         public void TestParameterlessConstructor()
         {
             var p = new PrecisionModel();
@@ -18,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(0, p.Scale, 1E-10);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestGetMaximumSignificantDigits()
         {
             Assert.AreEqual(16, new PrecisionModel(PrecisionModels.Floating).MaximumSignificantDigits);
@@ -27,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(4, new PrecisionModel(1000).MaximumSignificantDigits);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMakePrecise()
         {
             var pm10 = new PrecisionModel(0.1);
@@ -36,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             PreciseCoordinateTester(pm10, 1209.4, 1240.4, 1210, 1240);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMakePreciseNegative()
         {
             var pm1 = new PrecisionModel(1);
@@ -48,7 +44,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             PreciseCoordinateTester(pm1, -9.5, -9.5, -9, -9);
         }
 
-        private static void PreciseCoordinateTester(IPrecisionModel pm,
+        private static void PreciseCoordinateTester(PrecisionModel pm,
             double x1, double y1,
             double x2, double y2)
         {

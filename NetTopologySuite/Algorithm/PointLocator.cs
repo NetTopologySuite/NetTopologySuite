@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
@@ -14,7 +12,7 @@ namespace NetTopologySuite.Algorithm
     /// <para>
     /// Notes:
     /// <list Type="Bullet">
-    /// <item><see cref="ILinearRing"/>s do not enclose any area - points inside the ring are still in the EXTERIOR of the ring.</item>
+    /// <item><see cref="LinearRing"/>s do not enclose any area - points inside the ring are still in the EXTERIOR of the ring.</item>
     /// </list>
     /// Instances of this class are not reentrant.
     /// </para>
@@ -51,7 +49,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p">The coordinate to test.</param>
         /// <param name="geom">The Geometry to test.</param>
         /// <returns><c>true</c> if the point is in the interior or boundary of the Geometry.</returns>
-        public bool Intersects(Coordinate p, IGeometry geom)
+        public bool Intersects(Coordinate p, Geometry geom)
         {
             return Locate(p, geom) != Location.Exterior;
         }
@@ -62,14 +60,14 @@ namespace NetTopologySuite.Algorithm
         /// The algorithm for multi-part Geometries takes into account the boundaryDetermination rule.
         /// </summary>
         /// <returns>The Location of the point relative to the input Geometry.</returns>
-        public Location Locate(Coordinate p, IGeometry geom)
+        public Location Locate(Coordinate p, Geometry geom)
         {
             if (geom.IsEmpty)
                 return Location.Exterior;
-            if (geom is ILineString)
-                return LocateOnLineString(p, (ILineString) geom);
-            if (geom is IPolygon)
-                return LocateInPolygon(p, (IPolygon) geom);
+            if (geom is LineString)
+                return LocateOnLineString(p, (LineString) geom);
+            if (geom is Polygon)
+                return LocateInPolygon(p, (Polygon) geom);
 
             _isIn = false;
             _numBoundaries = 0;
@@ -82,32 +80,32 @@ namespace NetTopologySuite.Algorithm
             return Location.Exterior;
         }
 
-        private void ComputeLocation(Coordinate p, IGeometry geom)
+        private void ComputeLocation(Coordinate p, Geometry geom)
         {
-            if (geom is IPoint)
-                UpdateLocationInfo(LocateOnPoint(p, (IPoint) geom));
-            if (geom is ILineString)
-                UpdateLocationInfo(LocateOnLineString(p, (ILineString) geom));
-            else if(geom is IPolygon)
-                UpdateLocationInfo(LocateInPolygon(p, (IPolygon) geom));
-            else if(geom is IMultiLineString)
+            if (geom is Point)
+                UpdateLocationInfo(LocateOnPoint(p, (Point) geom));
+            if (geom is LineString)
+                UpdateLocationInfo(LocateOnLineString(p, (LineString) geom));
+            else if(geom is Polygon)
+                UpdateLocationInfo(LocateInPolygon(p, (Polygon) geom));
+            else if(geom is MultiLineString)
             {
-                var ml = (IMultiLineString) geom;
-                foreach (ILineString l in ml.Geometries)
+                var ml = (MultiLineString) geom;
+                foreach (LineString l in ml.Geometries)
                     UpdateLocationInfo(LocateOnLineString(p, l));
             }
-            else if(geom is IMultiPolygon)
+            else if(geom is MultiPolygon)
             {
-                var mpoly = (IMultiPolygon) geom;
-                foreach (IPolygon poly in mpoly.Geometries)
+                var mpoly = (MultiPolygon) geom;
+                foreach (Polygon poly in mpoly.Geometries)
                     UpdateLocationInfo(LocateInPolygon(p, poly));
             }
-            else if (geom is IGeometryCollection)
+            else if (geom is GeometryCollection)
             {
-                var geomi = new GeometryCollectionEnumerator((IGeometryCollection) geom);
+                var geomi = new GeometryCollectionEnumerator((GeometryCollection) geom);
                 while(geomi.MoveNext())
                 {
-                    var g2 = (IGeometry) geomi.Current;
+                    var g2 = (Geometry) geomi.Current;
                     if (g2 != geom)
                         ComputeLocation(p, g2);
                 }
@@ -122,7 +120,7 @@ namespace NetTopologySuite.Algorithm
                 _numBoundaries++;
         }
 
-        private static Location LocateOnPoint(Coordinate p, IPoint pt)
+        private static Location LocateOnPoint(Coordinate p, Point pt)
         {
             // no point in doing envelope test, since equality test is just as fast
 
@@ -132,7 +130,7 @@ namespace NetTopologySuite.Algorithm
             return Location.Exterior;
         }
 
-        private static Location LocateOnLineString(Coordinate p, ILineString l)
+        private static Location LocateOnLineString(Coordinate p, LineString l)
         {
             // bounding-box check
             if (!l.EnvelopeInternal.Intersects(p))
@@ -147,7 +145,7 @@ namespace NetTopologySuite.Algorithm
             return Location.Exterior;
         }
 
-        private static Location LocateInPolygonRing(Coordinate p, ILinearRing ring)
+        private static Location LocateInPolygonRing(Coordinate p, LinearRing ring)
         {
             // bounding-box check
             if (! ring.EnvelopeInternal.Intersects(p)) return Location.Exterior;
@@ -155,7 +153,7 @@ namespace NetTopologySuite.Algorithm
             return PointLocation.LocateInRing(p, ring.CoordinateSequence);
         }
 
-        private Location LocateInPolygon(Coordinate p, IPolygon poly)
+        private Location LocateInPolygon(Coordinate p, Polygon poly)
         {
             if (poly.IsEmpty)
                 return Location.Exterior;
@@ -166,7 +164,7 @@ namespace NetTopologySuite.Algorithm
             if (shellLoc == Location.Boundary)
                 return Location.Boundary;
             // now test if the point lies in or on the holes
-            foreach (ILinearRing hole in poly.InteriorRings)
+            foreach (LinearRing hole in poly.InteriorRings)
             {
                 var holeLoc = LocateInPolygonRing(p, hole);
                 if (holeLoc == Location.Interior)

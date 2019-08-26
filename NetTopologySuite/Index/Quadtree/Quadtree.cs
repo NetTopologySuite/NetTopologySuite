@@ -1,12 +1,12 @@
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Index.Quadtree
 {
     /// <summary>
     /// A Quadtree is a spatial index structure for efficient range querying
     /// of items bounded by 2D rectangles.<br/>
-    /// <see cref="IGeometry"/>s can be indexed by using their <see cref="Envelope"/>s.<br/>
+    /// <see cref="Geometry"/>s can be indexed by using their <see cref="Envelope"/>s.<br/>
     /// Any type of object can also be indexed, as long as it has an extent that can be
     /// represented by an <see cref="Envelope"/>.
     /// <para/>
@@ -29,9 +29,7 @@ namespace NetTopologySuite.Index.Quadtree
     /// This data structure is also known as an <c>MX-CIF quadtree</c>
     /// following the terminology usage of Samet and others.
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [System.Serializable]
-#endif
     public class Quadtree<T> : ISpatialIndex<T>
     {
         /// <summary>

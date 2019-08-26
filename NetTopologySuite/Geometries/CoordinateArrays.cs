@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using System.Linq;
 using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Geometries
@@ -11,6 +11,44 @@ namespace NetTopologySuite.Geometries
     /// </summary>
     public static class CoordinateArrays
     {
+        /// <summary>
+        /// Determine dimension based on subclass of <see cref="Coordinate"/>.
+        /// </summary>
+        /// <param name="pts">pts supplied coordinates</param>
+        /// <returns>number of ordinates recorded</returns>
+        public static int Dimension(Coordinate[] pts)
+        {
+            if (pts == null || pts.Length == 0)
+            {
+                return 2; // unknown, assume default
+            }
+            int dimension = 0;
+            foreach (var coordinate in pts)
+            {
+                dimension = Math.Max(dimension, Coordinates.Dimension(coordinate));
+            }
+            return dimension;
+        }
+
+        /// <summary>
+        /// Determine number of measures based on subclass of <see cref="Coordinate"/>.
+        /// </summary>
+        /// <param name="pts">supplied coordinates</param>
+        /// <returns>number of measures recorded</returns>
+        public static int Measures(Coordinate[] pts)
+        {
+            if (pts == null || pts.Length == 0)
+            {
+                return 0; // unknown, assume default
+            }
+            int measures = 0;
+            foreach (var coordinate in pts)
+            {
+                measures = Math.Max(measures, Coordinates.Measures(coordinate));
+            }
+            return measures;
+        }
+
         /// <summary>
         /// Tests whether an array of <see cref="Coordinate"/>s forms a ring, by checking length and closure.
         /// Self-intersection is not checked.
@@ -131,7 +169,7 @@ namespace NetTopologySuite.Geometries
             var copy = new Coordinate[coordinates.Length];
             for (int i = 0; i < coordinates.Length; i++)
             {
-                var c = new Coordinate(coordinates[i]);
+                var c = coordinates[i].Copy();
                 copy[i] = c;
             }
             return copy;
@@ -150,41 +188,20 @@ namespace NetTopologySuite.Geometries
         {
             for (int i = 0; i < length; i++)
             {
-                var c = new Coordinate(src[srcStart + i]);
+                var c = src[srcStart + i].Copy();
                 dest[destStart + i] = c;
             }
         }
 
         /// <summary>
-        /// Converts the given <see cref="System.Collections.ICollection" /> of
+        /// Converts the given <see cref="IEnumerable{T}" /> of
         /// <see cref="Coordinate" />s into a <see cref="Coordinate" /> array.
         /// </summary>
-        /// <param name="coordList"><see cref="System.Collections.ICollection" /> of coordinates.</param>
+        /// <param name="coordList"><see cref="IEnumerable{T}"/> of coordinates.</param>
         /// <returns></returns>
-        /// <exception cref="InvalidCastException">
-        /// If <paramref name="coordList"/> contains not only <see cref="Coordinate" />s.
-        /// </exception>
-        [Obsolete("Use generic method instead")]
-        public static Coordinate[] ToCoordinateArray(ICollection coordList)
+        public static Coordinate[] ToCoordinateArray(IEnumerable<Coordinate> coordList)
         {
-            var tempList = new List<Coordinate>(coordList.Count);
-            foreach (Coordinate coord in coordList)
-                tempList.Add(coord);
-            return tempList.ToArray();
-        }
-
-        /// <summary>
-        /// Converts the given <see cref="ICollection{T}" /> of
-        /// <see cref="Coordinate" />s into a <see cref="Coordinate" /> array.
-        /// </summary>
-        /// <param name="coordList"><see cref="ICollection{T}"/> of coordinates.</param>
-        /// <returns></returns>
-        public static Coordinate[] ToCoordinateArray(ICollection<Coordinate> coordList)
-        {
-            var tempList = new List<Coordinate>(coordList.Count);
-            foreach (var coord in coordList)
-                tempList.Add(coord);
-            return tempList.ToArray();
+            return coordList.ToArray();
         }
 
         /// <summary>
@@ -354,13 +371,13 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Returns <c>true</c> if the two arrays are identical, both <c>null</c>, or pointwise
-        /// equal, using a user-defined <see cref="System.Collections.IComparer" />
+        /// equal, using a user-defined <see cref="IComparer" />
         /// for <see cref="Coordinate" />s.
         /// </summary>
         /// <param name="coord1">An array of <see cref="Coordinate" />s.</param>
         /// <param name="coord2">Another array of <see cref="Coordinate" />s.</param>
         /// <param name="coordinateComparer">
-        /// A <see cref="System.Collections.IComparer" /> for <see cref="Coordinate" />s.
+        /// A <see cref="IComparer" /> for <see cref="Coordinate" />s.
         /// </param>
         /// <returns></returns>
         public static bool Equals(Coordinate[] coord1, Coordinate[] coord2,

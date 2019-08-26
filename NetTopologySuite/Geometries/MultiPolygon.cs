@@ -1,21 +1,18 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Basic implementation of <c>MultiPolygon</c>.
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
-    public class MultiPolygon : GeometryCollection, IMultiPolygon
+    public class MultiPolygon : GeometryCollection, IPolygonal
     {
         /// <summary>
         /// Represents an empty <c>MultiPolygon</c>.
         /// </summary>
-        public static new readonly IMultiPolygon Empty = new GeometryFactory().CreateMultiPolygon(null);
+        public static new readonly MultiPolygon Empty = new GeometryFactory().CreateMultiPolygon(null);
 
         /// <summary>
         /// Constructs a <c>MultiPolygon</c>.
@@ -32,7 +29,7 @@ namespace NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public MultiPolygon(IPolygon[] polygons) : this(polygons, DefaultFactory) { }
+        public MultiPolygon(Polygon[] polygons) : this(polygons, DefaultFactory) { }
 
         /// <summary>
         /// Constructs a <c>MultiPolygon</c>.
@@ -46,14 +43,14 @@ namespace NetTopologySuite.Geometries
         /// Specification for SQL.
         /// </param>
         /// <param name="factory"></param>
-        public MultiPolygon(IPolygon[] polygons, IGeometryFactory factory) : base(polygons, factory) { }
+        public MultiPolygon(Polygon[] polygons, GeometryFactory factory) : base(polygons, factory) { }
 
         /// <inheritdoc cref="Geometry.CopyInternal"/>>
-        protected override IGeometry CopyInternal()
+        protected override Geometry CopyInternal()
         {
-            var polygons = new IPolygon[NumGeometries];
+            var polygons = new Polygon[NumGeometries];
             for (int i = 0; i < polygons.Length; i++)
-                polygons[i] = (IPolygon)GetGeometryN(i).Copy();
+                polygons[i] = (Polygon)GetGeometryN(i).Copy();
 
             return new MultiPolygon(polygons, Factory);
         }
@@ -94,20 +91,20 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public override IGeometry Boundary
+        public override Geometry Boundary
         {
             get
             {
                 if (IsEmpty)
                     return Factory.CreateMultiLineString();
 
-                var allRings = new List<ILineString>();
+                var allRings = new List<LineString>();
                 for (int i = 0; i < Geometries.Length; i++)
                 {
-                    var polygon = (IPolygon) Geometries[i];
+                    var polygon = (Polygon) Geometries[i];
                     var rings = polygon.Boundary;
                     for (int j = 0; j < rings.NumGeometries; j++)
-                        allRings.Add((ILineString) rings.GetGeometryN(j));
+                        allRings.Add((LineString) rings.GetGeometryN(j));
                 }
                 return Factory.CreateMultiLineString(allRings.ToArray());
             }
@@ -119,7 +116,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance)
+        public override bool EqualsExact(Geometry other, double tolerance)
         {
             if (!IsEquivalentClass(other))
                 return false;
@@ -129,11 +126,11 @@ namespace NetTopologySuite.Geometries
         /// <summary>Creates a {@link MultiPolygon} with every component reversed.
         /// </summary>
         /// <remarks>The order of the components in the collection are not reversed.</remarks>
-        /// <returns>An <see cref="IMultiPolygon"/> in the reverse order</returns>
-        public override IGeometry Reverse()
+        /// <returns>An <see cref="MultiPolygon"/> in the reverse order</returns>
+        public override Geometry Reverse()
         {
             int n = Geometries.Length;
-            var revGeoms = new IPolygon[n];
+            var revGeoms = new Polygon[n];
             for (int i = 0; i < Geometries.Length; i++)
             {
                 revGeoms[i] = (Polygon)Geometries[i].Reverse();

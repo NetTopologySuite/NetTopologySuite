@@ -1,21 +1,20 @@
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class TriangleTest
     {
         private static readonly PrecisionModel PrecisionModel = new PrecisionModel();
-        private static readonly IGeometryFactory GeometryFactory = new GeometryFactory(PrecisionModel, 0);
+        private static readonly GeometryFactory GeometryFactory = new GeometryFactory(PrecisionModel, 0);
         private static readonly WKTReader Reader = new WKTReader(GeometryFactory);
 
         private const double Tolerance = 1E-5;
 
-        [TestAttribute]
+        [Test]
         public void TestInterpolateZ()
         {
             CheckInterpolateZ("LINESTRING(1 1 0, 2 1 0, 1 2 10)", new Coordinate(1.5, 1.5), 5);
@@ -34,7 +33,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(expectedValue, z, Tolerance);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestArea3D()
         {
             CheckArea3D("POLYGON((0 0 10, 100 0 110, 100 100 110, 0 0 10))",
@@ -53,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(expectedValue, area3D, Tolerance);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestArea()
         {
             // CW
@@ -81,7 +80,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 
         }
 
-        [TestAttribute]
+        [Test]
         public void TestAcute()
         {
             // right triangle

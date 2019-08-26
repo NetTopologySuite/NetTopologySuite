@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Overlay;
@@ -41,7 +40,7 @@ namespace NetTopologySuite.Samples.Tests.Various
 
         private void TestFormatting(Coordinate c)
         {
-            IGeometry point = GeometryFactory.Floating.CreatePoint(c);
+            Geometry point = GeometryFactory.Floating.CreatePoint(c);
             string result = writer.Write(point);
             Debug.WriteLine(result);
             var geom = new WKTReader(GeometryFactory.Floating).Read(result);
@@ -76,7 +75,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.IsTrue(mp1.EqualsExact(mp2));
         }
 
-        private static void TestValid(IGeometry geom)
+        private static void TestValid(Geometry geom)
         {
             if (!geom.IsValid)
             {
@@ -93,9 +92,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         [Test]
         public void TestMaximumPrecisionDigitsFormatting()
         {
-            var factory = GeometryFactory.Default;
-
-            var wkbreader = new WKBReader(factory);
+            var wkbreader = new WKBReader();
             var wkb1 = wkbreader.Read(test00_Geom0_WkbByteArray);
             Assert.IsNotNull(wkb1);
             TestValid(wkb1);
@@ -113,7 +110,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             string tos2 = writer.Write(wkb2);
             Assert.IsNotNull(tos2);
 
-            var reader = new WKTReader(factory);
+            var reader = new WKTReader();
             var wkt1 = reader.Read(tos1);
             Assert.IsNotNull(wkt1);
             Assert.IsTrue(wkt1.IsValid);
@@ -130,7 +127,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.IsTrue(ex.GetType() == typeof(TopologyException));
         }
 
-        private Exception TryOverlay(IGeometry g1, IGeometry g2)
+        private Exception TryOverlay(Geometry g1, Geometry g2)
         {
             Exception ex = null;
             try

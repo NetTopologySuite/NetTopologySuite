@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
-using NUnit.Framework;
 using NetTopologySuite.Mathematics;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
 {
@@ -12,7 +12,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
     /// <author>Martin Davis</author>
     public class DDExpressionPerformance
     {
-        [TestAttribute]
+        [Test]
         public void Test()
         {
             Run(1000000);
@@ -89,11 +89,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
 
                 var a = new DD(9.0);
                 var factor = new DD(10.0);
-                var aMul = factor.Multiply(a);
-                var aDiv = a.Divide(factor);
+                var aMul = factor * a;
+                var aDiv = a / factor;
 
-                var det = a.Multiply(a)
-                    .Subtract(aMul.Multiply(aDiv));
+                var det = a * a - aMul * aDiv;
                 // Console.WriteLine(aDiv);
                 // Console.WriteLine(det);
             }

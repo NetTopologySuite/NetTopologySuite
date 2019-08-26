@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Geometries.Prepared
 {
-public class TestDataBuilder
+    public class TestDataBuilder
 {
-  private IGeometryFactory _geomFact = new GeometryFactory();
+  private GeometryFactory _geomFact = new GeometryFactory();
 
     private Coordinate _origin = new Coordinate(0, 0);
     private double _size = 100.0;
     private int _testDim = 1;
 
-    public TestDataBuilder(IGeometryFactory geomFact)
+    public TestDataBuilder(GeometryFactory geomFact)
     {
         _geomFact = geomFact;
     }
@@ -30,7 +29,7 @@ public class TestDataBuilder
         set => _testDim = value;
     }
 
-    public IGeometry CreateCircle(int nPts) {
+    public Geometry CreateCircle(int nPts) {
         var gsf = new GeometricShapeFactory(_geomFact);
         gsf.Centre = _origin;
         gsf.Size = _size;
@@ -41,7 +40,7 @@ public class TestDataBuilder
         return circle;
     }
 
-  public IGeometry CreateSineStar(int nPts) {
+  public Geometry CreateSineStar(int nPts) {
         var gsf = new SineStarFactory(_geomFact);
         gsf.Centre = _origin;
         gsf.Size = _size;
@@ -52,11 +51,11 @@ public class TestDataBuilder
         return poly;
     }
 
-  public IList<IGeometry> CreateTestGeoms(Envelope env, int nItems, double size, int nPts)
+  public IList<Geometry> CreateTestGeoms(Envelope env, int nItems, double size, int nPts)
   {
     int nCells = (int) Math.Sqrt(nItems);
 
-    var geoms = new List<IGeometry>();
+    var geoms = new List<Geometry>();
     double width = env.Width;
     double xInc = width / nCells;
     double yInc = width / nCells;
@@ -72,7 +71,7 @@ public class TestDataBuilder
     return geoms;
   }
 
-  public IGeometry CreateLine(Coordinate @base, double size, int nPts)
+  public Geometry CreateLine(Coordinate @base, double size, int nPts)
   {
     var gsf = new GeometricShapeFactory();
     gsf.Centre = _origin;

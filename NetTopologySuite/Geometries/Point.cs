@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
 {
@@ -14,23 +13,20 @@ namespace NetTopologySuite.Geometries
     /// </list>
     /// </summary>
     ///
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-
-#endif
-    public class Point : Geometry, IPoint
+    public class Point : Geometry, IPuntal
     {
         private static readonly Coordinate EmptyCoordinate = null;
 
         /// <summary>
         /// Represents an empty <c>Point</c>.
         /// </summary>
-        public static readonly IPoint Empty = new GeometryFactory().CreatePoint(EmptyCoordinate);
+        public static readonly Point Empty = new GeometryFactory().CreatePoint(EmptyCoordinate);
 
         /// <summary>
         /// The <c>Coordinate</c> wrapped by this <c>Point</c>.
         /// </summary>
-        private ICoordinateSequence _coordinates;
+        private CoordinateSequence _coordinates;
 
         /// <summary>
         /// Gets a value to sort the geometry
@@ -40,7 +36,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public ICoordinateSequence CoordinateSequence => _coordinates;
+        public CoordinateSequence CoordinateSequence => _coordinates;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Point"/> class.
@@ -62,7 +58,7 @@ namespace NetTopologySuite.Geometries
         /// or <c>null</c> to create the empty point.
         /// </param>
         /// <param name="factory"></param>
-        public Point(ICoordinateSequence coordinates, IGeometryFactory factory) : base(factory)
+        public Point(CoordinateSequence coordinates, GeometryFactory factory) : base(factory)
         {
             if (coordinates == null)
                 coordinates = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
@@ -81,11 +77,14 @@ namespace NetTopologySuite.Geometries
             if (IsEmpty)
                 return new double[0];
 
-            var ordinateFlag = OrdinatesUtility.ToOrdinatesFlag(ordinate);
+            var ordinateFlag = (Ordinates)(1 << (int)ordinate);
             if ((_coordinates.Ordinates & ordinateFlag) != ordinateFlag)
                 return new[] {Coordinate.NullOrdinate};
 
-            return new [] { _coordinates.GetOrdinate(0, ordinate)};
+            double val = _coordinates.TryGetOrdinateIndex(ordinate, out int ordinateIndex)
+                ? _coordinates.GetOrdinate(0, ordinateIndex)
+                : Coordinate.NullOrdinate;
+            return new [] { val };
         }
 
         /// <summary>
@@ -119,7 +118,12 @@ namespace NetTopologySuite.Geometries
                     throw new ArgumentOutOfRangeException("X called on empty Point");
                 return Coordinate.X;
             }
-            set => Coordinate.X = value;
+            set
+            {
+                if (CoordinateSequence.Count == 0)
+                    throw new ArgumentOutOfRangeException("X called on empty Point");
+                CoordinateSequence.SetX(0, value);
+            }
         }
 
         /// <summary>
@@ -133,7 +137,12 @@ namespace NetTopologySuite.Geometries
                     throw new ArgumentOutOfRangeException("Y called on empty Point");
                 return Coordinate.Y;
             }
-            set => Coordinate.Y = value;
+            set
+            {
+                if (CoordinateSequence.Count == 0)
+                    throw new ArgumentOutOfRangeException("Y called on empty Point");
+                CoordinateSequence.SetY(0, value);
+            }
         }
 
         /// <summary>
@@ -157,7 +166,7 @@ namespace NetTopologySuite.Geometries
         ///Zero-dimensional geometries have no boundary by definition,
         ///so an empty GeometryCollection is returned.
         /// </summary>
-        public override IGeometry Boundary => Factory.CreateGeometryCollection();
+        public override Geometry Boundary => Factory.CreateGeometryCollection();
 
         /// <summary>
         ///
@@ -183,7 +192,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        public override bool EqualsExact(IGeometry other, double tolerance)
+        public override bool EqualsExact(Geometry other, double tolerance)
         {
             if (!IsEquivalentClass(other))
                 return false;
@@ -233,27 +242,16 @@ namespace NetTopologySuite.Geometries
             filter.Filter(this);
         }
 
-        /// <summary>
-        /// Creates and returns a full copy of this object.
-        /// (including all coordinates contained by it).
-        /// </summary>
-        /// <returns>A copy of this instance</returns>
-        [Obsolete("Use Copy()")]
-        public override object Clone()
-        {
-            return Copy();
-        }
-
         /// <inheritdoc cref="Geometry.CopyInternal"/>>
-        protected override IGeometry CopyInternal()
+        protected override Geometry CopyInternal()
         {
             var coordinates = _coordinates.Copy();
             return new Point(coordinates, Factory);
         }
 
-        public override IGeometry Reverse()
+        public override Geometry Reverse()
         {
-            return (IGeometry)Copy();
+            return Copy();
         }
 
         /// <summary>
@@ -278,9 +276,9 @@ namespace NetTopologySuite.Geometries
         /// <param name="other"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        protected internal override int CompareToSameClass(object other, IComparer<ICoordinateSequence> comparer)
+        protected internal override int CompareToSameClass(object other, IComparer<CoordinateSequence> comparer)
         {
-            return comparer.Compare(CoordinateSequence, ((IPoint) other).CoordinateSequence);
+            return comparer.Compare(CoordinateSequence, ((Point) other).CoordinateSequence);
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
@@ -296,7 +294,7 @@ namespace NetTopologySuite.Geometries
         /// with <see cref="PrecisionModel" /> <c> set to </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         public Point(double x, double y, double z) :
-            this(DefaultFactory.CoordinateSequenceFactory.Create(new Coordinate[] { new Coordinate(x, y, z) }), DefaultFactory) { }
+            this(DefaultFactory.CoordinateSequenceFactory.Create(new Coordinate[] { new CoordinateZ(x, y, z) }), DefaultFactory) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Point"/> class.
@@ -317,11 +315,16 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                if (Coordinate == null)
+                if (CoordinateSequence.Count == 0)
                     throw new ArgumentOutOfRangeException("Z called on empty Point");
-                return Coordinate.Z;
+                return CoordinateSequence.GetZ(0);
             }
-            set => Coordinate.Z = value;
+            set
+            {
+                if (CoordinateSequence.Count == 0)
+                    throw new ArgumentOutOfRangeException("Z called on empty Point");
+                CoordinateSequence.SetZ(0, value);
+            }
         }
 
         /* END ADDED BY MPAUL42: monoGIS team */
@@ -330,11 +333,16 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                if (CoordinateSequence == null)
+                if (CoordinateSequence.Count == 0)
                     throw new ArgumentOutOfRangeException("M called on empty Point");
-                return CoordinateSequence.GetOrdinate(0, Ordinate.M);
+                return CoordinateSequence.GetM(0);
             }
-            set => CoordinateSequence.SetOrdinate(0, Ordinate.M, value);
+            set
+            {
+                if (CoordinateSequence.Count == 0)
+                    throw new ArgumentOutOfRangeException("Z called on empty Point");
+                CoordinateSequence.SetM(0, value);
+            }
         }
     }
 }

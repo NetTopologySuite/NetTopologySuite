@@ -1,4 +1,3 @@
-using GeoAPI.Geometries;
 using NetTopologySuite.Noding;
 
 namespace NetTopologySuite.Geometries.Prepared
@@ -14,7 +13,7 @@ namespace NetTopologySuite.Geometries.Prepared
         private volatile FastSegmentSetIntersectionFinder _segIntFinder;
 
         public PreparedLineString(ILineal line)
-            : base((IGeometry)line)
+            : base((Geometry)line)
         {
         }
 
@@ -41,7 +40,7 @@ namespace NetTopologySuite.Geometries.Prepared
             }
         }
 
-        public override bool Intersects(IGeometry g)
+        public override bool Intersects(Geometry g)
         {
             if (!EnvelopesIntersect(g)) return false;
             return PreparedLineStringIntersects.Intersects(this, g);

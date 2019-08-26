@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Match;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
@@ -11,7 +10,7 @@ namespace NetTopologySuite.Tests.Various
     [TestFixture]
     public class Issue35Tests
     {
-        private readonly IGeometryFactory factory = GeometryFactory.Default;
+        private readonly GeometryFactory factory = GeometryFactory.Default;
 
         private WKTReader reader;
 

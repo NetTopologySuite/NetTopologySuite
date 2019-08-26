@@ -1,6 +1,5 @@
 ﻿using System;
 
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 
@@ -124,7 +123,7 @@ namespace NetTopologySuite.Simplify
 
             // Special-case: we want to make sure that we don't return a 1-
             // element array, as the outputs of this are typically used to
-            // build an ILineString.  So if there's just one coordinate, we
+            // build an LineString.  So if there's just one coordinate, we
             // output it twice, mainly just to ensure equivalence to JTS / old
             // NTS.
             list.Add(_pts[_pts.Length - 1], list.Count == 1);

@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Index
 {
-    using Interval = GeoAPI.Geometries.Interval;
+    using Interval = NetTopologySuite.Geometries.Interval;
 
     [TestAttribute]
     public class IntervalTest

@@ -1,6 +1,4 @@
-using System;
 using System.Diagnostics;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Samples.SimpleTests;
@@ -44,7 +42,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         /// <summary>
         ///
         /// </summary>
-        private static void PerformTest(IGeometryFactory factory)
+        private static void PerformTest(GeometryFactory factory)
         {
             var path = new WKTReader(factory).Read(GeomText);
             Assert.IsNotNull(path);

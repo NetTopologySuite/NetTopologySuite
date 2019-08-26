@@ -1,28 +1,23 @@
-using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Algorithm.Distance;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance
 {
     public class DiscreteHausdorffDistanceTest
     {
-        [TestAttribute]
+        [Test]
         public void TestLineSegments()
         {
             RunTest("LINESTRING (0 0, 2 1)", "LINESTRING (0 0, 2 0)", 1.0);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestLineSegments2()
         {
             RunTest("LINESTRING (0 0, 2 0)", "LINESTRING (0 1, 1 2, 2 1)", 2.0);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestLinePoints()
         {
             RunTest("LINESTRING (0 0, 2 0)", "MULTIPOINT (0 1, 1 0, 2 1)", 1.0);
@@ -34,7 +29,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Distance
         *
         * @
         */
-        [TestAttribute]
+        [Test]
         public void TestLinesShowingDiscretenessEffect()
         {
             RunTest("LINESTRING (130 0, 0 0, 0 150)", "LINESTRING (10 10, 10 150, 130 10)", 14.142135623730951);

@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Samples.SimpleTests;
 using NUnit.Framework;
@@ -29,12 +28,12 @@ namespace NetTopologySuite.Samples.Tests.Various
                 new Coordinate(20, 20),
                 new Coordinate(20, 30),
             });
-            var reverse = (ILineString)lineString.Reverse();
+            var reverse = (LineString)lineString.Reverse();
 
             Debug.WriteLine(lineString.ToString());
             Debug.WriteLine(reverse.ToString());
 
-            Assert.IsTrue(lineString.Equals(reverse));
+            Assert.IsTrue(lineString.EqualsTopologically(reverse));
             Assert.IsFalse(lineString.EqualsExact(reverse));
         }
 
@@ -57,20 +56,20 @@ namespace NetTopologySuite.Samples.Tests.Various
                 new Coordinate(24, 36),
             });
             var multiLineString = Factory.CreateMultiLineString(new[] { lineString1, lineString2, });
-            var reverse = multiLineString.Reverse();
+            var reverse = (MultiLineString)multiLineString.Reverse();
 
             Debug.WriteLine(multiLineString.ToString());
             Debug.WriteLine(reverse.ToString());
 
-            Assert.IsTrue(multiLineString.Equals(reverse));
+            Assert.IsTrue(multiLineString.EqualsTopologically(reverse));
             Assert.IsFalse(multiLineString.EqualsExact(reverse));
 
             var result2 = reverse[1];
-            Assert.IsTrue(lineString1.Equals(result2));
+            Assert.IsTrue(lineString1.EqualsTopologically(result2));
             Assert.IsFalse(lineString1.EqualsExact(result2));
 
             var result1 = reverse[0];
-            Assert.IsTrue(lineString2.Equals(result1));
+            Assert.IsTrue(lineString2.EqualsTopologically(result1));
             Assert.IsFalse(lineString2.EqualsExact(result1));
         }
     }

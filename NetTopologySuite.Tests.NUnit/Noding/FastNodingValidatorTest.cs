@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Noding;
 using NUnit.Framework;
@@ -101,7 +100,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding
             }
         }
 
-        private static List<ISegmentString> ToSegmentStrings(IEnumerable<IGeometry> geoms)
+        private static List<ISegmentString> ToSegmentStrings(IEnumerable<Geometry> geoms)
         {
             var segStrings = new List<ISegmentString>();
             foreach (var geom in geoms) {

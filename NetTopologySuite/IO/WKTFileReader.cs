@@ -1,13 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using RTools_NTS.Util;
 
 namespace NetTopologySuite.IO
 {
     /// <summary>
-    /// Reads a sequence of <see cref="IGeometry"/>s in WKT format from a text file.
+    /// Reads a sequence of <see cref="Geometry"/>s in WKT format from a text file.
     /// </summary>
     /// <remarks>The geometries in the file may be separated by any amount of whitespace and newlines.</remarks>
     /// <author>
@@ -15,10 +14,8 @@ namespace NetTopologySuite.IO
     /// </author>
     public class WKTFileReader
     {
-#if FEATURE_FILE_IO
         private const int MaxLookahead = 2048;
         private readonly FileInfo _file;
-#endif
 
         private TextReader _reader;
         private readonly WKTReader _wktReader;
@@ -30,7 +27,6 @@ namespace NetTopologySuite.IO
             Limit = -1;
         }
 
-#if FEATURE_FILE_IO
         /// <summary>
         /// Creates a new <see cref="WKTFileReader" /> given the <paramref name="file" /> to read from and a <see cref="WKTReader" /> to use to parse the geometries.
         /// </summary>
@@ -51,7 +47,7 @@ namespace NetTopologySuite.IO
             : this(new FileInfo(filename), wktReader)
         {
         }
-#endif
+
         /// <summary>
         /// Creates a new <see cref="WKTFileReader" />, given a <see cref="Stream"/> to read from.
         /// </summary>
@@ -92,34 +88,26 @@ namespace NetTopologySuite.IO
         /// <para>If a limit is specified, no more than <see cref="Limit" /> geometries are read.</para>
         /// </remarks>
         /// <exception cref="IOException">Thrown if an I/O exception was encountered</exception>
-        /// <exception cref="GeoAPI.IO.ParseException">Thrown if an error occurred reading a geometry</exception>
+        /// <exception cref="ParseException">Thrown if an error occurred reading a geometry</exception>
         /// <returns>The list of geometries read</returns>
-        public IList<IGeometry> Read()
+        public IList<Geometry> Read()
         {
             _count = 0;
 
-#if FEATURE_FILE_IO
             if (_file != null)
                 _reader =  new StreamReader(new FileStream(_file.FullName, FileMode.Open, FileAccess.Read, FileShare.Read, MaxLookahead));
-#endif
-            try
+
+            using (_reader)
             {
                 return Read(_reader);
             }
-            finally
-            {
-#if FEATURE_FILE_IO
-                _reader.Dispose();
-#endif
-            }
         }
 
-        private IList<IGeometry> Read(TextReader bufferedReader)
+        private IList<Geometry> Read(TextReader bufferedReader)
         {
-            var geoms = new List<IGeometry>();
+            var geoms = new List<Geometry>();
             var tokens = _wktReader.Tokenizer(bufferedReader);
-            tokens.MoveNext();
-            while (!IsAtEndOfTokens(tokens.Current) && !IsAtLimit(geoms))
+            while (!IsAtEndOfTokens(tokens.NextToken(false)) && !IsAtLimit(geoms))
             {
                 var g = _wktReader.ReadGeometryTaggedText(tokens);
                 if (_count >= Offset)
@@ -130,7 +118,7 @@ namespace NetTopologySuite.IO
             /*
             while (!IsAtEndOfFile(bufferedReader) && !IsAtLimit(geoms))
             {
-                IGeometry g = _wktReader.Read(bufferedReader);
+                Geometry g = _wktReader.Read(bufferedReader);
                 if (_count >= Offset)
                     geoms.Add(g);
                 _count++;
@@ -139,7 +127,7 @@ namespace NetTopologySuite.IO
             return geoms;
         }
 
-        private bool IsAtLimit(IList<IGeometry> geoms)
+        private bool IsAtLimit(IList<Geometry> geoms)
         {
             if (Limit < 0) return false;
             if (geoms.Count < Limit) return false;

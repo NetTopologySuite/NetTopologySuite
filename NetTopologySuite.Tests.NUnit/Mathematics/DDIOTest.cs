@@ -20,23 +20,20 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             CheckStandardNotation(0.0, "0.0");
 
             // cases where hi is a power of 10 and lo is negative
-            CheckStandardNotation(DD.ValueOf(1e12).Subtract(DD.ValueOf(1)), "999999999999.0");
-            CheckStandardNotation(DD.ValueOf(1e14).Subtract(DD.ValueOf(1)), "99999999999999.0");
-            CheckStandardNotation(DD.ValueOf(1e16).Subtract(DD.ValueOf(1)), "9999999999999999.0");
+            CheckStandardNotation(DD.ValueOf(1e12) - DD.ValueOf(1), "999999999999.0");
+            CheckStandardNotation(DD.ValueOf(1e14) - DD.ValueOf(1), "99999999999999.0");
+            CheckStandardNotation(DD.ValueOf(1e16) - DD.ValueOf(1), "9999999999999999.0");
 
-            var num8Dec = DD.ValueOf(-379363639).Divide(
-                DD.ValueOf(100000000));
+            var num8Dec = DD.ValueOf(-379363639) / DD.ValueOf(100000000);
             CheckStandardNotation(num8Dec, "-3.79363639");
 
             CheckStandardNotation(new DD(-3.79363639, 8.039137357367426E-17),
                 "-3.7936363900000000000000000");
 
-            CheckStandardNotation(DD.ValueOf(34).Divide(
-                DD.ValueOf(1000)), "0.034");
+            CheckStandardNotation(DD.ValueOf(34) / DD.ValueOf(1000), "0.034");
             CheckStandardNotation(1.05e3, "1050.0");
             CheckStandardNotation(0.34, "0.34000000000000002442490654175344");
-            CheckStandardNotation(DD.ValueOf(34).Divide(
-                DD.ValueOf(100)), "0.34");
+            CheckStandardNotation(DD.ValueOf(34) / DD.ValueOf(100), "0.34");
             CheckStandardNotation(14, "14.0");
         }
 
@@ -55,8 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             CheckSciNotation(0.0, "0.0E0");
             CheckSciNotation(1.05e10, "1.05E10");
             CheckSciNotation(0.34, "3.4000000000000002442490654175344E-1");
-            CheckSciNotation(
-                DD.ValueOf(34).Divide(DD.ValueOf(100)), "3.4E-1");
+            CheckSciNotation(DD.ValueOf(34) / DD.ValueOf(100), "3.4E-1");
             CheckSciNotation(14, "1.4E1");
         }
 
@@ -107,8 +103,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
              * representation of the same number. To avoid this, compute the expected
              * value using full DD precision.
              */
-            CheckParse("1.4",
-                DD.ValueOf(14).Divide(DD.ValueOf(10)), 1e-30);
+            CheckParse("1.4", DD.ValueOf(14) / DD.ValueOf(10), 1e-30);
 
             // 39.5D can be converted to an exact FP representation
             CheckParse("39.5", 39.5, 1e-30);
@@ -124,11 +119,8 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
 
             CheckParse("-1.05e10", -1.05E10, 1e-32);
 
-            CheckParse("1.05e-10", DD.ValueOf(105.0).Divide(
-                DD.ValueOf(100.0)).Divide(DD.ValueOf(1.0E10)), 1e-32);
-            CheckParse("-1.05e-10", DD.ValueOf(105.0).Divide(
-                    DD.ValueOf(100.0)).Divide(DD.ValueOf(1.0E10))
-                .Negate(), 1e-32);
+            CheckParse("1.05e-10", DD.ValueOf(105.0) / DD.ValueOf(100.0) / DD.ValueOf(1.0E10), 1e-32);
+            CheckParse("-1.05e-10", -(DD.ValueOf(105.0) / DD.ValueOf(100.0) / DD.ValueOf(1.0E10)), 1e-32);
         }
 
         private static void CheckParse(string str, double expectedVal, double errBound)
@@ -172,7 +164,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         {
             WriteRepeatedSqrt(DD.ValueOf(1.0));
             WriteRepeatedSqrt(DD.ValueOf(.999999999999));
-            WriteRepeatedSqrt(DD.PI.Divide(DD.ValueOf(10)));
+            WriteRepeatedSqrt(DD.PI / DD.ValueOf(10));
         }
 
         /// <summary>
@@ -191,14 +183,14 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
                 // System.Console.WriteLine((count + ": " + s);
 
                 var xSqrt2 = DD.Parse(s);
-                var xx = xSqrt2.Multiply(xSqrt2);
+                var xx = xSqrt2 * xSqrt2;
                 double err = Math.Abs(xx.ToDoubleValue() - x);
                 // assertTrue(err < 1e-10);
 
                 xdd = xSqrt;
 
                 // square roots converge on 1 - stop when very close
-                var distFrom1DD = xSqrt.Subtract(DD.ValueOf(1.0));
+                var distFrom1DD = xSqrt - DD.ValueOf(1.0);
                 double distFrom1 = distFrom1DD.ToDoubleValue();
                 if (Math.Abs(distFrom1) < 1.0e-40)
                     break;
@@ -209,7 +201,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         public void TestWriteRepeatedSqr()
         {
             WriteRepeatedSqr(DD.ValueOf(0.9));
-            WriteRepeatedSqr(DD.PI.Divide(DD.ValueOf(10)));
+            WriteRepeatedSqr(DD.PI / DD.ValueOf(10));
         }
 
         /// <summary>

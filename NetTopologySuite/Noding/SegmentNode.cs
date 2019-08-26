@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Noding
 {
@@ -34,14 +34,14 @@ namespace NetTopologySuite.Noding
         {
             Coord = null;
             _segString = segString;
-            Coord = new Coordinate(coord.X, coord.Y, coord.Z);
+            Coord = coord.Copy();
             SegmentIndex = segmentIndex;
             _segmentOctant = segmentOctant;
             _isInterior = !coord.Equals2D(segString.Coordinates[segmentIndex]);
         }
 
         /// <summary>
-        /// Gets the <see cref="GeoAPI.Geometries.Coordinate"/> giving the location of this node.
+        /// Gets the <see cref="Geometries.Coordinate"/> giving the location of this node.
         /// </summary>
         public Coordinate Coordinate => Coord;
 

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
+using AbstractNode = NetTopologySuite.Index.Strtree.AbstractNode<NetTopologySuite.Index.Strtree.Interval, object>;
 //using NetTopologySuite.IO;
 using SIRtree = NetTopologySuite.Index.Strtree.SIRtree<object>;
-using AbstractNode = NetTopologySuite.Index.Strtree.AbstractNode<NetTopologySuite.Index.Strtree.Interval, object>;
 namespace NetTopologySuite.Tests.NUnit.Index.Strtree
 {
     [TestFixture]

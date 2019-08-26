@@ -1,9 +1,9 @@
 ﻿using System;
-using GeoAPI.Geometries;
-using NUnit.Framework;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Distance3D;
-// using ParseException = GeoAPI.IO.ParseException;
+using NUnit.Framework;
+// using ParseException = NetTopologySuite.IO.ParseException;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Distance3d
 {
@@ -22,7 +22,7 @@ public class Distance3DOpTest
     }
     */
 
-    [TestAttribute]
+    [Test]
     public void TestEmpty()
     {
         CheckDistance("POINT EMPTY", "POINT EMPTY", 0);
@@ -31,7 +31,7 @@ public class Distance3DOpTest
         CheckDistance("MULTIPOLYGON EMPTY", "POINT (0 0 0)", 0);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestPartiallyEmpty()
     {
         CheckDistance("GEOMETRYCOLLECTION( MULTIPOINT (0 0 0), POLYGON EMPTY)", "POINT (0 1 0)", 1);
@@ -40,7 +40,7 @@ public class Distance3DOpTest
                 1);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestPointPointFlat() {
         CheckDistance("POINT (10 10 0 )",
                 "POINT (20 20 0 )",
@@ -50,7 +50,7 @@ public class Distance3DOpTest
                 14.1421356);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestPointPoint() {
         CheckDistance("POINT (0 0 0 )",
                         "POINT (0 0 1 )",
@@ -63,14 +63,14 @@ public class Distance3DOpTest
                 14.142135623730951);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestPointSegFlat() {
         CheckDistance("LINESTRING (10 10 0, 10 20 0 )",
                 "POINT (20 15 0 )",
                 10);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestPointSeg() {
         CheckDistance("LINESTRING (0 0 0, 10 10 10 )",
                 "POINT (5 5 5 )",
@@ -80,7 +80,7 @@ public class Distance3DOpTest
                 0.816496580927726);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestPointSegRobust() {
         CheckDistance("LINESTRING (0 0 0, 10000000 10000000 1 )",
                 "POINT (9999999 9999999 .9999999 )",
@@ -90,7 +90,7 @@ public class Distance3DOpTest
                 0 );
     }
 
-    [TestAttribute]
+    [Test]
     public void TestCrossSegmentsFlat() {
         CheckDistance("LINESTRING (0 0 0, 10 10 0 )",
                 "LINESTRING (10 0 0, 0 10 0 )",
@@ -100,7 +100,7 @@ public class Distance3DOpTest
                 0);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestCrossSegments() {
         CheckDistance("LINESTRING (0 0 0, 10 10 0 )",
                 "LINESTRING (10 0 1, 0 10 1 )",
@@ -119,7 +119,7 @@ public class Distance3DOpTest
      * This happens when computing nearly-coincident lines
      * with very large ordinate values
      */
-    [TestAttribute]
+    [Test]
     public void TestCrossSegmentsRobust() {
         CheckDistance("LINESTRING (0 0 0, 10000000 10000000 1 )",
                 "LINESTRING (0 0 1, 10000000 10000000 0 )",
@@ -140,21 +140,21 @@ public class Distance3DOpTest
                 0);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestTSegmentsFlat() {
         CheckDistance("LINESTRING (10 10 0, 10 20 0 )",
                 "LINESTRING (20 15 0, 25 15 0 )",
                 10);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestParallelSegmentsFlat() {
         CheckDistance("LINESTRING (10 10 0, 20 20 0 )",
                 "LINESTRING (10 20 0, 20 30 0 )",
                 7.0710678118654755);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestParallelSegments() {
         CheckDistance("LINESTRING (0 0 0, 1 0 0 )",
                 "LINESTRING (0 0 1, 1 0 1 )",
@@ -169,7 +169,7 @@ public class Distance3DOpTest
                 // = hypotenuse(7.0710678118654755, 10)
     }
 
-    [TestAttribute]
+    [Test]
     public void TestLineLine()
     {
         CheckDistance("LINESTRING (0 1 2, 1 1 1, 1 0 2 )",
@@ -180,7 +180,7 @@ public class Distance3DOpTest
                 0.7071067811865476);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestPointPolygon()
     {
         // point above poly
@@ -197,7 +197,7 @@ public class Distance3DOpTest
                 10);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestPointPolygonFlat()
     {
         // inside
@@ -214,7 +214,7 @@ public class Distance3DOpTest
                 0);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestLinePolygonFlat()
     {
         // line inside
@@ -231,7 +231,7 @@ public class Distance3DOpTest
                 0);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestLinePolygonSimple()
     {
         // line crossing inside
@@ -250,7 +250,7 @@ public class Distance3DOpTest
 
     const string PolyHoleFlat = "POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0), (120 180 0, 180 180 0, 180 120 0, 120 120 0, 120 180 0))";
 
-    [TestAttribute]
+    [Test]
     public void TestLinePolygonHoleFlat()
     {
         // line crossing hole
@@ -263,7 +263,7 @@ public class Distance3DOpTest
         CheckDistance("LINESTRING (120 180 0, 120 180 100)", PolyHoleFlat, 0);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestPointPolygonHoleFlat()
     {
         // point above poly hole
@@ -280,7 +280,7 @@ public class Distance3DOpTest
      * A case proving that polygon/polygon distance requires
      * computing distance between all rings, not just the shells.
      */
-    [TestAttribute]
+    [Test]
     public void TestPolygonPolygonLinkedThruHoles()
     {
         // note distance is zero!
@@ -300,7 +300,7 @@ public class Distance3DOpTest
                 10);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestMultiPoint()
     {
         CheckDistance(
@@ -310,7 +310,7 @@ public class Distance3DOpTest
                 );
     }
 
-    [TestAttribute]
+    [Test]
     public void TestMultiLineString()
     {
         CheckDistance(
@@ -320,7 +320,7 @@ public class Distance3DOpTest
                 );
     }
 
-    [TestAttribute]
+    [Test]
     public void TestMultiPolygon()
     {
         CheckDistance(
@@ -332,7 +332,7 @@ public class Distance3DOpTest
                 );
     }
 
-    [TestAttribute]
+    [Test]
     public void TestMultiMixed()
     {
         CheckDistance(
@@ -355,19 +355,19 @@ public class Distance3DOpTest
 
     private void CheckDistance(string wkt1, string wkt2, double expectedDistance, double tolerance)
     {
-        IGeometry g1;
-        IGeometry g2;
+        Geometry g1;
+        Geometry g2;
         try {
             g1 = Rdr.Read(wkt1);
         }
-        catch (GeoAPI.IO.ParseException e)
+        catch (ParseException e)
         {
             throw new Exception(e.Message);
         }
         try {
             g2 = Rdr.Read(wkt2);
         }
-        catch (GeoAPI.IO.ParseException e)
+        catch (ParseException e)
         {
             throw new Exception(e.Message);
         }
@@ -376,7 +376,7 @@ public class Distance3DOpTest
         CheckDistance(g2, g1, expectedDistance, tolerance);
     }
 
-    private void CheckDistance(IGeometry g1, IGeometry g2, double expectedDistance, double tolerance)
+    private void CheckDistance(Geometry g1, Geometry g2, double expectedDistance, double tolerance)
     {
         var distOp = new Distance3DOp(g1, g2);
             double dist = distOp.Distance();

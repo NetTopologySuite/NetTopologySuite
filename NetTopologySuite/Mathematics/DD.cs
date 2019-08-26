@@ -64,9 +64,7 @@ namespace NetTopologySuite.Mathematics
     /// </list>
     /// </summary>
     /// <author>Martin Davis</author>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public struct DD : IComparable, IComparable<DD> /*, IFormattable*/
     {
 
@@ -250,18 +248,6 @@ namespace NetTopologySuite.Mathematics
         */
 
         /// <summary>
-        /// Returns a <see cref="DD"/> whose value is <c>(this + <paramref name="y"/>)</c>
-        /// </summary>
-        /// <param name="y">The addende</param>"/>
-        /// <returns><c>(this + <paramref name="y"/>)</c></returns>
-        [Obsolete("Use operator +")]
-        public DD Add(DD y)
-        {
-            return this + y;
-            //return Copy(this).SelfAdd(y);
-        }
-
-        /// <summary>
         /// Returns the sum of <paramref name="lhs"/> and <paramref name="rhs"/>.
         /// </summary>
         /// <param name="lhs">The left hand side</param>
@@ -306,7 +292,7 @@ namespace NetTopologySuite.Mathematics
         /// <returns>The difference of <paramref name="lhs"/> and <paramref name="rhs"/></returns>
         public static DD operator -(DD lhs, DD rhs)
         {
-            return lhs + rhs.Negate();
+            return lhs + (-rhs);
         }
         /// <summary>
         /// Returns the difference of <paramref name="lhs"/> and <paramref name="rhs"/>.
@@ -317,17 +303,6 @@ namespace NetTopologySuite.Mathematics
         public static DD operator -(DD lhs, double rhs)
         {
             return lhs + new DD(-rhs, 0);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="DD"/> whose value is <tt>(this + y)</tt>.
-        /// </summary>
-        /// <param name="y">The addend</param>
-        /// <returns><tt>(this + y)</tt></returns>
-        [Obsolete("Use Operator +")]
-        public DD Add(double y)
-        {
-            return this+y;
         }
 
         //public DD SelfAdd(DD y)
@@ -371,28 +346,6 @@ namespace NetTopologySuite.Mathematics
         //    return this;
         //}
 
-        /// <summary>
-        /// Computes a new <see cref="DD"/> object whose value is <tt>(this - y)</tt>.
-        /// </summary>
-        /// <param name="y">The subtrahend</param>
-        /// <returns><tt>(this - y)</tt></returns>
-        [Obsolete("Use operator -")]
-        public DD Subtract(DD y)
-        {
-            return Add(y.Negate());
-        }
-
-        /// <summary>
-        /// Computes a new <see cref="DD"/> object whose value is <tt>(this - y)</tt>.
-        /// </summary>
-        /// <param name="y">The subtrahend</param>
-        /// <returns><tt>(this - y)</tt></returns>
-        [Obsolete("Use operator -")]
-        public DD Subtract(double y)
-        {
-            return Add(-y);
-        }
-
         ///**
         // * Subtracts the argument from the value of <tt>this</tt>.
         // * To prevent altering constants,
@@ -425,41 +378,10 @@ namespace NetTopologySuite.Mathematics
         //    return SelfAdd(-y, 0.0);
         //}
 
-        /// <summary>
-        /// Returns a <see cref="DD"/> whose value is <c>-this</c>.
-        /// </summary>
-        /// <returns><c>-this</c></returns>
-        public DD Negate()
+        public static DD operator-(DD val)
         {
-            if (IsNaN(this)) return this;
-            return new DD(-_hi, -_lo);
-        }
-
-        /**
-         * Returns a new DoubleDouble whose value is <tt>(this * y)</tt>.
-         *
-         * @param y the multiplicand
-         * @return <tt>(this * y)</tt>
-         */
-
-        [Obsolete("Use *-operator instead")]
-        public DD Multiply(DD y)
-        {
-            return this*y;
-            //return Copy(this).SelfMultiply(y);
-        }
-
-        /**
-         * Returns a new DoubleDouble whose value is <tt>(this * y)</tt>.
-         *
-         * @param y the multiplicand
-         * @return <tt>(this * y)</tt>
-         */
-        [Obsolete("Use *-operator instead")]
-        public DD Multiply(double y)
-        {
-            return this*y;
-            //return Copy(this).SelfMultiply(y, 0.0);
+            if (IsNaN(val)) return val;
+            return new DD(-val._hi, -val._lo);
         }
 
         ///**
@@ -539,43 +461,6 @@ namespace NetTopologySuite.Mathematics
             return this;
         }
         */
-        /// <summary>
-        /// Computes a new <see cref="DD"/> whose value is <tt>(this / y)</tt>.
-        /// </summary>
-        /// <param name="y">The divisor</param>
-        /// <returns>A new <see cref="DD"/> with the value <c>(this / y)</c></returns>
-        public DD Divide(DD y)
-        {
-            double hc, tc, hy, ty, C, c, U, u;
-            C = _hi/y._hi;
-            c = Split*C;
-            hc = c - C;
-            u = Split*y._hi;
-            hc = c - hc;
-            tc = C - hc;
-            hy = u - y._hi;
-            U = C*y._hi;
-            hy = u - hy;
-            ty = y._hi - hy;
-            u = (((hc*hy - U) + hc*ty) + tc*hy) + tc*ty;
-            c = ((((_hi - U) - u) + _lo) - C*y._lo)/y._hi;
-            u = C + c;
-
-            double zhi = u;
-            double zlo = (C - u) + c;
-            return new DD(zhi, zlo);
-        }
-
-        /// <summary>
-        /// Computes a new <see cref="DD"/> whose value is <tt>(this / y)</tt>.
-        /// </summary>
-        /// <param name="y">The divisor</param>
-        /// <returns>A new <see cref="DD"/> with the value <c>(this / y)</c></returns>
-        [Obsolete("Use /-operator instead")]
-        public DD Divide(double y)
-        {
-            return this/y;
-        }
 
         ///// <summary>
         ///// Divides this object by the argument, returning <tt>this</tt>.
@@ -825,7 +710,7 @@ namespace NetTopologySuite.Mathematics
         public DD Abs()
         {
             if (IsNaN(this)) return NaN;
-            return IsNegative ? Negate() : new DD(this);
+            return IsNegative ? -this : new DD(this);
         }
 
         /// <summary>
@@ -1426,7 +1311,7 @@ namespace NetTopologySuite.Mathematics
             else if (numDecPlaces > 0)
             {
                 var scale = Ten.Pow(numDecPlaces);
-                val2 = val.Divide(scale);
+                val2 = val / scale;
             }
             else if (numDecPlaces < 0)
             {
@@ -1436,7 +1321,7 @@ namespace NetTopologySuite.Mathematics
             // apply leading sign, if any
             if (isNegative)
             {
-                return val2.Negate();
+                return -val2;
             }
             return val2;
 

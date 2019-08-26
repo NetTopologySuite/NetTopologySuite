@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Distance;
+using NetTopologySuite.Geometries;
 
 namespace Open.Topology.TestRunner.Result
 {
@@ -27,7 +27,7 @@ namespace Open.Topology.TestRunner.Result
         /// <param name="expectedResult">The expected result of the test</param>
         /// <param name="tolerance">The tolerance for the test</param>
         /// <returns>true if the actual and expected results are considered equal</returns>
-        public bool IsMatch(IGeometry geom, string opName, object[] args,
+        public bool IsMatch(Geometry geom, string opName, object[] args,
                             GeometryResult actualResult, GeometryResult expectedResult,
                             double tolerance)
         {
@@ -49,7 +49,7 @@ namespace Open.Topology.TestRunner.Result
          */
         private const double MinDistanceTolerance = 1.0e-8;
 
-        public bool IsBufferResultMatch(IGeometry actualBuffer, IGeometry expectedBuffer, double distance)
+        public bool IsBufferResultMatch(Geometry actualBuffer, Geometry expectedBuffer, double distance)
         {
             if (actualBuffer.IsEmpty && expectedBuffer.IsEmpty)
                 return true;
@@ -70,7 +70,7 @@ namespace Open.Topology.TestRunner.Result
             return true;
         }
 
-        public bool IsSymDiffAreaInTolerance(IGeometry actualBuffer, IGeometry expectedBuffer)
+        public bool IsSymDiffAreaInTolerance(Geometry actualBuffer, Geometry expectedBuffer)
         {
             double area = expectedBuffer.Area;
             var diff = actualBuffer.SymmetricDifference(expectedBuffer);
@@ -88,7 +88,7 @@ namespace Open.Topology.TestRunner.Result
             return frac < MaxRelativeAreaDifference;
         }
 
-        public bool IsBoundaryHausdorffDistanceInTolerance(IGeometry actualBuffer, IGeometry expectedBuffer,
+        public bool IsBoundaryHausdorffDistanceInTolerance(Geometry actualBuffer, Geometry expectedBuffer,
                                                            double distance)
         {
             var actualBdy = actualBuffer.Boundary;
@@ -104,7 +104,7 @@ namespace Open.Topology.TestRunner.Result
             return true;
         }
 
-        public bool IsMatch(IGeometry geom, string opName, object[] args, IResult actualResult, IResult expectedResult, double tolerance)
+        public bool IsMatch(Geometry geom, string opName, object[] args, IResult actualResult, IResult expectedResult, double tolerance)
         {
             return IsMatch(geom, opName, args, actualResult as GeometryResult, expectedResult as GeometryResult,
                            tolerance);

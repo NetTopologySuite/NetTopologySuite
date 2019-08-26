@@ -1,6 +1,4 @@
-﻿using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
+﻿using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
@@ -16,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         {
             var geom = reader.Read(wkt);
             Assert.AreEqual(expectedLoc, RayCrossingCounter.LocatePointInRing(pt, geom.Coordinates));
-            var poly = geom as IPolygon;
+            var poly = geom as Polygon;
             if (poly == null)
                 return;
 

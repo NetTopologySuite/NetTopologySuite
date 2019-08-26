@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Index.KdTree
@@ -31,7 +29,7 @@ namespace NetTopologySuite.Index.KdTree
         /// </summary>
         /// <param name="kdnodes">A collection of nodes</param>
         /// <returns>An array of the coordinates represented by the nodes</returns>
-        public static Coordinate[] ToCoordinates(ICollection<KdNode<T>> kdnodes)
+        public static Coordinate[] ToCoordinates(IEnumerable<KdNode<T>> kdnodes)
         {
             return ToCoordinates(kdnodes, false);
         }
@@ -46,7 +44,7 @@ namespace NetTopologySuite.Index.KdTree
         /// <param name="includeRepeated">true if repeated nodes should
         /// be included multiple times</param>
         /// <returns>An array of the coordinates represented by the nodes</returns>
-        public static Coordinate[] ToCoordinates(ICollection<KdNode<T>> kdnodes, bool includeRepeated)
+        public static Coordinate[] ToCoordinates(IEnumerable<KdNode<T>> kdnodes, bool includeRepeated)
         {
             var coord = new CoordinateList();
             foreach (var node in kdnodes)

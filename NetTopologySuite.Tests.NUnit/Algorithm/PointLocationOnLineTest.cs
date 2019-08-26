@@ -1,6 +1,4 @@
-﻿using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
+﻿using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
@@ -8,7 +6,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     /// <summary>
     /// Tests <see cref="PointLocation.IsOnLine(Coordinate, Coordinate[])"/> and
-    /// <see cref="PointLocation.IsOnLine(Coordinate, ICoordinateSequence)"/>
+    /// <see cref="PointLocation.IsOnLine(Coordinate, CoordinateSequence)"/>
     /// </summary>
     /// <version>1.15</version>
     public class PointLocationOnLineTest : GeometryTestCase
@@ -34,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         void CheckOnLine(double x, double y, string wktLine, bool expected)
         {
-            var line = (ILineString) Read(wktLine);
+            var line = (LineString) Read(wktLine);
 
             Assert.AreEqual(expected, PointLocation.IsOnLine(new Coordinate(x, y), line.Coordinates));
             Assert.AreEqual(expected, PointLocation.IsOnLine(new Coordinate(x, y), line.CoordinateSequence));

@@ -1,5 +1,4 @@
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 
@@ -12,8 +11,8 @@ namespace NetTopologySuite.Utilities
     /// </summary>
     public class GeometricShapeFactory
     {
-        protected IGeometryFactory GeomFact;
-        protected IPrecisionModel PrecModel = null;
+        protected GeometryFactory GeomFact;
+        protected PrecisionModel PrecModel = null;
         private readonly Dimensions _dim = new Dimensions();
         private int _nPts = 100;
 
@@ -29,7 +28,7 @@ namespace NetTopologySuite.Utilities
         /// Create a shape factory which will create shapes using the given GeometryFactory.
         /// </summary>
         /// <param name="geomFact">The factory to use.</param>
-        public GeometricShapeFactory(IGeometryFactory geomFact)
+        public GeometricShapeFactory(GeometryFactory geomFact)
         {
             GeomFact = geomFact;
             PrecModel = geomFact.PrecisionModel;
@@ -108,7 +107,7 @@ namespace NetTopologySuite.Utilities
             set => _rotationAngle = value;
         }
 
-        protected IGeometry Rotate(IGeometry geom)
+        protected Geometry Rotate(Geometry geom)
         {
             if (_rotationAngle != 0.0)
             {
@@ -135,7 +134,7 @@ namespace NetTopologySuite.Utilities
         /// Creates a rectangular <c>Polygon</c>.
         /// </summary>
         /// <returns>A rectangular polygon.</returns>
-        public IPolygon CreateRectangle()
+        public Polygon CreateRectangle()
         {
             int i;
             int ipt = 0;
@@ -171,18 +170,18 @@ namespace NetTopologySuite.Utilities
                 double y = env.MaxY - i * ySegLen;
                 pts[ipt++] = CreateCoord(x, y);
             }
-            pts[ipt] = new Coordinate(pts[0]);
+            pts[ipt] = pts[0].Copy();
 
             var ring = GeomFact.CreateLinearRing(pts);
             var poly = GeomFact.CreatePolygon(ring);
-            return (IPolygon) Rotate(poly);
+            return (Polygon) Rotate(poly);
         }
 
         /// <summary>
         /// Creates a circular <c>Polygon</c>.
         /// </summary>
         /// <returns>A circular polygon.</returns>
-        public IPolygon CreateCircle()
+        public Polygon CreateCircle()
         {
             var env = _dim.Envelope;
             double xRadius = env.Width / 2.0;
@@ -205,7 +204,7 @@ namespace NetTopologySuite.Utilities
 
             var ring = GeomFact.CreateLinearRing(pts);
             var poly = GeomFact.CreatePolygon(ring);
-            return (IPolygon) Rotate(poly);
+            return (Polygon) Rotate(poly);
         }
 
         /// <summary>
@@ -214,19 +213,7 @@ namespace NetTopologySuite.Utilities
         /// result will be a circle.
         /// </summary>
         /// <returns>An an ellipse or circle.</returns>
-        [Obsolete("Use CreateEllipse")]
-        public IPolygon CeateEllipse()
-        {
-            return CreateEllipse();
-        }
-
-        /// <summary>
-        /// Creates an elliptical <c>Polygon</c>.
-        /// If the supplied envelope is square the
-        /// result will be a circle.
-        /// </summary>
-        /// <returns>An an ellipse or circle.</returns>
-        public IPolygon CreateEllipse()
+        public Polygon CreateEllipse()
         {
             var env = _dim.Envelope;
             double xRadius = env.Width / 2.0;
@@ -244,18 +231,18 @@ namespace NetTopologySuite.Utilities
                 double y = yRadius * Math.Sin(ang) + centreY;
                 pts[iPt++] = CreateCoord(x, y);
             }
-            pts[iPt] = new Coordinate(pts[0]);
+            pts[iPt] = pts[0].Copy();
 
             var ring = GeomFact.CreateLinearRing(pts);
             var poly = GeomFact.CreatePolygon(ring);
-            return (IPolygon) Rotate(poly);
+            return (Polygon) Rotate(poly);
         }
 
         /// <summary>
         /// Creates a squircular <see cref="Polygon"/>.
         /// </summary>
         /// <returns>a squircle</returns>
-        public IPolygon CreateSquircle()
+        public Polygon CreateSquircle()
         {
             return CreateSupercircle(4);
         }
@@ -265,7 +252,7 @@ namespace NetTopologySuite.Utilities
         /// of a given positive power.
         /// </summary>
         /// <returns>a supercircle</returns>
-        public IPolygon CreateSupercircle(double power)
+        public Polygon CreateSupercircle(double power)
         {
             double recipPow = 1.0 / power;
 
@@ -304,11 +291,11 @@ namespace NetTopologySuite.Utilities
                 pts[6 * nSegsInOct + i] = CreateCoordTrans(-y, x, centre);
                 pts[8 * nSegsInOct - i] = CreateCoordTrans(-x, y, centre);
             }
-            pts[pts.Length - 1] = new Coordinate(pts[0]);
+            pts[pts.Length - 1] = pts[0].Copy();
 
             var ring = GeomFact.CreateLinearRing(pts);
             var poly = GeomFact.CreatePolygon(ring);
-            return (IPolygon) Rotate(poly);
+            return (Polygon) Rotate(poly);
         }
 
         /// <summary>
@@ -319,7 +306,7 @@ namespace NetTopologySuite.Utilities
         /// <param name="startAng">Start angle in radians</param>
         /// <param name="angExtent">Size of angle in radians</param>
         /// <returns></returns>
-        public ILineString CreateArc(double startAng, double angExtent)
+        public LineString CreateArc(double startAng, double angExtent)
         {
             var env = _dim.Envelope;
             double xRadius = env.Width / 2.0;
@@ -344,7 +331,7 @@ namespace NetTopologySuite.Utilities
                 pts[iPt++] = pt;
             }
             var line = GeomFact.CreateLineString(pts);
-            return (ILineString) Rotate(line);
+            return (LineString) Rotate(line);
         }
 
         /// <summary>
@@ -357,7 +344,7 @@ namespace NetTopologySuite.Utilities
         /// <param name="startAng">Start angle in radians</param>
         /// <param name="angExtent">Size of angle in radians</param>
         /// <returns>An elliptical arc polygon</returns>
-        public IPolygon CreateArcPolygon(double startAng, double angExtent)
+        public Polygon CreateArcPolygon(double startAng, double angExtent)
         {
             var env = _dim.Envelope;
             double xRadius = env.Width / 2.0;
@@ -388,7 +375,7 @@ namespace NetTopologySuite.Utilities
             pts[iPt] = CreateCoord(centreX, centreY);
             var ring = GeomFact.CreateLinearRing(pts);
             var geom = GeomFact.CreatePolygon(ring);
-            return (IPolygon) Rotate(geom);
+            return (Polygon) Rotate(geom);
         }
 
         protected class Dimensions
@@ -461,7 +448,7 @@ namespace NetTopologySuite.Utilities
                     _width = value.Width;
                     _height = value.Height;
                     _base = new Coordinate(value.MinX, value.MinY);
-                    _centre = new Coordinate(value.Centre);
+                    _centre = value.Centre.Copy();
                 }
             }
         }

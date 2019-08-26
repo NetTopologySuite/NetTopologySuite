@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using GeoAPI.Geometries;
-using NUnit.Framework;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 {
@@ -21,10 +20,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
     {
         private const int MaxIter = 50;
 
-        private static readonly IPrecisionModel PrecModel = new PrecisionModel();
-        //private static IPrecisionModel PrecModel = new PrecisionModel(10);
+        private static readonly PrecisionModel PrecModel = new PrecisionModel();
+        //private static PrecisionModel PrecModel = new PrecisionModel(10);
 
-        private static readonly IGeometryFactory Factory = new GeometryFactory(PrecModel, 0);
+        private static readonly GeometryFactory Factory = new GeometryFactory(PrecModel, 0);
         private static readonly WKTReader WktReader = new WKTReader(Factory);
         //private static WKTWriter wktWriter = new WKTWriter();
 
@@ -32,8 +31,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 
         private bool _testFailed;
 
-        [TestAttribute]
-        [CategoryAttribute("Stress")]
+        [Test]
+        [Category("Stress")]
         public void Test()
         {
             //String geomStr;
@@ -56,7 +55,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             Test(g);
         }
 
-        private IGeometry GetSampleGeometry()
+        private Geometry GetSampleGeometry()
         {
             string wkt;
             // triangle
@@ -72,7 +71,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             //star polygon with NO hole, 10x size
             // wkt ="POLYGON ((2600 4000, 2200 3000, 800 3000, 1800 2200, 400 2000, 1800 1600, 600 200, 2000 800, 2800 200, 2600 1400, 4400 200, 3400 1800, 5200 1600, 2800 2200, 4600 3400, 3000 3000, 2600 4000))";
 
-            IGeometry g = null;
+            Geometry g = null;
             try
             {
                 g = WktReader.Read(wkt);
@@ -85,7 +84,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             return g;
         }
 
-        public void Test(IGeometry g)
+        public void Test(Geometry g)
         {
             int maxCount = MaxIter;
             //doIteratedBuffer(g, 1, -120.01, maxCount);
@@ -97,7 +96,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             }
         }
 
-        public void DoIteratedBuffer(IGeometry g, double initDist, double distanceInc, int maxCount)
+        public void DoIteratedBuffer(Geometry g, double initDist, double distanceInc, int maxCount)
         {
             int i = 0;
             double dist = initDist;
@@ -114,7 +113,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             }
         }
 
-        public void DoAlternatingIteratedBuffer(IGeometry g, double dist, int maxCount)
+        public void DoAlternatingIteratedBuffer(Geometry g, double dist, int maxCount)
         {
             int i = 0;
             while (i < maxCount)
@@ -130,7 +129,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             }
         }
 
-        private IGeometry GetBuffer(IGeometry geom, double dist)
+        private Geometry GetBuffer(Geometry geom, double dist)
         {
             var buf = geom.Buffer(dist);
             //System.out.println(buf);

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 
@@ -27,9 +26,9 @@ namespace NetTopologySuite.Operation.Predicate
         /// <param name="seq"></param>
         /// <param name="lines"></param>
         /// <returns></returns>
-        public bool HasIntersectionWithLineStrings(ICoordinateSequence seq, ICollection<IGeometry> lines)
+        public bool HasIntersectionWithLineStrings(CoordinateSequence seq, ICollection<Geometry> lines)
         {
-            foreach (ILineString line in lines)
+            foreach (LineString line in lines)
             {
                 HasIntersection(seq, line.CoordinateSequence);
                 if (_hasIntersection)
@@ -44,7 +43,7 @@ namespace NetTopologySuite.Operation.Predicate
         /// <param name="seq0"></param>
         /// <param name="seq1"></param>
         /// <returns></returns>
-        public bool HasIntersection(ICoordinateSequence seq0, ICoordinateSequence seq1)
+        public bool HasIntersection(CoordinateSequence seq0, CoordinateSequence seq1)
         {
             for (int i = 1; i < seq0.Count && ! _hasIntersection; i++)
             {

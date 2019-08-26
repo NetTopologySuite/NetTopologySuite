@@ -1,7 +1,6 @@
-﻿using GeoAPI.Geometries;
-using NUnit.Framework;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Tests.Various
 {
@@ -13,7 +12,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         {
             var sequence = CoordinateArraySequenceFactory.Instance.Create(0, Ordinates.XY);
             var factory = GeometryFactory.Default;
-            IGeometry empty = factory.CreatePoint(sequence);
+            Geometry empty = factory.CreatePoint(sequence);
             Assert.That(empty, Is.Not.Null);
             Assert.That(empty.IsValid, Is.True);
             Assert.That(empty.IsEmpty, Is.True);

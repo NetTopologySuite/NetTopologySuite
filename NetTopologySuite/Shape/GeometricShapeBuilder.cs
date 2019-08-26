@@ -1,5 +1,4 @@
 ﻿using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Shape
@@ -7,9 +6,9 @@ namespace NetTopologySuite.Shape
     public abstract class GeometricShapeBuilder
     {
         private Envelope _extent = new Envelope(0, 1, 0, 1);
-        protected IGeometryFactory GeomFactory;
+        protected GeometryFactory GeomFactory;
 
-        protected GeometricShapeBuilder(IGeometryFactory geomFactory)
+        protected GeometricShapeBuilder(GeometryFactory geomFactory)
         {
             GeomFactory = geomFactory;
         }
@@ -47,13 +46,13 @@ namespace NetTopologySuite.Shape
         }
 
         /// <summary>
-        /// Gets or sets the total number of points in the created <see cref="IGeometry"/>.
+        /// Gets or sets the total number of points in the created <see cref="Geometry"/>.
         /// The created geometry will have no more than this number of points,
         /// unless more are needed to create a valid geometry.
         /// </summary>
         public int NumPoints { get; set; }
 
-        public abstract IGeometry GetGeometry();
+        public abstract Geometry GetGeometry();
 
         protected Coordinate CreateCoord(double x, double y)
         {

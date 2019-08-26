@@ -1,6 +1,4 @@
 using System;
-using GeoAPI.Geometries;
-using GeoAPI.Operation.Buffer;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
 using NetTopologySuite.Noding;
@@ -23,18 +21,18 @@ namespace NetTopologySuite.Operation.Buffer
     /// </para>
     /// <para>
     /// The buffer operation always returns a polygonal result.
-    /// The negative or zero-distance buffer of lines and points is always an empty <see cref="IPolygon" />.
+    /// The negative or zero-distance buffer of lines and points is always an empty <see cref="Polygon" />.
     /// </para>
     /// <para>
     /// Since true buffer curves may contain circular arcs,
     /// computed buffer polygons are only approximations to the true geometry.
     /// The user can control the accuracy of the approximation by specifying
     /// the number of linear segments used to approximate arcs.
-    /// This is specified via <see cref="IBufferParameters.QuadrantSegments"/>
+    /// This is specified via <see cref="BufferParameters.QuadrantSegments"/>
     /// or <see cref="QuadrantSegments"/>.
     /// </para>
     /// <para>
-    /// The <see cref="IBufferParameters.EndCapStyle"/> of a linear buffer may be specified.
+    /// The <see cref="BufferParameters.EndCapStyle"/> of a linear buffer may be specified.
     /// The following end cap styles are supported:
     /// <ul>
     /// <li><see cref="EndCapStyle.Round" /> - the usual round end caps</li>
@@ -43,11 +41,11 @@ namespace NetTopologySuite.Operation.Buffer
     /// </ul>
     /// </para>
     /// <para>
-    /// The <see cref="IBufferParameters.JoinStyle"/> of the corners in a buffer may be specified.
+    /// The <see cref="BufferParameters.JoinStyle"/> of the corners in a buffer may be specified.
     /// The following join styles are supported:
     /// <ul>
     /// <li><see cref="JoinStyle.Round" /> - the usual round join</li>
-    /// <li><see cref="JoinStyle.Mitre" /> - corners are "sharp" (up to a <see cref="IBufferParameters.MitreLimit"/> distance limit})</li>
+    /// <li><see cref="JoinStyle.Mitre" /> - corners are "sharp" (up to a <see cref="BufferParameters.MitreLimit"/> distance limit})</li>
     /// <li><see cref="JoinStyle.Bevel" /> - corners are beveled (clipped off)</li>
     /// </ul>
     /// </para>
@@ -55,7 +53,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// The buffer algorithm can perform simplification on the input to increase performance.
     /// The simplification is performed a way that always increases the buffer area
     /// (so that the simplified input covers the original input).
-    /// The degree of simplification can be specified with <see cref="IBufferParameters.SimplifyFactor"/>,
+    /// The degree of simplification can be specified with <see cref="BufferParameters.SimplifyFactor"/>,
     /// with a <see cref="BufferParameters.DefaultSimplifyFactor"/> used otherwise.
     /// Note that if the buffer distance is zero then so is the computed simplify tolerance,
     /// no matter what the simplify factor.
@@ -88,7 +86,7 @@ namespace NetTopologySuite.Operation.Buffer
         ///          the precision determined by the computed scale factor</param>
         ///
         /// <returns> a scale factor for the buffer computation</returns>
-        private static double PrecisionScaleFactor(IGeometry g,
+        private static double PrecisionScaleFactor(Geometry g,
             double distance,
           int maxPrecisionDigits)
         {
@@ -133,7 +131,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="g"> the geometry to buffer</param>
         /// <param name="distance"> the buffer distance</param>
         /// <returns> the buffer of the input geometry</returns>
-        public static IGeometry Buffer(IGeometry g, double distance)
+        public static Geometry Buffer(Geometry g, double distance)
         {
             var gBuf = new BufferOp(g);
             var geomBuf = gBuf.GetResultGeometry(distance);
@@ -150,7 +148,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="distance"> the buffer distance</param>
         /// <param name="parameters"> the buffer parameters to use</param>
         /// <returns> the buffer of the input geometry</returns>
-        public static IGeometry Buffer(IGeometry g, double distance, IBufferParameters parameters)
+        public static Geometry Buffer(Geometry g, double distance, BufferParameters parameters)
         {
             var bufOp = new BufferOp(g, parameters);
             var geomBuf = bufOp.GetResultGeometry(distance);
@@ -165,7 +163,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="distance"> the buffer distance</param>
         /// <param name="quadrantSegments"> the number of segments used to approximate a quarter circle</param>
         /// <returns> the buffer of the input geometry</returns>
-        public static IGeometry Buffer(IGeometry g, double distance, int quadrantSegments)
+        public static Geometry Buffer(Geometry g, double distance, int quadrantSegments)
         {
             var bufOp = new BufferOp(g);
             bufOp.QuadrantSegments = quadrantSegments;
@@ -173,40 +171,19 @@ namespace NetTopologySuite.Operation.Buffer
             return geomBuf;
         }
 
-        /// <summary>
-        /// Computes the buffer for a geometry for a given buffer distance
-        /// and accuracy of approximation.
-        /// </summary>
-        /// <param name="g"> the geometry to buffer</param>
-        /// <param name="distance"> the buffer distance</param>
-        /// <param name="quadrantSegments"> the number of segments used to approximate a quarter circle</param>
-        /// <param name="endCapStyle"> the end cap style to use</param>
-        /// <returns> the buffer of the input geometry</returns>
-        [Obsolete("use Buffer(IGeometry, distance, IBufferParameters) instead!")]
-        public static IGeometry Buffer(IGeometry g, double distance,
-          int quadrantSegments,
-          BufferStyle endCapStyle)
-        {
-            var bufOp = new BufferOp(g);
-            bufOp.QuadrantSegments = quadrantSegments;
-            bufOp.BufferStyle = endCapStyle;
-            var geomBuf = bufOp.GetResultGeometry(distance);
-            return geomBuf;
-        }
-
-        private readonly IGeometry _argGeom;
+        private readonly Geometry _argGeom;
         private double _distance;
 
-        private readonly IBufferParameters _bufParams = new BufferParameters();
+        private readonly BufferParameters _bufParams = new BufferParameters();
 
-        private IGeometry _resultGeometry;
+        private Geometry _resultGeometry;
         private Exception _saveException;   // debugging only
 
         /// <summary>
         /// Initializes a buffer computation for the given geometry
         /// </summary>
         /// <param name="g"> the geometry to buffer</param>
-        public BufferOp(IGeometry g)
+        public BufferOp(Geometry g)
         {
             _argGeom = g;
         }
@@ -217,22 +194,10 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <param name="g"> the geometry to buffer</param>
         /// <param name="bufParams"> the buffer parameters to use</param>
-        public BufferOp(IGeometry g, IBufferParameters bufParams)
+        public BufferOp(Geometry g, BufferParameters bufParams)
         {
             _argGeom = g;
             _bufParams = bufParams;
-        }
-
-        /// <summary>
-        /// Specifies the end cap style of the generated buffer.
-        /// The styles supported are <see cref="GeoAPI.Operations.Buffer.BufferStyle.CapRound" />, <see cref="GeoAPI.Operations.Buffer.BufferStyle.CapButt" />, and <see cref="GeoAPI.Operations.Buffer.BufferStyle.CapSquare" />.
-        /// The default is <see cref="GeoAPI.Operations.Buffer.BufferStyle.CapRound" />.
-        /// </summary>
-        [Obsolete]
-        public BufferStyle BufferStyle
-        {
-            get => (BufferStyle)_bufParams.EndCapStyle;
-            set => _bufParams.EndCapStyle = (EndCapStyle)value;
         }
 
         /// <summary>
@@ -249,7 +214,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <param name="distance"> the buffer distance</param>
         /// <returns> the buffer of the input geometry</returns>
-        public IGeometry GetResultGeometry(double distance)
+        public Geometry GetResultGeometry(double distance)
         {
             _distance = distance;
             ComputeGeometry();
@@ -317,7 +282,7 @@ namespace NetTopologySuite.Operation.Buffer
             BufferFixedPrecision(fixedPrecModel);
         }
 
-        private void BufferFixedPrecision(IPrecisionModel fixedPrecModel)
+        private void BufferFixedPrecision(PrecisionModel fixedPrecModel)
         {
             var noder = new ScaledNoder(new MCIndexSnapRounder(new PrecisionModel(1.0)),
                                           fixedPrecModel.Scale);

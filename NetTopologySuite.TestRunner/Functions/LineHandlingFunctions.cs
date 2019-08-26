@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Dissolve;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Operation.Linemerge;
 
@@ -8,7 +8,7 @@ namespace Open.Topology.TestRunner.Functions
 {
     public static class LineHandlingFunctions
     {
-        public static IGeometry MergeLines(IGeometry g)
+        public static Geometry MergeLines(Geometry g)
         {
             var merger = new LineMerger();
             merger.Add(g);
@@ -16,24 +16,24 @@ namespace Open.Topology.TestRunner.Functions
             return g.Factory.BuildGeometry(lines);
         }
 
-        public static IGeometry SequenceLines(IGeometry g)
+        public static Geometry SequenceLines(Geometry g)
         {
             var ls = new LineSequencer();
             ls.Add(g);
             return ls.GetSequencedLineStrings();
         }
 
-        public static IGeometry ExtractLines(IGeometry g)
+        public static Geometry ExtractLines(Geometry g)
         {
             var lines = LinearComponentExtracter.GetLines(g);
             return g.Factory.BuildGeometry(lines);
         }
 
-        public static IGeometry ExtractSegments(IGeometry g)
+        public static Geometry ExtractSegments(Geometry g)
         {
             var lines = LinearComponentExtracter.GetLines(g);
-            var segments = new List<IGeometry>();
-            foreach (ILineString line in lines)
+            var segments = new List<Geometry>();
+            foreach (LineString line in lines)
             {
                 for (int i = 1; i < line.NumPoints; i++)
                 {
@@ -45,11 +45,11 @@ namespace Open.Topology.TestRunner.Functions
             }
             return g.Factory.BuildGeometry(segments);
         }
-        public static IGeometry ExtractChains(IGeometry g, int maxChainSize)
+        public static Geometry ExtractChains(Geometry g, int maxChainSize)
         {
             var lines = LinearComponentExtracter.GetLines(g);
-            var chains = new List<IGeometry>();
-            foreach (ILineString line in lines)
+            var chains = new List<Geometry>();
+            foreach (LineString line in lines)
             {
                 for (int i = 0; i < line.NumPoints - 1; i += maxChainSize)
                 {
@@ -60,7 +60,7 @@ namespace Open.Topology.TestRunner.Functions
             return g.Factory.BuildGeometry(chains);
         }
 
-        private static ILineString ExtractChain(ILineString line, int index, int maxChainSize)
+        private static LineString ExtractChain(LineString line, int index, int maxChainSize)
         {
             int size = maxChainSize + 1;
             if (index + size > line.NumPoints)
@@ -73,7 +73,7 @@ namespace Open.Topology.TestRunner.Functions
             return line.Factory.CreateLineString(pts);
         }
 
-        public static IGeometry Dissolve(IGeometry geom)
+        public static Geometry Dissolve(Geometry geom)
         {
             return LineDissolver.Dissolve(geom);
         }

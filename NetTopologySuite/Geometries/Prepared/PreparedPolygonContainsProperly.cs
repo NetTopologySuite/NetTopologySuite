@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Noding;
 
 namespace NetTopologySuite.Geometries.Prepared
@@ -25,12 +23,12 @@ namespace NetTopologySuite.Geometries.Prepared
     /// <author>Martin Davis</author>
     internal class PreparedPolygonContainsProperly : PreparedPolygonPredicate
     {
-        /// <summary>Computes the <c>containsProperly</c> predicate between a <see cref="PreparedPolygon"/> and a <see cref="IGeometry"/>.
+        /// <summary>Computes the <c>containsProperly</c> predicate between a <see cref="PreparedPolygon"/> and a <see cref="Geometry"/>.
         /// </summary>
         /// <param name="prep">The prepared polygon</param>
         /// <param name="geom">A test geometry</param>
         /// <returns>true if the polygon properly contains the geometry</returns>
-        public static bool ContainsProperly(PreparedPolygon prep, IGeometry geom)
+        public static bool ContainsProperly(PreparedPolygon prep, Geometry geom)
         {
             var polyInt = new PreparedPolygonContainsProperly(prep);
             return polyInt.ContainsProperly(geom);
@@ -50,7 +48,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </summary>
         /// <param name="geom">The test geometry</param>
         /// <returns>true if the polygon properly contains the geometry</returns>
-        public bool ContainsProperly(IGeometry geom)
+        public bool ContainsProperly(Geometry geom)
         {
             /*
              * Do point-in-poly tests first, since they are cheaper and may result

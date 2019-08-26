@@ -1,11 +1,11 @@
 ﻿using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Distance;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm.Match
 {
     /// <summary>
-    /// Measures the degree of similarity between two <see cref="IGeometry"/>s using the Hausdorff distance metric.
+    /// Measures the degree of similarity between two <see cref="Geometry"/>s using the Hausdorff distance metric.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -32,7 +32,7 @@ namespace NetTopologySuite.Algorithm.Match
          */
         private static readonly double DensifyFraction = 0.25;
 
-        public double Measure(IGeometry g1, IGeometry g2)
+        public double Measure(Geometry g1, Geometry g2)
         {
             double distance = DiscreteHausdorffDistance.Distance(g1, g2, DensifyFraction);
 

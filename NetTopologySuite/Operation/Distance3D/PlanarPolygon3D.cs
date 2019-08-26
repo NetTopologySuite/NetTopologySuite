@@ -1,5 +1,5 @@
-﻿using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
+﻿using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Operation.Distance3D
@@ -7,7 +7,7 @@ namespace NetTopologySuite.Operation.Distance3D
     /// <summary>
     /// Models a polygon lying in a plane in 3-dimensional Cartesian space.
     /// The polygon representation is supplied
-    /// by a <see cref="IPolygon"/>,
+    /// by a <see cref="Polygon"/>,
     /// containing coordinates with XYZ ordinates.
     /// 3D polygons are assumed to lie in a single plane.
     /// The plane best fitting the polygon coordinates is
@@ -18,10 +18,10 @@ namespace NetTopologySuite.Operation.Distance3D
     {
 
         private readonly Plane3D _plane;
-        private readonly IPolygon _poly;
+        private readonly Polygon _poly;
         private readonly Plane _facingPlane = Mathematics.Plane.Undefined;
 
-        public PlanarPolygon3D(IPolygon poly)
+        public PlanarPolygon3D(Polygon poly)
         {
             _poly = poly;
             _plane = FindBestFitPlane(poly);
@@ -40,7 +40,7 @@ namespace NetTopologySuite.Operation.Distance3D
         /// </summary>
         /// <param name="poly">The polygon to determine the plane for</param>
         /// <returns>The best-fit plane</returns>
-        private static Plane3D FindBestFitPlane(IPolygon poly)
+        private static Plane3D FindBestFitPlane(Polygon poly)
         {
             var seq = poly.ExteriorRing.CoordinateSequence;
             var basePt = AveragePoint(seq);
@@ -58,12 +58,12 @@ namespace NetTopologySuite.Operation.Distance3D
          * @param seq the sequence of coordinates for the polygon
          * @return a normal vector
          */
-        private static Vector3D AverageNormal(ICoordinateSequence seq)
+        private static Vector3D AverageNormal(CoordinateSequence seq)
         {
             int n = seq.Count;
-            var sum = new Coordinate(0, 0, 0);
-            var p1 = new Coordinate(0, 0, 0);
-            var p2 = new Coordinate(0, 0, 0);
+            var sum = new CoordinateZ(0, 0, 0);
+            var p1 = new CoordinateZ(0, 0, 0);
+            var p2 = new CoordinateZ(0, 0, 0);
             for (int i = 0; i < n - 1; i++)
             {
                 seq.GetCoordinate(i, p1);
@@ -88,15 +88,15 @@ namespace NetTopologySuite.Operation.Distance3D
          * @param seq a coordinate sequence
          * @return a Coordinate with averaged ordinates
          */
-        private static Coordinate AveragePoint(ICoordinateSequence seq)
+        private static Coordinate AveragePoint(CoordinateSequence seq)
         {
-            var a = new Coordinate(0, 0, 0);
+            var a = new CoordinateZ(0, 0, 0);
             int n = seq.Count;
             for (int i = 0; i < n; i++)
             {
-                a.X += seq.GetOrdinate(i, Ordinate.X);
-                a.Y += seq.GetOrdinate(i, Ordinate.Y);
-                a.Z += seq.GetOrdinate(i, Ordinate.Z);
+                a.X += seq.GetOrdinate(i, 0);
+                a.Y += seq.GetOrdinate(i, 1);
+                a.Z += seq.GetOrdinate(i, 2);
             }
             a.X /= n;
             a.Y /= n;
@@ -106,7 +106,7 @@ namespace NetTopologySuite.Operation.Distance3D
 
         public Plane3D Plane => _plane;
 
-        public IPolygon Polygon => _poly;
+        public Polygon Polygon => _poly;
 
         public bool Intersects(Coordinate intPt)
         {
@@ -121,7 +121,7 @@ namespace NetTopologySuite.Operation.Distance3D
             return true;
         }
 
-        private Location Locate(Coordinate pt, ILineString ring)
+        private Location Locate(Coordinate pt, LineString ring)
         {
             var seq = ring.CoordinateSequence;
             var seqProj = Project(seq, _facingPlane);
@@ -129,7 +129,7 @@ namespace NetTopologySuite.Operation.Distance3D
             return RayCrossingCounter.LocatePointInRing(ptProj, seqProj);
         }
 
-        public bool Intersects(Coordinate pt, ILineString ring)
+        public bool Intersects(Coordinate pt, LineString ring)
         {
             var seq = ring.CoordinateSequence;
             var seqProj = Project(seq, _facingPlane);
@@ -137,7 +137,7 @@ namespace NetTopologySuite.Operation.Distance3D
             return Location.Exterior != RayCrossingCounter.LocatePointInRing(ptProj, seqProj);
         }
 
-        private static ICoordinateSequence Project(ICoordinateSequence seq, Plane facingPlane)
+        private static CoordinateSequence Project(CoordinateSequence seq, Plane facingPlane)
         {
             switch (facingPlane)
             {

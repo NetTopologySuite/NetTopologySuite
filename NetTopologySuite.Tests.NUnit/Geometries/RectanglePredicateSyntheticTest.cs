@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
@@ -12,7 +10,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
      * Test spatial predicate optimizations for rectangles by
      * synthesizing an exhaustive set of test cases.
      */
-    [TestFixtureAttribute]
+    [TestFixture]
     public class RectanglePredicateSyntheticTest
     {
         private WKTReader rdr = new WKTReader();
@@ -26,7 +24,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         double bufferWidth = 1.0;
 
         Envelope rectEnv;
-        IGeometry rect;
+        Geometry rect;
 
         public RectanglePredicateSyntheticTest()
         {
@@ -34,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             rect = fact.ToGeometry(rectEnv);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestLines()
         {
             //Console.WriteLine(rect);
@@ -46,7 +44,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             }
         }
 
-        [TestAttribute]
+        [Test]
         public void TestDenseLines()
         {
             //Console.WriteLine(rect);
@@ -61,7 +59,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             }
         }
 
-        [TestAttribute]
+        [Test]
         public void TestPolygons()
         {
             var testGeoms = getTestGeometries();
@@ -71,7 +69,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             }
         }
 
-        private List<IGeometry> getTestGeometries()
+        private List<Geometry> getTestGeometries()
         {
             var testEnv = new Envelope(rectEnv.MinX - bufSize, rectEnv.MaxX + bufSize,
                                             rectEnv.MinY - bufSize, rectEnv.MaxY + bufSize);
@@ -79,7 +77,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             return testGeoms;
         }
 
-        private void runRectanglePredicates(IGeometry rect, IGeometry testGeom)
+        private void runRectanglePredicates(Geometry rect, Geometry testGeom)
         {
             bool intersectsValue = rect.Intersects(testGeom);
             bool relateIntersectsValue = rect.Relate(testGeom).IsIntersects();
@@ -98,9 +96,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(containsOK);
         }
 
-        public List<IGeometry> CreateTestGeometries(Envelope env, double inc, double size)
+        public List<Geometry> CreateTestGeometries(Envelope env, double inc, double size)
         {
-            var testGeoms = new List<IGeometry>();
+            var testGeoms = new List<Geometry>();
 
             for (double y = env.MinY; y <= env.MaxY; y += inc)
             {
@@ -116,7 +114,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             return testGeoms;
         }
 
-        public IGeometry CreateAngle(Coordinate baseCoord, double size, int quadrant)
+        public Geometry CreateAngle(Coordinate baseCoord, double size, int quadrant)
         {
             int[,] factor = new int[,] {
                                     { 1, 0 },

@@ -1,4 +1,4 @@
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Precision
 {
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Precision
         /// <param name="geom0">The first Geometry.</param>
         /// <param name="geom1">The second Geometry.</param>
         /// <returns>The Geometry representing the set-theoretic intersection of the input Geometries.</returns>
-        public IGeometry Intersection(IGeometry geom0, IGeometry geom1)
+        public Geometry Intersection(Geometry geom0, Geometry geom1)
         {
             var geom = RemoveCommonBits(geom0, geom1);
             return ComputeResultPrecision(geom[0].Intersection(geom[1]));
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Precision
         /// <param name="geom0">The first Geometry.</param>
         /// <param name="geom1">The second Geometry.</param>
         /// <returns>The Geometry representing the set-theoretic union of the input Geometries.</returns>
-        public IGeometry Union(IGeometry geom0, IGeometry geom1)
+        public Geometry Union(Geometry geom0, Geometry geom1)
         {
             var geom = RemoveCommonBits(geom0, geom1);
             return ComputeResultPrecision(geom[0].Union(geom[1]));
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Precision
         /// <param name="geom0">The first Geometry.</param>
         /// <param name="geom1">The second Geometry, to be subtracted from the first.</param>
         /// <returns>The Geometry representing the set-theoretic difference of the input Geometries.</returns>
-        public IGeometry Difference(IGeometry geom0, IGeometry geom1)
+        public Geometry Difference(Geometry geom0, Geometry geom1)
         {
             var geom = RemoveCommonBits(geom0, geom1);
             return ComputeResultPrecision(geom[0].Difference(geom[1]));
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Precision
         /// <param name="geom0">The first Geometry.</param>
         /// <param name="geom1">The second Geometry.</param>
         /// <returns>The Geometry representing the set-theoretic symmetric difference of the input Geometries.</returns>
-        public IGeometry SymDifference(IGeometry geom0, IGeometry geom1)
+        public Geometry SymDifference(Geometry geom0, Geometry geom1)
         {
             var geom = RemoveCommonBits(geom0, geom1);
             return ComputeResultPrecision(geom[0].SymmetricDifference(geom[1]));
@@ -85,7 +85,7 @@ namespace NetTopologySuite.Precision
         /// <param name="geom0">The Geometry to buffer.</param>
         /// <param name="distance">The buffer distance.</param>
         /// <returns>The Geometry representing the buffer of the input Geometry.</returns>
-        public IGeometry Buffer(IGeometry geom0, double distance)
+        public Geometry Buffer(Geometry geom0, double distance)
         {
             var geom = RemoveCommonBits(geom0);
             return ComputeResultPrecision(geom.Buffer(distance));
@@ -99,7 +99,7 @@ namespace NetTopologySuite.Precision
         /// </summary>
         /// <param name="result">The result Geometry to modify.</param>
         /// <returns>The result Geometry with the required precision.</returns>
-        private IGeometry ComputeResultPrecision(IGeometry result)
+        private Geometry ComputeResultPrecision(Geometry result)
         {
             if (_returnToOriginalPrecision)
                 _cbr.AddCommonBits(result);
@@ -112,11 +112,11 @@ namespace NetTopologySuite.Precision
         /// </summary>
         /// <param name="geom0">The Geometry to remove common bits from.</param>
         /// <returns>A copy of the input Geometry with common bits removed.</returns>
-        private IGeometry RemoveCommonBits(IGeometry geom0)
+        private Geometry RemoveCommonBits(Geometry geom0)
         {
             _cbr = new CommonBitsRemover();
             _cbr.Add(geom0);
-            var geom = _cbr.RemoveCommonBits((IGeometry) geom0.Copy());
+            var geom = _cbr.RemoveCommonBits((Geometry) geom0.Copy());
             return geom;
         }
 
@@ -130,14 +130,14 @@ namespace NetTopologySuite.Precision
         /// An array containing copies
         /// of the input Geometry's with common bits removed.
         /// </returns>
-        private IGeometry[] RemoveCommonBits(IGeometry geom0, IGeometry geom1)
+        private Geometry[] RemoveCommonBits(Geometry geom0, Geometry geom1)
         {
             _cbr = new CommonBitsRemover();
             _cbr.Add(geom0);
             _cbr.Add(geom1);
-            var geom = new IGeometry[2];
-            geom[0] = _cbr.RemoveCommonBits((IGeometry) geom0.Copy());
-            geom[1] = _cbr.RemoveCommonBits((IGeometry) geom1.Copy());
+            var geom = new Geometry[2];
+            geom[0] = _cbr.RemoveCommonBits((Geometry) geom0.Copy());
+            geom[1] = _cbr.RemoveCommonBits((Geometry) geom1.Copy());
             return geom;
         }
     }

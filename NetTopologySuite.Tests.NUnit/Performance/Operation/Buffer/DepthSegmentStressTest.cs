@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NetTopologySuite.Geometries;
-using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 {

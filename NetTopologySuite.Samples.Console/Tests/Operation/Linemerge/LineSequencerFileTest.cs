@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Linemerge;
@@ -10,7 +9,7 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
 {
     public class LineSequencerFileTest
     {
-        private readonly IGeometryFactory factory = new GeometryFactory(new PrecisionModel(10000));
+        private readonly GeometryFactory factory = new GeometryFactory(new PrecisionModel(10000));
 
         [TestCase("d:\\temp\\linestosequence.wkt")]
         public void TestWktFile(string file)

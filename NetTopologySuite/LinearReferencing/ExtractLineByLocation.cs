@@ -1,4 +1,3 @@
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 
@@ -11,7 +10,7 @@ namespace NetTopologySuite.LinearReferencing
     public class ExtractLineByLocation
     {
         /// <summary>
-        /// Computes the subline of a <see cref="ILineString" /> between
+        /// Computes the subline of a <see cref="LineString" /> between
         /// two <see cref="LinearLocation"/>s on the line.
         /// If the start location is after the end location,
         /// the computed linear geometry has reverse orientation to the input line.
@@ -20,19 +19,19 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="start">The start location.</param>
         /// <param name="end">The end location.</param>
         /// <returns>The extracted subline.</returns>
-        public static IGeometry Extract(IGeometry line, LinearLocation start, LinearLocation end)
+        public static Geometry Extract(Geometry line, LinearLocation start, LinearLocation end)
         {
             var ls = new ExtractLineByLocation(line);
             return ls.Extract(start, end);
         }
 
-        private readonly IGeometry _line;
+        private readonly Geometry _line;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtractLineByLocation"/> class.
         /// </summary>
         /// <param name="line"></param>
-        public ExtractLineByLocation(IGeometry line)
+        public ExtractLineByLocation(Geometry line)
         {
             _line = line;
         }
@@ -45,7 +44,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="start">The start location.</param>
         /// <param name="end">The end location.</param>
         /// <returns>A linear geometry.</returns>
-        public IGeometry Extract(LinearLocation start, LinearLocation end)
+        public Geometry Extract(LinearLocation start, LinearLocation end)
         {
             if (end.CompareTo(start) < 0)
                 return Reverse(ComputeLinear(end, start));
@@ -57,7 +56,7 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="linear"></param>
         /// <returns></returns>
-        private static IGeometry Reverse(IGeometry linear)
+        private static Geometry Reverse(Geometry linear)
         {
             if (!(linear is ILineal))
             {
@@ -67,10 +66,10 @@ namespace NetTopologySuite.LinearReferencing
             return linear.Reverse();
 
             /*
-            if (linear is ILineString)
-            return ((ILineString) linear).Reverse();
-            if (linear is IMultiLineString)
-            return ((IMultiLineString) linear).Reverse();
+            if (linear is LineString)
+            return ((LineString) linear).Reverse();
+            if (linear is MultiLineString)
+            return ((MultiLineString) linear).Reverse();
             Assert.ShouldNeverReachHere("non-linear geometry encountered");
             return null;
              */
@@ -83,7 +82,7 @@ namespace NetTopologySuite.LinearReferencing
         ///// <param name="start"></param>
         ///// <param name="end"></param>
         ///// <returns></returns>
-        //private ILineString ComputeLine(LinearLocation start, LinearLocation end)
+        //private LineString ComputeLine(LinearLocation start, LinearLocation end)
         //{
         //    var coordinates = _line.Coordinates;
         //    var newCoordinates = new CoordinateList();
@@ -130,7 +129,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="start"></param>
         /// <param name="end"></param>
         /// <returns></returns>
-        private IGeometry ComputeLinear(LinearLocation start, LinearLocation end)
+        private Geometry ComputeLinear(LinearLocation start, LinearLocation end)
         {
             var builder = new LinearGeometryBuilder(_line.Factory);
             builder.FixInvalidLines = true;

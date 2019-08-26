@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
-using Open.Topology.TestRunner.Utility;
 
 namespace Open.Topology.TestRunner.Functions
 {
@@ -10,7 +9,7 @@ namespace Open.Topology.TestRunner.Functions
     {
         private static Random RND = new Random();
 
-        public static IGeometry RandomPointsInGrid(IGeometry g, int nPts)
+        public static Geometry RandomPointsInGrid(Geometry g, int nPts)
         {
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
             var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
@@ -20,7 +19,7 @@ namespace Open.Topology.TestRunner.Functions
             double xLen = env.Width / nCell;
             double yLen = env.Height / nCell;
 
-            var pts = new List<IPoint>();
+            var pts = new List<Point>();
 
             for (int i = 0; i < nCell; i++)
             {
@@ -34,14 +33,14 @@ namespace Open.Topology.TestRunner.Functions
             return geomFact.BuildGeometry(pts.ToArray());
         }
 
-        public static IGeometry RandomPoints(IGeometry g, int nPts)
+        public static Geometry RandomPoints(Geometry g, int nPts)
         {
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
             var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
             double xLen = env.Width;
             double yLen = env.Height;
 
-            var pts = new List<IPoint>();
+            var pts = new List<Point>();
 
             for (int i = 0; i < nPts; i++)
             {
@@ -52,7 +51,7 @@ namespace Open.Topology.TestRunner.Functions
             return geomFact.BuildGeometry(pts.ToArray());
         }
 
-        public static IGeometry RandomRadialPoints(IGeometry g, int nPts)
+        public static Geometry RandomRadialPoints(Geometry g, int nPts)
         {
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
             var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
@@ -63,7 +62,7 @@ namespace Open.Topology.TestRunner.Functions
             double centreX = env.MinX + xLen / 2;
             double centreY = env.MinY + yLen / 2;
 
-            var pts = new List<IPoint>();
+            var pts = new List<Point>();
 
             for (int i = 0; i < nPts; i++)
             {
@@ -78,17 +77,28 @@ namespace Open.Topology.TestRunner.Functions
             return geomFact.BuildGeometry(pts.ToArray());
         }
 
-        public static IGeometry HaltonPoints(IGeometry g, int nPts)
+        /// <summary>
+        /// Create Halton points using bases 2 and 3.
+        /// </summary>
+        public static Geometry HaltonPoints(Geometry g, int nPts)
         {
             return HaltonPointsWithBases(g, nPts, 2, 3);
         }
 
-        public static IGeometry HaltonPoints57(IGeometry g, int nPts)
+        /// <summary>
+        /// Create Halton points using bases 5 and 7.
+        /// </summary>
+        public static Geometry HaltonPoints57(Geometry g, int nPts)
         {
             return HaltonPointsWithBases(g, nPts, 5, 7);
         }
 
-        public static IGeometry HaltonPointsWithBases(IGeometry g, int nPts, int basei, int basej)
+        /// <summary>
+        /// Create Halton points using provided bases.
+        /// </summary>
+        /// <param name="basei">Base 1</param>
+        /// <param name="basej">Base 2</param>
+        public static Geometry HaltonPointsWithBases(Geometry g, int nPts, int basei, int basej)
         {
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
             var pts = new Coordinate[nPts];
@@ -102,9 +112,9 @@ namespace Open.Topology.TestRunner.Functions
                 double y = baseY + env.Height * HaltonOrdinate(i + 1, basej);
                 var p = new Coordinate(x, y);
                 if (env.Contains(p))
-                    pts[i++] = new Coordinate(p);
+                    pts[i++] = p.Copy();
             }
-            return FunctionsUtil.GetFactoryOrDefault(g).CreateMultiPoint(pts);
+            return FunctionsUtil.GetFactoryOrDefault(g).CreateMultiPointFromCoords(pts);
         }
 
         private static double HaltonOrdinate(int index, int basis)
@@ -121,14 +131,14 @@ namespace Open.Topology.TestRunner.Functions
             return result;
         }
 
-        public static IGeometry RandomSegments(IGeometry g, int nPts)
+        public static Geometry RandomSegments(Geometry g, int nPts)
         {
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
             var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
             double xLen = env.Width;
             double yLen = env.Height;
 
-            var lines = new List<IGeometry>();
+            var lines = new List<Geometry>();
 
             for (int i = 0; i < nPts; i++)
             {
@@ -144,7 +154,7 @@ namespace Open.Topology.TestRunner.Functions
             return geomFact.BuildGeometry(lines);
         }
 
-        public static IGeometry RandomSegmentsInGrid(IGeometry g, int nPts)
+        public static Geometry RandomSegmentsInGrid(Geometry g, int nPts)
         {
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
             var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
@@ -154,7 +164,7 @@ namespace Open.Topology.TestRunner.Functions
             double xLen = env.Width / nCell;
             double yLen = env.Height / nCell;
 
-            var lines = new List<IGeometry>();
+            var lines = new List<Geometry>();
 
             for (int i = 0; i < nCell; i++)
             {
@@ -173,7 +183,7 @@ namespace Open.Topology.TestRunner.Functions
             return geomFact.BuildGeometry(lines);
         }
 
-        public static IGeometry RandomLineString(IGeometry g, int nPts)
+        public static Geometry RandomLineString(Geometry g, int nPts)
         {
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
             var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
@@ -191,7 +201,7 @@ namespace Open.Topology.TestRunner.Functions
             return geomFact.CreateLineString(pts);
         }
 
-        public static IGeometry RandomRectilinearWalk(IGeometry g, int nPts)
+        public static Geometry RandomRectilinearWalk(Geometry g, int nPts)
         {
             var env = FunctionsUtil.GetEnvelopeOrDefault(g);
             var geomFact = FunctionsUtil.GetFactoryOrDefault(g);

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.KdTree;
@@ -67,7 +66,7 @@ namespace NetTopologySuite.Triangulate
         private IList<Segment> _segments = new List<Segment>(); // List<Segment>
         private QuadEdgeSubdivision _subdiv;
         private IncrementalDelaunayTriangulator _incDel;
-        private IGeometry _convexHull;
+        private Geometry _convexHull;
         private IConstraintSplitPointFinder _splitFinder = new NonEncroachingSplitPointFinder();
         private readonly KdTree<Vertex> _kdt;
         private ConstraintVertexFactory _vertexFactory;
@@ -168,7 +167,7 @@ namespace NetTopologySuite.Triangulate
         /// Only valid after the constraints have been enforced.
         /// </summary>
         /// <remarks>the convex hull of the sites</remarks>
-        public IGeometry ConvexHull => _convexHull;
+        public Geometry ConvexHull => _convexHull;
 
         // ==================================================================
 

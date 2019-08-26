@@ -1,8 +1,6 @@
-﻿using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Triangulate;
-using NetTopologySuite.Triangulate.QuadEdge;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Triangulate
@@ -10,10 +8,10 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
     /// <summary>
     /// Tests Voronoi diagram generation
     /// </summary>
-    [TestFixtureAttribute]
+    [TestFixture]
     public class VoronoiTest
     {
-        [TestAttribute]
+        [Test]
         public void TestSimple()
         {
             const string wkt = "MULTIPOINT ((10 10), (20 70), (60 30), (80 70))";
@@ -32,7 +30,7 @@ namespace NetTopologySuite.Tests.NUnit.Triangulate
             builder.SetSites(sites);
 
             var subdiv = builder.GetSubdivision();
-            IGeometry result = subdiv.GetVoronoiDiagram(GeometryFactory.Default);
+            Geometry result = subdiv.GetVoronoiDiagram(GeometryFactory.Default);
             Assert.IsNotNull(result);
 
             var expectedEdges = reader.Read(expectedWKT);

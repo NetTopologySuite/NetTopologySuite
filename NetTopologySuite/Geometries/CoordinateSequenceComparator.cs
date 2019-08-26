@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
-    /// Compares two <see cref="ICoordinateSequence"/>s.
+    /// Compares two <see cref="CoordinateSequence"/>s.
     /// </summary><remarks>
     /// <para>
     /// For sequences of the same dimension, the ordering is lexicographic.
@@ -17,7 +15,7 @@ namespace NetTopologySuite.Geometries
     /// If different behaviour is required for comparing size, dimension,
     /// or coordinate values, any or all methods can be overridden.</para>
     /// </remarks>
-    public class CoordinateSequenceComparator : IComparer<ICoordinateSequence>
+    public class CoordinateSequenceComparator : IComparer<CoordinateSequence>
     {
         /// <summary>
         /// Compare two <code>double</code>s, allowing for NaN values.
@@ -64,31 +62,31 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Compares two <see cref="ICoordinateSequence" />s for relative order.
+        /// Compares two <see cref="CoordinateSequence" />s for relative order.
         /// </summary>
         /// <param name="o1">A coordinate sequence</param>
         /// <param name="o2">A coordinate sequence</param>
         /// <returns>-1, 0, or 1 depending on whether o1 is less than, equal to, or greater than o2</returns>
         public int Compare(object o1, object o2)
         {
-            var s1 = (ICoordinateSequence)o1;
-            var s2 = (ICoordinateSequence)o2;
+            var s1 = (CoordinateSequence)o1;
+            var s2 = (CoordinateSequence)o2;
             return Compare(s1, s2);
         }
 
         /// <summary>
-        /// Compares the same coordinate of two <see cref="ICoordinateSequence"/>s
+        /// Compares the same coordinate of two <see cref="CoordinateSequence"/>s
         /// </summary>
         /// <param name="s1">A coordinate sequence</param>
         /// <param name="s2">A coordinate sequence</param>
         /// <param name="i">The index of the coordinate to test</param>
         /// <param name="dimension">the number of dimensions to test</param>
-        protected int CompareCoordinate(ICoordinateSequence s1, ICoordinateSequence s2, int i, int dimension)
+        protected int CompareCoordinate(CoordinateSequence s1, CoordinateSequence s2, int i, int dimension)
         {
             for (int d = 0; d < dimension; d++)
             {
-                double ord1 = s1.GetOrdinate(i, (Ordinate)d);
-                double ord2 = s2.GetOrdinate(i, (Ordinate)d);
+                double ord1 = s1.GetOrdinate(i, d);
+                double ord2 = s2.GetOrdinate(i, d);
                 int comp = Compare(ord1, ord2);
                 if (comp != 0) return comp;
             }
@@ -96,12 +94,12 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Compares two <see cref="ICoordinateSequence"/>s for relative order.
+        /// Compares two <see cref="CoordinateSequence"/>s for relative order.
         /// </summary>
         /// <param name="s1">A coordinate sequence</param>
         /// <param name="s2">A coordinate sequence</param>
         /// <returns>-1, 0, or 1 depending on whether s1 is less than, equal to, or greater than s2</returns>
-        public int Compare(ICoordinateSequence s1, ICoordinateSequence s2)
+        public int Compare(CoordinateSequence s1, CoordinateSequence s2)
         {
             int size1 = s1.Count;
             int size2 = s2.Count;

@@ -1,8 +1,8 @@
 ﻿using System;
-using GeoAPI.Geometries;
-using NUnit.Framework;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Distance3D;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Distance3d
 {
@@ -10,14 +10,14 @@ public class WithinDistance3DTest
 {
     static readonly WKTReader Rdr = new WKTReader();
 
-    [TestAttribute]
+    [Test]
     public void TestEmpty()
     {
         CheckWithinDistance("POINT EMPTY", "POINT EMPTY", 0);
         CheckWithinDistance("LINESTRING EMPTY", "POINT (0 0 0)", 1, true);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestPointPoint()
     {
         CheckWithinDistance("POINT (0 0 0 )",
@@ -34,7 +34,7 @@ public class WithinDistance3DTest
                 14.143);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestPointSeg()
     {
         CheckWithinDistance("LINESTRING (0 0 0, 10 10 10 )",
@@ -45,7 +45,7 @@ public class WithinDistance3DTest
                 0.8, false);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestCrossSegmentsFlat()
     {
         CheckWithinDistance("LINESTRING (0 0 0, 10 10 0 )",
@@ -56,7 +56,7 @@ public class WithinDistance3DTest
                 0);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestCrossSegments()
     {
         CheckWithinDistance("LINESTRING (0 0 0, 10 10 0 )",
@@ -70,7 +70,7 @@ public class WithinDistance3DTest
                 0);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestTSegmentsFlat()
     {
         CheckWithinDistance("LINESTRING (10 10 0, 10 20 0 )",
@@ -78,7 +78,7 @@ public class WithinDistance3DTest
                 10);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestParallelSegmentsFlat()
     {
         CheckWithinDistance("LINESTRING (10 10 0, 20 20 0 )",
@@ -86,7 +86,7 @@ public class WithinDistance3DTest
                 7.0710678118654755);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestParallelSegments()
     {
         CheckWithinDistance("LINESTRING (0 0 0, 1 0 0 )",
@@ -102,7 +102,7 @@ public class WithinDistance3DTest
                 // = hypotenuse(7.0710678118654755, 10)
     }
 
-    [TestAttribute]
+    [Test]
     public void TestLineLine()
     {
         CheckWithinDistance("LINESTRING (0 1 2, 1 1 1, 1 0 2 )",
@@ -113,7 +113,7 @@ public class WithinDistance3DTest
                 0.7071067811865476);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestPointPolygon()
     {
         // point above poly
@@ -130,7 +130,7 @@ public class WithinDistance3DTest
                 10);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestPointPolygonFlat()
     {
         // inside
@@ -147,7 +147,7 @@ public class WithinDistance3DTest
                 0);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestLinePolygonFlat()
     {
         // line inside
@@ -164,7 +164,7 @@ public class WithinDistance3DTest
                 0);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestLinePolygonSimple()
     {
         // line crossing inside
@@ -183,7 +183,7 @@ public class WithinDistance3DTest
 
     string polyHoleFlat = "POLYGON ((100 200 0, 200 200 0, 200 100 0, 100 100 0, 100 200 0), (120 180 0, 180 180 0, 180 120 0, 120 120 0, 120 180 0))";
 
-    [TestAttribute]
+    [Test]
     public void TestLinePolygonHoleFlat()
     {
         // line crossing hole
@@ -192,7 +192,7 @@ public class WithinDistance3DTest
         CheckWithinDistance("LINESTRING (110 110 10, 110 110 -10)", polyHoleFlat, 0);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestPointPolygonHoleFlat()
     {
         // point above poly hole
@@ -203,7 +203,7 @@ public class WithinDistance3DTest
         CheckWithinDistance("POINT (110 110 100)", polyHoleFlat, 100);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestMultiPoint()
     {
         CheckWithinDistance(
@@ -212,7 +212,7 @@ public class WithinDistance3DTest
                 1);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestMultiLineString()
     {
         CheckWithinDistance(
@@ -221,7 +221,7 @@ public class WithinDistance3DTest
                 1);
     }
 
-    [TestAttribute]
+    [Test]
     public void TestMultiPolygon()
     {
         CheckWithinDistance(
@@ -243,18 +243,18 @@ public class WithinDistance3DTest
 
     private void CheckWithinDistance(string wkt1, string wkt2, double distance, bool expectedResult)
     {
-        IGeometry g1;
-        IGeometry g2;
+        Geometry g1;
+        Geometry g2;
         try {
             g1 = Rdr.Read(wkt1);
         }
-        catch (GeoAPI.IO.ParseException e)
+        catch (ParseException e)
         {
             throw new Exception(e.Message);
         }
         try {
             g2 = Rdr.Read(wkt2);
-        } catch (GeoAPI.IO.ParseException e) {
+        } catch (ParseException e) {
             throw new Exception(e.Message);
         }
         // check both orders for arguments
@@ -262,7 +262,7 @@ public class WithinDistance3DTest
         CheckWithinDistance(g2, g1, distance, expectedResult);
     }
 
-    private static void CheckWithinDistance(IGeometry g1, IGeometry g2, double distance, bool expectedResult)
+    private static void CheckWithinDistance(Geometry g1, Geometry g2, double distance, bool expectedResult)
     {
             bool isWithinDist = Distance3DOp.IsWithinDistance(g1, g2, distance);
         Assert.AreEqual(expectedResult, isWithinDist);

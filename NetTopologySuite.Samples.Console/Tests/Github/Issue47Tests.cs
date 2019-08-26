@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Text;
 using System.Xml;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO.GML2;
 using NUnit.Framework;

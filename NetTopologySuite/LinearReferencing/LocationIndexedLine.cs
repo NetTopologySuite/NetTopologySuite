@@ -1,32 +1,31 @@
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.LinearReferencing
 {
     /// <summary>
-    /// Supports linear referencing along a linear <see cref="IGeometry" />
+    /// Supports linear referencing along a linear <see cref="Geometry" />
     /// using <see cref="LinearLocation" />s as the index.
     /// </summary>
     public class LocationIndexedLine
     {
-        private readonly IGeometry _linearGeom;
+        private readonly Geometry _linearGeom;
 
         /// <summary>
         /// Constructs an object which allows linear referencing along
         /// a given linear <see cref="Geometry" />.
         /// </summary>
         /// <param name="linearGeom">The linear geometry to reference alo</param>
-        public LocationIndexedLine(IGeometry linearGeom)
+        public LocationIndexedLine(Geometry linearGeom)
         {
             if (!CheckGeometryType(linearGeom))
                 throw new ArgumentException("Input geometry must be linear", "linearGeom");
             _linearGeom = linearGeom;
         }
 
-        private static bool CheckGeometryType(IGeometry linearGeometry)
+        private static bool CheckGeometryType(Geometry linearGeometry)
         {
-            return ((linearGeometry is ILineString || linearGeometry is IMultiLineString));
+            return ((linearGeometry is LineString || linearGeometry is MultiLineString));
         }
 
         /// <summary>
@@ -83,7 +82,7 @@ namespace NetTopologySuite.LinearReferencing
             return loc.GetSegment(_linearGeom).PointAlongOffset(loc.SegmentFraction, offsetDistance);
         }
         /// <summary>
-        /// Computes the <see cref="ILineString" /> for the interval
+        /// Computes the <see cref="LineString" /> for the interval
         /// on the line between the given indices.
         /// If the start location is after the end location,
         /// the computed linear geometry has reverse orientation to the input line.
@@ -91,7 +90,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="startIndex">The index of the start of the interval.</param>
         /// <param name="endIndex">The index of the end of the interval.</param>
         /// <returns>The linear interval between the indices.</returns>
-        public IGeometry ExtractLine(LinearLocation startIndex, LinearLocation endIndex)
+        public Geometry ExtractLine(LinearLocation startIndex, LinearLocation endIndex)
         {
             return ExtractLineByLocation.Extract(_linearGeom, startIndex, endIndex);
         }
@@ -120,7 +119,7 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="subLine">A subLine of the line.</param>
         /// <returns>A pair of indices for the start and end of the subline.</returns>
-        public LinearLocation[] IndicesOf(IGeometry subLine)
+        public LinearLocation[] IndicesOf(Geometry subLine)
         {
             return LocationIndexOfLine.IndicesOf(_linearGeom, subLine);
         }

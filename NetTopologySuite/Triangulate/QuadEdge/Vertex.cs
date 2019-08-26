@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
@@ -51,7 +51,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="z">z-ordinate value</param>
         public Vertex(double x, double y, double z)
         {
-            _p = new Coordinate(x, y, z);
+            _p = new CoordinateZ(x, y, z);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="p">The coordinate</param>
         public Vertex(Coordinate p)
         {
-            _p = new Coordinate(p);
+            _p = p.Copy();
         }
 
         /// <summary>

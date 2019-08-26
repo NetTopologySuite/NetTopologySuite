@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
@@ -33,7 +32,7 @@ namespace NetTopologySuite.Operation.Overlay
     }
 
     /// <summary>
-    /// Computes the geometric overlay of two <see cref="IGeometry"/>s.  The overlay
+    /// Computes the geometric overlay of two <see cref="Geometry"/>s.  The overlay
     /// can be used to determine any bool combination of the geometries.
     /// </summary>
     public class OverlayOp : GeometryGraphOperation
@@ -57,7 +56,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="opCode">The code for the desired overlay operation</param>
         /// <returns>The result of the overlay operation</returns>
         /// <exception cref="TopologyException">Thrown if a robustness problem is encountered.</exception>
-        public static IGeometry Overlay(IGeometry geom0, IGeometry geom1, SpatialFunction opCode)
+        public static Geometry Overlay(Geometry geom0, Geometry geom1, SpatialFunction opCode)
         {
             var gov = new OverlayOp(geom0, geom1);
             var geomOv = gov.GetResultGeometry(opCode);
@@ -118,15 +117,15 @@ namespace NetTopologySuite.Operation.Overlay
         }
 
         private readonly PointLocator _ptLocator = new PointLocator();
-        private readonly IGeometryFactory _geomFact;
-        private IGeometry _resultGeom;
+        private readonly GeometryFactory _geomFact;
+        private Geometry _resultGeom;
 
         private readonly PlanarGraph _graph;
         private readonly EdgeList _edgeList      = new EdgeList();
 
-        private IList<IGeometry> _resultPolyList = new List<IGeometry>();
-        private IList<IGeometry> _resultLineList = new List<IGeometry>();
-        private IList<IGeometry> _resultPointList = new List<IGeometry>();
+        private IList<Geometry> _resultPolyList = new List<Geometry>();
+        private IList<Geometry> _resultLineList = new List<Geometry>();
+        private IList<Geometry> _resultPointList = new List<Geometry>();
 
         /// <summary>
         /// Constructs an instance to compute a single overlay operation
@@ -134,7 +133,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// </summary>
         /// <param name="g0">The first geometry argument</param>
         /// <param name="g1">The second geometry argument</param>
-        public OverlayOp(IGeometry g0, IGeometry g1)
+        public OverlayOp(Geometry g0, Geometry g1)
             : base(g0, g1)
         {
             _graph = new PlanarGraph(new OverlayNodeFactory());
@@ -155,7 +154,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="overlayOpCode">The code of the overlay operation to perform</param>
         /// <returns>The computed result geometry</returns>
         /// <exception cref="TopologyException">Thrown if a robustness problem is encountered</exception>
-        public IGeometry GetResultGeometry(SpatialFunction overlayOpCode)
+        public Geometry GetResultGeometry(SpatialFunction overlayOpCode)
         {
             ComputeOverlay(overlayOpCode);
             return _resultGeom;
@@ -449,7 +448,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// </summary>
         private void LabelIncompleteNodes()
         {
-            //int nodeCount = 0;
+            // int nodeCount = 0;
             var ni = _graph.Nodes.GetEnumerator();
             while (ni.MoveNext())
             {
@@ -457,7 +456,7 @@ namespace NetTopologySuite.Operation.Overlay
                 var label = n.Label;
                 if (n.IsIsolated)
                 {
-                    //nodeCount++;
+                    // nodeCount++;
                     if (label.IsNull(0))
                          LabelIncompleteNode(n, 0);
                     else LabelIncompleteNode(n, 1);
@@ -554,7 +553,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <c>true</c> if the coord is located in the interior or boundary of
         /// a point in the list.
         /// </returns>
-        private bool IsCovered(Coordinate coord, IEnumerable<IGeometry> geomList)
+        private bool IsCovered(Coordinate coord, IEnumerable<Geometry> geomList)
         {
             var it = geomList.GetEnumerator();
             while (it.MoveNext())
@@ -567,9 +566,9 @@ namespace NetTopologySuite.Operation.Overlay
             return false;
         }
 
-        private IGeometry ComputeGeometry(IEnumerable<IGeometry> resultPtList, IEnumerable<IGeometry> resultLiList, IEnumerable<IGeometry> resultPlList, SpatialFunction opCode)
+        private Geometry ComputeGeometry(IEnumerable<Geometry> resultPtList, IEnumerable<Geometry> resultLiList, IEnumerable<Geometry> resultPlList, SpatialFunction opCode)
         {
-            var geomList = new List<IGeometry>();
+            var geomList = new List<Geometry>();
 
             // element geometries of the result are always in the order Point,Curve,A
             geomList.AddRange(resultPtList);
@@ -603,9 +602,9 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="b">An input geometry</param>
         /// <param name="geomFact">The geometry factory being used for the operation</param>
         /// <returns>An empty atomic geometry of the appropriate dimension</returns>
-        public static IGeometry CreateEmptyResult(SpatialFunction overlayOpCode, IGeometry a, IGeometry b, IGeometryFactory geomFact)
+        public static Geometry CreateEmptyResult(SpatialFunction overlayOpCode, Geometry a, Geometry b, GeometryFactory geomFact)
         {
-            IGeometry result = null;
+            Geometry result = null;
             switch (ResultDimension(overlayOpCode, a, b))
             {
                 case Dimension.False:
@@ -624,7 +623,7 @@ namespace NetTopologySuite.Operation.Overlay
             return result;
         }
 
-        private static Dimension ResultDimension(SpatialFunction opCode, IGeometry g0, IGeometry g1)
+        private static Dimension ResultDimension(SpatialFunction opCode, Geometry g0, Geometry g1)
         {
             int dim0 = (int)g0.Dimension;
             int dim1 = (int)g1.Dimension;

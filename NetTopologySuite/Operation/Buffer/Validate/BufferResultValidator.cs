@@ -1,6 +1,5 @@
-using System;
 using System.Diagnostics;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Buffer.Validate
 {
@@ -27,7 +26,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
          */
         private const double MaxEnvDiffFrac = .012;
 
-        public static bool IsValid(IGeometry g, double distance, IGeometry result)
+        public static bool IsValid(Geometry g, double distance, Geometry result)
         {
             var validator = new BufferResultValidator(g, distance, result);
             if (validator.IsValid())
@@ -43,7 +42,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// <returns>An appropriate error message<br/>
         /// or <c>null</c>if the buffer is valid</returns>
         ///
-        public static string IsValidMessage(IGeometry g, double distance, IGeometry result)
+        public static string IsValidMessage(Geometry g, double distance, Geometry result)
         {
             var validator = new BufferResultValidator(g, distance, result);
             if (!validator.IsValid())
@@ -51,15 +50,15 @@ namespace NetTopologySuite.Operation.Buffer.Validate
             return null;
         }
 
-        private readonly IGeometry _input;
+        private readonly Geometry _input;
         private readonly double _distance;
-        private readonly IGeometry _result;
+        private readonly Geometry _result;
         private bool _isValid = true;
         private string _errorMsg;
         private Coordinate _errorLocation;
-        private IGeometry _errorIndicator;
+        private Geometry _errorIndicator;
 
-        public BufferResultValidator(IGeometry input, double distance, IGeometry result)
+        public BufferResultValidator(Geometry input, double distance, Geometry result)
         {
             _input = input;
             _distance = distance;
@@ -100,7 +99,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// </summary>
         /// <returns>A geometric error indicator<br/>
         /// or <value>null</value>, if no error was found</returns>
-        public IGeometry ErrorIndicator => _errorIndicator;
+        public Geometry ErrorIndicator => _errorIndicator;
 
         private void Report(string checkName)
         {
@@ -111,8 +110,8 @@ namespace NetTopologySuite.Operation.Buffer.Validate
 
         private void CheckPolygonal()
         {
-            if (!(_result is IPolygon
-                    || _result is IMultiPolygon))
+            if (!(_result is Polygon
+                    || _result is MultiPolygon))
                 _isValid = false;
             _errorMsg = "Result is not polygonal";
             _errorIndicator = _result;

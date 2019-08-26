@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
 {
@@ -12,12 +11,12 @@ namespace NetTopologySuite.Geometries
     /// simple to ignore the <c>GeometryCollection</c> objects if they are not
     /// needed.
     /// </summary>
-    public class GeometryCollectionEnumerator : IEnumerator<IGeometry>, IEnumerable<IGeometry>
+    public class GeometryCollectionEnumerator : IEnumerator<Geometry>, IEnumerable<Geometry>
     {
         /// <summary>
         /// The <c>GeometryCollection</c> being iterated over.
         /// </summary>
-        private readonly IGeometry _parent;
+        private readonly Geometry _parent;
 
         /// <summary>
         /// Indicates whether or not the first element (the <c>GeometryCollection</c>)
@@ -43,7 +42,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         private GeometryCollectionEnumerator _subcollectionEnumerator;
 
-        private IGeometry _current = null;
+        private Geometry _current = null;
 
         /// <summary>
         /// Constructs an iterator over the given <c>GeometryCollection</c>.
@@ -52,7 +51,7 @@ namespace NetTopologySuite.Geometries
         /// The collection over which to iterate; also, the first
         /// element returned by the iterator.
         /// </param>
-        public GeometryCollectionEnumerator(IGeometry parent)
+        public GeometryCollectionEnumerator(Geometry parent)
         {
             _parent = parent;
             _atStart = true;
@@ -106,7 +105,7 @@ namespace NetTopologySuite.Geometries
                 throw new ArgumentOutOfRangeException();
 
             var obj = _parent.GetGeometryN(_index++);
-            if (obj is IGeometryCollection gc)
+            if (obj is GeometryCollection gc)
             {
                 _subcollectionEnumerator = new GeometryCollectionEnumerator(gc);
                 // there will always be at least one element in the sub-collection
@@ -134,9 +133,9 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <inheritdoc cref="IEnumerator{T}.Current"/>
-        public IGeometry Current => _current;
+        public Geometry Current => _current;
 
-        private static bool IsAtomic(IGeometry geom)
+        private static bool IsAtomic(Geometry geom)
         {
             return !(geom is GeometryCollection);
         }
@@ -151,7 +150,7 @@ namespace NetTopologySuite.Geometries
         #region Implementation of IEnumerable
 
         /// <inheritdoc cref="IEnumerable{T}.GetEnumerator"/>
-        public IEnumerator<IGeometry> GetEnumerator()
+        public IEnumerator<Geometry> GetEnumerator()
         {
             return this;
         }

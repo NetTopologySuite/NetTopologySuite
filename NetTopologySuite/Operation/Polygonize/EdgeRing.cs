@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
@@ -66,38 +65,6 @@ namespace NetTopologySuite.Operation.Polygonize
             return minShell;
         }
 
-        /// <summary>
-        /// Finds a point in a list of points which is not contained in another list of points.
-        /// </summary>
-        /// <param name="testPts">The <c>Coordinate</c>s to test.</param>
-        /// <param name="pts">An array of <c>Coordinate</c>s to test the input points against.</param>
-        /// <returns>A <c>Coordinate</c> from <c>testPts</c> which is not in <c>pts</c>, <br/>
-        /// or <value>null</value>.</returns>
-        [Obsolete("Use CoordinateArrays.PointNotInList instead")]
-        public static Coordinate PointNotInList(Coordinate[] testPts, Coordinate[] pts)
-        {
-            foreach (var testPt in testPts)
-                if (!IsInList(testPt, pts))
-                    return testPt;
-            return null;
-        }
-
-        /// <summary>
-        /// Tests whether a given point is in an array of points.
-        /// Uses a value-based test.
-        /// </summary>
-        /// <param name="pt">A <c>Coordinate</c> for the test point.</param>
-        /// <param name="pts">An array of <c>Coordinate</c>s to test,</param>
-        /// <returns><c>true</c> if the point is in the array.</returns>
-        [Obsolete]
-        public static bool IsInList(Coordinate pt, Coordinate[] pts)
-        {
-            foreach (var p in pts)
-                if (pt.Equals(p))
-                    return true;
-            return true;
-        }
-
         /**
          * Traverses a ring of DirectedEdges, accumulating them into a list.
          * This assumes that all dangling directed edges have been removed
@@ -115,21 +82,21 @@ namespace NetTopologySuite.Operation.Polygonize
             {
                 edges.Add(de);
                 de = de.Next;
-                Utilities.Assert.IsTrue(de != null, "found null DE in ring");
-                Utilities.Assert.IsTrue(de == startDE || !de.IsInRing, "found DE already in ring");
+                Assert.IsTrue(de != null, "found null DE in ring");
+                Assert.IsTrue(de == startDE || !de.IsInRing, "found DE already in ring");
             } while (de != startDE);
             return edges;
         }
 
-        private readonly IGeometryFactory _factory;
+        private readonly GeometryFactory _factory;
         private readonly List<DirectedEdge> _deList = new List<DirectedEdge>();
         private DirectedEdge lowestEdge = null;
 
         // cache the following data for efficiency
-        private ILinearRing _ring;
+        private LinearRing _ring;
 
         private Coordinate[] _ringPts;
-        private List<ILinearRing> _holes;
+        private List<LinearRing> _holes;
         private EdgeRing _shell;
         private bool _isHole;
         private bool _isProcessed;
@@ -140,7 +107,7 @@ namespace NetTopologySuite.Operation.Polygonize
         ///
         /// </summary>
         /// <param name="factory"></param>
-        public EdgeRing(IGeometryFactory factory)
+        public EdgeRing(GeometryFactory factory)
         {
             _factory = factory;
         }
@@ -153,8 +120,8 @@ namespace NetTopologySuite.Operation.Polygonize
                 Add(de);
                 de.Ring = this;
                 de = de.Next;
-                Utilities.Assert.IsTrue(de != null, "found null DE in ring");
-                Utilities.Assert.IsTrue(de == startDE || !de.IsInRing, "found DE already in ring");
+                Assert.IsTrue(de != null, "found null DE in ring");
+                Assert.IsTrue(de == startDE || !de.IsInRing, "found DE already in ring");
             } while (de != startDE);
         }
 
@@ -191,37 +158,37 @@ namespace NetTopologySuite.Operation.Polygonize
         /// Adds a hole to the polygon formed by this ring.
         /// </summary>
         /// <param name="hole">The LinearRing forming the hole.</param>
-        public void AddHole(ILinearRing hole)
+        public void AddHole(LinearRing hole)
         {
             if (_holes == null)
-                _holes = new List<ILinearRing>();
+                _holes = new List<LinearRing>();
             _holes.Add(hole);
         }
 
         /// <summary>
         /// Adds a hole to the polygon formed by this ring.
         /// </summary>
-        /// <param name="holeER">the <see cref="ILinearRing"/> forming the hole.</param>
+        /// <param name="holeER">the <see cref="LinearRing"/> forming the hole.</param>
         public void AddHole(EdgeRing holeER)
         {
             holeER.Shell = this;
             var hole = holeER.Ring;
             if (_holes == null)
-                _holes = new List<ILinearRing>();
+                _holes = new List<LinearRing>();
             _holes.Add(hole);
         }
 
         /// <summary>
         /// Computes and returns the Polygon formed by this ring and any contained holes.
         /// </summary>
-        public IPolygon Polygon
+        public Polygon Polygon
         {
             get
             {
-                ILinearRing[] holeLR = null;
+                LinearRing[] holeLR = null;
                 if (_holes != null)
                 {
-                    holeLR = new ILinearRing[_holes.Count];
+                    holeLR = new LinearRing[_holes.Count];
                     for (int i = 0; i < _holes.Count; i++)
                         holeLR[i] = _holes[i];
                 }
@@ -231,7 +198,7 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// Tests if the <see cref="ILinearRing" /> ring formed by this edge ring is topologically valid.
+        /// Tests if the <see cref="LinearRing" /> ring formed by this edge ring is topologically valid.
         /// </summary>
         /// <return>true if the ring is valid.</return>
         public bool IsValid
@@ -288,7 +255,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// as a valid point, when it has been detected that the ring is topologically
         /// invalid.
         /// </summary>
-        public ILineString LineString
+        public LineString LineString
         {
             get
             {
@@ -303,7 +270,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// creating it (such as a topology problem). Details of problems are written to
         /// standard output.
         /// </summary>
-        public ILinearRing Ring
+        public LinearRing Ring
         {
             get
             {

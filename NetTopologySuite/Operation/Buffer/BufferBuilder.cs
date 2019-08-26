@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using GeoAPI.Geometries;
-using GeoAPI.Operation.Buffer;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
@@ -35,16 +33,19 @@ namespace NetTopologySuite.Operation.Buffer
                 return -1;
             return 0;
         }
-        private readonly IBufferParameters _bufParams;
+        private readonly BufferParameters _bufParams;
 
-        private IPrecisionModel _workingPrecisionModel;
+        private PrecisionModel _workingPrecisionModel;
         private INoder _workingNoder;
-        private IGeometryFactory _geomFact;
+        private GeometryFactory _geomFact;
         private PlanarGraph _graph;
         private readonly EdgeList _edgeList = new EdgeList();
 
-        /// <summary>Creates a new BufferBuilder</summary>
-        public BufferBuilder(IBufferParameters bufParams)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BufferBuilder"/> class using the given parameters.
+        /// </summary>
+        /// <param name="bufParams">The buffer parameters to use.</param>
+        public BufferBuilder(BufferParameters bufParams)
         {
             _bufParams = bufParams;
         }
@@ -57,7 +58,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// If the precision model is less than the precision of the Geometry precision model,
         /// the Geometry must have previously been rounded to that precision.
         /// </remarks>
-        public IPrecisionModel WorkingPrecisionModel
+        public PrecisionModel WorkingPrecisionModel
         {
             get => _workingPrecisionModel;
             set => _workingPrecisionModel = value;
@@ -74,7 +75,7 @@ namespace NetTopologySuite.Operation.Buffer
             set => _workingNoder = value;
         }
 
-        public IGeometry Buffer(IGeometry g, double distance)
+        public Geometry Buffer(Geometry g, double distance)
         {
             var precisionModel = _workingPrecisionModel;
             if (precisionModel == null)
@@ -114,7 +115,7 @@ namespace NetTopologySuite.Operation.Buffer
             return resultGeom;
         }
 
-        private INoder GetNoder(IPrecisionModel precisionModel)
+        private INoder GetNoder(PrecisionModel precisionModel)
         {
             if (_workingNoder != null) return _workingNoder;
 
@@ -132,7 +133,7 @@ namespace NetTopologySuite.Operation.Buffer
             //                                  precisionModel.getScale());
         }
 
-        private void ComputeNodedEdges(IList<ISegmentString> bufferSegStrList, IPrecisionModel precisionModel)
+        private void ComputeNodedEdges(IList<ISegmentString> bufferSegStrList, PrecisionModel precisionModel)
         {
             var noder = GetNoder(precisionModel);
             noder.ComputeNodes(bufferSegStrList);
@@ -256,10 +257,10 @@ namespace NetTopologySuite.Operation.Buffer
             }
         }
 
-        private static IGeometry ConvertSegStrings(IEnumerator<ISegmentString> it)
+        private static Geometry ConvertSegStrings(IEnumerator<ISegmentString> it)
         {
             var fact = new GeometryFactory();
-            var lines = new List<IGeometry>();
+            var lines = new List<Geometry>();
             while (it.MoveNext())
             {
                 var ss = it.Current;
@@ -274,7 +275,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// Since buffer always returns a polygonal result, this is chosen to be an empty polygon.
         /// </summary>
         /// <returns>The empty result geometry</returns>
-        private IGeometry CreateEmptyResultGeometry()
+        private Geometry CreateEmptyResultGeometry()
         {
             var emptyGeom = _geomFact.CreatePolygon();
             return emptyGeom;

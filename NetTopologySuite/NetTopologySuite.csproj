@@ -1,55 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
-    <TargetFrameworks>net35-client;net40-client;net403-client;net45;netstandard1.0;netstandard1.3;netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(SolutionDir)nts.snk</AssemblyOriginatorKeyFile>
     <NoWarn>659,168,1587</NoWarn>
   </PropertyGroup>
 
   <Import Project="$(SolutionDir)NetTopologySuite.Common.props" />
 
-  <!-- These versions of the Fody packages HAPPEN to work for these target frameworks, so tell NuGet
-       that it's OK to pretend like they're net45. -->
-  <PropertyGroup>
-    <AssetTargetFallback Condition=" '$(TargetFramework)' == 'net35-client' Or '$(TargetFramework)' == 'net40-client' Or '$(TargetFramework)' == 'net403-client' ">net45</AssetTargetFallback>
-    <NoWarn>$(NoWarn),NU1701</NoWarn>
+  <PropertyGroup Label="Assembly Info">
+    <AssemblyTitle>NetTopologySuite</AssemblyTitle>
+    <Description>A .NET library for GIS operations, direct porting of JTS Topology Suite $(JTSCompatibilityLevel) library</Description>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(RequiresFrameworkAssemblyReferences)' == 'true' ">
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="$(SolutionDir)SharedAssemblyVersion.cs" Link="Properties\SharedAssemblyVersion.cs" />
-  </ItemGroup>
+  <PropertyGroup Label="NuGet Package Info">
+    <PackageId>NetTopologySuite</PackageId>
+    <Title>NTS - Topology Suite</Title>
+    <Authors>NetTopologySuite - Team</Authors>
+    <Owners>NetTopologySuite - Team</Owners>
+    <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Description>The NTS Topology Suite is an API for modelling and manipulating 2-dimensional linear geometry. It provides numerous geometric predicates and functions. NTS conforms to the Simple Features Specification.
+This package references GeoAPI.</Description>
+    <PackageTags>NTS;Topology;OGC;SFS</PackageTags>
+  </PropertyGroup>
 
   <ItemGroup>
     <None Include="$(SolutionDir)nts.snk" Link="nts.snk" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GeoAPI.Core" Version="$(GeoAPIPackageReferenceVersion)" />
+    <!-- SourceLink adds stuff to let debuggers step into our code. -->
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05" PrivateAssets="All" />
 
-    <!-- We use ModuleInit.Fody to automatically initialize GeometryServiceProvider when loaded. -->
-    <PackageReference Include="ModuleInit.Fody" Version="1.8.0" PrivateAssets="All" />
-    <PackageReference Include="Fody" Version="3.0.3" PrivateAssets="All" />
+    <PackageReference Include="System.Memory" Version="4.5.3" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.0' Or '$(TargetFramework)' == 'netstandard1.3' ">
-    <PackageReference Include="System.Diagnostics.Debug" Version="4.3.0" />
-    <PackageReference Include="System.Linq" Version="4.3.0" />
-    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.0" />
-    <PackageReference Include="System.Xml.ReaderWriter" Version="4.3.0" />
-    <PackageReference Include="System.Xml.XDocument" Version="4.3.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
-    <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
-  </ItemGroup>
 </Project>

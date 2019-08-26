@@ -1,9 +1,7 @@
-﻿using GeoAPI.Geometries;
-
-namespace NetTopologySuite.Geometries.Prepared
+﻿namespace NetTopologySuite.Geometries.Prepared
 {
     /// <summary>
-    /// Computes the <c>contains</c> spatial relationship predicate for a <see cref="PreparedPolygon"/> relative to all other <see cref="IGeometry"/> classes.
+    /// Computes the <c>contains</c> spatial relationship predicate for a <see cref="PreparedPolygon"/> relative to all other <see cref="Geometry"/> classes.
     /// Uses short-circuit tests and indexing to improve performance.
     /// </summary>
     /// <remarks>
@@ -17,12 +15,12 @@ namespace NetTopologySuite.Geometries.Prepared
     internal class PreparedPolygonContains : AbstractPreparedPolygonContains
     {
         /// <summary>
-        /// Computes the <c>contains</c> spatial relationship predicate between a <see cref="PreparedPolygon"/> and a <see cref="IGeometry"/>.
+        /// Computes the <c>contains</c> spatial relationship predicate between a <see cref="PreparedPolygon"/> and a <see cref="Geometry"/>.
         /// </summary>
         /// <param name="prep">The prepared polygon</param>
         /// <param name="geom">A test geometry</param>
         /// <returns>true if the polygon contains the geometry</returns>
-        public static bool Contains(PreparedPolygon prep, IGeometry geom)
+        public static bool Contains(PreparedPolygon prep, Geometry geom)
         {
             var polyInt = new PreparedPolygonContains(prep);
             return polyInt.Contains(geom);
@@ -42,7 +40,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </summary>
         /// <param name="geom">The test geometry</param>
         /// <returns>true if the test geometry is contained</returns>
-        public bool Contains(IGeometry geom)
+        public bool Contains(Geometry geom)
         {
             return Eval(geom);
         }
@@ -53,7 +51,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </summary>
         /// <param name="geom">The test geometry </param>
         /// <returns>true if this prepared polygon contains the test geometry</returns>
-        protected override bool FullTopologicalPredicate(IGeometry geom)
+        protected override bool FullTopologicalPredicate(Geometry geom)
         {
             bool isContained = prepPoly.Geometry.Contains(geom);
             return isContained;

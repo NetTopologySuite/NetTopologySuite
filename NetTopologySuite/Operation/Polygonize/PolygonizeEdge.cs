@@ -1,4 +1,4 @@
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Planargraph;
 
 namespace NetTopologySuite.Operation.Polygonize
@@ -8,13 +8,13 @@ namespace NetTopologySuite.Operation.Polygonize
     /// </summary>
     public class PolygonizeEdge : Edge
     {
-        private readonly ILineString line;
+        private readonly LineString line;
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="line"></param>
-        public PolygonizeEdge(ILineString line)
+        public PolygonizeEdge(LineString line)
         {
             this.line = line;
         }
@@ -22,6 +22,6 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <summary>
         ///
         /// </summary>
-        public ILineString Line => line;
+        public LineString Line => line;
     }
 }

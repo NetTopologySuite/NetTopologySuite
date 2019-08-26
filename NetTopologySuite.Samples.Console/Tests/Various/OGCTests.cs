@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Samples.SimpleTests;
 using NUnit.Framework;
@@ -12,8 +11,8 @@ namespace NetTopologySuite.Samples.Tests.Various
     //[TestFixture]
     public class OGCTests : BaseSamples
     {
-        private IGeometry blueLake = null;
-        private IGeometry ashton = null;
+        private Geometry blueLake = null;
+        private Geometry ashton = null;
 
         /// <summary>
         ///

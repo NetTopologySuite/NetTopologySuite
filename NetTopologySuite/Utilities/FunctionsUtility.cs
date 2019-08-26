@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Utilities
@@ -9,19 +8,19 @@ namespace NetTopologySuite.Utilities
 
         public static readonly Envelope DefaultEnvelope = new Envelope(0, 100, 0, 100);
 
-        public static Envelope GetEnvelopeOrDefault(IGeometry g)
+        public static Envelope GetEnvelopeOrDefault(Geometry g)
         {
             return g == null ? DefaultEnvelope : g.EnvelopeInternal;
         }
 
-        private static readonly IGeometryFactory Factory = new GeometryFactory();
+        private static readonly GeometryFactory Factory = new GeometryFactory();
 
-        public static IGeometryFactory GetFactoryOrDefault(IGeometry g)
+        public static GeometryFactory GetFactoryOrDefault(Geometry g)
         {
             return g == null ? Factory : g.Factory;
         }
 
-        public static IGeometryFactory GetFactoryOrDefault(IEnumerable<IGeometry> gs)
+        public static GeometryFactory GetFactoryOrDefault(IEnumerable<Geometry> gs)
         {
             if (gs == null)
                 return Factory;
@@ -33,7 +32,7 @@ namespace NetTopologySuite.Utilities
             return Factory;
         }
 
-        public static IGeometry BuildGeometry(List<IGeometry> geoms, IGeometry parentGeom)
+        public static Geometry BuildGeometry(List<Geometry> geoms, Geometry parentGeom)
         {
             if (geoms.Count <= 0)
                 return null;
@@ -46,18 +45,18 @@ namespace NetTopologySuite.Utilities
             return GetFactoryOrDefault(geoms).BuildGeometry(geoms);
         }
 
-        public static IGeometry BuildGeometry(params IGeometry[] geoms)
+        public static Geometry BuildGeometry(params Geometry[] geoms)
         {
             var gf = GetFactoryOrDefault(geoms);
             return gf.CreateGeometryCollection(geoms);
         }
 
-        public static IGeometry BuildGeometry(IGeometry a, IGeometry b)
+        public static Geometry BuildGeometry(Geometry a, Geometry b)
         {
             int size = 0;
             if (a != null) size++;
             if (b != null) size++;
-            var geoms = new IGeometry[size];
+            var geoms = new Geometry[size];
             size = 0;
             if (a != null) geoms[size++] = a;
             if (b != null) geoms[size] = b;

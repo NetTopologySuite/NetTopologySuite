@@ -1,22 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Open.Topology.TestRunner</RootNamespace>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <Import Project="$(SolutionDir)NetTopologySuite.Common.props" />
 
   <ItemGroup>
-    <Compile Include="$(SolutionDir)SharedAssemblyVersion.cs" Link="Properties\SharedAssemblyVersion.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="GeoAPI" Version="$(GeoAPIPackageReferenceVersion)" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" />
   </ItemGroup>
+
 </Project>

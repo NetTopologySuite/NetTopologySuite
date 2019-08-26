@@ -1,12 +1,7 @@
-﻿using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
+﻿using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
-
-#if HAS_SYSTEM_ICLONEABLE
 using ICloneable = System.ICloneable;
-#else
-using ICloneable = GeoAPI.ICloneable;
-#endif
 
 namespace NetTopologySuite.Mathematics
 {
@@ -436,8 +431,8 @@ namespace NetTopologySuite.Mathematics
         {
             // Algorithm from Effective Java by Joshua Bloch
             int result = 17;
-            result = 37 * result + Coordinate.GetHashCode(_x);
-            result = 37 * result + Coordinate.GetHashCode(_y);
+            result = 37 * result + _x.GetHashCode();
+            result = 37 * result + _y.GetHashCode();
             return result;
         }
 

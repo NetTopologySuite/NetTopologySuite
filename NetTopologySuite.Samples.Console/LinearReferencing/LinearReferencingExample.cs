@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
 using NetTopologySuite.LinearReferencing;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 
 namespace NetTopologySuite.Samples.LinearReferencing
 {
@@ -15,7 +13,7 @@ namespace NetTopologySuite.Samples.LinearReferencing
     /// </summary>
     public class LinearReferencingExample
     {
-        private static IGeometryFactory fact = GeometryFactory.Fixed;
+        private static GeometryFactory fact = GeometryFactory.Fixed;
         private static WKTReader rdr = new WKTReader(fact);
 
         /// <summary>
@@ -81,7 +79,7 @@ namespace NetTopologySuite.Samples.LinearReferencing
 
         }
 
-IGeometry InsertPoint(IGeometry geom, Coordinate point)
+Geometry InsertPoint(Geometry geom, Coordinate point)
 {
     if (!(geom is ILineal))
         throw new InvalidOperationException();
@@ -89,7 +87,7 @@ IGeometry InsertPoint(IGeometry geom, Coordinate point)
     var lil = new LocationIndexedLine(geom);
     var ll = lil.Project(point);
 
-    var element = (ILineString) geom.GetGeometryN(ll.ComponentIndex);
+    var element = (LineString) geom.GetGeometryN(ll.ComponentIndex);
     var oldSeq = element.CoordinateSequence;
     var newSeq = element.Factory.CoordinateSequenceFactory.Create(
         oldSeq.Count + 1, oldSeq.Dimension);
@@ -116,7 +114,7 @@ IGeometry InsertPoint(IGeometry geom, Coordinate point)
         CoordinateSequences.Copy(oldSeq, ll.SegmentIndex + 1, newSeq, ll.SegmentIndex + 2, newSeq.Count - 2 - ll.SegmentIndex);
     }
 
-    var lines = new List<IGeometry>();
+    var lines = new List<Geometry>();
     LineStringExtracter.GetLines(geom, lines);
     lines[ll.ComponentIndex] = geom.Factory.CreateLineString(newSeq);
     if (lines.Count == 1)
@@ -128,7 +126,7 @@ IGeometry InsertPoint(IGeometry geom, Coordinate point)
 
     internal static class ICoordinateSequenceEx
     {
-        public static void SetCoordinate(this ICoordinateSequence self, int index, Coordinate coord)
+        public static void SetCoordinate(this CoordinateSequence self, int index, Coordinate coord)
         {
             self.SetOrdinate(index, Ordinate.X, coord.X);
             self.SetOrdinate(index, Ordinate.Y, coord.Y);

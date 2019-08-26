@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Buffer.Validate;
 using NetTopologySuite.Tests.NUnit.TestData;
@@ -10,14 +9,14 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
 {
-    [TestFixtureAttribute]
-    [CategoryAttribute("Stress")]
+    [TestFixture]
+    [Category("Stress")]
     public class FileBufferResultValidatorTest
     {
         private const int MAX_FEATURE = 1;
         WKTReader rdr = new WKTReader();
 
-        [TestAttribute]
+        [Test]
         public void TestAfrica()
         {
             using (var file = EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.africa.wkt"))
@@ -27,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             }
         }
 
-        [TestAttribute]
+        [Test]
         public void TestPerformanceAfrica()
         {
             using (var file = EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.africa.wkt"))
@@ -63,7 +62,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             //RunAll(polys, 1000.0);
         }
 
-        void RunAll(ICollection<IGeometry> geoms, double dist)
+        void RunAll(ICollection<Geometry> geoms, double dist)
         {
             //var sw = new Stopwatch();
             //sw.Start();
@@ -81,7 +80,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Buffer
             //System.Console.WriteLine("  " + sw.Elapsed.TotalMilliseconds + " milliseconds");
         }
 
-        static void RunBuffer(IGeometry g, double dist)
+        static void RunBuffer(Geometry g, double dist)
         {
             var buf = g.Buffer(dist);
             var validator = new BufferResultValidator(g, dist, buf);

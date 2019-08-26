@@ -1,9 +1,9 @@
-using GeoAPI.Geometries;
+using System;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Samples.Geometries
 {
-    public class ExtendedCoordinate : Coordinate, ICoordinate
+    public class ExtendedCoordinate : CoordinateZ
     {
         // A Coordinate subclass should provide all of these methods
 
@@ -31,28 +31,73 @@ namespace NetTopologySuite.Samples.Geometries
             _m = coord._m;
         }
 
-        /// <inheritdoc cref="Coordinate.Copy"/>
-        public override Coordinate Copy()
-        {
-            return new ExtendedCoordinate(X, Y, Z, _m);
-        }
-
         /// <summary>
         /// An example of extended data.
         /// The m variable holds a measure value for linear referencing
         /// </summary>
         private double _m;
 
-        public double M
+        public override double M
         {
             get => _m;
             set => _m = value;
         }
 
+        public override Coordinate CoordinateValue
+        {
+            get => this;
+            set
+            {
+                X = value.X;
+                Y = value.Y;
+                Z = value.Z;
+                M = value.M;
+            }
+        }
+
+        /// <inheritdoc />
+        public override double this[int ordinateIndex]
+        {
+            get
+            {
+                switch (ordinateIndex)
+                {
+                    case 0:
+                        return X;
+                    case 1:
+                        return Y;
+                    case 2:
+                        return Z;
+                    case 3:
+                        return M;
+                }
+                throw new ArgumentOutOfRangeException(nameof(ordinateIndex));
+            }
+            set
+            {
+                switch (ordinateIndex)
+                {
+                    case 0:
+                        X = value;
+                        return;
+                    case 1:
+                        Y = value;
+                        return;
+                    case 2:
+                        Z = value;
+                        return;
+                    case 3:
+                        M = value;
+                        return;
+                }
+                throw new ArgumentOutOfRangeException(nameof(ordinateIndex));
+            }
+        }
+
         /// <inheritdoc cref="object.ToString()"/>
         public override string ToString()
         {
-            string stringRep = X + " " + Y + " m=" + M;
+            string stringRep = "(" + X + "," + Y + "," + Z + " m=" + M + ")";
             return stringRep;
         }
     }

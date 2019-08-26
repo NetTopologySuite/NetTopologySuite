@@ -6,8 +6,7 @@ namespace NetTopologySuite.Tests.Various
     using System;
     using System.Diagnostics;
     using System.Globalization;
-    using GeoAPI.Geometries;
-    using Geometries;
+    using NetTopologySuite.Geometries;
     using NetTopologySuite.IO;
     using Noding;
 
@@ -54,7 +53,7 @@ namespace NetTopologySuite.Tests.Various
             PerformTest(new GeometryFactory(new PrecisionModel(PrecisionModels.Floating), 0, DotSpatialAffineCoordinateSequenceFactory.Instance));
         }
 
-        private static void PerformTest(IGeometryFactory factory)
+        private static void PerformTest(GeometryFactory factory)
         {
             if (factory == null)
                 throw new ArgumentNullException("factory");
@@ -63,13 +62,13 @@ namespace NetTopologySuite.Tests.Various
             var g1 = reader.Read(t1);
             Assert.IsNotNull(g1);
             Assert.IsTrue(g1.IsValid);
-            Assert.IsInstanceOf(typeof(IPolygon), g1);
+            Assert.IsInstanceOf(typeof(Polygon), g1);
             Assert.IsInstanceOf(typeof(Polygon), g1);
 
             var g2 = reader.Read(t2);
             Assert.IsNotNull(g2);
             Assert.IsTrue(g2.IsValid);
-            Assert.IsInstanceOf(typeof(IMultiPolygon), g2);
+            Assert.IsInstanceOf(typeof(MultiPolygon), g2);
             Assert.IsInstanceOf(typeof(MultiPolygon), g2);
 
             var watch = new Stopwatch();
@@ -77,7 +76,7 @@ namespace NetTopologySuite.Tests.Various
             var r = g1.Intersection(g2);
             watch.Stop();
             Assert.IsNotNull(r);
-            Assert.IsInstanceOf(typeof(IMultiPolygon), r);
+            Assert.IsInstanceOf(typeof(MultiPolygon), r);
             Assert.IsInstanceOf(typeof(MultiPolygon), r);
             Assert.IsTrue(r.IsValid);
             Console.WriteLine("GeometryFactory.Default => Elapsed: {0}", watch.Elapsed);
@@ -119,7 +118,7 @@ namespace NetTopologySuite.Tests.Various
             PerformTest(sequence);
         }
 
-        private static void PerformTest(ICoordinateSequence sequence)
+        private static void PerformTest(CoordinateSequence sequence)
         {
             if (sequence == null)
                 throw new ArgumentNullException("sequence");

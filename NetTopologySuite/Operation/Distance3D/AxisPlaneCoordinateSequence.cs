@@ -1,10 +1,10 @@
 ﻿using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Distance3D
 {
     /// <summary>
-    /// A <see cref="ICoordinateSequence"/> wrapper which
+    /// A <see cref="CoordinateSequence"/> wrapper which
     /// projects 3D coordinates into one of the
     /// three Cartesian axis planes,
     /// using the standard orthonormal projection
@@ -12,7 +12,7 @@ namespace NetTopologySuite.Operation.Distance3D
     /// The projected data is represented as 2D coordinates.
     /// </summary>
     /// <author>Martin Davis</author>
-    public class AxisPlaneCoordinateSequence : ICoordinateSequence
+    public class AxisPlaneCoordinateSequence : CoordinateSequence
     {
 
         // ReSharper disable InconsistentNaming
@@ -21,7 +21,7 @@ namespace NetTopologySuite.Operation.Distance3D
         /// </summary>
         /// <param name="seq">The sequence to be projected</param>
         /// <returns>A sequence which projects coordinates</returns>
-        public static ICoordinateSequence ProjectToXY(ICoordinateSequence seq)
+        public static CoordinateSequence ProjectToXY(CoordinateSequence seq)
         {
             /**
          * This is just a no-op, but return a wrapper
@@ -35,7 +35,7 @@ namespace NetTopologySuite.Operation.Distance3D
         /// </summary>
         /// <param name="seq">The sequence to be projected</param>
         /// <returns>A sequence which projects coordinates</returns>
-        public static ICoordinateSequence ProjectToXZ(ICoordinateSequence seq)
+        public static CoordinateSequence ProjectToXZ(CoordinateSequence seq)
         {
             return new AxisPlaneCoordinateSequence(seq, XZIndex);
         }
@@ -45,97 +45,94 @@ namespace NetTopologySuite.Operation.Distance3D
         /// </summary>
         /// <param name="seq">The sequence to be projected</param>
         /// <returns>A sequence which projects coordinates</returns>
-        public static ICoordinateSequence ProjectToYZ(ICoordinateSequence seq)
+        public static CoordinateSequence ProjectToYZ(CoordinateSequence seq)
         {
             return new AxisPlaneCoordinateSequence(seq, YZIndex);
         }
 
-        private static readonly Ordinate[] XYIndex = new[] {Ordinate.X, Ordinate.Y};
-        private static readonly Ordinate[] XZIndex = new[] {Ordinate.X, Ordinate.Z};
-        private static readonly Ordinate[] YZIndex = new[] {Ordinate.Y, Ordinate.Z};
+        private static readonly int[] XYIndex = new[] {0, 1};
+        private static readonly int[] XZIndex = new[] {0, 2};
+        private static readonly int[] YZIndex = new[] {1, 2};
         // ReSharper restore InconsistentNaming
 
-        private readonly ICoordinateSequence _seq;
-        private readonly Ordinate[] _indexMap;
+        private readonly CoordinateSequence _seq;
+        private readonly int[] _indexMap;
 
-        private AxisPlaneCoordinateSequence(ICoordinateSequence seq, Ordinate[] indexMap)
+        private AxisPlaneCoordinateSequence(CoordinateSequence seq, int[] indexMap)
+            : base(seq?.Count ?? 0, 2, 0)
         {
             _seq = seq;
             _indexMap = indexMap;
         }
 
-        public int Dimension => 2;
+        /// <inheritdoc />
+        public override Coordinate CreateCoordinate() => new CoordinateZ();
 
-        public Ordinates Ordinates => _seq.Ordinates;
-
-        public Coordinate GetCoordinate(int i)
+        public override Coordinate GetCoordinate(int i)
         {
             return GetCoordinateCopy(i);
         }
 
-        public Coordinate GetCoordinateCopy(int i)
+        public override Coordinate GetCoordinateCopy(int i)
         {
-            return new Coordinate(GetX(i), GetY(i), GetZ(i));
+            return new CoordinateZ(GetX(i), GetY(i), GetZ(i));
         }
 
-        public void GetCoordinate(int index, Coordinate coord)
+        public override void GetCoordinate(int index, Coordinate coord)
         {
-            coord.X = GetOrdinate(index, Ordinate.X);
-            coord.Y = GetOrdinate(index, Ordinate.Y);
-            coord.Z = GetOrdinate(index, Ordinate.Z);
+            coord.X = GetOrdinate(index, 0);
+            coord.Y = GetOrdinate(index, 1);
+            coord.Z = GetOrdinate(index, 2);
         }
 
-        public double GetX(int index)
+        public override double GetX(int index)
         {
-            return GetOrdinate(index, Ordinate.X);
+            return GetOrdinate(index, 0);
         }
 
-        public double GetY(int index)
+        public override double GetY(int index)
         {
-            return GetOrdinate(index, Ordinate.Y);
+            return GetOrdinate(index, 1);
         }
 
-        public double GetZ(int index)
+        public override double GetZ(int index)
         {
-            return GetOrdinate(index, Ordinate.Z);
+            return GetOrdinate(index, 2);
         }
 
-        public double GetOrdinate(int index, Ordinate ordinateIndex)
+        public override double GetM(int index)
+        {
+            return double.NaN;
+        }
+
+        public override double GetOrdinate(int index, int ordinateIndex)
         {
             // Z ord is always 0
-            if (ordinateIndex > Ordinate.Y) return 0;
-            return _seq.GetOrdinate(index, _indexMap[(int) ordinateIndex]);
+            if (ordinateIndex > 1) return 0;
+            return _seq.GetOrdinate(index, _indexMap[ordinateIndex]);
         }
 
-        public int Count => _seq.Count;
-
-        public void SetOrdinate(int index, Ordinate ordinateIndex, double value)
+        public override void SetOrdinate(int index, int ordinateIndex, double value)
         {
             throw new NotSupportedException();
         }
 
-        public Coordinate[] ToCoordinateArray()
+        public override Coordinate[] ToCoordinateArray()
         {
             throw new NotSupportedException();
         }
 
-        public Envelope ExpandEnvelope(Envelope env)
+        public override Envelope ExpandEnvelope(Envelope env)
         {
             throw new NotSupportedException();
         }
 
-        [Obsolete]
-        public object Clone()
-        {
-            return Copy();
-        }
-
-        public ICoordinateSequence Copy()
+        public override CoordinateSequence Copy()
         {
             throw new NotSupportedException();
         }
 
-        public ICoordinateSequence Reversed()
+        public override CoordinateSequence Reversed()
         {
             throw new NotSupportedException();
         }

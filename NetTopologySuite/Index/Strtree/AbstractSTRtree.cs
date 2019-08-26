@@ -1,8 +1,9 @@
 using System;
-using GeoAPI.Geometries;
-using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
+using System.Linq;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
+using IList = System.Collections.Generic.IList<object>;
 
 namespace NetTopologySuite.Index.Strtree
 {
@@ -16,9 +17,7 @@ namespace NetTopologySuite.Index.Strtree
     /// data, both of which are treated as <see cref="IBoundable{T, TItem}"/>s.
     /// </para>
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public abstract class AbstractSTRtree<T, TItem>
         where T: IIntersectable<T>, IExpandable<T>
     {
@@ -109,9 +108,7 @@ namespace NetTopologySuite.Index.Strtree
             parentBoundables.Add(CreateNode(newLevel));
 
             // JTS does a stable sort here.  List<T>.Sort is not stable.
-            var sortedChildBoundables = CollectionUtil.StableSort(childBoundables, GetComparer());
-
-            foreach (var childBoundable in sortedChildBoundables)
+            foreach (var childBoundable in childBoundables.OrderBy(x => x, GetComparer()))
             {
                 if (LastNode(parentBoundables).ChildBoundables.Count == NodeCapacity)
                     parentBoundables.Add(CreateNode(newLevel));
@@ -147,6 +144,9 @@ namespace NetTopologySuite.Index.Strtree
             return CreateHigherLevels(parentBoundables, level + 1);
         }
 
+        /// <summary>
+        /// Gets the root node of the tree.
+        /// </summary>
         public AbstractNode<T, TItem> Root
         {
             get
@@ -154,11 +154,11 @@ namespace NetTopologySuite.Index.Strtree
                 Build();
                 return _root;
             }
-            set => _root = value;
+            protected set => _root = value;
         }
 
         /// <summary>
-        /// Returns the maximum number of child nodes that a node may have.
+        /// Gets the maximum number of child nodes that a node may have.
         /// </summary>
         public int NodeCapacity => _nodeCapacity;
 

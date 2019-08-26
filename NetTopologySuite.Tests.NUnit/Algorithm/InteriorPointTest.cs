@@ -2,23 +2,26 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using GeoAPI.Geometries;
-using NUnit.Framework;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Tests.NUnit.TestData;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
-    public class InteriorPointTest
+    public class InteriorPointTest : GeometryTestCase
     {
-        [TestAttribute]
-        public void TestAll()
+        [Test]
+        public void TestPolygonZeroArea()
         {
-            string name = "NetTopologySuite.Tests.NUnit.TestData.europe.wkt";
-            var stream = EmbeddedResourceManager.GetResourceStream(name);
-            CheckInteriorPointFile(stream, name);
-            name = "NetTopologySuite.Tests.NUnit.TestData.africa.wkt";
-            stream = EmbeddedResourceManager.GetResourceStream(name);
+            CheckInteriorPoint(Read("POLYGON ((10 10, 10 10, 10 10, 10 10))"), new Coordinate(10, 10));
+        }
+
+        [TestCase("europe.wkt")]
+        ////[TestCase("africa.wkt")]
+        public void TestAll(string name)
+        {
+            var stream = EmbeddedResourceManager.GetResourceStream($"NetTopologySuite.Tests.NUnit.TestData.{name}");
             CheckInteriorPointFile(stream, name);
         }
 
@@ -34,7 +37,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             CheckInteriorPoint(name, polys);
         }
 
-        private static void CheckInteriorPoint(string name, IEnumerable<IGeometry> geoms)
+        private static void CheckInteriorPoint(string name, IEnumerable<Geometry> geoms)
         {
             Console.WriteLine(name);
             var sw = new Stopwatch();
@@ -48,10 +51,16 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             //Console.WriteLine("\n {0}ms\n", sw.ElapsedMilliseconds);
         }
 
-        private static void CheckInteriorPoint(IGeometry g)
+        private static void CheckInteriorPoint(Geometry g)
         {
             var ip = g.InteriorPoint;
             Assert.IsTrue(g.Contains(ip));
+        }
+
+        private static void CheckInteriorPoint(Geometry g, Coordinate expectedPt)
+        {
+            var ip = g.InteriorPoint;
+            Assert.That(ip.Coordinate, Is.EqualTo(expectedPt));
         }
     }
 }

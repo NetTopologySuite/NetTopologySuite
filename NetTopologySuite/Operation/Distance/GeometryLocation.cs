@@ -1,4 +1,6 @@
-using GeoAPI.Geometries;
+using System.Globalization;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Operation.Distance
 {
@@ -20,7 +22,7 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         public const int InsideArea = -1;
 
-        private readonly IGeometry _component;
+        private readonly Geometry _component;
         private readonly int _segIndex;
         private readonly Coordinate _pt;
 
@@ -31,7 +33,7 @@ namespace NetTopologySuite.Operation.Distance
         /// <param name="component">The component of the geometry containing the point</param>
         /// <param name="segIndex">The segment index of the location, or <see cref="InsideArea"/></param>
         /// <param name="pt">The coordinate of the location</param>
-        public GeometryLocation(IGeometry component, int segIndex, Coordinate pt)
+        public GeometryLocation(Geometry component, int segIndex, Coordinate pt)
         {
             _component = component;
             _segIndex = segIndex;
@@ -43,12 +45,12 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         /// <param name="component">The component of the geometry containing the point</param>
         /// <param name="pt">The coordinate of the location</param>
-        public GeometryLocation(IGeometry component, Coordinate pt) : this(component, InsideArea, pt) { }
+        public GeometryLocation(Geometry component, Coordinate pt) : this(component, InsideArea, pt) { }
 
         /// <summary>
         /// Returns the geometry component on (or in) which this location occurs.
         /// </summary>
-        public IGeometry GeometryComponent => _component;
+        public Geometry GeometryComponent => _component;
 
         /// <summary>
         /// Returns the segment index for this location. If the location is inside an
@@ -65,5 +67,11 @@ namespace NetTopologySuite.Operation.Distance
         /// Tests whether this location represents a point inside an area geometry.
         /// </summary>
         public bool IsInsideArea => _segIndex == InsideArea;
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"{_component.GeometryType}[{_segIndex.ToString(CultureInfo.InvariantCulture)}]-{WKTWriter.ToPoint(_pt)}";
+        }
     }
 }

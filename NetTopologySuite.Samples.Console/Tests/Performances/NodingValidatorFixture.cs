@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Overlay;
 using NUnit.Framework;
@@ -31,7 +31,7 @@ namespace NetTopologySuite.Tests.Performances
             Assert.IsTrue(elapsed1 < elapsed2);
         }
 
-        private static long Perform(IGeometry geom1, IGeometry geom2)
+        private static long Perform(Geometry geom1, Geometry geom2)
         {
             var stopWatch = new Stopwatch();
             stopWatch.Start();

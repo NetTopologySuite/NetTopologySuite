@@ -1,13 +1,12 @@
 ﻿using System;
-using GeoAPI.Geometries;
-using GeoAPI.Geometries.Prepared;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Prepared;
 
 namespace Open.Topology.TestRunner.Operations
 {
     public class PreparedGeometryTeeOperation : TeeGeometryOperation
     {
-        private static bool ContainsProperly(IGeometry g1, IGeometry g2)
+        private static bool ContainsProperly(Geometry g1, Geometry g2)
         {
             return g1.Relate(g2, "T**FF*FF*");
         }
@@ -28,10 +27,10 @@ namespace Open.Topology.TestRunner.Operations
         {
         }
 
-        protected override void RunTeeOp(string opName, IGeometry geometry, object[] args)
+        protected override void RunTeeOp(string opName, Geometry geometry, object[] args)
         {
             if (args.Length < 1) return;
-            var g2 = args[0] as IGeometry;
+            var g2 = args[0] as Geometry;
             if (g2 == null) return;
 
             if (!geometry.IsValid)
@@ -43,7 +42,7 @@ namespace Open.Topology.TestRunner.Operations
             CheckAllPrepOps(g2, geometry);
         }
 
-        private static void CheckAllPrepOps(IGeometry g1, IGeometry g2)
+        private static void CheckAllPrepOps(Geometry g1, Geometry g2)
         {
             var prepGeom = PreparedGeometryFactory.Prepare(g1);
 
@@ -53,7 +52,7 @@ namespace Open.Topology.TestRunner.Operations
             CheckCovers(prepGeom, g2);
         }
 
-        private static void CheckIntersects(IPreparedGeometry pg, IGeometry g2)
+        private static void CheckIntersects(IPreparedGeometry pg, Geometry g2)
         {
             bool pgResult = pg.Intersects(g2);
             bool expected = pg.Geometry.Intersects(g2);
@@ -67,7 +66,7 @@ namespace Open.Topology.TestRunner.Operations
             // System.out.println("Results match!");
         }
 
-        private static void CheckContains(IPreparedGeometry pg, IGeometry g2)
+        private static void CheckContains(IPreparedGeometry pg, Geometry g2)
         {
             bool pgResult = pg.Contains(g2);
             bool expected = pg.Geometry.Contains(g2);
@@ -78,7 +77,7 @@ namespace Open.Topology.TestRunner.Operations
             // System.out.println("Results match!");
         }
 
-        private static void CheckContainsProperly(IPreparedGeometry pg, IGeometry g2)
+        private static void CheckContainsProperly(IPreparedGeometry pg, Geometry g2)
         {
             bool pgResult = pg.ContainsProperly(g2);
             bool expected = ContainsProperly(pg.Geometry, g2);
@@ -89,7 +88,7 @@ namespace Open.Topology.TestRunner.Operations
             // System.out.println("Results match!");
         }
 
-        private static void CheckCovers(IPreparedGeometry pg, IGeometry g2)
+        private static void CheckCovers(IPreparedGeometry pg, Geometry g2)
         {
             bool pgResult = pg.Covers(g2);
             bool expected = pg.Geometry.Covers(g2);
@@ -103,25 +102,25 @@ namespace Open.Topology.TestRunner.Operations
         /*
         static class PreparedGeometryOp
         {
-            public static bool Intersects(IGeometry g1, IGeometry g2)
+            public static bool Intersects(Geometry g1, Geometry g2)
             {
                 var prepGeom = PreparedGeometryFactory.Prepare(g1);
                 return prepGeom.Intersects(g2);
             }
 
-            public static bool Contains(IGeometry g1, IGeometry g2)
+            public static bool Contains(Geometry g1, Geometry g2)
             {
                 var prepGeom = PreparedGeometryFactory.Prepare(g1);
                 return prepGeom.Contains(g2);
             }
 
-            public static bool ContainsProperly(IGeometry g1, IGeometry g2)
+            public static bool ContainsProperly(Geometry g1, Geometry g2)
             {
                 var prepGeom = PreparedGeometryFactory.Prepare(g1);
                 return prepGeom.ContainsProperly(g2);
             }
 
-            public static bool Covers(IGeometry g1, IGeometry g2)
+            public static bool Covers(Geometry g1, Geometry g2)
             {
                 var prepGeom = PreparedGeometryFactory.Prepare(g1);
                 return prepGeom.Covers(g2);

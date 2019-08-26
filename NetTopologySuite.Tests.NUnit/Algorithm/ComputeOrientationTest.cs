@@ -1,18 +1,16 @@
-﻿using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
+﻿using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class ComputeOrientationTest
     {
         private readonly WKTReader _reader = new WKTReader();
 
-        [TestAttribute]
+        [Test]
         public void TestCCW()
         {
             Assert.IsTrue(IsAllOrientationsEqual(GetCoordinates("LINESTRING ( 0 0, 0 1, 1 1)")));
@@ -27,8 +25,8 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
         }
 
         // MD - deliberately disabled
-        [TestAttribute]
-        [IgnoreAttribute("This case fails because subtraction of small from large loses precision")]
+        [Test]
+        [Ignore("This case fails because subtraction of small from large loses precision")]
         public void TestBadCCW()
         {
             // this case fails because subtraction of small from large loses precision

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 
@@ -12,16 +11,16 @@ namespace NetTopologySuite.Samples.Lab.Clean
     {
         public interface Predicate
         {
-            bool Value(IGeometry geom);
+            bool Value(Geometry geom);
         }
 
-        private readonly IGeometry _geom;
+        private readonly Geometry _geom;
         private readonly Predicate _predicate;
 
         /// <summary>
         /// Creates a new hole remover instance.
         /// </summary>
-        public HoleRemover(IGeometry geom, Predicate predicate)
+        public HoleRemover(Geometry geom, Predicate predicate)
         {
             _geom = geom;
             _predicate = predicate;
@@ -30,7 +29,7 @@ namespace NetTopologySuite.Samples.Lab.Clean
         /// <summary>
         /// Gets the cleaned geometry.
         /// </summary>
-        public IGeometry GetResult()
+        public Geometry GetResult()
         {
             var op = new HoleRemoverMapOp(_predicate);
             return GeometryMapper.Map(_geom, op);
@@ -45,39 +44,39 @@ namespace NetTopologySuite.Samples.Lab.Clean
                 _predicate = predicate;
             }
 
-            public IGeometry Map(IGeometry geom)
+            public Geometry Map(Geometry geom)
             {
-                if (geom is IPolygon)
-                    return PolygonHoleRemover.Clean((IPolygon)geom, _predicate);
+                if (geom is Polygon)
+                    return PolygonHoleRemover.Clean((Polygon)geom, _predicate);
                 return geom;
             }
         }
 
         private class PolygonHoleRemover
         {
-            public static IPolygon Clean(IPolygon poly, Predicate isRemoved)
+            public static Polygon Clean(Polygon poly, Predicate isRemoved)
             {
                 var pihr = new PolygonHoleRemover(poly, isRemoved);
                 return pihr.GetResult();
             }
 
-            private readonly IPolygon _poly;
+            private readonly Polygon _poly;
             private readonly Predicate _predicate;
 
-            public PolygonHoleRemover(IPolygon poly, Predicate predicate)
+            public PolygonHoleRemover(Polygon poly, Predicate predicate)
             {
                 _poly = poly;
                 _predicate = predicate;
             }
 
-            public IPolygon GetResult()
+            public Polygon GetResult()
             {
                 var gf = _poly.Factory;
 
-                IList<IGeometry> holes = new List<IGeometry>();
+                IList<Geometry> holes = new List<Geometry>();
                 for (int i = 0; i < _poly.NumInteriorRings; i++)
                 {
-                    var hole = (ILinearRing)_poly.GetInteriorRingN(i);
+                    var hole = (LinearRing)_poly.GetInteriorRingN(i);
                     if (!_predicate.Value(hole))
                         holes.Add(hole);
                 }
@@ -86,7 +85,7 @@ namespace NetTopologySuite.Samples.Lab.Clean
                     return _poly;
 
                 // return new polygon with covered holes only
-                var shell = (ILinearRing)_poly.ExteriorRing;
+                var shell = (LinearRing)_poly.ExteriorRing;
                 var rings = GeometryFactory.ToLinearRingArray(holes);
                 var result = gf.CreatePolygon(shell, rings);
                 return result;

@@ -11,7 +11,7 @@
  */
 
 using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.Quadtree;
 using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;
@@ -20,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Quadtree
 {
     public class QuadtreeTest
     {
-        [TestAttribute]
+        [Test]
         public void TestSpatialIndex()
         {
             var tester = new SpatialIndexTester { SpatialIndex = new Quadtree<object>() };
@@ -29,7 +29,7 @@ namespace NetTopologySuite.Tests.NUnit.Index.Quadtree
             Assert.IsTrue(tester.IsSuccess);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestSerialization()
         {
             var tester = new SpatialIndexTester { SpatialIndex = new Quadtree<object>() };

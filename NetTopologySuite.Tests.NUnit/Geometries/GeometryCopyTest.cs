@@ -1,6 +1,4 @@
-﻿using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries
@@ -20,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             CheckCopy(Read(GeometryTestData.WKT_GC));
         }
 
-        private void CheckCopy(IGeometry g)
+        private void CheckCopy(Geometry g)
         {
             int SRID = 123;
             g.SRID = SRID;

@@ -1,10 +1,10 @@
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Precision
 {
     /// <summary>
     /// Removes common most-significant mantissa bits
-    /// from one or more <see cref="IGeometry"/>s.
+    /// from one or more <see cref="Geometry"/>s.
     /// <para/>
     /// The CommonBitsRemover "scavenges" precision
     /// which is "wasted" by a large displacement of the geometry
@@ -48,7 +48,7 @@ namespace NetTopologySuite.Precision
         /// geometries.
         /// </summary>
         /// <param name="geom">A Geometry to test for common bits.</param>
-        public void Add(IGeometry geom)
+        public void Add(Geometry geom)
         {
             geom.Apply(_ccFilter);
             _commonCoord = _ccFilter.CommonCoordinate;
@@ -65,11 +65,11 @@ namespace NetTopologySuite.Precision
         /// </summary>
         /// <param name="geom">The Geometry from which to remove the common coordinate bits.</param>
         /// <returns>The shifted Geometry.</returns>
-        public IGeometry RemoveCommonBits(IGeometry geom)
+        public Geometry RemoveCommonBits(Geometry geom)
         {
             if (_commonCoord.X == 0.0 && _commonCoord.Y == 0.0)
                 return geom;
-            var invCoord = new Coordinate(_commonCoord);
+            var invCoord = _commonCoord.Copy();
             invCoord.X = -invCoord.X;
             invCoord.Y = -invCoord.Y;
             var trans = new Translater(invCoord);
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Precision
         /// The coordinates of the Geometry are changed.
         /// </summary>
         /// <param name="geom">The Geometry to which to add the common coordinate bits.</param>
-        public void AddCommonBits(IGeometry geom)
+        public void AddCommonBits(Geometry geom)
         {
             var trans = new Translater(_commonCoord);
             geom.Apply(trans);
@@ -134,12 +134,12 @@ namespace NetTopologySuite.Precision
             ///
             /// </summary>
             /// <param name="seq">The coordinate sequence</param>
-            public void Filter(ICoordinateSequence seq, int i)
+            public void Filter(CoordinateSequence seq, int i)
             {
-                double xp = seq.GetOrdinate(i, Ordinate.X) + _trans.X;
-                double yp = seq.GetOrdinate(i, Ordinate.Y) + _trans.Y;
-                seq.SetOrdinate(i, Ordinate.X, xp);
-                seq.SetOrdinate(i, Ordinate.Y, yp);
+                double xp = seq.GetOrdinate(i, 0) + _trans.X;
+                double yp = seq.GetOrdinate(i, 1) + _trans.Y;
+                seq.SetOrdinate(i, 0, xp);
+                seq.SetOrdinate(i, 1, yp);
             }
 
             public bool Done => false;

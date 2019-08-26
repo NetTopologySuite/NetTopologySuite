@@ -1,4 +1,4 @@
-﻿using GeoAPI.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.Quadtree;
 using NUnit.Framework;
 

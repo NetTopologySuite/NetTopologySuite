@@ -2,7 +2,7 @@ namespace NetTopologySuite.Algorithm
 {
     using System;
     using System.Text;
-    using GeoAPI.Geometries;
+    using NetTopologySuite.Geometries;
     using Utilities;
 
     /// <summary>
@@ -36,28 +36,6 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public abstract class LineIntersector
     {
-        #region obsolete
-        /**
-          * These are deprecated, due to ambiguous naming
-          */
-
-        /// <summary>
-        /// Indicates that line segments do not intersect
-        /// </summary>
-        [Obsolete("Ambiguous naming, use NoIntersection")]
-        public const int DontIntersect = 0;
-        /// <summary>
-        /// Indicates that line segments intersect in a single point
-        /// </summary>
-        [Obsolete("Ambiguous naming, use PointIntersection")]
-        public const int DoIntersect = 1;
-        /// <summary>
-        /// Indicates that line segments intersect in a line segment
-        /// </summary>
-        [Obsolete("Ambiguous naming, use CollinearIntersection")]
-        public const int Collinear = 2;
-        #endregion
-
         /// <summary>
         /// Indicates that line segments do not intersect
         /// </summary>
@@ -155,7 +133,7 @@ namespace NetTopologySuite.Algorithm
         /// If MakePrecise is true, computed intersection coordinates will be made precise
         /// using <c>Coordinate.MakePrecise</c>.
         /// </summary>
-        private IPrecisionModel _precisionModel;
+        private PrecisionModel _precisionModel;
 
         protected LineIntersector()
         {
@@ -172,19 +150,10 @@ namespace NetTopologySuite.Algorithm
         }
 
         /// <summary>
-        /// Force computed intersection to be rounded to a given precision model
-        /// </summary>
-        [Obsolete("Use PrecisionModel instead")]
-        public IPrecisionModel MakePrecise
-        {
-            set => _precisionModel = value;
-        }
-
-        /// <summary>
         /// Force computed intersection to be rounded to a given precision model.
         /// No getter is provided, because the precision model is not required to be specified.
         /// </summary>
-        public IPrecisionModel PrecisionModel
+        public PrecisionModel PrecisionModel
         {
             get => _precisionModel;
             set => _precisionModel = value;

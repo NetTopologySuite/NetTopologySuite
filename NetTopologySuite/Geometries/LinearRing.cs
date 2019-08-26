@@ -1,5 +1,4 @@
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 
 namespace NetTopologySuite.Geometries
@@ -19,10 +18,8 @@ namespace NetTopologySuite.Geometries
     /// If these conditions are not met, the constructors throw
     /// an <see cref="ArgumentException"/></para>
     /// </remarks>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
-    public class LinearRing : LineString, ILinearRing
+    public class LinearRing : LineString
     {
         /// <summary>
         /// The minimum number of vertices allowed in a valid non-empty ring (= 4).
@@ -32,13 +29,13 @@ namespace NetTopologySuite.Geometries
 
         /// <summary>
         /// Constructs a <c>LinearRing</c> with the vertices specified
-        /// by the given <see cref="ICoordinateSequence"/>.
+        /// by the given <see cref="CoordinateSequence"/>.
         /// </summary>
         /// <param name="points">A sequence points forming a closed and simple linestring,
         /// or <c>null</c> to create the empty geometry.</param>
         /// <param name="factory">The factory that creates this <c>LinearRing</c></param>
         /// <exception cref="ArgumentException">If the ring is not closed, or has too few points</exception>
-        public LinearRing(ICoordinateSequence points, IGeometryFactory factory)
+        public LinearRing(CoordinateSequence points, GeometryFactory factory)
             : base(points, factory)
         {
             ValidateConstruction();
@@ -85,14 +82,15 @@ namespace NetTopologySuite.Geometries
         public override string GeometryType => "LinearRing";
 
         /// <inheritdoc cref="Geometry.CopyInternal"/>>
-        protected override IGeometry CopyInternal()
+        protected override Geometry CopyInternal()
         {
             return new LinearRing(CoordinateSequence.Copy(), Factory);
         }
 
-        public override IGeometry Reverse()
+        public override Geometry Reverse()
         {
-            var sequence = CoordinateSequence.Reversed();
+            var sequence = CoordinateSequence.Copy();
+            CoordinateSequences.Reverse(sequence);
             return Factory.CreateLinearRing(sequence);
         }
 
@@ -109,7 +107,6 @@ namespace NetTopologySuite.Geometries
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
         /// <exception cref="ArgumentException">If the ring is not closed, or has too few points</exception>
-        //[Obsolete("Use GeometryFactory instead")]
         public LinearRing(Coordinate[] points) :
             this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory) { }
 

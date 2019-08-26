@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
-using GeoAPI.Geometries;
+using System.Collections.ObjectModel;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 
 namespace NetTopologySuite.Noding.Snapround
 {
     /// <summary>
-    /// Nodes the linework in a list of <see cref="IGeometry"/>s using Snap-Rounding
-    /// to a given <see cref="IPrecisionModel"/>.
+    /// Nodes the linework in a list of <see cref="Geometry"/>s using Snap-Rounding
+    /// to a given <see cref="PrecisionModel"/>.
     /// <para>
     /// The input coordinates are expected to be rounded
     /// to the given precision model.
@@ -21,15 +22,15 @@ namespace NetTopologySuite.Noding.Snapround
     /// </para></summary>
     public class GeometryNoder
     {
-        private IGeometryFactory _geomFact;
-        private readonly IPrecisionModel _pm;
+        private GeometryFactory _geomFact;
+        private readonly PrecisionModel _pm;
         //private bool isValidityChecked = false;
 
         /// <summary>
-        /// Creates a new noder which snap-rounds to a grid specified by the given <see cref="IPrecisionModel"/>
+        /// Creates a new noder which snap-rounds to a grid specified by the given <see cref="PrecisionModel"/>
         /// </summary>
         /// <param name="pm">The precision model for the grid to snap-round to.</param>
-        public GeometryNoder(IPrecisionModel pm)
+        public GeometryNoder(PrecisionModel pm)
         {
             _pm = pm;
         }
@@ -44,16 +45,27 @@ namespace NetTopologySuite.Noding.Snapround
         /// </summary>
         /// <param name="geoms">A collection of Geometrys of any type</param>
         /// <returns>A list of LineStrings representing the noded linework of the input</returns>
-        public IList<ILineString> Node(ICollection<IGeometry> geoms)
+        public ReadOnlyCollection<LineString> Node(IEnumerable<Geometry> geoms)
         {
             // get geometry factory
+            // DEVIATION: JTS uses an "ExtractLines" helper, but by inlining it,
+            // we can make the parameter any ol' IEnumerable<Geometry> without
+            // iterating over it multiple times.
+            var lines = new List<Geometry>();
+            var lce = new LinearComponentExtracter(lines);
+            bool first = true;
             foreach (var g in geoms)
             {
-                _geomFact = g.Factory;
-                break;
+                if (first)
+                {
+                    _geomFact = g.Factory;
+                    first = false;
+                }
+
+                g.Apply(lce);
             }
 
-            var segStrings = ToSegmentStrings(ExtractLines(geoms));
+            var segStrings = ToSegmentStrings(lines);
             //Noder sr = new SimpleSnapRounder(pm);
             var sr = new MCIndexSnapRounder(_pm);
             sr.ComputeNodes(segStrings);
@@ -69,9 +81,9 @@ namespace NetTopologySuite.Noding.Snapround
             return ToLineStrings(nodedLines);
         }
 
-        private IList<ILineString> ToLineStrings(IEnumerable<ISegmentString> segStrings)
+        private ReadOnlyCollection<LineString> ToLineStrings(IEnumerable<ISegmentString> segStrings)
         {
-            var lines = new List<ILineString>();
+            var lines = new List<LineString>();
             foreach (var ss in segStrings)
             {
                 // skip collapsed lines
@@ -79,24 +91,13 @@ namespace NetTopologySuite.Noding.Snapround
                     continue;
                 lines.Add(_geomFact.CreateLineString(ss.Coordinates));
             }
-            return lines;
+            return lines.AsReadOnly();
         }
 
-        private static IEnumerable<IGeometry> ExtractLines(IEnumerable<IGeometry> geoms)
+        private static List<ISegmentString> ToSegmentStrings(List<Geometry> lines)
         {
-            var lines = new List<IGeometry>();
-            var lce = new LinearComponentExtracter(lines);
-            foreach (var geom in geoms)
-            {
-                geom.Apply(lce);
-            }
-            return lines;
-        }
-
-        private static IList<ISegmentString> ToSegmentStrings(IEnumerable<IGeometry> lines)
-        {
-            var segStrings = new List<ISegmentString>();
-            foreach (ILineString line in lines)
+            var segStrings = new List<ISegmentString>(lines.Count);
+            foreach (LineString line in lines)
             {
                 segStrings.Add(new NodedSegmentString(line.Coordinates, null));
             }

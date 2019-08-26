@@ -30,6 +30,6 @@ namespace NetTopologySuite.Noding
         /// <param name="segmentStrings">A collection of <see cref="ISegmentString"/>s to node</param>
         /// <param name="segmentIntersector">The intersection detector to either record intersection occurrences
         /// or add intersection nodes to the input segment strings.</param>
-        void Process(ICollection<ISegmentString> segmentStrings, ISegmentIntersector segmentIntersector);
+        void Process(IEnumerable<ISegmentString> segmentStrings, ISegmentIntersector segmentIntersector);
     }
 }

@@ -1,14 +1,14 @@
 namespace NetTopologySuite.Index
 {
     /// <summary>
-    /// A visitor for items in an index.
+    /// A visitor for items in a <see cref="ISpatialIndex{T}"/>.
     /// </summary>
-    public interface IItemVisitor< T>
+    public interface IItemVisitor<in T>
     {
         /// <summary>
-        ///
+        /// Visits an item in the index.
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">The index item to be visited.</param>
         void VisitItem(T item);
     }
 }

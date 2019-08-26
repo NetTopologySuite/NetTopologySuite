@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class IsCCWTest
     {
         private WKTReader reader = new WKTReader();
 
-        [TestAttribute]
+        [Test]
         public void TestCCW()
         {
             var pts = GetCoordinates("POLYGON ((60 180, 140 240, 140 240, 140 240, 200 180, 120 120, 60 180))");
@@ -41,13 +40,13 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
             return geom.Coordinates;
         }
 
-        private ICoordinateSequence GetCoordinateSequence(string wkt)
+        private CoordinateSequence GetCoordinateSequence(string wkt)
         {
             var geom = reader.Read(wkt);
-            if (!(geom is IPolygon))
+            if (!(geom is Polygon))
                 throw new ArgumentException($"{nameof(wkt)} must be of Polygon");
 
-            var poly = (IPolygon) geom;
+            var poly = (Polygon) geom;
             return poly.ExteriorRing.CoordinateSequence;
         }
     }

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using GeoAPI.Geometries;
-using GeoAPI.Geometries.Prepared;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Prepared;
 using NUnit.Framework;
@@ -19,7 +17,7 @@ namespace NetTopologySuite.Samples.Tests.Performances
         private const int NumShellCoords = 10;
 
         private readonly Random _generator;
-        private readonly IGeometryFactory _factory;
+        private readonly GeometryFactory _factory;
 
         public PreparedGeometryFixture()
         {
@@ -46,7 +44,7 @@ namespace NetTopologySuite.Samples.Tests.Performances
             return new Coordinate(x, y);
         }
 
-        private IEnumerable<IPolygon> create_polygons(int total)
+        private IEnumerable<Polygon> create_polygons(int total)
         {
             int count = 0;
             while (count++ < total)

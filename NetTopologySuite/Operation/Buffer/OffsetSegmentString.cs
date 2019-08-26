@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using GeoAPI.Geometries;
+﻿using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Buffer
@@ -14,7 +12,7 @@ namespace NetTopologySuite.Operation.Buffer
     internal class OffsetSegmentString
     {
         private readonly List<Coordinate> _ptList;
-        private IPrecisionModel _precisionModel;
+        private PrecisionModel _precisionModel;
 
         /**
          * The distance below which two adjacent points on the curve
@@ -28,7 +26,7 @@ namespace NetTopologySuite.Operation.Buffer
             _ptList = new List<Coordinate>();
         }
 
-        public IPrecisionModel PrecisionModel
+        public PrecisionModel PrecisionModel
         {
             get => _precisionModel;
             set => _precisionModel = value;
@@ -42,7 +40,7 @@ namespace NetTopologySuite.Operation.Buffer
 
         public void AddPt(Coordinate pt)
         {
-            var bufPt = new Coordinate(pt);
+            var bufPt = pt.Copy();
             _precisionModel.MakePrecise(bufPt);
             // don't add duplicate (or near-duplicate) points
             if (IsRedundant(bufPt))
@@ -92,13 +90,8 @@ namespace NetTopologySuite.Operation.Buffer
             if (_ptList.Count < 1)
                 return;
 
-            var startPt = new Coordinate(_ptList[0]);
+            var startPt = _ptList[0].Copy();
             var lastPt = _ptList[_ptList.Count - 1];
-            /*
-            Coordinate last2Pt = null;
-            if (ptList.Count >= 2)
-                last2Pt = ptList[ptList.Count - 2];
-            */
             if (startPt.Equals(lastPt)) return;
             _ptList.Add(startPt);
         }

@@ -1,22 +1,20 @@
-using System;
-using GeoAPI.Geometries;
-using GeoAPI.Geometries.Prepared;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Prepared;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 {
     /// <summary>
-    /// Stress tests <see cref="PreparedPolygon"/> for correctness of <see cref="PreparedPolygon.Contains(IGeometry)"/> and
-    /// <see cref="PreparedPolygon.Intersects(IGeometry)"/> operation.
+    /// Stress tests <see cref="PreparedPolygon"/> for correctness of <see cref="PreparedPolygon.Contains(Geometry)"/> and
+    /// <see cref="PreparedPolygon.Intersects(Geometry)"/> operation.
     /// </summary>
     /// <author>Martin Davis</author>
     public class PreparedPolygonPredicateStressTest
     {
         bool testFailed = false;
 
-        [TestAttribute]
-        [CategoryAttribute("Stress")]
+        [Test]
+        [Category("Stress")]
         public void Test()
         {
             var tester = new PredicateStressTester();
@@ -25,14 +23,14 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
 
         class PredicateStressTester : StressTestHarness
         {
-            public override bool CheckResult(IGeometry target, IGeometry test)
+            public override bool CheckResult(Geometry target, Geometry test)
             {
                 if (!CheckIntersects(target, test)) return false;
                 if (!CheckContains(target, test)) return false;
                 return true;
             }
 
-            private static bool CheckContains(IGeometry target, IGeometry test)
+            private static bool CheckContains(Geometry target, Geometry test)
             {
                 bool expectedResult = target.Contains(test);
 
@@ -48,7 +46,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Prepared
                 return true;
             }
 
-            private static bool CheckIntersects(IGeometry target, IGeometry test)
+            private static bool CheckIntersects(Geometry target, Geometry test)
             {
                 bool expectedResult = target.Intersects(test);
 

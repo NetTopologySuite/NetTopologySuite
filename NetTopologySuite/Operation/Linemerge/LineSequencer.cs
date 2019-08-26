@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Planargraph;
 using NetTopologySuite.Planargraph.Algorithm;
@@ -11,7 +9,7 @@ namespace NetTopologySuite.Operation.Linemerge
 {
     /// <summary>
     /// <para>
-    /// Builds a sequence from a set of <see cref="ILineString" />s,
+    /// Builds a sequence from a set of <see cref="LineString" />s,
     /// so that they are ordered end to end.
     /// A sequence is a complete non-repeating list of the linear
     /// components of the input.  Each linestring is oriented
@@ -21,7 +19,7 @@ namespace NetTopologySuite.Operation.Linemerge
     /// The input linestrings may form one or more connected sets.
     /// The input linestrings should be correctly noded, or the results may
     /// not be what is expected.
-    /// The output of this method is a single <see cref="IMultiLineString" />,
+    /// The output of this method is a single <see cref="MultiLineString" />,
     /// containing the ordered linestrings in the sequence.
     /// </para>
     /// <para>
@@ -47,22 +45,22 @@ namespace NetTopologySuite.Operation.Linemerge
     public class LineSequencer
     {
         /// <summary>
-        /// Tests whether a <see cref="IGeometry" /> is sequenced correctly.
-        /// <see cref="ILineString" />s are trivially sequenced.
-        /// <see cref="IMultiLineString" />s are checked for correct sequencing.
+        /// Tests whether a <see cref="Geometry" /> is sequenced correctly.
+        /// <see cref="LineString" />s are trivially sequenced.
+        /// <see cref="MultiLineString" />s are checked for correct sequencing.
         /// Otherwise, <c>IsSequenced</c> is defined
         /// to be <c>true</c> for geometries that are not lineal.
         /// </summary>
-        /// <param name="geom">The <see cref="IGeometry" /> to test.</param>
+        /// <param name="geom">The <see cref="Geometry" /> to test.</param>
         /// <returns>
-        /// <value>true</value> if the <see cref="IGeometry" /> is sequenced or is not lineal.
+        /// <value>true</value> if the <see cref="Geometry" /> is sequenced or is not lineal.
         /// </returns>
-        public static bool IsSequenced(IGeometry geom)
+        public static bool IsSequenced(Geometry geom)
         {
-            if (!(geom is IMultiLineString))
+            if (!(geom is MultiLineString))
                 return true;
 
-            var mls = geom as IMultiLineString;
+            var mls = geom as MultiLineString;
 
             // The nodes in all subgraphs which have been completely scanned
             var prevSubgraphNodes = new HashSet<Coordinate>();
@@ -71,7 +69,7 @@ namespace NetTopologySuite.Operation.Linemerge
             var currNodes = new List<Coordinate>();
             for (int i = 0; i < mls.NumGeometries; i++)
             {
-                var line = (ILineString) mls.GetGeometryN(i);
+                var line = (LineString) mls.GetGeometryN(i);
                 var startNode = line.GetCoordinateN(0);
                 var endNode   = line.GetCoordinateN(line.NumPoints - 1);
 
@@ -100,9 +98,9 @@ namespace NetTopologySuite.Operation.Linemerge
         private readonly LineMergeGraph _graph = new LineMergeGraph();
 
         // Initialize with default, in case no lines are input
-        private IGeometryFactory _factory = GeometryFactory.Default;
+        private GeometryFactory _factory = GeometryFactory.Default;
 
-        private IGeometry _sequencedGeometry;
+        private Geometry _sequencedGeometry;
 
         private int _lineCount;
         private bool _isRun;
@@ -114,7 +112,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// Any dimension of Geometry may be added; the constituent linework will be extracted.
         /// </summary>
         /// <param name="geometries">A <see cref="IEnumerable{T}" /> of geometries to add.</param>
-        public void Add(IEnumerable<IGeometry> geometries)
+        public void Add(IEnumerable<Geometry> geometries)
         {
             foreach(var geometry in geometries)
                 Add(geometry);
@@ -127,7 +125,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// the constituent linework will be extracted.
         /// </summary>
         /// <param name="geometry"></param>
-        public void Add(IGeometry geometry)
+        public void Add(Geometry geometry)
         {
             geometry.Apply(new GeometryComponentFilterImpl(this));
         }
@@ -154,14 +152,14 @@ namespace NetTopologySuite.Operation.Linemerge
             /// <param name="component">
             /// A <see cref="Geometry" /> to which the filter is applied.
             /// </param>
-            public void Filter(IGeometry component)
+            public void Filter(Geometry component)
             {
-                if (component is ILineString)
-                    _sequencer.AddLine(component as ILineString);
+                if (component is LineString)
+                    _sequencer.AddLine(component as LineString);
             }
         }
 
-        internal void AddLine(ILineString lineString)
+        internal void AddLine(LineString lineString)
         {
             if (_factory == null)
                 _factory = lineString.Factory;
@@ -186,7 +184,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// </summary>
         /// <returns>The sequenced linestrings,
         /// or <c>null</c> if a valid sequence does not exist.</returns>
-        public IGeometry GetSequencedLineStrings()
+        public Geometry GetSequencedLineStrings()
         {
             ComputeSequence();
             return _sequencedGeometry;
@@ -207,7 +205,7 @@ namespace NetTopologySuite.Operation.Linemerge
 
             int finalLineCount = _sequencedGeometry.NumGeometries;
             Assert.IsTrue(_lineCount == finalLineCount, "Lines were missing from result");
-            Assert.IsTrue(_sequencedGeometry is ILineString || _sequencedGeometry is IMultiLineString, "Result is not lineal");
+            Assert.IsTrue(_sequencedGeometry is LineString || _sequencedGeometry is MultiLineString, "Result is not lineal");
         }
 
         private IList<IEnumerable<DirectedEdge>> FindSequences()
@@ -458,9 +456,9 @@ namespace NetTopologySuite.Operation.Linemerge
         /// <returns>
         /// The sequenced geometry, or <c>null</c> if no sequence exists.
         /// </returns>
-        private IGeometry BuildSequencedGeometry(IEnumerable<IEnumerable<DirectedEdge>> sequences)
+        private Geometry BuildSequencedGeometry(IEnumerable<IEnumerable<DirectedEdge>> sequences)
         {
-            var lines = new List<IGeometry>();
+            var lines = new List<Geometry>();
 
             foreach (IList<DirectedEdge> seq in sequences)
             {
@@ -477,10 +475,10 @@ namespace NetTopologySuite.Operation.Linemerge
                 }
             }
 
-            return lines.Count == 0 ? _factory.CreateMultiLineString(new ILineString[] { }) : _factory.BuildGeometry(lines);
+            return lines.Count == 0 ? _factory.CreateMultiLineString(new LineString[] { }) : _factory.BuildGeometry(lines);
         }
 
-        private static ILineString Reverse(ILineString line)
+        private static LineString Reverse(LineString line)
         {
             var pts = line.Coordinates;
             Array.Reverse(pts);

@@ -1,12 +1,10 @@
-﻿using System;
-using GeoAPI.Geometries;
-using NUnit.Framework;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Relate
 {
-public class ContainsTest
+    public class ContainsTest
 {
   private readonly WKTReader _reader = new WKTReader(new GeometryFactory());
 
@@ -25,7 +23,7 @@ public class ContainsTest
    * to contribute to the intersection matrix result).
    * This will require a complete reworking of the relate algorithm.
    */
-  [TestAttribute, Ignore("Known to fail")]
+  [Test, Ignore("Known to fail")]
     public void TestContainsIncorrect()
     {
         var a = _reader.Read("LINESTRING (1 0, 0 2, 0 0, 2 2)");

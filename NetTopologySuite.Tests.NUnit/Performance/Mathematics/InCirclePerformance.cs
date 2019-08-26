@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
@@ -14,7 +14,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
      *
      */
 
-    [CategoryAttribute("Stress")]
+    [Category("Stress")]
     public class InCirclePerf
     {
 
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         private readonly Coordinate _pc = new Coordinate(687957.58, 7460721);
         private readonly Coordinate _pp = new Coordinate(687958.13, 7460720.99);
 
-        [TestAttribute]
+        [Test]
         public void Test()
         {
             Console.WriteLine("InCircle perf");
@@ -31,10 +31,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
             double doubleTime = RunDouble(n);
             double ddSelfTime = RunDDSelf(n);
             double ddSelf2Time = runDDSelf2(n);
-            double ddTime = RunDD(n);
             // double ddSelfTime = runDoubleDoubleSelf(10000000);
 
-            Console.WriteLine("DD VS double performance factor      = " + ddTime/doubleTime);
             Console.WriteLine("DDSelf VS double performance factor  = " + ddSelfTime/doubleTime);
             Console.WriteLine("DDSelf2 VS double performance factor = " + ddSelf2Time/doubleTime);
         }
@@ -49,20 +47,6 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
             }
             sw.Stop();
             Console.WriteLine("double:   nIter = " + nIter
-                              + "   time = " + sw.ElapsedMilliseconds);
-            return sw.ElapsedMilliseconds/(double) nIter;
-        }
-
-        public double RunDD(int nIter)
-        {
-            var sw = new Stopwatch();
-            sw.Start();
-            for (int i = 0; i < nIter; i++)
-            {
-                TriPredicate.IsInCircleDD(_pa, _pb, _pc, _pp);
-            }
-            sw.Stop();
-            Console.WriteLine("DD:       nIter = " + nIter
                               + "   time = " + sw.ElapsedMilliseconds);
             return sw.ElapsedMilliseconds/(double) nIter;
         }

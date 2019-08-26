@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.GeometriesGraph.Index
 {
@@ -30,20 +30,6 @@ namespace NetTopologySuite.GeometriesGraph.Index
     /// </summary>
     public class MonotoneChainIndexer
     {
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="list"></param>
-        /// <returns></returns>
-        [Obsolete("Use List<int>.ToArray()")]
-        public static int[] ToIntArray(IList<int> list)
-        {
-            int[] array = new int[list.Count];
-            for (int i = 0; i < array.Length; i++)
-                array[i] = Convert.ToInt32(list[i]);
-            return array;
-        }
-
         /*
         /// <summary>
         /// Default empty constructor.

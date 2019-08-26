@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Samples.SimpleTests.Geometries
 {
@@ -15,10 +15,10 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
         private IFormatter serializer = null;
 
         private Coordinate[] coordinates = null;
-        private IPoint point = null;
-        private ILineString line = null;
-        private IPolygon polygon = null;
-        private IMultiPoint multiPoint = null;
+        private Point point = null;
+        private LineString line = null;
+        private Polygon polygon = null;
+        private MultiPoint multiPoint = null;
 
         public SerializationSamples() : base()
         {
@@ -55,7 +55,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
                 new Coordinate(400,400),
                 new Coordinate(500,500),
             };
-            multiPoint = Factory.CreateMultiPoint(coordinates);
+            multiPoint = Factory.CreateMultiPointFromCoords(coordinates);
         }
         /// <summary>
         ///
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Samples.SimpleTests.Geometries
         ///
         /// </summary>
         /// <param name="geom"></param>
-        private void TestSerialization(IGeometry geom)
+        private void TestSerialization(Geometry geom)
         {
             using (Stream stream = File.OpenWrite(filepath))
                 serializer.Serialize(stream, geom);

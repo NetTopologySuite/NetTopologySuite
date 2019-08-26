@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
 
@@ -39,26 +38,26 @@ namespace NetTopologySuite.Samples.Geometries
 
         }
 
-        public IEnumerable<IGeometry> BuildConcentricBuffers(Coordinate coord)
+        public IEnumerable<Geometry> BuildConcentricBuffers(Coordinate coord)
         {
             var center = GeometryFactory.Floating.CreatePoint(coord);
-            IPolygon lastPolygon = null;
+            Polygon lastPolygon = null;
             int distance = 0;
             while (distance <= 100000)
             {
                 distance += 5000;
-                var polygon = (IPolygon) center.Buffer(distance);
+                var polygon = (Polygon) center.Buffer(distance);
                 yield return polygon.Difference(lastPolygon);
                 lastPolygon = polygon;
             }
         }
 
-        public IList<IGeometry> BuildSlices(Coordinate coord)
+        public IList<Geometry> BuildSlices(Coordinate coord)
         {
             const double start = 101.25d;
             const double range = -22.5d;
 
-            var slices = new List<IGeometry>(16);
+            var slices = new List<Geometry>(16);
 
             for (double angle = start; angle > 101.25d - 360d; angle += range)
             {

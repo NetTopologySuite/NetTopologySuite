@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
-using GeoAPI.Operation.Buffer;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
@@ -9,7 +7,7 @@ using NetTopologySuite.GeometriesGraph;
 namespace NetTopologySuite.Operation.Buffer
 {
     /// <summary>
-    /// Computes the raw offset curve for a single <see cref="IGeometry"/> component (ring, line or point).
+    /// Computes the raw offset curve for a single <see cref="Geometry"/> component (ring, line or point).
     /// </summary>
     /// <remarks>
     /// A raw offset curve line is not noded - it may contain self-intersections (and usually will).
@@ -53,9 +51,9 @@ namespace NetTopologySuite.Operation.Buffer
         private const int MAX_CLOSING_SEG_FRACTION = 80;
 
         private double _distance;
-        private readonly IPrecisionModel _precisionModel;
+        private readonly PrecisionModel _precisionModel;
 
-        private readonly IBufferParameters _bufParams;
+        private readonly BufferParameters _bufParams;
 
         /**
          * The Closing Segment Factor controls how long
@@ -79,8 +77,8 @@ namespace NetTopologySuite.Operation.Buffer
         private readonly LineIntersector _li;
 
         public OldOffsetCurveBuilder(
-                      IPrecisionModel precisionModel,
-                      IBufferParameters bufParams
+                      PrecisionModel precisionModel,
+                      BufferParameters bufParams
                       )
         {
             _precisionModel = precisionModel;
@@ -164,7 +162,7 @@ namespace NetTopologySuite.Operation.Buffer
             var copy = new Coordinate[pts.Length];
             for (int i = 0; i < copy.Length; i++)
             {
-                copy[i] = new Coordinate(pts[i]);
+                copy[i] = pts[i].Copy();
             }
             return copy;
         }
@@ -517,7 +515,7 @@ namespace NetTopologySuite.Operation.Buffer
             int sideSign = side == Positions.Left ? 1 : -1;
             double dx = seg.P1.X - seg.P0.X;
             double dy = seg.P1.Y - seg.P0.Y;
-            double len = System.Math.Sqrt(dx * dx + dy * dy);
+            double len = Math.Sqrt(dx * dx + dy * dy);
             // u is the vector that is the length of the offset, in the direction of the segment
             double ux = sideSign * distance * dx / len;
             double uy = sideSign * distance * dy / len;

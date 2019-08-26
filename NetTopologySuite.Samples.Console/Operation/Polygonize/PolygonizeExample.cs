@@ -1,7 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Polygonize;
 using NUnit.Framework;
@@ -36,7 +35,7 @@ namespace NetTopologySuite.Samples.Operation.Poligonize
         internal virtual void Run()
         {
             var rdr = new WKTReader();
-            IList<IGeometry> lines = new List<IGeometry>
+            IList<Geometry> lines = new List<Geometry>
                                          {
                                              rdr.Read("LINESTRING (0 0 , 10 10)"),
                                              rdr.Read("LINESTRING (185 221, 100 100)"),

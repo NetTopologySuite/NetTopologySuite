@@ -1,19 +1,17 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
-using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Index
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public abstract class SpatialIndexTest
     {
         protected abstract ISpatialIndex<object> CreateSpatialIndex();
 
-        [TestAttribute]
+        [Test]
         public void TestSpatialIndex()
         {
             Console.WriteLine("===============================");

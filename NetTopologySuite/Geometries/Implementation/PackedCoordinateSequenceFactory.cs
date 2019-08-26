@@ -1,5 +1,4 @@
 using System;
-using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries.Implementation
 {
@@ -7,10 +6,8 @@ namespace NetTopologySuite.Geometries.Implementation
     /// Builds packed array coordinate sequences. The array data type can be either
     /// double or float, and defaults to double.
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
-    public class PackedCoordinateSequenceFactory : ICoordinateSequenceFactory
+    public class PackedCoordinateSequenceFactory : CoordinateSequenceFactory
     {
         /// <summary>
         ///
@@ -35,7 +32,6 @@ namespace NetTopologySuite.Geometries.Implementation
             new PackedCoordinateSequenceFactory(PackedType.Float);
 
         private PackedType type = PackedType.Double;
-        private int dimension = 3;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedCoordinateSequenceFactory"/> class,
@@ -47,17 +43,9 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Initializes a new instance of the <see cref="PackedCoordinateSequenceFactory"/> class.
         /// </summary>
         /// <param name="type">The type.</param>
-        public PackedCoordinateSequenceFactory(PackedType type) : this(type, 3) { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PackedCoordinateSequenceFactory"/> class.
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="dimension"></param>
-        public PackedCoordinateSequenceFactory(PackedType type, int dimension)
+        public PackedCoordinateSequenceFactory(PackedType type)
         {
             Type = type;
-            Dimension = dimension;
         }
 
         /// <summary>
@@ -75,25 +63,25 @@ namespace NetTopologySuite.Geometries.Implementation
         }
 
         /// <summary>
-        ///
-        /// </summary>
-        public int Dimension
-        {
-            get => dimension;
-            set => this.dimension = value;
-        }
-
-        /// <summary>
         /// Returns a CoordinateSequence based on the given array; whether or not the
         /// array is copied is implementation-dependent.
         /// </summary>
         /// <param name="coordinates">Coordinates array, which may not be null nor contain null elements</param>
         /// <returns></returns>
-        public ICoordinateSequence Create(Coordinate[] coordinates)
+        public override CoordinateSequence Create(Coordinate[] coordinates)
         {
+            int dimension = 2;
+            int measures = 0;
+            if (coordinates != null && coordinates.Length > 0 && coordinates[0] != null)
+            {
+                var first = coordinates[0];
+                dimension = Coordinates.Dimension(first);
+                measures = Coordinates.Measures(first);
+            }
+
             if (type == PackedType.Double)
-                 return new PackedDoubleCoordinateSequence(coordinates, dimension);
-            return new PackedFloatCoordinateSequence(coordinates, dimension);
+                return new PackedDoubleCoordinateSequence(coordinates, dimension, measures);
+            return new PackedFloatCoordinateSequence(coordinates, dimension, measures);
         }
 
         /// <summary>
@@ -102,66 +90,71 @@ namespace NetTopologySuite.Geometries.Implementation
         /// </summary>
         /// <param name="coordSeq"></param>
         /// <returns></returns>
-        public ICoordinateSequence Create(ICoordinateSequence coordSeq)
+        public override CoordinateSequence Create(CoordinateSequence coordSeq)
         {
+            int dimension = coordSeq.Dimension;
+            int measures = coordSeq.Measures;
             if (type == PackedType.Double)
-                 return new PackedDoubleCoordinateSequence(coordSeq.ToCoordinateArray(), dimension);
-            return new PackedFloatCoordinateSequence(coordSeq.ToCoordinateArray(), dimension);
+                return new PackedDoubleCoordinateSequence(coordSeq.ToCoordinateArray(), dimension, measures);
+            return new PackedFloatCoordinateSequence(coordSeq.ToCoordinateArray(), dimension, measures);
         }
 
         /// <summary>
-        /// Creates a <see cref="ICoordinateSequence" /> of the specified size and ordinates.
-        /// For this to be useful, the <see cref="ICoordinateSequence" /> implementation must be mutable.
+        /// Create a packed coordinate sequence from the provided array. 
         /// </summary>
-        /// <param name="size">The number of coordinates</param>
-        /// <param name="ordinates">
-        /// The ordinates each coordinate has. <see cref="Ordinates.XY"/> is fix, <see cref="Ordinates.Z"/> and <see cref="Ordinates.M"/> can be set.
-        /// </param>
-        /// <returns></returns>
-        public ICoordinateSequence Create(int size, Ordinates ordinates)
+        /// <param name="packedCoordinates"></param>
+        /// <param name="dimension"></param>
+        /// <returns>Packaged coordinate seqeunce of the requested type</returns>
+        public CoordinateSequence Create(double[] packedCoordinates, int dimension)
         {
-            return Create(size, OrdinatesUtility.OrdinatesToDimension(ordinates));
+            return Create(packedCoordinates, dimension, 0);
         }
 
-        public Ordinates Ordinates => OrdinatesUtility.DimensionToOrdinates(dimension);
+        /// <summary>
+        /// Create a packed coordinate sequence from the provided array. 
+        /// </summary>
+        /// <param name="packedCoordinates"></param>
+        /// <param name="dimension"></param>
+        /// <param name="measures"></param>
+        /// <returns>Packaged coordinate seqeunce of the requested type</returns>
+        public CoordinateSequence Create(double[] packedCoordinates, int dimension, int measures)
+        {
+            if (type == PackedType.Double)
+                return new PackedDoubleCoordinateSequence(packedCoordinates, dimension, measures);
+            return new PackedFloatCoordinateSequence(packedCoordinates, dimension, measures);
+        }
+
+        /// <summary>
+        /// Create a packed coordinate sequence from the provided array. 
+        /// </summary>
+        /// <param name="packedCoordinates"></param>
+        /// <param name="dimension"></param>
+        /// <returns>Packaged coordinate seqeunce of the requested type</returns>
+        public CoordinateSequence Create(float[] packedCoordinates, int dimension)
+        {
+            return Create(packedCoordinates, dimension, 0);
+        }
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="packedCoordinates"></param>
         /// <param name="dimension"></param>
-        /// <returns></returns>
-        public ICoordinateSequence Create(double[] packedCoordinates, int dimension)
+        /// <param name="measures"></param>
+        /// <returns>Packaged coordinate seqeunce of the requested type</returns>
+        public CoordinateSequence Create(float[] packedCoordinates, int dimension, int measures)
         {
             if (type == PackedType.Double)
-                 return new PackedDoubleCoordinateSequence(packedCoordinates, dimension);
-            return new PackedFloatCoordinateSequence(packedCoordinates, dimension);
+                return new PackedDoubleCoordinateSequence(packedCoordinates, dimension, measures);
+            else return new PackedFloatCoordinateSequence(packedCoordinates, dimension, measures);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="packedCoordinates"></param>
-        /// <param name="dimension"></param>
-        /// <returns></returns>
-        public ICoordinateSequence Create(float[] packedCoordinates, int dimension)
+        /// <inheritdoc />
+        public override CoordinateSequence Create(int size, int dimension, int measures)
         {
             if (type == PackedType.Double)
-                 return new PackedDoubleCoordinateSequence(packedCoordinates, dimension);
-            else return new PackedFloatCoordinateSequence(packedCoordinates, dimension);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="size"></param>
-        /// <param name="dimension"></param>
-        /// <returns></returns>
-        public ICoordinateSequence Create(int size, int dimension)
-        {
-            if (type == PackedType.Double)
-                 return new PackedDoubleCoordinateSequence(size, dimension);
-            else return new PackedFloatCoordinateSequence(size, dimension);
+                return new PackedDoubleCoordinateSequence(size, dimension, measures);
+            else return new PackedFloatCoordinateSequence(size, dimension, measures);
         }
     }
 }

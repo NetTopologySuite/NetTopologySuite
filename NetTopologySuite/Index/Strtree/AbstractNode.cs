@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Index.Strtree
@@ -14,9 +14,7 @@ namespace NetTopologySuite.Index.Strtree
     /// </list>
     /// A node stores the bounds of its children, and its level within the index tree.
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public abstract class AbstractNode<T, TItem> : IBoundable<T, TItem> where T : IIntersectable<T>, IExpandable<T>
     {
         private readonly List<IBoundable<T, TItem>> _childBoundables = new List<IBoundable<T, TItem>>();
@@ -90,7 +88,7 @@ namespace NetTopologySuite.Index.Strtree
         /// Adds either an AbstractNode, or if this is a leaf node, a data object
         /// (wrapped in an ItemBoundable).
         /// </summary>
-        /// <param name="childBoundable"></param>
+        /// <param name="childBoundable">The child to add.</param>
         public void AddChildBoundable(IBoundable<T, TItem> childBoundable)
         {
             Assert.IsTrue(_bounds == null);

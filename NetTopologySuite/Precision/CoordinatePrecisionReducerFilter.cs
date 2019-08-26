@@ -1,13 +1,13 @@
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Precision
 {
     /// <summary>
     /// Reduces the precision of the <see cref="Coordinate"/>s in a
-    /// <see cref="ICoordinateSequence"/> to match the supplied <see cref="IPrecisionModel"/>.
+    /// <see cref="CoordinateSequence"/> to match the supplied <see cref="PrecisionModel"/>.
     /// </summary>
     /// <remarks>
-    /// Uses <see cref="IPrecisionModel.MakePrecise(double)"/>.
+    /// Uses <see cref="PrecisionModel.MakePrecise(double)"/>.
     /// The input is modified in-place, so
     /// it should be cloned beforehand if the
     /// original should not be modified.
@@ -15,13 +15,13 @@ namespace NetTopologySuite.Precision
     /// <author>mbdavis</author>
     public class CoordinatePrecisionReducerFilter : ICoordinateSequenceFilter
     {
-        private readonly IPrecisionModel _precModel;
+        private readonly PrecisionModel _precModel;
 
         /// <summary>
         /// Creates a new precision reducer filter.
         /// </summary>
         /// <param name="precModel">The PrecisionModel to use</param>
-        public CoordinatePrecisionReducerFilter(IPrecisionModel precModel)
+        public CoordinatePrecisionReducerFilter(PrecisionModel precModel)
         {
             _precModel = precModel;
         }
@@ -29,10 +29,10 @@ namespace NetTopologySuite.Precision
         /// <summary>
         /// Rounds the Coordinates in the sequence to match the PrecisionModel
         /// </summary>
-        public void Filter(ICoordinateSequence seq, int i)
+        public void Filter(CoordinateSequence seq, int i)
         {
-            seq.SetOrdinate(i, Ordinate.X, _precModel.MakePrecise(seq.GetOrdinate(i, Ordinate.X)));
-            seq.SetOrdinate(i, Ordinate.Y, _precModel.MakePrecise(seq.GetOrdinate(i, Ordinate.Y)));
+            seq.SetOrdinate(i, 0, _precModel.MakePrecise(seq.GetOrdinate(i, 0)));
+            seq.SetOrdinate(i, 1, _precModel.MakePrecise(seq.GetOrdinate(i, 1)));
         }
 
         /// <summary>

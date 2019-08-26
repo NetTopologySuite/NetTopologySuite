@@ -1,5 +1,5 @@
 using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Noding
 {
@@ -80,8 +80,8 @@ namespace NetTopologySuite.Noding
             if (dx == 0.0 && dy == 0.0)
                 throw new ArgumentException("Cannot compute the octant for point ( " + dx + ", " + dy + " )");
 
-            double adx = System.Math.Abs(dx);
-            double ady = System.Math.Abs(dy);
+            double adx = Math.Abs(dx);
+            double ady = Math.Abs(dy);
 
             if (dx >= 0)
             {

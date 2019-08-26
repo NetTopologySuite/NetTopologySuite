@@ -1,12 +1,11 @@
-﻿using System;
-using GeoAPI.Geometries;
+﻿using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
 namespace Open.Topology.TestRunner.Utility
 {
     /// <summary>
-    /// Reads a <seealso cref="IGeometry"/> from a string which is in either WKT or WKBHex format
+    /// Reads a <seealso cref="Geometry"/> from a string which is in either WKT or WKBHex format
     /// </summary>
     public class MultiFormatReader
     {
@@ -33,8 +32,7 @@ namespace Open.Topology.TestRunner.Utility
 
         //private GeometryFactory _geomFactory;
         private readonly WKTReader _wktReader;
-        private readonly WKBReader _wkbReader;
-        private readonly IGeometryFactory _factory;
+        private readonly NtsGeometryServices _services;
 
         public MultiFormatReader()
             : this(new GeometryFactory())
@@ -44,8 +42,7 @@ namespace Open.Topology.TestRunner.Utility
         public MultiFormatReader(GeometryFactory geomFactory)
         {
             _wktReader = new WKTReader(geomFactory);
-            _wkbReader = new WKBReader(geomFactory);
-            _factory = geomFactory;
+            _services = new NtsGeometryServices(geomFactory.CoordinateSequenceFactory, geomFactory.PrecisionModel, geomFactory.SRID);
         }
 
         /// <summary>
@@ -54,11 +51,11 @@ namespace Open.Topology.TestRunner.Utility
         /// <param name="geomStr"></param>
         /// <returns></returns>
         /// <exception cref="ParseException"></exception>
-        public IGeometry Read(string geomStr)
+        public Geometry Read(string geomStr)
         {
             string trimStr = geomStr.Trim();
             if (IsHex(trimStr, MaxCharsToCheck))
-                return IOUtility.ReadGeometriesFromWkbHexString(trimStr, _factory);
+                return IOUtility.ReadGeometriesFromWkbHexString(trimStr, _services);
             return _wktReader.Read(trimStr);
         }
     }

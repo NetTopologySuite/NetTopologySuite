@@ -1,6 +1,4 @@
-﻿using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 
@@ -9,7 +7,7 @@ namespace NetTopologySuite.Tests.Various
     [TestFixture]
     public class Issue56Tests
     {
-        private readonly IGeometryFactory factory = GeometryFactory.Default;
+        private readonly GeometryFactory factory = GeometryFactory.Default;
 
         private WKTWriter writer;
 

@@ -1,6 +1,3 @@
-using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
@@ -10,7 +7,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     /*
      * Test named predicate short-circuits
      */
-    [TestFixtureAttribute]
+    [TestFixture]
     public class PredicateShortCircuitTest
     {
         WKTReader rdr = new WKTReader();
@@ -31,7 +28,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         { "POLYGON (( 40 40, 40 60, 60 60, 60 40, 40 40 ))",
           "POLYGON (( 0 0, 100 0, 100 100, 0 100, 0 0), ( 10 10, 90 10, 90 90, 10 90, 10 10))" };
 
-        [TestAttribute]
+        [Test]
         public void TestAll()
         {
             DoPredicates(polyInsidePoly);
@@ -49,7 +46,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             DoPredicates(b, a);
         }
 
-        public void DoPredicates(IGeometry a, IGeometry b)
+        public void DoPredicates(Geometry a, Geometry b)
         {
             Assert.IsTrue(a.Contains(b) == a.Relate(b).IsContains());
             Assert.IsTrue(a.Crosses(b) == a.Relate(b).IsCrosses(a.Dimension, b.Dimension));

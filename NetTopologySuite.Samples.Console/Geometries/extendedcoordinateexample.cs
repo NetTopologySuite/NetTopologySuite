@@ -1,5 +1,4 @@
 using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Samples.Geometries
@@ -9,7 +8,7 @@ namespace NetTopologySuite.Samples.Geometries
         [STAThread]
         public static void main(string[] args)
         {
-            var seqFact = ExtendedCoordinateSequenceFactory.Instance();
+            var seqFact = ExtendedCoordinateSequenceFactory.Instance;
 
             var array1 = new ExtendedCoordinate[] { new ExtendedCoordinate(0, 0, 0, 91),
                 new ExtendedCoordinate(10, 0, 0, 92), new ExtendedCoordinate(10, 10, 0, 93),
@@ -20,21 +19,21 @@ namespace NetTopologySuite.Samples.Geometries
                 new ExtendedCoordinate(15, 5, 0, 92), new ExtendedCoordinate(15, 15, 0, 93),
                 new ExtendedCoordinate(5, 15, 0, 94), new ExtendedCoordinate(5, 5, 0, 91)});
 
-            var fact = new GeometryFactory(ExtendedCoordinateSequenceFactory.Instance());
+            var fact = new GeometryFactory(ExtendedCoordinateSequenceFactory.Instance);
 
-            IGeometry g1 = fact.CreatePolygon(fact.CreateLinearRing(seq1), null);
-            IGeometry g2 = fact.CreatePolygon(fact.CreateLinearRing(seq2), null);
+            Geometry g1 = fact.CreatePolygon(fact.CreateLinearRing(seq1), null);
+            Geometry g2 = fact.CreatePolygon(fact.CreateLinearRing(seq2), null);
 
             Console.WriteLine("WKT for g1: " + g1);
-            Console.WriteLine("Internal rep for g1: " + ((IPolygon) g1).ExteriorRing.CoordinateSequence);
+            Console.WriteLine("Internal rep for g1: " + ((Polygon) g1).ExteriorRing.CoordinateSequence);
 
             Console.WriteLine("WKT for g2: " + g2);
-            Console.WriteLine("Internal rep for g2: " + ((IPolygon)g2).ExteriorRing.CoordinateSequence);
+            Console.WriteLine("Internal rep for g2: " + ((Polygon)g2).ExteriorRing.CoordinateSequence);
 
             var gInt = g1.Intersection(g2);
 
             Console.WriteLine("WKT for gInt: " + gInt);
-            Console.WriteLine("Internal rep for gInt: " + ((IPolygon)gInt).ExteriorRing.CoordinateSequence);
+            Console.WriteLine("Internal rep for gInt: " + ((Polygon)gInt).ExteriorRing.CoordinateSequence);
         }
 
         public ExtendedCoordinateExample() { }

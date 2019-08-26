@@ -1,38 +1,82 @@
-using System.Collections.Generic;
-using GeoAPI.Geometries;
+using System;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm.Locate
 {
     /// <summary>
-    /// Computes the location of points relative to an areal <see cref="IGeometry"/>, using a simple O(n) algorithm.
-    /// This algorithm is suitable for use in cases where only one or a few points will be tested against a given area.
+    /// Computes the location of points
+    /// relative to an areal <see cref="Geometry"/>,
+    /// using a simple <c>O(n)</c> algorithm.
+    /// <para>
+    /// The algorithm used reports
+    /// if a point lies in the interior, exterior,
+    /// or exactly on the boundary of the Geometry.
+    /// </para>
+    /// <para>
+    /// Instance methods are provided to implement
+    /// the interface <see cref="IPointOnGeometryLocator"/>.
+    /// However, they provide no performance
+    /// advantage over the class methods.
+    /// </para>
+    /// <para>
+    /// This algorithm is suitable for use in cases where
+    /// only a few points will be tested.
+    /// If many points will be tested,
+    /// <see cref="IndexedPointInAreaLocator"/> may provide better performance.
+    /// </para>
     /// </summary>
     /// <remarks>The algorithm used is only guaranteed to return correct results for points which are <b>not</b> on the boundary of the Geometry.</remarks>
     public class SimplePointInAreaLocator : IPointOnGeometryLocator
     {
         /// <summary>
-        /// Determines the <see cref="Location"/> of a point in an areal <see cref="IGeometry"/>.
-        /// Computes <see cref="Location.Boundary"/> if the point lies exactly on a geometry line segment.
+        /// Determines the <see cref="Location"/> of a point in an areal <see cref="Geometry"/>.
+        /// The return value is one of:
+        /// <list type="bullet">
+        /// <item><term><see cref="Location.Interior"/></term><description>if the point is in the geometry interior</description></item>
+        /// <item><term><see cref="Location.Boundary"/></term><description>if the point lies exactly on the boundary</description></item>
+        /// <item><term><see cref="Location.Exterior"/></term><description>if the point is outside the geometry</description></item>
+        /// </list>
         /// </summary>
         /// <param name="p">The point to test</param>
         /// <param name="geom">The areal geometry to test</param>
         /// <returns>The Location of the point in the geometry  </returns>
-        public static Location Locate(Coordinate p, IGeometry geom)
+        public static Location Locate(Coordinate p, Geometry geom)
         {
             if (geom.IsEmpty) return Location.Exterior;
+
+            // Do a fast check against the geometry envelope first
+            if (!geom.EnvelopeInternal.Intersects(p))
+            {
+                return Location.Exterior;
+            }
 
             return LocateInGeometry(p, geom);
         }
 
-        private static Location LocateInGeometry(Coordinate p, IGeometry geom)
+        /// <summary>
+        /// Determines whether a point is contained in a <see cref="Geometry"/>,
+        /// or lies on its boundary.
+        /// This is a convenience method for
+        /// <code>
+        /// Location.Exterior != Locate(p, geom)
+        /// </code>
+        /// </summary>
+        /// <param name="p">The point to test.</param>
+        /// <param name="geom">The geometry to test.</param>
+        /// <returns><see langword="true"/> if the point lies in or on the geometry.</returns>
+        public static bool IsContained(Coordinate p, Geometry geom)
         {
-            if (geom is IPolygon)
-                return LocatePointInPolygon(p, (IPolygon)geom);
+            return Location.Exterior != Locate(p, geom);
+        }
 
-            if (geom is IGeometryCollection)
+        private static Location LocateInGeometry(Coordinate p, Geometry geom)
+        {
+            if (geom is Polygon)
+                return LocatePointInPolygon(p, (Polygon)geom);
+
+            if (geom is GeometryCollection)
             {
-                var geomi = new GeometryCollectionEnumerator((IGeometryCollection)geom);
+                var geomi = new GeometryCollectionEnumerator((GeometryCollection)geom);
                 while (geomi.MoveNext())
                 {
                     var g2 = geomi.Current;
@@ -46,24 +90,16 @@ namespace NetTopologySuite.Algorithm.Locate
             return Location.Exterior;
         }
 
-        /// <summary>
-        /// Determines the <see cref="Location"/> of a point in a <see cref="IPolygon"/>.
-        /// Computes <see cref="Location.Boundary"/> if the point lies exactly
-        /// on the polygon boundary.
-        /// </summary>
-        /// <param name="p">The point to test</param>
-        /// <param name="poly">The areal geometry to test</param>
-        /// <returns>The Location of the point in the polygon</returns>
-        public static Location LocatePointInPolygon(Coordinate p, IPolygon poly)
+        private static Location LocatePointInPolygon(Coordinate p, Polygon poly)
         {
             if (poly.IsEmpty) return Location.Exterior;
-            var shell = (ILinearRing)poly.ExteriorRing;
+            var shell = (LinearRing)poly.ExteriorRing;
             var shellLoc = LocatePointInRing(p, shell);
             if (shellLoc != Location.Interior) return shellLoc;
             // now test if the point lies in or on the holes
             for (int i = 0; i < poly.NumInteriorRings; i++)
             {
-                var hole = (ILinearRing)poly.GetInteriorRingN(i);
+                var hole = (LinearRing)poly.GetInteriorRingN(i);
                 var holeLoc = LocatePointInRing(p, hole);
                 if (holeLoc == Location.Boundary) return Location.Boundary;
                 if (holeLoc == Location.Interior) return Location.Exterior;
@@ -75,14 +111,14 @@ namespace NetTopologySuite.Algorithm.Locate
         }
 
         /// <summary>
-        /// Determines whether a point lies in a <see cref="IPolygon"/>.
+        /// Determines whether a point lies in a <see cref="Polygon"/>.
         /// If the point lies on the polygon boundary it is
         /// considered to be inside.
         /// </summary>
         /// <param name="p">The point to test</param>
         /// <param name="poly">The areal geometry to test</param>
         /// <returns><c>true</c> if the point lies in the polygon</returns>
-        public static bool ContainsPointInPolygon(Coordinate p, IPolygon poly)
+        public static bool ContainsPointInPolygon(Coordinate p, Polygon poly)
         {
             return Location.Exterior != LocatePointInPolygon(p, poly);
         }
@@ -93,7 +129,7 @@ namespace NetTopologySuite.Algorithm.Locate
         /// <param name="p">The point to test</param>
         /// <param name="ring">A linear ring</param>
         /// <returns><c>true</c> if the point lies inside the ring</returns>
-        private static Location LocatePointInRing(Coordinate p, ILinearRing ring)
+        private static Location LocatePointInRing(Coordinate p, LinearRing ring)
         {
             // short-circuit if point is not in ring envelope
             if (!ring.EnvelopeInternal.Intersects(p))
@@ -101,13 +137,29 @@ namespace NetTopologySuite.Algorithm.Locate
             return PointLocation.LocateInRing(p, ring.CoordinateSequence);
         }
 
-        private readonly IGeometry _geom;
+        private readonly Geometry _geom;
 
-        public SimplePointInAreaLocator(IGeometry geom)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SimplePointInAreaLocator"/> class,
+        /// using the provided areal geometry.
+        /// </summary>
+        /// <param name="geom">The areal geometry to locate in.</param>
+        public SimplePointInAreaLocator(Geometry geom)
         {
             _geom = geom;
         }
 
+        /// <summary>
+        /// Determines the <see cref="Location"/> of a point in an areal <see cref="Geometry"/>.
+        /// The return value is one of:
+        /// <list type="bullet">
+        /// <item><term><see cref="Location.Interior"/></term><description>if the point is in the geometry interior</description></item>
+        /// <item><term><see cref="Location.Boundary"/></term><description>if the point lies exactly on the boundary</description></item>
+        /// <item><term><see cref="Location.Exterior"/></term><description>if the point is outside the geometry</description></item>
+        /// </list>
+        /// </summary>
+        /// <param name="p">The point to test</param>
+        /// <returns>The Location of the point in the geometry.</returns>
         public Location Locate(Coordinate p)
         {
             return Locate(p, _geom);

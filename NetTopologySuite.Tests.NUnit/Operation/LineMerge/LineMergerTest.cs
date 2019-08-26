@@ -1,20 +1,17 @@
-using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
-using NUnit.Framework;
 using NetTopologySuite.Operation.Linemerge;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class LineMergerTest
     {
         private static WKTReader reader = new WKTReader();
 
-        [TestAttribute]
+        [Test]
         public void Test1()
         {
             DoTest(new string[] {
@@ -23,7 +20,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
               }, new string[] { "LINESTRING (120 120, 180 140, 200 180, 240 180)" });
         }
 
-        [TestAttribute]
+        [Test]
         public void Test2()
         {
             DoTest(new string[]{"LINESTRING (120 300, 80 340)",
@@ -39,21 +36,21 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
               "LINESTRING (40 320, 60 320, 80 340, 120 300, 140 320, 160 320)"});
         }
 
-        [TestAttribute]
+        [Test]
         public void Test3()
         {
             DoTest(new string[] { "LINESTRING (0 0, 100 100)", "LINESTRING (0 100, 100 0)" },
               new string[] { "LINESTRING (0 0, 100 100)", "LINESTRING (0 100, 100 0)" });
         }
 
-        [TestAttribute]
+        [Test]
         public void Test4()
         {
             DoTest(new string[] { "LINESTRING EMPTY", "LINESTRING EMPTY" },
               new string[] { });
         }
 
-        [TestAttribute]
+        [Test]
         public void Test5()
         {
             DoTest(new string[] { },
@@ -79,8 +76,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             Compare(ToGeometries(expectedOutputWKT), lineMerger.GetMergedLineStrings(), compareDirections);
         }
 
-        public static void Compare(IList<IGeometry> expectedGeometries,
-            IList<IGeometry> actualGeometries, bool compareDirections)
+        public static void Compare(IList<Geometry> expectedGeometries,
+            IList<Geometry> actualGeometries, bool compareDirections)
         {
             Assert.AreEqual(expectedGeometries.Count, actualGeometries.Count, "Geometry count, " + actualGeometries);
             foreach (var expectedGeometry in expectedGeometries)
@@ -89,7 +86,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             }
         }
 
-        private static bool Contains(IList<IGeometry> geometries, IGeometry g, bool exact)
+        private static bool Contains(IList<Geometry> geometries, Geometry g, bool exact)
         {
             foreach (var element in geometries)
             {
@@ -106,16 +103,16 @@ namespace NetTopologySuite.Tests.NUnit.Operation.LineMerge
             return false;
         }
 
-        public static IList<IGeometry> ToGeometries(string[] inputWKT)
+        public static IList<Geometry> ToGeometries(string[] inputWKT)
         {
-            var geometries = new List<IGeometry>();
+            var geometries = new List<Geometry>();
             foreach (string geomWkt in inputWKT)
             {
                 try
                 {
                     geometries.Add(reader.Read(geomWkt));
                 }
-                catch (GeoAPI.IO.ParseException e)
+                catch (ParseException e)
                 {
                     NetTopologySuite.Utilities.Assert.ShouldNeverReachHere();
                 }

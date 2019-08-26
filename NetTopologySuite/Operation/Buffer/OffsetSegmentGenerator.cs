@@ -1,6 +1,4 @@
 ﻿using System;
-using GeoAPI.Geometries;
-using GeoAPI.Operation.Buffer;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
@@ -70,8 +68,8 @@ namespace NetTopologySuite.Operation.Buffer
 
         private OffsetSegmentString _segList;
         private double _distance;
-        private readonly IPrecisionModel _precisionModel;
-        private readonly IBufferParameters _bufParams;
+        private readonly PrecisionModel _precisionModel;
+        private readonly BufferParameters _bufParams;
         private readonly LineIntersector _li;
 
         private Coordinate _s0, _s1, _s2;
@@ -82,8 +80,8 @@ namespace NetTopologySuite.Operation.Buffer
         private Positions _side = Positions.On;
         private bool _hasNarrowConcaveAngle;
 
-        public OffsetSegmentGenerator(IPrecisionModel precisionModel,
-            IBufferParameters bufParams, double distance)
+        public OffsetSegmentGenerator(PrecisionModel precisionModel,
+            BufferParameters bufParams, double distance)
         {
             _precisionModel = precisionModel;
             _bufParams = bufParams;
@@ -499,7 +497,6 @@ namespace NetTopologySuite.Operation.Buffer
             var basePt = _seg0.P1;
 
             double ang0 = AngleUtility.Angle(basePt, _seg0.P0);
-            //var ang1 = AngleUtility.Angle(basePt, _seg1.P1);
 
             // oriented angle between segments
             double angDiff = AngleUtility.AngleBetweenOriented(_seg0.P0, basePt, _seg1.P1);

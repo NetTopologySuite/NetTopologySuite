@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.GeometriesGraph
@@ -46,7 +45,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="dist"></param>
         public EdgeIntersection(Coordinate coord, int segmentIndex, double dist)
         {
-            _coordinate = new Coordinate(coord);
+            _coordinate = coord.Copy();
             _segmentIndex = segmentIndex;
             _distance = dist;
         }

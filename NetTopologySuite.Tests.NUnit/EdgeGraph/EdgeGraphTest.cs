@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
-using GeoAPI.Geometries;
-using NetTopologySuite.EdgeGraph;
+﻿using NetTopologySuite.EdgeGraph;
+using NetTopologySuite.Geometries;
 using NUnit.Framework;
 using EGraph = NetTopologySuite.EdgeGraph.EdgeGraph;
 
 namespace NetTopologySuite.Tests.NUnit.EdgeGraph
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class EdgeGraphTest
     {
-        [TestAttribute]
+        [Test]
         public void TestNode()
         {
             var graph = Build("MULTILINESTRING((0 0, 1 0), (0 0, 0 1), (0 0, -1 0))");

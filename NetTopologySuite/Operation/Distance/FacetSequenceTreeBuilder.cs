@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.Strtree;
 
@@ -23,7 +22,7 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         /// <param name="g"></param>
         /// <returns></returns>
-        public static STRtree<FacetSequence> BuildSTRtree(IGeometry g)
+        public static STRtree<FacetSequence> BuildSTRtree(Geometry g)
 // ReSharper restore InconsistentNaming
         {
             var tree = new STRtree<FacetSequence>(STRtreeNodeCapacity);
@@ -41,29 +40,29 @@ namespace NetTopologySuite.Operation.Distance
         /// </summary>
         /// <param name="g">The geometry</param>
         /// <returns>A list of <see cref="FacetSequence"/>s</returns>
-        private static List<FacetSequence> ComputeFacetSequences(IGeometry g)
+        private static List<FacetSequence> ComputeFacetSequences(Geometry g)
         {
             var sections = new List<FacetSequence>();
 
             g.Apply(new GeometryComponentFilter(
-                        delegate(IGeometry geom)
+                        delegate(Geometry geom)
                             {
-                                ICoordinateSequence seq;
-                                if (geom is ILineString)
+                                CoordinateSequence seq;
+                                if (geom is LineString)
                                 {
-                                    seq = ((ILineString) geom).CoordinateSequence;
-                                    AddFacetSequences(seq, sections);
+                                    seq = ((LineString) geom).CoordinateSequence;
+                                    AddFacetSequences(geom, seq, sections);
                                 }
-                                else if (geom is IPoint)
+                                else if (geom is Point)
                                 {
-                                    seq = ((IPoint) geom).CoordinateSequence;
-                                    AddFacetSequences(seq, sections);
+                                    seq = ((Point) geom).CoordinateSequence;
+                                    AddFacetSequences(geom, seq, sections);
                                 }
                             }));
             return sections;
         }
 
-        private static void AddFacetSequences(ICoordinateSequence pts, List<FacetSequence> sections)
+        private static void AddFacetSequences(Geometry geom, CoordinateSequence pts, List<FacetSequence> sections)
         {
             int i = 0;
             int size = pts.Count;
@@ -74,7 +73,7 @@ namespace NetTopologySuite.Operation.Distance
                 // section
                 if (end >= size - 1)
                     end = size;
-                var sect = new FacetSequence(pts, i, end);
+                var sect = new FacetSequence(geom, pts, i, end);
                 sections.Add(sect);
                 i = i + FacetSequenceSize;
             }

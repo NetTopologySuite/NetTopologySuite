@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Noding
 {
@@ -108,7 +108,7 @@ namespace NetTopologySuite.Noding
         /// Gets the intersections found.
         /// </summary>
         /// <returns>A list of <see cref="Coordinate"/>.</returns>
-        public IList<Coordinate> Intersections => new ReadOnlyCollection<Coordinate>(_intersections);
+        public ReadOnlyCollection<Coordinate> Intersections => _intersections.AsReadOnly();
 
         /// <summary>
         /// Gets the count of intersections found.

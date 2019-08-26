@@ -1,5 +1,4 @@
 ﻿
-using GeoAPI.Geometries;
 using System;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
@@ -21,7 +20,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="startWidth">the buffer width at the start of the line</param>
         /// <param name="endWidth">the buffer width at the end of the line</param>
         /// <returns>The variable-width buffer polygon</returns>
-        public static IGeometry Buffer(ILineString line, double startWidth,
+        public static Geometry Buffer(LineString line, double startWidth,
             double endWidth)
         {
             double[] width = Interpolate(line, startWidth, endWidth);
@@ -40,7 +39,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="start">The start value</param>
         /// <param name="end">The end value</param>
         /// <returns>The array of interpolated values</returns>
-        public static double[] Interpolate(ILineString line, double start,
+        public static double[] Interpolate(LineString line, double start,
             double end)
         {
             start = Math.Abs(start);
@@ -73,16 +72,16 @@ namespace NetTopologySuite.Operation.Buffer
             return a;
         }
 
-        private readonly ILineString _line;
+        private readonly LineString _line;
         private readonly double[] _width;
-        private readonly IGeometryFactory _geomFactory;
+        private readonly GeometryFactory _geomFactory;
 
         /// <summary>
         /// Creates a generator for a variable-width line buffer.
         /// </summary>
         /// <param name="line">The line to buffer</param>
         /// <param name="width">An array of witdth values</param>
-        public VariableWidthBuffer(ILineString line, double[] width)
+        public VariableWidthBuffer(LineString line, double[] width)
         {
             _line = line;
             _width = Abs(width);
@@ -93,11 +92,11 @@ namespace NetTopologySuite.Operation.Buffer
         /// Gets the computed variable-width line buffer.
         /// </summary>
         /// <returns>A polygon</returns>
-        public IGeometry GetResult()
+        public Geometry GetResult()
         {
             Utilities.Assert.IsTrue(_line.NumPoints == _width.Length);
 
-            var parts = new List<IGeometry>();
+            var parts = new List<Geometry>();
 
             var pts = _line.Coordinates;
             for (int i = 0; i < _line.NumPoints; i++)

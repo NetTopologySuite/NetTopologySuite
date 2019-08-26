@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeoAPI.DataStructures;
-using GeoAPI.Geometries;
+using NetTopologySuite.DataStructures;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NUnit.Framework;
@@ -10,7 +9,7 @@ namespace NetTopologySuite.Samples.Technique
 {
     public class ExtractLinestringByMeasure
     {
-        private readonly IGeometryFactory _factory = new GeometryFactory(DotSpatialAffineCoordinateSequenceFactory.Instance);
+        private readonly GeometryFactory _factory = new GeometryFactory(DotSpatialAffineCoordinateSequenceFactory.Instance);
 
         [Test]
         public void Test1()
@@ -38,11 +37,11 @@ namespace NetTopologySuite.Samples.Technique
             l.Apply(lmf);
 
             Assert.IsTrue(lmf.Filtered.Count == 2);
-            var lf = (ILineString)lmf.Filtered[0];
+            var lf = (LineString)lmf.Filtered[0];
             Assert.AreEqual(250, lf.StartPoint.X, 1e-7);
             Assert.AreEqual(750, lf.EndPoint.X, 1e-7);
 
-            lf = (ILineString)lmf.Filtered[1];
+            lf = (LineString)lmf.Filtered[1];
             Assert.AreEqual(1250, lf.StartPoint.X, 1e-7);
             Assert.AreEqual(1750, lf.EndPoint.X, 1e-7);
         }
@@ -51,7 +50,7 @@ namespace NetTopologySuite.Samples.Technique
     public class LinestringMeasureFilter : IGeometryFilter
     {
         private Interval _measureInterval;
-        private readonly List<IGeometry> _geoms = new List<IGeometry>();
+        private readonly List<Geometry> _geoms = new List<Geometry>();
 
         public LinestringMeasureFilter()
             :this(Interval.Create(double.MinValue, double.MaxValue))
@@ -62,15 +61,15 @@ namespace NetTopologySuite.Samples.Technique
             _measureInterval = create;
         }
 
-        public void Filter(IGeometry geom)
+        public void Filter(Geometry geom)
         {
-            if (!(geom is ILineString))
+            if (!(geom is LineString))
                 return;
 
-            Filter(((ILineString)geom));
+            Filter(((LineString)geom));
         }
 
-        private void Filter(ILineString lineString)
+        private void Filter(LineString lineString)
         {
             if (!IsValidLinestring(lineString))
                 return;
@@ -158,7 +157,7 @@ namespace NetTopologySuite.Samples.Technique
             Utilities.Assert.IsTrue(tuples.Count == 0);
         }
 
-        private static IGeometry ToLinestring(IGeometryFactory factory, Ordinates ordinates,
+        private static Geometry ToLinestring(GeometryFactory factory, Ordinates ordinates,
             List<Tuple<Coordinate, double>> tuples)
         {
             var seq = factory.CoordinateSequenceFactory.Create(tuples.Count, ordinates);
@@ -180,7 +179,7 @@ namespace NetTopologySuite.Samples.Technique
             return Tuple.Create(segment.PointAlong(measureFraction), measure);
         }
 
-        private static bool IsValidLinestring(ILineString lineString)
+        private static bool IsValidLinestring(LineString lineString)
         {
             if (lineString == null)
             {
@@ -205,7 +204,7 @@ namespace NetTopologySuite.Samples.Technique
 
         }
 
-        public IList<IGeometry> Filtered => _geoms.AsReadOnly();
+        public IList<Geometry> Filtered => _geoms.AsReadOnly();
     }
 
     internal enum IntervalRelation

@@ -1,10 +1,9 @@
 using System;
-using GeoAPI.Geometries;
 
 namespace NetTopologySuite.Geometries
 {
     /// <summary>
-    /// A bounding container for a <see cref="IGeometry"/> which is in the shape of a general octagon.
+    /// A bounding container for a <see cref="Geometry"/> which is in the shape of a general octagon.
     /// </summary>
     /// <remarks>
     /// The OctagonalEnvelope of a geometric object
@@ -21,7 +20,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="geom">The geometry</param>
         /// <returns>The octagonal envelope of the geometry</returns>
-        public static IGeometry GetOctagonalEnvelope(IGeometry geom)
+        public static Geometry GetOctagonalEnvelope(Geometry geom)
         {
             return (new OctagonalEnvelope(geom)).ToGeometry(geom.Factory);
         }
@@ -93,9 +92,9 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Creates a new null bounding octagon bounding a <see cref="IGeometry" />
+        /// Creates a new null bounding octagon bounding a <see cref="Geometry" />
         /// </summary>
-        public OctagonalEnvelope(IGeometry geom)
+        public OctagonalEnvelope(Geometry geom)
         {
             ExpandToInclude(geom);
         }
@@ -157,7 +156,7 @@ namespace NetTopologySuite.Geometries
         /// Method to expand this <see cref="OctagonalEnvelope"/> to include the provided <paramref name="g"/> geometry.
         /// </summary>
         /// <param name="g">The geometry</param>
-        public void ExpandToInclude(IGeometry g)
+        public void ExpandToInclude(Geometry g)
         {
             g.Apply(new BoundingOctagonComponentFilter(this));
         }
@@ -167,7 +166,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="seq">The coordinate sequence</param>
         /// <returns>A reference to <c>this</c> octagonal envelope, expanded by <paramref name="seq"/></returns>
-        public OctagonalEnvelope ExpandToInclude(ICoordinateSequence seq)
+        public OctagonalEnvelope ExpandToInclude(CoordinateSequence seq)
         {
             for (int i = 0; i < seq.Count; i++)
             {
@@ -371,7 +370,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="geomFactory">The factory to create the geometry</param>
         /// <returns>A geometry</returns>
-        public IGeometry ToGeometry(IGeometryFactory geomFactory)
+        public Geometry ToGeometry(GeometryFactory geomFactory)
         {
             if (geomFactory == null)
                 throw new ArgumentNullException(nameof(geomFactory));
@@ -438,13 +437,13 @@ namespace NetTopologySuite.Geometries
                 _octogonalEnvelope = octagonalEnvelope;
             }
 
-            public void Filter(IGeometry geom)
+            public void Filter(Geometry geom)
             {
-                if (geom is ILineString lgeom)
+                if (geom is LineString lgeom)
                 {
                     _octogonalEnvelope.ExpandToInclude(lgeom.CoordinateSequence);
                 }
-                else if (geom is IPoint pgeom)
+                else if (geom is Point pgeom)
                 {
                     _octogonalEnvelope.ExpandToInclude(pgeom.CoordinateSequence);
                 }

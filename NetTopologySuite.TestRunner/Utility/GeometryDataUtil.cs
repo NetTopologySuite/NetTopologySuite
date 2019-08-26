@@ -1,10 +1,10 @@
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace Open.Topology.TestRunner.Utility
 {
     public static class GeometryDataUtil
     {
-        public static void SetComponentDataToIndex(IGeometry geom)
+        public static void SetComponentDataToIndex(Geometry geom)
         {
             for (int i = 0; i < geom.NumGeometries; i++)
             {

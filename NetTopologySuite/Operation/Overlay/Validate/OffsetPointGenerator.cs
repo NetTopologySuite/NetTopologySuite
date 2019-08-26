@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 
 namespace NetTopologySuite.Operation.Overlay.Validate
 {
     /// <summary>
-    /// Generates points offset by a given distance from both sides of the midpoint of all segments in a <see cref="IGeometry"/>.
+    /// Generates points offset by a given distance from both sides of the midpoint of all segments in a <see cref="Geometry"/>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -25,9 +24,9 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         //private readonly double _offsetDistance;
         private bool _doLeft = true;
         private bool _doRight = true;
-        private readonly IGeometry _g;
+        private readonly Geometry _g;
 
-        public OffsetPointGenerator(IGeometry g)
+        public OffsetPointGenerator(Geometry g)
         {
             _g = g;
         }
@@ -51,14 +50,14 @@ namespace NetTopologySuite.Operation.Overlay.Validate
         {
             var offsetPts = new List<Coordinate>();
             var lines = LinearComponentExtracter.GetLines(_g);
-            foreach (ILineString line in lines)
+            foreach (LineString line in lines)
                 ExtractPoints(line, offsetDistance, offsetPts);
 
             //System.out.println(toMultiPoint(offsetPts));
             return offsetPts;
         }
 
-        private void ExtractPoints(ILineString line, double offsetDistance, IList<Coordinate> offsetPts)
+        private void ExtractPoints(LineString line, double offsetDistance, IList<Coordinate> offsetPts)
         {
             var coordinateSequence = line.CoordinateSequence;
             int maxIndex = coordinateSequence.Count - 1;

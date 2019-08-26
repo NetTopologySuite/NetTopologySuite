@@ -1,5 +1,5 @@
 using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Index.Strtree
 {
@@ -7,9 +7,7 @@ namespace NetTopologySuite.Index.Strtree
     /// Boundable wrapper for a non-Boundable spatial object. Used internally by
     /// AbstractSTRtree.
     /// </summary>
-#if HAS_SYSTEM_SERIALIZABLEATTRIBUTE
     [Serializable]
-#endif
     public class ItemBoundable<T, TItem> : IBoundable<T, TItem> where T : IIntersectable<T>, IExpandable<T>
     {
         private readonly T _bounds;

@@ -1,9 +1,8 @@
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
@@ -182,7 +181,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
 
             using (var file = EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.world.wkt"))
             {
-                foreach (ILineString line in GeometryUtils.ReadWKTFile(file).SelectMany(LinearComponentExtracter.GetLines))
+                foreach (LineString line in GeometryUtils.ReadWKTFile(file).SelectMany(LinearComponentExtracter.GetLines))
                 {
                     var coordinates = line.Coordinates;
 
@@ -214,9 +213,9 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
     {
         private static readonly WKTReader Rdr = new WKTReader();
 
-        public static IGeometry[] GetResult(string wkt, double tolerance)
+        public static Geometry[] GetResult(string wkt, double tolerance)
         {
-            var ioGeom = new IGeometry[2];
+            var ioGeom = new Geometry[2];
             ioGeom[0] = Rdr.Read(wkt);
             ioGeom[1] = VWSimplifier.Simplify(ioGeom[0], tolerance);
             Console.WriteLine(ioGeom[1]);

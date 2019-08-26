@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using System.Collections.ObjectModel;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 
 namespace NetTopologySuite.Index.Chain
@@ -33,7 +34,7 @@ namespace NetTopologySuite.Index.Chain
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
-        public static IList<MonotoneChain> GetChains(Coordinate[] pts)
+        public static ReadOnlyCollection<MonotoneChain> GetChains(Coordinate[] pts)
         {
             return GetChains(pts, null);
         }
@@ -44,7 +45,7 @@ namespace NetTopologySuite.Index.Chain
         /// </summary>
         /// <param name="pts"></param>
         /// <param name="context"></param>
-        public static IList<MonotoneChain> GetChains(Coordinate[] pts, object context)
+        public static ReadOnlyCollection<MonotoneChain> GetChains(Coordinate[] pts, object context)
         {
             var mcList = new List<MonotoneChain>();
             int[] startIndex = GetChainStartIndices(pts);
@@ -53,7 +54,7 @@ namespace NetTopologySuite.Index.Chain
                 var mc = new MonotoneChain(pts, startIndex[i], startIndex[i + 1], context);
                 mcList.Add(mc);
             }
-            return mcList;
+            return mcList.AsReadOnly();
         }
 
         /// <summary>

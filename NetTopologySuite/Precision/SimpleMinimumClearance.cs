@@ -1,6 +1,4 @@
-﻿using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
+﻿using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Precision
@@ -19,23 +17,23 @@ namespace NetTopologySuite.Precision
     /// <author>Martin Davis</author>
     public class SimpleMinimumClearance
     {
-        public static double GetDistance(IGeometry g)
+        public static double GetDistance(Geometry g)
         {
             var rp = new SimpleMinimumClearance(g);
             return rp.GetDistance();
         }
 
-        public static IGeometry GetLine(IGeometry g)
+        public static Geometry GetLine(Geometry g)
         {
             var rp = new SimpleMinimumClearance(g);
             return rp.GetLine();
         }
 
-        private readonly IGeometry _inputGeom;
+        private readonly Geometry _inputGeom;
         private double _minClearance;
         private Coordinate[] _minClearancePts;
 
-        public SimpleMinimumClearance(IGeometry geom)
+        public SimpleMinimumClearance(Geometry geom)
         {
             _inputGeom = geom;
         }
@@ -46,7 +44,7 @@ namespace NetTopologySuite.Precision
             return _minClearance;
         }
 
-        public ILineString GetLine()
+        public LineString GetLine()
         {
             Compute();
             return _inputGeom.Factory.CreateLineString(_minClearancePts);
@@ -65,8 +63,8 @@ namespace NetTopologySuite.Precision
             if (candidateValue < _minClearance)
             {
                 _minClearance = candidateValue;
-                _minClearancePts[0] = new Coordinate(p0);
-                _minClearancePts[1] = new Coordinate(p1);
+                _minClearancePts[0] = p0.Copy();
+                _minClearancePts[1] = p1.Copy();
             }
         }
 
@@ -76,18 +74,18 @@ namespace NetTopologySuite.Precision
             if (candidateValue < _minClearance)
             {
                 _minClearance = candidateValue;
-                _minClearancePts[0] = new Coordinate(p);
+                _minClearancePts[0] = p.Copy();
                 var seg = new LineSegment(seg0, seg1);
-                _minClearancePts[1] = new Coordinate(seg.ClosestPoint(p));
+                _minClearancePts[1] = seg.ClosestPoint(p).Copy();
             }
         }
 
         private class VertexCoordinateFilter : ICoordinateFilter
         {
             private readonly SimpleMinimumClearance _smc;
-            private readonly IGeometry _inputGeometry;
+            private readonly Geometry _inputGeometry;
 
-            public VertexCoordinateFilter(SimpleMinimumClearance smc, IGeometry inputGeometry)
+            public VertexCoordinateFilter(SimpleMinimumClearance smc, Geometry inputGeometry)
             {
                 _smc = smc;
                 _inputGeometry = inputGeometry;
@@ -110,7 +108,7 @@ namespace NetTopologySuite.Precision
                 _queryPt = queryPt;
             }
 
-            public void Filter(ICoordinateSequence seq, int i)
+            public void Filter(CoordinateSequence seq, int i)
             {
                 // compare to vertex
                 CheckVertexDistance(seq.GetCoordinate(i));

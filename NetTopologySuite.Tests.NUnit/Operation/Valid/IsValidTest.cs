@@ -1,6 +1,3 @@
-using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Valid;
@@ -8,7 +5,7 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Valid
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class IsValidTest
     {
         private PrecisionModel precisionModel;
@@ -22,12 +19,12 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             reader = new WKTReader(geometryFactory);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestInvalidCoordinate()
         {
             var badCoord = new Coordinate(1.0, double.NaN);
             Coordinate[] pts = { new Coordinate(0.0, 0.0), badCoord };
-            IGeometry line = geometryFactory.CreateLineString(pts);
+            Geometry line = geometryFactory.CreateLineString(pts);
             var isValidOp = new IsValidOp(line);
             bool valid = isValidOp.IsValid;
             var err = isValidOp.ValidationError;

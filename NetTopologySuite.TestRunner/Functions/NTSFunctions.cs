@@ -1,10 +1,7 @@
 ﻿using System;
-using GeoAPI.Geometries;
-using GeoAPI.Operation.Buffer;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Buffer;
 using NetTopologySuite.Utilities;
-using Open.Topology.TestRunner.Utility;
 
 namespace Open.Topology.TestRunner.Functions
 {
@@ -19,14 +16,14 @@ namespace Open.Topology.TestRunner.Functions
 
         private static readonly double T_WIDTH = WIDTH - 2 * S_RADIUS - J_WIDTH;
 
-        public static IGeometry LogoLines(IGeometry g)
+        public static Geometry LogoLines(Geometry g)
         {
             return CreateJ(g)
                 .Union(CreateT(g))
                 .Union(CreateS(g));
         }
 
-        public static IGeometry LogoBuffer(IGeometry g, double distance)
+        public static Geometry LogoBuffer(Geometry g, double distance)
         {
             var lines = LogoLines(g);
             var bufParams = new BufferParameters();
@@ -34,7 +31,7 @@ namespace Open.Topology.TestRunner.Functions
             return BufferOp.Buffer(lines, distance, bufParams);
         }
 
-        private static IGeometry CreateJ(IGeometry g)
+        private static Geometry CreateJ(Geometry g)
         {
             var gf = FunctionsUtil.GetFactoryOrDefault(g);
 
@@ -58,13 +55,13 @@ namespace Open.Topology.TestRunner.Functions
 
             var coordList = new CoordinateList();
             coordList.Add(jTop, false);
-            coordList.Add(((IGeometry)jArc).Reverse().Coordinates, false, 1, jArc.NumPoints - 1);
+            coordList.Add(((Geometry)jArc).Reverse().Coordinates, false, 1, jArc.NumPoints - 1);
             coordList.Add(jBottom, false);
 
             return gf.CreateLineString(coordList.ToCoordinateArray());
         }
 
-        private static IGeometry CreateT(IGeometry g)
+        private static Geometry CreateT(Geometry g)
         {
             var gf = FunctionsUtil.GetFactoryOrDefault(g);
 
@@ -86,7 +83,7 @@ namespace Open.Topology.TestRunner.Functions
             return gf.CreateMultiLineString(lines);
         }
 
-        private static IGeometry CreateS(IGeometry g)
+        private static Geometry CreateS(Geometry g)
         {
             var gf = FunctionsUtil.GetFactoryOrDefault(g);
 
@@ -113,7 +110,7 @@ namespace Open.Topology.TestRunner.Functions
             gsf2.Centre = new Coordinate(centreX, S_RADIUS);
             gsf2.Size = 2 * S_RADIUS;
             gsf2.NumPoints = 10;
-            var arcBottom = (ILineString)((IGeometry)gsf2.CreateArc(1.5 * Math.PI, Math.PI)).Reverse();
+            var arcBottom = (LineString)((Geometry)gsf2.CreateArc(1.5 * Math.PI, Math.PI)).Reverse();
 
             var coordList = new CoordinateList();
             coordList.Add(top, false);

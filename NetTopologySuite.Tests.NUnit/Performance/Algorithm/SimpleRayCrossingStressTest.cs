@@ -1,19 +1,18 @@
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
-using NUnit.Framework;
 using NetTopologySuite.Tests.NUnit.Algorithm;
+using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 {
-    [TestFixtureAttribute]
+    [TestFixture]
     public class SimpleRayCrossingStressTest
     {
         PrecisionModel pmFixed_1 = new PrecisionModel(1.0);
 
-        [TestAttribute]
-        [CategoryAttribute("Stress")]
+        [Test]
+        [Category("Stress")]
         public void TestGrid()
         {
             // Use fixed PM to try and get at least some points hitting the boundary
@@ -37,9 +36,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 
         class SimpleRayCrossingPointInAreaLocator : IPointOnGeometryLocator
         {
-            private IGeometry geom;
+            private Geometry geom;
 
-            public SimpleRayCrossingPointInAreaLocator(IGeometry geom)
+            public SimpleRayCrossingPointInAreaLocator(Geometry geom)
             {
                 this.geom = geom;
             }
@@ -63,7 +62,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
                     this.rcc = rcc;
                 }
 
-                public void Filter(ICoordinateSequence seq, int i)
+                public void Filter(CoordinateSequence seq, int i)
                 {
                     if (i == 0) return;
                     seq.GetCoordinate(i - 1, p0);

@@ -1,5 +1,3 @@
-using GeoAPI.Geometries;
-
 namespace NetTopologySuite.Geometries.Prepared
 {
     /// <summary>
@@ -10,18 +8,18 @@ namespace NetTopologySuite.Geometries.Prepared
     public class PreparedPoint : BasicPreparedGeometry
     {
         public PreparedPoint(IPuntal point)
-            : base((IGeometry)point)
+            : base((Geometry)point)
         {
         }
 
         /// <summary>
-        /// Tests whether this point intersects a <see cref="IGeometry"/>.
+        /// Tests whether this point intersects a <see cref="Geometry"/>.
         /// </summary>
         /// <remarks>
         /// The optimization here is that computing topology for the test geometry
         /// is avoided. This can be significant for large geometries.
         /// </remarks>
-        public override bool Intersects(IGeometry g)
+        public override bool Intersects(Geometry g)
         {
             if (!EnvelopesIntersect(g))
                 return false;

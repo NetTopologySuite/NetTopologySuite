@@ -1,4 +1,3 @@
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.LinearReferencing
@@ -19,7 +18,7 @@ namespace NetTopologySuite.LinearReferencing
         /// <param name="linearGeom"></param>
         /// <param name="subLine"></param>
         /// <returns></returns>
-        public static LinearLocation[] IndicesOf(IGeometry linearGeom, IGeometry subLine)
+        public static LinearLocation[] IndicesOf(Geometry linearGeom, Geometry subLine)
         {
             /*
              * MD - this algorithm has been extracted into a class
@@ -30,13 +29,13 @@ namespace NetTopologySuite.LinearReferencing
             return locater.IndicesOf(subLine);
         }
 
-        private readonly IGeometry _linearGeom;
+        private readonly Geometry _linearGeom;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocationIndexOfLine"/> class.
         /// </summary>
         /// <param name="linearGeom">The linear geom.</param>
-        public LocationIndexOfLine(IGeometry linearGeom)
+        public LocationIndexOfLine(Geometry linearGeom)
         {
             _linearGeom = linearGeom;
         }
@@ -46,10 +45,10 @@ namespace NetTopologySuite.LinearReferencing
         /// </summary>
         /// <param name="subLine"></param>
         /// <returns></returns>
-        public virtual LinearLocation[] IndicesOf(IGeometry subLine)
+        public virtual LinearLocation[] IndicesOf(Geometry subLine)
         {
-            var startPt = ((ILineString) subLine.GetGeometryN(0)).GetCoordinateN(0);
-            var lastLine = (ILineString) subLine.GetGeometryN(subLine.NumGeometries - 1);
+            var startPt = ((LineString) subLine.GetGeometryN(0)).GetCoordinateN(0);
+            var lastLine = (LineString) subLine.GetGeometryN(subLine.NumGeometries - 1);
             var endPt = lastLine.GetCoordinateN(lastLine.NumPoints - 1);
 
             var locPt = new LocationIndexOfPoint(_linearGeom);

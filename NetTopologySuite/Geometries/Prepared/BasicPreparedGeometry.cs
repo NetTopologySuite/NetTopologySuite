@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using GeoAPI.Geometries;
-using GeoAPI.Geometries.Prepared;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries.Utilities;
 
@@ -11,22 +9,22 @@ namespace NetTopologySuite.Geometries.Prepared
     /// A base class for <see cref="IPreparedGeometry"/> subclasses.
     /// </summary>
     /// <remarks>
-    /// <para>Contains default implementations for methods, which simply delegate to the equivalent <see cref="IGeometry"/> methods.</para>
+    /// <para>Contains default implementations for methods, which simply delegate to the equivalent <see cref="Geometry"/> methods.</para>
     /// <para>This class may be used as a "no-op" class for Geometry types which do not have a corresponding <see cref="IPreparedGeometry"/> implementation.</para>
     /// </remarks>
     /// <author>Martin Davis</author>
     public class BasicPreparedGeometry : IPreparedGeometry
     {
-        private readonly IGeometry _baseGeom;
+        private readonly Geometry _baseGeom;
         private readonly List<Coordinate> _representativePts;  // List<Coordinate>
 
-        public BasicPreparedGeometry(IGeometry geom)
+        public BasicPreparedGeometry(Geometry geom)
         {
             _baseGeom = geom;
             _representativePts = ComponentCoordinateExtracter.GetCoordinates(geom);
         }
 
-        public IGeometry Geometry => _baseGeom;
+        public Geometry Geometry => _baseGeom;
 
         /// <summary>
         /// Gets the list of representative points for this geometry.
@@ -43,7 +41,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </summary>
         /// <param name="testGeom">The test geometry</param>
         /// <returns>true if any component intersects the areal test geometry</returns>
-        public bool IsAnyTargetComponentInTest(IGeometry testGeom)
+        public bool IsAnyTargetComponentInTest(Geometry testGeom)
         {
             var locator = new PointLocator();
             foreach (var representativePoint in RepresentativePoints)
@@ -59,7 +57,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </summary>
         /// <param name="g">A geometry</param>
         /// <returns>true if the envelopes intersect</returns>
-        protected bool EnvelopesIntersect(IGeometry g)
+        protected bool EnvelopesIntersect(Geometry g)
         {
             if (!_baseGeom.EnvelopeInternal.Intersects(g.EnvelopeInternal))
                 return false;
@@ -71,7 +69,7 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </summary>
         /// <param name="g">A geometry</param>
         /// <returns>true if g is contained in this envelope</returns>
-        protected bool EnvelopeCovers(IGeometry g)
+        protected bool EnvelopeCovers(Geometry g)
         {
             if (!_baseGeom.EnvelopeInternal.Covers(g.EnvelopeInternal))
                 return false;
@@ -79,19 +77,19 @@ namespace NetTopologySuite.Geometries.Prepared
         }
 
         /// <summary>
-        /// Tests whether the base <see cref="IGeometry"/> contains a given geometry.
+        /// Tests whether the base <see cref="Geometry"/> contains a given geometry.
         /// </summary>
         /// <param name="g">The Geometry to test</param>
         /// <returns>true if this Geometry contains the given Geometry</returns>
-        /// <see cref="IGeometry.Contains(IGeometry)"/>
+        /// <see cref="Geometry.Contains(Geometry)"/>
         /// <remarks>Default implementation.</remarks>
-        public virtual bool Contains(IGeometry g)
+        public virtual bool Contains(Geometry g)
         {
             return _baseGeom.Contains(g);
         }
 
         /// <summary>
-        /// Tests whether the base <see cref="IGeometry"/> properly contains a given geometry.
+        /// Tests whether the base <see cref="Geometry"/> properly contains a given geometry.
         /// <para/>
         /// The <c>ContainsProperly</c> predicate has the following equivalent definitions:
         /// <list>
@@ -116,10 +114,10 @@ namespace NetTopologySuite.Geometries.Prepared
         /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry properly contains the given geometry</returns>
-        /// <see cref="IPreparedGeometry.ContainsProperly(IGeometry)"/>
+        /// <see cref="IPreparedGeometry.ContainsProperly(Geometry)"/>
         /// <remarks>Default implementation.</remarks>
         /// <seealso cref="Contains"/>
-        public virtual bool ContainsProperly(IGeometry g)
+        public virtual bool ContainsProperly(Geometry g)
         {
             // since raw relate is used, provide some optimizations
 
@@ -132,97 +130,97 @@ namespace NetTopologySuite.Geometries.Prepared
         }
 
         /// <summary>
-        /// Tests whether the base <see cref="IGeometry"/> is covered by a given geometry.
+        /// Tests whether the base <see cref="Geometry"/> is covered by a given geometry.
         /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry is covered by the given geometry</returns>
-        /// <see cref="IGeometry.CoveredBy(IGeometry)"/>
+        /// <see cref="Geometry.CoveredBy(Geometry)"/>
         /// <remarks>Default implementation.</remarks>
-        public bool CoveredBy(IGeometry g)
+        public virtual bool CoveredBy(Geometry g)
         {
             return _baseGeom.CoveredBy(g);
         }
 
         /// <summary>
-        /// Tests whether the base <see cref="IGeometry"/> covers a given geometry.
+        /// Tests whether the base <see cref="Geometry"/> covers a given geometry.
         /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry covers the given geometry</returns>
-        /// <see cref="IGeometry.Covers(IGeometry)"/>
+        /// <see cref="Geometry.Covers(Geometry)"/>
         /// <remarks>Default implementation.</remarks>
-        public virtual bool Covers(IGeometry g)
+        public virtual bool Covers(Geometry g)
         {
             return _baseGeom.Covers(g);
         }
 
         /// <summary>
-        /// Tests whether the base <see cref="IGeometry"/> crosses a given geometry.
+        /// Tests whether the base <see cref="Geometry"/> crosses a given geometry.
         /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry crosses the given geometry</returns>
-        /// <see cref="IGeometry.Crosses(IGeometry)"/>
+        /// <see cref="Geometry.Crosses(Geometry)"/>
         /// <remarks>Default implementation.</remarks>
-        public bool Crosses(IGeometry g)
+        public virtual bool Crosses(Geometry g)
         {
             return _baseGeom.Crosses(g);
         }
 
         /// <summary>
-        /// Tests whether the base <see cref="IGeometry"/> is disjoint from given geometry.
+        /// Tests whether the base <see cref="Geometry"/> is disjoint from given geometry.
         /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry is disjoint from the given geometry</returns>
-        /// <see cref="IGeometry.Disjoint(IGeometry)"/>
-        /// <remarks>Default implementation.</remarks>
-        public bool Disjoint(IGeometry g)
+        /// <see cref="Geometry.Disjoint(Geometry)"/>
+        /// <remarks>Standard implementation for all geometries.</remarks>
+        public bool Disjoint(Geometry g)
         {
             return !Intersects(g);
         }
 
         /// <summary>
-        /// Tests whether the base <see cref="IGeometry"/> intersects a given geometry.
+        /// Tests whether the base <see cref="Geometry"/> intersects a given geometry.
         /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry intersects the given geometry</returns>
-        /// <see cref="IGeometry.Intersects(IGeometry)"/>
+        /// <see cref="Geometry.Intersects(Geometry)"/>
         /// <remarks>Default implementation.</remarks>
-        public virtual bool Intersects(IGeometry g)
+        public virtual bool Intersects(Geometry g)
         {
             return _baseGeom.Intersects(g);
         }
 
         /// <summary>
-        /// Tests whether the base <see cref="IGeometry"/> overlaps a given geometry.
+        /// Tests whether the base <see cref="Geometry"/> overlaps a given geometry.
         /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry overlaps the given geometry</returns>
-        /// <see cref="IGeometry.Overlaps(IGeometry)"/>
+        /// <see cref="Geometry.Overlaps(Geometry)"/>
         /// <remarks>Default implementation.</remarks>
-        public bool Overlaps(IGeometry g)
+        public virtual bool Overlaps(Geometry g)
         {
             return _baseGeom.Overlaps(g);
         }
 
         /// <summary>
-        /// Tests whether the base <see cref="IGeometry"/> touches a given geometry.
+        /// Tests whether the base <see cref="Geometry"/> touches a given geometry.
         /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry touches the given geometry</returns>
-        /// <see cref="IGeometry.Touches(IGeometry)"/>
+        /// <see cref="Geometry.Touches(Geometry)"/>
         /// <remarks>Default implementation.</remarks>
-        public bool Touches(IGeometry g)
+        public virtual bool Touches(Geometry g)
         {
             return _baseGeom.Touches(g);
         }
 
         /// <summary>
-        /// Tests whether the base <see cref="IGeometry"/> is within a given geometry.
+        /// Tests whether the base <see cref="Geometry"/> is within a given geometry.
         /// </summary>
         /// <param name="g">The geometry to test</param>
         /// <returns>true if this geometry is within the given geometry</returns>
-        /// <see cref="IGeometry.Within(IGeometry)"/>
+        /// <see cref="Geometry.Within(Geometry)"/>
         /// <remarks>Default implementation.</remarks>
-        public bool Within(IGeometry g)
+        public virtual bool Within(Geometry g)
         {
             return _baseGeom.Within(g);
         }

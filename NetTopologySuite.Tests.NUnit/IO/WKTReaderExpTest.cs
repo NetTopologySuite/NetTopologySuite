@@ -1,6 +1,4 @@
 using System;
-using GeoAPI.Geometries;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
@@ -10,10 +8,10 @@ namespace NetTopologySuite.Tests.NUnit.IO
     /// <summary>
     /// Tests the <see cref="WKTReader" /> with exponential notation.
     /// </summary>
-    [TestFixtureAttribute]
+    [TestFixture]
     public class WKTReaderExpTest
     {
-        private IGeometryFactory fact;
+        private GeometryFactory fact;
         private WKTReader rdr;
 
         public WKTReaderExpTest()
@@ -22,31 +20,31 @@ namespace NetTopologySuite.Tests.NUnit.IO
             rdr = new WKTReader(fact);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestGoodBasicExp()
         {
             ReadGoodCheckCoordinate("POINT ( 1e01 -1E02)", 1E01, -1E02);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestGoodWithExpSign()
         {
             ReadGoodCheckCoordinate("POINT ( 1e-04 1E-05)", 1e-04, 1e-05);
         }
 
-        [TestAttribute]
+        [Test]
         public void TestBadExpFormat()
         {
             ReadBad("POINT (1e0a1 1X02)");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestBadExpPlusSign()
         {
             ReadBad("POINT (1e+01 1X02)");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestBadPlusSign()
         {
             ReadBad("POINT ( +1e+01 1X02)");
@@ -67,7 +65,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             {
                 var g = rdr.Read(wkt);
             }
-            catch (GeoAPI.IO.ParseException ex)
+            catch (ParseException ex)
             {
                 Console.WriteLine(ex.Message);
                 threwParseEx = true;

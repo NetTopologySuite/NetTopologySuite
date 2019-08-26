@@ -1,8 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
-using GeoAPI.Geometries;
-using GeoAPI.IO;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO
@@ -15,16 +14,8 @@ namespace NetTopologySuite.IO
     /// otherwise <see cref="Coordinate.Z" /> value is discarded and only X,Y are stored.
     /// </remarks>
     // Thanks to Roberto Acioli for Coordinate.Z patch
-    public class WKBWriter : IBinaryGeometryWriter
+    public class WKBWriter
     {
-        /// <summary>Converts a byte array to a hexadecimal string.</summary>
-        /// <param name="bytes">A byte array</param>
-        [Obsolete("Use ToHex(byte[])")]
-        public static string BytesToHex(byte[] bytes)
-        {
-            return ToHex(bytes);
-        }
-
         /// <summary>Converts a byte array to a hexadecimal string.</summary>
         /// <param name="bytes">A byte array</param>
         public static string ToHex(byte[] bytes)
@@ -49,70 +40,11 @@ namespace NetTopologySuite.IO
         }
 
         /// <summary>
-        /// Gets or sets whether the <see cref="IGeometry.SRID"/> value should be emitted
-        /// </summary>
-        [Obsolete("Use HandleSRID instead")]
-        public bool EmitSRID
-        {
-            get => HandleSRID;
-            set => HandleSRID = value;
-        }
-
-        private bool _emitZ;
-
-        /// <summary>
-        /// Gets or sets whether the <see cref="Coordinate.Z"/> values should be emitted
-        /// </summary>
-        [Obsolete("Use HandleOrdinates instead")]
-        public bool EmitZ
-        {
-            get => _emitZ;
-            set
-            {
-                if (value == _emitZ)
-                    return;
-                _emitZ = value;
-
-                if (value)
-                    HandleOrdinates |= Ordinates.Z;
-                else
-                    HandleOrdinates &= ~Ordinates.Z;
-
-                CalcCoordinateSize();
-            }
-        }
-
-        private bool _emitM;
-
-        /// <summary>
-        /// Gets or sets whether the <see cref="ICoordinate.M"/> values should be emitted
-        /// </summary>
-        [Obsolete("Use HandleOrdintes instead.")]
-        public bool EmitM
-        {
-            get => _emitM;
-            set
-            {
-                if (value == _emitM)
-                    return;
-
-                _emitM = value;
-
-                if (value)
-                    HandleOrdinates |= Ordinates.M;
-                else
-                    HandleOrdinates &= ~Ordinates.M;
-
-                CalcCoordinateSize();
-            }
-        }
-
-        /// <summary>
         ///
         /// </summary>
         /// <param name="writer"></param>
         /// <param name="geom"></param>
-        private void WriteHeader(BinaryWriter writer, IGeometry geom)
+        private void WriteHeader(BinaryWriter writer, Geometry geom)
         {
             //Byte Order
             WriteByteOrder(writer);
@@ -174,7 +106,7 @@ namespace NetTopologySuite.IO
                 writer.Write(geom.SRID);
         }
 
-        protected ByteOrder EncodingType;
+        public ByteOrder EncodingType { get; protected set; }
 
         /// <summary>
         /// Standard byte size for each complex point.
@@ -242,7 +174,6 @@ namespace NetTopologySuite.IO
                 handleOrdinates |= Ordinates.Z;
             if (emitM)
                 handleOrdinates |= Ordinates.M;
-
             _handleOrdinates = handleOrdinates;
             CalcCoordinateSize();
         }
@@ -252,7 +183,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        public virtual byte[] Write(IGeometry geometry)
+        public virtual byte[] Write(Geometry geometry)
         {
             byte[] bytes = GetBytes(geometry);
             Write(geometry, new MemoryStream(bytes));
@@ -265,7 +196,7 @@ namespace NetTopologySuite.IO
         /// <param name="geometry"></param>
         /// <param name="stream"></param>
         /// <returns></returns>
-        public virtual void Write(IGeometry geometry, Stream stream)
+        public virtual void Write(Geometry geometry, Stream stream)
         {
             BinaryWriter writer = null;
             try
@@ -287,22 +218,22 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="writer"></param>
-        protected void Write(IGeometry geometry, BinaryWriter writer)
+        protected void Write(Geometry geometry, BinaryWriter writer)
         {
-            if (geometry is IPoint)
-                Write(geometry as IPoint, writer);
-            else if (geometry is ILineString)
-                Write(geometry as ILineString, writer);
-            else if (geometry is IPolygon)
-                Write(geometry as IPolygon, writer);
-            else if (geometry is IMultiPoint)
-                Write(geometry as IMultiPoint, writer);
-            else if (geometry is IMultiLineString)
-                Write(geometry as IMultiLineString, writer);
-            else if (geometry is IMultiPolygon)
-                Write(geometry as IMultiPolygon, writer);
-            else if (geometry is IGeometryCollection)
-                Write(geometry as IGeometryCollection, writer);
+            if (geometry is Point)
+                Write(geometry as Point, writer);
+            else if (geometry is LineString)
+                Write(geometry as LineString, writer);
+            else if (geometry is Polygon)
+                Write(geometry as Polygon, writer);
+            else if (geometry is MultiPoint)
+                Write(geometry as MultiPoint, writer);
+            else if (geometry is MultiLineString)
+                Write(geometry as MultiLineString, writer);
+            else if (geometry is MultiPolygon)
+                Write(geometry as MultiPolygon, writer);
+            else if (geometry is GeometryCollection)
+                Write(geometry as GeometryCollection, writer);
             else throw new ArgumentException("Geometry not recognized: " + geometry);
         }
 
@@ -327,11 +258,10 @@ namespace NetTopologySuite.IO
             if ((HandleOrdinates & Ordinates.Z) == Ordinates.Z)
                 writer.Write(coordinate.Z);
             if ((HandleOrdinates & Ordinates.M) == Ordinates.M)
-                //NOTE: Implement
-                writer.Write(double.NaN);
+                writer.Write(coordinate.M);
         }
 
-        protected void Write(ICoordinateSequence sequence, bool emitSize, BinaryWriter writer)
+        protected void Write(CoordinateSequence sequence, bool emitSize, BinaryWriter writer)
         {
             if (emitSize)
                 writer.Write(sequence.Count);
@@ -341,8 +271,8 @@ namespace NetTopologySuite.IO
             double ordinateM = Coordinate.NullOrdinate;
 
             // test if zm-values are provided by sequence
-            bool getZ = (sequence.Ordinates & Ordinates.Z) == Ordinates.Z;
-            bool getM = (sequence.Ordinates & Ordinates.M) == Ordinates.M;
+            bool getZ = sequence.HasZ;
+            bool getM = sequence.HasM;
 
             // test if zm-values should be emitted
             bool writeZ = (HandleOrdinates & Ordinates.Z) == Ordinates.Z;
@@ -350,16 +280,16 @@ namespace NetTopologySuite.IO
 
             for (int index = 0; index < sequence.Count; index++)
             {
-                writer.Write(sequence.GetOrdinate(index, Ordinate.X));
-                writer.Write(sequence.GetOrdinate(index, Ordinate.Y));
+                writer.Write(sequence.GetOrdinate(index, 0));
+                writer.Write(sequence.GetOrdinate(index, 1));
                 if (writeZ)
                 {
-                    if (getZ) ordinateZ = sequence.GetOrdinate(index, Ordinate.Z);
+                    if (getZ) ordinateZ = sequence.GetZ(index);
                     writer.Write(ordinateZ);
                 }
                 if (writeM)
                 {
-                    if (getM) ordinateM = sequence.GetOrdinate(index, Ordinate.M);
+                    if (getM) ordinateM = sequence.GetM(index);
                     writer.Write(ordinateM);
                 }
             }
@@ -370,7 +300,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="point"></param>
         /// <param name="writer"></param>
-        protected void Write(IPoint point, BinaryWriter writer)
+        protected void Write(Point point, BinaryWriter writer)
         {
             ////WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, point);
@@ -386,7 +316,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="lineString"></param>
         /// <param name="writer"></param>
-        protected void Write(ILineString lineString, BinaryWriter writer)
+        protected void Write(LineString lineString, BinaryWriter writer)
         {
             ////WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, lineString);
@@ -404,7 +334,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="ring"></param>
         /// <param name="writer"></param>
-        protected void Write(ILinearRing ring, BinaryWriter writer)
+        protected void Write(LinearRing ring, BinaryWriter writer)
         {
             //writer.Write(ring.NumPoints);
             //for (int i = 0; i < ring.Coordinates.Length; i++)
@@ -417,7 +347,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="polygon"></param>
         /// <param name="writer"></param>
-        protected void Write(IPolygon polygon, BinaryWriter writer)
+        protected void Write(Polygon polygon, BinaryWriter writer)
         {
             //WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, polygon);
@@ -425,9 +355,9 @@ namespace NetTopologySuite.IO
             //     writer.Write((int)WKBGeometryTypes.WKBPolygon);
             //else writer.Write((int)WKBGeometryTypes.WKBPolygonZ);
             writer.Write(polygon.NumInteriorRings + 1);
-            Write(polygon.ExteriorRing as ILinearRing, writer);
+            Write(polygon.ExteriorRing as LinearRing, writer);
             for (int i = 0; i < polygon.NumInteriorRings; i++)
-                Write(polygon.InteriorRings[i] as ILinearRing, writer);
+                Write(polygon.InteriorRings[i] as LinearRing, writer);
         }
 
         /// <summary>
@@ -435,7 +365,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="multiPoint"></param>
         /// <param name="writer"></param>
-        protected void Write(IMultiPoint multiPoint, BinaryWriter writer)
+        protected void Write(MultiPoint multiPoint, BinaryWriter writer)
         {
             //WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, multiPoint);
@@ -444,7 +374,7 @@ namespace NetTopologySuite.IO
             //else writer.Write((int)WKBGeometryTypes.WKBMultiPointZ);
             writer.Write(multiPoint.NumGeometries);
             for (int i = 0; i < multiPoint.NumGeometries; i++)
-                Write(multiPoint.Geometries[i] as IPoint, writer);
+                Write(multiPoint.Geometries[i] as Point, writer);
         }
 
         /// <summary>
@@ -452,7 +382,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="multiLineString"></param>
         /// <param name="writer"></param>
-        protected void Write(IMultiLineString multiLineString, BinaryWriter writer)
+        protected void Write(MultiLineString multiLineString, BinaryWriter writer)
         {
             //WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, multiLineString);
@@ -461,7 +391,7 @@ namespace NetTopologySuite.IO
             //else writer.Write((int)WKBGeometryTypes.WKBMultiLineStringZ);
             writer.Write(multiLineString.NumGeometries);
             for (int i = 0; i < multiLineString.NumGeometries; i++)
-                Write(multiLineString.Geometries[i] as ILineString, writer);
+                Write(multiLineString.Geometries[i] as LineString, writer);
         }
 
         /// <summary>
@@ -469,7 +399,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="multiPolygon"></param>
         /// <param name="writer"></param>
-        protected void Write(IMultiPolygon multiPolygon, BinaryWriter writer)
+        protected void Write(MultiPolygon multiPolygon, BinaryWriter writer)
         {
             //WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, multiPolygon);
@@ -478,7 +408,7 @@ namespace NetTopologySuite.IO
             //else writer.Write((int)WKBGeometryTypes.WKBMultiPolygonZ);
             writer.Write(multiPolygon.NumGeometries);
             for (int i = 0; i < multiPolygon.NumGeometries; i++)
-                Write(multiPolygon.Geometries[i] as IPolygon, writer);
+                Write(multiPolygon.Geometries[i] as Polygon, writer);
         }
 
         /// <summary>
@@ -486,7 +416,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geomCollection"></param>
         /// <param name="writer"></param>
-        protected void Write(IGeometryCollection geomCollection, BinaryWriter writer)
+        protected void Write(GeometryCollection geomCollection, BinaryWriter writer)
         {
             //WriteByteOrder(writer);     // LittleIndian
             WriteHeader(writer, geomCollection);
@@ -503,22 +433,22 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected byte[] GetBytes(IGeometry geometry)
+        protected byte[] GetBytes(Geometry geometry)
         {
-            if (geometry is IPoint)
-                return new byte[SetByteStream(geometry as IPoint)];
-            if (geometry is ILineString)
-                return new byte[SetByteStream(geometry as ILineString)];
-            if (geometry is IPolygon)
-                return new byte[SetByteStream(geometry as IPolygon)];
-            if (geometry is IMultiPoint)
-                return new byte[SetByteStream(geometry as IMultiPoint)];
-            if (geometry is IMultiLineString)
-                return new byte[SetByteStream(geometry as IMultiLineString)];
-            if (geometry is IMultiPolygon)
-                return new byte[SetByteStream(geometry as IMultiPolygon)];
-            if (geometry is IGeometryCollection)
-                return new byte[SetByteStream(geometry as IGeometryCollection)];
+            if (geometry is Point)
+                return new byte[SetByteStream(geometry as Point)];
+            if (geometry is LineString)
+                return new byte[SetByteStream(geometry as LineString)];
+            if (geometry is Polygon)
+                return new byte[SetByteStream(geometry as Polygon)];
+            if (geometry is MultiPoint)
+                return new byte[SetByteStream(geometry as MultiPoint)];
+            if (geometry is MultiLineString)
+                return new byte[SetByteStream(geometry as MultiLineString)];
+            if (geometry is MultiPolygon)
+                return new byte[SetByteStream(geometry as MultiPolygon)];
+            if (geometry is GeometryCollection)
+                return new byte[SetByteStream(geometry as GeometryCollection)];
             throw new ArgumentException("ShouldNeverReachHere");
         }
 
@@ -527,22 +457,22 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected virtual int SetByteStream(IGeometry geometry)
+        protected virtual int SetByteStream(Geometry geometry)
         {
-            if (geometry is IPoint)
-                return SetByteStream(geometry as IPoint);
-            if (geometry is ILineString)
-                return SetByteStream(geometry as ILineString);
-            if (geometry is IPolygon)
-                return SetByteStream(geometry as IPolygon);
-            if (geometry is IMultiPoint)
-                return SetByteStream(geometry as IMultiPoint);
-            if (geometry is IMultiLineString)
-                return SetByteStream(geometry as IMultiLineString);
-            if (geometry is IMultiPolygon)
-                return SetByteStream(geometry as IMultiPolygon);
-            if (geometry is IGeometryCollection)
-                return SetByteStream(geometry as IGeometryCollection);
+            if (geometry is Point)
+                return SetByteStream(geometry as Point);
+            if (geometry is LineString)
+                return SetByteStream(geometry as LineString);
+            if (geometry is Polygon)
+                return SetByteStream(geometry as Polygon);
+            if (geometry is MultiPoint)
+                return SetByteStream(geometry as MultiPoint);
+            if (geometry is MultiLineString)
+                return SetByteStream(geometry as MultiLineString);
+            if (geometry is MultiPolygon)
+                return SetByteStream(geometry as MultiPolygon);
+            if (geometry is GeometryCollection)
+                return SetByteStream(geometry as GeometryCollection);
             throw new ArgumentException("ShouldNeverReachHere");
         }
 
@@ -551,7 +481,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected int SetByteStream(IGeometryCollection geometry)
+        protected int SetByteStream(GeometryCollection geometry)
         {
             int count = InitCount;
             count += 4;
@@ -565,11 +495,11 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected int SetByteStream(IMultiPolygon geometry)
+        protected int SetByteStream(MultiPolygon geometry)
         {
             int count = InitCount;
             count += 4;
-            foreach (IPolygon geom in geometry.Geometries)
+            foreach (Polygon geom in geometry.Geometries)
                 count += SetByteStream(geom);
             return count;
         }
@@ -579,11 +509,11 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected int SetByteStream(IMultiLineString geometry)
+        protected int SetByteStream(MultiLineString geometry)
         {
             int count = InitCount;
             count += 4;
-            foreach (ILineString geom in geometry.Geometries)
+            foreach (LineString geom in geometry.Geometries)
                 count += SetByteStream(geom);
             return count;
         }
@@ -593,11 +523,11 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected int SetByteStream(IMultiPoint geometry)
+        protected int SetByteStream(MultiPoint geometry)
         {
             int count = InitCount;
             count += 4;     // NumPoints
-            foreach (IPoint geom in geometry.Geometries)
+            foreach (Point geom in geometry.Geometries)
                 count += SetByteStream(geom);
             return count;
         }
@@ -607,7 +537,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected int SetByteStream(IPolygon geometry)
+        protected int SetByteStream(Polygon geometry)
         {
             int pointSize = _coordinateSize; //Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
             int count = InitCount;
@@ -622,7 +552,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected int SetByteStream(ILineString geometry)
+        protected int SetByteStream(LineString geometry)
         {
             int pointSize = _coordinateSize; //Double.IsNaN(geometry.Coordinate.Z) ? 16 : 24;
             int numPoints = geometry.NumPoints;
@@ -637,7 +567,7 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="geometry"></param>
         /// <returns></returns>
-        protected int SetByteStream(IPoint geometry)
+        protected int SetByteStream(Point geometry)
         {
             return InitCount + _coordinateSize;
             //return Double.IsNaN(geometry.Coordinate.Z) ? 21 : 29;
@@ -659,6 +589,7 @@ namespace NetTopologySuite.IO
         /// <item>0x40000000 flag if geometry's m-ordinate values are written</item>
         /// <item>0x20000000 flag if geometry's SRID value is written</item></list>
         /// </summary>
+        private bool _strict = true;
         public bool Strict
         {
             get => _strict;
@@ -670,8 +601,7 @@ namespace NetTopologySuite.IO
             }
         }
 
-        #region Implementation of IGeometryIOBase
-
+        private bool _handleSRID;
         public bool HandleSRID
         {
             get => _handleSRID;
@@ -683,12 +613,30 @@ namespace NetTopologySuite.IO
             }
         }
 
-        public Ordinates AllowedOrdinates => Ordinates.XYZM;
+        /// <summary>
+        /// Gets the <see cref="Ordinates"/> that this class can write.
+        /// </summary>
+        public static readonly Ordinates AllowedOrdinates = Ordinates.XYZM;
 
         private Ordinates _handleOrdinates;
-        private bool _handleSRID;
-        private bool _strict = true;
 
+        /// <summary>
+        /// Gets or sets the maximum <see cref="Ordinates"/> to write out.
+        /// The default is equivalent to <see cref="AllowedOrdinates"/>.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The purpose of this property is to <b>restrict</b> what gets written out to ensure that,
+        /// e.g., Z values are never written out even if present on a geometry instance.  Ordinates
+        /// that are not present on a geometry instance will be omitted regardless of this value.
+        /// </para>
+        /// <para>
+        /// Flags not present in <see cref="AllowedOrdinates"/> are silently ignored.
+        /// </para>
+        /// <para>
+        /// <see cref="Ordinates.X"/> and <see cref="Ordinates.Y"/> are always present.
+        /// </para>
+        /// </remarks>
         public Ordinates HandleOrdinates
         {
             get => _handleOrdinates;
@@ -699,22 +647,8 @@ namespace NetTopologySuite.IO
                     return;
 
                 _handleOrdinates = value;
-                _emitZ = (value & Ordinates.Z) != 0;
-                _emitM = (value & Ordinates.M) != 0;
                 CalcCoordinateSize();
             }
         }
-
-        #endregion Implementation of IGeometryIOBase
-
-        #region Implementation of IBinaryGeometryWriter
-
-        public ByteOrder ByteOrder
-        {
-            get => EncodingType;
-            set { }
-        }
-
-        #endregion Implementation of IBinaryGeometryWriter
     }
 }

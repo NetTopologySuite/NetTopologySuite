@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Planargraph;
 using NetTopologySuite.Utilities;
 
@@ -44,17 +44,17 @@ namespace NetTopologySuite.Operation.Linemerge
             ///
             /// </summary>
             /// <param name="component"></param>
-            public void Filter(IGeometry component)
+            public void Filter(Geometry component)
             {
-                if (component is ILineString)
-                    _container.Add((ILineString) component);
+                if (component is LineString)
+                    _container.Add((LineString) component);
             }
         }
 
         private readonly LineMergeGraph _graph = new LineMergeGraph();
-        private List<IGeometry> _mergedLineStrings;
+        private List<Geometry> _mergedLineStrings;
         private List<EdgeString> _edgeStrings;
-        private IGeometryFactory _factory;
+        private GeometryFactory _factory;
 
         /// <summary>
         /// Adds a Geometry to be processed. May be called multiple times.
@@ -62,7 +62,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// extracted.
         /// </summary>
         /// <param name="geometry"></param>
-        public void Add(IGeometry geometry)
+        public void Add(Geometry geometry)
         {
             geometry.Apply(new AnonymousGeometryComponentFilterImpl(this));
         }
@@ -73,7 +73,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// extracted.
         /// </summary>
         /// <param name="geometries"></param>
-        public void Add(IEnumerable<IGeometry> geometries)
+        public void Add(IEnumerable<Geometry> geometries)
         {
             _mergedLineStrings = null;
             foreach (var geometry in geometries)
@@ -84,7 +84,7 @@ namespace NetTopologySuite.Operation.Linemerge
         ///
         /// </summary>
         /// <param name="lineString"></param>
-        private void Add(ILineString lineString)
+        private void Add(LineString lineString)
         {
             if (_factory == null)
                 _factory = lineString.Factory;
@@ -106,7 +106,7 @@ namespace NetTopologySuite.Operation.Linemerge
             _edgeStrings = new List<EdgeString>();
             BuildEdgeStringsForObviousStartNodes();
             BuildEdgeStringsForIsolatedLoops();
-            _mergedLineStrings = new List<IGeometry>();
+            _mergedLineStrings = new List<Geometry>();
             foreach (var edgeString in _edgeStrings)
                 _mergedLineStrings.Add(edgeString.ToLineString());
         }
@@ -195,7 +195,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// Returns the LineStrings built by the merging process.
         /// </summary>
         /// <returns></returns>
-        public IList<IGeometry> GetMergedLineStrings()
+        public IList<Geometry> GetMergedLineStrings()
         {
             Merge();
             return _mergedLineStrings;

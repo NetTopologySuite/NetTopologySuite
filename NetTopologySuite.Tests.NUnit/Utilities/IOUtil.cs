@@ -1,14 +1,13 @@
-﻿using System;
-using GeoAPI.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
-using ParseException = GeoAPI.IO.ParseException;
+using ParseException = NetTopologySuite.IO.ParseException;
 
 namespace NetTopologySuite.Tests.NUnit.Utilities
 {
     public class IOUtil
     {
-        public static IGeometry Read(string wkt)
+        public static Geometry Read(string wkt)
         {
             var rdr = new WKTReader();
             try

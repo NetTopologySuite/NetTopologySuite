@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Linemerge;
@@ -235,9 +234,9 @@ namespace NetTopologySuite.Samples.Tests.Operation.Linemerge
             catch(Exception ex) { Debug.WriteLine(ex.ToString()); throw ex; }
         }
 
-        private static IEnumerable<IGeometry> FromWKT(string[] wkts)
+        private static IEnumerable<Geometry> FromWKT(string[] wkts)
         {
-            IList<IGeometry> geomList = new List<IGeometry>();
+            IList<Geometry> geomList = new List<Geometry>();
             foreach (string wkt in wkts)
             {
                 try

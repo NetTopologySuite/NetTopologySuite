@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Simplify;
 using NUnit.Framework;
@@ -36,7 +35,7 @@ namespace NetTopologySuite.Tests.Various
             try
             {
                 var line = Helper.GetLine(Encoded);
-                var res = (ILineString)TopologyPreservingSimplifier.Simplify(line, Tolerance);
+                var res = (LineString)TopologyPreservingSimplifier.Simplify(line, Tolerance);
                 Simplify(line, Tolerance, res, 0);
 
                 for (int i = 1; i <= Max; i++)
@@ -63,12 +62,12 @@ namespace NetTopologySuite.Tests.Various
         /// <param name="tolerance">Tolerance to use by simplify function</param>
         /// <param name="supposedResult">The supposed result</param>
         /// <param name="index"></param>
-        public void Simplify(ILineString line, double tolerance, ILineString supposedResult, int index)
+        public void Simplify(LineString line, double tolerance, LineString supposedResult, int index)
         {
             try
             {
                 Console.WriteLine("Job {0} started", index);
-                var geometry = TopologyPreservingSimplifier.Simplify((ILineString)line.Copy(), tolerance);
+                var geometry = TopologyPreservingSimplifier.Simplify((LineString)line.Copy(), tolerance);
                 Assert.IsTrue(geometry.Equals(supposedResult));
                 Console.WriteLine("Job {0} terminated", index);
             }

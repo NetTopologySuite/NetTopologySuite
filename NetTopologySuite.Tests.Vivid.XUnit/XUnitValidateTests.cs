@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NetTopologySuite.Tests.XUnit
+﻿namespace NetTopologySuite.Tests.XUnit
 {
     public abstract class ValidateXUnitRunner : XUnitRunner
     {

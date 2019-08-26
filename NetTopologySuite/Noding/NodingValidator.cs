@@ -1,12 +1,8 @@
 using System;
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 
-#if !HAS_SYSTEM_APPLICATIONEXCEPTION
-using ApplicationException = System.Exception;
-#endif
 namespace NetTopologySuite.Noding
 {
     /// <summary>
@@ -15,7 +11,7 @@ namespace NetTopologySuite.Noding
     /// </summary>
     public class NodingValidator
     {
-        private static readonly IGeometryFactory Factory = new GeometryFactory();
+        private static readonly GeometryFactory Factory = new GeometryFactory();
 
         private readonly LineIntersector _li = new RobustLineIntersector();
         private readonly IList<ISegmentString> _segStrings;

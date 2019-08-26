@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Linemerge
@@ -10,7 +9,7 @@ namespace NetTopologySuite.Operation.Linemerge
     /// </summary>
     public class EdgeString
     {
-        private readonly IGeometryFactory factory;
+        private readonly GeometryFactory factory;
         private readonly List<LineMergeDirectedEdge> directedEdges = new List<LineMergeDirectedEdge>();
         private Coordinate[] coordinates;
 
@@ -19,7 +18,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// to a LineString.
         /// </summary>
         /// <param name="factory"></param>
-        public EdgeString(IGeometryFactory factory)
+        public EdgeString(GeometryFactory factory)
         {
             this.factory = factory;
         }
@@ -63,7 +62,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// <summary>
         /// Converts this EdgeString into a LineString.
         /// </summary>
-        public ILineString ToLineString()
+        public LineString ToLineString()
         {
             return factory.CreateLineString(Coordinates);
         }

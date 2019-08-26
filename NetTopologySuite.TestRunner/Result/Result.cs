@@ -1,5 +1,5 @@
 ﻿using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
 namespace Open.Topology.TestRunner.Result
@@ -117,24 +117,24 @@ namespace Open.Topology.TestRunner.Result
         }
     }
 
-    public class GeometryResult : IResult<IGeometry>
+    public class GeometryResult : IResult<Geometry>
     {
-        public GeometryResult(IGeometry result)
+        public GeometryResult(Geometry result)
         {
             Value = result;
         }
 
-        public IGeometry Value { get; private set; }
+        public Geometry Value { get; private set; }
 
         public bool Equals(IResult other, double tolerance)
         {
-            if (!(other is IResult<IGeometry>))
+            if (!(other is IResult<Geometry>))
                 return false;
-            var otherGeometryResult = (IResult<IGeometry>)other;
+            var otherGeometryResult = (IResult<Geometry>)other;
             var otherGeometry = otherGeometryResult.Value;
 
-            var thisGeometryClone = (IGeometry)Value.Copy();
-            var otherGeometryClone = (IGeometry)otherGeometry.Copy();
+            var thisGeometryClone = (Geometry)Value.Copy();
+            var otherGeometryClone = (Geometry)otherGeometry.Copy();
             thisGeometryClone.Normalize();
             otherGeometryClone.Normalize();
 

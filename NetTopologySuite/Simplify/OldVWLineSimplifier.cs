@@ -1,5 +1,4 @@
 ﻿using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Simplify
@@ -41,7 +40,7 @@ namespace NetTopologySuite.Simplify
             // ensure computed value is a valid line
             if (simp.Length >= 2)
                 return simp;
-            return new[] { simp[0], new Coordinate(simp[0]) };
+            return new[] { simp[0], simp[0].Copy() };
         }
 
         private double SimplifyVertex(VWVertex vwLine)

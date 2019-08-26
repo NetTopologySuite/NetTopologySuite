@@ -12,8 +12,8 @@ namespace NetTopologySuite.IO
     /// </summary>
     /// <remarks>
     /// While <see cref="BEBinaryWriter" /> extends <see cref="BinaryWriter" />
-    /// adding methods for writing integer values (<see cref="BEBinaryWriter.Write(int)" />)
-    /// and double values (<see cref="BEBinaryWriter.Write(double)" />) in the BigEndian format,
+    /// adding methods for writing integer values (<see cref="Write(int)" />)
+    /// and double values (<see cref="Write(double)" />) in the BigEndian format,
     /// this implementation overrides methods, such <see cref="BinaryWriter.Write(int)" />
     /// and <see cref="BinaryWriter.Write(double)" /> and more,
     /// for writing <see cref="ByteOrder.BigEndian" /> values in the BigEndian format.
@@ -141,34 +141,6 @@ namespace NetTopologySuite.IO
         public override void Write(double value)
         {
             base.Write(BitTweaks.ReverseByteOrder(value));
-        }
-
-        /// <summary>
-        /// Writes a length-prefixed string to this stream in the current encoding
-        /// of the <see cref="T:System.IO.BinaryWriter"></see>,
-        /// and advances the current position of the stream in accordance
-        /// with the encoding used and the specific characters being written to the stream.
-        /// </summary>
-        /// <param name="value">The value to write.</param>
-        /// <exception cref="T:System.ObjectDisposedException">The stream is closed. </exception>
-        /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
-        /// <exception cref="T:System.ArgumentNullException">value is null. </exception>
-        [Obsolete("Not implemented")]
-        public override void Write(string value)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Writes a decimal value to the current stream and advances the stream position by sixteen bytes.
-        /// </summary>
-        /// <param name="value">The decimal value to write.</param>
-        /// <exception cref="T:System.ObjectDisposedException">The stream is closed. </exception>
-        /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
-        [Obsolete("Not implemented")]
-        public override void Write(decimal value)
-        {
-            throw new NotImplementedException();
         }
     }
 }

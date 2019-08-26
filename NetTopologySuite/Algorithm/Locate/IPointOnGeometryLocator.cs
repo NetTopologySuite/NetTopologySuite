@@ -1,5 +1,5 @@
 using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm.Locate
 {
@@ -11,7 +11,7 @@ namespace NetTopologySuite.Algorithm.Locate
     public interface IPointOnGeometryLocator
     {
         /// <summary>
-        /// Determines the <see cref="Location"/> of a point in an areal <see cref="IGeometry"/>.
+        /// Determines the <see cref="Location"/> of a point in an areal <see cref="Geometry"/>.
         /// </summary>
         /// <param name="p">The point to test</param>
         /// <returns>The location of the point in the geometry</returns>

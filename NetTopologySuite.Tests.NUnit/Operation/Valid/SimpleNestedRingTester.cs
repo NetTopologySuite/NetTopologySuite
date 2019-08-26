@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Utilities;
 
@@ -14,7 +14,7 @@ namespace NetTopologySuite.Operation.Valid
     public class SimpleNestedRingTester
     {
         private readonly GeometryGraph graph;  // used to find non-node vertices
-        private readonly List<ILinearRing> rings = new List<ILinearRing>();
+        private readonly List<LinearRing> rings = new List<LinearRing>();
         private Coordinate nestedPt;
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace NetTopologySuite.Operation.Valid
         ///
         /// </summary>
         /// <param name="ring"></param>
-        public void Add(ILinearRing ring)
+        public void Add(LinearRing ring)
         {
             rings.Add(ring);
         }

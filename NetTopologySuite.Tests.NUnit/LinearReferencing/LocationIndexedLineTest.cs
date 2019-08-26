@@ -1,5 +1,4 @@
-using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.LinearReferencing;
 using NUnit.Framework;
 
@@ -8,10 +7,10 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
     /// <summary>
     /// Tests the <see cref="LocationIndexedLine"/> class
     /// </summary>
-    [TestFixtureAttribute]
+    [TestFixture]
     public class LocationIndexedLineTest : AbstractIndexedLineTest
     {
-        [TestAttribute]
+        [Test]
         public override void TestOffsetStartPointRepeatedPoint()
         {
             RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(0 0)", 1.0, "POINT (-0.7071067811865475 0.7071067811865475)");
@@ -22,7 +21,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             //RunOffsetTest("LINESTRING (0 0, 10 10, 10 10, 20 20)", "POINT(10 10)", -5.0, "POINT (13.535533905932738 6.464466094067262)");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiLineStringSimple()
         {
             RunExtractLine("MULTILINESTRING ((0 0, 10 10), (20 20, 30 30))",
@@ -31,7 +30,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
                             "MULTILINESTRING ((5 5, 10 10), (20 20, 25 25))");
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiLineString2()
         {
             RunExtractLine("MULTILINESTRING ((0 0, 10 10), (20 20, 30 30))",
@@ -49,7 +48,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             CheckExpected(result, expected);
         }
 
-        protected override IGeometry IndicesOfThenExtract(IGeometry input, IGeometry subLine)
+        protected override Geometry IndicesOfThenExtract(Geometry input, Geometry subLine)
         {
             var indexedLine = new LocationIndexedLine(input);
             var loc = indexedLine.IndicesOf(subLine);
@@ -57,7 +56,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             return result;
         }
 
-        protected override bool IndexOfAfterCheck(IGeometry linearGeom, Coordinate testPt)
+        protected override bool IndexOfAfterCheck(Geometry linearGeom, Coordinate testPt)
         {
             var indexedLine = new LocationIndexedLine(linearGeom);
 
@@ -75,7 +74,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
             return true;
         }
 
-        protected override Coordinate ExtractOffsetAt(IGeometry linearGeom, Coordinate testPt, double offsetDistance)
+        protected override Coordinate ExtractOffsetAt(Geometry linearGeom, Coordinate testPt, double offsetDistance)
         {
             var indexedLine = new LocationIndexedLine(linearGeom);
             var index = indexedLine.IndexOf(testPt);

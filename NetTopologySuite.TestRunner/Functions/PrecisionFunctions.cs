@@ -1,4 +1,3 @@
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Precision;
 
@@ -7,15 +6,15 @@ namespace Open.Topology.TestRunner.Functions
     public static class PrecisionFunctions
     {
         /*
-        public static IGeometry OLDReducePrecisionPointwise(IGeometry geom, double scaleFactor)
+        public static Geometry OLDReducePrecisionPointwise(Geometry geom, double scaleFactor)
         {
             PrecisionModel pm = new PrecisionModel(scaleFactor);
-            IGeometry reducedGeom = SimpleGeometryPrecisionReducer.Reduce(geom, pm);
+            Geometry reducedGeom = SimpleGeometryPrecisionReducer.Reduce(geom, pm);
             return reducedGeom;
         }
         */
 
-        public static IGeometry ReducePrecisionPointwise(IGeometry geom, double scaleFactor)
+        public static Geometry ReducePrecisionPointwise(Geometry geom, double scaleFactor)
         {
             var pm = new PrecisionModel(scaleFactor);
             var reducedGeom = GeometryPrecisionReducer.Reduce(geom, pm);

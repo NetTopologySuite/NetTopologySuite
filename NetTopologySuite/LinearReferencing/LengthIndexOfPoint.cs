@@ -1,5 +1,3 @@
-using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 
@@ -10,31 +8,31 @@ namespace NetTopologySuite.LinearReferencing
     /// </summary>
     public class LengthIndexOfPoint
     {
-        public static double IndexOf(IGeometry linearGeom, Coordinate inputPt)
+        public static double IndexOf(Geometry linearGeom, Coordinate inputPt)
         {
             var locater = new LengthIndexOfPoint(linearGeom);
             return locater.IndexOf(inputPt);
         }
 
-        public static double IndexOfAfter(IGeometry linearGeom, Coordinate inputPt, double minIndex)
+        public static double IndexOfAfter(Geometry linearGeom, Coordinate inputPt, double minIndex)
         {
             var locater = new LengthIndexOfPoint(linearGeom);
             return locater.IndexOfAfter(inputPt, minIndex);
         }
 
-        private readonly IGeometry _linearGeom;
+        private readonly Geometry _linearGeom;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LengthIndexOfPoint"/> class.
         /// </summary>
         /// <param name="linearGeom">A linear geometry.</param>
-        public LengthIndexOfPoint(IGeometry linearGeom)
+        public LengthIndexOfPoint(Geometry linearGeom)
         {
             _linearGeom = linearGeom;
         }
 
         /// <summary>
-        /// Find the nearest location along a linear <see cref="IGeometry"/> to a given point.
+        /// Find the nearest location along a linear <see cref="Geometry"/> to a given point.
         /// </summary>
         /// <param name="inputPt">The coordinate to locate.</param>
         /// <returns>The location of the nearest point.</returns>
@@ -44,7 +42,7 @@ namespace NetTopologySuite.LinearReferencing
         }
 
         /// <summary>
-        /// Finds the nearest index along the linear <see cref="IGeometry" />
+        /// Finds the nearest index along the linear <see cref="Geometry" />
         /// to a given <see cref="Coordinate"/> after the specified minimum index.
         /// If possible the location returned will be strictly
         /// greater than the <paramref name="minIndex" />.

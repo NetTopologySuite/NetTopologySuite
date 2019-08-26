@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Triangulate.QuadEdge;
@@ -15,7 +14,7 @@ namespace NetTopologySuite.Triangulate
     public class ConformingDelaunayTriangulationBuilder
     {
         private ICollection<Coordinate> _siteCoords;
-        private IGeometry _constraintLines;
+        private Geometry _constraintLines;
         private double _tolerance;
         private QuadEdgeSubdivision _subdiv;
 
@@ -30,7 +29,7 @@ namespace NetTopologySuite.Triangulate
         /// from the site vertex set.
         /// </summary>
         /// <remarks>The geometry from which the sites will be extracted.</remarks>
-        public void SetSites(IGeometry sites)
+        public void SetSites(Geometry sites)
         {
             _siteCoords = DelaunayTriangulationBuilder.ExtractUniqueCoordinates(sites);
         }
@@ -42,7 +41,7 @@ namespace NetTopologySuite.Triangulate
         /// the site vertices.
         /// The constraints must not contain duplicate segments (up to orientation).
         /// </summary>
-        public IGeometry Constraints
+        public Geometry Constraints
         {
             set => _constraintLines = value;
         }
@@ -93,7 +92,7 @@ namespace NetTopologySuite.Triangulate
             return verts;
         }
 
-        private void CreateVertices(IGeometry geom)
+        private void CreateVertices(Geometry geom)
         {
             var coords = geom.Coordinates;
             for (int i = 0; i < coords.Length; i++)
@@ -103,16 +102,16 @@ namespace NetTopologySuite.Triangulate
             }
         }
 
-        private static List<Segment> CreateConstraintSegments(IGeometry geom)
+        private static List<Segment> CreateConstraintSegments(Geometry geom)
         {
             var lines = LinearComponentExtracter.GetLines(geom);
             var constraintSegs = new List<Segment>();
             foreach (var line in lines)
-                CreateConstraintSegments((ILineString) line, constraintSegs);
+                CreateConstraintSegments((LineString) line, constraintSegs);
             return constraintSegs;
         }
 
-        private static void CreateConstraintSegments(ILineString line, IList<Segment> constraintSegs)
+        private static void CreateConstraintSegments(LineString line, IList<Segment> constraintSegs)
         {
             var coords = line.Coordinates;
             for (int i = 1; i < coords.Length; i++)
@@ -130,23 +129,23 @@ namespace NetTopologySuite.Triangulate
         }
 
         /// <summary>
-        /// Gets the edges of the computed triangulation as a <see cref="IMultiLineString"/>.
+        /// Gets the edges of the computed triangulation as a <see cref="MultiLineString"/>.
         /// </summary>
         /// <param name="geomFact">The geometry factory to use to create the output</param>
         /// <returns>the edges of the triangulation</returns>
-        public IMultiLineString GetEdges(IGeometryFactory geomFact)
+        public MultiLineString GetEdges(GeometryFactory geomFact)
         {
             Create();
             return _subdiv.GetEdges(geomFact);
         }
 
         /// <summary>
-        /// Gets the faces of the computed triangulation as a <see cref="IGeometryCollection"/>
+        /// Gets the faces of the computed triangulation as a <see cref="GeometryCollection"/>
         /// of <see cref="Polygon"/>.
         /// </summary>
         /// <param name="geomFact">the geometry factory to use to create the output</param>
         /// <returns>the faces of the triangulation</returns>
-        public IGeometryCollection GetTriangles(IGeometryFactory geomFact)
+        public GeometryCollection GetTriangles(GeometryFactory geomFact)
         {
             Create();
             return _subdiv.GetTriangles(geomFact);

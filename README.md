@@ -1,4 +1,3 @@
-[![Stories in Ready](https://badge.waffle.io/nettopologysuite/nettopologysuite.png?label=ready&title=Ready)](https://waffle.io/nettopologysuite/nettopologysuite)
 [![Build Status](https://travis-ci.org/NetTopologySuite/NetTopologySuite.svg?branch=master)](https://travis-ci.org/NetTopologySuite/NetTopologySuite)
 NetTopologySuite
 ================
@@ -20,7 +19,7 @@ Stable releases are hosted on the default NuGet feed. You can install them using
 PM> Install-Package NetTopologySuite
 ```
 
-### Pre release [![MyGet PreRelease Status](http://img.shields.io/myget/nettopologysuite/vpre/NetTopologySuite.svg?style=flat)]
+### Pre release [![MyGet PreRelease Status](http://img.shields.io/myget/nettopologysuite/vpre/NetTopologySuite.svg?style=flat)](https://www.myget.org/feed/nettopologysuite/package/nuget/NetTopologySuite)
 Pre-Release versions of NetTopologySuite are hosted on MyGet. The sources for the NetTopologySuite feed are as follows:
 
 Version | URL

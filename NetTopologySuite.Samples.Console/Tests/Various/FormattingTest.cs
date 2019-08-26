@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Samples.SimpleTests;
@@ -56,7 +55,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         {
             var coordinate = new Coordinate(0.00000000000000000001, 0.00000000000000000001);
             var point = GeometryFactory.Floating.CreatePoint(coordinate);
-            var test = (IPoint)new WKTReader(GeometryFactory.Floating).Read(point.ToString());
+            var test = (Point)new WKTReader(GeometryFactory.Floating).Read(point.ToString());
 
             // If i modify PrecisionModel.MaximumSignificantDigits from 16 to (as example) 20, all the digits are printed...
             Debug.WriteLine(point.ToString());
@@ -74,7 +73,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         {
             var coordinate = new Coordinate(0.0000000000001, 0.0000000000002);
             var point = GeometryFactory.Floating.CreatePoint(coordinate);
-            var test = (IPoint) new WKTReader(GeometryFactory.Floating).Read(point.ToString());
+            var test = (Point) new WKTReader(GeometryFactory.Floating).Read(point.ToString());
             Debug.WriteLine(point.ToString());
             Debug.WriteLine(test.ToString());
 
@@ -92,7 +91,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         {
             var coordinate = new Coordinate(0.0000000000001, 0.0000000000002);
             var point = GeometryFactory.FloatingSingle.CreatePoint(coordinate);
-            var test = (IPoint)new WKTReader(GeometryFactory.FloatingSingle).Read(point.ToString());
+            var test = (Point)new WKTReader(GeometryFactory.FloatingSingle).Read(point.ToString());
             Debug.WriteLine(point.ToString());
             Debug.WriteLine(test.ToString());
 
@@ -110,7 +109,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         {
             var coordinate = new Coordinate(0.0000000000001, 0.0000000000002);
             var point = GeometryFactory.Fixed.CreatePoint(coordinate);
-            var test = (IPoint)new WKTReader(GeometryFactory.Fixed).Read(point.ToString());
+            var test = (Point)new WKTReader(GeometryFactory.Fixed).Read(point.ToString());
             Debug.WriteLine(point.ToString());
             Debug.WriteLine(test.ToString());
 

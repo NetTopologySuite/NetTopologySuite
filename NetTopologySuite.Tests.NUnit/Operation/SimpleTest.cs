@@ -1,5 +1,3 @@
-using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
@@ -16,13 +14,13 @@ namespace NetTopologySuite.Tests.NUnit.Operation
     {
         private const double Tolerance = 0.00005;
 
-        private static readonly IGeometryFactory Fact = new GeometryFactory();
+        private static readonly GeometryFactory Fact = new GeometryFactory();
         private static readonly WKTReader rdr = new WKTReader(Fact);
 
         ///<summary>
         /// 2 LineStrings touching at an endpoint
         ///</summary>
-        [TestAttribute]
+        [Test]
         public void Test2TouchAtEndpoint()
         {
             string a = "MULTILINESTRING((0 1, 1 1, 2 1), (0 0, 1 0, 2 1))";
@@ -33,7 +31,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
         }
 
         ///<summary>3 LineStrings touching at an endpoint.</summary>
-        [TestAttribute]
+        [Test]
         public void Test3TouchAtEndpoint()
         {
             string a = "MULTILINESTRING ((0 1, 1 1, 2 1),   (0 0, 1 0, 2 1),  (0 2, 1 2, 2 1))";
@@ -44,7 +42,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
             RunIsSimpleTest(a, BoundaryNodeRules.EndpointBoundaryRule, true,
                     new Coordinate(2, 1));
         }
-        [TestAttribute]
+        [Test]
         public void TestCross()
         {
             string a = "MULTILINESTRING ((20 120, 120 20), (20 20, 120 120))";
@@ -54,7 +52,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
                     new Coordinate(70, 70));
         }
 
-        [TestAttribute]
+        [Test]
         public void TestMultiLineStringWithRingTouchAtEndpoint()
         {
             string a = "MULTILINESTRING ((100 100, 20 20, 200 20, 100 100), (100 200, 100 100))";
@@ -64,7 +62,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation
             // under Endpoint, the ring has a boundary point, so the line does NOT intersect the interior ==> simple
             RunIsSimpleTest(a, BoundaryNodeRules.EndpointBoundaryRule, true);
         }
-        [TestAttribute]
+        [Test]
         public void TestRing()
         {
             string a = "LINESTRING (100 100, 20 20, 200 20, 100 100)";

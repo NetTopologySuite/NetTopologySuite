@@ -1,5 +1,5 @@
 using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Triangulate
@@ -36,7 +36,7 @@ namespace NetTopologySuite.Triangulate
         public ConstraintEnforcementException(string msg, Coordinate pt)
             : base(MsgWithCoord(msg, pt))
         {
-            _pt = new Coordinate(pt);
+            _pt = pt.Copy();
         }
 
         /// <summary>

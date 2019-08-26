@@ -1,4 +1,4 @@
-﻿using GeoAPI.Geometries;
+﻿using NetTopologySuite.Geometries;
 using NetTopologySuite.IO.GML2;
 using NUnit.Framework;
 
@@ -15,12 +15,12 @@ namespace NetTopologySuite.Tests.IO
             var geom = reader.Read(gml);
 
             Assert.IsNotNull(geom);
-            Assert.IsInstanceOf<IPoint>(geom);
+            Assert.IsInstanceOf<Point>(geom);
         }
 
         /*
     protected
-     IPoint ReadPoint(XmlReader reader)
+     Point ReadPoint(XmlReader reader)
             {
     while
      (reader.Read())

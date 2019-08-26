@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using GeoAPI.Geometries;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
 
@@ -19,7 +17,7 @@ namespace NetTopologySuite.Shape.Random
 
         /// <summary>
         /// Create a builder which will create shapes using the default
-        /// <see cref="IGeometryFactory"/>.
+        /// <see cref="GeometryFactory"/>.
         /// </summary>
         public RandomPointsInGridBuilder()
             : this(new GeometryFactory())
@@ -28,10 +26,10 @@ namespace NetTopologySuite.Shape.Random
 
         /// <summary>
         /// Create a builder which will create shapes using the given
-        /// <see cref="IGeometryFactory"/>.
+        /// <see cref="GeometryFactory"/>.
         /// </summary>
         /// <param name="geomFact">The factory to use</param>
-        public RandomPointsInGridBuilder(IGeometryFactory geomFact)
+        public RandomPointsInGridBuilder(GeometryFactory geomFact)
             : base(geomFact)
         {
         }
@@ -59,10 +57,10 @@ namespace NetTopologySuite.Shape.Random
         public double GutterFraction { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="IMultiPoint"/> containing the generated point
+        /// Gets the <see cref="MultiPoint"/> containing the generated point
         /// </summary>
         /// <returns>A MultiPoint</returns>
-        public override IGeometry GetGeometry()
+        public override Geometry GetGeometry()
         {
             int nCells = (int)Math.Sqrt(NumPoints) + 1;
 

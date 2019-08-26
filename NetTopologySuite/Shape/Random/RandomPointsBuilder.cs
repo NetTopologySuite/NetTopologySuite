@@ -1,5 +1,4 @@
 ﻿using System;
-using GeoAPI.Geometries;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 
@@ -14,12 +13,12 @@ namespace NetTopologySuite.Shape.Random
     {
         protected static readonly System.Random Rnd = new System.Random();
 
-        private IGeometry _maskPoly;
+        private Geometry _maskPoly;
         private IPointOnGeometryLocator _extentLocator;
 
         /// <summary>
         /// Create a shape factory which will create shapes using the default
-        /// <see cref="IGeometryFactory"/>.
+        /// <see cref="GeometryFactory"/>.
         /// </summary>
         public RandomPointsBuilder()
             : this(new GeometryFactory())
@@ -28,10 +27,10 @@ namespace NetTopologySuite.Shape.Random
 
         /// <summary>
         /// Create a shape factory which will create shapes using the given
-        /// <see cref="IGeometryFactory"/>
+        /// <see cref="GeometryFactory"/>
         /// </summary>
         /// <param name="geomFact">The factory to use</param>
-        public RandomPointsBuilder(IGeometryFactory geomFact)
+        public RandomPointsBuilder(GeometryFactory geomFact)
             : base(geomFact)
         {
         }
@@ -40,7 +39,7 @@ namespace NetTopologySuite.Shape.Random
         /// Sets a polygonal mask.
         /// </summary>
         /// <exception cref="ArgumentException">if the mask is not polygonal</exception>
-        public void SetExtent(IGeometry mask)
+        public void SetExtent(Geometry mask)
         {
             if (!(mask is IPolygonal))
                 throw new ArgumentException("Only polygonal extents are supported");
@@ -50,7 +49,7 @@ namespace NetTopologySuite.Shape.Random
             _extentLocator = new IndexedPointInAreaLocator(mask);
         }
 
-        public override IGeometry GetGeometry()
+        public override Geometry GetGeometry()
         {
             var pts = new Coordinate[NumPoints];
             int i = 0;

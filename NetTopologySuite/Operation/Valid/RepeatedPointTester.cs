@@ -1,5 +1,5 @@
 using System;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Valid
 {
@@ -24,18 +24,18 @@ namespace NetTopologySuite.Operation.Valid
         /// </summary>
         /// <param name="g"></param>
         /// <returns></returns>
-        public bool HasRepeatedPoint(IGeometry g)
+        public bool HasRepeatedPoint(Geometry g)
         {
             if (g.IsEmpty)  return false;
-            if (g is IPoint) return false;
-            else if (g is IMultiPoint) return false;
+            if (g is Point) return false;
+            else if (g is MultiPoint) return false;
             // LineString also handles LinearRings
-            else if (g is ILineString)
+            else if (g is LineString)
                 return HasRepeatedPoint((g).Coordinates);
-            else if (g is IPolygon)
-                return HasRepeatedPoint((IPolygon) g);
-            else if (g is IGeometryCollection)
-                return HasRepeatedPoint((IGeometryCollection) g);
+            else if (g is Polygon)
+                return HasRepeatedPoint((Polygon) g);
+            else if (g is GeometryCollection)
+                return HasRepeatedPoint((GeometryCollection) g);
             else  throw new NotSupportedException(g.GetType().FullName);
         }
 
@@ -62,7 +62,7 @@ namespace NetTopologySuite.Operation.Valid
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        private bool HasRepeatedPoint(IPolygon p)
+        private bool HasRepeatedPoint(Polygon p)
         {
             if (HasRepeatedPoint(p.ExteriorRing.Coordinates))
                 return true;
@@ -77,7 +77,7 @@ namespace NetTopologySuite.Operation.Valid
         /// </summary>
         /// <param name="gc"></param>
         /// <returns></returns>
-        private bool HasRepeatedPoint(IGeometryCollection gc)
+        private bool HasRepeatedPoint(GeometryCollection gc)
         {
             for (int i = 0; i < gc.NumGeometries; i++)
             {

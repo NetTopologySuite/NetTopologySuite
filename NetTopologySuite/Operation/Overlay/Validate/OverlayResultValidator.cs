@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Overlay.Snap;
 
 namespace NetTopologySuite.Operation.Overlay.Validate
@@ -23,13 +23,13 @@ namespace NetTopologySuite.Operation.Overlay.Validate
     /// <see cref="OverlayOp"/>
     public class OverlayResultValidator
     {
-        public static bool IsValid(IGeometry a, IGeometry b, SpatialFunction overlayOp, IGeometry result)
+        public static bool IsValid(Geometry a, Geometry b, SpatialFunction overlayOp, Geometry result)
         {
             var validator = new OverlayResultValidator(a, b, result);
             return validator.IsValid(overlayOp);
         }
 
-        private static double ComputeBoundaryDistanceTolerance(IGeometry g0, IGeometry g1)
+        private static double ComputeBoundaryDistanceTolerance(Geometry g0, Geometry g1)
         {
             return Math.Min(GeometrySnapper.ComputeSizeBasedSnapTolerance(g0),
                     GeometrySnapper.ComputeSizeBasedSnapTolerance(g1));
@@ -37,7 +37,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
 
         private const double Tolerance = 0.000001;
 
-        private readonly IGeometry[] _geom;
+        private readonly Geometry[] _geom;
         private readonly FuzzyPointLocator[] _locFinder;
         private readonly Location[] _location = new Location[3];
         private readonly double _boundaryDistanceTolerance = Tolerance;
@@ -45,7 +45,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
 
         private Coordinate _invalidLocation;
 
-        public OverlayResultValidator(IGeometry a, IGeometry b, IGeometry result)
+        public OverlayResultValidator(Geometry a, Geometry b, Geometry result)
         {
             /*
              * The tolerance to use needs to depend on the size of the geometries.
@@ -82,7 +82,7 @@ namespace NetTopologySuite.Operation.Overlay.Validate
 
         public Coordinate InvalidLocation => _invalidLocation;
 
-        private void AddTestPts(IGeometry g)
+        private void AddTestPts(Geometry g)
         {
             var ptGen = new OffsetPointGenerator(g);
             _testCoords.AddRange(ptGen.GetPoints(5 * _boundaryDistanceTolerance));
