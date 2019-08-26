@@ -325,12 +325,14 @@ namespace NetTopologySuite.IO
             set => _precisionModel = value;
         }
 
-        public bool EmitSRID { get; set; }
-
-        public bool EmitZ{ get; set; }
-
-        public bool EmitM{ get; set; }
-
+        /// <summary>
+        /// Creates a new instance of the <see cref="WKTWriter"/> class suitable for MSSQL's non-
+        /// standard WKT format.
+        /// </summary>
+        /// <returns>
+        /// A new instance of the <see cref="WKTWriter"/> class suitable for MSSQL's non-standard
+        /// WKT format.
+        /// </returns>
         public static WKTWriter ForMicrosoftSqlServer() => new WKTWriter(4, true);
 
         /// <summary>
