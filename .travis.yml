@@ -30,18 +30,6 @@ deploy:
     skip_cleanup: true
 
 
-  - on:
-      tags: true
-    provider: releases
-    file:
-      - "./Release/AnyCPU/*.nupkg"
-      - "./Release/AnyCPU/*.snupkg"
-    draft: true
-    api_key:
-      secure: "ZwZwz20dUb8U060PLeKIJ3/qmcQF53VukzOoetkfxFVfs4CUfuDNPSk5ZvHpVCQUJpKKj4F4/MIFBuCQ9r1hy7HDv9I1mbB08B19gZQhiAtxf2/KKbNVWZFubBIX1RMbfFyTBvKkm07/SCyiY59r4GvXr4t8iSpo5ih3lThacj4="
-    skip_cleanup: true
-
-
 env:
   global:
   - secure: BzD1R2uMyGVdJu+cIpRhydfCWfIQSsi7/GwqE30j+95v2Hr3X8fq+5aRR1EFhk1C51zqGhNymp55zUCXvIpXKuHnWL3tSYpFWV6suhJ9D3WplSXUbBA8hqB7KCkhT54qHykhS4Uq6V4P+JxSCcjZpbj0IQ/uCuolamU9Osh3rl0=
