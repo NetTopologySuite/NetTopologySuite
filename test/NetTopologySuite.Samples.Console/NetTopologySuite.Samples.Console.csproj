@@ -2,37 +2,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <RootNamespace>NetTopologySuite.Samples</RootNamespace>
     <OutputType>Exe</OutputType>
     <StartupObject>NetTopologySuite.Samples.SimpleTests.Program</StartupObject>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <IsTestProject>true</IsTestProject>
-
-    <!-- https://github.com/Microsoft/msbuild/issues/1310 -->
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   </PropertyGroup>
 
-  <Import Project="$(SolutionDir)NetTopologySuite.Common.props" />
-
   <ItemGroup>
-    <Compile Include="$(SolutionDir)NetTopologySuite.Tests.NUnit\TestData\EmbeddedResourceManager.cs" Link="Tests\Various\EmbeddedResourceManager.cs" />
-    <Compile Include="$(SolutionDir)NetTopologySuite.Tests.NUnit\GeometryTestCase.cs" Link="Tests\GeometryTestCase.cs" />
+    <Compile Include="$(SolutionDir)test\NetTopologySuite.Tests.NUnit\TestData\EmbeddedResourceManager.cs" Link="Tests\Various\EmbeddedResourceManager.cs" />
+    <Compile Include="$(SolutionDir)test\NetTopologySuite.Tests.NUnit\GeometryTestCase.cs" Link="Tests\GeometryTestCase.cs" />
 
     <EmbeddedResource Include="Tests\Various\*.gml" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
-    <PackageReference Include="NUnit" Version="3.10.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" />
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite.Lab\NetTopologySuite.Lab.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\NetTopologySuite\NetTopologySuite.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\NetTopologySuite.Lab\NetTopologySuite.Lab.csproj" />
   </ItemGroup>
 
 </Project>

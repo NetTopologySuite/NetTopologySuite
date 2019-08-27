@@ -2,17 +2,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>NetTopologySuite</RootNamespace>
     <SignAssembly>true</SignAssembly>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <Import Project="$(SolutionDir)NetTopologySuite.Common.props" />
-
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)NetTopologySuite\NetTopologySuite.csproj" />
+    <ProjectReference Include="$(SolutionDir)src\NetTopologySuite\NetTopologySuite.csproj" />
   </ItemGroup>
 
 </Project>

@@ -21,15 +21,14 @@ namespace ConsoleTestRunner
 
         public TestInfoCollection ParseProject(string projectFile)
         {
-            projectFile = Path.Combine(projectFile.Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries));
             if (!File.Exists(projectFile))
             {
-                throw new ArgumentException(projectFile,
-                    "The file does not exits or the 'projectFile' is not valid.");
+                throw new ArgumentException($"The file {projectFile} does not exist or is not valid.", nameof(projectFile));
             }
 
             try
             {
+                var projectFileInfo = new FileInfo(projectFile);
                 var collection = new TestInfoCollection();
 
                 var xmldoc = new XmlDocument();
@@ -87,7 +86,7 @@ namespace ConsoleTestRunner
                                 if (xmlFile != null)
                                 {
                                     var info    = new TestInfo(filterType);
-                                    info.FileName    = xmlFile.InnerText;
+                                    info.FileName    = Path.Combine(projectFileInfo.DirectoryName, xmlFile.InnerText);
                                     info.Verbose     = bVerbose;
                                     info.Exception   = bDisplayException;
                                     info.Interactive = bInteractive;
@@ -106,7 +105,7 @@ namespace ConsoleTestRunner
                                 if (xmlDir != null)
                                 {
                                     var info    = new TestInfo(filterType);
-                                    info.Directory   = xmlDir.InnerText;
+                                    info.Directory   = Path.Combine(projectFileInfo.DirectoryName, xmlDir.InnerText);
                                     info.Verbose     = bVerbose;
                                     info.Exception   = bDisplayException;
                                     info.Interactive = bInteractive;

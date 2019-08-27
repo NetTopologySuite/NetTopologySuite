@@ -4,9 +4,7 @@
     {
         protected ExternalXUnitRunner(string testFile) : base(testFile) { }
 
-        private const string testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\external";
-
-        protected override string TestLocation => testLocation;
+        protected override string TestLocation => "external";
     }
 
     public class TestGeosBuffer : ExternalXUnitRunner

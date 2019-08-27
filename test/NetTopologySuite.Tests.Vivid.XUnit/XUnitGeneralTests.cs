@@ -7,13 +7,11 @@ namespace NetTopologySuite.Tests.XUnit
     {
         //protected GeneralXUnitRunner(string testFile) : base(testFile) { }
 
-        private const string testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\general";
-
         public GeneralXUnitRunner() : base(string.Empty)
         {
         }
 
-        protected override string TestLocation => testLocation;
+        protected override string TestLocation => "general";
 
         [NUnit.Framework.Ignore("There are more than 20 files, so these all get handled by TestAllFiles anyway.")]
         public override void Test00() { }
@@ -67,7 +65,7 @@ namespace NetTopologySuite.Tests.XUnit
         }
         protected override void TestAll()
         {
-            foreach (string file in Directory.GetFiles(Path.Combine(TestLocation.Split('\\', StringSplitOptions.RemoveEmptyEntries))))
+            foreach (string file in Directory.GetFiles(Path.Combine(TestRunnerDirectory, TestLocation)))
             {
                 string ext = Path.GetExtension(file);
                 if (string.IsNullOrEmpty(ext))

@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.CompilerServices;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Samples.SimpleTests;
@@ -27,7 +28,7 @@ namespace NetTopologySuite.Samples.Tests.Various
         [SetUp]
         public void Init()
         {
-            string blobDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "NetTopologySuite.Samples.Shapefiles", "blob");
+            string blobDir = Path.Combine(GetShapefileSamplesDirectory(), "blob");
             blobFile = Path.Combine(blobDir, "blob");
             if (!File.Exists(blobFile))
                 throw new FileNotFoundException("blob file not found at " + blobDir);
@@ -71,6 +72,19 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.IsNotNull(bytes);
             Assert.IsNotEmpty(bytes);
             Debug.WriteLine(bytes.Length);
+        }
+
+        private static string GetShapefileSamplesDirectory([CallerFilePath] string thisFilePath = null)
+        {
+            return new FileInfo(thisFilePath)                             // /test/NetTopologySuite.Samples.Console/Tests/Various/OracleWKBTest.cs
+                .Directory                                                // /test/NetTopologySuite.Samples.Console/Tests/Various
+                .Parent                                                   // /test/NetTopologySuite.Samples.Console/Tests
+                .Parent                                                   // /test/NetTopologySuite.Samples.Console
+                .Parent                                                   // /test
+                .Parent                                                   // /
+                .GetDirectories("data")[0]                                // /data
+                .GetDirectories("NetTopologySuite.Samples.Shapefiles")[0] // /data/NetTopologySuite.Samples.Shapefiles
+                .FullName;
         }
     }
 }

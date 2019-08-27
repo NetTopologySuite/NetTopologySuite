@@ -2,13 +2,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(ProjectDir)..\</SolutionDir>
     <TargetFramework>netstandard2.0</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <NoWarn>659,168,1587</NoWarn>
   </PropertyGroup>
-
-  <Import Project="$(SolutionDir)NetTopologySuite.Common.props" />
 
   <PropertyGroup Label="Assembly Info">
     <AssemblyTitle>NetTopologySuite</AssemblyTitle>
@@ -28,13 +25,6 @@ This package references GeoAPI.</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="$(SolutionDir)nts.snk" Link="nts.snk" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <!-- SourceLink adds stuff to let debuggers step into our code. -->
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05" PrivateAssets="All" />
-
     <PackageReference Include="System.Memory" Version="4.5.3" />
   </ItemGroup>
 

@@ -2,10 +2,10 @@
 <project>
   <test verbose="false" exception="true" interactive="false" filter="none">
     <dirs>
-      <dir>..\..\..\NetTopologySuite.TestRunner.Tests\robust</dir>
-      <dir>..\..\..\NetTopologySuite.TestRunner.Tests\failure</dir>
-      <dir>..\..\..\NetTopologySuite.TestRunner.Tests\external</dir>
-      <dir>..\..\..\NetTopologySuite.TestRunner.Tests\stmlf</dir>
+      <dir>robust</dir>
+      <dir>failure</dir>
+      <dir>external</dir>
+      <dir>stmlf</dir>
     </dirs>
   </test>
 </project>

@@ -4,9 +4,7 @@
     {
         protected ValidateXUnitRunner(string testFile) : base(testFile) { }
 
-        private const string testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\validate";
-
-        protected override string TestLocation => testLocation;
+        protected override string TestLocation => "validate";
     }
 
     public class TestRelateAA : ValidateXUnitRunner

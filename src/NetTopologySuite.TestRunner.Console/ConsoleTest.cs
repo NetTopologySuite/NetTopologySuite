@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Open.Topology.TestRunner;
 
 namespace ConsoleTestRunner
@@ -10,6 +11,8 @@ namespace ConsoleTestRunner
     /// </summary>
     class ConsoleTest
     {
+        private static readonly string TestRunnerDirectory = GetTestRunnerTestDirectory();
+
         static void PrintMenu()
         {
             Console.WriteLine("\n\n**\n**\n** Interactive Test Instructions \n**\n**\n**\n");
@@ -43,14 +46,14 @@ namespace ConsoleTestRunner
                     switch (fileName)
                     {
                         case "default":
-                            RunDefault();
+                            Run("Default.xml");
                             break;
                         case "other":
-                            RunOther();
+                            Run("Other.xml");
                             break;
                         case "all":
-                            RunDefault();
-                            RunOther();
+                            Run("Default.xml");
+                            Run("Other.xml");
                             break;
                         default:
                             if (Directory.Exists(fileName))
@@ -113,11 +116,11 @@ namespace ConsoleTestRunner
             }
         }
 
-        static void RunDefault()
+        static void Run(string fileName)
         {
             var parserOptions = new TestOptionsParser();
             var listTests =
-                parserOptions.ParseProject(@"..\..\..\NetTopologySuite.TestRunner.Tests\Default.xml");
+                parserOptions.ParseProject(Path.Combine(TestRunnerDirectory, fileName));
 
             if (listTests != null && listTests.Count > 0)
             {
@@ -127,18 +130,15 @@ namespace ConsoleTestRunner
             }
         }
 
-        static void RunOther()
+        private static string GetTestRunnerTestDirectory([CallerFilePath] string thisFilePath = null)
         {
-            var parserOptions = new TestOptionsParser();
-            var listTests =
-                parserOptions.ParseProject(@"..\..\..\NetTopologySuite.TestRunner.Tests\Other.xml");
-
-            if (listTests != null && listTests.Count > 0)
-            {
-                var runner = new TestRunner(listTests);
-                runner.Run();
-                runner.PrintResult();
-            }
+            return new FileInfo(thisFilePath)                            // /src/NetTopologySuite.TestRunner.Console/ConsoleTest.cs
+                .Directory                                               // /src/NetTopologySuite.TestRunner.Console
+                .Parent                                                  // /src
+                .Parent                                                  // /
+                .GetDirectories("data")[0]                               // /data
+                .GetDirectories("NetTopologySuite.TestRunner.Tests")[0]  // /data/NetTopologySuite.TestRunner.Tests
+                .FullName;
         }
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace ConsoleTestRunner
 
                 if (parser.IsDefault)
                 {
-                    RunDefault();
+                    Run("Default.xml");
                 }
                 else
                 {

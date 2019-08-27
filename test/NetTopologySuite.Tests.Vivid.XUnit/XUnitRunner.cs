@@ -2,6 +2,8 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
+    using System.Runtime.CompilerServices;
     //using Xunit;
     using NUnit.Framework;
     using Open.Topology.TestRunner;
@@ -13,6 +15,8 @@
     [TestFixture]
     public abstract class XUnitRunner
     {
+        protected static readonly string TestRunnerDirectory = GetTestRunnerTestDirectory();
+
         protected abstract string TestLocation { get; }
 
         private readonly XmlTestController _controller = new XmlTestController();
@@ -43,7 +47,7 @@
 
         protected XmlTestCollection LoadTests()
         {
-            return this._controller.Load(Path.Combine(Path.Combine(this.TestLocation.Split('\\', StringSplitOptions.RemoveEmptyEntries)), this.TestFile));
+            return this._controller.Load(Path.Combine(TestRunnerDirectory,this.TestLocation, this.TestFile));
         }
 
         [Test]
@@ -213,6 +217,17 @@
                 }
             }
             Assert.True(success, "Fixture failed");
+        }
+
+        private static string GetTestRunnerTestDirectory([CallerFilePath] string thisFilePath = null)
+        {
+            return new FileInfo(thisFilePath)                            // /test/NetTopologySuite.Tests.Vivid.XUnit/XUnitRunner.cs
+                .Directory                                               // /test/NetTopologySuite.Tests.Vivid.XUnit
+                .Parent                                                  // /test
+                .Parent                                                  // /
+                .GetDirectories("data")[0]                               // /data
+                .GetDirectories("NetTopologySuite.TestRunner.Tests")[0]  // /data/NetTopologySuite.TestRunner.Tests
+                .FullName;
         }
     }
 

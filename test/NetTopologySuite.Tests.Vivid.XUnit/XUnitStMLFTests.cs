@@ -4,9 +4,7 @@
     {
         protected StMLFXUnitRunner(string testFile) : base(testFile) { }
 
-        private const string testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\stmlf";
-
-        protected override string TestLocation => testLocation;
+        protected override string TestLocation => "stmlf";
     }
 
     public class TestStMLF20061020 : StMLFXUnitRunner

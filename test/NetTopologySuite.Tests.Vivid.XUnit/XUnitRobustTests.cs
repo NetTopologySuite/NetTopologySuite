@@ -4,9 +4,7 @@
     {
         protected RobustXUnitRunner(string testFile) : base(testFile) { }
 
-        private const string testLocation = "..\\..\\..\\NetTopologySuite.TestRunner.Tests\\robust";
-
-        protected override string TestLocation => testLocation;
+        protected override string TestLocation => "robust";
     }
 
     // 1 expected exception thrown
