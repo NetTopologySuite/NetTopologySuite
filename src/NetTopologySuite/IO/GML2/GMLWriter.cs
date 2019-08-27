@@ -19,11 +19,21 @@ namespace NetTopologySuite.IO.GML2
     {
         private const int InitValue = 150;
         private const int CoordSize = 200;
+        private readonly GMLVersion Version = GMLVersion.Two;
 
         /// <summary>
         /// Formatter for double values of coordinates
         /// </summary>
         protected static NumberFormatInfo NumberFormatter => Global.GetNfi();
+
+        public GMLWriter()
+        {
+        }
+
+        public GMLWriter(GMLVersion version)
+        {
+            Version = version;
+        }
 
         /// <summary>
         /// Returns an <c>XmlReader</c> with feature informations.
@@ -174,12 +184,12 @@ namespace NetTopologySuite.IO.GML2
         protected void Write(Polygon polygon, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, "Polygon", GMLElements.gmlNS);
-            writer.WriteStartElement("outerBoundaryIs", GMLElements.gmlNS);
+            writer.WriteStartElement(Version == GMLVersion.Three ? "exterior" : "outerBoundaryIs", GMLElements.gmlNS);
             Write(polygon.ExteriorRing as LinearRing, writer);
             writer.WriteEndElement();
             for (int i = 0; i < polygon.NumInteriorRings; i++)
             {
-                writer.WriteStartElement("innerBoundaryIs", GMLElements.gmlNS);
+                writer.WriteStartElement(Version == GMLVersion.Three ? "exterior" : "innerBoundaryIs", GMLElements.gmlNS);
                 Write(polygon.InteriorRings[i] as LinearRing, writer);
                 writer.WriteEndElement();
             }
