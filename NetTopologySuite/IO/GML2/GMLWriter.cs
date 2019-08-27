@@ -19,6 +19,15 @@ namespace NetTopologySuite.IO.GML2
     {
         private const int InitValue = 150;
         private const int CoordSize = 200;
+        private GmlVersion Version = GmlVersion.Two;
+
+        public GMLWriter()
+        {
+        }
+        public GMLWriter(GmlVersion version)
+        {
+            Version = version;
+        }
 
         /// <summary>
         /// Formatter for double values of coordinates
@@ -174,12 +183,12 @@ namespace NetTopologySuite.IO.GML2
         protected void Write(Polygon polygon, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, "Polygon", GMLElements.gmlNS);
-            writer.WriteStartElement("outerBoundaryIs", GMLElements.gmlNS);
+            writer.WriteStartElement(Version == GmlVersion.Three ? "exterior" : "outerBoundaryIs", GMLElements.gmlNS);
             Write(polygon.ExteriorRing as LinearRing, writer);
             writer.WriteEndElement();
             for (int i = 0; i < polygon.NumInteriorRings; i++)
             {
-                writer.WriteStartElement("innerBoundaryIs", GMLElements.gmlNS);
+                writer.WriteStartElement(Version == GmlVersion.Three ? "exterior" : "innerBoundaryIs", GMLElements.gmlNS);
                 Write(polygon.InteriorRings[i] as LinearRing, writer);
                 writer.WriteEndElement();
             }
