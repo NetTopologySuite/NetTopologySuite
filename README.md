@@ -1,3 +1,5 @@
+NO MERGE
+
 [![Build Status](https://travis-ci.org/NetTopologySuite/NetTopologySuite.svg?branch=master)](https://travis-ci.org/NetTopologySuite/NetTopologySuite)
 NetTopologySuite
 ================
