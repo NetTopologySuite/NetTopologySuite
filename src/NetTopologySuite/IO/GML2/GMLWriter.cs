@@ -184,12 +184,12 @@ namespace NetTopologySuite.IO.GML2
         protected void Write(Polygon polygon, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, "Polygon", GMLElements.gmlNS);
-            writer.WriteStartElement(Version == GMLVersion.Three ? "exterior" : "outerBoundaryIs", GMLElements.gmlNS);
+            writer.WriteStartElement(Version == GMLVersion.Two ? "outerBoundaryIs" : "exterior", GMLElements.gmlNS);
             Write(polygon.ExteriorRing as LinearRing, writer);
             writer.WriteEndElement();
             for (int i = 0; i < polygon.NumInteriorRings; i++)
             {
-                writer.WriteStartElement(Version == GMLVersion.Three ? "exterior" : "innerBoundaryIs", GMLElements.gmlNS);
+                writer.WriteStartElement(Version == GMLVersion.Two ? "innerBoundaryIs" : "exterior", GMLElements.gmlNS);
                 Write(polygon.InteriorRings[i] as LinearRing, writer);
                 writer.WriteEndElement();
             }
