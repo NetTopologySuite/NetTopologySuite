@@ -4,6 +4,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Open.Topology.TestRunner</RootNamespace>
+    <ContainsNUnitTests>false</ContainsNUnitTests>
   </PropertyGroup>
 
   <ItemGroup>
