@@ -3,7 +3,7 @@
     /// <summary>
     /// Identifies a version of the GML specification.
     /// </summary>
-    public enum GMLVersion
+    internal enum GMLVersion
     {
         /// <summary>
         /// Version 2.1.1 (OGC 02-009).
