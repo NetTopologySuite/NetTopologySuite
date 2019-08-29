@@ -19,20 +19,33 @@ namespace NetTopologySuite.IO.GML2
     {
         private const int InitValue = 150;
         private const int CoordSize = 200;
-        private readonly GMLVersion Version = GMLVersion.Two;
+        private readonly GMLVersion _gmlVersion;
 
         /// <summary>
         /// Formatter for double values of coordinates
         /// </summary>
         protected static NumberFormatInfo NumberFormatter => Global.GetNfi();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GMLWriter"/> class.
+        /// </summary>
         public GMLWriter()
+            : this(GMLVersion.Two) // backwards compatibility.
         {
         }
 
-        public GMLWriter(GMLVersion version)
+        internal GMLWriter(GMLVersion gmlVersion)
         {
-            Version = version;
+            switch (gmlVersion)
+            {
+                case GMLVersion.Two:
+                case GMLVersion.Three:
+                    _gmlVersion = gmlVersion;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(gmlVersion), gmlVersion, "Only version 2 and 3");
+            }
         }
 
         /// <summary>
@@ -107,6 +120,7 @@ namespace NetTopologySuite.IO.GML2
         /// <param name="writer"></param>
         protected void WriteCoordinates(Coordinate[] coordinates, XmlWriter writer)
         {
+            // TODO: use of "coordinates" is deprecated in GML3.
             writer.WriteStartElement(GMLElements.gmlPrefix, "coordinates", GMLElements.gmlNS);
             var elements = new List<string>(coordinates.Length);
             foreach (var coordinate in coordinates)
@@ -184,12 +198,12 @@ namespace NetTopologySuite.IO.GML2
         protected void Write(Polygon polygon, XmlWriter writer)
         {
             writer.WriteStartElement(GMLElements.gmlPrefix, "Polygon", GMLElements.gmlNS);
-            writer.WriteStartElement(Version == GMLVersion.Two ? "outerBoundaryIs" : "exterior", GMLElements.gmlNS);
+            writer.WriteStartElement(_gmlVersion == GMLVersion.Two ? "outerBoundaryIs" : "exterior", GMLElements.gmlNS);
             Write(polygon.ExteriorRing as LinearRing, writer);
             writer.WriteEndElement();
             for (int i = 0; i < polygon.NumInteriorRings; i++)
             {
-                writer.WriteStartElement(Version == GMLVersion.Two ? "innerBoundaryIs" : "exterior", GMLElements.gmlNS);
+                writer.WriteStartElement(_gmlVersion == GMLVersion.Two ? "innerBoundaryIs" : "interior", GMLElements.gmlNS);
                 Write(polygon.InteriorRings[i] as LinearRing, writer);
                 writer.WriteEndElement();
             }
