@@ -1,10 +1,10 @@
-﻿using NetTopologySuite.Geometries;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Linemerge;
 using NetTopologySuite.Triangulate;
 using NetTopologySuite.Triangulate.QuadEdge;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 
 namespace NetTopologySuite.Hull
 {
