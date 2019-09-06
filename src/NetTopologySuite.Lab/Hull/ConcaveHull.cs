@@ -1,8 +1,9 @@
 ﻿using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Linemerge;
 using NetTopologySuite.Triangulate;
 using NetTopologySuite.Triangulate.QuadEdge;
-using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace NetTopologySuite.Hull
@@ -45,76 +46,90 @@ namespace NetTopologySuite.Hull
         private Geometry ComputeHull(IList<QuadEdgeTriangle> tris)
         {
             var quadEdgeTriangleList = new SortedList<QuadEdge, QuadEdgeTriangle>(new QuadEdgeComparer());
-            double maxEdgeLength = double.NegativeInfinity;
             foreach (var triangle in tris)
             {
-                maxEdgeLength = CheckMaxEdgeAndListBorderTriangles(quadEdgeTriangleList, maxEdgeLength, triangle);
+                CheckMaxEdgeAndListBorderTriangles(quadEdgeTriangleList, triangle);
             }
 
-            foreach (var triangle in quadEdgeTriangleList)
+            while (quadEdgeTriangleList.Count != 0)
             {
-                if (_tolerance.CompareTo(maxEdgeLength) <= 0)
-                {
-                    break;
-                }
+                var triangle = quadEdgeTriangleList.Last();
                 var edge = triangle.Key;
-                if (edge.Length == maxEdgeLength)
+                Debug.WriteLine(triangle.Value);
+                quadEdgeTriangleList.Remove(edge);
+                if (edge.Length.CompareTo(_tolerance) >= 0 && RemovalGivesRegularPolygon(triangle.Value))
                 {
                     var neighbours = triangle.Value.GetNeighbours();
                     triangle.Value.Kill();
-                    quadEdgeTriangleList.Remove(edge);
-                    maxEdgeLength = quadEdgeTriangleList.Keys.Last().Length;
                     foreach (var neighbour in from n in neighbours
-                                              where n != null
+                                              where n != null && n.IsLive()
                                               select n)
                     {
-                        maxEdgeLength = CheckMaxEdgeAndListBorderTriangles(quadEdgeTriangleList, maxEdgeLength, triangle.Value);
+                        Debug.WriteLine(neighbour);
+                        CheckMaxEdgeAndListBorderTriangles(quadEdgeTriangleList, neighbour);
                     }
                 }
             }
-            Geometry geometry = null;
-            if (quadEdgeTriangleList.Count == 0)
+            var lineMerger = new LineMerger();
+            var fact = new GeometryFactory();
+            foreach (var triangle in tris)
             {
-                throw new NotImplementedException("Simple geometry generate convexhull");
-            }
-            else
-            {
-                //Generate from edges
-                geometry = QuadEdgeTriangle.ToPolygon(quadEdgeTriangleList.Keys.ToArray());
-            }
-            return geometry;
-        }
-
-        private static double CheckMaxEdgeAndListBorderTriangles(SortedList<QuadEdge, QuadEdgeTriangle> quadEdgeTriangleStack, double maxEdgeLength, QuadEdgeTriangle triangle)
-        {
-            int neighbourCount = 0;
-            var neighbours = triangle.GetNeighbours();
-            for (int i = 0; i < 3; i++)
-            {
-                if (neighbours[i] != null)
+                if (!triangle.IsLive()) continue;
+                for (int i = 0; i < 3; i++)
                 {
-                    neighbourCount++;
+                    if (triangle.GetAdjacentTriangleAcrossEdge(i) == null || !triangle.GetAdjacentTriangleAcrossEdge(i).IsLive())
+                    {
+                        lineMerger.Add(triangle.GetEdge(i).ToLineSegment().ToGeometry(fact));
+                    }
                 }
             }
-            if (neighbourCount == 2)
+            var mergedLine = (LineString)lineMerger.GetMergedLineStrings().FirstOrDefault();
+            if (mergedLine.IsRing)
+            {
+                var lr = new LinearRing(mergedLine.CoordinateSequence, fact);
+
+                var concaveHull = new Polygon(lr, null, fact);
+
+                return concaveHull;
+            }
+            return mergedLine;
+        }
+
+
+
+        private void CheckMaxEdgeAndListBorderTriangles(SortedList<QuadEdge, QuadEdgeTriangle> quadEdgeTriangleList, QuadEdgeTriangle triangle)
+        {
+            bool canBeRemoved = RemovalGivesRegularPolygon(triangle);
+            if (canBeRemoved)
             {
                 for (int i = 0; i < 3; i++)
                 {
                     if (triangle.GetAdjacentTriangleAcrossEdge(i) == null)
                     {
                         var edge = triangle.GetEdge(i);
-                        if (!(edge.Length < maxEdgeLength))
+                        if (!quadEdgeTriangleList.ContainsKey(edge))
                         {
-                            maxEdgeLength = edge.Length;
-                        }
-                        if (!quadEdgeTriangleStack.ContainsValue(triangle))
-                        {
-                            quadEdgeTriangleStack.Add(edge, triangle);
+                            Debug.WriteLine($"edge: {edge} index: {i} triangle: {triangle}");
+                            quadEdgeTriangleList.Add(edge, triangle);
                         }
                     }
                 }
             }
-            return maxEdgeLength;
+        }
+
+        private static bool RemovalGivesRegularPolygon(QuadEdgeTriangle triangle)
+        {
+            int neighbourCount = 0;
+            var neighbours = triangle.GetNeighbours();
+            for (int i = 0; i < 3; i++)
+            {
+                if (neighbours[i] != null && neighbours[i].IsLive())
+                {
+                    neighbourCount++;
+                }
+            }
+            bool canBeRemoved = neighbourCount == 2;
+            return canBeRemoved;
         }
 
         private QuadEdgeSubdivision BuildDelaunay()

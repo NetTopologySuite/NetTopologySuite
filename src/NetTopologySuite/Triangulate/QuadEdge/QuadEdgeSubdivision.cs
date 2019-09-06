@@ -823,7 +823,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public MultiLineString GetEdges(GeometryFactory geomFact)
         {
             var quadEdges = GetPrimaryEdges(false);
-            LineString[] edges = new LineString[quadEdges.Count];
+            var edges = new LineString[quadEdges.Count];
             int i = 0;
             foreach (var qe in quadEdges)
             {
@@ -842,7 +842,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         public GeometryCollection GetTriangles(GeometryFactory geomFact)
         {
             var triPtsList = GetTriangleCoordinates(false);
-            Polygon[] tris = new Polygon[triPtsList.Count];
+            var tris = new Polygon[triPtsList.Count];
             int i = 0;
             foreach (var triPt in triPtsList)
             {
