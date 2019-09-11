@@ -10,6 +10,7 @@ script:
   - dotnet test  -c Release --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'
   - dotnet pack  -c Release --no-build -p:NoWarn=NU5105
 
+install: travis_wait mvn install
 
 deploy:
 
