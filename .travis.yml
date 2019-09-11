@@ -2,7 +2,7 @@ language: csharp
 mono: none
 sudo: false
 dotnet: 2.2
-dist: xenial
+dist: bionic
 
 
 script:
