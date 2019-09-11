@@ -17,12 +17,14 @@ namespace NetTopologySuite.Tests.NUnit.Hull
                 );
         }
 
-        [Test, Ignore("Not verified test case.")]
+        [Test(
+            Author ="Jeroen Bloemscheer",
+            Description ="Test found on turf.js website uses angular degrees for measure")]
         public void TestTurf()
         {
             CheckHull(
                 "LINESTRING (-63.601226 44.642643, -63.591442 44.651436, -63.580799 44.648749, -63.573589 44.641788, -63.587665 44.64533, -63.595218 44.64765)",
-                0.0001,
+                0.0145,
                 "POLYGON ((-63.601226 44.642643, -63.587665 44.64533, -63.573589 44.641788, -63.580799 44.648749, -63.591442 44.651436, -63.601226 44.642643))"
                 );
         }
