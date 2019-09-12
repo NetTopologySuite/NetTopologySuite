@@ -7,7 +7,7 @@ dist: bionic
 
 script:
   - dotnet build -c Release -v minimal -p:WarningLevel=3
-  - travis_wait dotnet test  -c Release --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'
+  - dotnet test  -c Release --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'
   - dotnet pack  -c Release --no-build -p:NoWarn=NU5105
 
 
