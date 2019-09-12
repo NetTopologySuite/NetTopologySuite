@@ -7,7 +7,10 @@ dist: bionic
 
 script:
   - dotnet build -c Release -v minimal -p:WarningLevel=3
-  - dotnet test  -c Release --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'
+  # travis_wait here is a hack.  for some reason, tests freeze up when run for PR builds.
+  # even weirder, adding travis_wait makes it all finish in under 3 minutes, even though
+  # the only observable impact of travis_wait is supposed to be a longer timeout period.
+  - travis_wait dotnet test -c Release --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'
   - dotnet pack  -c Release --no-build -p:NoWarn=NU5105
 
 
