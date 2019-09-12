@@ -15,6 +15,12 @@ namespace NetTopologySuite.Tests.NUnit
         private static WKTReader reader = new WKTReader(geometryFactory);
 
         [Test]
+        public void TestFailuresShouldResultInBuildFailures()
+        {
+            Assert.Fail();
+        }
+
+        [Test]
         public void TestEnvelopeCloned()
         {
             var a = reader.Read("LINESTRING(0 0, 10 10)");

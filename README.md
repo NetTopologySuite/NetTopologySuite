@@ -1,3 +1,5 @@
+If you can read this, then I merged something I shouldn't have merged.
+
 [![Build Status](https://travis-ci.org/NetTopologySuite/NetTopologySuite.svg?branch=master)](https://travis-ci.org/NetTopologySuite/NetTopologySuite)
 NetTopologySuite
 ================
