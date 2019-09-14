@@ -26058,19 +26058,6 @@ references:
   commentId: T:NetTopologySuite.IO.GML2.GMLWriter
   fullName: NetTopologySuite.IO.GML2.GMLWriter
   nameWithType: GMLWriter
-- uid: NetTopologySuite.IO.GML2.GMLWriter.#ctor
-  name: GMLWriter()
-  href: api/NetTopologySuite.IO.GML2.GMLWriter.html#NetTopologySuite_IO_GML2_GMLWriter__ctor
-  commentId: M:NetTopologySuite.IO.GML2.GMLWriter.#ctor
-  fullName: NetTopologySuite.IO.GML2.GMLWriter.GMLWriter()
-  nameWithType: GMLWriter.GMLWriter()
-- uid: NetTopologySuite.IO.GML2.GMLWriter.#ctor*
-  name: GMLWriter
-  href: api/NetTopologySuite.IO.GML2.GMLWriter.html#NetTopologySuite_IO_GML2_GMLWriter__ctor_
-  commentId: Overload:NetTopologySuite.IO.GML2.GMLWriter.#ctor
-  isSpec: "True"
-  fullName: NetTopologySuite.IO.GML2.GMLWriter.GMLWriter
-  nameWithType: GMLWriter.GMLWriter
 - uid: NetTopologySuite.IO.GML2.GMLWriter.NumberFormatter
   name: NumberFormatter
   href: api/NetTopologySuite.IO.GML2.GMLWriter.html#NetTopologySuite_IO_GML2_GMLWriter_NumberFormatter
