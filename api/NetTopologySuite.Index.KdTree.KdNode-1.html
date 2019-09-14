@@ -1,0 +1,520 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class KdNode&lt;T&gt;
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class KdNode&lt;T&gt;
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Index.KdTree.KdNode`1">
+  
+  
+  <h1 id="NetTopologySuite_Index_KdTree_KdNode_1" data-uid="NetTopologySuite.Index.KdTree.KdNode`1" class="text-break">Class KdNode&lt;T&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>A node of a <a class="xref" href="NetTopologySuite.Index.KdTree.KdTree-1.html">KdTree&lt;T&gt;</a>, which represents one or more points in the same location.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">KdNode&lt;T&gt;</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Index.KdTree.html">NetTopologySuite.Index.KdTree</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Index_KdTree_KdNode_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class KdNode&lt;T&gt;
+    where T : class</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type of the object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdNode_1__ctor_NetTopologySuite_Geometries_Coordinate__0_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdNode%601.%23ctor(NetTopologySuite.Geometries.Coordinate%2C%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/KdTree/KdNode.cs/#L38">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_KdTree_KdNode_1__ctor_" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.#ctor*"></a>
+  <h4 id="NetTopologySuite_Index_KdTree_KdNode_1__ctor_NetTopologySuite_Geometries_Coordinate__0_" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.#ctor(NetTopologySuite.Geometries.Coordinate,`0)">KdNode(Coordinate, T)</h4>
+  <div class="markdown level1 summary"><p>Creates a new KdNode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public KdNode(Coordinate p, T data)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">p</span></td>
+        <td><p>The point location of new node</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">data</span></td>
+        <td><p>A data objects to associate with this node</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdNode_1__ctor_System_Double_System_Double__0_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdNode%601.%23ctor(System.Double%2CSystem.Double%2C%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/KdTree/KdNode.cs/#L24">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_KdTree_KdNode_1__ctor_" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.#ctor*"></a>
+  <h4 id="NetTopologySuite_Index_KdTree_KdNode_1__ctor_System_Double_System_Double__0_" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.#ctor(System.Double,System.Double,`0)">KdNode(Double, Double, T)</h4>
+  <div class="markdown level1 summary"><p>Creates a new KdNode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public KdNode(double x, double y, T data)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">x</span></td>
+        <td><p>coordinate of point</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">y</span></td>
+        <td><p>coordinate of point</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">data</span></td>
+        <td><p>A data objects to associate with this node</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdNode_1_Coordinate.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdNode%601.Coordinate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/KdTree/KdNode.cs/#L60">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_KdTree_KdNode_1_Coordinate_" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.Coordinate*"></a>
+  <h4 id="NetTopologySuite_Index_KdTree_KdNode_1_Coordinate" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.Coordinate">Coordinate</h4>
+  <div class="markdown level1 summary"><p>Gets the location of this node</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Coordinate Coordinate { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdNode_1_Count.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdNode%601.Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/KdTree/KdNode.cs/#L86">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_KdTree_KdNode_1_Count_" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.Count*"></a>
+  <h4 id="NetTopologySuite_Index_KdTree_KdNode_1_Count" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.Count">Count</h4>
+  <div class="markdown level1 summary"><p>Gets the number of inserted points that are coincident at this location.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdNode_1_Data.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdNode%601.Data%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/KdTree/KdNode.cs/#L65">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_KdTree_KdNode_1_Data_" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.Data*"></a>
+  <h4 id="NetTopologySuite_Index_KdTree_KdNode_1_Data" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.Data">Data</h4>
+  <div class="markdown level1 summary"><p>Gets the user data object associated with this node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public T Data { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdNode_1_IsRepeated.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdNode%601.IsRepeated%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/KdTree/KdNode.cs/#L92">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_KdTree_KdNode_1_IsRepeated_" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.IsRepeated*"></a>
+  <h4 id="NetTopologySuite_Index_KdTree_KdNode_1_IsRepeated" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.IsRepeated">IsRepeated</h4>
+  <div class="markdown level1 summary"><p>Gets whether more than one point with this value have been inserted (up to the tolerance)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsRepeated { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdNode_1_Left.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdNode%601.Left%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/KdTree/KdNode.cs/#L70">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_KdTree_KdNode_1_Left_" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.Left*"></a>
+  <h4 id="NetTopologySuite_Index_KdTree_KdNode_1_Left" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.Left">Left</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the left node of the tree</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public KdNode&lt;T&gt; Left { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Index.KdTree.KdNode-1.html">KdNode</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdNode_1_Right.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdNode%601.Right%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/KdTree/KdNode.cs/#L75">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_KdTree_KdNode_1_Right_" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.Right*"></a>
+  <h4 id="NetTopologySuite_Index_KdTree_KdNode_1_Right" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.Right">Right</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the right node of the tree</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public KdNode&lt;T&gt; Right { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Index.KdTree.KdNode-1.html">KdNode</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdNode_1_X.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdNode%601.X%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/KdTree/KdNode.cs/#L50">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_KdTree_KdNode_1_X_" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.X*"></a>
+  <h4 id="NetTopologySuite_Index_KdTree_KdNode_1_X" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.X">X</h4>
+  <div class="markdown level1 summary"><p>Gets x-ordinate of this node</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double X { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdNode_1_Y.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdNode%601.Y%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/KdTree/KdNode.cs/#L55">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_KdTree_KdNode_1_Y_" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.Y*"></a>
+  <h4 id="NetTopologySuite_Index_KdTree_KdNode_1_Y" data-uid="NetTopologySuite.Index.KdTree.KdNode`1.Y">Y</h4>
+  <div class="markdown level1 summary"><p>Gets y-ordinate of this node</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Y { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_KdTree_KdNode_1.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.KdTree.KdNode%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/KdTree/KdNode.cs/#L10" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

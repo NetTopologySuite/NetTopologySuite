@@ -1,0 +1,712 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class CoordinateZ
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class CoordinateZ
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Geometries.CoordinateZ">
+  
+  
+  <h1 id="NetTopologySuite_Geometries_CoordinateZ" data-uid="NetTopologySuite.Geometries.CoordinateZ" class="text-break">Class CoordinateZ
+  </h1>
+  <div class="markdown level0 summary"><p>A lightweight class used to store coordinates on the 2-dimensional Cartesian plane
+and an additional z-ordinate (<a class="xref" href="NetTopologySuite.Geometries.CoordinateZ.html#NetTopologySuite_Geometries_CoordinateZ_Z">Z</a>) value.</p>
+<p>
+This base data object is suitable for use with coordinate sequences with
+<code>dimension</code> = 3 and <code>measures</code> = 0.
+</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></div>
+    <div class="level2"><span class="xref">CoordinateZ</span></div>
+      <div class="level3"><a class="xref" href="NetTopologySuite.Geometries.CoordinateZM.html">CoordinateZM</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable">IComparable</a></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_NullOrdinate">Coordinate.NullOrdinate</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_X">Coordinate.X</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_Y">Coordinate.Y</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_M">Coordinate.M</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_Item_NetTopologySuite_Geometries_Ordinate_">Coordinate.Item[Ordinate]</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_Equals2D_NetTopologySuite_Geometries_Coordinate_">Coordinate.Equals2D(Coordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_Equals2D_NetTopologySuite_Geometries_Coordinate_System_Double_">Coordinate.Equals2D(Coordinate, Double)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_EqualsWithTolerance_System_Double_System_Double_System_Double_">Coordinate.EqualsWithTolerance(Double, Double, Double)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_Equals_NetTopologySuite_Geometries_Coordinate_">Coordinate.Equals(Coordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_CompareTo_System_Object_">Coordinate.CompareTo(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_CompareTo_NetTopologySuite_Geometries_Coordinate_">Coordinate.CompareTo(Coordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_Copy">Coordinate.Copy()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_Distance_NetTopologySuite_Geometries_Coordinate_">Coordinate.Distance(Coordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_Equals_System_Object_">Coordinate.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_GetHashCode">Coordinate.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.html">NetTopologySuite.Geometries</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Geometries_CoordinateZ_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Serializable]
+public class CoordinateZ : Coordinate, IComparable, IComparable&lt;Coordinate&gt;</code></pre>
+  </div>
+  <h5 id="NetTopologySuite_Geometries_CoordinateZ_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>It is distinct from <a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a>, which is a subclass of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.
+Unlike objects of type <a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a> (which contain additional
+information such as an envelope, a precision model, and spatial reference
+system information), a <code>CoordinateZ</code> only contains ordinate values
+and properties.</p>
+<p>
+<code>CoordinateZ</code>s are two-dimensional points, with an additional Z-ordinate.    
+If an Z-ordinate value is not specified or not defined,
+constructed coordinates have a Z-ordinate of <pre><code>NaN</code></pre>
+(which is also the value of <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_NullOrdinate">NullOrdinate</a>).
+<p>
+Apart from the basic accessor functions, NTS supports
+only specific operations involving the Z-ordinate.
+<p>
+Implementations may optionally support Z-ordinate and M-measure values
+as appropriate for a <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>. Use of <a class="xref" href="NetTopologySuite.Geometries.CoordinateZ.html#NetTopologySuite_Geometries_CoordinateZ_Z">Z</a>
+and <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_M">M</a> setters or <span class="xref">NetTopologySuite.Geometries.CoordinateZ.this[int]</span> indexer are recommended.
+</div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateZ__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateZ.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/CoordinateZ.cs/#L55">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_CoordinateZ__ctor_" data-uid="NetTopologySuite.Geometries.CoordinateZ.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_CoordinateZ__ctor" data-uid="NetTopologySuite.Geometries.CoordinateZ.#ctor">CoordinateZ()</h4>
+  <div class="markdown level1 summary"><p>Constructs a <code>CoordinateZ</code> at (0,0,NaN).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CoordinateZ()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateZ__ctor_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateZ.%23ctor(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/CoordinateZ.cs/#L62">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_CoordinateZ__ctor_" data-uid="NetTopologySuite.Geometries.CoordinateZ.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_CoordinateZ__ctor_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Geometries.CoordinateZ.#ctor(NetTopologySuite.Geometries.Coordinate)">CoordinateZ(Coordinate)</h4>
+  <div class="markdown level1 summary"><p>Constructs a <code>CoordinateZ</code> having the same (x,y) values as
+<code data-dev-comment-type="paramref" class="paramref">c</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CoordinateZ(Coordinate c)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">c</span></td>
+        <td><p><code>Coordinate</code> to copy.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateZ__ctor_System_Double_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateZ.%23ctor(System.Double%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/CoordinateZ.cs/#L69">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_CoordinateZ__ctor_" data-uid="NetTopologySuite.Geometries.CoordinateZ.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_CoordinateZ__ctor_System_Double_System_Double_" data-uid="NetTopologySuite.Geometries.CoordinateZ.#ctor(System.Double,System.Double)">CoordinateZ(Double, Double)</h4>
+  <div class="markdown level1 summary"><p>Constructs a <code>CoordinateZ</code> at (x,y,NaN).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CoordinateZ(double x, double y)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">x</span></td>
+        <td><p>X value.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">y</span></td>
+        <td><p>Y value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateZ__ctor_System_Double_System_Double_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateZ.%23ctor(System.Double%2CSystem.Double%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/CoordinateZ.cs/#L47">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_CoordinateZ__ctor_" data-uid="NetTopologySuite.Geometries.CoordinateZ.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_CoordinateZ__ctor_System_Double_System_Double_System_Double_" data-uid="NetTopologySuite.Geometries.CoordinateZ.#ctor(System.Double,System.Double,System.Double)">CoordinateZ(Double, Double, Double)</h4>
+  <div class="markdown level1 summary"><p>Constructs a <code>CoordinateZ</code> at (x,y,z).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CoordinateZ(double x, double y, double z)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">x</span></td>
+        <td><p>The X value</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">y</span></td>
+        <td><p>The Y value</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">z</span></td>
+        <td><p>The Z value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateZ_CoordinateValue.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateZ.CoordinateValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/CoordinateZ.cs/#L116">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_CoordinateZ_CoordinateValue_" data-uid="NetTopologySuite.Geometries.CoordinateZ.CoordinateValue*"></a>
+  <h4 id="NetTopologySuite_Geometries_CoordinateZ_CoordinateValue" data-uid="NetTopologySuite.Geometries.CoordinateZ.CoordinateValue">CoordinateValue</h4>
+  <div class="markdown level1 summary"><p>Gets/Sets <code>CoordinateZ</code>s (x,y,z) values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Coordinate CoordinateValue { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_CoordinateValue">Coordinate.CoordinateValue</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateZ_Item_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateZ.Item(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/CoordinateZ.cs/#L80">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_CoordinateZ_Item_" data-uid="NetTopologySuite.Geometries.CoordinateZ.Item*"></a>
+  <h4 id="NetTopologySuite_Geometries_CoordinateZ_Item_System_Int32_" data-uid="NetTopologySuite.Geometries.CoordinateZ.Item(System.Int32)">Item[Int32]</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the ordinate value for the given index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override double this[int ordinateIndex] { get; set; }</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">ordinateIndex</span></td>
+        <td><p>The ordinate index</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><p>The ordinate value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_Item_System_Int32_">Coordinate.Item[Int32]</a></div>
+  <h5 id="NetTopologySuite_Geometries_CoordinateZ_Item_System_Int32__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The base implementation supports 0 (X), 1 (Y) and 2 (Z) as values for the index.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown if <code data-dev-comment-type="paramref" class="paramref">ordinateIndex</code> is not in the valid range.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateZ_Z.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateZ.Z%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/CoordinateZ.cs/#L39">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_CoordinateZ_Z_" data-uid="NetTopologySuite.Geometries.CoordinateZ.Z*"></a>
+  <h4 id="NetTopologySuite_Geometries_CoordinateZ_Z" data-uid="NetTopologySuite.Geometries.CoordinateZ.Z">Z</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the Z-ordinate value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override sealed double Z { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_Z">Coordinate.Z</a></div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateZ_Distance3D_NetTopologySuite_Geometries_CoordinateZ_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateZ.Distance3D(NetTopologySuite.Geometries.CoordinateZ)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/CoordinateZ.cs/#L175">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_CoordinateZ_Distance3D_" data-uid="NetTopologySuite.Geometries.CoordinateZ.Distance3D*"></a>
+  <h4 id="NetTopologySuite_Geometries_CoordinateZ_Distance3D_NetTopologySuite_Geometries_CoordinateZ_" data-uid="NetTopologySuite.Geometries.CoordinateZ.Distance3D(NetTopologySuite.Geometries.CoordinateZ)">Distance3D(CoordinateZ)</h4>
+  <div class="markdown level1 summary"><p>Computes the 3-dimensional Euclidean distance to another location.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Distance3D(CoordinateZ c)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateZ.html">CoordinateZ</a></td>
+        <td><span class="parametername">c</span></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.CoordinateZ.html">CoordinateZ</a> with which to do the distance comparison.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><p>the 3-dimensional Euclidean distance between the locations.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateZ_EqualInZ_NetTopologySuite_Geometries_CoordinateZ_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateZ.EqualInZ(NetTopologySuite.Geometries.CoordinateZ%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/CoordinateZ.cs/#L148">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_CoordinateZ_EqualInZ_" data-uid="NetTopologySuite.Geometries.CoordinateZ.EqualInZ*"></a>
+  <h4 id="NetTopologySuite_Geometries_CoordinateZ_EqualInZ_NetTopologySuite_Geometries_CoordinateZ_System_Double_" data-uid="NetTopologySuite.Geometries.CoordinateZ.EqualInZ(NetTopologySuite.Geometries.CoordinateZ,System.Double)">EqualInZ(CoordinateZ, Double)</h4>
+  <div class="markdown level1 summary"><p>Tests if another CoordinateZ has the same value for Z, within a tolerance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EqualInZ(CoordinateZ c, double tolerance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateZ.html">CoordinateZ</a></td>
+        <td><span class="parametername">c</span></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.CoordinateZ.html">CoordinateZ</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">tolerance</span></td>
+        <td><p>The tolerance value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the Z ordinates are within the given tolerance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateZ_Equals3D_NetTopologySuite_Geometries_CoordinateZ_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateZ.Equals3D(NetTopologySuite.Geometries.CoordinateZ)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/CoordinateZ.cs/#L136">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_CoordinateZ_Equals3D_" data-uid="NetTopologySuite.Geometries.CoordinateZ.Equals3D*"></a>
+  <h4 id="NetTopologySuite_Geometries_CoordinateZ_Equals3D_NetTopologySuite_Geometries_CoordinateZ_" data-uid="NetTopologySuite.Geometries.CoordinateZ.Equals3D(NetTopologySuite.Geometries.CoordinateZ)">Equals3D(CoordinateZ)</h4>
+  <div class="markdown level1 summary"><p>Returns <code>true</code> if <code data-dev-comment-type="paramref" class="paramref">other</code>
+has the same values for X, Y and Z.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals3D(CoordinateZ other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateZ.html">CoordinateZ</a></td>
+        <td><span class="parametername">other</span></td>
+        <td><p>A <a class="xref" href="NetTopologySuite.Geometries.CoordinateZ.html">CoordinateZ</a> with which to do the 3D comparison.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if <code data-dev-comment-type="paramref" class="paramref">other</code> is a <a class="xref" href="NetTopologySuite.Geometries.CoordinateZ.html">CoordinateZ</a>
+with the same values for X, Y and Z.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateZ_ToString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateZ.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/CoordinateZ.cs/#L157">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_CoordinateZ_ToString_" data-uid="NetTopologySuite.Geometries.CoordinateZ.ToString*"></a>
+  <h4 id="NetTopologySuite_Geometries_CoordinateZ_ToString" data-uid="NetTopologySuite.Geometries.CoordinateZ.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Returns a <code>string</code> of the form <em>(x, y, z)</em> .</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p><code>string</code> of the form <em>(x, y, z)</em></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html#NetTopologySuite_Geometries_Coordinate_ToString">Coordinate.ToString()</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable">System.IComparable</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">System.IComparable&lt;T&gt;</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateZ.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateZ%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/CoordinateZ.cs/#L32" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

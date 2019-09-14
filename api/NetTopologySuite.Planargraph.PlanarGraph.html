@@ -1,0 +1,705 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class PlanarGraph
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class PlanarGraph
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Planargraph.PlanarGraph">
+  
+  
+  <h1 id="NetTopologySuite_Planargraph_PlanarGraph" data-uid="NetTopologySuite.Planargraph.PlanarGraph" class="text-break">Class PlanarGraph
+  </h1>
+  <div class="markdown level0 summary"><p>Represents a directed graph which is embeddable in a planar surface.
+This class and the other classes in this package serve as a framework for
+building planar graphs for specific algorithms. This class must be
+subclassed to expose appropriate methods to construct the graph. This allows
+controlling the types of graph components ({DirectedEdge}s,
+<code>Edge</code>s and <code>Node</code>s) which can be added to the graph. An
+application which uses the graph framework will almost always provide
+subclasses for one or more graph components, which hold application-specific
+data and graph algorithms.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">PlanarGraph</span></div>
+      <div class="level2"><a class="xref" href="NetTopologySuite.Operation.Linemerge.LineMergeGraph.html">LineMergeGraph</a></div>
+      <div class="level2"><a class="xref" href="NetTopologySuite.Operation.Polygonize.PolygonizeGraph.html">PolygonizeGraph</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Planargraph.html">NetTopologySuite.Planargraph</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Planargraph_PlanarGraph_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class PlanarGraph</code></pre>
+  </div>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Planargraph_PlanarGraph_dirEdges.md&amp;value=---%0Auid%3A%20NetTopologySuite.Planargraph.PlanarGraph.dirEdges%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Planargraph/PlanarGraph.cs/#L27">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_Planargraph_PlanarGraph_dirEdges" data-uid="NetTopologySuite.Planargraph.PlanarGraph.dirEdges">dirEdges</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IList&lt;DirectedEdge&gt; dirEdges</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="NetTopologySuite.Planargraph.DirectedEdge.html">DirectedEdge</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Planargraph_PlanarGraph_nodeMap.md&amp;value=---%0Auid%3A%20NetTopologySuite.Planargraph.PlanarGraph.nodeMap%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Planargraph/PlanarGraph.cs/#L32">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_Planargraph_PlanarGraph_nodeMap" data-uid="NetTopologySuite.Planargraph.PlanarGraph.nodeMap">nodeMap</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected NodeMap nodeMap</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Planargraph.NodeMap.html">NodeMap</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Planargraph_PlanarGraph_Edges.md&amp;value=---%0Auid%3A%20NetTopologySuite.Planargraph.PlanarGraph.Edges%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Planargraph/PlanarGraph.cs/#L117">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Planargraph_PlanarGraph_Edges_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.Edges*"></a>
+  <h4 id="NetTopologySuite_Planargraph_PlanarGraph_Edges" data-uid="NetTopologySuite.Planargraph.PlanarGraph.Edges">Edges</h4>
+  <div class="markdown level1 summary"><p>Returns the Edges that have been added to this PlanarGraph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IList&lt;Edge&gt; Edges { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="NetTopologySuite.Planargraph.Edge.html">Edge</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Planargraph_PlanarGraph_Nodes.md&amp;value=---%0Auid%3A%20NetTopologySuite.Planargraph.PlanarGraph.Nodes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Planargraph/PlanarGraph.cs/#L92">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Planargraph_PlanarGraph_Nodes_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.Nodes*"></a>
+  <h4 id="NetTopologySuite_Planargraph_PlanarGraph_Nodes" data-uid="NetTopologySuite.Planargraph.PlanarGraph.Nodes">Nodes</h4>
+  <div class="markdown level1 summary"><p>Returns the Nodes in this PlanarGraph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ICollection&lt;Node&gt; Nodes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="NetTopologySuite.Planargraph.Node.html">Node</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Planargraph_PlanarGraph_Add_NetTopologySuite_Planargraph_DirectedEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Planargraph.PlanarGraph.Add(NetTopologySuite.Planargraph.DirectedEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Planargraph/PlanarGraph.cs/#L75">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Planargraph_PlanarGraph_Add_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.Add*"></a>
+  <h4 id="NetTopologySuite_Planargraph_PlanarGraph_Add_NetTopologySuite_Planargraph_DirectedEdge_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.Add(NetTopologySuite.Planargraph.DirectedEdge)">Add(DirectedEdge)</h4>
+  <div class="markdown level1 summary"><p>Adds the Edge to this PlanarGraph; only subclasses can add DirectedEdges,
+to ensure the edges added are of the right class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void Add(DirectedEdge dirEdge)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Planargraph.DirectedEdge.html">DirectedEdge</a></td>
+        <td><span class="parametername">dirEdge</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Planargraph_PlanarGraph_Add_NetTopologySuite_Planargraph_Edge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Planargraph.PlanarGraph.Add(NetTopologySuite.Planargraph.Edge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Planargraph/PlanarGraph.cs/#L63">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Planargraph_PlanarGraph_Add_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.Add*"></a>
+  <h4 id="NetTopologySuite_Planargraph_PlanarGraph_Add_NetTopologySuite_Planargraph_Edge_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.Add(NetTopologySuite.Planargraph.Edge)">Add(Edge)</h4>
+  <div class="markdown level1 summary"><p>Adds the Edge and its DirectedEdges with this PlanarGraph.
+Assumes that the Edge has already been created with its associated DirectEdges.
+Only subclasses can add Edges, to ensure the edges added are of the right class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void Add(Edge edge)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Planargraph.Edge.html">Edge</a></td>
+        <td><span class="parametername">edge</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Planargraph_PlanarGraph_Add_NetTopologySuite_Planargraph_Node_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Planargraph.PlanarGraph.Add(NetTopologySuite.Planargraph.Node)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Planargraph/PlanarGraph.cs/#L52">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Planargraph_PlanarGraph_Add_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.Add*"></a>
+  <h4 id="NetTopologySuite_Planargraph_PlanarGraph_Add_NetTopologySuite_Planargraph_Node_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.Add(NetTopologySuite.Planargraph.Node)">Add(Node)</h4>
+  <div class="markdown level1 summary"><p>Adds a node to the map, replacing any that is already at that location.
+Only subclasses can add Nodes, to ensure Nodes are of the right type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void Add(Node node)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Planargraph.Node.html">Node</a></td>
+        <td><span class="parametername">node</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Planargraph_PlanarGraph_FindNode_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Planargraph.PlanarGraph.FindNode(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Planargraph/PlanarGraph.cs/#L41">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Planargraph_PlanarGraph_FindNode_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.FindNode*"></a>
+  <h4 id="NetTopologySuite_Planargraph_PlanarGraph_FindNode_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.FindNode(NetTopologySuite.Geometries.Coordinate)">FindNode(Coordinate)</h4>
+  <div class="markdown level1 summary"><p>Returns the <a class="xref" href="NetTopologySuite.Planargraph.Node.html">Node</a> at the given <code data-dev-comment-type="paramref" class="paramref">pt</code>, or <returns>null</returns> if no <a class="xref" href="NetTopologySuite.Planargraph.Node.html">Node</a> was there.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Node FindNode(Coordinate pt)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">pt</span></td>
+        <td><p>The location</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Planargraph.Node.html">Node</a></td>
+        <td><p>The node found<br>
+or <code>null</code> if this graph contains no node at the location</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Planargraph_PlanarGraph_FindNodesOfDegree_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Planargraph.PlanarGraph.FindNodesOfDegree(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Planargraph/PlanarGraph.cs/#L188">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Planargraph_PlanarGraph_FindNodesOfDegree_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.FindNodesOfDegree*"></a>
+  <h4 id="NetTopologySuite_Planargraph_PlanarGraph_FindNodesOfDegree_System_Int32_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.FindNodesOfDegree(System.Int32)">FindNodesOfDegree(Int32)</h4>
+  <div class="markdown level1 summary"><p>Returns all Nodes with the given number of Edges around it.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IList&lt;Node&gt; FindNodesOfDegree(int degree)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">degree</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="NetTopologySuite.Planargraph.Node.html">Node</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Planargraph_PlanarGraph_GetDirEdgeEnumerator.md&amp;value=---%0Auid%3A%20NetTopologySuite.Planargraph.PlanarGraph.GetDirEdgeEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Planargraph/PlanarGraph.cs/#L99">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Planargraph_PlanarGraph_GetDirEdgeEnumerator_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.GetDirEdgeEnumerator*"></a>
+  <h4 id="NetTopologySuite_Planargraph_PlanarGraph_GetDirEdgeEnumerator" data-uid="NetTopologySuite.Planargraph.PlanarGraph.GetDirEdgeEnumerator">GetDirEdgeEnumerator()</h4>
+  <div class="markdown level1 summary"><p>Returns an Iterator over the DirectedEdges in this PlanarGraph, in the order in which they
+were added.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator&lt;DirectedEdge&gt; GetDirEdgeEnumerator()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<a class="xref" href="NetTopologySuite.Planargraph.DirectedEdge.html">DirectedEdge</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Planargraph_PlanarGraph_GetEdgeEnumerator.md&amp;value=---%0Auid%3A%20NetTopologySuite.Planargraph.PlanarGraph.GetEdgeEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Planargraph/PlanarGraph.cs/#L109">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Planargraph_PlanarGraph_GetEdgeEnumerator_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.GetEdgeEnumerator*"></a>
+  <h4 id="NetTopologySuite_Planargraph_PlanarGraph_GetEdgeEnumerator" data-uid="NetTopologySuite.Planargraph.PlanarGraph.GetEdgeEnumerator">GetEdgeEnumerator()</h4>
+  <div class="markdown level1 summary"><p>Returns an Iterator over the Edges in this PlanarGraph, in the order in which they
+were added.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator&lt;Edge&gt; GetEdgeEnumerator()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<a class="xref" href="NetTopologySuite.Planargraph.Edge.html">Edge</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Planargraph_PlanarGraph_GetNodeEnumerator.md&amp;value=---%0Auid%3A%20NetTopologySuite.Planargraph.PlanarGraph.GetNodeEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Planargraph/PlanarGraph.cs/#L84">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Planargraph_PlanarGraph_GetNodeEnumerator_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.GetNodeEnumerator*"></a>
+  <h4 id="NetTopologySuite_Planargraph_PlanarGraph_GetNodeEnumerator" data-uid="NetTopologySuite.Planargraph.PlanarGraph.GetNodeEnumerator">GetNodeEnumerator()</h4>
+  <div class="markdown level1 summary"><p>Returns an IEnumerator over the Nodes in this PlanarGraph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator&lt;Node&gt; GetNodeEnumerator()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<a class="xref" href="NetTopologySuite.Planargraph.Node.html">Node</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Planargraph_PlanarGraph_Remove_NetTopologySuite_Planargraph_DirectedEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Planargraph.PlanarGraph.Remove(NetTopologySuite.Planargraph.DirectedEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Planargraph/PlanarGraph.cs/#L146">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Planargraph_PlanarGraph_Remove_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.Remove*"></a>
+  <h4 id="NetTopologySuite_Planargraph_PlanarGraph_Remove_NetTopologySuite_Planargraph_DirectedEdge_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.Remove(NetTopologySuite.Planargraph.DirectedEdge)">Remove(DirectedEdge)</h4>
+  <div class="markdown level1 summary"><p>Removes a <a class="xref" href="NetTopologySuite.Planargraph.DirectedEdge.html">DirectedEdge</a> from its from-<a class="xref" href="NetTopologySuite.Planargraph.Node.html">Node</a> and from this PlanarGraph.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Remove(DirectedEdge de)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Planargraph.DirectedEdge.html">DirectedEdge</a></td>
+        <td><span class="parametername">de</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Planargraph_PlanarGraph_Remove_NetTopologySuite_Planargraph_DirectedEdge__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method does not remove the <a class="xref" href="NetTopologySuite.Planargraph.Node.html">Node</a>s associated with the DirectedEdge,
+even if the removal of the DirectedEdge reduces the degree of a Node to zero.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Planargraph_PlanarGraph_Remove_NetTopologySuite_Planargraph_Edge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Planargraph.PlanarGraph.Remove(NetTopologySuite.Planargraph.Edge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Planargraph/PlanarGraph.cs/#L130">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Planargraph_PlanarGraph_Remove_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.Remove*"></a>
+  <h4 id="NetTopologySuite_Planargraph_PlanarGraph_Remove_NetTopologySuite_Planargraph_Edge_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.Remove(NetTopologySuite.Planargraph.Edge)">Remove(Edge)</h4>
+  <div class="markdown level1 summary"><p>Removes an Edge and its associated DirectedEdges from their from-Nodes and
+from this PlanarGraph. Note: This method does not remove the Nodes associated
+with the Edge, even if the removal of the Edge reduces the degree of a
+Node to zero.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Remove(Edge edge)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Planargraph.Edge.html">Edge</a></td>
+        <td><span class="parametername">edge</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Planargraph_PlanarGraph_Remove_NetTopologySuite_Planargraph_Node_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Planargraph.PlanarGraph.Remove(NetTopologySuite.Planargraph.Node)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Planargraph/PlanarGraph.cs/#L161">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Planargraph_PlanarGraph_Remove_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.Remove*"></a>
+  <h4 id="NetTopologySuite_Planargraph_PlanarGraph_Remove_NetTopologySuite_Planargraph_Node_" data-uid="NetTopologySuite.Planargraph.PlanarGraph.Remove(NetTopologySuite.Planargraph.Node)">Remove(Node)</h4>
+  <div class="markdown level1 summary"><p>Removes a node from the graph, along with any associated DirectedEdges and
+Edges.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Remove(Node node)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Planargraph.Node.html">Node</a></td>
+        <td><span class="parametername">node</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Planargraph_PlanarGraph.md&amp;value=---%0Auid%3A%20NetTopologySuite.Planargraph.PlanarGraph%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Planargraph/PlanarGraph.cs/#L17" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

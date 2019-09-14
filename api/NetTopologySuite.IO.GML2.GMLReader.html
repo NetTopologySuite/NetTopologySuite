@@ -1,0 +1,1063 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class GMLReader
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class GMLReader
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.IO.GML2.GMLReader">
+  
+  
+  <h1 id="NetTopologySuite_IO_GML2_GMLReader" data-uid="NetTopologySuite.IO.GML2.GMLReader" class="text-break">Class GMLReader
+  </h1>
+  <div class="markdown level0 summary"><p>Reads a GML document and creates a representation of the features based on NetTopologySuite model.
+Uses GML 2.1.1 <code>Geometry.xsd</code> schema for base for features.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">GMLReader</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.IO.GML2.html">NetTopologySuite.IO.GML2</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_IO_GML2_GMLReader_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class GMLReader</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L27">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader__ctor_" data-uid="NetTopologySuite.IO.GML2.GMLReader.#ctor*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader__ctor" data-uid="NetTopologySuite.IO.GML2.GMLReader.#ctor">GMLReader()</h4>
+  <div class="markdown level1 summary"><p>Initialize reader with a standard <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GMLReader()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader__ctor_NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.%23ctor(NetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L32">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader__ctor_" data-uid="NetTopologySuite.IO.GML2.GMLReader.#ctor*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader__ctor_NetTopologySuite_Geometries_GeometryFactory_" data-uid="NetTopologySuite.IO.GML2.GMLReader.#ctor(NetTopologySuite.Geometries.GeometryFactory)">GMLReader(GeometryFactory)</h4>
+  <div class="markdown level1 summary"><p>Initialize reader with the given <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GMLReader(GeometryFactory factory)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a></td>
+        <td><span class="parametername">factory</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader_Factory.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.Factory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L22">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader_Factory_" data-uid="NetTopologySuite.IO.GML2.GMLReader.Factory*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader_Factory" data-uid="NetTopologySuite.IO.GML2.GMLReader.Factory">Factory</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> builder.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected GeometryFactory Factory { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader_Read_System_IO_StringReader_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.Read(System.IO.StringReader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L63">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader_Read_" data-uid="NetTopologySuite.IO.GML2.GMLReader.Read*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader_Read_System_IO_StringReader_" data-uid="NetTopologySuite.IO.GML2.GMLReader.Read(System.IO.StringReader)">Read(StringReader)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Geometry Read(StringReader stringReader)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.stringreader">StringReader</a></td>
+        <td><span class="parametername">stringReader</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader_Read_System_String_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.Read(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L58">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader_Read_" data-uid="NetTopologySuite.IO.GML2.GMLReader.Read*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader_Read_System_String_" data-uid="NetTopologySuite.IO.GML2.GMLReader.Read(System.String)">Read(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Geometry Read(string xmlText)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">xmlText</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader_Read_System_Xml_Linq_XDocument_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.Read(System.Xml.Linq.XDocument)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L52">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader_Read_" data-uid="NetTopologySuite.IO.GML2.GMLReader.Read*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader_Read_System_Xml_Linq_XDocument_" data-uid="NetTopologySuite.IO.GML2.GMLReader.Read(System.Xml.Linq.XDocument)">Read(XDocument)</h4>
+  <div class="markdown level1 summary"><p>Read a GML document and returns relative <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Geometry Read(XDocument document)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.xml.linq.xdocument">XDocument</a></td>
+        <td><span class="parametername">document</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader_Read_System_Xml_XmlDocument_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.Read(System.Xml.XmlDocument)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L42">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader_Read_" data-uid="NetTopologySuite.IO.GML2.GMLReader.Read*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader_Read_System_Xml_XmlDocument_" data-uid="NetTopologySuite.IO.GML2.GMLReader.Read(System.Xml.XmlDocument)">Read(XmlDocument)</h4>
+  <div class="markdown level1 summary"><p>Read a GML document and returns relative <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Geometry Read(XmlDocument document)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.xml.xmldocument">XmlDocument</a></td>
+        <td><span class="parametername">document</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader_Read_System_Xml_XmlReader_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.Read(System.Xml.XmlReader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L68">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader_Read_" data-uid="NetTopologySuite.IO.GML2.GMLReader.Read*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader_Read_System_Xml_XmlReader_" data-uid="NetTopologySuite.IO.GML2.GMLReader.Read(System.Xml.XmlReader)">Read(XmlReader)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Geometry Read(XmlReader reader)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.xml.xmlreader">XmlReader</a></td>
+        <td><span class="parametername">reader</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader_ReadCoordinate_System_Xml_XmlReader_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.ReadCoordinate(System.Xml.XmlReader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L98">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader_ReadCoordinate_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadCoordinate*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader_ReadCoordinate_System_Xml_XmlReader_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadCoordinate(System.Xml.XmlReader)">ReadCoordinate(XmlReader)</h4>
+  <div class="markdown level1 summary"><p>Reads the coordinate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Coordinate ReadCoordinate(XmlReader reader)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.xml.xmlreader">XmlReader</a></td>
+        <td><span class="parametername">reader</span></td>
+        <td><p>The reader.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader_ReadCoordinates_System_String_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.ReadCoordinates(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L132">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader_ReadCoordinates_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadCoordinates*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader_ReadCoordinates_System_String_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadCoordinates(System.String)">ReadCoordinates(String)</h4>
+  <div class="markdown level1 summary"><p>Extract a <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a> from a x,y string value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Coordinate ReadCoordinates(string value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader_ReadGeometryCollection_System_Xml_XmlReader_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.ReadGeometryCollection(System.Xml.XmlReader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L365">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader_ReadGeometryCollection_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadGeometryCollection*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader_ReadGeometryCollection_System_Xml_XmlReader_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadGeometryCollection(System.Xml.XmlReader)">ReadGeometryCollection(XmlReader)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected GeometryCollection ReadGeometryCollection(XmlReader reader)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.xml.xmlreader">XmlReader</a></td>
+        <td><span class="parametername">reader</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader_ReadLinearRing_System_Xml_XmlReader_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.ReadLinearRing(System.Xml.XmlReader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L263">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader_ReadLinearRing_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadLinearRing*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader_ReadLinearRing_System_Xml_XmlReader_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadLinearRing(System.Xml.XmlReader)">ReadLinearRing(XmlReader)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected LinearRing ReadLinearRing(XmlReader reader)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.xml.xmlreader">XmlReader</a></td>
+        <td><span class="parametername">reader</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader_ReadLineString_System_Xml_XmlReader_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.ReadLineString(System.Xml.XmlReader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L212">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader_ReadLineString_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadLineString*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader_ReadLineString_System_Xml_XmlReader_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadLineString(System.Xml.XmlReader)">ReadLineString(XmlReader)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected LineString ReadLineString(XmlReader reader)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.xml.xmlreader">XmlReader</a></td>
+        <td><span class="parametername">reader</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader_ReadMultiLineString_System_Xml_XmlReader_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.ReadMultiLineString(System.Xml.XmlReader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L319">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader_ReadMultiLineString_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadMultiLineString*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader_ReadMultiLineString_System_Xml_XmlReader_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadMultiLineString(System.Xml.XmlReader)">ReadMultiLineString(XmlReader)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected MultiLineString ReadMultiLineString(XmlReader reader)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.xml.xmlreader">XmlReader</a></td>
+        <td><span class="parametername">reader</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.MultiLineString.html">MultiLineString</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader_ReadMultiPoint_System_Xml_XmlReader_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.ReadMultiPoint(System.Xml.XmlReader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L296">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader_ReadMultiPoint_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadMultiPoint*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader_ReadMultiPoint_System_Xml_XmlReader_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadMultiPoint(System.Xml.XmlReader)">ReadMultiPoint(XmlReader)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected MultiPoint ReadMultiPoint(XmlReader reader)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.xml.xmlreader">XmlReader</a></td>
+        <td><span class="parametername">reader</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.MultiPoint.html">MultiPoint</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader_ReadMultiPolygon_System_Xml_XmlReader_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.ReadMultiPolygon(System.Xml.XmlReader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L342">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader_ReadMultiPolygon_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadMultiPolygon*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader_ReadMultiPolygon_System_Xml_XmlReader_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadMultiPolygon(System.Xml.XmlReader)">ReadMultiPolygon(XmlReader)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected MultiPolygon ReadMultiPolygon(XmlReader reader)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.xml.xmlreader">XmlReader</a></td>
+        <td><span class="parametername">reader</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.MultiPolygon.html">MultiPolygon</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader_ReadPoint_System_Xml_XmlReader_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.ReadPoint(System.Xml.XmlReader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L176">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader_ReadPoint_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadPoint*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader_ReadPoint_System_Xml_XmlReader_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadPoint(System.Xml.XmlReader)">ReadPoint(XmlReader)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Point ReadPoint(XmlReader reader)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.xml.xmlreader">XmlReader</a></td>
+        <td><span class="parametername">reader</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader_ReadPolygon_System_Xml_XmlReader_.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.ReadPolygon(System.Xml.XmlReader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L268">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader_ReadPolygon_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadPolygon*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader_ReadPolygon_System_Xml_XmlReader_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadPolygon(System.Xml.XmlReader)">ReadPolygon(XmlReader)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Polygon ReadPolygon(XmlReader reader)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.xml.xmlreader">XmlReader</a></td>
+        <td><span class="parametername">reader</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader_ReadPosAsCoordinate_System_String___.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.ReadPosAsCoordinate(System.String%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L145">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader_ReadPosAsCoordinate_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadPosAsCoordinate*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader_ReadPosAsCoordinate_System_String___" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadPosAsCoordinate(System.String[])">ReadPosAsCoordinate(String[])</h4>
+  <div class="markdown level1 summary"><p>Extract a <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a> from a pos entity string value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Coordinate ReadPosAsCoordinate(string[] value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader_ReadPosListAsCoordinates_System_Int32_System_String___.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader.ReadPosListAsCoordinates(System.Int32%2CSystem.String%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L160">View Source</a>
+  </span>
+  <a id="NetTopologySuite_IO_GML2_GMLReader_ReadPosListAsCoordinates_" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadPosListAsCoordinates*"></a>
+  <h4 id="NetTopologySuite_IO_GML2_GMLReader_ReadPosListAsCoordinates_System_Int32_System_String___" data-uid="NetTopologySuite.IO.GML2.GMLReader.ReadPosListAsCoordinates(System.Int32,System.String[])">ReadPosListAsCoordinates(Int32, String[])</h4>
+  <div class="markdown level1 summary"><p>Extract a <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a> from a x,y string value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IEnumerable&lt;Coordinate&gt; ReadPosListAsCoordinates(int numOrdinates, string[] value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">numOrdinates</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
+        <td><span class="parametername">value</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_IO_GML2_GMLReader.md&amp;value=---%0Auid%3A%20NetTopologySuite.IO.GML2.GMLReader%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/IO/GML2/GMLReader.cs/#L15" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

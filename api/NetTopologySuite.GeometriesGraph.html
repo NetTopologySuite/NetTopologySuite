@@ -1,0 +1,240 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NetTopologySuite.GeometriesGraph
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NetTopologySuite.GeometriesGraph
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.GeometriesGraph">
+  
+  <h1 id="NetTopologySuite_GeometriesGraph" data-uid="NetTopologySuite.GeometriesGraph" class="text-break">Namespace NetTopologySuite.GeometriesGraph
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.Depth.html">Depth</a></h4>
+      <section><p>A Depth object records the topological depth of the sides
+of an Edge for up to two Geometries.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.DirectedEdge.html">DirectedEdge</a></h4>
+      <section></section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.DirectedEdgeStar.html">DirectedEdgeStar</a></h4>
+      <section><p>A DirectedEdgeStar is an ordered list of outgoing DirectedEdges around a node.
+It supports labelling the edges as well as linking the edges to form both
+MaximalEdgeRings and MinimalEdgeRings.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.Edge.html">Edge</a></h4>
+      <section></section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeEnd.html">EdgeEnd</a></h4>
+      <section><p>Models the end of an edge incident on a node.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeEndStar.html">EdgeEndStar</a></h4>
+      <section><p>A EdgeEndStar is an ordered list of EdgeEnds around a node.
+They are maintained in CCW order (starting with the positive x-axis) around the node
+for efficient lookup and topology building.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeIntersection.html">EdgeIntersection</a></h4>
+      <section><p>An EdgeIntersection represents a point on an
+edge which intersects with another edge.
+The intersection may either be a single point, or a line segment
+(in which case this point is the start of the line segment)
+The label attached to this intersection point applies to
+the edge from this point forwards, until the next
+intersection or the end of the edge.
+The intersection point must be precise.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeIntersectionList.html">EdgeIntersectionList</a></h4>
+      <section><p>A list of edge intersections along an Edge.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeList.html">EdgeList</a></h4>
+      <section><p>A EdgeList is a list of Edges.  It supports locating edges
+that are point-wise equals to a target edge.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeNodingValidator.html">EdgeNodingValidator</a></h4>
+      <section><p>Validates that a collection of <a class="xref" href="NetTopologySuite.GeometriesGraph.Edge.html">Edge</a> is correctly noded.
+Throws an appropriate exception if an noding error is found.
+<remarks>
+Uses <a class="xref" href="NetTopologySuite.Noding.FastNodingValidator.html">FastNodingValidator</a> to perform the validation.
+</remarks></p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html">EdgeRing</a></h4>
+      <section></section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.GeometryGraph.html">GeometryGraph</a></h4>
+      <section><p>A GeometryGraph is a graph that models a given Geometry.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.GraphComponent.html">GraphComponent</a></h4>
+      <section><p>A GraphComponent is the parent class for the objects'
+that form a graph.  Each GraphComponent can carry a
+Label.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.Label.html">Label</a></h4>
+      <section><p>A <code>Label</code> indicates the topological relationship of a component
+of a topology graph to a given <code>Geometry</code>.
+This class supports labels for relationships to two <code>Geometry</code>s,
+which is sufficient for algorithms for binary operations.
+Topology graphs support the concept of labeling nodes and edges in the graph.
+The label of a node or edge specifies its topological relationship to one or
+more geometries.  (In fact, since NTS operations have only two arguments labels
+are required for only two geometries).  A label for a node or edge has one or
+two elements, depending on whether the node or edge occurs in one or both of the
+input <code>Geometry</code>s.  Elements contain attributes which categorize the
+topological location of the node or edge relative to the parent
+<code>Geometry</code>; that is, whether the node or edge is in the interior,
+boundary or exterior of the <code>Geometry</code>.  Attributes have a value
+from the set <code>{Interior, Boundary, Exterior}</code>.  In a node each
+element has a single attribute <code>On</code>. For an edge each element has a
+triplet of attributes <code>Left, On, Right</code>.
+It is up to the client code to associate the 0 and 1 <code>TopologyLocation</code>s
+with specific geometries.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.Node.html">Node</a></h4>
+      <section></section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.NodeFactory.html">NodeFactory</a></h4>
+      <section></section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.NodeMap.html">NodeMap</a></h4>
+      <section><p>A map of nodes, indexed by the coordinate of the node.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.PlanarGraph.html">PlanarGraph</a></h4>
+      <section><p>The computation of the <code>IntersectionMatrix</code> relies on the use of a structure
+called a &quot;topology graph&quot;. The topology graph contains nodes and edges
+corresponding to the nodes and line segments of a <code>Geometry</code>. Each
+node and edge in the graph is labeled with its topological location relative to
+the source point.
+Note that there is no requirement that points of self-intersection be a vertex.
+Thus to obtain a correct topology graph, <code>Geometry</code>s must be
+self-noded before constructing their graphs.
+Two fundamental operations are supported by topology graphs:
+Computing the intersections between all the edges and nodes of a single graph
+Computing the intersections between the edges and nodes of two different graphs</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.Position.html">Position</a></h4>
+      <section><p>A Position indicates the position of a Location relative to a graph component
+(Node, Edge, or Area).</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.QuadrantOp.html">QuadrantOp</a></h4>
+      <section><p>Utility functions for working with quadrants, which are numbered as follows:</p>
+<p>
+1 | 0
+--+--
+2 | 3
+</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.TopologyLocation.html">TopologyLocation</a></h4>
+      <section><p>A TopologyLocation is the labelling of a
+GraphComponent's topological relationship to a single Geometry.</p>
+</section>
+    <h3 id="enums">Enums
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.GeometriesGraph.Positions.html">Positions</a></h4>
+      <section></section>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

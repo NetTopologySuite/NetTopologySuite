@@ -1,0 +1,1218 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Struct Interval
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Struct Interval
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.DataStructures.Interval">
+  
+  
+  <h1 id="NetTopologySuite_DataStructures_Interval" data-uid="NetTopologySuite.DataStructures.Interval" class="text-break">Struct Interval
+  </h1>
+  <div class="markdown level0 summary"><p>Structure for a closed 1-dimensional ℝ-interval</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a>&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.DataStructures.html">NetTopologySuite.DataStructures</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_DataStructures_Interval_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Serializable]
+public struct Interval : IEquatable&lt;Interval&gt;</code></pre>
+  </div>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_Max.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.Max%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L22">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_DataStructures_Interval_Max" data-uid="NetTopologySuite.DataStructures.Interval.Max">Max</h4>
+  <div class="markdown level1 summary"><p>The upper bound of the interval</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Max</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_Min.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.Min%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L17">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_DataStructures_Interval_Min" data-uid="NetTopologySuite.DataStructures.Interval.Min">Min</h4>
+  <div class="markdown level1 summary"><p>The lower bound of the interval</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly double Min</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_Centre.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.Centre%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L115">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_Centre_" data-uid="NetTopologySuite.DataStructures.Interval.Centre*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_Centre" data-uid="NetTopologySuite.DataStructures.Interval.Centre">Centre</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating the centre of the interval (Min + Width * 0.5)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Centre { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_Width.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.Width%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L110">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_Width_" data-uid="NetTopologySuite.DataStructures.Interval.Width*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_Width" data-uid="NetTopologySuite.DataStructures.Interval.Width">Width</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating the width of the <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Width { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_Contains_NetTopologySuite_DataStructures_Interval_.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.Contains(NetTopologySuite.DataStructures.Interval)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L166">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_Contains_" data-uid="NetTopologySuite.DataStructures.Interval.Contains*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_Contains_NetTopologySuite_DataStructures_Interval_" data-uid="NetTopologySuite.DataStructures.Interval.Contains(NetTopologySuite.DataStructures.Interval)">Contains(Interval)</h4>
+  <div class="markdown level1 summary"><p>Function to test if this <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a> contains <code data-dev-comment-type="paramref" class="paramref">interval</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Contains(Interval interval)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></td>
+        <td><span class="parametername">interval</span></td>
+        <td><p>The interval to test</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if this interval contains <code data-dev-comment-type="paramref" class="paramref">interval</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_DataStructures_Interval_Contains_NetTopologySuite_DataStructures_Interval__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is more rigid than <a class="xref" href="NetTopologySuite.DataStructures.Interval.html#NetTopologySuite_DataStructures_Interval_Overlaps_NetTopologySuite_DataStructures_Interval_">Overlaps(Interval)</a></p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_Contains_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.Contains(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L188">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_Contains_" data-uid="NetTopologySuite.DataStructures.Interval.Contains*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_Contains_System_Double_" data-uid="NetTopologySuite.DataStructures.Interval.Contains(System.Double)">Contains(Double)</h4>
+  <div class="markdown level1 summary"><p>Function to test if this <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a> contains the value <code data-dev-comment-type="paramref" class="paramref">p</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Contains(double p)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">p</span></td>
+        <td><p>The value to test</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if this interval contains the value <code data-dev-comment-type="paramref" class="paramref">p</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_Contains_System_Double_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.Contains(System.Double%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L178">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_Contains_" data-uid="NetTopologySuite.DataStructures.Interval.Contains*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_Contains_System_Double_System_Double_" data-uid="NetTopologySuite.DataStructures.Interval.Contains(System.Double,System.Double)">Contains(Double, Double)</h4>
+  <div class="markdown level1 summary"><p>Function to test if this <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a> contains the interval ℝ[<code data-dev-comment-type="paramref" class="paramref">min</code>, <code data-dev-comment-type="paramref" class="paramref">max</code>].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Contains(double min, double max)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">min</span></td>
+        <td><p>The minimum value of the interval</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">max</span></td>
+        <td><p>The maximum value of the interval</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if this interval contains the interval ℝ[<code data-dev-comment-type="paramref" class="paramref">min</code>, <code data-dev-comment-type="paramref" class="paramref">max</code>]</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_DataStructures_Interval_Contains_System_Double_System_Double__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is more rigid than <a class="xref" href="NetTopologySuite.DataStructures.Interval.html#NetTopologySuite_DataStructures_Interval_Overlaps_System_Double_System_Double_">Overlaps(Double, Double)</a></p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_Create.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.Create%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L219">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_Create_" data-uid="NetTopologySuite.DataStructures.Interval.Create*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_Create" data-uid="NetTopologySuite.DataStructures.Interval.Create">Create()</h4>
+  <div class="markdown level1 summary"><p>Creates an empty or uninitialized Interval</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Interval Create()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></td>
+        <td><p>An empty or uninitialized <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_Create_NetTopologySuite_DataStructures_Interval_.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.Create(NetTopologySuite.DataStructures.Interval)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L253">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_Create_" data-uid="NetTopologySuite.DataStructures.Interval.Create*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_Create_NetTopologySuite_DataStructures_Interval_" data-uid="NetTopologySuite.DataStructures.Interval.Create(NetTopologySuite.DataStructures.Interval)">Create(Interval)</h4>
+  <div class="markdown level1 summary"><p>Creates an interval with the range ℝ[<a class="xref" href="NetTopologySuite.DataStructures.Interval.html#NetTopologySuite_DataStructures_Interval_Min">Min</a>,<a class="xref" href="NetTopologySuite.DataStructures.Interval.html#NetTopologySuite_DataStructures_Interval_Max">Max</a>].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Interval Create(Interval interval)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></td>
+        <td><span class="parametername">interval</span></td>
+        <td><p>The template interval</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></td>
+        <td><p>An <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_Create_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.Create(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L229">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_Create_" data-uid="NetTopologySuite.DataStructures.Interval.Create*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_Create_System_Double_" data-uid="NetTopologySuite.DataStructures.Interval.Create(System.Double)">Create(Double)</h4>
+  <div class="markdown level1 summary"><p>Creates an interval with the range ℝ[<code data-dev-comment-type="paramref" class="paramref">value</code>,<code data-dev-comment-type="paramref" class="paramref">value</code>]</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Interval Create(double value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></td>
+        <td><p>An <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_Create_System_Double_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.Create(System.Double%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L241">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_Create_" data-uid="NetTopologySuite.DataStructures.Interval.Create*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_Create_System_Double_System_Double_" data-uid="NetTopologySuite.DataStructures.Interval.Create(System.Double,System.Double)">Create(Double, Double)</h4>
+  <div class="markdown level1 summary"><p>Creates an interval with the range ℝ[<code data-dev-comment-type="paramref" class="paramref">val1</code>,<code data-dev-comment-type="paramref" class="paramref">val2</code>]. <br>
+If necessary, val1 and val2 are exchanged.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Interval Create(double val1, double val2)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">val1</span></td>
+        <td><p>The minimum value</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">val2</span></td>
+        <td><p>The maximum value</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></td>
+        <td><p>An <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_Equals_NetTopologySuite_DataStructures_Interval_.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.Equals(NetTopologySuite.DataStructures.Interval)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L86">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_Equals_" data-uid="NetTopologySuite.DataStructures.Interval.Equals*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_Equals_NetTopologySuite_DataStructures_Interval_" data-uid="NetTopologySuite.DataStructures.Interval.Equals(NetTopologySuite.DataStructures.Interval)">Equals(Interval)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(Interval other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_Equals_System_Object_.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L78">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_Equals_" data-uid="NetTopologySuite.DataStructures.Interval.Equals*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_Equals_System_Object_" data-uid="NetTopologySuite.DataStructures.Interval.Equals(System.Object)">Equals(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.equals#System_ValueType_Equals_System_Object_">ValueType.Equals(Object)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_ExpandedByInterval_NetTopologySuite_DataStructures_Interval_.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.ExpandedByInterval(NetTopologySuite.DataStructures.Interval)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L122">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_ExpandedByInterval_" data-uid="NetTopologySuite.DataStructures.Interval.ExpandedByInterval*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_ExpandedByInterval_NetTopologySuite_DataStructures_Interval_" data-uid="NetTopologySuite.DataStructures.Interval.ExpandedByInterval(NetTopologySuite.DataStructures.Interval)">ExpandedByInterval(Interval)</h4>
+  <div class="markdown level1 summary"><p>Function to compute an interval that contains this and <code data-dev-comment-type="paramref" class="paramref">interval</code> <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Interval ExpandedByInterval(Interval interval)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></td>
+        <td><span class="parametername">interval</span></td>
+        <td><p>The interval</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></td>
+        <td><p>An interval</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_ExpandedByValue_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.ExpandedByValue(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L50">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_ExpandedByValue_" data-uid="NetTopologySuite.DataStructures.Interval.ExpandedByValue*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_ExpandedByValue_System_Double_" data-uid="NetTopologySuite.DataStructures.Interval.ExpandedByValue(System.Double)">ExpandedByValue(Double)</h4>
+  <div class="markdown level1 summary"><p>Method to expand</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Interval ExpandedByValue(double p)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">p</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_GetHashCode.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L72">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_GetHashCode_" data-uid="NetTopologySuite.DataStructures.Interval.GetHashCode*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_GetHashCode" data-uid="NetTopologySuite.DataStructures.Interval.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.gethashcode#System_ValueType_GetHashCode">ValueType.GetHashCode()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_Intersects_NetTopologySuite_DataStructures_Interval_.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.Intersects(NetTopologySuite.DataStructures.Interval)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L199">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_Intersects_" data-uid="NetTopologySuite.DataStructures.Interval.Intersects*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_Intersects_NetTopologySuite_DataStructures_Interval_" data-uid="NetTopologySuite.DataStructures.Interval.Intersects(NetTopologySuite.DataStructures.Interval)">Intersects(Interval)</h4>
+  <div class="markdown level1 summary"><p>Function to test if this <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a> intersects the interval <code data-dev-comment-type="paramref" class="paramref">other</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(Interval other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_Intersects_System_Double_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.Intersects(System.Double%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L210">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_Intersects_" data-uid="NetTopologySuite.DataStructures.Interval.Intersects*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_Intersects_System_Double_System_Double_" data-uid="NetTopologySuite.DataStructures.Interval.Intersects(System.Double,System.Double)">Intersects(Double, Double)</h4>
+  <div class="markdown level1 summary"><p>Function to test if this <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a> intersects the interval ℝ[<code data-dev-comment-type="paramref" class="paramref">min</code>, <code data-dev-comment-type="paramref" class="paramref">max</code>].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Intersects(double min, double max)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">min</span></td>
+        <td><p>The minimum value of the interval</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">max</span></td>
+        <td><p>The maximum value of the interval</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><returns>true</returns> if this interval intersects the interval ℝ[<code data-dev-comment-type="paramref" class="paramref">min</code>, <code data-dev-comment-type="paramref" class="paramref">max</code>].</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_Overlaps_NetTopologySuite_DataStructures_Interval_.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.Overlaps(NetTopologySuite.DataStructures.Interval)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L144">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_Overlaps_" data-uid="NetTopologySuite.DataStructures.Interval.Overlaps*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_Overlaps_NetTopologySuite_DataStructures_Interval_" data-uid="NetTopologySuite.DataStructures.Interval.Overlaps(NetTopologySuite.DataStructures.Interval)">Overlaps(Interval)</h4>
+  <div class="markdown level1 summary"><p>Function to test if this <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a> overlaps <code data-dev-comment-type="paramref" class="paramref">interval</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Overlaps(Interval interval)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></td>
+        <td><span class="parametername">interval</span></td>
+        <td><p>The interval to test</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if this interval overlaps <code data-dev-comment-type="paramref" class="paramref">interval</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_Overlaps_System_Double_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.Overlaps(System.Double%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L155">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_Overlaps_" data-uid="NetTopologySuite.DataStructures.Interval.Overlaps*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_Overlaps_System_Double_System_Double_" data-uid="NetTopologySuite.DataStructures.Interval.Overlaps(System.Double,System.Double)">Overlaps(Double, Double)</h4>
+  <div class="markdown level1 summary"><p>Function to test if this <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a> overlaps the interval ℝ[<code data-dev-comment-type="paramref" class="paramref">min</code>, <code data-dev-comment-type="paramref" class="paramref">max</code>].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Overlaps(double min, double max)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">min</span></td>
+        <td><p>The minimum value of the interval</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">max</span></td>
+        <td><p>The maximum value of the interval</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if this interval overlaps the interval ℝ[<code data-dev-comment-type="paramref" class="paramref">min</code>, <code data-dev-comment-type="paramref" class="paramref">max</code>]</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_ToString.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L99">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_ToString_" data-uid="NetTopologySuite.DataStructures.Interval.ToString*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_ToString" data-uid="NetTopologySuite.DataStructures.Interval.ToString">ToString()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.tostring#System_ValueType_ToString">ValueType.ToString()</a></div>
+  <h3 id="operators">Operators
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_op_Equality_NetTopologySuite_DataStructures_Interval_NetTopologySuite_DataStructures_Interval_.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.op_Equality(NetTopologySuite.DataStructures.Interval%2CNetTopologySuite.DataStructures.Interval)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L264">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_op_Equality_" data-uid="NetTopologySuite.DataStructures.Interval.op_Equality*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_op_Equality_NetTopologySuite_DataStructures_Interval_NetTopologySuite_DataStructures_Interval_" data-uid="NetTopologySuite.DataStructures.Interval.op_Equality(NetTopologySuite.DataStructures.Interval,NetTopologySuite.DataStructures.Interval)">Equality(Interval, Interval)</h4>
+  <div class="markdown level1 summary"><p>Equality operator for <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a>s</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(Interval lhs, Interval rhs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></td>
+        <td><span class="parametername">lhs</span></td>
+        <td><p>The left-hand-side <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></td>
+        <td><span class="parametername">rhs</span></td>
+        <td><p>The right-hand-side <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><returns>true</returns> if the <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a>s are equal.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval_op_Inequality_NetTopologySuite_DataStructures_Interval_NetTopologySuite_DataStructures_Interval_.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval.op_Inequality(NetTopologySuite.DataStructures.Interval%2CNetTopologySuite.DataStructures.Interval)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L275">View Source</a>
+  </span>
+  <a id="NetTopologySuite_DataStructures_Interval_op_Inequality_" data-uid="NetTopologySuite.DataStructures.Interval.op_Inequality*"></a>
+  <h4 id="NetTopologySuite_DataStructures_Interval_op_Inequality_NetTopologySuite_DataStructures_Interval_NetTopologySuite_DataStructures_Interval_" data-uid="NetTopologySuite.DataStructures.Interval.op_Inequality(NetTopologySuite.DataStructures.Interval,NetTopologySuite.DataStructures.Interval)">Inequality(Interval, Interval)</h4>
+  <div class="markdown level1 summary"><p>Inequality operator for <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a>s</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(Interval lhs, Interval rhs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></td>
+        <td><span class="parametername">lhs</span></td>
+        <td><p>The left-hand-side <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></td>
+        <td><span class="parametername">rhs</span></td>
+        <td><p>The right-hand-side <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><returns>true</returns> if the <a class="xref" href="NetTopologySuite.DataStructures.Interval.html">Interval</a>s are <strong>not</strong> equal.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_DataStructures_Interval.md&amp;value=---%0Auid%3A%20NetTopologySuite.DataStructures.Interval%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/DataStructures/Interval.cs/#L11" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

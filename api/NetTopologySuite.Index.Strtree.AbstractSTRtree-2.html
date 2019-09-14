@@ -1,0 +1,1026 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class AbstractSTRtree&lt;T, TItem&gt;
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class AbstractSTRtree&lt;T, TItem&gt;
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2">
+  
+  
+  <h1 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2" class="text-break">Class AbstractSTRtree&lt;T, TItem&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>Base class for STRtree and SIRtree. STR-packed R-trees are described in:
+P. Rigaux, Michel Scholl and Agnes Voisard. <em>Spatial Databases With
+Application To GIS</em>. Morgan Kaufmann, San Francisco, 2002.</p>
+<p>
+This implementation is based on <a class="xref" href="NetTopologySuite.Geometries.IBoundable-2.html">IBoundable&lt;T, TItem&gt;</a>s rather than just <a class="xref" href="NetTopologySuite.Index.Strtree.AbstractNode-2.html">AbstractNode&lt;T, TItem&gt;</a>s,
+because the STR algorithm operates on both nodes and
+data, both of which are treated as <a class="xref" href="NetTopologySuite.Geometries.IBoundable-2.html">IBoundable&lt;T, TItem&gt;</a>s.
+</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">AbstractSTRtree&lt;T, TItem&gt;</span></div>
+      <div class="level2"><a class="xref" href="NetTopologySuite.Index.Strtree.SIRtree-1.html">SIRtree&lt;TItem&gt;</a></div>
+      <div class="level2"><a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html">STRtree&lt;TItem&gt;</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Index.Strtree.html">NetTopologySuite.Index.Strtree</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Serializable]
+public abstract class AbstractSTRtree&lt;T, TItem&gt;
+    where T : IIntersectable&lt;T&gt;, IExpandable&lt;T&gt;</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TItem</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2__ctor_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.%23ctor(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L59">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2__ctor_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.#ctor*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2__ctor_System_Int32_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.#ctor(System.Int32)">AbstractSTRtree(Int32)</h4>
+  <div class="markdown level1 summary"><p>Constructs an AbstractSTRtree with the specified maximum number of child
+nodes that a node may have.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected AbstractSTRtree(int nodeCapacity)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">nodeCapacity</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Count.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L182">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Count_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.Count*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Count" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.Count">Count</h4>
+  <div class="markdown level1 summary"><p>Gets the number of elements in the tree</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Depth.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.Depth%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L207">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Depth_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.Depth*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Depth" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.Depth">Depth</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Depth { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_IntersectsOp.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.IntersectsOp%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L353">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_IntersectsOp_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.IntersectsOp*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_IntersectsOp" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.IntersectsOp">IntersectsOp</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract AbstractSTRtree&lt;T, TItem&gt;.IIntersectsOp IntersectsOp { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Index.Strtree.AbstractSTRtree-2.IIntersectsOp.html">AbstractSTRtree.IIntersectsOp</a>&lt;&gt;</td>
+        <td><p>A test for intersection between two bounds, necessary because subclasses
+of AbstractSTRtree have different implementations of bounds.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_IsEmpty.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.IsEmpty%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L170">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_IsEmpty_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.IsEmpty*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_IsEmpty" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.IsEmpty">IsEmpty</h4>
+  <div class="markdown level1 summary"><p>Tests whether the index contains any items.
+This method does not build the index,
+so items can still be inserted after it has been called.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsEmpty { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_NodeCapacity.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.NodeCapacity%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L163">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_NodeCapacity_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.NodeCapacity*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_NodeCapacity" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.NodeCapacity">NodeCapacity</h4>
+  <div class="markdown level1 summary"><p>Gets the maximum number of child nodes that a node may have.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int NodeCapacity { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Root.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.Root%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L150">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Root_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.Root*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Root" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.Root">Root</h4>
+  <div class="markdown level1 summary"><p>Gets the root node of the tree.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AbstractNode&lt;T, TItem&gt; Root { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Index.Strtree.AbstractNode-2.html">AbstractNode</a>&lt;T, TItem&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_BoundablesAtLevel_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.BoundablesAtLevel(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L410">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_BoundablesAtLevel_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.BoundablesAtLevel*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_BoundablesAtLevel_System_Int32_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.BoundablesAtLevel(System.Int32)">BoundablesAtLevel(Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IList&lt;IBoundable&lt;T, TItem&gt;&gt; BoundablesAtLevel(int level)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">level</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.IBoundable-2.html">IBoundable</a>&lt;T, TItem&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Build.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.Build%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L71">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Build_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.Build*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Build" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.Build">Build()</h4>
+  <div class="markdown level1 summary"><p>Creates parent nodes, grandparent nodes, and so forth up to the root
+node, for the data that has been inserted into the tree. Can only be
+called once, and thus can be called only after all of the data has been
+inserted into the tree.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Build()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_CompareDoubles_System_Double_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.CompareDoubles(System.Double%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L125">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_CompareDoubles_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.CompareDoubles*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_CompareDoubles_System_Double_System_Double_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.CompareDoubles(System.Double,System.Double)">CompareDoubles(Double, Double)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static int CompareDoubles(double a, double b)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">b</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_CreateNode_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.CreateNode(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L96">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_CreateNode_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.CreateNode*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_CreateNode_System_Int32_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.CreateNode(System.Int32)">CreateNode(Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract AbstractNode&lt;T, TItem&gt; CreateNode(int level)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">level</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Index.Strtree.AbstractNode-2.html">AbstractNode</a>&lt;T, TItem&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_CreateParentBoundables_System_Collections_Generic_IList_NetTopologySuite_Geometries_IBoundable__0__1___System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.CreateParentBoundables(System.Collections.Generic.IList%7BNetTopologySuite.Geometries.IBoundable%7B%600%2C%601%7D%7D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L104">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_CreateParentBoundables_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.CreateParentBoundables*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_CreateParentBoundables_System_Collections_Generic_IList_NetTopologySuite_Geometries_IBoundable__0__1___System_Int32_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.CreateParentBoundables(System.Collections.Generic.IList{NetTopologySuite.Geometries.IBoundable{`0,`1}},System.Int32)">CreateParentBoundables(IList&lt;IBoundable&lt;T, TItem&gt;&gt;, Int32)</h4>
+  <div class="markdown level1 summary"><p>Sorts the childBoundables then divides them into groups of size M, where
+M is the node capacity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IList&lt;IBoundable&lt;T, TItem&gt;&gt; CreateParentBoundables(IList&lt;IBoundable&lt;T, TItem&gt;&gt; childBoundables, int newLevel)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.IBoundable-2.html">IBoundable</a>&lt;T, TItem&gt;&gt;</td>
+        <td><span class="parametername">childBoundables</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">newLevel</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.IBoundable-2.html">IBoundable</a>&lt;T, TItem&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_GetComparer.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.GetComparer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L437">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_GetComparer_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.GetComparer*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_GetComparer" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.GetComparer">GetComparer()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract IComparer&lt;IBoundable&lt;T, TItem&gt;&gt; GetComparer()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icomparer-1">IComparer</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.IBoundable-2.html">IBoundable</a>&lt;T, TItem&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_GetDepth_NetTopologySuite_Index_Strtree_AbstractNode__0__1__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.GetDepth(NetTopologySuite.Index.Strtree.AbstractNode%7B%600%2C%601%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L221">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_GetDepth_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.GetDepth*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_GetDepth_NetTopologySuite_Index_Strtree_AbstractNode__0__1__" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.GetDepth(NetTopologySuite.Index.Strtree.AbstractNode{`0,`1})">GetDepth(AbstractNode&lt;T, TItem&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int GetDepth(AbstractNode&lt;T, TItem&gt; node)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Index.Strtree.AbstractNode-2.html">AbstractNode</a>&lt;T, TItem&gt;</td>
+        <td><span class="parametername">node</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_GetSize_NetTopologySuite_Index_Strtree_AbstractNode__0__1__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.GetSize(NetTopologySuite.Index.Strtree.AbstractNode%7B%600%2C%601%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L194">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_GetSize_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.GetSize*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_GetSize_NetTopologySuite_Index_Strtree_AbstractNode__0__1__" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.GetSize(NetTopologySuite.Index.Strtree.AbstractNode{`0,`1})">GetSize(AbstractNode&lt;T, TItem&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected int GetSize(AbstractNode&lt;T, TItem&gt; node)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Index.Strtree.AbstractNode-2.html">AbstractNode</a>&lt;T, TItem&gt;</td>
+        <td><span class="parametername">node</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Insert__0__1_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.Insert(%600%2C%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L235">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Insert_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.Insert*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Insert__0__1_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.Insert(`0,`1)">Insert(T, TItem)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void Insert(T bounds, TItem item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">bounds</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">TItem</span></td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_ItemsTree.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.ItemsTree%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L320">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_ItemsTree_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.ItemsTree*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_ItemsTree" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.ItemsTree">ItemsTree()</h4>
+  <div class="markdown level1 summary"><p>Gets a tree structure (as a nested list)
+corresponding to the structure of the items and nodes in this tree.
+The returned Lists contain either Object items,
+or Lists which correspond to subtrees of the tree
+Subtrees which do not contain any items are not included.
+Builds the tree if necessary.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IList&lt;object&gt; ItemsTree()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><p>a List of items and/or Lists</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_LastNode_System_Collections_Generic_IList_NetTopologySuite_Geometries_IBoundable__0__1___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.LastNode(System.Collections.Generic.IList%7BNetTopologySuite.Geometries.IBoundable%7B%600%2C%601%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L120">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_LastNode_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.LastNode*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_LastNode_System_Collections_Generic_IList_NetTopologySuite_Geometries_IBoundable__0__1___" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.LastNode(System.Collections.Generic.IList{NetTopologySuite.Geometries.IBoundable{`0,`1}})">LastNode(IList&lt;IBoundable&lt;T, TItem&gt;&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected AbstractNode&lt;T, TItem&gt; LastNode(IList&lt;IBoundable&lt;T, TItem&gt;&gt; nodes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.IBoundable-2.html">IBoundable</a>&lt;T, TItem&gt;&gt;</td>
+        <td><span class="parametername">nodes</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Index.Strtree.AbstractNode-2.html">AbstractNode</a>&lt;T, TItem&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Query__0_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.Query(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L245">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Query_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.Query*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Query__0_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.Query(`0)">Query(T)</h4>
+  <div class="markdown level1 summary"><p>Also builds the tree, if necessary.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected IList&lt;TItem&gt; Query(T searchBounds)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">searchBounds</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;TItem&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Query__0_NetTopologySuite_Index_IItemVisitor__1__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.Query(%600%2CNetTopologySuite.Index.IItemVisitor%7B%601%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L264">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Query_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.Query*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Query__0_NetTopologySuite_Index_IItemVisitor__1__" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.Query(`0,NetTopologySuite.Index.IItemVisitor{`1})">Query(T, IItemVisitor&lt;TItem&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void Query(T searchBounds, IItemVisitor&lt;TItem&gt; visitor)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">searchBounds</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Index.IItemVisitor-1.html">IItemVisitor</a>&lt;TItem&gt;</td>
+        <td><span class="parametername">visitor</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Remove__0__1_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602.Remove(%600%2C%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L359">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Remove_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.Remove*"></a>
+  <h4 id="NetTopologySuite_Index_Strtree_AbstractSTRtree_2_Remove__0__1_" data-uid="NetTopologySuite.Index.Strtree.AbstractSTRtree`2.Remove(`0,`1)">Remove(T, TItem)</h4>
+  <div class="markdown level1 summary"><p>Removes an item from the tree.
+(Builds the tree, if necessary.)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool Remove(T searchBounds, TItem item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">searchBounds</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">TItem</span></td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractSTRtree_2.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractSTRtree%602%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Strtree/AbstractSTRtree.cs/#L20" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NetTopologySuite.Triangulate
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NetTopologySuite.Triangulate
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Triangulate">
+  
+  <h1 id="NetTopologySuite_Triangulate" data-uid="NetTopologySuite.Triangulate" class="text-break">Namespace NetTopologySuite.Triangulate
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.ConformingDelaunayTriangulationBuilder.html">ConformingDelaunayTriangulationBuilder</a></h4>
+      <section><p>A utility class which creates Conforming Delaunay Triangulations
+from collections of points and linear constraints, and extract the resulting
+triangulation edges or triangles as geometries.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.html">ConformingDelaunayTriangulator</a></h4>
+      <section><p>Computes a Conforming Delaunay Triangulation over a set of sites and a set of
+linear constraints.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.ConstraintEnforcementException.html">ConstraintEnforcementException</a></h4>
+      <section><p>Indicates a failure during constraint enforcement.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.ConstraintVertex.html">ConstraintVertex</a></h4>
+      <section><p>A vertex in a Constrained Delaunay Triangulation.
+The vertex may or may not lie on a constraint.
+If it does it may carry extra information about the original constraint.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.DelaunayTriangulationBuilder.html">DelaunayTriangulationBuilder</a></h4>
+      <section><p>A utility class which creates Delaunay Triangulations
+from collections of points and extract the resulting
+triangulation edges or triangles as geometries.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.IncrementalDelaunayTriangulator.html">IncrementalDelaunayTriangulator</a></h4>
+      <section><p>Computes a Delaunay Triangulation of a set of <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a>es, using an
+incremental insertion algorithm.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.MidpointSplitPointFinder.html">MidpointSplitPointFinder</a></h4>
+      <section><p>A simple split point finder which returns the midpoint of the split segment. This is a default
+strategy only. Usually a more sophisticated strategy is required to prevent repeated splitting.
+Other points which could be used are:</p>
+<ul>
+<li>The projection of the encroaching point on the segment</li>
+<li>A point on the segment which will produce two segments which will not be further encroached</li>
+<li>The point on the segment which is the same distance from an endpoint as the encroaching</li>
+point
+</ul>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.NonEncroachingSplitPointFinder.html">NonEncroachingSplitPointFinder</a></h4>
+      <section><p>A strategy for finding constraint split points which attempts to maximise the length of the split
+segments while preventing further encroachment. (This is not always possible for narrow angles).</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.Segment.html">Segment</a></h4>
+      <section><p>Models a constraint segment in a triangulation.
+A constraint segment is an oriented straight line segment between a start point
+and an end point.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.SplitSegment.html">SplitSegment</a></h4>
+      <section><p>Models a constraint segment which can be split in two in various ways,
+according to certain geometric constraints.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.VertexTaggedGeometryDataMapper.html">VertexTaggedGeometryDataMapper</a></h4>
+      <section><p>Creates a map between the vertex <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>s of a
+set of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s,
+and the parent geometry, and transfers the source geometry
+data objects to geometry components tagged with the coordinates.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.VoronoiDiagramBuilder.html">VoronoiDiagramBuilder</a></h4>
+      <section><p>A utility class which creates Voronoi Diagrams
+from collections of points.
+The diagram is returned as a <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a> of <a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a>s,
+representing the faces of the Voronoi diagram.
+/// The faces are clipped to the larger of:</p>
+<ul><li>an envelope supplied by <span class="xref">NetTopologySuite.Triangulate.VoronoiDiagramBuilder.set_ClipEnvelope(NetTopologySuite.Geometries.Envelope)</span>.</li><li>an envelope determined by the input sites.</li></ul>
+The <tt>userData</tt> attribute of each face <tt>Polygon</tt> is set to
+the <tt>Coordinate</tt>  of the corresponding input site.
+This allows using a <tt>Map</tt> to link faces to data associated with sites.
+</section>
+    <h3 id="interfaces">Interfaces
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.ConstraintVertexFactory.html">ConstraintVertexFactory</a></h4>
+      <section><p>An interface for factories which create a {@link ConstraintVertex}</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.IConstraintSplitPointFinder.html">IConstraintSplitPointFinder</a></h4>
+      <section><p>An interface for strategies for determining the location of split points on constraint segments.
+The location of split points has a large effect on the performance and robustness of enforcing a
+constrained Delaunay triangulation. Poorly chosen split points can cause repeated splitting,
+especially at narrow constraint angles, since the split point will end up encroaching on the
+segment containing the original encroaching point. With detailed knowledge of the geometry of the
+constraints, it is sometimes possible to choose better locations for splitting.</p>
+</section>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

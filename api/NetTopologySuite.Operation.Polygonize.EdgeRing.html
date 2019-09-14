@@ -1,0 +1,869 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class EdgeRing
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class EdgeRing
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing">
+  
+  
+  <h1 id="NetTopologySuite_Operation_Polygonize_EdgeRing" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing" class="text-break">Class EdgeRing
+  </h1>
+  <div class="markdown level0 summary"><p>Represents a ring of <code>PolygonizeDirectedEdge</code>s which form
+a ring of a polygon.  The ring may be either an outer shell or a hole.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">EdgeRing</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Operation.Polygonize.html">NetTopologySuite.Operation.Polygonize</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Operation_Polygonize_EdgeRing_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class EdgeRing</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing__ctor_NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.%23ctor(NetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L110">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing__ctor_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.#ctor*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing__ctor_NetTopologySuite_Geometries_GeometryFactory_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.#ctor(NetTopologySuite.Geometries.GeometryFactory)">EdgeRing(GeometryFactory)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EdgeRing(GeometryFactory factory)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a></td>
+        <td><span class="parametername">factory</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_HasShell.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.HasShell%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L323">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_HasShell_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.HasShell*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_HasShell" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.HasShell">HasShell</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this ring has a shell assigned to it.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasShell { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_IsHole.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.IsHole%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L143">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_IsHole_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.IsHole*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_IsHole" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.IsHole">IsHole</h4>
+  <div class="markdown level1 summary"><p>Tests whether this ring is a hole.
+Due to the way the edges in the polygonization graph are linked,
+a ring is a hole if it is oriented counter-clockwise.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsHole { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if this ring is a hole.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_IsIncluded.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.IsIncluded%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L220">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_IsIncluded_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.IsIncluded*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_IsIncluded" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.IsIncluded">IsIncluded</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsIncluded { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_IsIncludedSet.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.IsIncludedSet%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L218">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_IsIncludedSet_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.IsIncludedSet*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_IsIncludedSet" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.IsIncludedSet">IsIncludedSet</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsIncludedSet { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_IsOuterHole.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.IsOuterHole%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L329">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_IsOuterHole_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.IsOuterHole*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_IsOuterHole" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.IsOuterHole">IsOuterHole</h4>
+  <div class="markdown level1 summary"><p>Tests whether this ring is an outer hole.
+A hole is an outer hole if it is not contained by a shell.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsOuterHole { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_IsOuterShell.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.IsOuterShell%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L341">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_IsOuterShell_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.IsOuterShell*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_IsOuterShell" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.IsOuterShell">IsOuterShell</h4>
+  <div class="markdown level1 summary"><p>Tests whether this ring is an outer shell.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsOuterShell { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_IsProcessed.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.IsProcessed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L394">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_IsProcessed_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.IsProcessed*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_IsProcessed" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.IsProcessed">IsProcessed</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this ring has been processed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsProcessed { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_IsValid.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.IsValid%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L204">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_IsValid_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.IsValid*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_IsValid" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.IsValid">IsValid</h4>
+  <div class="markdown level1 summary"><p>Tests if the <a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a> ring formed by this edge ring is topologically valid.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsValid { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_LineString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.LineString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L258">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_LineString_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.LineString*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_LineString" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.LineString">LineString</h4>
+  <div class="markdown level1 summary"><p>Gets the coordinates for this ring as a <code>LineString</code>.
+Used to return the coordinates in this ring
+as a valid point, when it has been detected that the ring is topologically
+invalid.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LineString LineString { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_OuterHole.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.OuterHole%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L343">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_OuterHole_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.OuterHole*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_OuterHole" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.OuterHole">OuterHole</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EdgeRing OuterHole { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Polygonize.EdgeRing.html">EdgeRing</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_Polygon.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.Polygon%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L184">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_Polygon_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.Polygon*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_Polygon" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.Polygon">Polygon</h4>
+  <div class="markdown level1 summary"><p>Computes and returns the Polygon formed by this ring and any contained holes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Polygon Polygon { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_Ring.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.Ring%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L273">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_Ring_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.Ring*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_Ring" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.Ring">Ring</h4>
+  <div class="markdown level1 summary"><p>Returns this ring as a LinearRing, or null if an Exception occurs while
+creating it (such as a topology problem). Details of problems are written to
+standard output.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LinearRing Ring { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_Shell.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.Shell%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L314">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_Shell_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.Shell*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_Shell" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.Shell">Shell</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating the containing shell ring of a ring that has been determined to be a hole.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EdgeRing Shell { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Polygonize.EdgeRing.html">EdgeRing</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_AddHole_NetTopologySuite_Geometries_LinearRing_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.AddHole(NetTopologySuite.Geometries.LinearRing)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L161">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_AddHole_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.AddHole*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_AddHole_NetTopologySuite_Geometries_LinearRing_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.AddHole(NetTopologySuite.Geometries.LinearRing)">AddHole(LinearRing)</h4>
+  <div class="markdown level1 summary"><p>Adds a hole to the polygon formed by this ring.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddHole(LinearRing hole)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a></td>
+        <td><span class="parametername">hole</span></td>
+        <td><p>The LinearRing forming the hole.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_AddHole_NetTopologySuite_Operation_Polygonize_EdgeRing_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.AddHole(NetTopologySuite.Operation.Polygonize.EdgeRing)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L172">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_AddHole_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.AddHole*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_AddHole_NetTopologySuite_Operation_Polygonize_EdgeRing_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.AddHole(NetTopologySuite.Operation.Polygonize.EdgeRing)">AddHole(EdgeRing)</h4>
+  <div class="markdown level1 summary"><p>Adds a hole to the polygon formed by this ring.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddHole(EdgeRing holeER)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Polygonize.EdgeRing.html">EdgeRing</a></td>
+        <td><span class="parametername">holeER</span></td>
+        <td><p>the <a class="xref" href="NetTopologySuite.Geometries.LinearRing.html">LinearRing</a> forming the hole.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_Build_NetTopologySuite_Operation_Polygonize_PolygonizeDirectedEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.Build(NetTopologySuite.Operation.Polygonize.PolygonizeDirectedEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L115">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_Build_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.Build*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_Build_NetTopologySuite_Operation_Polygonize_PolygonizeDirectedEdge_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.Build(NetTopologySuite.Operation.Polygonize.PolygonizeDirectedEdge)">Build(PolygonizeDirectedEdge)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Build(PolygonizeDirectedEdge startDE)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Polygonize.PolygonizeDirectedEdge.html">PolygonizeDirectedEdge</a></td>
+        <td><span class="parametername">startDE</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_ComputeHole.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.ComputeHole%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L150">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_ComputeHole_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.ComputeHole*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_ComputeHole" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.ComputeHole">ComputeHole()</h4>
+  <div class="markdown level1 summary"><p>Computes whether this ring is a hole.
+Due to the way the edges in the polygonization graph are linked,
+a ring is a hole if it is oriented counter-clockwise.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ComputeHole()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_FindDirEdgesInRing_NetTopologySuite_Operation_Polygonize_PolygonizeDirectedEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.FindDirEdgesInRing(NetTopologySuite.Operation.Polygonize.PolygonizeDirectedEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L77">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_FindDirEdgesInRing_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.FindDirEdgesInRing*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_FindDirEdgesInRing_NetTopologySuite_Operation_Polygonize_PolygonizeDirectedEdge_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.FindDirEdgesInRing(NetTopologySuite.Operation.Polygonize.PolygonizeDirectedEdge)">FindDirEdgesInRing(PolygonizeDirectedEdge)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static List&lt;DirectedEdge&gt; FindDirEdgesInRing(PolygonizeDirectedEdge startDE)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Polygonize.PolygonizeDirectedEdge.html">PolygonizeDirectedEdge</a></td>
+        <td><span class="parametername">startDE</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="NetTopologySuite.Planargraph.DirectedEdge.html">DirectedEdge</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_FindEdgeRingContaining_NetTopologySuite_Operation_Polygonize_EdgeRing_System_Collections_Generic_IList_NetTopologySuite_Operation_Polygonize_EdgeRing__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.FindEdgeRingContaining(NetTopologySuite.Operation.Polygonize.EdgeRing%2CSystem.Collections.Generic.IList%7BNetTopologySuite.Operation.Polygonize.EdgeRing%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L31">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_FindEdgeRingContaining_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.FindEdgeRingContaining*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_FindEdgeRingContaining_NetTopologySuite_Operation_Polygonize_EdgeRing_System_Collections_Generic_IList_NetTopologySuite_Operation_Polygonize_EdgeRing__" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.FindEdgeRingContaining(NetTopologySuite.Operation.Polygonize.EdgeRing,System.Collections.Generic.IList{NetTopologySuite.Operation.Polygonize.EdgeRing})">FindEdgeRingContaining(EdgeRing, IList&lt;EdgeRing&gt;)</h4>
+  <div class="markdown level1 summary"><p>Find the innermost enclosing shell EdgeRing containing the argument EdgeRing, if any.
+The innermost enclosing ring is the <em>smallest</em> enclosing ring.
+The algorithm used depends on the fact that:
+ring A contains ring B iff envelope(ring A) contains envelope(ring B).
+This routine is only safe to use if the chosen point of the hole
+is known to be properly contained in a shell
+(which is guaranteed to be the case if the hole does not touch its shell).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IList&lt;EdgeRing&gt; shellList)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Polygonize.EdgeRing.html">EdgeRing</a></td>
+        <td><span class="parametername">testEr</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="NetTopologySuite.Operation.Polygonize.EdgeRing.html">EdgeRing</a>&gt;</td>
+        <td><span class="parametername">shellList</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Polygonize.EdgeRing.html">EdgeRing</a></td>
+        <td><p>Containing EdgeRing, if there is one <br>
+or <returns>null</returns> if no containing EdgeRing is found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing_ToString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L386">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_EdgeRing_ToString_" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.ToString*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_EdgeRing_ToString" data-uid="NetTopologySuite.Operation.Polygonize.EdgeRing.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Gets a string representation of this object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_EdgeRing.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.EdgeRing%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Polygonize/EdgeRing.cs/#L16" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

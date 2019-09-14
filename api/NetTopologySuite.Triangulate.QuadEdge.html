@@ -1,0 +1,219 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NetTopologySuite.Triangulate.QuadEdge
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NetTopologySuite.Triangulate.QuadEdge
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Triangulate.QuadEdge">
+  
+  <h1 id="NetTopologySuite_Triangulate_QuadEdge" data-uid="NetTopologySuite.Triangulate.QuadEdge" class="text-break">Namespace NetTopologySuite.Triangulate.QuadEdge
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.EdgeConnectedTriangleTraversal.html">EdgeConnectedTriangleTraversal</a></h4>
+      <section><p>A framework to visit sets of edge-connected <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdgeTriangle.html">QuadEdgeTriangle</a>s in breadth-first order</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.LastFoundQuadEdgeLocator.html">LastFoundQuadEdgeLocator</a></h4>
+      <section><p>Locates <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.html">QuadEdge</a>s in a <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdgeSubdivision.html">QuadEdgeSubdivision</a>,
+optimizing the search by starting in the
+locality of the last edge found.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.LocateFailureException.html">LocateFailureException</a></h4>
+      <section></section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.html">QuadEdge</a></h4>
+      <section><p>A class that represents the edge data structure which implements the quadedge algebra.
+The quadedge algebra was described in a well-known paper by Guibas and Stolfi,
+&quot;Primitives for the manipulation of general subdivisions and the computation of Voronoi diagrams&quot;,
+<em>ACM Transactions on Graphics</em>, 4(2), 1985, 75-123.</p>
+<p>
+Each edge object is part of a quartet of 4 edges,
+linked via their <tt>Rot</tt> references.
+Any edge in the group may be accessed using a series of <span class="xref">NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Rot</span> operations.
+Quadedges in a subdivision are linked together via their <tt>Next</tt> references.
+The linkage between the quadedge quartets determines the topology
+of the subdivision.
+</p>
+<p>
+The edge class does not contain separate information for vertices or faces; a vertex is implicitly
+defined as a ring of edges (created using the <tt>Next</tt> field).
+</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdgeSubdivision.html">QuadEdgeSubdivision</a></h4>
+      <section><p>A class that contains the <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.html">QuadEdge</a>s representing a planar
+subdivision that models a triangulation.
+The subdivision is constructed using the
+quadedge algebra defined in the class <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.html">QuadEdge</a>.
+All metric calculations
+are done in the <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a> class.
+In addition to a triangulation, subdivisions
+support extraction of Voronoi diagrams.
+This is easily accomplished, since the Voronoi diagram is the dual
+of the Delaunay triangulation.</p>
+<p>
+Subdivisions can be provided with a tolerance value. Inserted vertices which
+are closer than this value to vertices already in the subdivision will be
+ignored. Using a suitable tolerance value can prevent robustness failures
+from happening during Delaunay triangulation.
+</p>
+<p>
+Subdivisions maintain a <strong>frame</strong> triangle around the client-created
+edges. The frame is used to provide a bounded &quot;container&quot; for all edges
+within a TIN. Normally the frame edges, frame connecting edges, and frame
+triangles are not included in client processing.
+</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdgeTriangle.html">QuadEdgeTriangle</a></h4>
+      <section><p>Models a triangle formed from <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.html">QuadEdge</a>s in a <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdgeSubdivision.html">QuadEdgeSubdivision</a>
+which forms a triangulation. The class provides methods to access the
+topological and geometric properties of the triangle and its neighbours in
+the triangulation. Triangle vertices are ordered in CCW orientation in the
+structure.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdgeUtil.html">QuadEdgeUtil</a></h4>
+      <section></section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.TrianglePredicate.html">TrianglePredicate</a></h4>
+      <section><p>Algorithms for computing values and predicates
+associated with triangles.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></h4>
+      <section><p>Models a site (node) in a <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdgeSubdivision.html">QuadEdgeSubdivision</a>.
+The sites can be points on a line string representing a
+linear site.<p>
+The vertex can be considered as a vector with a norm, length, inner product, cross
+product, etc. Additionally, point relations (e.g., is a point to the left of a line, the circle
+defined by this point and two others, etc.) are also defined in this class.</p>
+<p>
+It is common to want to attach user-defined data to
+the vertices of a subdivision.
+One way to do this is to subclass <tt>Vertex</tt>
+to carry any desired information.
+</section>
+    <h3 id="interfaces">Interfaces
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.IQuadEdgeLocator.html">IQuadEdgeLocator</a></h4>
+      <section><p>An interface for classes which locate an edge in a <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdgeSubdivision.html">QuadEdgeSubdivision</a>
+which either contains a given <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a> V
+or is an edge of a triangle which contains V.
+Implementors may utilized different strategies for
+optimizing locating containing edges/triangles.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.ITraversalVisitor.html">ITraversalVisitor</a></h4>
+      <section><p>Interface for classes which process triangles visited during traversals of a
+<a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdgeSubdivision.html">QuadEdgeSubdivision</a></p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.ITriangleVisitor.html">ITriangleVisitor</a></h4>
+      <section><p>An interface for algorithms which process the triangles in a <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdgeSubdivision.html">QuadEdgeSubdivision</a>.</p>
+</section>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,336 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class InteriorIntersectionFinderAdder
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class InteriorIntersectionFinderAdder
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Noding.InteriorIntersectionFinderAdder">
+  
+  
+  <h1 id="NetTopologySuite_Noding_InteriorIntersectionFinderAdder" data-uid="NetTopologySuite.Noding.InteriorIntersectionFinderAdder" class="text-break">Class InteriorIntersectionFinderAdder
+  </h1>
+  <div class="markdown level0 summary"><p>Finds <strong>interior</strong> intersections
+between line segments in <a class="xref" href="NetTopologySuite.Noding.NodedSegmentString.html">NodedSegmentString</a>s,
+and adds them as nodes
+using <a class="xref" href="NetTopologySuite.Noding.NodedSegmentString.html#NetTopologySuite_Noding_NodedSegmentString_AddIntersection_NetTopologySuite_Algorithm_LineIntersector_System_Int32_System_Int32_System_Int32_">AddIntersection(LineIntersector, Int32, Int32, Int32)</a>.
+This class is used primarily for Snap-Rounding.
+For general-purpose noding, use <a class="xref" href="NetTopologySuite.Noding.IntersectionAdder.html">IntersectionAdder</a>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">InteriorIntersectionFinderAdder</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="NetTopologySuite.Noding.ISegmentIntersector.html">ISegmentIntersector</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Noding.html">NetTopologySuite.Noding</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Noding_InteriorIntersectionFinderAdder_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class InteriorIntersectionFinderAdder : ISegmentIntersector</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Noding_InteriorIntersectionFinderAdder__ctor_NetTopologySuite_Algorithm_LineIntersector_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.InteriorIntersectionFinderAdder.%23ctor(NetTopologySuite.Algorithm.LineIntersector)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Noding/InteriorIntersectionFinderAdder.cs/#L25">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_InteriorIntersectionFinderAdder__ctor_" data-uid="NetTopologySuite.Noding.InteriorIntersectionFinderAdder.#ctor*"></a>
+  <h4 id="NetTopologySuite_Noding_InteriorIntersectionFinderAdder__ctor_NetTopologySuite_Algorithm_LineIntersector_" data-uid="NetTopologySuite.Noding.InteriorIntersectionFinderAdder.#ctor(NetTopologySuite.Algorithm.LineIntersector)">InteriorIntersectionFinderAdder(LineIntersector)</h4>
+  <div class="markdown level1 summary"><p>Creates an intersection finder which finds all proper intersections.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public InteriorIntersectionFinderAdder(LineIntersector li)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Algorithm.LineIntersector.html">LineIntersector</a></td>
+        <td><span class="parametername">li</span></td>
+        <td><p>The <a class="xref" href="NetTopologySuite.Algorithm.LineIntersector.html">LineIntersector</a> to use.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Noding_InteriorIntersectionFinderAdder_InteriorIntersections.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.InteriorIntersectionFinderAdder.InteriorIntersections%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Noding/InteriorIntersectionFinderAdder.cs/#L34">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_InteriorIntersectionFinderAdder_InteriorIntersections_" data-uid="NetTopologySuite.Noding.InteriorIntersectionFinderAdder.InteriorIntersections*"></a>
+  <h4 id="NetTopologySuite_Noding_InteriorIntersectionFinderAdder_InteriorIntersections" data-uid="NetTopologySuite.Noding.InteriorIntersectionFinderAdder.InteriorIntersections">InteriorIntersections</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IList&lt;Coordinate&gt; InteriorIntersections { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Noding_InteriorIntersectionFinderAdder_IsDone.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.InteriorIntersectionFinderAdder.IsDone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Noding/InteriorIntersectionFinderAdder.cs/#L76">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_InteriorIntersectionFinderAdder_IsDone_" data-uid="NetTopologySuite.Noding.InteriorIntersectionFinderAdder.IsDone*"></a>
+  <h4 id="NetTopologySuite_Noding_InteriorIntersectionFinderAdder_IsDone" data-uid="NetTopologySuite.Noding.InteriorIntersectionFinderAdder.IsDone">IsDone</h4>
+  <div class="markdown level1 summary"><p>Always process all intersections</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDone { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Noding_InteriorIntersectionFinderAdder_ProcessIntersections_NetTopologySuite_Noding_ISegmentString_System_Int32_NetTopologySuite_Noding_ISegmentString_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.InteriorIntersectionFinderAdder.ProcessIntersections(NetTopologySuite.Noding.ISegmentString%2CSystem.Int32%2CNetTopologySuite.Noding.ISegmentString%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Noding/InteriorIntersectionFinderAdder.cs/#L48">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Noding_InteriorIntersectionFinderAdder_ProcessIntersections_" data-uid="NetTopologySuite.Noding.InteriorIntersectionFinderAdder.ProcessIntersections*"></a>
+  <h4 id="NetTopologySuite_Noding_InteriorIntersectionFinderAdder_ProcessIntersections_NetTopologySuite_Noding_ISegmentString_System_Int32_NetTopologySuite_Noding_ISegmentString_System_Int32_" data-uid="NetTopologySuite.Noding.InteriorIntersectionFinderAdder.ProcessIntersections(NetTopologySuite.Noding.ISegmentString,System.Int32,NetTopologySuite.Noding.ISegmentString,System.Int32)">ProcessIntersections(ISegmentString, Int32, ISegmentString, Int32)</h4>
+  <div class="markdown level1 summary"><p>This method is called by clients
+of the <a class="xref" href="NetTopologySuite.Noding.ISegmentIntersector.html">ISegmentIntersector</a> class to process
+intersections for two segments of the <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s being intersected.<br>
+Note that some clients (such as <code>MonotoneChain</code>s) may optimize away
+this call for segment pairs which they have determined do not intersect
+(e.g. by an disjoint envelope test).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ProcessIntersections(ISegmentString e0, int segIndex0, ISegmentString e1, int segIndex1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a></td>
+        <td><span class="parametername">e0</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">segIndex0</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a></td>
+        <td><span class="parametername">e1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">segIndex1</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="NetTopologySuite.Noding.ISegmentIntersector.html">ISegmentIntersector</a>
+  </div>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="NetTopologySuite.Noding.IntersectionAdder.html">IntersectionAdder</a></div>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Noding_InteriorIntersectionFinderAdder.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.InteriorIntersectionFinderAdder%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Noding/InteriorIntersectionFinderAdder.cs/#L16" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

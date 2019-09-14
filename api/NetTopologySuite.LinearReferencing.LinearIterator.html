@@ -1,0 +1,629 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class LinearIterator
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class LinearIterator
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.LinearReferencing.LinearIterator">
+  
+  
+  <h1 id="NetTopologySuite_LinearReferencing_LinearIterator" data-uid="NetTopologySuite.LinearReferencing.LinearIterator" class="text-break">Class LinearIterator
+  </h1>
+  <div class="markdown level0 summary"><p>An iterator over the components and coordinates of a linear geometry
+(<a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>s and <a class="xref" href="NetTopologySuite.Geometries.MultiLineString.html">MultiLineString</a>s.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">LinearIterator</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.LinearReferencing.html">NetTopologySuite.LinearReferencing</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_LinearReferencing_LinearIterator_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class LinearIterator</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_LinearReferencing_LinearIterator__ctor_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.LinearReferencing.LinearIterator.%23ctor(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/LinearReferencing/LinearIterator.cs/#L52">View Source</a>
+  </span>
+  <a id="NetTopologySuite_LinearReferencing_LinearIterator__ctor_" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.#ctor*"></a>
+  <h4 id="NetTopologySuite_LinearReferencing_LinearIterator__ctor_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.#ctor(NetTopologySuite.Geometries.Geometry)">LinearIterator(Geometry)</h4>
+  <div class="markdown level1 summary"><p>Creates an iterator initialized to the start of a linear <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LinearIterator(Geometry linearGeom)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">linearGeom</span></td>
+        <td><p>The linear geometry to iterate over.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>if <code data-dev-comment-type="paramref" class="paramref">linearGeom</code> is not <a class="xref" href="NetTopologySuite.Geometries.ILineal.html">ILineal</a></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_LinearReferencing_LinearIterator__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_LinearReferencing_LinearLocation_.md&amp;value=---%0Auid%3A%20NetTopologySuite.LinearReferencing.LinearIterator.%23ctor(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.LinearReferencing.LinearLocation)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/LinearReferencing/LinearIterator.cs/#L60">View Source</a>
+  </span>
+  <a id="NetTopologySuite_LinearReferencing_LinearIterator__ctor_" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.#ctor*"></a>
+  <h4 id="NetTopologySuite_LinearReferencing_LinearIterator__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_LinearReferencing_LinearLocation_" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.#ctor(NetTopologySuite.Geometries.Geometry,NetTopologySuite.LinearReferencing.LinearLocation)">LinearIterator(Geometry, LinearLocation)</h4>
+  <div class="markdown level1 summary"><p>Creates an iterator starting at a <a class="xref" href="NetTopologySuite.LinearReferencing.LinearLocation.html">LinearLocation</a> on a linear <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LinearIterator(Geometry linearGeom, LinearLocation start)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">linearGeom</span></td>
+        <td><p>The linear geometry to iterate over.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.LinearReferencing.LinearLocation.html">LinearLocation</a></td>
+        <td><span class="parametername">start</span></td>
+        <td><p>The location to start at.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>if <code data-dev-comment-type="paramref" class="paramref">linearGeom</code> is not <a class="xref" href="NetTopologySuite.Geometries.ILineal.html">ILineal</a></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_LinearReferencing_LinearIterator__ctor_NetTopologySuite_Geometries_Geometry_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.LinearReferencing.LinearIterator.%23ctor(NetTopologySuite.Geometries.Geometry%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/LinearReferencing/LinearIterator.cs/#L71">View Source</a>
+  </span>
+  <a id="NetTopologySuite_LinearReferencing_LinearIterator__ctor_" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.#ctor*"></a>
+  <h4 id="NetTopologySuite_LinearReferencing_LinearIterator__ctor_NetTopologySuite_Geometries_Geometry_System_Int32_System_Int32_" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.#ctor(NetTopologySuite.Geometries.Geometry,System.Int32,System.Int32)">LinearIterator(Geometry, Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates an iterator starting at
+a component and vertex in a linear <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LinearIterator(Geometry linearGeom, int componentIndex, int vertexIndex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">linearGeom</span></td>
+        <td><p>The linear geometry to iterate over.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">componentIndex</span></td>
+        <td><p>The component to start at.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">vertexIndex</span></td>
+        <td><p>The vertex to start at.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>if <code data-dev-comment-type="paramref" class="paramref">linearGeom</code> is not <a class="xref" href="NetTopologySuite.Geometries.ILineal.html">ILineal</a></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_LinearReferencing_LinearIterator_ComponentIndex.md&amp;value=---%0Auid%3A%20NetTopologySuite.LinearReferencing.LinearIterator.ComponentIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/LinearReferencing/LinearIterator.cs/#L150">View Source</a>
+  </span>
+  <a id="NetTopologySuite_LinearReferencing_LinearIterator_ComponentIndex_" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.ComponentIndex*"></a>
+  <h4 id="NetTopologySuite_LinearReferencing_LinearIterator_ComponentIndex" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.ComponentIndex">ComponentIndex</h4>
+  <div class="markdown level1 summary"><p>The component index of the vertex the iterator is currently at.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ComponentIndex { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_LinearReferencing_LinearIterator_IsEndOfLine.md&amp;value=---%0Auid%3A%20NetTopologySuite.LinearReferencing.LinearIterator.IsEndOfLine%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/LinearReferencing/LinearIterator.cs/#L135">View Source</a>
+  </span>
+  <a id="NetTopologySuite_LinearReferencing_LinearIterator_IsEndOfLine_" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.IsEndOfLine*"></a>
+  <h4 id="NetTopologySuite_LinearReferencing_LinearIterator_IsEndOfLine" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.IsEndOfLine">IsEndOfLine</h4>
+  <div class="markdown level1 summary"><p>Checks whether the iterator cursor is pointing to the
+endpoint of a component <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsEndOfLine { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_LinearReferencing_LinearIterator_Line.md&amp;value=---%0Auid%3A%20NetTopologySuite.LinearReferencing.LinearIterator.Line%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/LinearReferencing/LinearIterator.cs/#L160">View Source</a>
+  </span>
+  <a id="NetTopologySuite_LinearReferencing_LinearIterator_Line_" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.Line*"></a>
+  <h4 id="NetTopologySuite_LinearReferencing_LinearIterator_Line" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.Line">Line</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a> component the iterator is current at.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LineString Line { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_LinearReferencing_LinearIterator_SegmentEnd.md&amp;value=---%0Auid%3A%20NetTopologySuite.LinearReferencing.LinearIterator.SegmentEnd%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/LinearReferencing/LinearIterator.cs/#L173">View Source</a>
+  </span>
+  <a id="NetTopologySuite_LinearReferencing_LinearIterator_SegmentEnd_" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.SegmentEnd*"></a>
+  <h4 id="NetTopologySuite_LinearReferencing_LinearIterator_SegmentEnd" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.SegmentEnd">SegmentEnd</h4>
+  <div class="markdown level1 summary"><p>Gets the second <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a> of the current segment
+(the coordinate of the next vertex).
+If the iterator is at the end of a line, <code>null</code> is returned.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Coordinate SegmentEnd { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_LinearReferencing_LinearIterator_SegmentStart.md&amp;value=---%0Auid%3A%20NetTopologySuite.LinearReferencing.LinearIterator.SegmentStart%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/LinearReferencing/LinearIterator.cs/#L166">View Source</a>
+  </span>
+  <a id="NetTopologySuite_LinearReferencing_LinearIterator_SegmentStart_" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.SegmentStart*"></a>
+  <h4 id="NetTopologySuite_LinearReferencing_LinearIterator_SegmentStart" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.SegmentStart">SegmentStart</h4>
+  <div class="markdown level1 summary"><p>Gets the first <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a> of the current segment
+(the coordinate of the current vertex).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Coordinate SegmentStart { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_LinearReferencing_LinearIterator_VertexIndex.md&amp;value=---%0Auid%3A%20NetTopologySuite.LinearReferencing.LinearIterator.VertexIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/LinearReferencing/LinearIterator.cs/#L155">View Source</a>
+  </span>
+  <a id="NetTopologySuite_LinearReferencing_LinearIterator_VertexIndex_" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.VertexIndex*"></a>
+  <h4 id="NetTopologySuite_LinearReferencing_LinearIterator_VertexIndex" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.VertexIndex">VertexIndex</h4>
+  <div class="markdown level1 summary"><p>The vertex index of the vertex the iterator is currently at.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int VertexIndex { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_LinearReferencing_LinearIterator_HasNext.md&amp;value=---%0Auid%3A%20NetTopologySuite.LinearReferencing.LinearIterator.HasNext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/LinearReferencing/LinearIterator.cs/#L104">View Source</a>
+  </span>
+  <a id="NetTopologySuite_LinearReferencing_LinearIterator_HasNext_" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.HasNext*"></a>
+  <h4 id="NetTopologySuite_LinearReferencing_LinearIterator_HasNext" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.HasNext">HasNext()</h4>
+  <div class="markdown level1 summary"><p>Tests whether there are any vertices left to iterator over.
+Specifically, <code>HasNext()</code> returns <tt>true</tt> if the
+current state of the iterator represents a valid location
+on the linear geometry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasNext()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if there are more vertices to scan.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_LinearReferencing_LinearIterator_Next.md&amp;value=---%0Auid%3A%20NetTopologySuite.LinearReferencing.LinearIterator.Next%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/LinearReferencing/LinearIterator.cs/#L117">View Source</a>
+  </span>
+  <a id="NetTopologySuite_LinearReferencing_LinearIterator_Next_" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.Next*"></a>
+  <h4 id="NetTopologySuite_LinearReferencing_LinearIterator_Next" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.Next">Next()</h4>
+  <div class="markdown level1 summary"><p>Jump to the next element of the iteration.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Next()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_LinearReferencing_LinearIterator_SegmentEndVertexIndex_NetTopologySuite_LinearReferencing_LinearLocation_.md&amp;value=---%0Auid%3A%20NetTopologySuite.LinearReferencing.LinearIterator.SegmentEndVertexIndex(NetTopologySuite.LinearReferencing.LinearLocation)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/LinearReferencing/LinearIterator.cs/#L20">View Source</a>
+  </span>
+  <a id="NetTopologySuite_LinearReferencing_LinearIterator_SegmentEndVertexIndex_" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.SegmentEndVertexIndex*"></a>
+  <h4 id="NetTopologySuite_LinearReferencing_LinearIterator_SegmentEndVertexIndex_NetTopologySuite_LinearReferencing_LinearLocation_" data-uid="NetTopologySuite.LinearReferencing.LinearIterator.SegmentEndVertexIndex(NetTopologySuite.LinearReferencing.LinearLocation)">SegmentEndVertexIndex(LinearLocation)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int SegmentEndVertexIndex(LinearLocation loc)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.LinearReferencing.LinearLocation.html">LinearLocation</a></td>
+        <td><span class="parametername">loc</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_LinearReferencing_LinearIterator.md&amp;value=---%0Auid%3A%20NetTopologySuite.LinearReferencing.LinearIterator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/LinearReferencing/LinearIterator.cs/#L12" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

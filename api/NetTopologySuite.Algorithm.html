@@ -1,0 +1,321 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NetTopologySuite.Algorithm
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NetTopologySuite.Algorithm
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Algorithm">
+  
+  <h1 id="NetTopologySuite_Algorithm" data-uid="NetTopologySuite.Algorithm" class="text-break">Namespace NetTopologySuite.Algorithm
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.AngleUtility.html">AngleUtility</a></h4>
+      <section><p>Utility functions for working with angles.
+Unless otherwise noted, methods in this class express angles in radians.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.Area.html">Area</a></h4>
+      <section><p>Functions for computing area.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.BoundaryNodeRules.html">BoundaryNodeRules</a></h4>
+      <section><p>Provides access to static instances of common <a class="xref" href="NetTopologySuite.Algorithm.IBoundaryNodeRule.html">IBoundaryNodeRule</a>s.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.Centroid.html">Centroid</a></h4>
+      <section><p>Computes the centroid of a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> of any dimension.
+If the geometry is nominally of higher dimension,
+but has lower <em>effective</em> dimension
+(i.e. contains only components
+having zero length or area),
+the centroid will be computed as for the equivalent lower-dimension geometry.
+If the input geometry is empty, a
+<code>null</code> Coordinate is returned.</p>
+<h2>Algorithm</h2>
+<p>If the input geometries are empty, a <code>null</code> Coordinate is returned.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.CGAlgorithms3D.html">CGAlgorithms3D</a></h4>
+      <section><p>Basic computational geometry algorithms
+for geometry and coordinates defined in 3-dimensional Cartesian space.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.CGAlgorithmsDD.html">CGAlgorithmsDD</a></h4>
+      <section><p>Implements basic computational geometry algorithms using <a class="xref" href="NetTopologySuite.Mathematics.DD.html">DD</a> arithmetic.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.ConvexHull.html">ConvexHull</a></h4>
+      <section><p>Computes the convex hull of a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.
+The convex hull is the smallest convex Geometry that contains all the
+points in the input Geometry.
+Uses the Graham Scan algorithm.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.DistanceComputer.html">DistanceComputer</a></h4>
+      <section><p>Functions to compute distance between basic geometric structures.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.HCoordinate.html">HCoordinate</a></h4>
+      <section><p>Represents a homogeneous coordinate in a 2-D coordinate space.
+In NTS <a class="xref" href="NetTopologySuite.Algorithm.HCoordinate.html">HCoordinate</a>s are used as a clean way
+of computing intersections between line segments.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.InteriorPoint.html">InteriorPoint</a></h4>
+      <section><p>Computes an interior point of a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.
+An interior point is guaranteed to lie in the interior of the Geometry,
+if it possible to calculate such a point exactly.
+Otherwise, the point may lie on the boundary of the geometry.</p>
+<p>
+The interior point of an empty geometry is <pre><code>POINT EMPTY</code></pre>.
+</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.InteriorPointArea.html">InteriorPointArea</a></h4>
+      <section><p>Computes a point in the interior of an areal geometry.
+The point will lie in the geometry interior
+in all except certain pathological cases.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.InteriorPointLine.html">InteriorPointLine</a></h4>
+      <section><p>Computes a point in the interior of an linear point.
+Algorithm:
+Find an interior vertex which is closest to
+the centroid of the linestring.
+If there is no interior vertex, find the endpoint which is
+closest to the centroid.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.InteriorPointPoint.html">InteriorPointPoint</a></h4>
+      <section><p>Computes a point in the interior of an point point.
+Algorithm:
+Find a point which is closest to the centroid of the point.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.Length.html">Length</a></h4>
+      <section><p>Functions for computing length.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.LineIntersector.html">LineIntersector</a></h4>
+      <section><p>A <code>LineIntersector</code> is an algorithm that can both test whether
+two line segments intersect and compute the intersection point(s)
+if they do.</p>
+<p>
+There are three possible outcomes when determining whether two line segments intersect:
+<ul><li></li><li></li><li></li></ul>
+</p>
+<p>
+For segments which intersect in a single point, the point may be either an endpoint
+or in the interior of each segment.
+If the point lies in the interior of both segments,
+this is termed a <em>proper intersection</em>.
+The property <a class="xref" href="NetTopologySuite.Algorithm.LineIntersector.html#NetTopologySuite_Algorithm_LineIntersector_IsProper">IsProper</a> test for this situation.
+</p><p>
+The intersection point(s) may be computed in a precise or non-precise manner.
+Computing an intersection point precisely involves rounding it
+via a supplied <a class="xref" href="NetTopologySuite.Algorithm.LineIntersector.html#NetTopologySuite_Algorithm_LineIntersector_PrecisionModel">PrecisionModel</a>.
+</p><p>
+LineIntersectors do not perform an initial envelope intersection test
+to determine if the segments are disjoint.
+This is because this class is likely to be used in a context where
+envelope overlap is already known to occur (or be likely).
+</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.MinimumBoundingCircle.html">MinimumBoundingCircle</a></h4>
+      <section><p>Computes the <strong>Minimum Bounding Circle</strong> (MBC) for the points in a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.
+The MBC is the smallest circle which <tt>cover</tt>s all the input points
+(this is also sometimes known as the <strong>Smallest Enclosing Circle</strong>).
+This is equivalent to computing the Maximum Diameter of the input point set.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.MinimumDiameter.html">MinimumDiameter</a></h4>
+      <section><p>Computes the minimum diameter of a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.NotRepresentableException.html">NotRepresentableException</a></h4>
+      <section></section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.Orientation.html">Orientation</a></h4>
+      <section><p>Functions to compute the orientation of basic geometric structures
+including point triplets(triangles) and rings.
+Orientation is a fundamental property of planar geometries
+(and more generally geometry on two-dimensional manifolds).</p>
+<p>
+Orientation is notoriously subject to numerical precision errors
+in the case of collinear or nearly collinear points.
+NTS uses extended-precision arithmetic to increase
+the robustness of the computation.
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.PointLocation.html">PointLocation</a></h4>
+      <section><p>Functions for locating points within basic geometric
+structures such as lines and rings.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.PointLocator.html">PointLocator</a></h4>
+      <section><p>Computes the topological relationship (<a class="xref" href="NetTopologySuite.Geometries.Location.html">Location</a>) of a single point to a Geometry.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.RayCrossingCounter.html">RayCrossingCounter</a></h4>
+      <section><p>Counts the number of segments crossed by a horizontal ray extending to the right
+from a given point, in an incremental fashion.</p>
+<p>This can be used to determine whether a point lies in a <a class="xref" href="NetTopologySuite.Geometries.IPolygonal.html">IPolygonal</a> geometry.</p>
+<p>The class determines the situation where the point lies exactly on a segment.</p>
+<p>When being used for Point-In-Polygon determination, this case allows short-circuiting the evaluation.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.RectangleLineIntersector.html">RectangleLineIntersector</a></h4>
+      <section><p>Computes whether a rectangle intersects line segments.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.RobustDeterminant.html">RobustDeterminant</a></h4>
+      <section><p>Implements an algorithm to compute the
+sign of a 2x2 determinant for double precision values robustly.
+It is a direct translation of code developed by Olivier Devillers.</p>
+<p>The original code carries the following copyright notice:</p>
+<hr>
+<p>Author : Olivier Devillers
+Olivier.Devillers@sophia.inria.fr
+http:/www.inria.fr:/prisme/personnel/devillers/anglais/determinant.html</p>
+<p>Olivier Devillers has allowed the code to be distributed under
+the LGPL (2012-02-16) saying &quot;It is ok for LGPL distribution.&quot;</p>
+<hr>
+<hr>
+<p>Copyright (c) 1995  by  INRIA Prisme Project
+BP 93 06902 Sophia Antipolis Cedex, France.
+All rights reserved</p>
+<hr>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.RobustLineIntersector.html">RobustLineIntersector</a></h4>
+      <section><p>A robust version of <a class="xref" href="NetTopologySuite.Algorithm.LineIntersector.html">LineIntersector</a>.</p>
+</section>
+    <h3 id="interfaces">Interfaces
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.IBoundaryNodeRule.html">IBoundaryNodeRule</a></h4>
+      <section><p>An interface for rules which determine whether node points
+which are in boundaries of <a class="xref" href="NetTopologySuite.Geometries.ILineal.html">ILineal</a> geometry components
+are in the boundary of the parent geometry collection.
+The SFS specifies a single kind of boundary node rule,
+the <span class="xref">NetTopologySuite.Algorithm.BoundaryNodeRules.Mod2BoundaryNodeRule</span> rule.
+However, other kinds of Boundary Node Rules are appropriate
+in specific situations (for instance, linear network topology
+usually follows the <span class="xref">NetTopologySuite.Algorithm.BoundaryNodeRules.EndPointBoundaryNodeRule</span>.)
+Some JTS operations
+(such as <a class="xref" href="NetTopologySuite.Operation.Relate.RelateOp.html">RelateOp</a>, <a class="xref" href="NetTopologySuite.Operation.BoundaryOp.html">BoundaryOp</a> and <a class="xref" href="NetTopologySuite.Operation.IsSimpleOp.html">IsSimpleOp</a>)
+allow the BoundaryNodeRule to be specified,
+and respect the supplied rule when computing the results of the operation.</p>
+<p>
+An example use case for a non-SFS-standard Boundary Node Rule is
+that of checking that a set of <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>s have
+valid linear network topology, when turn-arounds are represented
+as closed rings.  In this situation, the entry road to the
+turn-around is only valid when it touches the turn-around ring
+at the single (common) endpoint.  This is equivalent
+to requiring the set of <tt>LineString</tt>s to be
+<strong>simple</strong> under the <span class="xref">NetTopologySuite.Algorithm.BoundaryNodeRules.EndPointBoundaryNodeRule</span>.
+The SFS-standard <span class="xref">NetTopologySuite.Algorithm.BoundaryNodeRules.Mod2BoundaryNodeRule</span> is not
+sufficient to perform this test, since it
+states that closed rings have <strong>no</strong> boundary points.
+<p>
+This interface and its subclasses follow the <tt>Strategy</tt> design pattern.
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.IPointInAreaLocator.html">IPointInAreaLocator</a></h4>
+      <section><p>An interface for classes which determine the <a class="xref" href="NetTopologySuite.Geometries.Location.html">Location</a> of points in a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></p>
+</section>
+    <h3 id="enums">Enums
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.Algorithm.OrientationIndex.html">OrientationIndex</a></h4>
+      <section><p>Angle orientation</p>
+</section>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

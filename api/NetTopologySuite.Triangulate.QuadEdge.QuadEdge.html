@@ -1,0 +1,801 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class QuadEdge
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class QuadEdge
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge">
+  
+  
+  <h1 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge" class="text-break">Class QuadEdge
+  </h1>
+  <div class="markdown level0 summary"><p>A class that represents the edge data structure which implements the quadedge algebra.
+The quadedge algebra was described in a well-known paper by Guibas and Stolfi,
+&quot;Primitives for the manipulation of general subdivisions and the computation of Voronoi diagrams&quot;,
+<em>ACM Transactions on Graphics</em>, 4(2), 1985, 75-123.</p>
+<p>
+Each edge object is part of a quartet of 4 edges,
+linked via their <tt>Rot</tt> references.
+Any edge in the group may be accessed using a series of <span class="xref">NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Rot</span> operations.
+Quadedges in a subdivision are linked together via their <tt>Next</tt> references.
+The linkage between the quadedge quartets determines the topology
+of the subdivision.
+</p>
+<p>
+The edge class does not contain separate information for vertices or faces; a vertex is implicitly
+defined as a ring of edges (created using the <tt>Next</tt> field).
+</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">QuadEdge</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.html">NetTopologySuite.Triangulate.QuadEdge</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class QuadEdge</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Data.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Data%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Triangulate/QuadEdge/QuadEdge.cs/#L149">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Data_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Data*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Data" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Data">Data</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the external data value for this edge.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object Data { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Data_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>an object containing external data</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Dest.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Dest%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Triangulate/QuadEdge/QuadEdge.cs/#L288">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Dest_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Dest*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Dest" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Dest">Dest</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the vertex for the edge's destination</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vertex Dest { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Dest_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Gets the destination vertex</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_QuadEdge_IsLive.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.QuadEdge.IsLive%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Triangulate/QuadEdge/QuadEdge.cs/#L167">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_IsLive_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.IsLive*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_IsLive" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.IsLive">IsLive</h4>
+  <div class="markdown level1 summary"><p>Tests whether this edge has been deleted.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsLive { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if this edge has not been deleted.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Length.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Length%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Triangulate/QuadEdge/QuadEdge.cs/#L298">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Length_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Length*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Length" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Length">Length</h4>
+  <div class="markdown level1 summary"><p>Gets the length of the geometry of this quadedge.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Length { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Length_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Gets the length of the quadedge</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Orig.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Orig%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Triangulate/QuadEdge/QuadEdge.cs/#L278">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Orig_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Orig*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Orig" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Orig">Orig</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the vertex for the edge's origin</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vertex Orig { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Orig_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Gets the origin vertex</p>
+</div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Connect_NetTopologySuite_Triangulate_QuadEdge_QuadEdge_NetTopologySuite_Triangulate_QuadEdge_QuadEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Connect(NetTopologySuite.Triangulate.QuadEdge.QuadEdge%2CNetTopologySuite.Triangulate.QuadEdge.QuadEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Triangulate/QuadEdge/QuadEdge.cs/#L64">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Connect_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Connect*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Connect_NetTopologySuite_Triangulate_QuadEdge_QuadEdge_NetTopologySuite_Triangulate_QuadEdge_QuadEdge_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Connect(NetTopologySuite.Triangulate.QuadEdge.QuadEdge,NetTopologySuite.Triangulate.QuadEdge.QuadEdge)">Connect(QuadEdge, QuadEdge)</h4>
+  <div class="markdown level1 summary"><p>Creates a new QuadEdge connecting the destination of a to the origin of
+b, in such a way that all three have the same left face after the
+connection is complete. Additionally, the data pointers of the new edge
+are set.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static QuadEdge Connect(QuadEdge a, QuadEdge b)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.html">QuadEdge</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.html">QuadEdge</a></td>
+        <td><span class="parametername">b</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.html">QuadEdge</a></td>
+        <td><p>the connected edge</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Delete.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Delete%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Triangulate/QuadEdge/QuadEdge.cs/#L158">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Delete_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Delete*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Delete" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Delete">Delete()</h4>
+  <div class="markdown level1 summary"><p>Marks this quadedge as being deleted.
+This does not free the memory used by
+this quadedge quartet, but indicates
+that this edge no longer participates
+in a subdivision.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Delete()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_QuadEdge_EqualsNonOriented_NetTopologySuite_Triangulate_QuadEdge_QuadEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.QuadEdge.EqualsNonOriented(NetTopologySuite.Triangulate.QuadEdge.QuadEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Triangulate/QuadEdge/QuadEdge.cs/#L306">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_EqualsNonOriented_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.EqualsNonOriented*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_EqualsNonOriented_NetTopologySuite_Triangulate_QuadEdge_QuadEdge_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.EqualsNonOriented(NetTopologySuite.Triangulate.QuadEdge.QuadEdge)">EqualsNonOriented(QuadEdge)</h4>
+  <div class="markdown level1 summary"><p>Tests if this quadedge and another have the same line segment geometry,
+regardless of orientation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EqualsNonOriented(QuadEdge qe)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.html">QuadEdge</a></td>
+        <td><span class="parametername">qe</span></td>
+        <td><p>a quadedge</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if the quadedges are based on the same line segment regardless of orientation</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_QuadEdge_EqualsOriented_NetTopologySuite_Triangulate_QuadEdge_QuadEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.QuadEdge.EqualsOriented(NetTopologySuite.Triangulate.QuadEdge.QuadEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Triangulate/QuadEdge/QuadEdge.cs/#L321">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_EqualsOriented_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.EqualsOriented*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_EqualsOriented_NetTopologySuite_Triangulate_QuadEdge_QuadEdge_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.EqualsOriented(NetTopologySuite.Triangulate.QuadEdge.QuadEdge)">EqualsOriented(QuadEdge)</h4>
+  <div class="markdown level1 summary"><p>Tests if this quadedge and another have the same line segment geometry
+with the same orientation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EqualsOriented(QuadEdge qe)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.html">QuadEdge</a></td>
+        <td><span class="parametername">qe</span></td>
+        <td><p>a quadedge</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if the quadedges are based on the same line segment</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_QuadEdge_GetPrimary.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.QuadEdge.GetPrimary%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Triangulate/QuadEdge/QuadEdge.cs/#L136">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_GetPrimary_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.GetPrimary*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_GetPrimary" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.GetPrimary">GetPrimary()</h4>
+  <div class="markdown level1 summary"><p>Gets the primary edge of this quadedge and its <tt>sym</tt>.
+The primary edge is the one for which the origin
+and destination coordinates are ordered
+according to the standard <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a> ordering</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public QuadEdge GetPrimary()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.html">QuadEdge</a></td>
+        <td><p>the primary quadedge</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_QuadEdge_MakeEdge_NetTopologySuite_Triangulate_QuadEdge_Vertex_NetTopologySuite_Triangulate_QuadEdge_Vertex_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.QuadEdge.MakeEdge(NetTopologySuite.Triangulate.QuadEdge.Vertex%2CNetTopologySuite.Triangulate.QuadEdge.Vertex)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Triangulate/QuadEdge/QuadEdge.cs/#L34">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_MakeEdge_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.MakeEdge*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_MakeEdge_NetTopologySuite_Triangulate_QuadEdge_Vertex_NetTopologySuite_Triangulate_QuadEdge_Vertex_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.MakeEdge(NetTopologySuite.Triangulate.QuadEdge.Vertex,NetTopologySuite.Triangulate.QuadEdge.Vertex)">MakeEdge(Vertex, Vertex)</h4>
+  <div class="markdown level1 summary"><p>Creates a new QuadEdge quartet from <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a>o to <a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a> d.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static QuadEdge MakeEdge(Vertex o, Vertex d)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td><span class="parametername">o</span></td>
+        <td><p>the origin Vertex</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a></td>
+        <td><span class="parametername">d</span></td>
+        <td><p>the destination Vertex</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.html">QuadEdge</a></td>
+        <td><p>the new QuadEdge quartet</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_QuadEdge_SetNext_NetTopologySuite_Triangulate_QuadEdge_QuadEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.QuadEdge.SetNext(NetTopologySuite.Triangulate.QuadEdge.QuadEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Triangulate/QuadEdge/QuadEdge.cs/#L173">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_SetNext_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.SetNext*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_SetNext_NetTopologySuite_Triangulate_QuadEdge_QuadEdge_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.SetNext(NetTopologySuite.Triangulate.QuadEdge.QuadEdge)">SetNext(QuadEdge)</h4>
+  <div class="markdown level1 summary"><p>Sets the connected edge</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetNext(QuadEdge next)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.html">QuadEdge</a></td>
+        <td><span class="parametername">next</span></td>
+        <td><p>edge</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Splice_NetTopologySuite_Triangulate_QuadEdge_QuadEdge_NetTopologySuite_Triangulate_QuadEdge_QuadEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Splice(NetTopologySuite.Triangulate.QuadEdge.QuadEdge%2CNetTopologySuite.Triangulate.QuadEdge.QuadEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Triangulate/QuadEdge/QuadEdge.cs/#L83">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Splice_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Splice*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Splice_NetTopologySuite_Triangulate_QuadEdge_QuadEdge_NetTopologySuite_Triangulate_QuadEdge_QuadEdge_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Splice(NetTopologySuite.Triangulate.QuadEdge.QuadEdge,NetTopologySuite.Triangulate.QuadEdge.QuadEdge)">Splice(QuadEdge, QuadEdge)</h4>
+  <div class="markdown level1 summary"><p>Splices two edges together or apart.
+Splice affects the two edge rings around the origins of a and b, and, independently, the two
+edge rings around the left faces of <tt>a</tt> and <tt>b</tt>.
+In each case, (i) if the two rings are distinct,
+Splice will combine them into one, or (ii) if the two are the same ring, Splice will break it
+into two separate pieces. Thus, Splice can be used both to attach the two edges together, and
+to break them apart.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Splice(QuadEdge a, QuadEdge b)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.html">QuadEdge</a></td>
+        <td><span class="parametername">a</span></td>
+        <td><p>an edge to splice</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.html">QuadEdge</a></td>
+        <td><span class="parametername">b</span></td>
+        <td><p>an edge to splice</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Swap_NetTopologySuite_Triangulate_QuadEdge_QuadEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Swap(NetTopologySuite.Triangulate.QuadEdge.QuadEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Triangulate/QuadEdge/QuadEdge.cs/#L103">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Swap_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Swap*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_Swap_NetTopologySuite_Triangulate_QuadEdge_QuadEdge_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.Swap(NetTopologySuite.Triangulate.QuadEdge.QuadEdge)">Swap(QuadEdge)</h4>
+  <div class="markdown level1 summary"><p>Turns an edge counterclockwise inside its enclosing quadrilateral.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Swap(QuadEdge e)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.html">QuadEdge</a></td>
+        <td><span class="parametername">e</span></td>
+        <td><p>the quadedge to turn</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_QuadEdge_ToLineSegment.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.QuadEdge.ToLineSegment%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Triangulate/QuadEdge/QuadEdge.cs/#L334">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_ToLineSegment_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.ToLineSegment*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_ToLineSegment" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.ToLineSegment">ToLineSegment()</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html">LineSegment</a> representing the
+geometry of this edge.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LineSegment ToLineSegment()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.LineSegment.html">LineSegment</a></td>
+        <td><p>a LineSegment</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_QuadEdge_ToString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.QuadEdge.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Triangulate/QuadEdge/QuadEdge.cs/#L344">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_ToString_" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.ToString*"></a>
+  <h4 id="NetTopologySuite_Triangulate_QuadEdge_QuadEdge_ToString" data-uid="NetTopologySuite.Triangulate.QuadEdge.QuadEdge.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Converts this edge to a WKT two-point <tt>LINESTRING</tt> indicating
+the geometry of this edge.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>a String representing this edge's geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Triangulate_QuadEdge_QuadEdge.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.QuadEdge.QuadEdge%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Triangulate/QuadEdge/QuadEdge.cs/#L26" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

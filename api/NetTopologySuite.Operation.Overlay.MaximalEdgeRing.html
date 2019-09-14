@@ -1,0 +1,411 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class MaximalEdgeRing
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class MaximalEdgeRing
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Operation.Overlay.MaximalEdgeRing">
+  
+  
+  <h1 id="NetTopologySuite_Operation_Overlay_MaximalEdgeRing" data-uid="NetTopologySuite.Operation.Overlay.MaximalEdgeRing" class="text-break">Class MaximalEdgeRing
+  </h1>
+  <div class="markdown level0 summary"><p>A ring of edges which may contain nodes of degree &gt; 2.
+A MaximalEdgeRing may represent two different spatial entities:
+a single polygon possibly containing inversions (if the ring is oriented CW)
+a single hole possibly containing exversions (if the ring is oriented CCW)
+If the MaximalEdgeRing represents a polygon,
+the interior of the polygon is strongly connected.
+These are the form of rings used to define polygons under some spatial data models.
+However, under the OGC SFS model, MinimalEdgeRings are required.
+A MaximalEdgeRing can be converted to a list of MinimalEdgeRings using the
+<code>BuildMinimalRings()</code> method.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html">EdgeRing</a></div>
+    <div class="level2"><span class="xref">MaximalEdgeRing</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_startDe">EdgeRing.startDe</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_GeometryFactory">EdgeRing.GeometryFactory</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_IsIsolated">EdgeRing.IsIsolated</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_IsHole">EdgeRing.IsHole</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_GetCoordinate_System_Int32_">EdgeRing.GetCoordinate(Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_LinearRing">EdgeRing.LinearRing</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_Label">EdgeRing.Label</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_IsShell">EdgeRing.IsShell</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_Shell">EdgeRing.Shell</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_AddHole_NetTopologySuite_GeometriesGraph_EdgeRing_">EdgeRing.AddHole(EdgeRing)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_ToPolygon_NetTopologySuite_Geometries_GeometryFactory_">EdgeRing.ToPolygon(GeometryFactory)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_ComputeRing">EdgeRing.ComputeRing()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_Edges">EdgeRing.Edges</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_ComputePoints_NetTopologySuite_GeometriesGraph_DirectedEdge_">EdgeRing.ComputePoints(DirectedEdge)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_MaxNodeDegree">EdgeRing.MaxNodeDegree</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_SetInResult">EdgeRing.SetInResult()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_MergeLabel_NetTopologySuite_GeometriesGraph_Label_">EdgeRing.MergeLabel(Label)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_MergeLabel_NetTopologySuite_GeometriesGraph_Label_System_Int32_">EdgeRing.MergeLabel(Label, Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_AddPoints_NetTopologySuite_GeometriesGraph_Edge_System_Boolean_System_Boolean_">EdgeRing.AddPoints(Edge, Boolean, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_ContainsPoint_NetTopologySuite_Geometries_Coordinate_">EdgeRing.ContainsPoint(Coordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Operation.Overlay.html">NetTopologySuite.Operation.Overlay</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Operation_Overlay_MaximalEdgeRing_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class MaximalEdgeRing : EdgeRing</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Overlay_MaximalEdgeRing__ctor_NetTopologySuite_GeometriesGraph_DirectedEdge_NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Overlay.MaximalEdgeRing.%23ctor(NetTopologySuite.GeometriesGraph.DirectedEdge%2CNetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Overlay/MaximalEdgeRing.cs/#L26">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Overlay_MaximalEdgeRing__ctor_" data-uid="NetTopologySuite.Operation.Overlay.MaximalEdgeRing.#ctor*"></a>
+  <h4 id="NetTopologySuite_Operation_Overlay_MaximalEdgeRing__ctor_NetTopologySuite_GeometriesGraph_DirectedEdge_NetTopologySuite_Geometries_GeometryFactory_" data-uid="NetTopologySuite.Operation.Overlay.MaximalEdgeRing.#ctor(NetTopologySuite.GeometriesGraph.DirectedEdge,NetTopologySuite.Geometries.GeometryFactory)">MaximalEdgeRing(DirectedEdge, GeometryFactory)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MaximalEdgeRing(DirectedEdge start, GeometryFactory geometryFactory)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.GeometriesGraph.DirectedEdge.html">DirectedEdge</a></td>
+        <td><span class="parametername">start</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a></td>
+        <td><span class="parametername">geometryFactory</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Overlay_MaximalEdgeRing_BuildMinimalRings.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Overlay.MaximalEdgeRing.BuildMinimalRings%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Overlay/MaximalEdgeRing.cs/#L69">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Overlay_MaximalEdgeRing_BuildMinimalRings_" data-uid="NetTopologySuite.Operation.Overlay.MaximalEdgeRing.BuildMinimalRings*"></a>
+  <h4 id="NetTopologySuite_Operation_Overlay_MaximalEdgeRing_BuildMinimalRings" data-uid="NetTopologySuite.Operation.Overlay.MaximalEdgeRing.BuildMinimalRings">BuildMinimalRings()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IList&lt;EdgeRing&gt; BuildMinimalRings()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html">EdgeRing</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Overlay_MaximalEdgeRing_GetNext_NetTopologySuite_GeometriesGraph_DirectedEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Overlay.MaximalEdgeRing.GetNext(NetTopologySuite.GeometriesGraph.DirectedEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Overlay/MaximalEdgeRing.cs/#L34">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Overlay_MaximalEdgeRing_GetNext_" data-uid="NetTopologySuite.Operation.Overlay.MaximalEdgeRing.GetNext*"></a>
+  <h4 id="NetTopologySuite_Operation_Overlay_MaximalEdgeRing_GetNext_NetTopologySuite_GeometriesGraph_DirectedEdge_" data-uid="NetTopologySuite.Operation.Overlay.MaximalEdgeRing.GetNext(NetTopologySuite.GeometriesGraph.DirectedEdge)">GetNext(DirectedEdge)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override DirectedEdge GetNext(DirectedEdge de)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.GeometriesGraph.DirectedEdge.html">DirectedEdge</a></td>
+        <td><span class="parametername">de</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.GeometriesGraph.DirectedEdge.html">DirectedEdge</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_GetNext_NetTopologySuite_GeometriesGraph_DirectedEdge_">EdgeRing.GetNext(DirectedEdge)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Overlay_MaximalEdgeRing_LinkDirectedEdgesForMinimalEdgeRings.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Overlay.MaximalEdgeRing.LinkDirectedEdgesForMinimalEdgeRings%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Overlay/MaximalEdgeRing.cs/#L53">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Overlay_MaximalEdgeRing_LinkDirectedEdgesForMinimalEdgeRings_" data-uid="NetTopologySuite.Operation.Overlay.MaximalEdgeRing.LinkDirectedEdgesForMinimalEdgeRings*"></a>
+  <h4 id="NetTopologySuite_Operation_Overlay_MaximalEdgeRing_LinkDirectedEdgesForMinimalEdgeRings" data-uid="NetTopologySuite.Operation.Overlay.MaximalEdgeRing.LinkDirectedEdgesForMinimalEdgeRings">LinkDirectedEdgesForMinimalEdgeRings()</h4>
+  <div class="markdown level1 summary"><p>For all nodes in this EdgeRing,
+link the DirectedEdges at the node to form minimalEdgeRings</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void LinkDirectedEdgesForMinimalEdgeRings()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Overlay_MaximalEdgeRing_SetEdgeRing_NetTopologySuite_GeometriesGraph_DirectedEdge_NetTopologySuite_GeometriesGraph_EdgeRing_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Overlay.MaximalEdgeRing.SetEdgeRing(NetTopologySuite.GeometriesGraph.DirectedEdge%2CNetTopologySuite.GeometriesGraph.EdgeRing)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Overlay/MaximalEdgeRing.cs/#L44">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Overlay_MaximalEdgeRing_SetEdgeRing_" data-uid="NetTopologySuite.Operation.Overlay.MaximalEdgeRing.SetEdgeRing*"></a>
+  <h4 id="NetTopologySuite_Operation_Overlay_MaximalEdgeRing_SetEdgeRing_NetTopologySuite_GeometriesGraph_DirectedEdge_NetTopologySuite_GeometriesGraph_EdgeRing_" data-uid="NetTopologySuite.Operation.Overlay.MaximalEdgeRing.SetEdgeRing(NetTopologySuite.GeometriesGraph.DirectedEdge,NetTopologySuite.GeometriesGraph.EdgeRing)">SetEdgeRing(DirectedEdge, EdgeRing)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void SetEdgeRing(DirectedEdge de, EdgeRing er)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.GeometriesGraph.DirectedEdge.html">DirectedEdge</a></td>
+        <td><span class="parametername">de</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html">EdgeRing</a></td>
+        <td><span class="parametername">er</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeRing.html#NetTopologySuite_GeometriesGraph_EdgeRing_SetEdgeRing_NetTopologySuite_GeometriesGraph_DirectedEdge_NetTopologySuite_GeometriesGraph_EdgeRing_">EdgeRing.SetEdgeRing(DirectedEdge, EdgeRing)</a></div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Overlay_MaximalEdgeRing.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Overlay.MaximalEdgeRing%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Overlay/MaximalEdgeRing.cs/#L19" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

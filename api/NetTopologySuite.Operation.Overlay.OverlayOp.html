@@ -1,0 +1,782 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class OverlayOp
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class OverlayOp
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp">
+  
+  
+  <h1 id="NetTopologySuite_Operation_Overlay_OverlayOp" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp" class="text-break">Class OverlayOp
+  </h1>
+  <div class="markdown level0 summary"><p>Computes the geometric overlay of two <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s.  The overlay
+can be used to determine any bool combination of the geometries.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="NetTopologySuite.Operation.GeometryGraphOperation.html">GeometryGraphOperation</a></div>
+    <div class="level2"><span class="xref">OverlayOp</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="NetTopologySuite.Operation.GeometryGraphOperation.html#NetTopologySuite_Operation_GeometryGraphOperation_lineIntersector">GeometryGraphOperation.lineIntersector</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Operation.GeometryGraphOperation.html#NetTopologySuite_Operation_GeometryGraphOperation_resultPrecisionModel">GeometryGraphOperation.resultPrecisionModel</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Operation.GeometryGraphOperation.html#NetTopologySuite_Operation_GeometryGraphOperation_arg">GeometryGraphOperation.arg</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Operation.GeometryGraphOperation.html#NetTopologySuite_Operation_GeometryGraphOperation_GetArgGeometry_System_Int32_">GeometryGraphOperation.GetArgGeometry(Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Operation.GeometryGraphOperation.html#NetTopologySuite_Operation_GeometryGraphOperation_ComputationPrecision">GeometryGraphOperation.ComputationPrecision</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Operation.Overlay.html">NetTopologySuite.Operation.Overlay</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Operation_Overlay_OverlayOp_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class OverlayOp : GeometryGraphOperation</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Overlay_OverlayOp__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Overlay.OverlayOp.%23ctor(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Overlay/OverlayOp.cs/#L136">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Overlay_OverlayOp__ctor_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.#ctor*"></a>
+  <h4 id="NetTopologySuite_Operation_Overlay_OverlayOp__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.#ctor(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry)">OverlayOp(Geometry, Geometry)</h4>
+  <div class="markdown level1 summary"><p>Constructs an instance to compute a single overlay operation
+for the given geometries.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OverlayOp(Geometry g0, Geometry g1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">g0</span></td>
+        <td><p>The first geometry argument</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">g1</span></td>
+        <td><p>The second geometry argument</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Overlay_OverlayOp_Graph.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Overlay.OverlayOp.Graph%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Overlay/OverlayOp.cs/#L166">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Overlay_OverlayOp_Graph_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.Graph*"></a>
+  <h4 id="NetTopologySuite_Operation_Overlay_OverlayOp_Graph" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.Graph">Graph</h4>
+  <div class="markdown level1 summary"><p>Gets the graph constructed to compute the overlay.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PlanarGraph Graph { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.GeometriesGraph.PlanarGraph.html">PlanarGraph</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Overlay_OverlayOp_NodingValidatorDisabled.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Overlay.OverlayOp.NodingValidatorDisabled%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Overlay/OverlayOp.cs/#L48">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Overlay_OverlayOp_NodingValidatorDisabled_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.NodingValidatorDisabled*"></a>
+  <h4 id="NetTopologySuite_Operation_Overlay_OverlayOp_NodingValidatorDisabled" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.NodingValidatorDisabled">NodingValidatorDisabled</h4>
+  <div class="markdown level1 summary"><p>Disable <a class="xref" href="NetTopologySuite.GeometriesGraph.EdgeNodingValidator.html">EdgeNodingValidator</a>
+when an intersection is made (<span class="xref">NetTopologySuite.Operation.Overlay.OverlayOp.ComputeOverlay(NetTopologySuite.Operation.Overlay.SpatialFunction)</span>),
+so performances are dramatically improved but failures are not managed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool NodingValidatorDisabled { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Operation_Overlay_OverlayOp_NodingValidatorDisabled_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Use ay your own risk!</p>
+</div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Overlay_OverlayOp_CreateEmptyResult_NetTopologySuite_Operation_Overlay_SpatialFunction_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Overlay.OverlayOp.CreateEmptyResult(NetTopologySuite.Operation.Overlay.SpatialFunction%2CNetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Overlay/OverlayOp.cs/#L605">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Overlay_OverlayOp_CreateEmptyResult_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.CreateEmptyResult*"></a>
+  <h4 id="NetTopologySuite_Operation_Overlay_OverlayOp_CreateEmptyResult_NetTopologySuite_Operation_Overlay_SpatialFunction_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_GeometryFactory_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.CreateEmptyResult(NetTopologySuite.Operation.Overlay.SpatialFunction,NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.GeometryFactory)">CreateEmptyResult(SpatialFunction, Geometry, Geometry, GeometryFactory)</h4>
+  <div class="markdown level1 summary"><p>Creates an empty result geometry of the appropriate dimension,
+based on the given overlay operation and the dimensions of the inputs.
+The created geometry is always an atomic geometry,
+not a collection.</p>
+<p>
+The empty result is constructed using the following rules:
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry CreateEmptyResult(SpatialFunction overlayOpCode, Geometry a, Geometry b, GeometryFactory geomFact)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html">SpatialFunction</a></td>
+        <td><span class="parametername">overlayOpCode</span></td>
+        <td><p>The overlay operation being performed</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">a</span></td>
+        <td><p>An input geometry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">b</span></td>
+        <td><p>An input geometry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a></td>
+        <td><span class="parametername">geomFact</span></td>
+        <td><p>The geometry factory being used for the operation</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>An empty atomic geometry of the appropriate dimension</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Overlay_OverlayOp_GetResultGeometry_NetTopologySuite_Operation_Overlay_SpatialFunction_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Overlay.OverlayOp.GetResultGeometry(NetTopologySuite.Operation.Overlay.SpatialFunction)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Overlay/OverlayOp.cs/#L157">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Overlay_OverlayOp_GetResultGeometry_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.GetResultGeometry*"></a>
+  <h4 id="NetTopologySuite_Operation_Overlay_OverlayOp_GetResultGeometry_NetTopologySuite_Operation_Overlay_SpatialFunction_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.GetResultGeometry(NetTopologySuite.Operation.Overlay.SpatialFunction)">GetResultGeometry(SpatialFunction)</h4>
+  <div class="markdown level1 summary"><p>Gets the result of the overlay for a given overlay operation.</p>
+<p>
+Note: this method can be called once only.
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Geometry GetResultGeometry(SpatialFunction overlayOpCode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html">SpatialFunction</a></td>
+        <td><span class="parametername">overlayOpCode</span></td>
+        <td><p>The code of the overlay operation to perform</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The computed result geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.TopologyException.html">TopologyException</a></td>
+        <td><p>Thrown if a robustness problem is encountered</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Overlay_OverlayOp_InsertUniqueEdge_NetTopologySuite_GeometriesGraph_Edge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Overlay.OverlayOp.InsertUniqueEdge(NetTopologySuite.GeometriesGraph.Edge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Overlay/OverlayOp.cs/#L251">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Overlay_OverlayOp_InsertUniqueEdge_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.InsertUniqueEdge*"></a>
+  <h4 id="NetTopologySuite_Operation_Overlay_OverlayOp_InsertUniqueEdge_NetTopologySuite_GeometriesGraph_Edge_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.InsertUniqueEdge(NetTopologySuite.GeometriesGraph.Edge)">InsertUniqueEdge(Edge)</h4>
+  <div class="markdown level1 summary"><p>Insert an edge from one of the noded input graphs.
+Checks edges that are inserted to see if an
+identical edge already exists.
+If so, the edge is not inserted, but its label is merged
+with the existing edge.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void InsertUniqueEdge(Edge e)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.GeometriesGraph.Edge.html">Edge</a></td>
+        <td><span class="parametername">e</span></td>
+        <td><p>The edge to insert</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Overlay_OverlayOp_IsCoveredByA_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Overlay.OverlayOp.IsCoveredByA(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Overlay/OverlayOp.cs/#L547">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Overlay_OverlayOp_IsCoveredByA_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.IsCoveredByA*"></a>
+  <h4 id="NetTopologySuite_Operation_Overlay_OverlayOp_IsCoveredByA_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.IsCoveredByA(NetTopologySuite.Geometries.Coordinate)">IsCoveredByA(Coordinate)</h4>
+  <div class="markdown level1 summary"><p>Tests if an L edge should be included in the result or not.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsCoveredByA(Coordinate coord)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">coord</span></td>
+        <td><p>The point coordinate</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the coordinate point is covered by a result Area geometry.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Overlay_OverlayOp_IsCoveredByLA_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Overlay.OverlayOp.IsCoveredByLA(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Overlay/OverlayOp.cs/#L536">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Overlay_OverlayOp_IsCoveredByLA_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.IsCoveredByLA*"></a>
+  <h4 id="NetTopologySuite_Operation_Overlay_OverlayOp_IsCoveredByLA_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.IsCoveredByLA(NetTopologySuite.Geometries.Coordinate)">IsCoveredByLA(Coordinate)</h4>
+  <div class="markdown level1 summary"><p>Tests if a point node should be included in the result or not.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsCoveredByLA(Coordinate coord)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">coord</span></td>
+        <td><p>The point coordinate</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the coordinate point is covered by a result Line or Area geometry.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Overlay_OverlayOp_IsResultOfOp_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_NetTopologySuite_Operation_Overlay_SpatialFunction_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Overlay.OverlayOp.IsResultOfOp(NetTopologySuite.Geometries.Location%2CNetTopologySuite.Geometries.Location%2CNetTopologySuite.Operation.Overlay.SpatialFunction)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Overlay/OverlayOp.cs/#L96">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Overlay_OverlayOp_IsResultOfOp_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.IsResultOfOp*"></a>
+  <h4 id="NetTopologySuite_Operation_Overlay_OverlayOp_IsResultOfOp_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_NetTopologySuite_Operation_Overlay_SpatialFunction_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.IsResultOfOp(NetTopologySuite.Geometries.Location,NetTopologySuite.Geometries.Location,NetTopologySuite.Operation.Overlay.SpatialFunction)">IsResultOfOp(Location, Location, SpatialFunction)</h4>
+  <div class="markdown level1 summary"><p>Tests whether a point with given <a class="xref" href="NetTopologySuite.Geometries.Location.html">Location</a>s
+relative to two geometries is contained in
+the result of overlaying the geometries using
+a given overlay operation.</p>
+<p>
+The method handles arguments of <a class="xref" href="NetTopologySuite.Geometries.Location.html#NetTopologySuite_Geometries_Location_Null">Null</a> correctly
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsResultOfOp(Location loc0, Location loc1, SpatialFunction overlayOpCode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Location.html">Location</a></td>
+        <td><span class="parametername">loc0</span></td>
+        <td><p>the code for the location in the first geometry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Location.html">Location</a></td>
+        <td><span class="parametername">loc1</span></td>
+        <td><p>the code for the location in the second geometry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html">SpatialFunction</a></td>
+        <td><span class="parametername">overlayOpCode</span></td>
+        <td><p>the code for the overlay operation to test</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the locations correspond to the overlayOpCode.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Overlay_OverlayOp_IsResultOfOp_NetTopologySuite_GeometriesGraph_Label_NetTopologySuite_Operation_Overlay_SpatialFunction_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Overlay.OverlayOp.IsResultOfOp(NetTopologySuite.GeometriesGraph.Label%2CNetTopologySuite.Operation.Overlay.SpatialFunction)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Overlay/OverlayOp.cs/#L77">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Overlay_OverlayOp_IsResultOfOp_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.IsResultOfOp*"></a>
+  <h4 id="NetTopologySuite_Operation_Overlay_OverlayOp_IsResultOfOp_NetTopologySuite_GeometriesGraph_Label_NetTopologySuite_Operation_Overlay_SpatialFunction_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.IsResultOfOp(NetTopologySuite.GeometriesGraph.Label,NetTopologySuite.Operation.Overlay.SpatialFunction)">IsResultOfOp(Label, SpatialFunction)</h4>
+  <div class="markdown level1 summary"><p>Tests whether a point with a given topological <a class="xref" href="NetTopologySuite.GeometriesGraph.Label.html">Label</a>
+relative to two geometries is contained in
+the result of overlaying the geometries using
+a given overlay operation.</p>
+<p>
+The method handles arguments of <a class="xref" href="NetTopologySuite.Geometries.Location.html#NetTopologySuite_Geometries_Location_Null">Null</a> correctly
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsResultOfOp(Label label, SpatialFunction overlayOpCode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.GeometriesGraph.Label.html">Label</a></td>
+        <td><span class="parametername">label</span></td>
+        <td><p>The topological label of the point</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html">SpatialFunction</a></td>
+        <td><span class="parametername">overlayOpCode</span></td>
+        <td><p>The code for the overlay operation to test</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the label locations correspond to the overlayOpCode</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Overlay_OverlayOp_Overlay_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Overlay_SpatialFunction_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Overlay.OverlayOp.Overlay(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Operation.Overlay.SpatialFunction)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Overlay/OverlayOp.cs/#L59">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Overlay_OverlayOp_Overlay_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.Overlay*"></a>
+  <h4 id="NetTopologySuite_Operation_Overlay_OverlayOp_Overlay_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Operation_Overlay_SpatialFunction_" data-uid="NetTopologySuite.Operation.Overlay.OverlayOp.Overlay(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry,NetTopologySuite.Operation.Overlay.SpatialFunction)">Overlay(Geometry, Geometry, SpatialFunction)</h4>
+  <div class="markdown level1 summary"><p>Computes an overlay operation
+for the given geometry arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry Overlay(Geometry geom0, Geometry geom1, SpatialFunction opCode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom0</span></td>
+        <td><p>The first geometry argument</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">geom1</span></td>
+        <td><p>The second geometry argument</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Operation.Overlay.SpatialFunction.html">SpatialFunction</a></td>
+        <td><span class="parametername">opCode</span></td>
+        <td><p>The code for the desired overlay operation</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The result of the overlay operation</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.TopologyException.html">TopologyException</a></td>
+        <td><p>Thrown if a robustness problem is encountered.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Operation_Overlay_OverlayOp.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Overlay.OverlayOp%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Operation/Overlay/OverlayOp.cs/#L38" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

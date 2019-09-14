@@ -1,0 +1,426 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class TaggedLineSegment
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class TaggedLineSegment
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Simplify.TaggedLineSegment">
+  
+  
+  <h1 id="NetTopologySuite_Simplify_TaggedLineSegment" data-uid="NetTopologySuite.Simplify.TaggedLineSegment" class="text-break">Class TaggedLineSegment
+  </h1>
+  <div class="markdown level0 summary"><p>A LineSegment which is tagged with its location in a <code>Geometry</code>.
+Used to index the segments in a point and recover the segment locations
+from the index.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="NetTopologySuite.Geometries.LineSegment.html">LineSegment</a></div>
+    <div class="level2"><span class="xref">TaggedLineSegment</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.LineSegment.html">LineSegment</a>&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_P1">LineSegment.P1</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_P0">LineSegment.P0</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_GetCoordinate_System_Int32_">LineSegment.GetCoordinate(Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_SetCoordinates_NetTopologySuite_Geometries_LineSegment_">LineSegment.SetCoordinates(LineSegment)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_SetCoordinates_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_">LineSegment.SetCoordinates(Coordinate, Coordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_MinX">LineSegment.MinX</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_MaxX">LineSegment.MaxX</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_MinY">LineSegment.MinY</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_MaxY">LineSegment.MaxY</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_Length">LineSegment.Length</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_IsHorizontal">LineSegment.IsHorizontal</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_IsVertical">LineSegment.IsVertical</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_OrientationIndex_NetTopologySuite_Geometries_LineSegment_">LineSegment.OrientationIndex(LineSegment)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_OrientationIndex_NetTopologySuite_Geometries_Coordinate_">LineSegment.OrientationIndex(Coordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_Reverse">LineSegment.Reverse()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_Normalize">LineSegment.Normalize()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_Angle">LineSegment.Angle</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_MidPoint">LineSegment.MidPoint</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_Distance_NetTopologySuite_Geometries_LineSegment_">LineSegment.Distance(LineSegment)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_Distance_NetTopologySuite_Geometries_Coordinate_">LineSegment.Distance(Coordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_DistancePerpendicular_NetTopologySuite_Geometries_Coordinate_">LineSegment.DistancePerpendicular(Coordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_PointAlong_System_Double_">LineSegment.PointAlong(Double)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_PointAlongOffset_System_Double_System_Double_">LineSegment.PointAlongOffset(Double, Double)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_ProjectionFactor_NetTopologySuite_Geometries_Coordinate_">LineSegment.ProjectionFactor(Coordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_SegmentFraction_NetTopologySuite_Geometries_Coordinate_">LineSegment.SegmentFraction(Coordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_Project_NetTopologySuite_Geometries_Coordinate_">LineSegment.Project(Coordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_Project_NetTopologySuite_Geometries_LineSegment_">LineSegment.Project(LineSegment)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_ClosestPoint_NetTopologySuite_Geometries_Coordinate_">LineSegment.ClosestPoint(Coordinate)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_ClosestPoints_NetTopologySuite_Geometries_LineSegment_">LineSegment.ClosestPoints(LineSegment)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_Intersection_NetTopologySuite_Geometries_LineSegment_">LineSegment.Intersection(LineSegment)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_LineIntersection_NetTopologySuite_Geometries_LineSegment_">LineSegment.LineIntersection(LineSegment)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_ToGeometry_NetTopologySuite_Geometries_GeometryFactory_">LineSegment.ToGeometry(GeometryFactory)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_Equals_System_Object_">LineSegment.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_CompareTo_NetTopologySuite_Geometries_LineSegment_">LineSegment.CompareTo(LineSegment)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_EqualsTopologically_NetTopologySuite_Geometries_LineSegment_">LineSegment.EqualsTopologically(LineSegment)</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_ToString">LineSegment.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_GetHashCode">LineSegment.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Simplify.html">NetTopologySuite.Simplify</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Simplify_TaggedLineSegment_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class TaggedLineSegment : LineSegment, IComparable&lt;LineSegment&gt;</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Simplify_TaggedLineSegment__ctor_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.TaggedLineSegment.%23ctor(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Simplify/TaggedLineSegment.cs/#L34">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Simplify_TaggedLineSegment__ctor_" data-uid="NetTopologySuite.Simplify.TaggedLineSegment.#ctor*"></a>
+  <h4 id="NetTopologySuite_Simplify_TaggedLineSegment__ctor_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Simplify.TaggedLineSegment.#ctor(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">TaggedLineSegment(Coordinate, Coordinate)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TaggedLineSegment(Coordinate p0, Coordinate p1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">p0</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">p1</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Simplify_TaggedLineSegment__ctor_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Geometry_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.TaggedLineSegment.%23ctor(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Geometry%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Simplify/TaggedLineSegment.cs/#L22">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Simplify_TaggedLineSegment__ctor_" data-uid="NetTopologySuite.Simplify.TaggedLineSegment.#ctor*"></a>
+  <h4 id="NetTopologySuite_Simplify_TaggedLineSegment__ctor_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Geometry_System_Int32_" data-uid="NetTopologySuite.Simplify.TaggedLineSegment.#ctor(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Geometry,System.Int32)">TaggedLineSegment(Coordinate, Coordinate, Geometry, Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TaggedLineSegment(Coordinate p0, Coordinate p1, Geometry parent, int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">p0</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">p1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">parent</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Simplify_TaggedLineSegment_Index.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.TaggedLineSegment.Index%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Simplify/TaggedLineSegment.cs/#L45">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Simplify_TaggedLineSegment_Index_" data-uid="NetTopologySuite.Simplify.TaggedLineSegment.Index*"></a>
+  <h4 id="NetTopologySuite_Simplify_TaggedLineSegment_Index" data-uid="NetTopologySuite.Simplify.TaggedLineSegment.Index">Index</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Index { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Simplify_TaggedLineSegment_Parent.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.TaggedLineSegment.Parent%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Simplify/TaggedLineSegment.cs/#L40">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Simplify_TaggedLineSegment_Parent_" data-uid="NetTopologySuite.Simplify.TaggedLineSegment.Parent*"></a>
+  <h4 id="NetTopologySuite_Simplify_TaggedLineSegment_Parent" data-uid="NetTopologySuite.Simplify.TaggedLineSegment.Parent">Parent</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Geometry Parent { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">System.IComparable&lt;T&gt;</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Simplify_TaggedLineSegment.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.TaggedLineSegment%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Simplify/TaggedLineSegment.cs/#L10" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

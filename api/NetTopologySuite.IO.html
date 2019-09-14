@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace NetTopologySuite.IO
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace NetTopologySuite.IO
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.IO">
+  
+  <h1 id="NetTopologySuite_IO" data-uid="NetTopologySuite.IO" class="text-break">Namespace NetTopologySuite.IO
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.IO.BEBinaryWriter.html">BEBinaryWriter</a></h4>
+      <section><p>Extends the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binarywriter">BinaryWriter</a> class to allow writing values in the BigEndian format.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.IO.BiEndianBinaryReader.html">BiEndianBinaryReader</a></h4>
+      <section><p>Extends the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader">BinaryReader</a> class to allow reading values in the specified format.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.IO.ParseException.html">ParseException</a></h4>
+      <section><p>Thrown by a <code>WKTReader</code> when a parsing problem occurs.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.IO.WKBHexFileReader.html">WKBHexFileReader</a></h4>
+      <section><p>Reads a sequence of {@link Geometry}s in WKBHex format
+from a text file.
+Each WKBHex geometry must be on a single line
+The geometries in the file may be separated by any amount
+of whitespace and newlines.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.IO.WKBReader.html">WKBReader</a></h4>
+      <section><p>Converts a Well-Known Binary byte data to a <code>Geometry</code>.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.IO.WKBWriter.html">WKBWriter</a></h4>
+      <section><p>Writes a Well-Known Binary byte data representation of a <code>Geometry</code>.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.IO.WKTFileReader.html">WKTFileReader</a></h4>
+      <section><p>Reads a sequence of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s in WKT format from a text file.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.IO.WKTReader.html">WKTReader</a></h4>
+      <section><p>Converts a Well-Known Text string to a <code>Geometry</code>.</p>
+<p>The <code>WKTReader</code> allows
+extracting <code>Geometry</code> objects from either input streams or
+internal strings. This allows it to function as a parser to read <code>Geometry</code>
+objects from text blocks embedded in other data formats (e.g. XML).</p>
+<p>The Well-known
+Text format is defined in the <a href="http://www.opengis.org/techno/specs.htm">
+OpenGIS Simple Features Specification for SQL</a> .</p>
+<p>NOTE:  There is an inconsistency in the SFS.
+The WKT grammar states that <code>MultiPoints</code> are represented by
+<code>MULTIPOINT ( ( x y), (x y) )</code>,
+but the examples show <code>MultiPoint</code>s as <code>MULTIPOINT ( x y, x y )</code>.
+Other implementations follow the latter syntax, so NTS will adopt it as well.
+A <code>WKTReader</code> is parameterized by a <code>GeometryFactory</code>,
+to allow it to create <code>Geometry</code> objects of the appropriate
+implementation. In particular, the <code>GeometryFactory</code> will
+determine the <code>PrecisionModel</code> and <code>SRID</code> that is used.
+The <code>WKTReader</code> will convert the input numbers to the precise
+internal representation.
+<remarks>
+<a class="xref" href="NetTopologySuite.IO.WKTReader.html">WKTReader</a> reads also non-standard &quot;LINEARRING&quot; tags.
+</remarks></p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.IO.WKTWriter.html">WKTWriter</a></h4>
+      <section><p>Outputs the textual representation of a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.
+The <a class="xref" href="NetTopologySuite.IO.WKTWriter.html">WKTWriter</a> outputs coordinates rounded to the precision
+model. No more than the maximum number of necessary decimal places will be
+output.
+The Well-known Text format is defined in the <a href="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features
+Specification for SQL</a>.
+A non-standard &quot;LINEARRING&quot; tag is used for LinearRings. The WKT spec does
+not define a special tag for LinearRings. The standard tag to use is
+&quot;LINESTRING&quot;.</p>
+</section>
+    <h3 id="structs">Structs
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.IO.GeometryType.html">GeometryType</a></h4>
+      <section><p>Lightweight class that handles OGC Geometry type declaration</p>
+</section>
+    <h3 id="enums">Enums
+  </h3>
+      <h4><a class="xref" href="NetTopologySuite.IO.ByteOrder.html">ByteOrder</a></h4>
+      <section><p>Byte order</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.IO.WKBGeometryTypes.html">WKBGeometryTypes</a></h4>
+      <section><p>WKB Geometry Types</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.IO.WKBReader.CoordinateSystem.html">WKBReader.CoordinateSystem</a></h4>
+      <section></section>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

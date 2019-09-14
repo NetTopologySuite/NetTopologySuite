@@ -1,0 +1,631 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Bintree&lt;T&gt;
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Bintree&lt;T&gt;
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Index.Bintree.Bintree`1">
+  
+  
+  <h1 id="NetTopologySuite_Index_Bintree_Bintree_1" data-uid="NetTopologySuite.Index.Bintree.Bintree`1" class="text-break">Class Bintree&lt;T&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>An <code>BinTree</code> (or &quot;Binary Interval Tree&quot;)
+is a 1-dimensional version of a quadtree.
+It indexes 1-dimensional intervals (which may
+be the projection of 2-D objects on an axis).
+It supports range searching
+(where the range may be a single point).</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">Bintree&lt;T&gt;</span></div>
+      <div class="level2"><a class="xref" href="NetTopologySuite.Index.Bintree.Bintree.html">Bintree</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Index.Bintree.html">NetTopologySuite.Index.Bintree</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Index_Bintree_Bintree_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Bintree&lt;T&gt;</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Index_Bintree_Bintree_1_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>
+This structure is dynamic -
+new items can be added at any time,
+and it will support deletion of items
+(although this is not currently implemented).
+</p>
+<p>
+This implementation does not require specifying the extent of the inserted
+items beforehand.  It will automatically expand to accommodate any extent
+of dataset.</p>
+<p>This index is different to the Interval Tree of Edelsbrunner
+or the Segment Tree of Bentley.</p>
+</div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Bintree_Bintree_1__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Bintree.Bintree%601.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Bintree/Bintree.cs/#L70">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Bintree_Bintree_1__ctor_" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.#ctor*"></a>
+  <h4 id="NetTopologySuite_Index_Bintree_Bintree_1__ctor" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.#ctor">Bintree()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Bintree()</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Bintree_Bintree_1_Count.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Bintree.Bintree%601.Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Bintree/Bintree.cs/#L91">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Bintree_Bintree_1_Count_" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.Count*"></a>
+  <h4 id="NetTopologySuite_Index_Bintree_Bintree_1_Count" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.Count">Count</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Bintree_Bintree_1_Depth.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Bintree.Bintree%601.Depth%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Bintree/Bintree.cs/#L78">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Bintree_Bintree_1_Depth_" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.Depth*"></a>
+  <h4 id="NetTopologySuite_Index_Bintree_Bintree_1_Depth" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.Depth">Depth</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Depth { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Bintree_Bintree_1_NodeSize.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Bintree.Bintree%601.NodeSize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Bintree/Bintree.cs/#L105">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Bintree_Bintree_1_NodeSize_" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.NodeSize*"></a>
+  <h4 id="NetTopologySuite_Index_Bintree_Bintree_1_NodeSize" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.NodeSize">NodeSize</h4>
+  <div class="markdown level1 summary"><p>Compute the total number of nodes in the tree.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int NodeSize { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>The number of nodes in the tree.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Bintree_Bintree_1_EnsureExtent_NetTopologySuite_Index_Bintree_Interval_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Bintree.Bintree%601.EnsureExtent(NetTopologySuite.Index.Bintree.Interval%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Bintree/Bintree.cs/#L37">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Bintree_Bintree_1_EnsureExtent_" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.EnsureExtent*"></a>
+  <h4 id="NetTopologySuite_Index_Bintree_Bintree_1_EnsureExtent_NetTopologySuite_Index_Bintree_Interval_System_Double_" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.EnsureExtent(NetTopologySuite.Index.Bintree.Interval,System.Double)">EnsureExtent(Interval, Double)</h4>
+  <div class="markdown level1 summary"><p>Ensure that the Interval for the inserted item has non-zero extents.
+Use the current minExtent to pad it, if necessary.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Interval EnsureExtent(Interval itemInterval, double minExtent)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Index.Bintree.Interval.html">Interval</a></td>
+        <td><span class="parametername">itemInterval</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">minExtent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Index.Bintree.Interval.html">Interval</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Bintree_Bintree_1_GetEnumerator.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Bintree.Bintree%601.GetEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Bintree/Bintree.cs/#L143">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Bintree_Bintree_1_GetEnumerator_" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.GetEnumerator*"></a>
+  <h4 id="NetTopologySuite_Index_Bintree_Bintree_1_GetEnumerator" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.GetEnumerator">GetEnumerator()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator&lt;T&gt; GetEnumerator()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Bintree_Bintree_1_Insert_NetTopologySuite_Index_Bintree_Interval__0_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Bintree.Bintree%601.Insert(NetTopologySuite.Index.Bintree.Interval%2C%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Bintree/Bintree.cs/#L120">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Bintree_Bintree_1_Insert_" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.Insert*"></a>
+  <h4 id="NetTopologySuite_Index_Bintree_Bintree_1_Insert_NetTopologySuite_Index_Bintree_Interval__0_" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.Insert(NetTopologySuite.Index.Bintree.Interval,`0)">Insert(Interval, T)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Insert(Interval itemInterval, T item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Index.Bintree.Interval.html">Interval</a></td>
+        <td><span class="parametername">itemInterval</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">item</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Bintree_Bintree_1_Query_NetTopologySuite_Index_Bintree_Interval_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Bintree.Bintree%601.Query(NetTopologySuite.Index.Bintree.Interval)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Bintree/Bintree.cs/#L168">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Bintree_Bintree_1_Query_" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.Query*"></a>
+  <h4 id="NetTopologySuite_Index_Bintree_Bintree_1_Query_NetTopologySuite_Index_Bintree_Interval_" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.Query(NetTopologySuite.Index.Bintree.Interval)">Query(Interval)</h4>
+  <div class="markdown level1 summary"><p>Queries the tree to find all candidate items which
+may overlap the query interval.
+If the query interval is <tt>null</tt>, all items in the tree are found.
+<code>min</code> and <code>max</code> may be the same value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IList&lt;T&gt; Query(Interval interval)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Index.Bintree.Interval.html">Interval</a></td>
+        <td><span class="parametername">interval</span></td>
+        <td><p>The interval to query for or <code>null</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Bintree_Bintree_1_Query_NetTopologySuite_Index_Bintree_Interval_System_Collections_Generic_ICollection__0__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Bintree.Bintree%601.Query(NetTopologySuite.Index.Bintree.Interval%2CSystem.Collections.Generic.ICollection%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Bintree/Bintree.cs/#L186">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Bintree_Bintree_1_Query_" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.Query*"></a>
+  <h4 id="NetTopologySuite_Index_Bintree_Bintree_1_Query_NetTopologySuite_Index_Bintree_Interval_System_Collections_Generic_ICollection__0__" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.Query(NetTopologySuite.Index.Bintree.Interval,System.Collections.Generic.ICollection{`0})">Query(Interval, ICollection&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Adds items in the tree which potentially overlap the query interval
+to the given collection.
+If the query interval is <code>null</code>, add all items in the tree.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Query(Interval interval, ICollection&lt;T&gt; foundItems)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Index.Bintree.Interval.html">Interval</a></td>
+        <td><span class="parametername">interval</span></td>
+        <td><p>A query interval, or <code>null</code></p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;T&gt;</td>
+        <td><span class="parametername">foundItems</span></td>
+        <td><p>The candidate items found</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Bintree_Bintree_1_Query_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Bintree.Bintree%601.Query(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Bintree/Bintree.cs/#L155">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Bintree_Bintree_1_Query_" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.Query*"></a>
+  <h4 id="NetTopologySuite_Index_Bintree_Bintree_1_Query_System_Double_" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.Query(System.Double)">Query(Double)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IList&lt;T&gt; Query(double x)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Bintree_Bintree_1_Remove_NetTopologySuite_Index_Bintree_Interval__0_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Bintree.Bintree%601.Remove(NetTopologySuite.Index.Bintree.Interval%2C%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Bintree/Bintree.cs/#L133">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Index_Bintree_Bintree_1_Remove_" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.Remove*"></a>
+  <h4 id="NetTopologySuite_Index_Bintree_Bintree_1_Remove_NetTopologySuite_Index_Bintree_Interval__0_" data-uid="NetTopologySuite.Index.Bintree.Bintree`1.Remove(NetTopologySuite.Index.Bintree.Interval,`0)">Remove(Interval, T)</h4>
+  <div class="markdown level1 summary"><p>Removes a single item from the tree.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Remove(Interval itemInterval, T item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Index.Bintree.Interval.html">Interval</a></td>
+        <td><span class="parametername">itemInterval</span></td>
+        <td><p>itemEnv the Envelope of the item to be removed</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">item</span></td>
+        <td><p>the item to remove</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the item was found (and thus removed)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Index_Bintree_Bintree_1.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Bintree.Bintree%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Index/Bintree/Bintree.cs/#L31" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

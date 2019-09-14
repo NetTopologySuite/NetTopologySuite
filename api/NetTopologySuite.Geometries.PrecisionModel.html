@@ -1,0 +1,1021 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class PrecisionModel
+   | NetTopologySuite </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class PrecisionModel
+   | NetTopologySuite ">
+    <meta name="generator" content="docfx 2.45.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="NetTopologySuite.Geometries.PrecisionModel">
+  
+  
+  <h1 id="NetTopologySuite_Geometries_PrecisionModel" data-uid="NetTopologySuite.Geometries.PrecisionModel" class="text-break">Class PrecisionModel
+  </h1>
+  <div class="markdown level0 summary"><p>Specifies the precision model of the <code>Coordinate</code>s in a <code>Geometry</code>.
+In other words, specifies the grid of allowable
+points for all <code>Geometry</code>s.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">PrecisionModel</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable">IComparable</a></div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a>&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.html">NetTopologySuite.Geometries</a></h6>
+  <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
+  <h5 id="NetTopologySuite_Geometries_PrecisionModel_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Serializable]
+public class PrecisionModel : IComparable, IComparable&lt;PrecisionModel&gt;</code></pre>
+  </div>
+  <h5 id="NetTopologySuite_Geometries_PrecisionModel_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>The <code>MakePrecise</code> method allows rounding a coordinate to
+a &quot;precise&quot; value; that is, one whose
+precision is known exactly.
+Coordinates are assumed to be precise in geometries.
+That is, the coordinates are assumed to be rounded to the
+precision model given for the point.
+NTS input routines automatically round coordinates to the precision model
+before creating Geometries.
+All internal operations
+assume that coordinates are rounded to the precision model.
+Constructive methods (such as bool operations) always round computed
+coordinates to the appropriate precision model.
+Currently three types of precision model are supported:</p>
+<p>
+Floating: represents full double precision floating point.
+This is the default precision model used in NTS
+FloatingSingle: represents single precision floating point.
+Fixed: represents a model with a fixed number of decimal places.
+</p>
+A Fixed Precision Model is specified by a scale factor.
+The scale factor specifies the size of the grid which numbers are rounded to.
+Input coordinates are mapped to fixed coordinates according to the following
+equations:
+<p>
+For example, to specify 3 decimal places of precision, use a scale factor
+of 1000. To specify -3 decimal places of precision (i.e. rounding to
+the nearest 1000), use a scale factor of 0.001.
+</p>
+Coordinates are represented internally as Java double-precision values.
+Since .NET uses the IEEE-394 floating point standard, this
+provides 53 bits of precision. (Thus the maximum precisely representable
+<em>integer</em> is 9,007,199,254,740,992 - or almost 16 decimal digits of precision).
+<p>
+NTS binary methods currently do not handle inputs which have different precision models.
+The precision model of any constructed geometric value is undefined.
+</div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L92">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_PrecisionModel__ctor_" data-uid="NetTopologySuite.Geometries.PrecisionModel.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel__ctor" data-uid="NetTopologySuite.Geometries.PrecisionModel.#ctor">PrecisionModel()</h4>
+  <div class="markdown level1 summary"><p>Creates a <code>PrecisionModel</code> with a default precision
+of Floating.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PrecisionModel()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel__ctor_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.%23ctor(NetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L133">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_PrecisionModel__ctor_" data-uid="NetTopologySuite.Geometries.PrecisionModel.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel__ctor_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Geometries.PrecisionModel.#ctor(NetTopologySuite.Geometries.PrecisionModel)">PrecisionModel(PrecisionModel)</h4>
+  <div class="markdown level1 summary"><p>Copy constructor to create a new <code>PrecisionModel</code>
+from an existing one.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PrecisionModel(PrecisionModel pm)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">pm</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel__ctor_NetTopologySuite_Geometries_PrecisionModels_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.%23ctor(NetTopologySuite.Geometries.PrecisionModels)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L106">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_PrecisionModel__ctor_" data-uid="NetTopologySuite.Geometries.PrecisionModel.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel__ctor_NetTopologySuite_Geometries_PrecisionModels_" data-uid="NetTopologySuite.Geometries.PrecisionModel.#ctor(NetTopologySuite.Geometries.PrecisionModels)">PrecisionModel(PrecisionModels)</h4>
+  <div class="markdown level1 summary"><p>Creates a <code>PrecisionModel</code> that specifies
+an explicit precision model type.
+If the model type is Fixed the scale factor will default to 1.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PrecisionModel(PrecisionModels modelType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModels.html">PrecisionModels</a></td>
+        <td><span class="parametername">modelType</span></td>
+        <td><p>The type of the precision model.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel__ctor_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.%23ctor(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L122">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_PrecisionModel__ctor_" data-uid="NetTopologySuite.Geometries.PrecisionModel.#ctor*"></a>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel__ctor_System_Double_" data-uid="NetTopologySuite.Geometries.PrecisionModel.#ctor(System.Double)">PrecisionModel(Double)</h4>
+  <div class="markdown level1 summary"><p>Creates a <code>PrecisionModel</code> that specifies Fixed precision.
+Fixed-precision coordinates are represented as precise internal coordinates,
+which are rounded to the grid defined by the scale factor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PrecisionModel(double scale)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">scale</span></td>
+        <td><p>Amount by which to multiply a coordinate, to obtain a precise coordinate.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_MaximumPreciseValue.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.MaximumPreciseValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L76">View Source</a>
+  </span>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel_MaximumPreciseValue" data-uid="NetTopologySuite.Geometries.PrecisionModel.MaximumPreciseValue">MaximumPreciseValue</h4>
+  <div class="markdown level1 summary"><p>The maximum precise value representable in a double. Since IEE754
+double-precision numbers allow 53 bits of mantissa, the value is equal to
+2^53 - 1.  This provides <em>almost</em> 16 decimal digits of precision.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const double MaximumPreciseValue = 9007199254740992</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_IsFloating.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.IsFloating%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L151">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_PrecisionModel_IsFloating_" data-uid="NetTopologySuite.Geometries.PrecisionModel.IsFloating*"></a>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel_IsFloating" data-uid="NetTopologySuite.Geometries.PrecisionModel.IsFloating">IsFloating</h4>
+  <div class="markdown level1 summary"><p>Tests whether the precision model supports floating point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsFloating { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the precision model supports floating point.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_MaximumSignificantDigits.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.MaximumSignificantDigits%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L161">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_PrecisionModel_MaximumSignificantDigits_" data-uid="NetTopologySuite.Geometries.PrecisionModel.MaximumSignificantDigits*"></a>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel_MaximumSignificantDigits" data-uid="NetTopologySuite.Geometries.PrecisionModel.MaximumSignificantDigits">MaximumSignificantDigits</h4>
+  <div class="markdown level1 summary"><p>Returns the maximum number of significant digits provided by this
+precision model.
+Intended for use by routines which need to print out precise values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int MaximumSignificantDigits { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>The maximum number of decimal places provided by this precision model.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_PrecisionModelType.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.PrecisionModelType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L211">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_PrecisionModel_PrecisionModelType_" data-uid="NetTopologySuite.Geometries.PrecisionModel.PrecisionModelType*"></a>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel_PrecisionModelType" data-uid="NetTopologySuite.Geometries.PrecisionModel.PrecisionModelType">PrecisionModelType</h4>
+  <div class="markdown level1 summary"><p>Gets the type of this PrecisionModel.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PrecisionModels PrecisionModelType { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModels.html">PrecisionModels</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_Scale.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.Scale%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L192">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_PrecisionModel_Scale_" data-uid="NetTopologySuite.Geometries.PrecisionModel.Scale*"></a>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel_Scale" data-uid="NetTopologySuite.Geometries.PrecisionModel.Scale">Scale</h4>
+  <div class="markdown level1 summary"><p>Returns the scale factor used to specify a fixed precision model.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Scale { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><p>The scale factor for the fixed precision model</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_PrecisionModel_Scale_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The number of decimal places of precision is
+equal to the base-10 logarithm of the scale factor.
+Non-integral and negative scale factors are supported.
+Negative scale factors indicate that the places
+of precision is to the left of the decimal point.</p>
+</div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_CompareTo_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.CompareTo(NetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L353">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_PrecisionModel_CompareTo_" data-uid="NetTopologySuite.Geometries.PrecisionModel.CompareTo*"></a>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel_CompareTo_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Geometries.PrecisionModel.CompareTo(NetTopologySuite.Geometries.PrecisionModel)">CompareTo(PrecisionModel)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CompareTo(PrecisionModel other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_CompareTo_System_Object_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.CompareTo(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L343">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_PrecisionModel_CompareTo_" data-uid="NetTopologySuite.Geometries.PrecisionModel.CompareTo*"></a>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel_CompareTo_System_Object_" data-uid="NetTopologySuite.Geometries.PrecisionModel.CompareTo(System.Object)">CompareTo(Object)</h4>
+  <div class="markdown level1 summary"><p>Compares this <code>PrecisionModel</code> object with the specified object for order.
+A PrecisionModel is greater than another if it provides greater precision.
+The comparison is based on the value returned by the
+{getMaximumSignificantDigits) method.
+This comparison is not strictly accurate when comparing floating precision models
+to fixed models; however, it is correct when both models are either floating or fixed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CompareTo(object o)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">o</span></td>
+        <td><p>The <code>PrecisionModel</code> with which this <code>PrecisionModel</code>
+is being compared.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><p>A negative integer, zero, or a positive integer as this <code>PrecisionModel</code>
+is less than, equal to, or greater than the specified <code>PrecisionModel</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_Equals_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.Equals(NetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L299">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_PrecisionModel_Equals_" data-uid="NetTopologySuite.Geometries.PrecisionModel.Equals*"></a>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel_Equals_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Geometries.PrecisionModel.Equals(NetTopologySuite.Geometries.PrecisionModel)">Equals(PrecisionModel)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(PrecisionModel otherPrecisionModel)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">otherPrecisionModel</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_Equals_System_Object_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L283">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_PrecisionModel_Equals_" data-uid="NetTopologySuite.Geometries.PrecisionModel.Equals*"></a>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel_Equals_System_Object_" data-uid="NetTopologySuite.Geometries.PrecisionModel.Equals(System.Object)">Equals(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_GetHashCode.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L142">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_PrecisionModel_GetHashCode_" data-uid="NetTopologySuite.Geometries.PrecisionModel.GetHashCode*"></a>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel_GetHashCode" data-uid="NetTopologySuite.Geometries.PrecisionModel.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"><p>Return HashCode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_MakePrecise_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.MakePrecise(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L251">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_PrecisionModel_MakePrecise_" data-uid="NetTopologySuite.Geometries.PrecisionModel.MakePrecise*"></a>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel_MakePrecise_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Geometries.PrecisionModel.MakePrecise(NetTopologySuite.Geometries.Coordinate)">MakePrecise(Coordinate)</h4>
+  <div class="markdown level1 summary"><p>Rounds a Coordinate to the PrecisionModel grid.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MakePrecise(Coordinate coord)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><span class="parametername">coord</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_MakePrecise_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.MakePrecise(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L223">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_PrecisionModel_MakePrecise_" data-uid="NetTopologySuite.Geometries.PrecisionModel.MakePrecise*"></a>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel_MakePrecise_System_Double_" data-uid="NetTopologySuite.Geometries.PrecisionModel.MakePrecise(System.Double)">MakePrecise(Double)</h4>
+  <div class="markdown level1 summary"><p>Rounds a numeric value to the PrecisionModel grid.
+Symmetric Arithmetic Rounding is used, to provide
+uniform rounding behaviour no matter where the number is
+on the number line.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double MakePrecise(double val)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">val</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="NetTopologySuite_Geometries_PrecisionModel_MakePrecise_System_Double__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method has no effect on NaN values</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_MostPrecise_NetTopologySuite_Geometries_PrecisionModel_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.MostPrecise(NetTopologySuite.Geometries.PrecisionModel%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L60">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_PrecisionModel_MostPrecise_" data-uid="NetTopologySuite.Geometries.PrecisionModel.MostPrecise*"></a>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel_MostPrecise_NetTopologySuite_Geometries_PrecisionModel_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Geometries.PrecisionModel.MostPrecise(NetTopologySuite.Geometries.PrecisionModel,NetTopologySuite.Geometries.PrecisionModel)">MostPrecise(PrecisionModel, PrecisionModel)</h4>
+  <div class="markdown level1 summary"><p>Determines which of two <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a>s is the most precise</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static PrecisionModel MostPrecise(PrecisionModel pm1, PrecisionModel pm2)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">pm1</span></td>
+        <td><p>A precision model</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">pm2</span></td>
+        <td><p>A precision model</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><p>The PrecisionModel which is most precise</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_ToString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L266">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_PrecisionModel_ToString_" data-uid="NetTopologySuite.Geometries.PrecisionModel.ToString*"></a>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel_ToString" data-uid="NetTopologySuite.Geometries.PrecisionModel.ToString">ToString()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
+  <h3 id="operators">Operators
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_op_Equality_NetTopologySuite_Geometries_PrecisionModel_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.op_Equality(NetTopologySuite.Geometries.PrecisionModel%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L311">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_PrecisionModel_op_Equality_" data-uid="NetTopologySuite.Geometries.PrecisionModel.op_Equality*"></a>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel_op_Equality_NetTopologySuite_Geometries_PrecisionModel_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Geometries.PrecisionModel.op_Equality(NetTopologySuite.Geometries.PrecisionModel,NetTopologySuite.Geometries.PrecisionModel)">Equality(PrecisionModel, PrecisionModel)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(PrecisionModel obj1, PrecisionModel obj2)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">obj1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">obj2</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel_op_Inequality_NetTopologySuite_Geometries_PrecisionModel_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel.op_Inequality(NetTopologySuite.Geometries.PrecisionModel%2CNetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L322">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_PrecisionModel_op_Inequality_" data-uid="NetTopologySuite.Geometries.PrecisionModel.op_Inequality*"></a>
+  <h4 id="NetTopologySuite_Geometries_PrecisionModel_op_Inequality_NetTopologySuite_Geometries_PrecisionModel_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Geometries.PrecisionModel.op_Inequality(NetTopologySuite.Geometries.PrecisionModel,NetTopologySuite.Geometries.PrecisionModel)">Inequality(PrecisionModel, PrecisionModel)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(PrecisionModel obj1, PrecisionModel obj2)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">obj1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">PrecisionModel</a></td>
+        <td><span class="parametername">obj2</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable">System.IComparable</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">System.IComparable&lt;T&gt;</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/develop/doc/overwrite/new?filename=NetTopologySuite_Geometries_PrecisionModel.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.PrecisionModel%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/develop/src/NetTopologySuite/Geometries/PrecisionModel.cs/#L51" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
