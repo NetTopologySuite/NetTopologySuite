@@ -1,0 +1,8 @@
+- name: Home
+  href: index.md
+- name: API Documentation
+  href: obj/api/
+- name: NuGet Package
+  href: https://www.nuget.org/packages/NetTopologySuite
+- name: GitHub
+  href: https://github.com/NetTopologySuite/NetTopologySuite
