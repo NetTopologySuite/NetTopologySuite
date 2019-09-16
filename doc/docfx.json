@@ -1,0 +1,45 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [ "**/NetTopologySuite.csproj" ],
+          "src": "../src"
+        }
+      ],
+      "dest": "obj/api"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [ "**/*.yml" ],
+        "src": "obj/api",
+        "dest": "api"
+      },
+      {
+        "files": ["articles/**.md", "articles/**/toc.yml", "toc.yml", "*.md" ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [ "images/**" ]
+      }
+    ],
+    "overwrite": "overwrite/**.md",
+    "dest": "obj/generated-site-content",
+    "globalMetadataFiles": [],
+    "fileMetadataFiles": [],
+    "template": [ "default" ],
+    "postProcessors": [],
+    "markdownEngineName": "markdig",
+    "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ],
+    "globalMetadata": {
+      "_appTitle": "NetTopologySuite",
+      "_enableSearch": true,
+      "_gitContribute": {
+        "apiSpecFolder": "doc/overwrite"
+      }
+    }
+  }
+}
