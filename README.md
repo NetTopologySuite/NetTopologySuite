@@ -15,6 +15,9 @@ Enjoy using them!
 ## Upgrading to 2.x from 1.x
 A [wiki page](https://github.com/NetTopologySuite/NetTopologySuite/wiki/Upgrading-to-2.0-from-1.x) has been started to try to document the breaking changes in 2.0 when coming from 1.x.
 
+## Documentation
+A documentation of the NetTopologySuite API based on code xml comments is accessible on [github-pages](http://nettopologysuite.github.io/NetTopologySuite/api/NetTopologySuite.html)
+
 ## Install with NuGet package manager
 ### Stable [![NuGet Status](http://img.shields.io/nuget/v/NetTopologySuite.svg?style=flat)](http://www.nuget.org/packages/NetTopologySuite/)
 Stable releases are hosted on the default NuGet feed. You can install them using the following command on the package manager command line
