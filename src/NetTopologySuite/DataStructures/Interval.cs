@@ -206,7 +206,7 @@ namespace NetTopologySuite.DataStructures
         /// </summary>
         /// <param name="min">The minimum value of the interval</param>
         /// <param name="max">The maximum value of the interval</param>
-        /// <returns><value>true</value> if this interval intersects the interval &#x211d;[<paramref name="min"/>, <paramref name="max"/>].</returns>
+        /// <returns><c>true</c> if this interval intersects the interval &#x211d;[<paramref name="min"/>, <paramref name="max"/>].</returns>
         public bool Intersects(double min, double max)
         {
             return !(min > Max || max < Min);
@@ -260,7 +260,7 @@ namespace NetTopologySuite.DataStructures
         /// </summary>
         /// <param name="lhs">The left-hand-side <see cref="Interval"/></param>
         /// <param name="rhs">The right-hand-side <see cref="Interval"/></param>
-        /// <returns><value>true</value> if the <see cref="Interval"/>s are equal.</returns>
+        /// <returns><c>true</c> if the <see cref="Interval"/>s are equal.</returns>
         public static bool operator ==(Interval lhs, Interval rhs)
         {
             return lhs.Equals(rhs);
@@ -271,7 +271,7 @@ namespace NetTopologySuite.DataStructures
         /// </summary>
         /// <param name="lhs">The left-hand-side <see cref="Interval"/></param>
         /// <param name="rhs">The right-hand-side <see cref="Interval"/></param>
-        /// <returns><value>true</value> if the <see cref="Interval"/>s are <b>not</b> equal.</returns>
+        /// <returns><c>true</c> if the <see cref="Interval"/>s are <b>not</b> equal.</returns>
         public static bool operator !=(Interval lhs, Interval rhs)
         {
             return !lhs.Equals(rhs);

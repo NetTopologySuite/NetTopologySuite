@@ -13,8 +13,9 @@ namespace NetTopologySuite.Algorithm
     /// the centroid will be computed as for the equivalent lower-dimension geometry.
     /// If the input geometry is empty, a
     /// <c>null</c> Coordinate is returned.
-    ///
-    /// <h2>Algorithm</h2>
+    /// </summary>
+    /// <remarks>
+    /// Algorithm
     /// <list type="Bullet">
     /// <item><b>Dimension 2</b> - the centroid ic computed
     /// as a weighted sum of the centroids
@@ -31,7 +32,7 @@ namespace NetTopologySuite.Algorithm
     /// </item>
     /// </list>
     /// If the input geometries are empty, a <c>null</c> Coordinate is returned.
-    /// </summary>
+    /// </remarks>
     /// <version>1.7</version>
     public class Centroid
     {

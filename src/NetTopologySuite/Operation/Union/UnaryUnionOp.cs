@@ -223,7 +223,7 @@ namespace NetTopologySuite.Operation.Union
         /// <param name="g1"></param>
         /// <returns>
         /// The union of the input(s)
-        /// or <value>null</value> if both inputs are <value>null</value>
+        /// or <c>null</c> if both inputs are <c>null</c>
         /// </returns>
         private static Geometry UnionWithNull(Geometry g0, Geometry g1)
         {

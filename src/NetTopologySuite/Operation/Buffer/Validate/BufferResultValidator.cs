@@ -98,7 +98,7 @@ namespace NetTopologySuite.Operation.Buffer.Validate
         /// </para>
         /// </summary>
         /// <returns>A geometric error indicator<br/>
-        /// or <value>null</value>, if no error was found</returns>
+        /// or <c>null</c>, if no error was found</returns>
         public Geometry ErrorIndicator => _errorIndicator;
 
         private void Report(string checkName)

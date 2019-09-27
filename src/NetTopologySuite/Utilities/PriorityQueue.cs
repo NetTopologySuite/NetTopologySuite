@@ -66,7 +66,7 @@ namespace NetTopologySuite.Utilities
         /// <summary>
         /// Remove the smallest item from the priority queue.
         /// </summary>
-        /// <remarks>The smallest item, or <value>default(T)</value> if empty.</remarks>
+        /// <remarks>The smallest item, or <c>default(T)</c> if empty.</remarks>
         public T Poll()
         {
             var node = this._queue.Dequeue();

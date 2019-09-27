@@ -105,7 +105,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <summary>
         /// Creates a polygonizer and allow specifying if only polygons which form a valid polygonal geometry are to be extracted.
         /// </summary>
-        /// <param name="extractOnlyPolygonal"><value>true</value> if only polygons which form a valid polygonal geometry are to be extracted</param>
+        /// <param name="extractOnlyPolygonal"><c>true</c> if only polygons which form a valid polygonal geometry are to be extracted</param>
         public Polygonizer(bool extractOnlyPolygonal)
         {
             _extractOnlyPolygonal = extractOnlyPolygonal;

@@ -121,7 +121,7 @@ namespace NetTopologySuite.IO
         /// Tests if reader has reached limit
         /// </summary>
         /// <param name="geoms">A collection of already read geometries</param>
-        /// <returns><value>true</value> if <see cref="Limit"/> number of geometries has been read.</returns>
+        /// <returns><c>true</c> if <see cref="Limit"/> number of geometries has been read.</returns>
         private bool IsAtLimit(List<Geometry> geoms)
         {
             if (Limit < 0)

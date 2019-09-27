@@ -100,7 +100,7 @@ namespace NetTopologySuite.Operation
         /// <see cref="IsSimple()"/> must be called before this location is accessed
         /// </summary>
         /// <returns> a coordinate for the location of the non-boundary self-intersection
-        /// or <value>null</value> if the geometry is simple</returns>
+        /// or <c>null</c> if the geometry is simple</returns>
         public Coordinate NonSimpleLocation => _nonSimpleLocation;
 
         private bool IsSimpleMultiPoint(MultiPoint mp)

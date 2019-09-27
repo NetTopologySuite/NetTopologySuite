@@ -201,7 +201,7 @@ namespace NetTopologySuite.Geometries.Utilities
             /// (may be different to the factory of the input point).
             /// </param>
             /// <returns>A new Geometry which is a modification of the input Geometry.</returns>
-            /// <returns><value>null</value> if the Geometry is to be deleted completely</returns>
+            /// <returns><c>null</c> if the Geometry is to be deleted completely</returns>
             Geometry Edit(Geometry geometry, GeometryFactory factory);
         }
 

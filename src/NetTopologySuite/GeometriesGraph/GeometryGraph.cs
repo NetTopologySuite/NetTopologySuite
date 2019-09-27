@@ -351,7 +351,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// not tested for self-intersection, since they are assumed to be valid).
         /// </summary >
         /// <param name="li">The <c>LineIntersector</c> to use</param>
-        /// <param name="computeRingSelfNodes">If <value>false</value>, intersection checks are optimized to not test rings for self-intersection</param>
+        /// <param name="computeRingSelfNodes">If <c>false</c>, intersection checks are optimized to not test rings for self-intersection</param>
         /// <param name="isDoneIfProperInt">Short-circuit the intersection computation if a proper intersection is found</param>
         public SegmentIntersector ComputeSelfNodes(LineIntersector li, bool computeRingSelfNodes, bool isDoneIfProperInt)
         {
