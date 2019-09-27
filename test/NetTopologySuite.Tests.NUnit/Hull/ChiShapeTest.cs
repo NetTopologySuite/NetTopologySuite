@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Hull
 {
     [TestFixture]
-    public class ConcaveHullTest : GeometryTestCase
+    public class ChiShapeTest : GeometryTestCase
     {
 
         [Test]
@@ -34,7 +34,7 @@ namespace NetTopologySuite.Tests.NUnit.Hull
         {
             var input = Read(inputWKT);
             var expected = Read(expectedWKT);
-            var hull = new ConcaveHull(input, tolerance);
+            var hull = new ChiShape(input, tolerance);
             var actual = hull.GetResult();
             CheckEqual(expected, actual);
         }

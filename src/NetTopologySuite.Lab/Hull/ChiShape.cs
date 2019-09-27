@@ -8,12 +8,12 @@ using NetTopologySuite.Triangulate.QuadEdge;
 
 namespace NetTopologySuite.Hull
 {
-    public class ConcaveHull
+    public class ChiShape
     {
         private readonly Geometry _geom;
         private readonly double _tolerance;
 
-        public ConcaveHull(Geometry geom, double tolerance)
+        public ChiShape(Geometry geom, double tolerance)
         {
             _geom = geom;
             _tolerance = tolerance;
