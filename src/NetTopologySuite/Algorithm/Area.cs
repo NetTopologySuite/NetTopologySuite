@@ -59,7 +59,7 @@ namespace NetTopologySuite.Algorithm
 
         /// <summary>
         /// Computes the signed area for a ring. The signed area is positive if the
-        /// <list type="Table">
+        /// <list type="table">
         /// <listheader>
         /// <term>value</term>
         /// <description>meaning</description>

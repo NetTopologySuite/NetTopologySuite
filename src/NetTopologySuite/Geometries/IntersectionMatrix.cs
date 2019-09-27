@@ -15,10 +15,10 @@ namespace NetTopologySuite.Geometries
     /// </para>
     /// <para>
     /// Methods are provided to:
-    /// <list type="Bullet">
-    /// <item>Set and query the elements of the matrix in a convenient fashion.</item>
-    /// <item>Convert to and from the standard string representation (specified in SFS Section 2.1.13.2).</item>
-    /// <item>Test to see if a matrix matches a given pattern string.</item>
+    /// <list type="bullet">
+    /// <item><description>Set and query the elements of the matrix in a convenient fashion.</description></item>
+    /// <item><description>Convert to and from the standard string representation (specified in SFS Section 2.1.13.2).</description></item>
+    /// <item><description>Test to see if a matrix matches a given pattern string.</description></item>
     /// </list>
     /// </para>
     /// For a description of the DE-9IM and the spatial predicates derived from it, see the <i>

@@ -13,13 +13,13 @@ namespace NetTopologySuite.Simplify
     /// <para/>
     /// If the input is a polygonal geometry
     /// (<see cref="Polygon"/> or <see cref="MultiPolygon"/>):
-    /// <list type="Bullet">
-    /// <item>The result has the same number of shells and holes as the input,
-    ///  with the same topological structure</item>
-    /// <item>The result rings touch at no more than the number of touching points in the input
+    /// <list type="bullet">
+    /// <item><description>The result has the same number of shells and holes as the input,
+    ///  with the same topological structure</description></item>
+    /// <item><description>The result rings touch at no more than the number of touching points in the input
     /// (although they may touch at fewer points).
     /// The key implication of this statement is that if the
-    /// input is topologically valid, so is the simplified output.</item>
+    /// input is topologically valid, so is the simplified output.</description></item>
     /// </list>
     /// For linear geometries, if the input does not contain
     /// any intersecting line segments, this property
@@ -40,8 +40,8 @@ namespace NetTopologySuite.Simplify
     /// </summary>
     /// <remarks>
     /// <h3>KNOWN BUGS</h3>
-    /// <list type="Bullet">
-    /// <item>May create invalid topology if there are components which are small
+    /// <list type="bullet">
+    /// <item><description>May create invalid topology if there are components which are small
     /// relative to the tolerance value.
     /// In particular, if a small hole is very near an edge,
     /// it is possible for the edge to be moved by a relatively large tolerance value
@@ -49,7 +49,7 @@ namespace NetTopologySuite.Simplify
     /// Similarly, it is possible for a small polygon component to end up inside
     /// a nearby larger polygon.
     /// A workaround is to test for this situation in post-processing and remove
-    /// any invalid holes or polygons.</item>
+    /// any invalid holes or polygons.</description></item>
     /// </list>
     /// </remarks>
     /// <seealso cref="DouglasPeuckerSimplifier"/>

@@ -68,10 +68,10 @@ namespace NetTopologySuite.Algorithm
         /// <param name="x2"></param>
         /// <param name="y2"></param>
         /// <returns>
-        /// <list>
-        /// <item>-1 if the determinant is negative,</item>
-        /// <item>1 if the determinant is positive,</item>
-        /// <item>0 if the determinant is null.</item>
+        /// <list type="bullet">
+        /// <item><description>-1 if the determinant is negative,</description></item>
+        /// <item><description>1 if the determinant is positive,</description></item>
+        /// <item><description>0 if the determinant is null.</description></item>
         /// </list>
         /// </returns>
         //private static int OriginalSignOfDet2x2(double x1, double y1, double x2, double y2) {
@@ -409,10 +409,10 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p2">The final point of the vector</param>
         /// <param name="q">the point to compute the direction to</param>
         /// <returns>
-        /// <list type="Bullet">
-        /// <item>1 if q is counter-clockwise (left) from p1-p2</item>
-        /// <item>-1 if q is clockwise (right) from p1-p2</item>
-        /// <item>0 if q is collinear with p1-p2</item></list>
+        /// <list type="bullet">
+        /// <item><description>1 if q is counter-clockwise (left) from p1-p2</description></item>
+        /// <item><description>-1 if q is clockwise (right) from p1-p2</description></item>
+        /// <item><description>0 if q is collinear with p1-p2</description></item></list>
         /// </returns>
         public static int OrientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
         {

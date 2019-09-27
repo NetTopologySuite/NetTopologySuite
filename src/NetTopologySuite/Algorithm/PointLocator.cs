@@ -12,7 +12,7 @@ namespace NetTopologySuite.Algorithm
     /// <para>
     /// Notes:
     /// <list Type="Bullet">
-    /// <item><see cref="LinearRing"/>s do not enclose any area - points inside the ring are still in the EXTERIOR of the ring.</item>
+    /// <item><description><see cref="LinearRing"/>s do not enclose any area - points inside the ring are still in the EXTERIOR of the ring.</description></item>
     /// </list>
     /// Instances of this class are not reentrant.
     /// </para>

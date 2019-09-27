@@ -101,12 +101,12 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <remarks>
         /// For a measured coordinate sequence a non-zero value is returned.
-        /// <list type="Bullet">
-        /// <item>For <see cref="Geometries.Ordinates.XY"/> sequence measures is zero</item>
-        /// <item>For <see cref="Geometries.Ordinates.XYM"/> sequence measure is one</item>
-        /// <item>For <see cref="Geometries.Ordinates.XYZ"/> sequence measure is zero</item>
-        /// <item>For <see cref="Geometries.Ordinates.XYZM"/> sequence measure is one</item>
-        /// <item>Values greater than one are supported</item>
+        /// <list type="bullet">
+        /// <item><description>For <see cref="Geometries.Ordinates.XY"/> sequence measures is zero</description></item>
+        /// <item><description>For <see cref="Geometries.Ordinates.XYM"/> sequence measure is one</description></item>
+        /// <item><description>For <see cref="Geometries.Ordinates.XYZ"/> sequence measure is zero</description></item>
+        /// <item><description>For <see cref="Geometries.Ordinates.XYZM"/> sequence measure is one</description></item>
+        /// <item><description>Values greater than one are supported</description></item>
         /// </list>
         /// </remarks>
         public int Measures { get; }

@@ -14,9 +14,9 @@ namespace NetTopologySuite.Algorithm
     /// The orientation of the shell and hole rings is unimportant.
     /// In order to compute a correct location for a given polygonal geometry,
     /// it is essential that <b>all</b> segments are counted which
-    /// <list type="Bullet">
-    /// <item>touch the ray</item>
-    /// <item>lie in in any ring which may contain the point</item>
+    /// <list type="bullet">
+    /// <item><description>touch the ray</description></item>
+    /// <item><description>lie in in any ring which may contain the point</description></item>
     /// </list>
     /// <para>
     /// The only exception is when the point-on-segment situation is detected, in which

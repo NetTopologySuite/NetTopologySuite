@@ -10,28 +10,28 @@ namespace NetTopologySuite.Operation
     /// Tests whether a <see cref="Geometry"/> is simple.
     /// In general, the SFS specification of simplicity
     /// follows the rule:
-    /// <list type="Bullet">
-    /// <item>
+    /// <list type="bullet">
+    /// <item><description>
     /// A Geometry is simple if and only if the only self-intersections are at boundary points.
-    /// </item>
+    /// </description></item>
     /// </list>
     /// </summary>
     /// <remarks>
     /// Simplicity is defined for each <see cref="Geometry"/>} subclass as follows:
-    /// <list type="Bullet">
-    /// <item>Valid <see cref="IPolygonal"/> geometries are simple by definition, so
+    /// <list type="bullet">
+    /// <item><description>Valid <see cref="IPolygonal"/> geometries are simple by definition, so
     /// <c>IsSimple</c> trivially returns true.<br/>
     /// (Note: this means that <tt>IsSimple</tt> cannot be used to test
     /// for (invalid) self-intersections in <tt>Polygon</tt>s.
     /// In order to check if a <tt>Polygonal</tt> geometry has self-intersections,
-    /// use <see cref="Geometry.IsValid()" />).</item>
-    /// <item><b><see cref="ILineal"/></b> geometries are simple if and only if they do <i>not</i> self-intersect at interior points
+    /// use <see cref="Geometry.IsValid()" />).</description></item>
+    /// <item><description><b><see cref="ILineal"/></b> geometries are simple if and only if they do <i>not</i> self-intersect at interior points
     /// (i.e. points other than boundary points).
     /// This is equivalent to saying that no two linear components satisfy the SFS <see cref="Geometry.Touches(Geometry)"/>
-    /// predicate.</item>
-    /// <item><b>Zero-dimensional (<see cref="IPuntal"/>)</b> geometries are simple if and only if they have no
-    /// repeated points.</item>
-    /// <item><b>Empty</b> <see cref="Geometry"/>s are <i>always</i> simple by definition.</item>
+    /// predicate.</description></item>
+    /// <item><description><b>Zero-dimensional (<see cref="IPuntal"/>)</b> geometries are simple if and only if they have no
+    /// repeated points.</description></item>
+    /// <item><description><b>Empty</b> <see cref="Geometry"/>s are <i>always</i> simple by definition.</description></item>
     /// </list>
     /// For <see cref="ILineal"/> geometries the evaluation of simplicity
     /// can be customized by supplying a <see cref="IBoundaryNodeRule"/>

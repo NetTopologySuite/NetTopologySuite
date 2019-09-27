@@ -11,10 +11,10 @@ namespace NetTopologySuite.GeometriesGraph
     /// <remarks>
     /// If the parent component is an area edge, each side and the edge itself
     /// have a topological location.  These locations are named:
-    /// <list type="Table">
-    /// <item>On</item><description>on the edge</description>
-    /// <item>Left</item><description>left-hand side of the edge</description>
-    /// <item>Right</item><description>right-hand side</description>
+    /// <list type="table">
+    /// <item><term>On</term><description>on the edge</description></item>
+    /// <item><term>Left</term><description>left-hand side of the edge</description></item>
+    /// <item><term>Right</term><description>right-hand side</description></item>
     /// </list>
     /// <para>
     /// If the parent component is a line edge or node, there is a single

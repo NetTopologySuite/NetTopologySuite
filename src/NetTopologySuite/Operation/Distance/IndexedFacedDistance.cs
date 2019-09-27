@@ -13,14 +13,14 @@ namespace NetTopologySuite.Operation.Distance
     /// on the target and the query geometries.
     /// <para>
     /// This approach provides the following benefits:
-    /// <list type="Bullet">
-    /// <item>
+    /// <list type="bullet">
+    /// <item><description>
     /// Performance is dramatically improved due to the use of the
     /// R-tree index
     /// and the pruning due to the Branch-and-Bound approach
-    /// </item><item>
+    /// </description></item><item><description>
     /// The spatial index on the target geometry is cached
-    /// which allow reuse in an repeated query situation.</item>
+    /// which allow reuse in an repeated query situation.</description></item>
     /// </list>
     /// Using this technique is usually much more performant
     /// than using the brute-force <see cref="Geometry.Distance(Geometry)"/>

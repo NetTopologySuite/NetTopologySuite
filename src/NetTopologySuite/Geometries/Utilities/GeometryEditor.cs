@@ -18,22 +18,22 @@ namespace NetTopologySuite.Geometries.Utilities
     /// (possibly) modified components.
     /// <para>
     /// Examples of the kinds of modifications which can be made are:
-    /// <list type="Bullet">
-    /// <item>
+    /// <list type="bullet">
+    /// <item><description>
     /// The values of the coordinates may be changed.
     /// The editor does not check whether changing coordinate values makes the result Geometry invalid
-    /// </item>
-    /// <item>
+    /// </description></item>
+    /// <item><description>
     /// The coordinate lists may be changed (e.g. by adding, deleting or modifying coordinates).
     /// The modified coordinate lists must be consistent with their original parent component
     /// (e.g. a <tt>LinearRing</tt> must always have at least 4 coordinates, and the first and last
     /// coordinate must be equal).
-    /// </item>
-    /// <item>
+    /// </description></item>
+    /// <item><description>
     /// Components of the original point may be deleted
     /// (e.g. holes may be removed from a Polygon, or LineStrings removed from a MultiLineString).
     /// Deletions will be propagated up the component tree appropriately.
-    /// </item></list>
+    /// </description></item></list>
     /// </para>
     /// <para>
     /// All changes must be consistent with the original Geometry's structure
@@ -48,11 +48,11 @@ namespace NetTopologySuite.Geometries.Utilities
     /// transformed to a new SRID and/or a new PrecisionModel.</para>
     /// <para>
     /// Usage notes
-    /// <list type="Bullet">
-    /// <item>The resulting Geometry is not checked for validity.
+    /// <list type="bullet">
+    /// <item><description>The resulting Geometry is not checked for validity.
     /// If validity needs to be enforced, the new Geometry's
-    /// <see cref="Geometry.IsValid"/> method should be called.</item>
-    /// <item>By default the UserData of the input geometry is not copied to the result. </item>
+    /// <see cref="Geometry.IsValid"/> method should be called.</description></item>
+    /// <item><description>By default the UserData of the input geometry is not copied to the result.</description></item>
     /// </list>
     /// </para>
     /// </remarks>

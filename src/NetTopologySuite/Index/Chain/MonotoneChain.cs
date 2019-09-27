@@ -9,10 +9,10 @@ namespace NetTopologySuite.Index.Chain
     /// <remarks>
     /// <para>
     /// They have the following properties:
-    /// <list>
-    /// <item>the segments within a monotone chain never intersect each other</item>
-    /// <item>the envelope of any contiguous subset of the segments in a monotone chain
-    /// is equal to the envelope of the endpoints of the subset.</item>
+    /// <list type="bullet">
+    /// <item><description>the segments within a monotone chain never intersect each other</description></item>
+    /// <item><description>the envelope of any contiguous subset of the segments in a monotone chain
+    /// is equal to the envelope of the endpoints of the subset.</description></item>
     /// </list>
     /// </para>
     /// <para>
@@ -30,7 +30,7 @@ namespace NetTopologySuite.Index.Chain
     /// have to be allocated.</para>
     /// <para>
     /// MonotoneChains support the following kinds of queries:
-    /// <list type="Table">
+    /// <list type="table">
     /// <item>Envelope select</item><description>determine all the segments in the chain which
     /// intersect a given envelope.</description>
     /// <item>Overlap</item><description>determine all the pairs of segments in two chains whose

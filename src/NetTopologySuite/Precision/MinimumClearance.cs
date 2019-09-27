@@ -27,9 +27,9 @@ namespace NetTopologySuite.Precision
     /// guarantee to leave the geometry valid" [TV06].
     /// An equivalent constructive definition [Mi88] is that
     /// <i>r</i> is the largest value such:
-    /// <list type="Bullet">
-    /// <item>No two distinct vertices of G are closer than <i>r</i>.</item>
-    /// <item>No vertex of G is closer than <i>r</i> to an edge of G of which the vertex is not an endpoint</item>
+    /// <list type="bullet">
+    /// <item><description>No two distinct vertices of G are closer than <i>r</i>.</description></item>
+    /// <item><description>No vertex of G is closer than <i>r</i> to an edge of G of which the vertex is not an endpoint</description></item>
     /// </list>
     /// The following image shows an example of the Minimum Clearance
     /// of a simple polygon.
@@ -66,14 +66,14 @@ namespace NetTopologySuite.Precision
     /// the computed Minimum Clearance line
     /// effectively determines the Nearest Neighbours in the collection.
     /// <h3>References</h3>
-    /// <list type="Bullet">
-    /// <item>[Mi88] Milenkovic, V. J.,
+    /// <list type="bullet">
+    /// <item><description>[Mi88] Milenkovic, V. J.,
     /// <i>Verifiable implementations of geometric algorithms
     /// using finite precision arithmetic</i>.
-    /// in Artificial Intelligence, 377-401. 1988</item>
-    /// <item>[TV06] Thompson, Rod and van Oosterom, Peter,
+    /// in Artificial Intelligence, 377-401. 1988</description></item>
+    /// <item><description>[TV06] Thompson, Rod and van Oosterom, Peter,
     /// <i>Interchange of Spatial Data-Inhibiting Factors</i>,
-    /// Agile 2006, Visegrad, Hungary. 2006</item>
+    /// Agile 2006, Visegrad, Hungary. 2006</description></item>
     /// </list>
     /// </remarks>
     /// /// <author>Martin Davis</author>

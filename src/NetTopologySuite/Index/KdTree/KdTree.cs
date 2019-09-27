@@ -155,9 +155,9 @@ namespace NetTopologySuite.Index.KdTree
         /// </summary>
         /// <param name="p">The point being inserted</param>
         /// <returns>
-        /// <list type="Bullet">
-        /// <item>the best matching node</item>
-        /// <item>null if no match was found</item>
+        /// <list type="bullet">
+        /// <item><description>the best matching node</description></item>
+        /// <item><description>null if no match was found</description></item>
         /// </list>
         /// </returns>
         private KdNode<T> FindBestMatchNode(Coordinate p)
@@ -176,9 +176,9 @@ namespace NetTopologySuite.Index.KdTree
         /// </summary>
         /// <param name="p">The point to insert</param>
         /// <returns>
-        /// <list type="Bullet">
-        /// <item>The data for the point</item>
-        /// <item>The created node</item>
+        /// <list type="bullet">
+        /// <item><description>The data for the point</description></item>
+        /// <item><description>The created node</description></item>
         /// </list>
         /// </returns>
         public KdNode<T> InsertExact(Coordinate p, T data)

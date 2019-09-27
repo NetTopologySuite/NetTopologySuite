@@ -36,9 +36,9 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <param name="b">A vector of length n</param>
         /// <exception cref="T:System.ArgumentException">if the matrix is the wrong size</exception>
         /// <returns>
-        /// <list type="Bullet">
-        /// <item>A vector containing the solution (if any)</item>
-        /// <item><c>null</c> if the system has no or no unique solution</item>
+        /// <list type="bullet">
+        /// <item><description>A vector containing the solution (if any)</description></item>
+        /// <item><description><c>null</c> if the system has no or no unique solution</description></item>
         /// </list>
         /// </returns>
         public static double[] Solve(double[][] a, double[] b)

@@ -7,9 +7,9 @@ namespace NetTopologySuite.Geometries
     /// Represents a single point.
     /// <para/>
     /// A <c>Point</c> is topologically valid if and only if:
-    /// <list type="Bullet">
-    /// <item>The coordinate which defines it if any) is a valid coordinate
-    /// (i.e. does not have an <c>NaN</c> X- or Y-ordinate</item>
+    /// <list type="bullet">
+    /// <item><description>The coordinate which defines it if any) is a valid coordinate
+    /// (i.e. does not have an <c>NaN</c> X- or Y-ordinate</description></item>
     /// </list>
     /// </summary>
     ///

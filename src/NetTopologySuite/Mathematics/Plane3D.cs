@@ -34,10 +34,10 @@ namespace NetTopologySuite.Mathematics
         /// <summary>
         /// Computes the oriented distance from a point to the plane.<br/>
         /// The distance is:
-        /// <list type="Bullet">
-        /// <item><b>positive</b> if the point lies above the plane (relative to the plane normal)</item>
-        /// <item><b>zero</b> if the point is on the plane</item>
-        /// <item><b>negative</b> if the point lies below the plane (relative to the plane normal)</item>
+        /// <list type="bullet">
+        /// <item><description><b>positive</b> if the point lies above the plane (relative to the plane normal)</description></item>
+        /// <item><description><b>zero</b> if the point is on the plane</description></item>
+        /// <item><description><b>negative</b> if the point lies below the plane (relative to the plane normal)</description></item>
         /// </list>
         /// </summary>
         /// <param name="p">The point to compute the distance for</param>
