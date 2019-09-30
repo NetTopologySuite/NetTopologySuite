@@ -209,21 +209,20 @@ namespace NetTopologySuite.Algorithm
 
         /// <summary>
         /// Computes the normalized positive value of an angle, which is the equivalent angle in the range [ 0, 2*Pi ).
-        /// <para>
+        /// <para/>
         /// E.g.
-        /// <list>
-        /// <item></item>
-        /// <item>NormalizePositive(0.0) = 0.0</item>
-        /// <item>NormalizePositive(-PI) = <see cref="System.Math.PI"/></item>
-        /// <item>NormalizePositive(-2PI) = 0.0</item>
-        /// <item>NormalizePositive(-3PI) = <see cref="System.Math.PI"/></item>
-        /// <item>NormalizePositive(-4PI) = 0</item>
-        /// <item>NormalizePositive(PI) = <see cref="System.Math.PI"/></item>
-        /// <item>NormalizePositive(2PI) = 0.0</item>
-        /// <item>NormalizePositive(3PI) = <see cref="System.Math.PI"/></item>
-        /// <item>NormalizePositive(4PI) = 0.0</item>
+        /// <list type="table">
+        /// <listheader><term>Function call</term><description>Result</description></listheader>
+        /// <item><term>NormalizePositive(0.0)</term><description>0.0</description></item>
+        /// <item><term>NormalizePositive(-PI)</term><description><see cref="System.Math.PI"/></description></item>
+        /// <item><term>NormalizePositive(-2PI)</term><description>0.0</description></item>
+        /// <item><term>NormalizePositive(-3PI)</term><description><see cref="System.Math.PI"/></description></item>
+        /// <item><term>NormalizePositive(-4PI)</term><description>0.0</description></item>
+        /// <item><term>NormalizePositive(PI)</term><description><see cref="System.Math.PI"/></description></item>
+        /// <item><term>NormalizePositive(2PI)</term><description>0.0</description></item>
+        /// <item><term>NormalizePositive(3PI)</term><description><see cref="System.Math.PI"/></description></item>
+        /// <item><term>NormalizePositive(4PI)</term><description>0.0</description></item>
         /// </list>
-        /// </para>
         /// </summary>
         /// <remarks></remarks>
         /// <param name="angle">The angle to normalize, in radians.</param>
@@ -253,9 +252,9 @@ namespace NetTopologySuite.Algorithm
         /// Computes the unoriented smallest difference between two angles.
         /// </summary>
         /// <remarks>
-        /// <list type="Bulltet">
-        /// <item>The angles are assumed to be normalized to the range [-Pi, Pi].</item>
-        /// <item>The result will be in the range [0, Pi].</item>
+        /// <list type="bullet">
+        /// <item><description>The angles are assumed to be normalized to the range [-Pi, Pi].</description></item>
+        /// <item><description>The result will be in the range [0, Pi].</description></item>
         /// </list>
         /// </remarks>
         /// <param name="ang1">The angle of one vector (in [-Pi, Pi] )</param>

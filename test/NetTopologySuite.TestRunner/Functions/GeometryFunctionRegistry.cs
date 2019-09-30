@@ -120,7 +120,7 @@ namespace Open.Topology.TestRunner.Functions
         /// </summary>
         /// <param name="name"></param>
         /// <param name="paramTypes"></param>
-        /// <returns>A matching function<br/>or <value>null</value> if no matching function was found</returns>
+        /// <returns>A matching function<br/>or <c>null</c> if no matching function was found</returns>
         public IGeometryFunction Find(string name, Type[] paramTypes)
         {
             return null;
@@ -131,7 +131,7 @@ namespace Open.Topology.TestRunner.Functions
         /// </summary>
         /// <param name="name"></param>
         /// <param name="argCount"></param>
-        /// <returns>A matching function<br/>or <value>null</value> if no matching function was found</returns>
+        /// <returns>A matching function<br/>or <c>null</c> if no matching function was found</returns>
         public IGeometryFunction Find(string name, int argCount)
         {
             foreach (var func in _functions)
@@ -148,7 +148,7 @@ namespace Open.Topology.TestRunner.Functions
         /// Finds the first function which matches the given name.
         /// </summary>
         /// <param name="name"></param>
-        /// <returns>A matching function<br/>or <value>null</value> if no matching function was found</returns>
+        /// <returns>A matching function<br/>or <c>null</c> if no matching function was found</returns>
         public IGeometryFunction Find(string name)
         {
             foreach (var func in _functions)

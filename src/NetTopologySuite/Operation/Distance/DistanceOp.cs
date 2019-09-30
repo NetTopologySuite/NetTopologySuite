@@ -90,7 +90,7 @@ namespace NetTopologySuite.Operation.Distance
         /// Report the distance between the closest points on the input geometries.
         /// </summary>
         /// <returns>The distance between the geometries<br/>
-        /// or <value>0</value> if either input geometry is empty.</returns>
+        /// or <c>0</c> if either input geometry is empty.</returns>
         /// <exception cref="ApplicationException"> if either input geometry is null</exception>
         public double Distance()
         {

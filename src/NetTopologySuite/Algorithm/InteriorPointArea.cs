@@ -13,23 +13,23 @@ namespace NetTopologySuite.Algorithm
     /// <remarks>
     /// <h2>Algorithm:</h2>
     /// For each input polygon:
-    /// <list type="Bullet">
-    /// <item>
+    /// <list type="bullet">
+    /// <item><description>
     /// Determine a horizontal scan line on which the interior
     /// point will be located.
     /// To increase the chance of the scan line
     /// having non-zero-width intersection with the polygon
     /// the scan line Y ordinate is chosen to be near the centre of the polygon's
     /// Y extent but distinct from all of vertex Y ordinates.
-    /// </item>
-    /// <item>
+    /// </description></item>
+    /// <item><description>
     /// Compute the sections of the scan line
     /// which lie in the interior of the polygon.
-    /// </item>
-    /// <item>
+    /// </description></item>
+    /// <item><description>
     /// Choose the widest interior section
     /// and take its midpoint as the interior point.
-    /// </item>
+    /// </description></item>
     /// </list>
     /// The final interior point is chosen as
     /// the one occurring in the widest interior section.
@@ -50,16 +50,16 @@ namespace NetTopologySuite.Algorithm
     /// Empty geometry is handled by returning a <see langword="null"/> point.
     /// </para>
     /// <h3>KNOWN BUGS</h3>
-    /// <list type="Bullet">
-    /// <item>
+    /// <list type="bullet">
+    /// <item><description>
     /// If a fixed precision model is used,
     /// in some cases this method may return a point
     /// which does not lie in the interior.
-    /// </item>
-    /// <item>
+    /// </description></item>
+    /// <item><description>
     /// If the input polygon is <i>extremely</i> narrow the computed point
     /// may not lie in the interior of the polygon.
-    /// </item>
+    /// </description></item>
     /// </list>
     /// </remarks>
     public class InteriorPointArea

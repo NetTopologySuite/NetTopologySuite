@@ -156,16 +156,16 @@ namespace NetTopologySuite.Operation.Buffer
             /// Assumes the segments are normalized.
             /// <para/>
             /// The definition of ordering is:
-            /// <list type="Bullet">
-            /// <item>-1 : if DS1.seg is left of or below DS2.seg (DS1 &lt; DS2).</item>
-            /// <item>1 : if DS1.seg is right of or above DS2.seg (DS1 &gt; DS2).</item>
-            /// <item>0 : if the segments are identical</item>
+            /// <list type="table">
+            /// <item><term>-1</term><description>if DS1.seg is left of or below DS2.seg (DS1 &lt; DS2).</description></item>
+            /// <item><term>1</term><description>if DS1.seg is right of or above DS2.seg (DS1 &gt; DS2).</description></item>
+            /// <item><term>0</term><description>if the segments are identical</description></item>
             /// </list>
             /// Known Bugs:
-            /// <list type="Bullet">
-            /// <item>The logic does not obey the <see cref="IComparable.CompareTo"/> contract.
+            /// <list type="bullet">
+            /// <item><description>The logic does not obey the <see cref="IComparable.CompareTo"/> contract.
             /// This is acceptable for the intended usage, but may cause problems if used with some
-            /// utilities in the .Net standard library (e.g. <see cref="T:System.Collections.List.Sort()"/>.</item>
+            /// utilities in the .Net standard library (e.g. <see cref="T:System.Collections.List.Sort()"/>.</description></item>
             /// </list>
             /// </remarks>
             /// <param name="other">A DepthSegment</param>

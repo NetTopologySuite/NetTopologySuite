@@ -7,12 +7,12 @@ namespace NetTopologySuite.Operation.Buffer
     /// specify how a buffer should be constructed.
     /// <para/>
     /// The parameters allow control over:
-    /// <list type="Bullet">
-    /// <item>Quadrant segments (accuracy of approximation for circular arcs)</item>
-    /// <item>End Cap style</item>
-    /// <item>Join style</item>
-    /// <item>Mitre limit</item>
-    /// <item>whether the buffer is single-sided</item>
+    /// <list type="bullet">
+    /// <item><description>Quadrant segments (accuracy of approximation for circular arcs)</description></item>
+    /// <item><description>End Cap style</description></item>
+    /// <item><description>Join style</description></item>
+    /// <item><description>Mitre limit</description></item>
+    /// <item><description>whether the buffer is single-sided</description></item>
     /// </list>
     /// </summary>
     /// <author>Martin Davis</author>
@@ -97,10 +97,10 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <remarks>
         /// QuadrantSegments is the number of line segments used to approximate an angle fillet.
-        /// <list type="Table">
-        /// <item><c>QuadrantSegments</c> &gt;>= 1</item><description>joins are round, and <c>QuadrantSegments</c> indicates the number of segments to use to approximate a quarter-circle.</description>
-        /// <item><c>QuadrantSegments</c> = 0</item><description>joins are beveled</description>
-        /// <item><c>QuadrantSegments</c> &lt; 0</item><description>joins are mitred, and the value of qs indicates the mitre ration limit as <c>mitreLimit = |<tt>QuadrantSegments</tt>|</c></description>
+        /// <list type="table">
+        /// <item><term><c>QuadrantSegments</c> &gt;>= 1</term><description>joins are round, and <c>QuadrantSegments</c> indicates the number of segments to use to approximate a quarter-circle.</description></item>
+        /// <item><term><c>QuadrantSegments</c> = 0</term><description>joins are beveled</description></item>
+        /// <item><term><c>QuadrantSegments</c> &lt; 0</term><description>joins are mitred, and the value of qs indicates the mitre ration limit as <c>mitreLimit = |<tt>QuadrantSegments</tt>|</c></description></item>
         /// </list>
         /// For round joins, <c>QuadrantSegments</c> determines the maximum
         /// error in the approximation to the true buffer curve.
@@ -218,9 +218,9 @@ namespace NetTopologySuite.Operation.Buffer
         /// A single-sided buffer is constructed on only one side of each input line.
         /// <para>
         /// The side used is determined by the sign of the buffer distance:
-        /// <list type="Bullet">
-        /// <item>a positive distance indicates the left-hand side</item>
-        /// <item>a negative distance indicates the right-hand side</item>
+        /// <list type="bullet">
+        /// <item><description>a positive distance indicates the left-hand side</description></item>
+        /// <item><description>a negative distance indicates the right-hand side</description></item>
         /// </list>
         /// The single-sided buffer of point geometries is  the same as the regular buffer.
         /// </para><para>

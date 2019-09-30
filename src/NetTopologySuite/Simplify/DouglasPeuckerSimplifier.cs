@@ -79,10 +79,10 @@ namespace NetTopologySuite.Simplify
         /// </summary>
         /// <remarks>
         /// The caller may choose to disable this because:
-        /// <list type="Bullet">
-        /// <item>valid topology is not required</item>
-        /// <item>fixing topology is a relative expensive operation</item>
-        /// <item>in some pathological cases the topology fixing operation may either fail or run for too long</item>
+        /// <list type="bullet">
+        /// <item><description>valid topology is not required</description></item>
+        /// <item><description>fixing topology is a relative expensive operation</description></item>
+        /// <item><description>in some pathological cases the topology fixing operation may either fail or run for too long</description></item>
         /// </list>
         /// The default is to fix polygon topology.
         /// </remarks>

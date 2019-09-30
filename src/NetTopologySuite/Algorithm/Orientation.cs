@@ -33,7 +33,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="q">The point to compute the direction to</param>
         /// <returns>
         /// The <see cref="OrientationIndex"/> of q in regard to the vector <c>p1-&gt;p2</c>
-        /// <list type="Table">
+        /// <list type="table">
         /// <listheader>
         /// <term>Value</term><description>Description</description>
         /// </listheader>
@@ -86,9 +86,9 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// Computes whether a ring defined by an array of <see cref="Coordinate"/>s is
         /// oriented counter-clockwise.
-        /// <list type="Bullet">
-        /// <item>The list of points is assumed to have the first and last points equal.</item>
-        /// <item>This will handle coordinate lists which contain repeated points.</item>
+        /// <list type="bullet">
+        /// <item><description>The list of points is assumed to have the first and last points equal.</description></item>
+        /// <item><description>This will handle coordinate lists which contain repeated points.</description></item>
         /// </list>
         /// This algorithm is <b>only</b> guaranteed to work with valid rings.If the
         /// ring is invalid(e.g.self-crosses or touches), the computed result may not
@@ -176,9 +176,9 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// Computes whether a ring defined by an <see cref="CoordinateSequence"/> is
         /// oriented counter-clockwise.
-        /// <list type="Bullet">
-        /// <item>The list of points is assumed to have the first and last points equal.</item>
-        /// <item>This will handle coordinate lists which contain repeated points.</item>
+        /// <list type="bullet">
+        /// <item><description>The list of points is assumed to have the first and last points equal.</description></item>
+        /// <item><description>This will handle coordinate lists which contain repeated points.</description></item>
         /// </list>
         /// This algorithm is <b>only</b> guaranteed to work with valid rings.If the
         /// ring is invalid(e.g.self-crosses or touches), the computed result may not

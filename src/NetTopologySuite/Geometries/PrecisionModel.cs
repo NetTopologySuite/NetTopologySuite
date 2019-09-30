@@ -31,9 +31,9 @@ namespace NetTopologySuite.Geometries
     /// The scale factor specifies the size of the grid which numbers are rounded to.
     /// Input coordinates are mapped to fixed coordinates according to the following
     /// equations:
-    /// <list>
-    /// <item>jtsPt.x = round( (inputPt.x * scale ) / scale</item>
-    /// <item>jtsPt.y = round( (inputPt.y * scale ) / scale</item>
+    /// <list type="bullet">
+    /// <item><description><c>jtsPt.X = Math.Round( inputPt.X * scale, MidPointRounding.AwayFromZero ) / scale )</c></description></item>
+    /// <item><description><c>jtsPt.Y = Math.Round( inputPt.Y * scale, MidPointRounding.AwayFromZero ) / scale )</c></description></item>
     /// </list>
     /// <para>
     /// For example, to specify 3 decimal places of precision, use a scale factor

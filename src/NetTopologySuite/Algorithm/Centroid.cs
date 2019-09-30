@@ -13,25 +13,26 @@ namespace NetTopologySuite.Algorithm
     /// the centroid will be computed as for the equivalent lower-dimension geometry.
     /// If the input geometry is empty, a
     /// <c>null</c> Coordinate is returned.
-    ///
-    /// <h2>Algorithm</h2>
-    /// <list type="Bullet">
-    /// <item><b>Dimension 2</b> - the centroid ic computed
+    /// </summary>
+    /// <remarks>
+    /// Algorithm
+    /// <list type="bullet">
+    /// <item><description><b>Dimension 2</b> - the centroid ic computed
     /// as a weighted sum of the centroids
     /// of a decomposition of the area into (possibly overlapping) triangles.
     /// Holes and multipolygons are handled correctly.
     /// See <c>http://www.faqs.org/faqs/graphics/algorithms-faq/</c>
-    /// for further details of the basic approach.</item>
-    /// <item><b>Dimension 1</b> - Computes the average of the midpoints
+    /// for further details of the basic approach.</description></item>
+    /// <item><description><b>Dimension 1</b> - Computes the average of the midpoints
     /// of all line segments weighted by the segment length.
     /// Zero-length lines are treated as points.
-    /// </item>
-    /// <item><b>Dimension 0</b> - Compute the average coordinate over all points.
+    /// </description></item>
+    /// <item><description><b>Dimension 0</b> - Compute the average coordinate over all points.
     /// Repeated points are all included in the average
-    /// </item>
+    /// </description></item>
     /// </list>
     /// If the input geometries are empty, a <c>null</c> Coordinate is returned.
-    /// </summary>
+    /// </remarks>
     /// <version>1.7</version>
     public class Centroid
     {

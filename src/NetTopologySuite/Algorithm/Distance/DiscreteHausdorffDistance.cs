@@ -31,12 +31,12 @@ namespace NetTopologySuite.Algorithm.Distance
     /// </para>
     /// <para>
     /// Examples of these are:
-    /// <list type="Bullet">
-    /// <item>
+    /// <list type="bullet">
+    /// <item><description>
     /// computing distance between Linestrings that are roughly parallel to each other,
     /// and roughly equal in length.  This occurs in matching linear networks.
-    /// </item>
-    /// <item>Testing similarity of geometries.</item>
+    /// </description></item>
+    /// <item><description>Testing similarity of geometries.</description></item>
     /// </list>
     /// </para>
     /// <para>

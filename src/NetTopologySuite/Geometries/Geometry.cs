@@ -348,17 +348,17 @@ namespace NetTopologySuite.Geometries
         /// self-tangency, self-intersection or other anomalous points.
         /// <para/>
         /// Simplicity is defined for each <see cref="Geometry"/> subclass as follows:
-        /// <list type="Bullet">
-        /// <item>Valid polygonal geometries are simple, since their rings
+        /// <list type="bullet">
+        /// <item><description>Valid polygonal geometries are simple, since their rings
         /// must not self-intersect. <c>IsSimple</c>
         /// tests for this condition and reports <code>false</code> if it is not met.
-        /// (This is a looser test than checking for validity).</item>
-        /// <item>Linear rings have the same semantics.</item>
-        /// <item>Linear geometries are simple iff they do not self-intersect at points
-        /// other than boundary points.</item>
-        /// <item>Zero-dimensional geometries (points) are simple iff they have no
-        /// repeated points.</item>
-        /// <item>Empty <code>Geometry</code>s are always simple.</item>
+        /// (This is a looser test than checking for validity).</description></item>
+        /// <item><description>Linear rings have the same semantics.</description></item>
+        /// <item><description>Linear geometries are simple iff they do not self-intersect at points
+        /// other than boundary points.</description></item>
+        /// <item><description>Zero-dimensional geometries (points) are simple iff they have no
+        /// repeated points.</description></item>
+        /// <item><description>Empty <code>Geometry</code>s are always simple.</description></item>
         /// </list>
         /// </summary>
         /// <returns><c>true</c> if this <code>Geometry</code> is simple</returns>
@@ -523,13 +523,13 @@ namespace NetTopologySuite.Geometries
         /// Gets a geometry representing the envelope (bounding box) of this <c>Geometry</c>.
         /// </summary>
         /// <remarks>If this <c>Geometry</c> is
-        /// <list type="Bullet">
-        /// <item>empty, returns an empty <c>Point</c></item>
-        /// <item>a point, returns a <c>Point</c></item>
-        /// <item>a line parallel to an axis, a two-vertex <c>LineString</c>,</item>
-        /// <item>otherwise, returns a
+        /// <list type="bullet">
+        /// <item><description>empty, returns an empty <c>Point</c></description></item>
+        /// <item><description>a point, returns a <c>Point</c></description></item>
+        /// <item><description>a line parallel to an axis, a two-vertex <c>LineString</c>,</description></item>
+        /// <item><description>otherwise, returns a
         /// <c>Polygon</c> whose vertices are (minx, miny), (maxx, miny), (maxx,
-        /// maxy), (minx, maxy), (minx, miny).</item>
+        /// maxy), (minx, maxy), (minx, miny).</description></item>
         /// </list>
         /// </remarks>
         /// <returns>
@@ -598,9 +598,9 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <remarks>
         /// The <c>Disjoint</c> predicate has the following equivalent definitions:
-        /// <list type="Bullet">
-        /// <item>The DE-9IM intersection matrix for the two geometries matches <c>FF*FF****</c>.</item>
-        /// <item><c>!g.intersects(this) == true</c><br/>(<c>Disjoint</c> is the inverse of <c>Intersects</c>)</item>
+        /// <list type="bullet">
+        /// <item><description>The DE-9IM intersection matrix for the two geometries matches <c>FF*FF****</c>.</description></item>
+        /// <item><description><c>!g.intersects(this) == true</c><br/>(<c>Disjoint</c> is the inverse of <c>Intersects</c>)</description></item>
         /// </list>
         /// </remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
@@ -616,16 +616,16 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <remarks>
         /// The <c>Touches</c> predicate has the following equivalent definitions:
-        /// <list type="Bullet">
-        /// <item>The geometries have at least one point in common,
-        /// but their interiors do not intersect</item>
-        /// <item>The DE-9IM Intersection Matrix for the two geometries matches
+        /// <list type="bullet">
+        /// <item><description>The geometries have at least one point in common,
+        /// but their interiors do not intersect</description></item>
+        /// <item><description>The DE-9IM Intersection Matrix for the two geometries matches
         /// at least one of the following patterns
-        /// <list type="Bullet">
-        /// <item><c>FT*******</c>, </item>
-        /// <item><c>F**T*****</c> or </item>
-        /// <item><c>F***T****</c>.</item>
-        /// </list></item>
+        /// <list type="bullet">
+        /// <item><description><c>FT*******</c>,</description></item>
+        /// <item><description><c>F**T*****</c> or</description></item>
+        /// <item><description><c>F***T****</c>.</description></item>
+        /// </list></description></item>
         /// </list>
         /// If both geometries have dimension 0, the predicate returns <c>false</c>,
         /// since points have only interiors.
@@ -649,15 +649,15 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <remarks>
         /// The <c>Intersects</c> predicate has the following equivalent definitions:
-        /// <list type="Bullet">
-        /// <item>The two geometries have at least one point in common</item>
-        /// <item>The DE-9IM Intersection Matrix for the two geometries matches<br/>
+        /// <list type="bullet">
+        /// <item><description>The two geometries have at least one point in common</description></item>
+        /// <item><description>The DE-9IM Intersection Matrix for the two geometries matches<br/>
         /// <c>[T********]</c> or<br/>
         /// <c>[*T*******]</c> or<br/>
         /// <c>[***T*****]</c> or<br/>
-        /// <c>[****T****]</c></item>
-        /// <item> <c>!g.disjoint(this)</c><br/>
-        /// (<c>Intersects</c> is the inverse of <c>Disjoint</c>)</item>
+        /// <c>[****T****]</c></description></item>
+        /// <item><description><c>!g.disjoint(this)</c><br/>
+        /// (<c>Intersects</c> is the inverse of <c>Disjoint</c>)</description></item>
         /// </list></remarks>
         /// <param name="g">The <c>Geometry</c> with which to compare this <c>Geometry</c>.</param>
         /// <returns><c>true</c> if the two <c>Geometry</c>s intersect.</returns>
@@ -710,15 +710,15 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <remarks>
         /// The <c>Crosses</c> predicate has the following equivalent definitions:
-        /// <list type="Bullet">
+        /// <list type="bullet">
         /// <item>The geometries have some but not all interior points in common.</item>
         /// <item>The DE-9IM Intersection Matrix for the two geometries matches
         /// one of the following patterns:
-        /// <list type="Table">
-        /// <listheader><item>Code</item><description>Description</description></listheader>
-        /// <item><c>[T*T******]</c></item><description>for P/L, P/A, and L/A situations</description>
-        /// <item><c>[T*****T**]</c></item><description>for L/P, A/P, and A/L situations)</description>
-        /// <item><c>[0********]</c></item><description>for L/L situations</description>
+        /// <list type="table">
+        /// <listheader><term>Code</term><description>Description</description></listheader>
+        /// <item><term><c>[T*T******]</c></term><description>for P/L, P/A, and L/A situations</description></item>
+        /// <item><term><c>[T*****T**]</c></term><description>for L/P, A/P, and A/L situations)</description></item>
+        /// <item><term><c>[0********]</c></term><description>for L/L situations</description></item>
         /// </list>
         /// </item>
         /// </list>
@@ -744,13 +744,13 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <remarks>
         /// The <code>within</code> predicate has the following equivalent definitions:
-        /// <list type="Bullet">
-        /// <item>
+        /// <list type="bullet">
+        /// <item><description>
         /// Every point of this geometry is a point of the other geometry,
         /// and the interiors of the two geometries have at least one point in common.
-        /// </item>
-        /// <item>The DE-9IM Intersection Matrix for the two geometries matches <c>[T*F**F***]</c></item>
-        /// <item><c>g.contains(this) == true</c><br/>(<c>Within</c> is the converse of <see cref="Contains"/>)</item>
+        /// </description></item>
+        /// <item><description>The DE-9IM Intersection Matrix for the two geometries matches <c>[T*F**F***]</c></description></item>
+        /// <item><description><c>g.contains(this) == true</c><br/>(<c>Within</c> is the converse of <see cref="Contains"/>)</description></item>
         /// </list>
         /// <para>
         /// An implication of the definition is that "The boundary of a geometry is not within the Polygon".
@@ -774,13 +774,13 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <remarks>
         /// The <c>Contains</c> predicate has the following equivalent definitions:
-        /// <list type="Bullet">
-        /// <item>Every point of the other geometry is a point of this geometry,
-        /// and the interiors of the two geometries have at least one point in common.</item>
-        /// <item>The DE-9IM Intersection Matrix for the two geometries matches the pattern
-        /// <c>[T*****FF*]</c></item>
-        /// <item><c>g.within(this)</c><br/>
-        /// (<c>Contains</c> is the converse of <see cref="Within"/>)</item>
+        /// <list type="bullet">
+        /// <item><description>Every point of the other geometry is a point of this geometry,
+        /// and the interiors of the two geometries have at least one point in common.</description></item>
+        /// <item><description>The DE-9IM Intersection Matrix for the two geometries matches the pattern
+        /// <c>[T*****FF*]</c></description></item>
+        /// <item><description><c>g.within(this)</c><br/>
+        /// (<c>Contains</c> is the converse of <see cref="Within"/>)</description></item>
         /// </list>
         /// <para>
         /// An implication of the definition is that "Geometries do not
@@ -828,14 +828,14 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <remarks>
         /// The <c>Overlaps</c> predicate has the following equivalent definitions:
-        /// <list type="Bullet">
-        /// <item>The geometries have at least one point each not shared by the other (or equivalently neither covers the other),
+        /// <list type="bullet">
+        /// <item><description>The geometries have at least one point each not shared by the other (or equivalently neither covers the other),
         /// they have the same dimension,
         /// and the intersection of the interiors of the two geometries has
-        /// the same dimension as the geometries themselves.</item>
-        /// <item>The DE-9IM Intersection Matrix for the two geometries matches
+        /// the same dimension as the geometries themselves.</description></item>
+        /// <item><description>The DE-9IM Intersection Matrix for the two geometries matches
         ///  <c>[T*T***T**]</c> (for two points or two surfaces)
-        ///  or <c>[1*T***T**]</c> (for two curves)</item>
+        ///  or <c>[1*T***T**]</c> (for two curves)</description></item>
         /// </list>
         /// If the geometries are of different dimension this predicate returns <c>false</c>.
         /// </remarks>
@@ -858,17 +858,17 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <remarks>
         /// The <c>covers</c> predicate has the following equivalent definitions:
-        /// <list>
-        /// <item>Every point of the other geometry is a point of this geometry.</item>
-        /// <item>The DE-9IM Intersection Matrix for the two geometries matches at least
+        /// <list type="bullet">
+        /// <item><description>Every point of the other geometry is a point of this geometry.</description></item>
+        /// <item><description>The DE-9IM Intersection Matrix for the two geometries matches at least
         /// one of the following patterns:
-        /// <list type="Bullet">
-        /// <item><c>[T*****FF*]</c> or<br/></item>
-        /// <item><c>[*T****FF*]</c> or<br/></item>
-        /// <item><c>[***T**FF*]</c> or<br/></item>
-        /// <item><c>[****T*FF*]</c></item>
+        /// <list type="bullet">
+        /// <item><description><c>[T*****FF*]</c> or<br/></description></item>
+        /// <item><description><c>[*T****FF*]</c> or<br/></description></item>
+        /// <item><description><c>[***T**FF*]</c> or<br/></description></item>
+        /// <item><description><c>[****T*FF*]</c></description></item>
         /// </list>
-        /// </item>
+        /// </description></item>
         /// <item><c>g.CoveredBy(this) == true</c><br/>
         /// (<c>covers</c> is the converse of <see cref="CoveredBy"/>)</item>
         /// </list>
@@ -913,19 +913,18 @@ namespace NetTopologySuite.Geometries
         /// <summary>Tests whether this geometry is covered by the specified geometry.</summary>
         /// <remarks>
         /// The <c>CoveredBy</c> predicate has the following equivalent definitions:
-        /// <list>
-        /// <item>Every point of this geometry is a point of the other geometry.
-        /// </item>
-        /// <item>The DE-9IM Intersection Matrix for the two geometries matches
+        /// <list type="bullet">
+        /// <item><description>Every point of this geometry is a point of the other geometry.</description></item>
+        /// <item><description>The DE-9IM Intersection Matrix for the two geometries matches
         /// at least one of the following patterns:
-        /// <list type="Bullet">
-        /// <item><c>[T*F**F***]</c></item>
-        /// <item><c>[*TF**F***]</c></item>
-        /// <item><c>[**FT*F***]</c></item>
-        /// <item><c>[**F*TF***]</c></item></list></item>
-        /// <item><c>g.Covers(this) == true</c><br/>
+        /// <list type="bullet">
+        /// <item><description><c>[T*F**F***]</c></description></item>
+        /// <item><description><c>[*TF**F***]</c></description></item>
+        /// <item><description><c>[**FT*F***]</c></description></item>
+        /// <item><description><c>[**F*TF***]</c></description></item></list></description></item>
+        /// <item><description><c>g.Covers(this) == true</c><br/>
         /// (<c>CoveredBy</c> is the converse of <see cref="Covers"/>)
-        /// </item>
+        /// </description></item>
         /// </list>
         /// If either geometry is empty, the value of this predicate is <c>false</c>.
         /// <para>
@@ -948,14 +947,15 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <remarks>
         /// The pattern is a 9-character string, with symbols drawn from the following set:
-        /// <list>
-        /// <item>0 (dimension 0)</item>
-        /// <item>1 (dimension 1)</item>
-        /// <item>2 (dimension 2)</item>
-        /// <item>T ( matches 0, 1 or 2)</item>
-        /// <item>F ( matches FALSE)</item>
-        /// <item>* ( matches any value)</item>
-        /// </list> For more information on the DE-9IM, see the <i>OpenGIS Simple Features
+        /// <list type="table">
+        /// <item><term>0</term><description>(dimension 0)</description></item>
+        /// <item><term>1</term><description>(dimension 1)</description></item>
+        /// <item><term>2</term><description>(dimension 2)</description></item>
+        /// <item><term>T</term><description>( matches 0, 1 or 2)</description></item>
+        /// <item><term>F</term><description>( matches FALSE)</description></item>
+        /// <item><term>*</term><description>( matches any value)</description></item>
+        /// </list>
+        /// For more information on the DE-9IM, see the <i>OpenGIS Simple Features
         /// Specification</i>.
         /// </remarks>
         /// <param name="g">the <c>Geometry</c> with which to compare this <c>Geometry</c></param>
@@ -1013,16 +1013,16 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <remarks>
         /// The SFS <code>equals</code> predicate has the following equivalent definitions:
-        /// <list type="Bullet">
-        /// <item>The two geometries have at least one point in common,
-        /// and no point of either geometry lies in the exterior of the other geometry.</item>
-        /// <item>The DE-9IM Intersection Matrix for the two geometries matches
+        /// <list type="bullet">
+        /// <item><description>The two geometries have at least one point in common,
+        /// and no point of either geometry lies in the exterior of the other geometry.</description></item>
+        /// <item><description>The DE-9IM Intersection Matrix for the two geometries matches
         /// the pattern <tt>T*F**FFF*</tt>
         /// <pre>
         /// T*F
         /// **F
         /// FF*
-        /// </pre></item>
+        /// </pre></description></item>
         /// </list>
         /// <b>Note</b> that this method computes <b>topologically equality</b>.
         /// For structural equality, see {@link #equalsExact(Geometry)}.
@@ -1576,11 +1576,11 @@ namespace NetTopologySuite.Geometries
         /// This method supports <see cref="GeometryCollection"/>s (which the other overlay operations currently do not).</remarks>
         /// <remarks>
         /// The result obeys the following contract:
-        /// <list type="Bullet">
-        /// <item>Unioning a set of <see cref="LineString"/>s has the effect of fully noding and dissolving the linework.</item>
-        /// <item>Unioning a set of <see cref="Polygon"/>s always returns a <see cref="IPolygonal"/> geometry
+        /// <list type="bullet">
+        /// <item><description>Unioning a set of <see cref="LineString"/>s has the effect of fully noding and dissolving the linework.</description></item>
+        /// <item><description>Unioning a set of <see cref="Polygon"/>s always returns a <see cref="IPolygonal"/> geometry
         /// (unlike <see cref="Union(Geometry)"/>), which may return geometries of lower dimension if a topology
-        /// collapse occurred).</item>
+        /// collapse occurred).</description></item>
         /// </list>
         /// </remarks>
         /// <exception cref="TopologyException">Thrown if a robustness error occurs</exception>
@@ -1593,11 +1593,11 @@ namespace NetTopologySuite.Geometries
         /// Returns true if the two <c>Geometry</c>s are exactly equal,
         /// up to a specified tolerance.
         /// Two Geometries are exactly within a tolerance equal if:
-        /// <list type="Bullet">
-        /// <item>they have the same class,</item>
-        /// <item>they have the same values of Coordinates,
+        /// <list type="bullet">
+        /// <item><description>they have the same class,</description></item>
+        /// <item><description>they have the same values of Coordinates,
         /// within the given tolerance distance, in their internal
-        /// Coordinate lists, in exactly the same order.</item>
+        /// Coordinate lists, in exactly the same order.</description></item>
         /// </list>
         /// This method does <i>not</i>
         /// test the values of the <c>GeometryFactory</c>, the <c>SRID</c>,
@@ -1621,10 +1621,10 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Returns true if the two <c>Geometry</c>s are exactly equal.
         /// Two Geometries are exactly equal if:
-        /// <list type="Bullet">
-        /// <item>they have the same class,</item>
-        /// <item>they have the same values of Coordinates in their internal
-        /// Coordinate lists, in exactly the same order.</item>
+        /// <list type="bullet">
+        /// <item><description>they have the same class,</description></item>
+        /// <item><description>they have the same values of Coordinates in their internal
+        /// Coordinate lists, in exactly the same order.</description></item>
         /// </list>
         /// This provides a stricter test of equality than
         /// <see cref="EqualsTopologically"/>, which is more useful
@@ -1784,15 +1784,15 @@ namespace NetTopologySuite.Geometries
         /// <remarks>
         /// If their classes are different, they are compared using the following
         /// ordering:
-        /// <list>
-        /// <item>Point (lowest),</item>
-        /// <item>MultiPoint,</item>
-        /// <item>LineString,</item>
-        /// <item>LinearRing,</item>
-        /// <item>MultiLineString,</item>
-        /// <item>Polygon,</item>
-        /// <item>MultiPolygon,</item>
-        /// <item>GeometryCollection (highest).</item>
+        /// <list type="bullet">
+        /// <item><description>Point (lowest),</description></item>
+        /// <item><description>MultiPoint,</description></item>
+        /// <item><description>LineString,</description></item>
+        /// <item><description>LinearRing,</description></item>
+        /// <item><description>MultiLineString,</description></item>
+        /// <item><description>Polygon,</description></item>
+        /// <item><description>MultiPolygon,</description></item>
+        /// <item><description>GeometryCollection (highest).</description></item>
         /// </list>
         /// If the two <c>Geometry</c>s have the same class, their first
         /// elements are compared. If those are the same, the second elements are
@@ -1816,16 +1816,16 @@ namespace NetTopologySuite.Geometries
         /// <remarks>
         /// If their classes are different, they are compared using the following
         /// ordering:
-        /// <list>
-        /// <item>Point (lowest),</item>
-        /// <item>MultiPoint,</item>
-        /// <item>LineString,</item>
-        /// <item>LinearRing,</item>
-        /// <item>MultiLineString,</item>
-        /// <item>Polygon,</item>
-        /// <item>MultiPolygon,</item>
-        /// <item>GeometryCollection (highest).</item>
-        /// </list>
+        /// <list type="bullet">
+        /// <item><description>Point (lowest),</description></item>
+        /// <item><description>MultiPoint,</description></item>
+        /// <item><description>LineString,</description></item>
+        /// <item><description>LinearRing,</description></item>
+        /// <item><description>MultiLineString,</description></item>
+        /// <item><description>Polygon,</description></item>
+        /// <item><description>MultiPolygon,</description></item>
+        /// <item><description>GeometryCollection (highest).</description></item>
+        /// /// </list>
         /// If the two <c>Geometry</c>s have the same class, their first
         /// elements are compared. If those are the same, the second elements are
         /// compared, etc.
@@ -1860,15 +1860,15 @@ namespace NetTopologySuite.Geometries
         /// <remarks>
         /// If their classes are different, they are compared using the following
         /// ordering:
-        /// <list>
-        /// <item>Point (lowest),</item>
-        /// <item>MultiPoint,</item>
-        /// <item>LineString,</item>
-        /// <item>LinearRing,</item>
-        /// <item>MultiLineString,</item>
-        /// <item>Polygon,</item>
-        /// <item>MultiPolygon,</item>
-        /// <item>GeometryCollection (highest).</item>
+        /// <list type="bullet">
+        /// <item><description>Point (lowest),</description></item>
+        /// <item><description>MultiPoint,</description></item>
+        /// <item><description>LineString,</description></item>
+        /// <item><description>LinearRing,</description></item>
+        /// <item><description>MultiLineString,</description></item>
+        /// <item><description>Polygon,</description></item>
+        /// <item><description>MultiPolygon,</description></item>
+        /// <item><description>GeometryCollection (highest).</description></item>
         /// </list>
         /// If the two <c>Geometry</c>s have the same class, their first
         /// elements are compared. If those are the same, the second elements are

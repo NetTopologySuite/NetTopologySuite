@@ -32,7 +32,7 @@ namespace NetTopologySuite.Planargraph
         protected NodeMap nodeMap = new NodeMap();
 
         /// <summary>
-        /// Returns the <see cref="Node"/> at the given <paramref name="pt">location</paramref>, or <value>null</value> if no <see cref="Node"/> was there.
+        /// Returns the <see cref="Node"/> at the given <paramref name="pt">location</paramref>, or <c>null</c> if no <see cref="Node"/> was there.
         /// </summary>
         /// <param name="pt">The location</param>
         /// <returns>The node found<br/>

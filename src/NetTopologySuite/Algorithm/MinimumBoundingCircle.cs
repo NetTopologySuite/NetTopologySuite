@@ -14,19 +14,18 @@ namespace NetTopologySuite.Algorithm
     /// <para>
     /// The computed circle can be specified in two equivalent ways,
     /// both of which are provide as output by this class:
-    /// <list type="Bullet">
-    /// <item>As a centre point and a radius</item>
-    /// <item>By the set of points defining the circle.</item>
-    ///
+    /// <list type="bullet">
+    /// <item><description>As a centre point and a radius</description></item>
+    /// <item><description>By the set of points defining the circle.
     /// Depending on the number of points in the input
     /// and their relative positions, this
     /// will be specified by anywhere from 0 to 3 points.
-    /// <list type="Bullet">
-    /// <item>0 or 1 points indicate an empty or trivial input point arrangement.</item>
-    /// <item>2 or 3 points define a circle which contains
-    /// all the input points.</item>
+    /// <list type="bullet">
+    /// <item><description>0 or 1 points indicate an empty or trivial input point arrangement.</description></item>
+    /// <item><description>2 or 3 points define a circle which contains
+    /// all the input points.</description></item>
     /// </list>
-    /// </list>
+    /// </description></item></list>
     /// </para>
     /// <para>
     /// The class can also output a <see cref="Geometry"/> which approximates the
@@ -109,10 +108,10 @@ namespace NetTopologySuite.Algorithm
         /// Gets a geometry representing the diameter of the computed Minimum Bounding Circle.
         /// </summary>
         /// <returns>
-        /// <list type="Bullet">
-        /// <item>the diameter line of the Minimum Bounding Circle</item>
-        /// <item>an empty line if the input is empty</item>
-        /// <item>a Point if the input is a point</item>
+        /// <list type="bullet">
+        /// <item><description>the diameter line of the Minimum Bounding Circle</description></item>
+        /// <item><description>an empty line if the input is empty</description></item>
+        /// <item><description>a Point if the input is a point</description></item>
         /// </list>
         /// </returns>
         public Geometry GetDiameter()

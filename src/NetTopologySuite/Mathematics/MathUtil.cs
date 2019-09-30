@@ -35,15 +35,15 @@
 
 // ReSharper disable InconsistentNaming
         private static readonly double LOG10 = System.Math.Log(10);
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
 
         /// <summary>
         /// Computes the base-10 logarithm of a <c>double</c> value.
         /// <para>
-        /// <list type="Bullet">
-        /// <item>If the argument is NaN or less than zero, then the result is NaN.</item>
-        /// <item>If the argument is positive infinity, then the result is positive infinity.</item>
-        /// <item>If the argument is positive zero or negative zero, then the result is negative infinity.</item>
+        /// <list type="bullet">
+        /// <item><description>If the argument is NaN or less than zero, then the result is NaN.</description></item>
+        /// <item><description>If the argument is positive infinity, then the result is positive infinity.</description></item>
+        /// <item><description>If the argument is positive zero or negative zero, then the result is negative infinity.</description></item>
         /// </list>
         /// </para>
         /// </summary>

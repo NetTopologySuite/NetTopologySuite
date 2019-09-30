@@ -589,12 +589,12 @@ namespace NetTopologySuite.Operation.Overlay
         /// not a collection.
         /// <para/>
         /// The empty result is constructed using the following rules:
-        /// <list type="Bullet">
-        /// <item><see cref="SpatialFunction.Intersection"/> - result has the dimension of the lowest input dimension</item>
-        /// <item><see cref="SpatialFunction.Union"/> - result has the dimension of the highest input dimension</item>
-        /// <item><see cref="SpatialFunction.Difference"/> - result has the dimension of the left-hand input</item>
-        /// <item><see cref="SpatialFunction.SymDifference"/> - result has the dimension of the highest input dimension
-        /// (since symDifference is the union of the differences).</item>
+        /// <list type="bullet">
+        /// <item><description><see cref="SpatialFunction.Intersection"/> - result has the dimension of the lowest input dimension</description></item>
+        /// <item><description><see cref="SpatialFunction.Union"/> - result has the dimension of the highest input dimension</description></item>
+        /// <item><description><see cref="SpatialFunction.Difference"/> - result has the dimension of the left-hand input</description></item>
+        /// <item><description><see cref="SpatialFunction.SymDifference"/> - result has the dimension of the highest input dimension
+        /// (since symDifference is the union of the differences).</description></item>
         /// </list>
         /// </summary>
         /// <param name="overlayOpCode">The overlay operation being performed</param>

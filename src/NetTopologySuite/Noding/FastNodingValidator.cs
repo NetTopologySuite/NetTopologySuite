@@ -21,8 +21,8 @@ namespace NetTopologySuite.Noding
     /// <para/>
     /// The validator checks for the following situations which indicated incorrect noding:
     /// <list type="Bullen">
-    /// <item>Proper intersections between segments (i.e. the intersection is interior to both segments)</item>
-    /// <item>Intersections at an interior vertex (i.e. with an endpoint or another interior vertex)</item>
+    /// <item><description>Proper intersections between segments (i.e. the intersection is interior to both segments)</description></item>
+    /// <item><description>Intersections at an interior vertex (i.e. with an endpoint or another interior vertex)</description></item>
     /// </list>
     /// </para>
     /// <para>

@@ -266,7 +266,7 @@ namespace NetTopologySuite.Operation.Union
         /// <param name="list">The list of geometries</param>
         /// <param name="index">The index</param>
         /// <returns>The geometry at the given index or
-        /// <value>null</value> if the index is out of range</returns>
+        /// <c>null</c> if the index is out of range</returns>
         private static Geometry GetGeometry(IList<Geometry> list, int index)
         {
             if (index >= list.Count)
@@ -302,7 +302,7 @@ namespace NetTopologySuite.Operation.Union
         /// <param name="g0">A Geometry</param>
         /// <param name="g1">A Geometry</param>
         /// <returns>The union of the input(s) or
-        /// <value>null</value> if both inputs are null</returns>
+        /// <c>null</c> if both inputs are null</returns>
         private Geometry UnionSafe(Geometry g0, Geometry g1)
         {
             if (g0 == null && g1 == null)

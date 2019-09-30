@@ -7,10 +7,10 @@ namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
     /// A node of an <see cref="AbstractSTRtree{T, TItem}"/>. A node is one of:
-    /// <list type="Bullet">
+    /// <list type="bullet">
     /// <item>empty</item>
-    /// <item>an <i>interior node</i> containing child <see cref="AbstractNode{T, TItem}"/>s</item>
-    /// <item>a <i>leaf node</i> containing data items (<see cref="ItemBoundable{T, TItem}"/>s).</item>
+    /// <item><description>an <i>interior node</i> containing child <see cref="AbstractNode{T, TItem}"/>s</description></item>
+    /// <item><description>a <i>leaf node</i> containing data items (<see cref="ItemBoundable{T, TItem}"/>s).</description></item>
     /// </list>
     /// A node stores the bounds of its children, and its level within the index tree.
     /// </summary>

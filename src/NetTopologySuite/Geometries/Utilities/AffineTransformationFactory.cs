@@ -116,10 +116,10 @@ namespace NetTopologySuite.Geometries.Utilities
         /// <summary>
         /// Creates an AffineTransformation defined by a mapping between two baselines.
         /// The computed transformation consists of:
-        /// <list type="Bullet">
-        /// <item>a translation from the start point of the source baseline to the start point of the destination baseline,</item>
-        /// <item>a rotation through the angle between the baselines about the destination start point,</item>
-        /// <item>and a scaling equal to the ratio of the baseline lengths.</item>
+        /// <list type="bullet">
+        /// <item><description>a translation from the start point of the source baseline to the start point of the destination baseline,</description></item>
+        /// <item><description>a rotation through the angle between the baselines about the destination start point,</description></item>
+        /// <item><description>and a scaling equal to the ratio of the baseline lengths.</description></item>
         /// </list>
         /// If the source baseline has zero length, an identity transformation is returned.
         /// </summary>

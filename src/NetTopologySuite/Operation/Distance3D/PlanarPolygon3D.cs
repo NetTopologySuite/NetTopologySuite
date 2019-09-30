@@ -33,9 +33,9 @@ namespace NetTopologySuite.Operation.Distance3D
         /// by sampling a few points from the exterior ring.
         /// <para/>
         /// The algorithm used is Newell's algorithm:
-        /// <list type="Bullet">
-        /// <item>a base point for the plane is determined from the average of all vertices</item>
-        /// <item>the normal vector is determined by computing the area of the projections on each of the axis planes</item>
+        /// <list type="bullet">
+        /// <item><description>a base point for the plane is determined from the average of all vertices</description></item>
+        /// <item><description>the normal vector is determined by computing the area of the projections on each of the axis planes</description></item>
         /// </list>
         /// </summary>
         /// <param name="poly">The polygon to determine the plane for</param>

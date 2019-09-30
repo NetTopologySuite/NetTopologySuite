@@ -17,10 +17,10 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p2">The final point of the vector</param>
         /// <param name="q">the point to compute the direction to</param>
         /// <returns>
-        /// <list type="Bullet">
-        /// <item>1 if q is counter-clockwise (left) from p1-p2</item>
-        /// <item>-1 if q is clockwise (right) from p1-p2</item>
-        /// <item>0 if q is collinear with p1-p2</item></list>
+        /// <list type="bullet">
+        /// <item><description>1 if q is counter-clockwise (left) from p1-p2</description></item>
+        /// <item><description>-1 if q is clockwise (right) from p1-p2</description></item>
+        /// <item><description>0 if q is collinear with p1-p2</description></item></list>
         /// </returns>
         public static int OrientationIndex(Coordinate p1, Coordinate p2, Coordinate q)
         {
@@ -48,10 +48,10 @@ namespace NetTopologySuite.Algorithm
         /// <param name="x2"></param>
         /// <param name="y2"></param>
         /// <returns>
-        /// <list type="Bullet">
-        /// <item>-1 if the determinant is negative,</item>
-        /// <item>1 if the determinant is positive,</item>
-        /// <item>0 if the determinant is 0.</item>
+        /// <list type="bullet">
+        /// <item><description>-1 if the determinant is negative,</description></item>
+        /// <item><description>1 if the determinant is positive,</description></item>
+        /// <item><description>0 if the determinant is 0.</description></item>
         /// </list>
         /// </returns>
         public static int SignOfDet2x2(DD x1, DD y1, DD x2, DD y2)
@@ -80,9 +80,9 @@ namespace NetTopologySuite.Algorithm
         /// Uses an approach due to Jonathan Shewchuk, which is in the public domain.
         /// </summary>
         /// <returns>
-        /// <list type="Bullet">
-        /// <item>The orientation index if it can be computed safely</item>
-        /// <item>&gt; 1 if the orientation index cannot be computed safely</item>>
+        /// <list type="bullet">
+        /// <item><description>The orientation index if it can be computed safely</description></item>
+        /// <item><description>&gt; 1 if the orientation index cannot be computed safely</description></item>>
         /// </list>
         /// </returns>
         private static int OrientationIndexFilter(Coordinate pa, Coordinate pb, Coordinate pc)

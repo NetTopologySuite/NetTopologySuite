@@ -43,9 +43,9 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <remarks>
         /// <para>
         /// The <c>ContainsProperly</c> predicate has the following equivalent definitions:
-        /// <list>
-        /// <item>Every point of the other geometry is a point of this geometry's interior.</item>
-        /// <item>The DE-9IM Intersection Matrix for the two geometries matches <c>>[T**FF*FF*]</c></item>
+        /// <list type="bullet">
+        /// <item><description>Every point of the other geometry is a point of this geometry's interior.</description></item>
+        /// <item><description>The DE-9IM Intersection Matrix for the two geometries matches <c>>[T**FF*FF*]</c></description></item>
         /// </list>
         /// The advantage to using this predicate is that it can be computed
         /// efficiently, with no need to compute topology at individual points.

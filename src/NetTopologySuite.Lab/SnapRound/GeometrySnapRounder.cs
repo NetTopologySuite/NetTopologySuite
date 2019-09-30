@@ -9,10 +9,10 @@ namespace NetTopologySuite.SnapRound
     /// <summary>
     /// Nodes a <see cref="Geometry"/>s using Snap-Rounding
     /// to a given <see cref="PrecisionModel"/>.
-    /// <list type="Bullet">
-    /// <item>Point geometries are not handled.They are skipped if present in the input.</item>
-    /// <item>Linestrings which collapse to a point due to snapping are removed.</item>
-    /// <item>Polygonal output may not be valid.</item>
+    /// <list type="bullet">
+    /// <item><description>Point geometries are not handled.They are skipped if present in the input.</description></item>
+    /// <item><description>Linestrings which collapse to a point due to snapping are removed.</description></item>
+    /// <item><description>Polygonal output may not be valid.</description></item>
     /// </list>
     /// Invalid output is due to the introduction of topology collapses.
     /// This should be straightforward to clean using standard heuristics(e.g.buffer(0) ).

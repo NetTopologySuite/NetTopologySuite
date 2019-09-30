@@ -44,7 +44,7 @@ namespace NetTopologySuite.Operation.Distance3D
         /// <param name="g0">A <see cref="Geometry">geometry</see></param>
         /// <param name="g1">A <see cref="Geometry">geometry</see></param>
         /// <param name="distance">The distance to test</param>
-        /// <returns><value>true</value> if <c>g0.distance(g1) &lt;= <paramref name="distance"/></c></returns>
+        /// <returns><c>true</c> if <c>g0.distance(g1) &lt;= <paramref name="distance"/></c></returns>
         public static bool IsWithinDistance(Geometry g0, Geometry g1,
                                             double distance)
         {
@@ -103,7 +103,7 @@ namespace NetTopologySuite.Operation.Distance3D
         /// Report the distance between the nearest points on the input geometries.
         /// </summary>
         /// <returns>The distance between the geometries<br/>
-        /// or <value>0</value> if either input geometry is empty</returns>
+        /// or <c>0</c> if either input geometry is empty</returns>
         /// <exception cref="ArgumentException">Thrown if either input geometry is null.</exception>
         public double Distance()
         {

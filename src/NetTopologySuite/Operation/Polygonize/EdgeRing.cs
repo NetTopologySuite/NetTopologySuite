@@ -27,7 +27,7 @@ namespace NetTopologySuite.Operation.Polygonize
         /// <param name="shellList"></param>
         /// <param name="testEr"></param>
         /// <returns>Containing EdgeRing, if there is one <br/>
-        /// or <value>null</value> if no containing EdgeRing is found.</returns>
+        /// or <c>null</c> if no containing EdgeRing is found.</returns>
         public static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IList<EdgeRing> shellList)
         {
             var testRing = testEr.Ring;

@@ -93,8 +93,8 @@ namespace NetTopologySuite.Geometries.Prepared
         /// <para/>
         /// The <c>ContainsProperly</c> predicate has the following equivalent definitions:
         /// <list>
-        /// <item>Every point of the other geometry is a point of this geometry's interior.</item>
-        /// <item>The DE-9IM Intersection Matrix for the two geometries matches <c>>[T**FF*FF*]</c></item>
+        /// <item><description>Every point of the other geometry is a point of this geometry's interior.</description></item>
+        /// <item><description>The DE-9IM Intersection Matrix for the two geometries matches <c>>[T**FF*FF*]</c></description></item>
         /// </list>
         /// In other words, if the test geometry has any interaction with the boundary of the target
         /// geometry the result of <c>ContainsProperly</c> is <c>false</c>.
