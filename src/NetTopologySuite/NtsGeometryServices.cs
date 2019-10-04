@@ -9,7 +9,7 @@ namespace NetTopologySuite
     /// <summary>
     /// A geometry service provider class
     /// </summary>
-    public sealed class NtsGeometryServices
+    public class NtsGeometryServices
     {
         private static volatile NtsGeometryServices s_instance = new NtsGeometryServices();
 
@@ -109,7 +109,39 @@ namespace NetTopologySuite
             }
 
             return m_factories.GetOrAdd(new GeometryFactoryKey(precisionModel, srid, coordinateSequenceFactory),
-                                        key => new GeometryFactory(key.PrecisionModel, key.SRID, key.CoordinateSequenceFactory));
+                                        key => CreateGeometryFactoryCore(key.PrecisionModel, key.SRID, key.CoordinateSequenceFactory));
+        }
+
+        /// <summary>
+        /// Creates a <see cref="GeometryFactory"/> based on the given parameters.
+        /// </summary>
+        /// <param name="precisionModel">
+        /// The value for <see cref="GeometryFactory.PrecisionModel"/>.
+        /// </param>
+        /// <param name="srid">
+        /// The value for <see cref="GeometryFactory.SRID"/>.
+        /// </param>
+        /// <param name="coordinateSequenceFactory">
+        /// The value for <see cref="GeometryFactory.CoordinateSequenceFactory"/>.
+        /// </param>
+        /// <returns>
+        /// A <see cref="GeometryFactory"/> that has the given values.
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// This method is expected to be safe to call from any number of threads at once.
+        /// </para>
+        /// <para>
+        /// Although the result for a given set of parameters is cached, there is no guarantee that,
+        /// once this method is called with some set of parameters, it will never be called again
+        /// with an exactly equal set of parameters.  When this does happen, an arbitrary result is
+        /// chosen as the winner (not necessarily the first one to start or finish), and all other
+        /// results are discarded.
+        /// </para>
+        /// </remarks>
+        protected virtual GeometryFactory CreateGeometryFactoryCore(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory)
+        {
+            return new GeometryFactory(precisionModel, srid, coordinateSequenceFactory);
         }
 
         private readonly struct GeometryFactoryKey : IEquatable<GeometryFactoryKey>
