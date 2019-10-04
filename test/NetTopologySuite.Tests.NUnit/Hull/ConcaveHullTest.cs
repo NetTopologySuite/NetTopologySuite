@@ -7,8 +7,7 @@ namespace NetTopologySuite.Tests.NUnit.Hull
     {
 
         [Test, Ignore("Incomplete")]
-        public void TestSimple()
-        {
+        public void TestSimple() {
             CheckHull(
                 "POLYGON ((100 200, 200 180, 300 200, 200 190, 100 200))",
                 150,
@@ -16,8 +15,7 @@ namespace NetTopologySuite.Tests.NUnit.Hull
                 );
         }
 
-        private void CheckHull(string inputWKT, double tolerance, string expectedWKT)
-        {
+        private void CheckHull(string inputWKT, double tolerance, string expectedWKT) {
             var input = Read(inputWKT);
             var expected = Read(expectedWKT);
             var hull = new ConcaveHull(input, tolerance);
