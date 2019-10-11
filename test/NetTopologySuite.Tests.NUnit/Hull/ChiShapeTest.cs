@@ -17,8 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Hull
                 );
         }
 
-        [Test(
-            Author ="Jeroen Bloemscheer",
+        [Test(Author ="Jeroen Bloemscheer",
             Description ="Test found on turf.js website uses angular degrees for measure")]
         public void TestTurf()
         {

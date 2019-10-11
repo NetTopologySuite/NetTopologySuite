@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NetTopologySuite.Geometries;
@@ -15,7 +16,9 @@ namespace NetTopologySuite.Hull
 
         public ChiShape(Geometry geom, double tolerance)
         {
-            _geom = geom;
+            _geom = geom ?? throw new ArgumentNullException(nameof(geom));
+            if (double.IsNaN(tolerance) || double.IsInfinity(tolerance)) throw new ArgumentException(nameof(tolerance));
+            if (tolerance < 0) throw new ArgumentOutOfRangeException(nameof(tolerance));
             _tolerance = tolerance;
         }
 
@@ -57,42 +60,51 @@ namespace NetTopologySuite.Hull
                 var edge = triangle.Key;
                 Debug.WriteLine(triangle.Value);
                 quadEdgeTriangleList.Remove(edge);
-                if (edge.Length.CompareTo(_tolerance) >= 0 && RemovalGivesRegularPolygon(triangle.Value))
+
+                if (edge.Length < _tolerance)
                 {
-                    var neighbours = triangle.Value.GetNeighbours();
-                    triangle.Value.Kill();
-                    foreach (var neighbour in from n in neighbours
-                                              where n != null && n.IsLive()
-                                              select n)
-                    {
-                        Debug.WriteLine(neighbour);
-                        CheckMaxEdgeAndListBorderTriangles(quadEdgeTriangleList, neighbour);
-                    }
+                    break;
                 }
+
+                if (!RemovalGivesRegularPolygon(triangle.Value))
+                {
+                    continue;
+                }
+
+                var neighbours = triangle.Value.GetNeighbours();
+                triangle.Value.Kill();
+                foreach (var neighbour in from n in neighbours
+                                            where n != null && n.IsLive()
+                                            select n)
+                {
+                    Debug.WriteLine(neighbour);
+                    CheckMaxEdgeAndListBorderTriangles(quadEdgeTriangleList, neighbour);
+                }
+                
             }
             var lineMerger = new LineMerger();
-            var fact = new GeometryFactory();
+            var fact = _geom.Factory;
             foreach (var triangle in tris)
             {
                 if (!triangle.IsLive()) continue;
                 for (int i = 0; i < 3; i++)
                 {
-                    if (triangle.GetAdjacentTriangleAcrossEdge(i) == null || !triangle.GetAdjacentTriangleAcrossEdge(i).IsLive())
+                    if (triangle.GetAdjacentTriangleAcrossEdge(i)?.IsLive() != true)
                     {
                         lineMerger.Add(triangle.GetEdge(i).ToLineSegment().ToGeometry(fact));
                     }
                 }
             }
             var mergedLine = (LineString)lineMerger.GetMergedLineStrings().FirstOrDefault();
-            if (mergedLine.IsRing)
+            if (mergedLine?.IsRing ?? false)
             {
-                var lr = new LinearRing(mergedLine.CoordinateSequence, fact);
-
-                var concaveHull = new Polygon(lr, null, fact);
-
+                var concaveHull = fact.CreatePolygon(mergedLine.CoordinateSequence);
                 return concaveHull;
             }
-            return mergedLine;
+            else
+            {
+                throw new TopologyException("Can't generate a hull.");
+            }
         }
 
 
