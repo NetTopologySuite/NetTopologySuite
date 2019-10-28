@@ -39,7 +39,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
         public override void StartRun(int npts)
         {
             _sineStar = SineStarFactory.Create(new Coordinate(OriginX, OriginY), Size, npts, NumberOfArms, ArmRatio);
-            _sinePolyCrinkly = GeometryPrecisionReducer.Reduce(_sineStar, new PrecisionModel(Size));
+            double scale = npts / Size;
+            var pm = new PrecisionModel(scale);
+            _sinePolyCrinkly = GeometryPrecisionReducer.Reduce(_sineStar, pm);
 
             Console.WriteLine();
             Console.WriteLine($"Running with # pts {_sinePolyCrinkly.NumPoints}");
