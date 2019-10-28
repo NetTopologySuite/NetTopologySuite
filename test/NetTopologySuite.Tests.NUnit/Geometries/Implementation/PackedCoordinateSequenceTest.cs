@@ -24,16 +24,17 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
 
         private void CheckAll(CoordinateSequenceFactory factory)
         {
-            CheckDim2(factory);
+            CheckDim2(1, factory);
+            CheckDim2(5, factory);
             CheckDim3(factory);
             CheckDim3_M1(factory);
             CheckDim4_M1(factory);
             CheckDimInvalid(factory);
         }
 
-        private void CheckDim2(CoordinateSequenceFactory factory)
+        private void CheckDim2(int size, CoordinateSequenceFactory factory)
         {
-            var seq = factory.Create(5, 2);
+            var seq = factory.Create(size, 2);
 
             InitProgression(seq);
 
@@ -41,14 +42,17 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.IsTrue(!seq.HasZ, "Z should not be present");
             Assert.IsTrue(!seq.HasM, "M should not be present");
 
-            var coord = seq.GetCoordinate(4);
+            int indexLast = size - 1;
+            double valLast = indexLast;
+
+            var coord = seq.GetCoordinate(indexLast);
             Assert.IsTrue(coord.GetType() == typeof(Coordinate));
-            Assert.AreEqual(4.0, coord.X);
-            Assert.AreEqual(4.0, coord.Y);
+            Assert.AreEqual(valLast, coord.X);
+            Assert.AreEqual(valLast, coord.Y);
 
             var array = seq.ToCoordinateArray();
-            Assert.AreEqual(coord, array[4]);
-            Assert.IsTrue(coord != array[4]);
+            Assert.AreEqual(coord, array[indexLast]);
+            Assert.IsTrue(coord != array[indexLast]);
             Assert.IsTrue(IsEqual(seq, array));
 
             var copy = factory.Create(array);
