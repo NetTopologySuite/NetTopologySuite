@@ -270,13 +270,13 @@ namespace NetTopologySuite.Geometries.Implementation
             _coords = new double[coordinates.Length * Dimension];
             for (int i = 0; i < coordinates.Length; i++)
             {
-                _coords[i * Dimension] = coordinates[i].X;
-                if (Dimension >= 2)
-                    _coords[i * Dimension + 1] = coordinates[i].Y;
+                int offset = i * dimension;
+                _coords[offset] = coordinates[i].X;
+                _coords[offset + 1] = coordinates[i].Y;
                 if (Dimension >= 3)
-                    _coords[i * Dimension + 2] = coordinates[i][2]; // Z or M
+                    _coords[offset + 2] = coordinates[i][2]; // Z or M
                 if (Dimension >= 4)
-                    _coords[i * Dimension + 3] = coordinates[i][3]; // M
+                    _coords[offset + 3] = coordinates[i][3]; // M
             }
         }
 
@@ -477,11 +477,13 @@ namespace NetTopologySuite.Geometries.Implementation
             _coords = new float[coordinates.Length * Dimension];
             for (int i = 0; i < coordinates.Length; i++)
             {
-                _coords[i * Dimension] = (float) coordinates[i].X;
-                if (Dimension >= 2)
-                    _coords[i * Dimension + 1] = (float) coordinates[i].Y;
+                int offset = i * dimension;
+                _coords[offset] = (float)coordinates[i].X;
+                _coords[offset + 1] = (float)coordinates[i].Y;
                 if (Dimension >= 3)
-                _coords[i * Dimension + 2] = (float) coordinates[i].Z;
+                    _coords[offset + 2] = (float)coordinates[i][2]; // Z or M
+                if (Dimension >= 4)
+                    _coords[offset + 3] = (float)coordinates[i][3]; // M
             }
         }
 

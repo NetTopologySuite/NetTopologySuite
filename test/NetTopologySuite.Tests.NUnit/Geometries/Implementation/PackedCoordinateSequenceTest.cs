@@ -11,108 +11,149 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
         protected override CoordinateSequenceFactory CsFactory => new PackedCoordinateSequenceFactory();
 
         [Test]
-        public void TestMultiPointDim4()
+        public void TestDouble()
         {
-            var gf = new GeometryFactory(new PackedCoordinateSequenceFactory());
-            var mpSeq = gf.CoordinateSequenceFactory.Create(1, Ordinates.XYZM);
-            mpSeq.SetOrdinate(0, Ordinate.X, 50);
-            mpSeq.SetOrdinate(0, Ordinate.Y, -2);
-            mpSeq.SetOrdinate(0, Ordinate.Z, 10);
-            mpSeq.SetOrdinate(0, Ordinate.M, 20);
-
-            var mp = gf.CreateMultiPoint(mpSeq);
-            var pSeq = ((Point)mp.GetGeometryN(0)).CoordinateSequence;
-            Assert.AreEqual(4, pSeq.Dimension);
-            Assert.AreEqual(Ordinates.XYZM, pSeq.Ordinates);
-            for (int i = 0; i < 4; i++)
-                Assert.AreEqual(mpSeq.GetOrdinate(0, i), pSeq.GetOrdinate(0, i));
+            CheckAll(PackedCoordinateSequenceFactory.DoubleFactory);
         }
 
         [Test]
-        public void TestDimensionAndMeasure()
+        public void TestFloat()
         {
-            var factory = CsFactory;
+            CheckAll(PackedCoordinateSequenceFactory.FloatFactory);
+        }
+
+        private void CheckAll(CoordinateSequenceFactory factory)
+        {
+            CheckDim2(factory);
+            CheckDim3(factory);
+            CheckDim3_M1(factory);
+            CheckDim4_M1(factory);
+            CheckDimInvalid(factory);
+        }
+
+        private void CheckDim2(CoordinateSequenceFactory factory)
+        {
             var seq = factory.Create(5, 2);
-            CoordinateSequence copy;
-            Coordinate coord;
-            Coordinate[] array;
 
             InitProgression(seq);
-            Assert.That(seq.Dimension, Is.EqualTo(2));
-            Assert.That(seq.HasZ, Is.False);
-            Assert.That(seq.HasM, Is.False);
-            coord = seq.GetCoordinate(4);
-            Assert.That(coord, Is.TypeOf<Coordinate>());
-            Assert.That(coord.X, Is.EqualTo(4));
-            Assert.That(coord.Y, Is.EqualTo(4));
-            array = seq.ToCoordinateArray();
-            Assert.That(array[4], Is.EqualTo(coord));
-            Assert.That(array[4], Is.Not.SameAs(coord));
-            Assert.That(IsEqual(seq, array), Is.True);
-            copy = factory.Create(array);
-            Assert.That(IsEqual(copy, array), Is.True);
-            copy = factory.Create(seq);
-            Assert.That(IsEqual(copy, array), Is.True);
 
-            seq = factory.Create(5, 3);
+            Assert.AreEqual(2, seq.Dimension, "Dimension should be 2");
+            Assert.IsTrue(!seq.HasZ, "Z should not be present");
+            Assert.IsTrue(!seq.HasM, "M should not be present");
+
+            var coord = seq.GetCoordinate(4);
+            Assert.IsTrue(coord.GetType() == typeof(Coordinate));
+            Assert.AreEqual(4.0, coord.X);
+            Assert.AreEqual(4.0, coord.Y);
+
+            var array = seq.ToCoordinateArray();
+            Assert.AreEqual(coord, array[4]);
+            Assert.IsTrue(coord != array[4]);
+            Assert.IsTrue(IsEqual(seq, array));
+
+            var copy = factory.Create(array);
+
+            Assert.IsTrue(IsEqual(copy, array));
+
+            var copy2 = factory.Create(seq);
+            Assert.IsTrue(IsEqual(copy2, array));
+        }
+
+        private void CheckDim3(CoordinateSequenceFactory factory)
+        {
+            var seq = factory.Create(5, 3);
             InitProgression(seq);
-            Assert.That(seq.Dimension, Is.EqualTo(3));
-            Assert.That(seq.HasZ, Is.True);
-            Assert.That(seq.HasM, Is.False);
-            coord = seq.GetCoordinate(4);
-            Assert.That(coord, Is.TypeOf<CoordinateZ>());
-            Assert.That(coord.X, Is.EqualTo(4));
-            Assert.That(coord.Y, Is.EqualTo(4));
-            Assert.That(coord.Z, Is.EqualTo(4));
-            array = seq.ToCoordinateArray();
-            Assert.That(array[4], Is.EqualTo(coord));
-            Assert.That(array[4], Is.Not.SameAs(coord));
-            Assert.That(IsEqual(seq, array), Is.True);
-            copy = factory.Create(array);
-            Assert.That(IsEqual(copy, array), Is.True);
-            copy = factory.Create(seq);
-            Assert.That(IsEqual(copy, array), Is.True);
 
-            seq = factory.Create(5, 3, 1);
+            Assert.AreEqual(3, seq.Dimension, "Dimension should be 3");
+            Assert.IsTrue(seq.HasZ, "Z should be present");
+            Assert.IsTrue(!seq.HasM, "M should not be present");
+
+            var coord = seq.GetCoordinate(4);
+            Assert.IsTrue(coord.GetType() == typeof(CoordinateZ));
+            var coordZ = (CoordinateZ) coord;
+            Assert.AreEqual(4.0, coord.X);
+            Assert.AreEqual(4.0, coord.Y);
+            Assert.AreEqual(4.0, coordZ.Z);
+
+            var array = seq.ToCoordinateArray();
+            Assert.AreEqual(coord, array[4]);
+            Assert.IsTrue(coord != array[4]);
+            Assert.IsTrue(IsEqual(seq, array));
+
+            var copy = factory.Create(array);
+            Assert.IsTrue(IsEqual(copy, array));
+
+            var copy2 = factory.Create(seq);
+            Assert.IsTrue(IsEqual(copy2, array));
+        }
+
+        private void CheckDim3_M1(CoordinateSequenceFactory factory)
+        {
+            var seq = factory.Create(5, 3, 1);
             InitProgression(seq);
-            Assert.That(seq.Dimension, Is.EqualTo(3));
-            Assert.That(seq.HasZ, Is.False);
-            Assert.That(seq.HasM, Is.True);
-            coord = seq.GetCoordinate(4);
-            Assert.That(coord, Is.TypeOf<CoordinateM>());
-            Assert.That(coord.X, Is.EqualTo(4));
-            Assert.That(coord.Y, Is.EqualTo(4));
-            Assert.That(coord.M, Is.EqualTo(4));
-            array = seq.ToCoordinateArray();
-            Assert.That(array[4], Is.EqualTo(coord));
-            Assert.That(array[4], Is.Not.SameAs(coord));
-            Assert.That(IsEqual(seq, array), Is.True);
-            copy = factory.Create(array);
-            Assert.That(IsEqual(copy, array), Is.True);
-            copy = factory.Create(seq);
-            Assert.That(IsEqual(copy, array), Is.True);
 
-            seq = factory.Create(5, 4, 1);
+            Assert.AreEqual(3, seq.Dimension, "Dimension should be 3");
+            Assert.IsTrue(!seq.HasZ, "Z should not be present");
+            Assert.IsTrue(seq.HasM, "M should be present");
+
+            var coord = seq.GetCoordinate(4);
+            Assert.IsTrue(coord is CoordinateM);
+            var coordM = (CoordinateM) coord;
+            Assert.AreEqual(4.0, coord.X);
+            Assert.AreEqual(4.0, coord.Y);
+            Assert.AreEqual(4.0, coordM.M);
+
+            var array = seq.ToCoordinateArray();
+            Assert.AreEqual(coord, array[4]);
+            Assert.IsTrue(coord != array[4]);
+            Assert.IsTrue(IsEqual(seq, array));
+
+            var copy = factory.Create(array);
+            Assert.IsTrue(IsEqual(copy, array));
+
+            var copy2 = factory.Create(seq);
+            Assert.IsTrue(IsEqual(copy2, array));
+        }
+
+        private void CheckDim4_M1(CoordinateSequenceFactory factory)
+        {
+            var seq = factory.Create(5, 4, 1);
             InitProgression(seq);
-            Assert.That(seq.Dimension, Is.EqualTo(4));
-            Assert.That(seq.HasZ, Is.True);
-            Assert.That(seq.HasM, Is.True);
-            coord = seq.GetCoordinate(4);
-            Assert.That(coord, Is.TypeOf<CoordinateZM>());
-            Assert.That(coord.X, Is.EqualTo(4));
-            Assert.That(coord.Y, Is.EqualTo(4));
-            Assert.That(coord.Z, Is.EqualTo(4));
-            Assert.That(coord.M, Is.EqualTo(4));
-            array = seq.ToCoordinateArray();
-            Assert.That(array[4], Is.EqualTo(coord));
-            Assert.That(array[4], Is.Not.SameAs(coord));
-            Assert.That(IsEqual(seq, array), Is.True);
-            copy = factory.Create(array);
-            Assert.That(IsEqual(copy, array), Is.True);
-            copy = factory.Create(seq);
-            Assert.That(IsEqual(copy, array), Is.True);
 
-            Assert.That(() => factory.Create(5, 2, 1), Throws.InstanceOf<ArgumentException>());
+            Assert.AreEqual(4, seq.Dimension, "Dimension should be 4");
+            Assert.IsTrue(seq.HasZ, "Z should be present");
+            Assert.IsTrue(seq.HasM, "M should be present");
+
+            var coord = seq.GetCoordinate(4);
+            Assert.IsTrue(coord is CoordinateZM);
+            var coordZM = (CoordinateZM) coord;
+            Assert.AreEqual(4.0, coord.X);
+            Assert.AreEqual(4.0, coord.Y);
+            Assert.AreEqual(4.0, coordZM.Z);
+            Assert.AreEqual(4.0, coordZM.M);
+
+            var array = seq.ToCoordinateArray();
+            Assert.AreEqual(coord, array[4]);
+            Assert.IsTrue(coord != array[4]);
+            Assert.IsTrue(IsEqual(seq, array));
+
+            var copy = factory.Create(array);
+            Assert.IsTrue(IsEqual(copy, array));
+
+            var copy2 = factory.Create(seq);
+            Assert.IsTrue(IsEqual(copy2, array));
+        }
+
+        private void CheckDimInvalid(CoordinateSequenceFactory factory)
+        {
+            try
+            {
+                var seq = factory.Create(5, 2, 1);
+                Assert.Fail("Dimension=2/Measure=1 (XM) not supported");
+            }
+            catch (ArgumentException expected)
+            {
+            }
         }
 
         private static void InitProgression(CoordinateSequence seq)
