@@ -162,7 +162,7 @@ namespace NetTopologySuite.Algorithm
         {
             private readonly Polygon _polygon;
             private readonly double _interiorPointY;
-            private readonly List<double> _crossings = new List<double>();
+            //private readonly List<double> _crossings = new List<double>();
 
             private double _interiorSectionWidth;
             private Coordinate _interiorPoint;
@@ -202,16 +202,17 @@ namespace NetTopologySuite.Algorithm
 
                 // set default interior point in case polygon has zero area
                 _interiorPoint = new Coordinate(_polygon.Coordinate);
-                ScanRing((LinearRing)_polygon.ExteriorRing);
+                var crossings = new List<double>();
+                ScanRing((LinearRing)_polygon.ExteriorRing, crossings);
                 for (int i = 0; i < _polygon.NumInteriorRings; i++)
                 {
-                    ScanRing((LinearRing)_polygon.GetInteriorRingN(i));
+                    ScanRing((LinearRing)_polygon.GetInteriorRingN(i), crossings);
                 }
 
-                FindBestMidpoint(_crossings);
+                FindBestMidpoint(crossings);
             }
 
-            private void ScanRing(LinearRing ring)
+            private void ScanRing(LinearRing ring, List<double> crossings)
             {
                 // skip rings which don't cross scan line
                 if (!IntersectsHorizontalLine(ring.EnvelopeInternal, _interiorPointY))
@@ -224,7 +225,7 @@ namespace NetTopologySuite.Algorithm
                 {
                     var ptPrev = seq.GetCoordinate(i - 1);
                     var pt = seq.GetCoordinate(i);
-                    AddEdgeCrossing(ptPrev, pt, _interiorPointY, _crossings);
+                    AddEdgeCrossing(ptPrev, pt, _interiorPointY, crossings);
                 }
             }
 
