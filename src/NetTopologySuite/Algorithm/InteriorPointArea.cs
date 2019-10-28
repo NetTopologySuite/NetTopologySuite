@@ -251,39 +251,11 @@ namespace NetTopologySuite.Algorithm
             }
 
             /// <summary>
-            /// Tests if an edge intersection contributes to the crossing count.
-            /// Some crossing situations are not counted,
-            /// to ensure that the list of crossings
-            /// captures strict inside/outside topology.
+            /// Finds the midpoint of the widest interior section.
+            /// Sets the <see cref="_interiorPoint"/> location and the
+            /// <see cref="_interiorSectionWidth"/>
             /// </summary>
-            /// <param name="p0">An endpoint of the segment.</param>
-            /// <param name="p1">An endpoint of the segment.</param>
-            /// <param name="scanY">The Y-ordinate of the horizontal line.</param>
-            /// <returns><see langword="true"/> if the edge crossing is counted.</returns>
-            private bool IsEdgeCrossingCounted(Coordinate p0, Coordinate p1, double scanY)
-            {
-                // skip horizontal lines
-                if (p0.Y == p1.Y)
-                {
-                    return false;
-                }
-
-                // handle cases where vertices lie on scan-line
-                // downward segment does not include start point
-                if (p0.Y == scanY && p1.Y < scanY)
-                {
-                    return false;
-                }
-
-                // upward segment does not include endpoint
-                if (p1.Y == scanY && p0.Y < scanY)
-                {
-                    return false;
-                }
-
-                return true;
-            }
-
+            /// <param name="crossings">The list of scan-line X ordinates</param>
             private void FindBestMidpoint(List<double> crossings)
             {
                 // zero-area polygons will have no crossings
@@ -317,6 +289,36 @@ namespace NetTopologySuite.Algorithm
             }
 
             /// <summary>
+            /// Tests if an edge intersection contributes to the crossing count.
+            /// Some crossing situations are not counted,
+            /// to ensure that the list of crossings
+            /// captures strict inside/outside topology.
+            /// </summary>
+            /// <param name="p0">An endpoint of the segment.</param>
+            /// <param name="p1">An endpoint of the segment.</param>
+            /// <param name="scanY">The Y-ordinate of the horizontal line.</param>
+            /// <returns><see langword="true"/> if the edge crossing is counted.</returns>
+            private bool IsEdgeCrossingCounted(Coordinate p0, Coordinate p1, double scanY)
+            {
+                double y0 = p0.Y;
+                double y1 = p1.Y;
+                // skip horizontal lines
+                if (y0 == y1)
+                    return false;
+                
+                // handle cases where vertices lie on scan-line
+                // downward segment does not include start point
+                if (y0 == scanY && y1 < scanY)
+                    return false;
+
+                // upward segment does not include endpoint
+                if (y1 == scanY && y0 < scanY)
+                    return false;
+                
+                return true;
+            }
+
+            /// <summary>
             /// Computes the intersection of a segment with a horizontal line.
             /// The segment is expected to cross the horizontal line
             /// - this condition is not checked.
@@ -345,38 +347,6 @@ namespace NetTopologySuite.Algorithm
                 return x;
             }
         }
-
-#if CheckIntersectionUsingDoubleDouble
-        // for testing only
-        private static void CheckIntersectionDD(Coordinate p0, Coordinate p1, double scanY, double xInt)
-        {
-          double xIntDD = IntersectionDD(p0, p1, scanY);
-          System.Console.WriteLine(
-              ((xInt != xIntDD) ? ">>" : "")
-              + "IntPt x - DP: " + xInt + ", DD: " + xIntDD 
-              + "   y: " + scanY + "   " + IO.WKTWriter.ToLineString(p0, p1) );
-        }
-
-        private static double IntersectionDD(Coordinate p0, Coordinate p1, double y)
-        {
-            double x0 = p0.X;
-            double x1 = p1.X;
-            if (x0 == x1)
-            {
-                return x0;
-            }
-
-            var segDX = Mathematics.DD.ValueOf(x1) - x0;
-
-            // Assert: segDX is non-zero, due to previous equality test
-            var segDY = Mathematics.DD.ValueOf(p1.Y) - p0.Y;
-            var m = segDY / segDX;
-            var dy = Mathematics.DD.ValueOf(y) - p0.Y;
-            var dx = dy / m;
-            var xInt = Mathematics.DD.ValueOf(x0) + dx;
-            return xInt.ToDoubleValue();
-        }
-#endif
 
         /// <summary>
         /// Tests if an envelope intersects a horizontal line.
@@ -501,5 +471,37 @@ namespace NetTopologySuite.Algorithm
 
             }
         }
+
+#if CheckIntersectionUsingDoubleDouble
+        // for testing only
+        private static void CheckIntersectionDD(Coordinate p0, Coordinate p1, double scanY, double xInt)
+        {
+          double xIntDD = IntersectionDD(p0, p1, scanY);
+          System.Console.WriteLine(
+              ((xInt != xIntDD) ? ">>" : "")
+              + "IntPt x - DP: " + xInt + ", DD: " + xIntDD 
+              + "   y: " + scanY + "   " + IO.WKTWriter.ToLineString(p0, p1) );
+        }
+
+        private static double IntersectionDD(Coordinate p0, Coordinate p1, double y)
+        {
+            double x0 = p0.X;
+            double x1 = p1.X;
+            if (x0 == x1)
+            {
+                return x0;
+            }
+
+            var segDX = Mathematics.DD.ValueOf(x1) - x0;
+
+            // Assert: segDX is non-zero, due to previous equality test
+            var segDY = Mathematics.DD.ValueOf(p1.Y) - p0.Y;
+            var m = segDY / segDX;
+            var dy = Mathematics.DD.ValueOf(y) - p0.Y;
+            var dx = dy / m;
+            var xInt = Mathematics.DD.ValueOf(x0) + dx;
+            return xInt.ToDoubleValue();
+        }
+#endif
     }
 }
