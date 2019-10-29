@@ -5,7 +5,6 @@ namespace NetTopologySuite.Geometries.Implementation
 {
     /// <summary>
     /// A <c>CoordinateSequence</c> implementation based on a packed arrays.
-    /// A <c>CoordinateSequence</c> implementation based on a packed arrays.
     /// </summary>
     [Serializable]
     public abstract class PackedCoordinateSequence : CoordinateSequence
@@ -17,6 +16,12 @@ namespace NetTopologySuite.Geometries.Implementation
         [NonSerialized]
         protected WeakReference CoordRef;
 
+        /// <summary>
+        /// Creates an instance of this class
+        /// </summary>
+        /// <param name="count">The number of <see cref="Coordinate"/>s in the sequence.</param>
+        /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
+        /// <param name="measures">the number of measure-ordinates each {<see cref="Coordinate"/> in this sequence has.</param>
         protected PackedCoordinateSequence(int count, int dimension, int measures)
             : base(count, dimension, measures)
         {
@@ -101,17 +106,13 @@ namespace NetTopologySuite.Geometries.Implementation
             return arr;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
         private Coordinate[] GetCachedCoords()
         {
             var localCoordRef = CoordRef;
             if (localCoordRef != null)
             {
                 var arr = (Coordinate[]) localCoordRef.Target;
-                if (arr != null)
+                if (arr != null && localCoordRef.IsAlive)
                     return arr;
 
                 CoordRef = null;
@@ -193,8 +194,8 @@ namespace NetTopologySuite.Geometries.Implementation
         /// Returns a Coordinate representation of the specified coordinate, by always
         /// building a new Coordinate object.
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
+        /// <param name="index">The coordinate index</param>
+        /// <returns>The <see cref="Coordinate"/> at the given index</returns>
         protected abstract Coordinate GetCoordinateInternal(int index);
 
         [OnDeserialized]
@@ -218,12 +219,15 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
         /// </summary>
-        /// <param name="coords"></param>
-        /// <param name="dimension"></param>
-        /// <param name="measures"></param>
+        /// <param name="coords">An array of <c>double</c> values that contains the ordinate values of the sequence.</param>
+        /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
+        /// <param name="measures">The number of measure-ordinates each <see cref="Coordinate"/> in this sequence has.</param>
         public PackedDoubleCoordinateSequence(double[] coords, int dimension, int measures)
             : base(coords?.Length / dimension ?? 0, dimension, measures)
         {
+            if (coords == null)
+                coords = new double[0];
+
             if (coords.Length % dimension != 0)
                 throw new ArgumentException("Packed array does not contain " +
                     "an integral number of coordinates");
@@ -234,64 +238,72 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
         /// </summary>
-        /// <param name="coordinates"></param>
-        /// <param name="dimension"></param>
-        /// <param name="measures"></param>
-        public PackedDoubleCoordinateSequence(float[] coordinates, int dimension, int measures)
-            : base(coordinates?.Length / dimension ?? 0, dimension, measures)
+        /// <param name="coords">An array of <c>float</c> values that contains the ordinate values of the sequence.</param>
+        /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
+        /// <param name="measures">The number of measure-ordinates each <see cref="Coordinate"/> in this sequence has.</param>
+        public PackedDoubleCoordinateSequence(float[] coords, int dimension, int measures)
+            : base(coords?.Length / dimension ?? 0, dimension, measures)
         {
-            _coords = new double[coordinates.Length];
-            for (int i = 0; i < coordinates.Length; i++)
-                _coords[i] = coordinates[i];
+            if (coords == null)
+            {
+                _coords = new double[0];
+                return;
+            }
+            _coords = new double[coords.Length];
+            for (int i = 0; i < coords.Length; i++)
+                _coords[i] = coords[i];
+        }
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
+        /// </summary>
+        /// <param name="coords">An array of <see cref="Coordinate"/>s.</param>
+        public PackedDoubleCoordinateSequence(Coordinate[] coords)
+            : this(coords, PackedCoordinateSequenceFactory.DefaultDimension)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
+        /// </summary>
+        /// <param name="coords">An array of <see cref="Coordinate"/>s.</param>
+        /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
+        public PackedDoubleCoordinateSequence(Coordinate[] coords, int dimension)
+            : this(coords, dimension, PackedCoordinateSequenceFactory.DefaultMeasures)
+        {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
         /// </summary>
-        /// <param name="coordinates"></param>
-        /// <param name="dimension"></param>
-        public PackedDoubleCoordinateSequence(Coordinate[] coordinates, int dimension)
-            : this(coordinates, dimension, 0)
+        /// <param name="coords">An array of <see cref="Coordinate"/>s.</param>
+        /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
+        /// <param name="measures">The number of measure-ordinates each <see cref="Coordinate"/> in this sequence has.</param>
+        public PackedDoubleCoordinateSequence(Coordinate[] coords, int dimension, int measures)
+            : base(coords?.Length ?? 0, dimension, measures)
         {
-        }
+            if (coords == null)
+                coords = new Coordinate[0];
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
-        /// </summary>
-        /// <param name="coordinates"></param>
-        /// <param name="dimension"></param>
-        /// <param name="measures"></param>
-        public PackedDoubleCoordinateSequence(Coordinate[] coordinates, int dimension, int measures)
-            : base(coordinates?.Length ?? 0, dimension, measures)
-        {
-            if (coordinates == null)
-                coordinates = new Coordinate[0];
-
-            _coords = new double[coordinates.Length * Dimension];
-            for (int i = 0; i < coordinates.Length; i++)
+            _coords = new double[coords.Length * Dimension];
+            for (int i = 0; i < coords.Length; i++)
             {
                 int offset = i * dimension;
-                _coords[offset] = coordinates[i].X;
-                _coords[offset + 1] = coordinates[i].Y;
+                _coords[offset] = coords[i].X;
+                _coords[offset + 1] = coords[i].Y;
                 if (Dimension >= 3)
-                    _coords[offset + 2] = coordinates[i][2]; // Z or M
+                    _coords[offset + 2] = coords[i][2]; // Z or M
                 if (Dimension >= 4)
-                    _coords[offset + 3] = coordinates[i][3]; // M
+                    _coords[offset + 3] = coords[i][3]; // M
             }
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
         /// </summary>
-        /// <param name="coordinates"></param>
-        public PackedDoubleCoordinateSequence(Coordinate[] coordinates) : this(coordinates, 3, 0) { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
-        /// </summary>
-        /// <param name="size"></param>
-        /// <param name="dimension"></param>
-        /// <param name="measures"></param>
+        /// <param name="size">The number of coordinates in this sequence</param>
+        /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
+        /// <param name="measures">The number of measure-ordinates each <see cref="Coordinate"/> in this sequence has.</param>
         public PackedDoubleCoordinateSequence(int size, int dimension, int measures)
             : base(size, dimension, measures)
         {
@@ -425,12 +437,15 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedFloatCoordinateSequence"/> class.
         /// </summary>
-        /// <param name="coords"></param>
-        /// <param name="dimension"></param>
-        /// <param name="measures"></param>
+        /// <param name="coords">An array of <c>float</c> values that contains the ordinate values of the sequence.</param>
+        /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
+        /// <param name="measures">The number of measure-ordinates each <see cref="Coordinate"/> in this sequence has.</param>
         public PackedFloatCoordinateSequence(float[] coords, int dimension, int measures)
             : base(coords?.Length / dimension ?? 0, dimension, measures)
         {
+            if (coords == null)
+                coords = new float[0];
+
             if (coords.Length % dimension != 0)
                 throw new ArgumentException("Packed array does not contain " +
                     "an integral number of coordinates");
@@ -441,49 +456,63 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedFloatCoordinateSequence"/> class.
         /// </summary>
-        /// <param name="coordinates"></param>
-        /// <param name="dimension"></param>
-        /// <param name="measures"></param>
-        public PackedFloatCoordinateSequence(double[] coordinates, int dimension, int measures)
-            : base(coordinates?.Length / dimension ?? 0, dimension, measures)
+        /// <param name="coords">An array of <c>double</c> values that contains the ordinate values of the sequence.</param>
+        /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
+        /// <param name="measures">The number of measure-ordinates each <see cref="Coordinate"/> in this sequence has.</param>
+        public PackedFloatCoordinateSequence(double[] coords, int dimension, int measures)
+            : base(coords?.Length / dimension ?? 0, dimension, measures)
         {
-            _coords = new float[coordinates.Length];
-            for (int i = 0; i < coordinates.Length; i++)
-                _coords[i] = (float) coordinates[i];
+            if (coords == null)
+            {
+                _coords = new float[0];
+                return;
+            }
+
+            _coords = new float[coords.Length];
+            for (int i = 0; i < coords.Length; i++)
+                _coords[i] = (float)coords[i];
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PackedDoubleCoordinateSequence"/> class.
+        /// </summary>
+        /// <param name="coords">An array of <see cref="Coordinate"/>s.</param>
+        public PackedFloatCoordinateSequence(Coordinate[] coords)
+            : this(coords, PackedCoordinateSequenceFactory.DefaultDimension)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PackedFloatCoordinateSequence"/> class.
+        /// </summary>
+        /// <param name="coords">An array of <see cref="Coordinate"/>s.</param>
+        /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
+        public PackedFloatCoordinateSequence(Coordinate[] coords, int dimension)
+            : this(coords, dimension, PackedCoordinateSequenceFactory.DefaultMeasures)
+        {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PackedFloatCoordinateSequence"/> class.
         /// </summary>
-        /// <param name="coordinates"></param>
-        /// <param name="dimension"></param>
-        public PackedFloatCoordinateSequence(Coordinate[] coordinates, int dimension)
-            : this(coordinates, dimension, 0)
+        /// <param name="coords">An array of <see cref="Coordinate"/>s.</param>
+        /// <param name="dimension">The total number of ordinates that make up a <see cref="Coordinate"/> in this sequence.</param>
+        /// <param name="measures">The number of measure-ordinates each <see cref="Coordinate"/> in this sequence has.</param>
+        public PackedFloatCoordinateSequence(Coordinate[] coords, int dimension, int measures)
+            : base(coords?.Length ?? 0, dimension, measures)
         {
-        }
+            if (coords == null)
+                coords = new Coordinate[0];
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PackedFloatCoordinateSequence"/> class.
-        /// </summary>
-        /// <param name="coordinates"></param>
-        /// <param name="dimension"></param>
-        /// <param name="measures"></param>
-        public PackedFloatCoordinateSequence(Coordinate[] coordinates, int dimension, int measures)
-            : base(coordinates?.Length ?? 0, dimension, measures)
-        {
-            if (coordinates == null)
-                coordinates = new Coordinate[0];
-
-            _coords = new float[coordinates.Length * Dimension];
-            for (int i = 0; i < coordinates.Length; i++)
+            _coords = new float[coords.Length * Dimension];
+            for (int i = 0; i < coords.Length; i++)
             {
                 int offset = i * dimension;
-                _coords[offset] = (float)coordinates[i].X;
-                _coords[offset + 1] = (float)coordinates[i].Y;
+                _coords[offset] = (float)coords[i].X;
+                _coords[offset + 1] = (float)coords[i].Y;
                 if (Dimension >= 3)
-                    _coords[offset + 2] = (float)coordinates[i][2]; // Z or M
+                    _coords[offset + 2] = (float)coords[i][2]; // Z or M
                 if (Dimension >= 4)
-                    _coords[offset + 3] = (float)coordinates[i][3]; // M
+                    _coords[offset + 3] = (float)coords[i][3]; // M
             }
         }
 

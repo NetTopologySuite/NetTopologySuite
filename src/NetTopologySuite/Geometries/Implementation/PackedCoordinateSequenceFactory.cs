@@ -39,8 +39,8 @@ namespace NetTopologySuite.Geometries.Implementation
         public static readonly PackedCoordinateSequenceFactory FloatFactory =
             new PackedCoordinateSequenceFactory(PackedType.Float);
 
-        private const int DefaultMeasures = 0;
-        private const int DefaultDimensions = 2;
+        internal const int DefaultMeasures = 0;
+        internal const int DefaultDimension = 2;
 
         private PackedType _type = PackedType.Double;
 
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Geometries.Implementation
         /// <returns></returns>
         public override CoordinateSequence Create(Coordinate[] coordinates)
         {
-            int dimension = DefaultDimensions;
+            int dimension = DefaultDimension;
             int measures = DefaultMeasures;
             if (coordinates != null && coordinates.Length > 0 && coordinates[0] != null)
             {
@@ -163,7 +163,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             if (_type == PackedType.Double)
                 return new PackedDoubleCoordinateSequence(packedCoordinates, dimension, measures);
-            else return new PackedFloatCoordinateSequence(packedCoordinates, dimension, measures);
+            return new PackedFloatCoordinateSequence(packedCoordinates, dimension, measures);
         }
 
         /// <inheritdoc />
@@ -171,7 +171,7 @@ namespace NetTopologySuite.Geometries.Implementation
         {
             if (_type == PackedType.Double)
                 return new PackedDoubleCoordinateSequence(size, dimension, measures);
-            else return new PackedFloatCoordinateSequence(size, dimension, measures);
+            return new PackedFloatCoordinateSequence(size, dimension, measures);
         }
     }
 }
