@@ -16,15 +16,19 @@ namespace NetTopologySuite.Operation.Polygonize
     /// and reports them as errors.
     /// </para><para>
     /// The Polygonizer reports the follow kinds of errors:
-    /// Dangles - edges which have one or both ends which are not incident on another edge endpoint
-    /// Cut Edges - edges which are connected at both ends but which do not form part of polygon
-    /// Invalid Ring Lines - edges which form rings which are invalid
-    /// (e.g. the component lines contain a self-intersection).</para>
+    /// <list type="Table">
+    /// <item><term><see cref="GetDangles"/>Dangles</term><description>edges which have one or both ends which are not incident on another edge endpoint</description></item>
+    /// <item><term><see cref="GetCutEdges"/></term><description>edges which are connected at both ends but which do not form part of polygon</description></item>
+    /// <item><term><see cref="GetInvalidRingLines"/></term><description>edges which form rings which are invalid
+    /// (e.g. the component lines contain a self-intersection)</description>
+    /// </item></list>
+    /// </para>
     /// <para>
-    /// Polygonization supports extracting only polygons which form a valid polygonal geometry.
+    /// The <see cref="Polygonizer(bool)"/> constructor allows
+    /// extracting only polygons which form a valid polygonal result.
     /// The set of extracted polygons is guaranteed to be edge-disjoint.
     /// This is useful for situations where it is known that the input lines form a
-    /// valid polygonal geometry.</para>
+    /// valid polygonal geometry (which may include holes or nested polygons).</para>
     /// </remarks>
     ///
     public class Polygonizer
@@ -90,22 +94,22 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         /// <summary>
-        /// Creates a polygonizer with the same <see cref="GeometryFactory"/>
-        /// as the input <c>Geometry</c>s.
-        /// The output mask is <see cref="AllPolys"/>
+        /// Creates a polygonizer that extracts all polygons.
         /// </summary>
-        ///
         public Polygonizer()
-            :this(AllPolys)
+            :this(false)
         {
 
             _lineStringAdder = new LineStringAdder(this);
         }
 
         /// <summary>
-        /// Creates a polygonizer and allow specifying if only polygons which form a valid polygonal geometry are to be extracted.
+        /// Creates a polygonizer, specifying whether a valid polygonal geometry must be created.
+        /// If the argument is <c>true</c>
+        /// then areas may be discarded in order to 
+        /// ensure that the extracted geometry is a valid polygonal geometry.
         /// </summary>
-        /// <param name="extractOnlyPolygonal"><value>true</value> if only polygons which form a valid polygonal geometry are to be extracted</param>
+        /// <param name="extractOnlyPolygonal"><c>true</c> if a valid polygonal geometry should be extracted</param>
         public Polygonizer(bool extractOnlyPolygonal)
         {
             _extractOnlyPolygonal = extractOnlyPolygonal;
