@@ -43,7 +43,7 @@ namespace Open.Topology.TestRunner.Functions
         public static Geometry Reverse(Geometry g) { return g.Reverse(); }
         public static Geometry Normalize(Geometry g)
         {
-            var gNorm = (Geometry)g.Copy();
+            var gNorm = g.Copy();
             gNorm.Normalize();
             return gNorm;
         }

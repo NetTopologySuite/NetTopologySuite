@@ -13,16 +13,21 @@ namespace NetTopologySuite.Algorithm
     /// </summary>
     public static class InteriorPoint
     {
-        public static Point GetInteriorPoint(Geometry geom)
+        /// <summary>
+        /// Compute a location of an interior point in a <see cref="Geometry"/>.
+        /// Handles all geometry types.
+        /// </summary>
+        /// <param name="geom">A geometry in which to find an interior point</param>
+        /// <returns>the location of an interior point, or <c>null</c> if the input is empty
+        /// </returns>
+        public static Coordinate GetInteriorPoint(Geometry geom)
         {
             var factory = geom.Factory;
 
             if (geom.IsEmpty)
-            {
-                return CreatePointEmpty(factory);
-            }
+                return null;
 
-            Coordinate interiorPt = null;
+            Coordinate interiorPt;
             switch (geom.Dimension)
             {
                 case Dimension.Point:
@@ -38,18 +43,7 @@ namespace NetTopologySuite.Algorithm
                     break;
             }
 
-            return CreatePointPrecise(factory, interiorPt);
-        }
-
-        private static Point CreatePointEmpty(GeometryFactory factory)
-        {
-            return factory.CreatePoint();
-        }
-
-        private static Point CreatePointPrecise(GeometryFactory factory, Coordinate coord)
-        {
-            factory.PrecisionModel.MakePrecise(coord);
-            return factory.CreatePoint(coord);
+            return interiorPt;
         }
     }
 }

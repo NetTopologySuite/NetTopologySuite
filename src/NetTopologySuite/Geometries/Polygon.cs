@@ -242,17 +242,6 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public override bool IsEmpty => _shell.IsEmpty;
 
-        ///// <summary>
-        /////
-        ///// </summary>
-        //public override bool IsSimple
-        //{
-        //    get
-        //    {
-        //        return true;
-        //    }
-        //}
-
         /// <summary>
         ///
         /// </summary>

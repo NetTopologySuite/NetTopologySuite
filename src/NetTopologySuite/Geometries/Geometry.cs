@@ -470,7 +470,11 @@ namespace NetTopologySuite.Geometries
         {
             get
             {
-                return Algorithm.InteriorPoint.GetInteriorPoint(this);
+                if (IsEmpty)
+                    return _factory.CreatePoint();
+
+                var pt = Algorithm.InteriorPoint.GetInteriorPoint(this);
+                return CreatePointFromInternalCoord(pt, this);
             }
         }
 
