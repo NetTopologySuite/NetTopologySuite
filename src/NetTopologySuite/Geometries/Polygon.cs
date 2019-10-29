@@ -17,16 +17,16 @@ namespace NetTopologySuite.Geometries
     /// Specification for SQL</a>.
     /// <para/>
     /// A <c>Polygon</c> is topologically valid if and only if:
-    /// <list type="Bullet">
-    /// <item>the coordinates which define it are valid coordinates</item>
-    /// <item>the linear rings for the shell and holes are valid
-    /// (i.e. are closed and do not self-intersect)</item>
-    /// <item>holes touch the shell or another hole at at most one point
-    /// (which implies that the rings of the shell and holes must not cross)</item>
-    /// <item>the interior of the polygon is connected,
+    /// <list type="bullet">
+    /// <item><description>the coordinates which define it are valid coordinates</description></item>
+    /// <item><description>the linear rings for the shell and holes are valid
+    /// (i.e. are closed and do not self-intersect)</description></item>
+    /// <item><description>holes touch the shell or another hole at at most one point
+    /// (which implies that the rings of the shell and holes must not cross)</description></item>
+    /// <item><description>the interior of the polygon is connected,
     /// or equivalently no sequence of touching holes
     /// makes the interior of the polygon disconnected
-    /// (i.e. effectively split the polygon into two pieces).</item>
+    /// (i.e. effectively split the polygon into two pieces).</description></item>
     /// </list>
     /// </summary>
     [Serializable]

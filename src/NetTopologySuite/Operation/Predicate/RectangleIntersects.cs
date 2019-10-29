@@ -55,8 +55,8 @@ namespace NetTopologySuite.Operation.Predicate
         /// Tests whether the given Geometry intersects the query rectangle.
         /// </summary>
         /// <param name="geom">The Geometry to test (may be of any type)</param>
-        /// <returns><value>true</value> if an intersection must occur
-        /// or <value>false</value> if no conclusion about intersection can be made</returns>
+        /// <returns><c>true</c> if an intersection must occur
+        /// or <c>false</c> if no conclusion about intersection can be made</returns>
         public bool Intersects(Geometry geom)
         {
             if (!_rectEnv.Intersects(geom.EnvelopeInternal))
@@ -186,8 +186,8 @@ namespace NetTopologySuite.Operation.Predicate
         /// Gets a value indicating whether it can be concluded that a corner point of the rectangle is
         /// contained in the geometry, or whether further testing is required.
         /// </summary>
-        /// <returns><value>true</value> if a corner point is contained
-        /// or <value>false</value> if no conclusion about intersection can be made
+        /// <returns><c>true</c> if a corner point is contained
+        /// or <c>false</c> if no conclusion about intersection can be made
         /// </returns>
         public bool ContainsPoint { get; private set; }
 

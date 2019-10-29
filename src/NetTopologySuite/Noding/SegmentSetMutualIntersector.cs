@@ -15,7 +15,7 @@ namespace NetTopologySuite.Noding
     /// In order to allow optimizing processing,
     /// the following condition is assumed to hold for each set:
     /// <list Type="Bullet">
-    /// <item>the only intersection between any two linestrings occurs at their endpoints.</item>
+    /// <item><description>the only intersection between any two linestrings occurs at their endpoints.</description></item>
     /// </list>
     /// Implementations can take advantage of this fact to optimize processing
     /// (i.e. by avoiding testing for intersections between linestrings

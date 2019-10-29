@@ -53,7 +53,7 @@ namespace NetTopologySuite.Operation.Linemerge
         /// </summary>
         /// <param name="geom">The <see cref="Geometry" /> to test.</param>
         /// <returns>
-        /// <value>true</value> if the <see cref="Geometry" /> is sequenced or is not lineal.
+        /// <c>true</c> if the <see cref="Geometry" /> is sequenced or is not lineal.
         /// </returns>
         public static bool IsSequenced(Geometry geom)
         {

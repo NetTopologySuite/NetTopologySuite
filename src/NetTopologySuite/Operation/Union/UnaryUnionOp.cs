@@ -20,9 +20,9 @@ namespace NetTopologySuite.Operation.Union
     /// </para>
     /// <para>
     /// The result obeys the following contract:
-    /// <list type="Bullet">
-    /// <item>Unioning a set of <see cref="Polygon"/>s has the effect of merging the areas (i.e. the same effect as iteratively unioning all individual polygons together).</item>
-    /// <item>Unioning a set of <see cref="LineString"/>s has the effect of <b>fully noding</b>
+    /// <list type="bullet">
+    /// <item><description>Unioning a set of <see cref="Polygon"/>s has the effect of merging the areas (i.e. the same effect as iteratively unioning all individual polygons together).</description></item>
+    /// <item><description>Unioning a set of <see cref="LineString"/>s has the effect of <b>fully noding</b>
     /// and <b>dissolving</b> the input linework.
     /// In this context "fully noded" means that there will be
     /// an endpoint or node in the result
@@ -31,8 +31,8 @@ namespace NetTopologySuite.Operation.Union
     /// of line segments will be reduced to a single line segment in the output.
     /// This is consistent with the semantics of the
     /// <see cref="Geometry.Union(Geometry)"/> operation.
-    /// If <b>merged</b> linework is required, the <see cref="LineMerger"/> class can be used.</item>
-    /// <item>Unioning a set of <see cref="Point"/>s has the effect of merging all identical points (producing a set with no duplicates).</item> </list>
+    /// If <b>merged</b> linework is required, the <see cref="LineMerger"/> class can be used.</description></item>
+    /// <item><description>Unioning a set of <see cref="Point"/>s has the effect of merging all identical points (producing a set with no duplicates).</description></item> </list>
     /// </para>
     /// <para>
     /// <c>UnaryUnion</c> always operates on the individual components of MultiGeometries.
@@ -223,7 +223,7 @@ namespace NetTopologySuite.Operation.Union
         /// <param name="g1"></param>
         /// <returns>
         /// The union of the input(s)
-        /// or <value>null</value> if both inputs are <value>null</value>
+        /// or <c>null</c> if both inputs are <c>null</c>
         /// </returns>
         private static Geometry UnionWithNull(Geometry g0, Geometry g1)
         {

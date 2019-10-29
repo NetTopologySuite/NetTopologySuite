@@ -664,7 +664,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// <param name="includeFrame" />
         /// <param name="visitedEdges"></param>
         /// <returns>the visited triangle edges,<br/>
-        /// or <value>null</value> if the triangle should not be visited (for instance, if it is outer)
+        /// or <c>null</c> if the triangle should not be visited (for instance, if it is outer)
         /// </returns>
         private QuadEdge[] FetchTriangleToVisit(QuadEdge edge, Stack<QuadEdge> edgeStack, bool includeFrame,
             HashSet<QuadEdge> visitedEdges)

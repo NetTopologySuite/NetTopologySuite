@@ -179,10 +179,10 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         ///
         /// <returns>
-        /// <list>
-        /// <item>1 if <c>p</c> is to the left of this segment</item>
-        /// <item>-1 if <c>p</c> is to the right of this segment</item>
-        /// <item>0 if <c>p</c> is collinear with this segment</item>
+        /// <list type="table">
+        /// <item><term>1</term><description>if <c>p</c> is to the left of this segment</description></item>
+        /// <item><term>-1</term><description>if <c>p</c> is to the right of this segment</description></item>
+        /// <item><term>0</term><description>if <c>p</c> is collinear with this segment</description></item>
         /// </list>"
         /// </returns>
         ///

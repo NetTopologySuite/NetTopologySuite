@@ -17,7 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <param name="p">The point to test</param>
-        /// <returns><value>true</value> if this point is inside the circle defined by the points a, b, c</returns>
+        /// <returns><c>true</c> if this point is inside the circle defined by the points a, b, c</returns>
         public static bool IsInCircle(
             Coordinate a, Coordinate b, Coordinate c,
             Coordinate p)
@@ -53,7 +53,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <param name="p">The point to test</param>
-        /// <returns><value>true</value> if this point is inside the circle defined by the points a, b, c</returns>
+        /// <returns><c>true</c> if this point is inside the circle defined by the points a, b, c</returns>
         public static bool IsInCircleRobust(
             Coordinate a, Coordinate b, Coordinate c,
             Coordinate p)
@@ -70,7 +70,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <param name="p">The point to test</param>
-        /// <returns><value>true</value> if this point is inside the circle defined by the points a, b, c</returns>
+        /// <returns><c>true</c> if this point is inside the circle defined by the points a, b, c</returns>
         public static bool IsInCircleDD2(
             Coordinate a, Coordinate b, Coordinate c,
             Coordinate p)
@@ -94,7 +94,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <param name="p">The point to test</param>
-        /// <returns><value>true</value> if this point is inside the circle defined by the points a, b, c</returns>
+        /// <returns><c>true</c> if this point is inside the circle defined by the points a, b, c</returns>
         public static bool IsInCircleDD3(
             Coordinate a, Coordinate b, Coordinate c,
             Coordinate p)
@@ -147,7 +147,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Mathematics
         /// <param name="b">A vertex of the triangle</param>
         /// <param name="c">A vertex of the triangle</param>
         /// <param name="p">The point to test</param>
-        /// <returns><value>true</value> if this point is inside the circle defined by the points a, b, c</returns>
+        /// <returns><c>true</c> if this point is inside the circle defined by the points a, b, c</returns>
         public static bool IsInCircleCC(Coordinate a, Coordinate b, Coordinate c,
                                         Coordinate p)
         {

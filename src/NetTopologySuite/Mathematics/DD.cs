@@ -52,15 +52,15 @@ namespace NetTopologySuite.Mathematics
     /// Douglas Priest developed the first C implementation of these techniques.
     /// Other more recent C++ implementation are due to Keith M. Briggs and David Bailey et al.
     /// <h3>References</h3>
-    /// <list type="Bullet">
-    /// <item>Priest, D., <i>Algorithms for Arbitrary Precision Floating Point Arithmetic</i>,
+    /// <list type="bullet">
+    /// <item><description>Priest, D., <i>Algorithms for Arbitrary Precision Floating Point Arithmetic</i>,
     /// in P. Kornerup and D. Matula, Eds., Proc. 10th Symposium on Computer Arithmetic,
-    /// IEEE Computer Society Press, Los Alamitos, Calif., 1991.</item>
-    /// <item>Yozo Hida, Xiaoye S. Li and David H. Bailey,
+    /// IEEE Computer Society Press, Los Alamitos, Calif., 1991.</description></item>
+    /// <item><description>Yozo Hida, Xiaoye S. Li and David H. Bailey,
     /// <i>Quad-Double Arithmetic: Algorithms, Implementation, and Application</i>,
-    /// manuscript, Oct 2000; Lawrence Berkeley National Laboratory Report BNL-46996.</item>
-    /// <item>David Bailey, <i>High Precision Software Directory</i>;
-    /// <tt>http://crd.lbl.gov/~dhbailey/mpdist/index.html</tt></item>
+    /// manuscript, Oct 2000; Lawrence Berkeley National Laboratory Report BNL-46996.</description></item>
+    /// <item><description>David Bailey, <i>High Precision Software Directory</i>;
+    /// <tt>http://crd.lbl.gov/~dhbailey/mpdist/index.html</tt></description></item>
     /// </list>
     /// </summary>
     /// <author>Martin Davis</author>
@@ -594,8 +594,8 @@ namespace NetTopologySuite.Mathematics
         /// value that is not greater than the argument
         /// and is equal to a mathematical integer.
         /// Special cases:
-        /// <list type="Bullet">
-        /// <item>If this value is NaN, returns NaN.</item>
+        /// <list type="bullet">
+        /// <item><description>If this value is NaN, returns NaN.</description></item>
         /// </list>
         /// </summary>
         /// <returns>The largest (closest to positive infinity)
@@ -620,8 +620,8 @@ namespace NetTopologySuite.Mathematics
         /// Returns the smallest (closest to negative infinity) value
         /// that is not less than the argument and is equal to a mathematical integer.
         /// Special cases:
-        /// <list type="Bullet">
-        ///  <item>If this value is NaN, returns NaN.</item>
+        /// <list type="bullet">
+        ///  <item><description>If this value is NaN, returns NaN.</description></item>
         /// </list>
         /// </summary>
         /// <returns>
@@ -645,11 +645,11 @@ namespace NetTopologySuite.Mathematics
         /// <summary>
         /// Returns an integer indicating the sign of this value.
         /// <para>
-        /// <list type="Bullet">
-        /// <item>if this value is &gt; 0, returns 1</item>
-        /// <item>if this value is &lt; 0, returns -1</item>
-        /// <item>if this value is = 0, returns 0</item>
-        /// <item>if this value is NaN, returns 0</item>
+        /// <list type="bullet">
+        /// <item><description>if this value is &gt; 0, returns 1</description></item>
+        /// <item><description>if this value is &lt; 0, returns -1</description></item>
+        /// <item><description>if this value is = 0, returns 0</description></item>
+        /// <item><description>if this value is NaN, returns 0</description></item>
         /// </list>
         /// </para>
         /// </summary>
@@ -667,8 +667,8 @@ namespace NetTopologySuite.Mathematics
         /// Rounds this value to the nearest integer.
         /// The value is rounded to an integer by adding 1/2 and taking the floor of the result.
         /// Special cases:
-        /// <list type="Bullet">
-        /// <item>If this value is NaN, returns NaN.</item>
+        /// <list type="bullet">
+        /// <item><description>If this value is NaN, returns NaN.</description></item>
         /// </list>
         /// </summary>
         /// <returns>This value rounded to the nearest integer</returns>
@@ -685,8 +685,8 @@ namespace NetTopologySuite.Mathematics
         /// from zero than this value.
         /// <para/>
         /// Special cases:
-        /// <list type="Bullet">
-        /// <item>If this value is NaN, returns NaN.</item>
+        /// <list type="bullet">
+        /// <item><description>If this value is NaN, returns NaN.</description></item>
         /// </list>
         /// </summary>
         /// <returns>
@@ -702,8 +702,8 @@ namespace NetTopologySuite.Mathematics
         /// Returns the absolute value of this value.
         /// <para/>
         /// Special cases:
-        /// <list type="Bullet">
-        /// <item>if this value is NaN, it is returned.</item>
+        /// <list type="bullet">
+        /// <item><description>if this value is NaN, it is returned.</description></item>
         /// </list>
         /// </summary>
         /// <returns>The absolute value of this value</returns>

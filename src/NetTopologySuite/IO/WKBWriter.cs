@@ -585,9 +585,10 @@ namespace NetTopologySuite.IO
         /// <summary>
         /// Gets a value whether or not EWKB featues may be used.
         /// <para/>EWKB features are
-        /// <list type="Bullet"><item>0x80000000 flag if geometry's z-ordinate values are written</item>
-        /// <item>0x40000000 flag if geometry's m-ordinate values are written</item>
-        /// <item>0x20000000 flag if geometry's SRID value is written</item></list>
+        /// <list type="bullet">
+        /// <item><description><c>0x80000000</c> flag if geometry's z-ordinate values are written</description></item>
+        /// <item><description><c>0x40000000</c> flag if geometry's m-ordinate values are written</description></item>
+        /// <item><description><c>0x20000000</c> flag if geometry's SRID value is written</description></item></list>
         /// </summary>
         private bool _strict = true;
         public bool Strict

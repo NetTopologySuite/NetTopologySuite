@@ -12,9 +12,9 @@ namespace NetTopologySuite.Algorithm
     /// <para>
     /// There are three possible outcomes when determining whether two line segments intersect:
     /// <list type="bullet">
-    /// <item><see cref="NoIntersection"/> - the segments do not intersect</item>
-    /// <item><see cref="PointIntersection"/> - the segments intersect in a single point</item>
-    /// <item><see cref="CollinearIntersection"/> - the segments are collinear and they intersect in a line segment</item>
+    /// <item><description><see cref="NoIntersection"/> - the segments do not intersect</description></item>
+    /// <item><description><see cref="PointIntersection"/> - the segments intersect in a single point</description></item>
+    /// <item><description><see cref="CollinearIntersection"/> - the segments are collinear and they intersect in a line segment</description></item>
     /// </list>
     /// </para>
     /// <para>

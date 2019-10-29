@@ -9,9 +9,9 @@ namespace NetTopologySuite.Samples.Lab.Clean
     /// Removes holes which are invalid due to not being wholly covered by the parent shell.
     /// </summary>
     /// <remarks>
-    /// <list type="Bullet">
-    /// <item>Does not remove holes which are invalid due to touching other rings at more than one point.</item>
-    /// <item>Does not remove holes which are nested inside another hole.</item>
+    /// <list type="bullet">
+    /// <item><description>Does not remove holes which are invalid due to touching other rings at more than one point.</description></item>
+    /// <item><description>Does not remove holes which are nested inside another hole.</description></item>
     /// </list>
     /// </remarks>
     /// <author>Martin Davis</author>

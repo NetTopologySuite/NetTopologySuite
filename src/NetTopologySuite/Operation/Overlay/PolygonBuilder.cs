@@ -132,7 +132,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// no shell is returned.
         /// </summary>
         /// <returns>The shell EdgeRing, if there is one<br/> or
-        /// <value>null</value>, if all the rings are holes.</returns>
+        /// <c>null</c>, if all the rings are holes.</returns>
         private static EdgeRing FindShell(IEnumerable<EdgeRing> minEdgeRings)
         {
             int shellCount = 0;
@@ -231,7 +231,7 @@ namespace NetTopologySuite.Operation.Overlay
         /// <param name="testEr"></param>
         /// <param name="shellList"></param>
         /// <returns>Containing EdgeRing, if there is one <br/> or
-        /// <value>null</value> if no containing EdgeRing is found.</returns>
+        /// <c>null</c> if no containing EdgeRing is found.</returns>
         private static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IEnumerable<EdgeRing> shellList)
         {
             var teString = testEr.LinearRing;
