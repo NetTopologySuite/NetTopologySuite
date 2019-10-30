@@ -48,6 +48,24 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(TestShellRingOrientationEnforcement(LinearRingOrientation.Clockwise));
         }
 
+        [Test]
+        public void TestEnvelopeToGeometry()
+        {
+            var env = new Envelope(-10, 10, -8, 8);
+
+            var gf = new GeometryFactoryEx();
+            Assert.IsTrue(((Polygon)gf.ToGeometry(env)).Shell.IsCCW );
+
+            gf = new GeometryFactoryEx {OrientationOfExteriorRing = LinearRingOrientation.DontCare };
+            Assert.IsFalse(((Polygon)gf.ToGeometry(env)).Shell.IsCCW);
+
+            gf = new GeometryFactoryEx { OrientationOfExteriorRing = LinearRingOrientation.Clockwise };
+            Assert.IsFalse(((Polygon)gf.ToGeometry(env)).Shell.IsCCW);
+
+            gf = new GeometryFactoryEx { OrientationOfExteriorRing = LinearRingOrientation.CounterClockwise };
+            Assert.IsTrue(((Polygon)gf.ToGeometry(env)).Shell.IsCCW);
+        }
+
         private static bool TestShellRingOrientationEnforcement(LinearRingOrientation ringOrientation)
         {
             var gf = new GeometryFactoryEx();
