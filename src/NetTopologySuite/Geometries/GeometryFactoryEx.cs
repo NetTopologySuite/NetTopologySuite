@@ -1,4 +1,5 @@
 ﻿using System;
+using NetTopologySuite.Geometries.Implementation;
 
 namespace NetTopologySuite.Geometries
 {
@@ -11,6 +12,79 @@ namespace NetTopologySuite.Geometries
         /// Gets the default polygon shell ring orientation that is used when nothing else has been set.
         /// </summary>
         private const LinearRingOrientation DefaultRingOrientation = LinearRingOrientation.Default;
+
+        private static readonly PrecisionModel FloatingPrecisionModel = new PrecisionModel();
+
+        private static CoordinateSequenceFactory _defaultCoordinateSequenceFactory;
+        private static PrecisionModel _defaultPrecisionModel;
+
+        /// <summary>
+        /// Gets or sets the default precision model to use with these geometry factories
+        /// </summary>
+        public static PrecisionModel DefaultPrecisionModel
+        {
+            get => _defaultPrecisionModel ?? FloatingPrecisionModel;
+            set => _defaultPrecisionModel = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the default coordinate sequence factory to use with these geometry factories
+        /// </summary>
+        public static CoordinateSequenceFactory DefaultCoordinateSequenceFactory
+        {
+            get => _defaultCoordinateSequenceFactory ?? CoordinateArraySequenceFactory.Instance;
+            set => _defaultCoordinateSequenceFactory = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the default spatial reference id.
+        /// </summary>
+        public static int DefaultSRID { get; set; } = 0;
+
+        /// <summary>
+        /// Constructs a GeometryFactory that generates Geometries having the given
+        /// PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.
+        /// </summary>
+        public GeometryFactoryEx(PrecisionModel precisionModel, int srid, CoordinateSequenceFactory coordinateSequenceFactory)
+            : base(precisionModel, srid, coordinateSequenceFactory)
+        { }
+
+        /// <summary>
+        /// Constructs a GeometryFactory that generates Geometries having the given
+        /// CoordinateSequence implementation, a double-precision floating PrecisionModel and a
+        /// spatial-reference ID of 0.
+        /// </summary>
+        public GeometryFactoryEx(CoordinateSequenceFactory coordinateSequenceFactory) :
+            this(DefaultPrecisionModel, DefaultSRID, coordinateSequenceFactory)
+        { }
+
+        /// <summary>
+        /// Constructs a GeometryFactory that generates Geometries having the given
+        /// {PrecisionModel} and the default CoordinateSequence
+        /// implementation.
+        /// </summary>
+        /// <param name="precisionModel">The PrecisionModel to use.</param>
+        public GeometryFactoryEx(PrecisionModel precisionModel) :
+            this(precisionModel, DefaultSRID, DefaultCoordinateSequenceFactory)
+        { }
+
+        /// <summary>
+        /// Constructs a GeometryFactory that generates Geometries having the given
+        /// <c>PrecisionModel</c> and spatial-reference ID, and the default CoordinateSequence
+        /// implementation.
+        /// </summary>
+        /// <param name="precisionModel">The PrecisionModel to use.</param>
+        /// <param name="srid">The SRID to use.</param>
+        public GeometryFactoryEx(PrecisionModel precisionModel, int srid) :
+            this(precisionModel, srid, DefaultCoordinateSequenceFactory)
+        { }
+
+        /// <summary>
+        /// Constructs a GeometryFactory that generates Geometries having a floating
+        /// PrecisionModel and a spatial-reference ID of 0.
+        /// </summary>
+        public GeometryFactoryEx() : this(DefaultPrecisionModel, DefaultSRID) { }
+
 
         /// <summary>
         /// The polygon shell ring orientation enforced by this factory
