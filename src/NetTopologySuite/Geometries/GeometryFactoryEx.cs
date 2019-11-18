@@ -9,9 +9,9 @@ namespace NetTopologySuite.Geometries
     public class GeometryFactoryEx : GeometryFactory
     {
         /// <summary>
-        /// Gets the default polygon shell ring orientation that is used when nothing else has been set.
+        /// Gets or sets the default polygon shell ring orientation that is used when nothing else has been set.
         /// </summary>
-        private const LinearRingOrientation DefaultRingOrientation = LinearRingOrientation.Default;
+        private static LinearRingOrientation DefaultShellRingOrientation { get; set; } = LinearRingOrientation.Default;
 
         private static readonly PrecisionModel FloatingPrecisionModel = new PrecisionModel();
 
@@ -89,7 +89,8 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// The polygon shell ring orientation enforced by this factory
         /// </summary>
-        private LinearRingOrientation? _polygonShellRingOrientation;
+        private Lazy<LinearRingOrientation> _polygonShellRingOrientation =
+            new Lazy<LinearRingOrientation>(() => DefaultShellRingOrientation);
 
         /// <summary>
         /// Gets or sets a value indicating the ring orientation of the
@@ -108,15 +109,15 @@ namespace NetTopologySuite.Geometries
         /// <seealso cref="GeometryFactory.CreateMultiPolygon(Polygon[])"/>
         public LinearRingOrientation OrientationOfExteriorRing
         {
-            get => _polygonShellRingOrientation ?? (_polygonShellRingOrientation = DefaultRingOrientation).Value;
+            get => _polygonShellRingOrientation.Value;
             set
             {
-                if (_polygonShellRingOrientation.HasValue && _polygonShellRingOrientation.Value != value)
+                if (_polygonShellRingOrientation.IsValueCreated && _polygonShellRingOrientation.Value != value)
                     throw new InvalidOperationException();
                 if ((int)value < -1 || (int)value > 1)
                     throw new ArgumentOutOfRangeException();
 
-                _polygonShellRingOrientation = value;
+                _polygonShellRingOrientation = new Lazy<LinearRingOrientation>(() => value);
             }
         }
 
@@ -208,8 +209,7 @@ namespace NetTopologySuite.Geometries
             if (ringOrientation == LinearRingOrientation.DontCare)
                 return ring;
 
-            if (ringOrientation == LinearRingOrientation.CCW && !ring.IsCCW ||
-                ringOrientation == LinearRingOrientation.CW && ring.IsCCW)
+            if (ringOrientation == LinearRingOrientation.CCW != ring.IsCCW)
                 ring = (LinearRing)ring.Reverse();
 
             return ring;

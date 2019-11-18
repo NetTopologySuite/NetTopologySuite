@@ -32,7 +32,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             TestShellRingOrientationSetter(gf, (LinearRingOrientation)(-2), 1);
             TestShellRingOrientationSetter(gf, (LinearRingOrientation)2, 1);
 
-            // check preventation of setting after first usage
+            // check prevention of setting after first usage
             var ro = gf.OrientationOfExteriorRing;
             // don't fail if value does not change
             TestShellRingOrientationSetter(gf, ro, 0);
@@ -43,9 +43,9 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         [Test]
         public void TestShellRingOrientationEnforcement()
         {
-            Assert.IsTrue(TestShellRingOrientationEnforcement(LinearRingOrientation.DontCare));
-            Assert.IsTrue(TestShellRingOrientationEnforcement(LinearRingOrientation.CounterClockwise));
-            Assert.IsTrue(TestShellRingOrientationEnforcement(LinearRingOrientation.Clockwise));
+            TestShellRingOrientationEnforcement(LinearRingOrientation.DontCare);
+            TestShellRingOrientationEnforcement(LinearRingOrientation.CounterClockwise);
+            TestShellRingOrientationEnforcement(LinearRingOrientation.Clockwise);
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.IsTrue(((Polygon)gf.ToGeometry(env)).Shell.IsCCW);
         }
 
-        private static bool TestShellRingOrientationEnforcement(LinearRingOrientation ringOrientation)
+        private static void TestShellRingOrientationEnforcement(LinearRingOrientation ringOrientation)
         {
             var gf = new GeometryFactoryEx();
             gf.OrientationOfExteriorRing = ringOrientation;
@@ -91,27 +91,27 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             {
                 case LinearRingOrientation.CW:
                     if (polygon.Shell.IsCCW)
-                        return false;
+                        Assert.Fail($"Shell ring orientation requested {LinearRingOrientation.CW}, was CCW");
                     if (!polygon.Holes[0].IsCCW)
-                        return false;
+                        Assert.Fail($"Hole[0] ring orientation requested {LinearRingOrientation.CCW}, was CW"); ;
                     if (!polygon.Holes[1].IsCCW)
-                        return false;
+                        Assert.Fail($"Hole[0] ring orientation requested {LinearRingOrientation.CCW}, was CW"); ;
                     break;
                 case LinearRingOrientation.CCW:
                     if (!polygon.Shell.IsCCW)
-                        return false;
+                        Assert.Fail($"Shell ring orientation requested {LinearRingOrientation.CCW}, was CW");
                     if (polygon.Holes[0].IsCCW)
-                        return false;
+                        Assert.Fail($"Hole[0] ring orientation requested {LinearRingOrientation.CW}, was CCW"); ;
                     if (polygon.Holes[1].IsCCW)
-                        return false;
+                        Assert.Fail($"Hole[0] ring orientation requested {LinearRingOrientation.CW}, was CCW"); ;
                     break;
                 case LinearRingOrientation.DontCare:
                     if (polygon.Shell.IsCCW != Orientation.IsCCW(origShellSequence))
-                        return false;
+                        Assert.Fail($"Shell ring orientation flipped");
                     if (polygon.Holes[0].IsCCW != Orientation.IsCCW(origHolesSequences[0]))
-                        return false;
+                        Assert.Fail($"Hole[0] ring orientation flipped");
                     if (polygon.Holes[1].IsCCW != Orientation.IsCCW(origHolesSequences[1]))
-                        return false;
+                        Assert.Fail($"Hole[1] ring orientation flipped");
                     break;
             }
 
@@ -125,18 +125,17 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             if (ringOrientation == LinearRingOrientation.CW)
             {
                 if (test.Shell.IsCCW)
-                    return false;
+                    Assert.Fail($"Buffer should return shell ring with CW orientation");
                 if (!test.Holes[0].IsCCW)
-                    return false;
+                    Assert.Fail($"Buffer should return hole ring with CCW orientation");
             }
             else if (ringOrientation == LinearRingOrientation.CCW)
             {
                 if (!test.Shell.IsCCW)
-                    return false;
+                    Assert.Fail($"Buffer should return shell ring with CCW orientation");
                 if (test.Holes[0].IsCCW)
-                    return false;
+                    Assert.Fail($"Buffer should return hole ring with CW orientation");
             }
-            return true;
         }
 
         private static Coordinate[] CreateCcwRing(int number)
