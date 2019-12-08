@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using NetTopologySuite.Geometries;
@@ -32,9 +33,15 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML2
         }
 
         [Test]
+        [Category("GitHub Issue")]
+        [Category("Issue331")]
         public void TestMultiPointRead()
         {
-            DoTest(typeof(MultiPoint));
+            var gc = DoTest(typeof(MultiPoint));
+
+            // the last MultiPoint has z values in its <coordinates>
+            var lastCoords = gc.Geometries.Last().Coordinates;
+            Assert.That(lastCoords, Is.All.Property(nameof(Coordinate.Z)).Not.NaN);
         }
 
         [Test]
@@ -49,7 +56,7 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML2
             DoTest(typeof(MultiPolygon));
         }
 
-        private static void DoTest(Type expectedType)
+        private static GeometryCollection DoTest(Type expectedType)
         {
             string name = expectedType.Name;
             string file = string.Format("{0}s", name.ToLowerInvariant());
@@ -58,10 +65,12 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML2
 
             var gr = new GMLReader();
 
+            GeometryCollection gc = null;
+
             // different target frameworks have different overload sets...
             foreach (var readMethod in GetReadMethods())
             {
-                var gc = (GeometryCollection)readMethod(gr, xml);
+                gc = (GeometryCollection)readMethod(gr, xml);
                 Assert.IsTrue(gc.NumGeometries == 25);
                 for (int i = 0; i < 25; i++)
                 {
@@ -70,6 +79,8 @@ namespace NetTopologySuite.Tests.NUnit.IO.GML2
                     Assert.IsInstanceOf(expectedType, g);
                 }
             }
+
+            return gc;
         }
 
         private static List<Func<GMLReader, string, Geometry>> GetReadMethods()

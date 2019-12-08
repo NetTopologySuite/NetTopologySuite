@@ -557,22 +557,22 @@
 	<MultiPoint>
 		<pointMember>
 			<Point>
-				<coordinates>54000.0,81000.0 </coordinates>
+				<coordinates>54000.0,81000.0,15.0 </coordinates>
 			</Point>
 		</pointMember>
 		<pointMember>
 			<Point>
-				<coordinates>58000.0,81000.0 </coordinates>
+				<coordinates>58000.0,81000.0,18.0 </coordinates>
 			</Point>
 		</pointMember>
 		<pointMember>
 			<Point>
-				<coordinates>54000.0,87000.0 </coordinates>
+				<coordinates>54000.0,87000.0,99.0 </coordinates>
 			</Point>
 		</pointMember>
 		<pointMember>
 			<Point>
-				<coordinates>58000.0,87000.0 </coordinates>
+				<coordinates>58000.0,87000.0,36.0 </coordinates>
 			</Point>
 		</pointMember>
 	</MultiPoint>
