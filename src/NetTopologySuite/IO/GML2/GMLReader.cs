@@ -132,9 +132,7 @@ namespace NetTopologySuite.IO.GML2
         protected Coordinate ReadCoordinates(string value)
         {
             string[] values = value.Split(',');
-            double x = XmlConvert.ToDouble(values[0]);
-            double y = XmlConvert.ToDouble(values[1]);
-            return new Coordinate(x, y);
+            return ReadPosAsCoordinate(values);
         }
 
         /// <summary>
