@@ -504,7 +504,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="polygons">Polygons, each of which may be empty but not null.</param>
         /// <returns>A <see cref="MultiPolygon"/> object</returns>
-        public MultiPolygon CreateMultiPolygon(Polygon[] polygons)
+        public virtual MultiPolygon CreateMultiPolygon(Polygon[] polygons)
         {
             return new MultiPolygon(polygons, this);
         }

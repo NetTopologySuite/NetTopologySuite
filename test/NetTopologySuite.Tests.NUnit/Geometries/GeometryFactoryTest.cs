@@ -8,8 +8,8 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class GeometryFactoryTest
     {
-        private readonly static PrecisionModel PrecModel = new PrecisionModel();
-        private readonly static GeometryFactory Factory = new GeometryFactory(PrecModel, 0);
+        private static readonly PrecisionModel PrecModel = new PrecisionModel();
+        private static readonly GeometryFactory Factory = new GeometryFactory(PrecModel, 0);
         private readonly WKTReader _reader = new WKTReader(Factory);
 
         [Test]

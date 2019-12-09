@@ -6,6 +6,7 @@ namespace NetTopologySuite.Geometries
     /// <summary>
     /// OGC compliant geometry factory
     /// </summary>
+    [Obsolete("Use GeometryFactoryEx with OrientationOfExteriorRing = CCW")]
     public class OgcCompliantGeometryFactory : GeometryFactory
     {
         /// <summary>
