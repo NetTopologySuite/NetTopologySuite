@@ -184,67 +184,67 @@ namespace NetTopologySuite.Triangulate.QuadEdge
         /// Gets the dual of this edge, directed from its right to its left.
         /// </summary>
         /// <remarks>Gets or Sets the rotated edge</remarks>
-        internal QuadEdge Rot { get; set; }
+        public QuadEdge Rot { get; private set; }
 
         /// <summary>
         /// Gets the dual of this edge, directed from its left to its right.
         /// </summary>
         /// <remarks>Gets the inverse rotated edge.</remarks>
-        private QuadEdge InvRot => Rot.Sym;
+        public QuadEdge InvRot => Rot.Sym;
 
         /// <summary>
         /// Gets the edge from the destination to the origin of this edge.
         /// </summary>
         /// <remarks>Gets the sym of the edge.</remarks>
-        internal QuadEdge Sym => Rot.Rot;
+        public QuadEdge Sym => Rot.Rot;
 
         /// <summary>
         /// Gets the next CCW edge around the origin of this edge.
         /// </summary>
         /// <remarks>Gets the next linked edge.</remarks>
-        internal QuadEdge ONext => _next;
+        public QuadEdge ONext => _next;
 
         /// <summary>
         /// Gets the next CW edge around (from) the origin of this edge.
         /// </summary>
         /// <remarks>Gets the previous edge.</remarks>
-        internal QuadEdge OPrev => Rot._next.Rot;
+        public QuadEdge OPrev => Rot._next.Rot;
 
         /// <summary>
         /// Gets the next CCW edge around (into) the destination of this edge.
         /// </summary>
         /// <remarks>Get the next destination edge.</remarks>
-        internal QuadEdge DNext => Sym.ONext.Sym;
+        public QuadEdge DNext => Sym.ONext.Sym;
 
         /// <summary>
         /// Gets the next CW edge around (into) the destination of this edge.
         /// </summary>
         /// <remarks>Get the previous destination edge.</remarks>
-        internal QuadEdge DPrev => InvRot.ONext.InvRot;
+        public QuadEdge DPrev => InvRot.ONext.InvRot;
 
         /// <summary>
         /// Gets the CCW edge around the left face following this edge.
         /// </summary>
         /// <remarks>Gets the next left face edge.</remarks>
-        internal QuadEdge LNext => InvRot.ONext.Rot;
+        public QuadEdge LNext => InvRot.ONext.Rot;
 
         /// <summary>
         /// Gets the CCW edge around the left face before this edge.
         /// </summary>
         /// <remarks>Get the previous left face edge.</remarks>
-        internal QuadEdge LPrev => _next.Sym;
+        public QuadEdge LPrev => _next.Sym;
 
         /// <summary>
         /// Gets the edge around the right face ccw following this edge.
         /// </summary>
         /// <remarks>Gets the next right face edge.</remarks>
-        internal QuadEdge RNext => Rot._next.InvRot;
+        public QuadEdge RNext => Rot._next.InvRot;
 
         /// <summary>
         /// Gets the edge around the right face ccw before this edge.
         /// </summary>
         /// <remarks>Gets the previous right face edge.</remarks>
-        internal QuadEdge RPrev => Sym.ONext;
+        public QuadEdge RPrev => Sym.ONext;
 
         /***********************************************************************************************
          * Data Access
