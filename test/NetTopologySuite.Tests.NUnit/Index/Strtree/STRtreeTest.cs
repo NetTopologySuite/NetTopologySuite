@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Strtree;
@@ -158,6 +159,18 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
             tree.Insert(new Envelope(15, 25, 15, 25), "4");
             tree.Remove(new Envelope(10, 20, 10, 20), "4");
             Assert.AreEqual(3, tree.Count);
+        }
+
+        [Test]
+        public void TestRemoveValueType()
+        {
+            var tree = new STRtree<int>();
+            tree.Insert(new Envelope(0, 10, 0, 10), 1);
+            tree.Insert(new Envelope(5, 15, 5, 15), 2);
+            tree.Insert(new Envelope(10, 20, 10, 20), 3);
+            tree.Insert(new Envelope(15, 25, 15, 25), 4);
+            tree.Remove(new Envelope(10, 20, 10, 20), 4);
+            Assert.That(tree.ItemsTree().OfType<int>(), Is.EquivalentTo(new[] { 1, 2, 3 }));
         }
 
         [Test]
