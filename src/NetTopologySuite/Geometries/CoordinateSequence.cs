@@ -406,7 +406,7 @@ namespace NetTopologySuite.Geometries
                     return true;
                 }
             }
-            else
+            else if ((uint)ordinate <= (uint)Ordinate.Measure16)
             {
                 ordinate -= Ordinate.Measure1;
                 if ((uint)ordinate < (uint)Measures)

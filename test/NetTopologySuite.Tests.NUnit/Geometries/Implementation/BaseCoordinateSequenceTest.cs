@@ -76,13 +76,20 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
                     else
                     {
                         int measureIndex = dim - spatial;
-                        if (measureIndex >= measures)
+                        if (measureIndex >= measures || measureIndex >= 16)
                         {
                             continue;
                         }
 
                         ord = Ordinate.Measure1 + measureIndex;
                     }
+
+                    Assert.That(cs.TryGetOrdinateIndex(ord, out int ordinateIndex));
+                    Assert.That(ordinateIndex, Is.EqualTo(dim));
+                    Assert.That(reversed.TryGetOrdinateIndex(ord, out ordinateIndex));
+                    Assert.That(ordinateIndex, Is.EqualTo(dim));
+                    Assert.That(reversed2.TryGetOrdinateIndex(ord, out ordinateIndex));
+                    Assert.That(ordinateIndex, Is.EqualTo(dim));
 
                     var ordinatesFlag = (Ordinates)(1 << (int)ord);
                     Assert.That(cs.Ordinates.HasFlag(ordinatesFlag));
@@ -166,6 +173,18 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
                     Assert.That(!reversed.Ordinates.HasFlag(ordinatesFlag));
                     Assert.That(!reversed2.Ordinates.HasFlag(ordinatesFlag));
 
+                    cs.SetOrdinate(i, ord, random.NextDouble());
+                    reversed.SetOrdinate(j, ord, random.NextDouble());
+                    reversed2.SetOrdinate(i, ord, random.NextDouble());
+
+                    Assert.That(cs.GetOrdinate(i, ord), Is.NaN);
+                    Assert.That(reversed.GetOrdinate(j, ord), Is.NaN);
+                    Assert.That(reversed2.GetOrdinate(i, ord), Is.NaN);
+                }
+
+                // undefined ordinates should be inaccessible, though no errors should be thrown
+                {
+                    var ord = Ordinate.Measure16 + 1;
                     cs.SetOrdinate(i, ord, random.NextDouble());
                     reversed.SetOrdinate(j, ord, random.NextDouble());
                     reversed2.SetOrdinate(i, ord, random.NextDouble());
