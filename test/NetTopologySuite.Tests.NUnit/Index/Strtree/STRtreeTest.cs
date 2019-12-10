@@ -162,6 +162,8 @@ namespace NetTopologySuite.Tests.NUnit.Index.Strtree
         }
 
         [Test]
+        [Category("GitHub Issue")]
+        [Category("Issue366")]
         public void TestRemoveValueType()
         {
             var tree = new STRtree<int>();
