@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 using IList = System.Collections.Generic.IList<object>;
@@ -21,6 +22,8 @@ namespace NetTopologySuite.Index.Strtree
     public abstract class AbstractSTRtree<T, TItem>
         where T: IIntersectable<T>, IExpandable<T>
     {
+        private static readonly IEqualityComparer<TItem> EqualityComparerForRemoveItem = InitializeEqualityComparerForRemoveItem();
+
         /// <returns>
         /// A test for intersection between two bounds, necessary because subclasses
         /// of AbstractSTRtree have different implementations of bounds.
@@ -368,8 +371,10 @@ namespace NetTopologySuite.Index.Strtree
             for (var i = node.ChildBoundables.GetEnumerator(); i.MoveNext(); )
             {
                 var childBoundable = i.Current as ItemBoundable<T, TItem>;
-                if (childBoundable != null && ReferenceEquals(childBoundable.Item, item))
-                        childToRemove = childBoundable;
+                if (childBoundable != null && EqualityComparerForRemoveItem.Equals(childBoundable.Item, item))
+                {
+                    childToRemove = childBoundable;
+                }
             }
             if (childToRemove != null)
             {
@@ -436,5 +441,23 @@ namespace NetTopologySuite.Index.Strtree
         }
         protected abstract IComparer<IBoundable<T, TItem>> GetComparer();
 
+        private static IEqualityComparer<TItem> InitializeEqualityComparerForRemoveItem()
+        {
+            if (typeof(TItem).IsValueType)
+            {
+                return EqualityComparer<TItem>.Default;
+            }
+
+            // for compatibility (and a little touch of speed in expected common cases), don't use
+            // the default equality comparer for reference types.  older versions (and JTS) check
+            // object reference equality, so we should do the same.
+            return new ObjectReferenceEqualityComparer();
+        }
+
+        private sealed class ObjectReferenceEqualityComparer : EqualityComparer<TItem>
+        {
+            public override bool Equals(TItem x, TItem y) => ReferenceEquals(x, y);
+            public override int GetHashCode(TItem obj) => RuntimeHelpers.GetHashCode(obj);
+        }
     }
 }
