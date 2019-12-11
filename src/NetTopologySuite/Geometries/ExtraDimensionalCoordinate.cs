@@ -121,7 +121,7 @@ namespace NetTopologySuite.Geometries
                     return ref _extraValues[(int)(ordinate - 2)];
                 }
             }
-            else
+            else if ((uint)ordinate <= (uint)Ordinate.Measure16)
             {
                 ordinate -= Ordinate.Measure1;
                 if ((uint)ordinate < (uint)Measures)
