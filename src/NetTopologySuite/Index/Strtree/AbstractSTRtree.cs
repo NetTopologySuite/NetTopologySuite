@@ -371,15 +371,9 @@ namespace NetTopologySuite.Index.Strtree
             for (var i = node.ChildBoundables.GetEnumerator(); i.MoveNext(); )
             {
                 var childBoundable = i.Current as ItemBoundable<T, TItem>;
-                if (childBoundable != null)
+                if (childBoundable != null && EqualityComparerForRemoveItem.Equals(childBoundable.Item, item))
                 {
-                    // EqualityComparerForRemoveItem might be null, to signal that we should use the
-                    // default equality comparer for the type.
-                    if (EqualityComparerForRemoveItem?.Equals(childBoundable.Item, item) ??
-                        EqualityComparer<TItem>.Default.Equals(childBoundable.Item, item))
-                    {
-                        childToRemove = childBoundable;
-                    }
+                    childToRemove = childBoundable;
                 }
             }
             if (childToRemove != null)
@@ -451,10 +445,7 @@ namespace NetTopologySuite.Index.Strtree
         {
             if (typeof(TItem).IsValueType)
             {
-                // the JIT in .NET Core can devirtualize .Equals if it has local knowledge that the
-                // equality comparer is EqualityComparer<TItem>.Default.  so return null to signal
-                // to RemoveItem that it should fetch the default in-place.
-                return null;
+                return EqualityComparer<TItem>.Default;
             }
 
             // for compatibility (and a little touch of speed in expected common cases), don't use
