@@ -246,10 +246,37 @@ namespace NetTopologySuite.Geometries
         /// </returns>
         public virtual double GetM(int index) => _mIndex < 0 ? Coordinate.NullOrdinate : GetOrdinate(index, _mIndex);
 
+        /// <summary>
+        /// Sets ordinate X (0) of the specified coordinate to the specified value.
+        /// </summary>
+        /// <param name="index">
+        /// The index of the coordinate whose X value to set.
+        /// </param>
+        /// <param name="value">
+        /// The value to set the coordinate's X value to.
+        /// </param>
         public virtual void SetX(int index, double value) => SetOrdinate(index, 0, value);
 
+        /// <summary>
+        /// Sets ordinate Y (1) of the specified coordinate to the specified value.
+        /// </summary>
+        /// <param name="index">
+        /// The index of the coordinate whose Y value to set.
+        /// </param>
+        /// <param name="value">
+        /// The value to set the coordinate's Y value to.
+        /// </param>
         public virtual void SetY(int index, double value) => SetOrdinate(index, 1, value);
 
+        /// <summary>
+        /// Sets ordinate Z of the specified coordinate to the specified value if present.
+        /// </summary>
+        /// <param name="index">
+        /// The index of the coordinate whose Z value to set if present.
+        /// </param>
+        /// <param name="value">
+        /// The value to set the coordinate's Z value to if present.
+        /// </param>
         public virtual void SetZ(int index, double value)
         {
             int zIndex = _zIndex;
@@ -259,6 +286,15 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        /// <summary>
+        /// Sets ordinate M of the specified coordinate to the specified value if present.
+        /// </summary>
+        /// <param name="index">
+        /// The index of the coordinate whose M value to set if present.
+        /// </param>
+        /// <param name="value">
+        /// The value to set the coordinate's M value to if present.
+        /// </param>
         public virtual void SetM(int index, double value)
         {
             int mIndex = _mIndex;
@@ -374,6 +410,15 @@ namespace NetTopologySuite.Geometries
         /// <returns>A copy of the coordinate sequence containing copies of all points</returns>
         public abstract CoordinateSequence Copy();
 
+        /// <summary>
+        /// Returns a reversed copy of this <see cref="CoordinateSequence"/>.
+        /// </summary>
+        /// <returns>
+        /// A reversed copy of this <see cref="CoordinateSequence"/>.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when <see cref="Copy"/> returned <see langword="null"/>.
+        /// </exception>
         public virtual CoordinateSequence Reversed()
         {
             var copy = Copy() ?? throw new InvalidOperationException("Cannot reverse a coordinate sequence whose Copy() method returns null.");
