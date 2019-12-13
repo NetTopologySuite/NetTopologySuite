@@ -148,23 +148,6 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
                     }
                 }
 
-                // other spatial ordinates should be inaccessible, though no errors should be thrown
-                for (var ord = Ordinate.Spatial1 + spatial; ord <= Ordinate.Spatial16; ord++)
-                {
-                    var ordinatesFlag = (Ordinates)(1 << (int)ord);
-                    Assert.That(!cs.Ordinates.HasFlag(ordinatesFlag));
-                    Assert.That(!reversed.Ordinates.HasFlag(ordinatesFlag));
-                    Assert.That(!reversed2.Ordinates.HasFlag(ordinatesFlag));
-
-                    cs.SetOrdinate(i, ord, random.NextDouble());
-                    reversed.SetOrdinate(j, ord, random.NextDouble());
-                    reversed2.SetOrdinate(i, ord, random.NextDouble());
-
-                    Assert.That(cs.GetOrdinate(i, ord), Is.NaN);
-                    Assert.That(reversed.GetOrdinate(j, ord), Is.NaN);
-                    Assert.That(reversed2.GetOrdinate(i, ord), Is.NaN);
-                }
-
                 var coord = cs.GetCoordinate(i);
                 var coordReversed = reversed.GetCoordinate(j);
                 var coordReversed2 = reversed2.GetCoordinate(i);
@@ -200,37 +183,38 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
                     Assert.That(coordToFillReversed2[dim], Is.EqualTo(coordinateTemplate[dim] + 3));
                 }
 
-                // other measure ordinates should be inaccessible, though errors should only be
-                // thrown when accessing through the Coordinate object.
-                for (var ord = Ordinate.Measure1 + measures; ord <= Ordinate.Measure16; ord++)
+                // other (and undefined) ordinates should be inaccessible, though errors should only
+                // be thrown when accessing through the Coordinate object, unless the inaccessible
+                // Ordinate is Z or M, in which case it should silently give a NaN.  this is how JTS
+                // and older versions of NTS do it.  IMO all the ways of trying to access the value
+                // of an Ordinate should be consistent, but here we are (airbreather 2019-12-13).
+                var inaccessibleOrdinates = new List<Ordinate>
                 {
-                    var ordinatesFlag = (Ordinates)(1 << (int)ord);
-                    Assert.That(!cs.Ordinates.HasFlag(ordinatesFlag));
-                    Assert.That(!reversed.Ordinates.HasFlag(ordinatesFlag));
-                    Assert.That(!reversed2.Ordinates.HasFlag(ordinatesFlag));
-
-                    cs.SetOrdinate(i, ord, random.NextDouble());
-                    reversed.SetOrdinate(j, ord, random.NextDouble());
-                    reversed2.SetOrdinate(i, ord, random.NextDouble());
-
-                    Assert.That(cs.GetOrdinate(i, ord), Is.NaN);
-                    Assert.That(reversed.GetOrdinate(j, ord), Is.NaN);
-                    Assert.That(reversed2.GetOrdinate(i, ord), Is.NaN);
-
-                    // this is how JTS and older versions of NTS do it.  IMO this should do the same
-                    // as the above calls, but here we are (airbreather 2019-12-11)
-                    Assert.That(() => coord[ord], Throws.InstanceOf<ArgumentOutOfRangeException>());
-                    Assert.That(() => coordReversed[ord], Throws.InstanceOf<ArgumentOutOfRangeException>());
-                    Assert.That(() => coordReversed2[ord], Throws.InstanceOf<ArgumentOutOfRangeException>());
-                    Assert.That(() => coordCopy[ord], Throws.InstanceOf<ArgumentOutOfRangeException>());
-                    Assert.That(() => coordCopyReversed[ord], Throws.InstanceOf<ArgumentOutOfRangeException>());
-                    Assert.That(() => coordCopyReversed2[ord], Throws.InstanceOf<ArgumentOutOfRangeException>());
+                    // undefined ordinates should never be accessible, since each of the 32 defined
+                    // Ordinate values corresponds to a flag in the Ordinates enum.
+                    Ordinate.Spatial1 - 1,
+                    Ordinate.Measure16 + 1,
+                };
+                for (var ord = Ordinate.Spatial1 + spatial; ord <= Ordinate.Spatial16; ord++)
+                {
+                    inaccessibleOrdinates.Add(ord);
                 }
 
-                // undefined ordinates should be inaccessible, though errors should only be thrown
-                // when accessing through the Coordinate object.
+                for (var ord = Ordinate.Measure1 + measures; ord <= Ordinate.Measure16; ord++)
                 {
-                    var ord = Ordinate.Measure16 + 1;
+                    inaccessibleOrdinates.Add(ord);
+                }
+
+                foreach (var ord in inaccessibleOrdinates)
+                {
+                    if (ord >= Ordinate.Spatial1 && ord <= Ordinate.Measure16)
+                    {
+                        var ordinatesFlag = (Ordinates)(1 << (int)ord);
+                        Assert.That(!cs.Ordinates.HasFlag(ordinatesFlag));
+                        Assert.That(!reversed.Ordinates.HasFlag(ordinatesFlag));
+                        Assert.That(!reversed2.Ordinates.HasFlag(ordinatesFlag));
+                    }
+
                     cs.SetOrdinate(i, ord, random.NextDouble());
                     reversed.SetOrdinate(j, ord, random.NextDouble());
                     reversed2.SetOrdinate(i, ord, random.NextDouble());
@@ -239,14 +223,24 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
                     Assert.That(reversed.GetOrdinate(j, ord), Is.NaN);
                     Assert.That(reversed2.GetOrdinate(i, ord), Is.NaN);
 
-                    // this is how JTS and older versions of NTS do it.  IMO this should do the same
-                    // as the above calls, but here we are (airbreather 2019-12-11)
-                    Assert.That(() => coord[ord], Throws.InstanceOf<ArgumentOutOfRangeException>());
-                    Assert.That(() => coordReversed[ord], Throws.InstanceOf<ArgumentOutOfRangeException>());
-                    Assert.That(() => coordReversed2[ord], Throws.InstanceOf<ArgumentOutOfRangeException>());
-                    Assert.That(() => coordCopy[ord], Throws.InstanceOf<ArgumentOutOfRangeException>());
-                    Assert.That(() => coordCopyReversed[ord], Throws.InstanceOf<ArgumentOutOfRangeException>());
-                    Assert.That(() => coordCopyReversed2[ord], Throws.InstanceOf<ArgumentOutOfRangeException>());
+                    if (ord == Ordinate.Z || ord == Ordinate.M)
+                    {
+                        Assert.That(coord[ord], Is.NaN);
+                        Assert.That(coordReversed[ord], Is.NaN);
+                        Assert.That(coordReversed2[ord], Is.NaN);
+                        Assert.That(coordCopy[ord], Is.NaN);
+                        Assert.That(coordCopyReversed[ord], Is.NaN);
+                        Assert.That(coordCopyReversed2[ord], Is.NaN);
+                    }
+                    else
+                    {
+                        Assert.That(() => coord[ord], Throws.InstanceOf<ArgumentOutOfRangeException>());
+                        Assert.That(() => coordReversed[ord], Throws.InstanceOf<ArgumentOutOfRangeException>());
+                        Assert.That(() => coordReversed2[ord], Throws.InstanceOf<ArgumentOutOfRangeException>());
+                        Assert.That(() => coordCopy[ord], Throws.InstanceOf<ArgumentOutOfRangeException>());
+                        Assert.That(() => coordCopyReversed[ord], Throws.InstanceOf<ArgumentOutOfRangeException>());
+                        Assert.That(() => coordCopyReversed2[ord], Throws.InstanceOf<ArgumentOutOfRangeException>());
+                    }
                 }
             }
 

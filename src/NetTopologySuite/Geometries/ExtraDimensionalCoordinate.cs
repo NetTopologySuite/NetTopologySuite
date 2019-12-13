@@ -42,95 +42,187 @@ namespace NetTopologySuite.Geometries
 
         public override double Z
         {
-            get => Dimension - Measures > 2 ? _extraValues[0] : NullOrdinate;
+            get
+            {
+                if (Dimension - Measures > 2)
+                {
+                    return _extraValues[0];
+                }
+                else
+                {
+                    // inherit whatever the base class does when Z is missing.
+                    return base.Z;
+                }
+            }
+
             set
             {
                 if (Dimension - Measures > 2)
                 {
                     _extraValues[0] = value;
                 }
+                else
+                {
+                    // inherit whatever the base class does when Z is missing.
+                    base.Z = value;
+                }
             }
         }
 
         public override double M
         {
-            get => Measures > 0 ? _extraValues[_extraValues.Length - Measures] : NullOrdinate;
+            get
+            {
+                if (Measures > 0)
+                {
+                    return _extraValues[_extraValues.Length - Measures];
+                }
+                else
+                {
+                    // inherit whatever the base class does when M is missing.
+                    return base.M;
+                }
+            }
+
             set
             {
                 if (Measures > 0)
                 {
                     _extraValues[_extraValues.Length - Measures] = value;
                 }
+                else
+                {
+                    // inherit whatever the base class does when M is missing.
+                    base.M = value;
+                }
             }
         }
 
         public override double this[int ordinateIndex]
         {
-            get => OrdinateRef(ordinateIndex);
-            set => OrdinateRef(ordinateIndex) = value;
-        }
-
-        private ref double OrdinateRef(int ordinateIndex)
-        {
-            if (ordinateIndex == 0)
+            get
             {
-                return ref _x;
+                switch (ordinateIndex)
+                {
+                    case 0:
+                        return X;
+
+                    case 1:
+                        return Y;
+
+                    default:
+                        // use uint instead of int, to handle negatives more gracefully
+                        if ((uint)(ordinateIndex - 2) < (uint)_extraValues.Length)
+                        {
+                            return _extraValues[ordinateIndex - 2];
+                        }
+
+                        // inherit whatever the base class does when an ordinate is missing.
+                        return base[ordinateIndex];
+                }
             }
 
-            if (ordinateIndex == 1)
+            set
             {
-                return ref _y;
+                switch (ordinateIndex)
+                {
+                    case 0:
+                        X = value;
+                        break;
+
+                    case 1:
+                        Y = value;
+                        break;
+
+                    default:
+                        // use uint instead of int, to handle negatives more gracefully
+                        if ((uint)(ordinateIndex - 2) < (uint)_extraValues.Length)
+                        {
+                            _extraValues[ordinateIndex - 2] = value;
+                            break;
+                        }
+
+                        // inherit whatever the base class does when an ordinate is missing.
+                        base[ordinateIndex] = value;
+                        break;
+                }
             }
-
-            ordinateIndex -= 2;
-
-            // use uint instead of int for comparisons, in order to handle negatives more gracefully
-            if ((uint)ordinateIndex >= (uint)_extraValues.Length)
-            {
-                throw new ArgumentOutOfRangeException(nameof(ordinateIndex), ordinateIndex + 2, "Not present in this coordinate.");
-            }
-
-            return ref _extraValues[ordinateIndex];
         }
 
         public override double this[Ordinate ordinate]
         {
-            get => OrdinateRef(ordinate);
-            set => OrdinateRef(ordinate) = value;
-        }
-
-        private ref double OrdinateRef(Ordinate ordinate)
-        {
-            if (ordinate == Ordinate.X)
+            get
             {
-                return ref _x;
-            }
-
-            if (ordinate == Ordinate.Y)
-            {
-                return ref _y;
-            }
-
-            int spatial = Dimension - Measures;
-
-            // use uint instead of int for comparisons, in order to handle negatives more gracefully
-            if ((uint)ordinate < (uint)Ordinate.Measure1)
-            {
-                if ((uint)ordinate < (uint)spatial)
+                switch (ordinate)
                 {
-                    return ref _extraValues[(int)(ordinate - 2)];
+                    case Ordinate.X:
+                        return X;
+
+                    case Ordinate.Y:
+                        return Y;
+
+                    default:
+                        int spatial = Dimension - Measures;
+
+                        // use uint instead of int, to handle negatives more gracefully
+                        if ((uint)ordinate < (uint)Ordinate.Measure1)
+                        {
+                            if ((uint)ordinate < (uint)spatial)
+                            {
+                                return _extraValues[(int)(ordinate - 2)];
+                            }
+                        }
+                        else if ((uint)ordinate <= (uint)Ordinate.Measure16)
+                        {
+                            if ((uint)(ordinate - Ordinate.Measure1) < (uint)Measures)
+                            {
+                                return _extraValues[spatial + (ordinate - Ordinate.Measure1) - 2];
+                            }
+                        }
+
+                        // inherit whatever the base class does when an ordinate is missing.
+                        return base[ordinate];
                 }
             }
-            else if ((uint)ordinate <= (uint)Ordinate.Measure16)
+
+            set
             {
-                ordinate -= Ordinate.Measure1;
-                if ((uint)ordinate < (uint)Measures)
+                switch (ordinate)
                 {
-                    return ref _extraValues[(int)(ordinate - 2) + spatial];
+                    case Ordinate.X:
+                        X = value;
+                        break;
+
+                    case Ordinate.Y:
+                        Y = value;
+                        break;
+
+                    default:
+                        int spatial = Dimension - Measures;
+
+                        // use uint instead of int, to handle negatives more gracefully
+                        if ((uint)ordinate < (uint)Ordinate.Measure1)
+                        {
+                            if ((uint)ordinate < (uint)spatial)
+                            {
+                                _extraValues[(int)(ordinate - 2)] = value;
+                                break;
+                            }
+                        }
+                        else if ((uint)ordinate <= (uint)Ordinate.Measure16)
+                        {
+                            if ((uint)(ordinate - Ordinate.Measure1) < (uint)Measures)
+                            {
+                                _extraValues[spatial + (ordinate - Ordinate.Measure1) - 2] = value;
+                                break;
+                            }
+                        }
+
+                        // inherit whatever the base class does when an ordinate is missing.
+                        base[ordinate] = value;
+                        break;
                 }
             }
-
-            throw new ArgumentOutOfRangeException(nameof(ordinate), ordinate, "Not present in this coordinate.");
         }
 
         public override Coordinate CoordinateValue
