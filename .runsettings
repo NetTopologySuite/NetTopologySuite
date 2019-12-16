@@ -5,4 +5,7 @@
       <DataCollector uri="my://timingcollector" friendlyName="TimingCollector" assemblyQualifiedName="TimingCollector, TimingCollector" />
     </DataCollectors>
   </DataCollectionRunSettings>
+  <NUnit>
+    <DefaultTimeout>10000</DefaultTimeout>
+  </NUnit>
 </RunSettings>
