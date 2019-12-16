@@ -5,15 +5,8 @@ dotnet: 3.0
 dist: bionic
 
 script:
-  # somehow, just running the "dotnet test" here normally is responsible for
-  # tests timing out when (and only when) run for PR builds, when (and only
-  # when) the PR is coming from a fork of the project.  even weirder, running
-  # the tests in a background process and then waiting seems to work around
-  # the issue.  hopefully we can figure this out eventually, but I don't want
-  # it to discourage contributors in the meantime (airbreather 2019-09-12).
   - dotnet build -c Release -v minimal -p:WarningLevel=3
-  - dotnet test  -c Release --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'&
-  - wait $!
+  - dotnet test  -c Release --no-build --filter '(TestCategory!=LongRunning)&(TestCategory!=Stress)&(TestCategory!=FailureCase)'
   - dotnet pack  -c Release --no-build -p:NoWarn=NU5105
 
 
