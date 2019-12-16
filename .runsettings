@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector uri="my://timingcollector" friendlyName="TimingCollector" assemblyQualifiedName="TimingCollector, TimingCollector" />
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>
