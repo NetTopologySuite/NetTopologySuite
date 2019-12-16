@@ -4,11 +4,6 @@ sudo: false
 dotnet: 3.0
 dist: bionic
 
-before_install:
-  # Some people still use VS2017, so rather than rolling tests forward to
-  # target netcoreapp3.0, just install the runtime so that they'll still run.
-  - sudo apt-get install -y dotnet-runtime-2.2
-
 script:
   # somehow, just running the "dotnet test" here normally is responsible for
   # tests timing out when (and only when) run for PR builds, when (and only
