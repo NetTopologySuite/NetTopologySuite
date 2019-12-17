@@ -34,5 +34,22 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             //TODO: use a test which checks all ordinates of CoordinateSequences
             Assert.True(g.EqualsExact(copy));
         }
+
+        [Test]
+        public void TestCopyDoesNotChangeFactory()
+        {
+            var gf = new GeometryFactory(new PrecisionModel(), 4325);
+            var pt1 = gf.CreatePoint(new Coordinate(10, 10));
+            var pt2 = pt1.Copy();
+
+            Assert.That(ReferenceEquals(pt1.Factory, pt2.Factory), Is.True);
+
+            pt2.SRID = 4326;
+            Assert.That(ReferenceEquals(pt1.Factory, pt2.Factory), Is.False);
+
+            pt1.SRID = 4326;
+            Assert.That(ReferenceEquals(pt1.Factory, pt2.Factory), Is.True);
+
+        }
     }
 }

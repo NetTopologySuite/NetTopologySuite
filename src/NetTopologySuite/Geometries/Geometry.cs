@@ -172,18 +172,16 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         private Envelope _envelope;
 
-        // The ID of the Spatial Reference System used by this <c>Geometry</c>
-        private int _srid;
         /// <summary>
         /// Sets the ID of the Spatial Reference System used by the <c>Geometry</c>.
         /// </summary>
         /// <remarks>
         /// <para>
         /// <b>NOTE:</b> This method should only be used for exceptional circumstances or
-        /// for backwards compatibility.  Normally the SRID should be set on the
-        /// <see cref="GeometryFactory"/> used to create the geometry.
-        /// SRIDs set using this method will <i>not</i> be propagated to
-        /// geometries returned by constructive methods.</para>
+        /// for backwards compatibility.  Normally the <c>SRID</c> should be set on the
+        /// <see cref="GeometryFactory"/> used to <b>create</b> the geometry.
+        /// <c>SRID</c>s set using this method will change the <see cref="Factory"/>.
+        /// </para>
         /// </remarks>
         /// <seealso cref="GeometryFactory"/>
         /*
@@ -195,11 +193,11 @@ namespace NetTopologySuite.Geometries
          */
         public int SRID
         {
-            get => _srid;
+            get => _factory.SRID;
             set
             {
-
-                _srid = value;
+                if (value == _factory.SRID)
+                    return;
 
                 // Adjust the geometry factory
                 _factory = NtsGeometryServices.Instance.CreateGeometryFactory(
@@ -222,7 +220,6 @@ namespace NetTopologySuite.Geometries
         protected Geometry(GeometryFactory factory)
         {
             _factory = factory;
-            _srid = factory.SRID;
         }
 
         /// <summary>
@@ -1735,7 +1732,13 @@ namespace NetTopologySuite.Geometries
         public Geometry Copy()
         {
             var copy = CopyInternal();
-            copy.SRID = SRID;
+
+            //Not necessary as SRID is Factory.SRID
+            //copy.SRID = SRID;
+
+            // This is for later
+            //copy._envelope = _envelope?.Copy();
+
             copy.UserData = UserData;
             return copy;
         }
