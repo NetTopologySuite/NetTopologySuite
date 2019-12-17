@@ -57,139 +57,143 @@
                 this.TestAll();
         }
 
-        [Test, Category("FailureCase")]
+        [Test]
         public virtual void Test00()
         {
-            this.ExecuteTest(0);
+            Assert.That(this.ExecuteTest(0).Success, Is.True);
         }
 
         [Test]
         public virtual void Test01()
         {
-            this.ExecuteTest(1);
+            Assert.That(this.ExecuteTest(1).Success, Is.True);
         }
 
         [Test]
         public virtual void Test02()
         {
-            this.ExecuteTest(2);
+            Assert.That(this.ExecuteTest(2).Success, Is.True);
         }
 
         [Test]
         public virtual void Test03()
         {
-            this.ExecuteTest(3);
+            Assert.That(this.ExecuteTest(3).Success, Is.True);
         }
 
         [Test]
         public virtual void Test04()
         {
-            this.ExecuteTest(4);
+            Assert.That(this.ExecuteTest(4).Success, Is.True);
         }
 
         [Test]
         public virtual void Test05()
         {
-            this.ExecuteTest(5);
+            Assert.That(this.ExecuteTest(5).Success, Is.True);
         }
 
-        [Test, Category("FailureCase")]
+        [Test]
         public virtual void Test06()
         {
-            this.ExecuteTest(6);
+            Assert.That(this.ExecuteTest(6).Success, Is.True);
         }
 
         [Test]
         public virtual void Test07()
         {
-            this.ExecuteTest(7);
+            Assert.That(this.ExecuteTest(7).Success, Is.True);
         }
 
         [Test]
         public virtual void Test08()
         {
-            this.ExecuteTest(8);
+            Assert.That(this.ExecuteTest(8).Success, Is.True);
         }
 
         [Test]
         public virtual void Test09()
         {
-            this.ExecuteTest(9);
+            Assert.That(this.ExecuteTest(9).Success, Is.True);
         }
 
         [Test]
         public virtual void Test10()
         {
-            this.ExecuteTest(10);
+            Assert.That(this.ExecuteTest(10).Success, Is.True);
         }
 
         [Test]
         public virtual void Test11()
         {
-            this.ExecuteTest(11);
+            Assert.That(this.ExecuteTest(11).Success, Is.True);
         }
 
         [Test]
         public virtual void Test12()
         {
-            this.ExecuteTest(12);
+            Assert.That(this.ExecuteTest(12).Success, Is.True);
         }
 
         [Test]
         public virtual void Test13()
         {
-            this.ExecuteTest(13);
+            Assert.That(this.ExecuteTest(13).Success, Is.True);
         }
 
         [Test]
         public virtual void Test14()
         {
-            this.ExecuteTest(14);
+            Assert.That(this.ExecuteTest(14).Success, Is.True);
         }
 
         [Test]
         public virtual void Test15()
         {
-            this.ExecuteTest(15);
+            Assert.That(this.ExecuteTest(15).Success, Is.True);
         }
 
         [Test]
         public virtual void Test16()
         {
-            this.ExecuteTest(16);
+            Assert.That(this.ExecuteTest(16).Success, Is.True);
         }
 
         [Test]
         public virtual void Test17()
         {
-            this.ExecuteTest(17);
+            Assert.That(this.ExecuteTest(17).Success, Is.True);
         }
 
         [Test]
         public virtual void Test18()
         {
-            this.ExecuteTest(18);
+            Assert.That(this.ExecuteTest(18).Success, Is.True);
         }
 
         [Test]
         public virtual void Test19()
         {
-            this.ExecuteTest(19);
+            Assert.That(this.ExecuteTest(19).Success, Is.True);
         }
 
         [Test]
         public virtual void Test20()
         {
-            this.ExecuteTest(20);
+            Assert.That(this.ExecuteTest(20).Success, Is.True);
         }
 
         private TestResults ExecuteTest(int i)
         {
             if (i >= this.Count)
+            {
+                Assert.Ignore($"Index out of range (max = {Count}");
                 return new TestResults("i > Count", true);
+            }
 
             var test = this.Tests[i];
             bool b = test.RunTest();
+
             return new TestResults(test.Description, b);
         }
 

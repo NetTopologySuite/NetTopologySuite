@@ -1,0 +1,42 @@
+From 9e2a9e6c275f02b90704ae594effcdd13e96702e Mon Sep 17 00:00:00 2001
+From: Felix Obermaier <felix.obermaier@netcologne.de>
+Date: Fri, 13 Dec 2019 16:26:58 +0100
+Subject: [PATCH] Revert "Update docs.  This was performed automatically."
+
+This reverts commit c95c475ac58209644b405d5cb4b11c4bd5677419.
+---
+ generate-and-push-docs.cmd | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/generate-and-push-docs.cmd b/generate-and-push-docs.cmd
+index db6bdc3b..170a5a61 100644
+--- a/generate-and-push-docs.cmd
++++ b/generate-and-push-docs.cmd
+@@ -1,11 +1,11 @@
+ @echo off
+ set DOCFX_CONSOLE_PACKAGE_VERSION=2.45.0
+-rem set GITBRANCH=
+-rem for /f %%I in ('git.exe rev-parse --abbrev-ref HEAD 2^> NUL') do set GITBRANCH=%%I
+-rem if "%GITBRANCH%" neq "master" (
+-rem     echo This should only be used on the master branch, for the sake of "View Source" links.
+-rem     exit /b 1
+-rem )
++set GITBRANCH=
++for /f %%I in ('git.exe rev-parse --abbrev-ref HEAD 2^> NUL') do set GITBRANCH=%%I
++if "%GITBRANCH%" neq "master" (
++    echo This should only be used on the master branch, for the sake of "View Source" links.
++    exit /b 1
++)
+ pushd %~dp0
+ dotnet restore
+ pushd tools
+@@ -25,5 +25,5 @@ git push origin gh-pages
+ popd
+ rd /s /q gh-pages
+ popd
+-rem git push origin gh-pages
++git push origin gh-pages
+ popd
+-- 
+2.24.0.windows.2
+
