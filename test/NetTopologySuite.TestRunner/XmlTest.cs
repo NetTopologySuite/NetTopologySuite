@@ -413,10 +413,25 @@ namespace Open.Topology.TestRunner
                     throw new NotImplementedException(format);
             }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Console.WriteLine(ToString());
-                throw;
+                Console.WriteLine($"Test '{Description}' threw exception!");
+                Console.WriteLine($"Test type: {TestType}");
+                Console.WriteLine($"A: {A}");
+                Console.WriteLine($"B: {B?.ToString() ?? new string('-',3)}");
+                if (!(ReferenceEquals(Argument1, A) || ReferenceEquals(Argument1, B)) && Argument1 != null)
+                    Console.WriteLine($"Argument1: {Argument1}");
+                if (!(ReferenceEquals(Argument2, A) || ReferenceEquals(Argument2, B)) && Argument2 != null)
+                    Console.WriteLine($"Argument2: {Argument2}");
+                Console.WriteLine($"Tolerance: {_dTolerance}");
+                Console.WriteLine($"Exception:\n{ex.Message}");
+                Console.WriteLine($"Stack trace:\n{ex.StackTrace}");
+
+                // Set the exception thrown
+                Thrown = ex;
+                //Console.WriteLine(ToString());
+                //throw;
+                return false;
             }
         }
 
