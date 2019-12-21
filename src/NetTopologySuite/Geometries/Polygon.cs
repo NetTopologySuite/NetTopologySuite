@@ -388,6 +388,33 @@ namespace NetTopologySuite.Geometries
                 GeometryChanged();
         }
 
+        /// <inheritdoc />
+        public override void Apply(IEntireCoordinateSequenceFilter filter)
+        {
+            if (filter is null)
+            {
+                throw new ArgumentNullException(nameof(filter));
+            }
+
+            _shell.Apply(filter);
+            if (!filter.Done)
+            {
+                foreach (var hole in _holes)
+                {
+                    hole.Apply(filter);
+                    if (filter.Done)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (filter.GeometryChanged)
+            {
+                GeometryChanged();
+            }
+        }
+
         /// <summary>
         ///
         /// </summary>
