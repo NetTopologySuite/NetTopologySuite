@@ -261,54 +261,56 @@ namespace FilterBench
 
             private void Filter(PackedDoubleCoordinateSequence seq)
             {
-                double sumX = 0;
-                double sumY = 0;
-                double sumZ = 0;
-                double sumM = 0;
-
                 int dim = seq.Dimension;
-                int zOffset = seq.HasZ ? seq.ZOrdinateIndex : 0;
-                int mOffset = seq.HasM ? seq.MOrdinateIndex : 0;
+                Span<double> vals = stackalloc double[dim];
 
                 double[] raw = seq.GetRawCoordinates();
                 for (int i = 0; i < raw.Length; i += dim)
                 {
-                    sumX += raw[i + 0];
-                    sumY += raw[i + 1];
-                    sumZ += raw[i + zOffset];
-                    sumM += raw[i + mOffset];
+                    for (int j = 0; j < dim; j++)
+                    {
+                        vals[j] += raw[i + j];
+                    }
                 }
 
-                _sumX += sumX;
-                _sumY += sumY;
-                _sumZ = seq.HasZ ? _sumZ + sumZ : Coordinate.NullOrdinate;
-                _sumM = seq.HasM ? _sumM + sumM : Coordinate.NullOrdinate;
+                _sumX += vals[0];
+                _sumY += vals[1];
+                if (seq.HasZ)
+                {
+                    _sumZ += vals[seq.ZOrdinateIndex];
+                }
+
+                if (seq.HasM)
+                {
+                    _sumM += vals[seq.MOrdinateIndex];
+                }
             }
 
             private void Filter(PackedFloatCoordinateSequence seq)
             {
-                double sumX = 0;
-                double sumY = 0;
-                double sumZ = 0;
-                double sumM = 0;
-
                 int dim = seq.Dimension;
-                int zOffset = seq.HasZ ? seq.ZOrdinateIndex : 0;
-                int mOffset = seq.HasM ? seq.MOrdinateIndex : 0;
+                Span<double> vals = stackalloc double[dim];
 
                 float[] raw = seq.GetRawCoordinates();
                 for (int i = 0; i < raw.Length; i += dim)
                 {
-                    sumX += raw[i + 0];
-                    sumY += raw[i + 1];
-                    sumZ += raw[i + zOffset];
-                    sumM += raw[i + mOffset];
+                    for (int j = 0; j < dim; j++)
+                    {
+                        vals[j] += raw[i + j];
+                    }
                 }
 
-                _sumX += sumX;
-                _sumY += sumY;
-                _sumZ = seq.HasZ ? _sumZ + sumZ : Coordinate.NullOrdinate;
-                _sumM = seq.HasM ? _sumM + sumM : Coordinate.NullOrdinate;
+                _sumX += vals[0];
+                _sumY += vals[1];
+                if (seq.HasZ)
+                {
+                    _sumZ += vals[seq.ZOrdinateIndex];
+                }
+
+                if (seq.HasM)
+                {
+                    _sumM += vals[seq.MOrdinateIndex];
+                }
             }
 
             private void Filter(VectorCoordinateSequence seq)
