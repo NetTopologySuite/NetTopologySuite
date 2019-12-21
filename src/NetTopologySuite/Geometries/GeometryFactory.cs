@@ -289,7 +289,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">a CoordinateSequence (possibly empty), or null</param>
         /// <returns>A <see cref="Point"/> object</returns>
-        public Point CreatePoint(CoordinateSequence coordinates)
+        public virtual Point CreatePoint(CoordinateSequence coordinates)
         {
             return new Point(coordinates, this);
         }
@@ -318,7 +318,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">A CoordinateSequence (possibly empty), or null.</param>
         /// <returns>A <see cref="LineString"/> object</returns>
-        public LineString CreateLineString(CoordinateSequence coordinates)
+        public virtual LineString CreateLineString(CoordinateSequence coordinates)
         {
             return new LineString(coordinates, this);
         }
@@ -350,7 +350,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="coordinates">A CoordinateSequence (possibly empty), or null.</param>
         /// <returns>A <see cref="LinearRing"/> object</returns>
         /// <exception cref="ArgumentException"> If the ring is not closed, or has too few points</exception>
-        public LinearRing CreateLinearRing(CoordinateSequence coordinates)
+        public virtual LinearRing CreateLinearRing(CoordinateSequence coordinates)
         {
             return new LinearRing(coordinates, this);
         }
@@ -434,7 +434,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="point">An array (without null elements), or an empty array, or <c>null</c>.</param>
         /// <returns>A <see cref="MultiPoint"/> object</returns>
-        public MultiPoint CreateMultiPoint(Point[] point)
+        public virtual MultiPoint CreateMultiPoint(Point[] point)
         {
             return new MultiPoint(point, this);
         }
@@ -484,7 +484,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="lineStrings">LineStrings, each of which may be empty but not null-</param>
         /// <returns>A <see cref="MultiLineString"/> object</returns>
-        public MultiLineString CreateMultiLineString(LineString[] lineStrings)
+        public virtual MultiLineString CreateMultiLineString(LineString[] lineStrings)
         {
             return new MultiLineString(lineStrings, this);
         }
@@ -522,7 +522,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="geometries">an array of Geometries, each of which may be empty but not null, or null</param>
         /// <returns>A <see cref="GeometryCollection"/> object</returns>
-        public GeometryCollection CreateGeometryCollection(Geometry[] geometries)
+        public virtual GeometryCollection CreateGeometryCollection(Geometry[] geometries)
         {
             return new GeometryCollection(geometries, this);
         }
@@ -551,7 +551,7 @@ namespace NetTopologySuite.Geometries
         /// A <see cref="Geometry"/> of the "smallest", "most type-specific"
         /// class that can contain the elements of <c>geomList</c>.
         /// </returns>
-        public Geometry BuildGeometry(IEnumerable<Geometry> geomList)
+        public virtual Geometry BuildGeometry(IEnumerable<Geometry> geomList)
         {
             var geoms = new List<Geometry>();
 
@@ -624,7 +624,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="g">The geometry</param>
         /// <returns>A deep copy of the input geometry, using the CoordinateSequence type of this factory</returns>
         /// <seealso cref="Geometry.Copy"/>
-        public Geometry CreateGeometry(Geometry g)
+        public virtual Geometry CreateGeometry(Geometry g)
         {
             // NOTE: don't move lambda to a separate variable!
             //       make a variable and you've broke WinPhone build.
