@@ -261,13 +261,13 @@ namespace FilterBench
 
             private void Filter(PackedDoubleCoordinateSequence seq)
             {
-                int dim = seq.Dimension;
-                Span<double> vals = stackalloc double[dim];
+                Span<double> vals = stackalloc double[seq.Dimension];
+                vals.Clear();
 
                 double[] raw = seq.GetRawCoordinates();
-                for (int i = 0; i < raw.Length; i += dim)
+                for (int i = 0; i < raw.Length; i += vals.Length)
                 {
-                    for (int j = 0; j < dim; j++)
+                    for (int j = 0; j < vals.Length; j++)
                     {
                         vals[j] += raw[i + j];
                     }
@@ -288,13 +288,13 @@ namespace FilterBench
 
             private void Filter(PackedFloatCoordinateSequence seq)
             {
-                int dim = seq.Dimension;
-                Span<double> vals = stackalloc double[dim];
+                Span<double> vals = stackalloc double[seq.Dimension];
+                vals.Clear();
 
                 float[] raw = seq.GetRawCoordinates();
-                for (int i = 0; i < raw.Length; i += dim)
+                for (int i = 0; i < raw.Length; i += vals.Length)
                 {
-                    for (int j = 0; j < dim; j++)
+                    for (int j = 0; j < vals.Length; j++)
                     {
                         vals[j] += raw[i + j];
                     }
