@@ -365,6 +365,27 @@ namespace NetTopologySuite.Geometries
                 GeometryChanged();
         }
 
+        /// <inheritdoc />
+        public override void Apply(IEntireCoordinateSequenceFilter filter)
+        {
+            if (filter is null)
+            {
+                throw new ArgumentNullException(nameof(filter));
+            }
+
+            if (_points.Count == 0)
+            {
+                return;
+            }
+
+            filter.Filter(_points);
+
+            if (filter.GeometryChanged)
+            {
+                GeometryChanged();
+            }
+        }
+
         /// <summary>
         /// Performs an operation with or on this <c>Geometry</c> and its
         /// subelement <c>Geometry</c>s (if any).
