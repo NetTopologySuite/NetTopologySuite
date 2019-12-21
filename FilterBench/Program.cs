@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
 
@@ -17,14 +18,33 @@ namespace FilterBench
 
         static void Main()
         {
+            var p = new Program();
+
+            var distinctResults = new HashSet<(double, double, double, double)>();
+            foreach (string seqType in new[] { nameof(CoordinateArraySequence), nameof(PackedDoubleCoordinateSequence), nameof(PackedFloatCoordinateSequence), nameof(VectorCoordinateSequence) })
+            {
+                p.SequenceType = seqType;
+                p.Init();
+
+                distinctResults.Add(p.Agnostic_OneByOne());
+                distinctResults.Add(p.Agnostic_Entire());
+                distinctResults.Add(p.Fast_OneByOne());
+                distinctResults.Add(p.Fast_Entire());
+            }
+
+            if (distinctResults.Count > 1)
+            {
+                throw new Exception("Results differ.");
+            }
+
             BenchmarkRunner.Run<Program>();
         }
 
         [GlobalSetup]
         public void Init()
         {
-            int dimension = DimensionAndMeasures[0];
-            int measures = DimensionAndMeasures[1];
+            int dimension = 4;
+            int measures = 1;
             CoordinateSequenceFactory seqFactory = null;
             switch (SequenceType)
             {
@@ -45,12 +65,12 @@ namespace FilterBench
                     break;
             }
 
-            var seq = seqFactory.Create(PointCount, dimension, measures);
+            var seq = seqFactory.Create(10_000_000, dimension, measures);
             for (int i = 0; i < seq.Count; i++)
             {
                 for (int j = 0; j < dimension; j++)
                 {
-                    seq.SetOrdinate(i, j, i + (((double)j) * seq.Count + i));
+                    seq.SetOrdinate(i, j, i + 1 + (((double)j) * seq.Count + i));
                 }
             }
 
@@ -60,12 +80,6 @@ namespace FilterBench
 
         [Params(nameof(CoordinateArraySequence), nameof(PackedDoubleCoordinateSequence), nameof(PackedFloatCoordinateSequence), nameof(VectorCoordinateSequence))]
         public string SequenceType;
-
-        [Params(1, 10, 100, 1_000, 10_000, 100_000, 1_000_000, 10_000_000, 100_000_000)]
-        public int PointCount;
-
-        [Params(new int[] { 2, 0 }, new int[] { 3, 0 }, new int[] { 3, 1 }, new int[] { 4, 1 })]
-        public int[] DimensionAndMeasures;
 
         [Benchmark(Baseline = true)]
         public (double x, double y, double z, double m) Agnostic_OneByOne()
@@ -273,10 +287,10 @@ namespace FilterBench
 
             private void Filter(PackedFloatCoordinateSequence seq)
             {
-                float sumX = 0;
-                float sumY = 0;
-                float sumZ = 0;
-                float sumM = 0;
+                double sumX = 0;
+                double sumY = 0;
+                double sumZ = 0;
+                double sumM = 0;
 
                 int dim = seq.Dimension;
                 int zOffset = seq.HasZ ? seq.ZOrdinateIndex : 0;
@@ -322,33 +336,34 @@ namespace FilterBench
 
             private static unsafe double ComputeVectorSum(ReadOnlySpan<double> vals)
             {
-                if (!Avx.IsSupported)
+                if (!Avx2.IsSupported)
                 {
                     throw new PlatformNotSupportedException("I only bothered testing this on my machine at home...");
                 }
 
                 var sums = Vector256<double>.Zero;
 
-                int lastIdx = vals.Length - (vals.Length % Vector256<double>.Count);
+                int endIndex = vals.Length - (vals.Length % Vector256<double>.Count);
                 fixed (double* d = vals)
                 {
-                    double* cur = d;
-                    double* end = cur + lastIdx;
-                    while (cur < end)
+                    for (double* cur = d, end = d + endIndex; cur < end; cur += Vector256<double>.Count)
                     {
                         sums = Avx.Add(sums, Avx.LoadVector256(cur));
-                        cur += Vector256<double>.Count;
                     }
+
+                    double sum = 0;
+                    for (int i = 0; i < Vector256<double>.Count; i++)
+                    {
+                        sum += sums.GetElement(i);
+                    }
+
+                    for (int i = endIndex; i < vals.Length; i++)
+                    {
+                        sum += vals[i];
+                    }
+
+                    return sum;
                 }
-
-                double sum = Avx.HorizontalAdd(sums, sums).ToScalar();
-
-                for (int i = lastIdx; i < vals.Length; i++)
-                {
-                    sum += vals[lastIdx];
-                }
-
-                return sum;
             }
         }
 
