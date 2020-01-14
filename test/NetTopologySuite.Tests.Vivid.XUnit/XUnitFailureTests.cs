@@ -38,6 +38,12 @@ namespace NetTopologySuite.Tests.XUnit
         }
 
         [Test, Category("FailureCase")]
+        public override void Test03()
+        {
+            base.Test03();
+        }
+
+        [Test, Category("FailureCase")]
         public override void Test04()
         {
             base.Test04();
