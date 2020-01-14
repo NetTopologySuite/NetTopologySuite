@@ -3,7 +3,6 @@
 
   <PropertyGroup>
     <SolutionDir Condition=" '$(SolutionDir)' == '' ">$(MSBuildThisFileDirectory)</SolutionDir>
-    <LangVersion>7.3</LangVersion> <!-- latest version supported by VS2017 -->
 
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)nts.snk</AssemblyOriginatorKeyFile>
 

@@ -30,6 +30,13 @@
     <NtsBuildMetadata Condition=" '$(NtsBuildMetadata)' == '' ">ci.appveyor.$(APPVEYOR_BUILD_NUMBER)</NtsBuildMetadata>
   </PropertyGroup>
 
+  <!-- GitHub Actions -->
+  <PropertyGroup Condition=" '$(GITHUB_ACTIONS)' == 'True' ">
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <NtsBuildMetadata Condition=" '$(NtsBuildMetadata)' == '' ">ci.github.$(GITHUB_ACTION)</NtsBuildMetadata>
+  </PropertyGroup>
+
   <!-- Fallback for local builds and CI environments we don't recognize -->
   <PropertyGroup>
     <NtsBuildMetadata Condition=" '$(NtsBuildMetadata)' == '' ">local</NtsBuildMetadata>
