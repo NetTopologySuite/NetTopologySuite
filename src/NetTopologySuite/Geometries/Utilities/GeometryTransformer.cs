@@ -99,7 +99,7 @@ namespace NetTopologySuite.Geometries.Utilities
             if (inputGeom is MultiPoint)
                 return TransformMultiPoint((MultiPoint)inputGeom, null);
             if (inputGeom is LinearRing)
-                return TransformLineString((LinearRing)inputGeom, null);
+                return TransformLinearRing((LinearRing)inputGeom, null);
             if (inputGeom is LineString)
                 return TransformLineString((LineString)inputGeom, null);
             if (inputGeom is MultiLineString)
