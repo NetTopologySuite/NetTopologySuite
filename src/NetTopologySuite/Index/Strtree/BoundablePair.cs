@@ -56,7 +56,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <returns>the maximum distance between items in the pair</returns>
         public double MaximumDistance()
         {
-            return EnvelopeUtility.MaximumDistance(
+            return EnvelopeDistance.MaximumDistance(
                 _boundable1.Bounds,
                 _boundable2.Bounds);
         }

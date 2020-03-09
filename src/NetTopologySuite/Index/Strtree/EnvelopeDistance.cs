@@ -7,7 +7,7 @@ namespace NetTopologySuite.Index.Strtree
     /// Utility functions for working with <see cref="Envelope"/>s.
     /// </summary>
     /// <author>mdavis</author>
-    public class EnvelopeUtility
+    public class EnvelopeDistance
     {
         ///<summary>
         /// Computes the maximum distance between the points defining two envelopes.
