@@ -7,12 +7,12 @@ namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
     /// A query-only R-tree created using the Sort-Tile-Recursive (STR) algorithm.
-    /// For two-dimensional spatial data.
+    /// For two-dimensional spatial data.<para/>
     /// The STR packed R-tree is simple to implement and maximizes space
     /// utilization; that is, as many leaves as possible are filled to capacity.
     /// Overlap between nodes is far less than in a basic R-tree. However, once the
-    /// tree has been built (explicitly or on the first call to #query), items may
-    /// not be added or removed.
+    /// tree has been built (explicitly or on the first call to <see cref="Query"/>), items may
+    /// not be added or removed.<para/>
     /// Described in: P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
     /// </summary>
@@ -280,11 +280,19 @@ namespace NetTopologySuite.Index.Strtree
         /// using <see cref="IItemDistance{Envelope, TItem}"/> as the distance metric.
         /// A Branch-and-Bound tree traversal algorithm is used
         /// to provide an efficient search.
+        /// <para/>
+        /// If the tree is empty, the return value is <c>null</c>.
+        /// If the tree contains only one item, the return value is a pair containing that item.
+        /// If it is required to find only pairs of distinct items,
+        /// the <see cref="IItemDistance{T,TItem}"/> function must be <b>anti-reflexive</b>.
         /// </summary>
         /// <param name="itemDist">A distance metric applicable to the items in this tree</param>
-        /// <returns>The pair of the nearest items</returns>
+        /// <returns>The pair of the nearest items or <c>null</c> if the tree is empty</returns>
         public TItem[] NearestNeighbour(IItemDistance<Envelope, TItem> itemDist)
         {
+            if (IsEmpty) return null;
+
+            // if tree has only one item this will return null
             var bp = new BoundablePair<TItem>(Root, Root, itemDist);
             return NearestNeighbour(bp);
         }
@@ -303,7 +311,7 @@ namespace NetTopologySuite.Index.Strtree
         /// <param name="env">The envelope of the query item</param>
         /// <param name="item">The item to find the nearest neighbour of</param>
         /// <param name="itemDist">A distance metric applicable to the items in this tree and the query item</param>
-        /// <returns>The nearest item in this tree</returns>
+        /// <returns>The nearest item in this tree or <c>null</c> if the tree is empty</returns>
         public TItem NearestNeighbour(Envelope env, TItem item, IItemDistance<Envelope, TItem> itemDist)
         {
             var bnd = new ItemBoundable<Envelope, TItem>(env, item);
@@ -323,16 +331,17 @@ namespace NetTopologySuite.Index.Strtree
         /// </summary>
         /// <param name="tree">Another tree</param>
         /// <param name="itemDist">A distance metric applicable to the items in the trees</param>
-        /// <returns>The pair of the nearest items, one from each tree</returns>
+        /// <returns>The pair of the nearest items, one from each tree or <c>null</c> if no pair of distinct items can be found.</returns>
         public TItem[] NearestNeighbour(STRtree<TItem> tree, IItemDistance<Envelope, TItem> itemDist)
         {
+            if (IsEmpty || tree.IsEmpty) return null;
             var bp = new BoundablePair<TItem>(Root, tree.Root, itemDist);
             return NearestNeighbour(bp);
         }
 
         private static TItem[] NearestNeighbour(BoundablePair<TItem> initBndPair)
         {
-            double distanceLowerBound = double.MaxValue;
+            double distanceLowerBound = double.PositiveInfinity;
             BoundablePair<TItem> minPair = null;
 
             // initialize search queue
@@ -343,7 +352,7 @@ namespace NetTopologySuite.Index.Strtree
             {
                 // pop head of queue and expand one side of pair
                 var bndPair = priQ.Poll();
-                double currentDistance = bndPair.Distance;
+                double pairDistance = bndPair.Distance;
 
                 /**
                  * If the distance for the first node in the queue
@@ -352,7 +361,7 @@ namespace NetTopologySuite.Index.Strtree
                  * So the current minDistance must be the true minimum,
                  * and we are done.
                  */
-                if (currentDistance >= distanceLowerBound)
+                if (pairDistance >= distanceLowerBound)
                     break;
 
                 /**
@@ -365,7 +374,7 @@ namespace NetTopologySuite.Index.Strtree
                 if (bndPair.IsLeaves)
                 {
                     // assert: currentDistance < minimumDistanceFound
-                    distanceLowerBound = currentDistance;
+                    distanceLowerBound = pairDistance;
                     minPair = bndPair;
                 }
                 else
@@ -430,41 +439,44 @@ namespace NetTopologySuite.Index.Strtree
             {
                 // pop head of queue and expand one side of pair
                 var bndPair = priQ.Poll();
-                double currentDistance = bndPair.Distance;
+                double pairDistance = bndPair.Distance;
 
                 /**
                  * If the distance for the first pair in the queue
-                 * is >= maxDistance, other pairs
+                 * is > maxDistance, other pairs
                  * in the queue must also have a greater distance.
                  * So can conclude no items are within the distance
-                 * and terminate with false
+                 * and terminate with result = false
                  */
-                if (currentDistance > maxDistance)
+                if (pairDistance > maxDistance)
                     return false;
 
                 /**
-                 * There must be some pair of items in the nodes which 
-                 * are closer than the max distance,
-                 * so can terminate with true.
+                 * If the maximum distance between the nodes
+                 * is less than the maxDistance,
+                 * than all items in the nodes must be 
+                 * closer than the max distance.
+                 * Then can terminate with result = true.
                  * 
-                 * NOTE: using the Envelope MinMaxDistance would provide a tighter bound,
-                 * but not sure how to compute this!
+                 * NOTE: using Envelope MinMaxDistance 
+                 * would provide a tighter bound,
+                 * but not much performance improvement has been observed
                  */
                 if (bndPair.MaximumDistance() <= maxDistance)
                     return true;
                 /**
-                 * If the pair members are leaves
-                 * then their distance is an upper bound.
+                 * If the pair items are leaves
+                 * then their actual distance is an upper bound.
                  * Update the distanceUpperBound to reflect this
                  */
                 if (bndPair.IsLeaves)
                 {
                     // assert: currentDistance < minimumDistanceFound
-                    distanceUpperBound = currentDistance;
+                    distanceUpperBound = pairDistance;
 
                     /**
-                     * Current pair is closer than maxDistance
-                     * so can terminate with true
+                     * If the items are closer than maxDistance
+                     * can terminate with result = true.
                      */
                     if (distanceUpperBound <= maxDistance)
                         return true;
@@ -531,7 +543,7 @@ namespace NetTopologySuite.Index.Strtree
             {
                 // pop head of queue and expand one side of pair
                 var bndPair = priQ.Poll();
-                double currentDistance = bndPair.Distance;
+                double pairDistance = bndPair.Distance;
 
                 /**
                  * If the distance for the first node in the queue
@@ -540,7 +552,7 @@ namespace NetTopologySuite.Index.Strtree
                  * So the current minDistance must be the true minimum,
                  * and we are done.
                  */
-                if (currentDistance >= distanceLowerBound)
+                if (pairDistance >= distanceLowerBound)
                 {
                     break;
                 }
@@ -561,8 +573,8 @@ namespace NetTopologySuite.Index.Strtree
                     }
                     else
                     {
-
-                        if (kNearestNeighbors.Peek().Distance > currentDistance)
+                        var bp1 = kNearestNeighbors.Peek();
+                        if (bp1.Distance > pairDistance)
                         {
                             kNearestNeighbors.Poll();
                             kNearestNeighbors.Add(bndPair);
@@ -570,20 +582,12 @@ namespace NetTopologySuite.Index.Strtree
                         /*
                          * minDistance should be the farthest point in the K nearest neighbor queue.
                          */
-                        distanceLowerBound = kNearestNeighbors.Peek().Distance;
-
+                        var bp2 = kNearestNeighbors.Peek();
+                        distanceLowerBound = bp2.Distance;
                     }
                 }
                 else
                 {
-                    // testing - does allowing a tolerance improve speed?
-                    // Ans: by only about 10% - not enough to matter
-                    /*
-                    double maxDist = bndPair.getMaximumDistance();
-                    if (maxDist * .99 < lastComputedDistance)
-                      return;
-                    //*/
-
                     /**
                      * Otherwise, expand one side of the pair,
                      * (the choice of which side to expand is heuristically determined)
@@ -604,11 +608,11 @@ namespace NetTopologySuite.Index.Strtree
              * in this queue
              */
             var items = new TItem[kNearestNeighbors.Size];
-            var resultIterator = kNearestNeighbors.GetEnumerator();
             int count = 0;
-            while (resultIterator.MoveNext())
+            while (!kNearestNeighbors.IsEmpty())
             {
-                items[count] = ((ItemBoundable<Envelope, TItem>)resultIterator.Current.GetBoundable(0)).Item;
+                var bp = kNearestNeighbors.Poll();
+                items[count] = bp.GetBoundable(0).Item;
                 count++;
             }
             return items;

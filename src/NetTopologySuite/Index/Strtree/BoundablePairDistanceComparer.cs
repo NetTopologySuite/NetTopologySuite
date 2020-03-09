@@ -11,6 +11,7 @@
  */
 
 using System.Collections.Generic;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Index.Strtree
 {
@@ -29,8 +30,8 @@ namespace NetTopologySuite.Index.Strtree
         /// Instantiates a new boundable pair distance comparator.
         /// </summary>
         /// <param name="normalOrder">
-        /// A value of <c>true</c> means puts the least record at the head of this queue.
-        /// This is the natural order.PriorityQueue peek() will get the least element.Vice versa.
+        /// A value of <c>true</c> puts the lowest record at the head of this queue.
+        /// This is the natural order. <see cref="PriorityQueue{T}.Peek()"/> will get the least element.
         /// </param>
         public BoundablePairDistanceComparer(bool normalOrder)
         {

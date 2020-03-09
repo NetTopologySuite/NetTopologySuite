@@ -125,13 +125,15 @@ namespace NetTopologySuite.Index.Strtree
         /// from the expansion of the larger boundable
         /// with distance less than minDistance
         /// and adds them to a priority queue.
+        /// <para/>
+        /// Note that expanded pairs may contain
+        /// the same item/node on both sides.
+        /// This must be allowed to support distance
+        /// functions which have non-zero distances
+        /// between the item and itself (non-zero reflexive distance).
         /// </summary>
-        /// <param name="priQ">
-        /// The priority queue to add the new pairs to.
-        /// </param>
-        /// <param name="minDistance">
-        /// The limit on the distance between added pairs.
-        /// </param>
+        /// <param name="priQ">The priority queue to add the new pairs to. </param>
+        /// <param name="minDistance">The limit on the distance between added pairs. </param>
         public void ExpandToQueue(PriorityQueue<BoundablePair<TItem>> priQ, double minDistance)
         {
             bool isComp1 = IsComposite(_boundable1);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.KdTree;
 using NetTopologySuite.Index.Quadtree;
@@ -93,6 +94,29 @@ namespace Open.Topology.TestRunner.Functions
             });
 
             return index;
+        }
+
+        public static Geometry StrTreeNN(Geometry geoms, Geometry geom)
+        {
+            var index = BuildSTRtree(geoms);
+            object result = index.NearestNeighbour(geom.EnvelopeInternal, geom, new GeometryItemDistance());
+            return (Geometry)result;
+        }
+
+        public static Geometry StrTreeNNInSet(Geometry geoms)
+        {
+            var index = BuildSTRtree(geoms);
+            object[] result = index.NearestNeighbour(new GeometryItemDistance());
+            var resultGeoms = new [] { (Geometry)result[0], (Geometry)result[1] };
+            return geoms.Factory.CreateGeometryCollection(resultGeoms);
+        }
+
+        public static Geometry StrTreeNNk(Geometry geoms, Geometry geom, int k)
+        {
+            var index = BuildSTRtree(geoms);
+            object[] knnObjects = index.NearestNeighbour(geom.EnvelopeInternal, geom, new GeometryItemDistance(), k);
+            var geometryCollection = geoms.Factory.BuildGeometry(knnObjects.Cast<Geometry>());
+            return geometryCollection;
         }
 
         public static Geometry QuadTreeQuery(Geometry geoms, Geometry queryEnv)
