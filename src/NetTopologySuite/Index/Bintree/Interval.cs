@@ -37,7 +37,7 @@ namespace NetTopologySuite.Index.Bintree
         /// <summary>
         /// Gets the centre of the interval (<see cref="Min"/> + <see cref="Width"/> * 0.5d)
         /// </summary>
-        public double Centre => Max - Min;
+        public double Centre => (Min + Max) * 0.5d;
 
         /// <summary>
         /// Creates a new interval instance, setting <see cref="Min"/>=<see cref="Max"/>=0d;

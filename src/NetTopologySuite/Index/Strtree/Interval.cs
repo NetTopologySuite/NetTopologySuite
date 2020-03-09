@@ -29,10 +29,11 @@ namespace NetTopologySuite.Index.Strtree
 
         private double _min;
         private double _max;
+
         /// <summary>
-        ///
+        /// Gets the centre of the interval (<see cref="Min"/> + <see cref="Width"/> * 0.5d)
         /// </summary>
-        public double Centre => (_min + _max) / 2;
+        public double Centre => (_min + _max) * 0.5d;
 
         /// <summary>
         ///
