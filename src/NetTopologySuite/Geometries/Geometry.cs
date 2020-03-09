@@ -2064,9 +2064,9 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        ///
+        /// Tests whether this is a rectangular <see cref="Polygon"/>.
         /// </summary>
-        /// <returns></returns>
+        /// <returns><c>true</c> if the geometry is a rectangle.</returns>
         /// <remarks>Polygon overrides to check for actual rectangle.</remarks>
         public virtual bool IsRectangle => false;
 
