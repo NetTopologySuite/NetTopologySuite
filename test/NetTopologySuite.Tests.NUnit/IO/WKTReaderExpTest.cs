@@ -67,7 +67,7 @@ namespace NetTopologySuite.Tests.NUnit.IO
             }
             catch (ParseException ex)
             {
-                Console.WriteLine(ex.Message);
+                //Console.WriteLine(ex.Message);
                 threwParseEx = true;
             }
             Assert.IsTrue(threwParseEx);
