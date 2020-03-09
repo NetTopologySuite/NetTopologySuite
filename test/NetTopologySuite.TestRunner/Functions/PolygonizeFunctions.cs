@@ -10,7 +10,7 @@ namespace Open.Topology.TestRunner.Functions
     {
         private static Geometry Polygonize(Geometry g, bool extractOnlyPolygonal)
         {
-            var lines = LineStringExtracter.GetLines(g);
+            var lines = LinearComponentExtracter.GetLines(g);
             var polygonizer = new Polygonizer(extractOnlyPolygonal);
             polygonizer.Add(lines);
             return polygonizer.GetGeometry();
@@ -22,12 +22,7 @@ namespace Open.Topology.TestRunner.Functions
         }
         public static Geometry Polygonize(Geometry g)
         {
-            var lines = LineStringExtracter.GetLines(g);
-            var polygonizer = new Polygonizer();
-            polygonizer.Add(lines);
-            var polys = polygonizer.GetPolygons();
-            var polyArray = GeometryFactory.ToPolygonArray(polys);
-            return g.Factory.CreateGeometryCollection(polyArray);
+            return Polygonize(g, false);
         }
 
         public static Geometry PolygonizeDangles(Geometry g)
