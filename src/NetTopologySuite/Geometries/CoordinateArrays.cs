@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,7 +16,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="pts">pts supplied coordinates</param>
         /// <returns>number of ordinates recorded</returns>
-        public static int Dimension(Coordinate[] pts)
+        public static int Dimension(Coordinate?[]? pts)
         {
             if (pts == null || pts.Length == 0)
             {
@@ -36,7 +35,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="pts">supplied coordinates</param>
         /// <returns>number of measures recorded</returns>
-        public static int Measures(Coordinate[] pts)
+        public static int Measures(Coordinate?[]? pts)
         {
             if (pts == null || pts.Length == 0)
             {
@@ -75,7 +74,7 @@ namespace NetTopologySuite.Geometries
         /// A <see cref="Coordinate" /> from <paramref name="testPts" />
         /// which is not in <paramref name="pts" />, or <c>null</c>.
         /// </returns>
-        public static Coordinate PointNotInList(Coordinate[] testPts, Coordinate[] pts)
+        public static Coordinate? PointNotInList(Coordinate[] testPts, Coordinate[] pts)
         {
             for (int i = 0; i < testPts.Length; i++)
             {
@@ -255,7 +254,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coord">The coordinate array to collapse</param>
         /// <returns>An Array containing only non-null elements</returns>
-        public static Coordinate[] RemoveNull(Coordinate[] coord)
+        public static Coordinate[] RemoveNull(Coordinate?[] coord)
         {
             var coordinateList = new List<Coordinate>(coord.Length);
             foreach (var coordinate in coord)
@@ -282,7 +281,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="coord1">First array of Coordinates.</param>
         /// <param name="coord2">Second array of Coordinates.</param>
         /// <returns><c>true</c> if two Coordinates array are equals; false otherwise</returns>
-        public static bool Equals(Coordinate[] coord1, Coordinate[] coord2)
+        public static bool Equals(Coordinate[]? coord1, Coordinate[]? coord2)
         {
             if (coord1 == coord2)
                 return true;
@@ -381,7 +380,7 @@ namespace NetTopologySuite.Geometries
         /// A <see cref="IComparer" /> for <see cref="Coordinate" />s.
         /// </param>
         /// <returns></returns>
-        public static bool Equals(Coordinate[] coord1, Coordinate[] coord2,
+        public static bool Equals(Coordinate[]? coord1, Coordinate[]? coord2,
                 IComparer<Coordinate[]> coordinateComparer)
         {
             if (coord1 == coord2)
@@ -400,9 +399,9 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">Array to search.</param>
         /// <returns>The minimum coordinate in the array, found using <c>CompareTo</c>.</returns>
-        public static Coordinate MinCoordinate(Coordinate[] coordinates)
+        public static Coordinate? MinCoordinate(Coordinate[] coordinates)
         {
-            Coordinate minCoord = null;
+            Coordinate? minCoord = null;
             for (int i = 0; i < coordinates.Length; i++)
                 if (minCoord == null || minCoord.CompareTo(coordinates[i]) > 0)
                     minCoord = coordinates[i];

@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using NetTopologySuite.Algorithm;
@@ -46,7 +45,7 @@ namespace NetTopologySuite.Geometries
         /// </remarks>
         /// <param name="points">The coordinates used for create this <see cref="LineString" />.</param>
         /// <exception cref="ArgumentException">If too few points are provided</exception>
-        public LineString(Coordinate[] points) :
+        public LineString(Coordinate[]? points) :
             this(DefaultFactory.CoordinateSequenceFactory.Create(points), DefaultFactory)
         { }
 
@@ -59,7 +58,7 @@ namespace NetTopologySuite.Geometries
         /// </param>
         /// <param name="factory"></param>
         /// <exception cref="ArgumentException">If too few points are provided</exception>
-        public LineString(CoordinateSequence points, GeometryFactory factory)
+        public LineString(CoordinateSequence? points, GeometryFactory factory)
             : base(factory)
         {
             if (points == null)
@@ -110,7 +109,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public override Coordinate Coordinate
+        public override Coordinate? Coordinate
         {
             get
             {
@@ -162,7 +161,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public Point StartPoint
+        public Point? StartPoint
         {
             get
             {
@@ -175,7 +174,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public Point EndPoint
+        public Point? EndPoint
         {
             get
             {

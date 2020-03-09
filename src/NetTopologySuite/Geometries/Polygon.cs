@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,7 +65,7 @@ namespace NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public Polygon(LinearRing shell, LinearRing[] holes) : this(shell, holes, DefaultFactory) { }
+        public Polygon(LinearRing? shell, LinearRing[]? holes) : this(shell, holes, DefaultFactory) { }
 
         /// <summary>
         /// Constructs a <c>Polygon</c> with the given exterior boundary and
@@ -83,7 +82,7 @@ namespace NetTopologySuite.Geometries
         /// point is to be created.
         /// </param>
         /// <param name="factory"></param>
-        public Polygon(LinearRing shell, LinearRing[] holes, GeometryFactory factory) : base(factory)
+        public Polygon(LinearRing? shell, LinearRing[]? holes, GeometryFactory factory) : base(factory)
         {
             if (shell == null)
                 shell = Factory.CreateLinearRing();
@@ -113,7 +112,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>a Coordinate which is a vertex of this <c>Geometry</c>.</returns>
         /// <returns><c>null</c> if this Geometry is empty.
         /// </returns>
-        public override Coordinate Coordinate => _shell.Coordinate;
+        public override Coordinate? Coordinate => _shell.Coordinate;
 
         /// <summary>
         /// Returns an array containing the values of all the vertices for
@@ -357,7 +356,7 @@ namespace NetTopologySuite.Geometries
             if (_holes.Length != otherPolygon.Holes.Length)
                 return false;
             for (int i = 0; i < _holes.Length; i++)
-                if (!(_holes[i]).EqualsExact(otherPolygon.Holes[i], tolerance))
+                if (!_holes[i].EqualsExact(otherPolygon.Holes[i], tolerance))
                     return false;
             return true;
         }
@@ -380,7 +379,7 @@ namespace NetTopologySuite.Geometries
             {
                 for (int i = 0; i < _holes.Length; i++)
                 {
-                    ((LinearRing)_holes[i]).Apply(filter);
+                    _holes[i].Apply(filter);
                     if (filter.Done)
                         break;
                 }

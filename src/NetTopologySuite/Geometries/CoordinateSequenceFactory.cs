@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 
 namespace NetTopologySuite.Geometries
@@ -37,7 +36,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">A coordinates array, which may not be null nor contain null elements</param>
         /// <returns>A coordinate sequence.</returns>
-        public virtual CoordinateSequence Create(Coordinate[] coordinates)
+        public virtual CoordinateSequence Create(Coordinate[]? coordinates)
         {
             var result = Create(coordinates?.Length ?? 0, CoordinateArrays.Dimension(coordinates), CoordinateArrays.Measures(coordinates));
             if (coordinates != null)
@@ -61,7 +60,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordSeq"></param>
         /// <returns>A coordinate sequence</returns>
-        public virtual CoordinateSequence Create(CoordinateSequence coordSeq)
+        public virtual CoordinateSequence Create(CoordinateSequence? coordSeq)
         {
             var result = Create(coordSeq?.Count ?? 0, coordSeq?.Dimension ?? 2, coordSeq?.Measures ?? 0);
             if (coordSeq != null)

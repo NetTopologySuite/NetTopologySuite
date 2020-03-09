@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -233,7 +232,7 @@ namespace NetTopologySuite.Geometries
         {
             // null envelope - return empty point geometry
             if (envelope.IsNull)
-                return CreatePoint((CoordinateSequence)null);
+                return CreatePoint((CoordinateSequence?)null);
 
             // point?
             if (envelope.MinX == envelope.MaxX && envelope.MinY == envelope.MaxY)
@@ -279,7 +278,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinate">a Coordinate, or null</param>
         /// <returns>A <see cref="Point"/> object</returns>
-        public Point CreatePoint(Coordinate coordinate)
+        public Point CreatePoint(Coordinate? coordinate)
         {
             return CreatePoint(coordinate != null ? CoordinateSequenceFactory.Create(new[] { coordinate }) : null);
         }
@@ -290,7 +289,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">a CoordinateSequence (possibly empty), or null</param>
         /// <returns>A <see cref="Point"/> object</returns>
-        public virtual Point CreatePoint(CoordinateSequence coordinates)
+        public virtual Point CreatePoint(CoordinateSequence? coordinates)
         {
             return new Point(coordinates, this);
         }
@@ -308,7 +307,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
         /// <returns>A <see cref="LineString"/> object</returns>
-        public LineString CreateLineString(Coordinate[] coordinates)
+        public LineString CreateLineString(Coordinate[]? coordinates)
         {
             return CreateLineString(coordinates != null ? CoordinateSequenceFactory.Create(coordinates) : null);
         }
@@ -319,7 +318,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">A CoordinateSequence (possibly empty), or null.</param>
         /// <returns>A <see cref="LineString"/> object</returns>
-        public virtual LineString CreateLineString(CoordinateSequence coordinates)
+        public virtual LineString CreateLineString(CoordinateSequence? coordinates)
         {
             return new LineString(coordinates, this);
         }
@@ -338,7 +337,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="coordinates">An array without null elements, or an empty array, or null.</param>
         /// <returns>A <see cref="LinearRing"/> object</returns>
         /// <exception cref="ArgumentException"> If the ring is not closed, or has too few points</exception>
-        public LinearRing CreateLinearRing(Coordinate[] coordinates)
+        public LinearRing CreateLinearRing(Coordinate[]? coordinates)
         {
             return CreateLinearRing(coordinates != null ? CoordinateSequenceFactory.Create(coordinates) : null);
         }
@@ -351,7 +350,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="coordinates">A CoordinateSequence (possibly empty), or null.</param>
         /// <returns>A <see cref="LinearRing"/> object</returns>
         /// <exception cref="ArgumentException"> If the ring is not closed, or has too few points</exception>
-        public virtual LinearRing CreateLinearRing(CoordinateSequence coordinates)
+        public virtual LinearRing CreateLinearRing(CoordinateSequence? coordinates)
         {
             return new LinearRing(coordinates, this);
         }
@@ -378,7 +377,7 @@ namespace NetTopologySuite.Geometries
         /// the empty point is to be created.
         /// </param>
         /// <returns>A <see cref="Polygon"/> object</returns>
-        public virtual Polygon CreatePolygon(LinearRing shell, LinearRing[] holes)
+        public virtual Polygon CreatePolygon(LinearRing? shell, LinearRing[]? holes)
         {
             return new Polygon(shell, holes, this);
         }
@@ -391,7 +390,7 @@ namespace NetTopologySuite.Geometries
         /// the empty geometry is to be created.</param>
         /// <returns>A <see cref="Polygon"/> object</returns>
         /// <exception cref="ArgumentException">If the boundary ring is invalid</exception>
-        public virtual Polygon CreatePolygon(CoordinateSequence coordinates)
+        public virtual Polygon CreatePolygon(CoordinateSequence? coordinates)
         {
             return CreatePolygon(CreateLinearRing(coordinates));
         }
@@ -404,7 +403,7 @@ namespace NetTopologySuite.Geometries
         /// the empty geometry is to be created.</param>
         /// <returns>A <see cref="Polygon"/> object</returns>
         /// <exception cref="ArgumentException">If the boundary ring is invalid</exception>
-        public virtual Polygon CreatePolygon(Coordinate[] coordinates)
+        public virtual Polygon CreatePolygon(Coordinate[]? coordinates)
         {
             return CreatePolygon(CreateLinearRing(coordinates));
         }
@@ -417,7 +416,7 @@ namespace NetTopologySuite.Geometries
         /// the empty geometry is to be created.</param>
         /// <returns>the created Polygon</returns>
         /// <exception cref="ArgumentException">If the boundary ring is invalid</exception>
-        public virtual Polygon CreatePolygon(LinearRing shell)
+        public virtual Polygon CreatePolygon(LinearRing? shell)
         {
             return CreatePolygon(shell, null);
         }
@@ -435,7 +434,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="point">An array (without null elements), or an empty array, or <c>null</c>.</param>
         /// <returns>A <see cref="MultiPoint"/> object</returns>
-        public virtual MultiPoint CreateMultiPoint(Point[] point)
+        public virtual MultiPoint CreateMultiPoint(Point[]? point)
         {
             return new MultiPoint(point, this);
         }
@@ -446,7 +445,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">An array (without null elements), or an empty array, or <c>null</c></param>
         /// <returns>A <see cref="MultiPoint"/> object</returns>
-        public MultiPoint CreateMultiPointFromCoords(Coordinate[] coordinates)
+        public MultiPoint CreateMultiPointFromCoords(Coordinate[]? coordinates)
         {
             return CreateMultiPoint(coordinates != null ? CoordinateSequenceFactory.Create(coordinates) : null);
         }
@@ -457,7 +456,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="coordinates">A CoordinateSequence (possibly empty), or <c>null</c>.</param>
         /// <returns>A <see cref="MultiPoint"/> object</returns>
-        public MultiPoint CreateMultiPoint(CoordinateSequence coordinates)
+        public MultiPoint CreateMultiPoint(CoordinateSequence? coordinates)
         {
             if (coordinates == null)
                 coordinates = CoordinateSequenceFactory.Create(new Coordinate[] { });
@@ -485,7 +484,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="lineStrings">LineStrings, each of which may be empty but not null-</param>
         /// <returns>A <see cref="MultiLineString"/> object</returns>
-        public virtual MultiLineString CreateMultiLineString(LineString[] lineStrings)
+        public virtual MultiLineString CreateMultiLineString(LineString[]? lineStrings)
         {
             return new MultiLineString(lineStrings, this);
         }
@@ -505,7 +504,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="polygons">Polygons, each of which may be empty but not null.</param>
         /// <returns>A <see cref="MultiPolygon"/> object</returns>
-        public virtual MultiPolygon CreateMultiPolygon(Polygon[] polygons)
+        public virtual MultiPolygon CreateMultiPolygon(Polygon[]? polygons)
         {
             return new MultiPolygon(polygons, this);
         }
@@ -523,7 +522,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="geometries">an array of Geometries, each of which may be empty but not null, or null</param>
         /// <returns>A <see cref="GeometryCollection"/> object</returns>
-        public virtual GeometryCollection CreateGeometryCollection(Geometry[] geometries)
+        public virtual GeometryCollection CreateGeometryCollection(Geometry[]? geometries)
         {
             return new GeometryCollection(geometries, this);
         }
@@ -559,11 +558,11 @@ namespace NetTopologySuite.Geometries
             /**
              * Determine some facts about the geometries in the list
              */
-            Type geomClass = null;
+            Type? geomClass = null;
             bool isHeterogeneous = false;
             bool hasGeometryCollection = false;
 
-            Geometry geom0 = null;
+            Geometry? geom0 = null;
             foreach (var geom in geomList)
             {
                 geoms.Add(geom);
@@ -604,9 +603,9 @@ namespace NetTopologySuite.Geometries
                     return CreateMultiLineString(ToLineStringArray(geoms));
                 if (geom0 is Point)
                     return CreateMultiPoint(ToPointArray(geoms));
-                Assert.ShouldNeverReachHere("Unhandled class: " + geom0.GetType().FullName);
+                Assert.ShouldNeverReachHere("Unhandled class: " + geom0!.GetType().FullName);
             }
-            return geom0;
+            return geom0!;
         }
 
         /// <summary>

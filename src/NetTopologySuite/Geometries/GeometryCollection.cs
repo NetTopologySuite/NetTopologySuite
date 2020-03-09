@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 using NetTopologySuite.Utilities;
@@ -34,7 +33,7 @@ namespace NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public GeometryCollection(Geometry[] geometries) : this(geometries, DefaultFactory) { }
+        public GeometryCollection(Geometry[]? geometries) : this(geometries, DefaultFactory) { }
 
         /// <summary>
         ///
@@ -46,7 +45,7 @@ namespace NetTopologySuite.Geometries
         /// but not <c>null</c>s.
         /// </param>
         /// <param name="factory"></param>
-        public GeometryCollection(Geometry[] geometries, GeometryFactory factory) : base(factory)
+        public GeometryCollection(Geometry[]? geometries, GeometryFactory factory) : base(factory)
         {
             if (geometries == null)
                 geometries = new Geometry[] { };
@@ -63,7 +62,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public override Coordinate Coordinate
+        public override Coordinate? Coordinate
         {
             get
             {
@@ -229,7 +228,7 @@ namespace NetTopologySuite.Geometries
             {
                 CheckNotGeometryCollection(this);
                 Assert.ShouldNeverReachHere();
-                return null;
+                return null!;
             }
         }
 
@@ -329,7 +328,7 @@ namespace NetTopologySuite.Geometries
                 return;
             for (int i = 0; i < _geometries.Length; i++)
             {
-                ((Geometry)_geometries[i]).Apply(filter);
+                _geometries[i].Apply(filter);
                 if (filter.Done)
                 {
                     break;
@@ -416,7 +415,7 @@ namespace NetTopologySuite.Geometries
                 var thisGeom = GetGeometryN(i);
                 Assert.IsTrue(thisGeom is Geometry);
                 var otherGeom = gc.GetGeometryN(i);
-                int holeComp = ((Geometry) thisGeom).CompareToSameClass(otherGeom, comp);
+                int holeComp = thisGeom.CompareToSameClass(otherGeom, comp);
                 if (holeComp != 0) return holeComp;
                 i++;
             }

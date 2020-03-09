@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 
 namespace NetTopologySuite.Geometries
@@ -23,7 +22,7 @@ namespace NetTopologySuite.Geometries
         /// Elements may be empty <c>Point</c>s, but not <c>null</c>s.
         /// </param>
         /// <param name="factory"></param>
-        public MultiPoint(Point[] points, GeometryFactory factory) : base(points, factory) { }
+        public MultiPoint(Point[]? points, GeometryFactory factory) : base(points, factory) { }
 
         /// <summary>
         /// Constructs a <c>MultiPoint</c>.
@@ -37,7 +36,7 @@ namespace NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public MultiPoint(Point[] points) : this(points, DefaultFactory) { }
+        public MultiPoint(Point[]? points) : this(points, DefaultFactory) { }
 
         /// <inheritdoc cref="Geometry.CopyInternal"/>>
         protected override Geometry CopyInternal()
@@ -115,7 +114,7 @@ namespace NetTopologySuite.Geometries
         /// <param name="n">The index of the <c>Coordinate</c> to retrieve, beginning at 0.
         /// </param>
         /// <returns>The <c>n</c>th <c>Coordinate</c>.</returns>
-        protected Coordinate GetCoordinate(int n)
+        protected Coordinate? GetCoordinate(int n)
         {
             return Geometries[n].Coordinate;
         }

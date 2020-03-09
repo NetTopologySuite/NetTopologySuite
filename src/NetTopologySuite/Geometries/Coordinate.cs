@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Globalization;
 
@@ -275,7 +274,7 @@ namespace NetTopologySuite.Geometries
         /// A negative integer, zero, or a positive integer as this <c>Coordinate</c>
         ///         is less than, equal to, or greater than the specified <c>Coordinate</c>.
         /// </returns>
-        public int CompareTo(object o)
+        public int CompareTo(object? o)
         {
             //Like in JTS
             //return CompareTo((Coordinate) o);
@@ -344,7 +343,7 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="o"><c>Coordinate</c> with which to do the comparison.</param>
         /// <returns><c>true</c> if <c>other</c> is a <c>Coordinate</c> with the same values for the x and y ordinates.</returns>
-        public sealed override bool Equals(object o)
+        public sealed override bool Equals(object? o)
         {
             if (o is Coordinate other)
                 return Equals(other);

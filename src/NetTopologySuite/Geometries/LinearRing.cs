@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using NetTopologySuite.Algorithm;
 
@@ -36,7 +35,7 @@ namespace NetTopologySuite.Geometries
         /// or <c>null</c> to create the empty geometry.</param>
         /// <param name="factory">The factory that creates this <c>LinearRing</c></param>
         /// <exception cref="ArgumentException">If the ring is not closed, or has too few points</exception>
-        public LinearRing(CoordinateSequence points, GeometryFactory factory)
+        public LinearRing(CoordinateSequence? points, GeometryFactory factory)
             : base(points, factory)
         {
             ValidateConstruction();

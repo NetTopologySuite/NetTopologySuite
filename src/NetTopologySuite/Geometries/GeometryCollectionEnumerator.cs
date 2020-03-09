@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 
@@ -12,7 +11,7 @@ namespace NetTopologySuite.Geometries
     /// simple to ignore the <c>GeometryCollection</c> objects if they are not
     /// needed.
     /// </summary>
-    public class GeometryCollectionEnumerator : IEnumerator<Geometry>, IEnumerable<Geometry>
+    public class GeometryCollectionEnumerator : IEnumerator<Geometry?>, IEnumerable<Geometry?>
     {
         /// <summary>
         /// The <c>GeometryCollection</c> being iterated over.
@@ -41,9 +40,9 @@ namespace NetTopologySuite.Geometries
         /// if this <c>GeometryCollectionIterator</c> is not currently iterating
         /// over a nested <c>GeometryCollection</c>.
         /// </summary>
-        private GeometryCollectionEnumerator _subcollectionEnumerator;
+        private GeometryCollectionEnumerator? _subcollectionEnumerator;
 
-        private Geometry _current = null;
+        private Geometry? _current = null;
 
         /// <summary>
         /// Constructs an iterator over the given <c>GeometryCollection</c>.
@@ -122,7 +121,7 @@ namespace NetTopologySuite.Geometries
 
         /// <inheritdoc cref="System.Collections.IEnumerator.Current"/>>
         /// <remarks> The parent GeometryCollection is the first object returned!</remarks>
-        object System.Collections.IEnumerator.Current => Current;
+        object? System.Collections.IEnumerator.Current => Current;
 
         /// <inheritdoc cref="System.Collections.IEnumerator.Reset"/>
         public void Reset()
@@ -134,7 +133,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <inheritdoc cref="IEnumerator{T}.Current"/>
-        public Geometry Current => _current;
+        public Geometry? Current => _current;
 
         private static bool IsAtomic(Geometry geom)
         {
@@ -151,7 +150,7 @@ namespace NetTopologySuite.Geometries
         #region Implementation of IEnumerable
 
         /// <inheritdoc cref="IEnumerable{T}.GetEnumerator"/>
-        public IEnumerator<Geometry> GetEnumerator()
+        public IEnumerator<Geometry?> GetEnumerator()
         {
             return this;
         }

@@ -1,4 +1,3 @@
-#nullable disable
 using NetTopologySuite.Operation;
 
 namespace NetTopologySuite.Geometries
@@ -28,7 +27,7 @@ namespace NetTopologySuite.Geometries
         /// but not <c>null</c>s.
         /// </param>
         /// <param name="factory"></param>
-        public MultiLineString(LineString[] lineStrings, GeometryFactory factory)
+        public MultiLineString(LineString[]? lineStrings, GeometryFactory factory)
             : base(lineStrings, factory) { }
 
         /// <summary>
@@ -44,7 +43,7 @@ namespace NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public MultiLineString(LineString[] lineStrings) : this(lineStrings, DefaultFactory) { }
+        public MultiLineString(LineString[]? lineStrings) : this(lineStrings, DefaultFactory) { }
 
         /// <summary>
         /// Gets a value to sort the geometry

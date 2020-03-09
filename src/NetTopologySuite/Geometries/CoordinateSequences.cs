@@ -219,9 +219,9 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="seq">The coordinate sequence to search</param>
         /// <returns>The minimum coordinate in the sequence, found using <see cref="Coordinate.CompareTo(Coordinate)"/></returns>
-        public static Coordinate MinCoordinate(CoordinateSequence seq)
+        public static Coordinate? MinCoordinate(CoordinateSequence seq)
         {
-            Coordinate minCoord = null;
+            Coordinate? minCoord = null;
             for (int i = 0; i < seq.Count; i++)
             {
                 var testCoord = seq.GetCoordinate(i);
@@ -259,7 +259,7 @@ namespace NetTopologySuite.Geometries
         public static int MinCoordinateIndex(CoordinateSequence seq, int from, int to)
         {
             int minCoordIndex = -1;
-            Coordinate minCoord = null;
+            Coordinate? minCoord = null;
             for (int i = from; i <= to; i++)
             {
                 var testCoord = seq.GetCoordinate(i);

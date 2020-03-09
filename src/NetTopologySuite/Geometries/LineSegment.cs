@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Text;
 using NetTopologySuite.Algorithm;
@@ -561,7 +560,7 @@ namespace NetTopologySuite.Geometries
         /// <c>true</c> if <c>o</c> is a <c>LineSegment</c>
         /// with the same values for the x and y ordinates.
         /// </returns>
-        public override bool Equals(object o)
+        public override bool Equals(object? o)
         {
             if (o == null)
                 return false;

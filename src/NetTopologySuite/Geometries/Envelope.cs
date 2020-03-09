@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Globalization;
 using System.Text;
@@ -18,7 +17,7 @@ namespace NetTopologySuite.Geometries
     /// </remarks>
     [Serializable]
 #pragma warning disable 612,618
-    public class Envelope : IComparable<Envelope>, IIntersectable<Envelope>, IExpandable<Envelope>
+    public class Envelope : IComparable, IComparable<Envelope>, IIntersectable<Envelope>, IExpandable<Envelope>
 #pragma warning restore 612,618
     {
         /// <summary>
@@ -488,7 +487,7 @@ namespace NetTopologySuite.Geometries
         /// The centre coordinate of this envelope,
         /// or <c>null</c> if the envelope is null.
         /// </returns>.
-        public Coordinate Centre
+        public Coordinate? Centre
         {
             get
             {
@@ -702,7 +701,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <inheritdoc />
-        public override bool Equals(object o)
+        public override bool Equals(object? o)
         {
             if (o is Envelope other)
                 return Equals(other);
@@ -726,7 +725,7 @@ namespace NetTopologySuite.Geometries
         /// Null envelopes are less than all non-null envelopes.
         /// </summary>
         /// <param name="o">An envelope</param>
-        public int CompareTo(object o)
+        public int CompareTo(object? o)
         {
             if (o is Envelope other)
                 return CompareTo(other);
@@ -740,7 +739,7 @@ namespace NetTopologySuite.Geometries
         /// Null envelopes are less than all non-null envelopes.
         /// </summary>
         /// <param name="env">An envelope</param>
-        public int CompareTo(Envelope env)
+        public int CompareTo(Envelope? env)
         {
             env = env ?? new Envelope();
 

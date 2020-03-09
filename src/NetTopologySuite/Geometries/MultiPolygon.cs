@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 
@@ -30,7 +29,7 @@ namespace NetTopologySuite.Geometries
         /// For create this <see cref="Geometry"/> is used a standard <see cref="GeometryFactory"/>
         /// with <see cref="PrecisionModel" /> <c> == </c> <see cref="PrecisionModels.Floating"/>.
         /// </remarks>
-        public MultiPolygon(Polygon[] polygons) : this(polygons, DefaultFactory) { }
+        public MultiPolygon(Polygon[]? polygons) : this(polygons, DefaultFactory) { }
 
         /// <summary>
         /// Constructs a <c>MultiPolygon</c>.
@@ -44,7 +43,7 @@ namespace NetTopologySuite.Geometries
         /// Specification for SQL.
         /// </param>
         /// <param name="factory"></param>
-        public MultiPolygon(Polygon[] polygons, GeometryFactory factory) : base(polygons, factory) { }
+        public MultiPolygon(Polygon[]? polygons, GeometryFactory factory) : base(polygons, factory) { }
 
         /// <inheritdoc cref="Geometry.CopyInternal"/>>
         protected override Geometry CopyInternal()

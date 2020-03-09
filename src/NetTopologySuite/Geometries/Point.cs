@@ -1,4 +1,3 @@
-#nullable disable
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +16,7 @@ namespace NetTopologySuite.Geometries
     [Serializable]
     public class Point : Geometry, IPuntal
     {
-        private static readonly Coordinate EmptyCoordinate = null;
+        private static readonly Coordinate? EmptyCoordinate = null;
 
         /// <summary>
         /// Represents an empty <c>Point</c>.
@@ -59,7 +58,7 @@ namespace NetTopologySuite.Geometries
         /// or <c>null</c> to create the empty point.
         /// </param>
         /// <param name="factory"></param>
-        public Point(CoordinateSequence coordinates, GeometryFactory factory) : base(factory)
+        public Point(CoordinateSequence? coordinates, GeometryFactory factory) : base(factory)
         {
             if (coordinates == null)
                 coordinates = factory.CoordinateSequenceFactory.Create(new Coordinate[] { });
@@ -70,7 +69,7 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public override Coordinate[] Coordinates => IsEmpty ? new Coordinate[] { } : new Coordinate[] { this.Coordinate };
+        public override Coordinate[] Coordinates => IsEmpty ? new Coordinate[] { } : new Coordinate[] { this.Coordinate! };
 
         public override double[] GetOrdinates(Ordinate ordinate)
         {
@@ -149,7 +148,10 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         ///
         /// </summary>
-        public override Coordinate Coordinate => _coordinates.Count != 0 ? _coordinates.GetCoordinate(0) : null;
+        // note about nullability: when IsEmpty is false, then our value is non-null.  the compiler
+        // doesn't understand this, so we have to use a lot of null-forgiveness operators when we
+        // use this value after a !IsEmpty guard.
+        public override Coordinate? Coordinate => _coordinates.Count != 0 ? _coordinates.GetCoordinate(0) : null;
 
         /// <summary>
         /// Returns the name of this object's interface.
@@ -177,7 +179,7 @@ namespace NetTopologySuite.Geometries
         {
             if (IsEmpty)
                 return new Envelope();
-            return new Envelope(Coordinate.X, Coordinate.X, Coordinate.Y, Coordinate.Y);
+            return new Envelope(Coordinate!.X, Coordinate.X, Coordinate.Y, Coordinate.Y);
         }
 
         //internal override int  GetHashCodeInternal(int baseValue, Func<int,int> operation)
@@ -202,7 +204,7 @@ namespace NetTopologySuite.Geometries
             if (IsEmpty != other.IsEmpty)
                 return false;
 
-            return Equal(other.Coordinate, Coordinate, tolerance);
+            return Equal(other.Coordinate!, Coordinate!, tolerance);
         }
 
         /// <summary>
@@ -213,7 +215,7 @@ namespace NetTopologySuite.Geometries
         {
             if (IsEmpty)
                 return;
-            filter.Filter(Coordinate);
+            filter.Filter(Coordinate!);
         }
 
         public override void Apply(ICoordinateSequenceFilter filter)
