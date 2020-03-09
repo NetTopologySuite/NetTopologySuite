@@ -48,6 +48,19 @@ namespace NetTopologySuite.Index.Strtree
             return i == 0 ? _boundable1 : _boundable2;
         }
 
+
+        /// <summary>
+        /// Computes the maximum distance between any
+        /// two items in the pair of nodes.
+        /// </summary>
+        /// <returns>the maximum distance between items in the pair</returns>
+        public double MaximumDistance()
+        {
+            return EnvelopeUtility.MaximumDistance(
+                _boundable1.Bounds,
+                _boundable2.Bounds);
+        }
+
         /// <summary>
         /// Computes the distance between the <see cref="IBoundable{Envelope, TItem}"/>s in this pair.
         /// The boundables are either composites or leaves.
@@ -66,35 +79,6 @@ namespace NetTopologySuite.Index.Strtree
             // otherwise compute distance between bounds of boundables
             return _boundable1.Bounds.Distance(_boundable2.Bounds);
         }
-
-        /*
-        public double GetMaximumDistance()
-        {
-          if (_maxDistance < 0.0)
-              _maxDistance = MaxDistance();
-          return _maxDistance;
-        }
-        */
-
-        /*
-        private double MaxDistance()
-        {
-          return maximumDistance(
-              (Envelope) boundable1.Bounds,
-              (Envelope) boundable2.Bounds);
-        }
-
-        private static double MaximumDistance(Envelope env1, Envelope env2)
-        {
-          double minx = Math.Min(env1.GetMinX(), env2.GetMinX());
-          double miny = Math.Min(env1.GetMinY(), env2.GetMinY());
-          double maxx = Math.Max(env1.GetMaxX(), env2.GetMaxX());
-          double maxy = Math.Max(env1.GetMaxY(), env2.GetMaxY());
-          var min = new Coordinate(minx, miny);
-          var max = new Coordinate(maxx, maxy);
-          return min.Distance(max);
-        }
-        */
 
         /// <summary>
         /// Gets the minimum possible distance between the Boundables in

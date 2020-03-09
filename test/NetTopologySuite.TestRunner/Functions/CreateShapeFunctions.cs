@@ -36,6 +36,31 @@ namespace Open.Topology.TestRunner.Functions
             return geomFact.BuildGeometry(geoms);
         }
 
+        public static Geometry GridPoints(Geometry g, int nCells)
+        {
+            var env = FunctionsUtil.GetEnvelopeOrDefault(g);
+            var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
+
+            int nCellsOnSideY = (int)Math.Sqrt(nCells);
+            int nCellsOnSideX = nCells / nCellsOnSideY;
+
+            double cellSizeX = env.Width / (nCellsOnSideX - 1);
+            double cellSizeY = env.Height / (nCellsOnSideY - 1);
+
+            var pts = new CoordinateList();
+
+            for (int i = 0; i < nCellsOnSideX; i++)
+            {
+                for (int j = 0; j < nCellsOnSideY; j++)
+                {
+                    double x = env.MinX + i * cellSizeX;
+                    double y = env.MinY + j * cellSizeY;
+
+                    pts.Add(new Coordinate(x, y));
+                }
+            }
+            return geomFact.CreateMultiPointFromCoords(pts.ToCoordinateArray());
+        }
         public static Geometry Supercircle3(Geometry g, int nPts)
         {
             return Supercircle(g, nPts, 3);

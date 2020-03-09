@@ -41,9 +41,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
 
             //test(50);
             Test(100);
-            //Test(200);
-            //Test(500);
-            //Test(1000);
+            Test(200);
+            Test(500);
+            Test(1000);
             //test(5000);
             //test(10000);
             //test(50000);
@@ -61,7 +61,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
             Envelope bcEnv_Albers = new Envelope(-45838, 1882064, 255756, 1733287);
             Geometry[] pts = createPoints(bcEnv_Albers, num);
             */
-            Test(pts, target);
+            Test(pts, target, true);
         }
 
         /*
@@ -78,10 +78,19 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
         private void Test(Geometry[] pts, Geometry target)
         {
             if (verbose)
+            {
+                Console.WriteLine();
                 Console.WriteLine("Query points = " + pts.Length
-                                  + "     Target points = " + target.NumPoints);
-            //    if (! verbose) System.out.print(num + ", ");
+                                                    + "     Target points = " + target.NumPoints);
+                //    if (! verbose) System.out.print(num + ", ");
+            }
 
+            Test(pts, target, true);
+            Test(pts, target, false);
+        }
+
+        public void Test(Geometry[] pts, Geometry target, bool useFastDist)
+        {
             double dist = 0.0;
             var sw = new Stopwatch();
             sw.Start();
@@ -94,9 +103,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Distance
                 Console.WriteLine(sw.ElapsedMilliseconds);
             if (verbose)
             {
-                string name = USE_INDEXED_DIST ? "IndexedFacetDistance" : "Distance";
+                string name = useFastDist ? "IndexedFacetDistance" : "Distance";
                 Console.WriteLine(name + " - Run time: " + sw.ElapsedMilliseconds);
-                Console.WriteLine();
+                //Console.WriteLine();
             }
         }
 

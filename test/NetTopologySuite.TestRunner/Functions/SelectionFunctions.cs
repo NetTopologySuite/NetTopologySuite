@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Operation.Distance;
 
 namespace Open.Topology.TestRunner.Functions
 {
@@ -54,6 +55,17 @@ namespace Open.Topology.TestRunner.Functions
         public static Geometry InteriorPointWithin(Geometry a, Geometry mask)
         {
             return Select(a, g => g.InteriorPoint.Within(mask));
+        }
+
+        public static Geometry withinDistance(Geometry a, Geometry mask, double maximumDistance)
+        {
+            return Select(a, t => mask.IsWithinDistance(t, maximumDistance));
+        }
+
+        public static Geometry withinDistanceIndexed(Geometry a, Geometry mask, double maximumDistance)
+        {
+            var indexedDist = new IndexedFacetDistance(mask);
+            return Select(a, t => indexedDist.IsWithinDistance(t, maximumDistance));
         }
 
         private static Geometry Select(Geometry geom, Func<Geometry, bool> predicate)

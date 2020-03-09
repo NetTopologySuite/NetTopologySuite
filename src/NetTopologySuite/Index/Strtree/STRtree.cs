@@ -1,4 +1,4 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
@@ -290,33 +290,6 @@ namespace NetTopologySuite.Index.Strtree
         }
 
         /// <summary>
-        /// Finds k items in this tree which are the top k nearest neighbors to the given <c>item</c>,
-        /// using <c>itemDist</c> as the distance metric.
-        /// A Branch-and-Bound tree traversal algorithm is used
-        /// to provide an efficient search.
-        /// This method implements the KNN algorithm described in the following paper:
-        /// <para/>
-        /// Roussopoulos, Nick, Stephen Kelley, and FrÃ©dÃ©ric Vincent. "Nearest neighbor queries."
-        /// ACM sigmod record. Vol. 24. No. 2. ACM, 1995.
-        /// <para/>
-        /// The query <c>item</c> does <b>not</b> have to be
-        /// contained in the tree, but it does
-        /// have to be compatible with the <c>itemDist</c>
-        /// distance metric.
-        /// </summary>
-        /// <param name="env">The envelope of the query item</param>
-        /// <param name="item">The item to find the nearest neighbour of</param>
-        /// <param name="itemDist">A distance metric applicable to the items in this tree and the query item</param>
-        /// <param name="k">The K nearest items in kNearestNeighbour</param>
-        /// <returns>K nearest items in this tree</returns>
-        public TItem[] NearestNeighbour(Envelope env, TItem item, IItemDistance<Envelope, TItem> itemDist, int k)
-        {
-            var bnd = new ItemBoundable<Envelope, TItem> (env, item);
-            var bp = new BoundablePair<TItem>(Root, bnd, itemDist);
-            return NearestNeighbour(bp, k);
-        }
-
-        /// <summary>
         /// Finds the item in this tree which is nearest to the given <paramref name="item"/>,
         /// using <see cref="IItemDistance{Envelope,TItem}"/> as the distance metric.
         /// A Branch-and-Bound tree traversal algorithm is used
@@ -359,30 +332,18 @@ namespace NetTopologySuite.Index.Strtree
 
         private static TItem[] NearestNeighbour(BoundablePair<TItem> initBndPair)
         {
-            return NearestNeighbour(initBndPair, double.PositiveInfinity);
-        }
-
-        private TItem[] NearestNeighbour(BoundablePair<TItem> initBndPair, int k)
-        {
-            return NearestNeighbour(initBndPair, double.PositiveInfinity, k);
-        }
-
-        private static TItem[] NearestNeighbour(BoundablePair<TItem> initBndPair, double maxDistance)
-        {
-            double distanceLowerBound = maxDistance;
+            double distanceLowerBound = double.MaxValue;
             BoundablePair<TItem> minPair = null;
 
-            // initialize internal structures
+            // initialize search queue
             var priQ = new PriorityQueue<BoundablePair<TItem>>();
-
-            // initialize queue
             priQ.Add(initBndPair);
 
             while (!priQ.IsEmpty() && distanceLowerBound > 0.0)
             {
                 // pop head of queue and expand one side of pair
                 var bndPair = priQ.Poll();
-                double currentDistance = bndPair.Distance; //bndPair.GetDistance();
+                double currentDistance = bndPair.Distance;
 
                 /**
                  * If the distance for the first node in the queue
@@ -409,14 +370,6 @@ namespace NetTopologySuite.Index.Strtree
                 }
                 else
                 {
-                    // testing - does allowing a tolerance improve speed?
-                    // Ans: by only about 10% - not enough to matter
-                    /*
-                    double maxDist = bndPair.getMaximumDistance();
-                    if (maxDist * .99 < lastComputedDistance)
-                      return;
-                    //*/
-
                     /**
                      * Otherwise, expand one side of the pair,
                      * (the choice of which side to expand is heuristically determined)
@@ -426,16 +379,143 @@ namespace NetTopologySuite.Index.Strtree
                 }
             }
             if (minPair != null)
-            // done - return items with min distance
-            return new[]
-                       {
+                // done - return items with min distance
+                return new[] {
                            ((ItemBoundable<Envelope, TItem>) minPair.GetBoundable(0)).Item,
                            ((ItemBoundable<Envelope, TItem>) minPair.GetBoundable(1)).Item
                        };
             return null;
         }
 
-        private TItem[] NearestNeighbour(BoundablePair<TItem> initBndPair, double maxDistance, int k)
+
+        /**
+         * Tests whether some two items from this tree and another tree
+         * lie within a given distance.
+         * {@link ItemDistance} is used as the distance metric.
+         * A Branch-and-Bound tree traversal algorithm is used
+         * to provide an efficient search.
+         * 
+         * @param tree another tree
+         * @param itemDist a distance metric applicable to the items in the trees
+         * @param maxDistance the distance limit for the search
+         * @return true if there are items within the distance
+         */
+        public bool IsWithinDistance(STRtree<TItem> tree, IItemDistance<Envelope, TItem> itemDist, double maxDistance)
+        {
+            var bp = new BoundablePair<TItem>(Root, tree.Root, itemDist);
+            return IsWithinDistance(bp, maxDistance);
+        }
+
+        /**
+         * Performs a withinDistance search on the tree node pairs.
+         * This is a different search algorithm to nearest neighbour.
+         * It can utilize the {@link BoundablePair#maximumDistance()} between
+         * tree nodes to confirm if two internal nodes must
+         * have items closer than the maxDistance,
+         * and short-circuit the search.
+         * 
+         * @param initBndPair the initial pair containing the tree root nodes
+         * @param maxDistance the maximum distance to search for
+         * @return true if two items lie within the given distance
+         */
+        private bool IsWithinDistance(BoundablePair<TItem> initBndPair, double maxDistance)
+        {
+            double distanceUpperBound = double.PositiveInfinity;
+
+            // initialize search queue
+            var priQ = new PriorityQueue<BoundablePair<TItem>>();
+            priQ.Add(initBndPair);
+
+            while (!priQ.IsEmpty())
+            {
+                // pop head of queue and expand one side of pair
+                var bndPair = priQ.Poll();
+                double currentDistance = bndPair.Distance;
+
+                /**
+                 * If the distance for the first pair in the queue
+                 * is >= maxDistance, other pairs
+                 * in the queue must also have a greater distance.
+                 * So can conclude no items are within the distance
+                 * and terminate with false
+                 */
+                if (currentDistance > maxDistance)
+                    return false;
+
+                /**
+                 * There must be some pair of items in the nodes which 
+                 * are closer than the max distance,
+                 * so can terminate with true.
+                 * 
+                 * NOTE: using the Envelope MinMaxDistance would provide a tighter bound,
+                 * but not sure how to compute this!
+                 */
+                if (bndPair.MaximumDistance() <= maxDistance)
+                    return true;
+                /**
+                 * If the pair members are leaves
+                 * then their distance is an upper bound.
+                 * Update the distanceUpperBound to reflect this
+                 */
+                if (bndPair.IsLeaves)
+                {
+                    // assert: currentDistance < minimumDistanceFound
+                    distanceUpperBound = currentDistance;
+
+                    /**
+                     * Current pair is closer than maxDistance
+                     * so can terminate with true
+                     */
+                    if (distanceUpperBound <= maxDistance)
+                        return true;
+                }
+                else
+                {
+                    /**
+                     * Otherwise, expand one side of the pair, 
+                     * and insert the expanded pairs into the queue.
+                     * The choice of which side to expand is determined heuristically.
+                     */
+                    bndPair.ExpandToQueue(priQ, distanceUpperBound);
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Finds k items in this tree which are the top k nearest neighbors to the given <c>item</c>,
+        /// using <c>itemDist</c> as the distance metric.
+        /// A Branch-and-Bound tree traversal algorithm is used
+        /// to provide an efficient search.
+        /// This method implements the KNN algorithm described in the following paper:
+        /// <para/>
+        /// Roussopoulos, Nick, Stephen Kelley, and Frédéric Vincent. "Nearest neighbor queries."
+        /// ACM sigmod record. Vol. 24. No. 2. ACM, 1995.
+        /// <para/>
+        /// The query <c>item</c> does <b>not</b> have to be
+        /// contained in the tree, but it does
+        /// have to be compatible with the <c>itemDist</c>
+        /// distance metric.
+        /// </summary>
+        /// <param name="env">The envelope of the query item</param>
+        /// <param name="item">The item to find the nearest neighbour of</param>
+        /// <param name="itemDist">A distance metric applicable to the items in this tree and the query item</param>
+        /// <param name="k">The K nearest items in kNearestNeighbour</param>
+        /// <returns>K nearest items in this tree</returns>
+        public TItem[] NearestNeighbour(Envelope env, TItem item, IItemDistance<Envelope, TItem> itemDist, int k)
+        {
+            var bnd = new ItemBoundable<Envelope, TItem> (env, item);
+            var bp = new BoundablePair<TItem>(Root, bnd, itemDist);
+            return NearestNeighbourK(bp, k);
+        }
+
+        private TItem[] NearestNeighbourK(BoundablePair<TItem> initBndPair, int k)
+        {
+            return NearestNeighbourK(initBndPair, double.PositiveInfinity, k);
+        }
+
+
+        private TItem[] NearestNeighbourK(BoundablePair<TItem> initBndPair, double maxDistance, int k)
         {
             double distanceLowerBound = maxDistance;
 
@@ -460,7 +540,6 @@ namespace NetTopologySuite.Index.Strtree
                  * So the current minDistance must be the true minimum,
                  * and we are done.
                  */
-
                 if (currentDistance >= distanceLowerBound)
                 {
                     break;
