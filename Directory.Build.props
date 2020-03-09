@@ -9,6 +9,8 @@
     <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
+  <Import Project="NullableSupport.props" />
+
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)icon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
