@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 
 namespace NetTopologySuite.Utilities
 {
@@ -35,7 +35,7 @@ namespace NetTopologySuite.Utilities
              if (valueIn.Trim().Length == 0)
                            return result;
 
-             // se baseIn e baseOut sono uguali la conversione Ë gi‡ fatta!
+             // se baseIn e baseOut sono uguali la conversione √® gi√† fatta!
              if (baseIn == baseOut)
                           return valueIn;
 
@@ -43,7 +43,7 @@ namespace NetTopologySuite.Utilities
              double valore = 0;
              try
              {
-                  // se il campo Ë in base 10 non c'Ë bisogno di calcolare il valore
+                  // se il campo √® in base 10 non c'√® bisogno di calcolare il valore
                   if (baseIn == 10)
                       valore = double.Parse(valueIn);
                   else
@@ -72,7 +72,7 @@ namespace NetTopologySuite.Utilities
                   }
 
                   // generazione del risultato final
-                  // se il risultato da generare Ë in base 10 non c'Ë
+                  // se il risultato da generare √® in base 10 non c'√®
                   // bisogno di calcoli
                   if (baseOut == 10)
                            result = valore.ToString();

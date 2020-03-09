@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -1509,7 +1509,7 @@ namespace RTools_NTS.Util
         #region Implementation of IEnumerable
 
         /// <summary>
-        /// Gibt einen Enumerator zurück, der die Auflistung durchläuft.
+        /// Gibt einen Enumerator zurÃ¼ck, der die Auflistung durchlÃ¤uft.
         /// </summary>
         /// <returns>
         /// Ein <see cref="T:System.Collections.Generic.IEnumerator`1"/>, der zum Durchlaufen der Auflistung verwendet werden kann.
@@ -1532,7 +1532,7 @@ namespace RTools_NTS.Util
         }
 
         /// <summary>
-        /// Gibt einen Enumerator zurück, der eine Auflistung durchläuft.
+        /// Gibt einen Enumerator zurÃ¼ck, der eine Auflistung durchlÃ¤uft.
         /// </summary>
         /// <returns>
         /// Ein <see cref="T:System.Collections.IEnumerator"/>-Objekt, das zum Durchlaufen der Auflistung verwendet werden kann.

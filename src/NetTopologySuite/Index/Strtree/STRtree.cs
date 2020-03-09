@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
@@ -296,7 +296,7 @@ namespace NetTopologySuite.Index.Strtree
         /// to provide an efficient search.
         /// This method implements the KNN algorithm described in the following paper:
         /// <para/>
-        /// Roussopoulos, Nick, Stephen Kelley, and Frédéric Vincent. "Nearest neighbor queries."
+        /// Roussopoulos, Nick, Stephen Kelley, and FrÃ©dÃ©ric Vincent. "Nearest neighbor queries."
         /// ACM sigmod record. Vol. 24. No. 2. ACM, 1995.
         /// <para/>
         /// The query <c>item</c> does <b>not</b> have to be
