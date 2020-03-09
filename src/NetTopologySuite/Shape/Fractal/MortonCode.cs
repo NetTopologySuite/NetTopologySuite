@@ -50,7 +50,7 @@ namespace NetTopologySuite.Shape.Fractal
 
         /// <summary>
         /// The number of points in the curve for the given level.
-        /// The number of points is 2ˡᵉᵛᵉˡ⁺¹.
+        /// The number of points is 2²ˡᵉᵛᵉˡ.
         /// </summary>
         /// <param name="level">The level of the curve</param>
         /// <returns>The number of points.</returns>
