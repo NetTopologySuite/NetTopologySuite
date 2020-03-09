@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Buffer;

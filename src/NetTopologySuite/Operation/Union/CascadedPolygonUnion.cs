@@ -1,3 +1,4 @@
+#nullable disable
 //#define UseWorker
 
 using System;

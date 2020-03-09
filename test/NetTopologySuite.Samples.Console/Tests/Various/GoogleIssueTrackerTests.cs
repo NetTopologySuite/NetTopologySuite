@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.IO;
+﻿#nullable disable
+using NetTopologySuite.IO;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.Various

@@ -1,3 +1,4 @@
+#nullable disable
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
     using System.Collections.Generic;

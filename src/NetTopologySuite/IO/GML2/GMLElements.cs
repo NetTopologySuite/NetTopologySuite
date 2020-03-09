@@ -1,3 +1,4 @@
+#nullable disable
 namespace NetTopologySuite.IO.GML2
 {
     internal static class GMLElements

@@ -1,4 +1,5 @@
-﻿namespace NetTopologySuite.Operation.Buffer
+﻿#nullable disable
+namespace NetTopologySuite.Operation.Buffer
 {
     ///<summary>
     /// End cap style constants

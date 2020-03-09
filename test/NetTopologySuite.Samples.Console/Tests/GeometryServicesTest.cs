@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿#nullable disable
+using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.SimpleTests.Tests
 {

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿#nullable disable
+using System.Threading;
 
 namespace NetTopologySuite.Tests.NUnit.Performance
 {

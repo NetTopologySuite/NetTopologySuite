@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿#nullable disable
+using System.IO;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.IO.GML2;

@@ -1,3 +1,4 @@
+#nullable disable
 using System.IO;
 using NetTopologySuite.Operation.Union;
 using NetTopologySuite.Tests.NUnit.TestData;

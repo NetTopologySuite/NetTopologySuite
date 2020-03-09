@@ -1,3 +1,4 @@
+#nullable disable
 using NetTopologySuite.Noding;
 
 namespace NetTopologySuite.Geometries.Prepared

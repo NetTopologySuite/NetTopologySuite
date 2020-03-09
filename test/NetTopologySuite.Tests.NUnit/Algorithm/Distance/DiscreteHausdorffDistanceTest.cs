@@ -1,3 +1,4 @@
+#nullable disable
 using NetTopologySuite.Algorithm.Distance;
 using NUnit.Framework;
 

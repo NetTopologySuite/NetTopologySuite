@@ -1,3 +1,4 @@
+#nullable disable
 using NetTopologySuite.IO;
 using NUnit.Framework;
 

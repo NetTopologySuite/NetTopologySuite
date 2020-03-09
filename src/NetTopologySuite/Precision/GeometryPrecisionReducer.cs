@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Geometries;
+﻿#nullable disable
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 
 namespace NetTopologySuite.Precision

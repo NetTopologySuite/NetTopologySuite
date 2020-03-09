@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using NetTopologySuite.Algorithm;
 
 namespace NetTopologySuite.Geometries.Utilities

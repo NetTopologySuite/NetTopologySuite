@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#nullable disable
+using System.Collections.Generic;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Chain;
 using NetTopologySuite.Index.Strtree;

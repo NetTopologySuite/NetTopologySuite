@@ -1,4 +1,5 @@
-﻿namespace NetTopologySuite.Geometries.Prepared
+﻿#nullable disable
+namespace NetTopologySuite.Geometries.Prepared
 {
     /// <summary>
     /// Computes the <c>contains</c> spatial relationship predicate for a <see cref="PreparedPolygon"/> relative to all other <see cref="Geometry"/> classes.

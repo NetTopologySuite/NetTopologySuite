@@ -1,4 +1,5 @@
-﻿/*
+﻿#nullable disable
+/*
  * Copyright (c) 2017 Jia Yu.
  *
  * All rights reserved. This program and the accompanying materials

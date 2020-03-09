@@ -1,3 +1,4 @@
+#nullable disable
 using System;
 using NetTopologySuite.Samples.SimpleTests.ShapeTests;
 using NUnit.Framework;

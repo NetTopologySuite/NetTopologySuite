@@ -1,4 +1,5 @@
-﻿namespace NetTopologySuite.Geometries
+﻿#nullable disable
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Interface describing objects that can perform an intersects predicate with <typeparamref name="T"/> objects.

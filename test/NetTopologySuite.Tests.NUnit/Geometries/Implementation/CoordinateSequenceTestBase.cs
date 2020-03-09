@@ -1,3 +1,4 @@
+#nullable disable
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;

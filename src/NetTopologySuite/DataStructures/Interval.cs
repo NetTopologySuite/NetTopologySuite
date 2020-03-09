@@ -1,4 +1,5 @@
-﻿#define picky
+﻿#nullable disable
+#define picky
 using System;
 using System.Globalization;
 using NetTopologySuite.Geometries;

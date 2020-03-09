@@ -1,3 +1,4 @@
+#nullable disable
 // VerbosityLevel.cs
 //
 // Copyright (C) 2002-2004 Ryan Seghers

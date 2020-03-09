@@ -1,3 +1,4 @@
+#nullable disable
 ////#define CheckIntersectionUsingDoubleDouble
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;

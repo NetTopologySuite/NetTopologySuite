@@ -1,3 +1,4 @@
+#nullable disable
 using Open.Topology.TestRunner;
 
 namespace ConsoleTestRunner

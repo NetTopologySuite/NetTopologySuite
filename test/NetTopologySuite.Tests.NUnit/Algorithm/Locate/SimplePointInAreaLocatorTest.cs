@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Algorithm.Locate;
+﻿#nullable disable
+using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;

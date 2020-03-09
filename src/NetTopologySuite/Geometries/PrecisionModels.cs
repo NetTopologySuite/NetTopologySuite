@@ -1,4 +1,5 @@
-﻿namespace NetTopologySuite.Geometries
+﻿#nullable disable
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// 

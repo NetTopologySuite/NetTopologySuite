@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#nullable disable
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;

@@ -1,3 +1,4 @@
+#nullable disable
 namespace NetTopologySuite.Geometries.Prepared
 {
     /// <summary>

@@ -1,3 +1,4 @@
+#nullable disable
 namespace NetTopologySuite.Index.IntervalRTree
 {
     public class IntervalRTreeLeafNode<T> : IntervalRTreeNode<T>

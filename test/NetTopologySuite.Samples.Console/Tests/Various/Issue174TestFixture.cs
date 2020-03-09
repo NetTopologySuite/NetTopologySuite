@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using NetTopologySuite.Triangulate;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;

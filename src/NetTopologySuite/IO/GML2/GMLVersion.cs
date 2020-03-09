@@ -1,4 +1,5 @@
-﻿namespace NetTopologySuite.IO.GML2
+﻿#nullable disable
+namespace NetTopologySuite.IO.GML2
 {
     /// <summary>
     /// Identifies a version of the GML specification.

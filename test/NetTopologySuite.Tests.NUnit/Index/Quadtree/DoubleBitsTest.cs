@@ -1,3 +1,4 @@
+#nullable disable
 using NetTopologySuite.Index.Quadtree;
 using NUnit.Framework;
 

@@ -1,3 +1,4 @@
+#nullable disable
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Algorithm

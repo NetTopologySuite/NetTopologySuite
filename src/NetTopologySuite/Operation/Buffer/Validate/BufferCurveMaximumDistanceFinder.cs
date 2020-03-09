@@ -1,3 +1,4 @@
+#nullable disable
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.Buffer.Validate

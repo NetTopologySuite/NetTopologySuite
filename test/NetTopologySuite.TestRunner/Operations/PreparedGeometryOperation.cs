@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Prepared;
 using Open.Topology.TestRunner.Result;

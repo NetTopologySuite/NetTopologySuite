@@ -1,3 +1,4 @@
+#nullable disable
 using System.Globalization;
 
 namespace NetTopologySuite.Utilities

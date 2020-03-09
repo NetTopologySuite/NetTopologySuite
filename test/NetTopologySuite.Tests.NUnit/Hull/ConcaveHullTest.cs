@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Hull;
+﻿#nullable disable
+using NetTopologySuite.Hull;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Hull

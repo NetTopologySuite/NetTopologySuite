@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Tests.NUnit;
+﻿#nullable disable
+using NetTopologySuite.Tests.NUnit;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Samples.Lab.Clean

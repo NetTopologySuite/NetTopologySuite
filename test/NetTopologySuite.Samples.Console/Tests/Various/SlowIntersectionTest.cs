@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Geometries.Implementation;
+﻿#nullable disable
+using NetTopologySuite.Geometries.Implementation;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.Various

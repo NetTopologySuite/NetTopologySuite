@@ -1,3 +1,4 @@
+#nullable disable
 using NetTopologySuite.Operation;
 
 namespace NetTopologySuite.Geometries

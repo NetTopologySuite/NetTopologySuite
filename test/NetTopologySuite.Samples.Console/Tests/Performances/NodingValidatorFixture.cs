@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿#nullable disable
+using System.Diagnostics;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Overlay;

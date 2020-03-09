@@ -1,3 +1,4 @@
+#nullable disable
 internal static class Consts
 {
     public const string PublicKeyToken =

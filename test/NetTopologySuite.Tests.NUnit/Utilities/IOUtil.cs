@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Geometries;
+﻿#nullable disable
+using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;
 using ParseException = NetTopologySuite.IO.ParseException;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance

@@ -1,3 +1,4 @@
+#nullable disable
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Noding;

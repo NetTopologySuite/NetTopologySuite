@@ -1,3 +1,4 @@
+#nullable disable
 using System.Collections;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;

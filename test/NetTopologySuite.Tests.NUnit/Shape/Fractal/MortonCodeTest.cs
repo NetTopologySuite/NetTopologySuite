@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Shape.Fractal;
+﻿#nullable disable
+using NetTopologySuite.Shape.Fractal;
 
 using NUnit.Framework;
 

@@ -1,3 +1,4 @@
+#nullable disable
 using NetTopologySuite.Utilities;
 
 using BitConverter = System.BitConverter;

@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Algorithm;
+﻿#nullable disable
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Utilities;
 using ICloneable = System.ICloneable;

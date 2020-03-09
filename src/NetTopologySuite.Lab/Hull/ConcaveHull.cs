@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#nullable disable
+using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Triangulate;
 using NetTopologySuite.Triangulate.QuadEdge;

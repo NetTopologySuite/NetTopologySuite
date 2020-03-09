@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿#nullable disable
+using System.IO;
 using System.Reflection;
 
 namespace NetTopologySuite.Tests.NUnit.TestData

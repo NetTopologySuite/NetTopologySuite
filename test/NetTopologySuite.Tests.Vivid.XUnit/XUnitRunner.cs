@@ -1,4 +1,5 @@
-﻿namespace NetTopologySuite.Tests.XUnit
+﻿#nullable disable
+namespace NetTopologySuite.Tests.XUnit
 {
     using System;
     using System.IO;

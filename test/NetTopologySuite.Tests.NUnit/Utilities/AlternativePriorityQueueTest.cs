@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using System.Collections.Generic;
 using NetTopologySuite.Utilities;
 using NUnit.Framework;

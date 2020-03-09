@@ -1,3 +1,4 @@
+#nullable disable
 /*
 * Arguments class: application arguments interpreter
 *

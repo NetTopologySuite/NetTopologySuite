@@ -1,4 +1,5 @@
-﻿/*
+﻿#nullable disable
+/*
  * Copyright (c) 2016 Martin Davis.
  *
  * All rights reserved. This program and the accompanying materials

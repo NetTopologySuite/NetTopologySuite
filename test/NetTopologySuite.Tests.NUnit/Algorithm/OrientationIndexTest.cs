@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Algorithm;
+﻿#nullable disable
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using NUnit.Framework;

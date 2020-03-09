@@ -1,3 +1,4 @@
+#nullable disable
 using System.Globalization;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;

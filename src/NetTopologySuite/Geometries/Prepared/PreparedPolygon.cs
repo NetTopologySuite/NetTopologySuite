@@ -1,3 +1,4 @@
+#nullable disable
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Noding;
 using NetTopologySuite.Operation.Predicate;

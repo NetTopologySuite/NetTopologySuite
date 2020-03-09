@@ -1,3 +1,4 @@
+#nullable disable
 using System.Diagnostics;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Precision;

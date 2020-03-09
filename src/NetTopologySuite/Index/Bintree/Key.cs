@@ -1,3 +1,4 @@
+#nullable disable
 using System;
 //using NetTopologySuite.DataStructures;
 using NetTopologySuite.Index.Quadtree;

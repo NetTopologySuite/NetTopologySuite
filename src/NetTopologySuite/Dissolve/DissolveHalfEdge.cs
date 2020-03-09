@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.EdgeGraph;
+﻿#nullable disable
+using NetTopologySuite.EdgeGraph;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Dissolve

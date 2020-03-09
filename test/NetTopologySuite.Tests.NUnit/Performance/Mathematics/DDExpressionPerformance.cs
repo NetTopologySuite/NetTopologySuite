@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using System.Diagnostics;
 using NetTopologySuite.Mathematics;
 using NUnit.Framework;

@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.EdgeGraph;
+﻿#nullable disable
+using NetTopologySuite.EdgeGraph;
 using NetTopologySuite.Geometries;
 using NUnit.Framework;
 using EGraph = NetTopologySuite.EdgeGraph.EdgeGraph;

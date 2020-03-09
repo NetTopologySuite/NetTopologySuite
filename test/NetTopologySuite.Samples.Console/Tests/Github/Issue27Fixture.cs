@@ -1,3 +1,4 @@
+#nullable disable
 using NetTopologySuite.Algorithm.Distance;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;

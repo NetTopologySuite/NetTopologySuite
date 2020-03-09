@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Algorithm.Match;
+﻿#nullable disable
+using NetTopologySuite.Algorithm.Match;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Tests.NUnit;
 using NUnit.Framework;

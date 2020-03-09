@@ -1,4 +1,5 @@
-﻿namespace NetTopologySuite.Mathematics
+﻿#nullable disable
+namespace NetTopologySuite.Mathematics
 {
     /// <summary>
     /// Various utility functions for mathematical and numerical operations.

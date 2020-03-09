@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using NetTopologySuite.Precision;
 using NetTopologySuite.Triangulate;
 using NetTopologySuite.Triangulate.QuadEdge;

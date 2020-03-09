@@ -1,4 +1,5 @@
-﻿namespace NetTopologySuite.Geometries
+﻿#nullable disable
+namespace NetTopologySuite.Geometries
 {
     /// <summary>
     /// Identifies the different well-supported components of coordinate values.

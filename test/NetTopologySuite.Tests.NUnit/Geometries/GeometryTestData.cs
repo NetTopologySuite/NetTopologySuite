@@ -1,4 +1,5 @@
-﻿namespace NetTopologySuite.Tests.NUnit.Geometries
+﻿#nullable disable
+namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     public class GeometryTestData
     {

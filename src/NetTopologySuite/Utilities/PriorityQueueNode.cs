@@ -1,4 +1,5 @@
-﻿// Derived from BlueRaja's "High Speed Priority Queue for C#",
+﻿#nullable disable
+// Derived from BlueRaja's "High Speed Priority Queue for C#",
 // which has the following license text:
 /*
 The MIT License (MIT)

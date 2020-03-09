@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Dissolve;
+﻿#nullable disable
+using NetTopologySuite.Dissolve;
 using NetTopologySuite.Geometries;
 
 namespace Open.Topology.TestRunner.Functions

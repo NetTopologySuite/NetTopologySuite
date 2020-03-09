@@ -1,3 +1,4 @@
+#nullable disable
 namespace NetTopologySuite.GeometriesGraph.Index
 {
     /// <summary>

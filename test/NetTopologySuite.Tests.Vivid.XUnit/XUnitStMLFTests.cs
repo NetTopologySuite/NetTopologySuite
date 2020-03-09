@@ -1,4 +1,5 @@
-﻿namespace NetTopologySuite.Tests.XUnit
+﻿#nullable disable
+namespace NetTopologySuite.Tests.XUnit
 {
     public abstract class StMLFXUnitRunner : XUnitRunner
     {

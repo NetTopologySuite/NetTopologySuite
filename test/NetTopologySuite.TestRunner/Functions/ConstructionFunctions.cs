@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Algorithm;
+﻿#nullable disable
+using NetTopologySuite.Algorithm;
 using NetTopologySuite.Densify;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
