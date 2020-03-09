@@ -17,7 +17,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Distance
 
         protected override bool IsWithinDistance(Geometry g1, Geometry g2, double distance)
         {
-            return Distance(g1, g2) <= distance;
+            return g2.IsWithinDistance(g1, distance);
         }
 
         protected override Coordinate[] NearestPoints(Geometry g1, Geometry g2)

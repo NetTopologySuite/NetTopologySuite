@@ -41,6 +41,13 @@ namespace NetTopologySuite.Operation.Distance
         /// <returns></returns>
         public static bool IsWithinDistance(Geometry g0, Geometry g1, double distance)
         {
+            // check envelope distance for a short-circuit negative result
+            double envDist = g0.EnvelopeInternal.Distance(g1.EnvelopeInternal);
+            if (envDist > distance)
+                return false;
+
+            // MD - could improve this further with a positive short-circuit based on envelope MinMaxDist
+
             var distOp = new DistanceOp(g0, g1, distance);
             return distOp.Distance() <= distance;
         }

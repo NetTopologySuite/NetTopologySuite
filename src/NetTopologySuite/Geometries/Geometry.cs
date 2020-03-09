@@ -405,9 +405,6 @@ namespace NetTopologySuite.Geometries
         /// <returns><c>true</c> if the geometries are less than <c>distance</c> apart.</returns>
         public virtual bool IsWithinDistance(Geometry geom, double distance)
         {
-            double envDist = EnvelopeInternal.Distance(geom.EnvelopeInternal);
-            if (envDist > distance)
-                return false;
             return DistanceOp.IsWithinDistance(this, geom, distance);
         }
 
