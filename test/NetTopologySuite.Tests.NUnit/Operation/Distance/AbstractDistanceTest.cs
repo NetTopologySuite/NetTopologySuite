@@ -49,7 +49,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Distance
             var g3 = _reader.Read("POLYGON ((160 240, 120 240, 120 160, 180 100, 160 240))");
             Assert.That(Distance(g1, g3), Is.Zero.Within(1E-5));
 
-            Assert.That(IsWithinDistance(g1, g2, 0), Is.True);
+            Assert.That(IsWithinDistance(g1, g3, 0), Is.True);
 
         }
 
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Distance
         {
             var g1 = _reader.Read("POINT (0 0)");
             var g2 = _reader.Read("POLYGON EMPTY");
-            Assert.That(Distance(g1, g2), Is.Zero);
+            Assert.That(g1.Distance(g2), Is.Zero);
         }
 
         [TestCase("POLYGON ((200 180, 60 140, 60 260, 200 180))", "POINT (140 280)", 57.05597791103589, 111.6923076923077, 230.46153846153845, 140, 280, false)]
