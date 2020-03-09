@@ -1,4 +1,3 @@
-#nullable disable
 namespace NetTopologySuite.Triangulate.QuadEdge
 {
     /// <summary>

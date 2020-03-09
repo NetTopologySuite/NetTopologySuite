@@ -1,4 +1,3 @@
-#nullable disable
 using System.Collections.Generic;
 
 namespace NetTopologySuite.Noding

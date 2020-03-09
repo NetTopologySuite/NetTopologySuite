@@ -1,5 +1,4 @@
-﻿#nullable disable
-using System;
+﻿using System;
 using NetTopologySuite.Geometries;
 using Open.Topology.TestRunner.Result;
 

@@ -1,4 +1,3 @@
-#nullable disable
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Noding
@@ -13,7 +12,7 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// Gets/Sets the user-defined data for this segment string.
         /// </summary>
-        object Context { get; set; }
+        object? Context { get; set; }
         /// <summary>
         /// Points that make up ISegmentString
         /// </summary>
