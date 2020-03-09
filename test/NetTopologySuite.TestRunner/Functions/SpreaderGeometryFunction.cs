@@ -49,7 +49,9 @@ namespace Open.Topology.TestRunner.Functions
 
             return geom.Factory.CreateGeometryCollection(results);
 #else
-            return GeometryMapper.Map(geom, g => (Geometry)_fun.Invoke(g, args));
+            var result = GeometryMapper.Map(geom, g => (Geometry)_fun.Invoke(g, args));
+            if (result.IsEmpty) return null;
+            return result;
 #endif
         }
     }
