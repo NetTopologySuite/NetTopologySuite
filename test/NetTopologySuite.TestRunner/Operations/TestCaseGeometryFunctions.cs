@@ -46,7 +46,7 @@ namespace Open.Topology.TestRunner.Operations
             return polygonize(g, false);
         }
 
-        public static Geometry polygonizeValidArea(Geometry g)
+        public static Geometry polygonizeValidPolygonal(Geometry g)
         {
             return polygonize(g, true);
         }

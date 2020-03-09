@@ -25,6 +25,11 @@ namespace Open.Topology.TestRunner.Functions
             return Polygonize(g, false);
         }
 
+        public static Geometry PolygonizeValidPolygonal(Geometry g)
+        {
+            return Polygonize(g, true);
+        }
+
         public static Geometry PolygonizeDangles(Geometry g)
         {
             var lines = LineStringExtracter.GetLines(g);
