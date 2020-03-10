@@ -18,5 +18,15 @@ namespace NetTopologySuite
         {
             return RectangleClipPolygon.Clip(geom, rectangle, new PrecisionModel(scaleFactor));
         }
+
+        public static Geometry ClipByIntersection(Geometry geom, Geometry rectangle)
+        {
+            // short-circuit check
+            var rectEnv = rectangle.EnvelopeInternal;
+            if (rectEnv.Contains(geom.EnvelopeInternal)) return geom.Copy();
+
+            return rectangle.Intersection(geom);
+        }
+
     }
 }
