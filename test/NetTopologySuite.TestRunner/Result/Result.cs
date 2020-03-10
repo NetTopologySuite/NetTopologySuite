@@ -138,7 +138,8 @@ namespace Open.Topology.TestRunner.Result
             thisGeometryClone.Normalize();
             otherGeometryClone.Normalize();
 
-            return thisGeometryClone.EqualsExact(otherGeometryClone, tolerance);
+            bool isEqual = thisGeometryClone.EqualsExact(otherGeometryClone, tolerance);
+            return isEqual;
 
         }
 
