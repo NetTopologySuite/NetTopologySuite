@@ -203,11 +203,11 @@ namespace NetTopologySuite.Clip
                 if (coords == null) return null;
 
                 //if (isOutsideEdge(currentCoordsEnv, edgeIndex)) return null;
-
             }
             return coords;
         }
 
+        /*
         private bool IsInsideEdge(Envelope env, int edgeIndex)
         {
             switch (edgeIndex)
@@ -240,7 +240,9 @@ namespace NetTopologySuite.Clip
             }
         }
 
-        //Envelope currentCoordsEnv;
+        Envelope currentCoordsEnv;
+        */
+
         /// <summary>
         /// Clips ring to a axis-parallel line defined by a single box edge.
         /// </summary>

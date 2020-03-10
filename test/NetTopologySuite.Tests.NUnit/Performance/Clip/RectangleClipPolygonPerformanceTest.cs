@@ -24,27 +24,36 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Clip
         [Test, Category("Stress")]
         public void Test()
         {
-            List<Geometry> world = null;
+            Geometry data = LoadData();
+
+            Console.WriteLine($"Dataset: # geometries = {data.NumGeometries}   # pts = {data.NumPoints}");
+
+            var sw = new Stopwatch();
+            sw.Start();
+            RunClip(data);
+            sw.Stop();
+
+            Console.WriteLine("Time: {0}ms", sw.ElapsedMilliseconds);
+        }
+
+        private GeometryCollection LoadData()
+        {
+            List<Geometry> data = null;
             try
             {
-                world = readWKTFile(EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.world.wkt"));
+                data = readWKTFile(EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.world.wkt"));
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.StackTrace);
             }
 
-            var sw = new Stopwatch();
-            sw.Start();
-            RunClip(world);
-            sw.Stop();
-
-            Console.WriteLine("Time: {0}ms", sw.ElapsedMilliseconds);
+            return factory.CreateGeometryCollection(data.ToArray());
         }
 
-        private void RunClip(List<Geometry> data)
+        private void RunClip(Geometry data)
         {
-            var dataEnv = Envelope(data);
+            var dataEnv = data.EnvelopeInternal;
 
             for (int x = -180; x < 180; x += 10)
             {
@@ -57,10 +66,11 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Clip
             }
         }
 
-        private void RunClip(Geometry rect, List<Geometry> data)
+        private void RunClip(Geometry rect, Geometry data)
         {
-            foreach (var geom in data)
+            for (int i = 0; i < data.NumGeometries; i++)
             {
+                var geom = data.GetGeometryN(i);
                 Clip(rect, geom);
                 //RectangleIntersection(rect, geom);
             }
