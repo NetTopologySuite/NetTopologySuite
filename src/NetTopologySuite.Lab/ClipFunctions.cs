@@ -28,5 +28,13 @@ namespace NetTopologySuite
             return rectangle.Intersection(geom);
         }
 
+        public static Geometry ClipByIntersectionOpt(Geometry geom, Geometry rectangle)
+        {
+            // short-circuit check
+            var rectEnv = rectangle.EnvelopeInternal;
+            if (rectEnv.Contains(geom.EnvelopeInternal)) return geom.Copy();
+            if (!rectangle.Intersects(geom)) return null;
+            return rectangle.Intersection(geom);
+        }
     }
 }

@@ -10,10 +10,18 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Clip
 {
+    [TestFixture(true)]
+    [TestFixture(false)]
     public class RectangleClipPolygonPerformanceTest
     {
 
-        static GeometryFactory factory = new GeometryFactory();
+        static readonly GeometryFactory Factory = new GeometryFactory();
+        private readonly bool _clip;
+
+        public RectangleClipPolygonPerformanceTest(bool clip)
+        {
+            _clip = clip;
+        }
 
         public static List<Geometry> readWKTFile(Stream fileStream)
         {
@@ -48,19 +56,20 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Clip
                 Console.WriteLine(e.StackTrace);
             }
 
-            return factory.CreateGeometryCollection(data.ToArray());
+            return Factory.CreateGeometryCollection(data.ToArray());
         }
 
         private void RunClip(Geometry data)
         {
             var dataEnv = data.EnvelopeInternal;
 
-            for (int x = -180; x < 180; x += 10)
+            const int gridSize = 20;
+            for (int x = -180; x < 180; x += gridSize)
             {
-                for (int y = -90; y < 90; y += 10)
+                for (int y = -90; y < 90; y += gridSize)
                 {
-                    var env = new Envelope(x, x + 10, y, y + 10);
-                    var rect = factory.ToGeometry(env);
+                    var env = new Envelope(x, x + gridSize, y, y + gridSize);
+                    var rect = Factory.ToGeometry(env);
                     RunClip(rect, data);
                 }
             }
@@ -71,8 +80,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Clip
             for (int i = 0; i < data.NumGeometries; i++)
             {
                 var geom = data.GetGeometryN(i);
-                Clip(rect, geom);
-                //RectangleIntersection(rect, geom);
+                if (_clip) Clip(rect, geom);
+                else RectangleIntersection(rect, geom);
             }
         }
 
@@ -91,11 +100,10 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Clip
                 return geom.Copy();
             }
 
-            if (!env.Intersects(geom.EnvelopeInternal))
-                return null;
-            if (rect.Intersects(geom))
-                return rect.Intersection(geom);
-            return null;
+            // Use intersects check first as that is faster
+            if (!rect.Intersects(geom)) return null;
+
+            return rect.Intersection(geom);
         }
 
         private Envelope Envelope(List<Geometry> world)
