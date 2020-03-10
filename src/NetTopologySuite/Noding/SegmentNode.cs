@@ -92,5 +92,11 @@ namespace NetTopologySuite.Noding
             outstream.Write(Coord);
             outstream.Write(" seg # = " + SegmentIndex);
         }
+
+        /// <inheritdoc cref="object.ToString()"/>>
+        public override string ToString()
+        {
+            return $"{SegmentIndex}:{Coordinate}";
+        }
     }
 }
