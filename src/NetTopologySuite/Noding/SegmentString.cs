@@ -64,6 +64,7 @@ namespace NetTopologySuite.Noding
         /// <summary>
         /// Gets/Sets the user-defined data for this segment string.
         /// </summary>
+        /// <remarks>In JTS this property is called <i>Data</i></remarks>
         public object Context { get; set; }
 
         /// <summary>

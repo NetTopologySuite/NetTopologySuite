@@ -80,6 +80,12 @@ namespace NetTopologySuite.Noding
                 return 1;
             if (Coord.Equals2D(other.Coord))
                 return 0;
+
+            // an exterior node is the segment start point, so always sorts first
+            // this guards against a robustness problem where the octants are not reliable
+            if (!IsInterior) return -1;
+            if (!other.IsInterior) return 1;
+
             return SegmentPointComparator.Compare(_segmentOctant, Coord, other.Coord);
         }
 

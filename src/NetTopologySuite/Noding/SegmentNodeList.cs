@@ -224,8 +224,25 @@ namespace NetTopologySuite.Noding
         /// <param name="ei0"></param>
         /// <param name="ei1"></param>
         /// <returns></returns>
-        ISegmentString CreateSplitEdge(SegmentNode ei0, SegmentNode ei1)
+        private ISegmentString CreateSplitEdge(SegmentNode ei0, SegmentNode ei1)
         {
+            var pts = CreateSplitEdgePts(ei0, ei1);
+            return new NodedSegmentString(pts, _edge.Context);
+        }
+
+        /// <summary>
+        /// Extracts the points for a split edge running between two nodes.
+        /// The extracted points should contain no duplicate points.
+        /// There should always be at least two points extracted
+        /// (which will be the given nodes).
+        /// </summary>
+        /// <param name="ei0">The start node of the split edge</param>
+        /// <param name="ei1">The end node of the split edge</param>
+        /// <returns>The points for the split edge</returns>
+        private Coordinate[] CreateSplitEdgePts(SegmentNode ei0, SegmentNode ei1)
+        {
+            //Debug.WriteLine("\nCreateSplitEdge"); Debug.print(ei0); Debug.print(ei1);
+
             int npts = ei1.SegmentIndex - ei0.SegmentIndex + 2;
 
             var lastSegStartPt = _edge.GetCoordinate(ei1.SegmentIndex);
@@ -244,7 +261,7 @@ namespace NetTopologySuite.Noding
             if (useIntPt1)
                 pts[ipt] = ei1.Coord.Copy();
 
-            return new NodedSegmentString(pts, _edge.Context);
+            return pts;
         }
 
         /// <summary>Gets the list of coordinates for the fully noded segment string,
