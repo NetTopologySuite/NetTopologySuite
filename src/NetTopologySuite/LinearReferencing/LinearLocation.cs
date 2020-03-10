@@ -222,7 +222,7 @@ namespace NetTopologySuite.LinearReferencing
             _componentIndex = linear.NumGeometries - 1;
             var lastLine = (LineString)linear.GetGeometryN(_componentIndex);
             _segmentIndex = lastLine.NumPoints - 1;
-            _segmentFraction = 1.0;
+            _segmentFraction = 0.0;
         }
 
         /// <summary>

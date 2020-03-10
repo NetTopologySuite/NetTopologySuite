@@ -33,6 +33,22 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         }
 
         [Test]
+        public void TestEndLocation()
+        {
+            var line = reader.Read("LINESTRING (10 0, 20 0)");
+            var loc0 = LinearLocation.GetEndLocation(line);
+            Assert.That(loc0.SegmentFraction, Is.EqualTo(0d));
+            Assert.That(loc0.SegmentIndex, Is.EqualTo(1));
+
+            var indexedLine = new LocationIndexedLine(line);
+            var endLoc = indexedLine.EndIndex;
+            var normLoc = new LinearLocation(endLoc.ComponentIndex, endLoc.SegmentIndex, endLoc.SegmentFraction);
+            Assert.That(normLoc.ComponentIndex, Is.EqualTo(endLoc.ComponentIndex));
+            Assert.That(normLoc.SegmentIndex, Is.EqualTo(endLoc.SegmentIndex));
+            Assert.That(normLoc.SegmentFraction, Is.EqualTo(endLoc.SegmentFraction));
+        }
+
+        [Test]
         public void TestSameSegmentLineString()
         {
             var line = reader.Read("LINESTRING (0 0, 10 0, 20 0, 30 0)");
