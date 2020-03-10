@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Geometries.Utilities;
 
 namespace Open.Topology.TestRunner.Functions
 {
@@ -41,33 +40,6 @@ namespace Open.Topology.TestRunner.Functions
         public string Signature => _fun.Signature;
 
         public bool IsBinary => _fun.IsBinary;
-
-        public object OLDInvoke(Geometry geom, object[] args)
-        {
-#if false
-            var results = new Geometry[geom.NumGeometries];
-            for (int i = 0; i < results.Length; i++)
-            {
-                var elt = geom.GetGeometryN(i);
-                var result = (Geometry)_fun.Invoke(elt, args);
-
-                // can't include null results
-                if (result == null)
-                {
-                    continue;
-                }
-
-                ////FunctionsUtil.showIndicator(result);
-                results[i] = result;
-            }
-
-            return geom.Factory.CreateGeometryCollection(results);
-#else
-            var result = GeometryMapper.Map(geom, g => (Geometry)_fun.Invoke(g, args));
-            if (result.IsEmpty) return null;
-            return result;
-#endif
-        }
 
         public object Invoke(Geometry geom, object[] args)
         {
@@ -121,8 +93,8 @@ namespace Open.Topology.TestRunner.Functions
 
         private void InvokeEachB(Geometry geom, object[] args, List<Geometry> result)
         {
-            var geomB = (Geometry)args[0];
             object[] argsCopy = (object[])args.Clone();
+            var geomB = (Geometry)args[0];
             int nElt = geomB.NumGeometries;
             for (int i = 0; i < nElt; i++)
             {
@@ -135,12 +107,39 @@ namespace Open.Topology.TestRunner.Functions
         private void InvokeFun(Geometry geom, object[] args, List<Geometry> result)
         {
             var resultGeom = (Geometry)_fun.Invoke(geom, args);
-            if (resultGeom == null) return;
-            if (resultGeom.IsEmpty) return;
+            // don't keep null / empty geoms
+            if (resultGeom == null || resultGeom.IsEmpty) return;
             //FunctionsUtil.showIndicator(resultGeom);
             result.Add(resultGeom);
         }
+        /*
+        public object OLDInvoke(Geometry geom, object[] args)
+        {
+#if false
+            var results = new Geometry[geom.NumGeometries];
+            for (int i = 0; i < results.Length; i++)
+            {
+                var elt = geom.GetGeometryN(i);
+                var result = (Geometry)_fun.Invoke(elt, args);
 
+                // can't include null results
+                if (result == null)
+                {
+                    continue;
+                }
+
+                ////FunctionsUtil.showIndicator(result);
+                results[i] = result;
+            }
+
+            return geom.Factory.CreateGeometryCollection(results);
+#else
+            var result = GeometryMapper.Map(geom, g => (Geometry)_fun.Invoke(g, args));
+            if (result.IsEmpty) return null;
+            return result;
+#endif
+        }
+        */
 
     }
 }
