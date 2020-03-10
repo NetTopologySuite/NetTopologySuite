@@ -18,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
 
         public ConvexHullTest()
         {
-            PrecisionModel precisionModel = new PrecisionModel(1000);
+            var precisionModel = new PrecisionModel(1000);
             _geometryFactory = new GeometryFactory(precisionModel, 0);
             _reader = new WKTReader(_geometryFactory);
         }

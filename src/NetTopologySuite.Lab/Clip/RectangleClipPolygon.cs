@@ -64,14 +64,16 @@ namespace NetTopologySuite.Clip
 
         public Geometry Clip(Geometry geom)
         {
-            // TODO: handle MultiPolygons
-            var polyClip = ClipPolygon((Polygon)geom);
-            return FixTopology(polyClip);
+            var geomsClip = ClipCollection(geom);
+            if (geomsClip == null)
+                return geom.Factory.CreatePolygon();
+
+            return FixTopology(geomsClip);
         }
 
         /// <summary>
         /// The clipped geometry may be invalid
-        /// (due to coincident linework from clipping to edges, 
+        /// (due to coincident at clip edges, 
         /// or due to precision reduction if performed).
         /// This method fixed the geometry topology to be valid.
         /// <para/>
@@ -90,10 +92,41 @@ namespace NetTopologySuite.Clip
             return geom.Buffer(0d);
         }
 
+        public Geometry ClipCollection(Geometry geom)
+        {
+            if (IsOutsideRectangle(geom)) return null;
+            // TODO: need to precision reduce
+            if (IsInsideRectangle(geom)) return (Polygon)geom.Copy();
+
+            var geomsClip = new List<Geometry>();
+            for (int i = 0; i < geom.NumGeometries; i++)
+            {
+                var item = geom.GetGeometryN(i);
+                if (!(item is Polygon poly)) continue;
+                var polyClip = ClipPolygon(poly);
+                if (polyClip == null) continue;
+                geomsClip.Add(polyClip);
+            }
+    
+            if (geomsClip.Count == 0) {
+                return null;
+            }
+            var geomClip = geom.Factory.BuildGeometry(geomsClip);
+            return geomClip;
+        }
+
         private Polygon ClipPolygon(Polygon poly)
         {
+            if (IsOutsideRectangle(poly)) return null;
+            // TODO: need to precision reduce
+            if (IsInsideRectangle(poly)) return (Polygon)poly.Copy();
+
             var shell = (LinearRing)poly.ExteriorRing;
             var shellClip = ClipRing(shell);
+            if (shellClip == null)
+            {
+                return null;
+            }
 
             var holesClip = ClipHoles(poly);
 
@@ -117,22 +150,39 @@ namespace NetTopologySuite.Clip
 
         private LinearRing ClipRing(LinearRing ring)
         {
+            if (IsOutsideRectangle(ring)) return null;
+            // TODO: need to precision reduce
+            if (IsInsideRectangle(ring)) return (LinearRing)ring.Copy();
+
             var pts = ClipRingToBox(ring.Coordinates);
             return ring.Factory.CreateLinearRing(pts);
         }
+
+        private bool IsInsideRectangle(Geometry geom)
+        {
+            return clipEnv.Covers(geom.EnvelopeInternal);
+        }
+
+        private bool IsOutsideRectangle(Geometry geom)
+        {
+            return !clipEnv.Intersects(geom.EnvelopeInternal);
+        }
+
 
         /// <summary>
         /// Clips ring to rectangle box.
         /// This follows the Sutherland-Hodgson algorithm.
         /// </summary>
         /// <param name="ring"></param>
-        /// <returns></returns>
+        /// <returns>the clipped points, or <c>null</c> if all were clipped</returns>
         private Coordinate[] ClipRingToBox(Coordinate[] ring)
         {
             var coords = ring;
             for (int edgeIndex = 0; edgeIndex < 4; edgeIndex++)
             {
                 coords = ClipRingToBoxEdge(coords, edgeIndex);
+                // check if all points clipped off
+                if (coords == null) return null;
             }
             return coords;
         }
@@ -142,6 +192,7 @@ namespace NetTopologySuite.Clip
         /// </summary>
         /// <param name="coords">An array of coordinates</param>
         /// <param name="edgeIndex">An edge index</param>
+        /// <returns>The clipped points, or <c>null</c> if all were clipped</returns>
         private Coordinate[] ClipRingToBoxEdge(Coordinate[] coords, int edgeIndex)
         {
             var clipCoords = new CoordinateList();
@@ -168,6 +219,9 @@ namespace NetTopologySuite.Clip
                 }
                 p0 = p1;
             }
+            // check if all points clipped off
+            if (clipCoords.Count <= 0) return null;
+
             clipCoords.CloseRing();
             return clipCoords.ToCoordinateArray();
         }
@@ -216,6 +270,9 @@ namespace NetTopologySuite.Clip
 
         private double IntersectionLineY(Coordinate a, Coordinate b, double y)
         {
+            // short-circuit segment parallel to Y axis
+            if (b.X == a.X) return a.X;
+
             double m = (b.X - a.X) / (b.Y - a.Y);
             double intercept = (y - a.Y) * m;
             return a.X + intercept;
@@ -223,6 +280,9 @@ namespace NetTopologySuite.Clip
 
         private double IntersectionLineX(Coordinate a, Coordinate b, double x)
         {
+            // short-circuit segment parallel to X axis
+            if (b.Y == a.Y) return a.Y;
+
             double m = (b.Y - a.Y) / (b.X - a.X);
             double intercept = (x - a.X) * m;
             return a.Y + intercept;

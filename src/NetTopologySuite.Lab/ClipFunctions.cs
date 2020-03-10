@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using NetTopologySuite.Clip;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite
@@ -8,14 +9,14 @@ namespace NetTopologySuite
     public class ClipFunctions
     {
 
-        public static Geometry clipPoly(Geometry geom, Geometry rectangle)
+        public static Geometry ClipPoly(Geometry geom, Geometry rectangle)
         {
-            return RectangleClipPolygon.clip(geom, rectangle);
+            return RectangleClipPolygon.Clip(geom, rectangle);
         }
 
-        public static Geometry clipPolyPrecise(Geometry geom, Geometry rectangle, double scaleFactor)
+        public static Geometry ClipPolyPrecise(Geometry geom, Geometry rectangle, double scaleFactor)
         {
-            return RectangleClipPolygon.clip(geom, rectangle, new PrecisionModel(scaleFactor));
+            return RectangleClipPolygon.Clip(geom, rectangle, new PrecisionModel(scaleFactor));
         }
     }
 }
