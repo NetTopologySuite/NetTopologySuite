@@ -6,7 +6,7 @@ namespace NetTopologySuite.Tests.XUnit
     {
         protected ExternalXUnitRunner(string testFile) : base(testFile) { }
 
-        protected override string TestLocation => "external";
+        protected override string TestLocation => "misc";
     }
 
     public class TestGeosBuffer : ExternalXUnitRunner

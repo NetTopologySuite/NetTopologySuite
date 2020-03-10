@@ -187,7 +187,7 @@
         {
             if (i >= this.Count)
             {
-                Assert.Ignore($"Index out of range (max = {Count}");
+                Assert.Ignore($"Index out of range (max = {Count})");
                 return new TestResults("i > Count", true);
             }
 
