@@ -7,14 +7,22 @@ namespace NetTopologySuite.Index.Strtree
 {
     /// <summary>
     /// A query-only R-tree created using the Sort-Tile-Recursive (STR) algorithm.
-    /// For two-dimensional spatial data.<para/>
+    /// For two-dimensional spatial data.
+    /// <para/>
     /// The STR packed R-tree is simple to implement and maximizes space
     /// utilization; that is, as many leaves as possible are filled to capacity.
     /// Overlap between nodes is far less than in a basic R-tree. However, once the
     /// tree has been built (explicitly or on the first call to <see cref="Query"/>), items may
-    /// not be added or removed.<para/>
+    /// not be added or removed.
+    /// <para/>
     /// Described in: P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
     /// Application To GIS. Morgan Kaufmann, San Francisco, 2002.
+    /// <para/>
+    /// <b>Note that inserting items into a tree is not thread-safe.</b>
+    /// Inserting performed on more than one thread must be synchronized externally.
+    /// <para/>
+    /// Querying a tree is thread-safe. The building phase is done synchronously,
+    /// and querying is stateless.
     /// </summary>
     [Serializable]
     public class STRtree<TItem> : AbstractSTRtree<Envelope, TItem>, ISpatialIndex<TItem>
