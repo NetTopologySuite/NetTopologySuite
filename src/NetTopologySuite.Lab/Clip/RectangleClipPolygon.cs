@@ -180,13 +180,58 @@ namespace NetTopologySuite.Clip
             var coords = ring;
             for (int edgeIndex = 0; edgeIndex < 4; edgeIndex++)
             {
+                /*
+                // this is a further optimization to clip entire line
+                // but not clear it makes much difference
+                if (edgeIndex >= 1 && isInsideEdge(currentCoordsEnv, edgeIndex))
+                    // all pts inside - skip clipping against this edge
+                    continue;
+                */
+
+                //currentCoordsEnv = new Envelope();
                 coords = ClipRingToBoxEdge(coords, edgeIndex);
                 // check if all points clipped off
                 if (coords == null) return null;
+
+                //if (isOutsideEdge(currentCoordsEnv, edgeIndex)) return null;
+
             }
             return coords;
         }
 
+        private bool IsInsideEdge(Envelope env, int edgeIndex)
+        {
+            switch (edgeIndex)
+            {
+                case ENV_BOTTOM:
+                    return env.MinY > clipEnvMinY;
+                case ENV_RIGHT:
+                    return env.MaxX < clipEnvMaxX;
+                case ENV_TOP:
+                    return env.MaxY < clipEnvMaxY;
+                case ENV_LEFT:
+                default:
+                    return env.MinX > clipEnvMinX;
+            }
+        }
+
+        private bool IsOutsideEdge(Envelope env, int edgeIndex)
+        {
+            switch (edgeIndex)
+            {
+                case ENV_BOTTOM:
+                    return env.MaxY < clipEnvMinY;
+                case ENV_RIGHT:
+                    return env.MinX > clipEnvMaxX;
+                case ENV_TOP:
+                    return env.MinY > clipEnvMaxY;
+                case ENV_LEFT:
+                default:
+                    return env.MaxX < clipEnvMinX;
+            }
+        }
+
+        //Envelope currentCoordsEnv;
         /// <summary>
         /// Clips ring to a axis-parallel line defined by a single box edge.
         /// </summary>
@@ -207,16 +252,20 @@ namespace NetTopologySuite.Clip
                     {
                         var intPt = IntersectionPrecise(p0, p1, edgeIndex);
                         clipCoords.Add(intPt, false);
+                        //currentCoordsEnv.expandToInclude(intPt);
                     }
                     // TODO: avoid copying so much?
-                    clipCoords.Add(MakePrecise(p1.Copy()), false);
-
+                    var p1Precise = MakePrecise(p1.Copy());
+                    clipCoords.Add(p1Precise, false);
+                    //currentCoordsEnv.expandToInclude(p1Precise);
                 }
                 else if (IsInsideEdge(p0, edgeIndex))
                 {
                     var intPt = IntersectionPrecise(p0, p1, edgeIndex);
                     clipCoords.Add(intPt, false);
+                    //currentCoordsEnv.expandToInclude(intPt);
                 }
+                // move to next segment
                 p0 = p1;
             }
             // check if all points clipped off
