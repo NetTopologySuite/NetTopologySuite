@@ -39,27 +39,34 @@ namespace NetTopologySuite.Clip
             return result;
         }
 
-        private Envelope clipEnv;
-        private double clipEnvMinY;
-        private double clipEnvMaxY;
-        private double clipEnvMinX;
-        private double clipEnvMaxX;
-        private PrecisionModel precModel;
+        private readonly Envelope _clipEnv;
+        private readonly double _clipEnvMinY;
+        private readonly double _clipEnvMaxY;
+        private readonly double _clipEnvMinX;
+        private readonly double _clipEnvMaxX;
+        private readonly PrecisionModel _precModel;
+
+        public RectangleClipPolygon(Envelope clipEnv)
+            : this(clipEnv, new PrecisionModel(PrecisionModels.Floating))
+        { }
 
         public RectangleClipPolygon(Geometry clipRectangle)
             : this(clipRectangle, new PrecisionModel(PrecisionModels.Floating))
-        {
-        }
+        { }
 
         public RectangleClipPolygon(Geometry clipRectangle, PrecisionModel pm)
-        {
-            clipEnv = clipRectangle.EnvelopeInternal;
-            clipEnvMinY = clipEnv.MinY;
-            clipEnvMaxY = clipEnv.MaxY;
-            clipEnvMinX = clipEnv.MinX;
-            clipEnvMaxX = clipEnv.MaxX;
+            : this(clipRectangle.EnvelopeInternal, pm)
+        { }
 
-            precModel = pm;
+        public RectangleClipPolygon(Envelope clipEnv, PrecisionModel pm)
+        {
+            _clipEnv = clipEnv;
+            _clipEnvMinY = clipEnv.MinY;
+            _clipEnvMaxY = clipEnv.MaxY;
+            _clipEnvMinX = clipEnv.MinX;
+            _clipEnvMaxX = clipEnv.MaxX;
+
+            _precModel = pm;
         }
 
         public Geometry Clip(Geometry geom)
@@ -96,7 +103,7 @@ namespace NetTopologySuite.Clip
         {
             if (IsOutsideRectangle(geom)) return null;
             // TODO: need to precision reduce
-            if (IsInsideRectangle(geom)) return (Polygon)geom.Copy();
+            if (IsInsideRectangle(geom)) return geom.Copy();
 
             var geomsClip = new List<Geometry>();
             for (int i = 0; i < geom.NumGeometries; i++)
@@ -155,17 +162,19 @@ namespace NetTopologySuite.Clip
             if (IsInsideRectangle(ring)) return (LinearRing)ring.Copy();
 
             var pts = ClipRingToBox(ring.Coordinates);
+            // check for a collapsed ring
+            if (pts == null || pts.Length < 4) return null;
             return ring.Factory.CreateLinearRing(pts);
         }
 
         private bool IsInsideRectangle(Geometry geom)
         {
-            return clipEnv.Covers(geom.EnvelopeInternal);
+            return _clipEnv.Covers(geom.EnvelopeInternal);
         }
 
         private bool IsOutsideRectangle(Geometry geom)
         {
-            return !clipEnv.Intersects(geom.EnvelopeInternal);
+            return !_clipEnv.Intersects(geom.EnvelopeInternal);
         }
 
 
@@ -204,14 +213,14 @@ namespace NetTopologySuite.Clip
             switch (edgeIndex)
             {
                 case ENV_BOTTOM:
-                    return env.MinY > clipEnvMinY;
+                    return env.MinY > _clipEnvMinY;
                 case ENV_RIGHT:
-                    return env.MaxX < clipEnvMaxX;
+                    return env.MaxX < _clipEnvMaxX;
                 case ENV_TOP:
-                    return env.MaxY < clipEnvMaxY;
+                    return env.MaxY < _clipEnvMaxY;
                 case ENV_LEFT:
                 default:
-                    return env.MinX > clipEnvMinX;
+                    return env.MinX > _clipEnvMinX;
             }
         }
 
@@ -220,14 +229,14 @@ namespace NetTopologySuite.Clip
             switch (edgeIndex)
             {
                 case ENV_BOTTOM:
-                    return env.MaxY < clipEnvMinY;
+                    return env.MaxY < _clipEnvMinY;
                 case ENV_RIGHT:
-                    return env.MinX > clipEnvMaxX;
+                    return env.MinX > _clipEnvMaxX;
                 case ENV_TOP:
-                    return env.MinY > clipEnvMaxY;
+                    return env.MinY > _clipEnvMaxY;
                 case ENV_LEFT:
                 default:
-                    return env.MaxX < clipEnvMinX;
+                    return env.MaxX < _clipEnvMinX;
             }
         }
 
@@ -277,9 +286,9 @@ namespace NetTopologySuite.Clip
 
         private Coordinate MakePrecise(Coordinate coord)
         {
-            if (precModel == null)
+            if (_precModel == null)
                 return coord;
-            precModel.MakePrecise(coord);
+            _precModel.MakePrecise(coord);
             return coord;
         }
 
@@ -306,14 +315,14 @@ namespace NetTopologySuite.Clip
             switch (edgeIndex)
             {
                 case ENV_BOTTOM:
-                    return new Coordinate(IntersectionLineY(a, b, clipEnvMinY), clipEnvMinY);
+                    return new Coordinate(IntersectionLineY(a, b, _clipEnvMinY), _clipEnvMinY);
                 case ENV_RIGHT:
-                    return new Coordinate(clipEnvMaxX, IntersectionLineX(a, b, clipEnvMaxX));
+                    return new Coordinate(_clipEnvMaxX, IntersectionLineX(a, b, _clipEnvMaxX));
                 case ENV_TOP:
-                    return new Coordinate(IntersectionLineY(a, b, clipEnvMaxY), clipEnvMaxY);
+                    return new Coordinate(IntersectionLineY(a, b, _clipEnvMaxY), _clipEnvMaxY);
                 case ENV_LEFT:
                 default:
-                    return new Coordinate(clipEnvMinX, IntersectionLineX(a, b, clipEnvMinX));
+                    return new Coordinate(_clipEnvMinX, IntersectionLineX(a, b, _clipEnvMinX));
             }
         }
 
@@ -342,14 +351,14 @@ namespace NetTopologySuite.Clip
             switch (edgeIndex)
             {
                 case ENV_BOTTOM: // bottom
-                    return p.Y > clipEnvMinY;
+                    return p.Y > _clipEnvMinY;
                 case ENV_RIGHT: // right
-                    return p.X < clipEnvMaxX;
+                    return p.X < _clipEnvMaxX;
                 case ENV_TOP: // top
-                    return p.Y < clipEnvMaxY;
+                    return p.Y < _clipEnvMaxY;
                 case ENV_LEFT:
                 default: // left
-                    return p.X > clipEnvMinX;
+                    return p.X > _clipEnvMinX;
             }
         }
 
