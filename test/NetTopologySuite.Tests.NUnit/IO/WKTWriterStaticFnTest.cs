@@ -117,5 +117,22 @@ namespace NetTopologySuite.Tests.NUnit.IO
             var cd = _reader.Read(toLineStringText).Coordinates;
             Assert.That(cd, Is.EqualTo(cs));
         }
+
+        [Test]
+        public void TestPointNoSciNot()
+        {
+            var coord = new Coordinate(123456789, 987654321);
+            string wkt = WKTWriter.ToPoint(coord);
+            Assert.That(wkt, Is.EqualTo("POINT (123456789 987654321)"));
+        }
+
+        [Test]
+        public void TestLineStringNoSciNot()
+        {
+            var coord = new Coordinate(123456789, 987654321);
+            var coord2 = new Coordinate(100000000, 900000000);
+            string wkt = WKTWriter.ToLineString(coord, coord2);
+            Assert.That(wkt, Is.EqualTo("LINESTRING (123456789 987654321, 100000000 900000000)"));
+        }
     }
 }

@@ -119,7 +119,7 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.IsNotNull(wkt2);
             Assert.IsTrue(wkt2.IsValid);
 
-            Assert.IsTrue(wkb1.EqualsExact(wkt1), "First geometry pair must be equal!");
+            Assert.IsTrue(wkb1.EqualsExact(wkt1), "First geometry pair must be equal!\n{0}\n{1}", wkb1, wkt1);
             Assert.IsTrue(wkb2.EqualsExact(wkt2), "Second geometry pair must be equal!");
 
             ex = TryOverlay(wkt1, wkt2);

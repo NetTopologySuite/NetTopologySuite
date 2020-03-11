@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Geometries
 {
@@ -133,18 +134,31 @@ namespace NetTopologySuite.Geometries
             return newseq;
         }
 
+        /// <summary>
+        /// Extends a given <see cref="CoordinateSequence"/>.
+        /// <para/>
+        /// Because coordinate sequences are fix in size, extending is done by
+        /// creating a new coordinate sequence of the requested size.
+        /// <para/>
+        /// The new, trailing coordinate entries (if any) are filled with the last 
+        /// coordinate of the input sequence
+        /// </summary>
+        /// <param name="fact">The factory to use when creating the new sequence.</param>
+        /// <param name="seq">The sequence to extend.</param>
+        /// <param name="size">The required size of the extended sequence</param>
+        /// <returns>The extended sequence</returns>
         public static CoordinateSequence Extend(CoordinateSequenceFactory fact, CoordinateSequence seq, int size)
         {
-            var newseq = fact.Create(size, seq.Ordinates);
+            var newSeq = fact.Create(size, seq.Ordinates);
             int n = seq.Count;
-            Copy(seq, 0, newseq, 0, n);
+            Copy(seq, 0, newSeq, 0, n);
             // fill remaining coordinates with end point, if it exists
             if (n > 0)
             {
                 for (int i = n; i < size; i++)
-                    Copy(seq, n - 1, newseq, i, 1);
+                    Copy(seq, n - 1, newSeq, i, 1);
             }
-            return newseq;
+            return newSeq;
         }
 
         /// <summary>
@@ -206,7 +220,7 @@ namespace NetTopologySuite.Geometries
                 {
                     if (d > 0) sb.Append(",");
                     double ordinate = cs.GetOrdinate(i, d);
-                    sb.Append(string.Format("{0:0.#}", ordinate));
+                    sb.Append(OrdinateFormat.Default.Format(ordinate));
                 }
             }
             sb.Append(')');
@@ -237,8 +251,6 @@ namespace NetTopologySuite.Geometries
         /// coordinate sequence, using the usual lexicographic comparison.
         /// </summary>
         /// <param name="seq">The coordinate sequence to search</param>
-        /// <param name="from">The lower search index</param>
-        /// <param name="to">The upper search index</param>
         /// <returns>The index of the minimum coordinate in the sequence, found using <see cref="Coordinate.CompareTo(Coordinate)"/></returns>
         public static int MinCoordinateIndex(CoordinateSequence seq)
         {
