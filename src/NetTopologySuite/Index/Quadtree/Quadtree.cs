@@ -55,12 +55,12 @@ namespace NetTopologySuite.Index.Quadtree
             if (minx == maxx)
             {
                 minx = minx - minExtent / 2.0;
-                maxx = minx + minExtent / 2.0;
+                maxx = maxx + minExtent / 2.0;
             }
             if (miny == maxy)
             {
                 miny = miny - minExtent / 2.0;
-                maxy = miny + minExtent / 2.0;
+                maxy = maxy + minExtent / 2.0;
             }
             return new Envelope(minx, maxx, miny, maxy);
         }
