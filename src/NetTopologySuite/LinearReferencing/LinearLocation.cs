@@ -165,7 +165,7 @@ namespace NetTopologySuite.LinearReferencing
             if (_segmentIndex >= linear.NumPoints)
             {
                 var line = (LineString)linear.GetGeometryN(_componentIndex);
-                _segmentIndex = line.NumPoints - 1;
+                _segmentIndex = NumSegments(line);
                 _segmentFraction = 1.0;
             }
         }
@@ -204,7 +204,7 @@ namespace NetTopologySuite.LinearReferencing
 
             // ensure segment index is valid
             int segIndex = _segmentIndex;
-            if (_segmentIndex >= lineComp.NumPoints - 1)
+            if (_segmentIndex >= NumSegments(lineComp))
                 segIndex = lineComp.NumPoints - 2;
 
             var p0 = lineComp.GetCoordinateN(segIndex);
@@ -221,7 +221,7 @@ namespace NetTopologySuite.LinearReferencing
         {
             _componentIndex = linear.NumGeometries - 1;
             var lastLine = (LineString)linear.GetGeometryN(_componentIndex);
-            _segmentIndex = lastLine.NumPoints - 1;
+            _segmentIndex = NumSegments(lastLine);
             _segmentFraction = 0.0;
         }
 
@@ -257,7 +257,7 @@ namespace NetTopologySuite.LinearReferencing
         {
             var lineComp = (LineString)linearGeom.GetGeometryN(_componentIndex);
             var p0 = lineComp.GetCoordinateN(_segmentIndex);
-            if (_segmentIndex >= lineComp.NumPoints - 1)
+            if (_segmentIndex >= NumSegments(lineComp))
                 return p0;
             var p1 = lineComp.GetCoordinateN(_segmentIndex + 1);
             return PointAlongSegmentByFraction(p0, p1, _segmentFraction);
@@ -273,7 +273,7 @@ namespace NetTopologySuite.LinearReferencing
             var lineComp = (LineString)linearGeom.GetGeometryN(_componentIndex);
             var p0 = lineComp.GetCoordinateN(_segmentIndex);
             // check for endpoint - return last segment of the line if so
-            if (_segmentIndex >= lineComp.NumPoints - 1)
+            if (_segmentIndex >= NumSegments(lineComp))
             {
                 var prev = lineComp.GetCoordinateN(lineComp.NumPoints - 2);
                 return new LineSegment(prev, p0);
@@ -459,9 +459,9 @@ namespace NetTopologySuite.LinearReferencing
         {
             var lineComp = (LineString)linearGeom.GetGeometryN(_componentIndex);
             // check for endpoint
-            int nseg = lineComp.NumPoints - 1;
+            int nseg = NumSegments(lineComp);
             return _segmentIndex >= nseg ||
-                (_segmentIndex == nseg && _segmentFraction >= 1.0);
+                (_segmentIndex == nseg - 1 && _segmentFraction >= 1.0);
         }
 
         /// <summary>
@@ -477,17 +477,37 @@ namespace NetTopologySuite.LinearReferencing
         public LinearLocation ToLowest(Geometry linearGeom)
         {
             // TODO: compute lowest component index
-            var lineComp = linearGeom.GetGeometryN(_componentIndex);
-            int nseg = lineComp.NumPoints - 1;
+            var lineComp = (LineString)linearGeom.GetGeometryN(_componentIndex);
+            int nseg = NumSegments(lineComp);
             // if not an endpoint can be returned directly
             if (_segmentIndex < nseg)
                 return this;
-            return new LinearLocation(_componentIndex, nseg, 1.0, false);
+            return new LinearLocation(_componentIndex, nseg - 1, 1.0, false);
         }
 
         public LinearLocation Copy()
         {
             return new LinearLocation(_segmentIndex, _segmentFraction);
+        }
+
+        /// <inheritdoc cref="object.ToString()"/>
+        public override string ToString()
+        {
+            return $"LinearLoc[{_componentIndex}, {_segmentIndex}, {_segmentFraction}]";
+        }
+
+        /// <summary>
+        /// Gets the count of the number of line segments
+        /// in a <see cref="LineString"/>.
+        /// This is one less than the number of coordinates.
+        /// </summary>
+        /// <param name="line">A LineString</param>
+        /// <returns>The number of segments</returns>
+        private static int NumSegments(LineString line)
+        {
+            int nPts = line.NumPoints;
+            if (nPts <= 1) return 0;
+            return nPts - 1;
         }
     }
 }

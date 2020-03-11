@@ -49,6 +49,53 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         }
 
         [Test]
+        public void TestIsEndPoint()
+        {
+            var line = reader.Read("LINESTRING (10 0, 20 0)");
+
+            Assert.True(!(new LinearLocation(0, 0)).IsEndpoint(line));
+            Assert.True(!(new LinearLocation(0, 0.5)).IsEndpoint(line));
+            Assert.True(!(new LinearLocation(0, 0.9999)).IsEndpoint(line));
+
+            Assert.True((new LinearLocation(0, 1.0)).IsEndpoint(line));
+
+            Assert.True((new LinearLocation(1, 0.0)).IsEndpoint(line));
+            Assert.True((new LinearLocation(1, 0.5)).IsEndpoint(line));
+            Assert.True((new LinearLocation(1, 1.0)).IsEndpoint(line));
+            Assert.True((new LinearLocation(1, 1.5)).IsEndpoint(line));
+
+            Assert.True((new LinearLocation(2, 0.5)).IsEndpoint(line));
+
+            var loc = new LinearLocation(0, 0.0);
+            loc.SetToEnd(line);
+            Assert.True(loc.IsEndpoint(line));
+
+            var locLow = loc.ToLowest(line);
+            Assert.True(locLow.IsEndpoint(line));
+        }
+
+        [Test]
+        public void TestEndPointLowest()
+        {
+            var line = reader.Read("LINESTRING (10 0, 20 0, 30 10)");
+
+            Assert.True((new LinearLocation(1, 1.0)).IsEndpoint(line));
+            Assert.True((new LinearLocation(2, 0.0)).IsEndpoint(line));
+            Assert.True((new LinearLocation(2, 0.5)).IsEndpoint(line));
+
+            var loc = new LinearLocation(0, 0.0);
+            loc.SetToEnd(line);
+            Assert.True(loc.IsEndpoint(line));
+            Assert.AreEqual(2, loc.SegmentIndex);
+            Assert.AreEqual(0.0, loc.SegmentFraction);
+
+            var locLow = loc.ToLowest(line);
+            Assert.True(locLow.IsEndpoint(line));
+            Assert.AreEqual(1, locLow.SegmentIndex);
+            Assert.AreEqual(1.0, locLow.SegmentFraction);
+        }
+
+        [Test]
         public void TestSameSegmentLineString()
         {
             var line = reader.Read("LINESTRING (0 0, 10 0, 20 0, 30 0)");
