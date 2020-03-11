@@ -4,8 +4,11 @@ using NetTopologySuite.Geometries;
 namespace NetTopologySuite.Utilities
 {
     /// <summary>
-    /// A <c>CoordinateFilter</c> that builds a set of <c>Coordinate</c>s.
-    /// The set of coordinates contains no duplicate points.
+    /// A <see cref="ICoordinateFilter"/>
+    /// that extracts a unique array of<c>Coordinate</c> s.
+    /// The array of coordinates contains no duplicate points.
+    /// <para/>
+    /// It preserves the order of the input points.
     /// </summary>
     public class UniqueCoordinateArrayFilter : ICoordinateFilter
     {
@@ -22,20 +25,20 @@ namespace NetTopologySuite.Utilities
             return filter.Coordinates;
         }
 
+        private readonly ISet<Coordinate> _coordSet = new HashSet<Coordinate>();
+        // Use an auxiliary list as well in order to preserve coordinate order
         private readonly List<Coordinate> _list = new List<Coordinate>();
 
         /// <summary>
         /// Returns the gathered <see cref="Coordinate"/>s.
         /// </summary>
+        /// <returns>The <c>Coordinate</c>s collected by this <c>ICoordinateArrayFilter</c></returns>
         public Coordinate[] Coordinates => _list.ToArray();
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="coord"></param>
+        /// <inheritdoc cref="ICoordinateFilter.Filter"/>
         public void Filter(Coordinate coord)
         {
-            if (!_list.Contains(coord))
+            if (_coordSet.Add(coord))
                 _list.Add(coord);
         }
     }
