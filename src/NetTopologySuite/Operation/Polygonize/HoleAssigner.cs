@@ -60,14 +60,14 @@ namespace NetTopologySuite.Operation.Polygonize
 
         private void AssignHoleToShell(EdgeRing holeER)
         {
-            var shell = FindEdgeRingContaining(holeER);
+            var shell = FindShellContaining(holeER);
             if (shell != null)
             {
                 shell.AddHole(holeER);
             }
         }
 
-        private IList<EdgeRing> FindShells(Envelope ringEnv)
+        private IList<EdgeRing> QueryOverlappingShells(Envelope ringEnv)
         {
             return _shellIndex.Query(ringEnv);
         }
@@ -84,14 +84,14 @@ namespace NetTopologySuite.Operation.Polygonize
         /// (which is guaranteed to be the case if the hole does not touch its shell)
         /// </summary>
         /// <param name="testER">An edge ring to test</param>
-        /// <returns>The containing EdgeRing, if there is one
+        /// <returns>
+        /// The containing shell EdgeRing, if there is one
         /// or <c>null</c> if no containing EdgeRing is found
         /// </returns>
-        private EdgeRing FindEdgeRingContaining(EdgeRing testER)
+        private EdgeRing FindShellContaining(EdgeRing testER)
         {
-            var testRing = testER.Ring;
-            var testEnv = testRing.EnvelopeInternal;
-            var candidateShells = FindShells(testEnv);
+            var testEnv = testER.Ring.EnvelopeInternal;
+            var candidateShells = QueryOverlappingShells(testEnv);
             return EdgeRing.FindEdgeRingContaining(testER, candidateShells);
         }
     }

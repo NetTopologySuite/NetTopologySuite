@@ -7,16 +7,25 @@ using NetTopologySuite.Operation.Polygonize;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Polygonize
 {
+
+    /// <summary>
+    /// Test performance of {@link Polygonizer}.
+    /// Force large number of hole-in-shell tests,
+    /// as well as testing against large ring
+    /// for point-in-polygon computation.
+    /// </summary>
+    /// <author>mdavis</author>
     public class PolygonizerPerfTest : PerformanceTestCase
     {
+        private const int BufferSegments = 10;
 
-        private Geometry _circles;
+        private Geometry _testCircles;
 
 
         public PolygonizerPerfTest()
             : base(typeof(PolygonizerPerfTest).Name)
         {
-            RunSize = new [] {1000, 10000, 20000};
+            RunSize = new [] { 10, /* 100, 200, 300, 400, 500, */ 1000, 2000 };
             RunIterations = 1;
         }
 
@@ -25,40 +34,59 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.Polygonize
             PerformanceTestRunner.Run(typeof(PolygonizerPerfTest));
         }
 
-        public override void StartRun(int size)
+        public override void StartRun(int num)
         {
-            Console.WriteLine($"Running with size {size}");
+            Console.WriteLine($"Running with size {num}");
 
-            _circles = CreateCircles(size);
+            double size = 100;
+            var polys = CreateCircleGrid(num, size, BufferSegments);
+
+            var surround = CreateAnnulus(size / 2, size / 2, 2 * size, size, 1000 * BufferSegments);
+            polys.Add(surround);
+            _testCircles = GeometryFactory.Default.CreateMultiPolygon(GeometryFactory.ToPolygonArray(polys));
+            //_testCircles = CreateCircles(num);
         }
 
-        private static Geometry CreateCircles(int size)
+        private static IList<Polygon> CreateCircleGrid(int num, double size, int bufferSegs)
         {
-            var polys = new Polygon[size];
+            var polys = new List<Polygon>(num);
 
-            double radius = 10;
+            int nOnSide = (int)Math.Sqrt(num) + 1;
+            double radius = size / nOnSide / 4;
             double gap = 4 * radius;
-            int nOnSide = (int) Math.Sqrt(size) + 1;
-            for (int index = 0; index < size; index++)
+
+            for (int index = 0; index < num; index++)
             {
-                int i = index % nOnSide;
-                int j = index - (nOnSide * i);
-                double x = i * gap;
-                double y = j * gap;
+                int iy = index / nOnSide;
+                int ix = index % nOnSide;
+                double x = ix * gap;
+                double y = iy * gap;
 
-                var pt = GeometryFactory.Default.CreatePoint(new Coordinate(x, y));
-                polys[index] = (Polygon) pt.Buffer(radius);
+                var poly = CreateAnnulus(x, y, radius, radius / 2, bufferSegs);
+                polys.Add(poly);
             }
-
-            return GeometryFactory.Default.CreateMultiPolygon(polys);
+            return polys;
         }
 
-        
+        private static Polygon CreateAnnulus(double x, double y, double radius, double innerRadius, int bufferSegs)
+        {
+            var pt = Geometry.DefaultFactory.CreatePoint(new Coordinate(x, y));
+            var shell = BufferRing(pt, radius, bufferSegs);
+            var hole = BufferRing(pt, innerRadius, bufferSegs);
+            return pt.Factory.CreatePolygon(shell, new LinearRing[] { hole });
+        }
+
+        private static LinearRing BufferRing(Point pt, double radius, int bufferSegs)
+        {
+            var buf = (Polygon)pt.Buffer(radius, bufferSegs);
+            return (LinearRing)buf.ExteriorRing;
+        }
+
         public void RunDisjointCircles()
         {
             const bool extractOnlyPolygonal = false;
             var polygonizer = new Polygonizer(extractOnlyPolygonal);
-            polygonizer.Add(_circles);
+            polygonizer.Add(_testCircles);
             var output = polygonizer.GetPolygons();
         }
     

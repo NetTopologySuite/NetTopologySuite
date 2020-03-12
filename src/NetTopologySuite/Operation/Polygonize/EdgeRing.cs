@@ -29,56 +29,56 @@ namespace NetTopologySuite.Operation.Polygonize
         /// make the passed shellList as small as possible(e.g.
         /// by using a spatial index filter beforehand).
         /// </summary>
-        /// <param name="shellList"></param>
+        /// <param name="erList"></param>
         /// <param name="testEr"></param>
         /// <returns>Containing EdgeRing, if there is one <br/>
         /// or <c>null</c> if no containing EdgeRing is found.</returns>
-        public static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IList<EdgeRing> shellList)
+        public static EdgeRing FindEdgeRingContaining(EdgeRing testEr, IList<EdgeRing> erList)
         {
             var testRing = testEr.Ring;
             var testEnv = testRing.EnvelopeInternal;
             //var testPt = testRing.GetCoordinateN(0);
 
-            EdgeRing minShell = null;
-            Envelope minShellEnv = null;
-            foreach (var tryShell in shellList)
+            EdgeRing minRing = null;
+            Envelope minRingEnv = null;
+            foreach (var tryEdgeRing in erList)
             {
-                var tryShellRing = tryShell.Ring;
-                var tryShellEnv = tryShellRing.EnvelopeInternal;
-                if (minShell != null)
-                    minShellEnv = minShell.Ring.EnvelopeInternal;
+                var tryRing = tryEdgeRing.Ring;
+                var tryRingEnv = tryRing.EnvelopeInternal;
+                if (minRing != null)
+                    minRingEnv = minRing.Ring.EnvelopeInternal;
 
                 // the hole envelope cannot equal the shell envelope
                 // (also guards against testing rings against themselves)
-                if (tryShellEnv.Equals(testEnv)) continue;
-                // hole must be contained in shell
-                if (!tryShellEnv.Contains(testEnv)) continue;
+                if (tryRingEnv.Equals(testEnv)) continue;
 
-                var testPt = CoordinateArrays.PointNotInList(testRing.Coordinates, tryShellRing.Coordinates);
-                bool isContained = PointLocation.IsInRing(testPt, tryShellRing.Coordinates);
+                // hole must be contained in shell
+                if (!tryRingEnv.Contains(testEnv)) continue;
+
+                var testPt = CoordinateArrays.PointNotInList(testRing.Coordinates, tryEdgeRing.Coordinates);
+
+                bool isContained = tryEdgeRing.IsInRing(testPt);
 
                 // check if this new containing ring is smaller than the current minimum ring
                 if (isContained)
                 {
-                    if (minShell == null || minShellEnv.Contains(tryShellEnv))
+                    if (minRing == null || minRingEnv.Contains(tryRingEnv))
                     {
-                        minShell = tryShell;
-                        minShellEnv = minShell.Ring.EnvelopeInternal;
+                        minRing = tryEdgeRing;
+                        minRingEnv = minRing.Ring.EnvelopeInternal;
                     }
                 }
             }
-            return minShell;
+            return minRing;
         }
 
-        /**
-         * Traverses a ring of DirectedEdges, accumulating them into a list.
-         * This assumes that all dangling directed edges have been removed
-         * from the graph, so that there is always a next dirEdge.
-         *
-         * @param startDE the DirectedEdge to start traversing at
-         * @return a List of DirectedEdges that form a ring
-         */
-
+        /// <summary>
+        /// Traverses a ring of DirectedEdges, accumulating them into a list.
+        /// This assumes that all dangling directed edges have been removed
+        /// from the graph, so that there is always a next dirEdge.
+        /// </summary>
+        /// <param name="startDE">The DirectedEdge to start traversing at</param>
+        /// <returns>A list of DirectedEdges that form a ring</returns>
         public static List<DirectedEdge> FindDirEdgesInRing(PolygonizeDirectedEdge startDE)
         {
             var de = startDE;
@@ -247,6 +247,9 @@ namespace NetTopologySuite.Operation.Polygonize
 
         public bool IsInRing(Coordinate pt)
         {
+            /**
+             * Use an indexed point-in-polygon for performance
+             */
             return Location.Exterior != Locator.Locate(pt);
         }
 
