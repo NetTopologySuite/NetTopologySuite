@@ -39,14 +39,14 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
         public void TestZeroAreaPolygon()
         {
             var g = reader.Read("POLYGON((0 0, 0 0, 0 0, 0 0, 0 0))");
-            Assert.That(g.IsValid);
+            Assert.That(() => g.IsValid, Throws.Nothing);
         }
 
         [Test]
         public void TestLineString()
         {
             var g = reader.Read("LINESTRING(0 0, 0 0)");
-            Assert.That(g.IsValid);
+            Assert.That(() => g.IsValid, Throws.Nothing);
         }
 
     }
