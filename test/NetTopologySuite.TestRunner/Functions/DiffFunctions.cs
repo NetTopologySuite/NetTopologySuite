@@ -7,7 +7,7 @@ namespace Open.Topology.TestRunner.Functions
     public class DiffFunctions
     {
 
-        public static GeometryCollection DiffVerticeBoths(Geometry a, Geometry b)
+        public static GeometryCollection DiffVerticesBoth(Geometry a, Geometry b)
         {
             var diffAB = DiffVertices(a, b);
             var diffBA = DiffVertices(b, a);
@@ -16,28 +16,45 @@ namespace Open.Topology.TestRunner.Functions
                 new Geometry[] {diffAB, diffBA});
         }
 
+        /// <summary>
+        /// Diff the vertices in A against B to
+        /// find vertices in A which are not in B.
+        /// </summary>
+        /// <param name="a">A geometry</param>
+        /// <param name="b">A geometry</param>
+        /// <returns>The vertices in A which are not in B</returns>
         private static MultiPoint DiffVertices(Geometry a, Geometry b)
         {
 
-            var ptsA = a.Coordinates;
+            var ptsB = b.Coordinates;
             var pts = new HashSet<Coordinate>();
-            for (int i = 0; i < ptsA.Length; i++)
+            for (int i = 0; i < ptsB.Length; i++)
             {
-                pts.Add(ptsA[i]);
+                pts.Add(ptsB[i]);
             }
 
             var diffPts = new CoordinateList();
-            var ptsB = b.Coordinates;
+            var ptsA = b.Coordinates;
             for (int j = 0; j < ptsB.Length; j++)
             {
-                var p = ptsB[j];
-                if (!pts.Contains(p))
+                var pA = ptsA[j];
+                if (!pts.Contains(pA))
                 {
-                    diffPts.Add(p);
+                    diffPts.Add(pA);
                 }
             }
 
             return a.Factory.CreateMultiPointFromCoords(diffPts.ToCoordinateArray());
+        }
+
+        public static GeometryCollection DiffSegments(Geometry a, Geometry b)
+        {
+            var segsA = ExtractSegments(a);
+            var segsB = ExtractSegments(b);
+
+            var diffAB = DiffSegments(segsA, segsB, a.Factory);
+
+            return diffAB;
         }
 
         public static GeometryCollection DiffSegmentsBoth(Geometry a, Geometry b)
@@ -56,17 +73,17 @@ namespace Open.Topology.TestRunner.Functions
         private static MultiLineString DiffSegments(IEnumerable<LineSegment> segsA, IEnumerable<LineSegment> segsB,
             GeometryFactory factory)
         {
-            var segs = new HashSet<LineSegment>(segsA);
-            var segsDiff = new List<LineSegment>();
-            foreach (var seg in segsB)
+            var segs = new HashSet<LineSegment>(segsB);
+            var segsDiffA = new List<LineSegment>();
+            foreach (var seg in segsA)
             {
                 if (!segs.Contains(seg))
                 {
-                    segsDiff.Add(seg);
+                    segsDiffA.Add(seg);
                 }
             }
 
-            var diffLines = ToLineStrings(segsDiff, factory);
+            var diffLines = ToLineStrings(segsDiffA, factory);
             return factory.CreateMultiLineString(diffLines);
         }
 
