@@ -109,15 +109,24 @@ namespace NetTopologySuite.Noding.Snapround
             }
 
             /// <summary>
-            ///
+            /// Reports whether the HotPixel caused a node to be added in any target
+            /// segmentString(including its own). If so, the HotPixel must be added as a
+            /// node as well.
             /// </summary>
+            /// <returns>
+            /// <c>true</c> if a node was added in any target segmentString.
+            /// </returns>
             public bool IsNodeAdded => _isNodeAdded;
 
             /// <summary>
-            ///
+            /// Check if a segment of the monotone chain intersects
+            /// the hot pixel vertex and introduce a snap node if so.
+            /// Optimized to avoid noding segments which
+            /// contain the vertex (which otherwise
+            /// would cause every vertex to be noded).
             /// </summary>
-            /// <param name="mc"></param>
-            /// <param name="startIndex"></param>
+            /// <param name="mc">A monotone chain</param>
+            /// <param name="startIndex">A start index</param>
             public override void Select(MonotoneChain mc, int startIndex)
             {
                 var ss = (INodableSegmentString) mc.Context;
@@ -131,14 +140,15 @@ namespace NetTopologySuite.Noding.Snapround
                  * Sep 22 2012 - MD - currently do need to snap to every vertex,
                  * since otherwise the testCollapse1 test in SnapRoundingTest fails.
                  */
-                if (_parentEdge != null)
+                if (_parentEdge == ss)
                 {
-                    if (ss == _parentEdge &&
-                        (startIndex == _hotPixelVertexIndex)
-                        )
+                    // exit if hotpixel is equal to endpoint of target segment
+                    if (startIndex == _hotPixelVertexIndex
+                        || startIndex + 1 == _hotPixelVertexIndex)
                         return;
                 }
-                _isNodeAdded = _hotPixel.AddSnappedNode(ss, startIndex);
+                // snap and record if a node was created
+                _isNodeAdded |= _hotPixel.AddSnappedNode(ss, startIndex);
             }
         }
     }
