@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Algorithm
 {
     //[Ignore("The Minimum Bounding Circle logic does not look to have been included in NTS as yet")]
-    public class MinimumBoundingCircleTest
+    public class MinimumBoundingCircleTest : GeometryTestCase
     {
         private PrecisionModel precisionModel;
         private GeometryFactory geometryFactory;
@@ -66,7 +66,36 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
                 new Coordinate(15, 15), 7.0710678118654755);
         }
 
+        [Test]
+        public void TestQuadrilateral() 
+        {
+            DoMinimumBoundingCircleTest("POLYGON ((26426 65078, 26531 65242, 26096 65427, 26075 65136, 26426 65078))", "MULTIPOINT ((26531 65242), (26075 65136), (26096 65427))",
+        new Coordinate(26284.84180271327, 65267.114509082545), 247.4360455914027 );
+    }
+
+        [Test]
+        public void TestMinDiameterLine()
+        {
+            DoMinDiameterTest("LINESTRING (100 200, 300 100)", "LINESTRING (100 200, 300 100)");
+        }
+
+        [Test]
+        public void TestMinDiameterPolygon()
+        {
+            DoMinDiameterTest("POLYGON ((100 200, 300 150, 110 100, 100 200))", "LINESTRING (300 150, 100 200)");
+        }
+
         static double TOLERANCE = 1.0e-5;
+
+        private void DoMinDiameterTest(string wkt, string expectedWKT)
+        {
+            var mbc = new MinimumBoundingCircle(Read(wkt));
+            var diamActual = mbc.GetMaximumDiameter();
+            var expected = Read(expectedWKT);
+
+            CheckEqual(expected, diamActual);
+        }
+
 
         private void DoMinimumBoundingCircleTest(string wkt, string expectedWKT)
         {

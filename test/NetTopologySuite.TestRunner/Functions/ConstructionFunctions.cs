@@ -17,11 +17,12 @@ namespace Open.Topology.TestRunner.Functions
         public static double MinimumDiameterLength(Geometry g) { return (new MinimumDiameter(g)).Diameter.Length; }
 
         public static Geometry MinimumRectangle(Geometry g) { return (new MinimumDiameter(g)).GetMinimumRectangle(); }
-        public static Geometry MinimumBoundingCircle(Geometry g) { return (new MinimumBoundingCircle(g)).GetCircle(); }
-        public static Geometry MaximumDiameter(Geometry g) { return g.Factory.CreateLineString((new MinimumBoundingCircle(g)).GetExtremalPoints()); }
-        public static Geometry FarthestPoints(Geometry g) { return ((new MinimumBoundingCircle(g)).GetFarthestPoints()); }
 
-        public static double MaximumDiameterLength(Geometry g) { return 2 * (new MinimumBoundingCircle(g)).GetRadius(); }
+        public static Geometry MinimumBoundingCircle(Geometry g) { return (new MinimumBoundingCircle(g)).GetCircle(); }
+        public static double MinimumBoundingCircleDiameterLength(Geometry g) { return 2 * (new MinimumBoundingCircle(g)).GetRadius(); }
+
+        public static Geometry MaximumDiameter(Geometry g) { return new MinimumBoundingCircle(g).GetMaximumDiameter(); ; }
+        public static double MaximumDiameterLength(Geometry g) { return MaximumDiameter(g).Length; }
 
         public static Geometry Boundary(Geometry g) { return g.Boundary; }
         public static Geometry ConvexHull(Geometry g) { return g.ConvexHull(); }

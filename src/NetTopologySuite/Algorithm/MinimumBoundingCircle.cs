@@ -11,26 +11,34 @@ namespace NetTopologySuite.Algorithm
     /// This is equivalent to computing the Maximum Diameter of the input point set.
     /// </summary>
     /// <remarks>
-    /// <para>
+    /// <para/>
     /// The computed circle can be specified in two equivalent ways,
     /// both of which are provide as output by this class:
     /// <list type="bullet">
     /// <item><description>As a centre point and a radius</description></item>
     /// <item><description>By the set of points defining the circle.
     /// Depending on the number of points in the input
-    /// and their relative positions, this
-    /// will be specified by anywhere from 0 to 3 points.
+    /// and their relative positions, this set
+    /// contains from 0 to 3 points.
     /// <list type="bullet">
     /// <item><description>0 or 1 points indicate an empty or trivial input point arrangement.</description></item>
-    /// <item><description>2 or 3 points define a circle which contains
-    /// all the input points.</description></item>
+    /// <item><description>2 points define the diameter of the minimum bounding circle.</description></item>
+    /// <item><description>3 points define an inscribed triangle of the minimum bounding circle.</description></item>
     /// </list>
     /// </description></item></list>
-    /// </para>
-    /// <para>
+    /// <para/>
     /// The class can also output a <see cref="Geometry"/> which approximates the
-    /// shape of the MBC (although as an approximation it is <b>not</b>
-    /// guaranteed to <tt>cover</tt> all the input points.)</para>
+    /// shape of the Minimum Bounding Circle (although as an approximation 
+    /// it is <b>not</b> guaranteed to <tt>cover</tt> all the input points.)
+    /// <para/>
+    /// The Maximum Diameter of the input point set can
+    /// be computed as well. The Maximum Diameter is
+    /// defined by the pair of input points with maximum distance between them.
+    /// The points of the maximum diameter are two of the extremal points of the Minimum Bounding Circle.
+    /// They lie on the convex hull of the input.
+    /// However, that the maximum diameter is not a diameter
+    /// of the Minimum Bounding Circle in the case where the MBC is
+    /// defined by an inscribed triangle.
     /// </remarks>
     /// <author>Martin Davis</author>
     public class MinimumBoundingCircle
@@ -81,16 +89,22 @@ namespace NetTopologySuite.Algorithm
             return centrePoint.Buffer(_radius);
         }
 
-        /// <summary>
-        /// Gets a geometry representing a line between the two farthest points
-        /// in the input.
-        /// These points will be two of the extremal points of the Minimum Bounding Circle.
-        /// They also lie on the convex hull of the input.
+        /// <summary>Gets a geometry representing the maximum diameter of the
+        /// input. The maximum diameter is the longest line segment
+        /// between any two points of the input.
+        /// <para/>
+        /// The points are two of the extremal points of the Minimum Bounding Circle.
+        /// They lie on the convex hull of the input.
         /// </summary>
-        /// <returns>A LineString between the two farthest points of the input</returns>
-        /// <returns>An empty LineString if the input is empty</returns>
-        /// <returns>A Point if the input is a point</returns>
-        public Geometry GetFarthestPoints()
+        /// <returns>
+        /// The result is 
+        /// <list type="Bullet">
+        /// <item><description>a LineString between the two farthest points of the input</description></item>
+        /// <item><description>a empty LineString if the input is empty</description></item>
+        /// <item><description>a Point if the input is a point</description></item>
+        /// </list>
+        /// </returns>
+        public Geometry GetMaximumDiameter()
         {
             Compute();
             switch (_extremalPts.Length)
@@ -99,11 +113,49 @@ namespace NetTopologySuite.Algorithm
                     return _input.Factory.CreateLineString();
                 case 1:
                     return _input.Factory.CreatePoint(_centre);
+                case 2:
+                    return _input.Factory.CreateLineString(
+                        new [] { _extremalPts[0], _extremalPts[1] });
+                default: // case 3
+                     var maxDiameter = FarthestPoints(_extremalPts);
+                    return _input.Factory.CreateLineString(maxDiameter);
             }
-            var p0 = _extremalPts[0];
-            var p1 = _extremalPts[_extremalPts.Length - 1];
-            return _input.Factory.CreateLineString(new Coordinate[] { p0, p1 });
         }
+
+
+        /// <summary>
+        /// Gets a geometry representing a line between the two farthest points
+        /// in the input.
+        /// <para/>
+        /// These points are two of the extremal points of the Minimum Bounding Circle
+        /// They lie on the convex hull of the input.
+        /// </summary>
+        /// <returns>A LineString between the two farthest points of the input</returns>
+        /// <returns>An empty LineString if the input is empty</returns>
+        /// <returns>A Point if the input is a point</returns>
+        [Obsolete("Use GetMaximumDiameter()")]
+        public Geometry GetFarthestPoints()
+        {
+            return GetMaximumDiameter();
+
+        }
+
+        /// <summary>
+        /// Finds the farthest pair out of 3 extremal points
+        /// </summary>
+        /// <param name="pts">The array of extremal points</param>
+        /// <returns>The pair of farthest points</returns>
+        private static Coordinate[] FarthestPoints(Coordinate[] pts)
+        {
+            double dist01 = pts[0].Distance(pts[1]);
+            double dist12 = pts[1].Distance(pts[2]);
+            if (dist12 < dist01)
+            {
+                return new [] { pts[0], pts[1] };
+            }
+            return new [] { pts[1], pts[2] };
+        }
+
         /// <summary>
         /// Gets a geometry representing the diameter of the computed Minimum Bounding Circle.
         /// </summary>
@@ -127,17 +179,20 @@ namespace NetTopologySuite.Algorithm
             //TODO: handle case of 3 extremal points, by computing a line from one of them through the centre point with len = 2*radius
             var p0 = _extremalPts[0];
             var p1 = _extremalPts[1];
-            return _input.Factory.CreateLineString(new Coordinate[] { p0, p1 });
+            return _input.Factory.CreateLineString(new [] { p0, p1 });
         }
 
         /// <summary>
         /// Gets the extremal points which define the computed Minimum Bounding Circle.
+        /// There may be zero, one, two or three of these points, depending on the number
+        /// of points in the input and the geometry of those points.
+        /// <list type="Bullet">
+        /// <item><description>0 or 1 points indicate an empty or trivial input point arrangement.</description></item>
+        /// <item><description>2 points define the diameter of the Minimum Bounding Circle.</description></item>
+        /// <item><description>3 points define an inscribed triangle of which the Minimum Bounding Circle is the circumcircle.
+        /// The longest chords of the circle are the line segments [0-1] and[1 - 2]</description></item>
+        /// </list>
         /// </summary>
-        /// <remarks>
-        /// There may be zero, one, two or three of these points,
-        /// depending on the number of points in the input
-        /// and the geometry of those points.
-        /// </remarks>
         /// <returns>The points defining the Minimum Bounding Circle</returns>
         public Coordinate[] GetExtremalPoints()
         {
@@ -148,7 +203,12 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// Gets the centre point of the computed Minimum Bounding Circle.
         /// </summary>
-        /// <returns>the centre point of the Minimum Bounding Circle, null if the input is empty</returns>
+        /// <returns>
+        /// <list type="Bullet">
+        /// <item><description>The centre point of the Minimum Bounding Circle or</description></item>
+        /// <item><description><c>null</c> if the input is empty</description></item>
+        /// </list>
+        /// </returns>
         public Coordinate GetCentre()
         {
             Compute();
