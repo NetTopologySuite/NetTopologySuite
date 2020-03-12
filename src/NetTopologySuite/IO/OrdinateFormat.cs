@@ -104,7 +104,6 @@ namespace NetTopologySuite.IO
         /// </summary>
         /// <param name="ord">The ordinate value</param>
         /// <returns>The formatted number string</returns>
-        [MethodImpl(MethodImplOptions.Synchronized)]
         public string Format(double ord)
         {
             string res = string.Format(_format, _formatText, ord);
@@ -127,19 +126,19 @@ namespace NetTopologySuite.IO
                     sb.Append(fraction);
                 else
                 {
-                    sb.Append(fraction.Substring(0, exp));
+                    sb.Append(fraction, 0, exp);
                     sb.Append(".");
-                    sb.Append(fraction.Substring(exp));
+                    sb.Append(fraction, exp, fraction.Length-exp);
                 }
 
                 if (exp - fraction.Length > 0)
-                    sb.Append(new string('0', exp - fraction.Length));
+                    sb.Append('0', exp - fraction.Length);
             }
             else
             {
                 exp = Math.Abs(exp);
                 sb.Append("0.");
-                sb.Append(new string('0', exp - 1));
+                sb.Append('0', exp - 1);
                 sb.Append(whole);
                 sb.Append(fraction);
             }

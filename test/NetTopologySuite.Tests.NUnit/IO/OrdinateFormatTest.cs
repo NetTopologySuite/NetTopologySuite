@@ -67,16 +67,22 @@ namespace NetTopologySuite.Tests.NUnit.IO
             CheckFormat(0.0000000000123456789012345, "0.0000000000123456789012345");
         }
 
+        [TestCase(0.84551240822557006, "0.84551240822557006"), Ignore("Known to fail")]
+        public void TestValue(double value, string expected)
+        {
+            CheckFormat(value, expected);
+        }
+
         [Test]
         public void TestPi()
         {
             CheckFormat(Math.PI, "3.141592653589793");
         }
 
+        /*
         [Test, Ignore("Just testing")]
         public void TestFormat()
         {
-
             Console.WriteLine(string.Format(NumberFormatInfo.InvariantInfo,
                 $"{{0:0.{new string('#', 325)}}}", double.MaxValue));
             Console.WriteLine(string.Format(NumberFormatInfo.InvariantInfo,
@@ -88,7 +94,12 @@ namespace NetTopologySuite.Tests.NUnit.IO
             double parsed2 = double.Parse(string.Format(NumberFormatInfo.InvariantInfo,
                 "{0:G17}", double.MaxValue), NumberFormatInfo.InvariantInfo);
             Assert.That(parsed1, Is.EqualTo(double.MaxValue));
+
+            Console.WriteLine(string.Format(NumberFormatInfo.InvariantInfo, $"{{0:0.{new string('#', 325)}}}", Math.PI));
+            Console.WriteLine(string.Format(NumberFormatInfo.InvariantInfo, $"{{0:R}}", Math.PI));
+            Console.WriteLine(string.Format(NumberFormatInfo.InvariantInfo, $"{{0:G17}}", Math.PI));
         }
+        */
 
         [Test]
         public void TestNaN()
