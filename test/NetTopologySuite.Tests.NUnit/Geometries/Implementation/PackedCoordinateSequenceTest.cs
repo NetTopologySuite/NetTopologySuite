@@ -148,6 +148,28 @@ namespace NetTopologySuite.Tests.NUnit.Geometries.Implementation
             Assert.IsTrue(IsEqual(copy2, array));
         }
 
+        /**
+         * Disable for now until solution can be found.
+         * See Issue 434.
+         */
+         [Test]
+        public void TestMixedFactoryWithXY()
+        {
+            var factoryPacked = new GeometryFactory(new PackedCoordinateSequenceFactory());
+            var polygonPacked = factoryPacked.CreatePolygon(
+                    new [] { new Coordinate(0, 0), new Coordinate(10, 0),
+                        new Coordinate(10, 10), new Coordinate(0, 10), new Coordinate(0, 0) });
+            var factoryDefault = new GeometryFactory();
+            var polygonArray = factoryDefault.CreatePolygon(
+                new Coordinate[] { new Coordinate(5, 5), new Coordinate(15, 5),
+                    new Coordinate(15, 15), new Coordinate(5, 15), new Coordinate(5, 5) });
+
+            Assert.That(() => polygonArray.Intersection(polygonPacked), Throws.Nothing);
+
+            // this fails as of 2019-June-7
+            Assert.That(() => polygonPacked.Intersection(polygonArray), Throws.Nothing);
+        }
+
         private void CheckDimInvalid(CoordinateSequenceFactory factory)
         {
             try
