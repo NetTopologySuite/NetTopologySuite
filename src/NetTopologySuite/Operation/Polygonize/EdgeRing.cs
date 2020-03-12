@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
@@ -10,7 +11,7 @@ using NetTopologySuite.Utilities;
 namespace NetTopologySuite.Operation.Polygonize
 {
     /// <summary>
-    /// Represents a ring of <c>PolygonizeDirectedEdge</c>s which form
+    /// Represents a ring of <see cref="PolygonizeDirectedEdge"/>s which form
     /// a ring of a polygon.  The ring may be either an outer shell or a hole.
     /// </summary>
     public class EdgeRing
@@ -23,6 +24,10 @@ namespace NetTopologySuite.Operation.Polygonize
         /// This routine is only safe to use if the chosen point of the hole
         /// is known to be properly contained in a shell
         /// (which is guaranteed to be the case if the hole does not touch its shell).
+        /// <para/>
+        /// To improve performance of this function the caller should
+        /// make the passed shellList as small as possible(e.g.
+        /// by using a spatial index filter beforehand).
         /// </summary>
         /// <param name="shellList"></param>
         /// <param name="testEr"></param>
@@ -89,11 +94,13 @@ namespace NetTopologySuite.Operation.Polygonize
         }
 
         private readonly GeometryFactory _factory;
+
         private readonly List<DirectedEdge> _deList = new List<DirectedEdge>();
         private DirectedEdge lowestEdge = null;
 
         // cache the following data for efficiency
         private LinearRing _ring;
+        private IndexedPointInAreaLocator locator;
 
         private Coordinate[] _ringPts;
         private List<LinearRing> _holes;
@@ -227,6 +234,22 @@ namespace NetTopologySuite.Operation.Polygonize
             }
         }
 
+        private IPointOnGeometryLocator Locator
+        {
+            get
+            {
+                if (locator == null)
+                    locator = new IndexedPointInAreaLocator(Ring);
+
+                return locator;
+            }
+        }
+
+        public bool IsInRing(Coordinate pt)
+        {
+            return Location.Exterior != Locator.Locate(pt);
+        }
+
         /// <summary>
         /// Computes and returns the list of coordinates which are contained in this ring.
         /// The coordinates are computed once only and cached.
@@ -340,10 +363,21 @@ namespace NetTopologySuite.Operation.Polygonize
         /// </summary>
         public bool IsOuterShell => OuterHole != null;
 
+        /// <summary>
+        /// Gets the outer hole of a shell, if it has one.
+        /// An outer hole is one that is not contained
+        /// in any other shell.
+        /// Each disjoint connected group of shells
+        /// is surrounded by an outer hole.
+        /// </summary>
+        /// <returns>The outer hole edge ring, or <c>null</c></returns>
         public EdgeRing OuterHole
         {
             get
             {
+                /*
+                 * Only shells can have outer holes
+                 */
                 if (IsHole) return null;
                 /*
                  * A shell is an outer shell if any edge is also in an outer hole.

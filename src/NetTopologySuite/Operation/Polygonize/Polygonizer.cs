@@ -234,7 +234,8 @@ namespace NetTopologySuite.Operation.Polygonize
             else validEdgeRingList = (List<EdgeRing>)edgeRingList;
 
             FindShellsAndHoles(validEdgeRingList);
-            AssignHolesToShells(_holeList, _shellList);
+            HoleAssigner.AssignHolesToShells(_holeList, _shellList);
+
             // order the shells to make any subsequent processing deterministic
             _shellList.Sort(new EdgeRing.EnvelopeComparator());
 
@@ -269,27 +270,6 @@ namespace NetTopologySuite.Operation.Polygonize
                      _holeList.Add(er);
                 else _shellList.Add(er);
 
-            }
-        }
-
-        private static void AssignHolesToShells(IEnumerable<EdgeRing> holeList, List<EdgeRing> shellList)
-        {
-            foreach (var holeEdgeRing in holeList)
-            {
-                AssignHoleToShell(holeEdgeRing, shellList);
-                /*
-                if (!holeER.hasShell()) {
-                    System.out.println("DEBUG: Outer hole: " + holeER);
-                }
-                */
-            }
-        }
-
-        private static void AssignHoleToShell(EdgeRing holeEdgeRing, IList<EdgeRing> shellList)
-        {
-            var shell = EdgeRing.FindEdgeRingContaining(holeEdgeRing, shellList);
-            if (shell != null) {
-                shell.AddHole(holeEdgeRing);
             }
         }
 
