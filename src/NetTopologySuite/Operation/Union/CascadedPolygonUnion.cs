@@ -3,6 +3,7 @@
 using System;
 using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
+using System.Linq;
 #if UseWorker
 using System.Threading;
 #endif
@@ -69,20 +70,18 @@ namespace NetTopologySuite.Operation.Union
             _inputPolys = polys ?? new List<Geometry>();
         }
 
-        /**
-         * The effectiveness of the index is somewhat sensitive
-         * to the node capacity.
-         * Testing indicates that a smaller capacity is better.
-         * For an STRtree, 4 is probably a good number (since
-         * this produces 2x2 "squares").
-         */
-        private const int StrtreeNodeCapacity = 4;
+        /// <summary>
+        /// The effectiveness of the index is somewhat sensitive
+        /// to the node capacity.
+        /// Testing indicates that a smaller capacity is better.
+        /// For an STRtree, 4 is probably a good number (since
+        /// this produces 2x2 "squares").
+        /// </summary>
+        private const int STRtreeNodeCapacity = 4;
 
         private GeometryFactory Factory()
         {
-            var geomenumerator = _inputPolys.GetEnumerator();
-            geomenumerator.MoveNext();
-            return geomenumerator.Current.Factory;
+            return _inputPolys.FirstOrDefault()?.Factory;
         }
 
         /// <summary>
@@ -115,7 +114,7 @@ namespace NetTopologySuite.Operation.Union
              * This makes unioning more efficient, since vertices are more likely
              * to be eliminated on each round.
              */
-            var index = new STRtree<object>(StrtreeNodeCapacity);
+            var index = new STRtree<object>(STRtreeNodeCapacity);
             foreach (var item in _inputPolys)
                 index.Insert(item.EnvelopeInternal, item);
 
@@ -311,69 +310,19 @@ namespace NetTopologySuite.Operation.Union
                 return (Geometry)g1.Copy();
             if (g1 == null)
                 return (Geometry)g0.Copy();
-            return UnionOptimized(g0, g1);
-        }
-
-        private Geometry UnionOptimized(Geometry g0, Geometry g1)
-        {
-            var g0Env = g0.EnvelopeInternal;
-            var g1Env = g1.EnvelopeInternal;
-            if (!g0Env.Intersects(g1Env))
-            {
-                var combo = GeometryCombiner.Combine(g0, g1);
-                return combo;
-            }
-            if (g0.NumGeometries <= 1 && g1.NumGeometries <= 1)
-                return UnionActual(g0, g1);
-
-            var commonEnv = g0Env.Intersection(g1Env);
-            return UnionUsingEnvelopeIntersection(g0, g1, commonEnv);
-        }
-
-        /// <summary>
-        /// Unions two polygonal geometries, restricting computation
-        /// to the envelope intersection where possible.
-        /// The case of MultiPolygons is optimized to union only
-        /// the polygons which lie in the intersection of the two geometry's envelopes.
-        /// Polygons outside this region can simply be combined with the union result,
-        /// which is potentially much faster.
-        /// This case is likely to occur often during cascaded union, and may also
-        /// occur in real world data (such as unioning data for parcels on different street blocks).
-        /// </summary>
-        /// <param name="g0">A polygonal geometry</param>
-        /// <param name="g1">A polygonal geometry</param>
-        /// <param name="common">The intersection of the envelopes of the inputs</param>
-        /// <returns>The union of the inputs</returns>
-        private Geometry UnionUsingEnvelopeIntersection(Geometry g0, Geometry g1, Envelope common)
-        {
-            var disjointPolys = new List<Geometry>();
-            var g0Int = ExtractByEnvelope(common, g0, disjointPolys);
-            var g1Int = ExtractByEnvelope(common, g1, disjointPolys);
-            var union = UnionActual(g0Int, g1Int);
-            disjointPolys.Add(union);
-            var overallUnion = GeometryCombiner.Combine(disjointPolys);
-            return overallUnion;
-        }
-
-        private Geometry ExtractByEnvelope(Envelope env, Geometry geom, IList<Geometry> disjointGeoms)
-        {
-            var intersectingGeoms = new List<Geometry>();
-            for (int i = 0; i < geom.NumGeometries; i++)
-            {
-                var elem = geom.GetGeometryN(i);
-                if (elem.EnvelopeInternal.Intersects(env))
-                    intersectingGeoms.Add(elem);
-                else disjointGeoms.Add(elem);
-            }
-            return _geomFactory.BuildGeometry(intersectingGeoms);
+            return UnionActual(g0, g1);
         }
 
         /// <summary>
         /// Encapsulates the actual unioning of two polygonal geometries.
         /// </summary>
+        /// <param name="g0">A geometry to union</param>
+        /// <param name="g1">A geometry to union</param>
+        /// <returns>The union of the inputs</returns>
         private static Geometry UnionActual(Geometry g0, Geometry g1)
         {
-            return RestrictToPolygons(g0.Union(g1));
+            var union = OverlapUnion.Union(g0, g1); ;
+            return RestrictToPolygons(union);
         }
 
         /// <summary> Computes a <see cref="Geometry"/> containing only <see cref="IPolygonal"/> components.
