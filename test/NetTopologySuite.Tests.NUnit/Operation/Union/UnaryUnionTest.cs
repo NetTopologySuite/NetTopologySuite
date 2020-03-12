@@ -1,11 +1,12 @@
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Union;
+using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Union
 {
     [TestFixture]
-    public class UnaryUnionTest
+    public class UnaryUnionTest : GeometryTestCase
     {
         GeometryFactory geomFact = new GeometryFactory();
 
@@ -44,7 +45,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
         private void DoTest(string[] inputWKT, string expectedWKT)
         {
             Geometry result;
-            var geoms = GeometryUtils.ReadWKT(inputWKT);
+            var geoms = IOUtil.ReadWKT(inputWKT);
             if (geoms.Count == 0)
             {
                 result = UnaryUnionOp.Union(geoms, geomFact);
@@ -54,7 +55,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
                 result = UnaryUnionOp.Union(geoms);
             }
 
-            Assert.IsTrue(GeometryUtils.IsEqual(GeometryUtils.ReadWKT(expectedWKT), result));
+            CheckEqual(IOUtil.ReadWKT(expectedWKT), result);
         }
     }
 }

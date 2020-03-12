@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using NetTopologySuite.Dissolve;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Operation.Linemerge;
 using NetTopologySuite.Tests.NUnit.TestData;
+using NetTopologySuite.Tests.NUnit.Utilities;
 using NetTopologySuite.Utilities;
 using NUnit.Framework;
 
@@ -18,8 +20,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Dissolve
         public void Test()
         {
             Trace.WriteLine("Loading data...");
-            var data = GeometryUtils.ReadWKTFile(EmbeddedResourceManager.GetResourceStream(
-                "NetTopologySuite.Tests.NUnit.TestData.world.wkt"));
+            var data = IOUtil.ReadWKTFile(new StreamReader(EmbeddedResourceManager.GetResourceStream(
+                "NetTopologySuite.Tests.NUnit.TestData.world.wkt")));
 
             const int maxTimes = 5;
             for (int i = 1; i <= maxTimes; i++)

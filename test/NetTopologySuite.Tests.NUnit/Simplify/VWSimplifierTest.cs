@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 using NetTopologySuite.Geometries;
@@ -8,7 +9,7 @@ using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.IO;
 using NetTopologySuite.Simplify;
 using NetTopologySuite.Tests.NUnit.TestData;
-
+using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Simplify
@@ -181,7 +182,7 @@ namespace NetTopologySuite.Tests.NUnit.Simplify
 
             using (var file = EmbeddedResourceManager.GetResourceStream("NetTopologySuite.Tests.NUnit.TestData.world.wkt"))
             {
-                foreach (LineString line in GeometryUtils.ReadWKTFile(file).SelectMany(LinearComponentExtracter.GetLines))
+                foreach (LineString line in IOUtil.ReadWKTFile(new StreamReader(file)).SelectMany(LinearComponentExtracter.GetLines))
                 {
                     var coordinates = line.Coordinates;
 

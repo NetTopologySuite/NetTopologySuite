@@ -9,8 +9,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
     public class IsValidTest
     {
         private PrecisionModel precisionModel;
-        private GeometryFactory geometryFactory;
-        WKTReader reader;
+        private readonly GeometryFactory geometryFactory;
+        private readonly WKTReader reader;
 
         public IsValidTest()
         {
@@ -34,5 +34,20 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Valid
             Assert.IsTrue(double.IsNaN(errCoord.Y));
             Assert.AreEqual(false, valid);
         }
+
+        [Test]
+        public void TestZeroAreaPolygon()
+        {
+            var g = reader.Read("POLYGON((0 0, 0 0, 0 0, 0 0, 0 0))");
+            Assert.That(g.IsValid);
+        }
+
+        [Test]
+        public void TestLineString()
+        {
+            var g = reader.Read("LINESTRING(0 0, 0 0)");
+            Assert.That(g.IsValid);
+        }
+
     }
 }

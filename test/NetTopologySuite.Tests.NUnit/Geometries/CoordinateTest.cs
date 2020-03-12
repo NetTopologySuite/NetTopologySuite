@@ -251,6 +251,22 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.That(xyzm.Z, Is.EqualTo(coord.Z).Within(0.000001));
         }
 
+        [Test]
+        public void TestCoordinateHash()
+        {
+            DoTestCoordinateHash(true, new Coordinate(1, 2), new Coordinate(1, 2));
+            DoTestCoordinateHash(false, new Coordinate(1, 2), new Coordinate(3, 4));
+            DoTestCoordinateHash(false, new Coordinate(1, 2), new Coordinate(1, 4));
+            DoTestCoordinateHash(false, new Coordinate(1, 2), new Coordinate(3, 2));
+            DoTestCoordinateHash(false, new Coordinate(1, 2), new Coordinate(2, 1));
+        }
+
+        private void DoTestCoordinateHash(bool equal, Coordinate a, Coordinate b)
+        {
+            Assert.That(a.Equals(b), Is.EqualTo(equal));
+            Assert.That(a.GetHashCode() == b.GetHashCode(), Is.EqualTo(equal));
+        }
+
         private static void CheckZUnsupported(Coordinate coord)
         {
             Assert.That(() => coord.Z = 0, Throws.InvalidOperationException);

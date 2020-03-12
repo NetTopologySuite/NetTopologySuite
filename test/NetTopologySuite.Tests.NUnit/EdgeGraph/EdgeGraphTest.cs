@@ -1,5 +1,6 @@
 ﻿using NetTopologySuite.EdgeGraph;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;
 using EGraph = NetTopologySuite.EdgeGraph.EdgeGraph;
 
@@ -46,7 +47,7 @@ namespace NetTopologySuite.Tests.NUnit.EdgeGraph
 
         private EGraph Build(string[] wkt)
         {
-            var geoms = GeometryUtils.ReadWKT(wkt);
+            var geoms = IOUtil.ReadWKT(wkt);
             return EdgeGraphBuilder.Build(geoms);
         }
     }

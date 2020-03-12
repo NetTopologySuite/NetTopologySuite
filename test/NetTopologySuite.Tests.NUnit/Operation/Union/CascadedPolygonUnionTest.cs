@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Union;
+using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Union
@@ -17,7 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
         [Test]
         public void TestBoxes()
         {
-            RunTest(GeometryUtils.ReadWKT(
+            RunTest(IOUtil.ReadWKT(
                     new[] {
                         "POLYGON ((80 260, 200 260, 200 30, 80 30, 80 260))",
                         "POLYGON ((30 180, 300 180, 300 110, 30 110, 30 180))",

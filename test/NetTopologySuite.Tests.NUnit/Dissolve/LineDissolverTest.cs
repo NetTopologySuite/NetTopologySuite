@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NetTopologySuite.Dissolve;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Dissolve
@@ -140,8 +141,8 @@ namespace NetTopologySuite.Tests.NUnit.Dissolve
 
         private void CheckDissolve(string[] wkt, string expectedWkt)
         {
-            var geoms = GeometryUtils.ReadWKT(wkt);
-            var expected = GeometryUtils.ReadWKT(expectedWkt);
+            var geoms = IOUtil.ReadWKT(wkt);
+            var expected = IOUtil.ReadWKT(expectedWkt);
             CheckDissolve(geoms, expected);
         }
 

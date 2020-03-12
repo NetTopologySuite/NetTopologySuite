@@ -1,6 +1,7 @@
 using System.IO;
 using NetTopologySuite.Operation.Union;
 using NetTopologySuite.Tests.NUnit.TestData;
+using NetTopologySuite.Tests.NUnit.Utilities;
 using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.Union
@@ -33,7 +34,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
 
         private static void RunTest(Stream stream, double minimumMeasure)
         {
-            var geoms = GeometryUtils.ReadWKTFile(stream);
+            var geoms = IOUtil.ReadWKTFile(new StreamReader(stream));
             Assert.IsTrue(Tester.Test(geoms, minimumMeasure));
         }
     }
