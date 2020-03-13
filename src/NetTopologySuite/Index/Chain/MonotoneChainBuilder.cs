@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using NetTopologySuite.Geometries;
@@ -16,11 +17,7 @@ namespace NetTopologySuite.Index.Chain
         /// </summary>
         private MonotoneChainBuilder() { }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="list"></param>
-        /// <returns></returns>
+        [Obsolete]
         public static int[] ToIntArray(IList<int> list)
         {
             int[] array = new int[list.Count];
@@ -30,10 +27,11 @@ namespace NetTopologySuite.Index.Chain
         }
 
         /// <summary>
-        ///
+        /// Computes a list of the <see cref="MonotoneChain"/>s
+        /// for a list of coordinates.
         /// </summary>
-        /// <param name="pts"></param>
-        /// <returns></returns>
+        /// <param name="pts">The list of points to compute chains for</param>
+        /// <returns>A list of the monotone chains for the points</returns>
         public static ReadOnlyCollection<MonotoneChain> GetChains(Coordinate[] pts)
         {
             return GetChains(pts, null);
@@ -43,17 +41,20 @@ namespace NetTopologySuite.Index.Chain
         /// Return a list of the <c>MonotoneChain</c>s
         /// for the given list of coordinates.
         /// </summary>
-        /// <param name="pts"></param>
-        /// <param name="context"></param>
+        /// <param name="pts">The list of points to compute chains for</param>
+        /// <param name="context">A data object to attach to each chain</param>
+        /// <returns>A list of the monotone chains for the points</returns>
         public static ReadOnlyCollection<MonotoneChain> GetChains(Coordinate[] pts, object context)
         {
             var mcList = new List<MonotoneChain>();
-            int[] startIndex = GetChainStartIndices(pts);
-            for (int i = 0; i < startIndex.Length - 1; i++)
+            int chainStart = 0;
+            do
             {
-                var mc = new MonotoneChain(pts, startIndex[i], startIndex[i + 1], context);
+                int chainEnd = FindChainEnd(pts, chainStart);
+                var mc = new MonotoneChain(pts, chainStart, chainEnd, context);
                 mcList.Add(mc);
-            }
+                chainStart = chainEnd;
+            } while (chainStart < pts.Length - 1);
             return mcList.AsReadOnly();
         }
 
@@ -64,11 +65,12 @@ namespace NetTopologySuite.Index.Chain
         /// for use as a sentinel.
         /// </summary>
         /// <param name="pts"></param>
+        [Obsolete]
         public static int[] GetChainStartIndices(Coordinate[] pts)
         {
             // find the startpoint (and endpoints) of all monotone chains in this edge
             int start = 0;
-            var startIndexList = new List<int>();
+            var startIndexList = new List<int>(pts.Length);
             startIndexList.Add(start);
             do
             {

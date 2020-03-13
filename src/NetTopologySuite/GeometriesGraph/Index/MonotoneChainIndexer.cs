@@ -37,12 +37,30 @@ namespace NetTopologySuite.GeometriesGraph.Index
         public MonotoneChainIndexer() { }
         */
 
+        public int[] GetChainStartIndices(Coordinate[] pts)
+        {
+            // find the startpoint (and endpoints) of all monotone chains in this edge
+            int start = 0;
+            var startIndexList = new List<int>(pts.Length);
+            // use heuristic to size initial array
+            //startIndexList.ensureCapacity(pts.length / 4);
+            startIndexList.Add(start);
+            do
+            {
+                int last = FindChainEnd(pts, start);
+                startIndexList.Add(last);
+                start = last;
+            } while (start < pts.Length - 1);
+            // copy list to an array of ints, for efficiency
+            return startIndexList.ToArray();
+        }
+
         /// <summary>
         ///
         /// </summary>
         /// <param name="pts"></param>
         /// <returns></returns>
-        public int[] GetChainStartIndices(Coordinate[] pts)
+        public int[] OLDGetChainStartIndices(Coordinate[] pts)
         {
             // find the startpoint (and endpoints) of all monotone chains in this edge
             int start = 0;
