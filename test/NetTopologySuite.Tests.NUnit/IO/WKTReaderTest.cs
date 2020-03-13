@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Globalization;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
@@ -469,6 +469,26 @@ namespace NetTopologySuite.Tests.NUnit.IO
             // assert
             Assert.That(pt.SRID, Is.EqualTo(srid));
         }
+
+        [TestCase("tr")]
+        public void TestLocale(string cultureName)
+        {
+            var culture = CultureInfo.CreateSpecificCulture("tr");
+            var current = CultureInfo.CurrentCulture;
+
+            try
+            {
+                CultureInfo.CurrentCulture = culture;
+                var point = (Point) reader2D.Read("point (10 20)");
+                Assert.That(point.X, Is.EqualTo(10.0).Within(1E-7));
+                Assert.That(point.Y, Is.EqualTo(20.0).Within(1E-7));
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = current;
+            }
+        }
+
 
         private static CoordinateSequence CreateSequence(Ordinates ordinateFlags, double[] xy)
         {
