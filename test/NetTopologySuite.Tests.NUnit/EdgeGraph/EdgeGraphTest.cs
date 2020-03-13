@@ -21,6 +21,21 @@ namespace NetTopologySuite.Tests.NUnit.EdgeGraph
             CheckEdge(graph, new Coordinate(0, 0), new Coordinate(1, 0));
         }
 
+        /**
+         * This test produced an error using the original buggy sorting algorithm
+         * (in {@link HalfEdge#insert(HalfEdge)}).
+         */
+         [Test]
+        public void TestCCWAfterInserts()
+        {
+            var graph = new NetTopologySuite.EdgeGraph.EdgeGraph();
+            var e1 = AddEdge(graph, 50, 39, 35, 42);
+            AddEdge(graph, 50, 39, 50, 60);
+            AddEdge(graph, 50, 39, 68, 35);
+            CheckCCW(e1);
+        }
+
+
         private static void CheckEdgeRing(EGraph graph, Coordinate p, Coordinate[] dest)
         {
             var e = graph.FindEdge(p, dest[0]);
@@ -40,6 +55,18 @@ namespace NetTopologySuite.Tests.NUnit.EdgeGraph
             Assert.IsNotNull(e);
         }
 
+        private void CheckCCW(NetTopologySuite.EdgeGraph.EdgeGraph graph, Coordinate p0, Coordinate p1)
+        {
+            var e = graph.FindEdge(p0, p1);
+            Assert.That(e.IsCCW());
+        }
+
+
+        private void CheckCCW(HalfEdge e)
+        {
+            Assert.That(e.IsCCW());
+        }
+
         private EGraph Build(string wkt)
         {
             return Build(new[] { wkt });
@@ -50,5 +77,11 @@ namespace NetTopologySuite.Tests.NUnit.EdgeGraph
             var geoms = IOUtil.ReadWKT(wkt);
             return EdgeGraphBuilder.Build(geoms);
         }
+
+        private HalfEdge AddEdge(NetTopologySuite.EdgeGraph.EdgeGraph graph, double p0x, double p0y, double p1x, double p1y)
+        {
+            return graph.AddEdge(new Coordinate(p0x, p0y), new Coordinate(p1x, p1y));
+        }
+
     }
 }

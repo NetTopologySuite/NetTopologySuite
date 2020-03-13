@@ -13,21 +13,21 @@ namespace NetTopologySuite.EdgeGraph
     /// and terminate at a <b>destination</b> vertex.
     /// HalfEdges always occur in symmetric pairs, with the <see cref="Sym"/> method
     /// giving access to the oppositely-oriented component.
+    /// HalfEdges with the same origin are ordered
+    /// so that the ring of their dest points is oriented CCW.
     /// HalfEdges and the methods on them form an edge algebra,
     /// which can be used to traverse and query the topology
     /// of the graph formed by the edges.
-    /// </summary>
-    /// <remarks>
+    /// <para/>
     /// By design HalfEdges carry minimal information
     /// about the actual usage of the graph they represent.
     /// They can be subclassed to carry more information if required.
-    /// </remarks>
-    /// <remarks>
+    /// <para/>
     /// HalfEdges form a complete and consistent data structure by themselves,
     /// but an <see cref="EdgeGraph"/> is useful to allow retrieving edges
     /// by vertex and edge location, as well as ensuring
     /// edges are created and linked appropriately.
-    /// </remarks>
+    /// </summary>
     public class HalfEdge : IComparable<HalfEdge>
     {
         /// <summary>
@@ -99,7 +99,7 @@ namespace NetTopologySuite.EdgeGraph
         public Coordinate Dest => Sym.Orig;
 
         /// <summary>
-        /// Gets the symmetric pair edge of this edge.
+        /// Gets or sets the symmetric (opposite) edge of this edge.
         /// </summary>
         public HalfEdge Sym
         {
@@ -109,9 +109,11 @@ namespace NetTopologySuite.EdgeGraph
 
         /// <summary>
         /// Gets the next edge CCW around the
-        /// destination vertex of this edge.
-        /// If the vertex has degree 1 then this is the <b>sym</b> edge.
+        /// destination vertex of this edge,
+        /// with the dest vertex as its origin.
+        /// If the vertex has degree 1 then this is the <b>Sym</b> edge.
         /// </summary>
+        /// <returns>The next edge</returns>
         public HalfEdge Next
         {
             get => _next;
@@ -124,6 +126,11 @@ namespace NetTopologySuite.EdgeGraph
         /// </summary>
         public HalfEdge Prev => Sym.Next.Sym;
 
+        /// <summary>
+        /// Gets the next edge CCW around the origin of this edge,
+        /// with the same origin.
+        /// </summary>
+        /// <returns>The next edge around the origin</returns>
         public HalfEdge ONext => Sym.Next;
 
         /// <summary>
@@ -163,35 +170,75 @@ namespace NetTopologySuite.EdgeGraph
 
         /// <summary>
         /// Inserts an edge
-        /// into the ring of edges around the origin vertex of this edge.
+        /// into the ring of edges around the origin vertex of this edge,
+        /// ensuring that the edges remain ordered CCW.
         /// The inserted edge must have the same origin as this edge.
         /// </summary>
-        /// <param name="e">the edge to insert</param>
-        public void Insert(HalfEdge e)
+        /// <param name="eAdd">the edge to insert</param>
+        public void Insert(HalfEdge eAdd)
         {
-            // if no other edge around origin
+            // If this is only edge at origin, insert it after this
             if (ONext == this)
             {
                 // set linkage so ring is correct
-                InsertAfter(e);
+                InsertAfter(eAdd);
                 return;
             }
 
-            // otherwise, find edge to insert after
-            int ecmp = CompareTo(e);
+            // Scan edges
+            // until insertion point is found
+            var ePrev = InsertionEdge(eAdd);
+            ePrev.InsertAfter(eAdd);
+        }
+
+        /**
+         * 
+         * 
+         * @param eAdd the edge being added
+         * @return 
+         */
+        /// <summary>
+        /// Finds the insertion edge for a edge
+        /// being added to this origin,
+        /// ensuring that the star of edges
+        /// around the origin remains fully CCW.
+        /// </summary>
+        /// <param name="eAdd">The edge being added</param>
+        /// <returns>The edge to insert after</returns>
+        private HalfEdge InsertionEdge(HalfEdge eAdd)
+        {
             var ePrev = this;
             do
             {
-                var oNext = ePrev.ONext;
-                int cmp = oNext.CompareTo(e);
-                if (cmp != ecmp || oNext == this)
+                var eNext = ePrev.ONext;
+                /**
+                 * Case 1: General case,
+                 * with eNext higher than ePrev.
+                 * 
+                 * Insert edge here if it lies between ePrev and eNext.  
+                 */
+                if (eNext.CompareTo(ePrev) > 0
+                    && eAdd.CompareTo(ePrev) >= 0
+                    && eAdd.CompareTo(eNext) <= 0)
                 {
-                    ePrev.InsertAfter(e);
-                    return;
+                    return ePrev;
                 }
-                ePrev = oNext;
+                /**
+                 * Case 2: Origin-crossing case,
+                 * indicated by eNext <= ePrev.
+                 * 
+                 * Insert edge here if it lies
+                 * in the gap between ePrev and eNext across the origin. 
+                 */
+                if (eNext.CompareTo(ePrev) <= 0
+                    && (eAdd.CompareTo(eNext) <= 0 || eAdd.CompareTo(ePrev) >= 0))
+                {
+                    return ePrev;
+                }
+                ePrev = eNext;
             } while (ePrev != this);
             Assert.ShouldNeverReachHere();
+            return null;
         }
 
         /// <summary>
@@ -206,6 +253,36 @@ namespace NetTopologySuite.EdgeGraph
             var save = ONext;
             Sym.Next = e;
             e.Sym.Next = save;
+        }
+
+        internal bool IsCCW()
+        {
+            // degree <= 2 has no orientation
+            if (Degree() <= 2) return true;
+
+            // test each triangle of consecutive direction points to confirm it is CCW
+            var e = this;
+            do
+            {
+                var eNext = e.ONext;
+                var eNext2 = eNext.ONext;
+                if (!IsCCW(e, eNext, eNext2)) return false;
+                e = eNext;
+            } while (e != this);
+            return true;
+        }
+
+        /// <summary>
+        /// Tests if the edges e1,e2,e3 are oriented CCW
+        /// around their origin (using their direction points).
+        /// </summary>
+        /// <param name="e1">A half-edge</param>
+        /// <param name="e2">A half-edge</param>
+        /// <param name="e3">A half-edge</param>
+        internal bool IsCCW(HalfEdge e1, HalfEdge e2, HalfEdge e3)
+        {
+            var orientIndex = Orientation.Index(e1.Dest, e2.Dest, e3.Dest);
+            return orientIndex == OrientationIndex.CounterClockwise;
         }
 
         /// <summary>
