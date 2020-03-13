@@ -6,47 +6,39 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Operation.Distance
 {
     [TestFixture]
-    public abstract class AbstractDistanceTest : GeometryTestCase
+    public abstract class BaseDistanceTest : GeometryTestCase
     {
-        private readonly PrecisionModel _precisionModel;
-        private readonly GeometryFactory _geometryFactory;
-        private readonly WKTReader _reader;
-
-        protected AbstractDistanceTest()
-        {
-            _precisionModel = new PrecisionModel(1);
-            _geometryFactory = new GeometryFactory(_precisionModel, 0);
-            _reader = new WKTReader(_geometryFactory);
-        }
-
         protected bool SkipTestsThatRelyOnCheckingPointInPolygon { get; set; }
 
         [Test]
         public void TestDisjointCollinearSegments()
         {
-            var g1 = _reader.Read("LINESTRING (0.0 0.0, 9.9 1.4)");
-            var g2 = _reader.Read("LINESTRING (11.88 1.68, 21.78 3.08)");
+            var g1 = Read("LINESTRING (0.0 0.0, 9.9 1.4)");
+            var g2 = Read("LINESTRING (11.88 1.68, 21.78 3.08)");
 
             double distance = Distance(g1, g2);
-            Assert.That(distance, Is.EqualTo(2.23606).Within(0.0001));
+            Assert.That(distance, Is.EqualTo(1.9996999774966246).Within(0.0001));
 
-            Assert.That(IsWithinDistance(g1, g2, 2), Is.False);
+            Assert.That(IsWithinDistance(g1, g2, 1), Is.False);
             Assert.That(IsWithinDistance(g1, g2, 3), Is.True);
         }
 
         [Test]
-        public void TestEverything()
+        public void TestPolygonsDisjoint()
         {
-            var g1 = _reader.Read(
-                "POLYGON ((40 320, 200 380, 320 80, 40 40, 40 320),  (180 280, 80 280, 100 100, 220 140, 180 280))");
-            var g2 = _reader.Read("POLYGON ((160 240, 120 240, 120 160, 160 140, 160 240))");
+            var g1 = Read("POLYGON ((40 320, 200 380, 320 80, 40 40, 40 320),  (180 280, 80 280, 100 100, 220 140, 180 280))");
+            var g2 = Read("POLYGON ((160 240, 120 240, 120 160, 160 140, 160 240))");
             Assert.That(Distance(g1, g2), Is.EqualTo(18.97366596).Within(1E-5));
 
             Assert.That(IsWithinDistance(g1, g2, 0), Is.False);
             Assert.That(IsWithinDistance(g1, g2, 10), Is.False);
             Assert.That(IsWithinDistance(g1, g2, 20), Is.True);
+        }
 
-            var g3 = _reader.Read("POLYGON ((160 240, 120 240, 120 160, 180 100, 160 240))");
+        public void testPolygonsOverlapping()
+        {
+            var g1 = Read("POLYGON ((40 320, 200 380, 320 80, 40 40, 40 320),  (180 280, 80 280, 100 100, 220 140, 180 280))");
+            var g3 = Read("POLYGON ((160 240, 120 240, 120 160, 180 100, 160 240))");
             Assert.That(Distance(g1, g3), Is.Zero.Within(1E-5));
 
             Assert.That(IsWithinDistance(g1, g3, 0), Is.True);
@@ -56,16 +48,16 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Distance
         [Test]
         public void TestLinesIdentical()
         {
-            var l1 = (LineString)_reader.Read("LINESTRING(10 10, 20 20, 30 40)");
-            var l2 = (LineString)_reader.Read("LINESTRING(10 10, 20 20, 30 40)");
+            var l1 = (LineString)Read("LINESTRING(10 10, 20 20, 30 40)");
+            var l2 = (LineString)Read("LINESTRING(10 10, 20 20, 30 40)");
             Assert.That(Distance(l1, l2), Is.Zero);
         }
 
         [Test]
         public void TestEmpty()
         {
-            var g1 = _reader.Read("POINT (0 0)");
-            var g2 = _reader.Read("POLYGON EMPTY");
+            var g1 = Read("POINT (0 0)");
+            var g2 = Read("POLYGON EMPTY");
             Assert.That(g1.Distance(g2), Is.Zero);
         }
 

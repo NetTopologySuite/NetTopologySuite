@@ -5,11 +5,11 @@ using NUnit.Framework;
 namespace NetTopologySuite.Tests.NUnit.Operation.Distance
 {
     [TestFixture]
-    public class IndexedFacetDistanceTest : AbstractDistanceTest
+    public class IndexedFacetDistanceTest : BaseDistanceTest
     {
         public IndexedFacetDistanceTest()
         {
-            this.SkipTestsThatRelyOnCheckingPointInPolygon = true;
+            SkipTestsThatRelyOnCheckingPointInPolygon = true;
         }
 
         protected override double Distance(Geometry g1, Geometry g2)

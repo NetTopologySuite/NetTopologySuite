@@ -8,7 +8,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Distance
     // (well, technically, AbstractDistanceTest is a copy-paste of JTS' DistanceTest), which looks
     // like an oversight more than anything else.
     [TestFixture]
-    public class DistanceTest : AbstractDistanceTest
+    public class DistanceTest : BaseDistanceTest
     {
         protected override double Distance(Geometry g1, Geometry g2)
         {
