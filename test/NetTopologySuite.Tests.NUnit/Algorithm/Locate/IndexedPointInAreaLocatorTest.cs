@@ -21,5 +21,14 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm.Locate
             Assert.AreEqual(expectedLoc, result);
         }
 
+        /**
+         * See JTS GH Issue #19.
+         * Used to infinite-loop on empty geometries.
+         */
+        [Test]
+        public void TestEmpty()
+        {
+            RunPtInRing(Location.Exterior, new Coordinate(0,0), "POLYGON EMPTY");
+        }
     }
 }

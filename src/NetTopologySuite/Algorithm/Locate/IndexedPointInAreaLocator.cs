@@ -89,11 +89,15 @@ namespace NetTopologySuite.Algorithm.Locate
 
         private class IntervalIndexedGeometry
         {
+            private readonly bool _isEmpty;
             private readonly SortedPackedIntervalRTree<LineSegment> _index = new SortedPackedIntervalRTree<LineSegment>();
 
             public IntervalIndexedGeometry(Geometry geom)
             {
-                Init(geom);
+                if (geom.IsEmpty)
+                    _isEmpty = true;
+                else
+                    Init(geom);
             }
 
             private void Init(Geometry geom)
@@ -128,6 +132,9 @@ namespace NetTopologySuite.Algorithm.Locate
 
             public void Query(double min, double max, IItemVisitor<LineSegment> visitor)
             {
+                if (_isEmpty)
+                    return;
+
                 _index.Query(min, max, visitor);
             }
         }

@@ -29,6 +29,13 @@ namespace NetTopologySuite.Index.IntervalRTree
     {
         private readonly object _leavesLock = new object();
         private readonly List<IntervalRTreeNode<T>> _leaves = new List<IntervalRTreeNode<T>>();
+
+        /// <summary>
+        /// If root is null that indicates
+        /// that the tree has not yet been built,
+        /// OR nothing has been added to the tree.
+        /// In both cases, the tree is still open for insertions.
+        /// </summary>
         private volatile IntervalRTreeNode<T> _root;
 
         /// <summary>
@@ -47,10 +54,17 @@ namespace NetTopologySuite.Index.IntervalRTree
 
         private void Init()
         {
-            //1st check
+            // already built
             if (_root != null) return;
+
             lock (_leavesLock)
             {
+                /**
+                 * if leaves is empty then nothing has been inserted.
+                 * In this case it is safe to leave the tree in an open state
+                 */
+                if (_leaves.Count == 0) return;
+
                 //2nd check
                 if (_root == null)
                 {
@@ -121,6 +135,9 @@ namespace NetTopologySuite.Index.IntervalRTree
         public void Query(double min, double max, IItemVisitor<T> visitor)
         {
             Init();
+
+            // if root is null tree must be empty
+            if (_root == null) return;
 
             _root.Query(min, max, visitor);
         }
