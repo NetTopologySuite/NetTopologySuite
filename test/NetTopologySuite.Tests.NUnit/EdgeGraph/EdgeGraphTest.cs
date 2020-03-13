@@ -18,6 +18,7 @@ namespace NetTopologySuite.Tests.NUnit.EdgeGraph
                                                                  new Coordinate(0, 1),
                                                                  new Coordinate(-1, 0)
                                                              });
+            CheckNodeValid(graph, new Coordinate(0, 0), new Coordinate(1, 0));
             CheckEdge(graph, new Coordinate(0, 0), new Coordinate(1, 0));
         }
 
@@ -32,9 +33,18 @@ namespace NetTopologySuite.Tests.NUnit.EdgeGraph
             var e1 = AddEdge(graph, 50, 39, 35, 42);
             AddEdge(graph, 50, 39, 50, 60);
             AddEdge(graph, 50, 39, 68, 35);
-            CheckCCW(e1);
+            CheckNodeValid(e1);
         }
 
+        [Test]
+        public void TestCCWAfterInserts2()
+        {
+            var graph = new NetTopologySuite.EdgeGraph.EdgeGraph();
+            var e1 = AddEdge(graph, 50, 200, 0, 200);
+            AddEdge(graph, 50, 200, 190, 50);
+            AddEdge(graph, 50, 200, 200, 200);
+            CheckNodeValid(e1);
+        }
 
         private static void CheckEdgeRing(EGraph graph, Coordinate p, Coordinate[] dest)
         {
@@ -55,16 +65,16 @@ namespace NetTopologySuite.Tests.NUnit.EdgeGraph
             Assert.IsNotNull(e);
         }
 
-        private void CheckCCW(NetTopologySuite.EdgeGraph.EdgeGraph graph, Coordinate p0, Coordinate p1)
+        private void CheckNodeValid(NetTopologySuite.EdgeGraph.EdgeGraph graph, Coordinate p0, Coordinate p1)
         {
             var e = graph.FindEdge(p0, p1);
-            Assert.That(e.IsCCW());
+            Assert.That(e.IsEdgesSorted, $"Found non-sorted edges around node {e}.");
         }
 
 
-        private void CheckCCW(HalfEdge e)
+        private void CheckNodeValid(HalfEdge e)
         {
-            Assert.That(e.IsCCW());
+            Assert.That(e.IsEdgesSorted, $"Found non-sorted edges around node {e}.");
         }
 
         private EGraph Build(string wkt)

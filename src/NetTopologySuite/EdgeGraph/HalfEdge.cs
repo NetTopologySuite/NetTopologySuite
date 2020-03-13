@@ -255,34 +255,56 @@ namespace NetTopologySuite.EdgeGraph
             e.Sym.Next = save;
         }
 
-        internal bool IsCCW()
+        /// <summary>
+        /// Tests whether the edges around the origin
+        /// are sorted correctly.
+        /// Note that edges must be strictly increasing,
+        /// which implies no two edges can have the same direction point.
+        /// </summary>
+        /// <returns><c>true</c> if the origin edges are sorted correctly
+        /// </returns>
+        internal bool IsEdgesSorted
         {
-            // degree <= 2 has no orientation
-            if (Degree() <= 2) return true;
-
-            // test each triangle of consecutive direction points to confirm it is CCW
-            var e = this;
-            do
+            get
             {
-                var eNext = e.ONext;
-                var eNext2 = eNext.ONext;
-                if (!IsCCW(e, eNext, eNext2)) return false;
-                e = eNext;
-            } while (e != this);
-            return true;
+                // find lowest edge at origin
+                var lowest = FindLowest();
+                var e = lowest;
+                // check that all edges are sorted
+                do
+                {
+                    var eNext = e.ONext;
+                    if (eNext == lowest) break;
+                    bool isSorted = eNext.CompareTo(e) > 0;
+                    if (!isSorted)
+                    {
+                        //int comp = eNext.compareTo(e);
+                        return false;
+                    }
+
+                    e = eNext;
+                } while (e != lowest);
+
+                return true;
+            }
         }
 
         /// <summary>
-        /// Tests if the edges e1,e2,e3 are oriented CCW
-        /// around their origin (using their direction points).
+        /// Finds the lowest edge around the origin,
+        /// using the standard edge ordering.
         /// </summary>
-        /// <param name="e1">A half-edge</param>
-        /// <param name="e2">A half-edge</param>
-        /// <param name="e3">A half-edge</param>
-        internal bool IsCCW(HalfEdge e1, HalfEdge e2, HalfEdge e3)
+        /// <returns>The lowest edge around the origin</returns>
+        private HalfEdge FindLowest()
         {
-            var orientIndex = Orientation.Index(e1.Dest, e2.Dest, e3.Dest);
-            return orientIndex == OrientationIndex.CounterClockwise;
+            var lowest = this;
+            var e = this.ONext;
+            do
+            {
+                if (e.CompareTo(lowest) < 0)
+                    lowest = e;
+                e = e.ONext;
+            } while (e != this);
+            return lowest;
         }
 
         /// <summary>
