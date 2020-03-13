@@ -263,6 +263,23 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Gets the length of the diameter (diagonal) of the envelope.
+        /// </summary>
+        /// <returns>The diameter length</returns>
+        public double Diameter
+        {
+            get
+            {
+                if (IsNull)
+                    return 0;
+
+                double w = Width;
+                double h = Height;
+                return Math.Sqrt(w * w + h * h);
+            }
+        }
+
+        /// <summary>
         /// Returns the <c>Envelope</c>s minimum x-value. min x > max x
         /// indicates that this is a null <c>Envelope</c>.
         /// </summary>

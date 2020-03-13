@@ -229,6 +229,24 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                     poly10);
         }
 
+        [Test]
+        public void TestMetrics()
+        {
+            var env = new Envelope(0, 4, 0, 3);
+            Assert.That(env.Width, Is.EqualTo(4d));
+            Assert.That(env.Height, Is.EqualTo(3d));
+            Assert.That(env.Diameter, Is.EqualTo(5d));
+        }
+
+        [Test]
+        public void TestEmptyMetrics()
+        {
+            var env = new Envelope();
+            Assert.That(env.Width, Is.EqualTo(0d));
+            Assert.That(env.Height, Is.EqualTo(0d));
+            Assert.That(env.Diameter, Is.EqualTo(0d));
+        }
+
         void checkExpectedEnvelopeGeometry(string wktInput)
         {
             checkExpectedEnvelopeGeometry(wktInput, wktInput);
