@@ -7,6 +7,13 @@ namespace Open.Topology.TestRunner.Functions
 {
     public static class ConversionFunctions
     {
+        public static Geometry PointsToLine(Geometry g)
+        {
+            var pts = g.Coordinates;
+            var line = g.Factory.CreateLineString(pts);
+            return line;
+        }
+
         public static Geometry LineToPolygon(Geometry g)
         {
             if (g is IPolygonal) return g;

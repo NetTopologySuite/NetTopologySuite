@@ -159,5 +159,22 @@ namespace Open.Topology.TestRunner.Functions
             }
             return null;
         }
+
+        /// <summary>
+        /// Finds the first function which matches the given category and name.
+        /// </summary>
+        /// <param name="category"></param>
+        /// <param name="name"></param>
+        /// <returns>A matching function or <c>null</c></returns>
+        public IGeometryFunction Find(string category, string name)
+        {
+            foreach (var func in _functions)
+            {
+                if (string.Equals(category, func.Category, StringComparison.InvariantCultureIgnoreCase) &&
+                    string.Equals(name, func.Name, StringComparison.InvariantCultureIgnoreCase))
+                    return func;
+            }
+            return null;
+        }
     }
 }
