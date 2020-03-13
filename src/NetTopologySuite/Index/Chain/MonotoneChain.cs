@@ -46,6 +46,12 @@ namespace NetTopologySuite.Index.Chain
     /// returned by the query.
     /// Queries made in this manner are thread-safe.
     /// </para>
+    /// MonotoneChains support being assigned an integer id value
+    /// to provide a total ordering for a set of chains.
+    /// This can be used during some kinds of processing to
+    /// avoid redundant comparisons
+    /// (i.e.by comparing only chains where the first id is less than the second).
+
     /// </remarks>
     public class MonotoneChain
     {
@@ -56,12 +62,12 @@ namespace NetTopologySuite.Index.Chain
         private readonly object _context;  // user-defined information
 
         /// <summary>
-        ///
+        /// Creates a new MonotoneChain based on the given array of points.
         /// </summary>
-        /// <param name="pts"></param>
-        /// <param name="start"></param>
-        /// <param name="end"></param>
-        /// <param name="context"></param>
+        /// <param name="pts">The points containing the chain</param>
+        /// <param name="start">The index of the first coordinate in the chain</param>
+        /// <param name="end">The index of the last coordinate in the chain </param>
+        /// <param name="context">A user-defined data object</param>
         public MonotoneChain(Coordinate[] pts, int start, int end, object context)
         {
             _pts = pts;
@@ -71,17 +77,21 @@ namespace NetTopologySuite.Index.Chain
         }
 
         /// <summary>
-        /// Gets or sets the Id
+        /// Gets or sets the Id of this chain
         /// </summary>
+        /// <remarks>
+        /// Useful for assigning an ordering to a set of
+        /// chains, which can be used to avoid redundant processing.
+        /// </remarks>
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets the chain's context
+        /// Gets the chain's user-defined context data value.
         /// </summary>
         public object Context => _context;
 
         /// <summary>
-        /// Gets the chain's envelope
+        /// Gets the envelope of this chain
         /// </summary>
         public Envelope Envelope
         {
@@ -89,6 +99,9 @@ namespace NetTopologySuite.Index.Chain
             {
                 if (_env == null)
                 {
+                    /**
+                     * The monotonicity property allows fast envelope determination
+                     */
                     var p0 = _pts[_start];
                     var p1 = _pts[_end];
                     _env = new Envelope(p0, p1);
@@ -98,12 +111,14 @@ namespace NetTopologySuite.Index.Chain
         }
 
         /// <summary>
-        /// Gets the start index
+        /// Gets the index of the start of the monotone chain
+        /// in the underlying array of points.
         /// </summary>
         public int StartIndex => _start;
 
         /// <summary>
-        /// Gets the end index of the underlying linestring
+        /// Gets the index of the end of the monotone chain
+        /// in the underlying array of points.
         /// </summary>
         public int EndIndex => _end;
 
@@ -206,6 +221,17 @@ namespace NetTopologySuite.Index.Chain
             ComputeOverlaps(_start, _end, mc, mc._start, mc._end, mco);
         }
 
+        /// <summary>
+        /// Uses an efficient mutual binary search strategy
+        /// to determine which pairs of chain segments
+        /// may overlap, and calls the given overlap action on them.
+        /// </summary>
+        /// <param name="start0">The start index of this chain section</param>
+        /// <param name="end0">The end index of this chain section</param>
+        /// <param name="mc">The target monotone chain</param>
+        /// <param name="start1">The start index of the target chain section</param>
+        /// <param name="end1">The end index of the target chain section</param>
+        /// <param name="mco">The overlap action to execute on selected segments</param>
         private void ComputeOverlaps(int start0, int end0, MonotoneChain mc, int start1, int end1, MonotoneChainOverlapAction mco)
         {
             // terminating condition for the recursion
@@ -238,9 +264,20 @@ namespace NetTopologySuite.Index.Chain
                     ComputeOverlaps(mid0, end0, mc, mid1, end1, mco);
             }
         }
+
         /// <summary>
-        /// Tests whether the envelopes of two chain sections overlap (intersect).
+        /// Tests whether the envelope of a section of the chain
+        /// overlaps(intersects) the envelope of a section of another target chain.
+        /// This test is efficient due to the monotonicity property
+        /// of the sections(i.e.the envelopes can be are determined
+        /// from the section endpoints
+        /// rather than a full scan).
         /// </summary>
+        /// <param name="start0">The start index of this chain section</param>
+        /// <param name="end0">The end index of this chain section</param>
+        /// <param name="mc">The target monotone chain</param>
+        /// <param name="start1">The start index of the target chain section</param>
+        /// <param name="end1">The end index of the target chain section</param>
         /// <returns><c>true</c> if the section envelopes overlap</returns>
         private bool Overlaps(
             int start0, int end0,
