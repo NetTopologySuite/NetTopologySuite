@@ -7,6 +7,21 @@ namespace Open.Topology.TestRunner.Functions
 {
     public static class ConversionFunctions
     {
+        public static Geometry LineToPolygon(Geometry g)
+        {
+            if (g is IPolygonal) return g;
+            // TODO: ensure ring is valid
+            var ringList = new CoordinateList();
+            var pts = g.Coordinates;
+            foreach (var pt in pts)
+            {
+                ringList.Add(pt, true);
+            }
+            ringList.CloseRing();
+            var ring = g.Factory.CreateLinearRing(ringList.ToCoordinateArray());
+            return g.Factory.CreatePolygon(ring, null);
+        }
+
         public static Geometry ToPoints(Geometry g1, Geometry g2)
         {
             var geoms = FunctionsUtil.BuildGeometry(g1, g2);

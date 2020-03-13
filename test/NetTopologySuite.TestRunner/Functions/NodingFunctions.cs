@@ -12,21 +12,6 @@ namespace Open.Topology.TestRunner.Functions
 {
     public static class NodingFunctions
     {
-        public static Geometry NodeWithPointwisePrecision(Geometry geom, double scaleFactor)
-        {
-            var pm = new PrecisionModel(scaleFactor);
-
-            var roundedGeom = GeometryPrecisionReducer.Reduce(geom, pm);
-
-            var geomList = new List<Geometry>();
-            geomList.Add(roundedGeom);
-
-            var noder = new GeometryNoder(pm);
-            var lines = noder.Node(geomList);
-
-            return FunctionsUtil.GetFactoryOrDefault(geom).BuildGeometry(lines.Cast<Geometry>().ToArray());
-        }
-
         /// <summary>
         /// Reduces precision pointwise, then snap-rounds.
         /// Note that output set may not contain non-unique linework
@@ -36,7 +21,7 @@ namespace Open.Topology.TestRunner.Functions
         /// <param name="geom">A geometry containing linework to node</param>
         /// <param name="scaleFactor">the precision model scale factor to use</param>
         /// <returns>The noded, snap-rounded linework</returns>
-        public static Geometry SnapRoundWithPointwisePrecisionReduction(Geometry geom, double scaleFactor)
+        public static Geometry SnapRoundWithPrecision(Geometry geom, double scaleFactor)
         {
             var pm = new PrecisionModel(scaleFactor);
 

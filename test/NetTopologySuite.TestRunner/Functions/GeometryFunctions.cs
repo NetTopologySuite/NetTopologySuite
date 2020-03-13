@@ -117,15 +117,6 @@ namespace Open.Topology.TestRunner.Functions
             return null;
         }
 
-        public static Geometry ConvertToPolygon(Geometry g)
-        {
-            if (g is Polygon)
-                return g;
-            // TODO: ensure ring is valid
-            var ring = g.Factory.CreateLinearRing(g.Coordinates);
-            return g.Factory.CreatePolygon(ring, null);
-        }
-
         public static Geometry GetCoordinates(Geometry g)
         {
             var pts = g.Coordinates;
