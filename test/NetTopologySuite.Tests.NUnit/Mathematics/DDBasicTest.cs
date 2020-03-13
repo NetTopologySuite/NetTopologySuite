@@ -79,6 +79,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             Assert.True(isEqual);
         }
 
+        [Test]
         public void TestPow()
         {
             CheckPow(0, 3, 16*DD.Epsilon);
@@ -89,6 +90,7 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             CheckPow(0.12345, -5, 1e5*DD.Epsilon);
         }
 
+        [Test]
         public void TestReciprocal()
         {
             // error bounds are chosen to be "close enough" (i.e. heuristically)
@@ -100,6 +102,38 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
             CheckReciprocal(314159269.0, 0);
         }
 
+        /**
+         * A basic test for determinant correctness
+         */
+        [Test]
+        public void TestDeterminant()
+        {
+            CheckDeterminant(3, 8, 4, 6, -14, 0);
+            CheckDeterminantDD(3, 8, 4, 6, -14, 0);
+        }
+
+        [Test]
+        public void TestDeterminantRobust()
+        {
+            CheckDeterminant(1.0e9, 1.0e9 - 1, 1.0e9 - 1, 1.0e9 - 2, -1, 0);
+            CheckDeterminantDD(1.0e9, 1.0e9 - 1, 1.0e9 - 1, 1.0e9 - 2, -1, 0);
+        }
+
+        private void CheckDeterminant(double x1, double y1, double x2, double y2, double expected, double errBound)
+        {
+            var det = DD.Determinant(x1, y1, x2, y2);
+            CheckErrorBound("Determinant", det, DD.ValueOf(expected), errBound);
+        }
+
+        private void CheckDeterminantDD(double x1, double y1, double x2, double y2, double expected, double errBound)
+        {
+            var det = DD.Determinant(
+                DD.ValueOf(x1), DD.ValueOf(y1),
+                DD.ValueOf(x2), DD.ValueOf(y2));
+            CheckErrorBound("Determinant", det, DD.ValueOf(expected), errBound);
+        }
+
+        [Test]
         public void TestBinom()
         {
             CheckBinomialSquare(100.0, 1.0);
@@ -145,19 +179,19 @@ namespace NetTopologySuite.Tests.NUnit.Mathematics
         private static void CheckErrorBound(string tag, DD x, DD y, double errBound)
         {
             var err = (x - y).Abs();
-            Console.WriteLine(tag + " err=" + err);
+            //Console.WriteLine(tag + " err=" + err);
             bool isWithinEps = err.ToDoubleValue() <= errBound;
-            Assert.True(isWithinEps);
+            if (!isWithinEps)
+            {
+                Assert.Warn($"checkErrorBound: {tag} val1 = {x} val2 = {y}  err={err}");
+                Assert.Fail();
+            }
         }
 
-        /**
-         * Computes (a+b)^2 in two different ways and compares the result.
-         * For correct results, a and b should be integers.
-         *
-         * @param a
-         * @param b
-         */
-
+        /// <summary>
+        /// Computes (a+b)^2 in two different ways and compares the result.
+        /// For correct results, a and b should be integers.
+        /// </summary>
         private static void CheckBinomialSquare(double a, double b)
         {
             // binomial square
