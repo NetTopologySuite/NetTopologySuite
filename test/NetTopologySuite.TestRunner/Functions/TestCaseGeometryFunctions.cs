@@ -24,62 +24,6 @@ namespace Open.Topology.TestRunner.Functions
         }
     }
 
-    public class TriangleFunctions
-    {
-        public static Geometry Circumcentre(Geometry g)
-        {
-            var pts = TrianglePts(g);
-            var cc = Triangle.Circumcentre(pts[0], pts[1], pts[2]);
-            var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
-            return geomFact.CreatePoint(cc);
-        }
-
-        public static Geometry PerpendicularBisectors(Geometry g)
-        {
-            var pts = TrianglePts(g);
-            var cc = Triangle.Circumcentre(pts[0], pts[1], pts[2]);
-            var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
-            var line = new LineString[3];
-            var p0 = (new LineSegment(pts[1], pts[2])).ClosestPoint(cc);
-            line[0] = geomFact.CreateLineString(new[] { p0, cc });
-            var p1 = (new LineSegment(pts[0], pts[2])).ClosestPoint(cc);
-            line[1] = geomFact.CreateLineString(new[] { p1, cc });
-            var p2 = (new LineSegment(pts[0], pts[1])).ClosestPoint(cc);
-            line[2] = geomFact.CreateLineString(new[] { p2, cc });
-            return geomFact.CreateMultiLineString(line);
-        }
-
-        public static Geometry Incentre(Geometry g)
-        {
-            var pts = TrianglePts(g);
-            var t = new Triangle(pts[0], pts[1], pts[2]);
-            var cc = t.InCentre();
-            var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
-            return geomFact.CreatePoint(cc);
-        }
-
-        public static Geometry AngleBisectors(Geometry g)
-        {
-            var pts = TrianglePts(g);
-            var t = new Triangle(pts[0], pts[1], pts[2]);
-            var cc = t.InCentre();
-            var geomFact = FunctionsUtil.GetFactoryOrDefault(g);
-            var line = new LineString[3];
-            line[0] = geomFact.CreateLineString(new[] { pts[0], cc });
-            line[1] = geomFact.CreateLineString(new[] { pts[1], cc });
-            line[2] = geomFact.CreateLineString(new[] { pts[2], cc });
-            return geomFact.CreateMultiLineString(line);
-        }
-
-        private static Coordinate[] TrianglePts(Geometry g)
-        {
-            var pts = g.Coordinates;
-            if (pts.Length < 3)
-                throw new ArgumentException("Input geometry must have at least 3 points");
-            return pts;
-        }
-    }
-
     public class TriangulationFunctions
     {
         private const double TriangulationTolerance = 0.0;

@@ -565,6 +565,34 @@ namespace NetTopologySuite.Mathematics
             return new DD(zhi, zlo);
         }
 
+
+        /// <summary>
+        /// Computes the determinant of the 2x2 matrix with the given entries.
+        /// </summary>
+        /// <param name="x1">A matrix entry</param>
+        /// <param name="y1">A matrix entry</param>
+        /// <param name="x2">A matrix entry</param>
+        /// <param name="y2">A matrix entry</param>
+        /// <returns>The determinant of the matrix of values</returns>
+        public static DD Determinant(double x1, double y1, double x2, double y2)
+        {
+            return Determinant(ValueOf(x1), ValueOf(y1), ValueOf(x2), ValueOf(y2));
+        }
+
+        /// <summary>
+        /// Computes the determinant of the 2x2 matrix with the given entries.
+        /// </summary>
+        /// <param name="x1">A matrix entry</param>
+        /// <param name="y1">A matrix entry</param>
+        /// <param name="x2">A matrix entry</param>
+        /// <param name="y2">A matrix entry</param>
+        /// <returns>The determinant of the matrix of values</returns>
+        public static DD Determinant(DD x1, DD y1, DD x2, DD y2)
+        {
+            var det = x1 * y2 - y1 * x2;
+            return det;
+        }
+
         #region Ordering Functions
 
         /// <summary>

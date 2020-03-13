@@ -1,5 +1,6 @@
 using System;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Geometries
 {
@@ -114,6 +115,43 @@ namespace NetTopologySuite.Geometries
             double ccy = cy + numy / denom;
 
             return new Coordinate(ccx, ccy);
+        }
+
+        /// <summary>
+        /// Computes the circumcentre of a triangle. The circumcentre is the centre of
+        /// the circumcircle, the smallest circle which encloses the triangle.It is
+        /// also the common intersection point of the perpendicular bisectors of the
+        /// sides of the triangle, and is the only point which has equal distance to
+        /// all three vertices of the triangle.
+        /// <para/>
+        /// The circumcentre does not necessarily lie within the triangle. For example,
+        /// the circumcentre of an obtuse isosceles triangle lies outside the triangle.
+        /// <para/>
+        /// This method uses <see cref="DD"/> extended-precision arithmetic to
+        /// provide more accurate results than
+        /// <see cref="Circumcentre(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)"/>
+        /// </summary>
+        /// <param name="a">A vertex of the triangle</param>
+        /// <param name="b">A vertex of the triangle</param>
+        /// <param name="c">A vertex of the triangle</param>
+        /// <returns>The circumcentre of the triangle</returns>
+        public static Coordinate CircumcentreDD(Coordinate a, Coordinate b, Coordinate c)
+        {
+            var ax = DD.ValueOf(a.X) - DD.ValueOf(c.X);
+            var ay = DD.ValueOf(a.Y) - DD.ValueOf(c.Y);
+            var bx = DD.ValueOf(b.X) - DD.ValueOf(c.X);
+            var by = DD.ValueOf(b.Y) - DD.ValueOf(c.Y);
+
+            var denom = DD.Determinant(ax, ay, bx, by) * DD.ValueOf(2);
+            var asqr = ax.Sqr() + ay.Sqr();
+            var bsqr = bx.Sqr() + by.Sqr();
+            var numx = DD.Determinant(ay, asqr, by, bsqr);
+            var numy = DD.Determinant(ax, asqr, bx, bsqr);
+
+            var ccx = DD.ValueOf(c.X) - numx / denom;
+            var ccy = DD.ValueOf(c.Y) + numy / denom;
+
+            return new Coordinate(ccx.ToDoubleValue(), ccy.ToDoubleValue());
         }
 
         /// <summary>

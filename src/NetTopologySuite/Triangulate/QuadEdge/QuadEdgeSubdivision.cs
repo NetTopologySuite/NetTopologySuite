@@ -608,7 +608,7 @@ namespace NetTopologySuite.Triangulate.QuadEdge
                 var c = triEdges[2].Orig.Coordinate;
 
                 // TODO: choose the most accurate circumcentre based on the edges
-                var cc = Triangle.Circumcentre(a, b, c);
+                var cc = Triangle.CircumcentreDD(a, b, c);
                 var ccVertex = new Vertex(cc);
                 // save the circumcentre as the origin for the dual edges originating in this triangle
                 for (int i = 0; i < 3; i++)

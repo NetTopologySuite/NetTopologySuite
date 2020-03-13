@@ -13,7 +13,7 @@ namespace NetTopologySuite.Tests.NUnit
     /// <author>Martin Davis</author>
     public abstract class GeometryTestCase
     {
-        readonly WKTReader _reader = new WKTReader();
+        //readonly WKTReader _readerWKT = new WKTReader();
         private readonly GeometryFactory _geomFactory = new GeometryFactory();
 
         protected GeometryTestCase()
@@ -23,7 +23,7 @@ namespace NetTopologySuite.Tests.NUnit
         protected GeometryTestCase(CoordinateSequenceFactory coordinateSequenceFactory)
         {
             _geomFactory = new GeometryFactory(coordinateSequenceFactory);
-            _reader = new WKTReader(_geomFactory);
+            //_readerWKT = new WKTReader(_geomFactory);
         }
 
         protected void CheckEqual(Geometry expected, Geometry actual)
@@ -66,7 +66,8 @@ namespace NetTopologySuite.Tests.NUnit
 
         protected Geometry Read(string wkt)
         {
-            return Read(_reader, wkt);
+            //return Read(_readerWKT, wkt);
+            return WKTorBReader.Read(wkt, _geomFactory);
         }
 
         public static Geometry Read(WKTReader reader, string wkt)
@@ -88,6 +89,7 @@ namespace NetTopologySuite.Tests.NUnit
             {
                 geometries.Add(Read(wkt[i]));
             }
+
             return geometries;
         }
 
@@ -98,6 +100,7 @@ namespace NetTopologySuite.Tests.NUnit
             {
                 geometries.Add(Read(reader, wkt[i]));
             }
+
             return geometries;
         }
 
@@ -147,7 +150,8 @@ namespace NetTopologySuite.Tests.NUnit
 
             if (ordinateFlags.HasFlag(Ordinates.M))
             {
-                return new WKTReader(new GeometryFactory(precisionModel, 0, PackedCoordinateSequenceFactory.DoubleFactory))
+                return new WKTReader(new GeometryFactory(precisionModel, 0,
+                    PackedCoordinateSequenceFactory.DoubleFactory))
                 {
                     IsOldNtsCoordinateSyntaxAllowed = false,
                 };

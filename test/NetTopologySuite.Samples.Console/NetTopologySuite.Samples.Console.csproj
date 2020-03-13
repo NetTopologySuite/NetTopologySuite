@@ -12,6 +12,7 @@
   <ItemGroup>
     <Compile Include="$(SolutionDir)test\NetTopologySuite.Tests.NUnit\TestData\EmbeddedResourceManager.cs" Link="Tests\Various\EmbeddedResourceManager.cs" />
     <Compile Include="$(SolutionDir)test\NetTopologySuite.Tests.NUnit\GeometryTestCase.cs" Link="Tests\GeometryTestCase.cs" />
+    <Compile Include="$(SolutionDir)test\NetTopologySuite.Tests.NUnit\WKTorBReader.cs" Link="Tests\WKTorBReader.cs" />
 
     <EmbeddedResource Include="Tests\Various\*.gml" />
   </ItemGroup>
