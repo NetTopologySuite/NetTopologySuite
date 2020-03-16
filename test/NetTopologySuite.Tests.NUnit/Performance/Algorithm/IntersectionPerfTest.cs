@@ -3,6 +3,32 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Tests.NUnit.Performance.Algorithm
 {
+    /// <summary>
+    /// Performance test for various line intersection implementations.
+    /// <para/>
+    /// These include:
+    /// <list type="Bullet">
+    /// <item><term>DP-Basic</term><description>a basic double-precision (DP) implementation, with no attempt at reducing the effects of numerical round-off</description></item>
+    /// <item><term>DP-Cond</term><description>a DP implementation in which the inputs are conditioned by translating them to around the origin</description></item>
+    /// <item><term>DP-CB</term><description>a DP implementation using the <see cref="CommonBitsRemover"/> functionality</description></item>
+    /// <item><term>DD</term><description>an implementation using extended-precision <see cref="DoubleDouble"/> arithmetic</description></item>
+    /// <item><term>DDFilter</term><description>an experimental implementation using extended-precision <see cref="DoubleDouble"/> arithmetic
+    /// along with a filter that uses DP if the accuracy is sufficient</description></item>
+    /// </list>
+    /// <h2>Results</h2>
+    /// <list type="Bullet">
+    /// <item><description>DP-Basic is the fastest but least accurate</description></item>
+    /// <item><description>DP-Cond is fairly fast</description></item>
+    /// <item><description>DP-CB is similar in performance to DP-Cond (but less accurate)</description></item>
+    /// <item><description>DD is the slowest implementation</description></item>
+    /// <item><description>the performance of DP-Filter is similar to DP or DD, depending on which method is chosen by the filter</description></item>
+    /// </list>
+    /// This test is evaluated together with the accuracy results from <see cref="IntersectionStressTest"/>.
+    /// The conclusion is that the best combination of accuracy and performance
+    /// is provided by DP-Cond.
+    /// </summary>
+    /// <seealso cref="IntersectionStressTest"/>
+    /// <author>mdavis</author>
     public class IntersectionPerfTest : PerformanceTestCase
     {
         private const int N_ITER = 1000000;
