@@ -455,40 +455,43 @@ namespace NetTopologySuite.Geometries
                 return new[] { intPt, intPt };
 
             /*
-            *  if no intersection closest pair contains at least one endpoint.
-            * Test each endpoint in turn.
-            */
+             * if no intersection closest pair contains at least one endpoint.
+             * Test each endpoint in turn.
+             */
             var closestPt = new Coordinate[2];
 
-            var close00 = ClosestPoint(line._p0);
-            double minDistance = close00.Distance(line._p0);
-            closestPt[0] = close00;
-            closestPt[1] = line._p0;
+            double minDistance = double.MaxValue;
+            double dist;
 
-            var close01 = ClosestPoint(line._p1);
-            double dist = close01.Distance(line._p1);
+            var close00 = ClosestPoint(line.P0);
+            minDistance = close00.Distance(line.P0);
+            closestPt[0] = close00;
+            closestPt[1] = line.P0;
+
+            var close01 = ClosestPoint(line.P1);
+            dist = close01.Distance(line.P1);
             if (dist < minDistance)
             {
                 minDistance = dist;
                 closestPt[0] = close01;
-                closestPt[1] = line._p1;
+                closestPt[1] = line.P1;
             }
 
-            var close10 = line.ClosestPoint(_p0);
-            dist = close10.Distance(_p0);
+            var close10 = line.ClosestPoint(P0);
+            dist = close10.Distance(P0);
             if (dist < minDistance)
             {
                 minDistance = dist;
-                closestPt[0] = _p0;
+                closestPt[0] = P0;
                 closestPt[1] = close10;
             }
 
-            var close11 = line.ClosestPoint(_p1);
-            dist = close11.Distance(_p1);
+            var close11 = line.ClosestPoint(P1);
+            dist = close11.Distance(P1);
             if (dist < minDistance)
             {
                 minDistance = dist;
-                closestPt[0] = _p1;
+                closestPt[0] = P1;
                 closestPt[1] = close11;
             }
 
@@ -501,7 +504,7 @@ namespace NetTopologySuite.Geometries
         /// If there are 0, null is returned. If there is 1 or more, a single one
         /// is returned (chosen at the discretion of the algorithm).  If
         /// more information is required about the details of the intersection,
-        /// the {RobustLineIntersector} class should be used.
+        /// the <see cref="RobustLineIntersector"/> class should be used.
         /// </summary>
         /// <param name="line">A line segment</param>
         /// <returns> An intersection point, or <c>null</c> if there is none.</returns>
@@ -509,7 +512,7 @@ namespace NetTopologySuite.Geometries
         public Coordinate Intersection(LineSegment line)
         {
             var li = new RobustLineIntersector();
-            li.ComputeIntersection(_p0, _p1, line._p0, line._p1);
+            li.ComputeIntersection(_p0, _p1, line.P0, line.P1);
             if (li.HasIntersection)
                 return li.GetIntersection(0);
             return null;
@@ -532,7 +535,7 @@ namespace NetTopologySuite.Geometries
         {
             try
             {
-                var intPt = HCoordinate.Intersection(_p0, _p1, line._p0, line._p1);
+                var intPt = IntersectionComputer.Intersection(_p0, _p1, line._p0, line._p1);
                 return intPt;
             }
             catch (NotRepresentableException ex)

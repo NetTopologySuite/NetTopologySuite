@@ -28,6 +28,38 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         [Test]
+        public void TestLineIntersection()
+        {
+            // simple case
+            CheckLineIntersection(
+                0, 0, 10, 10,
+                0, 10, 10, 0,
+                5, 5);
+
+            //Almost collinear - See JTS GitHub issue #464
+            CheckLineIntersection(
+                35613471.6165017, 4257145.306132293, 35613477.7705378, 4257160.528222711,
+                35613477.77505724, 4257160.539653536, 35613479.85607389, 4257165.92369170,
+                35613477.772841461, 4257160.5339209242);
+        }
+
+        private const double MAX_ABS_ERROR_INTERSECTION = 1e-5;
+
+        private static void CheckLineIntersection(double p1x, double p1y, double p2x, double p2y,
+            double q1x, double q1y, double q2x, double q2y,
+            double expectedx, double expectedy)
+        {
+            var seg1 = new LineSegment(p1x, p1y, p2x, p2y);
+            var seg2 = new LineSegment(q1x, q1y, q2x, q2y);
+
+            var actual = seg1.LineIntersection(seg2);
+            var expected = new Coordinate(expectedx, expectedy);
+            double dist = actual.Distance(expected);
+            //System.out.println("Expected: " + expected + "  Actual: " + actual + "  Dist = " + dist);
+            Assert.That(dist, Is.LessThanOrEqualTo(MAX_ABS_ERROR_INTERSECTION));
+        }
+
+        [Test]
         public void TestOffset()
         {
             CheckOffset(0, 0, 10, 10, 0.0, ROOT2, -1, 1);

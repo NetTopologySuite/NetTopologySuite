@@ -65,18 +65,20 @@ namespace NetTopologySuite.Operation.Distance
             return distOp.NearestPoints();
         }
 
-        private readonly PointLocator _ptLocator = new PointLocator();
+        // input
         private readonly Geometry[] _geom;
+        private readonly double _terminateDistance;
+        // working
+        private readonly PointLocator _ptLocator = new PointLocator();
         private GeometryLocation[] _minDistanceLocation;
         private double _minDistance = double.MaxValue;
-        private readonly double _terminateDistance;
 
         /// <summary>
         /// Constructs a <see cref="DistanceOp" />  that computes the distance and closest points between
         /// the two specified geometries.
         /// </summary>
-        /// <param name="g0"></param>
-        /// <param name="g1"></param>
+        /// <param name="g0">A geometry</param>
+        /// <param name="g1">A geometry</param>
         public DistanceOp(Geometry g0, Geometry g1)
         : this(g0, g1, 0) { }
 
@@ -84,8 +86,8 @@ namespace NetTopologySuite.Operation.Distance
         /// Constructs a <see cref="DistanceOp" /> that computes the distance and closest points between
         /// the two specified geometries.
         /// </summary>
-        /// <param name="g0"></param>
-        /// <param name="g1"></param>
+        /// <param name="g0">A geometry</param>
+        /// <param name="g1">A geometry</param>
         /// <param name="terminateDistance">The distance on which to terminate the search.</param>
         public DistanceOp(Geometry g0, Geometry g1, double terminateDistance)
         {
@@ -185,40 +187,10 @@ namespace NetTopologySuite.Operation.Distance
         private void ComputeContainmentDistance()
         {
             var locPtPoly = new GeometryLocation[2];
+            // test if either geometry has a vertex inside the other
             ComputeContainmentDistance(0, locPtPoly);
             if (_minDistance <= _terminateDistance) return;
             ComputeContainmentDistance(1, locPtPoly);
-
-            // test if either geometry has a vertex inside the other
-
-            /*
-            IList<Polygon> polys1 = PolygonExtracter.GetPolygons(_geom[1]);
-            if (polys1.Count > 0)
-            {
-                IList<GeometryLocation> insideLocs0 = ConnectedElementLocationFilter.GetLocations(_geom[0]);
-                ComputeInside(insideLocs0, polys1, locPtPoly);
-                if (_minDistance <= _terminateDistance)
-                {
-                    _minDistanceLocation[0] = locPtPoly[0];
-                    _minDistanceLocation[1] = locPtPoly[1];
-                    return;
-                }
-            }
-
-            IList<Polygon> polys0 = PolygonExtracter.GetPolygons(_geom[0]);
-            if (polys0.Count > 0)
-            {
-                IList<GeometryLocation> insideLocs1 = ConnectedElementLocationFilter.GetLocations(_geom[1]);
-                ComputeInside(insideLocs1, polys0, locPtPoly);
-                if (_minDistance <= _terminateDistance)
-                {
-                    // flip locations, since we are testing geom 1 VS geom 0
-                    _minDistanceLocation[0] = locPtPoly[1];
-                    _minDistanceLocation[1] = locPtPoly[0];
-                    return;
-                }
-            }
-             */
         }
 
         private void ComputeContainmentDistance(int polyGeomIndex, GeometryLocation[] locPtPoly)
@@ -235,7 +207,7 @@ namespace NetTopologySuite.Operation.Distance
                 ComputeContainmentDistance(insideLocs, polys, locPtPoly);
                 if (_minDistance <= _terminateDistance)
                 {
-                    // this assigment is determined by the order of the args in the computeInside call above
+                    // this assignment is determined by the order of the args in the computeInside call above
                     _minDistanceLocation[locationsIndex] = locPtPoly[0];
                     _minDistanceLocation[polyGeomIndex] = locPtPoly[1];
                 }
@@ -266,50 +238,9 @@ namespace NetTopologySuite.Operation.Distance
                 _minDistance = 0.0;
                 locPtPoly[0] = ptLoc;
                 locPtPoly[1] = new GeometryLocation(poly, pt);
-            }
-        }
-
-        /*
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="locs"></param>
-        /// <param name="polys"></param>
-        /// <param name="locPtPoly"></param>
-        private void ComputeInside(IEnumerable<GeometryLocation> locs, IEnumerable<Polygon> polys, GeometryLocation[] locPtPoly)
-        {
-            foreach (GeometryLocation loc in locs)
-            {
-                foreach (Polygon poly in polys)
-                {
-                    ComputeInside(loc, poly, locPtPoly);
-                    if (_minDistance <= _terminateDistance)
-                        return;
-                }
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="ptLoc"></param>
-        /// <param name="poly"></param>
-        /// <param name="locPtPoly"></param>
-        private void ComputeInside(GeometryLocation ptLoc, Polygon poly, GeometryLocation[] locPtPoly)
-        {
-            Coordinate pt = ptLoc.Coordinate;
-            // if pt is not in exterior, distance to geom is 0
-            if (Location.Exterior != _ptLocator.Locate(pt, poly))
-            {
-                _minDistance = 0.0;
-                locPtPoly[0] = ptLoc;
-                GeometryLocation locPoly = new GeometryLocation(poly, pt);
-                locPtPoly[1] = locPoly;
                 return;
             }
         }
-
-        */
 
         /// <summary>
         /// Computes distance between facets (lines and points) of input geometries.

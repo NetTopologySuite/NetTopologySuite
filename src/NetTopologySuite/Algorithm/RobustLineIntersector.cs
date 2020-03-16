@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using NetTopologySuite.Geometries;
 
@@ -185,7 +186,7 @@ namespace NetTopologySuite.Algorithm
         /// <returns></returns>
         private Coordinate Intersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            var intPt = IntersectionWithNormalization(p1, p2, q1, q2);
+            var intPt = IntersectionSafe(p1, p2, q1, q2);
 
             /*
             // TESTING ONLY
@@ -234,74 +235,21 @@ namespace NetTopologySuite.Algorithm
                 Debug.WriteLine("Distance = " + distance);
         }
 
-        private Coordinate IntersectionWithNormalization(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
-        {
-            var n1 = p1.Copy();
-            var n2 = p2.Copy();
-            var n3 = q1.Copy();
-            var n4 = q2.Copy();
-            var normPt = new Coordinate();
-            NormalizeToEnvCentre(n1, n2, n3, n4, normPt);
-
-            var intPt = SafeHCoordinateIntersection(n1, n2, n3, n4);
-            intPt.X += normPt.X;
-            intPt.Y += normPt.Y;
-            return intPt;
-        }
-
         /// <summary>
         /// Computes a segment intersection using homogeneous coordinates.
         /// Round-off error can cause the raw computation to fail,
         /// (usually due to the segments being approximately parallel).
         /// If this happens, a reasonable approximation is computed instead.
         /// </summary>
-        private static Coordinate SafeHCoordinateIntersection(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
+        private static Coordinate IntersectionSafe(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
         {
-            Coordinate intPt;
-            try
-            {
-                intPt = HCoordinate.Intersection(p1, p2, q1, q2);
-            }
-            catch (NotRepresentableException e)
-            {
-                // compute an approximate result
-                // intPt = CentralEndpointIntersector.GetIntersection(p1, p2, q1, q2);
+            var intPt = IntersectionComputer.Intersection(p1, p2, q1, q2);
+            if (intPt == null) {
                 intPt = NearestEndpoint(p1, p2, q1, q2);
+                //Console.WriteLine($"Snapped to {intPt}");
             }
+            
             return intPt;
-        }
-
-        /// <summary>
-        /// Normalize the supplied coordinates to
-        /// so that the midpoint of their intersection envelope
-        /// lies at the origin.
-        /// </summary>
-        private void NormalizeToEnvCentre(Coordinate n00, Coordinate n01, Coordinate n10, Coordinate n11, Coordinate normPt)
-        {
-            double minX0 = n00.X < n01.X ? n00.X : n01.X;
-            double minY0 = n00.Y < n01.Y ? n00.Y : n01.Y;
-            double maxX0 = n00.X > n01.X ? n00.X : n01.X;
-            double maxY0 = n00.Y > n01.Y ? n00.Y : n01.Y;
-
-            double minX1 = n10.X < n11.X ? n10.X : n11.X;
-            double minY1 = n10.Y < n11.Y ? n10.Y : n11.Y;
-            double maxX1 = n10.X > n11.X ? n10.X : n11.X;
-            double maxY1 = n10.Y > n11.Y ? n10.Y : n11.Y;
-
-            double intMinX = minX0 > minX1 ? minX0 : minX1;
-            double intMaxX = maxX0 < maxX1 ? maxX0 : maxX1;
-            double intMinY = minY0 > minY1 ? minY0 : minY1;
-            double intMaxY = maxY0 < maxY1 ? maxY0 : maxY1;
-
-            double intMidX = (intMinX + intMaxX) / 2.0;
-            double intMidY = (intMinY + intMaxY) / 2.0;
-            normPt.X = intMidX;
-            normPt.Y = intMidY;
-
-            n00.X -= normPt.X; n00.Y -= normPt.Y;
-            n01.X -= normPt.X; n01.Y -= normPt.Y;
-            n10.X -= normPt.X; n10.Y -= normPt.Y;
-            n11.X -= normPt.X; n11.Y -= normPt.Y;
         }
 
         /// <summary>

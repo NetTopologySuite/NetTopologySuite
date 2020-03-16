@@ -8,6 +8,17 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     public class CGAlgorithmsTest
     {
         [Test]
+        public void TestIntersection()
+        {
+            var p1 = new Coordinate(413219.0849208352, 990424.3721256976);
+            var p2 = new Coordinate(413217.6678330222, 990524.3620845041);
+            var q1 = new Coordinate(413216.2715430226, 990404.8197292066);
+            var q2 = new Coordinate(413186.72067708324, 990309.2857231029);
+            var intPt = CGAlgorithmsDD.Intersection(p1, p2, q1, q2);
+            Assert.IsTrue(intPt != null);
+        }
+
+        [Test]
         public void TestOrientationIndexRobust()
         {
             var p0 = new Coordinate(219.3649559090992, 140.84159161824724);

@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Geometries;
+﻿using System.Net.Http.Headers;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Algorithm
@@ -133,43 +134,34 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// Computes an intersection point between two lines
         /// using DD arithmetic.
-        /// Currently does not handle case of parallel lines.
+        /// If the lines are parallel (either identical
+        /// or separate) a null value is returned.
         /// </summary>
-        /// <param name="p1">A point of 1st segment</param>
-        /// <param name="p2">Another point of 1st segment</param>
-        /// <param name="q1">A point of 2nd segment</param>
-        /// <param name="q2">Another point of 2nd segment</param>
-        /// <returns>An intersection point if one exists.</returns>
+        /// <param name="p1">An endpoint of line segment 1</param>
+        /// <param name="p2">An endpoint of line segment 1</param>
+        /// <param name="q1">An endpoint of line segment 2</param>
+        /// <param name="q2">An endpoint of line segment 2</param>
+        /// <returns>An intersection point if one exists, or <c>null</c> if lines are parallel.</returns>
         public static Coordinate Intersection(
             Coordinate p1, Coordinate p2,
             Coordinate q1, Coordinate q2)
         {
-            var denom1 = (DD.ValueOf(q2.Y) - DD.ValueOf(q1.Y))*(DD.ValueOf(p2.X) - DD.ValueOf(p1.X));
-            var denom2 = (DD.ValueOf(q2.X) - DD.ValueOf(q1.X))*(DD.ValueOf(p2.Y) - DD.ValueOf(p1.Y));
-            var denom = denom1 - denom2;
+            var px = (DD)p1.Y - (DD)p2.Y;
+            var py = (DD)p2.X - (DD)p1.X;
+            var pw = (DD)p1.X * (DD)p2.Y - (DD)p2.X * (DD)p1.Y;
 
-            /**
-             * Cases:
-             * - denom is 0 if lines are parallel
-             * - intersection point lies within line segment p if fracP is between 0 and 1
-             * - intersection point lies within line segment q if fracQ is between 0 and 1
-             */
+            var qx = (DD)q1.Y - (DD)q2.Y;
+            var qy = (DD)q2.X - (DD)q1.X;
+            var qw = (DD)q1.X * (DD)q2.Y - (DD)q2.X * (DD)q1.Y;
 
-            var numx1 = (DD.ValueOf(q2.X) - DD.ValueOf(q1.X)) * (DD.ValueOf(p1.Y) - DD.ValueOf(q1.Y));
-            var numx2 = (DD.ValueOf(q2.Y) - DD.ValueOf(q1.Y)) * (DD.ValueOf(p1.X) - DD.ValueOf(q1.X));
-            var numx = numx1 - numx2;
-            var fracP = (numx / denom)/*.ToDoubleValue()*/;
+            var x = py * qw - qy * pw;
+            var y = qx * pw - px * qw;
+            var w = px * qy - qx * py;
 
-            double x = (DD.ValueOf(p1.X) + (DD.ValueOf(p2.X) - DD.ValueOf(p1.X)) * fracP).ToDoubleValue();
+            double xInt = (x / w).ToDoubleValue();
+            double yInt = (y / w).ToDoubleValue();
 
-            var numy1 = (DD.ValueOf(p2.X) - DD.ValueOf(p1.X)) * (DD.ValueOf(p1.Y) - DD.ValueOf(q1.Y));
-            var numy2 = (DD.ValueOf(p2.Y) - DD.ValueOf(p1.Y)) * (DD.ValueOf(p1.X) - DD.ValueOf(q1.X));
-            var numy = numy1 - numy2;
-            var fracQ = numy / denom;
-
-            double y = (DD.ValueOf(q1.Y) + (DD.ValueOf(q2.Y) - DD.ValueOf(q1.Y)) * fracQ).ToDoubleValue();
-
-            return new Coordinate(x, y);
+            return new Coordinate(xInt, yInt);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
@@ -24,6 +25,7 @@ namespace NetTopologySuite.Algorithm
         /// <param name="p2">2nd Coordinate of 1st linesegment</param>
         /// <param name="q1">1st Coordinate of 2nd linesegment</param>
         /// <param name="q2">2nd Coordinate of 2nd linesegment</param>
+        [Obsolete("Use Intersection.Compute(Coordinate, Coordinate, Coordinate, Coordinate)")]
         public static Coordinate Intersection(
             Coordinate p1, Coordinate p2,
             Coordinate q1, Coordinate q2)

@@ -443,40 +443,23 @@ namespace NetTopologySuite.Operation.Buffer
             LineSegment offset1,
             double distance)
         {
-            bool isMitreWithinLimit = true;
-            Coordinate intPt;
-
             /**
              * This computation is unstable if the offset segments are nearly collinear.
-             * However, this situation should have been eliminated earlier by the check for
-             * whether the offset segment endpoints are almost coincident
+             * However, this situation should have been eliminated earlier by the check
+             * for whether the offset segment endpoints are almost coincident
              */
-            try
+            var intPt = IntersectionComputer.Intersection(offset0.P0, offset0.P1, offset1.P0, offset1.P1);
+            if (intPt != null)
             {
-                intPt = HCoordinate.Intersection(offset0.P0,
-                   offset0.P1, offset1.P0, offset1.P1);
-
-                double mitreRatio = distance <= 0.0 ? 1.0
-                    : intPt.Distance(p) / Math.Abs(distance);
-
-                if (mitreRatio > _bufParams.MitreLimit)
-                    isMitreWithinLimit = false;
+                double mitreRatio = distance <= 0.0 ? 1.0 : intPt.Distance(p) / Math.Abs(distance);
+                if (mitreRatio <= _bufParams.MitreLimit)
+                {
+                    _segList.AddPt(intPt);
+                    return;
+                }
             }
-            catch (NotRepresentableException ex)
-            {
-                intPt = new Coordinate(0, 0);
-                isMitreWithinLimit = false;
-            }
-
-            if (isMitreWithinLimit)
-            {
-                _segList.AddPt(intPt);
-            }
-            else
-            {
-                AddLimitedMitreJoin(offset0, offset1, distance, _bufParams.MitreLimit);
-                //      addBevelJoin(offset0, offset1);
-            }
+            // at this point either intersection failed or mitre limit was exceeded
+            AddLimitedMitreJoin(offset0, offset1, distance, _bufParams.MitreLimit);
         }
 
         /// <summary>
