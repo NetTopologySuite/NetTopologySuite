@@ -77,8 +77,8 @@ namespace NetTopologySuite.Operation.Union
         /// <param name="g1">A geometry to union</param>
         public OverlapUnion(Geometry g0, Geometry g1)
         {
-            this._g0 = g0;
-            this._g1 = g1;
+            _g0 = g0;
+            _g1 = g1;
             _geomFactory = g0.Factory;
         }
 
@@ -174,10 +174,35 @@ namespace NetTopologySuite.Operation.Union
 
         private static Geometry UnionFull(Geometry geom0, Geometry geom1)
         {
-            var union = geom0.Union(geom1);
-            return union;
+            try
+            {
+                return geom0.Union(geom1);
+            }
+            catch (TopologyException)
+            {
+                /**
+                 * If the overlay union fails,
+                 * try a buffer union, which often succeeds
+                 */
+                return UnionBuffer(geom0, geom1);
+            }
         }
 
+        /// <summary>
+        /// Implements union using the buffer-by-zero trick.
+        /// This seems to be more robust than overlay union,
+        /// for reasons somewhat unknown.
+        /// </summary>
+        /// <param name="g0">A geometry</param>
+        /// <param name="g1">A geometry</param>
+        /// <returns>The union of the geometries </returns>
+        private static Geometry UnionBuffer(Geometry g0, Geometry g1)
+        {
+            var factory = g0.Factory;
+            var gColl = factory.CreateGeometryCollection(new Geometry[] { g0, g1 });
+            var union = gColl.Buffer(0.0);
+            return union;
+        }
         private bool IsBorderSegmentsSame(Geometry result, Envelope env)
         {
             var segsBefore = ExtractBorderSegments(_g0, _g1, env);
