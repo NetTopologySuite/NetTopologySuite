@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Geometries;
+﻿using System;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Algorithm
 {
@@ -15,15 +16,37 @@ namespace NetTopologySuite.Algorithm
     {
         /// <summary>
         /// Compute a location of an interior point in a <see cref="Geometry"/>.
+        /// <para/>
         /// Handles all geometry types.
         /// </summary>
         /// <param name="geom">A geometry in which to find an interior point</param>
+        /// <returns>the location of an interior point, or <c>POINT EMPTY</c> if the input is empty
+        /// </returns>
+        [Obsolete("Use GetInteriorCoord")]
+        public static Point GetInteriorPoint(Geometry geom)
+        {
+            if (geom == null)
+                throw new ArgumentException();
+
+            var interiorCoord = GetInteriorCoord(geom);
+            return interiorCoord != null
+                ? geom.Factory.CreatePoint(interiorCoord)
+                : geom.Factory.CreatePoint();
+        }
+
+        /// <summary>
+        /// Compute a location of an interior point in a <see cref="Geometry"/>.
+        /// <para/>
+        /// Handles all geometry types.
+        /// </summary>
+        /// <remarks>
+        /// This function is called <c>GetInteriorPoint</c> in JTS.
+        /// It has been renamed to <c>GetInteriorCoord</c> to prevent a breaking change.</remarks>
+        /// <param name="geom">A geometry in which to find an interior point</param>
         /// <returns>the location of an interior point, or <c>null</c> if the input is empty
         /// </returns>
-        public static Coordinate GetInteriorPoint(Geometry geom)
+        public static Coordinate GetInteriorCoord(Geometry geom)
         {
-            var factory = geom.Factory;
-
             if (geom.IsEmpty)
                 return null;
 
