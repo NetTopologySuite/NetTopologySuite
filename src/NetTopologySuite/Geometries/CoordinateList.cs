@@ -218,6 +218,28 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Creates an array containing the coordinates in this list,
+        /// oriented in the given direction (forward or reverse).
+        /// </summary>
+        /// <param name="isForward">The direction value: <c>true</c> for forward, <c>false</c> for reverse</param>
+        /// <returns>An oriented array of coordinates</returns>
+        public Coordinate[] ToCoordinateArray(bool isForward)
+        {
+            if (isForward)
+            {
+                return ToArray();
+            }
+            // construct reversed array
+            int size = Count;
+            var pts = new Coordinate[size];
+            for (int i = 0; i < size; i++)
+            {
+                pts[i] = this[size - i - 1];
+            }
+            return pts;
+        }
+
+        /// <summary>
         /// Returns a deep copy of this collection.
         /// </summary>
         /// <returns>The copied object.</returns>
