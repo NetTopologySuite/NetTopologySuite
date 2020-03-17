@@ -103,12 +103,12 @@ namespace NetTopologySuite.IO
             return $"LINESTRING ({Format(p0)}, {Format(p1)})";
         }
 
-        private static string Format(Coordinate p)
+        internal static string Format(Coordinate p)
         {
             return Format(p.X, p.Y);
         }
 
-        private static string Format(double x, double y)
+        internal static string Format(double x, double y)
         {
             return OrdinateFormat.Default.Format(x) + " " + OrdinateFormat.Default.Format(y);
         }

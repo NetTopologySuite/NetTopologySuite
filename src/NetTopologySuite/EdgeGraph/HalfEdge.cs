@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Text;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
+using NetTopologySuite.IO;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.EdgeGraph
@@ -13,11 +15,16 @@ namespace NetTopologySuite.EdgeGraph
     /// and terminate at a <b>destination</b> vertex.
     /// HalfEdges always occur in symmetric pairs, with the <see cref="Sym"/> method
     /// giving access to the oppositely-oriented component.
-    /// HalfEdges with the same origin are ordered
-    /// so that the ring of their dest points is oriented CCW.
     /// HalfEdges and the methods on them form an edge algebra,
     /// which can be used to traverse and query the topology
     /// of the graph formed by the edges.
+    /// <para/>
+    /// To support graphs where the edges are sequences of coordinates
+    /// each edge may also have a direction point supplied.
+    /// This is used to determine the ordering
+    /// of the edges around the origin.
+    /// HalfEdges with the same origin are ordered
+    /// so that the ring of edges formed by them is oriented CCW.
     /// <para/>
     /// By design HalfEdges carry minimal information
     /// about the actual usage of the graph they represent.
@@ -28,6 +35,7 @@ namespace NetTopologySuite.EdgeGraph
     /// by vertex and edge location, as well as ensuring
     /// edges are created and linked appropriately.
     /// </summary>
+    /// <author>Martin Davis</author>
     public class HalfEdge : IComparable<HalfEdge>
     {
         /// <summary>
@@ -45,27 +53,6 @@ namespace NetTopologySuite.EdgeGraph
             return e0;
         }
 
-        /// <summary>
-        /// Initialize a symmetric pair of HalfEdges.
-        /// Intended for use by <see cref="EdgeGraph"/> subclasses.
-        /// The edges are initialized to have each other
-        /// as the <see cref="Sym"/> edge, and to have <see cref="Next"/> pointers
-        /// which point to edge other.
-        /// This effectively creates a graph containing a single edge.
-        /// </summary>
-        /// <param name="e0">a HalfEdge</param>
-        /// <param name="e1">a symmetric HalfEdge</param>
-        /// <returns>the initialized edge e0</returns>
-        public static HalfEdge Init(HalfEdge e0, HalfEdge e1)
-        {
-            // ensure only newly created edges can be initialized, to prevent information loss
-            if (e0.Sym != null || e1.Sym != null ||
-                e0.Next != null || e1.Next != null)
-                throw new ArgumentException("Edges are already initialized");
-            e0.Init(e1);
-            return e0;
-        }
-
         private readonly Coordinate _orig;
         private HalfEdge _sym;
         private HalfEdge _next;
@@ -79,13 +66,25 @@ namespace NetTopologySuite.EdgeGraph
             _orig = orig;
         }
 
+        /**
+         * Links this edge with its sym (opposite) edge.
+         * This must be done for each pair of edges created.
+         * 
+         * @param e the sym edge to link.
+         */
+        public virtual void Link(HalfEdge sym)
+        {
+            Sym = sym;
+            sym.Sym = this;
+            // set next ptrs for a single segment
+            Next = sym;
+            sym.Next = this;
+        }
+
+        [Obsolete("Use Link")]
         protected virtual void Init(HalfEdge e)
         {
-            Sym = e;
-            e.Sym = this;
-            // set next ptrs for a single segment
-            Next = e;
-            e.Next = this;
+            Link(e);
         }
 
         /// <summary>
@@ -97,6 +96,34 @@ namespace NetTopologySuite.EdgeGraph
         /// Gets the destination coordinate of this edge.
         /// </summary>
         public Coordinate Dest => Sym.Orig;
+
+        /// <summary>
+        /// Gets a value indicating the X component of the direction vector.
+        /// </summary>
+        /// <returns>The X component of the direction vector</returns>
+        double DirectionX { get => DirectionPt.X - Orig.X; }
+
+        /// <summary>
+        /// Gets a value indicating the Y component of the direction vector.
+        /// </summary>
+        /// <returns>The Y component of the direction vector</returns>
+        double DirectionY { get => DirectionPt.Y - Orig.Y; }
+
+        /// <summary>
+        /// Gets a value indicating the direction point of this edge.
+        /// In the base case this is the dest coordinate
+        /// of the edge.
+        /// <para/>
+        /// Subclasses may override to
+        /// allow a HalfEdge to represent an edge with more than two coordinates.
+        /// </summary>
+        /// <returns>The direction point for the edge</returns>
+        protected virtual Coordinate DirectionPt
+        {
+            // default is to assume edges have only 2 vertices
+            // subclasses may override to provide an internal direction point
+            get => Dest;
+        }
 
         /// <summary>
         /// Gets or sets the symmetric (opposite) edge of this edge.
@@ -191,12 +218,6 @@ namespace NetTopologySuite.EdgeGraph
             ePrev.InsertAfter(eAdd);
         }
 
-        /**
-         * 
-         * 
-         * @param eAdd the edge being added
-         * @return 
-         */
         /// <summary>
         /// Finds the insertion edge for a edge
         /// being added to this origin,
@@ -263,7 +284,7 @@ namespace NetTopologySuite.EdgeGraph
         /// </summary>
         /// <returns><c>true</c> if the origin edges are sorted correctly
         /// </returns>
-        internal bool IsEdgesSorted
+        public bool IsEdgesSorted
         {
             get
             {
@@ -338,37 +359,47 @@ namespace NetTopologySuite.EdgeGraph
         /// </remarks>
         public int CompareAngularDirection(HalfEdge e)
         {
-            double dx = DeltaX;
-            double dy = DeltaY;
-            double dx2 = e.DeltaX;
-            double dy2 = e.DeltaY;
+            double dx = DirectionX;
+            double dy = DirectionY;
+            double dx2 = e.DirectionX;
+            double dy2 = e.DirectionY;
 
             // same vector
             if (dx == dx2 && dy == dy2)
                 return 0;
 
-            double quadrant = QuadrantOp.Quadrant(dx, dy);
-            double quadrant2 = QuadrantOp.Quadrant(dx2, dy2);
+            int quadrant = QuadrantOp.Quadrant(dx, dy);
+            int quadrant2 = QuadrantOp.Quadrant(dx2, dy2);
 
-            // if the vectors are in different quadrants, determining the ordering is trivial
-            if (quadrant > quadrant2)
-                return 1;
-            if (quadrant < quadrant2)
-                return -1;
+            /*
+             * if the vectors are in different quadrants,
+             * determining the ordering is trivial
+             */
+            if (quadrant > quadrant2) return 1;
+            if (quadrant < quadrant2) return -1;
+
             // vectors are in the same quadrant
             // Check relative orientation of direction vectors
             // this is > e if it is CCW of e
-            return (int)Orientation.Index(e.Orig, e.Dest, Dest);
+
+            //--- vectors are in the same quadrant
+            // Check relative orientation of direction vectors
+            // this is > e if it is CCW of e
+            var dir1 = DirectionPt;
+            var dir2 = e.DirectionPt;
+            return (int)Orientation.Index(e.Orig, dir2, dir1);
         }
 
         /// <summary>
         /// The X component of the distance between the orig and dest vertices.
         /// </summary>
+        [Obsolete("Use DirectionX")]
         public double DeltaX => Sym.Orig.X - Orig.X;
 
         /// <summary>
         /// The Y component of the distance between the orig and dest vertices.
         /// </summary>
+        [Obsolete("Use DirectionY")]
         public double DeltaY => Sym.Orig.Y - Orig.Y;
 
         /// <summary>
@@ -377,6 +408,27 @@ namespace NetTopologySuite.EdgeGraph
         public override string ToString()
         {
             return string.Format("HE({0} {1}, {2} {3})", Orig.X, Orig.Y, Sym.Orig.X, Sym.Orig.Y);
+        }
+
+        public string ToStringNode()
+        {
+            var orig = Orig;
+            var dest = Dest;
+            var sb = new StringBuilder();
+            sb.Append("Node( " + WKTWriter.Format(orig) + " )" + "\n");
+            var e = this;
+            do
+            {
+                sb.Append("  -> " + e);
+                sb.Append("\n");
+                e = e.Next;
+            } while (e != this);
+            return sb.ToString();
+        }
+
+        private String toStringNodeEdge()
+        {
+            return "  -> (" + WKTWriter.format(dest());
         }
 
         /// <summary>
