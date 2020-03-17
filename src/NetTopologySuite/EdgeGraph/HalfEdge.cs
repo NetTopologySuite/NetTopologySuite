@@ -49,10 +49,33 @@ namespace NetTopologySuite.EdgeGraph
         {
             var e0 = new HalfEdge(p0);
             var e1 = new HalfEdge(p1);
-            e0.Init(e1);
+            e0.Link(e1);
             return e0;
         }
 
+        /// <summary>
+        /// Initialize a symmetric pair of halfedges.
+        /// Intended for use by <see cref="EdgeGraph" />
+        /// subclasses.
+        /// <para/>
+        /// The edges are initialized to have each other
+        /// as the <see cref="Sym"/> edge, and to have
+        /// <see cref="Next"/> pointers which point to edge other.
+        /// This effectively creates a graph containing a single edge.
+        /// </summary>
+        /// <param name="e0">A halfedge</param>
+        /// <param name="e1">A symmetric halfedge</param>
+        /// <returns>The initialized edge e0</returns>
+        [Obsolete]
+        public static HalfEdge Init(HalfEdge e0, HalfEdge e1)
+        {
+            // ensure only newly created edges can be initialized, to prevent information loss
+            if (e0.Sym != null || e1.Sym != null
+                               || e0.Next != null || e1.Next != null)
+                throw new InvalidOperationException("Edges are already initialized");
+            e0.Link(e1);
+            return e0;
+        }
         private readonly Coordinate _orig;
         private HalfEdge _sym;
         private HalfEdge _next;
@@ -66,12 +89,11 @@ namespace NetTopologySuite.EdgeGraph
             _orig = orig;
         }
 
-        /**
-         * Links this edge with its sym (opposite) edge.
-         * This must be done for each pair of edges created.
-         * 
-         * @param e the sym edge to link.
-         */
+        /// <summary>
+        /// Links this edge with its sym (opposite) edge.
+        /// This must be done for each pair of edges created.
+        /// </summary>
+        /// <param name="sym">The sym edge to link.</param>
         public virtual void Link(HalfEdge sym)
         {
             Sym = sym;
@@ -81,6 +103,10 @@ namespace NetTopologySuite.EdgeGraph
             sym.Next = this;
         }
 
+        /// <summary>
+        /// Initializes this edge with <paramref name="e"/> as <see cref="Sym"/> edge.
+        /// </summary>
+        /// <param name="e">A symmetric half edge.</param>
         [Obsolete("Use Link")]
         protected virtual void Init(HalfEdge e)
         {
@@ -378,10 +404,6 @@ namespace NetTopologySuite.EdgeGraph
             if (quadrant > quadrant2) return 1;
             if (quadrant < quadrant2) return -1;
 
-            // vectors are in the same quadrant
-            // Check relative orientation of direction vectors
-            // this is > e if it is CCW of e
-
             //--- vectors are in the same quadrant
             // Check relative orientation of direction vectors
             // this is > e if it is CCW of e
@@ -394,13 +416,13 @@ namespace NetTopologySuite.EdgeGraph
         /// The X component of the distance between the orig and dest vertices.
         /// </summary>
         [Obsolete("Use DirectionX")]
-        public double DeltaX => Sym.Orig.X - Orig.X;
+        public double DeltaX => DirectionX;
 
         /// <summary>
         /// The Y component of the distance between the orig and dest vertices.
         /// </summary>
         [Obsolete("Use DirectionY")]
-        public double DeltaY => Sym.Orig.Y - Orig.Y;
+        public double DeltaY => DirectionY;
 
         /// <summary>
         /// Computes a string representation of a HalfEdge.
@@ -415,7 +437,7 @@ namespace NetTopologySuite.EdgeGraph
             var orig = Orig;
             var dest = Dest;
             var sb = new StringBuilder();
-            sb.Append("Node( " + WKTWriter.Format(orig) + " )" + "\n");
+            sb.Append($"Node( {WKTWriter.Format(orig)} )\n");
             var e = this;
             do
             {
@@ -426,9 +448,9 @@ namespace NetTopologySuite.EdgeGraph
             return sb.ToString();
         }
 
-        private String toStringNodeEdge()
+        private string ToStringNodeEdge()
         {
-            return "  -> (" + WKTWriter.format(dest());
+            return $"  -> ( {WKTWriter.Format(Dest)} )";
         }
 
         /// <summary>

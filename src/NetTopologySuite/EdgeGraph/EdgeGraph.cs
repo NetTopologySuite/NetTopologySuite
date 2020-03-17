@@ -36,7 +36,7 @@ namespace NetTopologySuite.EdgeGraph
         {
             var e0 = CreateEdge(p0);
             var e1 = CreateEdge(p1);
-            HalfEdge.Init(e0, e1);
+            e0.Link(e1);
             return e0;
         }
 
