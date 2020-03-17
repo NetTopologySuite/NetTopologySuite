@@ -71,21 +71,26 @@ namespace NetTopologySuite.Utilities
         {
             var node = this._queue.Dequeue();
             return node == null
-                ? default(T)
+                ? default
                 : node.Data;
         }
 
+        /// <summary>
+        /// Gets the smallest item without removing it from the queue
+        /// </summary>
+        /// <returns></returns>
         public T Peek()
         {
             var node = _queue.Head;
             return node == null
-                ? default(T)
+                ? default
                 : node.Data;
         }
 
+        /// <inheritdoc cref="IEnumerable{T}.GetEnumerator()"/>>
         public IEnumerator<T> GetEnumerator()
         {
-            return new DataEnumerator<T>(_queue.GetEnumerator());
+            return new DataEnumerator(_queue.GetEnumerator());
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -93,7 +98,7 @@ namespace NetTopologySuite.Utilities
             return GetEnumerator();
         }
 
-        private class DataEnumerator<T> : IEnumerator<T>
+        private class DataEnumerator : IEnumerator<T>
         {
             private readonly IEnumerator<PriorityQueueNode<T, T>> _pqnEnumerator;
             public DataEnumerator(IEnumerator<PriorityQueueNode<T, T>> pqnEnumerator)
