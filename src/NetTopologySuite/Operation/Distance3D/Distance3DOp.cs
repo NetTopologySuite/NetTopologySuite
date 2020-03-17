@@ -164,7 +164,7 @@ namespace NetTopologySuite.Operation.Distance3D
             _minDistanceLocation = new GeometryLocation[2];
 
             int geomIndex = MostPolygonalIndex();
-            bool flip = geomIndex == 0;
+            bool flip = geomIndex == 1;
             ComputeMinDistanceMultiMulti(_geom[geomIndex], _geom[1 - geomIndex], flip);
         }
 
