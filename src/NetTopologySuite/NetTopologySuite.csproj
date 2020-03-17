@@ -1,14 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <!---
-  <Import Project="../Directory.Build.props" />
-  -->
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <SignAssembly>true</SignAssembly>
     <NoWarn>659,168,1587</NoWarn>
+    <EnableApiCompat>true</EnableApiCompat>
   </PropertyGroup>
 
   <PropertyGroup Label="Assembly Info">
@@ -23,8 +20,7 @@
     <Owners>NetTopologySuite - Team</Owners>
     <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Description>The NTS Topology Suite is an API for modelling and manipulating 2-dimensional linear geometry. It provides numerous geometric predicates and functions. NTS conforms to the Simple Features Specification.
-This package references GeoAPI.</Description>
+    <Description>The NTS Topology Suite is an API for modelling and manipulating 2-dimensional linear geometry. It provides numerous geometric predicates and functions. NTS conforms to the Simple Features Specification.</Description>
     <PackageTags>NTS;Topology;OGC;SFS</PackageTags>
   </PropertyGroup>
 
@@ -32,23 +28,11 @@ This package references GeoAPI.</Description>
     <PackageReference Include="System.Memory" Version="4.5.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.DotNet.ApiCompat" Version="5.0.0-beta.19557.20" PrivateAssets="All" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include=".APICompatReference\$(AssemblyName).dll" />
-  </ItemGroup>
-  <PropertyGroup>
-    <RunApiCompat>$( Exists( '.APICompatReference\$(AssemblyName).dll' ))</RunApiCompat>
-  </PropertyGroup>
-  <ItemGroup Condition=" Exists( '.APICompatReference\$(AssemblyName).dll' ) ">
-    <ResolvedMatchingContract Include=".APICompatReference\$(AssemblyName).dll" />
-  </ItemGroup>
+  <ItemGroup Condition=" '$(EnableApiCompat)' == 'true' ">
+    <PackageReference Include="Microsoft.DotNet.ApiCompat" Version="5.0.0-beta.20162.3" PrivateAssets="All" />
+    <PackageDownload Include="NetTopologySuite" Version="[$(NtsMajorVersion).0.0]" PrivateAssets="All" />
 
-  <Target Name="GetApiCompatReference" Condition= " !Exists( '.APICompatReference\$(AssemblyName).dll' )" BeforeTargets="BeforeBuild">
-    <MakeDir Directories="$(MSBuildProjectDirectory)\.ApiCompatReference"></MakeDir>
-    <Exec Command="nuget install $(AssemblyName) -Version $(NtsMajorVersion).0.0 -ForceEnglishOutput -OutputDirectory $(TEMP)\.ApiCompatReference" />
-    <Copy SourceFiles="$(TEMP)\.ApiCompatReference\$(AssemblyName).$(NtsMajorVersion).0.0\lib\netstandard2.0\$(AssemblyName).dll" DestinationFiles=".ApiCompatReference\$(AssemblyName).dll" />
-  </Target>
+    <ResolvedMatchingContract Include="$(NugetPackageRoot)nettopologysuite\$(NtsMajorVersion).0.0\lib\netstandard2.0\NetTopologySuite.dll" />
+  </ItemGroup>
 
 </Project>
