@@ -77,6 +77,15 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         [Test]
+        public void TestDisjointEmpty()
+        {
+            Assert.IsTrue(new Envelope(-5, 5, -5, 5).Disjoint(new Envelope()));
+            Assert.IsTrue(new Envelope().Disjoint(new Envelope(-5, 5, -5, 5)));
+            Assert.IsTrue(new Envelope().Disjoint(new Envelope(100, 101, 100, 101)));
+            Assert.IsTrue(new Envelope(100, 101, 100, 101).Disjoint(new Envelope()));
+        }
+
+        [Test]
         public void TestContainsEmpty()
         {
             Assert.IsTrue(!new Envelope(-5, 5, -5, 5).Contains(new Envelope()));
@@ -199,6 +208,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(4, e2.MaxY, 1E-5);
         }
 
+
         [Test]
         public void TestCopyMethod()
         {
@@ -210,6 +220,11 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(4, e2.MaxY, 1E-5);
 
             Assert.That(ReferenceEquals(e1, e2), Is.False);
+
+            var eNull = new Envelope();
+            var eNullCopy = eNull.Copy();
+            Assert.IsTrue(eNullCopy.IsNull);
+
         }
 
         [Test]

@@ -570,8 +570,8 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        /// Check if the extent defined by two extremal points
-        /// intersects the extent of this <code>Envelope</code>.
+        /// Tests if the extent defined by two extremal points
+        /// intersects the extent of this <c>Envelope</c>.
         /// </summary>
         /// <param name="a">A point</param>
         /// <param name="b">Another point</param>
@@ -593,6 +593,22 @@ namespace NetTopologySuite.Geometries
             if (envMaxY < _minY) return false;
 
             return true;
+        }
+
+        /// <summary>
+        /// Tests if the region defined by <c>other</c>
+        /// is disjoint from the region of this <c>Envelope</c>.
+        /// </summary>
+        /// <param name="other">The <c>Envelope</c> being checked for disjointness</param>
+        /// <returns><c>true</c> if the <code>Envelope</code>s are disjoint</returns>
+        /// <seealso cref="Intersects(NetTopologySuite.Geometries.Envelope)"/>
+        public bool Disjoint(Envelope other)
+        {
+            if (IsNull || other.IsNull) { return true; }
+            return other.MinX > MaxX ||
+                   other.MaxX < MinX ||
+                   other.MinY > MaxY ||
+                   other.MaxY < MinY;
         }
 
         ///<summary>
@@ -786,7 +802,7 @@ namespace NetTopologySuite.Geometries
         /// <inheritdoc/>
         public override int GetHashCode()
         {
-            var result = 17;
+            int result = 17;
             // ReSharper disable NonReadonlyFieldInGetHashCode
             result = 37 * result + _minX.GetHashCode();
             result = 37 * result + _maxX.GetHashCode();
@@ -847,19 +863,19 @@ namespace NetTopologySuite.Geometries
                 return new Envelope();
 
             // Parse values
-            var ordinatesValues = new double[4];
-            var ordinateLabel = new[] { "x", "y" };
-            var j = 0;
+            double[] ordinatesValues = new double[4];
+            string[] ordinateLabel = new[] { "x", "y" };
+            int j = 0;
 
             // split into ranges
-            var parts = envelope.Split(',');
+            string[] parts = envelope.Split(',');
             if (parts.Length != 2)
                 throw new ArgumentException("Does not provide two ranges", nameof(envelope));
 
-            foreach (var part in parts)
+            foreach (string part in parts)
             {
                 // Split int min/max
-                var ordinates = part.Split(':');
+                string[] ordinates = part.Split(':');
                 if (ordinates.Length != 2)
                     throw new ArgumentException("Does not provide just min and max values", nameof(envelope));
 
