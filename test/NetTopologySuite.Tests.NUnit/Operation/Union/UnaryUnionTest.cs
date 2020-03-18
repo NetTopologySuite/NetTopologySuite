@@ -21,6 +21,11 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Union
         {
             DoTest("POLYGON EMPTY", "POLYGON EMPTY");
         }
+        [Test]
+        public void TestEmptyPointWithLine()
+        {
+            DoTest(new []{ "POINT EMPTY", "LINESTRING (0 0, 1 1)"}, "LINESTRING (0 0, 1 1)");
+        }
 
         [Test]
         public void TestPoints()
