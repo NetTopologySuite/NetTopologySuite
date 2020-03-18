@@ -33,7 +33,7 @@ namespace NetTopologySuite.Geometries
         False = -1,
 
         /// <summary>
-        /// Dimension value of non-empty geometries (= {Point,Curve,A}).
+        /// Dimension value of non-empty geometries (= {Point,Curve,Surface}).
         /// </summary>
         True = -2,
 

@@ -84,10 +84,10 @@ namespace NetTopologySuite.Operation.Union
             return op.Union();
         }
 
-        private readonly List<Geometry> _polygons = new List<Geometry>();
-        private readonly List<Geometry> _lines = new List<Geometry>();
-        private readonly List<Geometry> _points = new List<Geometry>();
-
+        //private readonly List<Geometry> _polygons = new List<Geometry>();
+        //private readonly List<Geometry> _lines = new List<Geometry>();
+        //private readonly List<Geometry> _points = new List<Geometry>();
+        private InputExtracter _extracter;
         private GeometryFactory _geomFact;
 
         /// <summary>
@@ -126,43 +126,50 @@ namespace NetTopologySuite.Operation.Union
 
         private void Extract(IEnumerable<Geometry> geoms)
         {
-            foreach (var geom in geoms)
-                Extract(geom);
+            _extracter = InputExtracter.Extract(geoms);
         }
 
         private void Extract(Geometry geom)
         {
-            if (_geomFact == null)
-                _geomFact = geom.Factory;
-
-            /*
-            PolygonExtracter.getPolygons(geom, polygons);
-            LineStringExtracter.getLines(geom, lines);
-            PointExtracter.getPoints(geom, points);
-            */
-            GeometryExtracter.Extract<Polygon>(geom, _polygons);
-            GeometryExtracter.Extract<LineString>(geom, _lines);
-            GeometryExtracter.Extract<Point>(geom, _points);
+            _extracter = InputExtracter.Extract(geom);
         }
 
         /// <summary>
         /// Gets the union of the input geometries.
-        /// If no input geometries were provided but a <see cref="GeometryFactory"/> was provided,
-        /// an empty <see cref="GeometryCollection"/> is returned.
-        /// <para/>Otherwise, the return value is <c>null</c>
+        /// <para/>
+        /// The result of empty input is determined as follows:
+        /// <list type="Bullet">
+        /// <item><description>If the input is empty and a dimension can be
+        /// determined (i.e. an empty geometry is present),
+        /// an empty atomic geometry of that dimension is returned.</description></item>
+        /// <item><description>If no input geometries were provided but a <see cref="GeometryFactory" /> was provided,
+        /// an empty <see cref="GeometryCollection" is returned.</description></item>
+        /// <item><description>Otherwise, the return value is <c>null</c>.</description></item>
+        /// </list>
         /// </summary>
         /// <returns>
-        /// A Geometry containing the union
-        /// or an empty <see cref="GeometryCollection"/> if no geometries were provided in the input,
-        /// or <c>null</c> if not GeometryFactory was provided
+        /// A Geometry containing the union,
+        /// or an empty atomic geometry, or an empty <c>GEOMETRYCOLLECTION</c>,
+        /// or<c>null</c> if no GeometryFactory was provided
         /// </returns>
         public Geometry Union()
         {
             if (_geomFact == null)
             {
-                return null;
+                _geomFact = _extracter.Factory;
             }
 
+            // Case 3
+            if (_geomFact == null)
+                return null;
+
+            // Case 1 & 2
+            if (_extracter.IsEmpty)
+                return _geomFact.CreateEmpty(_extracter.Dimension);
+
+            var points = _extracter.GetExtract(Dimension.Point);
+            var lines = _extracter.GetExtract(Dimension.Curve);
+            var polygons = _extracter.GetExtract(Dimension.Surface);
             /**
              * For points and lines, only a single union operation is
              * required, since the OGC model allows self-intersecting
@@ -170,23 +177,23 @@ namespace NetTopologySuite.Operation.Union
              * This is not the case for polygons, so Cascaded Union is required.
              */
             Geometry unionPoints = null;
-            if (_points.Count > 0)
+            if (points.Count > 0)
             {
-                var ptGeom = _geomFact.BuildGeometry(_points);
+                var ptGeom = _geomFact.BuildGeometry(points);
                 unionPoints = UnionNoOpt(ptGeom);
             }
 
             Geometry unionLines = null;
-            if (_lines.Count > 0)
+            if (lines.Count > 0)
             {
-                var lineGeom = _geomFact.BuildGeometry(_lines);
+                var lineGeom = _geomFact.BuildGeometry(lines);
                 unionLines = UnionNoOpt(lineGeom);
             }
 
             Geometry unionPolygons = null;
-            if (_polygons.Count > 0)
+            if (polygons.Count > 0)
             {
-                unionPolygons = CascadedPolygonUnion.Union(_polygons);
+                unionPolygons = CascadedPolygonUnion.Union(polygons);
             }
 
             /*

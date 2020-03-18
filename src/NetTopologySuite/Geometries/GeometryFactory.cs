@@ -20,7 +20,7 @@ namespace NetTopologySuite.Geometries
     public class GeometryFactory
     {
         /// <summary>
-        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" />
+        /// A predefined <see cref="GeometryFactory" /> with <see cref="PrecisionModel" />c
         /// <c> == </c> <see cref="PrecisionModels.Floating" />.
         /// </summary>
         public static readonly GeometryFactory Default = new GeometryFactory();
@@ -294,7 +294,9 @@ namespace NetTopologySuite.Geometries
             return new Point(coordinates, this);
         }
 
-        /// <summary>Creates an empty LineString</summary>
+        /// <summary>
+        /// Creates an empty LineString
+        /// </summary>
         /// <returns>An empty LineString</returns>
         public LineString CreateLineString()
         {
@@ -606,6 +608,26 @@ namespace NetTopologySuite.Geometries
                 Assert.ShouldNeverReachHere("Unhandled class: " + geom0.GetType().FullName);
             }
             return geom0;
+        }
+
+        /// <summary>
+        /// Creates an empty atomic geometry of the given dimension.
+        /// If passed a dimension of <see cref="Dimension.Dontcare"/>
+        /// will create an empty <see cref="GeometryCollection"/>.
+        /// </summary>
+        /// <param name="dimension">The required dimension (<see cref="Dimension.Dontcare"/>, <see cref="Dimension.Point"/>, <see cref="Dimension.Curve"/> or <see cref="Dimension.Surface"/>)</param>
+        /// <returns>An empty atomic geometry of given dimension</returns>
+        public Geometry CreateEmpty(Dimension dimension)
+        {
+            switch (dimension)
+            {
+                case Dimension.False: return CreateGeometryCollection();
+                case Dimension.Point: return CreatePoint();
+                case Dimension.Curve: return CreateLineString();
+                case Dimension.Surface: return CreatePolygon();
+                default:
+                    throw new ArgumentOutOfRangeException($"Invalid dimension: {dimension}");
+            }
         }
 
         /// <summary>

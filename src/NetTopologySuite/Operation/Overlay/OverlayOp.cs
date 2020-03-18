@@ -604,23 +604,9 @@ namespace NetTopologySuite.Operation.Overlay
         /// <returns>An empty atomic geometry of the appropriate dimension</returns>
         public static Geometry CreateEmptyResult(SpatialFunction overlayOpCode, Geometry a, Geometry b, GeometryFactory geomFact)
         {
-            Geometry result = null;
-            switch (ResultDimension(overlayOpCode, a, b))
-            {
-                case Dimension.False:
-                    result = geomFact.CreateGeometryCollection();
-                    break;
-                case Dimension.Point:
-                    result = geomFact.CreatePoint();
-                    break;
-                case Dimension.Curve:
-                    result = geomFact.CreateLineString();
-                    break;
-                case Dimension.Surface:
-                    result = geomFact.CreatePolygon();
-                    break;
-            }
-            return result;
+            var resultDim = ResultDimension(overlayOpCode, a, b);
+            // Handles resultDim == Dimension.False, although it should not happen
+            return geomFact.CreateEmpty(resultDim);
         }
 
         private static Dimension ResultDimension(SpatialFunction opCode, Geometry g0, Geometry g1)

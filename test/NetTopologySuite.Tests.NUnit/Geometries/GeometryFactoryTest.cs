@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Geometries;
+﻿using System;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Implementation;
 using NetTopologySuite.IO;
 using NUnit.Framework;
@@ -25,6 +26,29 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
                 "MULTIPOLYGON (((100 200, 200 200, 200 100, 100 100, 100 200)), ((300 200, 400 200, 400 100, 300 100, 300 200)))");
             CheckCreateGeometryExact(
                 "GEOMETRYCOLLECTION (POLYGON ((100 200, 200 200, 200 100, 100 100, 100 200)), LINESTRING (250 100, 350 200), POINT (350 150))");
+        }
+
+        [Test]
+        public void TestCreateEmpty()
+        {
+            CheckEmpty(Factory.CreateEmpty(Dimension.Point), typeof(Point));
+            CheckEmpty(Factory.CreateEmpty(Dimension.Curve), typeof(LineString));
+            CheckEmpty(Factory.CreateEmpty(Dimension.Surface), typeof(Polygon));
+    
+            CheckEmpty(Factory.CreatePoint(), typeof(Point));
+            CheckEmpty(Factory.CreateLineString(), typeof(LineString));
+            CheckEmpty(Factory.CreatePolygon(), typeof(Polygon));
+    
+            CheckEmpty(Factory.CreateMultiPoint(), typeof(MultiPoint));
+            CheckEmpty(Factory.CreateMultiLineString(), typeof(MultiLineString));
+            CheckEmpty(Factory.CreateMultiPolygon(), typeof(MultiPolygon));
+            CheckEmpty(Factory.CreateGeometryCollection(), typeof(GeometryCollection));
+        }
+
+        private static void CheckEmpty(Geometry geom, Type clz)
+        {
+            Assert.IsTrue(geom.IsEmpty);
+            Assert.IsTrue(geom.GetType() == clz);
         }
 
         [Test]
