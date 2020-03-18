@@ -15,10 +15,10 @@ namespace NetTopologySuite.Operation.Union
     class InputExtracter : IGeometryFilter
     {
         /// <summary>
-        /// Creates and returns an <see cref="InputExtracter"/> initialized with <paramref name="geoms"/>
+        /// Extracts elements from an enumeration of geometries.
         /// </summary>
-        /// <param name="geoms">The geometries for the input extracter</param>
-        /// <returns>An initialized input extracter.</returns>
+        /// <param name="geoms">An enumeration of geometries</param>
+        /// <returns>An extracter over the geometries.</returns>
         public static InputExtracter Extract(IEnumerable<Geometry> geoms)
         {
             var extracter = new InputExtracter();
@@ -27,10 +27,10 @@ namespace NetTopologySuite.Operation.Union
         }
 
         /// <summary>
-        /// Creates and returns an <see cref="InputExtracter"/> initialized with <paramref name="geom"/>
+        /// Extracts elements from a geometry.
         /// </summary>
-        /// <param name="geom">The geometry for the input extracter</param>
-        /// <returns>An initialized input extracter.</returns>
+        /// <param name="geom">An geometry to extract from</param>
+        /// <returns>An extracter over the geometry.</returns>
         public static InputExtracter Extract(Geometry geom)
         {
             var extracter = new InputExtracter();
@@ -46,21 +46,37 @@ namespace NetTopologySuite.Operation.Union
         /// <summary>The default dimension for an empty GeometryCollection</summary>
         private Dimension _dimension = Dimension.False;
 
+        /// <summary>
+        /// Gets a value indicating if there were any non-empty geometries extracted
+        /// </summary>
         public bool IsEmpty
         {
             get => _polygons.Count == 0 && _lines.Count == 0 && _points.Count == 0;
         }
 
+        /// <summary>
+        /// Gets a value indicating the maximum <see cref="Geometries.Dimension"/> extracted.
+        /// </summary>
         public Dimension Dimension
         {
             get => _dimension;
         }
 
+        /// <summary>
+        /// Gets a value indicating the geometry factory from the extracted geometry,
+        /// if there is one. <para/>
+        /// If an empty collection was extracted, will return <c>null</c>.
+        /// </summary>
         public GeometryFactory Factory
         {
             get => _geomFactory;
         }
 
+        /// <summary>
+        /// Gets the extracted atomic geometries of the given dimension <c>dim</c>.
+        /// </summary>
+        /// <param name="dim">The dimension of geometry to return</param>
+        /// <returns>A list of the extracted geometries of dimension dim.</returns>
         public IList<Geometry> GetExtract(Dimension dim)
         {
             switch (dim)

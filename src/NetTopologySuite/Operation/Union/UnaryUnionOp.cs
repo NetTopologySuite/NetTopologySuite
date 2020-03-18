@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Operation.Linemerge;
 using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Operation.Overlay.Snap;
@@ -84,9 +83,6 @@ namespace NetTopologySuite.Operation.Union
             return op.Union();
         }
 
-        //private readonly List<Geometry> _polygons = new List<Geometry>();
-        //private readonly List<Geometry> _lines = new List<Geometry>();
-        //private readonly List<Geometry> _points = new List<Geometry>();
         private InputExtracter _extracter;
         private GeometryFactory _geomFact;
 
@@ -142,8 +138,8 @@ namespace NetTopologySuite.Operation.Union
         /// <item><description>If the input is empty and a dimension can be
         /// determined (i.e. an empty geometry is present),
         /// an empty atomic geometry of that dimension is returned.</description></item>
-        /// <item><description>If no input geometries were provided but a <see cref="GeometryFactory" /> was provided,
-        /// an empty <see cref="GeometryCollection" is returned.</description></item>
+        /// <item><description>If no input geometries were provided but a <see cref="GeometryFactory"/> was provided,
+        /// an empty <see cref="GeometryCollection"/> is returned.</description></item>
         /// <item><description>Otherwise, the return value is <c>null</c>.</description></item>
         /// </list>
         /// </summary>
