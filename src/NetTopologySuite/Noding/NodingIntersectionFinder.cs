@@ -6,28 +6,44 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Noding
 {
+
     /// <summary>
+    /// Finds non-noded intersections in a set of {@link SegmentString}s,
+    /// if any exist.
+    /// <para/>
+    /// Non-noded intersections include:
+    /// <list type="Bullet">
+    /// <item><term>Interior intersections</term><description>which lie in the interior of a segment
+    /// (with another segment interior or with a vertex or endpoint)</description></item>
+    /// <item><term>Vertex intersections</term><description>which occur at vertices in the interior of <see cref="ISegmentString"/>s
+    /// (with a segment string endpoint or with another interior vertex)</description></item>
+    /// </list>
+    /// The finder can be limited to finding only interior intersections
+    /// by setting <see cref="InteriorIntersectionOnly"/>.
+    /// <para/>
+    /// By default only the first intersection is found,
+    /// but all can be found by setting {@link #setFindAllIntersections(boolean)
     /// </summary>
     public class NodingIntersectionFinder : ISegmentIntersector
     {
         /// <summary>
-        /// Creates an intersection finder which tests if there is at least one interior intersection.
+        /// Creates a finder which tests if there is at least one intersection.
         /// Uses short-circuiting for efficient performance.
         /// The intersection found is recorded.
         /// </summary>
         /// <param name="li">A line intersector.</param>
-        /// <returns>A intersection finder which tests if there is at least one interior intersection.</returns>
+        /// <returns>A finder which tests if there is at least one intersection.</returns>
         public static NodingIntersectionFinder CreateAnyIntersectionFinder(LineIntersector li)
         {
             return new NodingIntersectionFinder(li);
         }
 
         /// <summary>
-        /// Creates an intersection finder which finds all interior intersections.
+        /// Creates a finder which tests if there is at least one intersection.
         /// The intersections are recorded for later inspection.
         /// </summary>
         /// <param name="li">A line intersector.</param>
-        /// <returns>a intersection finder which finds all interior intersections.</returns>
+        /// <returns>A finder which finds all intersections.</returns>
         public static NodingIntersectionFinder CreateAllIntersectionsFinder(LineIntersector li)
         {
             var finder = new NodingIntersectionFinder(li);
@@ -36,14 +52,43 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// Creates an intersection finder which counts all interior intersections.
+        /// Creates a finder which finds all interior intersections.
+        /// The intersections are recorded for later inspection.
+        /// </summary>
+        /// <param name="li">A line intersector</param>
+        /// <returns>A finder which finds all interior intersections.</returns>
+        public static NodingIntersectionFinder CreateInteriorIntersectionsFinder(LineIntersector li)
+        {
+            var finder = new NodingIntersectionFinder(li);
+            finder.FindAllIntersections = true;
+            finder.InteriorIntersectionsOnly = true;
+            return finder;
+        }
+
+        /// <summary>
+        /// Creates a finder which counts all intersections.
         /// The intersections are note recorded to reduce memory usage.
         /// </summary>
         /// <param name="li">A line intersector.</param>
-        /// <returns>a intersection finder which counts all interior intersections.</returns>
+        /// <returns>A finder which counts all intersections.</returns>
         public static NodingIntersectionFinder CreateIntersectionCounter(LineIntersector li)
         {
             var finder = new NodingIntersectionFinder(li);
+            finder.FindAllIntersections = true;
+            finder.KeepIntersections = false;
+            return finder;
+        }
+
+        /// <summary>
+        /// Creates a finder which counts all interior intersections.
+        /// The intersections are note recorded to reduce memory usage.
+        /// </summary>
+        /// <param name="li">A line intersector.</param>
+        /// <returns>A finder which counts all interior intersections.</returns>
+        public static NodingIntersectionFinder CreateInteriorIntersectionCounter(LineIntersector li)
+        {
+            var finder = new NodingIntersectionFinder(li);
+            finder.InteriorIntersectionsOnly = true;
             finder.FindAllIntersections = true;
             finder.KeepIntersections = false;
             return finder;
@@ -78,6 +123,11 @@ namespace NetTopologySuite.Noding
         public bool FindAllIntersections { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether only interior (proper) intersections will be found.
+        /// </summary>
+        public bool InteriorIntersectionsOnly { get; set; }
+
+        /// <summary>
         /// Gets/Sets whether intersection points are recorded.
         /// <remarks>
         /// If the only need is to count intersection points, this can be set to <c>false</c>.
@@ -91,7 +141,7 @@ namespace NetTopologySuite.Noding
         }
 
         /// <summary>
-        /// Gets/Sets whether only end segments should be tested for interior intersection.
+        /// Gets/Sets whether only end segments should be tested for intersection.
         /// This is a performance optimization that may be used if
         /// the segments have been previously noded by an appropriate algorithm.
         /// It may be known that any potential noding failures will occur only in
@@ -120,7 +170,14 @@ namespace NetTopologySuite.Noding
         /// Gets the computed location of the intersection.
         /// Due to round-off, the location may not be exact.
         /// </summary>
-        public Coordinate InteriorIntersection => _interiorIntersection;
+        [Obsolete("Renamed to just Intersection")]
+        public Coordinate InteriorIntersection => Intersection;
+
+        /// <summary>
+        /// Gets the computed location of the intersection.
+        /// Due to round-off, the location may not be exact.
+        /// </summary>
+        public Coordinate Intersection => _interiorIntersection;
 
         /// <summary>
         /// Gets the endpoints of the intersecting segments.
@@ -174,14 +231,20 @@ namespace NetTopologySuite.Noding
             _li.ComputeIntersection(p00, p01, p10, p11);
 
 
-            // Check for an intersection in the interior of a segment
+            /*
+             * Check for an intersection in the interior of a segment
+             */
             bool isInteriorInt = _li.HasIntersection && _li.IsInteriorIntersection();
-            /**
+            /*
              * Check for an intersection between two vertices which are not both endpoints.
              */
-            bool isAdjacentSegment = isSameSegString && Math.Abs(segIndex1 - segIndex0) <= 1;
-            bool isInteriorVertexInt = (!isAdjacentSegment) && IsInteriorVertexIntersection(p00, p01, p10, p11,
-                                           isEnd00, isEnd01, isEnd10, isEnd11);
+            bool isInteriorVertexInt = false;
+            if (!InteriorIntersectionsOnly)
+            {
+                bool isAdjacentSegment = isSameSegString && Math.Abs(segIndex1 - segIndex0) <= 1;
+                isInteriorVertexInt = (!isAdjacentSegment) && IsInteriorVertexIntersection(p00, p01, p10, p11,
+                    isEnd00, isEnd01, isEnd10, isEnd11);
+            }
 
             if (isInteriorInt || isInteriorVertexInt)
             {

@@ -113,7 +113,7 @@ namespace NetTopologySuite.Noding
         public void CheckValid()
         {
             if (!IsValid)
-                throw new TopologyException(GetErrorMessage(), _segInt.InteriorIntersection);
+                throw new TopologyException(GetErrorMessage(), _segInt.Intersection);
         }
 
         private void Execute()

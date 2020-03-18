@@ -12,37 +12,21 @@ namespace Open.Topology.TestRunner.Functions
 {
     public static class NodingFunctions
     {
-        /// <summary>
-        /// Reduces precision pointwise, then snap-rounds.
-        /// Note that output set may not contain non-unique linework
-        /// (and thus cannot be used as input to Polygonizer directly).
-        /// UnaryUnion is one way to make the linework unique.
-        /// </summary>
-        /// <param name="geom">A geometry containing linework to node</param>
-        /// <param name="scaleFactor">the precision model scale factor to use</param>
-        /// <returns>The noded, snap-rounded linework</returns>
-        public static Geometry SnapRoundWithPrecision(Geometry geom, double scaleFactor)
-        {
-            var pm = new PrecisionModel(scaleFactor);
-
-            var roundedGeom = GeometryPrecisionReducer.ReducePointwise(geom, pm);
-
-            var geomList = new List<Geometry>();
-            geomList.Add(roundedGeom);
-
-            var noder = new GeometryNoder(pm);
-            var lines = noder.Node(geomList);
-
-            return FunctionsUtil.GetFactoryOrDefault(geom).BuildGeometry(lines.Cast<Geometry>().ToArray());
-        }
-
         public static bool IsNodingValid(Geometry geom)
         {
             var nv = new FastNodingValidator(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
             return nv.IsValid;
         }
 
-        public static Geometry FindSingleNodePoint(Geometry geom)
+        public static bool IsSegmentNodingValid(Geometry geom)
+        {
+            var intFinder = NodingIntersectionFinder
+                .CreateInteriorIntersectionCounter(new RobustLineIntersector());
+            ProcessNodes(geom, intFinder);
+            return 0 == intFinder.Count;
+        }
+
+        public static Geometry FindOneNode(Geometry geom)
         {
             var nv = new FastNodingValidator(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
             bool temp = nv.IsValid;
@@ -51,23 +35,50 @@ namespace Open.Topology.TestRunner.Functions
             return FunctionsUtil.GetFactoryOrDefault((Geometry)null).CreatePoint((Coordinate)intPts[0]);
         }
 
-        public static Geometry FindNodePoints(Geometry geom)
+        public static Geometry FindNodes(Geometry geom)
         {
             var intPts = FastNodingValidator.ComputeIntersections(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
             return FunctionsUtil.GetFactoryOrDefault((Geometry)null).CreateMultiPointFromCoords(CoordinateArrays.ToCoordinateArray(intPts));
         }
 
-        public static int InteriorIntersectionCount(Geometry geom)
+        private static Coordinate[] Dedup(IList<Coordinate> ptsList)
+        {
+            var ptsNoDup = new List<Coordinate>(new HashSet<Coordinate>(ptsList));
+            var pts = CoordinateArrays.ToCoordinateArray(ptsNoDup);
+            return pts;
+        }
+
+        public static Geometry FindInteriorNodes(Geometry geom)
+        {
+            var intFinder = NodingIntersectionFinder.CreateInteriorIntersectionsFinder(new RobustLineIntersector());
+            ProcessNodes(geom, intFinder);
+            var intPts = intFinder.Intersections;
+            return FunctionsUtil.GetFactoryOrDefault((Geometry)null)
+                .CreateMultiPointFromCoords(Dedup(intPts));
+        }
+
+        public static int IntersectionCount(Geometry geom)
         {
             var intCounter = NodingIntersectionFinder.CreateIntersectionCounter(new RobustLineIntersector());
-            INoder noder = new MCIndexNoder(intCounter);
-            noder.ComputeNodes(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
+            ProcessNodes(geom, intCounter);
             return intCounter.Count;
+        }
+        public static int InteriorIntersectionCount(Geometry geom)
+        {
+            var intCounter = NodingIntersectionFinder.CreateInteriorIntersectionCounter(new RobustLineIntersector());
+            ProcessNodes(geom, intCounter);
+            return intCounter.Count;
+        }
+
+        private static void ProcessNodes(Geometry geom, NodingIntersectionFinder intFinder)
+        {
+            var noder = new MCIndexNoder(intFinder);
+            noder.ComputeNodes(SegmentStringUtil.ExtractNodedSegmentStrings(geom));
         }
 
         public static Geometry MCIndexNodingWithPrecision(Geometry geom, double scaleFactor)
         {
-            PrecisionModel fixedPM = new PrecisionModel(scaleFactor);
+            var fixedPM = new PrecisionModel(scaleFactor);
 
             LineIntersector li = new RobustLineIntersector();
             li.PrecisionModel = fixedPM;
@@ -84,6 +95,30 @@ namespace Open.Topology.TestRunner.Functions
             return SegmentStringUtil.ToGeometry(noder.GetNodedSubstrings(), geom.Factory);
         }
 
+        /// <summary>
+        /// Reduces precision pointwise, then snap-rounds.
+        /// Note that output set may not contain non-unique linework
+        /// (and thus cannot be used as input to Polygonizer directly).
+        /// UnaryUnion is one way to make the linework unique.
+        /// </summary>
+        /// <param name="geom">A geometry containing linework to node</param>
+        /// <param name="scaleFactor">The precision model scale factor to use</param>
+        /// <returns>The noded, snap-rounded linework</returns>
+        public static Geometry SnapRoundWithPrecision(
+            Geometry geom, double scaleFactor)
+        {
+            var pm = new PrecisionModel(scaleFactor);
+
+            var roundedGeom = GeometryPrecisionReducer.ReducePointwise(geom, pm);
+
+            var geomList = new List<Geometry>();
+            geomList.Add(roundedGeom);
+
+            var noder = new GeometryNoder(pm);
+            var lines = noder.Node(geomList);
+
+            return FunctionsUtil.GetFactoryOrDefault(geom).BuildGeometry(lines);
+        }
         /// <summary>
         /// Runs a ScaledNoder on input.
         /// Input vertices should be rounded to precision model.
