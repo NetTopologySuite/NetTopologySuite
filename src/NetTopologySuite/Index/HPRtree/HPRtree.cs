@@ -74,7 +74,7 @@ namespace NetTopologySuite.Index.HPRtree
         /// <param name="nodeCapacity">The node capacity to use</param>
         public HPRtree(int nodeCapacity)
         {
-            this._nodeCapacity = nodeCapacity;
+            _nodeCapacity = nodeCapacity;
         }
 
         /// <summary>Gets the number of items in the index.</summary>
