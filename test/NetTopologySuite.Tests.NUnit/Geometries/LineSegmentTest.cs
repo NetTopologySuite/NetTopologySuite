@@ -96,6 +96,22 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
         }
 
         [Test]
+        public void TestReflect()
+        {
+            CheckReflect(0, 0, 10, 10, 1, 2, 2, 1);
+            CheckReflect(0, 1, 10, 1, 1, 2, 1, 0);
+        }
+
+        void CheckReflect(double x0, double y0, double x1, double y1, double x, double y,
+            double expectedX, double expectedY)
+        {
+            var seg = new LineSegment(x0, y0, x1, y1);
+            var p = seg.Reflect(new Coordinate(x, y));
+            Assert.That(EqualsTolerance(new Coordinate(expectedX, expectedY), p, 0.000001));
+        }
+
+
+        [Test]
         public void TestOrientationIndexCoordinate()
         {
             var seg = new LineSegment(0, 0, 10, 10);

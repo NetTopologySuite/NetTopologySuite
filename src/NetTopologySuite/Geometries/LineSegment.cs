@@ -499,6 +499,32 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
+        /// Computes the reflection of a point in the line defined
+        /// by this line segment.
+        /// </summary>
+        /// <param name="p">The point to reflect</param>
+        /// <returns>The reflected point</returns>
+        public Coordinate Reflect(Coordinate p)
+        {
+            // general line equation
+            double A = _p1.Y - _p0.Y;
+            double B = _p0.X - _p1.X;
+            double C = _p0.Y * (_p1.X - _p0.X) - _p0.X * (_p1.Y - _p0.Y);
+
+            // compute reflected point
+            double A2plusB2 = A * A + B * B;
+            double A2subB2 = A * A - B * B;
+
+            double x = p.X;
+            double y = p.Y;
+            double rx = (-A2subB2 * x - 2 * A * B * y - 2 * A * C) / A2plusB2;
+            double ry = (A2subB2 * y - 2 * A * B * x - 2 * B * C) / A2plusB2;
+
+            return new Coordinate(rx, ry);
+        }
+
+
+        /// <summary>
         /// Computes an intersection point between two segments, if there is one.
         /// There may be 0, 1 or many intersection points between two segments.
         /// If there are 0, null is returned. If there is 1 or more, a single one

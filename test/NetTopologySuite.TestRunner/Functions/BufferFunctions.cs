@@ -139,5 +139,12 @@ namespace Open.Topology.TestRunner.Functions
         {
             return GeometryMapper.Map(g, gin => gin.Buffer(distance));
         }
-    }
+
+        public static Geometry VariableBuffer(Geometry line,
+        double startDist,
+        double endDist) {
+            return NetTopologySuite.Operation.Buffer.VariableBuffer.Buffer(line, startDist, endDist);
+        }
+
+}
 }

@@ -79,6 +79,15 @@ namespace Open.Topology.TestRunner.Functions
             }
             return g1.Factory.CreatePoint(intPt);
         }
+        public static Geometry ReflectPoint(Geometry g1, Geometry g2)
+        {
+            var line = g1.Coordinates;
+            var pt = g2.Coordinate;
 
+            var seg = new LineSegment(line[0], line[1]);
+            var reflectPt = seg.Reflect(pt);
+
+            return g1.Factory.CreatePoint(reflectPt);
+        }
     }
 }
