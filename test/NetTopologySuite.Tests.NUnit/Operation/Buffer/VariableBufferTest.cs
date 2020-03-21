@@ -7,6 +7,8 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
 {
     public class VariableBufferTest : GeometryTestCase
     {
+        private const double DEFAULT_TOLERANCE = 1.0e-6;
+
         [Test]
         public void TestZeroWidth()
         {
@@ -79,7 +81,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
         private void CheckBuffer(Geometry actual, string wktExpected)
         {
             var expected = Read(wktExpected);
-            CheckEqual(expected, actual);
+            CheckEqual(expected, actual, DEFAULT_TOLERANCE);
         }
     }
 }

@@ -35,6 +35,18 @@ namespace NetTopologySuite.Tests.NUnit
             Assert.That(equal, Is.True, string.Format("\nExpected = {0}\nactual   = {1}", expected, actual));
         }
 
+        protected void CheckEqual(Geometry expected, Geometry actual, double tolerance)
+        {
+            var actualNorm = actual.Normalized();
+            var expectedNorm = expected.Normalized();
+            bool equal = actualNorm.EqualsExact(expectedNorm, tolerance);
+            if (!equal)
+            {
+                Console.WriteLine($"FAIL - Expected = {expectedNorm} actual = {actualNorm}");
+            }
+            Assert.That(equal);
+        }
+
         protected void CheckEqual(ICollection<Geometry> expected, ICollection<Geometry> actual)
         {
             CheckEqual(ToGeometryCollection(expected), ToGeometryCollection(actual));
