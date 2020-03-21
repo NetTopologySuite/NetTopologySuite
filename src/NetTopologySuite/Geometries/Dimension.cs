@@ -121,7 +121,7 @@ namespace NetTopologySuite.Geometries
         /// Possible values are <c>True, False, Dontcare, 0, 1, 2</c>.</returns>
         public static Dimension ToDimensionValue(char dimensionSymbol)
         {
-            switch (Char.ToUpper(dimensionSymbol))
+            switch (char.ToUpper(dimensionSymbol))
             {
                 case SymFalse:
                     return Dimension.False;

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Mime;
 using NetTopologySuite.Geometries;
 using RTools_NTS.Util;
 
@@ -17,7 +18,7 @@ namespace NetTopologySuite.IO
         private const int MaxLookahead = 2048;
         private readonly FileInfo _file;
 
-        private TextReader _reader;
+        private StreamReader _reader;
         private readonly WKTReader _wktReader;
         private int _count;
 
@@ -66,13 +67,20 @@ namespace NetTopologySuite.IO
         public WKTFileReader(TextReader reader, WKTReader wktReader)
             :this(wktReader)
         {
-            _reader = reader;
+            _reader = (StreamReader)reader;
         }
 
         /// <summary>
         /// Gets/Sets the maximum number of geometries to read.
         /// </summary>
         public int Limit { get; set; }
+
+        /// <summary>
+        /// Gets/Sets allow ignoring WKT parse errors
+        /// after at least one geometry has been read,
+        /// to return a partial result.
+        /// </summary>
+        public bool StrictParsing { get; set; }
 
         /// <summary>
         /// Gets/Sets the number of geometries to skip before reading.
@@ -103,31 +111,33 @@ namespace NetTopologySuite.IO
             }
         }
 
-        private IList<Geometry> Read(TextReader bufferedReader)
+        private IList<Geometry> Read(StreamReader bufferedReader)
         {
             var geoms = new List<Geometry>();
-            var tokens = _wktReader.Tokenizer(bufferedReader);
-            while (!IsAtEndOfTokens(tokens.NextToken(false)) && !IsAtLimit(geoms))
+            try
             {
-                var g = _wktReader.ReadGeometryTaggedText(tokens);
-                if (_count >= Offset)
-                    geoms.Add(g);
-                _count++;
+                Read(bufferedReader, geoms);
             }
-
-            /*
-            while (!IsAtEndOfFile(bufferedReader) && !IsAtLimit(geoms))
+            catch (ParseException ex)
             {
-                Geometry g = _wktReader.Read(bufferedReader);
-                if (_count >= Offset)
-                    geoms.Add(g);
-                _count++;
+                // throw if strict or error is on first geometry
+                if (StrictParsing || geoms.Count == 0)
+                    throw ex;
             }
-             */
             return geoms;
         }
 
-        private bool IsAtLimit(IList<Geometry> geoms)
+        private void Read(StreamReader bufferedReader, IList<Geometry> geoms)
+        {
+            while (!IsAtEndOfFile(bufferedReader) && !IsAtLimit(geoms)) {
+                var g = _wktReader.Read(bufferedReader);
+                if (_count >= Offset )
+                    geoms.Add(g);
+                _count++;
+            }
+        }
+
+        private bool IsAtLimit(ICollection<Geometry> geoms)
         {
             if (Limit < 0) return false;
             if (geoms.Count < Limit) return false;
