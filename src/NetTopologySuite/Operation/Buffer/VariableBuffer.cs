@@ -22,12 +22,35 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="line">The line to buffer</param>
         /// <param name="startDistance">The buffer width at the start of the line</param>
         /// <param name="endDistance">The buffer width at the end of the line</param>
-        /// <returns>The variable-width buffer polygon</returns>
+        /// <returns>The variable-distance buffer polygon</returns>
         public static Geometry Buffer(Geometry line, double startDistance,
             double endDistance)
         {
-            double[] distance = VariableBuffer.Interpolate((LineString)line,
+            double[] distance = Interpolate((LineString)line,
                 startDistance, endDistance);
+            var vb = new VariableBuffer(line, distance);
+            return vb.GetResult();
+        }
+
+        /// <summary>
+        /// Creates a buffer polygon along a line with the buffer distance interpolated
+        /// between a start distance, a middle distance and an end distance.
+        /// The middle distance is attained at
+        /// the vertex at or just past the half-length of the line.
+        /// For smooth buffering of a <see cref="LinearRing"/> (or the rings of a <see cref="Polygon"/>)
+        /// the start distance and end distance should be equal.
+        /// </summary>
+        /// <param name="line">The line to buffer</param>
+        /// <param name="startDistance">The buffer width at the start of the line</param>
+        /// <param name="midDistance">The buffer width at the middle vertex of the line</param>
+        /// <param name="endDistance">The buffer width at the end of the line</param>
+        /// <returns>The variable-distance buffer polygon</returns>
+        public static Geometry Buffer(Geometry line, double startDistance,
+            double midDistance,
+            double endDistance)
+        {
+            double[] distance = Interpolate((LineString)line,
+                startDistance, midDistance, endDistance);
             var vb = new VariableBuffer(line, distance);
             return vb.GetResult();
         }
@@ -45,18 +68,17 @@ namespace NetTopologySuite.Operation.Buffer
             return vb.GetResult();
         }
 
-        /**
-         * Computes a list of values for the points along a line by
-         * interpolating between values for the start and end point.
-         * The interpolation is
-         * based on the distance of each point along the line
-         * relative to the total line length.
-         * 
-         * @param line the line to interpolate along
-         * @param startValue the start value 
-         * @param endValue the end value
-         * @return the array of interpolated values
-         */
+        /// <summary>
+        /// Computes a list of values for the points along a line by
+        /// interpolating between values for the start and end point.
+        /// The interpolation is
+        /// based on the distance of each point along the line
+        /// relative to the total line length.
+        /// </summary>
+        /// <param name="line">The line to interpolate along</param>
+        /// <param name="startValue">The start value</param>
+        /// <param name="endValue">The end value</param>
+        /// <returns>The array of interpolated values</returns>
         private static double[] Interpolate(LineString line,
             double startValue,
             double endValue)
@@ -79,6 +101,86 @@ namespace NetTopologySuite.Operation.Buffer
                 values[i] = startValue + delta;
             }
             return values;
+        }
+
+        /// <summary>
+        /// Computes a list of values for the points along a line by
+        /// interpolating between values for the start, middle and end points.
+        /// The interpolation is
+        /// based on the distance of each point along the line
+        /// relative to the total line length.
+        /// The middle distance is attained at
+        /// the vertex at or just past the half-length of the line.
+        /// </summary>
+        /// <param name="line">The line to interpolate along</param>
+        /// <param name="startValue">The start value</param>
+        /// <param name="midValue">The mid value</param>
+        /// <param name="endValue">The end value</param>
+        /// <returns>The array of interpolated values</returns>
+        private static double[] Interpolate(LineString line,
+            double startValue,
+            double midValue,
+            double endValue)
+        {
+            startValue = Math.Abs(startValue);
+            midValue = Math.Abs(midValue);
+            endValue = Math.Abs(endValue);
+
+            double[] values = new double[line.NumPoints];
+            values[0] = startValue;
+            values[values.Length - 1] = endValue;
+
+            var pts = line.Coordinates;
+            double lineLen = line.Length;
+            int midIndex = IndexAtLength(pts, lineLen / 2);
+
+            double delMidStart = midValue - startValue;
+            double delEndMid = endValue - midValue;
+
+            double lenSM = Length(pts, 0, midIndex);
+            double currLen = 0;
+            for (int i = 1; i <= midIndex; i++)
+            {
+                double segLen = pts[i].Distance(pts[i - 1]);
+                currLen += segLen;
+                double lenFrac = currLen / lenSM;
+                double val = startValue + lenFrac * delMidStart;
+                values[i] = val;
+            }
+
+            double lenME = Length(pts, midIndex, pts.Length - 1);
+            currLen = 0;
+            for (int i = midIndex + 1; i < values.Length - 1; i++)
+            {
+                double segLen = pts[i].Distance(pts[i - 1]);
+                currLen += segLen;
+                double lenFrac = currLen / lenME;
+                double val = midValue + lenFrac * delEndMid;
+                values[i] = val;
+            }
+            return values;
+        }
+
+        private static int IndexAtLength(Coordinate[] pts, double targetLen)
+        {
+            double len = 0;
+            for (int i = 1; i < pts.Length; i++)
+            {
+                len += pts[i].Distance(pts[i - 1]);
+                if (len > targetLen)
+                    return i;
+            }
+            return pts.Length - 1;
+        }
+
+        private static double Length(Coordinate[] pts, int i1, int i2)
+        {
+            double len = 0;
+            for (int i = i1 + 1; i <= i2; i++)
+            {
+                len += pts[i].Distance(pts[i - 1]);
+            }
+            return len;
         }
 
         private readonly LineString _line;

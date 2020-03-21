@@ -143,7 +143,20 @@ namespace Open.Topology.TestRunner.Functions
         public static Geometry VariableBuffer(Geometry line,
         double startDist,
         double endDist) {
+            if (line is Polygon poly) {
+                line = poly.ExteriorRing;
+            }
             return NetTopologySuite.Operation.Buffer.VariableBuffer.Buffer(line, startDist, endDist);
+        }
+
+        public static Geometry VariableBufferMid(Geometry line,
+        double startDist,
+        double midDist)  
+        {
+            if (line is Polygon poly) {
+                line = poly.ExteriorRing;
+            }
+            return NetTopologySuite.Operation.Buffer.VariableBuffer.Buffer(line, startDist, midDist, startDist);
         }
 
 }
