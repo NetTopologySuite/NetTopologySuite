@@ -1718,10 +1718,11 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Creates a deep copy of this <see cref="Geometry"/> object.
         /// Coordinate sequences contained in it are copied.
-        /// All instance fields are copied (i.e. the <c>SRID</c> and <c>UserData</c>).
+        /// All instance fields are copied
+        /// (i.e. the <c>SRID</c>, <c>EnvelopeInternal</c> and <c>UserData</c>).
         /// </summary>
         /// <remarks>
-        /// <b>NOTE:</b> The userData object reference (if present) is copied,
+        /// <b>NOTE:</b> The UserData object reference (if present) is copied,
         /// but the value itself is not copied.
         /// If a deep copy is required this must be performed by the caller. 
         /// </remarks>
@@ -1732,10 +1733,7 @@ namespace NetTopologySuite.Geometries
 
             //Not necessary as SRID is Factory.SRID
             //copy.SRID = SRID;
-
-            // This is for later
-            //copy._envelope = _envelope?.Copy();
-
+            copy._envelope = _envelope?.Copy();
             copy.UserData = UserData;
             return copy;
         }
