@@ -14,6 +14,9 @@ namespace NetTopologySuite.Operation.Distance
     /// not be vertices of the geometries, but may lie in the interior of
     /// a line segment. In this case the coordinate computed is a close
     /// approximation to the exact point.
+    /// <para/>
+    /// Empty geometry collection components are ignored.
+    /// <para/>
     /// The algorithms used are straightforward O(n^2)
     /// comparisons.  This worst-case performance could be improved on
     /// by using Voronoi techniques.

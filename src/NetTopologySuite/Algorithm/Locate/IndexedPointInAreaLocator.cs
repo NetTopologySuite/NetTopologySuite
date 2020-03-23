@@ -18,6 +18,9 @@ namespace NetTopologySuite.Algorithm.Locate
     /// <para/>
     /// <see cref="IPolygonal"/> and <see cref="LinearRing"/> geometries are supported.
     /// <para/>
+    /// The index is lazy-loaded, which allows
+    /// creating instances even if they are not used.
+    /// <para/>
     /// Thread-safe and immutable.
     /// </summary>
     /// <author>Martin Davis</author>
@@ -36,7 +39,6 @@ namespace NetTopologySuite.Algorithm.Locate
             if (!(g is IPolygonal || g is LinearRing))
                 throw new ArgumentException("Argument must be Polygonal");
             _geom = g;
-            //_index = new IntervalIndexedGeometry(g);
         }
 
         /// <summary>
