@@ -15,6 +15,8 @@ namespace NetTopologySuite.Geometries
     /// Note that the factory constructor methods do <b>not</b> change the input coordinates in any way.
     /// In particular, they are not rounded to the supplied <c>PrecisionModel</c>.
     /// It is assumed that input Coordinates meet the given precision.
+    /// <para/>
+    /// Instances of this class are thread-safe.
     /// </remarks>
     [Serializable]
     public class GeometryFactory

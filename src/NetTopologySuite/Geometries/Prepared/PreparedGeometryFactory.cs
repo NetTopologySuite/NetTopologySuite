@@ -3,11 +3,12 @@ namespace NetTopologySuite.Geometries.Prepared
     /// <summary>
     /// A factory for creating <see cref="IPreparedGeometry"/>s. It chooses an appropriate implementation of PreparedGeometry
     /// based on the geometric type of the input geometry.
-    /// </summary>
-    /// <remarks>
+    /// <para/>
     /// In the future, the factory may accept hints that indicate
     /// special optimizations which can be performed.
-    /// </remarks>
+    /// <para/>
+    /// Instances of this class are thread-safe.
+    /// </summary>
     /// <author>Martin Davis</author>
     public class PreparedGeometryFactory
     {
