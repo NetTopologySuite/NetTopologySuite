@@ -439,10 +439,12 @@ namespace NetTopologySuite.Operation.Valid
         /// <param name="graph">A GeometryGraph incorporating the polygon.</param>
         private void CheckHolesInShell(Polygon p, GeometryGraph graph)
         {
+            // skip test if no holes are present
+            if (p.NumInteriorRings <= 0) return;
+
             var shell = p.Shell;
             bool isShellEmpty = shell.IsEmpty;
 
-            //IPointInRing pir = new MCPointInRing(shell);
             var pir = new IndexedPointInAreaLocator(shell);
 
             for (int i = 0; i < p.NumInteriorRings; i++)
@@ -484,6 +486,9 @@ namespace NetTopologySuite.Operation.Valid
         /// </summary>
         private void CheckHolesNotNested(Polygon p, GeometryGraph graph)
         {
+            // skip test if no holes are present
+            if (p.NumInteriorRings <= 0) return;
+
             var nestedTester = new IndexedNestedRingTester(graph);
             foreach (var innerHole in p.Holes)
             {

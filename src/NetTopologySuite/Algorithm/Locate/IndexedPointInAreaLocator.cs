@@ -23,7 +23,8 @@ namespace NetTopologySuite.Algorithm.Locate
     /// <author>Martin Davis</author>
     public class IndexedPointInAreaLocator : IPointOnGeometryLocator
     {
-        private readonly IntervalIndexedGeometry _index;
+        private Geometry _geom;
+        private IntervalIndexedGeometry _index;
 
         /// <summary>
         /// Creates a new locator for a given <see cref="Geometry"/>.
@@ -34,7 +35,8 @@ namespace NetTopologySuite.Algorithm.Locate
         {
             if (!(g is IPolygonal || g is LinearRing))
                 throw new ArgumentException("Argument must be Polygonal");
-            _index = new IntervalIndexedGeometry(g);
+            _geom = g;
+            //_index = new IntervalIndexedGeometry(g);
         }
 
         /// <summary>
@@ -45,6 +47,12 @@ namespace NetTopologySuite.Algorithm.Locate
         /// </returns>
         public Location Locate(Coordinate p)
         {
+            if (_index == null)
+            {
+                _index = new IntervalIndexedGeometry(_geom);
+                // no need to hold onto geom
+                _geom = null;
+            }
             var rcc = new RayCrossingCounter(p);
 
             var visitor = new SegmentVisitor(rcc);

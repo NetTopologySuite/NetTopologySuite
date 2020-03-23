@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using NetTopologySuite.Algorithm;
+using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Index;
@@ -82,6 +83,57 @@ namespace NetTopologySuite.Operation.Valid
             }
             return true;
         }
+
+        /**
+         * An implementation of an optimization introduced in GEOS
+         * https://github.com/libgeos/geos/pull/255/commits/1bf16cdf5a4827b483a1f712e0597ccb243f58cb
+         * 
+         * Not used for now, since improvement is small and very data-dependent.
+         * 
+         * @return
+         */
+        /*
+        private bool IsNonNestedWithIndex()
+        {
+            BuildIndex();
+
+            for (int i = 0; i < _rings.Count; i++)
+            {
+                var outerRing = (LinearRing) _rings[i];
+                var outerRingPts = outerRing.Coordinates;
+
+                var ptLocator = new IndexedPointInAreaLocator(outerRing);
+                var results = _index.Query(outerRing.EnvelopeInternal);
+                //System.out.println(results.size());
+                for (int j = 0; j < results.Count; j++)
+                {
+                    var searchRing = (LinearRing) results[j];
+                    if (outerRing == searchRing)
+                        continue;
+
+                    if (!outerRing.EnvelopeInternal.Intersects(searchRing.EnvelopeInternal))
+                        continue;
+
+                    var searchRingPts = searchRing.Coordinates;
+                    var innerRingPt = IsValidOp.FindPointNotNode(searchRingPts, outerRing, _graph);
+
+                    if (innerRingPt == null)
+                        continue;
+
+                    bool isInside = Location.Exterior != ptLocator.Locate(innerRingPt);
+                    //boolean isInside = PointLocation.isInRing(innerRingPt, outerRingPts);
+
+                    if (isInside)
+                    {
+                        _nestedPt = innerRingPt;
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+        */
 
         private void BuildIndex()
         {
