@@ -74,6 +74,29 @@ namespace Open.Topology.TestRunner.Functions
             return diagram;
         }
 
+        public static Geometry VoronoiRelaxation(Geometry sitesGeom, Geometry clipGeom, int nIter)
+        {
+            Geometry voronoiPolys = null;
+            for (int i = 0; i < nIter; i++)
+            {
+                voronoiPolys = VoronoiDiagram(sitesGeom, clipGeom);
+                sitesGeom = Centroids(voronoiPolys);
+            }
+            return voronoiPolys;
+        }
+
+        private static Geometry Centroids(Geometry polygons)
+        {
+            int npolys = polygons.NumGeometries;
+            var centroids = new Point[npolys];
+            for (int i = 0; i < npolys; i++)
+            {
+                centroids[i] = polygons.GetGeometryN(i).Centroid;
+            }
+            return polygons.Factory.CreateMultiPoint(centroids);
+        }
+
+
         public static Geometry ConformingDelaunayEdges(Geometry sites, Geometry constraints)
         {
             return ConformingDelaunayEdgesWithTolerance(sites, constraints, TriangulationTolerance);
