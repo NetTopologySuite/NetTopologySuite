@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Common;
 using System.Globalization;
 using NetTopologySuite.Geometries;
 
@@ -11,14 +12,14 @@ namespace NetTopologySuite.Mathematics
     public class Vector3D
     {
 
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         /// <summary>
         /// Computes the dot product of the 3D vectors AB and CD.
         /// </summary>
-        /// <param name="A">A coordinate</param>
-        /// <param name="B">A coordinate</param>
-        /// <param name="C">A coordinate</param>
-        /// <param name="D">A coordinate</param>
+        /// <param name="A">The start point of the 1st vector</param>
+        /// <param name="B">The end point of the 1st vector</param>
+        /// <param name="C">The start point of the 2nd vector</param>
+        /// <param name="D">The end point of the 2nd vector</param>
         /// <returns>The dot product</returns>
         public static double Dot(Coordinate A, Coordinate B, Coordinate C, Coordinate D)
         {
@@ -45,7 +46,10 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// Creates a new vector from a <see cref="Coordinate"/>.
+        /// Creates a vector from a 3D <see cref="Coordinate"/>.
+        /// <para/>
+        /// The coordinate should have the
+        /// X,Y and Z ordinates specified.
         /// </summary>
         /// <param name="coord">The coordinate to copy</param>
         /// <returns>A new vector</returns>
@@ -54,12 +58,6 @@ namespace NetTopologySuite.Mathematics
             return new Vector3D(coord);
         }
 
-        public Vector3D(Coordinate v)
-        {
-            _x = v.X;
-            _y = v.Y;
-            _z = v.Z;
-        }
 
         /// <summary>
         /// Computes the 3D dot-product of two <see cref="Coordinate"/>s
@@ -76,8 +74,23 @@ namespace NetTopologySuite.Mathematics
         private readonly double _y;
         private readonly double _z;
 
+
         /// <summary>
-        /// Creates a vector, that is the difference of <paramref name="to"/> and <paramref name="from"/>
+        /// Creates a new 3D vector from a <see cref="Coordinate"/>.<para/> The coordinate should have
+        /// the X,Y and Z ordinates specified.
+        /// </summary>
+        /// <param name="coord">The coordinate to copy</param>
+        public Vector3D(Coordinate coord)
+        {
+            _x = coord.X;
+            _y = coord.Y;
+            _z = coord.Z;
+        }
+
+        /// <summary>
+        /// Creates a vector with the direction and magnitude
+        /// of the difference between the <paramref name="to"/>
+        /// and <paramref name="from"/> <see cref="Coordinate"/>s.
         /// </summary>
         /// <param name="from">The origin coordinate</param>
         /// <param name="to">The destination coordinate</param>
@@ -89,11 +102,11 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// Creates a vector with the ordinates <paramref name="x"/>, <paramref name="y"/> and <paramref name="z"/>
+        /// Creates a vector with the given <paramref name="x"/>, <paramref name="y"/> and <paramref name="z"/> components
         /// </summary>
-        /// <param name="x">The x-ordinate</param>
-        /// <param name="y">The y-ordinate</param>
-        /// <param name="z">The z-ordinate</param>
+        /// <param name="x">The x component</param>
+        /// <param name="y">The y component</param>
+        /// <param name="z">The z component</param>
         public Vector3D(double x, double y, double z)
         {
             _x = x;
@@ -117,6 +130,40 @@ namespace NetTopologySuite.Mathematics
         public double Z => _z;
 
         /// <summary>
+        /// Computes a vector which is the sum
+        /// of this vector and the given vector.
+        /// </summary>
+        /// <param name="v">The vector to add</param>
+        /// <returns>The sum of this and <c>v</c></returns>
+        public Vector3D Add(Vector3D v)
+        {
+            return Create(X + v.X, Y + v.Y, Z + v.Z);
+        }
+
+        /// <summary>
+        /// Computes a vector which is the difference
+        /// of this vector and the given vector.
+        /// </summary>
+        /// <param name="v">The vector to subtract</param>
+        /// <returns>The difference of this and <c>v</c></returns>
+        public Vector3D Subtract(Vector3D v)
+        {
+            return Create(X - v.X, Y - v.Y, Z - v.Z);
+        }
+
+        /// <summary>
+        /// Creates a new vector which has the same direction
+        /// and with length equals to the length of this vector
+        /// divided by the scalar value <c>d</c>.
+        /// </summary>
+        /// <param name="d">The scalar divisor</param>
+        /// <returns>A new vector with divided length</returns>
+        public Vector3D Divide(double d)
+        {
+            return Create(_x / d, _y / d, _z / d);
+        }
+
+        /// <summary>
         /// Computes the dot-product of this <see cref="Vector3D"/> and <paramref name="v"/>
         /// </summary>
         /// <paramref name="v">The 2nd vector</paramref>
@@ -126,8 +173,9 @@ namespace NetTopologySuite.Mathematics
             return _x * v._x + _y * v._y + _z * v._z;
         }
 
+
         /// <summary>
-        /// Function to compute the length of this vector
+        /// Computes the length of this vector
         /// </summary>
         /// <returns>The length of this vector</returns>
         public double Length()
@@ -136,9 +184,9 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// Function to compute the length of vector <paramref name="v"/>.
+        /// Computes the length of vector <paramref name="v"/>.
         /// </summary>
-        /// <param name="v">A coordinate, treated as vector</param>
+        /// <param name="v">A coordinate representing a 3D Vector</param>
         /// <returns>The length of <paramref name="v"/></returns>
         public static double Length(Coordinate v)
         {
@@ -146,9 +194,10 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// Function to compute a normalized form of this vector
+        /// Computes a vector having identical direction
+        /// but normalized to have length 1.
         /// </summary>
-        /// <returns>A normalized form of this vector</returns>
+        /// <returns>A new normalized vector</returns>
         public Vector3D Normalize()
         {
             double length = Length();
@@ -158,20 +207,11 @@ namespace NetTopologySuite.Mathematics
         }
 
         /// <summary>
-        /// Function to devide all dimensions of this vector by <paramref name="d"/>.
+        /// Computes a vector having identical direction as <c>v</c>
+        /// but normalized to have length 1.
         /// </summary>
-        /// <param name="d">The divisor</param>
-        /// <returns>A new (divided) vector</returns>
-        private Vector3D Divide(double d)
-        {
-            return Create(_x / d, _y / d, _z / d);
-        }
-
-        /// <summary>
-        /// Function to compute a normalized form of vector <paramref name="v"/>.
-        /// </summary>
-        /// <param name="v">A coordinate vector</param>
-        /// <returns>A normalized form of <paramref name="v"/></returns>
+        /// <param name="v">A coordinate representing a 3D vector</param>
+        /// <returns>A coordinate representing the normalized vector</returns>
         public static Coordinate Normalize(Coordinate v)
         {
             double len = Length(v);
@@ -184,5 +224,24 @@ namespace NetTopologySuite.Mathematics
             return string.Format(NumberFormatInfo.InvariantInfo, "[{0}, {1}, {2}]", _x, _y, _z);
         }
 
+        ///<inheritdoc cref="object.Equals(object)"/>
+        public override bool Equals(object o)
+        {
+            if (!(o is Vector3D v) ) {
+                return false;
+            }
+            return _x == v.X && _y == v.Y && _z == v.Z;
+        }
+
+        ///<inheritdoc cref="object.GetHashCode()"/>
+        public override int GetHashCode()
+        {
+            // Algorithm from Effective Java by Joshua Bloch
+            int result = 17;
+            result = 37 * result + _x.GetHashCode();
+            result = 37 * result + _y.GetHashCode();
+            result = 37 * result + _z.GetHashCode();
+            return result;
+        }
     }
 }

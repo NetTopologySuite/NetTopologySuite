@@ -356,7 +356,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>A hashcode for this coordinate.</returns>
         public sealed override int GetHashCode()
         {
-            var result = 17;
+            int result = 17;
             // ReSharper disable NonReadonlyFieldInGetHashCode
             result = 37 * result + X.GetHashCode();
             result = 37 * result + Y.GetHashCode();
