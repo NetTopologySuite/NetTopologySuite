@@ -49,7 +49,7 @@ namespace NetTopologySuite.Geometries
         {
             if (geometries == null)
                 geometries = new Geometry[] { };
-            if (HasNullElements(geometries))
+            if (HasNullElements<Geometry>(geometries))
                 throw new ArgumentException("geometries must not contain null elements");
             _geometries = geometries;
         }
@@ -98,6 +98,7 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        /// <inheritdoc cref="Geometry.GetOrdinates"/>
         public override double[] GetOrdinates(Ordinate ordinate)
         {
             if (IsEmpty)
@@ -115,9 +116,7 @@ namespace NetTopologySuite.Geometries
             return result;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
+        /// <inheritdoc cref="Geometry.IsEmpty"/>
         public override bool IsEmpty
         {
             get
@@ -129,9 +128,7 @@ namespace NetTopologySuite.Geometries
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
+        /// <inheritdoc cref="Geometry.Dimension"/>
         public override Dimension Dimension
         {
             get
@@ -312,23 +309,21 @@ namespace NetTopologySuite.Geometries
             return true;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="filter"></param>
+        /// <inheritdoc cref="Apply(ICoordinateFilter)"/>
         public override void Apply(ICoordinateFilter filter)
         {
             for (int i = 0; i < _geometries.Length; i++)
                  _geometries[i].Apply(filter);
         }
 
+        /// <inheritdoc cref="Apply(ICoordinateSequenceFilter)"/>
         public override void Apply(ICoordinateSequenceFilter filter)
         {
             if (_geometries.Length == 0)
                 return;
             for (int i = 0; i < _geometries.Length; i++)
             {
-                ((Geometry)_geometries[i]).Apply(filter);
+                _geometries[i].Apply(filter);
                 if (filter.Done)
                 {
                     break;
@@ -338,10 +333,7 @@ namespace NetTopologySuite.Geometries
                 GeometryChanged();
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="filter"></param>
+        /// <inheritdoc cref="Apply(IGeometryFilter)"/>
         public override void Apply(IGeometryFilter filter)
         {
             filter.Filter(this);
@@ -349,10 +341,7 @@ namespace NetTopologySuite.Geometries
                  _geometries[i].Apply(filter);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="filter"></param>
+        /// <inheritdoc cref="Apply(IGeometryComponentFilter)"/>
         public override void Apply(IGeometryComponentFilter filter)
         {
             filter.Filter(this);
@@ -391,11 +380,7 @@ namespace NetTopologySuite.Geometries
             return envelope;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="o"></param>
-        /// <returns></returns>
+        ///<inheritdoc cref="Geometry.CompareToSameClass(object)"/>
         protected internal override int CompareToSameClass(object o)
         {
             var theseElements = new List<Geometry>(_geometries);
@@ -403,6 +388,7 @@ namespace NetTopologySuite.Geometries
             return Compare(theseElements, otherElements);
         }
 
+        ///<inheritdoc cref="Geometry.CompareToSameClass(object, IComparer{CoordinateSequence})"/>
         protected internal override int CompareToSameClass(object o, IComparer<CoordinateSequence> comp)
         {
             var gc = (GeometryCollection) o;
@@ -413,9 +399,9 @@ namespace NetTopologySuite.Geometries
             while (i < n1 && i < n2)
             {
                 var thisGeom = GetGeometryN(i);
-                Assert.IsTrue(thisGeom is Geometry);
+                //Assert.IsTrue(thisGeom is Geometry);
                 var otherGeom = gc.GetGeometryN(i);
-                int holeComp = ((Geometry) thisGeom).CompareToSameClass(otherGeom, comp);
+                int holeComp = thisGeom.CompareToSameClass(otherGeom, comp);
                 if (holeComp != 0) return holeComp;
                 i++;
             }
@@ -470,15 +456,24 @@ namespace NetTopologySuite.Geometries
         /// The order of the components in the collection are not reversed.
         /// </summary>
         /// <returns>A <see cref="GeometryCollection"/></returns> in the reverse order
+        [Obsolete("Call Geometry.Reverse()")]
         public override Geometry Reverse()
         {
-            int n = _geometries.Length;
-            var revGeoms = new Geometry[n];
-            for (int i = 0; i < _geometries.Length; i++)
-            {
-                revGeoms[i] = _geometries[i].Reverse();
-            }
-            return Factory.CreateGeometryCollection(revGeoms);
+            return base.Reverse();
+        }
+
+        /// <summary>
+        /// The actual implementation of the <see cref="Geometry.Reverse"/> function for <c>GeometryCollection</c>s.
+        /// </summary>
+        /// <returns>A reversed geometry</returns>
+        protected override Geometry ReverseInternal()
+        {
+            int numGeometries = _geometries.Length;
+            var reversed = new Geometry[numGeometries];
+            for (int i = 0; i < numGeometries; i++)
+                reversed[i] = _geometries[i].Reverse();
+
+            return Factory.BuildGeometry(reversed);
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */

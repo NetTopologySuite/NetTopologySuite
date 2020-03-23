@@ -179,13 +179,6 @@ namespace NetTopologySuite.Geometries
             return new Envelope(Coordinate.X, Coordinate.X, Coordinate.Y, Coordinate.Y);
         }
 
-        //internal override int  GetHashCodeInternal(int baseValue, Func<int,int> operation)
-        //{
-        //    if (!IsEmpty)
-        //        baseValue = operation(baseValue) + _coordinates.GetX(0).GetHashCode();
-        //    return baseValue;
-        //}
-
         /// <summary>
         ///
         /// </summary>
@@ -249,14 +242,23 @@ namespace NetTopologySuite.Geometries
             return new Point(coordinates, Factory);
         }
 
+        /// <inheritdoc cref="Geometry.Reverse"/>
+        [Obsolete("Call Geometry.Reverse()")]
         public override Geometry Reverse()
         {
-            return Copy();
+            return base.Reverse();
         }
 
         /// <summary>
-        ///
+        /// The actual implementation of the <see cref="Geometry.Reverse"/> function for <c>POINT</c>s.
         /// </summary>
+        /// <returns>A reversed geometry</returns>
+        protected override Geometry ReverseInternal()
+        {
+            return Factory.CreatePoint(_coordinates.Copy());
+        }
+
+        /// <inheritdoc cref="Normalize"/>
         public override void Normalize() { }
 
         /// <summary>

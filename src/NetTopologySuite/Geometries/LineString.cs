@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using NetTopologySuite.Algorithm;
 using NetTopologySuite.Operation;
 using NetTopologySuite.Utilities;
 
@@ -75,10 +74,33 @@ namespace NetTopologySuite.Geometries
         protected override SortIndexValue SortIndex => SortIndexValue.LineString;
 
         /// <summary>
-        ///
+        /// Returns an array containing the values of all the vertices for
+        /// this geometry.
         /// </summary>
+        /// <remarks>
+        /// If the geometry is a composite, the array will contain all the vertices
+        /// for the components, in the order in which the components occur in the geometry.
+        /// <para>
+        /// In general, the array cannot be assumed to be the actual internal
+        /// storage for the vertices.  Thus modifying the array
+        /// may not modify the geometry itself.
+        /// Use the <see cref="Geometries.CoordinateSequence.SetOrdinate(int, int, double)"/> method
+        /// (possibly on the components) to modify the underlying data.
+        /// If the coordinates are modified,
+        /// <see cref="Geometry.GeometryChanged"/> must be called afterwards.
+        /// </para>
+        /// </remarks>
+        /// <returns>The vertices of this <c>Geometry</c>.</returns>
+        /// <seealso cref="Geometry.GeometryChanged"/>
+        /// <seealso cref="Geometries.CoordinateSequence.SetOrdinate(int, int, double)"/>
+        /// <seealso cref="Geometries.CoordinateSequence.SetOrdinate(int, Ordinate, double)"/>
         public override Coordinate[] Coordinates => _points.ToCoordinateArray();
 
+        /// <summary>
+        /// Gets an array of <see cref="double"/> ordinate values
+        /// </summary>
+        /// <param name="ordinate">The ordinate index</param>
+        /// <returns>An array of ordinate values</returns>
         public override double[] GetOrdinates(Ordinate ordinate)
         {
             if (IsEmpty)
@@ -149,7 +171,7 @@ namespace NetTopologySuite.Geometries
         public override int NumPoints => _points.Count;
 
         /// <summary>
-        ///
+        /// Gets 
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
@@ -159,7 +181,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        ///
+        /// Gets a value indicating the start point of this <c>LINESTRING</c>
         /// </summary>
         public Point StartPoint
         {
@@ -172,7 +194,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        ///
+        /// Gets a value indicating the end point of this <c>LINESTRING</c>
         /// </summary>
         public Point EndPoint
         {
@@ -185,7 +207,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        ///
+        /// Gets a value indicating if this <c>LINESTRING</c> is closed.
         /// </summary>
         public virtual bool IsClosed
         {
@@ -198,7 +220,7 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        ///
+        /// Gets a value indicating if this <c>LINESTRING</c> forms a ring.
         /// </summary>
         public bool IsRing => IsClosed && IsSimple;
 
@@ -208,6 +230,9 @@ namespace NetTopologySuite.Geometries
         /// <returns>"LineString"</returns>
         public override string GeometryType => "LineString";
 
+        /// <summary>
+        /// Gets the OGC geometry type
+        /// </summary>
         public override OgcGeometryType OgcGeometryType => OgcGeometryType.LineString;
 
         /// <summary>
@@ -216,24 +241,31 @@ namespace NetTopologySuite.Geometries
         /// <returns>The length of the polygon.</returns>
         public override double Length => Algorithm.Length.OfLine(_points);
 
-        ///// <summary>
-        /////
-        ///// </summary>
-        //public override bool IsSimple
-        //{
-        //    get
-        //    {
-        //        return (new IsSimpleOp()).IsSimple(this);
-        //    }
-        //}
-
+        /// <summary>
+        /// Returns the boundary, or an empty geometry of appropriate dimension
+        /// if this <c>Geometry</c> is empty.
+        /// For a discussion of this function, see the OpenGIS Simple
+        /// Features Specification. As stated in SFS Section 2.1.13.1, "the boundary
+        /// of a Geometry is a set of Geometries of the next lower dimension."
+        /// </summary>
+        /// <returns>The closure of the combinatorial boundary of this <c>Geometry</c>.</returns>
         public override Geometry Boundary => (new BoundaryOp(this)).GetBoundary();
 
         /// <summary>
         /// Creates a <see cref="LineString" /> whose coordinates are in the reverse order of this objects.
         /// </summary>
         /// <returns>A <see cref="LineString" /> with coordinates in the reverse order.</returns>
+        [Obsolete("Call Geometry.Reverse()")]
         public override Geometry Reverse()
+        {
+            return base.Reverse();
+        }
+
+        /// <summary>
+        /// The actual implementation of the <see cref="Geometry.Reverse"/> function for <c>LINESTRING</c>s.
+        /// </summary>
+        /// <returns>A reversed geometry</returns>
+        protected override Geometry ReverseInternal()
         {
             var seq = _points.Copy();
             CoordinateSequences.Reverse(seq);
@@ -311,6 +343,14 @@ namespace NetTopologySuite.Geometries
                 filter.Filter(_points.GetCoordinate(i));
         }
 
+        /// <summary>
+        /// Performs an operation on the coordinates in this <c>Geometry</c>'s <see cref="Geometries.CoordinateSequence"/>s.
+        /// </summary>
+        /// <remarks>
+        /// If the filter reports that a coordinate value has been changed,
+        /// <see cref="Geometry.GeometryChanged"/> will be called automatically.
+        /// </remarks>
+        /// <param name="filter">The filter to apply</param>
         public override void Apply(ICoordinateSequenceFilter filter)
         {
             if (_points.Count == 0)
@@ -326,18 +366,27 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        ///
+        /// Performs an operation with or on this <c>Geometry</c> and its
+        /// subelement <c>Geometry</c>s (if any).
+        /// Only GeometryCollections and subclasses
+        /// have subelement Geometry's.
         /// </summary>
-        /// <param name="filter"></param>
+        /// <param name="filter">
+        /// The filter to apply to this <c>Geometry</c> (and
+        /// its children, if it is a <c>GeometryCollection</c>).
+        /// </param>
         public override void Apply(IGeometryFilter filter)
         {
             filter.Filter(this);
         }
 
         /// <summary>
-        ///
+        /// Performs an operation with or on this Geometry and its
+        /// component Geometry's. Only GeometryCollections and
+        /// Polygons have component Geometry's; for Polygons they are the LinearRings
+        /// of the shell and holes.
         /// </summary>
-        /// <param name="filter"></param>
+        /// <param name="filter">The filter to apply to this <c>Geometry</c>.</param>
         public override void Apply(IGeometryComponentFilter filter)
         {
             filter.Filter(this);
@@ -375,16 +424,13 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        /// <inheritdoc cref="Geometry.IsEquivalentClass"/>
         protected override bool IsEquivalentClass(Geometry other)
         {
             return other is LineString;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="o"></param>
-        /// <returns></returns>
+        /// <inheritdoc cref="Geometry.CompareToSameClass(object)"/>
         protected internal override int CompareToSameClass(object o)
         {
             Assert.IsTrue(o is LineString);
@@ -408,6 +454,7 @@ namespace NetTopologySuite.Geometries
             return 0;
         }
 
+        /// <inheritdoc cref="Geometry.CompareToSameClass(object, IComparer{CoordinateSequence})"/>
         protected internal override int CompareToSameClass(object o, IComparer<CoordinateSequence> comp)
         {
             Assert.IsTrue(o is LineString);

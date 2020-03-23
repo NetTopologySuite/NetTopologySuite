@@ -26,7 +26,7 @@ namespace NetTopologySuite.Tests.NUnit.LinearReferencing
         public void TestExtractLineReverseMulti()
         {
             CheckExtractLine("MULTILINESTRING ((0 0, 10 0), (20 0, 25 0, 30 0))",
-                                19, 1, "MULTILINESTRING ((29 0, 25 0, 20 0), (10 0, 1 0))");
+                                19, 1, "MULTILINESTRING ((10 0, 1 0), (29 0, 25 0, 20 0))");
         }
 
         [Test]

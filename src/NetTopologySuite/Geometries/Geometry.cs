@@ -254,9 +254,23 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="array"> an array to validate.</param>
         /// <returns><c>true</c> if any of <c>array</c>s elements are <c>null</c>.</returns>
+        [Obsolete("Use HasNullElements<T>")]
         public static bool HasNullElements(object[] array)
         {
             foreach (object o in array)
+                if (o == null)
+                    return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Returns true if the array contains any <c>null</c> elements.
+        /// </summary>
+        /// <param name="array"> an array to validate.</param>
+        /// <returns><c>true</c> if any of <c>array</c>s elements are <c>null</c>.</returns>
+        public static bool HasNullElements<T>(IEnumerable<T> array) where T:class
+        {
+            foreach (var o in array)
                 if (o == null)
                     return true;
             return false;
@@ -1412,11 +1426,26 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        ///  Computes a new geometry which has all component coordinate sequences
-        ///  in reverse order (opposite orientation) to this one.
+        /// Computes a new geometry which has all component coordinate sequences
+        /// in reverse order (opposite orientation) to this one.
         /// </summary>
-        ///  <returns>A reversed geometry</returns>
-        public abstract Geometry Reverse();
+        /// <returns>A reversed geometry</returns>
+        /// <remarks>Don't override this function, implement <see cref="ReverseInternal"/>.</remarks>
+        public virtual Geometry Reverse()
+        {
+            var res = ReverseInternal();
+            res._envelope = _envelope?.Copy();
+            //res.SRID = SRID;
+
+            return res;
+        }
+
+        /// <summary>
+        /// The actual implementation of the <see cref="Reverse"/> function
+        /// </summary>
+        /// <returns>A reversed geometry</returns>
+        /// <remarks>In JTS this function is abstract, but that would break binary compatibility of current version.</remarks>
+        protected virtual Geometry ReverseInternal() { throw new NotSupportedException("Calling Geometry.ReverseInternal directly is not supported"); }
 
         /// <summary>
         /// Computes a <c>Geometry</c> representing the point-set which is

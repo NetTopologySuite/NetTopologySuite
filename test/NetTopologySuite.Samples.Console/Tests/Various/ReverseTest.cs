@@ -64,11 +64,11 @@ namespace NetTopologySuite.Samples.Tests.Various
             Assert.IsTrue(multiLineString.EqualsTopologically(reverse));
             Assert.IsFalse(multiLineString.EqualsExact(reverse));
 
-            var result2 = reverse[1];
+            var result2 = reverse[0];
             Assert.IsTrue(lineString1.EqualsTopologically(result2));
             Assert.IsFalse(lineString1.EqualsExact(result2));
 
-            var result1 = reverse[0];
+            var result1 = reverse[1];
             Assert.IsTrue(lineString2.EqualsTopologically(result1));
             Assert.IsFalse(lineString2.EqualsExact(result1));
         }

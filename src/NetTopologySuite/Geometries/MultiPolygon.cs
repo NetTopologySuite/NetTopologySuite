@@ -75,6 +75,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>"MultiPolygon"</returns>
         public override string GeometryType => "MultiPolygon";
 
+        /// <inheritdoc cref="Geometry.OgcGeometryType"/>>
         public override OgcGeometryType OgcGeometryType => OgcGeometryType.MultiPolygon;
 
         ///// <summary>
@@ -123,20 +124,17 @@ namespace NetTopologySuite.Geometries
             return base.EqualsExact(other, tolerance);
         }
 
-        /// <summary>Creates a {@link MultiPolygon} with every component reversed.
+        /// <summary>
+        /// Creates a <see cref="MultiPolygon"/> with every component reversed.
         /// </summary>
         /// <remarks>The order of the components in the collection are not reversed.</remarks>
         /// <returns>An <see cref="MultiPolygon"/> in the reverse order</returns>
+        [Obsolete("Call Geometry.Reverse()")]
         public override Geometry Reverse()
         {
-            int n = Geometries.Length;
-            var revGeoms = new Polygon[n];
-            for (int i = 0; i < Geometries.Length; i++)
-            {
-                revGeoms[i] = (Polygon)Geometries[i].Reverse();
-            }
-            return Factory.CreateMultiPolygon(revGeoms);
+            return base.Reverse();
         }
+
 
     }
 }

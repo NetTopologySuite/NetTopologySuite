@@ -58,21 +58,11 @@ namespace NetTopologySuite.LinearReferencing
         /// <returns></returns>
         private static Geometry Reverse(Geometry linear)
         {
-            if (!(linear is ILineal))
-            {
-                Assert.ShouldNeverReachHere("non-linear geometry encountered");
-                return null;
-            }
-            return linear.Reverse();
+            if (linear is ILineal)
+                return linear.Reverse();
 
-            /*
-            if (linear is LineString)
-            return ((LineString) linear).Reverse();
-            if (linear is MultiLineString)
-            return ((MultiLineString) linear).Reverse();
             Assert.ShouldNeverReachHere("non-linear geometry encountered");
             return null;
-             */
         }
 
         ///// <summary>

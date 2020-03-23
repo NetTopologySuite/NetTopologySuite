@@ -88,7 +88,7 @@ namespace NetTopologySuite.Geometries
                 shell = Factory.CreateLinearRing();
             if (holes == null)
                 holes = new LinearRing[] { };
-            if (HasNullElements(holes))
+            if (HasNullElements<LinearRing>(holes))
                 throw new ArgumentException("holes must not contain null elements");
             if (shell.IsEmpty && HasNonEmptyElements(holes))
                 throw new ArgumentException("shell is empty but holes are not");
@@ -125,7 +125,7 @@ namespace NetTopologySuite.Geometries
         /// In general, the array cannot be assumed to be the actual internal
         /// storage for the vertices.  Thus modifying the array
         /// may not modify the geometry itself.
-        /// Use the <see cref="CoordinateSequence.SetOrdinate"/> method
+        /// Use the <see cref="CoordinateSequence.SetOrdinate(int, int, double)"/> method
         /// (possibly on the components) to modify the underlying data.
         /// If the coordinates are modified,
         /// <see cref="Geometry.GeometryChanged"/> must be called afterwards.
@@ -133,7 +133,8 @@ namespace NetTopologySuite.Geometries
         /// </remarks>
         /// <returns>The vertices of this <c>Geometry</c>.</returns>
         /// <seealso cref="Geometry.GeometryChanged"/>
-        /// <seealso cref="CoordinateSequence.SetOrdinate"/>
+        /// <seealso cref="CoordinateSequence.SetOrdinate(int, int, double)"/>
+        /// <seealso cref="CoordinateSequence.SetOrdinate(int, Ordinate, double)"/>
         public override Coordinate[] Coordinates
         {
             get
@@ -273,6 +274,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>"Polygon"</returns>
         public override string GeometryType => "Polygon";
 
+        /// <inheritdoc cref="Geometry.OgcGeometryType"/>
         public override OgcGeometryType OgcGeometryType => OgcGeometryType.Polygon;
 
         /// <summary>
@@ -361,10 +363,7 @@ namespace NetTopologySuite.Geometries
             return true;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="filter"></param>
+        /// <inheritdoc cref="Geometry.Apply(ICoordinateFilter)"/>
         public override void Apply(ICoordinateFilter filter)
         {
             _shell.Apply(filter);
@@ -372,6 +371,7 @@ namespace NetTopologySuite.Geometries
                 _holes[i].Apply(filter);
         }
 
+        /// <inheritdoc cref="Geometry.Apply(ICoordinateSequenceFilter)"/>
         public override void Apply(ICoordinateSequenceFilter filter)
         {
             _shell.Apply(filter);
@@ -379,7 +379,7 @@ namespace NetTopologySuite.Geometries
             {
                 for (int i = 0; i < _holes.Length; i++)
                 {
-                    ((LinearRing)_holes[i]).Apply(filter);
+                    (_holes[i]).Apply(filter);
                     if (filter.Done)
                         break;
                 }
@@ -388,19 +388,13 @@ namespace NetTopologySuite.Geometries
                 GeometryChanged();
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="filter"></param>
+        /// <inheritdoc cref="Geometry.Apply(IGeometryFilter)"/>
         public override void Apply(IGeometryFilter filter)
         {
             filter.Filter(this);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="filter"></param>
+        /// <inheritdoc cref="Geometry.Apply(IGeometryComponentFilter)"/>
         public override void Apply(IGeometryComponentFilter filter)
         {
             filter.Filter(this);
@@ -502,9 +496,9 @@ namespace NetTopologySuite.Geometries
         }
 
         /// <summary>
-        ///
+        /// Tests whether this is a rectangular <see cref="Polygon"/>.
         /// </summary>
-        /// <returns></returns>
+        /// <returns><c>true</c> if the geometry is a rectangle.</returns>
         public override bool IsRectangle
         {
             get
@@ -548,13 +542,27 @@ namespace NetTopologySuite.Geometries
             }
         }
 
+        /// <inheritdoc cref="Geometry.Reverse"/>
+        [Obsolete("Call Geometry.Reverse()")]
         public override Geometry Reverse()
         {
-            var shell = (LinearRing)_shell.Reverse();
-            var holes = new LinearRing[_holes.Length];
-            for (int i = 0; i < _holes.Length; i++)
-                holes[i] = (LinearRing)_holes[i].Reverse();
-            return new Polygon(shell, holes, Factory);
+            return base.Reverse();
+        }
+
+        /// <summary>
+        /// The actual implementation of the <see cref="Geometry.Reverse"/> function for <c>POLYGON</c>s
+        /// </summary>
+        /// <returns>A reversed geometry</returns>
+        protected override Geometry ReverseInternal()
+        {
+#pragma warning disable 618
+            var shell = (LinearRing)ExteriorRing.Reverse();
+            var holes = new LinearRing[NumInteriorRings];
+            for (int i = 0; i < holes.Length; i++)
+                holes[i] = (LinearRing)GetInteriorRingN(i).Reverse();
+#pragma warning restore 618
+
+            return Factory.CreatePolygon(shell, holes);
         }
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */

@@ -128,13 +128,10 @@ namespace NetTopologySuite.Geometries
         /// and the order of their coordinate sequences are reversed.
         /// </summary>
         /// <returns>a <see cref="MultiLineString" /> in the reverse order.</returns>
+        [Obsolete("Call Geometry.Reverse()")]
         public override Geometry Reverse()
         {
-            int nLines = Geometries.Length;
-            var revLines = new LineString[nLines];
-            for (int i = 0; i < Geometries.Length; i++)
-                revLines[nLines - 1 - i] = (LineString) Geometries[i].Reverse();
-            return Factory.CreateMultiLineString(revLines);
+            return base.Reverse();
         }
 
         /// <inheritdoc cref="Geometry.CopyInternal"/>>

@@ -62,6 +62,9 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         public override Dimension BoundaryDimension => Dimension.False;
 
+        /// <summary>
+        ///
+        /// </summary>
         public override bool IsClosed
         {
             get
@@ -87,13 +90,27 @@ namespace NetTopologySuite.Geometries
             return new LinearRing(CoordinateSequence.Copy(), Factory);
         }
 
+        /// <inheritdoc cref="Geometry.Reverse"/>
+        [Obsolete("Call Geometry.Reverse()")]
         public override Geometry Reverse()
+        {
+            return base.Reverse();
+        }
+
+        /// <summary>
+        /// The actual implementation of the <see cref="Geometry.Reverse"/> function for <c>LINEARRING</c>s.
+        /// </summary>
+        /// <returns>A reversed geometry</returns>
+        protected override Geometry ReverseInternal()
         {
             var sequence = CoordinateSequence.Copy();
             CoordinateSequences.Reverse(sequence);
             return Factory.CreateLinearRing(sequence);
         }
 
+        /// <summary>
+        /// Gets a value indicating if this <c>LINEARRING</c> is oriented <see cref="OrientationIndex.CounterClockwise"/>
+        /// </summary>
         public bool IsCCW => Orientation.IsCCW(CoordinateSequence);
 
         /* BEGIN ADDED BY MPAUL42: monoGIS team */
