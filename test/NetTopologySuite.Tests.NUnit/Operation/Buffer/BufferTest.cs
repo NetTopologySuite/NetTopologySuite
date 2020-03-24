@@ -6,6 +6,26 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
     [TestFixture]
     public class BufferTest : GeometryTestCase
     {
+        /// <summary>
+        /// This tests that the algorithm used to generate fillet curves
+        /// does not suffer from numeric "slop-over".
+        /// See GEOS PR #282.
+        /// </summary>
+        [Test]
+        public void TestPointBufferSegmentCount()
+        {
+            var g = Read("POINT ( 100 100 )");
+            CheckPointBufferSegmentCount(g, 80, 53);
+            CheckPointBufferSegmentCount(g, 80, 129);
+        }
+
+        private void CheckPointBufferSegmentCount(Geometry g, double dist, int quadSegs)
+        {
+            var buf = g.Buffer(dist, quadSegs);
+            int segsExpected = 4 * quadSegs + 1;
+            Assert.That(buf.NumPoints, Is.EqualTo(segsExpected));
+        }
+
         [Test]
         public void TestMultiLineStringDepthFailure()
         {
@@ -16,7 +36,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.Buffer
               .TestContains();
         }
 
-        [Test]
+        [Test, Order(0)]
         public void TestMultiLineStringSeparateBuffersFloating()
         {
             new BufferValidator(

@@ -596,18 +596,14 @@ namespace NetTopologySuite.Operation.Buffer
             if (nSegs < 1) return;    // no segments because angle is less than increment - nothing to do!
 
             // choose angle increment so that each segment has equal length
-            const double initAngle = 0.0;
-            double currAngleInc = totalAngle / nSegs;
-
-            double currAngle = initAngle;
+            double angleInc = totalAngle / nSegs;
             var pt = new Coordinate();
-            while (currAngle < totalAngle)
+            for (int i = 0; i < nSegs; i++)
             {
-                double angle = startAngle + directionFactor * currAngle;
+                double angle = startAngle + directionFactor * i * angleInc;
                 pt.X = p.X + radius * Math.Cos(angle);
                 pt.Y = p.Y + radius * Math.Sin(angle);
                 _segList.AddPt(pt);
-                currAngle += currAngleInc;
             }
         }
 
