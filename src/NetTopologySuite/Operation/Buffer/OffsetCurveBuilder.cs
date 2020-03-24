@@ -8,7 +8,7 @@ namespace NetTopologySuite.Operation.Buffer
     /// Computes the raw offset curve for a
     /// single <see cref="Geometry"/> component (ring, line or point).
     /// A raw offset curve line is not noded -
-    /// it may contain self-intersections (and usually will).
+    /// it may contain self-intersections (and usually will).g
     /// The final buffer polygon is computed by forming a topological graph
     /// of all the noded raw curves and tracing outside contours.
     /// The points in the raw curve are rounded
@@ -48,9 +48,7 @@ namespace NetTopologySuite.Operation.Buffer
         {
             _distance = distance;
 
-            // a zero or negative width buffer of a line/point is empty
-            if (distance < 0.0 && !_bufParams.IsSingleSided) return null;
-            if (distance == 0.0) return null;
+            if (IsLineOffsetEmpty(distance)) return null;
 
             double posDistance = Math.Abs(distance);
             var segGen = GetSegmentGenerator(posDistance);
@@ -71,6 +69,27 @@ namespace NetTopologySuite.Operation.Buffer
 
             var lineCoord = segGen.GetCoordinates();
             return lineCoord;
+        }
+
+        /// <summary>
+        /// Tests whether the offset curve for line or point geometries
+        /// at the given offset distance is empty (does not exist).
+        /// This is the case if:
+        /// <list type="bullet">
+        /// <item><term>the distance is zero</term></item>
+        /// <item><term>the distance is negative, except for the case of singled-sided buffers</term></item>
+        /// </list>
+        /// </summary>
+        /// <param name="distance">The offset curve distance</param>
+        /// <returns><c>true</c> if the offset curve is empty</returns>
+        public bool IsLineOffsetEmpty(double distance)
+        {
+            // a zero width buffer of a line or point is empty
+            if (distance == 0.0) return true;
+            // a negative width buffer of a line or point is empty,
+            // except for single-sided buffers, where the sign indicates the side
+            if (distance < 0.0 && !_bufParams.IsSingleSided) return true;
+            return false;
         }
 
         /// <summary>
@@ -199,33 +218,6 @@ namespace NetTopologySuite.Operation.Buffer
 
             segGen.CloseRing();
         }
-
-        /*
-  private void OLDcomputeLineBufferCurve(Coordinate[] inputPts)
-  {
-    int n = inputPts.length - 1;
-
-    // compute points for left side of line
-    initSideSegments(inputPts[0], inputPts[1], Position.LEFT);
-    for (int i = 2; i <= n; i++) {
-      addNextSegment(inputPts[i], true);
-    }
-    addLastSegment();
-    // add line cap for end of line
-    addLineEndCap(inputPts[n - 1], inputPts[n]);
-
-    // compute points for right side of line
-    initSideSegments(inputPts[n], inputPts[n - 1], Position.LEFT);
-    for (int i = n - 2; i >= 0; i--) {
-      addNextSegment(inputPts[i], true);
-    }
-    addLastSegment();
-    // add line cap for start of line
-    addLineEndCap(inputPts[1], inputPts[0]);
-
-    vertexList.closeRing();
-  }
-  */
 
         private void ComputeSingleSidedBufferCurve(Coordinate[] inputPts, bool isRightSide,
                                                    OffsetSegmentGenerator segGen)

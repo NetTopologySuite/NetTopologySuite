@@ -107,7 +107,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="p"></param>
         private void AddPoint(Geometry p)
         {
-            // a zero or negative width buffer of a line/point is empty
+            // a zero or negative width buffer of a point is empty
             if (_distance <= 0.0)
                 return;
             var coord = p.Coordinates;
@@ -115,18 +115,28 @@ namespace NetTopologySuite.Operation.Buffer
             AddCurve(curve, Location.Exterior, Location.Interior);
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="line"></param>
         private void AddLineString(Geometry line)
         {
-            // a zero or negative width buffer of a line/point is empty
-            if (_distance <= 0.0 && !_curveBuilder.BufferParameters.IsSingleSided)
-                return;
+            if (_curveBuilder.IsLineOffsetEmpty(_distance)) return;
+
             var coord = CoordinateArrays.RemoveRepeatedPoints(line.Coordinates);
-            var curve = _curveBuilder.GetLineCurve(coord, _distance);
-            AddCurve(curve, Location.Exterior, Location.Interior);
+            /*
+             * Rings (closed lines) are generated with a continuous curve, 
+             * with no end arcs. This produces better quality linework, 
+             * and avoids noding issues with arcs around almost-parallel end segments.
+             * See JTS #523 and #518.
+             * 
+             * Singled-sided buffers currently treat rings as if they are lines.
+             */
+            if (CoordinateArrays.IsRing(coord) && !_curveBuilder.BufferParameters.IsSingleSided)
+            {
+                AddRingBothSides(coord, _distance);
+            }
+            else
+            {
+                var curve = _curveBuilder.GetLineCurve(coord, _distance);
+                AddCurve(curve, Location.Exterior, Location.Interior);
+            }
         }
 
         /// <summary>
@@ -153,7 +163,7 @@ namespace NetTopologySuite.Operation.Buffer
             if (_distance <= 0.0 && shellCoord.Length < 3)
                 return;
 
-            AddPolygonRing(shellCoord, offsetDistance, offsetSide,
+            AddRingSide(shellCoord, offsetDistance, offsetSide,
                            Location.Exterior, Location.Interior);
 
             for (int i = 0; i < p.NumInteriorRings; i++)
@@ -169,10 +179,22 @@ namespace NetTopologySuite.Operation.Buffer
                 // Holes are topologically labelled opposite to the shell, since
                 // the interior of the polygon lies on their opposite side
                 // (on the left, if the hole is oriented CCW)
-                AddPolygonRing(holeCoord, offsetDistance, Position.Opposite(offsetSide),
+                AddRingSide(holeCoord, offsetDistance, Position.Opposite(offsetSide),
                                Location.Interior, Location.Exterior);
             }
         }
+
+        private void AddRingBothSides(Coordinate[] coord, double distance)
+        {
+            AddRingSide(coord, distance,
+                Positions.Left,
+                Location.Exterior, Location.Interior);
+            // Add the opposite side of the ring
+            AddRingSide(coord, distance,
+                Positions.Right,
+                Location.Interior, Location.Exterior);
+        }
+
 
         /// <summary>
         /// Adds an offset curve for a polygon ring.
@@ -186,7 +208,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="side">The side of the ring on which to construct the buffer line.</param>
         /// <param name="cwLeftLoc">The location on the L side of the ring (if it is CW).</param>
         /// <param name="cwRightLoc">The location on the R side of the ring (if it is CW).</param>
-        private void AddPolygonRing(Coordinate[] coord, double offsetDistance,
+        private void AddRingSide(Coordinate[] coord, double offsetDistance,
             Positions side, Location cwLeftLoc, Location cwRightLoc)
         {
             // don't bother adding ring if it is "flat" and will disappear in the output
