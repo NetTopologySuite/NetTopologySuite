@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using System.Text;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.IO
 {
@@ -62,8 +62,7 @@ namespace NetTopologySuite.IO
         }
          */
 
-        private readonly NumberFormatInfo _format;
-        private readonly string _formatText;
+        private readonly string _format;
 
         /// <summary>
         /// Creates an OrdinateFormat using the default maximum number of fraction digits.
@@ -78,11 +77,9 @@ namespace NetTopologySuite.IO
         /// <param name="maximumFractionDigits">The maximum number of fraction digits to output</param>
         public OrdinateFormat(int maximumFractionDigits)
         {
-            _format = CreateFormat(maximumFractionDigits);
-            _formatText = maximumFractionDigits < 16
-                ? "{" + $"0:0.{new string('#', maximumFractionDigits)}" + "}"
-                : "{0:R}";
-                //: "{0:G17}";
+            _format = maximumFractionDigits < 16
+                ? $"0.{new string('#', maximumFractionDigits)}"
+                : "R";
         }
 
         internal static NumberFormatInfo CreateFormat(int maximumFractionDigits)
@@ -106,22 +103,80 @@ namespace NetTopologySuite.IO
         /// <returns>The formatted number string</returns>
         public string Format(double ord)
         {
-            string res = string.Format(_format, _formatText, ord);
+            // finite values only pass through this one outer branch
+            if ((BitConverter.DoubleToInt64Bits(ord) & 0x7FFFFFFFFFFFFFFF) >= 0x7FF0000000000000)
+            {
+                if (double.IsNaN(ord))
+                {
+                    return REP_NAN;
+                }
+
+                if (double.IsPositiveInfinity(ord))
+                {
+                    return REP_POS_INF;
+                }
+
+                if (double.IsNegativeInfinity(ord))
+                {
+                    return REP_NEG_INF;
+                }
+
+                Assert.ShouldNeverReachHere("All values are either finite, NaN, +Inf, or -Inf.");
+            }
+
+            string res;
+            if (_format == "R")
+            {
+                res = ord.ToString("R", CultureInfo.InvariantCulture);
+
+                // use the built-in parsing to check for exponents; some popular platforms have a
+                // bug that we ought to work around, so we want to parse it anyway.
+                if (double.TryParse(res, NumberStyles.Float & ~NumberStyles.AllowExponent, CultureInfo.InvariantCulture, out double parsed))
+                {
+                    // work around a bug in .NET Framework and .NET Core pre-3.0.  Those versions
+                    // will still occasionally see "too many" significant digits regardless of what
+                    // we do in this block (the fix was quite comprehensive!), but the value will at
+                    // least be something that won't round differently (airbreather 2020-03-25).
+                    // see: https://devblogs.microsoft.com/dotnet/floating-point-parsing-and-formatting-improvements-in-net-core-3-0/
+                    if (ord != parsed)
+                    {
+                        // the "G15" step is *probably* redundant, but it's here for safety...
+                        // callers who are interested in getting the best possible performance will
+                        // be on the latest version of .NET Core, which should never get here anyway
+                        res = ord.ToString("G15", CultureInfo.InvariantCulture);
+                        if (double.TryParse(res, NumberStyles.Float & ~NumberStyles.AllowExponent, CultureInfo.InvariantCulture, out parsed) && ord != parsed)
+                        {
+                            res = ord.ToString("G16", CultureInfo.InvariantCulture);
+                            if (double.TryParse(res, NumberStyles.Float & ~NumberStyles.AllowExponent, CultureInfo.InvariantCulture, out parsed) && ord != parsed)
+                            {
+                                res = ord.ToString("G17", CultureInfo.InvariantCulture);
+                            }
+                        }
+                    }
+
+                    return res;
+                }
+
+                // else it has an exponent in it, which we need to account for.
+            }
+            else
+            {
+                return ord.ToString(_format, CultureInfo.InvariantCulture);
+            }
+
             int posE = res.IndexOf('E');
-            if (posE < 0) return res;
 
             int exp = int.Parse(res.Substring(posE + 1));
             int posD = res.IndexOf('.');
             if (posD < 0) posD = posE;
             int numberOffset = ord < 0 ? 1 : 0;
-            string whole = res.Substring(numberOffset, posD-numberOffset);
             string fraction = posE > posD ? res.Substring(posD + 1, posE - posD - 1) : string.Empty;
             
             var sb = new StringBuilder();
             if (ord < 0) sb.Append("-");
             if (exp >= 0)
             {
-                sb.Append(whole);
+                sb.Append(res, numberOffset, posD - numberOffset);
                 if (fraction.Length <= exp)
                     sb.Append(fraction);
                 else
@@ -139,7 +194,7 @@ namespace NetTopologySuite.IO
                 exp = Math.Abs(exp);
                 sb.Append("0.");
                 sb.Append('0', exp - 1);
-                sb.Append(whole);
+                sb.Append(res, numberOffset, posD - numberOffset);
                 sb.Append(fraction);
             }
 
