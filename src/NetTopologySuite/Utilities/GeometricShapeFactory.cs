@@ -11,8 +11,16 @@ namespace NetTopologySuite.Utilities
     /// </summary>
     public class GeometricShapeFactory
     {
+        /// <summary>
+        /// A geometry factory
+        /// </summary>
         protected GeometryFactory GeomFact;
-        protected PrecisionModel PrecModel = null;
+
+        /// <summary>
+        /// A precision model
+        /// </summary>
+        /// 
+        protected PrecisionModel PrecModel;
         private readonly Dimensions _dim = new Dimensions();
         private int _nPts = 100;
 
@@ -107,6 +115,11 @@ namespace NetTopologySuite.Utilities
             set => _rotationAngle = value;
         }
 
+        /// <summary>
+        /// Rotates a geometry by <see cref="Rotation"/> angle
+        /// </summary>
+        /// <param name="geom">The geometry to rotate</param>
+        /// <returns>A rotated geometry</returns>
         protected Geometry Rotate(Geometry geom)
         {
             if (_rotationAngle != 0.0)
@@ -118,6 +131,13 @@ namespace NetTopologySuite.Utilities
             }
             return geom;
         }
+
+        /// <summary>
+        /// Creates a coordinate at (<paramref name="x"/>, <paramref name="y"/>)
+        /// </summary>
+        /// <param name="x">The x-ordinate value</param>
+        /// <param name="y">The y-ordinate value</param>
+        /// <returns>A coordinate</returns>
         protected Coordinate CreateCoord(double x, double y)
         {
             var p = new Coordinate(x, y);
@@ -125,6 +145,13 @@ namespace NetTopologySuite.Utilities
             return p;
         }
 
+        /// <summary>
+        /// Creates a translated coordinate at (<paramref name="x"/> + <paramref name="trans.X"/>, <paramref name="y"/> + <paramref name="trans.Y"/>)
+        /// </summary>
+        /// <param name="x">The x-ordinate value</param>
+        /// <param name="y">The y-ordinate value</param>
+        /// <param name="trans">A translation vector (coordinate)</param>
+        /// <returns>A coordinate</returns>
         protected Coordinate CreateCoordTrans(double x, double y, Coordinate trans)
         {
             return CreateCoord(x + trans.X, y + trans.Y);
@@ -378,10 +405,16 @@ namespace NetTopologySuite.Utilities
             return (Polygon) Rotate(geom);
         }
 
+        /// <summary>
+        /// A dimension class for <see cref="GeometricShapeFactory"/>s
+        /// </summary>
         protected class Dimensions
         {
             private Coordinate _base;
 
+            /// <summary>
+            /// Gets or sets a value indicating the base of the shapes to be created
+            /// </summary>
             public Coordinate Base
             {
                 get => _base;
@@ -390,6 +423,9 @@ namespace NetTopologySuite.Utilities
 
             private Coordinate _centre;
 
+            /// <summary>
+            /// Gets or sets a value indicating the centre of the shapes to be created
+            /// </summary>
             public Coordinate Centre
             {
                 get
@@ -407,6 +443,9 @@ namespace NetTopologySuite.Utilities
 
             private double _width;
 
+            /// <summary>
+            /// Gets or sets a value indicating the width of the <see cref="Envelope"/>.
+            /// </summary>
            public double Width
             {
                 get => _width;
@@ -415,12 +454,18 @@ namespace NetTopologySuite.Utilities
 
             private double _height;
 
+            /// <summary>
+            /// Gets or sets a value indicating the height of the <see cref="Envelope"/>.
+            /// </summary>
            public double Height
             {
                 get => _height;
                set => _height = value;
            }
 
+           /// <summary>
+           /// Sets <see cref="Width"/> and <see cref="Height"/> to the same value
+           /// </summary>
             public double Size
             {
                 set
@@ -430,8 +475,14 @@ namespace NetTopologySuite.Utilities
                 }
             }
 
+            /// <summary>
+            /// Gets a value indicating the minimum size of the shape's <see cref="Envelope"/>
+            /// </summary>
             public double MinSize => Math.Min(Width, Height);
 
+            /// <summary>
+            /// Gets or sets a value indicating the bounds of the shape to be created
+            /// </summary>
             public Envelope Envelope
             {
                 get
