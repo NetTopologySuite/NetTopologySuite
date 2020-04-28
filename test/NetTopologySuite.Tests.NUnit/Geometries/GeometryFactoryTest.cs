@@ -9,12 +9,23 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
     [TestFixture]
     public class GeometryFactoryTest
     {
-        private static readonly PrecisionModel PrecModel = new PrecisionModel();
-        private static readonly GeometryFactory Factory = new GeometryFactory(PrecModel, 0);
-        private readonly WKTReader _reader = new WKTReader(Factory);
+        protected static readonly PrecisionModel PrecModel = new PrecisionModel();
+        private readonly GeometryFactory Factory;
+        private readonly WKTReader _reader;
+
+        public GeometryFactoryTest() : this(new GeometryFactory())
+        {
+        }
+
+        public GeometryFactoryTest(GeometryFactory geometryFactory = null)
+        {
+            Factory = geometryFactory ?? new GeometryFactory();
+            _reader = new WKTReader(Factory);
+        }
+
 
         [Test]
-        public void TestCreateGeometry()
+        public virtual void TestCreateGeometry()
         {
             CheckCreateGeometryExact("POINT EMPTY");
             CheckCreateGeometryExact("POINT ( 10 20 )");
@@ -82,7 +93,7 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             Assert.AreEqual(2, g2Seq.Dimension);
         }
 
-        private void CheckCreateGeometryExact(string wkt)
+        protected void CheckCreateGeometryExact(string wkt)
         {
             var g = Read(wkt);
             var g2 = Factory.CreateGeometry(g);

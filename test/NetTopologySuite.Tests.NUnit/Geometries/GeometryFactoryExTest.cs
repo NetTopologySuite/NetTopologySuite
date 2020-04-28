@@ -7,6 +7,35 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
 {
     public class GeometryFactoryExTest : GeometryFactoryTest
     {
+        private NtsGeometryServices _oldInstance;
+
+        private class NtsGeometryServicesEx : NtsGeometryServices
+        {
+            protected override GeometryFactory CreateGeometryFactoryCore(PrecisionModel precisionModel, int srid,
+                CoordinateSequenceFactory coordinateSequenceFactory)
+            {
+                return new GeometryFactoryEx(precisionModel, srid, coordinateSequenceFactory);
+            }
+        }
+
+        public GeometryFactoryExTest() : base(new GeometryFactoryEx(PrecModel, 0))
+        {
+
+        }
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            _oldInstance = NtsGeometryServices.Instance;
+            NtsGeometryServices.Instance = new NtsGeometryServicesEx();
+        }
+
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
+        {
+            NtsGeometryServices.Instance = _oldInstance;
+        }
+
         [Test]
         public void TestShellRingOrientationSetting()
         {
