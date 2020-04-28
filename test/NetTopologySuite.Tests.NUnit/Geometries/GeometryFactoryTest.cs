@@ -23,6 +23,22 @@ namespace NetTopologySuite.Tests.NUnit.Geometries
             _reader = new WKTReader(Factory);
         }
 
+        [Test]
+        public void TestCreatePolygonWithNull()
+        {
+            Geometry p = null;
+            Assert.That(() => p = Factory.CreatePolygon((CoordinateSequence)null), Throws.Nothing);
+            Assert.That(p.IsEmpty);
+
+            Assert.That(() => p = Factory.CreatePolygon((Coordinate[])null), Throws.Nothing);
+            Assert.That(p.IsEmpty);
+
+            Assert.That(() => p = Factory.CreatePolygon((LinearRing)null), Throws.Nothing);
+            Assert.That(p.IsEmpty);
+
+            Assert.That(() => p = Factory.CreatePolygon(null, null), Throws.Nothing);
+            Assert.That(p.IsEmpty);
+        }
 
         [Test]
         public virtual void TestCreateGeometry()

@@ -206,7 +206,7 @@ namespace NetTopologySuite.Geometries
         /// <returns>A ring</returns>
         private static LinearRing EnsureOrientation(LinearRing ring, LinearRingOrientation ringOrientation)
         {
-            if (ring.IsEmpty || ringOrientation == LinearRingOrientation.DontCare)
+            if (ring == null || ring.IsEmpty || ringOrientation == LinearRingOrientation.DontCare)
                 return ring;
 
             if (ringOrientation == LinearRingOrientation.CCW != ring.IsCCW)
