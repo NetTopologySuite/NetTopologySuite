@@ -32,7 +32,7 @@ namespace NetTopologySuite.Samples.SimpleTests
             {
                 _sample = new GMLTesting();
                 _sample.Start();
-                Console.WriteLine();
+                if (readLine) Console.WriteLine();
             }
             finally
             {

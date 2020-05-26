@@ -20,6 +20,10 @@ namespace NetTopologySuite.Triangulate
     {
         private readonly IDictionary<Coordinate, object> _coordDataMap = new SortedDictionary<Coordinate, object>();
 
+        /// <summary>
+        /// Loads the vertices of a geometry and maps them with th the <see cref="Geometry.UserData"/>.
+        /// </summary>
+        /// <param name="geoms">A geometry</param>
         public void LoadSourceGeometries(Geometry geoms)
         {
             for (int i = 0; i < geoms.NumGeometries; i++)
@@ -29,6 +33,10 @@ namespace NetTopologySuite.Triangulate
             }
         }
 
+        /// <summary>
+        /// Loads the vertices of a collection of geometries and maps them with the <see cref="Geometry.UserData"/>.
+        /// </summary>
+        /// <param name="geoms">A collection of geometry</param>
         public void LoadSourceGeometries(ICollection<Geometry> geoms)
         {
             foreach (var geom in geoms)
@@ -37,6 +45,10 @@ namespace NetTopologySuite.Triangulate
             }
         }
 
+        /// <summary>
+        /// Loads the vertices of the geometries of a <c>GeometryCollection</c> and maps them with the <see cref="Geometry.UserData"/>.
+        /// </summary>
+        /// <param name="geomColl">A <c>GeometryCollection</c></param>
         public void LoadSourceGeometries(GeometryCollection geomColl)
         {
             for (int i = 0; i < geomColl.NumGeometries; i++)
@@ -54,6 +66,10 @@ namespace NetTopologySuite.Triangulate
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating the coordinates.
+        /// </summary>
+        /// <returns>A list of <c>Coordinate</c>s.</returns>
         public IList<Coordinate> Coordinates => new List<Coordinate>(_coordDataMap.Keys);
 
         /// <summary>

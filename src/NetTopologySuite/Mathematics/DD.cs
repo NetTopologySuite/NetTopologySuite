@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Text;
 
@@ -116,23 +117,29 @@ namespace NetTopologySuite.Mathematics
             return Parse(str);
         }
 
+        /// <summary>
+        /// Operator to parse a <tt>DoubleDouble</tt> from a string
+        /// </summary>
+        /// <param name="val">The DoubleDouble string</param>
         public static explicit operator DD (string val)
         {
             return Parse(val);
         }
 
-        /**
-         * Converts the <tt>double</tt> argument to a DoubleDouble number.
-         *
-         * @param x a numeric value
-         * @return the extended precision version of the value
-         */
-
+        /// <summary>
+        /// Converts the <tt>double</tt> argument to a <tt>DoubleDouble</tt> number.
+        /// </summary>
+        /// <param name="x">A numeric value</param>
+        /// <returns>The extended precision version of the value</returns>
         public static DD ValueOf(double x)
         {
             return new DD(x);
         }
 
+        /// <summary>
+        /// Operator to convert the <tt>double</tt> value to a <tt>DoubleDouble</tt> value.
+        /// </summary>
+        /// <param name="val">The DoubleDouble string</param>
         public static implicit operator DD(double val)
         {
             return new DD(val);
@@ -143,14 +150,14 @@ namespace NetTopologySuite.Mathematics
         /// </summary>
         private const double Split = 134217729.0D; // 2^27+1, for IEEE double
 
-        /**
-         * The high-order component of the double-double precision value.
-         */
+        /// <summary>
+        /// The high-order component of the double-double precision value.
+        /// </summary>
         private readonly double _hi;
 
-        /**
-         * The low-order component of the double-double precision value.
-         */
+        /// <summary>
+        /// The low-order component of the double-double precision value.
+        /// </summary>
         private readonly double _lo;
 
         /// <summary>
@@ -213,39 +220,6 @@ namespace NetTopologySuite.Mathematics
         {
             return new DD(_hi, _lo);
         }
-
-        //private void Init(double x)
-        //{
-        //    Init(x, 0.0d);
-        //}
-
-        //private void Init(double hi, double lo)
-        //{
-        //    this._hi = hi;
-        //    this._lo = lo;
-        //}
-
-        //private void Init(DD dd)
-        //{
-        //    Init(dd._hi, dd._lo);
-        //}
-
-        /*
-        double getHighComponent() { return hi; }
-
-        double getLowComponent() { return lo; }
-        */
-
-        // Testing only - should not be public
-        /*
-        public void RENORM()
-        {
-          double s = hi + lo;
-          double err = lo - (s - hi);
-          hi = s;
-          lo = err;
-        }
-        */
 
         /// <summary>
         /// Returns the sum of <paramref name="lhs"/> and <paramref name="rhs"/>.
@@ -378,47 +352,35 @@ namespace NetTopologySuite.Mathematics
         //    return SelfAdd(-y, 0.0);
         //}
 
+        /// <summary>
+        /// Subtracts the argument from the value of <tt>this</tt>.
+        /// </summary>
+        /// <param name="val">The subtrahend</param>
+        /// <returns>The result of this - y</returns>
         public static DD operator-(DD val)
         {
             if (IsNaN(val)) return val;
             return new DD(-val._hi, -val._lo);
         }
 
-        ///**
-        // * Multiplies this object by the argument, returning <tt>this</tt>.
-        // * To prevent altering constants,
-        // * this method <b>must only</b> be used on values known to
-        // * be newly created.
-        // *
-        // * @param y the value to multiply by
-        // * @return this object, multiplied by y
-        // */
 
-        //public DD SelfMultiply(DD y)
-        //{
-        //    return SelfMultiply(y._hi, y._lo);
-        //}
-
-        ///**
-        // * Multiplies this object by the argument, returning <tt>this</tt>.
-        // * To prevent altering constants,
-        // * this method <b>must only</b> be used on values known to
-        // * be newly created.
-        // *
-        // * @param y the value to multiply by
-        // * @return this object, multiplied by y
-        // */
-
-        //public DD SelfMultiply(double y)
-        //{
-        //    return SelfMultiply(y, 0.0);
-        //}
-
+        /// <summary>
+        /// Multiplies <paramref name="lhs"/> by <paramref name="rhs"/>.
+        /// </summary>
+        /// <param name="lhs">A DoubleDouble value.</param>
+        /// <param name="rhs">A double value.</param>
+        /// <returns>The result of the multiplication.<para/></returns>
         public static DD operator *(DD lhs, double rhs)
         {
             return lhs*new DD(rhs, 0d);
         }
 
+        /// <summary>
+        /// Multiplies <paramref name="lhs"/> by <paramref name="rhs"/>.
+        /// </summary>
+        /// <param name="lhs">A DoubleDouble value.</param>
+        /// <param name="rhs">A DoubleDouble value.</param>
+        /// <returns>The result of the multiplication.<para/></returns>
         public static DD operator *(DD lhs, DD rhs)
         {
             if (IsNaN(rhs)) return CreateNaN();
@@ -489,11 +451,23 @@ namespace NetTopologySuite.Mathematics
         //    return SelfDivide(y, 0.0);
         //}
 
+        /// <summary>
+        /// Divides <paramref name="lhs"/> by <paramref name="rhs"/>.
+        /// </summary>
+        /// <param name="lhs">A DoubleDouble numerator.</param>
+        /// <param name="rhs">A double divisor.</param>
+        /// <returns>The result of the division.<para/></returns>
         public static DD operator /(DD lhs, double rhs)
         {
             return lhs/new DD(rhs, 0d);
         }
 
+        /// <summary>
+        /// Divides <paramref name="lhs"/> by <paramref name="rhs"/>.
+        /// </summary>
+        /// <param name="lhs">A DoubleDouble numerator.</param>
+        /// <param name="rhs">A DoubleDouble divisor.</param>
+        /// <returns>The result of the division.<para/></returns>
         public static DD operator /(DD lhs, DD rhs)
         {
             if (IsNaN(rhs)) return CreateNaN();
@@ -759,14 +733,12 @@ namespace NetTopologySuite.Mathematics
             return ValueOf(x) * x;
         }
 
-        /**
-         * Computes the positive square root of this value.
-         * If the number is NaN or negative, NaN is returned.
-         *
-         * @return the positive square root of this number.
-         * If the argument is NaN or less than zero, the result is NaN.
-         */
 
+        /// <summary>
+        /// Computes the positive square root of this value.<para/>
+        /// If the number is NaN or negative, NaN is returned.
+        /// </summary>
+        /// <returns>If this is NaN or less than zero, the result is NaN.</returns>
         public DD Sqrt()
         {
             /* Strategy:  Use Karp's trick:  if x is an approximation
@@ -797,6 +769,13 @@ namespace NetTopologySuite.Mathematics
             return axdd + d2;
         }
 
+        /// <summary>
+        /// Computes the positive square root of a <tt>DoubleDouble</tt> value.<para/>
+        /// If the number is NaN or negative, NaN is returned.
+        /// </summary>
+        /// <param name="x">A numeric value</param>
+        /// <returns>the positive square root of this number.<para/>
+        /// If the argument is NaN or less than zero, the result is NaN.</returns>
         public static DD Sqrt(double x)
         {
             return ValueOf(x).Sqrt();
@@ -808,6 +787,7 @@ namespace NetTopologySuite.Mathematics
         /// </summary>
         /// <param name="exp">The integer exponent</param>
         /// <returns>x raised to the integral power exp</returns>
+        [Pure]
         public DD Pow(int exp)
         {
             if (exp == 0.0)
@@ -900,49 +880,63 @@ namespace NetTopologySuite.Mathematics
             return double.IsNaN(value._hi);
         }
 
+        /// <summary>
+        /// Checks if <paramref name="value"/> is infinity.
+        /// </summary>
+        /// <param name="value">A DoubleDouble value</param>
+        /// <returns><c>true</c> if <c>value</c> is infinity.</returns>
         public static bool IsInfinity(DD value)
         {
             return double.IsInfinity(value._hi);
         }
-        /**
-         * Tests whether this value is equal to another <tt>DoubleDouble</tt> value.
-         *
-         * @param y a DoubleDouble value
-         * @return true if this value = y
-         */
 
+        /// <summary>
+        /// Tests whether this value is equal to another <tt>DoubleDouble</tt> value.
+        /// </summary>
+        /// <param name="y">A DoubleDouble value</param>
+        /// <returns><c>true</c> if this value == <paramref name="y"/>.</returns>
         public bool Equals(DD y)
         {
             return y._hi.Equals(_hi) && y._lo.Equals(_lo);
         }
 
+        /// <summary>
+        /// Equality operator for <tt>DoubleDouble</tt> values
+        /// </summary>
+        /// <param name="lhs">A DoubleDouble value</param>
+        /// <param name="rhs">A DoubleDouble value</param>
+        /// <returns><c>true</c> if <paramref name="lhs"/> == <paramref name="rhs"/>.</returns>
         public static bool operator == (DD lhs, DD rhs)
         {
             return lhs._hi == rhs._hi && lhs._lo == rhs._lo;
         }
 
+        /// <summary>
+        /// Inequality operator for <tt>DoubleDouble</tt> values
+        /// </summary>
+        /// <param name="lhs">A DoubleDouble value</param>
+        /// <param name="rhs">A DoubleDouble value</param>
+        /// <returns><c>true</c> if <paramref name="lhs"/> != <paramref name="rhs"/>.</returns>
         public static bool operator !=(DD rhs, DD lhs)
         {
             return !(rhs == lhs);
         }
 
-        /**
-         * Tests whether this value is greater than another <tt>DoubleDouble</tt> value.
-         * @param y a DoubleDouble value
-         * @return true if this value > y
-         */
-
+        /// <summary>
+        /// Tests whether this value is greater than another <tt>DoubleDouble</tt> value.
+        /// </summary>
+        /// <param name="y">A DoubleDouble value</param>
+        /// <returns><c>true</c> if this value &gt; <paramref name="y"/>.</returns>
         public bool GreaterThan(DD y)
         {
             return (_hi > y._hi) || (_hi == y._hi && _lo > y._lo);
         }
 
-        /**
-         * Tests whether this value is greater than or equals to another <tt>DoubleDouble</tt> value.
-         * @param y a DoubleDouble value
-         * @return true if this value >= y
-         */
-
+        /// <summary>
+        /// Tests whether this value is greater than or equals to another <tt>DoubleDouble</tt> value.
+        /// </summary>
+        /// <param name="y">A DoubleDouble value</param>
+        /// <returns><c>true</c> if this value &gt;= <paramref name="y"/>.</returns>
         public bool GreaterOrEqualThan(DD y)
         {
             return (_hi > y._hi) || (_hi == y._hi && _lo >= y._lo);
@@ -984,6 +978,7 @@ namespace NetTopologySuite.Mathematics
             return 0;
         }
 
+        /// <inheritdoc cref="IComparable.CompareTo"/>
         public int CompareTo(object o)
         {
             var other = (DD) o;
@@ -1003,8 +998,8 @@ namespace NetTopologySuite.Mathematics
         private const int MaxPrintDigits = 32;
         private static readonly DD Ten = ValueOf(10.0);
         private static readonly DD One = ValueOf(1.0);
-        private static readonly string SCI_NOT_EXPONENT_CHAR = "E";
-        private static readonly string SCI_NOT_ZERO = "0.0E0";
+        private static readonly string SciNotExponentChar = "E";
+        private static readonly string SciNotZero = "0.0E0";
 
         /// <summary>
         /// Dumps the components of this number to a string.
@@ -1075,7 +1070,7 @@ namespace NetTopologySuite.Mathematics
         {
             // special case zero, to allow as
             if (IsZero)
-                return SCI_NOT_ZERO;
+                return SciNotZero;
 
             string specialStr = GetSpecialNumberString();
             if (specialStr != null)
@@ -1083,7 +1078,7 @@ namespace NetTopologySuite.Mathematics
 
             int[] magnitude = new int[1];
             string digits = ExtractSignificantDigits(false, magnitude);
-            string expStr = SCI_NOT_EXPONENT_CHAR + magnitude[0];
+            string expStr = SciNotExponentChar + magnitude[0];
 
             // should never have leading zeroes
             // MD - is this correct?  Or should we simply strip them if they are present?
@@ -1355,6 +1350,7 @@ namespace NetTopologySuite.Mathematics
 
         }
 
+        /// <inheritdoc cref="object.Equals(object)"/>
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
@@ -1362,6 +1358,7 @@ namespace NetTopologySuite.Mathematics
             return Equals((DD) obj);
         }
 
+        /// <inheritdoc cref="object.GetHashCode"/>
         public override int GetHashCode()
         {
             unchecked
