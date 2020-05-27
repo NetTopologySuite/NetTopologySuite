@@ -47,12 +47,12 @@ namespace NetTopologySuite.Operation.OverlayNg
             switch (opCode)
             {
                 case OverlayNG.INTERSECTION:
-                    var envA = safeOverlapEnv(inputGeom.getEnvelope(0), pm);
-                    var envB = safeOverlapEnv(inputGeom.getEnvelope(1), pm);
+                    var envA = safeOverlapEnv(inputGeom.GetEnvelope(0), pm);
+                    var envB = safeOverlapEnv(inputGeom.GetEnvelope(1), pm);
                     clipEnv = envA.Intersection(envB);
                     break;
                 case OverlayNG.DIFFERENCE:
-                    clipEnv = safeOverlapEnv(inputGeom.getEnvelope(0), pm);
+                    clipEnv = safeOverlapEnv(inputGeom.GetEnvelope(0), pm);
                     break;
             }
             return clipEnv;

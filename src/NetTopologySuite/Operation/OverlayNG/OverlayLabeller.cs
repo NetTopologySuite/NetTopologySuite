@@ -58,7 +58,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             foreach (var nodeEdge in nodes)
             {
                 PropagateAreaLocations(nodeEdge, 0);
-                if (_inputGeometry.hasEdges(1))
+                if (_inputGeometry.HasEdges(1))
                 {
                     PropagateAreaLocations(nodeEdge, 1);
                 }
@@ -219,7 +219,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         {
             //TODO: can these be merged to avoid two scans?
             propagateLineLocations(0);
-            if (_inputGeometry.hasEdges(1))
+            if (_inputGeometry.HasEdges(1))
             {
                 propagateLineLocations(1);
             }
@@ -260,7 +260,7 @@ namespace NetTopologySuite.Operation.OverlayNg
              * If the parent geom is an L (dim 1) 
              * then only propagate EXTERIOR locations.
              */
-            if (inputGeometry.isLine(index)
+            if (inputGeometry.IsLine(index)
                 && lineLoc != Location.Exterior) return;
 
             do
@@ -359,7 +359,7 @@ namespace NetTopologySuite.Operation.OverlayNg
              * INTERIOR it would have been labelled
              * when it was created.
              */
-            if (!_inputGeometry.isArea(geomIndex))
+            if (!_inputGeometry.IsArea(geomIndex))
             {
                 label.setLocationAll(geomIndex, Location.Exterior);
                 return;
@@ -395,7 +395,7 @@ namespace NetTopologySuite.Operation.OverlayNg
          */
         private Location locateEdge(int geomIndex, OverlayEdge edge)
         {
-            var loc = _inputGeometry.locatePointInArea(geomIndex, edge.Orig);
+            var loc = _inputGeometry.LocatePointInArea(geomIndex, edge.Orig);
             var edgeLoc = loc != Location.Exterior ? Location.Interior : Location.Exterior;
             return edgeLoc;
         }
@@ -422,8 +422,8 @@ namespace NetTopologySuite.Operation.OverlayNg
              * check both ends of the edge.
              * Edge is only labelled INTERIOR if both ends are.
              */
-            var locOrig = _inputGeometry.locatePointInArea(geomIndex, edge.Orig);
-            var locDest = _inputGeometry.locatePointInArea(geomIndex, edge.Dest);
+            var locOrig = _inputGeometry.LocatePointInArea(geomIndex, edge.Orig);
+            var locDest = _inputGeometry.LocatePointInArea(geomIndex, edge.Dest);
             bool isInt = locOrig != Location.Exterior && locDest != Location.Exterior;
             var edgeLoc = isInt ? Location.Interior : Location.Exterior;
             return edgeLoc;
@@ -456,7 +456,7 @@ namespace NetTopologySuite.Operation.OverlayNg
                     label.getLocationBoundaryOrLine(0, Positions.Right, e.IsForward),
                     label.getLocationBoundaryOrLine(1, Positions.Right, e.IsForward)))
             {
-                e.markInResultArea();
+                e.MarkInResultArea();
             }
             //Debug.println("markInResultArea: " + e);
         }
@@ -473,7 +473,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             {
                 if (edge.IsInResultAreaBoth)
                 {
-                    edge.unmarkFromResultAreaBoth();
+                    edge.UnmarkFromResultAreaBoth();
                 }
             }
         }

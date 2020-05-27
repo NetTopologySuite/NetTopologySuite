@@ -6,7 +6,7 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
-    class OverlayEdgeRing
+    internal class OverlayEdgeRing
     {
 
         private readonly OverlayEdge _startEdge;

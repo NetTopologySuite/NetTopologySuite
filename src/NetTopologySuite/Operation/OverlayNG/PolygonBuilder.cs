@@ -61,7 +61,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             {
                 //Assert.isTrue(edge.isInResult());
                 // TODO: find some way to skip nodes which are already linked
-                MaximalEdgeRing.linkResultAreaMaxRingAtNode(edge);
+                MaximalEdgeRing.LinkResultAreaMaxRingAtNode(edge);
             }
         }
 
@@ -90,7 +90,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         {
             foreach (var erMax in maxRings)
             {
-                var minRings = erMax.buildMinimalRings(_geometryFactory);
+                var minRings = erMax.BuildMinimalRings(_geometryFactory);
                 AssignShellsAndHoles(minRings);
             }
         }

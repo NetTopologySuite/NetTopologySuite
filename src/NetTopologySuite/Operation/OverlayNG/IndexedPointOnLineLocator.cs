@@ -4,7 +4,7 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
-    class IndexedPointOnLineLocator : IPointOnGeometryLocator
+    internal class IndexedPointOnLineLocator : IPointOnGeometryLocator
     {
 
         private readonly Geometry _inputGeom;

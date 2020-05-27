@@ -3,119 +3,112 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
-    /**
-     * Manages the input geometries for an overlay operation.
-     * The second geometry is allowed to be null, 
-     * to support for instance precision reduction.
-     * 
-     * @author Martin Davis
-     *
-     */
-    class InputGeometry
+    /// <summary>
+    /// Manages the input geometries for an overlay operation.
+    /// The second geometry is allowed to be null, 
+    /// to support for instance precision reduction.
+    /// </summary>
+    /// <author>Martin Davis</author>
+    internal class InputGeometry
     {
 
         //private static final PointLocator ptLocator = new PointLocator();
 
-        private readonly Geometry[] geom;
-        private IPointOnGeometryLocator ptLocatorA;
-        private IPointOnGeometryLocator ptLocatorB;
-        private readonly bool[] isCollapsed = new bool[2];
+        private readonly Geometry[] _geom;
+        private IPointOnGeometryLocator _ptLocatorA;
+        private IPointOnGeometryLocator _ptLocatorB;
+        private readonly bool[] _isCollapsed = new bool[2];
 
         public InputGeometry(Geometry geomA, Geometry geomB)
         {
-            geom = new [] { geomA, geomB };
+            _geom = new [] { geomA, geomB };
         }
 
-        public bool isSingle()
+        public bool IsSingle
         {
-            return geom[1] == null;
+            get => _geom[1] == null;
         }
 
-        public Dimension getDimension(int index)
+        public Dimension GetDimension(int index)
         {
-            if (geom[index] == null) return Dimension.False;
-            return geom[index].Dimension;
+            if (_geom[index] == null) return Dimension.False;
+            return _geom[index].Dimension;
         }
 
-        public Geometry getGeometry(int geomIndex)
+        public Geometry GetGeometry(int geomIndex)
         {
-            return geom[geomIndex];
+            return _geom[geomIndex];
         }
 
-        public Envelope getEnvelope(int geomIndex)
+        public Envelope GetEnvelope(int geomIndex)
         {
-            return geom[geomIndex].EnvelopeInternal;
+            return _geom[geomIndex].EnvelopeInternal;
         }
 
-        public bool isEmpty(int geomIndex)
+        public bool IsEmpty(int geomIndex)
         {
-            return geom[geomIndex].IsEmpty;
+            return _geom[geomIndex].IsEmpty;
         }
 
-        public bool isArea(int geomIndex)
+        public bool IsArea(int geomIndex)
         {
-            return geom[geomIndex] != null && geom[geomIndex].Dimension == Dimension.Surface;
+            return _geom[geomIndex] != null && _geom[geomIndex].Dimension == Dimension.Surface;
         }
 
-        /**
-         * Gets the index of an input which is an area,
-         * if one exists.
-         * Otherwise returns -1.
-         * If both inputs are areas, returns the index of the first one (0).
-         * 
-         * @return the index of an area input, or -1
-         */
-        public int getAreaIndex()
+        /// <summary>
+        /// Gets the index of an input which is an area,
+        /// if one exists.
+        /// Otherwise returns -1.
+        /// </summary>
+        /// <returns>The index of an area input, or -1</returns>
+        public int GetAreaIndex()
         {
-            if (getDimension(0) == Dimension.Surface) return 0;
-            if (getDimension(1) == Dimension.Surface) return 1;
+            if (GetDimension(0) == Dimension.Surface) return 0;
+            if (GetDimension(1) == Dimension.Surface) return 1;
             return -1;
         }
 
-        public bool isLine(int geomIndex)
+        public bool IsLine(int geomIndex)
         {
-            return geom[geomIndex].Dimension == Dimension.Curve;
+            return _geom[geomIndex].Dimension == Dimension.Curve;
         }
 
-        public bool isAllPoints()
+        public bool IsAllPoints()
         {
-            return getDimension(0) == Dimension.Point
-                && geom[1] != null && getDimension(1) == Dimension.Point;
+            return GetDimension(0) == Dimension.Point
+                && _geom[1] != null && GetDimension(1) == Dimension.Point;
         }
 
-        public bool hasPoints()
+        public bool HasPoints()
         {
-            return getDimension(0) == Dimension.Point || getDimension(1) == Dimension.Point;
+            return GetDimension(0) == Dimension.Point || GetDimension(1) == Dimension.Point;
         }
 
-        /**
-         * Tests if an input geometry has edges.
-         * This indicates that topology needs to be computed for them.
-         * 
-         * @param geomIndex
-         * @return true if the input geometry has edges
-         */
-        public bool hasEdges(int geomIndex)
+        /// <summary>
+        /// Tests if an input geometry has edges.
+        /// This indicates that topology needs to be computed for them.
+        /// </summary>
+        /// <param name="geomIndex"></param>
+        /// <returns><c>true</c> if the input geometry has edges</returns>
+        public bool HasEdges(int geomIndex)
         {
-            return geom[geomIndex] != null && geom[geomIndex].Dimension > Dimension.Point;
+            return _geom[geomIndex] != null && _geom[geomIndex].Dimension > Dimension.Point;
         }
 
-        /**
-         * Determines the location within an area geometry.
-         * This allows disconnected edges to be fully 
-         * located.  
-         * 
-         * @param geomIndex the index of the geometry
-         * @param pt the coordinate to locate
-         * @return the location of the coordinate
-         * 
-         * @see Location
-         */
-        public Location locatePointInArea(int geomIndex, Coordinate pt)
+        /// <summary>
+        /// Determines the location within an area geometry.
+        /// This allows disconnected edges to be fully 
+        /// located. 
+        /// </summary>
+        /// <param name="geomIndex">The index of the geometry</param>
+        /// <param name="pt">The coordinate to locate</param>
+        /// <returns>The location of the coordinate</returns>
+        /// <seealso cref="Location"/>
+        public Location LocatePointInArea(int geomIndex, Coordinate pt)
         {
             // Assert: only called if dimension(geomIndex) = 2
 
-            if (isCollapsed[geomIndex])
+            if (_isCollapsed[geomIndex])
                 return Location.Exterior;
 
 
@@ -123,34 +116,34 @@ namespace NetTopologySuite.Operation.OverlayNg
 
             //*
             // this check is required because IndexedPointInAreaLocator can't handle empty polygons
-            if (getGeometry(geomIndex).IsEmpty
-                || isCollapsed[geomIndex])
+            if (GetGeometry(geomIndex).IsEmpty
+                || _isCollapsed[geomIndex])
                 return Location.Exterior;
 
-            var ptLocator = getLocator(geomIndex);
+            var ptLocator = GetLocator(geomIndex);
             return ptLocator.Locate(pt);
             //*/
         }
 
-        private IPointOnGeometryLocator getLocator(int geomIndex)
+        private IPointOnGeometryLocator GetLocator(int geomIndex)
         {
             if (geomIndex == 0)
             {
-                if (ptLocatorA == null)
-                    ptLocatorA = new IndexedPointInAreaLocator(getGeometry(geomIndex));
-                return ptLocatorA;
+                if (_ptLocatorA == null)
+                    _ptLocatorA = new IndexedPointInAreaLocator(GetGeometry(geomIndex));
+                return _ptLocatorA;
             }
             else
             {
-                if (ptLocatorB == null)
-                    ptLocatorB = new IndexedPointInAreaLocator(getGeometry(geomIndex));
-                return ptLocatorB;
+                if (_ptLocatorB == null)
+                    _ptLocatorB = new IndexedPointInAreaLocator(GetGeometry(geomIndex));
+                return _ptLocatorB;
             }
         }
 
-        public void setCollapsed(int geomIndex, bool isGeomCollapsed)
+        public void SetCollapsed(int geomIndex, bool isGeomCollapsed)
         {
-            isCollapsed[geomIndex] = isGeomCollapsed;
+            _isCollapsed[geomIndex] = isGeomCollapsed;
         }
 
 

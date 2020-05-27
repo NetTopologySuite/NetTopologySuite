@@ -1,39 +1,36 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
-    /**
-     * Performs merging on the noded edges of the input geometries.
-     * Merging takes place on edges which are coincident 
-     * (i.e. have the same coordinate list, modulo direction).
-     * The following situations can occur:
-     * <ul>
-     * <li>Coincident edges from different input geometries have their labels combined
-     * <li>Coincident edges from the same area geometry indicate a topology collapse.
-     * In this case the topology locations are "summed" to provide a final
-     * assignment of side location
-     * <li>Coincident edges from the same linear geometry can simply be merged 
-     * using the same ON location
-     * </ul>
-     * 
-     * One constraint that is maintained is that the direction of linear
-     * edges should be preserved if possible (which is the case if there is 
-     * no other coincident edge, or if all coincident edges have the same direction).
-     * This ensures that the overlay output line direction will be as consistent
-     * as possible with input lines.
-     * 
-     * @author mdavis
-     *
-     */
-    class EdgeMerger
+    /// <summary>
+    /// Performs merging on the noded edges of the input geometries.
+    /// Merging takes place on edges which are coincident
+    /// (i.e.have the same coordinate list, modulo direction).
+    /// The following situations can occur:<para/>
+    /// <list type="bullet">
+    /// <item><description>Coincident edges from different input geometries have their labels combined</description></item>
+    /// <item><description>Coincident edges from the same area geometry indicate a topology collapse.
+    /// In this case the topology locations are "summed" to provide a final
+    /// assignment of side location</description></item>
+    /// <item><description>Coincident edges from the same linear geometry can simply be merged
+    /// using the same ON location</description></item>
+    /// </list>
+    /// <para/>
+    /// One constraint that is maintained is that the direction of linear
+    /// edges should be preserved if possible(which is the case if there is 
+    /// no other coincident edge, or if all coincident edges have the same direction).
+    /// This ensures that the overlay output line direction will be as consistent
+    /// as possible with input lines.
+    /// </summary>
+    /// <author>Martin Davis</author>
+    internal class EdgeMerger
     {
 
-        public static IList<Edge> merge(List<Edge> edges)
+        public static IList<Edge> Merge(List<Edge> edges)
         {
             var merger = new EdgeMerger(edges);
-            return merger.merge();
+            return merger.Merge();
         }
 
         private readonly ICollection<Edge> _edges;
@@ -44,7 +41,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             _edges = edges;
         }
 
-        public IList<Edge> merge()
+        public IList<Edge> Merge()
         {
             foreach (var edge in _edges)
             {
@@ -65,7 +62,7 @@ namespace NetTopologySuite.Operation.OverlayNg
                     Assert.IsTrue(baseEdge.Count == edge.Count,
                         "Merge of edges of different sizes - probable noding error.");
 
-                    baseEdge.merge(edge);
+                    baseEdge.Merge(edge);
                     //Debug.println("edge merged: " + existing);
                     //Debug.println(edge.toLineString());
                 }

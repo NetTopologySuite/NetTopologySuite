@@ -3,19 +3,17 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
-    /**
-     * Limits the segments in a list of segments
-     * to those which intersect an envelope.
-     * This creates zero or more sections of the input segment sequences,
-     * containing only line segments which intersect the limit envelope.
-     * Segments are not clipped, since that happens in the overlay.
-     * This can substantially reduce the number of vertices which need to be
-     * processed during overlay.
-     * 
-     * @author Martin Davis
-     *
-     * @see RingClipper
-     */
+    /// <summary>
+    /// Limits the segments in a list of segments
+    /// to those which intersect an envelope.
+    /// This creates zero or more sections of the input segment sequences,
+    /// containing only line segments which intersect the limit envelope.
+    /// Segments are not clipped, since that happens in the overlay.
+    /// This can substantially reduce the number of vertices which need to be
+    /// processed during overlay.
+    /// </summary>
+    /// <seealso cref="RingClipper"/>
+    /// <author>Martin Davis</author>
     public class LineLimiter
     {
         private readonly Envelope _limitEnv;
@@ -23,22 +21,20 @@ namespace NetTopologySuite.Operation.OverlayNg
         private Coordinate _lastOutside;
         private List<Coordinate[]> _sections;
 
-        /**
-         * Creates a new limiter for a given envelope.
-         * 
-         * @param env the envelope to limit to
-         */
+        /// <summary>
+        /// Creates a new limiter for a given envelope.
+        /// </summary>
+        /// <param name="env">The envelope to limit to</param>
         public LineLimiter(Envelope env)
         {
             _limitEnv = env;
         }
 
-        /**
-         * Limits a list of segments.
-         * 
-         * @param pts the segment sequence to limit
-         * @return the sections which intersect the limit envelope
-         */
+        /// <summary>
+        /// Limits a list of segments.
+        /// </summary>
+        /// <param name="pts">The segment sequence to limit</param>
+        /// <returns>The sections which intersect the limit envelope</returns>
         public List<Coordinate[]> Limit(Coordinate[] pts)
         {
             _lastOutside = null;

@@ -108,7 +108,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         private OverlayEdge AddEdge(Edge edge)
         {
             //if (! isValidEdge(orig, dest)) return null;
-            var e = createEdges(edge.getCoordinates(), edge.createLabel());
+            var e = createEdges(edge.Coordinates, edge.CreateLabel());
             //Debug.println("added edge: " + e);
             Insert(e);
             Insert((OverlayEdge)e.Sym);
@@ -117,8 +117,8 @@ namespace NetTopologySuite.Operation.OverlayNg
 
         private OverlayEdge createEdges(Coordinate[] pts, OverlayLabel lbl)
         {
-            var e0 = OverlayEdge.createEdge(pts, lbl, true);
-            var e1 = OverlayEdge.createEdge(pts, lbl, false);
+            var e0 = OverlayEdge.CreateEdge(pts, lbl, true);
+            var e1 = OverlayEdge.CreateEdge(pts, lbl, false);
             e0.Link(e1);
             return e0;
         }

@@ -395,23 +395,23 @@ namespace NetTopologySuite.Operation.OverlayNg
         public Geometry getResult()
         {
             if (OverlayUtility.isEmptyResult(_opCode,
-                _inputGeom.getGeometry(0),
-                _inputGeom.getGeometry(1),
+                _inputGeom.GetGeometry(0),
+                _inputGeom.GetGeometry(1),
                 _pm))
             {
                 return CreateEmptyResult();
             }
 
             // special logic for Point-Point inputs
-            if (_inputGeom.isAllPoints())
+            if (_inputGeom.IsAllPoints())
             {
-                return OverlayPoints.Overlay(_opCode, _inputGeom.getGeometry(0), _inputGeom.getGeometry(1), _pm);
+                return OverlayPoints.Overlay(_opCode, _inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1), _pm);
             }
 
             // special logic for Point-nonPoint inputs 
-            if (!_inputGeom.isSingle() && _inputGeom.hasPoints())
+            if (!_inputGeom.isSingle() && _inputGeom.HasPoints())
             {
-                return OverlayMixedPoints.Overlay(_opCode, _inputGeom.getGeometry(0), _inputGeom.getGeometry(1), _pm);
+                return OverlayMixedPoints.Overlay(_opCode, _inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1), _pm);
             }
 
             var result = computeEdgeOverlay();
@@ -455,8 +455,8 @@ namespace NetTopologySuite.Operation.OverlayNg
                     ovNoder.ClipEnvelope = clipEnv;
             }
 
-            ovNoder.Add(_inputGeom.getGeometry(0), 0);
-            ovNoder.Add(_inputGeom.getGeometry(1), 1);
+            ovNoder.Add(_inputGeom.GetGeometry(0), 0);
+            ovNoder.Add(_inputGeom.GetGeometry(1), 1);
             var nodedLines = ovNoder.Node();
 
             /*
@@ -464,16 +464,16 @@ namespace NetTopologySuite.Operation.OverlayNg
              * Labels will be combined.
              */
             // nodedSegStrings are no longer needed, and will be GCed
-            var edges = Edge.createEdges(nodedLines);
-            var mergedEdges = EdgeMerger.merge(edges);
+            var edges = Edge.CreateEdges(nodedLines);
+            var mergedEdges = EdgeMerger.Merge(edges);
 
             /*
              * Record if an input geometry has collapsed.
              * This is used to avoid trying to locate disconnected edges
              * against a geometry which has collapsed completely.
              */
-            _inputGeom.setCollapsed(0, !ovNoder.HasEdgesFor(0));
-            _inputGeom.setCollapsed(1, !ovNoder.HasEdgesFor(1));
+            _inputGeom.SetCollapsed(0, !ovNoder.HasEdgesFor(0));
+            _inputGeom.SetCollapsed(1, !ovNoder.HasEdgesFor(1));
 
             return new OverlayGraph(mergedEdges);
         }
@@ -546,8 +546,8 @@ namespace NetTopologySuite.Operation.OverlayNg
         {
             return OverlayUtility.createEmptyResult(
                 OverlayUtility.resultDimension(_opCode,
-                    _inputGeom.getDimension(0),
-                    _inputGeom.getDimension(1)),
+                    _inputGeom.GetDimension(0),
+                    _inputGeom.GetDimension(1)),
                   _geomFact);
         }
 

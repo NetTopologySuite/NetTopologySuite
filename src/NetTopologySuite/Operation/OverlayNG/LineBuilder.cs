@@ -55,7 +55,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             _opCode = opCode;
             _geometryFactory = geomFact;
             _hasResultArea = hasResultArea;
-            _inputAreaIndex = inputGeom.getAreaIndex();
+            _inputAreaIndex = inputGeom.GetAreaIndex();
         }
 
         public List<LineString> GetLines()
@@ -74,7 +74,7 @@ namespace NetTopologySuite.Operation.OverlayNg
                     continue;
                 if (IsResultLine(edge.Label))
                 {
-                    edge.markInResultLine();
+                    edge.MarkInResultLine();
                     //Debug.println(edge);
                 }
             }
@@ -243,7 +243,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             var e = node;
             do
             {
-                e.markVisitedBoth();
+                e.MarkVisitedBoth();
                 e.AddCoordinates(pts);
 
                 // end line if next vertex is a node

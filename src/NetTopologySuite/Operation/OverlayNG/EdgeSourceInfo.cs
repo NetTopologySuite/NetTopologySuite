@@ -3,20 +3,18 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
-    /**
-     * Records topological information about an 
-     * edge representing a piece of linework (lineString or polygon ring)
-     * from a single source geometry.
-     * This information is carried through the noding process
-     * (which may result in many noded edges sharing the same information object).
-     * It is then used to populate the topology info fields
-     * in {@link Edge}s (possibly via merging).
-     * That information is used to construct the topology graph {@link OverlayLabel}s.
-     * 
-     * @author mdavis
-     *
-     */
-    struct EdgeSourceInfo
+    /// <summary>
+    /// Records topological information about an 
+    /// edge representing a piece of linework (lineString or polygon ring)
+    /// from a single source geometry.
+    /// This information is carried through the noding process
+    /// (which may result in many noded edges sharing the same information object).
+    /// It is then used to populate the topology info fields
+    /// in <see cref="Edge"/>s (possibly via merging).
+    /// That information is used to construct the topology graph <see cref="OverlayLabel"/>s.
+    /// </summary>
+    /// <autor>Martin Davis</autor>
+    internal struct EdgeSourceInfo
     {
         private int index;
         private Dimension dim;// = -999;
@@ -60,7 +58,7 @@ namespace NetTopologySuite.Operation.OverlayNg
 
         public override string ToString()
         {
-            return Edge.infoString(index, dim, isHole, depthDelta);
+            return Edge.InfoString(index, dim, isHole, depthDelta);
         }
     }
 }
