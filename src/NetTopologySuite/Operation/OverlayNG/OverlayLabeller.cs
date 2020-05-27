@@ -96,17 +96,17 @@ namespace NetTopologySuite.Operation.OverlayNg
             do
             {
                 var label = e.Label;
-                if (!label.isBoundary(geomIndex))
+                if (!label.IsBoundary(geomIndex))
                 {
                     /**
                      * If this is not a Boundary edge for this input area, 
                      * its location is now known relative to this input area
                      */
-                    label.setLocationLine(geomIndex, currLoc);
+                    label.SetLocationLine(geomIndex, currLoc);
                 }
                 else
                 {
-                    Assert.IsTrue(label.hasSides(geomIndex));
+                    Assert.IsTrue(label.HasSides(geomIndex));
                     /**
                      *  This is a boundary edge for the input area geom.
                      *  Update the current location from its labels.
@@ -147,9 +147,9 @@ namespace NetTopologySuite.Operation.OverlayNg
             do
             {
                 var label = eStart.Label;
-                if (label.isBoundary(geomIndex))
+                if (label.IsBoundary(geomIndex))
                 {
-                    Assert.IsTrue(label.hasSides(geomIndex));
+                    Assert.IsTrue(label.HasSides(geomIndex));
                     return eStart;
                 }
                 eStart = eStart.ONextOE;
@@ -183,11 +183,11 @@ namespace NetTopologySuite.Operation.OverlayNg
         {
             foreach (var edge in _edges)
             {
-                if (edge.Label.isLineLocationUnknown(0))
+                if (edge.Label.IsLineLocationUnknown(0))
                 {
                     labelCollapsedEdge(edge, 0);
                 }
-                if (edge.Label.isLineLocationUnknown(1))
+                if (edge.Label.IsLineLocationUnknown(1))
                 {
                     labelCollapsedEdge(edge, 1);
                 }
@@ -200,13 +200,13 @@ namespace NetTopologySuite.Operation.OverlayNg
             //Debug.println("\n------  labelCollapsedEdge - geomIndex= " + geomIndex);
             //Debug.print("BEFORE: " + edge.toStringNode());
             var label = edge.Label;
-            if (!label.isCollapse(geomIndex)) return;
+            if (!label.IsCollapse(geomIndex)) return;
             /**
              * This must be a collapsed edge which is disconnected
              * from any area edges (e.g. a fully collapsed shell or hole).
              * It can be labeled according to its parent source ring role. 
              */
-            label.setLocationCollapse(geomIndex);
+            label.SetLocationCollapse(geomIndex);
             //Debug.print("AFTER: " + edge.toStringNode());
         }
 
@@ -254,7 +254,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             LinkedList<OverlayEdge> edgeStack, InputGeometry inputGeometry)
         {
             var e = eStart.ONextOE;
-            var lineLoc = eStart.Label.getLineLocation(index);
+            var lineLoc = eStart.Label.GetLineLocation(index);
 
             /**
              * If the parent geom is an L (dim 1) 
@@ -267,13 +267,13 @@ namespace NetTopologySuite.Operation.OverlayNg
             {
                 var label = e.Label;
                 //Debug.println("propagateLineLocationAtNode - checking " + index + ": " + e);
-                if (label.isLineLocationUnknown(index))
+                if (label.IsLineLocationUnknown(index))
                 {
                     /**
                      * If edge is not a boundary edge, 
                      * its location is now known for this area
                      */
-                    label.setLocationLine(index, lineLoc);
+                    label.SetLocationLine(index, lineLoc);
                     //Debug.println("propagateLineLocationAtNode - setting "+ index + ": " + e);
 
                     /**
@@ -298,8 +298,8 @@ namespace NetTopologySuite.Operation.OverlayNg
             foreach (var edge in _edges)
             {
                 var lbl = edge.Label;
-                if (lbl.isLinear(geomIndex)
-                    && !lbl.isLineLocationUnknown(geomIndex))
+                if (lbl.IsLinear(geomIndex)
+                    && !lbl.IsLineLocationUnknown(geomIndex))
                 {
                     lineEdges.Add(edge);
                 }
@@ -326,11 +326,11 @@ namespace NetTopologySuite.Operation.OverlayNg
             foreach (var edge in _edges)
             {
                 //Debug.println("\n------  checking for Disconnected edge " + edge);
-                if (edge.Label.isLineLocationUnknown(0))
+                if (edge.Label.IsLineLocationUnknown(0))
                 {
                     LabelDisconnectedEdge(edge, 0);
                 }
-                if (edge.Label.isLineLocationUnknown(1))
+                if (edge.Label.IsLineLocationUnknown(1))
                 {
                     LabelDisconnectedEdge(edge, 1);
                 }
@@ -361,7 +361,7 @@ namespace NetTopologySuite.Operation.OverlayNg
              */
             if (!_inputGeometry.IsArea(geomIndex))
             {
-                label.setLocationAll(geomIndex, Location.Exterior);
+                label.SetLocationAll(geomIndex, Location.Exterior);
                 return;
             };
 
@@ -376,7 +376,7 @@ namespace NetTopologySuite.Operation.OverlayNg
              */
             //int edgeLoc = locateEdge(geomIndex, edge);
             var edgeLoc = LocateEdgeBothEnds(geomIndex, edge);
-            label.setLocationAll(geomIndex, edgeLoc);
+            label.SetLocationAll(geomIndex, edgeLoc);
             //Debug.print("AFTER: " + edge.toStringNode());
         }
 
@@ -450,11 +450,11 @@ namespace NetTopologySuite.Operation.OverlayNg
         public void markInResultArea(OverlayEdge e, SpatialFunction overlayOpCode)
         {
             var label = e.Label;
-            if (label.isBoundaryEither()
+            if (label.IsBoundaryEither
                 && OverlayNG.isResultOfOp(
                     overlayOpCode,
-                    label.getLocationBoundaryOrLine(0, Positions.Right, e.IsForward),
-                    label.getLocationBoundaryOrLine(1, Positions.Right, e.IsForward)))
+                    label.GetLocationBoundaryOrLine(0, Positions.Right, e.IsForward),
+                    label.GetLocationBoundaryOrLine(1, Positions.Right, e.IsForward)))
             {
                 e.MarkInResultArea();
             }

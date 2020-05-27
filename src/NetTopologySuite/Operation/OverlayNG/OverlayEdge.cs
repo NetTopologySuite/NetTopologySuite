@@ -92,7 +92,7 @@ namespace NetTopologySuite.Operation.OverlayNg
 
         public Location GetLocation(int index, Positions position)
         {
-            return _label.getLocation(index, position, _direction);
+            return _label.GetLocation(index, position, _direction);
         }
 
         public Coordinate Coordinate

@@ -73,15 +73,15 @@ namespace NetTopologySuite.Operation.OverlayNg
             return _geom[geomIndex].Dimension == Dimension.Curve;
         }
 
-        public bool IsAllPoints()
+        public bool IsAllPoints
         {
-            return GetDimension(0) == Dimension.Point
+            get => GetDimension(0) == Dimension.Point
                 && _geom[1] != null && GetDimension(1) == Dimension.Point;
         }
 
-        public bool HasPoints()
+        public bool HasPoints
         {
-            return GetDimension(0) == Dimension.Point || GetDimension(1) == Dimension.Point;
+            get => GetDimension(0) == Dimension.Point || GetDimension(1) == Dimension.Point;
         }
 
         /// <summary>

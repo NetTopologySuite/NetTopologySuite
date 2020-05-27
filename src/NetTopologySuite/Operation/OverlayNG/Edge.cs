@@ -170,16 +170,16 @@ namespace NetTopologySuite.Operation.OverlayNg
             switch (dimLabel)
             {
                 case OverlayLabel.DIM_NOT_PART:
-                    lbl.initNotPart(geomIndex);
+                    lbl.InitNotPart(geomIndex);
                     break;
                 case OverlayLabel.DIM_BOUNDARY:
-                    lbl.initBoundary(geomIndex, LocationLeft(depthDelta), LocationRight(depthDelta), isHole);
+                    lbl.InitBoundary(geomIndex, LocationLeft(depthDelta), LocationRight(depthDelta), isHole);
                     break;
                 case OverlayLabel.DIM_COLLAPSE:
-                    lbl.initCollapse(geomIndex, isHole);
+                    lbl.InitCollapse(geomIndex, isHole);
                     break;
                 case OverlayLabel.DIM_LINE:
-                    lbl.initLine(geomIndex);
+                    lbl.InitLine(geomIndex);
                     break;
             }
         }
@@ -348,14 +348,14 @@ namespace NetTopologySuite.Operation.OverlayNg
         {
             return
                 (index == 0 ? "A:" : "B:")
-                + OverlayLabel.dimensionSymbol(dim)
+                + OverlayLabel.DimensionSymbol(dim)
                 + RingRoleSymbol(dim, isHole)
                 + depthDelta.ToString();  // force to string
         }
 
         public static string RingRoleSymbol(Dimension dim, bool isHole)
         {
-            if (HasAreaParent(dim)) return "" + OverlayLabel.ringRoleSymbol(isHole);
+            if (HasAreaParent(dim)) return "" + OverlayLabel.RingRoleSymbol(isHole);
             return "";
         }
 

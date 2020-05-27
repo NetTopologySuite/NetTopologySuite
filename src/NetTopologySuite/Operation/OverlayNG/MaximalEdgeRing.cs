@@ -108,13 +108,13 @@ namespace NetTopologySuite.Operation.OverlayNg
             {
                 if (edge == null)
                     throw new TopologyException("Found null edge in ring");
-                if (edge.getEdgeRingMax() == this)
+                if (edge.MaxEdgeRing == this)
                     throw new TopologyException("Edge visited twice during ring-building at " + edge.Coordinate, edge.Coordinate);
                 if (edge.NextResultMax == null)
                 {
                     throw new TopologyException("Found null edge in ring", edge.Dest);
                 }
-                edge.setEdgeRingMax(this);
+                edge.MaxEdgeRing = this;
                 edge = edge.NextResultMax;
             } while (edge != startEdge);
         }
@@ -206,7 +206,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// <returns><c>true</c> if the edge has already been linked into a minimal edgering.</returns>
         private static bool IsAlreadyLinked(OverlayEdge edge, MaximalEdgeRing maxRing)
         {
-            bool isLinked = edge.getEdgeRingMax() == maxRing
+            bool isLinked = edge.MaxEdgeRing == maxRing
                                && edge.IsResultLinked;
             return isLinked;
         }
@@ -214,7 +214,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         private static OverlayEdge SelectMaxOutEdge(OverlayEdge currOut, MaximalEdgeRing maxEdgeRing)
         {
             // select if currOut edge is part of this max ring
-            if (currOut.getEdgeRingMax() == maxEdgeRing)
+            if (currOut.MaxEdgeRing == maxEdgeRing)
                 return currOut;
             // otherwise skip this edge
             return null;
@@ -226,7 +226,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         {
             var currIn = currOut.SymOE;
             // currIn is not in this max-edgering, so keep looking
-            if (currIn.getEdgeRingMax() != maxEdgeRing)
+            if (currIn.MaxEdgeRing != maxEdgeRing)
                 return currMaxRingOut;
 
             //Debug.println("Found result in-edge:  " + currIn);

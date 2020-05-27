@@ -79,8 +79,8 @@ namespace NetTopologySuite.Operation.OverlayNg
          */
         static bool isResultOfOpPoint(OverlayLabel label, SpatialFunction opCode)
         {
-            var loc0 = label.getLocation(0);
-            var loc1 = label.getLocation(1);
+            var loc0 = label.GetLocation(0);
+            var loc1 = label.GetLocation(1);
             return isResultOfOp(opCode, loc0, loc1);
         }
 
@@ -403,13 +403,13 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
 
             // special logic for Point-Point inputs
-            if (_inputGeom.IsAllPoints())
+            if (_inputGeom.IsAllPoints)
             {
                 return OverlayPoints.Overlay(_opCode, _inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1), _pm);
             }
 
             // special logic for Point-nonPoint inputs 
-            if (!_inputGeom.isSingle() && _inputGeom.HasPoints())
+            if (!_inputGeom.IsSingle && _inputGeom.HasPoints)
             {
                 return OverlayMixedPoints.Overlay(_opCode, _inputGeom.GetGeometry(0), _inputGeom.GetGeometry(1), _pm);
             }
@@ -508,7 +508,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         {
 
             //--- Build polygons
-            var resultAreaEdges = graph.getResultAreaEdges();
+            var resultAreaEdges = graph.GetResultAreaEdges();
             var polyBuilder = new PolygonBuilder(resultAreaEdges, _geomFact);
             var resultPolyList = polyBuilder.getPolygons();
             bool hasResultComponents = resultPolyList.Count > 0;

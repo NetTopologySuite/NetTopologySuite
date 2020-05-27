@@ -29,56 +29,59 @@ namespace NetTopologySuite.Operation.OverlayNg
             get => _ring;
         }
 
-        /**
-         * Tests whether this ring is a hole.
-         * @return <code>true</code> if this ring is a hole
-         */
+        /// <summary>
+        /// Tests whether this ring is a hole.
+        /// </summary>
+        /// <value><c>true</c> if this ring is a hole</value>
         public bool IsHole
         {
             get => isHole;
         }
 
-        /**
-         * Sets the containing shell ring of a ring that has been determined to be a hole.
-         * 
-         * @param shell the shell ring
-         */
-        [Obsolete("Use Shell property")]
+        /// <summary>
+        /// Sets the containing shell ring of a ring that has been determined to be a hole.
+        /// </summary>
+        /// <param name="shell">The shell ring</param>
+        [Obsolete("Use Shell property", true)]
         public void setShell(OverlayEdgeRing shell)
         {
             this._shell = shell;
-            if (shell != null) shell.addHole(this);
+            if (shell != null) shell.AddHole(this);
         }
 
-        /**
-         * Tests whether this ring has a shell assigned to it.
-         * 
-         * @return true if the ring has a shell
-         */
+        /// <summary>
+        /// Tests whether this ring has a shell assigned to it.
+        /// </summary>
+        /// <value><c>true</c> if the ring has a shell</value>
         public bool HasShell
         {
             get => _shell != null;
         }
 
-        /**
-         * Gets the shell for this ring.  The shell is the ring itself if it is not a hole, otherwise its parent shell.
-         * 
-         * @return the shell for this ring
-         */
-        [Obsolete("Use Shell property")]
+        /// <summary>
+        /// Gets the shell for this ring. The shell is the
+        /// ring itself if it is not a hole, otherwise its
+        /// parent shell.
+        /// </summary>
+        /// <returns>the shell for this ring</returns>
+        [Obsolete("Use Shell property", true)]
         public OverlayEdgeRing getShell()
         {
             if (IsHole) return _shell;
             return this;
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating the shell for this ring.<br/>
+        /// The shell is the ring itself if it is not a hole, otherwise its parent shell.
+        /// </summary>
         public OverlayEdgeRing Shell
         {
             get { return IsHole ? _shell : this; }
             set { _shell = value; }
         }
 
-        public void addHole(OverlayEdgeRing ring) { _holes.Add(ring); }
+        public void AddHole(OverlayEdgeRing ring) { _holes.Add(ring); }
 
         private Coordinate[] ComputeRingPts(OverlayEdge start)
         {
@@ -114,36 +117,35 @@ namespace NetTopologySuite.Operation.OverlayNg
             isHole = Orientation.IsCCW(_ring.Coordinates);
         }
 
-        /**
-         * Computes the list of coordinates which are contained in this ring.
-         * The coordinates are computed once only and cached.
-         *
-         * @return an array of the {@link Coordinate}s in this ring
-         */
+        /// <summary>
+        /// Computes the list of coordinates which are contained in this ring.
+        /// The coordinates are computed once only and cached.
+        /// </summary>
+        /// <value>An array of the <see cref="Coordinate"/>s in this ring</value>
         private Coordinate[] Coordinates
         {
             get => _ringPts;
         }
 
-        /**
-         * Finds the innermost enclosing shell OverlayEdgeRing
-         * containing this OverlayEdgeRing, if any.
-         * The innermost enclosing ring is the <i>smallest</i> enclosing ring.
-         * The algorithm used depends on the fact that:
-         * <br>
-         *  ring A contains ring B iff envelope(ring A) contains envelope(ring B)
-         * <br>
-         * This routine is only safe to use if the chosen point of the hole
-         * is known to be properly contained in a shell
-         * (which is guaranteed to be the case if the hole does not touch its shell)
-         * <p>
-         * To improve performance of this function the caller should 
-         * make the passed shellList as small as possible (e.g.
-         * by using a spatial index filter beforehand).
-         * 
-         * @return containing EdgeRing, if there is one
-         * or null if no containing EdgeRing is found
-         */
+        /// <summary>
+        /// Finds the innermost enclosing shell OverlayEdgeRing
+        /// containing this OverlayEdgeRing, if any.
+        /// The innermost enclosing ring is the <i>smallest</i> enclosing ring.
+        /// The algorithm used depends on the fact that:
+        /// <br/>
+        /// ring A contains ring B iff envelope(ring A) contains envelope(ring B)
+        /// <br/>
+        /// This routine is only safe to use if the chosen point of the hole
+        /// is known to be properly contained in a shell
+        /// (which is guaranteed to be the case if the hole does not touch its shell)
+        /// <para/>
+        /// To improve performance of this function the caller should 
+        /// make the passed shellList as small as possible (e.g.
+        /// by using a spatial index filter beforehand).
+        /// </summary>
+        /// <returns>The containing EdgeRing, if there is one
+        /// or <c>null</c> if no containing EdgeRing is found
+        /// </returns>
         public OverlayEdgeRing FindEdgeRingContaining(IEnumerable<OverlayEdgeRing> erList)
         {
             var testRing = this.Ring;
@@ -204,11 +206,10 @@ namespace NetTopologySuite.Operation.OverlayNg
             get => _ringPts[0];
         }
 
-        /**
-         * Computes the {@link Polygon} formed by this ring and any contained holes.
-         *
-         * @return the {@link Polygon} formed by this ring and its holes.
-         */
+        /// <summary>
+        /// Computes the <see cref="Polygon"/> formed by this ring and any contained holes.
+        /// </summary>
+        /// <returns>The <see cref="Polygon"/> formed by this ring and its holes.</returns>
         public Polygon ToPolygon(GeometryFactory factory)
         {
             LinearRing[] holeLR = null;

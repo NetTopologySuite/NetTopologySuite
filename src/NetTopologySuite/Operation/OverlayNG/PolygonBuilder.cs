@@ -73,10 +73,10 @@ namespace NetTopologySuite.Operation.OverlayNg
             var edgeRings = new List<MaximalEdgeRing>();
             foreach (var e in edges)
             {
-                if (e.IsInResultArea && e.Label.isBoundaryEither())
+                if (e.IsInResultArea && e.Label.IsBoundaryEither)
                 {
                     // if this edge has not yet been processed
-                    if (e.getEdgeRingMax() == null)
+                    if (e.MaxEdgeRing == null)
                     {
                         var er = new MaximalEdgeRing(e);
                         edgeRings.Add(er);

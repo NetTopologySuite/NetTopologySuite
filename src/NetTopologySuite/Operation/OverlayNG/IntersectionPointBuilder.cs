@@ -84,7 +84,7 @@ namespace NetTopologySuite.Operation.OverlayNg
 
         private static bool IsEdgeOf(OverlayLabel label, int i)
         {
-            return label.isBoundary(i) || label.isLine(i);
+            return label.IsBoundary(i) || label.IsLineAt(i);
         }
 
     }

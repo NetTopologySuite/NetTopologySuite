@@ -111,7 +111,7 @@ namespace NetTopologySuite.Operation.OverlayNg
              * In other words, an edge must be from a source line
              * or two (coincident) area boundaries.
              */
-            if (lbl.isBoundaryCollapse()) return false;
+            if (lbl.IsBoundaryCollapse) return false;
 
             /**
              * Skip edges that are inside result area, if there is one.
@@ -123,7 +123,7 @@ namespace NetTopologySuite.Operation.OverlayNg
              * are areas, lines are only output if there is no 
              * result area.
              */
-            if (_hasResultArea && lbl.isLineInArea(_inputAreaIndex))
+            if (_hasResultArea && lbl.IsLineInArea(_inputAreaIndex))
                 return false;
 
             var aLoc = EffectiveLocation(0, lbl);
@@ -149,11 +149,11 @@ namespace NetTopologySuite.Operation.OverlayNg
          */
         private static Location EffectiveLocation(int geomIndex, OverlayLabel lbl)
         {
-            if (lbl.isCollapse(geomIndex))
+            if (lbl.IsCollapse(geomIndex))
                 return Location.Interior;
-            if (lbl.isLine(geomIndex))
+            if (lbl.IsLineAt(geomIndex))
                 return Location.Interior;
-            return lbl.getLineLocation(geomIndex);
+            return lbl.GetLineLocation(geomIndex);
         }
 
         //----  Maximal line extraction methods
