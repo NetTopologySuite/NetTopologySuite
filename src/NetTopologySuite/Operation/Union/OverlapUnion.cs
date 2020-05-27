@@ -65,21 +65,53 @@ namespace NetTopologySuite.Operation.Union
             return union.Union();
         }
 
+        /// <summary>
+        /// Union a pair of geometries,
+        /// using the more performant overlap union algorithm if possible.
+        /// </summary>
+        /// <param name="g0">A geometry to union</param>
+        /// <param name="g1">A geometry to union</param>
+        /// <param name="unionFun">Function to union two geometries</param>
+        /// <returns>The union of the inputs</returns>
+        public static Geometry Union(Geometry g0, Geometry g1, UnionFunction unionFun)
+        {
+            var union = new OverlapUnion(g0, g1, unionFun);
+            return union.Union();
+        }
+
+        public UnionFunction Wrap(UnionFunction unionFun)
+        {
+            return new UnionFunction((g0, g1) => OverlapUnion.Union(g0, g1, unionFun));
+        }
+
         private readonly GeometryFactory _geomFactory;
 
         private readonly Geometry _g0;
         private readonly Geometry _g1;
+
+
+        private UnionFunction _unionFun;
 
         /// <summary>
         /// Creates a new instance for unioning the given geometries.
         /// </summary>
         /// <param name="g0">A geometry to union</param>
         /// <param name="g1">A geometry to union</param>
-        public OverlapUnion(Geometry g0, Geometry g1)
+        public OverlapUnion(Geometry g0, Geometry g1) : this(g0, g1, CascadedPolygonUnion.CLASSIC_UNION)
+        { }
+
+        /// <summary>
+        /// Creates a new instance for unioning the given geometries.
+        /// </summary>
+        /// <param name="g0">A geometry to union</param>
+        /// <param name="g1">A geometry to union</param>
+        /// <param name="unionFun">Function to union two geometries</param>
+        public OverlapUnion(Geometry g0, Geometry g1, UnionFunction unionFun)
         {
             _g0 = g0;
             _g1 = g1;
             _geomFactory = g0.Factory;
+            _unionFun = unionFun;
         }
 
         /// <summary>
@@ -172,20 +204,11 @@ namespace NetTopologySuite.Operation.Union
             return _geomFactory.BuildGeometry(intersectingGeoms);
         }
 
-        private static Geometry UnionFull(Geometry geom0, Geometry geom1)
+        private Geometry UnionFull(Geometry geom0, Geometry geom1)
         {
-            try
-            {
-                return geom0.Union(geom1);
-            }
-            catch (TopologyException)
-            {
-                /**
-                 * If the overlay union fails,
-                 * try a buffer union, which often succeeds
-                 */
-                return UnionBuffer(geom0, geom1);
-            }
+            var union = _unionFun.Union(geom0, geom1);
+            //var union = geom0.Union(geom1);
+            return union;
         }
 
         /// <summary>

@@ -1,26 +1,33 @@
 using System;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
+
 //using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Noding.Snapround
 {
     /// <summary>
     /// Implements a "hot pixel" as used in the Snap Rounding algorithm.
-    /// A hot pixel contains the interior of the tolerance square and the boundary
-    /// minus the top and right segments.
+    /// A hot pixel is a square region centred
+    /// on the rounded valud of the coordinate given,
+    /// and of width equal to the size of the scale factor.
+    /// It is a partially open region, which contains
+    /// the interior of the tolerance square and
+    /// the boundary
+    /// <b>minus</b> the top and right segments.
+    /// This ensures that every point of the space lies in a unique hot pixel.
+    /// It also matches the rounding semantics for numbers.
+    /// <para/>
     /// The hot pixel operations are all computed in the integer domain
     /// to avoid rounding problems.
     /// </summary>
     public class HotPixel
     {
-        private readonly LineIntersector _li;
+        private const double Tolerance = 0.5d;
 
-        private readonly Coordinate _pt;
+        private readonly Coordinate _ptHot;
         private readonly Coordinate _originalPt;
-
-        private readonly Coordinate _p0Scaled;
-        private readonly Coordinate _p1Scaled;
 
         private readonly double _scaleFactor;
 
@@ -44,23 +51,27 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="pt">The coordinate at the center of the hot pixel</param>
         /// <param name="scaleFactor">The scale factor determining the pixel size</param>
         /// <param name="li">THe intersector to use for testing intersection with line segments</param>
+        [Obsolete]
         public HotPixel(Coordinate pt, double scaleFactor, LineIntersector li)
+            :this(pt, scaleFactor)
+        {}
+        public HotPixel(Coordinate pt, double scaleFactor)
         {
             _originalPt = pt;
-            _pt = pt;
+            _ptHot = pt;
             _scaleFactor = scaleFactor;
-            _li = li;
 
             if (scaleFactor <= 0d)
                 throw new ArgumentException("Scale factor must be non-zero");
 
             if (scaleFactor != 1.0)
-            {
-                _pt = new Coordinate(Scale(pt.X), Scale(pt.Y));
-                _p0Scaled = new Coordinate();
-                _p1Scaled = new Coordinate();
-            }
-            InitCorners(_pt);
+                _ptHot = ScaleRound(pt);
+
+            // extreme values for pixel
+            _minx = _ptHot.X - Tolerance;
+            _maxx = _ptHot.X + Tolerance;
+            _miny = _ptHot.Y - Tolerance;
+            _maxy = _ptHot.Y + Tolerance;
         }
 
         /// <summary>
@@ -68,6 +79,46 @@ namespace NetTopologySuite.Noding.Snapround
         /// </summary>
         public Coordinate Coordinate => _originalPt;
 
+        /// <summary>
+        /// Gets the scale factor for the precision grid for this pixel.
+        /// </summary>
+        public double ScaleFactor
+        {
+            get => _scaleFactor;
+        }
+
+        /// <summary>
+        /// Gets the width of the hot pixel in the original coordinate system.
+        /// </summary>
+        public double Width
+        {
+            get => 1.0d / _scaleFactor;
+        }
+
+
+        private double ScaleRound(double val)
+        {
+            return Math.Round(val * _scaleFactor);
+        }
+
+        private Coordinate ScaleRound(Coordinate p)
+        {
+            return new Coordinate(ScaleRound(p.X), ScaleRound(p.Y));
+        }
+
+        /// <summary>
+        /// Scale without rounding.
+        /// This ensures intersections are checked against original
+        /// linework.
+        /// This is required to ensure that intersections are not missed
+        /// because the segment is moved by snapping.
+        /// </summary>
+        private double Scale(double val)
+        {
+            return val * _scaleFactor;
+        }
+
+        [Obsolete("Moved to MCIndexPointSnapper")]
         private const double SafeEnvelopeExpansionFactor = 0.75d;
 
         /// <summary>
@@ -75,6 +126,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// The envelope returned will be larger than the exact envelope of the pixel.
         /// </summary>
         /// <returns>An envelope which contains the pixel</returns>
+        [Obsolete("Moved to MCIndexPointSnapper")]
         public Envelope GetSafeEnvelope()
         {
             if (_safeEnv == null)
@@ -87,34 +139,6 @@ namespace NetTopologySuite.Noding.Snapround
         }
 
         /// <summary>
-        ///
-        /// </summary>
-        /// <param name="pt"></param>
-        private void InitCorners(Coordinate pt)
-        {
-            const double tolerance = 0.5;
-            _minx = pt.X - tolerance;
-            _maxx = pt.X + tolerance;
-            _miny = pt.Y - tolerance;
-            _maxy = pt.Y + tolerance;
-
-            _corner[0] = new Coordinate(_maxx, _maxy);
-            _corner[1] = new Coordinate(_minx, _maxy);
-            _corner[2] = new Coordinate(_minx, _miny);
-            _corner[3] = new Coordinate(_maxx, _miny);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="val"></param>
-        /// <returns></returns>
-        private double Scale(double val)
-        {
-            return Math.Round(val * _scaleFactor);
-        }
-
-        /// <summary>
         /// Tests whether the line segment (p0-p1)
         /// intersects this hot pixel.
         /// </summary>
@@ -124,23 +148,13 @@ namespace NetTopologySuite.Noding.Snapround
         public bool Intersects(Coordinate p0, Coordinate p1)
         {
             if (_scaleFactor == 1.0)
-                return IntersectsScaled(p0, p1);
+                return IntersectsScaled(p0.X, p0.Y, p1.X, p1.Y);
 
-            CopyScaled(p0, _p0Scaled);
-            CopyScaled(p1, _p1Scaled);
-            return IntersectsScaled(_p0Scaled, _p1Scaled);
-        }
-
-        /// <summary>
-        /// Tests whether the line segment (p0-p1)
-        /// intersects this hot pixel.
-        /// </summary>
-        /// <param name="p"></param>
-        /// <param name="pScaled"></param>
-        private void CopyScaled(Coordinate p, Coordinate pScaled)
-        {
-            pScaled.X = Scale(p.X);
-            pScaled.Y = Scale(p.Y);
+            double sp0x = Scale(p0.X);
+            double sp0y = Scale(p0.Y);
+            double sp1x = Scale(p1.X);
+            double sp1y = Scale(p1.Y);
+            return IntersectsScaled(sp0x, sp0y, sp1x, sp1y);
         }
 
         /// <summary>
@@ -149,67 +163,126 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="p0"></param>
         /// <param name="p1"></param>
         /// <returns></returns>
+        [Obsolete]
         public bool IntersectsScaled(Coordinate p0, Coordinate p1)
         {
-            double segMinx = Math.Min(p0.X, p1.X);
-            double segMaxx = Math.Max(p0.X, p1.X);
-            double segMiny = Math.Min(p0.Y, p1.Y);
-            double segMaxy = Math.Max(p0.Y, p1.Y);
-
-            bool isOutsidePixelEnv = _maxx < segMinx || _minx > segMaxx ||
-                                     _maxy < segMiny || _miny > segMaxy;
-            if (isOutsidePixelEnv)
-                return false;
-            bool intersects = IntersectsToleranceSquare(p0, p1);
-
-            //Assert.IsTrue(!(isOutsidePixelEnv && intersects), "Found bad envelope test");
-            return intersects;
+            return IntersectsScaled(p0.X, p0.Y, p1.X, p1.Y);
         }
 
-        /// <summary>
-        /// Tests whether the segment p0-p1 intersects the hot pixel tolerance square.
-        /// Because the tolerance square point set is partially open (along the
-        /// top and right) the test needs to be more sophisticated than
-        /// simply checking for any intersection.
-        /// However, it can take advantage of the fact that the hot pixel edges
-        /// do not lie on the coordinate grid.
-        /// It is sufficient to check if any of the following occur:
-        ///  - a proper intersection between the segment and any hot pixel edge.
-        ///  - an intersection between the segment and BOTH the left and bottom hot pixel edges
-        /// (which detects the case where the segment intersects the bottom left hot pixel corner).
-        ///  - an intersection between a segment endpoint and the hot pixel coordinate.
-        /// </summary>
-        /// <param name="p0"></param>
-        /// <param name="p1"></param>
-        /// <returns></returns>
-        private bool IntersectsToleranceSquare(Coordinate p0, Coordinate p1)
+        private bool IntersectsScaled(double p0x, double p0y,
+            double p1x, double p1y)
         {
-            bool intersectsLeft = false;
-            bool intersectsBottom = false;
-            //Console.WriteLine("Hot Pixel: " + WKTWriter.ToLineString(corner));
-            //Console.WriteLine("Line: " + WKTWriter.ToLineString(p0, p1));
+            double px = p0x;
+            double py = p0y;
+            double qx = p1x;
+            double qy = p1y;
 
-            _li.ComputeIntersection(p0, p1, _corner[0], _corner[1]);
-            if (_li.IsProper) return true;
+            if (px > qx)
+            {
+                px = p1x;
+                py = p1y;
+                qx = p0x;
+                qy = p0y;
+            }
+            /*
+            * Report false if segment env does not intersect pixel env.
+            * This check reflects the fact that the pixel Top and Right sides
+            * are open (not part of the pixel).
+            */
+            // check Right side
+            double segMinx = Math.Min(px, qx);
+            if (segMinx >= _maxx) return false;
+            // check Left side
+            double segMaxx = Math.Max(px, qx);
+            if (segMaxx < _minx) return false;
+            // check Top side
+            double segMiny = Math.Min(py, qy);
+            if (segMiny >= _maxy) return false;
+            // check Bottom side
+            double segMaxy = Math.Max(py, qy);
+            if (segMaxy < _miny) return false;
 
-            _li.ComputeIntersection(p0, p1, _corner[1], _corner[2]);
-            if (_li.IsProper) return true;
-            if (_li.HasIntersection) intersectsLeft = true;
+            /*
+             * Vertical or horizontal segments must now intersect
+             * the segment interior or Left or Bottom sides.
+             */
+            //---- check vertical segment
+            if (px == qx)
+            {
+                return true;
+            }
+            //---- check horizontal segment
+            if (py == qy)
+            {
+                return true;
+            }
 
-            _li.ComputeIntersection(p0, p1, _corner[2], _corner[3]);
-            if (_li.IsProper) return true;
-            if (_li.HasIntersection) intersectsBottom = true;
+            /*
+             * Now know segment is not horizontal or vertical.
+             * 
+             * Compute orientation WRT each pixel corner.
+             * If corner orientation == 0, 
+             * segment intersects the corner.  
+             * From the corner and whether segment is heading up or down,
+             * can determine intersection or not.
+             * 
+             * Otherwise, check whether segment crosses interior of pixel side
+             * This is the case if the orientations for each corner of the side are different.
+             */
 
-            _li.ComputeIntersection(p0, p1, _corner[3], _corner[0]);
-            if (_li.IsProper) return true;
+            int orientUL = CGAlgorithmsDD.OrientationIndex(px, py, qx, qy, _minx, _maxy);
+            if (orientUL == 0)
+            {
+                if (py < qy) return false;
+                return true;
+            }
 
-            if (intersectsLeft && intersectsBottom) return true;
+            int orientUR = CGAlgorithmsDD.OrientationIndex(px, py, qx, qy, _maxx, _maxy);
+            if (orientUR == 0)
+            {
+                if (py > qy) return false;
+                return true;
+            }
+            //--- check crossing Top side
+            if (orientUL != orientUR)
+            {
+                return true;
+            }
 
-            if (p0.Equals(_pt)) return true;
-            if (p1.Equals(_pt)) return true;
+            int orientLL = CGAlgorithmsDD.OrientationIndex(px, py, qx, qy, _minx, _miny);
+            if (orientUL == 0)
+            {
+                // LL corner is the only one in pixel interior
+                return true;
+            }
+            //--- check crossing Left side
+            if (orientLL != orientUL)
+            {
+                return true;
+            }
 
+            int orientLR = CGAlgorithmsDD.OrientationIndex(px, py, qx, qy, _maxx, _miny);
+            if (orientLR == 0)
+            {
+                if (py < qy) return false;
+                return true;
+            }
+
+            //--- check crossing Bottom side
+            if (orientLL != orientLR)
+            {
+                return true;
+            }
+            //--- check crossing Right side
+            if (orientLR != orientUR)
+            {
+                return true;
+            }
+
+            // segment does not intersect pixel
             return false;
         }
+
 
         /// <summary>
         /// Test whether the given segment intersects
@@ -223,14 +296,27 @@ namespace NetTopologySuite.Noding.Snapround
         /// <returns></returns>
         private bool IntersectsPixelClosure(Coordinate p0, Coordinate p1)
         {
-            _li.ComputeIntersection(p0, p1, _corner[0], _corner[1]);
-            if (_li.HasIntersection) return true;
-            _li.ComputeIntersection(p0, p1, _corner[1], _corner[2]);
-            if (_li.HasIntersection) return true;
-            _li.ComputeIntersection(p0, p1, _corner[2], _corner[3]);
-            if (_li.HasIntersection) return true;
-            _li.ComputeIntersection(p0, p1, _corner[3], _corner[0]);
-            if (_li.HasIntersection) return true;
+            const int upperRight = 0;
+            const int upperLeft = 1;
+            const int lowerLeft = 2;
+            const int lowerRight = 3;
+
+            var corner = new Coordinate[4];
+            corner[upperRight] = new Coordinate(_maxx, _maxy);
+            corner[upperLeft] = new Coordinate(_minx, _maxy);
+            corner[lowerLeft] = new Coordinate(_minx, _miny);
+            corner[lowerRight] = new Coordinate(_maxx, _miny);
+
+            LineIntersector li = new RobustLineIntersector();
+            li.ComputeIntersection(p0, p1, corner[0], corner[1]);
+            if (li.HasIntersection) return true;
+            li.ComputeIntersection(p0, p1, corner[1], corner[2]);
+            if (li.HasIntersection) return true;
+            li.ComputeIntersection(p0, p1, corner[2], corner[3]);
+            if (li.HasIntersection) return true;
+            li.ComputeIntersection(p0, p1, corner[3], corner[0]);
+            if (li.HasIntersection) return true;  
+
             return false;
         }
 
@@ -241,6 +327,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <param name="segStr"></param>
         /// <param name="segIndex"></param>
         /// <returns><c>true</c> if a node was added to the segment</returns>
+        [Obsolete("Moved to MCIndexPointSnapper", true)]
         public bool AddSnappedNode(INodableSegmentString segStr, int segIndex)
         {
             var coords = segStr.Coordinates;
@@ -256,6 +343,11 @@ namespace NetTopologySuite.Noding.Snapround
                 return true;
             }
             return false;
+        }
+
+        public override string ToString()
+        {
+            return $"HP({WKTWriter.Format(_ptHot)})";
         }
     }
 }

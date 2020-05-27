@@ -3,6 +3,7 @@
 using System;
 using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 #if UseWorker
 using System.Threading;
@@ -10,6 +11,7 @@ using System.Threading;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Index.Strtree;
+using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Operation.Union
 {
@@ -42,11 +44,30 @@ namespace NetTopologySuite.Operation.Union
     /// <seealso href="http://code.google.com/p/nettopologysuite/issues/detail?id=44"/>
     public class CascadedPolygonUnion
     {
-        private ICollection<Geometry> _inputPolys;
-        private GeometryFactory _geomFactory;
-#if UseWorker
-        private int _numThreadsStarted = 0;
-#endif
+        internal static UnionFunction CLASSIC_UNION => new UnionFunction((g0, g1) => g0.Union(g1));
+
+        internal static UnionFunction CLASSIC_UNION_SAFE => new UnionFunction((g0, g1) =>
+        {
+            try
+            {
+                return g0.Union(g1);
+            }
+            catch (TopologyException ex)
+            {
+                return UnionByBuffer(g0, g1);
+            }
+        });
+    
+
+    private static Geometry UnionByBuffer(Geometry g0, Geometry g1)
+    {
+        var coll = g0.Factory.CreateGeometryCollection(new [] { g0, g1 });
+        return coll.Buffer(0d);
+    }
+
+    internal static UnionFunction OVERLAP_CLASSIC_UNION = new UnionFunction((g0, g1) =>
+        OverlapUnion.Union(g0, g1, CLASSIC_UNION_SAFE));
+
         /// <summary>
         /// Computes the union of
         /// a collection of <see cref="Geometry"/>s.
@@ -60,14 +81,53 @@ namespace NetTopologySuite.Operation.Union
         }
 
         /// <summary>
+        /// Computes the union of
+        /// a collection of <see cref="Geometry"/>s.
+        /// </summary>
+        /// <param name="polys">A collection of <see cref="IPolygonal"/> <see cref="Geometry"/>s.</param>
+        /// <param name="unionFun">A function to union 2 geometries</param>
+        /// <returns>The unioned geometry.</returns>
+        public static Geometry Union(ICollection<Geometry> polys, UnionFunction unionFun)
+        {
+            var op = new CascadedPolygonUnion(polys, unionFun);
+            return op.Union();
+        }
+
+        private ICollection<Geometry> _inputPolys;
+        private GeometryFactory _geomFactory;
+        private UnionFunction unionFun;
+
+        private int countRemainder = 0;
+        private int countInput = 0;
+#if UseWorker
+        private int _numThreadsStarted = 0;
+#endif
+
+        /// <summary>
         /// Creates a new instance to union
         /// the given collection of <see cref="Geometry"/>s.
         /// </summary>
         /// <param name="polys">A collection of <see cref="IPolygonal"/> <see cref="Geometry"/>s</param>
         public CascadedPolygonUnion(ICollection<Geometry> polys)
+            : this(polys, OVERLAP_CLASSIC_UNION)
         {
+        }
+
+        /**
+      * Creates a new instance to union
+      * the given collection of {@link Geometry}s.
+      *
+      * @param polys a collection of {@link Polygonal} {@link Geometry}s
+      */
+        public CascadedPolygonUnion(ICollection<Geometry> polys, UnionFunction unionFun)
+        {
+            _inputPolys = polys;
+            this.unionFun = unionFun;
             // guard against null input
-            _inputPolys = polys ?? new List<Geometry>();
+            if (_inputPolys == null)
+                _inputPolys = new List<Geometry>();
+            this.countInput = _inputPolys.Count;
+            this.countRemainder = countInput;
         }
 
         /// <summary>
@@ -146,8 +206,8 @@ namespace NetTopologySuite.Operation.Union
             foreach (var g in geoms)
             {
                 if (union == null)
-                    union = (Geometry)g.Copy();
-                else union = union.Union(g);
+                    union = g.Copy();
+                else union = unionFun.Union(union, g);
             }
             return union;
         }
@@ -310,7 +370,18 @@ namespace NetTopologySuite.Operation.Union
                 return (Geometry)g1.Copy();
             if (g1 == null)
                 return (Geometry)g0.Copy();
-            return UnionActual(g0, g1);
+
+            countRemainder--;
+            Debug.WriteLine("Remainder: " + countRemainder + " out of " + countInput);
+            Debug.WriteLine("Union: A: " + g0.NumPoints + " / B: " + g1.NumPoints + "  ---  ");
+
+            var union = UnionActual(g0, g1, unionFun);
+
+            Debug.WriteLine(" Result: " + union.NumPoints);
+            //if (TestBuilderProxy.isActive()) TestBuilderProxy.showIndicator(union);
+
+            return union;
+
         }
 
         /// <summary>
@@ -319,10 +390,11 @@ namespace NetTopologySuite.Operation.Union
         /// <param name="g0">A geometry to union</param>
         /// <param name="g1">A geometry to union</param>
         /// <returns>The union of the inputs</returns>
-        private static Geometry UnionActual(Geometry g0, Geometry g1)
+        private static Geometry UnionActual(Geometry g0, Geometry g1, UnionFunction unionFun)
         {
-            var union = OverlapUnion.Union(g0, g1); ;
-            return RestrictToPolygons(union);
+            var union = unionFun.Union(g0, g1); ;
+            var unionPoly = RestrictToPolygons(union);
+            return unionPoly;
         }
 
         /// <summary> Computes a <see cref="Geometry"/> containing only <see cref="IPolygonal"/> components.

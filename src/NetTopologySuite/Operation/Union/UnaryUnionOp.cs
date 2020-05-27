@@ -85,6 +85,7 @@ namespace NetTopologySuite.Operation.Union
 
         private InputExtracter _extracter;
         private GeometryFactory _geomFact;
+        private UnionFunction unionFunction;
 
         /// <summary>
         /// Constructs a unary union operation for an enumeration
@@ -118,6 +119,12 @@ namespace NetTopologySuite.Operation.Union
         public UnaryUnionOp(Geometry geom)
         {
             Extract(geom);
+        }
+
+        public UnionFunction UnionFunction
+        {
+            get => unionFunction ?? CascadedPolygonUnion.OVERLAP_CLASSIC_UNION;
+            set => unionFunction = value;
         }
 
         private void Extract(IEnumerable<Geometry> geoms)
@@ -189,7 +196,7 @@ namespace NetTopologySuite.Operation.Union
             Geometry unionPolygons = null;
             if (polygons.Count > 0)
             {
-                unionPolygons = CascadedPolygonUnion.Union(polygons);
+                unionPolygons = CascadedPolygonUnion.Union(polygons, UnionFunction);
             }
 
             /*

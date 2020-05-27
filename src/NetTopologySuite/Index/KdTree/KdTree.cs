@@ -282,6 +282,38 @@ namespace NetTopologySuite.Index.KdTree
 
         }
 
+        private KdNode<T> QueryNodePoint(KdNode<T> currentNode,
+            Coordinate queryPt, bool odd)
+        {
+            if (currentNode == null)
+                return null;
+            if (currentNode.Coordinate.Equals2D(queryPt))
+                return currentNode;
+
+            double ord;
+            double discriminant;
+            if (odd)
+            {
+                ord = queryPt.X;
+                discriminant = currentNode.X;
+            }
+            else
+            {
+                ord = queryPt.Y;
+                discriminant = currentNode.Y;
+            }
+            bool searchLeft = ord < discriminant;
+
+            if (searchLeft)
+            {
+                return QueryNodePoint(currentNode.Left, queryPt, !odd);
+            }
+            else
+            {
+                return QueryNodePoint(currentNode.Right, queryPt, !odd);
+            }
+        }
+
         /// <summary>
         /// Performs a range search of the points in the index.
         /// </summary>
@@ -312,6 +344,17 @@ namespace NetTopologySuite.Index.KdTree
         public void Query(Envelope queryEnv, IList<KdNode<T>> result)
         {
             QueryNode(_root, queryEnv, true, new KdNodeVisitor<T>(result));
+        }
+
+        /**
+         * Searches for a given point in the index and returns its node if found.
+         * 
+         * @param queryPt the point to query
+         * @return the point node, if it is found in the index, or null if not
+         */
+        public KdNode<T> Query(Coordinate queryPt)
+        {
+            return QueryNodePoint(Root, queryPt, true);
         }
 
         private class KdNodeVisitor<T> : IKdNodeVisitor<T> where T : class

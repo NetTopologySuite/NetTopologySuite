@@ -55,7 +55,17 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Dimension value for any dimension (= {False, True}).
         /// </summary>
-        Dontcare = -3
+        Dontcare = -3,
+
+        /// <summary>
+        /// Dimension value for a unknown spatial object
+        /// </summary>
+        Unknown = False,
+
+        /// <summary>
+        /// Dimension value for a collapsed surface or curve
+        /// </summary>
+        Collapse = 3
     }
 
     /// <summary>
