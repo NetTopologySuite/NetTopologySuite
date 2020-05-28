@@ -4,45 +4,42 @@ using NetTopologySuite.Operation.Union;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
-    /**
-     * Unions a collection of geometries in an
-     * efficient way, using {@link OverlayNG}
-     * to ensure robust computation.
-     * 
-     * @author Martin Davis
-     *
-     */
+    /// <summary>
+    /// Unions a collection of geometries in an
+    /// efficient way, using {@link OverlayNG}
+    /// to ensure robust computation.
+    /// </summary>
+    /// <author>Martin Davis</author>
     public class UnaryUnionNG
     {
-
-        /**
-         * Unions a collection of geometries
-         * using a given precision model.
-         * 
-         * @param geom the geometry to union
-         * @param pm the precision model to use
-         * @return the union of the geometries
-         */
+        /// <summary>
+        /// Unions a collection of geometries
+        /// using a given precision model.
+        /// </summary>
+        /// <param name="geom">The geometry to union</param>
+        /// <param name="pm">The precision model to use</param>
+        /// <returns>The union of the geometries</returns>
         public static Geometry Union(Geometry geom, PrecisionModel pm)
         {
-            var unionSRFun = new UnionFunction((g0, g1) => OverlayNG.overlay(g0, g1, SpatialFunction.Union, pm));
-            var op = new UnaryUnionOp(geom);
-            op.UnionFunction = unionSRFun;
+            var unionSRFun = new UnionFunction((g0, g1) => OverlayNG.Overlay(g0, g1, SpatialFunction.Union, pm));
+            var op = new UnaryUnionOp(geom)
+            {
+                UnionFunction = unionSRFun
+            };
 
             return op.Union();
         }
 
-        /**
-     * Unions a collection of geometries
-     * using a precision model optimized to provide maximum
-     * precision while ensuring robust computation.
-     * 
-     * @param geom the geometry to union
-     * @return the union of the geometries
-     */
+             /// <summary>
+            /// Unions a collection of geometries
+     /// using a precision model optimized to provide maximum
+     /// precision while ensuring robust computation.
+            /// </summary>
+            /// <param name="geom">The geometry to union</param>
+            /// <returns>The union of the geometries</returns>
         public static Geometry Union(Geometry geom)
         {
-            var pm = PrecisionUtil.RobustPM(geom);
+            var pm = PrecisionUtility.RobustPM(geom);
             return Union(geom, pm);
         }
 
@@ -51,5 +48,4 @@ namespace NetTopologySuite.Operation.OverlayNg
             // no instantiation for now
         }
     }
-
 }

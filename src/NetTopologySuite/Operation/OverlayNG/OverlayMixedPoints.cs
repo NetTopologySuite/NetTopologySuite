@@ -6,38 +6,36 @@ using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
-    /**
-     * Computes an overlay where one input is Point(s) and one is not.
-     * <p>
-     * The semantics are:
-     * <ul>
-     * <li>Duplicates are removed from Point output 
-     * <li>Non-point output is rounded and noded using the given precision model
-     * <ii>An empty result is an empty atomic geometry 
-     * with dimension determined by the inputs and the operation
-     * <li>
-     * </ul>
-     * For efficiency the following optimizations are used:
-     * <ul>
-     * <li>Input points are not included in the noding of the non-point input geometry
-     * (in particular, they do not participate in snap-rounding if that is used).
-     * <li>If the non-point input geometry is not included in the output
-     * it is not rounded and noded.  This means that points 
-     * are compared to the non-rounded geometry, which will be apparent in the result.
-     * </ul>
-     * This means that overlay is efficient to use for finding points
-     * within or outside a polygon.
-     * 
-     * @author Martin Davis
-     *
-     */
-    class OverlayMixedPoints
+    /// <summary>
+    /// Computes an overlay where one input is Point(s) and one is not.
+    /// <para/>
+    /// The semantics are:
+    /// <list type="bullet">
+    /// <item><description>Duplicates are removed from Point output</description></item>
+    /// <item><description>Non-point output is rounded and noded using the given precision model</description></item>
+    /// <item><description>An empty result is an empty atomic geometry
+    /// with dimension determined by the inputs and the operation
+    /// </description></item>
+    /// </list>
+    /// For efficiency the following optimizations are used:
+    /// <list type="bullet">
+    /// <item><description>Input points are not included in the noding of the non-point input geometry
+    /// (in particular, they do not participate in snap-rounding if that is used).</description></item>
+    /// <item><description>If the non-point input geometry is not included in the output
+    /// it is not rounded and noded.This means that points
+    /// are compared to the non-rounded geometry, which will be apparent in the result.</description></item>
+    /// </list>
+    /// This means that overlay is efficient to use for finding points
+    /// within or outside a polygon.
+    /// </summary>
+    /// <author>Martin Davis</author>
+    internal class OverlayMixedPoints
     {
 
         public static Geometry Overlay(SpatialFunction opCode, Geometry geom0, Geometry geom1, PrecisionModel pm)
         {
             var overlay = new OverlayMixedPoints(opCode, geom0, geom1, pm);
-            return overlay.getResult();
+            return overlay.GetResult();
         }
 
         private readonly SpatialFunction _opCode;
@@ -54,10 +52,10 @@ namespace NetTopologySuite.Operation.OverlayNg
 
         public OverlayMixedPoints(SpatialFunction opCode, Geometry geom0, Geometry geom1, PrecisionModel pm)
         {
-            this._opCode = opCode;
-            this._pm = pm;
+            _opCode = opCode;
+            _pm = pm;
             _geometryFactory = geom0.Factory;
-            _resultDim = OverlayUtility.resultDimension(opCode, geom0.Dimension, geom1.Dimension);
+            _resultDim = OverlayUtility.ResultDimension(opCode, geom0.Dimension, geom1.Dimension);
 
 
             // name the dimensional geometries
@@ -75,7 +73,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
         }
 
-        public Geometry getResult()
+        public Geometry GetResult()
         {
             // reduce precision of non-point input, if required
             _geomNonPoint = PrepareNonPoint(_geomNonPointInput);
@@ -143,7 +141,7 @@ namespace NetTopologySuite.Operation.OverlayNg
                 resultPolyList = ExtractPolygons(_geomNonPoint);
             }
 
-            return OverlayUtility.createResultGeometry(resultPolyList, resultLineList, resultPointList, _geometryFactory);
+            return OverlayUtility.CreateResultGeometry(resultPolyList, resultLineList, resultPointList, _geometryFactory);
         }
 
         private Geometry ComputeDifference(Coordinate[] coords)
@@ -199,12 +197,11 @@ namespace NetTopologySuite.Operation.OverlayNg
             return isExterior;
         }
 
-        /**
-         * Copy the non-point input geometry if not
-         * already done by precision reduction process.
-         * 
-         * @return a copy of the non-point geometry
-         */
+        /// <summary>
+        /// Copy the non-point input geometry if not
+        /// already done by precision reduction process.
+        /// </summary>
+        /// <returns>A copy of the non-point geometry</returns>
         private Geometry CopyNonPoint()
         {
             if (_geomNonPointInput != _geomNonPoint)
@@ -220,7 +217,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             {
                 var point = (Point)points.GetGeometryN(i);
                 if (point.IsEmpty) continue;
-                var coord = OverlayUtility.round(point, pm);
+                var coord = OverlayUtility.Round(point, pm);
                 coords.Add(coord, true);
             }
             return coords.ToCoordinateArray();

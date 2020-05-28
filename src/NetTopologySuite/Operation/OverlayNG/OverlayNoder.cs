@@ -18,7 +18,7 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// </list>
     /// </summary>
     /// <author>Martin Davis</author>
-    class OverlayNoder
+    internal class OverlayNoder
     {
 
         /*
@@ -94,20 +94,6 @@ namespace NetTopologySuite.Operation.OverlayNg
             set => _customNoder = value;
         }
 
-        [Obsolete("Use Noder property")]
-        public void setNoder(INoder noder)
-        {
-           Noder = noder;
-        }
-
-        [Obsolete("Use ClipEnvelope property")]
-        public void setClipEnvelope(Envelope clipEnv)
-        {
-            this._clipEnv = clipEnv;
-            _clipper = new RingClipper(clipEnv);
-            _limiter = new LineLimiter(clipEnv);
-        }
-
         public Envelope ClipEnvelope
         {
             get => _clipEnv;
@@ -170,23 +156,6 @@ namespace NetTopologySuite.Operation.OverlayNg
         {
             if (geomIndex == 0) return _hasEdgesA;
             return _hasEdgesB;
-        }
-
-        /**
-         * Gets a noder appropriate for the precision model supplied.
-         * This is one of:
-         * <ul>
-         * <li>Fixed precision: a snap-rounding noder (which should be fully robust)
-         * <li>Floating precision: a conventional nodel (which may be non-robust).
-         * In this case, a validation step is applied to the output from the noder.
-         * </ul> 
-         * 
-         * @return
-         */
-        [Obsolete("Use Noder property")]
-        private INoder getNoder()
-        {
-            return Noder;
         }
 
         public void Add(Geometry g, int geomIndex)
@@ -374,7 +343,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             {
                 return pts;
             }
-            return _clipper.clip(pts);
+            return _clipper.Clip(pts);
         }
 
         /// <summary>
@@ -392,7 +361,7 @@ namespace NetTopologySuite.Operation.OverlayNg
                 return false;
             }
             var env = line.EnvelopeInternal;
-            /**
+            /*
              * If line is completely contained then no need to limit
              */
             if (_clipEnv.Covers(env))

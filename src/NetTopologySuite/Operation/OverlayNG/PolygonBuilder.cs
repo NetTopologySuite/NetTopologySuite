@@ -4,7 +4,7 @@ using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
-    class PolygonBuilder
+    internal class PolygonBuilder
     {
 
         private readonly GeometryFactory _geometryFactory;
@@ -24,12 +24,12 @@ namespace NetTopologySuite.Operation.OverlayNg
             BuildRings(resultAreaEdges);
         }
 
-        public IReadOnlyList<Polygon> getPolygons()
+        public IReadOnlyList<Polygon> GetPolygons()
         {
             return ComputePolygons(_shellList);
         }
 
-        public IReadOnlyList<OverlayEdgeRing> getShellRings()
+        public IReadOnlyList<OverlayEdgeRing> GetShellRings()
         {
             return _shellList;
         }
@@ -65,9 +65,9 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
         }
 
-        /**
-         * For all OverlayEdges in result, form them into MaximalEdgeRings
-         */
+        /// <summary>
+        /// For all OverlayEdges in result, form them into MaximalEdgeRings
+        /// </summary>
         private static List<MaximalEdgeRing> BuildMaximalRings(IEnumerable<OverlayEdge> edges)
         {
             var edgeRings = new List<MaximalEdgeRing>();
@@ -97,7 +97,7 @@ namespace NetTopologySuite.Operation.OverlayNg
 
         private void AssignShellsAndHoles(List<OverlayEdgeRing> minRings)
         {
-            /**
+            /*
              * Two situations may occur:
              * - the rings are a shell and some holes
              * - rings are a set of holes
@@ -117,15 +117,15 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
         }
 
-        /**
-         * Finds the single shell, if any, out of 
-         * a list of minimal rings derived from a maximal ring.
-         * The other possibility is that they are a set of (connected) holes, 
-         * in which case no shell will be found.
-         *
-         * @return the shell ring, if there is one
-         * or null, if all rings are holes
-         */
+        /// <summary>
+        /// Finds the single shell, if any, out of 
+        /// a list of minimal rings derived from a maximal ring.
+        /// The other possibility is that they are a set of (connected) holes, 
+        /// in which case no shell will be found.
+        /// </summary>
+        /// <returns>The shell ring, if there is one
+        /// or <c>null</c>, if all rings are holes
+        /// </returns>
         private OverlayEdgeRing FindSingleShell(IEnumerable<OverlayEdgeRing> edgeRings)
         {
             int shellCount = 0;
@@ -142,17 +142,17 @@ namespace NetTopologySuite.Operation.OverlayNg
             return shell;
         }
 
-        /**
-         * For the set of minimal rings comprising a maximal ring, 
-         * assigns the holes to the shell known to contain them.
-         * Assigning the holes directly to the shell serves two purposes:
-         * <ul>
-         * <li>it is faster than using a point-in-polygon check later on.
-         * <li>it ensures correctness, since if the PIP test was used the point
-         * chosen might lie on the shell, which might return an incorrect result from the
-         * PIP test
-         * </ul>
-         */
+        /// <summary>
+        /// For the set of minimal rings comprising a maximal ring, 
+        /// assigns the holes to the shell known to contain them.
+        /// Assigning the holes directly to the shell serves two purposes:
+        /// <list type="bullet">
+        /// <item><description>it is faster than using a point-in-polygon check later on.</description></item>
+        /// <item><description>it ensures correctness, since if the PIP test was used the point
+        /// chosen might lie on the shell, which might return an incorrect result from the
+        /// PIP test</description></item>
+        /// </list>
+        /// </summary>
         private static void AssignHoles(OverlayEdgeRing shell, IEnumerable<OverlayEdgeRing> edgeRings)
         {
             foreach (var er in edgeRings)
@@ -164,18 +164,17 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
         }
 
-        /**
-         * Place holes have not yet been assigned to a shell.
-         * These "free" holes should
-         * all be <b>properly</b> contained in their parent shells, so it is safe to use the
-         * <code>findEdgeRingContaining</code> method.
-         * (This is the case because any holes which are NOT
-         * properly contained (i.e. are connected to their
-         * parent shell) would have formed part of a MaximalEdgeRing
-         * and been handled in a previous step).
-         *
-         * @throws TopologyException if a hole cannot be assigned to a shell
-         */
+        /// <summary>
+        /// Place holes have not yet been assigned to a shell.
+        /// These "free" holes should
+        /// all be <b>properly</b> contained in their parent shells, so it is safe to use the
+        /// <c>findEdgeRingContaining</c> method.
+        /// (This is the case because any holes which are NOT
+        /// properly contained (i.e. are connected to their
+        /// parent shell) would have formed part of a MaximalEdgeRing
+        /// and been handled in a previous step).
+        /// </summary>
+        /// <exception cref="TopologyException">If a hole cannot be assigned to a shell</exception>
         private void PlaceFreeHoles(IReadOnlyCollection<OverlayEdgeRing> shellList, IEnumerable<OverlayEdgeRing> freeHoleList)
         {
             // TODO: use a spatial index to improve performance

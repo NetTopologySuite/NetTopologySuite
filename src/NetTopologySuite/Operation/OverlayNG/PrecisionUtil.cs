@@ -5,78 +5,73 @@ using NetTopologySuite.Mathematics;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
-    /**
-     * Functions for computing precision model scale factors
-     * that ensure robust geometry operations.
-     * In particular, these can be used to
-     * automatically determine appropriate scale factors for operations 
-     * using limited-precision noding (such as {@link OverlayNG}).
-     * 
-     * @author Martin Davis
-     *
-     */
-    public class PrecisionUtil
+    /// <summary>
+    /// Functions for computing precision model scale factors
+    /// that ensure robust geometry operations.
+    /// In particular, these can be used to
+    /// automatically determine appropriate scale factors for operations 
+    /// using limited-precision noding (such as <see cref="OverlayNG"/>).
+    /// </summary>
+    /// <author>Martin Davis</author>
+    public static class PrecisionUtility
     {
-        /**
-         * A number of digits of precision which leaves some computational "headroom"
-         * to ensure robust evaluation of certain double-precision floating point geometric operations.
-         * 
-         * This value should be less than the maximum decimal precision of double-precision values (16).
-         */
+        /// <summary>
+        /// A number of digits of precision which leaves some computational "headroom"
+        /// to ensure robust evaluation of certain double-precision floating point geometric operations.
+        /// <para/>
+        /// This value should be less than the maximum decimal precision of double-precision values (16).
+        /// </summary>
         public static int MAX_ROBUST_DP_DIGITS = 14;
 
-        /**
-         * Determines a precision model to 
-         * use for robust overlay operations.
-         * The precision scale factor is chosen to maximize 
-         * output precision while avoiding round-off issues.
-         * <p>
-         * NOTE: this is a heuristic determination, so is not guaranteed to 
-         * eliminate precision issues.
-         * <p>
-         * WARNING: this is quite slow.
-         * 
-         * @param a a geometry
-         * @param b a geometry
-         * @return a suitable precision model for overlay
-         */
+        /// <summary>
+        /// Determines a precision model to 
+        /// use for robust overlay operations.
+        /// The precision scale factor is chosen to maximize 
+        /// output precision while avoiding round-off issues.
+        /// <para/>
+        /// NOTE: this is a heuristic determination, so is not guaranteed to 
+        /// eliminate precision issues.
+        /// <para/>
+        /// WARNING: this is quite slow.
+        /// </summary>
+        /// <param name="a">A geometry</param>
+        /// <param name="b">A geometry</param>
+        /// <returns>A suitable precision model for overlay</returns>
         public static PrecisionModel RobustPM(Geometry a, Geometry b)
         {
-            double scale = PrecisionUtil.RobustScale(a, b);
+            double scale = RobustScale(a, b);
             return new PrecisionModel(scale);
         }
 
-        /**
-         * Determines a precision model to 
-         * use for robust overlay operations for one geometry.
-         * The precision scale factor is chosen to maximize 
-         * output precision while avoiding round-off issues.
-         * <p>
-         * NOTE: this is a heuristic determination, so is not guaranteed to 
-         * eliminate precision issues.
-         * <p>
-         * WARNING: this is quite slow.
-         * 
-         * @param a a geometry
-         * @return a suitable precision model for overlay
-         */
+        /// <summary>
+        /// Determines a precision model to 
+        /// use for robust overlay operations.
+        /// The precision scale factor is chosen to maximize 
+        /// output precision while avoiding round-off issues.
+        /// <para/>
+        /// NOTE: this is a heuristic determination, so is not guaranteed to 
+        /// eliminate precision issues.
+        /// <para/>
+        /// WARNING: this is quite slow.
+        /// </summary>
+        /// <param name="a">A geometry</param>
+        /// <returns>A suitable precision model for overlay</returns>
         public static PrecisionModel RobustPM(Geometry a)
         {
-            double scale = PrecisionUtil.RobustScale(a);
+            double scale = RobustScale(a);
             return new PrecisionModel(scale);
         }
 
-        /**
-         * Determines a scale factor which maximizes 
-         * the digits of precision and is 
-         * safe to use for overlay operations.
-         * The robust scale is the minimum of the 
-         * inherent scale and the safe scale factors.
-         * 
-         * @param a a geometry 
-         * @param b a geometry
-         * @return a scale factor for use in overlay operations
-         */
+        /// <summary>
+        /// Determines a scale factor which maximizes 
+        /// the digits of precision and is 
+        /// safe to use for overlay operations.
+        /// The robust scale is the minimum of the 
+        /// inherent scale and the safe scale factors.
+        /// </summary>
+        /// <param name="a">A geometry</param>
+        /// <param name="b">A geometry</param>
+        /// <returns>A scale factor for use in overlay operations</returns>
         public static double RobustScale(Geometry a, Geometry b)
         {
             double inherentScale = InherentScale(a, b);
@@ -84,16 +79,15 @@ namespace NetTopologySuite.Operation.OverlayNg
             return RobustScale(inherentScale, safeScale);
         }
 
-        /**
-         * Determines a scale factor which maximizes 
-         * the digits of precision and is 
-         * safe to use for overlay operations.
-         * The robust scale is the minimum of the 
-         * inherent scale and the safe scale factors.
-         * 
-         * @param a a geometry 
-         * @return a scale factor for use in overlay operations
-         */
+        /// <summary>
+        /// Determines a scale factor which maximizes 
+        /// the digits of precision and is 
+        /// safe to use for overlay operations.
+        /// The robust scale is the minimum of the 
+        /// inherent scale and the safe scale factors.
+        /// </summary>
+        /// <param name="a">A geometry</param>
+        /// <returns>A scale factor for use in overlay operations</returns>
         public static double RobustScale(Geometry a)
         {
             double inherentScale = InherentScale(a);
@@ -103,7 +97,7 @@ namespace NetTopologySuite.Operation.OverlayNg
 
         private static double RobustScale(double inherentScale, double safeScale)
         {
-            /**
+            /*
              * Use safe scale if lower, 
              * since it is important to preserve some precision for robustness
              */
@@ -116,44 +110,41 @@ namespace NetTopologySuite.Operation.OverlayNg
             return safeScale;
         }
 
-        /**
-         * Computes a safe scale factor for a numeric value.
-         * A safe scale factor ensures that rounded 
-         * number has no more than {@link MAX_PRECISION_DIGITS} 
-         * digits of precision.
-         * 
-         * @param value a numeric value
-         * @return a safe scale factor for the value
-         */
+        /// <summary>
+        /// Computes a safe scale factor for a numeric value.
+        /// A safe scale factor ensures that rounded 
+        /// number has no more than <see cref="MAX_ROBUST_DP_DIGITS"/> 
+        /// digits of precision.
+        /// </summary>
+        /// <param name="value">A numeric value.</param>
+        /// <returns>A safe scale factor for the value</returns>
         public static double SafeScale(double value)
         {
             return PrecisionScale(value, MAX_ROBUST_DP_DIGITS);
         }
 
-        /**
-         * Computes a safe scale factor for a geometry.
-         * A safe scale factor ensures that the rounded 
-         * ordinates have no more than {@link MAX_PRECISION_DIGITS} 
-         * digits of precision.
-         * 
-         * @param geom a geometry
-         * @return a safe scale factor for the geometry ordinates
-         */
+        /// <summary>
+        /// Computes a safe scale factor for a geometry.
+        /// A safe scale factor ensures that rounded 
+        /// number has no more than <see cref="MAX_ROBUST_DP_DIGITS"/> 
+        /// digits of precision.
+        /// </summary>
+        /// <param name="geom">A geometry.</param>
+        /// <returns>A safe scale factor for the geometry ordinates</returns>
         public static double SafeScale(Geometry geom)
         {
             return SafeScale(MaxBoundMagnitude(geom.EnvelopeInternal));
         }
 
-        /**
-         * Computes a safe scale factor for two geometries.
-         * A safe scale factor ensures that the rounded 
-         * ordinates have no more than {@link MAX_PRECISION_DIGITS} 
-         * digits of precision.
-         * 
-         * @param a a geometry
-         * @param b a geometry (which may be null)
-         * @return a safe scale factor for the geometry ordinates
-         */
+        /// <summary>
+        /// Computes a safe scale factor for two geometry.
+        /// A safe scale factor ensures that rounded 
+        /// number has no more than <see cref="MAX_ROBUST_DP_DIGITS"/> 
+        /// digits of precision.
+        /// </summary>
+        /// <param name="a">A geometry.</param>
+        /// <param name="b">A geometry (which may be <c>null</c>).</param>
+        /// <returns>A safe scale factor for the geometry ordinates</returns>
         public static double SafeScale(Geometry a, Geometry b)
         {
             double maxBnd = MaxBoundMagnitude(a.EnvelopeInternal);
@@ -163,19 +154,18 @@ namespace NetTopologySuite.Operation.OverlayNg
                 maxBnd = Math.Max(maxBnd, maxBndB);
             }
 
-            double scale = PrecisionUtil.SafeScale(maxBnd);
+            double scale = SafeScale(maxBnd);
             return scale;
         }
 
-        /**
-         * Determines the maximum magnitude (absolute value) of the bounds of an
-         * of an envelope.
-         * This is equal to the largest ordinate value
-         * which must be accommodated by a scale factor.
-         * 
-         * @param env an envelope
-         * @return the value of the maximum bound magnitude
-         */
+        /// <summary>
+        /// Determines the maximum magnitude (absolute value) of the bounds of an
+        /// of an envelope.
+        /// This is equal to the largest ordinate value
+        /// which must be accommodated by a scale factor.
+        /// </summary>
+        /// <param name="env">An envelope</param>
+        /// <returns>The value of the maximum bound magnitude</returns>
         private static double MaxBoundMagnitude(Envelope env)
         {
             return MathUtil.Max(
@@ -187,24 +177,22 @@ namespace NetTopologySuite.Operation.OverlayNg
         }
 
         // TODO: move to PrecisionModel?
-        /**
-         * Computes the scale factor which will
-         * produce a given number of digits of precision (significant digits)
-         * when used to round the given number.
-         * <p>
-         * For example: to provide 5 decimal digits of precision
-         * for the number 123.456 the precision scale factor is 100;
-         * for 3 digits of precision the scale factor is 1;
-         * for 2 digits of precision the scale factor is 0.1. 
-         * <p>
-         * Rounding to the scale factor can be performed with {@link PrecisionModel#round}
-         * 
-         * @param value a number to be rounded
-         * @param precisionDigits the number of digits of precision required
-         * @return scale factor which provides the required number of digits of precision 
-         * 
-         * @see PrecisionModel.round
-         */
+        /// <summary>
+        /// Computes the scale factor which will
+        /// produce a given number of digits of precision(significant digits)
+        /// when used to round the given number.
+        /// <para/>
+        /// For example: to provide 5 decimal digits of precision
+        /// for the number 123.456 the precision scale factor is 100;
+        /// for 3 digits of precision the scale factor is 1;
+        /// for 2 digits of precision the scale factor is 0.1. 
+        /// <para/>
+        /// Rounding to the scale factor can be performed with <see cref="PrecisionModel.Round"/>
+        /// </summary>
+        /// <param name="value">A number to be rounded</param>
+        /// <param name="precisionDigits">The number of digits of precision required</param>
+        /// <returns>The scale factor which provides the required number of digits of precision</returns>
+        /// <see cref="PrecisionModel.Round"/>
         private static double PrecisionScale(
             double value, int precisionDigits)
         {
@@ -216,21 +204,20 @@ namespace NetTopologySuite.Operation.OverlayNg
             return scaleFactor;
         }
 
-        /**
-         * Computes the inherent scale of a number.
-         * The inherent scale is the scale factor for rounding
-         * which preserves <b>all</b> digits of precision 
-         * (significant digits)
-         * present in the numeric value.
-         * In other words, it is the scale factor which does not
-         * change the numeric value when rounded:
-         * <pre>
-         *   num = round( num, inherentScale(num) )
-         * </pre>
-         * 
-         * @param value a number
-         * @return the inherent scale factor of the number
-         */
+        /// <summary>
+        /// Computes the inherent scale of a number.
+        /// The inherent scale is the scale factor for rounding
+        /// which preserves <b>all</b> digits of precision 
+        /// (significant digits)
+        /// present in the numeric value.
+        /// In other words, it is the scale factor which does not
+        /// change the numeric value when rounded:
+        /// <code>
+        ///   num = round( num, inherentScale(num) )
+        /// </code>
+        /// </summary>
+        /// <param name="value">A number</param>
+        /// <returns>The inherent scale factor of the number</returns>
         public static double InherentScale(double value)
         {
             int numDec = NumberOfDecimals(value);
@@ -238,19 +225,18 @@ namespace NetTopologySuite.Operation.OverlayNg
             return scaleFactor;
         }
 
-        /**
-         * Computes the inherent scale of a geometry.
-         * The inherent scale is the scale factor for rounding
-         * which preserves <b>all</b> digits of precision 
-         * (significant digits)
-         * present in the geometry ordinates.
-         * <p>
-         * This is the maximum inherent scale
-         * of all ordinate values in the geometry.
-         *  
-         * @param value a number
-         * @return the inherent scale factor of the number
-         */
+        /// <summary>
+        /// Computes the inherent scale of a geometry.
+        /// The inherent scale is the scale factor for rounding
+        /// which preserves <b>all</b> digits of precision 
+        /// (significant digits)
+        /// present in the geometry ordinates.
+        /// <para/>
+        /// This is the maximum inherent scale
+        /// of all ordinate values in the geometry.
+        /// </summary>
+        /// <param name="geom">A geometry</param>
+        /// <returns>The inherent scale factor in the geometry's ordinates</returns>
         public static double InherentScale(Geometry geom)
         {
             var scaleFilter = new InherentScaleFilter();
@@ -258,26 +244,25 @@ namespace NetTopologySuite.Operation.OverlayNg
             return scaleFilter.Scale;
         }
 
-        /**
-         * Computes the inherent scale of two geometries.
-         * The inherent scale is the scale factor for rounding
-         * which preserves <b>all</b> digits of precision 
-         * (significant digits)
-         * present in the geometry ordinates.
-         * <p>
-         * This is the maximum inherent scale
-         * of all ordinate values in the geometries.
-         * 
-         * @param a a geometry
-         * @param b a geometry
-         * @return the inherent scale factor of the two geometries
-         */
+        /// <summary>
+        /// Computes the inherent scale of two geometries.
+        /// The inherent scale is the scale factor for rounding
+        /// which preserves <b>all</b> digits of precision 
+        /// (significant digits)
+        /// present in the geometry ordinates.
+        /// <para/>
+        /// This is the maximum inherent scale
+        /// of all ordinate values in the geometries.
+        /// </summary>
+        /// <param name="a">A geometry</param>
+        /// <param name="b">A geomety (which may be <c>null</c>)</param>
+        /// <returns>The inherent scale factor in the geometries' ordinates</returns>
         public static double InherentScale(Geometry a, Geometry b)
         {
-            double scale = PrecisionUtil.InherentScale(a);
+            double scale = InherentScale(a);
             if (b != null)
             {
-                double scaleB = PrecisionUtil.InherentScale(b);
+                double scaleB = InherentScale(b);
                 scale = Math.Max(scale, scaleB);
             }
 
@@ -299,21 +284,20 @@ namespace NetTopologySuite.Operation.OverlayNg
         }
         */
 
-        /**
-         * Determines the 
-         * number of decimal places represented in a double-precision
-         * number (as determined by Java).
-         * This uses the Java double-precision print routine 
-         * to determine the number of decimal places,
-         * This is likely not optimal for performance, 
-         * but should be accurate and portable. 
-         * 
-         * @param value a numeric value
-         * @return the number of decimal places in the value
-         */
+        /// <summary>
+        /// Determines the 
+        /// number of decimal places represented in a double-precision
+        /// number (as determined by Java).
+        /// This uses the Java double-precision print routine 
+        /// to determine the number of decimal places,
+        /// This is likely not optimal for performance, 
+        /// but should be accurate and portable. 
+        /// </summary>
+        /// <param name="value">A numeric value</param>
+        /// <returns>The number of decimal places in the value</returns>
         private static int NumberOfDecimals(double value)
         {
-            /**
+            /*
              * Ensure that scientific notation is NOT used
              * (it would skew the number of fraction digits)
              */
@@ -327,13 +311,11 @@ namespace NetTopologySuite.Operation.OverlayNg
             return len - decIndex - 1;
         }
 
-        /**
-         * Applies the inherent scale calculation 
-         * to every ordinate in a geometry.
-         * 
-         * @author Martin Davis
-         *
-         */
+        /// <summary>
+        /// Applies the inherent scale calculation 
+        /// to every ordinate in a geometry.
+        /// </summary>
+        /// <author>Martin Davis</author>
         private class InherentScaleFilter : IEntireCoordinateSequenceFilter
         {
 
@@ -355,7 +337,7 @@ namespace NetTopologySuite.Operation.OverlayNg
 
             private void UpdateScaleMax(double value)
             {
-                double scaleVal = PrecisionUtil.InherentScale(value);
+                double scaleVal = PrecisionUtility.InherentScale(value);
                 if (scaleVal > _scale)
                 {
                     //System.out.println("Value " + value + " has scale: " + scaleVal);

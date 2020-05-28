@@ -5,22 +5,20 @@ using NetTopologySuite.Noding;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
-    /**
-     * A noder which extracts all line segments 
-     * as {@link SegmentString}s.
-     * This enables fast overlay of geometries which are known to be already fully noded.
-     * In particular, it provides fast union of polygonal and linear coverages.
-     * Unioning a noded set of lines is an effective way 
-     * to perform line merging and line dissolving.
-     * <p>
-     * No precision reduction is carried out. 
-     * If that is required, another noder must be used (such as a snap-rounding noder),
-     * or the input must be precision-reduced beforehand.
-     * 
-     * @author Martin Davis
-     *
-     */
-    class SegmentExtractingNoder : INoder
+    /// <summary>
+    /// A noder which extracts all line segments 
+    /// as {@link SegmentString}s.
+    /// This enables fast overlay of geometries which are known to be already fully noded.
+    /// In particular, it provides fast union of polygonal and linear coverages.
+    /// Unioning a noded set of lines is an effective way 
+    /// to perform line merging and line dissolving.
+    /// <para/>
+    /// No precision reduction is carried out. 
+    /// If that is required, another noder must be used (such as a snap-rounding noder),
+    /// or the input must be precision-reduced beforehand.
+    /// </summary>
+    /// <author>Martin Davis</author>
+    internal class SegmentExtractingNoder : INoder
     {
         private List<ISegmentString> _segList;
 

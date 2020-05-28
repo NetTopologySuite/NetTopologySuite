@@ -17,7 +17,7 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// </list>
     /// </summary>
     /// <author>Martin Davis</author>
-    class OverlayPoints
+    internal class OverlayPoints
     {
         /// <summary>
         /// Performs an overlay operation on inputs which are both point geometries.
@@ -49,10 +49,10 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// <param name="pm">The precision model to use</param>
         public OverlayPoints(SpatialFunction opCode, Geometry geom0, Geometry geom1, PrecisionModel pm)
         {
-            this._opCode = opCode;
-            this._geom0 = geom0;
-            this._geom1 = geom1;
-            this._pm = pm;
+            _opCode = opCode;
+            _geom0 = geom0;
+            _geom1 = geom1;
+            _pm = pm;
             _geometryFactory = geom0.Factory;
         }
 
@@ -83,7 +83,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
 
             if (_resultList.Count == 0)
-                return OverlayUtility.createEmptyResult(0, _geometryFactory);
+                return OverlayUtility.CreateEmptyResult(0, _geometryFactory);
 
             return _geometryFactory.BuildGeometry(_resultList);
         }

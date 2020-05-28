@@ -52,7 +52,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// </summary>
         /// <param name="pts">The points of the ring</param>
         /// <returns>The points of the clipped ring</returns>
-        public Coordinate[] clip(Coordinate[] pts)
+        public Coordinate[] Clip(Coordinate[] pts)
         {
             for (int edgeIndex = 0; edgeIndex < 4; edgeIndex++)
             {
@@ -161,24 +161,24 @@ namespace NetTopologySuite.Operation.OverlayNg
 
         private bool IsInsideEdge(Coordinate p, int edgeIndex)
         {
-            bool isInside = false;
+            //bool isInside = false;
             switch (edgeIndex)
             {
                 case BoxBottom: // bottom
-                    isInside = p.Y > _clipEnvMinY;
-                    break;
+                    return /*isInside =*/ p.Y > _clipEnvMinY;
+                    //break;
                 case BoxRight: // right
-                    isInside = p.X < _clipEnvMaxX;
-                    break;
+                    return /*isInside =*/ p.X < _clipEnvMaxX;
+                    //break;
                 case BoxTop: // top
-                    isInside = p.Y < _clipEnvMaxY;
-                    break;
+                    return /*isInside =*/ p.Y < _clipEnvMaxY;
+                    //break;
                 case BoxLeft:
                 default: // left
-                    isInside = p.X > _clipEnvMinX;
-                    break;
+                    return /*isInside =*/ p.X > _clipEnvMinX;
+                    //break;
             }
-            return isInside;
+            //return isInside;
         }
 
     }

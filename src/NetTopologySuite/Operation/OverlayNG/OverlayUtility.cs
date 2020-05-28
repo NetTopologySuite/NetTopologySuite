@@ -10,12 +10,12 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// Utility methods for overlay processing.
     /// </summary>
     /// <author>Martin Davis</author>
-    class OverlayUtility
+    internal static class OverlayUtility
     {
 
         private const int SafeEnvExpandFactor = 3;
 
-        static double expandDistance(Envelope env, PrecisionModel pm)
+        static double ExpandDistance(Envelope env, PrecisionModel pm)
         {
             double envExpandDist;
             if (pm.IsFloating)
@@ -33,98 +33,97 @@ namespace NetTopologySuite.Operation.OverlayNg
             return envExpandDist;
         }
 
-        static Envelope safeOverlapEnv(Envelope env, PrecisionModel pm)
+        static Envelope SafeOverlapEnv(Envelope env, PrecisionModel pm)
         {
-            double envExpandDist = expandDistance(env, pm);
+            double envExpandDist = ExpandDistance(env, pm);
             var safeEnv = env.Copy();
             safeEnv.ExpandBy(envExpandDist);
             return safeEnv;
         }
 
-        internal static Envelope clippingEnvelope(SpatialFunction opCode, InputGeometry inputGeom, PrecisionModel pm)
+        internal static Envelope ClippingEnvelope(SpatialFunction opCode, InputGeometry inputGeom, PrecisionModel pm)
         {
             Envelope clipEnv = null;
             switch (opCode)
             {
                 case OverlayNG.INTERSECTION:
-                    var envA = safeOverlapEnv(inputGeom.GetEnvelope(0), pm);
-                    var envB = safeOverlapEnv(inputGeom.GetEnvelope(1), pm);
+                    var envA = SafeOverlapEnv(inputGeom.GetEnvelope(0), pm);
+                    var envB = SafeOverlapEnv(inputGeom.GetEnvelope(1), pm);
                     clipEnv = envA.Intersection(envB);
                     break;
                 case OverlayNG.DIFFERENCE:
-                    clipEnv = safeOverlapEnv(inputGeom.GetEnvelope(0), pm);
+                    clipEnv = SafeOverlapEnv(inputGeom.GetEnvelope(0), pm);
                     break;
             }
             return clipEnv;
         }
 
-        /**
-         * Tests if the result can be determined to be empty
-         * based on simple properties of the input geometries
-         * (such as whether one or both are empty, 
-         * or their envelopes are disjoint).
-         * 
-         * @param opCode the overlay operation
-         * @param inputGeom the input geometries
-         * @return true if the overlay result is determined to be empty
-         */
-        internal static bool isEmptyResult(SpatialFunction opCode, Geometry a, Geometry b, PrecisionModel pm)
+        /// <summary>
+        /// Tests if the result can be determined to be empty
+        /// based on simple properties of the input geometries
+        /// (such as whether one or both are empty, 
+        /// or their envelopes are disjoint).
+        /// </summary>
+        /// <param name="opCode">The overlay operation</param>
+        /// <param name="a">The A operand geometry</param>
+        /// <param name="b">The B operand geometry</param>
+        /// <param name="pm">The precision model to use</param>
+        /// <returns><c>true</c> if the overlay result is determined to be empty</returns>
+        internal static bool IsEmptyResult(SpatialFunction opCode, Geometry a, Geometry b, PrecisionModel pm)
         {
             switch (opCode)
             {
                 case OverlayNG.INTERSECTION:
-                    if (isEnvDisjoint(a, b, pm))
+                    if (IsEnvDisjoint(a, b, pm))
                         return true;
                     break;
                 case OverlayNG.DIFFERENCE:
-                    if (isEmpty(a))
+                    if (IsEmpty(a))
                         return true;
                     break;
                 case OverlayNG.UNION:
                 case OverlayNG.SYMDIFFERENCE:
-                    if (isEmpty(a) && isEmpty(b))
+                    if (IsEmpty(a) && IsEmpty(b))
                         return true;
                     break;
             }
             return false;
         }
 
-        private static bool isEmpty(Geometry geom)
+        private static bool IsEmpty(Geometry geom)
         {
             return geom == null || geom.IsEmpty;
         }
 
-        /**
-         * Tests if the geometry envelopes are disjoint, or empty.
-         * The disjoint test must take into account the precision model
-         * being used, since geometry coordinates may shift under rounding.
-         * 
-         * @param a a geometry
-         * @param b a geometry
-         * @param pm the precision model being used
-         * @return true if the geometry envelopes are disjoint or empty
-         */
-        static bool isEnvDisjoint(Geometry a, Geometry b, PrecisionModel pm)
+        /// <summary>
+        /// Tests if the geometry envelopes are disjoint, or empty.
+        /// The disjoint test must take into account the precision model
+        /// being used, since geometry coordinates may shift under rounding.
+        /// </summary>
+        /// <param name="a">The A operand geometry</param>
+        /// <param name="b">The B operand geometry</param>
+        /// <param name="pm">The precision model to use</param>
+        /// <returns><c>true</c> if the geometry envelopes are disjoint or empty</returns>
+        private static bool IsEnvDisjoint(Geometry a, Geometry b, PrecisionModel pm)
         {
-            if (isEmpty(a) || isEmpty(b)) return true;
+            if (IsEmpty(a) || IsEmpty(b)) return true;
             if (pm.IsFloating)
             {
                 return a.EnvelopeInternal.Disjoint(b.EnvelopeInternal);
             }
-            return isDisjoint(a.EnvelopeInternal, b.EnvelopeInternal, pm);
+            return IsDisjoint(a.EnvelopeInternal, b.EnvelopeInternal, pm);
         }
 
-        /**
-         * Tests for disjoint envelopes adjusting for rounding 
-         * caused by a fixed precision model.
-         * Assumes envelopes are non-empty.
-         * 
-         * @param envA an envelope
-         * @param envB an envelope
-         * @param pm the precision model
-         * @return true if the envelopes are disjoint
-         */
-        private static bool isDisjoint(Envelope envA, Envelope envB, PrecisionModel pm)
+        /// <summary>
+        /// Tests for disjoint envelopes adjusting for rounding
+        /// caused by a fixed precision model.
+        /// Assumes envelopes are non-empty.
+        /// </summary>
+        /// <param name="envA">The A operand envelope</param>
+        /// <param name="envB">The B operand envelope</param>
+        /// <param name="pm">The precision model to use</param>
+        /// <returns><c>true</c> if the envelopes are disjoint</returns>
+        private static bool IsDisjoint(Envelope envA, Envelope envB, PrecisionModel pm)
         {
             if (pm.MakePrecise(envB.MinX) > pm.MakePrecise(envA.MaxX)) return true;
             if (pm.MakePrecise(envB.MaxX) < pm.MakePrecise(envA.MinX)) return true;
@@ -133,28 +132,25 @@ namespace NetTopologySuite.Operation.OverlayNg
             return false;
         }
 
-        /**
-         * Creates an empty result geometry of the appropriate dimension,
-         * based on the given overlay operation and the dimensions of the inputs.
-         * The created geometry is always an atomic geometry, 
-         * not a collection.
-         * <p>
-         * The empty result is constructed using the following rules:
-         * <ul>
-         * <li>{@link OverlayNG#INTERSECTION} - result has the dimension of the lowest input dimension
-         * <li>{@link OverlayNG#UNION} - result has the dimension of the highest input dimension
-         * <li>{@link OverlayNG#DIFFERENCE} - result has the dimension of the left-hand input
-         * <li>{@link OverlayNG#SYMDIFFERENCE} - result has the dimension of the highest input dimension
-         * (since the Symmetric Difference is the Union of the Differences).
-         * </ul>
-         * 
-         * @param overlayOpCode the code for the overlay operation being performed
-         * @param a an input geometry
-         * @param b an input geometry
-         * @param geomFact the geometry factory being used for the operation
-         * @return an empty atomic geometry of the appropriate dimension
-         */
-        internal static Geometry createEmptyResult(Dimension dim, GeometryFactory geomFact)
+        /// <summary>
+        /// Creates an empty result geometry of the appropriate dimension,
+        /// based on the given overlay operation and the dimensions of the inputs.
+        /// The created geometry is always an atomic geometry, 
+        /// not a collection.
+        /// <para/>
+        /// The empty result is constructed using the following rules:
+        /// <list type="bullet">
+        /// <item><term><see cref="SpatialFunction.Intersection"/></term><description>result has the dimension of the lowest input dimension</description></item>
+        /// <item><term><see cref="SpatialFunction.Union"/></term><description>result has the dimension of the highest input dimension</description></item>
+        /// <item><term><see cref="SpatialFunction.Difference"/></term><description>result has the dimension of the left-hand input</description></item>
+        /// <item><term><see cref="SpatialFunction.SymDifference"/></term><description>result has the dimension of the highest input dimension
+        /// (since the Symmetric Difference is the Union of the Differences).</description></item>
+        /// </list>
+        /// </summary>
+        /// <param name="dim">The dimension of the empty geometry</param>
+        /// <param name="geomFact">The geometry factory being used for the operation</param>
+        /// <returns>An empty atomic geometry of the appropriate dimension</returns>
+        internal static Geometry CreateEmptyResult(Dimension dim, GeometryFactory geomFact)
         {
             Geometry result = null;
             switch (dim)
@@ -175,18 +171,17 @@ namespace NetTopologySuite.Operation.OverlayNg
             return result;
         }
 
-        /**
-         * Computes the dimension of the result of
-         * applying the given operation to inputs
-         * with the given dimensions.
-         * This assumes that complete collapse does not occur.
-         * 
-         * @param opCode the overlay operation
-         * @param dim0 dimension of the LH input
-         * @param dim1 dimension of the RH input
-         * @return
-         */
-        internal static Dimension resultDimension(SpatialFunction opCode, Dimension dim0, Dimension dim1)
+        /// <summary>
+        /// Computes the dimension of the result of
+        /// applying the given operation to inputs
+        /// with the given dimensions.
+        /// This assumes that complete collapse does not occur.
+        /// </summary>
+        /// <param name="opCode">The overlay operation</param>
+        /// <param name="dim0">Dimension of the LH input</param>
+        /// <param name="dim1">Dimension of the RH input</param>
+        /// <returns></returns>
+        internal static Dimension ResultDimension(SpatialFunction opCode, Dimension dim0, Dimension dim1)
         {
             var resultDimension = Dimension.False;
             switch (opCode)
@@ -201,7 +196,7 @@ namespace NetTopologySuite.Operation.OverlayNg
                     resultDimension = dim0;
                     break;
                 case OverlayNG.SYMDIFFERENCE:
-                    /**
+                    /*
                      * This result is chosen because
                      * <pre>
                      * SymDiff = Union( Diff(A, B), Diff(B, A) )
@@ -214,16 +209,15 @@ namespace NetTopologySuite.Operation.OverlayNg
             return resultDimension;
         }
 
-        /**
-         * Creates an overlay result geometry for homogeneous or mixed components.
-         *  
-         * @param resultPolyList the list of result polygons (may be empty or null)
-         * @param resultLineList the list of result lines (may be empty or null)
-         * @param resultPointList the list of result points (may be empty or null)
-         * @param geometryFactory the geometry factory to use
-         * @return a geometry structured according to the overlay result semantics
-         */
-        internal static Geometry createResultGeometry(IEnumerable<Polygon> resultPolyList, IEnumerable<LineString> resultLineList, IEnumerable<Point> resultPointList, GeometryFactory geometryFactory)
+        /// <summary>
+        /// Creates an overlay result geometry for homogeneous or mixed components.
+        /// </summary>
+        /// <param name="resultPolyList">An enumeration of result polygons (may be empty or <c>null</c>)</param>
+        /// <param name="resultLineList">An enumeration of result lines (may be empty or <c>null</c>)</param>
+        /// <param name="resultPointList">An enumeration of result points (may be empty or <c>null</c>)</param>
+        /// <param name="geometryFactory">The geometry factory to use.</param>
+        /// <returns>A geometry structured according to the overlay result semantics</returns>
+        internal static Geometry CreateResultGeometry(IEnumerable<Polygon> resultPolyList, IEnumerable<LineString> resultLineList, IEnumerable<Point> resultPointList, GeometryFactory geometryFactory)
         {
             var geomList = new List<Geometry>();
 
@@ -239,7 +233,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             return geometryFactory.BuildGeometry(geomList);
         }
 
-        internal static Geometry toLines(OverlayGraph graph, bool isOutputEdges, GeometryFactory geomFact)
+        internal static Geometry ToLines(OverlayGraph graph, bool isOutputEdges, GeometryFactory geomFact)
         {
             var lines = new List<LineString>();
             foreach (var edge in graph.Edges)
@@ -261,14 +255,14 @@ namespace NetTopologySuite.Operation.OverlayNg
                 + (edge.IsInResultArea ? " Res" : "");
         }
 
-        /**
-         * Round the key point if precision model is fixed.
-         * Note: return value is only copied if rounding is performed.
-         * 
-         * @param pt the Point to round
-         * @return the rounded point coordinate, or null if empty
-         */
-        public static Coordinate round(Point pt, PrecisionModel pm)
+        /// <summary>
+        /// Round the key point if precision model is fixed.
+        /// Note: return value is only copied if rounding is performed.
+        /// </summary>
+        /// <param name="pt">The point to round</param>
+        /// <param name="pm">The precision model to use</param>
+        /// <returns>The rounded point coordinate, or null if empty</returns>
+        public static Coordinate Round(Point pt, PrecisionModel pm)
         {
             if (pt.IsEmpty) return null;
             var p = pt.Coordinate.Copy();

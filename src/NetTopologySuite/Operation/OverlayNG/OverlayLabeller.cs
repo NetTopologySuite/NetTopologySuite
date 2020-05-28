@@ -12,7 +12,7 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// for the edges in an <see cref="OverlayGraph"/>.
     /// </summary>
     /// <author>Martin Davis</author>
-    class OverlayLabeller
+    internal class OverlayLabeller
     {
         private readonly OverlayGraph _graph;
         private readonly InputGeometry _inputGeometry;
@@ -25,17 +25,16 @@ namespace NetTopologySuite.Operation.OverlayNg
             _edges = graph.Edges;
         }
 
-        /**
-         * Computes the topological labelling for the edges in the graph.
-         * 
-         */
+        /// <summary>
+        /// Computes the topological labelling for the edges in the graph.
+        /// </summary>
         public void ComputeLabelling()
         {
             var nodes = _graph.NodeEdges;
             LabelAreaNodeEdges(nodes);
 
             //TODO: is there a way to avoid scanning all edges in these steps?
-            /**
+            /*
              * At this point collapsed edges labeled with location UNKNOWN
              * must be disconnected from the area edges of the parent.
              * They can be located based on their parent ring role (shell or hole).
@@ -45,14 +44,12 @@ namespace NetTopologySuite.Operation.OverlayNg
             LabelDisconnectedEdges();
         }
 
-
-        /**
-         * Labels node edges based on the arrangement
-         * of boundary edges incident on them.
-         * Also propagates the labelling to connected linear edges.
-         *  
-         * @param nodes the nodes to label
-         */
+        /// <summary>
+        /// Labels node edges based on the arrangement
+        /// of boundary edges incident on them.
+        /// Also propagates the labelling to connected linear edges.
+        /// </summary>
+        /// <param name="nodes">The nodes to label</param>
         private void LabelAreaNodeEdges(IEnumerable<OverlayEdge> nodes)
         {
             foreach (var nodeEdge in nodes)
@@ -63,20 +60,19 @@ namespace NetTopologySuite.Operation.OverlayNg
                     PropagateAreaLocations(nodeEdge, 1);
                 }
             }
-            labelConnectedLinearEdges();
+            LabelConnectedLinearEdges();
         }
 
-        /**
-         * Scans around a node CCW, propagating the side labels
-         * for a given area geometry to all edges (and their sym)
-         * with unknown locations for that geometry.
-         * @param e2 
-         * 
-         * @param geomIndex the geometry to propagate locations for
-         */
+        /// <summary>
+        /// Scans around a node CCW, propagating the side labels
+        /// for a given area geometry to all edges (and their sym)
+        /// with unknown locations for that geometry.
+        /// </summary>
+        /// <param name="nodeEdge"></param>
+        /// <param name="geomIndex">The geometry to propagate locations for</param>
         public static void PropagateAreaLocations(OverlayEdge nodeEdge, int geomIndex)
         {
-            /**
+            /*
              * This handles dangling edges created by overlap limiting
              */
             if (nodeEdge.Degree() == 1) return;
@@ -98,7 +94,7 @@ namespace NetTopologySuite.Operation.OverlayNg
                 var label = e.Label;
                 if (!label.IsBoundary(geomIndex))
                 {
-                    /**
+                    /*
                      * If this is not a Boundary edge for this input area, 
                      * its location is now known relative to this input area
                      */
@@ -107,7 +103,7 @@ namespace NetTopologySuite.Operation.OverlayNg
                 else
                 {
                     Assert.IsTrue(label.HasSides(geomIndex));
-                    /**
+                    /*
                      *  This is a boundary edge for the input area geom.
                      *  Update the current location from its labels.
                      *  Also check for topological consistency.
@@ -134,13 +130,12 @@ namespace NetTopologySuite.Operation.OverlayNg
             //Debug.print("AFTER: " + toString(eStart));
         }
 
-        /**
-         * Finds a boundary edge for this geom, if one exists
-         * 
-         * @param nodeEdge an edge for this node
-         * @param geomIndex the parent geometry index
-         * @return a boundary edge, or null if no boundary edge exists
-         */
+        /// <summary>
+        /// Finds a boundary edge for this geom, if one exists
+        /// </summary>
+        /// <param name="nodeEdge">An edge for this node</param>
+        /// <param name="geomIndex">The parent geometry index</param>
+        /// <returns>A boundary edge, or <c>null</c> if no boundary edge exists</returns>
         private static OverlayEdge FindPropagationStartEdge(OverlayEdge nodeEdge, int geomIndex)
         {
             var eStart = nodeEdge;
@@ -157,51 +152,51 @@ namespace NetTopologySuite.Operation.OverlayNg
             return null;
         }
 
-        /**
-         * At this point collapsed edges with unknown location
-         * must be disconnected from the boundary edges of the parent
-         * (because otherwise the location would have
-         * been propagated from them).
-         * They can be now located based on their parent ring role (shell or hole).
-         * (This cannot be done earlier, because the location
-         * based on the boundary edges must take precedence.
-         * There are situations where a collapsed edge has a location 
-         * which is different to its ring role - 
-         * e.g. a narrow gore in a polygon, which is in 
-         * the interior of the reduced polygon, but whose
-         * ring role would imply the location EXTERIOR.)
-         * 
-         * Note that collapsed edges can NOT have location determined via a PIP location check,
-         * because that is done against the unreduced input geometry,
-         * which may give an invalid result due to topology collapse.
-         * 
-         * The labeling is propagated to other connected edges, 
-         * since there may be NOT_PART edges which are connected, 
-         * and they need to be labeled in the same way.
-         */
+        /// <summary>
+        /// At this point collapsed edges with unknown location
+        /// must be disconnected from the boundary edges of the parent
+        /// (because otherwise the location would have
+        /// been propagated from them).<br/>
+        /// They can be now located based on their parent ring role(shell or hole).
+        /// (This cannot be done earlier, because the location
+        /// based on the boundary edges must take precedence.<br/>
+        /// There are situations where a collapsed edge has a location 
+        /// which is different to its ring role - 
+        /// e.g.a narrow gore in a polygon, which is in
+        /// the interior of the reduced polygon, but whose
+        /// ring role would imply the location EXTERIOR.)
+        /// <para/> 
+        /// Note that collapsed edges can NOT have location determined via a PIP location check,
+        /// because that is done against the unreduced input geometry,
+        /// which may give an invalid result due to topology collapse.
+        /// <para/>
+        /// The labeling is propagated to other connected edges,
+        /// since there may be NOT_PART edges which are connected,
+        /// and they need to be labeled in the same way.
+        /// </summary>
         private void LabelCollapsedEdges()
         {
             foreach (var edge in _edges)
             {
                 if (edge.Label.IsLineLocationUnknown(0))
                 {
-                    labelCollapsedEdge(edge, 0);
+                    LabelCollapsedEdge(edge, 0);
                 }
                 if (edge.Label.IsLineLocationUnknown(1))
                 {
-                    labelCollapsedEdge(edge, 1);
+                    LabelCollapsedEdge(edge, 1);
                 }
             }
-            labelConnectedLinearEdges();
+            LabelConnectedLinearEdges();
         }
 
-        private void labelCollapsedEdge(OverlayEdge edge, int geomIndex)
+        private void LabelCollapsedEdge(OverlayEdge edge, int geomIndex)
         {
             //Debug.println("\n------  labelCollapsedEdge - geomIndex= " + geomIndex);
             //Debug.print("BEFORE: " + edge.toStringNode());
             var label = edge.Label;
             if (!label.IsCollapse(geomIndex)) return;
-            /**
+            /*
              * This must be a collapsed edge which is disconnected
              * from any area edges (e.g. a fully collapsed shell or hole).
              * It can be labeled according to its parent source ring role. 
@@ -210,22 +205,22 @@ namespace NetTopologySuite.Operation.OverlayNg
             //Debug.print("AFTER: " + edge.toStringNode());
         }
 
-        /**
-         * There can be edges which have unknown location
-         * but are connected to a Line edge with known location.
-         * In this case line location is propagated to the connected edges.
-         */
-        private void labelConnectedLinearEdges()
+        /// <summary>
+        /// There can be edges which have unknown location
+        /// but are connected to a Line edge with known location.
+        /// In this case line location is propagated to the connected edges.
+        /// </summary>
+        private void LabelConnectedLinearEdges()
         {
             //TODO: can these be merged to avoid two scans?
-            propagateLineLocations(0);
+            PropagateLineLocations(0);
             if (_inputGeometry.HasEdges(1))
             {
-                propagateLineLocations(1);
+                PropagateLineLocations(1);
             }
         }
 
-        private void propagateLineLocations(int geomIndex)
+        private void PropagateLineLocations(int geomIndex)
         {
             // find L edges
             var lineEdges = FindLinearEdgesWithLocation(geomIndex);
@@ -237,6 +232,7 @@ namespace NetTopologySuite.Operation.OverlayNg
 
         private void PropagateLineLocations(int geomIndex, LinkedList<OverlayEdge> edgeStack)
         {
+            // TODO: edgeStack is a Deque<OverlayEdge> in JTS.
             // traverse line edges, labelling unknown ones that are connected
             while (edgeStack.Count > 0)
             {
@@ -253,10 +249,11 @@ namespace NetTopologySuite.Operation.OverlayNg
         private static void PropagateLineLocation(OverlayEdge eStart, int index,
             LinkedList<OverlayEdge> edgeStack, InputGeometry inputGeometry)
         {
+            // TODO: edgeStack is a Deque<OverlayEdge> in JTS.
             var e = eStart.ONextOE;
             var lineLoc = eStart.Label.GetLineLocation(index);
 
-            /**
+            /*
              * If the parent geom is an L (dim 1) 
              * then only propagate EXTERIOR locations.
              */
@@ -269,14 +266,14 @@ namespace NetTopologySuite.Operation.OverlayNg
                 //Debug.println("propagateLineLocationAtNode - checking " + index + ": " + e);
                 if (label.IsLineLocationUnknown(index))
                 {
-                    /**
+                    /*
                      * If edge is not a boundary edge, 
                      * its location is now known for this area
                      */
                     label.SetLocationLine(index, lineLoc);
                     //Debug.println("propagateLineLocationAtNode - setting "+ index + ": " + e);
 
-                    /**
+                    /*
                      * Add sym edge to stack for graph traversal
                      * (Don't add e itself, since e origin node has now been scanned)
                      */
@@ -286,12 +283,8 @@ namespace NetTopologySuite.Operation.OverlayNg
             } while (e != eStart);
         }
 
-        /**
-         * Finds all OverlayEdges which are labelled as L dimension.
-         * 
-         * @param geomIndex
-         * @return list of L edges
-         */
+        /// <summary>Finds all OverlayEdges which are labelled as L dimension.</summary>
+        /// <returns>A list of L edges</returns>
         private List<OverlayEdge> FindLinearEdgesWithLocation(int geomIndex)
         {
             var lineEdges = new List<OverlayEdge>();
@@ -307,20 +300,20 @@ namespace NetTopologySuite.Operation.OverlayNg
             return lineEdges;
         }
 
-        /**
-         * At this point there may still be edges which have unknown location
-         * relative to an input geometry.
-         * This must be because they are NOT_PART edges for that geometry, 
-         * and are disconnected from any edges of that geometry.
-         * An example of this is rings of one geometry wholly contained
-         * in another geometry.
-         * The location must be fully determined to compute a 
-         * correct result for all overlay operations.
-         * 
-         * If the input geometry is an Area the edge location can
-         * be determined via a PIP test.
-         * If the input is not an Area the location is EXTERIOR. 
-         */
+        /// <summary>
+        /// At this point there may still be edges which have unknown location
+        /// relative to an input geometry.<br/>
+        /// This must be because they are NOT_PART edges for that geometry,
+        /// and are disconnected from any edges of that geometry.
+        /// An example of this is rings of one geometry wholly contained
+        /// in another geometry.<br/>
+        /// The location must be fully determined to compute a
+        /// correct result for all overlay operations.
+        /// <para/>
+        /// If the input geometry is an Area the edge location can
+        /// be determined via a PIP test.
+        /// If the input is not an Area the location is EXTERIOR.
+        /// </summary>
         private void LabelDisconnectedEdges()
         {
             foreach (var edge in _edges)
@@ -337,23 +330,22 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
         }
 
-        /**
-         * Determines the location of an edge relative to a target input geometry.
-         * The edge has no location information
-         * because it is disconnected from other
-         * edges that would provide that information.
-         * The location is determined by checking 
-         * if the edge lies inside the target geometry area (if any).
-         * 
-         * @param edge the edge to label
-         * @param geomIndex the input geometry to label against
-         */
+        /// <summary>
+        /// Determines the location of an edge relative to a target input geometry.
+        /// The edge has no location information
+        /// because it is disconnected from other
+        /// edges that would provide that information.
+        /// The location is determined by checking
+        /// if the edge lies inside the target geometry area(if any).
+        /// </summary>
+        /// <param name="edge">The edge to label</param>
+        /// <param name="geomIndex">The input geometry to label against</param>
         private void LabelDisconnectedEdge(OverlayEdge edge, int geomIndex)
         {
             var label = edge.Label;
             //Assert.isTrue(label.isNotPart(geomIndex));
 
-            /**
+            /*
              * if target geom is not an area then 
              * edge must be EXTERIOR, since to be 
              * INTERIOR it would have been labelled
@@ -367,7 +359,7 @@ namespace NetTopologySuite.Operation.OverlayNg
 
             //Debug.println("\n------  labelDisconnectedEdge - geomIndex= " + geomIndex);
             //Debug.print("BEFORE: " + edge.toStringNode());
-            /**
+            /*
              * Locate edge in input area using a Point-In-Poly check.
              * This should be safe even with precision reduction, 
              * because since the edge has remained disconnected
@@ -380,41 +372,39 @@ namespace NetTopologySuite.Operation.OverlayNg
             //Debug.print("AFTER: " + edge.toStringNode());
         }
 
-        /**
-         * Determines the {@link Location} for an edge within an Area geometry
-         * via point-in-polygon location.
-         * <p>
-         * NOTE this is only safe to use for disconnected edges,
-         * since the test is carried out against the original input geometry,
-         * and precision reduction may cause incorrect results for edges
-         * which are close enough to a boundary to become connected. 
-         * 
-         * @param geomIndex the parent geometry index
-         * @param edge the edge to locate
-         * @return the location of the edge
-         */
-        private Location locateEdge(int geomIndex, OverlayEdge edge)
+        /// <summary>
+        /// Determines the <see cref="Location"/> for an edge within an Area geometry
+        /// via point-in-polygon location.
+        /// <para/>
+        /// NOTE this is only safe to use for disconnected edges,
+        /// since the test is carried out against the original input geometry,
+        /// and precision reduction may cause incorrect results for edges
+        /// which are close enough to a boundary to become connected.
+        /// </summary>
+        /// <param name="geomIndex">The parent geometry index</param>
+        /// <param name="edge">The edge to locate</param>
+        /// <returns>The location of the edge.</returns>
+        private Location LocateEdge(int geomIndex, OverlayEdge edge)
         {
             var loc = _inputGeometry.LocatePointInArea(geomIndex, edge.Orig);
             var edgeLoc = loc != Location.Exterior ? Location.Interior : Location.Exterior;
             return edgeLoc;
         }
 
-        /**
-         * Determines the {@link Location} for an edge within an Area geometry
-         * via point-in-polygon location,
-         * by checking that both endpoints are interior to the target geometry.
-         * Checking both endpoints ensures correct results in the presence of topology collapse.
-         * <p>
-         * NOTE this is only safe to use for disconnected edges,
-         * since the test is carried out against the original input geometry,
-         * and precision reduction may cause incorrect results for edges
-         * which are close enough to a boundary to become connected. 
-         * 
-         * @param geomIndex the parent geometry index
-         * @param edge the edge to locate
-         * @return the location of the edge
-         */
+        /// <summary>
+        /// Determines the {@link Location} for an edge within an Area geometry
+        /// via point-in-polygon location,
+        /// by checking that both endpoints are interior to the target geometry.
+        /// Checking both endpoints ensures correct results in the presence of topology collapse.
+        /// <para/>
+        /// NOTE this is only safe to use for disconnected edges,
+        /// since the test is carried out against the original input geometry,
+        /// and precision reduction may cause incorrect results for edges
+        /// which are close enough to a boundary to become connected. 
+        /// </summary>
+        /// <param name="geomIndex">The parent geometry index</param>
+        /// <param name="edge">The edge to locate</param>
+        /// <returns>The location of the edge</returns>
         private Location LocateEdgeBothEnds(int geomIndex, OverlayEdge edge)
         {
             /*
@@ -429,29 +419,28 @@ namespace NetTopologySuite.Operation.OverlayNg
             return edgeLoc;
         }
 
-        public void markResultAreaEdges(SpatialFunction overlayOpCode)
+        public void MarkResultAreaEdges(SpatialFunction overlayOpCode)
         {
             foreach (var edge in _edges)
             {
-                markInResultArea(edge, overlayOpCode);
+                MarkInResultArea(edge, overlayOpCode);
             }
         }
 
-        /**
-         * Marks an edge which forms part of the boundary of the result area.
-         * This is determined by the overlay operation being executed,
-         * and the location of the edge.
-         * The relevant location is either the right side of a boundary edge,
-         * or the line location of a non-boundary edge.
-         * 
-         * @param e the edge to mark
-         * @param overlayOpCode the overlay operation
-         */
-        public void markInResultArea(OverlayEdge e, SpatialFunction overlayOpCode)
+        /// <summary>
+        /// Marks an edge which forms part of the boundary of the result area.
+        /// This is determined by the overlay operation being executed,
+        /// and the location of the edge.
+        /// The relevant location is either the right side of a boundary edge,
+        /// or the line location of a non-boundary edge.
+        /// </summary>
+        /// <param name="e">The edge to mark</param>
+        /// <param name="overlayOpCode">The overlay operation</param>
+        public void MarkInResultArea(OverlayEdge e, SpatialFunction overlayOpCode)
         {
             var label = e.Label;
             if (label.IsBoundaryEither
-                && OverlayNG.isResultOfOp(
+                && OverlayNG.IsResultOfOp(
                     overlayOpCode,
                     label.GetLocationBoundaryOrLine(0, Positions.Right, e.IsForward),
                     label.GetLocationBoundaryOrLine(1, Positions.Right, e.IsForward)))
@@ -461,13 +450,13 @@ namespace NetTopologySuite.Operation.OverlayNg
             //Debug.println("markInResultArea: " + e);
         }
 
-        /**
-         * Unmarks result area edges where the sym edge 
-         * is also marked as in the result.
-         * This has the effect of merging edge-adjacent result areas,
-         * as required by polygon validity rules.
-         */
-        public void unmarkDuplicateEdgesFromResultArea()
+        /// <summary>
+        /// Unmarks result area edges where the sym edge 
+        /// is also marked as in the result.
+        /// This has the effect of merging edge-adjacent result areas,
+        /// as required by polygon validity rules.
+        /// </summary>
+        public void UnmarkDuplicateEdgesFromResultArea()
         {
             foreach (var edge in _edges)
             {

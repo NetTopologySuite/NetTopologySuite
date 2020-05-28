@@ -129,7 +129,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             var aLoc = EffectiveLocation(0, lbl);
             var bLoc = EffectiveLocation(1, lbl);
 
-            bool isInResult = OverlayNG.isResultOfOp(_opCode, aLoc, bLoc);
+            bool isInResult = OverlayNG.IsResultOfOp(_opCode, aLoc, bLoc);
             return isInResult;
         }
 
