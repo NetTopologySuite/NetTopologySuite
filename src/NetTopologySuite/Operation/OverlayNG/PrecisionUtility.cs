@@ -187,12 +187,12 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// for 3 digits of precision the scale factor is 1;
         /// for 2 digits of precision the scale factor is 0.1. 
         /// <para/>
-        /// Rounding to the scale factor can be performed with <see cref="PrecisionModel.Round"/>
+        /// Rounding to the scale factor can be performed with <see cref="PrecisionModel.MakePrecise(double)"/>
         /// </summary>
         /// <param name="value">A number to be rounded</param>
         /// <param name="precisionDigits">The number of digits of precision required</param>
         /// <returns>The scale factor which provides the required number of digits of precision</returns>
-        /// <see cref="PrecisionModel.Round"/>
+        /// <seealso cref="PrecisionModel.MakePrecise(Coordinate)"/>
         private static double PrecisionScale(
             double value, int precisionDigits)
         {
