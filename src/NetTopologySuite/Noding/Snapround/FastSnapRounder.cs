@@ -260,7 +260,7 @@ namespace NetTopologySuite.Noding.Snapround
             public KdNodeVisitor(Coordinate p0, Coordinate p1, NodedSegmentString ss, int segIndex)
             {
                 _p0 = p0;
-                _p0 = p1;
+                _p1 = p1;
                 _ss = ss;
                 _segIndex = segIndex;
             }

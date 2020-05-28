@@ -243,7 +243,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         private readonly InputGeometry _inputGeom;
         private readonly GeometryFactory _geomFact;
         private readonly PrecisionModel _pm;
-        private readonly INoder _noder;
+        private INoder _noder;
         private bool _isOptimized = true;
         private bool _isOutputEdges;
         private bool _isOutputResultEdges;
@@ -332,7 +332,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             set => _isOutputResultEdges = value;
         }
 
-        private INoder Noder { get; set; }
+        private INoder Noder { get => _noder; set => _noder = value; }
 
         public Geometry GetResult()
         {
@@ -388,7 +388,7 @@ namespace NetTopologySuite.Operation.OverlayNg
              */
             var ovNoder = new OverlayNoder(_pm);
 
-            if (_noder != null) ovNoder.Noder = _noder;
+            if (Noder != null) ovNoder.Noder = Noder;
 
             if (_isOptimized)
             {

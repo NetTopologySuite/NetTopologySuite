@@ -52,13 +52,13 @@ namespace NetTopologySuite.Noding
         /// Creates an instance from a list of vertices and optional data object.
         /// </summary>
         /// <param name="pts">The vertices of the segment string.</param>
-        /// <param name="data">The user-defined data of this segment string (may be null).</param>
-        public NodedSegmentString(Coordinate[] pts, object data)
+        /// <param name="context">The user-defined data of this segment string (may be null).</param>
+        public NodedSegmentString(Coordinate[] pts, object context)
         {
             _nodeList = new SegmentNodeList(this);
 
             _pts = pts;
-            Context = data;
+            Context = context;
         }
 
         /// <summary>
@@ -66,9 +66,10 @@ namespace NetTopologySuite.Noding
         /// </summary>
         /// <param name="ss">The segment string to use.</param>
         public NodedSegmentString(ISegmentString ss)
+            :this(ss.Coordinates, ss.Context)
         {
-            _pts = ss.Coordinates;
-            Context = ss.Context;
+            //_pts = ss.Coordinates;
+            //Context = ss.Context;
         }
         /// <summary>
         /// Gets/Sets the user-defined data for this segment string.
