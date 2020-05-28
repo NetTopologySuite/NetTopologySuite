@@ -30,13 +30,13 @@ namespace NetTopologySuite.Operation.OverlayNg
             return op.Union();
         }
 
-             /// <summary>
-            /// Unions a collection of geometries
-     /// using a precision model optimized to provide maximum
-     /// precision while ensuring robust computation.
-            /// </summary>
-            /// <param name="geom">The geometry to union</param>
-            /// <returns>The union of the geometries</returns>
+        /// <summary>
+        /// Unions a collection of geometries
+        /// using a precision model optimized to provide maximum
+        /// precision while ensuring robust computation.
+        /// </summary>
+        /// <param name="geom">The geometry to union</param>
+        /// <returns>The union of the geometries</returns>
         public static Geometry Union(Geometry geom)
         {
             var pm = PrecisionUtility.RobustPM(geom);
