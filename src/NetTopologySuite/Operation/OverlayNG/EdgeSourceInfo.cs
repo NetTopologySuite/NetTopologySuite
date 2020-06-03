@@ -14,7 +14,7 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// That information is used to construct the topology graph <see cref="OverlayLabel"/>s.
     /// </summary>
     /// <autor>Martin Davis</autor>
-    internal struct EdgeSourceInfo
+    internal class EdgeSourceInfo
     {
         private int index;
         private Dimension dim;// = -999;

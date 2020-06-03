@@ -80,7 +80,8 @@ namespace NetTopologySuite.Operation.OverlayNg
         {
             get => _direction;
         }
-        public Coordinate DirectionPt
+
+        protected override Coordinate DirectionPt
         {
             get => _dirPt;
         }

@@ -87,11 +87,11 @@ namespace NetTopologySuite.Operation.OverlayNg
         {
             //Algorithm from Effective Java by Joshua Bloch
             int result = 17;
-            result = 37 * result + GetHashCode(_p0x);
-            result = 37 * result + GetHashCode(_p0y);
-            result = 37 * result + GetHashCode(_p1x);
-            result = 37 * result + GetHashCode(_p1y);
-            return result;
+            result = 37 * result + /*_p0x.GetHashCode(); */GetHashCode(_p0x);
+            result = 37 * result + /*_p0y.GetHashCode(); */GetHashCode(_p0y);
+            result = 37 * result + /*_p1x.GetHashCode(); */GetHashCode(_p1x);
+            result = 37 * result + /*_p1y.GetHashCode(); */GetHashCode(_p1y);
+            return unchecked(result);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// <returns>A hashcode for x</returns>
         public static int GetHashCode(double x)
         {
-            long f = BitConverter.DoubleToInt64Bits(x);
+            ulong f = (ulong)BitConverter.DoubleToInt64Bits(x);
             return (int)(f ^ (f >> 32));
         }
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using NetTopologySuite.EdgeGraph;
 using NetTopologySuite.Geometries;
 
@@ -86,7 +87,9 @@ namespace NetTopologySuite.Operation.OverlayNg
 
         private void Build(IEnumerable<Edge> edges)
         {
-            foreach (var e in edges)
+            var tmp = new List<Edge>(edges);
+            var sort = tmp.ToArray();
+            foreach (var e in sort)
             {
                 AddEdge(e);
             }

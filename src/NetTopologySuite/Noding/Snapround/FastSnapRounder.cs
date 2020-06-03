@@ -6,25 +6,24 @@ using NetTopologySuite.Index.KdTree;
 
 namespace NetTopologySuite.Noding.Snapround
 {
-    /**
-     * Uses Snap Rounding to compute a rounded,
-     * fully noded arrangement from a set of {@link SegmentString}s,
-     * in a performant way.
-     * <p>
-     * Implements the Snap Rounding technique described in 
-     * the papers by Hobby, Guibas &amp; Marimont, and Goodrich et al.
-     * Snap Rounding enforces that all output vertices lie on a uniform grid,
-     * which is determined by the provided {@link PrecisionModel}.
-     * Input vertices do not have to be rounded to the grid; 
-     * this is done during the snap-rounding process.
-     * In fact, rounding cannot be done a priori,
-     * since rounding vertices alone can distort the rounded topology
-     * of the arrangement (by moving segments away from hot pixels
-     * that would otherwise intersect them, or by moving vertices
-     * across segments).
-     * 
-     * @version 1.7
-     */
+    /// <summary>
+    /// Uses Snap Rounding to compute a rounded,
+    /// fully noded arrangement from a set of <see cref="ISegmentString"/>s,
+    /// in a performant way.
+    /// <para/>
+    /// Implements the Snap Rounding technique described in 
+    /// the papers by Hobby, Guibas &amp; Marimont, and Goodrich et al.
+    /// Snap Rounding enforces that all output vertices lie on a uniform grid,
+    /// which is determined by the provided {@link PrecisionModel}.
+    /// Input vertices do not have to be rounded to the grid; 
+    /// this is done during the snap-rounding process.
+    /// In fact, rounding cannot be done a priori,
+    /// since rounding vertices alone can distort the rounded topology
+    /// of the arrangement (by moving segments away from hot pixels
+    /// that would otherwise intersect them, or by moving vertices
+    /// across segments).
+    /// </summary>
+    /// <version>1.17</version>
     public class FastSnapRounder : INoder
     {
         private readonly PrecisionModel _pm;

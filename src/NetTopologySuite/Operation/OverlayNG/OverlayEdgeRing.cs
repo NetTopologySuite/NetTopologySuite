@@ -78,7 +78,11 @@ namespace NetTopologySuite.Operation.OverlayNg
         public OverlayEdgeRing Shell
         {
             get { return IsHole ? _shell : this; }
-            set { _shell = value; }
+            set
+            {
+                _shell = value;
+                if (_shell != null) _shell.AddHole(this);
+            }
         }
 
         public void AddHole(OverlayEdgeRing ring) { _holes.Add(ring); }
