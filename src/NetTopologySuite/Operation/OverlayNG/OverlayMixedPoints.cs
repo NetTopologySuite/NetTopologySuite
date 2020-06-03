@@ -131,7 +131,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         {
             var resultPointList = FindPoints(false, coords);
             List<LineString> resultLineList = null;
-            if (_geomNonPointDim == Dimension.Point)
+            if (_geomNonPointDim == Dimension.Curve)
             {
                 resultLineList = ExtractLines(_geomNonPoint);
             }
