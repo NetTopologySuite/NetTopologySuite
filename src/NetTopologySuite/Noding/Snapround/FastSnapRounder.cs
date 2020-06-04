@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Index.KdTree;
 
@@ -33,25 +31,22 @@ namespace NetTopologySuite.Noding.Snapround
 
         public FastSnapRounder(PrecisionModel pm)
         {
-            this._pm = pm;
+            _pm = pm;
             _pixelIndex = new HotPixelIndex(pm);
         }
 
-        /**
-       * @return a Collection of NodedSegmentStrings representing the substrings
-       * 
-       */
+        /// <summary>
+        /// Gets a Collection of NodedSegmentStrings representing the substrings
+        /// </summary>
         public IList<ISegmentString> GetNodedSubstrings()
         {
             return NodedSegmentString.GetNodedSubstrings(_snappedResult);
         }
 
-        /**
-     * @param inputSegmentStrings a Collection of NodedSegmentStrings
-     */
+        /// <param name="inputSegmentStrings">A Collection of NodedSegmentStrings</param>
         public void ComputeNodes(IList<ISegmentString> inputSegmentStrings)
         {
-            /**
+            /*
              * Determine intersections at full precision.  
              * Rounding happens during Hot Pixel creation.
              */
@@ -85,7 +80,7 @@ namespace NetTopologySuite.Noding.Snapround
         private List<NodedSegmentString> SnapRound(IList<ISegmentString> segStrings)
         {
             var inputSS = CreateNodedStrings(segStrings);
-            /**
+            /*
              * Determine hot pixels for intersections and vertices.
              * This is done BEFORE the input lines are rounded,
              * to avoid distorting the line arrangement 
@@ -126,13 +121,12 @@ namespace NetTopologySuite.Noding.Snapround
             return p2;
         }
 
-        /**
-     * Gets a list of the rounded coordinates.
-     * Duplicate (collapsed) coordinates are removed.
-     * 
-     * @param pts the coordinates to round
-     * @return array of rounded coordinates
-     */
+        /// <summary>
+        /// Gets a list of the rounded coordinates.
+        /// Duplicate (collapsed) coordinates are removed.
+        /// </summary>
+        /// <param name="pts">The coordinates to round</param>
+        /// <returns>Array of rounded coordinates</returns>
         private Coordinate[] Round(Coordinate[] pts)
         {
             var roundPts = new CoordinateList();
@@ -145,14 +139,15 @@ namespace NetTopologySuite.Noding.Snapround
             return roundPts.ToCoordinateArray();
         }
 
-        /**
-     * Computes all interior intersections in the collection of {@link SegmentString}s,
-     * and returns their {@link Coordinate}s.
-     *
-     * Also adds the intersection nodes to the segments.
-     *
-     * @return a list of Coordinates for the intersections
-     */
+        /// <summary>
+        /// Computes all interior intersections in the collection of {@link SegmentString}s,
+        /// and returns their <see cref="Coordinate"/>s.
+        /// <para/>
+        /// Also adds the intersection nodes to the segments.
+        /// </summary>
+        /// <returns>
+        /// A list of Coordinates for the intersections
+        /// </returns>
         private List<Coordinate> FindInteriorIntersections(IList<ISegmentString> inputSS)
         {
             var intAdder = new SnapIntersectionAdder(_pm);
@@ -162,13 +157,12 @@ namespace NetTopologySuite.Noding.Snapround
             return intAdder.Intersections;
         }
 
-        /**
-     * Computes new segment strings which are rounded and contain
-     * any intersections added as a result of snapping segments to snap points (hot pixels).
-     * 
-     * @param segStrings segments to snap
-     * @return the snapped segment strings
-     */
+        /// <summary>
+        /// Computes new segment strings which are rounded and contain
+        /// any intersections added as a result of snapping segments to snap points (hot pixels).
+        /// </summary>
+        /// <param name="segStrings">Segments to snap</param>
+        /// <returns>The snapped segment strings</returns>
         private List<NodedSegmentString> computeSnaps(IEnumerable<ISegmentString> segStrings)
         {
             var snapped = new List<NodedSegmentString>();
@@ -182,18 +176,19 @@ namespace NetTopologySuite.Noding.Snapround
             return snapped;
         }
 
-        /**
-     * Add snapped vertices to a segemnt string.
-     * If the segment string collapses completely due to rounding,
-     * null is returned.
-     * 
-     * @param ss the segment string to snap
-     * @return the snapped segment string, or null if it collapses completely
-     */
+        /// <summary>
+        /// Add snapped vertices to a segemnt string.
+        /// If the segment string collapses completely due to rounding,
+        /// null is returned.
+        /// </summary>
+        /// <param name="ss">The segment string to snap</param>
+        /// <returns>
+        /// The snapped segment string, or null if it collapses completely
+        /// </returns>
         private NodedSegmentString ComputeSnaps(NodedSegmentString ss)
         {
             //Coordinate[] pts = ss.getCoordinates();
-            /**
+            /*
              * Get edge coordinates, including added intersection nodes.
              * The coordinates are now rounded to the grid,
              * in preparation for snapping to the Hot Pixels
@@ -213,7 +208,7 @@ namespace NetTopologySuite.Noding.Snapround
             {
                 var currSnap = snapSS.GetCoordinate(snapSSindex);
 
-                /**
+                /*
                  * If the segment has collapsed completely, skip it
                  */
                 var p1 = pts[i + 1];
@@ -223,7 +218,7 @@ namespace NetTopologySuite.Noding.Snapround
 
                 var p0 = pts[i];
 
-                /**
+                /*
                  * Add any Hot Pixel intersections with *original* segment to rounded segment.
                  * (It is important to check original segment because rounding can
                  * move it enough to intersect other hot pixels not intersecting original segment)
@@ -236,14 +231,13 @@ namespace NetTopologySuite.Noding.Snapround
         }
 
 
-        /**
-     * Snaps a segment in a segmentString to HotPixels that it intersects.
-     * 
-     * @param p0 the segment start coordinate
-     * @param p1 the segment end coordinate
-     * @param ss the segment string to add intersections to
-     * @param segIndex the index of the segment
-     */
+        /// <summary>
+        /// Snaps a segment in a segmentString to HotPixels that it intersects.
+        /// </summary>
+        /// <param name="p0">The segment start coordinate</param>
+        /// <param name="p1">The segment end coordinate</param>
+        /// <param name="ss">The segment string to add intersections to</param>
+        /// <param name="segIndex">The index of the segment/</param>
         private void SnapSegment(Coordinate p0, Coordinate p1, NodedSegmentString ss, int segIndex)
         {
             _pixelIndex.Query(p0, p1, visitor: new KdNodeVisitor(p0, p1, ss, segIndex));
