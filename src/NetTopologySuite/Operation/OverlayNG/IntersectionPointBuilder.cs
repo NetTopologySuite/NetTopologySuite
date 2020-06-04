@@ -22,7 +22,7 @@ namespace NetTopologySuite.Operation.OverlayNg
 
         private readonly GeometryFactory _geometryFactory;
         private readonly OverlayGraph _graph;
-        private List<Point> _points = new List<Point>();
+        private List<Point> _points;// = new List<Point>();
 
         public IntersectionPointBuilder(OverlayGraph graph,
             GeometryFactory geomFact)
