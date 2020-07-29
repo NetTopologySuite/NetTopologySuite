@@ -56,6 +56,30 @@ namespace NetTopologySuite.Tests.NUnit
         {
             return _geomFactory.CreateGeometryCollection(GeometryFactory.ToGeometryArray(geoms));
         }
+        
+        protected void CheckEqualXY(Coordinate expected, Coordinate actual)
+        {
+            Assert.AreEqual(expected.X, actual.X, "Coordinate X");
+            Assert.AreEqual(expected.Y, actual.Y, "Coordinate Y");
+        }
+
+        protected void CheckEqualXY(string message, Coordinate expected, Coordinate actual)
+        {
+            Assert.AreEqual(expected.X, actual.X, message + " X");
+            Assert.AreEqual(expected.Y, actual.Y, message + " Y");
+        }
+
+        protected void CheckEqualXY(Coordinate expected, Coordinate actual, double tolerance)
+        {
+            Assert.AreEqual(expected.X, actual.X, tolerance, "Coordinate X");
+            Assert.AreEqual(expected.Y, actual.Y, tolerance, "Coordinate Y");
+        }
+
+        protected void CheckEqualXY(string message, Coordinate expected, Coordinate actual, double tolerance)
+        {
+            Assert.AreEqual(expected.X, actual.X, tolerance, message + " X");
+            Assert.AreEqual(expected.Y, actual.Y, tolerance, message + " Y");
+        }
 
         /// <summary>
         /// Reads a <see cref="Geometry"/> from a WKT string using a custom <see cref="GeometryFactory"/>.
