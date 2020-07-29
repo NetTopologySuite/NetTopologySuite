@@ -362,16 +362,16 @@ namespace NetTopologySuite.Operation.Distance
             {
 
                 // short-circuit if line segment is far from line
-                var env0 = new Envelope(coord0[i], coord0[i + 1]);
-                if (env0.Distance(line1.EnvelopeInternal) > _minDistance)
+                var segEnv0 = new Envelope(coord0[i], coord0[i + 1]);
+                if (segEnv0.Distance(line1.EnvelopeInternal) > _minDistance)
                     continue;
 
                 for (int j = 0; j < coord1.Length - 1; j++)
                 {
 
                     // short-circuit if line segments are far apart
-                    var env1 = new Envelope(coord1[j], coord1[j + 1]);
-                    if (env0.Distance(env1) > _minDistance)
+                    var segEnv1 = new Envelope(coord1[j], coord1[j + 1]);
+                    if (segEnv0.Distance(segEnv1) > _minDistance)
                         continue;
 
                     double dist = DistanceComputer.SegmentToSegment(
