@@ -1,5 +1,4 @@
 <run>
-  <precisionModel scale="1.0" offsetx="0.0" offsety="0.0"/>
 
 <case>
   <desc>PP - point contained in both A and B</desc>
@@ -26,12 +25,12 @@
   </b>
 <test>
   <op name="intersection" arg1="A" arg2="B">
-    GEOMETRYCOLLECTION EMPTY
+    POINT EMPTY
   </op>
 </test>
 <test>
   <op name="union" arg1="A" arg2="B">
-    MULTIPOINT(100 100, 200 200)
+    MULTIPOINT((100 100), (200 200))
   </op>
 </test>
 <test>
@@ -41,7 +40,7 @@
 </test>
 <test>
   <op name="symdifference" arg1="A" arg2="B">
-    MULTIPOINT(100 100, 200 200)
+    MULTIPOINT((100 100), (200 200))
   </op>
 </test>
 </case>
@@ -52,7 +51,7 @@
     POINT(100 100)
   </a>
   <b>
-    MULTIPOINT(100 100, 200 200)
+    MULTIPOINT((100 100), (200 200))
   </b>
 <test>
   <op name="intersection" arg1="A" arg2="B">
@@ -61,12 +60,12 @@
 </test>
 <test>
   <op name="union" arg1="A" arg2="B">
-    MULTIPOINT(100 100, 200 200)
+    MULTIPOINT((100 100), (200 200))
   </op>
 </test>
 <test>
   <op name="difference" arg1="A" arg2="B">
-    GEOMETRYCOLLECTION EMPTY
+    POINT EMPTY
   </op>
 </test>
 <test>
@@ -79,29 +78,29 @@
 <case>
   <desc>mPmP - points in A only, B only, and in both</desc>
   <a>
-    MULTIPOINT(100 100, 200 200, 300 300, 500 500)
+    MULTIPOINT((100 100), (200 200), (300 300), (500 500))
   </a>
   <b>
-    MULTIPOINT(100 100, 200 200, 400 400, 600 600)
+    MULTIPOINT((100 100), (200 200), (400 400), (600 600))
   </b>
 <test>
   <op name="intersection" arg1="A" arg2="B">
-    MULTIPOINT(100 100, 200 200)
+    MULTIPOINT((100 100), (200 200))
   </op>
 </test>
 <test>
   <op name="union" arg1="A" arg2="B">
-    MULTIPOINT(100 100, 200 200, 300 300, 400 400, 500 500, 600 600)
+    MULTIPOINT ((100 100), (200 200), (300 300), (400 400), (500 500), (600 600))
   </op>
 </test>
 <test>
   <op name="difference" arg1="A" arg2="B">
-    MULTIPOINT(300 300, 500 500)
+    MULTIPOINT((300 300), (500 500))
   </op>
 </test>
 <test>
   <op name="symdifference" arg1="A" arg2="B">
-    MULTIPOINT(300 300, 400 400, 500 500, 600 600)
+    MULTIPOINT((300 300), (400 400), (500 500), (600 600))
   </op>
 </test>
 </case>
@@ -115,16 +114,6 @@
     POINT(80 200)
   </b>
 <test>
-  <op name="getboundary" arg1="A">
-    GEOMETRYCOLLECTION EMPTY
-  </op>
-</test>
-<test>
-  <op name="convexhull" arg1="A">
-    POINT(80 200)
-  </op>
-</test>
-<test>
   <op name="intersection" arg1="A" arg2="B">
     POINT(80 200)
   </op>
@@ -136,12 +125,12 @@
 </test>
 <test>
   <op name="difference" arg1="A" arg2="B">
-    GEOMETRYCOLLECTION EMPTY
+    POINT EMPTY
   </op>
 </test>
 <test>
   <op name="symdifference" arg1="A" arg2="B">
-    GEOMETRYCOLLECTION EMPTY
+    POINT EMPTY
   </op>
 </test>
 </case>
@@ -155,23 +144,13 @@
     POINT(260 80)
   </b>
 <test>
-  <op name="getboundary" arg1="A">
-    GEOMETRYCOLLECTION EMPTY
-  </op>
-</test>
-<test>
-  <op name="convexhull" arg1="A">
-    POINT(80 200)
-  </op>
-</test>
-<test>
   <op name="intersection" arg1="A" arg2="B">
-    GEOMETRYCOLLECTION EMPTY
+    POINT EMPTY
   </op>
 </test>
 <test>
   <op name="union" arg1="A" arg2="B">
-    MULTIPOINT(80 200, 260 80)
+    MULTIPOINT((80 200), (260 80))
   </op>
 </test>
 <test>
@@ -181,7 +160,7 @@
 </test>
 <test>
   <op name="symdifference" arg1="A" arg2="B">
-    MULTIPOINT(80 200, 260 80)
+    MULTIPOINT((80 200), (260 80))
   </op>
 </test>
 </case>
@@ -195,23 +174,13 @@
     POINT(120 260)
   </b>
 <test>
-  <op name="getboundary" arg1="A">
-    GEOMETRYCOLLECTION EMPTY
-  </op>
-</test>
-<test>
-  <op name="convexhull" arg1="A">
-    POINT(60 260)
-  </op>
-</test>
-<test>
   <op name="intersection" arg1="A" arg2="B">
-    GEOMETRYCOLLECTION EMPTY
+    POINT EMPTY
   </op>
 </test>
 <test>
   <op name="union" arg1="A" arg2="B">
-    MULTIPOINT(60 260, 120 260)
+    MULTIPOINT((60 260), (120 260))
   </op>
 </test>
 <test>
@@ -221,7 +190,7 @@
 </test>
 <test>
   <op name="symdifference" arg1="A" arg2="B">
-    MULTIPOINT(60 260, 120 260)
+    MULTIPOINT((60 260), (120 260))
   </op>
 </test>
 </case>
@@ -235,23 +204,13 @@
     POINT(80 280)
   </b>
 <test>
-  <op name="getboundary" arg1="A">
-    GEOMETRYCOLLECTION EMPTY
-  </op>
-</test>
-<test>
-  <op name="convexhull" arg1="A">
-    POINT(80 80)
-  </op>
-</test>
-<test>
   <op name="intersection" arg1="A" arg2="B">
-    GEOMETRYCOLLECTION EMPTY
+    POINT EMPTY
   </op>
 </test>
 <test>
   <op name="union" arg1="A" arg2="B">
-    MULTIPOINT(80 80, 80 280)
+    MULTIPOINT((80 80), (80 280))
   </op>
 </test>
 <test>
@@ -261,7 +220,7 @@
 </test>
 <test>
   <op name="symdifference" arg1="A" arg2="B">
-    MULTIPOINT(80 80, 80 280)
+    MULTIPOINT((80 80), (80 280))
   </op>
 </test>
 </case>

@@ -10,7 +10,7 @@
     POINT(0 0)
   </b>
 <test>
-  <op name="intersects">
+  <op name="intersects" arg1="A" arg2="B">
     false
   </op>
 </test>
