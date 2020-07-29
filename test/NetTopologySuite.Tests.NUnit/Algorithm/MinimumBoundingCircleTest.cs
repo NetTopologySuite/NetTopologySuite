@@ -74,20 +74,22 @@ namespace NetTopologySuite.Tests.NUnit.Algorithm
     }
 
         [Test]
-        public void TestMinDiameterLine()
+        public void TestMaxDiameterLine()
         {
-            DoMinDiameterTest("LINESTRING (100 200, 300 100)", "LINESTRING (100 200, 300 100)");
+            DoMaxDiameterTest("LINESTRING (100 200, 300 100)", "LINESTRING (100 200, 300 100)");
         }
 
         [Test]
-        public void TestMinDiameterPolygon()
+        public void TestMaxDiameterPolygon()
         {
-            DoMinDiameterTest("POLYGON ((100 200, 300 150, 110 100, 100 200))", "LINESTRING (300 150, 100 200)");
+            DoMaxDiameterTest("POLYGON ((100 200, 300 150, 110 100, 100 200))", "LINESTRING (300 150, 100 200)");
+            DoMaxDiameterTest("POLYGON ((110 200, 300 150, 100 100, 110 200))", "LINESTRING (300 150, 100 100)");
+            DoMaxDiameterTest("POLYGON ((0 0, 6 0, 5 5, 0 0))", "LINESTRING (5 5, 0 0)");
         }
 
         static double TOLERANCE = 1.0e-5;
 
-        private void DoMinDiameterTest(string wkt, string expectedWKT)
+        private void DoMaxDiameterTest(string wkt, string expectedWKT)
         {
             var mbc = new MinimumBoundingCircle(Read(wkt));
             var diamActual = mbc.GetMaximumDiameter();

@@ -149,11 +149,14 @@ namespace NetTopologySuite.Algorithm
         {
             double dist01 = pts[0].Distance(pts[1]);
             double dist12 = pts[1].Distance(pts[2]);
-            if (dist01 >= dist12)
-            {
+            double dist20 = pts[2].Distance(pts[0]);
+            if (dist01 >= dist12 && dist01 >= dist20) {
                 return new [] { pts[0], pts[1] };
             }
-            return new [] { pts[1], pts[2] };
+            if (dist12 >= dist01 && dist12 >= dist20) {
+                return new [] { pts[1], pts[2] };
+            }
+            return new [] { pts[2], pts[0] };
         }
 
         /// <summary>
