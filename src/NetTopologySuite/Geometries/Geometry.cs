@@ -125,17 +125,63 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// An enumeration of sort values for geometries
         /// </summary>
+        /// <remarks>
+        /// NOTE:<br/>
+        /// For JTS v1.17 the values in this enum have been renamed to 'TYPECODE...'
+        /// In order not to break binary compatibility we did not follow.
+        /// </remarks>
         protected enum SortIndexValue
         {
+            /// <summary>Sort hierarchy value of a <see cref="Point"/></summary>
             Point = 0,
+            /// <summary>Sort hierarchy value of a <see cref="MultiPoint"/></summary>
             MultiPoint = 1,
+            /// <summary>Sort hierarchy value of a <see cref="LineString"/></summary>
             LineString = 2,
+            /// <summary>Sort hierarchy value of a <see cref="LinearRing"/></summary>
             LinearRing = 3,
+            /// <summary>Sort hierarchy value of a <see cref="MultiLineString"/></summary>
             MultiLineString = 4,
+            /// <summary>Sort hierarchy value of a <see cref="Polygon"/></summary>
             Polygon = 5,
+            /// <summary>Sort hierarchy value of a <see cref="MultiPolygon"/></summary>
             MultiPolygon = 6,
+            /// <summary>Sort hierarchy value of a <see cref="GeometryCollection"/></summary>
             GeometryCollection = 7
         }
+
+        /// <summary>
+        /// The name of point geometries
+        /// </summary>
+        public const string TypeNamePoint = "Point";
+        /// <summary>
+        /// The name of multi-point geometries
+        /// </summary>
+        public const string TypeNameMultiPoint = "MultiPoint";
+        /// <summary>
+        /// The name of linestring geometries
+        /// </summary>
+        public const string TypeNameLineString = "LineString";
+        /// <summary>
+        /// The name of linearring geometries
+        /// </summary>
+        public const string TypeNameLinearRing = "LinearRing";
+        /// <summary>
+        /// The name of multi-linestring geometries
+        /// </summary>
+        public const string TypeNameMultiLineString = "MultiLineString";
+        /// <summary>
+        /// The name of polygon geometries
+        /// </summary>
+        public const string TypeNamePolygon = "Polygon";
+        /// <summary>
+        /// The name of multi-polygon geometries
+        /// </summary>
+        public const string TypeNameMultiPolygon = "MultiPolygon";
+        /// <summary>
+        /// The name of geometry collection geometries.
+        /// </summary>
+        public const string TypeNameGeometryCollection = "GeometryCollection";
 
         //FObermaier: not *readonly* due to SRID property in geometryfactory
         private /*readonly*/ GeometryFactory _factory;
@@ -1892,6 +1938,7 @@ namespace NetTopologySuite.Geometries
             if (other == null)
                 return -1;
 
+            // Since JTS v.1.17 getTypeCode instead of getSortIndex
             if (SortIndex != other.SortIndex)
                 return (int)SortIndex - (int)other.SortIndex;
             if (IsEmpty && other.IsEmpty)
@@ -1937,6 +1984,7 @@ namespace NetTopologySuite.Geometries
             if (other == null)
                 return -1;
 
+            // Since JTS v.1.17 getTypeCode instead of getSortIndex
             if (SortIndex != other.SortIndex)
                 return (int)SortIndex - (int)other.SortIndex;
             if (IsEmpty && other.IsEmpty)
@@ -1998,9 +2046,13 @@ namespace NetTopologySuite.Geometries
          */
 
         /// <summary>
-        /// Gets a value indicating if this geometry is a geometry collection
+        /// Tests whether this is an instance of a general {@link GeometryCollection},
+        /// rather than a homogeneous subclass.
         /// </summary>
-        protected bool IsGeometryCollection => OgcGeometryType == OgcGeometryType.GeometryCollection;
+        /// <returns><c>true</c> if this is a heterogeneous GeometryCollection</returns>
+        protected bool IsGeometryCollection =>
+            // Since JTS v.1.17 getTypeCode is tested
+            OgcGeometryType == OgcGeometryType.GeometryCollection;
 
         /// <summary>
         /// Returns the minimum and maximum x and y values in this <c>Geometry</c>,
@@ -2035,10 +2087,11 @@ namespace NetTopologySuite.Geometries
         /// </summary>
         /// <param name="o">A <c>Geometry</c> having the same class as this <c>Geometry</c></param>
         /// <param name="comp">The comparer</param>
-        /// <returns>A positive number, 0, or a negative number, depending on whether
-        ///      this object is greater than, equal to, or less than <code>o</code>, as
-        ///      defined in "Normal Form For Geometry" in the JTS Technical
-        ///      Specifications
+        /// <returns>
+        /// A positive number, 0, or a negative number, depending on whether
+        /// this object is greater than, equal to, or less than <c>o</c>, as
+        /// defined in "Normal Form For Geometry" in the JTS Technical
+        /// Specifications
         /// </returns>
         protected internal abstract int CompareToSameClass(object o, IComparer<CoordinateSequence> comp);
 
@@ -2094,6 +2147,11 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value to sort the geometry
         /// </summary>
+        /// <remarks>
+        /// NOTE:<br/>
+        /// For JTS v1.17 this property's getter has been renamed to <c>getTypeCode()</c>.
+        /// In order not to break binary compatibility we did not follow.
+        /// </remarks>
         protected abstract SortIndexValue SortIndex { get; }
 
         /// <summary>

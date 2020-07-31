@@ -71,6 +71,11 @@ namespace NetTopologySuite.Geometries
         /// <summary>
         /// Gets a value to sort the geometry
         /// </summary>
+        /// <remarks>
+        /// NOTE:<br/>
+        /// For JTS v1.17 this property's getter has been renamed to <c>getTypeCode()</c>.
+        /// In order not to break binary compatibility we did not follow.
+        /// </remarks>
         protected override SortIndexValue SortIndex => SortIndexValue.LineString;
 
         /// <summary>
@@ -228,7 +233,7 @@ namespace NetTopologySuite.Geometries
         /// Returns the name of this object's interface.
         /// </summary>
         /// <returns>"LineString"</returns>
-        public override string GeometryType => "LineString";
+        public override string GeometryType => Geometry.TypeNameLineString;
 
         /// <summary>
         /// Gets the OGC geometry type
