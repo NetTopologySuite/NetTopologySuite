@@ -36,7 +36,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         {
             //Noder noder = new MCIndexSnapRounder(pm);
             //Noder noder = new SimpleSnapRounder(pm);
-            var noder = new FastSnapRounder(pm);
+            var noder = new SnapRoundingNoder(pm);
             return noder;
         }
 

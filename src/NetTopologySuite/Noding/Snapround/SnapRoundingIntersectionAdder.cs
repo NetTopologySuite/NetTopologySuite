@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Operation.Distance;
 
 namespace NetTopologySuite.Noding.Snapround
 {
@@ -21,7 +19,7 @@ namespace NetTopologySuite.Noding.Snapround
      *
      * @version 1.17
      */
-    public class SnapIntersectionAdder : ISegmentIntersector
+    public class SnapRoundingIntersectionAdder : ISegmentIntersector
     {
         /**
    * The division factor used to determine
@@ -41,7 +39,7 @@ namespace NetTopologySuite.Noding.Snapround
      *
      * @param pm the precision mode to use
      */
-        public SnapIntersectionAdder(PrecisionModel pm)
+        public SnapRoundingIntersectionAdder(PrecisionModel pm)
         {
             _precModel = pm;
             /**

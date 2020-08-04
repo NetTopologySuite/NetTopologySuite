@@ -22,14 +22,14 @@ namespace NetTopologySuite.Noding.Snapround
     /// across segments).
     /// </summary>
     /// <version>1.17</version>
-    public class FastSnapRounder : INoder
+    public class SnapRoundingNoder : INoder
     {
         private readonly PrecisionModel _pm;
         private readonly HotPixelIndex _pixelIndex;
 
         private List<NodedSegmentString> _snappedResult;
 
-        public FastSnapRounder(PrecisionModel pm)
+        public SnapRoundingNoder(PrecisionModel pm)
         {
             _pm = pm;
             _pixelIndex = new HotPixelIndex(pm);
@@ -150,7 +150,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// </returns>
         private List<Coordinate> FindInteriorIntersections(IList<ISegmentString> inputSS)
         {
-            var intAdder = new SnapIntersectionAdder(_pm);
+            var intAdder = new SnapRoundingIntersectionAdder(_pm);
             var noder = new MCIndexNoder();
             noder.SegmentIntersector = intAdder;
             noder.ComputeNodes(inputSS);

@@ -170,7 +170,7 @@ namespace NetTopologySuite.Noding.Snapround
         /// <returns>A list of <see cref="Coordinate" />s for the intersections.</returns>
         private IList<Coordinate> FindInteriorIntersections(IList<ISegmentString> segStrings)
         {
-            var intAdder = new SnapIntersectionAdder(_pm);
+            var intAdder = new SnapRoundingIntersectionAdder(_pm);
             var noder = new MCIndexNoder();
             noder.SegmentIntersector = intAdder;
             noder.ComputeNodes(segStrings);
