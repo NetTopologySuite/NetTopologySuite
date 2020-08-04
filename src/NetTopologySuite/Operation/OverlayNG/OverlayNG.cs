@@ -212,8 +212,10 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// <param name="geom">The geometry</param>
         /// <param name="pm">The precision model to use</param>
         /// <returns>The result of the union operation</returns>
+        /// <seealso cref="OverlayMixedPoints"/>
         /// <seealso cref="PrecisionReducer"/>
         /// <seealso cref="UnaryUnionNG"/>
+        /// <seealso cref="CoverageUnion"/>
         internal static Geometry Union(Geometry geom, PrecisionModel pm)
         {
             var ov = new OverlayNG(geom, pm);
