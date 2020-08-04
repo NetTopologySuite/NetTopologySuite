@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
 
 namespace NetTopologySuite.Noding.Snap
 {
