@@ -15,14 +15,14 @@ namespace NetTopologySuite.Noding.Snap
     /// <version>1.17</version>
     public class SnappingNoder : INoder
     {
-        private readonly SnapPointIndex snapIndex;
+        private readonly SnappingPointIndex snapIndex;
         private readonly double _snapTolerance;
         private IList<ISegmentString> _nodedResult;
 
         public SnappingNoder(double snapTolerance)
         {
             _snapTolerance = snapTolerance;
-            snapIndex = new SnapPointIndex(snapTolerance);
+            snapIndex = new SnappingPointIndex(snapTolerance);
         }
 
         /// <inheritdoc cref="INoder.GetNodedSubstrings"/>>

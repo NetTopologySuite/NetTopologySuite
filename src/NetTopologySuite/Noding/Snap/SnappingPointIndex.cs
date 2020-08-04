@@ -3,14 +3,14 @@ using NetTopologySuite.Index.KdTree;
 
 namespace NetTopologySuite.Noding.Snap
 {
-    public class SnapPointIndex
+    public class SnappingPointIndex
     {
 
         private readonly double _snapTolerance;
 
         private readonly KdTree<Coordinate> _snapPointIndex;
 
-        public SnapPointIndex(double snapTolerance)
+        public SnappingPointIndex(double snapTolerance)
         {
             _snapTolerance = snapTolerance;
             _snapPointIndex = new KdTree<Coordinate>(snapTolerance);
