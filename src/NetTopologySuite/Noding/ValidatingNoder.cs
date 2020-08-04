@@ -1,12 +1,19 @@
 ﻿using System.Collections.Generic;
+using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Noding
 {
     /// <summary>
     /// A wrapper for <see cref="INoder"/>s which validates
-    /// the noding is correct.
+    /// the output arrangement is correctly noded.
+    /// An arrangement of line segments is fully noded if
+    /// there is no line segment
+    /// which has another segment intersecting its interior.
+    /// If the noding is not correct, a <see cref="TopologyException"/> is thrown
+    /// with details of the first invalid location found.
     /// </summary>
     /// <author>Martin Davis</author>
+    /// <seealso cref="FastNodingValidator"/>
     public class ValidatingNoder : INoder
     {
 
@@ -22,7 +29,10 @@ namespace NetTopologySuite.Noding
             this._noder = noder;
         }
 
-        /// <inheritdoc cref="INoder.ComputeNodes"/>
+        /// <summary>
+        /// Checks whether the output of the wrapped noder is fully noded.
+        /// Throws an exception if it is not.
+        /// </summary>
         public void ComputeNodes(IList<ISegmentString> segStrings)
         {
             _noder.ComputeNodes(segStrings);
