@@ -12,6 +12,11 @@ namespace NetTopologySuite.Mathematics
     public class Vector2D : ICloneable
     {
         /// <summary>
+        /// Creates a new vector with all components set to Zero
+        /// </summary>
+        public static Vector2D Zero => new Vector2D();
+
+        /// <summary>
         /// Creates a new vector with given X and Y components.
         /// </summary>
         /// <param name="x">The x component</param>
@@ -124,7 +129,7 @@ namespace NetTopologySuite.Mathematics
         /// Gets the y-ordinate value
         /// </summary>
         public double Y => _y;
-
+        
         /// <summary>
         /// Gets the ordinate values by index
         /// </summary>
@@ -442,7 +447,8 @@ namespace NetTopologySuite.Mathematics
         /// <param name="left">The first vector to add.</param>
         /// <param name="right">The second vector to add.</param>
         /// <returns>The sum of the two vectors.</returns>
-        public static Vector2D operator +(Vector2D left, Vector2D right) {
+        public static Vector2D operator +(Vector2D left, Vector2D right)
+        {
             return new Vector2D(left.X + right.X, left.Y + right.Y);
         }
 
@@ -452,7 +458,8 @@ namespace NetTopologySuite.Mathematics
         /// <param name="left">The first vector to multiply.</param>
         /// <param name="right">The second vector to multiply.</param>
         /// <returns>The multiplication of the two vectors.</returns>
-        public static Vector2D operator *(Vector2D left, Vector2D right) {
+        public static Vector2D operator *(Vector2D left, Vector2D right)
+        {
             return new Vector2D(left.X * right.X, left.Y * right.Y);
         }
         
@@ -462,7 +469,8 @@ namespace NetTopologySuite.Mathematics
         /// <param name="left">The first vector to subtract.</param>
         /// <param name="right">The second vector to subtract.</param>
         /// <returns>The difference of the two vectors.</returns>
-        public static Vector2D operator -(Vector2D left, Vector2D right) {
+        public static Vector2D operator -(Vector2D left, Vector2D right)
+        {
             return new Vector2D(left.X - right.X, left.Y - right.Y);
         }
 
@@ -471,7 +479,8 @@ namespace NetTopologySuite.Mathematics
         /// </summary>
         /// <param name="value">The vector to negate.</param>
         /// <returns>A vector facing in the opposite direction.</returns>
-        public static Vector2D operator -(Vector2D value) {
+        public static Vector2D operator -(Vector2D value)
+        {
             return new Vector2D(-value.X, -value.Y);
         }
 
@@ -481,7 +490,8 @@ namespace NetTopologySuite.Mathematics
         /// <param name="value">The vector to scale.</param>
         /// <param name="scale">The amount by which to scale the vector.</param>
         /// <returns>The scaled vector.</returns>
-        public static Vector2D operator *(float scale, Vector2D value) {
+        public static Vector2D operator *(double scale, Vector2D value)
+        {
             return new Vector2D(value.X * scale, value.Y * scale);
         }
 
@@ -491,7 +501,8 @@ namespace NetTopologySuite.Mathematics
         /// <param name="value">The vector to scale.</param>
         /// <param name="scale">The amount by which to scale the vector.</param>
         /// <returns>The scaled vector.</returns>
-        public static Vector2D operator *(Vector2D value, float scale) {
+        public static Vector2D operator *(Vector2D value, double scale)
+        {
             return new Vector2D(value.X * scale, value.Y * scale);
         }
 
@@ -501,7 +512,8 @@ namespace NetTopologySuite.Mathematics
         /// <param name="value">The vector to scale.</param>
         /// <param name="scale">The amount by which to scale the vector.</param>
         /// <returns>The scaled vector.</returns>
-        public static Vector2D operator /(Vector2D value, float scale) {
+        public static Vector2D operator /(Vector2D value, double scale)
+        {
             return new Vector2D(value.X / scale, value.Y / scale);
         }
 
@@ -511,7 +523,8 @@ namespace NetTopologySuite.Mathematics
         /// <param name="value">The vector to scale.</param>
         /// <param name="scale">The amount by which to scale the vector.</param>
         /// <returns>The scaled vector.</returns>
-        public static Vector2D operator /(Vector2D value, Vector2D scale) {
+        public static Vector2D operator /(Vector2D value, Vector2D scale)
+        {
             return new Vector2D(value.X / scale.X, value.Y / scale.Y);
         }
 
@@ -522,7 +535,8 @@ namespace NetTopologySuite.Mathematics
         /// <param name="right">The second value to compare.</param>
         /// <returns><c>true</c> if <paramref name="left"/> has the same value as
         /// <paramref name="right"/>; otherwise, <c>false</c>.</returns>
-        public static bool operator ==(Vector2D left, Vector2D right) {
+        public static bool operator ==(Vector2D left, Vector2D right)
+        {
             if (left is null) return right is null;
             return left.Equals(right);
         }
@@ -534,7 +548,8 @@ namespace NetTopologySuite.Mathematics
         /// <param name="right">The second value to compare.</param>
         /// <returns><c>true</c> if <paramref name="left"/> has a different value
         /// than <paramref name="right"/>; otherwise, <c>false</c>.</returns>
-        public static bool operator !=(Vector2D left, Vector2D right) {
+        public static bool operator !=(Vector2D left, Vector2D right)
+        {
             if (left is null) return !(right is null);
             return !left.Equals(right);
         }
