@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NetTopologySuite.Geometries;
 using NetTopologySuite.Index;
 using NetTopologySuite.Index.Chain;
 using NetTopologySuite.Index.Strtree;
@@ -20,6 +21,7 @@ namespace NetTopologySuite.Noding
         private int _idCounter;
         private IList<ISegmentString> _nodedSegStrings;
         private int _nOverlaps; // statistics
+        private double _tolerance;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MCIndexNoder"/> class.
@@ -32,6 +34,11 @@ namespace NetTopologySuite.Noding
         /// <param name="segInt">The <see cref="ISegmentIntersector"/> to use.</param>
         public MCIndexNoder(ISegmentIntersector segInt)
             : base(segInt) { }
+
+        public double ToleranceDistance {
+            get => _tolerance;
+            set => _tolerance=value;
+        }
 
         /// <summary>
         ///
@@ -76,6 +83,7 @@ namespace NetTopologySuite.Noding
             foreach(var obj in _monoChains)
             {
                 var queryChain = obj;
+                var queryEnv = ExpandTol(queryChain.Envelope);
                 var overlapChains = _index.Query(queryChain.Envelope);
                 foreach(var testChain in overlapChains)
                 {
@@ -96,6 +104,14 @@ namespace NetTopologySuite.Noding
             }
         }
 
+        private Envelope ExpandTol(Envelope env)
+        {
+            if (_tolerance == 0) return env;
+            var envTol = env.Copy();
+            envTol.ExpandBy(_tolerance);
+            return envTol;
+        }
+
         /// <summary>
         ///
         /// </summary>
@@ -106,6 +122,7 @@ namespace NetTopologySuite.Noding
             foreach (var mc in segChains)
             {
                 mc.Id = _idCounter++;
+                mc.OverlapTolerance = _tolerance;
                 _index.Insert(mc.Envelope, mc);
                 _monoChains.Add(mc);
             }

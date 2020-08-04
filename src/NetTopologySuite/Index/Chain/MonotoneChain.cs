@@ -1,3 +1,4 @@
+using System;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Index.Chain
@@ -60,6 +61,7 @@ namespace NetTopologySuite.Index.Chain
         private readonly int _end;
         private Envelope _env;
         private readonly object _context;  // user-defined information
+        private double overlapTolerance;
 
         /// <summary>
         /// Creates a new MonotoneChain based on the given array of points.
@@ -105,6 +107,7 @@ namespace NetTopologySuite.Index.Chain
                     var p0 = _pts[_start];
                     var p1 = _pts[_end];
                     _env = new Envelope(p0, p1);
+                    _env.ExpandBy(overlapTolerance);
                 }
                 return _env;
             }
@@ -284,7 +287,38 @@ namespace NetTopologySuite.Index.Chain
             MonotoneChain mc,
             int start1, int end1)
         {
-            return Envelope.Intersects(_pts[start0], _pts[end0], mc._pts[start1], mc._pts[end1]);
+            return Intersects(_pts[start0], _pts[end0], mc._pts[start1], mc._pts[end1]);
         }
+
+        public double OverlapTolerance
+        {
+            get => overlapTolerance;
+            set => overlapTolerance = value;
+        }
+
+        public bool Intersects(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
+        {
+            double minq = Math.Min(q1.X, q2.X);
+            double maxq = Math.Max(q1.X, q2.X);
+            double minp = Math.Min(p1.X, p2.X);
+            double maxp = Math.Max(p1.X, p2.X);
+
+            if (minp > maxq + overlapTolerance)
+                return false;
+            if (maxp < minq - overlapTolerance)
+                return false;
+
+            minq = Math.Min(q1.Y, q2.Y);
+            maxq = Math.Max(q1.Y, q2.Y);
+            minp = Math.Min(p1.Y, p2.Y);
+            maxp = Math.Max(p1.Y, p2.Y);
+
+            if (minp > maxq + overlapTolerance)
+                return false;
+            if (maxp < minq - overlapTolerance)
+                return false;
+            return true;
+        }
+
     }
 }
