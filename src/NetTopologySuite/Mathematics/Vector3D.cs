@@ -247,12 +247,14 @@ namespace NetTopologySuite.Mathematics
 
 
         /// <inheritdoc cref="object.ToString()"/>
-        public override string ToString() {
+        public override string ToString()
+        {
             return string.Format(NumberFormatInfo.InvariantInfo, "[{0}, {1}, {2}]", _x, _y, _z);
         }
 
         ///<inheritdoc cref="object.Equals(object)"/>
-        public override bool Equals(object o) {
+        public override bool Equals(object o)
+        {
             if (!(o is Vector3D v)) {
                 return false;
             }
@@ -260,7 +262,8 @@ namespace NetTopologySuite.Mathematics
         }
 
         ///<inheritdoc cref="object.GetHashCode()"/>
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             // Algorithm from Effective Java by Joshua Bloch
             int result = 17;
             result = 37 * result + _x.GetHashCode();
