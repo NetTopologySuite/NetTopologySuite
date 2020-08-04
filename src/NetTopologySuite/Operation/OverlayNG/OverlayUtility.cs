@@ -18,7 +18,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         static double ExpandDistance(Envelope env, PrecisionModel pm)
         {
             double envExpandDist;
-            if (pm.IsFloating)
+            if (pm == null || pm.IsFloating)
             {
                 // if PM is FLOAT then there is no scale factor, so add 10%
                 double minSize = Math.Min(env.Height, env.Width);
@@ -107,7 +107,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         private static bool IsEnvDisjoint(Geometry a, Geometry b, PrecisionModel pm)
         {
             if (IsEmpty(a) || IsEmpty(b)) return true;
-            if (pm.IsFloating)
+            if (pm == null || pm.IsFloating)
             {
                 return a.EnvelopeInternal.Disjoint(b.EnvelopeInternal);
             }
