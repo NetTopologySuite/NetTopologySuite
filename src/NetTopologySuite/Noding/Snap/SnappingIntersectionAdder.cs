@@ -13,14 +13,14 @@ namespace NetTopologySuite.Noding.Snap
     {
         private readonly LineIntersector _li;
         private readonly double _snapTolerance;
-        private readonly SnapVertexIndex _snapIndex;
+        private readonly SnapPointIndex _snapIndex;
 
         /// <summary>
         /// Creates an intersector which finds all snapped interior intersections,
         /// and adds them as nodes.
         /// </summary>
         /// <param name="snapIndex">A snap index to use</param>
-        public SnappingIntersectionAdder(SnapVertexIndex snapIndex)
+        public SnappingIntersectionAdder(SnapPointIndex snapIndex)
         {
             _snapIndex = snapIndex;
             _snapTolerance = snapIndex.Tolerance;

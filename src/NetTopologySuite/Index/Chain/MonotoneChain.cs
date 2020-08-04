@@ -47,12 +47,20 @@ namespace NetTopologySuite.Index.Chain
     /// returned by the query.
     /// Queries made in this manner are thread-safe.
     /// </para>
+    /// <para>
     /// MonotoneChains support being assigned an integer id value
     /// to provide a total ordering for a set of chains.
     /// This can be used during some kinds of processing to
     /// avoid redundant comparisons
     /// (i.e.by comparing only chains where the first id is less than the second).
-
+    /// </para>
+    /// <para>
+    /// MonotoneChains support using an tolerance distance for overlap tests.
+    /// This allows reporting overlap in situations where
+    /// intersection snapping is being used.
+    /// If this is used the chain envelope must be computed
+    /// providing an expansion distance using <see cref="GetEnvelope(double)"/>.
+    /// </para>
     /// </remarks>
     public class MonotoneChain
     {
@@ -61,7 +69,7 @@ namespace NetTopologySuite.Index.Chain
         private readonly int _end;
         private Envelope _env;
         private readonly object _context;  // user-defined information
-        private double overlapTolerance;
+        //private double _overlapDistance;
 
         /// <summary>
         /// Creates a new MonotoneChain based on the given array of points.
@@ -88,6 +96,16 @@ namespace NetTopologySuite.Index.Chain
         public int Id { get; set; }
 
         /// <summary>
+        /// Gets or sets the overlap distance used in overlap tests
+        /// with other chains.
+        /// </summary>
+        public double OverlapDistance
+        {
+            get => 0d;//_overlapDistance;
+            set { /*_overlapDistance = value;*/ }
+        }
+
+        /// <summary>
         /// Gets the chain's user-defined context data value.
         /// </summary>
         public object Context => _context;
@@ -97,20 +115,30 @@ namespace NetTopologySuite.Index.Chain
         /// </summary>
         public Envelope Envelope
         {
-            get
+            get => GetEnvelope(0.0);
+        }
+
+        /// <summary>
+        /// Gets the envelope for this chain,
+        /// expanded by a given distance.
+        /// </summary>
+        /// <param name="expansionDistance">Distance to expand the envelope by</param>
+        /// <returns>The expanded envelope of the chain</returns>
+        public Envelope GetEnvelope(double expansionDistance)
+        {
+
+            if (_env == null)
             {
-                if (_env == null)
-                {
-                    /**
-                     * The monotonicity property allows fast envelope determination
-                     */
-                    var p0 = _pts[_start];
-                    var p1 = _pts[_end];
-                    _env = new Envelope(p0, p1);
-                    _env.ExpandBy(overlapTolerance);
-                }
-                return _env;
+                /**
+                 * The monotonicity property allows fast envelope determination
+                 */
+                var p0 = _pts[_start];
+                var p1 = _pts[_end];
+                _env = new Envelope(p0, p1);
+                if (expansionDistance > 0.0)
+                    _env.ExpandBy(expansionDistance);
             }
+            return _env;
         }
 
         /// <summary>
@@ -206,22 +234,36 @@ namespace NetTopologySuite.Index.Chain
         }
 
         /// <summary>
-        /// Determine all the line segments in two chains which may overlap, and process them.
+        /// Determines the line segments in two chains which may overlap,
+        /// and passes them to an overlap action.
         /// </summary>
         /// <remarks>
         /// The monotone chain search algorithm attempts to optimize
         /// performance by not calling the overlap action on chain segments
         /// which it can determine do not overlap.
-        /// However, it *may* call the overlap action on segments
+        /// However, it* may* call the overlap action on segments
         /// which do not actually interact.
         /// This saves on the overhead of checking intersection
         /// each time, since clients may be able to do this more efficiently.
         /// </remarks>
-        /// <param name="mc">The monotone chain</param>
+        /// <param name="mc">The chain to compare to</param>
         /// <param name="mco">The overlap action to execute on selected segments</param>
-        public  void ComputeOverlaps(MonotoneChain mc, MonotoneChainOverlapAction mco)
+        public void ComputeOverlaps(MonotoneChain mc, MonotoneChainOverlapAction mco)
         {
-            ComputeOverlaps(_start, _end, mc, mc._start, mc._end, mco);
+            ComputeOverlaps(_start, _end, mc, mc._start, mc._end, 0.0, mco);
+        }
+
+        /// <summary>
+        /// Determines the line segments in two chains which may overlap,
+        /// using an overlap distance tolerance,
+        /// and passes them to an overlap action.
+        /// </summary>
+        /// <param name="mc">The chain to compare to</param>
+        /// <param name="overlapTolerance">The overlap tolerance distance (may be 0)</param>
+        /// <param name="mco">The overlap action to execute on selected segments</param>
+        public void ComputeOverlaps(MonotoneChain mc, double overlapTolerance, MonotoneChainOverlapAction mco)
+        {
+            ComputeOverlaps(_start, _end, mc, mc._start, mc._end, overlapTolerance, mco);
         }
 
         /// <summary>
@@ -234,8 +276,9 @@ namespace NetTopologySuite.Index.Chain
         /// <param name="mc">The target monotone chain</param>
         /// <param name="start1">The start index of the target chain section</param>
         /// <param name="end1">The end index of the target chain section</param>
+        /// <param name="overlapTolerance">The overlap tolerance distance (may be 0)</param>
         /// <param name="mco">The overlap action to execute on selected segments</param>
-        private void ComputeOverlaps(int start0, int end0, MonotoneChain mc, int start1, int end1, MonotoneChainOverlapAction mco)
+        private void ComputeOverlaps(int start0, int end0, MonotoneChain mc, int start1, int end1, double overlapTolerance, MonotoneChainOverlapAction mco)
         {
             // terminating condition for the recursion
             if (end0 - start0 == 1 && end1 - start1 == 1)
@@ -244,7 +287,7 @@ namespace NetTopologySuite.Index.Chain
                 return;
             }
             // nothing to do if the envelopes of these sub-chains don't overlap
-            if (!Overlaps(start0, end0, mc, start1, end1)) return;
+            if (!Overlaps(start0, end0, mc, start1, end1, overlapTolerance)) return;
 
             // the chains overlap, so split each in half and iterate  (binary search)
             int mid0 = (start0 + end0) / 2;
@@ -255,16 +298,16 @@ namespace NetTopologySuite.Index.Chain
             if (start0 < mid0)
             {
                 if (start1 < mid1)
-                    ComputeOverlaps(start0, mid0, mc, start1, mid1, mco);
+                    ComputeOverlaps(start0, mid0, mc, start1, mid1, overlapTolerance, mco);
                 if (mid1 < end1)
-                    ComputeOverlaps(start0, mid0, mc, mid1, end1, mco);
+                    ComputeOverlaps(start0, mid0, mc, mid1, end1, overlapTolerance, mco);
             }
             if (mid0 < end0)
             {
                 if (start1 < mid1)
-                    ComputeOverlaps(mid0, end0, mc, start1, mid1, mco);
+                    ComputeOverlaps(mid0, end0, mc, start1, mid1, overlapTolerance, mco);
                 if (mid1 < end1)
-                    ComputeOverlaps(mid0, end0, mc, mid1, end1, mco);
+                    ComputeOverlaps(mid0, end0, mc, mid1, end1, overlapTolerance, mco);
             }
         }
 
@@ -281,22 +324,23 @@ namespace NetTopologySuite.Index.Chain
         /// <param name="mc">The target monotone chain</param>
         /// <param name="start1">The start index of the target chain section</param>
         /// <param name="end1">The end index of the target chain section</param>
+        /// <param name="overlapTolerance">The overlap tolerance distance (may be 0)</param>
         /// <returns><c>true</c> if the section envelopes overlap</returns>
         private bool Overlaps(
             int start0, int end0,
             MonotoneChain mc,
-            int start1, int end1)
+            int start1, int end1,
+            double overlapTolerance)
         {
-            return Intersects(_pts[start0], _pts[end0], mc._pts[start1], mc._pts[end1]);
+            if (overlapTolerance > 0.0)
+            {
+                return Overlaps(_pts[start0], _pts[end0], mc._pts[start1], mc._pts[end1], overlapTolerance);
+            }
+            return Envelope.Intersects(_pts[start0], _pts[end0], mc._pts[start1], mc._pts[end1]);
         }
 
-        public double OverlapTolerance
-        {
-            get => overlapTolerance;
-            set => overlapTolerance = value;
-        }
-
-        public bool Intersects(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2)
+        /// <param name="overlapTolerance">The overlap tolerance distance (may be 0)</param>
+        private static bool Overlaps(Coordinate p1, Coordinate p2, Coordinate q1, Coordinate q2, double overlapTolerance)
         {
             double minq = Math.Min(q1.X, q2.X);
             double maxq = Math.Max(q1.X, q2.X);

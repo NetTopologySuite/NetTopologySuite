@@ -15,14 +15,14 @@ namespace NetTopologySuite.Noding.Snap
     /// <version>1.17</version>
     public class SnappingNoder : INoder
     {
-        private readonly SnapVertexIndex snapIndex;
+        private readonly SnapPointIndex snapIndex;
         private readonly double _snapTolerance;
         private IList<ISegmentString> _nodedResult;
 
         public SnappingNoder(double snapTolerance)
         {
             _snapTolerance = snapTolerance;
-            snapIndex = new SnapVertexIndex(snapTolerance);
+            snapIndex = new SnapPointIndex(snapTolerance);
         }
 
         /// <inheritdoc cref="INoder.GetNodedSubstrings"/>>
@@ -109,9 +109,7 @@ namespace NetTopologySuite.Noding.Snap
         private IList<ISegmentString> ComputeIntersections(IList<ISegmentString> inputSS)
         {
             var intAdder = new SnappingIntersectionAdder(snapIndex);
-            var noder = new MCIndexNoder();
-            noder.ToleranceDistance = 2 * _snapTolerance;
-            noder.SegmentIntersector = intAdder;
+            var noder = new MCIndexNoder(intAdder, 2 * _snapTolerance);
             noder.ComputeNodes(inputSS);
             return noder.GetNodedSubstrings();
         }

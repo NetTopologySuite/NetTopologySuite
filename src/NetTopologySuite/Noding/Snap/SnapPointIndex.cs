@@ -3,17 +3,17 @@ using NetTopologySuite.Index.KdTree;
 
 namespace NetTopologySuite.Noding.Snap
 {
-    public class SnapVertexIndex
+    public class SnapPointIndex
     {
 
         private readonly double _snapTolerance;
 
-        private readonly KdTree<Coordinate> _snapVertexIndex;
+        private readonly KdTree<Coordinate> _snapPointIndex;
 
-        public SnapVertexIndex(double snapTolerance)
+        public SnapPointIndex(double snapTolerance)
         {
             _snapTolerance = snapTolerance;
-            _snapVertexIndex = new KdTree<Coordinate>(snapTolerance);
+            _snapPointIndex = new KdTree<Coordinate>(snapTolerance);
         }
 
         public Coordinate Snap(Coordinate p)
@@ -22,7 +22,7 @@ namespace NetTopologySuite.Noding.Snap
              * Inserting the coordinate snaps it to any existing
              * one within tolerance, or adds it.
              */
-            var node = _snapVertexIndex.Insert(p);
+            var node = _snapPointIndex.Insert(p);
             return node.Coordinate;
         }
 
