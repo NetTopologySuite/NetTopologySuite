@@ -200,6 +200,16 @@ namespace NetTopologySuite.Mathematics
             return _x * v._x + _y * v._y + _z * v._z;
         }
 
+        /// <summary>
+        /// Computes the cross-product of this <see cref="Vector3D"/> and <paramref name="v"/>
+        /// </summary>
+        /// <paramref name="v">The 2nd vector</paramref>
+        /// <returns>The cross product of the vectors</returns>
+        public Vector3D Cross(Vector3D v)
+        {
+            return Vector3D.Cross(this, v);
+        }
+
 
         /// <summary>
         /// Computes the length of this vector
