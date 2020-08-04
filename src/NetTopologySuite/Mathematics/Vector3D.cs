@@ -218,24 +218,22 @@ namespace NetTopologySuite.Mathematics
             return new CoordinateZ(v.X / len, v.Y / len, v.Z / len);
         }
 
+
         /// <inheritdoc cref="object.ToString()"/>
-        public override string ToString()
-        {
+        public override string ToString() {
             return string.Format(NumberFormatInfo.InvariantInfo, "[{0}, {1}, {2}]", _x, _y, _z);
         }
 
         ///<inheritdoc cref="object.Equals(object)"/>
-        public override bool Equals(object o)
-        {
-            if (!(o is Vector3D v) ) {
+        public override bool Equals(object o) {
+            if (!(o is Vector3D v)) {
                 return false;
             }
             return _x == v.X && _y == v.Y && _z == v.Z;
         }
 
         ///<inheritdoc cref="object.GetHashCode()"/>
-        public override int GetHashCode()
-        {
+        public override int GetHashCode() {
             // Algorithm from Effective Java by Joshua Bloch
             int result = 17;
             result = 37 * result + _x.GetHashCode();
@@ -243,5 +241,118 @@ namespace NetTopologySuite.Mathematics
             result = 37 * result + _z.GetHashCode();
             return result;
         }
+
+        /// <summary>
+        /// Adds two vectors.
+        /// </summary>
+        /// <param name="left">The first vector to add.</param>
+        /// <param name="right">The second vector to add.</param>
+        /// <returns>The sum of the two vectors.</returns>
+        public static Vector3D operator +(Vector3D left, Vector3D right) {
+            return new Vector3D(left.X + right.X, left.Y + right.Y, left.Z + right.Z);
+        }
+
+        /// <summary>
+        /// Modulates a vector with another by performing component-wise multiplication.
+        /// </summary>
+        /// <param name="left">The first vector to multiply.</param>
+        /// <param name="right">The second vector to multiply.</param>
+        /// <returns>The multiplication of the two vectors.</returns>
+        public static Vector3D operator *(Vector3D left, Vector3D right) {
+            return new Vector3D(left.X * right.X, left.Y * right.Y, left.Z * right.Z);
+        }
+
+        /// <summary>
+        /// Assert a vector (return it unchanged).
+        /// </summary>
+        /// <param name="value">The vector to assert (unchanged).</param>
+        /// <returns>The asserted (unchanged) vector.</returns>
+        public static Vector3D operator +(Vector3D value) {
+            return value;
+        }
+
+        /// <summary>
+        /// Subtracts two vectors.
+        /// </summary>
+        /// <param name="left">The first vector to subtract.</param>
+        /// <param name="right">The second vector to subtract.</param>
+        /// <returns>The difference of the two vectors.</returns>
+        public static Vector3D operator -(Vector3D left, Vector3D right) {
+            return new Vector3D(left.X - right.X, left.Y - right.Y, left.Z - right.Z);
+        }
+
+        /// <summary>
+        /// Reverses the direction of a given vector.
+        /// </summary>
+        /// <param name="value">The vector to negate.</param>
+        /// <returns>A vector facing in the opposite direction.</returns>
+        public static Vector3D operator -(Vector3D value) {
+            return new Vector3D(-value.X, -value.Y, -value.Z);
+        }
+
+        /// <summary>
+        /// Scales a vector by the given value.
+        /// </summary>
+        /// <param name="value">The vector to scale.</param>
+        /// <param name="scale">The amount by which to scale the vector.</param>
+        /// <returns>The scaled vector.</returns>
+        public static Vector3D operator *(float scale, Vector3D value) {
+            return new Vector3D(value.X * scale, value.Y * scale, value.Z * scale);
+        }
+
+        /// <summary>
+        /// Scales a vector by the given value.
+        /// </summary>
+        /// <param name="value">The vector to scale.</param>
+        /// <param name="scale">The amount by which to scale the vector.</param>
+        /// <returns>The scaled vector.</returns>
+        public static Vector3D operator *(Vector3D value, float scale) {
+            return new Vector3D(value.X * scale, value.Y * scale, value.Z * scale);
+        }
+
+        /// <summary>
+        /// Scales a vector by the given value.
+        /// </summary>
+        /// <param name="value">The vector to scale.</param>
+        /// <param name="scale">The amount by which to scale the vector.</param>
+        /// <returns>The scaled vector.</returns>
+        public static Vector3D operator /(Vector3D value, float scale) {
+            return new Vector3D(value.X / scale, value.Y / scale, value.Z / scale);
+        }
+
+        /// <summary>
+        /// Scales a vector by the given value.
+        /// </summary>
+        /// <param name="value">The vector to scale.</param>
+        /// <param name="scale">The amount by which to scale the vector.</param>
+        /// <returns>The scaled vector.</returns>
+        public static Vector3D operator /(Vector3D value, Vector3D scale) {
+            return new Vector3D(value.X / scale.X, value.Y / scale.Y, value.Z / scale.Z);
+        }
+
+        /// <summary>
+        /// Tests for equality between two objects.
+        /// </summary>
+        /// <param name="left">The first value to compare.</param>
+        /// <param name="right">The second value to compare.</param>
+        /// <returns><c>true</c> if <paramref name="left"/> has the same value as <paramref name="right"/>; otherwise, <c>false</c>.</returns>
+        public static bool operator ==(Vector3D left, Vector3D right) {
+            if (left is null) return right is null;
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Tests for inequality between two objects.
+        /// </summary>
+        /// <param name="left">The first value to compare.</param>
+        /// <param name="right">The second value to compare.</param>
+        /// <returns><c>true</c> if <paramref name="left"/> has a different value than <paramref name="right"/>; otherwise, <c>false</c>.</returns>
+        public static bool operator !=(Vector3D left, Vector3D right) {
+            if (left is null) return !(right is null);
+            return !left.Equals(right);
+        }
+
+
+
     }
 }
