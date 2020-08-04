@@ -13,42 +13,18 @@ namespace NetTopologySuite.Noding.Snap
     {
         private readonly LineIntersector _li = new RobustLineIntersector();
         private readonly double _snapTolerance;
-        private readonly SnappingPointIndex _snapIndex;
+        private readonly SnappingPointIndex _snapPointIndex;
 
         /// <summary>
         /// Creates an intersector which finds all snapped intersections,
         /// and adds them as nodes.
         /// </summary>
-        /// <param name="snapIndex">A snap index to use</param>
-        public SnappingIntersectionAdder(double snapTolerance, SnappingPointIndex snapIndex)
+        /// <param name="snapTolerance">The snapping tolerance distance</param>
+        /// <param name="snapPointIndex">A snap index to use</param>
+        public SnappingIntersectionAdder(double snapTolerance, SnappingPointIndex snapPointIndex)
         {
-            _snapIndex = snapIndex;
+            _snapPointIndex = snapPointIndex;
             _snapTolerance = snapTolerance;
-        }
-
-        /// <summary>
-        /// Test if two segments are adjacent segments on the same SegmentString.
-        /// Note that closed edges require a special check for the point shared by the beginning
-        /// and end segments.
-        /// </summary>
-        private static bool IsAdjacent(ISegmentString e0, int segIndex0, ISegmentString e1, int segIndex1)
-        {
-            if (e0 != e1) return false;
-
-            bool isAdjacent = Math.Abs(segIndex0 - segIndex1) == 1;
-            if (isAdjacent)
-                return true;
-            if (e0.IsClosed)
-            {
-                int maxSegIndex = e0.Count - 1;
-                if (   (segIndex0 == 0 && segIndex1 == maxSegIndex)
-                    || (segIndex1 == 0 && segIndex0 == maxSegIndex))
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         /// <summary>
@@ -88,7 +64,7 @@ namespace NetTopologySuite.Noding.Snap
                 if (!IsAdjacent(seg0, segIndex0, seg1, segIndex1))
                 {
                     var intPt = _li.GetIntersection(0);
-                    var snapPt = _snapIndex.Snap(intPt);
+                    var snapPt = _snapPointIndex.Snap(intPt);
 
                     ((NodedSegmentString) seg0).AddIntersection(snapPt, segIndex0);
                     ((NodedSegmentString) seg1).AddIntersection(snapPt, segIndex1);
@@ -96,9 +72,7 @@ namespace NetTopologySuite.Noding.Snap
             }
 
             /*
-             * Segments do not actually intersect, within the limits of orientation index robustness.
-             * 
-             * The segments must still be snapped to the segment endpoints.
+             * The segments must also be snapped to the other segment endpoints.
              */
             ProcessNearVertex(seg0, segIndex0, p00, seg1, segIndex1, p10, p11);
             ProcessNearVertex(seg0, segIndex0, p01, seg1, segIndex1, p10, p11);
@@ -119,12 +93,13 @@ namespace NetTopologySuite.Noding.Snap
         /// result in the snapped segment A crossing segment B
         /// without a node being introduced.
         /// </summary>
-        private void ProcessNearVertex(ISegmentString srcSS, int srcIndex, Coordinate p, ISegmentString edge, int segIndex, Coordinate p0, Coordinate p1)
+        private void ProcessNearVertex(ISegmentString srcSS, int srcIndex, Coordinate p, ISegmentString ss, int segIndex, Coordinate p0, Coordinate p1)
         {
             /*
              * Don't add intersection if candidate vertex is near endpoints of segment.
              * This avoids creating "zig-zag" linework
              * (since the vertex could actually be outside the segment envelope).
+             * Also, this should have already been snapped.
              */
             if (p.Distance(p0) < _snapTolerance) return;
             if (p.Distance(p1) < _snapTolerance) return;
@@ -133,10 +108,35 @@ namespace NetTopologySuite.Noding.Snap
             if (distSeg < _snapTolerance)
             {
                 // add vertex to target segment
-                ((NodedSegmentString) edge).AddIntersection(p, segIndex);
-                // add node at vertext to source SS
+                ((NodedSegmentString)ss).AddIntersection(p, segIndex);
+                // add node at vertex to source SS
                 ((NodedSegmentString)srcSS).AddIntersection(p, srcIndex);
             }
+        }
+
+        /// <summary>
+        /// Test if two segments are adjacent segments on the same SegmentString.
+        /// Note that closed edges require a special check for the point shared by the beginning
+        /// and end segments.
+        /// </summary>
+        private static bool IsAdjacent(ISegmentString e0, int segIndex0, ISegmentString e1, int segIndex1)
+        {
+            if (e0 != e1) return false;
+
+            bool isAdjacent = Math.Abs(segIndex0 - segIndex1) == 1;
+            if (isAdjacent)
+                return true;
+            if (e0.IsClosed)
+            {
+                int maxSegIndex = e0.Count - 1;
+                if ((segIndex0 == 0 && segIndex1 == maxSegIndex)
+                    || (segIndex1 == 0 && segIndex0 == maxSegIndex))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <inheritdoc cref="ISegmentIntersector.IsDone"/>>
