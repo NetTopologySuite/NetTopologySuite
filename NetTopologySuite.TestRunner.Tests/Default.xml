@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<project>
-	<test verbose="false" exception="true" interactive="false" filter="none">
-		<dirs>
-      <dir>..\..\..\NetTopologySuite.TestRunner.Tests\general</dir>
-      <dir>..\..\..\NetTopologySuite.TestRunner.Tests\validate</dir>
-    </dirs>
-	</test>
-</project>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+  <Import Project="../Directory.Build.props" />
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <!-- Travis-CI -->
+  <PropertyGroup Condition=" '$(TRAVIS)' == 'True' ">
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <NtsBuildMetadata Condition=" '$(NtsBuildMetadata)' == '' ">ci.travis.$(TRAVIS_BUILD_NUMBER)</NtsBuildMetadata>
+
+    <NtsOfficialRelease Condition=" '$(TRAVIS_BRANCH)' == 'master' And '$(TRAVIS_PULL_REQUEST)' == 'false' ">true</NtsOfficialRelease>
+  </PropertyGroup>
+
+  <!-- TeamCity -->
+  <PropertyGroup Condition=" '$(TEAMCITY_VERSION)' != '' ">
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <NtsBuildMetadata Condition=" '$(NtsBuildMetadata)' == '' ">ci.teamcity.$(BUILD_NUMBER)</NtsBuildMetadata>
+  </PropertyGroup>
+
+  <!-- AppVeyor -->
+  <PropertyGroup Condition=" '$(APPVEYOR)' == 'True' ">
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <NtsBuildMetadata Condition=" '$(NtsBuildMetadata)' == '' ">ci.appveyor.$(APPVEYOR_BUILD_NUMBER)</NtsBuildMetadata>
+  </PropertyGroup>
+
+  <!-- GitHub Actions -->
+  <PropertyGroup Condition=" '$(GITHUB_ACTIONS)' == 'True' ">
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <NtsBuildMetadata Condition=" '$(NtsBuildMetadata)' == '' ">ci.github.$(GITHUB_ACTION)</NtsBuildMetadata>
+  </PropertyGroup>
+
+  <!-- Fallback for local builds and CI environments we don't recognize -->
+  <PropertyGroup>
+    <NtsBuildMetadata Condition=" '$(NtsBuildMetadata)' == '' ">local</NtsBuildMetadata>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Version numbers">
+    <!-- The highest released version of JTS that we intend our behavior to be compatible with. -->
+    <JTSCompatibilityLevel>1.17.0</JTSCompatibilityLevel>
+
+    <!-- MAJOR, MINOR, and PATCH are defined according to SemVer 2.0.0. -->
+    <NtsMajorVersion>2</NtsMajorVersion>
+    <NtsMinorVersion>1</NtsMinorVersion>
+    <NtsPatchVersion>0</NtsPatchVersion>
+
+    <NtsBuildTimestamp>$([System.DateTime]::UtcNow.Ticks)</NtsBuildTimestamp>
+    <NtsDaysSinceEpoch>$([System.DateTime]::op_Subtraction($([System.DateTime]::new($(NtsBuildTimestamp)).Date),$([System.DateTime]::new(621355968000000000))).TotalDays.ToString("00000"))</NtsDaysSinceEpoch>
+
+    <!--
+        Note that, since this causes our version number to tick over every
+        minute, we see a (far less severe) variant of dotnet/project-system#1457
+        where VS decides to restore packages at seemingly random times.
+    -->
+    <NtsMinutesSinceStartOfUtcDay>$([System.DateTime]::new($(NtsBuildTimestamp)).TimeOfDay.TotalMinutes.ToString("0000"))</NtsMinutesSinceStartOfUtcDay>
+
+    <VersionPrefix>$(NtsMajorVersion).$(NtsMinorVersion).$(NtsPatchVersion)</VersionPrefix>
+    <VersionSuffix Condition=" '$(VersionSuffix)' == '' And '$(NtsOfficialRelease)' != 'true' ">pre.$(NtsDaysSinceEpoch)$(NtsMinutesSinceStartOfUtcDay)+$(NtsBuildMetadata)</VersionSuffix>
+
+    <!--
+        A sample of what this could have been on 2019-05-13 at 11:00:00 PM UTC:
+        NtsBuildTimestamp            = 636933024000000000
+
+        NtsMajorVersion              = 2
+        NtsMinorVersion              = 0
+        NtsPatchVersion              = 0
+        VersionPrefix                = 2.0.0
+
+        NtsDaysSinceEpoch            = 18029
+        NtsMinutesSinceStartOfUtcDay = 1380
+        NtsBuildMetadata             = local
+        VersionSuffix                = pre.180291380+local
+
+        (ultimate) package version   = 2.0.0-pre.180291380+local
+    -->
+  </PropertyGroup>
+
+  <PropertyGroup Label="Assembly Info">
+    <!-- See https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/versioning -->
+    <AssemblyVersion>$(NtsMajorVersion).0.0.0</AssemblyVersion>
+    <AssemblyFileVersion>$(NtsMajorVersion).$(NtsMinorVersion).$(NtsPatchVersion).$(NtsBuildNumber)</AssemblyFileVersion>
+    <InformationalVersion>$(NtsMajorVersion).$(NtsMinorVersion).$(NtsPatchVersion) (compatible with JTS $(JTSCompatibilityLevel))</InformationalVersion>
+
+    <Company>NetTopologySuite - Team</Company>
+
+    <CopyrightPeople>$(Company)</CopyrightPeople>
+    <CopyrightPeople>$(CopyrightPeople), Diego Guidi</CopyrightPeople>
+    <CopyrightPeople>$(CopyrightPeople), John Diss (www.newgrove.com)</CopyrightPeople>
+    <CopyrightPeople>$(CopyrightPeople), Felix Obermaier (www.ivv-aachen.de)</CopyrightPeople>
+    <CopyrightPeople>$(CopyrightPeople), Todd Jackson</CopyrightPeople>
+    <CopyrightPeople>$(CopyrightPeople), Joe Amenta</CopyrightPeople>
+    <Copyright>Copyright © 2006 - $([System.DateTime]::UtcNow.Year) $(CopyrightPeople)</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup Label="SourceLink Info">
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- SourceLink adds stuff to let debuggers step into our code. -->
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>

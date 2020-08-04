@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <SignAssembly>true</SignAssembly>
+    <NoWarn>659,168,1587</NoWarn>
+    <EnableApiCompat>true</EnableApiCompat>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Assembly Info">
+    <AssemblyTitle>NetTopologySuite</AssemblyTitle>
+    <Description>A .NET library for GIS operations, direct porting of JTS Topology Suite $(JTSCompatibilityLevel) library</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Label="NuGet Package Info">
+    <PackageId>NetTopologySuite</PackageId>
+    <Title>NTS - Topology Suite</Title>
+    <Authors>NetTopologySuite - Team</Authors>
+    <Owners>NetTopologySuite - Team</Owners>
+    <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Description>The NTS Topology Suite is an API for modelling and manipulating 2-dimensional linear geometry. It provides numerous geometric predicates and functions. NTS conforms to the Simple Features Specification.</Description>
+    <PackageTags>NTS;Topology;OGC;SFS</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Memory" Version="4.5.3" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(EnableApiCompat)' == 'true' ">
+    <PackageReference Include="Microsoft.DotNet.ApiCompat" Version="5.0.0-beta.20162.3" PrivateAssets="All" />
+    <PackageDownload Include="NetTopologySuite" Version="[$(NtsMajorVersion).0.0]" PrivateAssets="All" />
+
+    <ResolvedMatchingContract Include="$(NugetPackageRoot)nettopologysuite\$(NtsMajorVersion).0.0\lib\netstandard2.0\NetTopologySuite.dll" />
+  </ItemGroup>
+
+</Project>

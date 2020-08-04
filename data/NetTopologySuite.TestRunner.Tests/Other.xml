@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<project>
+  <test verbose="false" exception="true" interactive="false" filter="none">
+    <dirs>
+      <dir>robust</dir>
+      <dir>failure</dir>
+      <dir>external</dir>
+      <dir>stmlf</dir>
+    </dirs>
+  </test>
+</project>
