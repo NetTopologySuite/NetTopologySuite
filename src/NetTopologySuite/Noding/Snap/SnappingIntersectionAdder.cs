@@ -11,50 +11,40 @@ namespace NetTopologySuite.Noding.Snap
     /// <version>1.17</version>
     public class SnappingIntersectionAdder : ISegmentIntersector
     {
-        private readonly LineIntersector _li;
+        private readonly LineIntersector _li = new RobustLineIntersector();
         private readonly double _snapTolerance;
         private readonly SnappingPointIndex _snapIndex;
 
         /// <summary>
-        /// Creates an intersector which finds all snapped interior intersections,
+        /// Creates an intersector which finds all snapped intersections,
         /// and adds them as nodes.
         /// </summary>
         /// <param name="snapIndex">A snap index to use</param>
-        public SnappingIntersectionAdder(SnappingPointIndex snapIndex)
+        public SnappingIntersectionAdder(double snapTolerance, SnappingPointIndex snapIndex)
         {
             _snapIndex = snapIndex;
-            _snapTolerance = snapIndex.Tolerance;
-
-            /*
-             * Intersections are detected and computed using full precision.
-             */
-            _li = new RobustLineIntersector();
+            _snapTolerance = snapTolerance;
         }
 
         /// <summary>
-        /// A trivial intersection is an apparent self-intersection which in fact
-        /// is the point shared by adjacent segments of a SegmentString.
+        /// Test if two segments are adjacent segments on the same SegmentString.
         /// Note that closed edges require a special check for the point shared by the beginning
         /// and end segments.
         /// </summary>
-        private bool IsAdjacentIntersection(ISegmentString e0, int segIndex0, ISegmentString e1, int segIndex1)
+        private static bool IsAdjacent(ISegmentString e0, int segIndex0, ISegmentString e1, int segIndex1)
         {
-            if (e0 == e1)
+            if (e0 != e1) return false;
+
+            bool isAdjacent = Math.Abs(segIndex0 - segIndex1) == 1;
+            if (isAdjacent)
+                return true;
+            if (e0.IsClosed)
             {
-                if (_li.IntersectionNum == 1)
+                int maxSegIndex = e0.Count - 1;
+                if (   (segIndex0 == 0 && segIndex1 == maxSegIndex)
+                    || (segIndex1 == 0 && segIndex0 == maxSegIndex))
                 {
-                    bool isAdjacent = Math.Abs(segIndex0 - segIndex1) == 1;
-                    if (isAdjacent)
-                        return true;
-                    if (e0.IsClosed)
-                    {
-                        int maxSegIndex = e0.Count - 1;
-                        if ((segIndex0 == 0 && segIndex1 == maxSegIndex)
-                            || (segIndex1 == 0 && segIndex0 == maxSegIndex))
-                        {
-                            return true;
-                        }
-                    }
+                    return true;
                 }
             }
 
@@ -87,18 +77,15 @@ namespace NetTopologySuite.Noding.Snap
 
             /*
              * Process single point intersections only.
-             * Two-point ones will be handled by the near-vertex code
+             * Two-point (colinear) ones will be handled by the near-vertex code
              */
             if (_li.HasIntersection && _li.IntersectionNum == 1)
             {
-                /*
-                if (li.isInteriorIntersection()) {
-                  ((NodedSegmentString) e0).addIntersections(li, segIndex0, 0);
-                  ((NodedSegmentString) e1).addIntersections(li, segIndex1, 1);
-                  return;
-                }
-                */
-                if (!IsAdjacentIntersection(seg0, segIndex0, seg1, segIndex1))
+                /**
+                 * Don't node intersections which are just 
+                 * due to the shared vertex of adjacent segments.
+                 */
+                if (!IsAdjacent(seg0, segIndex0, seg1, segIndex1))
                 {
                     var intPt = _li.GetIntersection(0);
                     var snapPt = _snapIndex.Snap(intPt);
@@ -111,8 +98,7 @@ namespace NetTopologySuite.Noding.Snap
             /*
              * Segments do not actually intersect, within the limits of orientation index robustness.
              * 
-             * To avoid certain robustness issues in snapping, 
-             * also treat very near vertex-segment situations as intersections.
+             * The segments must still be snapped to the segment endpoints.
              */
             ProcessNearVertex(seg0, segIndex0, p00, seg1, segIndex1, p10, p11);
             ProcessNearVertex(seg0, segIndex0, p01, seg1, segIndex1, p10, p11);

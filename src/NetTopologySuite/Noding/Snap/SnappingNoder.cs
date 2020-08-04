@@ -7,10 +7,13 @@ using NetTopologySuite.IO;
 namespace NetTopologySuite.Noding.Snap
 {
     /// <summary>
-    /// Uses regular noding but with snapping vertices
-    /// to nearby segments.
+    /// Nodes a set of segment strings,
+    /// using a snap tolerance distance to snap vertices and node points together.
+    /// This produces a much more robust noded output.
     /// <para/>
-    /// EXPERIMENTAL
+    /// The snap tolerance should be chosen to be as small as possible.
+    /// It probably only needs to be a factor of 10e-12
+    /// smaller than the magnitude of the segment coordinates. 
     /// </summary>
     /// <version>1.17</version>
     public class SnappingNoder : INoder
@@ -32,22 +35,11 @@ namespace NetTopologySuite.Noding.Snap
             return _nodedResult;
         }
 
-        /// <param name="inputSegmentStrings">A Collection of <see cref="NodedSegmentString"/>s</param>
+        /// <param name="inputSegmentStrings">A Collection of <see cref="ISegmentString"/>s</param>
         public void ComputeNodes(IList<ISegmentString> inputSegmentStrings)
         {
             var snappedSS = SnapVertices(inputSegmentStrings);
-            /*
-             * Determine hot pixels for intersections and vertices.
-             * This is done BEFORE the input lines are rounded,
-             * to avoid distorting the line arrangement 
-             * (rounding can cause vertices to move across edges).
-             */
             _nodedResult = ComputeIntersections(snappedSS);
-
-            // testing purposes only - remove in final version
-            //checkCorrectness(inputSegmentStrings);
-            //if (Debug.isDebugging()) dumpNodedLines(inputSegmentStrings);
-            //if (Debug.isDebugging()) dumpNodedLines(snappedResult);
         }
 
         private IList<ISegmentString> SnapVertices(IEnumerable<ISegmentString> segStrings)
@@ -76,39 +68,20 @@ namespace NetTopologySuite.Noding.Snap
             return snapCoords.ToCoordinateArray();
         }
 
-        private void dumpNodedLines(IEnumerable<ISegmentString> segStrings)
-        {
-            foreach (NodedSegmentString nss in segStrings)
-            {
-                Debug.WriteLine(WKTWriter.ToLineString(nss.NodeList.GetSplitCoordinates()));
-            }
-        }
-
-        private void checkValidNoding(ICollection<ISegmentString> inputSegmentStrings)
-        {
-            var resultSegStrings = NodedSegmentString.GetNodedSubstrings(inputSegmentStrings);
-            var nv = new NodingValidator(resultSegStrings);
-            try
-            {
-                nv.CheckValid();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(ex.StackTrace);
-            }
-        }
-
         /// <summary>
-        /// Computes all interior intersections in the collection of {@link SegmentString}s,
-        /// and returns their {@link Coordinate}s.
+        /// Computes all interior intersections in the collection of <see cref="ISegmentString"/>s,
+        /// and returns their <see cref="NodedSegmentString"/>s.
         /// <para/>
         /// Also adds the intersection nodes to the segments.
         /// </summary>
         /// <returns>A list of noded substrings</returns>
         private IList<ISegmentString> ComputeIntersections(IList<ISegmentString> inputSS)
         {
-            var intAdder = new SnappingIntersectionAdder(snapIndex);
+            var intAdder = new SnappingIntersectionAdder(_snapTolerance, snapIndex);
+            /*
+             * Use an overlap tolerance to ensure all 
+             * possible snapped intersections are found
+             */
             var noder = new MCIndexNoder(intAdder, 2 * _snapTolerance);
             noder.ComputeNodes(inputSS);
             return noder.GetNodedSubstrings();
