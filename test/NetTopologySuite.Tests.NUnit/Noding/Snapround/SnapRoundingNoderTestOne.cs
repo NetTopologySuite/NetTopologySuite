@@ -16,14 +16,10 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
     {
 
 
-        private static INoder getSnapRounder(PrecisionModel pm)
+        private static INoder GetSnapRounder(PrecisionModel pm)
         {
             return new SnapRoundingNoder(pm);
-            //return new SimpleSnapRounder(pm);
-            //return new MCIndexSnapRounder(pm);
         }
-
-        private readonly GeometryFactory geomFact = new GeometryFactory();
 
         [Test]
         public void TestSlantAndHorizontalLineWithMiddleNode()
@@ -161,66 +157,15 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
         void CheckRounding(string wkt, double scale, string expectedWKT)
         {
             var geom = Read(wkt);
-            var result = Snap(geom, scale);
-            /*
-                for (Iterator it = nodedLines.iterator(); it.hasNext(); ) {
-                  System.out.println(it.next());
-                }
-                */
+            var pm = new PrecisionModel(scale);
+            var noder = GetSnapRounder(pm);
+            var result = NodingTestUtility.NodeValidated(geom, null, noder);  
 
             // only check if expected was provided
             if (expectedWKT == null) return;
+
             var expected = Read(expectedWKT);
             CheckEqual(expected, result);
         }
-
-        private Geometry Snap(Geometry geom, double scale)
-        {
-            var pm = new PrecisionModel(scale);
-            var lines = LinearComponentExtracter.GetLines(geom);
-            var ssList = GetSegmentStrings(lines);
-
-            var ssr = getSnapRounder(pm);
-            ssr.ComputeNodes(ssList);
-            var nodedList = ssr.GetNodedSubstrings();
-
-            var result = ToLines(nodedList);
-            TestContext.WriteLine(result);
-
-            // validate noding
-            var nv = new NodingValidator(nodedList);
-            nv.CheckValid();
-
-            return result;
-        }
-
-        private MultiLineString ToLines(ICollection<ISegmentString> nodedList)
-        {
-            var lines = new LineString[nodedList.Count];
-            int i = 0;
-            foreach (NodedSegmentString nss in nodedList)
-            {
-                var pts = nss.Coordinates;
-                var line = geomFact.CreateLineString(pts);
-                lines[i++] = line;
-            }
-
-            return geomFact.CreateMultiLineString(lines);
-        }
-
-        private IList<ISegmentString> GetSegmentStrings(IEnumerable<Geometry> lines)
-        {
-            var nssList = new List<ISegmentString>();
-            foreach (LineString line in lines)
-            {
-                var nss = new NodedSegmentString(line.Coordinates, line);
-                nssList.Add(nss);
-            }
-
-            return nssList;
-        }
-
-
-
     }
 }
