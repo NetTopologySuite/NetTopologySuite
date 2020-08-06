@@ -91,11 +91,18 @@ traversal of R-trees built
 on the target and the query geometries.</p>
 <p>
 This approach provides the following benefits:
-<p>Using this technique is usually much more performant
+<ul><li>
+Performance is dramatically improved due to the use of the
+R-tree index
+and the pruning due to the Branch-and-Bound approach
+</li><li>
+The spatial index on the target geometry is cached
+which allow reuse in an repeated query situation.</li></ul>
+Using this technique is usually much more performant
 than using the brute-force <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Distance_NetTopologySuite_Geometries_Geometry_">Distance(Geometry)</a>
 when one or both input geometries are large,
 or when evaluating many distance computations against
-a single geometry.</p>
+a single geometry.
 </p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -104,35 +111,11 @@ a single geometry.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">IndexedFacetDistance</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Operation.Distance.html">NetTopologySuite.Operation.Distance</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Operation_Distance_IndexedFacetDistance_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class IndexedFacetDistance</code></pre>
+    <pre><code class="lang-csharp hljs">public class IndexedFacetDistance : object</code></pre>
   </div>
   <h5 id="NetTopologySuite_Operation_Distance_IndexedFacetDistance_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>This class is thread-safe.</p>
@@ -144,7 +127,7 @@ a single geometry.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Distance_IndexedFacetDistance__ctor_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Distance.IndexedFacetDistance.%23ctor(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Distance/IndexedFacedDistance.cs/#L80">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Distance/IndexedFacedDistance.cs/#L102">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Distance_IndexedFacetDistance__ctor_" data-uid="NetTopologySuite.Operation.Distance.IndexedFacetDistance.#ctor*"></a>
   <h4 id="NetTopologySuite_Operation_Distance_IndexedFacetDistance__ctor_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.Distance.IndexedFacetDistance.#ctor(NetTopologySuite.Geometries.Geometry)">IndexedFacetDistance(Geometry)</h4>
@@ -193,7 +176,7 @@ to computing the distance to the polygon boundaries.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Distance_IndexedFacetDistance_Distance_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Distance.IndexedFacetDistance.Distance(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Distance/IndexedFacedDistance.cs/#L90">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Distance/IndexedFacedDistance.cs/#L113">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Distance_IndexedFacetDistance_Distance_" data-uid="NetTopologySuite.Operation.Distance.IndexedFacetDistance.Distance*"></a>
   <h4 id="NetTopologySuite_Operation_Distance_IndexedFacetDistance_Distance_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.Distance.IndexedFacetDistance.Distance(NetTopologySuite.Geometries.Geometry)">Distance(Geometry)</h4>
@@ -243,11 +226,11 @@ to computing the distance to the polygon boundaries.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Distance_IndexedFacetDistance_Distance_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Distance.IndexedFacetDistance.Distance(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Distance/IndexedFacedDistance.cs/#L49">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Distance/IndexedFacedDistance.cs/#L51">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Distance_IndexedFacetDistance_Distance_" data-uid="NetTopologySuite.Operation.Distance.IndexedFacetDistance.Distance*"></a>
   <h4 id="NetTopologySuite_Operation_Distance_IndexedFacetDistance_Distance_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.Distance.IndexedFacetDistance.Distance(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry)">Distance(Geometry, Geometry)</h4>
-  <div class="markdown level1 summary"><p>Computes the distance between two geometries using the indexed approach.</p>
+  <div class="markdown level1 summary"><p>Computes the distance between facets of two geometries.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -301,10 +284,129 @@ algorithm.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Distance_IndexedFacetDistance_IsWithinDistance_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Distance.IndexedFacetDistance.IsWithinDistance(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Distance/IndexedFacedDistance.cs/#L64">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Distance_IndexedFacetDistance_IsWithinDistance_" data-uid="NetTopologySuite.Operation.Distance.IndexedFacetDistance.IsWithinDistance*"></a>
+  <h4 id="NetTopologySuite_Operation_Distance_IndexedFacetDistance_IsWithinDistance_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_System_Double_" data-uid="NetTopologySuite.Operation.Distance.IndexedFacetDistance.IsWithinDistance(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry,System.Double)">IsWithinDistance(Geometry, Geometry, Double)</h4>
+  <div class="markdown level1 summary"><p>Tests whether the facets of two geometries lie within a given distance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsWithinDistance(Geometry g1, Geometry g2, double distance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">g1</span></td>
+        <td><p>A geometry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">g2</span></td>
+        <td><p>A geometry</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">distance</span></td>
+        <td><p>The distance limit</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if two facets lie with the given distance</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Distance_IndexedFacetDistance_IsWithinDistance_NetTopologySuite_Geometries_Geometry_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Distance.IndexedFacetDistance.IsWithinDistance(NetTopologySuite.Geometries.Geometry%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Distance/IndexedFacedDistance.cs/#L165">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Distance_IndexedFacetDistance_IsWithinDistance_" data-uid="NetTopologySuite.Operation.Distance.IndexedFacetDistance.IsWithinDistance*"></a>
+  <h4 id="NetTopologySuite_Operation_Distance_IndexedFacetDistance_IsWithinDistance_NetTopologySuite_Geometries_Geometry_System_Double_" data-uid="NetTopologySuite.Operation.Distance.IndexedFacetDistance.IsWithinDistance(NetTopologySuite.Geometries.Geometry,System.Double)">IsWithinDistance(Geometry, Double)</h4>
+  <div class="markdown level1 summary"><p>Tests whether the base geometry lies within
+a specified distance of the given geometry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsWithinDistance(Geometry g, double maxDistance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><span class="parametername">g</span></td>
+        <td><p>The geometry to test</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">maxDistance</span></td>
+        <td><p>The maximum distance to test</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the geometry lies with the specified distance</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Distance_IndexedFacetDistance_NearestLocations_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Distance.IndexedFacetDistance.NearestLocations(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Distance/IndexedFacedDistance.cs/#L105">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Distance/IndexedFacedDistance.cs/#L128">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Distance_IndexedFacetDistance_NearestLocations_" data-uid="NetTopologySuite.Operation.Distance.IndexedFacetDistance.NearestLocations*"></a>
   <h4 id="NetTopologySuite_Operation_Distance_IndexedFacetDistance_NearestLocations_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.Distance.IndexedFacetDistance.NearestLocations(NetTopologySuite.Geometries.Geometry)">NearestLocations(Geometry)</h4>
@@ -355,7 +457,7 @@ and the given geometry.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Distance_IndexedFacetDistance_NearestPoints_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Distance.IndexedFacetDistance.NearestPoints(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Distance/IndexedFacedDistance.cs/#L120">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Distance/IndexedFacedDistance.cs/#L143">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Distance_IndexedFacetDistance_NearestPoints_" data-uid="NetTopologySuite.Operation.Distance.IndexedFacetDistance.NearestPoints*"></a>
   <h4 id="NetTopologySuite_Operation_Distance_IndexedFacetDistance_NearestPoints_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.Distance.IndexedFacetDistance.NearestPoints(NetTopologySuite.Geometries.Geometry)">NearestPoints(Geometry)</h4>
@@ -406,11 +508,12 @@ and the given geometry.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Distance_IndexedFacetDistance_NearestPoints_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Distance.IndexedFacetDistance.NearestPoints(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Distance/IndexedFacedDistance.cs/#L55">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Distance/IndexedFacedDistance.cs/#L76">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Distance_IndexedFacetDistance_NearestPoints_" data-uid="NetTopologySuite.Operation.Distance.IndexedFacetDistance.NearestPoints*"></a>
   <h4 id="NetTopologySuite_Operation_Distance_IndexedFacetDistance_NearestPoints_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.Distance.IndexedFacetDistance.NearestPoints(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry)">NearestPoints(Geometry, Geometry)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Computes the nearest points of the facets of two geometries.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -429,12 +532,14 @@ and the given geometry.</p>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
         <td><span class="parametername">g1</span></td>
-        <td></td>
+        <td><p>A geometry</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
         <td><span class="parametername">g2</span></td>
-        <td></td>
+        <td><p>A geometry</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -449,7 +554,8 @@ and the given geometry.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
-        <td></td>
+        <td><p>The nearest points on the facets of the geometries</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -464,7 +570,7 @@ and the given geometry.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Distance_IndexedFacetDistance.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Distance.IndexedFacetDistance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Distance/IndexedFacedDistance.cs/#L36" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Distance/IndexedFacedDistance.cs/#L36" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

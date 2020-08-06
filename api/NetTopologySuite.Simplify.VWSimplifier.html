@@ -104,35 +104,11 @@ This is converted to an area tolerance by squaring it.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">VWSimplifier</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Simplify.html">NetTopologySuite.Simplify</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Simplify_VWSimplifier_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class VWSimplifier</code></pre>
+    <pre><code class="lang-csharp hljs">public class VWSimplifier : object</code></pre>
   </div>
   <h5 id="NetTopologySuite_Simplify_VWSimplifier_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Note that in general this algorithm does not preserve topology - e.g. polygons can be split,
@@ -146,7 +122,7 @@ can cross.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Simplify_VWSimplifier__ctor_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.VWSimplifier.%23ctor(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Simplify/VWSimplifier.cs/#L52">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Simplify/VWSimplifier.cs/#L52">View Source</a>
   </span>
   <a id="NetTopologySuite_Simplify_VWSimplifier__ctor_" data-uid="NetTopologySuite.Simplify.VWSimplifier.#ctor*"></a>
   <h4 id="NetTopologySuite_Simplify_VWSimplifier__ctor_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Simplify.VWSimplifier.#ctor(NetTopologySuite.Geometries.Geometry)">VWSimplifier(Geometry)</h4>
@@ -182,7 +158,7 @@ can cross.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Simplify_VWSimplifier_DistanceTolerance.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.VWSimplifier.DistanceTolerance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Simplify/VWSimplifier.cs/#L62">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Simplify/VWSimplifier.cs/#L62">View Source</a>
   </span>
   <a id="NetTopologySuite_Simplify_VWSimplifier_DistanceTolerance_" data-uid="NetTopologySuite.Simplify.VWSimplifier.DistanceTolerance*"></a>
   <h4 id="NetTopologySuite_Simplify_VWSimplifier_DistanceTolerance" data-uid="NetTopologySuite.Simplify.VWSimplifier.DistanceTolerance">DistanceTolerance</h4>
@@ -215,7 +191,7 @@ The tolerance value must be non-negative.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Simplify_VWSimplifier_IsEnsureValidTopology.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.VWSimplifier.IsEnsureValidTopology%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Simplify/VWSimplifier.cs/#L82">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Simplify/VWSimplifier.cs/#L82">View Source</a>
   </span>
   <a id="NetTopologySuite_Simplify_VWSimplifier_IsEnsureValidTopology_" data-uid="NetTopologySuite.Simplify.VWSimplifier.IsEnsureValidTopology*"></a>
   <h4 id="NetTopologySuite_Simplify_VWSimplifier_IsEnsureValidTopology" data-uid="NetTopologySuite.Simplify.VWSimplifier.IsEnsureValidTopology">IsEnsureValidTopology</h4>
@@ -258,7 +234,7 @@ fail or run for too long.</li>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Simplify_VWSimplifier_GetResultGeometry.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.VWSimplifier.GetResultGeometry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Simplify/VWSimplifier.cs/#L92">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Simplify/VWSimplifier.cs/#L92">View Source</a>
   </span>
   <a id="NetTopologySuite_Simplify_VWSimplifier_GetResultGeometry_" data-uid="NetTopologySuite.Simplify.VWSimplifier.GetResultGeometry*"></a>
   <h4 id="NetTopologySuite_Simplify_VWSimplifier_GetResultGeometry" data-uid="NetTopologySuite.Simplify.VWSimplifier.GetResultGeometry">GetResultGeometry()</h4>
@@ -290,7 +266,7 @@ fail or run for too long.</li>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Simplify_VWSimplifier_Simplify_NetTopologySuite_Geometries_Geometry_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.VWSimplifier.Simplify(NetTopologySuite.Geometries.Geometry%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Simplify/VWSimplifier.cs/#L37">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Simplify/VWSimplifier.cs/#L37">View Source</a>
   </span>
   <a id="NetTopologySuite_Simplify_VWSimplifier_Simplify_" data-uid="NetTopologySuite.Simplify.VWSimplifier.Simplify*"></a>
   <h4 id="NetTopologySuite_Simplify_VWSimplifier_Simplify_NetTopologySuite_Geometries_Geometry_System_Double_" data-uid="NetTopologySuite.Simplify.VWSimplifier.Simplify(NetTopologySuite.Geometries.Geometry,System.Double)">Simplify(Geometry, Double)</h4>
@@ -352,7 +328,7 @@ fail or run for too long.</li>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Simplify_VWSimplifier.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.VWSimplifier%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Simplify/VWSimplifier.cs/#L29" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Simplify/VWSimplifier.cs/#L29" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

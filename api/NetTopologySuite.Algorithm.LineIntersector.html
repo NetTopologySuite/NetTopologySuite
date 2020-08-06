@@ -88,7 +88,7 @@ two line segments intersect and compute the intersection point(s)
 if they do.</p>
 <p>
 There are three possible outcomes when determining whether two line segments intersect:
-<ul><li></li><li></li><li></li></ul>
+<ul><li><a class="xref" href="NetTopologySuite.Algorithm.LineIntersector.html#NetTopologySuite_Algorithm_LineIntersector_NoIntersection">NoIntersection</a> - the segments do not intersect</li><li><a class="xref" href="NetTopologySuite.Algorithm.LineIntersector.html#NetTopologySuite_Algorithm_LineIntersector_PointIntersection">PointIntersection</a> - the segments intersect in a single point</li><li><a class="xref" href="NetTopologySuite.Algorithm.LineIntersector.html#NetTopologySuite_Algorithm_LineIntersector_CollinearIntersection">CollinearIntersection</a> - the segments are collinear and they intersect in a line segment</li></ul>
 </p>
 <p>
 For segments which intersect in a single point, the point may be either an endpoint
@@ -114,32 +114,11 @@ envelope overlap is already known to occur (or be likely).
     <div class="level1"><span class="xref">LineIntersector</span></div>
       <div class="level2"><a class="xref" href="NetTopologySuite.Algorithm.RobustLineIntersector.html">RobustLineIntersector</a></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Algorithm.html">NetTopologySuite.Algorithm</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Algorithm_LineIntersector_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class LineIntersector</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class LineIntersector : object</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -148,7 +127,7 @@ envelope overlap is already known to occur (or be likely).
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L138">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L138">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector__ctor_" data-uid="NetTopologySuite.Algorithm.LineIntersector.#ctor*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector__ctor" data-uid="NetTopologySuite.Algorithm.LineIntersector.#ctor">LineIntersector()</h4>
@@ -165,7 +144,7 @@ envelope overlap is already known to occur (or be likely).
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_CollinearIntersection.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.CollinearIntersection%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L52">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L52">View Source</a>
   </span>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_CollinearIntersection" data-uid="NetTopologySuite.Algorithm.LineIntersector.CollinearIntersection">CollinearIntersection</h4>
   <div class="markdown level1 summary"><p>Indicates that line segments intersect in a line segment</p>
@@ -173,7 +152,7 @@ envelope overlap is already known to occur (or be likely).
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int CollinearIntersection = 2</code></pre>
+    <pre><code class="lang-csharp hljs">public const int CollinearIntersection = null</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -195,7 +174,7 @@ envelope overlap is already known to occur (or be likely).
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_InputLines.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.InputLines%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L110">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L110">View Source</a>
   </span>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_InputLines" data-uid="NetTopologySuite.Algorithm.LineIntersector.InputLines">InputLines</h4>
   <div class="markdown level1 summary"></div>
@@ -224,7 +203,7 @@ envelope overlap is already known to occur (or be likely).
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_IntersectionLineIndex.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.IntersectionLineIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L118">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L118">View Source</a>
   </span>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_IntersectionLineIndex" data-uid="NetTopologySuite.Algorithm.LineIntersector.IntersectionLineIndex">IntersectionLineIndex</h4>
   <div class="markdown level1 summary"><p>The indexes of the endpoints of the intersection lines, in order along
@@ -255,7 +234,7 @@ the corresponding line</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_IntersectionPoint.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.IntersectionPoint%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L112">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L112">View Source</a>
   </span>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_IntersectionPoint" data-uid="NetTopologySuite.Algorithm.LineIntersector.IntersectionPoint">IntersectionPoint</h4>
   <div class="markdown level1 summary"></div>
@@ -284,7 +263,7 @@ the corresponding line</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_NoIntersection.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.NoIntersection%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L42">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L42">View Source</a>
   </span>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_NoIntersection" data-uid="NetTopologySuite.Algorithm.LineIntersector.NoIntersection">NoIntersection</h4>
   <div class="markdown level1 summary"><p>Indicates that line segments do not intersect</p>
@@ -292,7 +271,7 @@ the corresponding line</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int NoIntersection = 0</code></pre>
+    <pre><code class="lang-csharp hljs">public const int NoIntersection = null</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -314,7 +293,7 @@ the corresponding line</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_PointIntersection.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.PointIntersection%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L47">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L47">View Source</a>
   </span>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_PointIntersection" data-uid="NetTopologySuite.Algorithm.LineIntersector.PointIntersection">PointIntersection</h4>
   <div class="markdown level1 summary"><p>Indicates that line segments intersect in a single point</p>
@@ -322,7 +301,7 @@ the corresponding line</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int PointIntersection = 1</code></pre>
+    <pre><code class="lang-csharp hljs">public const int PointIntersection = null</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -344,7 +323,7 @@ the corresponding line</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_Result.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.Result%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L108">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L108">View Source</a>
   </span>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_Result" data-uid="NetTopologySuite.Algorithm.LineIntersector.Result">Result</h4>
   <div class="markdown level1 summary"></div>
@@ -375,7 +354,7 @@ the corresponding line</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_HasIntersection.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.HasIntersection%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L223">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L223">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_HasIntersection_" data-uid="NetTopologySuite.Algorithm.LineIntersector.HasIntersection*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_HasIntersection" data-uid="NetTopologySuite.Algorithm.LineIntersector.HasIntersection">HasIntersection</h4>
@@ -407,7 +386,7 @@ the corresponding line</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_IntersectionNum.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.IntersectionNum%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L229">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L229">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_IntersectionNum_" data-uid="NetTopologySuite.Algorithm.LineIntersector.IntersectionNum*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_IntersectionNum" data-uid="NetTopologySuite.Algorithm.LineIntersector.IntersectionNum">IntersectionNum</h4>
@@ -439,7 +418,7 @@ the corresponding line</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_IsCollinear.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.IsCollinear%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L181">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L181">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_IsCollinear_" data-uid="NetTopologySuite.Algorithm.LineIntersector.IsCollinear*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_IsCollinear" data-uid="NetTopologySuite.Algorithm.LineIntersector.IsCollinear">IsCollinear</h4>
@@ -469,7 +448,7 @@ the corresponding line</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_IsEndPoint.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.IsEndPoint%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L217">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L217">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_IsEndPoint_" data-uid="NetTopologySuite.Algorithm.LineIntersector.IsEndPoint*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_IsEndPoint" data-uid="NetTopologySuite.Algorithm.LineIntersector.IsEndPoint">IsEndPoint</h4>
@@ -499,7 +478,7 @@ the corresponding line</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_IsProper.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.IsProper%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L307">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L307">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_IsProper_" data-uid="NetTopologySuite.Algorithm.LineIntersector.IsProper*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_IsProper" data-uid="NetTopologySuite.Algorithm.LineIntersector.IsProper">IsProper</h4>
@@ -536,7 +515,7 @@ if the point lies in the interior of the segment (e.g. is not equal to either of
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_Pa.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.Pa%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L125">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L125">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_Pa_" data-uid="NetTopologySuite.Algorithm.LineIntersector.Pa*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_Pa" data-uid="NetTopologySuite.Algorithm.LineIntersector.Pa">Pa</h4>
@@ -567,7 +546,7 @@ if the point lies in the interior of the segment (e.g. is not equal to either of
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_Pb.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.Pb%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L130">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L130">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_Pb_" data-uid="NetTopologySuite.Algorithm.LineIntersector.Pb*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_Pb" data-uid="NetTopologySuite.Algorithm.LineIntersector.Pb">Pb</h4>
@@ -598,7 +577,7 @@ if the point lies in the interior of the segment (e.g. is not equal to either of
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_PrecisionModel.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.PrecisionModel%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L156">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L156">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_PrecisionModel_" data-uid="NetTopologySuite.Algorithm.LineIntersector.PrecisionModel*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_PrecisionModel" data-uid="NetTopologySuite.Algorithm.LineIntersector.PrecisionModel">PrecisionModel</h4>
@@ -632,7 +611,7 @@ No getter is provided, because the precision model is not required to be specifi
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_ComputeEdgeDistance_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.ComputeEdgeDistance(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L68">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L68">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_ComputeEdgeDistance_" data-uid="NetTopologySuite.Algorithm.LineIntersector.ComputeEdgeDistance*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_ComputeEdgeDistance_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Algorithm.LineIntersector.ComputeEdgeDistance(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">ComputeEdgeDistance(Coordinate, Coordinate, Coordinate)</h4>
@@ -701,7 +680,7 @@ result of rounding points which lie on the line, but not safe to use for truncat
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_ComputeIntersect_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.ComputeIntersect(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L199">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L199">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_ComputeIntersect_" data-uid="NetTopologySuite.Algorithm.LineIntersector.ComputeIntersect*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_ComputeIntersect_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Algorithm.LineIntersector.ComputeIntersect(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">ComputeIntersect(Coordinate, Coordinate, Coordinate, Coordinate)</h4>
@@ -763,7 +742,7 @@ result of rounding points which lie on the line, but not safe to use for truncat
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_ComputeIntersection_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.ComputeIntersection(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L179">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L179">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_ComputeIntersection_" data-uid="NetTopologySuite.Algorithm.LineIntersector.ComputeIntersection*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_ComputeIntersection_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Algorithm.LineIntersector.ComputeIntersection(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">ComputeIntersection(Coordinate, Coordinate, Coordinate)</h4>
@@ -809,7 +788,7 @@ is equal to the value of <code>p</code>.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_ComputeIntersection_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.ComputeIntersection(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L188">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L188">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_ComputeIntersection_" data-uid="NetTopologySuite.Algorithm.LineIntersector.ComputeIntersection*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_ComputeIntersection_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Algorithm.LineIntersector.ComputeIntersection(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">ComputeIntersection(Coordinate, Coordinate, Coordinate, Coordinate)</h4>
@@ -859,7 +838,7 @@ and the (approximate) value of the intersection point itself (if there is one).<
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_ComputeIntLineIndex.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.ComputeIntLineIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L241">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L241">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_ComputeIntLineIndex_" data-uid="NetTopologySuite.Algorithm.LineIntersector.ComputeIntLineIndex*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_ComputeIntLineIndex" data-uid="NetTopologySuite.Algorithm.LineIntersector.ComputeIntLineIndex">ComputeIntLineIndex()</h4>
@@ -874,7 +853,7 @@ and the (approximate) value of the intersection point itself (if there is one).<
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_ComputeIntLineIndex_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.ComputeIntLineIndex(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L350">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L350">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_ComputeIntLineIndex_" data-uid="NetTopologySuite.Algorithm.LineIntersector.ComputeIntLineIndex*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_ComputeIntLineIndex_System_Int32_" data-uid="NetTopologySuite.Algorithm.LineIntersector.ComputeIntLineIndex(System.Int32)">ComputeIntLineIndex(Int32)</h4>
@@ -908,7 +887,7 @@ and the (approximate) value of the intersection point itself (if there is one).<
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_GetEdgeDistance_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.GetEdgeDistance(System.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L374">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L374">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_GetEdgeDistance_" data-uid="NetTopologySuite.Algorithm.LineIntersector.GetEdgeDistance*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_GetEdgeDistance_System_Int32_System_Int32_" data-uid="NetTopologySuite.Algorithm.LineIntersector.GetEdgeDistance(System.Int32,System.Int32)">GetEdgeDistance(Int32, Int32)</h4>
@@ -964,7 +943,7 @@ and the (approximate) value of the intersection point itself (if there is one).<
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_GetEndpoint_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.GetEndpoint(System.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L168">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L168">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_GetEndpoint_" data-uid="NetTopologySuite.Algorithm.LineIntersector.GetEndpoint*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_GetEndpoint_System_Int32_System_Int32_" data-uid="NetTopologySuite.Algorithm.LineIntersector.GetEndpoint(System.Int32,System.Int32)">GetEndpoint(Int32, Int32)</h4>
@@ -1020,7 +999,7 @@ and the (approximate) value of the intersection point itself (if there is one).<
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_GetIndexAlongSegment_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.GetIndexAlongSegment(System.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L339">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L339">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_GetIndexAlongSegment_" data-uid="NetTopologySuite.Algorithm.LineIntersector.GetIndexAlongSegment*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_GetIndexAlongSegment_System_Int32_System_Int32_" data-uid="NetTopologySuite.Algorithm.LineIntersector.GetIndexAlongSegment(System.Int32,System.Int32)">GetIndexAlongSegment(Int32, Int32)</h4>
@@ -1077,7 +1056,7 @@ a specified input line segment.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_GetIntersection_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.GetIntersection(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L236">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L236">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_GetIntersection_" data-uid="NetTopologySuite.Algorithm.LineIntersector.GetIntersection*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_GetIntersection_System_Int32_" data-uid="NetTopologySuite.Algorithm.LineIntersector.GetIntersection(System.Int32)">GetIntersection(Int32)</h4>
@@ -1127,7 +1106,7 @@ a specified input line segment.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_GetIntersectionAlongSegment_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.GetIntersectionAlongSegment(System.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L322">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L322">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_GetIntersectionAlongSegment_" data-uid="NetTopologySuite.Algorithm.LineIntersector.GetIntersectionAlongSegment*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_GetIntersectionAlongSegment_System_Int32_System_Int32_" data-uid="NetTopologySuite.Algorithm.LineIntersector.GetIntersectionAlongSegment(System.Int32,System.Int32)">GetIntersectionAlongSegment(Int32, Int32)</h4>
@@ -1184,7 +1163,7 @@ a specified input line segment.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_IsInteriorIntersection.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.IsInteriorIntersection%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L272">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L272">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_IsInteriorIntersection_" data-uid="NetTopologySuite.Algorithm.LineIntersector.IsInteriorIntersection*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_IsInteriorIntersection" data-uid="NetTopologySuite.Algorithm.LineIntersector.IsInteriorIntersection">IsInteriorIntersection()</h4>
@@ -1216,7 +1195,7 @@ a specified input line segment.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_IsInteriorIntersection_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.IsInteriorIntersection(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L287">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L287">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_IsInteriorIntersection_" data-uid="NetTopologySuite.Algorithm.LineIntersector.IsInteriorIntersection*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_IsInteriorIntersection_System_Int32_" data-uid="NetTopologySuite.Algorithm.LineIntersector.IsInteriorIntersection(System.Int32)">IsInteriorIntersection(Int32)</h4>
@@ -1265,7 +1244,7 @@ a specified input line segment.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_IsIntersection_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.IsIntersection(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L258">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L258">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_IsIntersection_" data-uid="NetTopologySuite.Algorithm.LineIntersector.IsIntersection*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_IsIntersection_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Algorithm.LineIntersector.IsIntersection(NetTopologySuite.Geometries.Coordinate)">IsIntersection(Coordinate)</h4>
@@ -1317,7 +1296,7 @@ It does not return true if the input point is internal to the intersection segme
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_NonRobustComputeEdgeDistance_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.NonRobustComputeEdgeDistance(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L99">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L99">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_NonRobustComputeEdgeDistance_" data-uid="NetTopologySuite.Algorithm.LineIntersector.NonRobustComputeEdgeDistance*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_NonRobustComputeEdgeDistance_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Algorithm.LineIntersector.NonRobustComputeEdgeDistance(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">NonRobustComputeEdgeDistance(Coordinate, Coordinate, Coordinate)</h4>
@@ -1376,7 +1355,7 @@ Currently not sure how to improve this.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector_ToString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L202">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L202">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_LineIntersector_ToString_" data-uid="NetTopologySuite.Algorithm.LineIntersector.ToString*"></a>
   <h4 id="NetTopologySuite_Algorithm_LineIntersector_ToString" data-uid="NetTopologySuite.Algorithm.LineIntersector.ToString">ToString()</h4>
@@ -1401,8 +1380,6 @@ Currently not sure how to improve this.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
 </article>
           </div>
           
@@ -1414,7 +1391,7 @@ Currently not sure how to improve this.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_LineIntersector.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.LineIntersector%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/LineIntersector.cs/#L37" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/LineIntersector.cs/#L37" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

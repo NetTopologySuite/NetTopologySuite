@@ -94,45 +94,35 @@ This is equivalent to computing the Maximum Diameter of the input point set.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">MinimumBoundingCircle</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Algorithm.html">NetTopologySuite.Algorithm</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Algorithm_MinimumBoundingCircle_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MinimumBoundingCircle</code></pre>
+    <pre><code class="lang-csharp hljs">public class MinimumBoundingCircle : object</code></pre>
   </div>
   <h5 id="NetTopologySuite_Algorithm_MinimumBoundingCircle_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>
 The computed circle can be specified in two equivalent ways,
 both of which are provide as output by this class:
-</p>
+<ul><li>As a centre point and a radius</li><li>By the set of points defining the circle.
+Depending on the number of points in the input
+and their relative positions, this set
+contains from 0 to 3 points.
+<ul><li>0 or 1 points indicate an empty or trivial input point arrangement.</li><li>2 points define the diameter of the minimum bounding circle.</li><li>3 points define an inscribed triangle of the minimum bounding circle.</li></ul>
+</li></ul>
 <p>
 The class can also output a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> which approximates the
-shape of the MBC (although as an approximation it is <strong>not</strong>
-guaranteed to <tt>cover</tt> all the input points.)</p>
+shape of the Minimum Bounding Circle (although as an approximation 
+it is <strong>not</strong> guaranteed to <tt>cover</tt> all the input points.)
+<p>
+The Maximum Diameter of the input point set can
+be computed as well. The Maximum Diameter is
+defined by the pair of input points with maximum distance between them.
+The points of the maximum diameter are two of the extremal points of the Minimum Bounding Circle.
+They lie on the convex hull of the input.
+However, that the maximum diameter is not a diameter
+of the Minimum Bounding Circle in the case where the MBC is
+defined by an inscribed triangle.
 </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -141,7 +131,7 @@ guaranteed to <tt>cover</tt> all the input points.)</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_MinimumBoundingCircle__ctor_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.MinimumBoundingCircle.%23ctor(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/MinimumBoundingCircle.cs/#L54">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/MinimumBoundingCircle.cs/#L61">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_MinimumBoundingCircle__ctor_" data-uid="NetTopologySuite.Algorithm.MinimumBoundingCircle.#ctor*"></a>
   <h4 id="NetTopologySuite_Algorithm_MinimumBoundingCircle__ctor_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Algorithm.MinimumBoundingCircle.#ctor(NetTopologySuite.Geometries.Geometry)">MinimumBoundingCircle(Geometry)</h4>
@@ -178,7 +168,7 @@ point set defined by the vertices of the given geometry.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_MinimumBoundingCircle_GetCentre.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.MinimumBoundingCircle.GetCentre%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/MinimumBoundingCircle.cs/#L153">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/MinimumBoundingCircle.cs/#L215">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_MinimumBoundingCircle_GetCentre_" data-uid="NetTopologySuite.Algorithm.MinimumBoundingCircle.GetCentre*"></a>
   <h4 id="NetTopologySuite_Algorithm_MinimumBoundingCircle_GetCentre" data-uid="NetTopologySuite.Algorithm.MinimumBoundingCircle.GetCentre">GetCentre()</h4>
@@ -200,8 +190,7 @@ point set defined by the vertices of the given geometry.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
-        <td><p>the centre point of the Minimum Bounding Circle, null if the input is empty</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -210,7 +199,7 @@ point set defined by the vertices of the given geometry.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_MinimumBoundingCircle_GetCircle.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.MinimumBoundingCircle.GetCircle%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/MinimumBoundingCircle.cs/#L71">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/MinimumBoundingCircle.cs/#L78">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_MinimumBoundingCircle_GetCircle_" data-uid="NetTopologySuite.Algorithm.MinimumBoundingCircle.GetCircle*"></a>
   <h4 id="NetTopologySuite_Algorithm_MinimumBoundingCircle_GetCircle" data-uid="NetTopologySuite.Algorithm.MinimumBoundingCircle.GetCircle">GetCircle()</h4>
@@ -250,7 +239,7 @@ Minimum Bounding Circle. (Note that because the computed polygon is only an appr
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_MinimumBoundingCircle_GetDiameter.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.MinimumBoundingCircle.GetDiameter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/MinimumBoundingCircle.cs/#L118">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/MinimumBoundingCircle.cs/#L172">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_MinimumBoundingCircle_GetDiameter_" data-uid="NetTopologySuite.Algorithm.MinimumBoundingCircle.GetDiameter*"></a>
   <h4 id="NetTopologySuite_Algorithm_MinimumBoundingCircle_GetDiameter" data-uid="NetTopologySuite.Algorithm.MinimumBoundingCircle.GetDiameter">GetDiameter()</h4>
@@ -272,7 +261,8 @@ Minimum Bounding Circle. (Note that because the computed polygon is only an appr
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
-        <td></td>
+        <td><ul><li>the diameter line of the Minimum Bounding Circle</li><li>an empty line if the input is empty</li><li>a Point if the input is a point</li></ul>
+</td>
       </tr>
     </tbody>
   </table>
@@ -281,11 +271,13 @@ Minimum Bounding Circle. (Note that because the computed polygon is only an appr
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_MinimumBoundingCircle_GetExtremalPoints.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.MinimumBoundingCircle.GetExtremalPoints%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/MinimumBoundingCircle.cs/#L143">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/MinimumBoundingCircle.cs/#L200">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_MinimumBoundingCircle_GetExtremalPoints_" data-uid="NetTopologySuite.Algorithm.MinimumBoundingCircle.GetExtremalPoints*"></a>
   <h4 id="NetTopologySuite_Algorithm_MinimumBoundingCircle_GetExtremalPoints" data-uid="NetTopologySuite.Algorithm.MinimumBoundingCircle.GetExtremalPoints">GetExtremalPoints()</h4>
-  <div class="markdown level1 summary"><p>Gets the extremal points which define the computed Minimum Bounding Circle.</p>
+  <div class="markdown level1 summary"><p>Gets the extremal points which define the computed Minimum Bounding Circle.
+There may be zero, one, two or three of these points, depending on the number
+of points in the input and the geometry of those points.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -308,24 +300,20 @@ Minimum Bounding Circle. (Note that because the computed polygon is only an appr
       </tr>
     </tbody>
   </table>
-  <h5 id="NetTopologySuite_Algorithm_MinimumBoundingCircle_GetExtremalPoints_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>There may be zero, one, two or three of these points,
-depending on the number of points in the input
-and the geometry of those points.</p>
-</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_MinimumBoundingCircle_GetFarthestPoints.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.MinimumBoundingCircle.GetFarthestPoints%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/MinimumBoundingCircle.cs/#L94">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/MinimumBoundingCircle.cs/#L136">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_MinimumBoundingCircle_GetFarthestPoints_" data-uid="NetTopologySuite.Algorithm.MinimumBoundingCircle.GetFarthestPoints*"></a>
   <h4 id="NetTopologySuite_Algorithm_MinimumBoundingCircle_GetFarthestPoints" data-uid="NetTopologySuite.Algorithm.MinimumBoundingCircle.GetFarthestPoints">GetFarthestPoints()</h4>
   <div class="markdown level1 summary"><p>Gets a geometry representing a line between the two farthest points
-in the input.
-These points will be two of the extremal points of the Minimum Bounding Circle.
-They also lie on the convex hull of the input.</p>
+in the input.</p>
+<p>
+These points are two of the extremal points of the Minimum Bounding Circle
+They lie on the convex hull of the input.
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -350,10 +338,47 @@ They also lie on the convex hull of the input.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_MinimumBoundingCircle_GetMaximumDiameter.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.MinimumBoundingCircle.GetMaximumDiameter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/MinimumBoundingCircle.cs/#L107">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Algorithm_MinimumBoundingCircle_GetMaximumDiameter_" data-uid="NetTopologySuite.Algorithm.MinimumBoundingCircle.GetMaximumDiameter*"></a>
+  <h4 id="NetTopologySuite_Algorithm_MinimumBoundingCircle_GetMaximumDiameter" data-uid="NetTopologySuite.Algorithm.MinimumBoundingCircle.GetMaximumDiameter">GetMaximumDiameter()</h4>
+  <div class="markdown level1 summary"><p>Gets a geometry representing the maximum diameter of the
+input. The maximum diameter is the longest line segment
+between any two points of the input.</p>
+<p>
+The points are two of the extremal points of the Minimum Bounding Circle.
+They lie on the convex hull of the input.
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Geometry GetMaximumDiameter()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The result is</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_MinimumBoundingCircle_GetRadius.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.MinimumBoundingCircle.GetRadius%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/MinimumBoundingCircle.cs/#L163">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/MinimumBoundingCircle.cs/#L225">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_MinimumBoundingCircle_GetRadius_" data-uid="NetTopologySuite.Algorithm.MinimumBoundingCircle.GetRadius*"></a>
   <h4 id="NetTopologySuite_Algorithm_MinimumBoundingCircle_GetRadius" data-uid="NetTopologySuite.Algorithm.MinimumBoundingCircle.GetRadius">GetRadius()</h4>
@@ -391,7 +416,7 @@ They also lie on the convex hull of the input.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_MinimumBoundingCircle.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.MinimumBoundingCircle%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/MinimumBoundingCircle.cs/#L37" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/MinimumBoundingCircle.cs/#L44" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

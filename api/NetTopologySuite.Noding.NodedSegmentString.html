@@ -102,32 +102,11 @@ All noded substrings are initialized with the same context object.</p>
     <div><a class="xref" href="NetTopologySuite.Noding.INodableSegmentString.html">INodableSegmentString</a></div>
     <div><a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Noding.html">NetTopologySuite.Noding</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Noding_NodedSegmentString_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class NodedSegmentString : INodableSegmentString, ISegmentString</code></pre>
+    <pre><code class="lang-csharp hljs">public class NodedSegmentString : object, INodableSegmentString, ISegmentString</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -136,7 +115,7 @@ All noded substrings are initialized with the same context object.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_NodedSegmentString__ctor_NetTopologySuite_Geometries_Coordinate___System_Object_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodedSegmentString.%23ctor(NetTopologySuite.Geometries.Coordinate%5B%5D%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Noding/SegmentString.cs/#L56">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/SegmentString.cs/#L56">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_NodedSegmentString__ctor_" data-uid="NetTopologySuite.Noding.NodedSegmentString.#ctor*"></a>
   <h4 id="NetTopologySuite_Noding_NodedSegmentString__ctor_NetTopologySuite_Geometries_Coordinate___System_Object_" data-uid="NetTopologySuite.Noding.NodedSegmentString.#ctor(NetTopologySuite.Geometries.Coordinate[],System.Object)">NodedSegmentString(Coordinate[], Object)</h4>
@@ -178,7 +157,7 @@ All noded substrings are initialized with the same context object.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_NodedSegmentString_Context.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodedSegmentString.Context%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Noding/SegmentString.cs/#L67">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/SegmentString.cs/#L68">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_NodedSegmentString_Context_" data-uid="NetTopologySuite.Noding.NodedSegmentString.Context*"></a>
   <h4 id="NetTopologySuite_Noding_NodedSegmentString_Context" data-uid="NetTopologySuite.Noding.NodedSegmentString.Context">Context</h4>
@@ -204,12 +183,15 @@ All noded substrings are initialized with the same context object.</p>
       </tr>
     </tbody>
   </table>
+  <h5 id="NetTopologySuite_Noding_NodedSegmentString_Context_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>In JTS this property is called <em>Data</em></p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_NodedSegmentString_Coordinates.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodedSegmentString.Coordinates%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Noding/SegmentString.cs/#L93">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/SegmentString.cs/#L94">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_NodedSegmentString_Coordinates_" data-uid="NetTopologySuite.Noding.NodedSegmentString.Coordinates*"></a>
   <h4 id="NetTopologySuite_Noding_NodedSegmentString_Coordinates" data-uid="NetTopologySuite.Noding.NodedSegmentString.Coordinates">Coordinates</h4>
@@ -239,7 +221,7 @@ All noded substrings are initialized with the same context object.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_NodedSegmentString_Count.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodedSegmentString.Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Noding/SegmentString.cs/#L78">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/SegmentString.cs/#L79">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_NodedSegmentString_Count_" data-uid="NetTopologySuite.Noding.NodedSegmentString.Count*"></a>
   <h4 id="NetTopologySuite_Noding_NodedSegmentString_Count" data-uid="NetTopologySuite.Noding.NodedSegmentString.Count">Count</h4>
@@ -269,7 +251,7 @@ All noded substrings are initialized with the same context object.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_NodedSegmentString_IsClosed.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodedSegmentString.IsClosed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Noding/SegmentString.cs/#L98">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/SegmentString.cs/#L99">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_NodedSegmentString_IsClosed_" data-uid="NetTopologySuite.Noding.NodedSegmentString.IsClosed*"></a>
   <h4 id="NetTopologySuite_Noding_NodedSegmentString_IsClosed" data-uid="NetTopologySuite.Noding.NodedSegmentString.IsClosed">IsClosed</h4>
@@ -299,7 +281,7 @@ All noded substrings are initialized with the same context object.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_NodedSegmentString_Item_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodedSegmentString.Item(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Noding/SegmentString.cs/#L174">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/SegmentString.cs/#L175">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_NodedSegmentString_Item_" data-uid="NetTopologySuite.Noding.NodedSegmentString.Item*"></a>
   <h4 id="NetTopologySuite_Noding_NodedSegmentString_Item_System_Int32_" data-uid="NetTopologySuite.Noding.NodedSegmentString.Item(System.Int32)">Item[Int32]</h4>
@@ -346,7 +328,7 @@ All noded substrings are initialized with the same context object.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_NodedSegmentString_NodeList.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodedSegmentString.NodeList%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Noding/SegmentString.cs/#L72">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/SegmentString.cs/#L73">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_NodedSegmentString_NodeList_" data-uid="NetTopologySuite.Noding.NodedSegmentString.NodeList*"></a>
   <h4 id="NetTopologySuite_Noding_NodedSegmentString_NodeList" data-uid="NetTopologySuite.Noding.NodedSegmentString.NodeList">NodeList</h4>
@@ -378,7 +360,7 @@ All noded substrings are initialized with the same context object.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_NodedSegmentString_AddIntersection_NetTopologySuite_Algorithm_LineIntersector_System_Int32_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodedSegmentString.AddIntersection(NetTopologySuite.Algorithm.LineIntersector%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Noding/SegmentString.cs/#L144">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/SegmentString.cs/#L145">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_NodedSegmentString_AddIntersection_" data-uid="NetTopologySuite.Noding.NodedSegmentString.AddIntersection*"></a>
   <h4 id="NetTopologySuite_Noding_NodedSegmentString_AddIntersection_NetTopologySuite_Algorithm_LineIntersector_System_Int32_System_Int32_System_Int32_" data-uid="NetTopologySuite.Noding.NodedSegmentString.AddIntersection(NetTopologySuite.Algorithm.LineIntersector,System.Int32,System.Int32,System.Int32)">AddIntersection(LineIntersector, Int32, Int32, Int32)</h4>
@@ -429,7 +411,7 @@ to use the higher of the two possible segmentIndexes.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_NodedSegmentString_AddIntersection_NetTopologySuite_Geometries_Coordinate_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodedSegmentString.AddIntersection(NetTopologySuite.Geometries.Coordinate%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Noding/SegmentString.cs/#L155">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/SegmentString.cs/#L156">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_NodedSegmentString_AddIntersection_" data-uid="NetTopologySuite.Noding.NodedSegmentString.AddIntersection*"></a>
   <h4 id="NetTopologySuite_Noding_NodedSegmentString_AddIntersection_NetTopologySuite_Geometries_Coordinate_System_Int32_" data-uid="NetTopologySuite.Noding.NodedSegmentString.AddIntersection(NetTopologySuite.Geometries.Coordinate,System.Int32)">AddIntersection(Coordinate, Int32)</h4>
@@ -466,7 +448,7 @@ to use the higher of the two possible segmentIndexes.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_NodedSegmentString_AddIntersections_NetTopologySuite_Algorithm_LineIntersector_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodedSegmentString.AddIntersections(NetTopologySuite.Algorithm.LineIntersector%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Noding/SegmentString.cs/#L128">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/SegmentString.cs/#L129">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_NodedSegmentString_AddIntersections_" data-uid="NetTopologySuite.Noding.NodedSegmentString.AddIntersections*"></a>
   <h4 id="NetTopologySuite_Noding_NodedSegmentString_AddIntersections_NetTopologySuite_Algorithm_LineIntersector_System_Int32_System_Int32_" data-uid="NetTopologySuite.Noding.NodedSegmentString.AddIntersections(NetTopologySuite.Algorithm.LineIntersector,System.Int32,System.Int32)">AddIntersections(LineIntersector, Int32, Int32)</h4>
@@ -510,7 +492,7 @@ intersections found for a segment of an edge to the edge intersection list.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_NodedSegmentString_GetCoordinate_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodedSegmentString.GetCoordinate(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Noding/SegmentString.cs/#L85">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/SegmentString.cs/#L86">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_NodedSegmentString_GetCoordinate_" data-uid="NetTopologySuite.Noding.NodedSegmentString.GetCoordinate*"></a>
   <h4 id="NetTopologySuite_Noding_NodedSegmentString_GetCoordinate_System_Int32_" data-uid="NetTopologySuite.Noding.NodedSegmentString.GetCoordinate(System.Int32)">GetCoordinate(Int32)</h4>
@@ -554,13 +536,13 @@ intersections found for a segment of an edge to the edge intersection list.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_NodedSegmentString_GetNodedSubstrings_System_Collections_Generic_IEnumerable_NetTopologySuite_Noding_ISegmentString__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodedSegmentString.GetNodedSubstrings(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Noding.ISegmentString%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_NodedSegmentString_GetNodedSubstrings_IEnumerable_NetTopologySuite_Noding_ISegmentString__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodedSegmentString.GetNodedSubstrings(IEnumerable%7BNetTopologySuite.Noding.ISegmentString%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Noding/SegmentString.cs/#L27">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/SegmentString.cs/#L27">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_NodedSegmentString_GetNodedSubstrings_" data-uid="NetTopologySuite.Noding.NodedSegmentString.GetNodedSubstrings*"></a>
-  <h4 id="NetTopologySuite_Noding_NodedSegmentString_GetNodedSubstrings_System_Collections_Generic_IEnumerable_NetTopologySuite_Noding_ISegmentString__" data-uid="NetTopologySuite.Noding.NodedSegmentString.GetNodedSubstrings(System.Collections.Generic.IEnumerable{NetTopologySuite.Noding.ISegmentString})">GetNodedSubstrings(IEnumerable&lt;ISegmentString&gt;)</h4>
+  <h4 id="NetTopologySuite_Noding_NodedSegmentString_GetNodedSubstrings_IEnumerable_NetTopologySuite_Noding_ISegmentString__" data-uid="NetTopologySuite.Noding.NodedSegmentString.GetNodedSubstrings(IEnumerable{NetTopologySuite.Noding.ISegmentString})">GetNodedSubstrings(IEnumerable&lt;ISegmentString&gt;)</h4>
   <div class="markdown level1 summary"><p>Gets the <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s which result from splitting this string at node points.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -579,7 +561,7 @@ intersections found for a segment of an edge to the edge intersection list.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>&gt;</td>
         <td><span class="parametername">segStrings</span></td>
         <td><p>A collection of NodedSegmentStrings</p>
 </td>
@@ -596,7 +578,7 @@ intersections found for a segment of an edge to the edge intersection list.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1">ReadOnlyCollection</a>&lt;<a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>&gt;</td>
+        <td><span class="xref">ReadOnlyCollection</span>&lt;<a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>&gt;</td>
         <td><p>A collection of NodedSegmentStrings representing the substrings</p>
 </td>
       </tr>
@@ -604,13 +586,13 @@ intersections found for a segment of an edge to the edge intersection list.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_NodedSegmentString_GetNodedSubstrings_System_Collections_Generic_IEnumerable_NetTopologySuite_Noding_ISegmentString__System_Collections_Generic_ICollection_NetTopologySuite_Noding_ISegmentString__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodedSegmentString.GetNodedSubstrings(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Noding.ISegmentString%7D%2CSystem.Collections.Generic.ICollection%7BNetTopologySuite.Noding.ISegmentString%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_NodedSegmentString_GetNodedSubstrings_IEnumerable_NetTopologySuite_Noding_ISegmentString__ICollection_NetTopologySuite_Noding_ISegmentString__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodedSegmentString.GetNodedSubstrings(IEnumerable%7BNetTopologySuite.Noding.ISegmentString%7D%2CICollection%7BNetTopologySuite.Noding.ISegmentString%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Noding/SegmentString.cs/#L39">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/SegmentString.cs/#L39">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_NodedSegmentString_GetNodedSubstrings_" data-uid="NetTopologySuite.Noding.NodedSegmentString.GetNodedSubstrings*"></a>
-  <h4 id="NetTopologySuite_Noding_NodedSegmentString_GetNodedSubstrings_System_Collections_Generic_IEnumerable_NetTopologySuite_Noding_ISegmentString__System_Collections_Generic_ICollection_NetTopologySuite_Noding_ISegmentString__" data-uid="NetTopologySuite.Noding.NodedSegmentString.GetNodedSubstrings(System.Collections.Generic.IEnumerable{NetTopologySuite.Noding.ISegmentString},System.Collections.Generic.ICollection{NetTopologySuite.Noding.ISegmentString})">GetNodedSubstrings(IEnumerable&lt;ISegmentString&gt;, ICollection&lt;ISegmentString&gt;)</h4>
+  <h4 id="NetTopologySuite_Noding_NodedSegmentString_GetNodedSubstrings_IEnumerable_NetTopologySuite_Noding_ISegmentString__ICollection_NetTopologySuite_Noding_ISegmentString__" data-uid="NetTopologySuite.Noding.NodedSegmentString.GetNodedSubstrings(IEnumerable{NetTopologySuite.Noding.ISegmentString},ICollection{NetTopologySuite.Noding.ISegmentString})">GetNodedSubstrings(IEnumerable&lt;ISegmentString&gt;, ICollection&lt;ISegmentString&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds the noded <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s which result from splitting this string at node points.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -629,13 +611,13 @@ intersections found for a segment of an edge to the edge intersection list.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>&gt;</td>
         <td><span class="parametername">segStrings</span></td>
         <td><p>A collection of NodedSegmentStrings</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>&gt;</td>
+        <td><span class="xref">ICollection</span>&lt;<a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>&gt;</td>
         <td><span class="parametername">resultEdgelist</span></td>
         <td><p>A list which will collect the NodedSegmentStrings representing the substrings</p>
 </td>
@@ -647,7 +629,7 @@ intersections found for a segment of an edge to the edge intersection list.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_NodedSegmentString_GetSegmentOctant_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodedSegmentString.GetSegmentOctant(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Noding/SegmentString.cs/#L108">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/SegmentString.cs/#L109">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_NodedSegmentString_GetSegmentOctant_" data-uid="NetTopologySuite.Noding.NodedSegmentString.GetSegmentOctant*"></a>
   <h4 id="NetTopologySuite_Noding_NodedSegmentString_GetSegmentOctant_System_Int32_" data-uid="NetTopologySuite.Noding.NodedSegmentString.GetSegmentOctant(System.Int32)">GetSegmentOctant(Int32)</h4>
@@ -698,7 +680,7 @@ Must not be the last index in the vertex list</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_NodedSegmentString_ToString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodedSegmentString.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Noding/SegmentString.cs/#L190">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/SegmentString.cs/#L191">View Source</a>
   </span>
   <a id="NetTopologySuite_Noding_NodedSegmentString_ToString_" data-uid="NetTopologySuite.Noding.NodedSegmentString.ToString*"></a>
   <h4 id="NetTopologySuite_Noding_NodedSegmentString_ToString" data-uid="NetTopologySuite.Noding.NodedSegmentString.ToString">ToString()</h4>
@@ -723,8 +705,6 @@ Must not be the last index in the vertex list</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="NetTopologySuite.Noding.INodableSegmentString.html">INodableSegmentString</a>
@@ -743,7 +723,7 @@ Must not be the last index in the vertex list</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Noding_NodedSegmentString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Noding.NodedSegmentString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Noding/SegmentString.cs/#L20" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Noding/SegmentString.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

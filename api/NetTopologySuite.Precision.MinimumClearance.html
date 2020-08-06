@@ -99,35 +99,11 @@ before becoming invalid.
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">MinimumClearance</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Precision.html">NetTopologySuite.Precision</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Precision_MinimumClearance_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MinimumClearance</code></pre>
+    <pre><code class="lang-csharp hljs">public class MinimumClearance : object</code></pre>
   </div>
   <h5 id="NetTopologySuite_Precision_MinimumClearance_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>The concept was introduced by Thompson and Van Oosterom
@@ -140,14 +116,15 @@ of <em>r</em> in any direction will
 guarantee to leave the geometry valid&quot; [TV06].
 An equivalent constructive definition [Mi88] is that
 <em>r</em> is the largest value such:
-<p>The following image shows an example of the Minimum Clearance
-of a simple polygon.</p>
+<ul><li>No two distinct vertices of G are closer than <em>r</em>.</li><li>No vertex of G is closer than <em>r</em> to an edge of G of which the vertex is not an endpoint</li></ul>
+The following image shows an example of the Minimum Clearance
+of a simple polygon.
 <p>
-<center><img src="DocFiles/minClearance.png"></center>
+<center><img src="/images/minClearance.png"></center>
 <p>
 If G has only a single vertex (i.e. is a
 <a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a>), the value of the minimum clearance
-is <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double.maxvalue">MaxValue</a>.
+is <see cref="!:double.MaxValue"></see>.
 <p>
 If G is a <a class="xref" href="NetTopologySuite.Geometries.IPuntal.html">IPuntal</a> or <a class="xref" href="NetTopologySuite.Geometries.ILineal.html">ILineal</a> geometry,
 then in fact no amount of perturbation
@@ -175,6 +152,12 @@ An interesting note is that for the case of <a class="xref" href="NetTopologySui
 the computed Minimum Clearance line
 effectively determines the Nearest Neighbours in the collection.
 <h3>References</h3>
+<ul><li>[Mi88] Milenkovic, V. J.,
+<em>Verifiable implementations of geometric algorithms
+using finite precision arithmetic</em>.
+in Artificial Intelligence, 377-401. 1988</li><li>[TV06] Thompson, Rod and van Oosterom, Peter,
+<em>Interchange of Spatial Data-Inhibiting Factors</em>,
+Agile 2006, Visegrad, Hungary. 2006</li></ul>
 </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -183,7 +166,7 @@ effectively determines the Nearest Neighbours in the collection.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Precision_MinimumClearance__ctor_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.MinimumClearance.%23ctor(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Precision/MinimumClearance.cs/#L116">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/MinimumClearance.cs/#L116">View Source</a>
   </span>
   <a id="NetTopologySuite_Precision_MinimumClearance__ctor_" data-uid="NetTopologySuite.Precision.MinimumClearance.#ctor*"></a>
   <h4 id="NetTopologySuite_Precision_MinimumClearance__ctor_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Precision.MinimumClearance.#ctor(NetTopologySuite.Geometries.Geometry)">MinimumClearance(Geometry)</h4>
@@ -219,14 +202,14 @@ effectively determines the Nearest Neighbours in the collection.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Precision_MinimumClearance_GetDistance.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.MinimumClearance.GetDistance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Precision/MinimumClearance.cs/#L131">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/MinimumClearance.cs/#L131">View Source</a>
   </span>
   <a id="NetTopologySuite_Precision_MinimumClearance_GetDistance_" data-uid="NetTopologySuite.Precision.MinimumClearance.GetDistance*"></a>
   <h4 id="NetTopologySuite_Precision_MinimumClearance_GetDistance" data-uid="NetTopologySuite.Precision.MinimumClearance.GetDistance">GetDistance()</h4>
   <div class="markdown level1 summary"><p>Gets the Minimum Clearance distance.</p>
 <p>If no distance exists
  (e.g. in the case of two identical points)
-<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double.maxvalue">MaxValue</a> is returned.</p>
+<see cref="!:double.MaxValue"></see> is returned.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -245,7 +228,7 @@ effectively determines the Nearest Neighbours in the collection.
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
         <td><p>The value of the minimum clearance distance<br>
-or <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double.maxvalue">MaxValue</a> if no Minimum Clearance distance exists</p>
+or <see cref="!:double.MaxValue"></see> if no Minimum Clearance distance exists</p>
 </td>
       </tr>
     </tbody>
@@ -255,7 +238,7 @@ or <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double.max
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Precision_MinimumClearance_GetDistance_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.MinimumClearance.GetDistance(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Precision/MinimumClearance.cs/#L88">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/MinimumClearance.cs/#L88">View Source</a>
   </span>
   <a id="NetTopologySuite_Precision_MinimumClearance_GetDistance_" data-uid="NetTopologySuite.Precision.MinimumClearance.GetDistance*"></a>
   <h4 id="NetTopologySuite_Precision_MinimumClearance_GetDistance_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Precision.MinimumClearance.GetDistance(NetTopologySuite.Geometries.Geometry)">GetDistance(Geometry)</h4>
@@ -306,7 +289,7 @@ the given Geometry.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Precision_MinimumClearance_GetLine.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.MinimumClearance.GetLine%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Precision/MinimumClearance.cs/#L146">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/MinimumClearance.cs/#L146">View Source</a>
   </span>
   <a id="NetTopologySuite_Precision_MinimumClearance_GetLine_" data-uid="NetTopologySuite.Precision.MinimumClearance.GetLine*"></a>
   <h4 id="NetTopologySuite_Precision_MinimumClearance_GetLine" data-uid="NetTopologySuite.Precision.MinimumClearance.GetLine">GetLine()</h4>
@@ -343,7 +326,7 @@ or <code>LINESTRING EMPTY</code> if no minimum clearance distance exists.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Precision_MinimumClearance_GetLine_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.MinimumClearance.GetLine(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Precision/MinimumClearance.cs/#L102">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/MinimumClearance.cs/#L102">View Source</a>
   </span>
   <a id="NetTopologySuite_Precision_MinimumClearance_GetLine_" data-uid="NetTopologySuite.Precision.MinimumClearance.GetLine*"></a>
   <h4 id="NetTopologySuite_Precision_MinimumClearance_GetLine_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Precision.MinimumClearance.GetLine(NetTopologySuite.Geometries.Geometry)">GetLine(Geometry)</h4>
@@ -402,7 +385,7 @@ or <code>LINESTRING EMPTY</code> if no minimum clearance distance exists.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Precision_MinimumClearance.md&amp;value=---%0Auid%3A%20NetTopologySuite.Precision.MinimumClearance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Precision/MinimumClearance.cs/#L80" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Precision/MinimumClearance.cs/#L80" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -86,6 +86,8 @@
   <div class="markdown level0 summary"><p>Represents a single point.</p>
 <p>
 A <code>Point</code> is topologically valid if and only if:
+<ul><li>The coordinate which defines it if any) is a valid coordinate
+(i.e. does not have an <code>NaN</code> X- or Y-ordinate</li></ul>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -96,12 +98,35 @@ A <code>Point</code> is topologically valid if and only if:
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable">IComparable</a></div>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</div>
+    <div><span class="xref">IComparable</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</div>
     <div><a class="xref" href="NetTopologySuite.Geometries.IPuntal.html">IPuntal</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNamePoint">Geometry.TypeNamePoint</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNameMultiPoint">Geometry.TypeNameMultiPoint</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNameLineString">Geometry.TypeNameLineString</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNameLinearRing">Geometry.TypeNameLinearRing</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNameMultiLineString">Geometry.TypeNameMultiLineString</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNamePolygon">Geometry.TypeNamePolygon</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNameMultiPolygon">Geometry.TypeNameMultiPolygon</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNameGeometryCollection">Geometry.TypeNameGeometryCollection</a>
+    </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Factory">Geometry.Factory</a>
     </div>
@@ -116,6 +141,9 @@ A <code>Point</code> is topologically valid if and only if:
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_HasNullElements_System_Object___">Geometry.HasNullElements(Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_HasNullElements__1_IEnumerable___0__">Geometry.HasNullElements&lt;T&gt;(IEnumerable&lt;T&gt;)</a>
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_PrecisionModel">Geometry.PrecisionModel</a>
@@ -280,7 +308,7 @@ A <code>Point</code> is topologically valid if and only if:
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareTo_NetTopologySuite_Geometries_Geometry_">Geometry.CompareTo(Geometry)</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareTo_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__">Geometry.CompareTo(Object, IComparer&lt;CoordinateSequence&gt;)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareTo_System_Object_IComparer_NetTopologySuite_Geometries_CoordinateSequence__">Geometry.CompareTo(Object, IComparer&lt;CoordinateSequence&gt;)</a>
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsEquivalentClass_NetTopologySuite_Geometries_Geometry_">Geometry.IsEquivalentClass(Geometry)</a>
@@ -292,7 +320,7 @@ A <code>Point</code> is topologically valid if and only if:
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsGeometryCollection">Geometry.IsGeometryCollection</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Compare_System_Collections_Generic_List_NetTopologySuite_Geometries_Geometry__System_Collections_Generic_List_NetTopologySuite_Geometries_Geometry__">Geometry.Compare(List&lt;Geometry&gt;, List&lt;Geometry&gt;)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Compare_List_NetTopologySuite_Geometries_Geometry__List_NetTopologySuite_Geometries_Geometry__">Geometry.Compare(List&lt;Geometry&gt;, List&lt;Geometry&gt;)</a>
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Equal_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_System_Double_">Geometry.Equal(Coordinate, Coordinate, Double)</a>
@@ -309,25 +337,12 @@ A <code>Point</code> is topologically valid if and only if:
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CreateArray_NetTopologySuite_Geometries_CoordinateSequence_NetTopologySuite_Geometries_Ordinate_">Geometry.CreateArray(CoordinateSequence, Ordinate)</a>
     </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.html">NetTopologySuite.Geometries</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Geometries_Point_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Serializable]
-public class Point : Geometry, IComparable, IComparable&lt;Geometry&gt;, IPuntal</code></pre>
+    <pre><code class="lang-csharp hljs">public class Point : Geometry, IComparable&lt;Geometry&gt;, IPuntal</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -336,7 +351,7 @@ public class Point : Geometry, IComparable, IComparable&lt;Geometry&gt;, IPuntal
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point__ctor_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.%23ctor(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L49">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L54">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point__ctor_" data-uid="NetTopologySuite.Geometries.Point.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_Point__ctor_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Geometries.Point.#ctor(NetTopologySuite.Geometries.Coordinate)">Point(Coordinate)</h4>
@@ -374,7 +389,7 @@ with <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">Prec
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point__ctor_NetTopologySuite_Geometries_CoordinateSequence_NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.%23ctor(NetTopologySuite.Geometries.CoordinateSequence%2CNetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L61">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L66">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point__ctor_" data-uid="NetTopologySuite.Geometries.Point.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_Point__ctor_NetTopologySuite_Geometries_CoordinateSequence_NetTopologySuite_Geometries_GeometryFactory_" data-uid="NetTopologySuite.Geometries.Point.#ctor(NetTopologySuite.Geometries.CoordinateSequence,NetTopologySuite.Geometries.GeometryFactory)">Point(CoordinateSequence, GeometryFactory)</h4>
@@ -414,7 +429,7 @@ or <code>null</code> to create the empty point.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point__ctor_System_Double_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.%23ctor(System.Double%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L308">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L336">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point__ctor_" data-uid="NetTopologySuite.Geometries.Point.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_Point__ctor_System_Double_System_Double_" data-uid="NetTopologySuite.Geometries.Point.#ctor(System.Double,System.Double)">Point(Double, Double)</h4>
@@ -458,7 +473,7 @@ with <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">Prec
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point__ctor_System_Double_System_Double_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.%23ctor(System.Double%2CSystem.Double%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L296">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L324">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point__ctor_" data-uid="NetTopologySuite.Geometries.Point.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_Point__ctor_System_Double_System_Double_System_Double_" data-uid="NetTopologySuite.Geometries.Point.#ctor(System.Double,System.Double,System.Double)">Point(Double, Double, Double)</h4>
@@ -510,7 +525,7 @@ with <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">Prec
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_Empty.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.Empty%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L24">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L24">View Source</a>
   </span>
   <h4 id="NetTopologySuite_Geometries_Point_Empty" data-uid="NetTopologySuite.Geometries.Point.Empty">Empty</h4>
   <div class="markdown level1 summary"><p>Represents an empty <code>Point</code>.</p>
@@ -542,7 +557,7 @@ with <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">Prec
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_Boundary.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.Boundary%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L169">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L174">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_Boundary_" data-uid="NetTopologySuite.Geometries.Point.Boundary*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_Boundary" data-uid="NetTopologySuite.Geometries.Point.Boundary">Boundary</h4>
@@ -577,7 +592,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_BoundaryDimension.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.BoundaryDimension%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L108">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L113">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_BoundaryDimension_" data-uid="NetTopologySuite.Geometries.Point.BoundaryDimension*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_BoundaryDimension" data-uid="NetTopologySuite.Geometries.Point.BoundaryDimension">BoundaryDimension</h4>
@@ -609,7 +624,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_Coordinate.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.Coordinate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L151">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L156">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_Coordinate_" data-uid="NetTopologySuite.Geometries.Point.Coordinate*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_Coordinate" data-uid="NetTopologySuite.Geometries.Point.Coordinate">Coordinate</h4>
@@ -641,7 +656,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_Coordinates.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.Coordinates%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L72">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L77">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_Coordinates_" data-uid="NetTopologySuite.Geometries.Point.Coordinates*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_Coordinates" data-uid="NetTopologySuite.Geometries.Point.Coordinates">Coordinates</h4>
@@ -673,7 +688,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_CoordinateSequence.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.CoordinateSequence%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L39">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L44">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_CoordinateSequence_" data-uid="NetTopologySuite.Geometries.Point.CoordinateSequence*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_CoordinateSequence" data-uid="NetTopologySuite.Geometries.Point.CoordinateSequence">CoordinateSequence</h4>
@@ -703,7 +718,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_Dimension.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.Dimension%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L103">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L108">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_Dimension_" data-uid="NetTopologySuite.Geometries.Point.Dimension*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_Dimension" data-uid="NetTopologySuite.Geometries.Point.Dimension">Dimension</h4>
@@ -735,7 +750,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_GeometryType.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.GeometryType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L157">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L162">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_GeometryType_" data-uid="NetTopologySuite.Geometries.Point.GeometryType*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_GeometryType" data-uid="NetTopologySuite.Geometries.Point.GeometryType">GeometryType</h4>
@@ -769,7 +784,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_IsEmpty.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.IsEmpty%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L98">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L103">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_IsEmpty_" data-uid="NetTopologySuite.Geometries.Point.IsEmpty*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_IsEmpty" data-uid="NetTopologySuite.Geometries.Point.IsEmpty">IsEmpty</h4>
@@ -801,7 +816,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_M.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.M%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L332">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L360">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_M_" data-uid="NetTopologySuite.Geometries.Point.M*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_M" data-uid="NetTopologySuite.Geometries.Point.M">M</h4>
@@ -831,7 +846,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_NumPoints.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.NumPoints%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L93">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L98">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_NumPoints_" data-uid="NetTopologySuite.Geometries.Point.NumPoints*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_NumPoints" data-uid="NetTopologySuite.Geometries.Point.NumPoints">NumPoints</h4>
@@ -863,7 +878,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_OgcGeometryType.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.OgcGeometryType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L162">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L167">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_OgcGeometryType_" data-uid="NetTopologySuite.Geometries.Point.OgcGeometryType*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_OgcGeometryType" data-uid="NetTopologySuite.Geometries.Point.OgcGeometryType">OgcGeometryType</h4>
@@ -896,7 +911,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_SortIndex.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.SortIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L34">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L39">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_SortIndex_" data-uid="NetTopologySuite.Geometries.Point.SortIndex*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_SortIndex" data-uid="NetTopologySuite.Geometries.Point.SortIndex">SortIndex</h4>
@@ -924,12 +939,17 @@ so an empty GeometryCollection is returned.</p>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_SortIndex">Geometry.SortIndex</a></div>
+  <h5 id="NetTopologySuite_Geometries_Point_SortIndex_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>NOTE:<br>
+For JTS v1.17 this property's getter has been renamed to <code>getTypeCode()</code>.
+In order not to break binary compatibility we did not follow.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_X.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.X%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L113">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L118">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_X_" data-uid="NetTopologySuite.Geometries.Point.X*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_X" data-uid="NetTopologySuite.Geometries.Point.X">X</h4>
@@ -959,7 +979,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_Y.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.Y%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L132">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L137">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_Y_" data-uid="NetTopologySuite.Geometries.Point.Y*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_Y" data-uid="NetTopologySuite.Geometries.Point.Y">Y</h4>
@@ -989,7 +1009,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_Z.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.Z%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L314">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L342">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_Z_" data-uid="NetTopologySuite.Geometries.Point.Z*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_Z" data-uid="NetTopologySuite.Geometries.Point.Z">Z</h4>
@@ -1021,7 +1041,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_Apply_NetTopologySuite_Geometries_ICoordinateFilter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.Apply(NetTopologySuite.Geometries.ICoordinateFilter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L211">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L209">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_Apply_" data-uid="NetTopologySuite.Geometries.Point.Apply*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_Apply_NetTopologySuite_Geometries_ICoordinateFilter_" data-uid="NetTopologySuite.Geometries.Point.Apply(NetTopologySuite.Geometries.ICoordinateFilter)">Apply(ICoordinateFilter)</h4>
@@ -1055,7 +1075,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_Apply_NetTopologySuite_Geometries_ICoordinateSequenceFilter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.Apply(NetTopologySuite.Geometries.ICoordinateSequenceFilter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L218">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L216">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_Apply_" data-uid="NetTopologySuite.Geometries.Point.Apply*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_Apply_NetTopologySuite_Geometries_ICoordinateSequenceFilter_" data-uid="NetTopologySuite.Geometries.Point.Apply(NetTopologySuite.Geometries.ICoordinateSequenceFilter)">Apply(ICoordinateSequenceFilter)</h4>
@@ -1086,10 +1106,50 @@ so an empty GeometryCollection is returned.</p>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Apply_NetTopologySuite_Geometries_ICoordinateSequenceFilter_">Geometry.Apply(ICoordinateSequenceFilter)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_Apply_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.Apply(NetTopologySuite.Geometries.IEntireCoordinateSequenceFilter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L226">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Point_Apply_" data-uid="NetTopologySuite.Geometries.Point.Apply*"></a>
+  <h4 id="NetTopologySuite_Geometries_Point_Apply_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter_" data-uid="NetTopologySuite.Geometries.Point.Apply(NetTopologySuite.Geometries.IEntireCoordinateSequenceFilter)">Apply(IEntireCoordinateSequenceFilter)</h4>
+  <div class="markdown level1 summary"><p>Performs an operation on this <code>Geometry</code>'s <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>s.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Apply(IEntireCoordinateSequenceFilter filter)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.IEntireCoordinateSequenceFilter.html">IEntireCoordinateSequenceFilter</a></td>
+        <td><span class="parametername">filter</span></td>
+        <td><p>The filter to apply</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Apply_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter_">Geometry.Apply(IEntireCoordinateSequenceFilter)</a></div>
+  <h5 id="NetTopologySuite_Geometries_Point_Apply_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If the filter reports that a coordinate value has been changed,
+<a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_GeometryChanged">GeometryChanged()</a> will be called automatically.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_Apply_NetTopologySuite_Geometries_IGeometryComponentFilter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.Apply(NetTopologySuite.Geometries.IGeometryComponentFilter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L240">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L259">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_Apply_" data-uid="NetTopologySuite.Geometries.Point.Apply*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_Apply_NetTopologySuite_Geometries_IGeometryComponentFilter_" data-uid="NetTopologySuite.Geometries.Point.Apply(NetTopologySuite.Geometries.IGeometryComponentFilter)">Apply(IGeometryComponentFilter)</h4>
@@ -1123,7 +1183,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_Apply_NetTopologySuite_Geometries_IGeometryFilter_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.Apply(NetTopologySuite.Geometries.IGeometryFilter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L231">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L250">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_Apply_" data-uid="NetTopologySuite.Geometries.Point.Apply*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_Apply_NetTopologySuite_Geometries_IGeometryFilter_" data-uid="NetTopologySuite.Geometries.Point.Apply(NetTopologySuite.Geometries.IGeometryFilter)">Apply(IGeometryFilter)</h4>
@@ -1157,7 +1217,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_CompareToSameClass_System_Object_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.CompareToSameClass(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L267">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L295">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_CompareToSameClass_" data-uid="NetTopologySuite.Geometries.Point.CompareToSameClass*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_CompareToSameClass_System_Object_" data-uid="NetTopologySuite.Geometries.Point.CompareToSameClass(System.Object)">CompareToSameClass(Object)</h4>
@@ -1203,13 +1263,13 @@ so an empty GeometryCollection is returned.</p>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareToSameClass_System_Object_">Geometry.CompareToSameClass(Object)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_CompareToSameClass_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.CompareToSameClass(System.Object%2CSystem.Collections.Generic.IComparer%7BNetTopologySuite.Geometries.CoordinateSequence%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_CompareToSameClass_System_Object_IComparer_NetTopologySuite_Geometries_CoordinateSequence__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.CompareToSameClass(System.Object%2CIComparer%7BNetTopologySuite.Geometries.CoordinateSequence%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L279">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L307">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_CompareToSameClass_" data-uid="NetTopologySuite.Geometries.Point.CompareToSameClass*"></a>
-  <h4 id="NetTopologySuite_Geometries_Point_CompareToSameClass_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__" data-uid="NetTopologySuite.Geometries.Point.CompareToSameClass(System.Object,System.Collections.Generic.IComparer{NetTopologySuite.Geometries.CoordinateSequence})">CompareToSameClass(Object, IComparer&lt;CoordinateSequence&gt;)</h4>
+  <h4 id="NetTopologySuite_Geometries_Point_CompareToSameClass_System_Object_IComparer_NetTopologySuite_Geometries_CoordinateSequence__" data-uid="NetTopologySuite.Geometries.Point.CompareToSameClass(System.Object,IComparer{NetTopologySuite.Geometries.CoordinateSequence})">CompareToSameClass(Object, IComparer&lt;CoordinateSequence&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1232,7 +1292,7 @@ so an empty GeometryCollection is returned.</p>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icomparer-1">IComparer</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>&gt;</td>
+        <td><span class="xref">IComparer</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>&gt;</td>
         <td><span class="parametername">comparer</span></td>
         <td></td>
       </tr>
@@ -1254,13 +1314,13 @@ so an empty GeometryCollection is returned.</p>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareToSameClass_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__">Geometry.CompareToSameClass(Object, IComparer&lt;CoordinateSequence&gt;)</a></div>
+  <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareToSameClass_System_Object_IComparer_NetTopologySuite_Geometries_CoordinateSequence__">Geometry.CompareToSameClass(Object, IComparer&lt;CoordinateSequence&gt;)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_ComputeEnvelopeInternal.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.ComputeEnvelopeInternal%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L175">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L180">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_ComputeEnvelopeInternal_" data-uid="NetTopologySuite.Geometries.Point.ComputeEnvelopeInternal*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_ComputeEnvelopeInternal" data-uid="NetTopologySuite.Geometries.Point.ComputeEnvelopeInternal">ComputeEnvelopeInternal()</h4>
@@ -1292,7 +1352,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_CopyInternal.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.CopyInternal%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L246">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L265">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_CopyInternal_" data-uid="NetTopologySuite.Geometries.Point.CopyInternal*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_CopyInternal" data-uid="NetTopologySuite.Geometries.Point.CopyInternal">CopyInternal()</h4>
@@ -1324,7 +1384,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_EqualsExact_NetTopologySuite_Geometries_Geometry_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.EqualsExact(NetTopologySuite.Geometries.Geometry%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L195">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L193">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_EqualsExact_" data-uid="NetTopologySuite.Geometries.Point.EqualsExact*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_EqualsExact_NetTopologySuite_Geometries_Geometry_System_Double_" data-uid="NetTopologySuite.Geometries.Point.EqualsExact(NetTopologySuite.Geometries.Geometry,System.Double)">EqualsExact(Geometry, Double)</h4>
@@ -1378,7 +1438,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_GetOrdinates_NetTopologySuite_Geometries_Ordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.GetOrdinates(NetTopologySuite.Geometries.Ordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L74">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L79">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_GetOrdinates_" data-uid="NetTopologySuite.Geometries.Point.GetOrdinates*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_GetOrdinates_NetTopologySuite_Geometries_Ordinate_" data-uid="NetTopologySuite.Geometries.Point.GetOrdinates(NetTopologySuite.Geometries.Ordinate)">GetOrdinates(Ordinate)</h4>
@@ -1427,7 +1487,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_Normalize.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.Normalize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L260">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L288">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_Normalize_" data-uid="NetTopologySuite.Geometries.Point.Normalize*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_Normalize" data-uid="NetTopologySuite.Geometries.Point.Normalize">Normalize()</h4>
@@ -1444,7 +1504,7 @@ so an empty GeometryCollection is returned.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_Reverse.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.Reverse%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L252">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L272">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Point_Reverse_" data-uid="NetTopologySuite.Geometries.Point.Reverse*"></a>
   <h4 id="NetTopologySuite_Geometries_Point_Reverse" data-uid="NetTopologySuite.Geometries.Point.Reverse">Reverse()</h4>
@@ -1471,12 +1531,43 @@ so an empty GeometryCollection is returned.</p>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Reverse">Geometry.Reverse()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point_ReverseInternal.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point.ReverseInternal%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L282">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_Point_ReverseInternal_" data-uid="NetTopologySuite.Geometries.Point.ReverseInternal*"></a>
+  <h4 id="NetTopologySuite_Geometries_Point_ReverseInternal" data-uid="NetTopologySuite.Geometries.Point.ReverseInternal">ReverseInternal()</h4>
+  <div class="markdown level1 summary"><p>The actual implementation of the <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Reverse">Reverse()</a> function for <code>POINT</code>s.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override Geometry ReverseInternal()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>A reversed geometry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_ReverseInternal">Geometry.ReverseInternal()</a></div>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable">System.IComparable</a>
-  </div>
-  <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">System.IComparable&lt;T&gt;</a>
+      <span class="xref">IComparable&lt;&gt;</span>
   </div>
   <div>
       <a class="xref" href="NetTopologySuite.Geometries.IPuntal.html">IPuntal</a>
@@ -1492,7 +1583,7 @@ so an empty GeometryCollection is returned.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Point.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Point%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Point.cs/#L16" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Point.cs/#L16" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

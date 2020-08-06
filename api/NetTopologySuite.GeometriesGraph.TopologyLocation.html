@@ -92,36 +92,16 @@ GraphComponent's topological relationship to a single Geometry.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">TopologyLocation</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.GeometriesGraph.html">NetTopologySuite.GeometriesGraph</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_GeometriesGraph_TopologyLocation_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TopologyLocation</code></pre>
+    <pre><code class="lang-csharp hljs">public class TopologyLocation : object</code></pre>
   </div>
   <h5 id="NetTopologySuite_GeometriesGraph_TopologyLocation_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>If the parent component is an area edge, each side and the edge itself
 have a topological location.  These locations are named:</p>
+<table><tbody><tr><td>On</td><td>on the edge</td></tr><tr><td>Left</td><td>left-hand side of the edge</td></tr><tr><td>Right</td><td>right-hand side</td></tr></tbody></table>
 <p>
 If the parent component is a line edge or node, there is a single
 topological relationship attribute, On.</p>
@@ -140,7 +120,7 @@ where j has the values On, Left, Right.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation__ctor_NetTopologySuite_Geometries_Location_.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.%23ctor(NetTopologySuite.Geometries.Location)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L64">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L64">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation__ctor_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.#ctor*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation__ctor_NetTopologySuite_Geometries_Location_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.#ctor(NetTopologySuite.Geometries.Location)">TopologyLocation(Location)</h4>
@@ -172,7 +152,7 @@ where j has the values On, Left, Right.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation__ctor_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.%23ctor(NetTopologySuite.Geometries.Location%2CNetTopologySuite.Geometries.Location%2CNetTopologySuite.Geometries.Location)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L52">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L52">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation__ctor_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.#ctor*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation__ctor_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.#ctor(NetTopologySuite.Geometries.Location,NetTopologySuite.Geometries.Location,NetTopologySuite.Geometries.Location)">TopologyLocation(Location, Location, Location)</h4>
@@ -218,7 +198,7 @@ and Location.Interior.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation__ctor_NetTopologySuite_Geometries_Location___.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.%23ctor(NetTopologySuite.Geometries.Location%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L38">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L38">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation__ctor_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.#ctor*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation__ctor_NetTopologySuite_Geometries_Location___" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.#ctor(NetTopologySuite.Geometries.Location[])">TopologyLocation(Location[])</h4>
@@ -250,7 +230,7 @@ and Location.Interior.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation__ctor_NetTopologySuite_GeometriesGraph_TopologyLocation_.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.%23ctor(NetTopologySuite.GeometriesGraph.TopologyLocation)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L74">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L74">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation__ctor_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.#ctor*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation__ctor_NetTopologySuite_GeometriesGraph_TopologyLocation_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.#ctor(NetTopologySuite.GeometriesGraph.TopologyLocation)">TopologyLocation(TopologyLocation)</h4>
@@ -284,7 +264,7 @@ and Location.Interior.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation_IsAnyNull.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.IsAnyNull%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L136">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L136">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation_IsAnyNull_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.IsAnyNull*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation_IsAnyNull" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.IsAnyNull">IsAnyNull</h4>
@@ -315,7 +295,7 @@ and Location.Interior.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation_IsArea.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.IsArea%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L161">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L161">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation_IsArea_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.IsArea*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation_IsArea" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.IsArea">IsArea</h4>
@@ -345,7 +325,7 @@ and Location.Interior.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation_IsLine.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.IsLine%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L166">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L166">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation_IsLine_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.IsLine*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation_IsLine" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.IsLine">IsLine</h4>
@@ -375,7 +355,7 @@ and Location.Interior.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation_IsNull.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.IsNull%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L122">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L122">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation_IsNull_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.IsNull*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation_IsNull" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.IsNull">IsNull</h4>
@@ -406,7 +386,7 @@ and Location.Interior.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation_Item_NetTopologySuite_GeometriesGraph_Positions_.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.Item(NetTopologySuite.GeometriesGraph.Positions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L113">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L113">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation_Item_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.Item*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation_Item_NetTopologySuite_GeometriesGraph_Positions_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.Item(NetTopologySuite.GeometriesGraph.Positions)">Item[Positions]</h4>
@@ -457,7 +437,7 @@ Set calls SetLocation(Positions locIndex, Location locValue)</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation_AllPositionsEqual_NetTopologySuite_Geometries_Location_.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.AllPositionsEqual(NetTopologySuite.Geometries.Location)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L257">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L257">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation_AllPositionsEqual_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.AllPositionsEqual*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation_AllPositionsEqual_NetTopologySuite_Geometries_Location_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.AllPositionsEqual(NetTopologySuite.Geometries.Location)">AllPositionsEqual(Location)</h4>
@@ -504,7 +484,7 @@ Set calls SetLocation(Positions locIndex, Location locValue)</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation_Flip.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.Flip%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L171">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L171">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation_Flip_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.Flip*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation_Flip" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.Flip">Flip()</h4>
@@ -519,7 +499,7 @@ Set calls SetLocation(Positions locIndex, Location locValue)</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation_Get_NetTopologySuite_GeometriesGraph_Positions_.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.Get(NetTopologySuite.GeometriesGraph.Positions)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L99">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L99">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation_Get_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.Get*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation_Get_NetTopologySuite_GeometriesGraph_Positions_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.Get(NetTopologySuite.GeometriesGraph.Positions)">Get(Positions)</h4>
@@ -566,7 +546,7 @@ Set calls SetLocation(Positions locIndex, Location locValue)</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation_GetLocations.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.GetLocations%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L224">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L224">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation_GetLocations_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.GetLocations*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation_GetLocations" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.GetLocations">GetLocations()</h4>
@@ -596,7 +576,7 @@ Set calls SetLocation(Positions locIndex, Location locValue)</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation_IsEqualOnSide_NetTopologySuite_GeometriesGraph_TopologyLocation_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.IsEqualOnSide(NetTopologySuite.GeometriesGraph.TopologyLocation%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L153">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L153">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation_IsEqualOnSide_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.IsEqualOnSide*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation_IsEqualOnSide_NetTopologySuite_GeometriesGraph_TopologyLocation_System_Int32_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.IsEqualOnSide(NetTopologySuite.GeometriesGraph.TopologyLocation,System.Int32)">IsEqualOnSide(TopologyLocation, Int32)</h4>
@@ -648,7 +628,7 @@ Set calls SetLocation(Positions locIndex, Location locValue)</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation_Merge_NetTopologySuite_GeometriesGraph_TopologyLocation_.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.Merge(NetTopologySuite.GeometriesGraph.TopologyLocation)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L269">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L269">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation_Merge_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.Merge*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation_Merge_NetTopologySuite_GeometriesGraph_TopologyLocation_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.Merge(NetTopologySuite.GeometriesGraph.TopologyLocation)">Merge(TopologyLocation)</h4>
@@ -682,7 +662,7 @@ with the attributes of another.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation_SetAllLocations_NetTopologySuite_Geometries_Location_.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.SetAllLocations(NetTopologySuite.Geometries.Location)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L184">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L184">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation_SetAllLocations_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.SetAllLocations*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation_SetAllLocations_NetTopologySuite_Geometries_Location_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.SetAllLocations(NetTopologySuite.Geometries.Location)">SetAllLocations(Location)</h4>
@@ -714,7 +694,7 @@ with the attributes of another.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation_SetAllLocationsIfNull_NetTopologySuite_Geometries_Location_.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.SetAllLocationsIfNull(NetTopologySuite.Geometries.Location)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L194">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L194">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation_SetAllLocationsIfNull_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.SetAllLocationsIfNull*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation_SetAllLocationsIfNull_NetTopologySuite_Geometries_Location_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.SetAllLocationsIfNull(NetTopologySuite.Geometries.Location)">SetAllLocationsIfNull(Location)</h4>
@@ -746,7 +726,7 @@ with the attributes of another.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation_SetLocation_NetTopologySuite_Geometries_Location_.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.SetLocation(NetTopologySuite.Geometries.Location)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L215">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L215">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation_SetLocation_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.SetLocation*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation_SetLocation_NetTopologySuite_Geometries_Location_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.SetLocation(NetTopologySuite.Geometries.Location)">SetLocation(Location)</h4>
@@ -778,7 +758,7 @@ with the attributes of another.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation_SetLocation_NetTopologySuite_GeometriesGraph_Positions_NetTopologySuite_Geometries_Location_.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.SetLocation(NetTopologySuite.GeometriesGraph.Positions%2CNetTopologySuite.Geometries.Location)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L206">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L206">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation_SetLocation_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.SetLocation*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation_SetLocation_NetTopologySuite_GeometriesGraph_Positions_NetTopologySuite_Geometries_Location_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.SetLocation(NetTopologySuite.GeometriesGraph.Positions,NetTopologySuite.Geometries.Location)">SetLocation(Positions, Location)</h4>
@@ -815,7 +795,7 @@ with the attributes of another.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation_SetLocations_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.SetLocations(NetTopologySuite.Geometries.Location%2CNetTopologySuite.Geometries.Location%2CNetTopologySuite.Geometries.Location)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L235">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L235">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation_SetLocations_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.SetLocations*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation_SetLocations_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.SetLocations(NetTopologySuite.Geometries.Location,NetTopologySuite.Geometries.Location,NetTopologySuite.Geometries.Location)">SetLocations(Location, Location, Location)</h4>
@@ -857,7 +837,7 @@ with the attributes of another.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation_SetLocations_NetTopologySuite_GeometriesGraph_TopologyLocation_.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.SetLocations(NetTopologySuite.GeometriesGraph.TopologyLocation)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L246">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L246">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation_SetLocations_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.SetLocations*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation_SetLocations_NetTopologySuite_GeometriesGraph_TopologyLocation_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.SetLocations(NetTopologySuite.GeometriesGraph.TopologyLocation)">SetLocations(TopologyLocation)</h4>
@@ -889,7 +869,7 @@ with the attributes of another.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation_ToString.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L289">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L289">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_TopologyLocation_ToString_" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.ToString*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_TopologyLocation_ToString" data-uid="NetTopologySuite.GeometriesGraph.TopologyLocation.ToString">ToString()</h4>
@@ -914,8 +894,6 @@ with the attributes of another.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
 </article>
           </div>
           
@@ -927,7 +905,7 @@ with the attributes of another.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_TopologyLocation.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.TopologyLocation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L30" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/TopologyLocation.cs/#L30" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

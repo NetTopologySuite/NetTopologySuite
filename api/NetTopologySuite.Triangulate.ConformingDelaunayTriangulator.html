@@ -92,35 +92,11 @@ linear constraints.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">ConformingDelaunayTriangulator</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Triangulate.html">NetTopologySuite.Triangulate</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ConformingDelaunayTriangulator</code></pre>
+    <pre><code class="lang-csharp hljs">public class ConformingDelaunayTriangulator : object</code></pre>
   </div>
   <h5 id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>
@@ -155,13 +131,13 @@ subdiv = cdt.Subdivision;</code></pre></p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Triangulate_ConformingDelaunayTriangulator__ctor_System_Collections_Generic_IEnumerable_NetTopologySuite_Triangulate_QuadEdge_Vertex__System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.%23ctor(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Triangulate.QuadEdge.Vertex%7D%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Triangulate_ConformingDelaunayTriangulator__ctor_IEnumerable_NetTopologySuite_Triangulate_QuadEdge_Vertex__System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.%23ctor(IEnumerable%7BNetTopologySuite.Triangulate.QuadEdge.Vertex%7D%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L88">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L88">View Source</a>
   </span>
   <a id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator__ctor_" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.#ctor*"></a>
-  <h4 id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator__ctor_System_Collections_Generic_IEnumerable_NetTopologySuite_Triangulate_QuadEdge_Vertex__System_Double_" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.#ctor(System.Collections.Generic.IEnumerable{NetTopologySuite.Triangulate.QuadEdge.Vertex},System.Double)">ConformingDelaunayTriangulator(IEnumerable&lt;Vertex&gt;, Double)</h4>
+  <h4 id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator__ctor_IEnumerable_NetTopologySuite_Triangulate_QuadEdge_Vertex__System_Double_" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.#ctor(IEnumerable{NetTopologySuite.Triangulate.QuadEdge.Vertex},System.Double)">ConformingDelaunayTriangulator(IEnumerable&lt;Vertex&gt;, Double)</h4>
   <div class="markdown level1 summary"><p>Creates a Conforming Delaunay Triangulation based on the given
 unconstrained initial vertices. The initial vertex set should not contain
 any vertices which appear in the constraint set.</p>
@@ -182,7 +158,7 @@ any vertices which appear in the constraint set.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a>&gt;</td>
         <td><span class="parametername">initialVertices</span></td>
         <td><p>a collection of <a class="xref" href="NetTopologySuite.Triangulate.ConstraintVertex.html">ConstraintVertex</a></p>
 </td>
@@ -202,7 +178,7 @@ any vertices which appear in the constraint set.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_ConstraintSegments.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.ConstraintSegments%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L162">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L162">View Source</a>
   </span>
   <a id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_ConstraintSegments_" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.ConstraintSegments*"></a>
   <h4 id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_ConstraintSegments" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.ConstraintSegments">ConstraintSegments</h4>
@@ -223,7 +199,7 @@ any vertices which appear in the constraint set.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="NetTopologySuite.Triangulate.Segment.html">Segment</a>&gt;</td>
+        <td><span class="xref">ICollection</span>&lt;<a class="xref" href="NetTopologySuite.Triangulate.Segment.html">Segment</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -233,7 +209,7 @@ any vertices which appear in the constraint set.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_ConvexHull.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.ConvexHull%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L170">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L170">View Source</a>
   </span>
   <a id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_ConvexHull_" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.ConvexHull*"></a>
   <h4 id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_ConvexHull" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.ConvexHull">ConvexHull</h4>
@@ -269,7 +245,7 @@ Only valid after the constraints have been enforced.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_InitialVertices.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.InitialVertices%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L157">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L157">View Source</a>
   </span>
   <a id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_InitialVertices_" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.InitialVertices*"></a>
   <h4 id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_InitialVertices" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.InitialVertices">InitialVertices</h4>
@@ -290,7 +266,7 @@ Only valid after the constraints have been enforced.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a>&gt;</td>
+        <td><span class="xref">IList</span>&lt;<a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -300,7 +276,7 @@ Only valid after the constraints have been enforced.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_KDT.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.KDT%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L152">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L152">View Source</a>
   </span>
   <a id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_KDT_" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.KDT*"></a>
   <h4 id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_KDT" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.KDT">KDT</h4>
@@ -331,7 +307,7 @@ Only valid after the constraints have been enforced.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_SplitPointFinder.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.SplitPointFinder%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L120">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L120">View Source</a>
   </span>
   <a id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_SplitPointFinder_" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.SplitPointFinder*"></a>
   <h4 id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_SplitPointFinder" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.SplitPointFinder">SplitPointFinder</h4>
@@ -368,7 +344,7 @@ for special situations.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_Subdivision.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.Subdivision%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L147">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L147">View Source</a>
   </span>
   <a id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_Subdivision_" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.Subdivision*"></a>
   <h4 id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_Subdivision" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.Subdivision">Subdivision</h4>
@@ -399,7 +375,7 @@ for special situations.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_Tolerance.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.Tolerance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L130">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L130">View Source</a>
   </span>
   <a id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_Tolerance_" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.Tolerance*"></a>
   <h4 id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_Tolerance" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.Tolerance">Tolerance</h4>
@@ -433,7 +409,7 @@ for special situations.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_VertexFactory.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.VertexFactory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L138">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L138">View Source</a>
   </span>
   <a id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_VertexFactory_" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.VertexFactory*"></a>
   <h4 id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_VertexFactory" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.VertexFactory">VertexFactory</h4>
@@ -470,7 +446,7 @@ to allow vertices carrying extra information to be created.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_EnforceConstraints.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.EnforceConstraints%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L310">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L310">View Source</a>
   </span>
   <a id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_EnforceConstraints_" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.EnforceConstraints*"></a>
   <h4 id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_EnforceConstraints" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.EnforceConstraints">EnforceConstraints()</h4>
@@ -502,7 +478,7 @@ to allow vertices carrying extra information to be created.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_FormInitialDelaunay.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.FormInitialDelaunay%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L292">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L292">View Source</a>
   </span>
   <a id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_FormInitialDelaunay_" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.FormInitialDelaunay*"></a>
   <h4 id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_FormInitialDelaunay" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.FormInitialDelaunay">FormInitialDelaunay()</h4>
@@ -518,7 +494,7 @@ to allow vertices carrying extra information to be created.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_InsertSite_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.InsertSite(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L282">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L282">View Source</a>
   </span>
   <a id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_InsertSite_" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.InsertSite*"></a>
   <h4 id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_InsertSite_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.InsertSite(NetTopologySuite.Geometries.Coordinate)">InsertSite(Coordinate)</h4>
@@ -552,13 +528,13 @@ or to improve the grading of the triangulation).</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_SetConstraints_System_Collections_Generic_IList_NetTopologySuite_Triangulate_Segment__System_Collections_Generic_IList_NetTopologySuite_Triangulate_QuadEdge_Vertex__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.SetConstraints(System.Collections.Generic.IList%7BNetTopologySuite.Triangulate.Segment%7D%2CSystem.Collections.Generic.IList%7BNetTopologySuite.Triangulate.QuadEdge.Vertex%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_SetConstraints_IList_NetTopologySuite_Triangulate_Segment__IList_NetTopologySuite_Triangulate_QuadEdge_Vertex__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.SetConstraints(IList%7BNetTopologySuite.Triangulate.Segment%7D%2CIList%7BNetTopologySuite.Triangulate.QuadEdge.Vertex%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L107">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L107">View Source</a>
   </span>
   <a id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_SetConstraints_" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.SetConstraints*"></a>
-  <h4 id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_SetConstraints_System_Collections_Generic_IList_NetTopologySuite_Triangulate_Segment__System_Collections_Generic_IList_NetTopologySuite_Triangulate_QuadEdge_Vertex__" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.SetConstraints(System.Collections.Generic.IList{NetTopologySuite.Triangulate.Segment},System.Collections.Generic.IList{NetTopologySuite.Triangulate.QuadEdge.Vertex})">SetConstraints(IList&lt;Segment&gt;, IList&lt;Vertex&gt;)</h4>
+  <h4 id="NetTopologySuite_Triangulate_ConformingDelaunayTriangulator_SetConstraints_IList_NetTopologySuite_Triangulate_Segment__IList_NetTopologySuite_Triangulate_QuadEdge_Vertex__" data-uid="NetTopologySuite.Triangulate.ConformingDelaunayTriangulator.SetConstraints(IList{NetTopologySuite.Triangulate.Segment},IList{NetTopologySuite.Triangulate.QuadEdge.Vertex})">SetConstraints(IList&lt;Segment&gt;, IList&lt;Vertex&gt;)</h4>
   <div class="markdown level1 summary"><p>Sets the constraints to be conformed to by the computed triangulation.
 The constraints must not contain duplicate segments (up to orientation).
 The unique set of vertices (as <a class="xref" href="NetTopologySuite.Triangulate.ConstraintVertex.html">ConstraintVertex</a>es)
@@ -583,13 +559,13 @@ if it is already available.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="NetTopologySuite.Triangulate.Segment.html">Segment</a>&gt;</td>
+        <td><span class="xref">IList</span>&lt;<a class="xref" href="NetTopologySuite.Triangulate.Segment.html">Segment</a>&gt;</td>
         <td><span class="parametername">segments</span></td>
         <td><p>list of the constraint {@link Segment}s</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a>&gt;</td>
+        <td><span class="xref">IList</span>&lt;<a class="xref" href="NetTopologySuite.Triangulate.QuadEdge.Vertex.html">Vertex</a>&gt;</td>
         <td><span class="parametername">segVertices</span></td>
         <td><p>the set of unique <a class="xref" href="NetTopologySuite.Triangulate.ConstraintVertex.html">ConstraintVertex</a>es referenced by the segments</p>
 </td>
@@ -607,7 +583,7 @@ if it is already available.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Triangulate_ConformingDelaunayTriangulator.md&amp;value=---%0Auid%3A%20NetTopologySuite.Triangulate.ConformingDelaunayTriangulator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L51" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Triangulate/ConformingDelaunayTriangulator.cs/#L51" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

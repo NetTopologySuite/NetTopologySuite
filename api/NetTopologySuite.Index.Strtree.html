@@ -82,14 +82,17 @@
   
   <h1 id="NetTopologySuite_Index_Strtree" data-uid="NetTopologySuite.Index.Strtree" class="text-break">Namespace NetTopologySuite.Index.Strtree
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary">
+<p>Contains 2-D and 1-D versions of the Sort-Tile-Recursive (STR) tree, a query-only R-tree.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
   </h3>
       <h4><a class="xref" href="NetTopologySuite.Index.Strtree.AbstractNode-2.html">AbstractNode&lt;T, TItem&gt;</a></h4>
       <section><p>A node of an <a class="xref" href="NetTopologySuite.Index.Strtree.AbstractSTRtree-2.html">AbstractSTRtree&lt;T, TItem&gt;</a>. A node is one of:</p>
-<p>A node stores the bounds of its children, and its level within the index tree.</p>
+<ul><li></li><li>an <em>interior node</em> containing child <a class="xref" href="NetTopologySuite.Index.Strtree.AbstractNode-2.html">AbstractNode&lt;T, TItem&gt;</a>s</li><li>a <em>leaf node</em> containing data items (<a class="xref" href="NetTopologySuite.Index.Strtree.ItemBoundable-2.html">ItemBoundable&lt;T, TItem&gt;</a>s).</li></ul>
+A node stores the bounds of its children, and its level within the index tree.
 </section>
       <h4><a class="xref" href="NetTopologySuite.Index.Strtree.AbstractSTRtree-2.html">AbstractSTRtree&lt;T, TItem&gt;</a></h4>
       <section><p>Base class for STRtree and SIRtree. STR-packed R-trees are described in:
@@ -101,9 +104,18 @@ because the STR algorithm operates on both nodes and
 data, both of which are treated as <a class="xref" href="NetTopologySuite.Geometries.IBoundable-2.html">IBoundable&lt;T, TItem&gt;</a>s.
 </p>
 </section>
+      <h4><a class="xref" href="NetTopologySuite.Index.Strtree.EnvelopeDistance.html">EnvelopeDistance</a></h4>
+      <section><p>Utility functions for working with <a class="xref" href="NetTopologySuite.Geometries.Envelope.html">Envelope</a>s.</p>
+</section>
       <h4><a class="xref" href="NetTopologySuite.Index.Strtree.GeometryItemDistance.html">GeometryItemDistance</a></h4>
       <section><p>An <a class="xref" href="NetTopologySuite.Index.Strtree.IItemDistance-2.html">IItemDistance&lt;T, TItem&gt;</a> function for
 items which are <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> using the <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Distance_NetTopologySuite_Geometries_Geometry_">Distance(Geometry)</a> method.</p>
+<p>
+To make this distance function suitable for
+using to query a single index tree,
+the distance metric is <em>anti-reflexive</em>.
+That is, if the two arguments are the same Geometry object,
+the distance returned is <see cref="!:double.MaxValue"></see>.
 </section>
       <h4><a class="xref" href="NetTopologySuite.Index.Strtree.Interval.html">Interval</a></h4>
       <section><p>A contiguous portion of 1D-space. Used internally by SIRtree.</p>
@@ -120,14 +132,22 @@ Application To GIS. Morgan Kaufmann, San Francisco, 2002.</p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html">STRtree&lt;TItem&gt;</a></h4>
       <section><p>A query-only R-tree created using the Sort-Tile-Recursive (STR) algorithm.
-For two-dimensional spatial data.
+For two-dimensional spatial data.</p>
+<p>
 The STR packed R-tree is simple to implement and maximizes space
 utilization; that is, as many leaves as possible are filled to capacity.
 Overlap between nodes is far less than in a basic R-tree. However, once the
-tree has been built (explicitly or on the first call to #query), items may
+tree has been built (explicitly or on the first call to <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html#NetTopologySuite_Index_Strtree_STRtree_1_Query_NetTopologySuite_Geometries_Envelope_">Query(Envelope)</a>), items may
 not be added or removed.
+<p>
 Described in: P. Rigaux, Michel Scholl and Agnes Voisard. Spatial Databases With
-Application To GIS. Morgan Kaufmann, San Francisco, 2002.</p>
+Application To GIS. Morgan Kaufmann, San Francisco, 2002.
+<p>
+<strong>Note that inserting items into a tree is not thread-safe.</strong>
+Inserting performed on more than one thread must be synchronized externally.
+<p>
+Querying a tree is thread-safe. The building phase is done synchronously,
+and querying is stateless.
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
@@ -137,6 +157,16 @@ Application To GIS. Morgan Kaufmann, San Francisco, 2002.</p>
       <section><p>A function method which computes the distance
 between two <a class="xref" href="NetTopologySuite.Geometries.IBoundable-2.html">IBoundable&lt;T, TItem&gt;</a>s in an <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html">STRtree&lt;TItem&gt;</a>.
 Used for Nearest Neighbour searches.</p>
+<p>
+To make a distance function suitable for
+querying a single index tree
+via <a class="xref" href="NetTopologySuite.Index.Strtree.STRtree-1.html#NetTopologySuite_Index_Strtree_STRtree_1_NearestNeighbour_NetTopologySuite_Index_Strtree_IItemDistance_NetTopologySuite_Geometries_Envelope__0__">NearestNeighbour(IItemDistance&lt;Envelope, TItem&gt;)</a>,
+the function should have a non-zero <em>reflexive distance</em>.
+That is, if the two arguments are the same object,
+the distance returned should be non-zero.
+If it is required that only pairs of <strong>distinct</strong> items be returned,
+the distance function must be <em>anti-reflexive</em>,
+and must return <see cref="!:double.MaxValue"></see> for identical arguments.
 </section>
 </article>
           </div>
@@ -145,6 +175,9 @@ Used for Nearest Neighbour searches.</p>
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/doc/overwrite/namespaces/NetTopologySuite.Index.Strtree.md/#L2" class="contribution-link">Improve this Doc</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

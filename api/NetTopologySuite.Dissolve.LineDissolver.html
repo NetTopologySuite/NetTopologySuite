@@ -97,35 +97,11 @@ either degree 1, or degree 3 or greater.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">LineDissolver</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Dissolve.html">NetTopologySuite.Dissolve</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Dissolve_LineDissolver_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class LineDissolver</code></pre>
+    <pre><code class="lang-csharp hljs">public class LineDissolver : object</code></pre>
   </div>
   <h5 id="NetTopologySuite_Dissolve_LineDissolver_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Use cases for dissolving linear components
@@ -142,7 +118,7 @@ depicting shared polygon boundaries).</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Dissolve_LineDissolver__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Dissolve.LineDissolver.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Dissolve/LineDissolver.cs/#L48">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Dissolve/LineDissolver.cs/#L48">View Source</a>
   </span>
   <a id="NetTopologySuite_Dissolve_LineDissolver__ctor_" data-uid="NetTopologySuite.Dissolve.LineDissolver.#ctor*"></a>
   <h4 id="NetTopologySuite_Dissolve_LineDissolver__ctor" data-uid="NetTopologySuite.Dissolve.LineDissolver.#ctor">LineDissolver()</h4>
@@ -156,10 +132,46 @@ depicting shared polygon boundaries).</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Dissolve_LineDissolver_Add_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Dissolve.LineDissolver.Add(IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Dissolve/LineDissolver.cs/#L75">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Dissolve_LineDissolver_Add_" data-uid="NetTopologySuite.Dissolve.LineDissolver.Add*"></a>
+  <h4 id="NetTopologySuite_Dissolve_LineDissolver_Add_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Dissolve.LineDissolver.Add(IEnumerable{NetTopologySuite.Geometries.Geometry})">Add(IEnumerable&lt;Geometry&gt;)</h4>
+  <div class="markdown level1 summary"><p>Adds a collection of Geometries to be processed. May be called multiple times.
+Any dimension of Geometry may be added; the constituent linework will be
+extracted.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Add(IEnumerable&lt;Geometry&gt; geometries)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">geometries</span></td>
+        <td><p>the geometries to be line-merged</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Dissolve_LineDissolver_Add_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Dissolve.LineDissolver.Add(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Dissolve/LineDissolver.cs/#L60">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Dissolve/LineDissolver.cs/#L60">View Source</a>
   </span>
   <a id="NetTopologySuite_Dissolve_LineDissolver_Add_" data-uid="NetTopologySuite.Dissolve.LineDissolver.Add*"></a>
   <h4 id="NetTopologySuite_Dissolve_LineDissolver_Add_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Dissolve.LineDissolver.Add(NetTopologySuite.Geometries.Geometry)">Add(Geometry)</h4>
@@ -193,46 +205,10 @@ extracted to be dissolved.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Dissolve_LineDissolver_Add_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Dissolve.LineDissolver.Add(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Dissolve/LineDissolver.cs/#L75">View Source</a>
-  </span>
-  <a id="NetTopologySuite_Dissolve_LineDissolver_Add_" data-uid="NetTopologySuite.Dissolve.LineDissolver.Add*"></a>
-  <h4 id="NetTopologySuite_Dissolve_LineDissolver_Add_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Dissolve.LineDissolver.Add(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">Add(IEnumerable&lt;Geometry&gt;)</h4>
-  <div class="markdown level1 summary"><p>Adds a collection of Geometries to be processed. May be called multiple times.
-Any dimension of Geometry may be added; the constituent linework will be
-extracted.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Add(IEnumerable&lt;Geometry&gt; geometries)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
-        <td><span class="parametername">geometries</span></td>
-        <td><p>the geometries to be line-merged</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Dissolve_LineDissolver_Dissolve_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Dissolve.LineDissolver.Dissolve(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Dissolve/LineDissolver.cs/#L36">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Dissolve/LineDissolver.cs/#L36">View Source</a>
   </span>
   <a id="NetTopologySuite_Dissolve_LineDissolver_Dissolve_" data-uid="NetTopologySuite.Dissolve.LineDissolver.Dissolve*"></a>
   <h4 id="NetTopologySuite_Dissolve_LineDissolver_Dissolve_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Dissolve.LineDissolver.Dissolve(NetTopologySuite.Geometries.Geometry)">Dissolve(Geometry)</h4>
@@ -282,7 +258,7 @@ extracted.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Dissolve_LineDissolver_GetResult.md&amp;value=---%0Auid%3A%20NetTopologySuite.Dissolve.LineDissolver.GetResult%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Dissolve/LineDissolver.cs/#L108">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Dissolve/LineDissolver.cs/#L108">View Source</a>
   </span>
   <a id="NetTopologySuite_Dissolve_LineDissolver_GetResult_" data-uid="NetTopologySuite.Dissolve.LineDissolver.GetResult*"></a>
   <h4 id="NetTopologySuite_Dissolve_LineDissolver_GetResult" data-uid="NetTopologySuite.Dissolve.LineDissolver.GetResult">GetResult()</h4>
@@ -320,7 +296,7 @@ extracted.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Dissolve_LineDissolver.md&amp;value=---%0Auid%3A%20NetTopologySuite.Dissolve.LineDissolver%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Dissolve/LineDissolver.cs/#L29" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Dissolve/LineDissolver.cs/#L29" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

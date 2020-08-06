@@ -93,41 +93,31 @@ in all except certain pathological cases.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">InteriorPointArea</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Algorithm.html">NetTopologySuite.Algorithm</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Algorithm_InteriorPointArea_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class InteriorPointArea</code></pre>
+    <pre><code class="lang-csharp hljs">public class InteriorPointArea : object</code></pre>
   </div>
   <h5 id="NetTopologySuite_Algorithm_InteriorPointArea_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><h2>Algorithm:</h2>
 For each input polygon:
-<p>The final interior point is chosen as
-the one occurring in the widest interior section.</p>
+<ul><li>
+Determine a horizontal scan line on which the interior
+point will be located.
+To increase the chance of the scan line
+having non-zero-width intersection with the polygon
+the scan line Y ordinate is chosen to be near the centre of the polygon&apos;s
+Y extent but distinct from all of vertex Y ordinates.
+</li><li>
+Compute the sections of the scan line
+which lie in the interior of the polygon.
+</li><li>
+Choose the widest interior section
+and take its midpoint as the interior point.
+</li></ul>
+The final interior point is chosen as
+the one occurring in the widest interior section.
 <p>
 This algorithm is a tradeoff between performance
 and point quality (where points further from the geometry
@@ -145,6 +135,14 @@ including zero-area and self-intersecting polygons.
 Empty geometry is handled by returning a <span class="xref">null</span> point.
 </p>
 <h3>KNOWN BUGS</h3>
+<ul><li>
+If a fixed precision model is used,
+in some cases this method may return a point
+which does not lie in the interior.
+</li><li>
+If the input polygon is <em>extremely</em> narrow the computed point
+may not lie in the interior of the polygon.
+</li></ul>
 </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -153,7 +151,7 @@ Empty geometry is handled by returning a <span class="xref">null</span> point.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_InteriorPointArea__ctor_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.InteriorPointArea.%23ctor(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/InteriorPointArea.cs/#L101">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/InteriorPointArea.cs/#L101">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_InteriorPointArea__ctor_" data-uid="NetTopologySuite.Algorithm.InteriorPointArea.#ctor*"></a>
   <h4 id="NetTopologySuite_Algorithm_InteriorPointArea__ctor_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Algorithm.InteriorPointArea.#ctor(NetTopologySuite.Geometries.Geometry)">InteriorPointArea(Geometry)</h4>
@@ -190,7 +188,7 @@ for an areal geometry.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_InteriorPointArea_InteriorPoint.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.InteriorPointArea.InteriorPoint%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/InteriorPointArea.cs/#L110">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/InteriorPointArea.cs/#L110">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_InteriorPointArea_InteriorPoint_" data-uid="NetTopologySuite.Algorithm.InteriorPointArea.InteriorPoint*"></a>
   <h4 id="NetTopologySuite_Algorithm_InteriorPointArea_InteriorPoint" data-uid="NetTopologySuite.Algorithm.InteriorPointArea.InteriorPoint">InteriorPoint</h4>
@@ -224,7 +222,7 @@ or <span class="xref">null</span> if the input geometry is empty.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_InteriorPointArea_GetInteriorPoint_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.InteriorPointArea.GetInteriorPoint(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/InteriorPointArea.cs/#L76">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/InteriorPointArea.cs/#L76">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_InteriorPointArea_GetInteriorPoint_" data-uid="NetTopologySuite.Algorithm.InteriorPointArea.GetInteriorPoint*"></a>
   <h4 id="NetTopologySuite_Algorithm_InteriorPointArea_GetInteriorPoint_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Algorithm.InteriorPointArea.GetInteriorPoint(NetTopologySuite.Geometries.Geometry)">GetInteriorPoint(Geometry)</h4>
@@ -282,7 +280,7 @@ or <span class="xref">null</span> if the geometry has no polygonal components.</
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_InteriorPointArea.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.InteriorPointArea%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/InteriorPointArea.cs/#L65" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/InteriorPointArea.cs/#L65" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

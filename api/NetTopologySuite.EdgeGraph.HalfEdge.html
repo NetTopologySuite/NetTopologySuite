@@ -92,6 +92,22 @@ giving access to the oppositely-oriented component.
 HalfEdges and the methods on them form an edge algebra,
 which can be used to traverse and query the topology
 of the graph formed by the edges.</p>
+<p>
+To support graphs where the edges are sequences of coordinates
+each edge may also have a direction point supplied.
+This is used to determine the ordering
+of the edges around the origin.
+HalfEdges with the same origin are ordered
+so that the ring of edges formed by them is oriented CCW.
+<p>
+By design HalfEdges carry minimal information
+about the actual usage of the graph they represent.
+They can be subclassed to carry more information if required.
+<p>
+HalfEdges form a complete and consistent data structure by themselves,
+but an <a class="xref" href="NetTopologySuite.EdgeGraph.EdgeGraph.html">EdgeGraph</a> is useful to allow retrieving edges
+by vertex and edge location, as well as ensuring
+edges are created and linked appropriately.
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -100,42 +116,12 @@ of the graph formed by the edges.</p>
     <div class="level1"><span class="xref">HalfEdge</span></div>
       <div class="level2"><a class="xref" href="NetTopologySuite.EdgeGraph.MarkHalfEdge.html">MarkHalfEdge</a></div>
   </div>
-  <div classs="implements">
-    <h5>Implements</h5>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a>&gt;</div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.EdgeGraph.html">NetTopologySuite.EdgeGraph</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_EdgeGraph_HalfEdge_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class HalfEdge : IComparable&lt;HalfEdge&gt;</code></pre>
   </div>
-  <h5 id="NetTopologySuite_EdgeGraph_HalfEdge_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>By design HalfEdges carry minimal information
-about the actual usage of the graph they represent.
-They can be subclassed to carry more information if required.</p>
-</div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
@@ -143,7 +129,7 @@ They can be subclassed to carry more information if required.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge__ctor_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.%23ctor(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L77">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L87">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge__ctor_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.#ctor*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge__ctor_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.#ctor(NetTopologySuite.Geometries.Coordinate)">HalfEdge(Coordinate)</h4>
@@ -179,7 +165,7 @@ They can be subclassed to carry more information if required.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_DeltaX.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.DeltaX%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L268">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L418">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge_DeltaX_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.DeltaX*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_DeltaX" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.DeltaX">DeltaX</h4>
@@ -210,7 +196,7 @@ They can be subclassed to carry more information if required.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_DeltaY.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.DeltaY%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L273">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L424">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge_DeltaY_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.DeltaY*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_DeltaY" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.DeltaY">DeltaY</h4>
@@ -241,7 +227,7 @@ They can be subclassed to carry more information if required.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_Dest.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.Dest%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L99">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L124">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge_Dest_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Dest*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_Dest" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Dest">Dest</h4>
@@ -269,16 +255,89 @@ They can be subclassed to carry more information if required.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_DirectionPt.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.DirectionPt%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L147">View Source</a>
+  </span>
+  <a id="NetTopologySuite_EdgeGraph_HalfEdge_DirectionPt_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.DirectionPt*"></a>
+  <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_DirectionPt" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.DirectionPt">DirectionPt</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating the direction point of this edge.
+In the base case this is the dest coordinate
+of the edge.</p>
+<p>
+Subclasses may override to
+allow a HalfEdge to represent an edge with more than two coordinates.
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Coordinate DirectionPt { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
+        <td><p>The direction point for the edge</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_IsEdgesSorted.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.IsEdgesSorted%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L313">View Source</a>
+  </span>
+  <a id="NetTopologySuite_EdgeGraph_HalfEdge_IsEdgesSorted_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.IsEdgesSorted*"></a>
+  <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_IsEdgesSorted" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.IsEdgesSorted">IsEdgesSorted</h4>
+  <div class="markdown level1 summary"><p>Tests whether the edges around the origin
+are sorted correctly.
+Note that edges must be strictly increasing,
+which implies no two edges can have the same direction point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsEdgesSorted { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the origin edges are sorted correctly</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_Next.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.Next%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L115">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L170">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge_Next_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Next*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_Next" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Next">Next</h4>
   <div class="markdown level1 summary"><p>Gets the next edge CCW around the
-destination vertex of this edge.
-If the vertex has degree 1 then this is the <strong>sym</strong> edge.</p>
+destination vertex of this edge,
+with the dest vertex as its origin.
+If the vertex has degree 1 then this is the <strong>Sym</strong> edge.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -296,7 +355,8 @@ If the vertex has degree 1 then this is the <strong>sym</strong> edge.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a></td>
-        <td></td>
+        <td><p>The next edge</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -305,11 +365,13 @@ If the vertex has degree 1 then this is the <strong>sym</strong> edge.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_ONext.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.ONext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L127">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L187">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge_ONext_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.ONext*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_ONext" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.ONext">ONext</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the next edge CCW around the origin of this edge,
+with the same origin.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -326,7 +388,8 @@ If the vertex has degree 1 then this is the <strong>sym</strong> edge.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a></td>
-        <td></td>
+        <td><p>The next edge around the origin</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -335,7 +398,7 @@ If the vertex has degree 1 then this is the <strong>sym</strong> edge.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_Orig.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.Orig%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L94">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L119">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge_Orig_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Orig*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_Orig" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Orig">Orig</h4>
@@ -366,7 +429,7 @@ If the vertex has degree 1 then this is the <strong>sym</strong> edge.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_Prev.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.Prev%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L125">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L180">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge_Prev_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Prev*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_Prev" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Prev">Prev</h4>
@@ -398,11 +461,11 @@ If the vertex has degree 1 then this is the <strong>sym</strong> edge.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_Sym.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.Sym%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L104">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L157">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge_Sym_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Sym*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_Sym" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Sym">Sym</h4>
-  <div class="markdown level1 summary"><p>Gets the symmetric pair edge of this edge.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the symmetric (opposite) edge of this edge.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -431,7 +494,7 @@ If the vertex has degree 1 then this is the <strong>sym</strong> edge.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_CompareAngularDirection_NetTopologySuite_EdgeGraph_HalfEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.CompareAngularDirection(NetTopologySuite.EdgeGraph.HalfEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L240">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L386">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge_CompareAngularDirection_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.CompareAngularDirection*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_CompareAngularDirection_NetTopologySuite_EdgeGraph_HalfEdge_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.CompareAngularDirection(NetTopologySuite.EdgeGraph.HalfEdge)">CompareAngularDirection(HalfEdge)</h4>
@@ -497,7 +560,7 @@ can be used to determine the relative orientation of the vectors.</li>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_CompareTo_NetTopologySuite_EdgeGraph_HalfEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.CompareTo(NetTopologySuite.EdgeGraph.HalfEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L216">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L362">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge_CompareTo_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.CompareTo*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_CompareTo_NetTopologySuite_EdgeGraph_HalfEdge_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.CompareTo(NetTopologySuite.EdgeGraph.HalfEdge)">CompareTo(HalfEdge)</h4>
@@ -547,7 +610,7 @@ This allows sorting edges around their origin vertex in CCW order.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_Create_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.Create(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L40">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L48">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge_Create_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Create*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_Create_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Create(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">Create(Coordinate, Coordinate)</h4>
@@ -604,7 +667,7 @@ between two vertices located at coordinates p0 and p1.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_Degree.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.Degree%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L289">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L462">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge_Degree_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Degree*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_Degree" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Degree">Degree()</h4>
@@ -638,7 +701,7 @@ originating from the vertex.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_Equals_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.Equals(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L159">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L219">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge_Equals_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Equals*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_Equals_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Equals(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">Equals(Coordinate, Coordinate)</h4>
@@ -694,7 +757,7 @@ originating from the vertex.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_Find_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.Find(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L138">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L198">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge_Find_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Find*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_Find_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Find(NetTopologySuite.Geometries.Coordinate)">Find(Coordinate)</h4>
@@ -746,11 +809,12 @@ if it exists, or null</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_Init_NetTopologySuite_EdgeGraph_HalfEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.Init(NetTopologySuite.EdgeGraph.HalfEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L82">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L110">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge_Init_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Init*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_Init_NetTopologySuite_EdgeGraph_HalfEdge_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Init(NetTopologySuite.EdgeGraph.HalfEdge)">Init(HalfEdge)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Initializes this edge with <code data-dev-comment-type="paramref" class="paramref">e</code> as <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_Sym">Sym</a> edge.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -769,7 +833,8 @@ if it exists, or null</p>
       <tr>
         <td><a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a></td>
         <td><span class="parametername">e</span></td>
-        <td></td>
+        <td><p>A symmetric half edge.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -778,16 +843,18 @@ if it exists, or null</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_Init_NetTopologySuite_EdgeGraph_HalfEdge_NetTopologySuite_EdgeGraph_HalfEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.Init(NetTopologySuite.EdgeGraph.HalfEdge%2CNetTopologySuite.EdgeGraph.HalfEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L59">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L69">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge_Init_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Init*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_Init_NetTopologySuite_EdgeGraph_HalfEdge_NetTopologySuite_EdgeGraph_HalfEdge_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Init(NetTopologySuite.EdgeGraph.HalfEdge,NetTopologySuite.EdgeGraph.HalfEdge)">Init(HalfEdge, HalfEdge)</h4>
-  <div class="markdown level1 summary"><p>Initialize a symmetric pair of HalfEdges.
-Intended for use by <a class="xref" href="NetTopologySuite.EdgeGraph.EdgeGraph.html">EdgeGraph</a> subclasses.
+  <div class="markdown level1 summary"><p>Initialize a symmetric pair of halfedges.
+Intended for use by <a class="xref" href="NetTopologySuite.EdgeGraph.EdgeGraph.html">EdgeGraph</a>
+subclasses.</p>
+<p>
 The edges are initialized to have each other
-as the <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_Sym">Sym</a> edge, and to have <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_Next">Next</a> pointers
-which point to edge other.
-This effectively creates a graph containing a single edge.</p>
+as the <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_Sym">Sym</a> edge, and to have
+<a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html#NetTopologySuite_EdgeGraph_HalfEdge_Next">Next</a> pointers which point to edge other.
+This effectively creates a graph containing a single edge.
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -807,13 +874,13 @@ This effectively creates a graph containing a single edge.</p>
       <tr>
         <td><a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a></td>
         <td><span class="parametername">e0</span></td>
-        <td><p>a HalfEdge</p>
+        <td><p>A halfedge</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a></td>
         <td><span class="parametername">e1</span></td>
-        <td><p>a symmetric HalfEdge</p>
+        <td><p>A symmetric halfedge</p>
 </td>
       </tr>
     </tbody>
@@ -829,7 +896,7 @@ This effectively creates a graph containing a single edge.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a></td>
-        <td><p>the initialized edge e0</p>
+        <td><p>The initialized edge e0</p>
 </td>
       </tr>
     </tbody>
@@ -839,18 +906,19 @@ This effectively creates a graph containing a single edge.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_Insert_NetTopologySuite_EdgeGraph_HalfEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.Insert(NetTopologySuite.EdgeGraph.HalfEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L170">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L231">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge_Insert_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Insert*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_Insert_NetTopologySuite_EdgeGraph_HalfEdge_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Insert(NetTopologySuite.EdgeGraph.HalfEdge)">Insert(HalfEdge)</h4>
   <div class="markdown level1 summary"><p>Inserts an edge
-into the ring of edges around the origin vertex of this edge.
+into the ring of edges around the origin vertex of this edge,
+ensuring that the edges remain ordered CCW.
 The inserted edge must have the same origin as this edge.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Insert(HalfEdge e)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Insert(HalfEdge eAdd)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -864,8 +932,43 @@ The inserted edge must have the same origin as this edge.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a></td>
-        <td><span class="parametername">e</span></td>
+        <td><span class="parametername">eAdd</span></td>
         <td><p>the edge to insert</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_Link_NetTopologySuite_EdgeGraph_HalfEdge_.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.Link(NetTopologySuite.EdgeGraph.HalfEdge)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L97">View Source</a>
+  </span>
+  <a id="NetTopologySuite_EdgeGraph_HalfEdge_Link_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Link*"></a>
+  <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_Link_NetTopologySuite_EdgeGraph_HalfEdge_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.Link(NetTopologySuite.EdgeGraph.HalfEdge)">Link(HalfEdge)</h4>
+  <div class="markdown level1 summary"><p>Links this edge with its sym (opposite) edge.
+This must be done for each pair of edges created.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Link(HalfEdge sym)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a></td>
+        <td><span class="parametername">sym</span></td>
+        <td><p>The sym edge to link.</p>
 </td>
       </tr>
     </tbody>
@@ -875,7 +978,7 @@ The inserted edge must have the same origin as this edge.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_PrevNode.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.PrevNode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L311">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L484">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge_PrevNode_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.PrevNode*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_PrevNode" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.PrevNode">PrevNode()</h4>
@@ -910,7 +1013,7 @@ or null if no node exists</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_ToString.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L278">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L430">View Source</a>
   </span>
   <a id="NetTopologySuite_EdgeGraph_HalfEdge_ToString_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.ToString*"></a>
   <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_ToString" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.ToString">ToString()</h4>
@@ -936,12 +1039,36 @@ or null if no node exists</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">System.IComparable&lt;T&gt;</a>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge_ToStringNode.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge.ToStringNode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L435">View Source</a>
+  </span>
+  <a id="NetTopologySuite_EdgeGraph_HalfEdge_ToStringNode_" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.ToStringNode*"></a>
+  <h4 id="NetTopologySuite_EdgeGraph_HalfEdge_ToStringNode" data-uid="NetTopologySuite.EdgeGraph.HalfEdge.ToStringNode">ToStringNode()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string ToStringNode()</code></pre>
   </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
@@ -953,7 +1080,7 @@ or null if no node exists</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_EdgeGraph_HalfEdge.md&amp;value=---%0Auid%3A%20NetTopologySuite.EdgeGraph.HalfEdge%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L31" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/EdgeGraph/HalfEdge.cs/#L39" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

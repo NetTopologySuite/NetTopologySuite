@@ -82,7 +82,9 @@
   
   <h1 id="NetTopologySuite_Utilities" data-uid="NetTopologySuite.Utilities" class="text-break">Namespace NetTopologySuite.Utilities
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary">
+<p>Contains support classes for the Net Topology Suite.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
@@ -116,25 +118,29 @@ in a <code>Geometry</code>.</p>
       <h4><a class="xref" href="NetTopologySuite.Utilities.EnumUtility.html">EnumUtility</a></h4>
       <section></section>
       <h4><a class="xref" href="NetTopologySuite.Utilities.FunctionsUtil.html">FunctionsUtil</a></h4>
-      <section></section>
+      <section><p>A utility class to get <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a>s, <a class="xref" href="NetTopologySuite.Geometries.Envelope.html">Envelope</a>s
+off of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s or to build aggregate geometries.</p>
+</section>
       <h4><a class="xref" href="NetTopologySuite.Utilities.GeometricShapeFactory.html">GeometricShapeFactory</a></h4>
       <section><p>Computes various kinds of common geometric shapes.
 Allows various ways of specifying the location and extent of the shapes,
 as well as number of line segments used to form them.</p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Utilities.GeometricShapeFactory.Dimensions.html">GeometricShapeFactory.Dimensions</a></h4>
-      <section></section>
+      <section><p>A dimension class for <a class="xref" href="NetTopologySuite.Utilities.GeometricShapeFactory.html">GeometricShapeFactory</a>s</p>
+</section>
       <h4><a class="xref" href="NetTopologySuite.Utilities.Global.html">Global</a></h4>
       <section></section>
       <h4><a class="xref" href="NetTopologySuite.Utilities.Guard.html">Guard</a></h4>
-      <section></section>
+      <section><p>A guard class</p>
+</section>
       <h4><a class="xref" href="NetTopologySuite.Utilities.HexConverter.html">HexConverter</a></h4>
       <section></section>
       <h4><a class="xref" href="NetTopologySuite.Utilities.Memory.html">Memory</a></h4>
       <section><p>Utility functions to report memory usage.</p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Utilities.PriorityQueue-1.html">PriorityQueue&lt;T&gt;</a></h4>
-      <section><p>A priority queue over a set of <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">IComparable&lt;T&gt;</a> objects.</p>
+      <section><p>A priority queue over a set of <see cref="!:IComparable&lt;T>"></see> objects.</p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Utilities.PriorityQueueNode-2.html">PriorityQueueNode&lt;TPriority, TData&gt;</a></h4>
       <section><p>A container for a prioritized node that sites in an
@@ -144,8 +150,11 @@ as well as number of line segments used to form them.</p>
       <section><p>Converts radians to degress.</p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Utilities.UniqueCoordinateArrayFilter.html">UniqueCoordinateArrayFilter</a></h4>
-      <section><p>A <code>CoordinateFilter</code> that builds a set of <code>Coordinate</code>s.
-The set of coordinates contains no duplicate points.</p>
+      <section><p>A <a class="xref" href="NetTopologySuite.Geometries.ICoordinateFilter.html">ICoordinateFilter</a>
+that extracts a unique array of<code>Coordinate</code> s.
+The array of coordinates contains no duplicate points.</p>
+<p>
+It preserves the order of the input points.
 </section>
 </article>
           </div>
@@ -154,6 +163,9 @@ The set of coordinates contains no duplicate points.</p>
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/doc/overwrite/namespaces/NetTopologySuite.Utilities.md/#L2" class="contribution-link">Improve this Doc</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

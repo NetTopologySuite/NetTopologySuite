@@ -92,35 +92,11 @@ represents the edges of a planar graph.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">Polygonizer</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Operation.Polygonize.html">NetTopologySuite.Operation.Polygonize</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Operation_Polygonize_Polygonizer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Polygonizer</code></pre>
+    <pre><code class="lang-csharp hljs">public class Polygonizer : object</code></pre>
   </div>
   <h5 id="NetTopologySuite_Operation_Polygonize_Polygonizer_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>All types of Geometry are accepted as input;
@@ -131,15 +107,13 @@ but will not form polygons from non-noded edges,
 and reports them as errors.
 </p><p>
 The Polygonizer reports the follow kinds of errors:
-Dangles - edges which have one or both ends which are not incident on another edge endpoint
-Cut Edges - edges which are connected at both ends but which do not form part of polygon
-Invalid Ring Lines - edges which form rings which are invalid
-(e.g. the component lines contain a self-intersection).</p>
+</p>
 <p>
-Polygonization supports extracting only polygons which form a valid polygonal geometry.
+The <a class="xref" href="NetTopologySuite.Operation.Polygonize.Polygonizer.html#NetTopologySuite_Operation_Polygonize_Polygonizer__ctor_System_Boolean_">Polygonizer(Boolean)</a> constructor allows
+extracting only polygons which form a valid polygonal result.
 The set of extracted polygons is guaranteed to be edge-disjoint.
 This is useful for situations where it is known that the input lines form a
-valid polygonal geometry.</p>
+valid polygonal geometry (which may include holes or nested polygons).</p>
 </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -148,13 +122,11 @@ valid polygonal geometry.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_Polygonizer__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.Polygonizer.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L98">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L99">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Polygonize_Polygonizer__ctor_" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.#ctor*"></a>
   <h4 id="NetTopologySuite_Operation_Polygonize_Polygonizer__ctor" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.#ctor">Polygonizer()</h4>
-  <div class="markdown level1 summary"><p>Creates a polygonizer with the same <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a>
-as the input <code>Geometry</code>s.
-The output mask is <a class="xref" href="NetTopologySuite.Operation.Polygonize.Polygonizer.html#NetTopologySuite_Operation_Polygonize_Polygonizer_AllPolys">AllPolys</a></p>
+  <div class="markdown level1 summary"><p>Creates a polygonizer that extracts all polygons.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -166,11 +138,14 @@ The output mask is <a class="xref" href="NetTopologySuite.Operation.Polygonize.P
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_Polygonizer__ctor_System_Boolean_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.Polygonizer.%23ctor(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L109">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L113">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Polygonize_Polygonizer__ctor_" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.#ctor*"></a>
   <h4 id="NetTopologySuite_Operation_Polygonize_Polygonizer__ctor_System_Boolean_" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.#ctor(System.Boolean)">Polygonizer(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Creates a polygonizer and allow specifying if only polygons which form a valid polygonal geometry are to be extracted.</p>
+  <div class="markdown level1 summary"><p>Creates a polygonizer, specifying whether a valid polygonal geometry must be created.
+If the argument is <code>true</code>
+then areas may be discarded in order to
+ensure that the extracted geometry is a valid polygonal geometry.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -190,7 +165,7 @@ The output mask is <a class="xref" href="NetTopologySuite.Operation.Polygonize.P
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">extractOnlyPolygonal</span></td>
-        <td><p><returns>true</returns> if only polygons which form a valid polygonal geometry are to be extracted</p>
+        <td><p><code>true</code> if a valid polygonal geometry should be extracted</p>
 </td>
       </tr>
     </tbody>
@@ -202,7 +177,7 @@ The output mask is <a class="xref" href="NetTopologySuite.Operation.Polygonize.P
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_Polygonizer_AllPolys.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.Polygonizer.AllPolys%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L35">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L39">View Source</a>
   </span>
   <h4 id="NetTopologySuite_Operation_Polygonize_Polygonizer_AllPolys" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.AllPolys">AllPolys</h4>
   <div class="markdown level1 summary"><p>The default polygonizer output behavior</p>
@@ -210,7 +185,7 @@ The output mask is <a class="xref" href="NetTopologySuite.Operation.Polygonize.P
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const bool AllPolys = false</code></pre>
+    <pre><code class="lang-csharp hljs">public const bool AllPolys = null</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -234,7 +209,7 @@ The output mask is <a class="xref" href="NetTopologySuite.Operation.Polygonize.P
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_Polygonizer_IsCheckingRingsValid.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.Polygonizer.IsCheckingRingsValid%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L86">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L90">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Polygonize_Polygonizer_IsCheckingRingsValid_" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.IsCheckingRingsValid*"></a>
   <h4 id="NetTopologySuite_Operation_Polygonize_Polygonizer_IsCheckingRingsValid" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.IsCheckingRingsValid">IsCheckingRingsValid</h4>
@@ -268,10 +243,47 @@ to optimize situations where invalid rings are not expected.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_Polygonizer_Add_ICollection_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.Polygonizer.Add(ICollection%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L126">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Polygonize_Polygonizer_Add_" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.Add*"></a>
+  <h4 id="NetTopologySuite_Operation_Polygonize_Polygonizer_Add_ICollection_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.Add(ICollection{NetTopologySuite.Geometries.Geometry})">Add(ICollection&lt;Geometry&gt;)</h4>
+  <div class="markdown level1 summary"><p>Adds a collection of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s to be polygonized.
+May be called multiple times.
+Any dimension of Geometry may be added;
+the constituent linework will be extracted and used.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Add(ICollection&lt;Geometry&gt; geomList)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ICollection</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">geomList</span></td>
+        <td><p>A list of <code>Geometry</code>s with linework to be polygonized.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_Polygonizer_Add_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.Polygonizer.Add(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L135">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L139">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Polygonize_Polygonizer_Add_" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.Add*"></a>
   <h4 id="NetTopologySuite_Operation_Polygonize_Polygonizer_Add_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.Add(NetTopologySuite.Geometries.Geometry)">Add(Geometry)</h4>
@@ -305,47 +317,10 @@ the constituent linework will be extracted and used</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_Polygonizer_Add_System_Collections_Generic_ICollection_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.Polygonizer.Add(System.Collections.Generic.ICollection%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L122">View Source</a>
-  </span>
-  <a id="NetTopologySuite_Operation_Polygonize_Polygonizer_Add_" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.Add*"></a>
-  <h4 id="NetTopologySuite_Operation_Polygonize_Polygonizer_Add_System_Collections_Generic_ICollection_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.Add(System.Collections.Generic.ICollection{NetTopologySuite.Geometries.Geometry})">Add(ICollection&lt;Geometry&gt;)</h4>
-  <div class="markdown level1 summary"><p>Adds a collection of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s to be polygonized.
-May be called multiple times.
-Any dimension of Geometry may be added;
-the constituent linework will be extracted and used.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Add(ICollection&lt;Geometry&gt; geomList)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
-        <td><span class="parametername">geomList</span></td>
-        <td><p>A list of <code>Geometry</code>s with linework to be polygonized.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_Polygonizer_GetCutEdges.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.Polygonizer.GetCutEdges%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L192">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L196">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Polygonize_Polygonizer_GetCutEdges_" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.GetCutEdges*"></a>
   <h4 id="NetTopologySuite_Operation_Polygonize_Polygonizer_GetCutEdges" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.GetCutEdges">GetCutEdges()</h4>
@@ -366,7 +341,7 @@ the constituent linework will be extracted and used.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>&gt;</td>
+        <td><span class="xref">ICollection</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -376,7 +351,7 @@ the constituent linework will be extracted and used.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_Polygonizer_GetDangles.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.Polygonizer.GetDangles%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L183">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L187">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Polygonize_Polygonizer_GetDangles_" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.GetDangles*"></a>
   <h4 id="NetTopologySuite_Operation_Polygonize_Polygonizer_GetDangles" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.GetDangles">GetDangles()</h4>
@@ -397,7 +372,7 @@ the constituent linework will be extracted and used.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>&gt;</td>
+        <td><span class="xref">ICollection</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -407,7 +382,7 @@ the constituent linework will be extracted and used.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_Polygonizer_GetGeometry.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.Polygonizer.GetGeometry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L168">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L172">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Polygonize_Polygonizer_GetGeometry_" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.GetGeometry*"></a>
   <h4 id="NetTopologySuite_Operation_Polygonize_Polygonizer_GetGeometry" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.GetGeometry">GetGeometry()</h4>
@@ -440,7 +415,7 @@ If a valid polygonal geometry was extracted the result is a <a class="xref" href
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_Polygonizer_GetInvalidRingLines.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.Polygonizer.GetInvalidRingLines%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L201">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L205">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Polygonize_Polygonizer_GetInvalidRingLines_" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.GetInvalidRingLines*"></a>
   <h4 id="NetTopologySuite_Operation_Polygonize_Polygonizer_GetInvalidRingLines" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.GetInvalidRingLines">GetInvalidRingLines()</h4>
@@ -461,7 +436,7 @@ If a valid polygonal geometry was extracted the result is a <a class="xref" href
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="xref">IList</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -471,7 +446,7 @@ If a valid polygonal geometry was extracted the result is a <a class="xref" href
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_Polygonizer_GetPolygons.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.Polygonizer.GetPolygons%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L157">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L161">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Polygonize_Polygonizer_GetPolygons_" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.GetPolygons*"></a>
   <h4 id="NetTopologySuite_Operation_Polygonize_Polygonizer_GetPolygons" data-uid="NetTopologySuite.Operation.Polygonize.Polygonizer.GetPolygons">GetPolygons()</h4>
@@ -492,7 +467,7 @@ If a valid polygonal geometry was extracted the result is a <a class="xref" href
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="xref">ICollection</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -508,7 +483,7 @@ If a valid polygonal geometry was extracted the result is a <a class="xref" href
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Polygonize_Polygonizer.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Polygonize.Polygonizer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L30" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Polygonize/Polygonizer.cs/#L34" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

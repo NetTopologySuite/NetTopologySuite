@@ -82,7 +82,9 @@
   
   <h1 id="NetTopologySuite_Simplify" data-uid="NetTopologySuite.Simplify" class="text-break">Namespace NetTopologySuite.Simplify
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary">
+<p>Classes which implement algorithms for simplifying or generalizing geometries.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
@@ -136,9 +138,14 @@ relationship.</p>
 <p>
 If the input is a polygonal geometry
 (<a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a> or <a class="xref" href="NetTopologySuite.Geometries.MultiPolygon.html">MultiPolygon</a>):
-<p>For linear geometries, if the input does not contain
+<ul><li>The result has the same number of shells and holes as the input,
+ with the same topological structure</li><li>The result rings touch at no more than the number of touching points in the input
+(although they may touch at fewer points).
+The key implication of this statement is that if the
+input is topologically valid, so is the simplified output.</li></ul>
+For linear geometries, if the input does not contain
 any intersecting line segments, this property
-will be preserved in the output.</p>
+will be preserved in the output.
 <p>
 For all geometry types, the result will contain
 enough vertices to ensure validity.  For polygons
@@ -182,6 +189,9 @@ This is converted to an area tolerance by squaring it.</p>
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/doc/overwrite/namespaces/NetTopologySuite.Simplify.md/#L2" class="contribution-link">Improve this Doc</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

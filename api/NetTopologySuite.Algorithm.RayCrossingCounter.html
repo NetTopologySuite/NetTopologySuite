@@ -95,41 +95,18 @@ from a given point, in an incremental fashion.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">RayCrossingCounter</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Algorithm.html">NetTopologySuite.Algorithm</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Algorithm_RayCrossingCounter_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class RayCrossingCounter</code></pre>
+    <pre><code class="lang-csharp hljs">public class RayCrossingCounter : object</code></pre>
   </div>
   <h5 id="NetTopologySuite_Algorithm_RayCrossingCounter_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>This class handles polygonal geometries with any number of shells and holes.
 The orientation of the shell and hole rings is unimportant.
 In order to compute a correct location for a given polygonal geometry,
 it is essential that <strong>all</strong> segments are counted which</p>
+<ul><li>touch the ray</li><li>lie in in any ring which may contain the point</li></ul>
 <p>
 The only exception is when the point-on-segment situation is detected, in which
 case no further processing is required.
@@ -149,7 +126,7 @@ other algorithms.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_RayCrossingCounter__ctor_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.RayCrossingCounter.%23ctor(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/RayCrossingCounter.cs/#L87">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/RayCrossingCounter.cs/#L87">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_RayCrossingCounter__ctor_" data-uid="NetTopologySuite.Algorithm.RayCrossingCounter.#ctor*"></a>
   <h4 id="NetTopologySuite_Algorithm_RayCrossingCounter__ctor_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Algorithm.RayCrossingCounter.#ctor(NetTopologySuite.Geometries.Coordinate)">RayCrossingCounter(Coordinate)</h4>
@@ -183,7 +160,7 @@ other algorithms.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_RayCrossingCounter_IsOnSegment.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.RayCrossingCounter.IsOnSegment%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/RayCrossingCounter.cs/#L173">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/RayCrossingCounter.cs/#L173">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_RayCrossingCounter_IsOnSegment_" data-uid="NetTopologySuite.Algorithm.RayCrossingCounter.IsOnSegment*"></a>
   <h4 id="NetTopologySuite_Algorithm_RayCrossingCounter_IsOnSegment" data-uid="NetTopologySuite.Algorithm.RayCrossingCounter.IsOnSegment">IsOnSegment</h4>
@@ -218,7 +195,7 @@ no further segments need be supplied, since the result will never change again.<
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_RayCrossingCounter_IsPointInPolygon.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.RayCrossingCounter.IsPointInPolygon%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/RayCrossingCounter.cs/#L209">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/RayCrossingCounter.cs/#L209">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_RayCrossingCounter_IsPointInPolygon_" data-uid="NetTopologySuite.Algorithm.RayCrossingCounter.IsPointInPolygon*"></a>
   <h4 id="NetTopologySuite_Algorithm_RayCrossingCounter_IsPointInPolygon" data-uid="NetTopologySuite.Algorithm.RayCrossingCounter.IsPointInPolygon">IsPointInPolygon</h4>
@@ -255,7 +232,7 @@ if <strong>all</strong> relevant segments have been processed</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_RayCrossingCounter_Location.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.RayCrossingCounter.Location%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/RayCrossingCounter.cs/#L183">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/RayCrossingCounter.cs/#L183">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_RayCrossingCounter_Location_" data-uid="NetTopologySuite.Algorithm.RayCrossingCounter.Location*"></a>
   <h4 id="NetTopologySuite_Algorithm_RayCrossingCounter_Location" data-uid="NetTopologySuite.Algorithm.RayCrossingCounter.Location">Location</h4>
@@ -293,7 +270,7 @@ if <strong>all</strong> relevant segments have been processed.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_RayCrossingCounter_CountSegment_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.RayCrossingCounter.CountSegment(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/RayCrossingCounter.cs/#L97">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/RayCrossingCounter.cs/#L97">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_RayCrossingCounter_CountSegment_" data-uid="NetTopologySuite.Algorithm.RayCrossingCounter.CountSegment*"></a>
   <h4 id="NetTopologySuite_Algorithm_RayCrossingCounter_CountSegment_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Algorithm.RayCrossingCounter.CountSegment(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">CountSegment(Coordinate, Coordinate)</h4>
@@ -333,7 +310,7 @@ if <strong>all</strong> relevant segments have been processed.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_RayCrossingCounter_LocatePointInRing_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.RayCrossingCounter.LocatePointInRing(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/RayCrossingCounter.cs/#L43">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/RayCrossingCounter.cs/#L43">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_RayCrossingCounter_LocatePointInRing_" data-uid="NetTopologySuite.Algorithm.RayCrossingCounter.LocatePointInRing*"></a>
   <h4 id="NetTopologySuite_Algorithm_RayCrossingCounter_LocatePointInRing_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate___" data-uid="NetTopologySuite.Algorithm.RayCrossingCounter.LocatePointInRing(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate[])">LocatePointInRing(Coordinate, Coordinate[])</h4>
@@ -390,7 +367,7 @@ This method is an exemplar of how to use this class.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_RayCrossingCounter_LocatePointInRing_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_CoordinateSequence_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.RayCrossingCounter.LocatePointInRing(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.CoordinateSequence)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/RayCrossingCounter.cs/#L64">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/RayCrossingCounter.cs/#L64">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_RayCrossingCounter_LocatePointInRing_" data-uid="NetTopologySuite.Algorithm.RayCrossingCounter.LocatePointInRing*"></a>
   <h4 id="NetTopologySuite_Algorithm_RayCrossingCounter_LocatePointInRing_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_CoordinateSequence_" data-uid="NetTopologySuite.Algorithm.RayCrossingCounter.LocatePointInRing(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.CoordinateSequence)">LocatePointInRing(Coordinate, CoordinateSequence)</h4>
@@ -452,7 +429,7 @@ This method is an exemplar of how to use this class.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_RayCrossingCounter.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.RayCrossingCounter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/RayCrossingCounter.cs/#L34" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/RayCrossingCounter.cs/#L34" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

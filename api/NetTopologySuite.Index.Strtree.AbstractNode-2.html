@@ -84,7 +84,8 @@
   <h1 id="NetTopologySuite_Index_Strtree_AbstractNode_2" data-uid="NetTopologySuite.Index.Strtree.AbstractNode`2" class="text-break">Class AbstractNode&lt;T, TItem&gt;
   </h1>
   <div class="markdown level0 summary"><p>A node of an <a class="xref" href="NetTopologySuite.Index.Strtree.AbstractSTRtree-2.html">AbstractSTRtree&lt;T, TItem&gt;</a>. A node is one of:</p>
-<p>A node stores the bounds of its children, and its level within the index tree.</p>
+<ul><li></li><li>an <em>interior node</em> containing child <a class="xref" href="NetTopologySuite.Index.Strtree.AbstractNode-2.html">AbstractNode&lt;T, TItem&gt;</a>s</li><li>a <em>leaf node</em> containing data items (<a class="xref" href="NetTopologySuite.Index.Strtree.ItemBoundable-2.html">ItemBoundable&lt;T, TItem&gt;</a>s).</li></ul>
+A node stores the bounds of its children, and its level within the index tree.
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -96,36 +97,11 @@
     <h5>Implements</h5>
     <div><a class="xref" href="NetTopologySuite.Geometries.IBoundable-2.html">IBoundable</a>&lt;T, TItem&gt;</div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Index.Strtree.html">NetTopologySuite.Index.Strtree</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Index_Strtree_AbstractNode_2_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Serializable]
-public abstract class AbstractNode&lt;T, TItem&gt; : IBoundable&lt;T, TItem&gt; where T : IIntersectable&lt;T&gt;, IExpandable&lt;T&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class AbstractNode&lt;T, TItem&gt; : object, IBoundable&lt;T, TItem&gt; where T : IIntersectable&lt;T&gt;, IExpandable&lt;T&gt;</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -153,7 +129,7 @@ public abstract class AbstractNode&lt;T, TItem&gt; : IBoundable&lt;T, TItem&gt; 
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractNode_2__ctor_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractNode%602.%23ctor(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L31">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L31">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_AbstractNode_2__ctor_" data-uid="NetTopologySuite.Index.Strtree.AbstractNode`2.#ctor*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_AbstractNode_2__ctor_System_Int32_" data-uid="NetTopologySuite.Index.Strtree.AbstractNode`2.#ctor(System.Int32)">AbstractNode(Int32)</h4>
@@ -190,7 +166,7 @@ root node will have the highest level.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractNode_2_Bounds.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractNode%602.Bounds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L57">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L57">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_AbstractNode_2_Bounds_" data-uid="NetTopologySuite.Index.Strtree.AbstractNode`2.Bounds*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_AbstractNode_2_Bounds" data-uid="NetTopologySuite.Index.Strtree.AbstractNode`2.Bounds">Bounds</h4>
@@ -221,7 +197,7 @@ root node will have the highest level.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractNode_2_ChildBoundables.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractNode%602.ChildBoundables%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L40">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L40">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_AbstractNode_2_ChildBoundables_" data-uid="NetTopologySuite.Index.Strtree.AbstractNode`2.ChildBoundables*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_AbstractNode_2_ChildBoundables" data-uid="NetTopologySuite.Index.Strtree.AbstractNode`2.ChildBoundables">ChildBoundables</h4>
@@ -243,7 +219,7 @@ in <a class="xref" href="NetTopologySuite.Index.Strtree.ItemBoundable-2.html">It
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.IBoundable-2.html">IBoundable</a>&lt;T, TItem&gt;&gt;</td>
+        <td><span class="xref">IList</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.IBoundable-2.html">IBoundable</a>&lt;T, TItem&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -253,7 +229,7 @@ in <a class="xref" href="NetTopologySuite.Index.Strtree.ItemBoundable-2.html">It
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractNode_2_Count.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractNode%602.Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L80">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L80">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_AbstractNode_2_Count_" data-uid="NetTopologySuite.Index.Strtree.AbstractNode`2.Count*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_AbstractNode_2_Count" data-uid="NetTopologySuite.Index.Strtree.AbstractNode`2.Count">Count</h4>
@@ -284,7 +260,7 @@ in <a class="xref" href="NetTopologySuite.Index.Strtree.ItemBoundable-2.html">It
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractNode_2_IsEmpty.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractNode%602.IsEmpty%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L85">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L85">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_AbstractNode_2_IsEmpty_" data-uid="NetTopologySuite.Index.Strtree.AbstractNode`2.IsEmpty*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_AbstractNode_2_IsEmpty" data-uid="NetTopologySuite.Index.Strtree.AbstractNode`2.IsEmpty">IsEmpty</h4>
@@ -315,7 +291,7 @@ in <a class="xref" href="NetTopologySuite.Index.Strtree.ItemBoundable-2.html">It
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractNode_2_Item.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractNode%602.Item%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L69">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L69">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_AbstractNode_2_Item_" data-uid="NetTopologySuite.Index.Strtree.AbstractNode`2.Item*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_AbstractNode_2_Item" data-uid="NetTopologySuite.Index.Strtree.AbstractNode`2.Item">Item</h4>
@@ -345,7 +321,7 @@ in <a class="xref" href="NetTopologySuite.Index.Strtree.ItemBoundable-2.html">It
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractNode_2_Level.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractNode%602.Level%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L75">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L75">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_AbstractNode_2_Level_" data-uid="NetTopologySuite.Index.Strtree.AbstractNode`2.Level*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_AbstractNode_2_Level" data-uid="NetTopologySuite.Index.Strtree.AbstractNode`2.Level">Level</h4>
@@ -379,7 +355,7 @@ root node will have the highest level.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractNode_2_AddChildBoundable_NetTopologySuite_Geometries_IBoundable__0__1__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractNode%602.AddChildBoundable(NetTopologySuite.Geometries.IBoundable%7B%600%2C%601%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L92">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L92">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_AbstractNode_2_AddChildBoundable_" data-uid="NetTopologySuite.Index.Strtree.AbstractNode`2.AddChildBoundable*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_AbstractNode_2_AddChildBoundable_NetTopologySuite_Geometries_IBoundable__0__1__" data-uid="NetTopologySuite.Index.Strtree.AbstractNode`2.AddChildBoundable(NetTopologySuite.Geometries.IBoundable{`0,`1})">AddChildBoundable(IBoundable&lt;T, TItem&gt;)</h4>
@@ -414,7 +390,7 @@ root node will have the highest level.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractNode_2_ComputeBounds.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractNode%602.ComputeBounds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L52">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L52">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_AbstractNode_2_ComputeBounds_" data-uid="NetTopologySuite.Index.Strtree.AbstractNode`2.ComputeBounds*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_AbstractNode_2_ComputeBounds" data-uid="NetTopologySuite.Index.Strtree.AbstractNode`2.ComputeBounds">ComputeBounds()</h4>
@@ -460,7 +436,7 @@ object (for other subclasses of AbstractSTRtree).</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_AbstractNode_2.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.AbstractNode%602%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L17" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/AbstractNode.cs/#L17" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

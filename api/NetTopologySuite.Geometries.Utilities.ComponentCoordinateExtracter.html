@@ -83,7 +83,8 @@
   
   <h1 id="NetTopologySuite_Geometries_Utilities_ComponentCoordinateExtracter" data-uid="NetTopologySuite.Geometries.Utilities.ComponentCoordinateExtracter" class="text-break">Class ComponentCoordinateExtracter
   </h1>
-  <div class="markdown level0 summary"><p>Extracts a single representative <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a> from each connected component of a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.</p>
+  <div class="markdown level0 summary"><p>Extracts a representative <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>
+from each connected component of a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -95,47 +96,23 @@
     <h5>Implements</h5>
     <div><a class="xref" href="NetTopologySuite.Geometries.IGeometryComponentFilter.html">IGeometryComponentFilter</a></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.Utilities.html">NetTopologySuite.Geometries.Utilities</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Geometries_Utilities_ComponentCoordinateExtracter_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ComponentCoordinateExtracter : IGeometryComponentFilter</code></pre>
+    <pre><code class="lang-csharp hljs">public class ComponentCoordinateExtracter : object, IGeometryComponentFilter</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_ComponentCoordinateExtracter__ctor_System_Collections_Generic_List_NetTopologySuite_Geometries_Coordinate__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.ComponentCoordinateExtracter.%23ctor(System.Collections.Generic.List%7BNetTopologySuite.Geometries.Coordinate%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_ComponentCoordinateExtracter__ctor_List_NetTopologySuite_Geometries_Coordinate__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.ComponentCoordinateExtracter.%23ctor(List%7BNetTopologySuite.Geometries.Coordinate%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Utilities/ComponentGeometryExtractor.cs/#L31">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Utilities/ComponentGeometryExtractor.cs/#L34">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Utilities_ComponentCoordinateExtracter__ctor_" data-uid="NetTopologySuite.Geometries.Utilities.ComponentCoordinateExtracter.#ctor*"></a>
-  <h4 id="NetTopologySuite_Geometries_Utilities_ComponentCoordinateExtracter__ctor_System_Collections_Generic_List_NetTopologySuite_Geometries_Coordinate__" data-uid="NetTopologySuite.Geometries.Utilities.ComponentCoordinateExtracter.#ctor(System.Collections.Generic.List{NetTopologySuite.Geometries.Coordinate})">ComponentCoordinateExtracter(List&lt;Coordinate&gt;)</h4>
+  <h4 id="NetTopologySuite_Geometries_Utilities_ComponentCoordinateExtracter__ctor_List_NetTopologySuite_Geometries_Coordinate__" data-uid="NetTopologySuite.Geometries.Utilities.ComponentCoordinateExtracter.#ctor(List{NetTopologySuite.Geometries.Coordinate})">ComponentCoordinateExtracter(List&lt;Coordinate&gt;)</h4>
   <div class="markdown level1 summary"><p>Constructs a LineExtracterFilter with a list in which to store LineStrings found.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -154,7 +131,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>&gt;</td>
         <td><span class="parametername">coords</span></td>
         <td></td>
       </tr>
@@ -167,7 +144,7 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_ComponentCoordinateExtracter_Filter_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.ComponentCoordinateExtracter.Filter(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Utilities/ComponentGeometryExtractor.cs/#L36">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Utilities/ComponentGeometryExtractor.cs/#L39">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Utilities_ComponentCoordinateExtracter_Filter_" data-uid="NetTopologySuite.Geometries.Utilities.ComponentCoordinateExtracter.Filter*"></a>
   <h4 id="NetTopologySuite_Geometries_Utilities_ComponentCoordinateExtracter_Filter_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Geometries.Utilities.ComponentCoordinateExtracter.Filter(NetTopologySuite.Geometries.Geometry)">Filter(Geometry)</h4>
@@ -199,14 +176,16 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_ComponentCoordinateExtracter_GetCoordinates_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.ComponentCoordinateExtracter.GetCoordinates(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Utilities/ComponentGeometryExtractor.cs/#L19">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Utilities/ComponentGeometryExtractor.cs/#L22">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Utilities_ComponentCoordinateExtracter_GetCoordinates_" data-uid="NetTopologySuite.Geometries.Utilities.ComponentCoordinateExtracter.GetCoordinates*"></a>
   <h4 id="NetTopologySuite_Geometries_Utilities_ComponentCoordinateExtracter_GetCoordinates_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Geometries.Utilities.ComponentCoordinateExtracter.GetCoordinates(NetTopologySuite.Geometries.Geometry)">GetCoordinates(Geometry)</h4>
-  <div class="markdown level1 summary"><p>Extracts the linear components from a single geometry.
+  <div class="markdown level1 summary"><p>Extracts a representative <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>
+from each connected component in a geometry.</p>
+<p>
 If more than one geometry is to be processed, it is more
-efficient to create a single <a class="xref" href="NetTopologySuite.Geometries.Utilities.ComponentCoordinateExtracter.html">ComponentCoordinateExtracter</a> instance
-and pass it to multiple geometries.</p>
+efficient to create a single <a class="xref" href="NetTopologySuite.Geometries.Utilities.ComponentCoordinateExtracter.html">ComponentCoordinateExtracter</a>
+instance and pass it to each geometry.
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -241,8 +220,8 @@ and pass it to multiple geometries.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>&gt;</td>
-        <td><p>A list of Coordinates</p>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>&gt;</td>
+        <td><p>A list of representative Coordinates</p>
 </td>
       </tr>
     </tbody>
@@ -262,7 +241,7 @@ and pass it to multiple geometries.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_ComponentCoordinateExtracter.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.ComponentCoordinateExtracter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Utilities/ComponentGeometryExtractor.cs/#L9" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Utilities/ComponentGeometryExtractor.cs/#L10" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

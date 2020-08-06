@@ -112,36 +112,11 @@ The new Geometries will use the custom CoordinateSequence implementation.
       <div class="level2"><a class="xref" href="NetTopologySuite.Geometries.Implementation.PackedCoordinateSequence.html">PackedCoordinateSequence</a></div>
       <div class="level2"><a class="xref" href="NetTopologySuite.Operation.Distance3D.AxisPlaneCoordinateSequence.html">AxisPlaneCoordinateSequence</a></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.html">NetTopologySuite.Geometries</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Geometries_CoordinateSequence_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Serializable]
-public abstract class CoordinateSequence</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class CoordinateSequence : object</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -150,7 +125,7 @@ public abstract class CoordinateSequence</code></pre>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence__ctor_System_Int32_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.%23ctor(System.Int32%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L51">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L51">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence__ctor_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence__ctor_System_Int32_System_Int32_System_Int32_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.#ctor(System.Int32,System.Int32,System.Int32)">CoordinateSequence(Int32, Int32, Int32)</h4>
@@ -191,28 +166,6 @@ public abstract class CoordinateSequence</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
-        <td><p>Thrown when any argument is negative.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">dimension</code> and <code data-dev-comment-type="paramref" class="paramref">measures</code> specify fewer
-than two (2) spatial dimensions.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
@@ -220,7 +173,7 @@ than two (2) spatial dimensions.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_Count.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L303">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L339">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_Count_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.Count*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_Count" data-uid="NetTopologySuite.Geometries.CoordinateSequence.Count">Count</h4>
@@ -251,7 +204,7 @@ than two (2) spatial dimensions.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_Dimension.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.Dimension%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L96">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L96">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_Dimension_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.Dimension*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_Dimension" data-uid="NetTopologySuite.Geometries.CoordinateSequence.Dimension">Dimension</h4>
@@ -285,7 +238,7 @@ This total includes any measures, indicated by non-zero <a class="xref" href="Ne
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_HasM.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.HasM%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L136">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L136">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_HasM_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.HasM*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_HasM" data-uid="NetTopologySuite.Geometries.CoordinateSequence.HasM">HasM</h4>
@@ -316,7 +269,7 @@ This total includes any measures, indicated by non-zero <a class="xref" href="Ne
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_HasZ.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.HasZ%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L131">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L131">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_HasZ_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.HasZ*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_HasZ" data-uid="NetTopologySuite.Geometries.CoordinateSequence.HasZ">HasZ</h4>
@@ -347,7 +300,7 @@ This total includes any measures, indicated by non-zero <a class="xref" href="Ne
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_Measures.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.Measures%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L112">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L112">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_Measures_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.Measures*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_Measures" data-uid="NetTopologySuite.Geometries.CoordinateSequence.Measures">Measures</h4>
@@ -376,13 +329,14 @@ sequence.</p>
   </table>
   <h5 id="NetTopologySuite_Geometries_CoordinateSequence_Measures_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>For a measured coordinate sequence a non-zero value is returned.</p>
+<ul><li>For <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html#NetTopologySuite_Geometries_Ordinates_XY">XY</a> sequence measures is zero</li><li>For <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html#NetTopologySuite_Geometries_Ordinates_XYM">XYM</a> sequence measure is one</li><li>For <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html#NetTopologySuite_Geometries_Ordinates_XYZ">XYZ</a> sequence measure is zero</li><li>For <a class="xref" href="NetTopologySuite.Geometries.Ordinates.html#NetTopologySuite_Geometries_Ordinates_XYZM">XYZM</a> sequence measure is one</li><li>Values greater than one are supported</li></ul>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_MOrdinateIndex.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.MOrdinateIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L156">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L156">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_MOrdinateIndex_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.MOrdinateIndex*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_MOrdinateIndex" data-uid="NetTopologySuite.Geometries.CoordinateSequence.MOrdinateIndex">MOrdinateIndex</h4>
@@ -418,7 +372,7 @@ sequence.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_Ordinates.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.Ordinates%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L126">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L126">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_Ordinates_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.Ordinates*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_Ordinates" data-uid="NetTopologySuite.Geometries.CoordinateSequence.Ordinates">Ordinates</h4>
@@ -449,7 +403,7 @@ sequence.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_Spatial.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.Spatial%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L121">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L121">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_Spatial_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.Spatial*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_Spatial" data-uid="NetTopologySuite.Geometries.CoordinateSequence.Spatial">Spatial</h4>
@@ -484,7 +438,7 @@ Equivalent to <pre><code>Dimension - Measures</code></pre>.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_ZOrdinateIndex.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.ZOrdinateIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L146">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L146">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_ZOrdinateIndex_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.ZOrdinateIndex*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_ZOrdinateIndex" data-uid="NetTopologySuite.Geometries.CoordinateSequence.ZOrdinateIndex">ZOrdinateIndex</h4>
@@ -522,7 +476,7 @@ Equivalent to <pre><code>Dimension - Measures</code></pre>.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_Copy.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.Copy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L375">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L411">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_Copy_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.Copy*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_Copy" data-uid="NetTopologySuite.Geometries.CoordinateSequence.Copy">Copy()</h4>
@@ -554,7 +508,7 @@ Equivalent to <pre><code>Dimension - Measures</code></pre>.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_CreateCoordinate.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.CreateCoordinate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L166">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L166">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_CreateCoordinate_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.CreateCoordinate*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_CreateCoordinate" data-uid="NetTopologySuite.Geometries.CoordinateSequence.CreateCoordinate">CreateCoordinate()</h4>
@@ -590,7 +544,7 @@ as this sequence and is suitable for use with <a class="xref" href="NetTopologyS
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_ExpandEnvelope_NetTopologySuite_Geometries_Envelope_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.ExpandEnvelope(NetTopologySuite.Geometries.Envelope)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L356">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L392">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_ExpandEnvelope_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.ExpandEnvelope*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_ExpandEnvelope_NetTopologySuite_Geometries_Envelope_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.ExpandEnvelope(NetTopologySuite.Geometries.Envelope)">ExpandEnvelope(Envelope)</h4>
@@ -641,7 +595,7 @@ Allows implementing classes to optimize access to coordinate values.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_GetCoordinate_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.GetCoordinate(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L179">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L179">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_GetCoordinate_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.GetCoordinate*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_GetCoordinate_System_Int32_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.GetCoordinate(System.Int32)">GetCoordinate(Int32)</h4>
@@ -695,7 +649,7 @@ modifying the Coordinate returned by this method.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_GetCoordinate_System_Int32_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.GetCoordinate(System.Int32%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L202">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L202">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_GetCoordinate_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.GetCoordinate*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_GetCoordinate_System_Int32_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.GetCoordinate(System.Int32,NetTopologySuite.Geometries.Coordinate)">GetCoordinate(Int32, Coordinate)</h4>
@@ -736,7 +690,7 @@ At least the first two dimensions <strong>must</strong> be copied.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_GetCoordinateCopy_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.GetCoordinateCopy(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L189">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L189">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_GetCoordinateCopy_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.GetCoordinateCopy*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_GetCoordinateCopy_System_Int32_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.GetCoordinateCopy(System.Int32)">GetCoordinateCopy(Int32)</h4>
@@ -789,7 +743,7 @@ has already created a new Coordinate object, no further copy is needed.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_GetM_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.GetM(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L247">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L247">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_GetM_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.GetM*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_GetM_System_Int32_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.GetM(System.Int32)">GetM(Int32)</h4>
@@ -839,7 +793,7 @@ has already created a new Coordinate object, no further copy is needed.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_GetOrdinate_System_Int32_NetTopologySuite_Geometries_Ordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.GetOrdinate(System.Int32%2CNetTopologySuite.Geometries.Ordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L293">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L329">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_GetOrdinate_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.GetOrdinate*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_GetOrdinate_System_Int32_NetTopologySuite_Geometries_Ordinate_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.GetOrdinate(System.Int32,NetTopologySuite.Geometries.Ordinate)">GetOrdinate(Int32, Ordinate)</h4>
@@ -895,7 +849,7 @@ has already created a new Coordinate object, no further copy is needed.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_GetOrdinate_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.GetOrdinate(System.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L285">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L321">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_GetOrdinate_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.GetOrdinate*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_GetOrdinate_System_Int32_System_Int32_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.GetOrdinate(System.Int32,System.Int32)">GetOrdinate(Int32, Int32)</h4>
@@ -959,7 +913,7 @@ values as described by <a class="xref" href="NetTopologySuite.Geometries.Coordin
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_GetX_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.GetX(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L220">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L220">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_GetX_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.GetX*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_GetX_System_Int32_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.GetX(System.Int32)">GetX(Int32)</h4>
@@ -1008,7 +962,7 @@ values as described by <a class="xref" href="NetTopologySuite.Geometries.Coordin
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_GetY_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.GetY(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L227">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L227">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_GetY_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.GetY*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_GetY_System_Int32_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.GetY(System.Int32)">GetY(Int32)</h4>
@@ -1057,7 +1011,7 @@ values as described by <a class="xref" href="NetTopologySuite.Geometries.Coordin
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_GetZ_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.GetZ(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L237">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L237">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_GetZ_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.GetZ*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_GetZ_System_Int32_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.GetZ(System.Int32)">GetZ(Int32)</h4>
@@ -1107,11 +1061,12 @@ values as described by <a class="xref" href="NetTopologySuite.Geometries.Coordin
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_Reversed.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.Reversed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L377">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L422">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_Reversed_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.Reversed*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_Reversed" data-uid="NetTopologySuite.Geometries.CoordinateSequence.Reversed">Reversed()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Returns a reversed copy of this <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1128,7 +1083,8 @@ values as described by <a class="xref" href="NetTopologySuite.Geometries.Coordin
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a></td>
-        <td></td>
+        <td><p>A reversed copy of this <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequence.html">CoordinateSequence</a>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1137,11 +1093,12 @@ values as described by <a class="xref" href="NetTopologySuite.Geometries.Coordin
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_SetM_System_Int32_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.SetM(System.Int32%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L262">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L298">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_SetM_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.SetM*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_SetM_System_Int32_System_Double_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.SetM(System.Int32,System.Double)">SetM(Int32, Double)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Sets ordinate M of the specified coordinate to the specified value if present.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1160,12 +1117,14 @@ values as described by <a class="xref" href="NetTopologySuite.Geometries.Coordin
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">index</span></td>
-        <td></td>
+        <td><p>The index of the coordinate whose M value to set if present.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
         <td><span class="parametername">value</span></td>
-        <td></td>
+        <td><p>The value to set the coordinate's M value to if present.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1174,7 +1133,7 @@ values as described by <a class="xref" href="NetTopologySuite.Geometries.Coordin
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_SetOrdinate_System_Int32_NetTopologySuite_Geometries_Ordinate_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.SetOrdinate(System.Int32%2CNetTopologySuite.Geometries.Ordinate%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L322">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L358">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_SetOrdinate_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.SetOrdinate*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_SetOrdinate_System_Int32_NetTopologySuite_Geometries_Ordinate_System_Double_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.SetOrdinate(System.Int32,NetTopologySuite.Geometries.Ordinate,System.Double)">SetOrdinate(Int32, Ordinate, Double)</h4>
@@ -1220,7 +1179,7 @@ values as described by <a class="xref" href="NetTopologySuite.Geometries.Coordin
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_SetOrdinate_System_Int32_System_Int32_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.SetOrdinate(System.Int32%2CSystem.Int32%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L314">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L350">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_SetOrdinate_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.SetOrdinate*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_SetOrdinate_System_Int32_System_Int32_System_Double_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.SetOrdinate(System.Int32,System.Int32,System.Double)">SetOrdinate(Int32, Int32, Double)</h4>
@@ -1269,11 +1228,12 @@ values as described by <a class="xref" href="NetTopologySuite.Geometries.Coordin
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_SetX_System_Int32_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.SetX(System.Int32%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L249">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L258">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_SetX_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.SetX*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_SetX_System_Int32_System_Double_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.SetX(System.Int32,System.Double)">SetX(Int32, Double)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Sets ordinate X (0) of the specified coordinate to the specified value.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1292,12 +1252,14 @@ values as described by <a class="xref" href="NetTopologySuite.Geometries.Coordin
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">index</span></td>
-        <td></td>
+        <td><p>The index of the coordinate whose X value to set.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
         <td><span class="parametername">value</span></td>
-        <td></td>
+        <td><p>The value to set the coordinate's X value to.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1306,11 +1268,12 @@ values as described by <a class="xref" href="NetTopologySuite.Geometries.Coordin
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_SetY_System_Int32_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.SetY(System.Int32%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L251">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L269">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_SetY_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.SetY*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_SetY_System_Int32_System_Double_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.SetY(System.Int32,System.Double)">SetY(Int32, Double)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Sets ordinate Y (1) of the specified coordinate to the specified value.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1329,12 +1292,14 @@ values as described by <a class="xref" href="NetTopologySuite.Geometries.Coordin
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">index</span></td>
-        <td></td>
+        <td><p>The index of the coordinate whose Y value to set.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
         <td><span class="parametername">value</span></td>
-        <td></td>
+        <td><p>The value to set the coordinate's Y value to.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1343,11 +1308,12 @@ values as described by <a class="xref" href="NetTopologySuite.Geometries.Coordin
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_SetZ_System_Int32_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.SetZ(System.Int32%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L253">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L280">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_SetZ_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.SetZ*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_SetZ_System_Int32_System_Double_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.SetZ(System.Int32,System.Double)">SetZ(Int32, Double)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Sets ordinate Z of the specified coordinate to the specified value if present.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1366,12 +1332,14 @@ values as described by <a class="xref" href="NetTopologySuite.Geometries.Coordin
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">index</span></td>
-        <td></td>
+        <td><p>The index of the coordinate whose Z value to set if present.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
         <td><span class="parametername">value</span></td>
-        <td></td>
+        <td><p>The value to set the coordinate's Z value to if present.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1380,7 +1348,7 @@ values as described by <a class="xref" href="NetTopologySuite.Geometries.Coordin
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_ToCoordinateArray.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.ToCoordinateArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L339">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L375">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_ToCoordinateArray_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.ToCoordinateArray*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_ToCoordinateArray" data-uid="NetTopologySuite.Geometries.CoordinateSequence.ToCoordinateArray">ToCoordinateArray()</h4>
@@ -1416,7 +1384,7 @@ be built from scratch.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence_TryGetOrdinateIndex_NetTopologySuite_Geometries_Ordinate_System_Int32__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence.TryGetOrdinateIndex(NetTopologySuite.Geometries.Ordinate%2CSystem.Int32%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L398">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L443">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_CoordinateSequence_TryGetOrdinateIndex_" data-uid="NetTopologySuite.Geometries.CoordinateSequence.TryGetOrdinateIndex*"></a>
   <h4 id="NetTopologySuite_Geometries_CoordinateSequence_TryGetOrdinateIndex_NetTopologySuite_Geometries_Ordinate_System_Int32__" data-uid="NetTopologySuite.Geometries.CoordinateSequence.TryGetOrdinateIndex(NetTopologySuite.Geometries.Ordinate,System.Int32@)">TryGetOrdinateIndex(Ordinate, out Int32)</h4>
@@ -1472,7 +1440,7 @@ is present in this sequence; otherwise, -1.  This parameter is passed uninitiali
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceEx.html#NetTopologySuite_Geometries_CoordinateSequenceEx_GetHashCode_NetTopologySuite_Geometries_CoordinateSequence_System_Int32_System_Func_System_Int32_System_Int32__">CoordinateSequenceEx.GetHashCode(CoordinateSequence, Int32, Func&lt;Int32, Int32&gt;)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.CoordinateSequenceEx.html#NetTopologySuite_Geometries_CoordinateSequenceEx_GetHashCode_NetTopologySuite_Geometries_CoordinateSequence_System_Int32_Func_System_Int32_System_Int32__">CoordinateSequenceEx.GetHashCode(CoordinateSequence, Int32, Func&lt;Int32, Int32&gt;)</a>
   </div>
 </article>
           </div>
@@ -1485,7 +1453,7 @@ is present in this sequence; otherwise, -1.  This parameter is passed uninitiali
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_CoordinateSequence.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.CoordinateSequence%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/CoordinateSequence.cs/#L31" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/CoordinateSequence.cs/#L31" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

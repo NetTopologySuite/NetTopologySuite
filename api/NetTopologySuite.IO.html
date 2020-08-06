@@ -82,16 +82,31 @@
   
   <h1 id="NetTopologySuite_IO" data-uid="NetTopologySuite.IO" class="text-break">Namespace NetTopologySuite.IO
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary">
+<p>Contains the interfaces for converting JTS objects to and from other formats.</p>
+<p>The Net Topology Suite (NTS) is a .Net API that implements a core set of spatial data operations using an explicit precision model and robust geometric algorithms. NTS is intended to be used in the development of applications that support the validation, cleaning, integration and querying of spatial datasets.</p>
+<p>NTS attempts to implement the OpenGIS Simple Features Specification (SFS) as accurately as possible. In some cases the SFS is unclear or omits a specification; in this case NTS attempts to choose a reasonable and consistent alternative. Differences from and elaborations of the SFS are documented in this specification.</p>
+<h1 id="package-specification">Package Specification</h1>
+<ul>
+<li>Java Topology Suite Technical Specifications</li>
+<li><a href="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features Specification for SQL</a></li>
+</ul>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
   </h3>
       <h4><a class="xref" href="NetTopologySuite.IO.BEBinaryWriter.html">BEBinaryWriter</a></h4>
-      <section><p>Extends the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binarywriter">BinaryWriter</a> class to allow writing values in the BigEndian format.</p>
+      <section><p>Extends the <see cref="!:BinaryWriter"></see> class to allow writing values in the BigEndian format.</p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.IO.BiEndianBinaryReader.html">BiEndianBinaryReader</a></h4>
-      <section><p>Extends the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io.binaryreader">BinaryReader</a> class to allow reading values in the specified format.</p>
+      <section><p>Extends the <see cref="!:BinaryReader"></see> class to allow reading values in the specified format.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.IO.OrdinateFormat.html">OrdinateFormat</a></h4>
+      <section><p>Formats numeric values for ordinates
+in a consistent, accurate way.</p>
+<p>
+The format has the following characteristics:
 </section>
       <h4><a class="xref" href="NetTopologySuite.IO.ParseException.html">ParseException</a></h4>
       <section><p>Thrown by a <code>WKTReader</code> when a parsing problem occurs.</p>
@@ -169,6 +184,9 @@ not define a special tag for LinearRings. The standard tag to use is
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/doc/overwrite/namespaces/NetTopologySuite.IO.md/#L2" class="contribution-link">Improve this Doc</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

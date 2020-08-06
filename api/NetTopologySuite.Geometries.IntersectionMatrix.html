@@ -91,32 +91,11 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">IntersectionMatrix</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.html">NetTopologySuite.Geometries</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Geometries_IntersectionMatrix_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class IntersectionMatrix</code></pre>
+    <pre><code class="lang-csharp hljs">public class IntersectionMatrix : object</code></pre>
   </div>
   <h5 id="NetTopologySuite_Geometries_IntersectionMatrix_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>
@@ -127,6 +106,7 @@ which are used for matching instances of DE-9IM matrices.
 </p>
 <p>
 Methods are provided to:
+<ul><li>Set and query the elements of the matrix in a convenient fashion.</li><li>Convert to and from the standard string representation (specified in SFS Section 2.1.13.2).</li><li>Test to see if a matrix matches a given pattern string.</li></ul>
 </p>
 For a description of the DE-9IM and the spatial predicates derived from it, see the <em>
 <a href="http://www.opengis.org/techno/specs.htm">OGC 99-049 OpenGIS Simple Features Specification for SQL.</a></em> as well as 
@@ -148,7 +128,7 @@ These are provided as constants in the <a class="xref" href="NetTopologySuite.Ge
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L47">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L47">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix__ctor_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix__ctor" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.#ctor">IntersectionMatrix()</h4>
@@ -164,7 +144,7 @@ These are provided as constants in the <a class="xref" href="NetTopologySuite.Ge
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix__ctor_NetTopologySuite_Geometries_IntersectionMatrix_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.%23ctor(NetTopologySuite.Geometries.IntersectionMatrix)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L69">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L69">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix__ctor_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix__ctor_NetTopologySuite_Geometries_IntersectionMatrix_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.#ctor(NetTopologySuite.Geometries.IntersectionMatrix)">IntersectionMatrix(IntersectionMatrix)</h4>
@@ -199,7 +179,7 @@ These are provided as constants in the <a class="xref" href="NetTopologySuite.Ge
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix__ctor_System_String_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L58">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L58">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix__ctor_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix__ctor_System_String_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.#ctor(System.String)">IntersectionMatrix(String)</h4>
@@ -236,7 +216,7 @@ symbols.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_Item_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.Item(NetTopologySuite.Geometries.Location%2CNetTopologySuite.Geometries.Location)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L292">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L292">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_Item_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.Item*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_Item_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.Item(NetTopologySuite.Geometries.Location,NetTopologySuite.Geometries.Location)">Item[Location, Location]</h4>
@@ -291,7 +271,7 @@ symbols.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_Add_NetTopologySuite_Geometries_IntersectionMatrix_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.Add(NetTopologySuite.Geometries.IntersectionMatrix)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L89">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L89">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_Add_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.Add*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_Add_NetTopologySuite_Geometries_IntersectionMatrix_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.Add(NetTopologySuite.Geometries.IntersectionMatrix)">Add(IntersectionMatrix)</h4>
@@ -327,7 +307,7 @@ in the summand matrices.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_Get_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.Get(NetTopologySuite.Geometries.Location%2CNetTopologySuite.Geometries.Location)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L284">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L284">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_Get_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.Get*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_Get_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.Get(NetTopologySuite.Geometries.Location,NetTopologySuite.Geometries.Location)">Get(Location, Location)</h4>
@@ -386,7 +366,7 @@ indicating the interior, boundary or exterior of the second <a class="xref" href
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_IsContains.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.IsContains%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L413">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L413">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_IsContains_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsContains*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_IsContains" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsContains">IsContains()</h4>
@@ -419,7 +399,7 @@ T*****FF*.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_IsCoveredBy.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.IsCoveredBy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L442">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L442">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_IsCoveredBy_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsCoveredBy*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_IsCoveredBy" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsCoveredBy">IsCoveredBy()</h4>
@@ -452,7 +432,7 @@ or <code><em>TF<strong>F</strong></em></code> or <code><strong>FT<em>F</em></str
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_IsCovers.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.IsCovers%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L425">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L425">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_IsCovers_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsCovers*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_IsCovers" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsCovers">IsCovers()</h4>
@@ -485,7 +465,7 @@ or <code><em>T</em>FF*</code> or <code><em><strong>T</strong>FF</em></code> or <
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_IsCrosses_NetTopologySuite_Geometries_Dimension_NetTopologySuite_Geometries_Dimension_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.IsCrosses(NetTopologySuite.Geometries.Dimension%2CNetTopologySuite.Geometries.Dimension)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L376">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L376">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_IsCrosses_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsCrosses*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_IsCrosses_NetTopologySuite_Geometries_Dimension_NetTopologySuite_Geometries_Dimension_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsCrosses(NetTopologySuite.Geometries.Dimension,NetTopologySuite.Geometries.Dimension)">IsCrosses(Dimension, Dimension)</h4>
@@ -547,7 +527,7 @@ and a surface.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_IsDisjoint.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.IsDisjoint%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L311">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L311">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_IsDisjoint_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsDisjoint*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_IsDisjoint" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsDisjoint">IsDisjoint()</h4>
@@ -580,7 +560,7 @@ this <a class="xref" href="NetTopologySuite.Geometries.IntersectionMatrix.html">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_IsEquals_NetTopologySuite_Geometries_Dimension_NetTopologySuite_Geometries_Dimension_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.IsEquals(NetTopologySuite.Geometries.Dimension%2CNetTopologySuite.Geometries.Dimension)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L473">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L473">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_IsEquals_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsEquals*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_IsEquals_NetTopologySuite_Geometries_Dimension_NetTopologySuite_Geometries_Dimension_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsEquals(NetTopologySuite.Geometries.Dimension,NetTopologySuite.Geometries.Dimension)">IsEquals(Dimension, Dimension)</h4>
@@ -647,7 +627,7 @@ related by this <a class="xref" href="NetTopologySuite.Geometries.IntersectionMa
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_IsIntersects.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.IsIntersects%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L327">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L327">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_IsIntersects_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsIntersects*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_IsIntersects" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsIntersects">IsIntersects()</h4>
@@ -680,7 +660,7 @@ this <a class="xref" href="NetTopologySuite.Geometries.IntersectionMatrix.html">
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_IsOverlaps_NetTopologySuite_Geometries_Dimension_NetTopologySuite_Geometries_Dimension_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.IsOverlaps(NetTopologySuite.Geometries.Dimension%2CNetTopologySuite.Geometries.Dimension)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L498">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L498">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_IsOverlaps_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsOverlaps*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_IsOverlaps_NetTopologySuite_Geometries_Dimension_NetTopologySuite_Geometries_Dimension_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsOverlaps(NetTopologySuite.Geometries.Dimension,NetTopologySuite.Geometries.Dimension)">IsOverlaps(Dimension, Dimension)</h4>
@@ -741,7 +721,7 @@ be two points, two curves or two surfaces.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_IsTouches_NetTopologySuite_Geometries_Dimension_NetTopologySuite_Geometries_Dimension_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.IsTouches(NetTopologySuite.Geometries.Dimension%2CNetTopologySuite.Geometries.Dimension)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L343">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L343">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_IsTouches_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsTouches*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_IsTouches_NetTopologySuite_Geometries_Dimension_NetTopologySuite_Geometries_Dimension_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsTouches(NetTopologySuite.Geometries.Dimension,NetTopologySuite.Geometries.Dimension)">IsTouches(Dimension, Dimension)</h4>
@@ -800,7 +780,7 @@ if both <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometr
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_IsTrue_NetTopologySuite_Geometries_Dimension_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.IsTrue(NetTopologySuite.Geometries.Dimension)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L104">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L104">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_IsTrue_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsTrue*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_IsTrue_NetTopologySuite_Geometries_Dimension_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsTrue(NetTopologySuite.Geometries.Dimension)">IsTrue(Dimension)</h4>
@@ -852,7 +832,7 @@ Possible values are <code>{<a class="xref" href="NetTopologySuite.Geometries.Dim
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_IsWithin.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.IsWithin%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L401">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L401">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_IsWithin_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsWithin*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_IsWithin" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.IsWithin">IsWithin()</h4>
@@ -885,7 +865,7 @@ T<em>F<strong>F</strong></em>.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_Matches_NetTopologySuite_Geometries_Dimension_System_Char_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.Matches(NetTopologySuite.Geometries.Dimension%2CSystem.Char)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L128">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L128">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_Matches_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.Matches*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_Matches_NetTopologySuite_Geometries_Dimension_System_Char_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.Matches(NetTopologySuite.Geometries.Dimension,System.Char)">Matches(Dimension, Char)</h4>
@@ -944,7 +924,7 @@ Possible values are <code>T, F, * , 0, 1, 2</code>.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_Matches_System_String_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.Matches(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L527">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L527">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_Matches_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.Matches*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_Matches_System_String_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.Matches(System.String)">Matches(String)</h4>
@@ -998,7 +978,7 @@ matches the required dimension symbols.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_Matches_System_String_System_String_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.Matches(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L161">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L161">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_Matches_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.Matches*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_Matches_System_String_System_String_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.Matches(System.String,System.String)">Matches(String, String)</h4>
@@ -1058,7 +1038,7 @@ symbols encompass the corresponding actual dimension symbol.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_Set_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Dimension_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.Set(NetTopologySuite.Geometries.Location%2CNetTopologySuite.Geometries.Location%2CNetTopologySuite.Geometries.Dimension)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L179">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L179">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_Set_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.Set*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_Set_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Dimension_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.Set(NetTopologySuite.Geometries.Location,NetTopologySuite.Geometries.Location,NetTopologySuite.Geometries.Dimension)">Set(Location, Location, Dimension)</h4>
@@ -1106,7 +1086,7 @@ indicating the interior, boundary or exterior of the second <a class="xref" href
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_Set_System_String_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.Set(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L192">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L192">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_Set_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.Set*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_Set_System_String_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.Set(System.String)">Set(String)</h4>
@@ -1142,7 +1122,7 @@ s elements. Possible values are <code>{T, F, * , 0, 1, 2}</code></p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_SetAll_NetTopologySuite_Geometries_Dimension_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.SetAll(NetTopologySuite.Geometries.Dimension)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L264">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L264">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_SetAll_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.SetAll*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_SetAll_NetTopologySuite_Geometries_Dimension_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.SetAll(NetTopologySuite.Geometries.Dimension)">SetAll(Dimension)</h4>
@@ -1177,7 +1157,7 @@ s elements. Possible values <code>True, False, Dontcare, 0, 1, 2}</code>.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_SetAtLeast_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Dimension_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.SetAtLeast(NetTopologySuite.Geometries.Location%2CNetTopologySuite.Geometries.Location%2CNetTopologySuite.Geometries.Dimension)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L218">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L218">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_SetAtLeast_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.SetAtLeast*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_SetAtLeast_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Dimension_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.SetAtLeast(NetTopologySuite.Geometries.Location,NetTopologySuite.Geometries.Location,NetTopologySuite.Geometries.Dimension)">SetAtLeast(Location, Location, Dimension)</h4>
@@ -1227,7 +1207,7 @@ element. The order of dimension values from least to greatest is
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_SetAtLeast_System_String_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.SetAtLeast(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L247">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L247">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_SetAtLeast_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.SetAtLeast*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_SetAtLeast_System_String_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.SetAtLeast(System.String)">SetAtLeast(String)</h4>
@@ -1265,7 +1245,7 @@ order of dimension values from least to greatest is <code>Dontcare, True, False,
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_SetAtLeastIfValid_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Dimension_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.SetAtLeastIfValid(NetTopologySuite.Geometries.Location%2CNetTopologySuite.Geometries.Location%2CNetTopologySuite.Geometries.Dimension)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L231">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L231">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_SetAtLeastIfValid_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.SetAtLeastIfValid*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_SetAtLeastIfValid_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Location_NetTopologySuite_Geometries_Dimension_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.SetAtLeastIfValid(NetTopologySuite.Geometries.Location,NetTopologySuite.Geometries.Location,NetTopologySuite.Geometries.Dimension)">SetAtLeastIfValid(Location, Location, Dimension)</h4>
@@ -1309,7 +1289,7 @@ if the element is less. Does nothing if row is smaller to 0 or column is smaller
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_ToString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L567">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L567">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_ToString_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.ToString*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_ToString" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.ToString">ToString()</h4>
@@ -1337,14 +1317,12 @@ in row-major order.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix_Transpose.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix.Transpose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L543">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L543">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_IntersectionMatrix_Transpose_" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.Transpose*"></a>
   <h4 id="NetTopologySuite_Geometries_IntersectionMatrix_Transpose" data-uid="NetTopologySuite.Geometries.IntersectionMatrix.Transpose">Transpose()</h4>
@@ -1382,7 +1360,7 @@ in row-major order.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_IntersectionMatrix.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.IntersectionMatrix%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L37" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/IntersectionMatrix.cs/#L37" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

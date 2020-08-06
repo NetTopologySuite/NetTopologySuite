@@ -89,10 +89,13 @@ The distance computation finds a pair of points in the input geometries
 which have minimum distance between them.  These points may
 not be vertices of the geometries, but may lie in the interior of
 a line segment. In this case the coordinate computed is a close
-approximation to the exact point.
+approximation to the exact point.</p>
+<p>
+Empty geometry collection components are ignored.
+<p>
 The algorithms used are straightforward O(n^2)
 comparisons.  This worst-case performance could be improved on
-by using Voronoi techniques.</p>
+by using Voronoi techniques.
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -100,35 +103,11 @@ by using Voronoi techniques.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">DistanceOp</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Operation.Distance.html">NetTopologySuite.Operation.Distance</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Operation_Distance_DistanceOp_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DistanceOp</code></pre>
+    <pre><code class="lang-csharp hljs">public class DistanceOp : object</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -137,7 +116,7 @@ by using Voronoi techniques.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Distance_DistanceOp__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Distance.DistanceOp.%23ctor(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Distance/DistanceOp.cs/#L73">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Distance/DistanceOp.cs/#L85">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Distance_DistanceOp__ctor_" data-uid="NetTopologySuite.Operation.Distance.DistanceOp.#ctor*"></a>
   <h4 id="NetTopologySuite_Operation_Distance_DistanceOp__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.Distance.DistanceOp.#ctor(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry)">DistanceOp(Geometry, Geometry)</h4>
@@ -162,12 +141,14 @@ the two specified geometries.</p>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
         <td><span class="parametername">g0</span></td>
-        <td></td>
+        <td><p>A geometry</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
         <td><span class="parametername">g1</span></td>
-        <td></td>
+        <td><p>A geometry</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -176,7 +157,7 @@ the two specified geometries.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Distance_DistanceOp__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Distance.DistanceOp.%23ctor(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Distance/DistanceOp.cs/#L83">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Distance/DistanceOp.cs/#L95">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Distance_DistanceOp__ctor_" data-uid="NetTopologySuite.Operation.Distance.DistanceOp.#ctor*"></a>
   <h4 id="NetTopologySuite_Operation_Distance_DistanceOp__ctor_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_System_Double_" data-uid="NetTopologySuite.Operation.Distance.DistanceOp.#ctor(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry,System.Double)">DistanceOp(Geometry, Geometry, Double)</h4>
@@ -201,12 +182,14 @@ the two specified geometries.</p>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
         <td><span class="parametername">g0</span></td>
-        <td></td>
+        <td><p>A geometry</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
         <td><span class="parametername">g1</span></td>
-        <td></td>
+        <td><p>A geometry</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
@@ -223,7 +206,7 @@ the two specified geometries.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Distance_DistanceOp_Distance.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Distance.DistanceOp.Distance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Distance/DistanceOp.cs/#L95">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Distance/DistanceOp.cs/#L107">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Distance_DistanceOp_Distance_" data-uid="NetTopologySuite.Operation.Distance.DistanceOp.Distance*"></a>
   <h4 id="NetTopologySuite_Operation_Distance_DistanceOp_Distance" data-uid="NetTopologySuite.Operation.Distance.DistanceOp.Distance">Distance()</h4>
@@ -246,23 +229,7 @@ the two specified geometries.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
         <td><p>The distance between the geometries<br>
-or <returns>0</returns> if either input geometry is empty.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.applicationexception">ApplicationException</a></td>
-        <td><p>if either input geometry is null</p>
+or <code>0</code> if either input geometry is empty.</p>
 </td>
       </tr>
     </tbody>
@@ -272,7 +239,7 @@ or <returns>0</returns> if either input geometry is empty.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Distance_DistanceOp_Distance_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Distance.DistanceOp.Distance(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Distance/DistanceOp.cs/#L29">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Distance/DistanceOp.cs/#L32">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Distance_DistanceOp_Distance_" data-uid="NetTopologySuite.Operation.Distance.DistanceOp.Distance*"></a>
   <h4 id="NetTopologySuite_Operation_Distance_DistanceOp_Distance_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.Distance.DistanceOp.Distance(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry)">Distance(Geometry, Geometry)</h4>
@@ -328,7 +295,7 @@ or <returns>0</returns> if either input geometry is empty.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Distance_DistanceOp_IsWithinDistance_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Distance.DistanceOp.IsWithinDistance(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Distance/DistanceOp.cs/#L42">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Distance/DistanceOp.cs/#L45">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Distance_DistanceOp_IsWithinDistance_" data-uid="NetTopologySuite.Operation.Distance.DistanceOp.IsWithinDistance*"></a>
   <h4 id="NetTopologySuite_Operation_Distance_DistanceOp_IsWithinDistance_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_System_Double_" data-uid="NetTopologySuite.Operation.Distance.DistanceOp.IsWithinDistance(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry,System.Double)">IsWithinDistance(Geometry, Geometry, Double)</h4>
@@ -386,7 +353,7 @@ or <returns>0</returns> if either input geometry is empty.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Distance_DistanceOp_NearestLocations.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Distance.DistanceOp.NearestLocations%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Distance/DistanceOp.cs/#L123">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Distance/DistanceOp.cs/#L135">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Distance_DistanceOp_NearestLocations_" data-uid="NetTopologySuite.Operation.Distance.DistanceOp.NearestLocations*"></a>
   <h4 id="NetTopologySuite_Operation_Distance_DistanceOp_NearestLocations" data-uid="NetTopologySuite.Operation.Distance.DistanceOp.NearestLocations">NearestLocations()</h4>
@@ -419,7 +386,7 @@ The locations are presented in the same order as the input Geometries.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Distance_DistanceOp_NearestPoints.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Distance.DistanceOp.NearestPoints%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Distance/DistanceOp.cs/#L110">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Distance/DistanceOp.cs/#L122">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Distance_DistanceOp_NearestPoints_" data-uid="NetTopologySuite.Operation.Distance.DistanceOp.NearestPoints*"></a>
   <h4 id="NetTopologySuite_Operation_Distance_DistanceOp_NearestPoints" data-uid="NetTopologySuite.Operation.Distance.DistanceOp.NearestPoints">NearestPoints()</h4>
@@ -452,7 +419,7 @@ The points are presented in the same order as the input Geometries.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Distance_DistanceOp_NearestPoints_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Distance.DistanceOp.NearestPoints(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Distance/DistanceOp.cs/#L55">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Distance/DistanceOp.cs/#L65">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Distance_DistanceOp_NearestPoints_" data-uid="NetTopologySuite.Operation.Distance.DistanceOp.NearestPoints*"></a>
   <h4 id="NetTopologySuite_Operation_Distance_DistanceOp_NearestPoints_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.Distance.DistanceOp.NearestPoints(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Geometry)">NearestPoints(Geometry, Geometry)</h4>
@@ -515,7 +482,7 @@ The points are presented in the same order as the input Geometries.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Distance_DistanceOp.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Distance.DistanceOp%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Distance/DistanceOp.cs/#L21" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Distance/DistanceOp.cs/#L24" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

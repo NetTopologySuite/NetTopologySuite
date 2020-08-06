@@ -93,35 +93,11 @@ maintaining the same type structure.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">GeometryEditor</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.Utilities.html">NetTopologySuite.Geometries.Utilities</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Geometries_Utilities_GeometryEditor_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class GeometryEditor</code></pre>
+    <pre><code class="lang-csharp hljs">public class GeometryEditor : object</code></pre>
   </div>
   <h5 id="NetTopologySuite_Geometries_Utilities_GeometryEditor_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Geometry objects are intended to be treated as immutable.
@@ -132,6 +108,19 @@ and creating a new Geometrys with the same structure but
 (possibly) modified components.</p>
 <p>
 Examples of the kinds of modifications which can be made are:
+<ul><li>
+The values of the coordinates may be changed.
+The editor does not check whether changing coordinate values makes the result Geometry invalid
+</li><li>
+The coordinate lists may be changed (e.g. by adding, deleting or modifying coordinates).
+The modified coordinate lists must be consistent with their original parent component
+(e.g. a <tt>LinearRing</tt> must always have at least 4 coordinates, and the first and last
+coordinate must be equal).
+</li><li>
+Components of the original point may be deleted
+(e.g. holes may be removed from a Polygon, or LineStrings removed from a MultiLineString).
+Deletions will be propagated up the component tree appropriately.
+</li></ul>
 </p>
 <p>
 All changes must be consistent with the original Geometry&apos;s structure
@@ -146,6 +135,9 @@ Examples of situations where this is required is if the geometry is
 transformed to a new SRID and/or a new PrecisionModel.</p>
 <p>
 Usage notes
+<ul><li>The resulting Geometry is not checked for validity.
+If validity needs to be enforced, the new Geometry&apos;s
+<a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsValid">IsValid</a> method should be called.</li><li>By default the UserData of the input geometry is not copied to the result.</li></ul>
 </p>
 </div>
   <h3 id="constructors">Constructors
@@ -155,7 +147,7 @@ Usage notes
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_GeometryEditor__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.GeometryEditor.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Utilities/GeometryEditor.cs/#L77">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Utilities/GeometryEditor.cs/#L77">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Utilities_GeometryEditor__ctor_" data-uid="NetTopologySuite.Geometries.Utilities.GeometryEditor.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_Utilities_GeometryEditor__ctor" data-uid="NetTopologySuite.Geometries.Utilities.GeometryEditor.#ctor">GeometryEditor()</h4>
@@ -172,7 +164,7 @@ edited <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_GeometryEditor__ctor_NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.GeometryEditor.%23ctor(NetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Utilities/GeometryEditor.cs/#L84">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Utilities/GeometryEditor.cs/#L84">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Utilities_GeometryEditor__ctor_" data-uid="NetTopologySuite.Geometries.Utilities.GeometryEditor.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_Utilities_GeometryEditor__ctor_NetTopologySuite_Geometries_GeometryFactory_" data-uid="NetTopologySuite.Geometries.Utilities.GeometryEditor.#ctor(NetTopologySuite.Geometries.GeometryFactory)">GeometryEditor(GeometryFactory)</h4>
@@ -209,7 +201,7 @@ edited <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_GeometryEditor_CopyUserData.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.GeometryEditor.CopyUserData%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Utilities/GeometryEditor.cs/#L93">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Utilities/GeometryEditor.cs/#L93">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Utilities_GeometryEditor_CopyUserData_" data-uid="NetTopologySuite.Geometries.Utilities.GeometryEditor.CopyUserData*"></a>
   <h4 id="NetTopologySuite_Geometries_Utilities_GeometryEditor_CopyUserData" data-uid="NetTopologySuite.Geometries.Utilities.GeometryEditor.CopyUserData">CopyUserData</h4>
@@ -243,7 +235,7 @@ If so, only the object reference is copied.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_GeometryEditor_Edit_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Utilities_GeometryEditor_IGeometryEditorOperation_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.GeometryEditor.Edit(NetTopologySuite.Geometries.Geometry%2CNetTopologySuite.Geometries.Utilities.GeometryEditor.IGeometryEditorOperation)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Utilities/GeometryEditor.cs/#L107">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Utilities/GeometryEditor.cs/#L107">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Utilities_GeometryEditor_Edit_" data-uid="NetTopologySuite.Geometries.Utilities.GeometryEditor.Edit*"></a>
   <h4 id="NetTopologySuite_Geometries_Utilities_GeometryEditor_Edit_NetTopologySuite_Geometries_Geometry_NetTopologySuite_Geometries_Utilities_GeometryEditor_IGeometryEditorOperation_" data-uid="NetTopologySuite.Geometries.Utilities.GeometryEditor.Edit(NetTopologySuite.Geometries.Geometry,NetTopologySuite.Geometries.Utilities.GeometryEditor.IGeometryEditorOperation)">Edit(Geometry, GeometryEditor.IGeometryEditorOperation)</h4>
@@ -312,7 +304,7 @@ CoordinateOperation to perform required modifications.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_GeometryEditor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.GeometryEditor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Utilities/GeometryEditor.cs/#L61" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Utilities/GeometryEditor.cs/#L61" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -82,7 +82,9 @@
   
   <h1 id="NetTopologySuite_Operation_Distance" data-uid="NetTopologySuite.Operation.Distance" class="text-break">Namespace NetTopologySuite.Operation.Distance
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary">
+<p>Provides classes for computing the distance between geometries</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
@@ -92,7 +94,8 @@
 from each connected element in a Geometry
 (e.g. a polygon, linestring or point)
 and returns them in a list. The elements of the list are
-<code>com.vividsolutions.jts.operation.distance.GeometryLocation</code>s.</p>
+<a class="xref" href="NetTopologySuite.Operation.Distance.GeometryLocation.html">GeometryLocation</a>s.
+Empty geometries do not provide a location item.</p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Operation.Distance.ConnectedElementPointFilter.html">ConnectedElementPointFilter</a></h4>
       <section><p>Extracts a single point
@@ -107,10 +110,13 @@ The distance computation finds a pair of points in the input geometries
 which have minimum distance between them.  These points may
 not be vertices of the geometries, but may lie in the interior of
 a line segment. In this case the coordinate computed is a close
-approximation to the exact point.
+approximation to the exact point.</p>
+<p>
+Empty geometry collection components are ignored.
+<p>
 The algorithms used are straightforward O(n^2)
 comparisons.  This worst-case performance could be improved on
-by using Voronoi techniques.</p>
+by using Voronoi techniques.
 </section>
       <h4><a class="xref" href="NetTopologySuite.Operation.Distance.FacetSequence.html">FacetSequence</a></h4>
       <section><p>Represents a sequence of facets (points or line segments) of a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>
@@ -137,11 +143,18 @@ traversal of R-trees built
 on the target and the query geometries.</p>
 <p>
 This approach provides the following benefits:
-<p>Using this technique is usually much more performant
+<ul><li>
+Performance is dramatically improved due to the use of the
+R-tree index
+and the pruning due to the Branch-and-Bound approach
+</li><li>
+The spatial index on the target geometry is cached
+which allow reuse in an repeated query situation.</li></ul>
+Using this technique is usually much more performant
 than using the brute-force <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Distance_NetTopologySuite_Geometries_Geometry_">Distance(Geometry)</a>
 when one or both input geometries are large,
 or when evaluating many distance computations against
-a single geometry.</p>
+a single geometry.
 </p>
 </section>
 </article>
@@ -151,6 +164,9 @@ a single geometry.</p>
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/doc/overwrite/namespaces/NetTopologySuite.Operation.Distance.md/#L2" class="contribution-link">Improve this Doc</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

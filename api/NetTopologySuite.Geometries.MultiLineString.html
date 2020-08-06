@@ -97,10 +97,8 @@ Any collection of <code>LineString</code>s is a valid <code>MultiLineString</cod
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable">IComparable</a></div>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</div>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</div>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a></div>
+    <div><span class="xref">IComparable</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</div>
+    <div><span class="xref">IEnumerable</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</div>
     <div><a class="xref" href="NetTopologySuite.Geometries.ILineal.html">ILineal</a></div>
   </div>
   <div class="inheritedMembers">
@@ -142,6 +140,9 @@ Any collection of <code>LineString</code>s is a valid <code>MultiLineString</cod
       <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html#NetTopologySuite_Geometries_GeometryCollection_Apply_NetTopologySuite_Geometries_ICoordinateSequenceFilter_">GeometryCollection.Apply(ICoordinateSequenceFilter)</a>
     </div>
     <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html#NetTopologySuite_Geometries_GeometryCollection_Apply_NetTopologySuite_Geometries_IEntireCoordinateSequenceFilter_">GeometryCollection.Apply(IEntireCoordinateSequenceFilter)</a>
+    </div>
+    <div>
       <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html#NetTopologySuite_Geometries_GeometryCollection_Apply_NetTopologySuite_Geometries_IGeometryFilter_">GeometryCollection.Apply(IGeometryFilter)</a>
     </div>
     <div>
@@ -157,7 +158,7 @@ Any collection of <code>LineString</code>s is a valid <code>MultiLineString</cod
       <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html#NetTopologySuite_Geometries_GeometryCollection_CompareToSameClass_System_Object_">GeometryCollection.CompareToSameClass(Object)</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html#NetTopologySuite_Geometries_GeometryCollection_CompareToSameClass_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__">GeometryCollection.CompareToSameClass(Object, IComparer&lt;CoordinateSequence&gt;)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html#NetTopologySuite_Geometries_GeometryCollection_CompareToSameClass_System_Object_IComparer_NetTopologySuite_Geometries_CoordinateSequence__">GeometryCollection.CompareToSameClass(Object, IComparer&lt;CoordinateSequence&gt;)</a>
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html#NetTopologySuite_Geometries_GeometryCollection_IsHomogeneous">GeometryCollection.IsHomogeneous</a>
@@ -166,13 +167,37 @@ Any collection of <code>LineString</code>s is a valid <code>MultiLineString</cod
       <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html#NetTopologySuite_Geometries_GeometryCollection_GetEnumerator">GeometryCollection.GetEnumerator()</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html#NetTopologySuite_Geometries_GeometryCollection_System_Collections_IEnumerable_GetEnumerator">GeometryCollection.IEnumerable.GetEnumerator()</a>
-    </div>
-    <div>
       <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html#NetTopologySuite_Geometries_GeometryCollection_Item_System_Int32_">GeometryCollection.Item[Int32]</a>
     </div>
     <div>
+      <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html#NetTopologySuite_Geometries_GeometryCollection_ReverseInternal">GeometryCollection.ReverseInternal()</a>
+    </div>
+    <div>
       <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html#NetTopologySuite_Geometries_GeometryCollection_Count">GeometryCollection.Count</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNamePoint">Geometry.TypeNamePoint</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNameMultiPoint">Geometry.TypeNameMultiPoint</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNameLineString">Geometry.TypeNameLineString</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNameLinearRing">Geometry.TypeNameLinearRing</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNameMultiLineString">Geometry.TypeNameMultiLineString</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNamePolygon">Geometry.TypeNamePolygon</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNameMultiPolygon">Geometry.TypeNameMultiPolygon</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_TypeNameGeometryCollection">Geometry.TypeNameGeometryCollection</a>
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Factory">Geometry.Factory</a>
@@ -188,6 +213,9 @@ Any collection of <code>LineString</code>s is a valid <code>MultiLineString</cod
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_HasNullElements_System_Object___">Geometry.HasNullElements(Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_HasNullElements__1_IEnumerable___0__">Geometry.HasNullElements&lt;T&gt;(IEnumerable&lt;T&gt;)</a>
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_PrecisionModel">Geometry.PrecisionModel</a>
@@ -340,7 +368,7 @@ Any collection of <code>LineString</code>s is a valid <code>MultiLineString</cod
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareTo_NetTopologySuite_Geometries_Geometry_">Geometry.CompareTo(Geometry)</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareTo_System_Object_System_Collections_Generic_IComparer_NetTopologySuite_Geometries_CoordinateSequence__">Geometry.CompareTo(Object, IComparer&lt;CoordinateSequence&gt;)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CompareTo_System_Object_IComparer_NetTopologySuite_Geometries_CoordinateSequence__">Geometry.CompareTo(Object, IComparer&lt;CoordinateSequence&gt;)</a>
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsEquivalentClass_NetTopologySuite_Geometries_Geometry_">Geometry.IsEquivalentClass(Geometry)</a>
@@ -352,7 +380,7 @@ Any collection of <code>LineString</code>s is a valid <code>MultiLineString</cod
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_IsGeometryCollection">Geometry.IsGeometryCollection</a>
     </div>
     <div>
-      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Compare_System_Collections_Generic_List_NetTopologySuite_Geometries_Geometry__System_Collections_Generic_List_NetTopologySuite_Geometries_Geometry__">Geometry.Compare(List&lt;Geometry&gt;, List&lt;Geometry&gt;)</a>
+      <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Compare_List_NetTopologySuite_Geometries_Geometry__List_NetTopologySuite_Geometries_Geometry__">Geometry.Compare(List&lt;Geometry&gt;, List&lt;Geometry&gt;)</a>
     </div>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Equal_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_System_Double_">Geometry.Equal(Coordinate, Coordinate, Double)</a>
@@ -369,25 +397,12 @@ Any collection of <code>LineString</code>s is a valid <code>MultiLineString</cod
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_CreateArray_NetTopologySuite_Geometries_CoordinateSequence_NetTopologySuite_Geometries_Ordinate_">Geometry.CreateArray(CoordinateSequence, Ordinate)</a>
     </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.html">NetTopologySuite.Geometries</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Geometries_MultiLineString_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Serializable]
-public class MultiLineString : GeometryCollection, IComparable, IComparable&lt;Geometry&gt;, IEnumerable&lt;Geometry&gt;, IEnumerable, ILineal</code></pre>
+    <pre><code class="lang-csharp hljs">public class MultiLineString : GeometryCollection, IComparable&lt;Geometry&gt;, IEnumerable&lt;Geometry&gt;, ILineal</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -396,7 +411,7 @@ public class MultiLineString : GeometryCollection, IComparable, IComparable&lt;G
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_MultiLineString__ctor_NetTopologySuite_Geometries_LineString___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.MultiLineString.%23ctor(NetTopologySuite.Geometries.LineString%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/MultiLineString.cs/#L46">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/MultiLineString.cs/#L46">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_MultiLineString__ctor_" data-uid="NetTopologySuite.Geometries.MultiLineString.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_MultiLineString__ctor_NetTopologySuite_Geometries_LineString___" data-uid="NetTopologySuite.Geometries.MultiLineString.#ctor(NetTopologySuite.Geometries.LineString[])">MultiLineString(LineString[])</h4>
@@ -437,7 +452,7 @@ with <a class="xref" href="NetTopologySuite.Geometries.PrecisionModel.html">Prec
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_MultiLineString__ctor_NetTopologySuite_Geometries_LineString___NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.MultiLineString.%23ctor(NetTopologySuite.Geometries.LineString%5B%5D%2CNetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/MultiLineString.cs/#L30">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/MultiLineString.cs/#L30">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_MultiLineString__ctor_" data-uid="NetTopologySuite.Geometries.MultiLineString.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_MultiLineString__ctor_NetTopologySuite_Geometries_LineString___NetTopologySuite_Geometries_GeometryFactory_" data-uid="NetTopologySuite.Geometries.MultiLineString.#ctor(NetTopologySuite.Geometries.LineString[],NetTopologySuite.Geometries.GeometryFactory)">MultiLineString(LineString[], GeometryFactory)</h4>
@@ -481,7 +496,7 @@ but not <code>null</code>s.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_MultiLineString_Empty.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.MultiLineString.Empty%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/MultiLineString.cs/#L18">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/MultiLineString.cs/#L18">View Source</a>
   </span>
   <h4 id="NetTopologySuite_Geometries_MultiLineString_Empty" data-uid="NetTopologySuite.Geometries.MultiLineString.Empty">Empty</h4>
   <div class="markdown level1 summary"><p>Represents an empty <code>MultiLineString</code>.</p>
@@ -513,7 +528,7 @@ but not <code>null</code>s.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_MultiLineString_Boundary.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.MultiLineString.Boundary%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/MultiLineString.cs/#L113">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/MultiLineString.cs/#L118">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_MultiLineString_Boundary_" data-uid="NetTopologySuite.Geometries.MultiLineString.Boundary*"></a>
   <h4 id="NetTopologySuite_Geometries_MultiLineString_Boundary" data-uid="NetTopologySuite.Geometries.MultiLineString.Boundary">Boundary</h4>
@@ -545,7 +560,7 @@ but not <code>null</code>s.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_MultiLineString_BoundaryDimension.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.MultiLineString.BoundaryDimension%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/MultiLineString.cs/#L63">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/MultiLineString.cs/#L68">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_MultiLineString_BoundaryDimension_" data-uid="NetTopologySuite.Geometries.MultiLineString.BoundaryDimension*"></a>
   <h4 id="NetTopologySuite_Geometries_MultiLineString_BoundaryDimension" data-uid="NetTopologySuite.Geometries.MultiLineString.BoundaryDimension">BoundaryDimension</h4>
@@ -577,7 +592,7 @@ but not <code>null</code>s.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_MultiLineString_Dimension.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.MultiLineString.Dimension%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/MultiLineString.cs/#L57">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/MultiLineString.cs/#L62">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_MultiLineString_Dimension_" data-uid="NetTopologySuite.Geometries.MultiLineString.Dimension*"></a>
   <h4 id="NetTopologySuite_Geometries_MultiLineString_Dimension" data-uid="NetTopologySuite.Geometries.MultiLineString.Dimension">Dimension</h4>
@@ -609,7 +624,7 @@ but not <code>null</code>s.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_MultiLineString_GeometryType.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.MultiLineString.GeometryType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/MultiLineString.cs/#L77">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/MultiLineString.cs/#L82">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_MultiLineString_GeometryType_" data-uid="NetTopologySuite.Geometries.MultiLineString.GeometryType*"></a>
   <h4 id="NetTopologySuite_Geometries_MultiLineString_GeometryType" data-uid="NetTopologySuite.Geometries.MultiLineString.GeometryType">GeometryType</h4>
@@ -643,7 +658,7 @@ but not <code>null</code>s.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_MultiLineString_IsClosed.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.MultiLineString.IsClosed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/MultiLineString.cs/#L88">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/MultiLineString.cs/#L93">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_MultiLineString_IsClosed_" data-uid="NetTopologySuite.Geometries.MultiLineString.IsClosed*"></a>
   <h4 id="NetTopologySuite_Geometries_MultiLineString_IsClosed" data-uid="NetTopologySuite.Geometries.MultiLineString.IsClosed">IsClosed</h4>
@@ -675,7 +690,7 @@ but not <code>null</code>s.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_MultiLineString_OgcGeometryType.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.MultiLineString.OgcGeometryType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/MultiLineString.cs/#L82">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/MultiLineString.cs/#L87">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_MultiLineString_OgcGeometryType_" data-uid="NetTopologySuite.Geometries.MultiLineString.OgcGeometryType*"></a>
   <h4 id="NetTopologySuite_Geometries_MultiLineString_OgcGeometryType" data-uid="NetTopologySuite.Geometries.MultiLineString.OgcGeometryType">OgcGeometryType</h4>
@@ -708,7 +723,7 @@ but not <code>null</code>s.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_MultiLineString_SortIndex.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.MultiLineString.SortIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/MultiLineString.cs/#L51">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/MultiLineString.cs/#L56">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_MultiLineString_SortIndex_" data-uid="NetTopologySuite.Geometries.MultiLineString.SortIndex*"></a>
   <h4 id="NetTopologySuite_Geometries_MultiLineString_SortIndex" data-uid="NetTopologySuite.Geometries.MultiLineString.SortIndex">SortIndex</h4>
@@ -736,6 +751,11 @@ but not <code>null</code>s.</p>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html#NetTopologySuite_Geometries_GeometryCollection_SortIndex">GeometryCollection.SortIndex</a></div>
+  <h5 id="NetTopologySuite_Geometries_MultiLineString_SortIndex_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>NOTE:<br>
+For JTS v1.17 this property's getter has been renamed to <code>getTypeCode()</code>.
+In order not to break binary compatibility we did not follow.</p>
+</div>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -743,7 +763,7 @@ but not <code>null</code>s.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_MultiLineString_CopyInternal.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.MultiLineString.CopyInternal%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/MultiLineString.cs/#L141">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/MultiLineString.cs/#L143">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_MultiLineString_CopyInternal_" data-uid="NetTopologySuite.Geometries.MultiLineString.CopyInternal*"></a>
   <h4 id="NetTopologySuite_Geometries_MultiLineString_CopyInternal" data-uid="NetTopologySuite.Geometries.MultiLineString.CopyInternal">CopyInternal()</h4>
@@ -775,7 +795,7 @@ but not <code>null</code>s.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_MultiLineString_EqualsExact_NetTopologySuite_Geometries_Geometry_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.MultiLineString.EqualsExact(NetTopologySuite.Geometries.Geometry%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/MultiLineString.cs/#L156">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/MultiLineString.cs/#L158">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_MultiLineString_EqualsExact_" data-uid="NetTopologySuite.Geometries.MultiLineString.EqualsExact*"></a>
   <h4 id="NetTopologySuite_Geometries_MultiLineString_EqualsExact_NetTopologySuite_Geometries_Geometry_System_Double_" data-uid="NetTopologySuite.Geometries.MultiLineString.EqualsExact(NetTopologySuite.Geometries.Geometry,System.Double)">EqualsExact(Geometry, Double)</h4>
@@ -829,7 +849,7 @@ but not <code>null</code>s.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_MultiLineString_Reverse.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.MultiLineString.Reverse%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/MultiLineString.cs/#L131">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/MultiLineString.cs/#L136">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_MultiLineString_Reverse_" data-uid="NetTopologySuite.Geometries.MultiLineString.Reverse*"></a>
   <h4 id="NetTopologySuite_Geometries_MultiLineString_Reverse" data-uid="NetTopologySuite.Geometries.MultiLineString.Reverse">Reverse()</h4>
@@ -862,16 +882,10 @@ and the order of their coordinate sequences are reversed.</p>
   <div><a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html#NetTopologySuite_Geometries_GeometryCollection_Reverse">GeometryCollection.Reverse()</a></div>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable">System.IComparable</a>
+      <span class="xref">IComparable&lt;&gt;</span>
   </div>
   <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">System.IComparable&lt;T&gt;</a>
-  </div>
-  <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">System.Collections.Generic.IEnumerable&lt;T&gt;</a>
-  </div>
-  <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.ienumerable">System.Collections.IEnumerable</a>
+      <span class="xref">IEnumerable&lt;&gt;</span>
   </div>
   <div>
       <a class="xref" href="NetTopologySuite.Geometries.ILineal.html">ILineal</a>
@@ -887,7 +901,7 @@ and the order of their coordinate sequences are reversed.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_MultiLineString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.MultiLineString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/MultiLineString.cs/#L12" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/MultiLineString.cs/#L12" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -82,7 +82,25 @@
   
   <h1 id="NetTopologySuite_Operation_Overlay" data-uid="NetTopologySuite.Operation.Overlay" class="text-break">Namespace NetTopologySuite.Operation.Overlay
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary">
+<p>Contains classes that perform a topological overlay to compute boolean spatial functions.</p>
+<p>The Overlay Algorithm is used in spatial analysis methods for computing set-theoretic operations (boolean combinations) of input <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometries</a>. The algorithm for computing the overlay uses the intersection operations supported by topology graphs. To compute an overlay it is necessary to explicitly compute the resultant graph formed by the computed intersections.</p>
+<p>The algorithm to compute a set-theoretic spatial analysis method has the following steps:</p>
+<ul>
+<li>Build topology graphs of the two input geometries. For each geometry all self-intersection nodes are computed and added to the graph.</li>
+<li>Compute nodes for all intersections between edges and nodes of the graphs.</li>
+<li>Compute the labeling for the computed nodes by merging the labels from the input graphs.</li>
+<li>Compute new edges between the compute intersection nodes. Label the edges appropriately.</li>
+<li>Build the resultant graph from the new nodes and edges.</li>
+<li>Compute the labeling for isolated components of the graph. Add the isolated components to the resultant graph.</li>
+<li>Compute the result of the boolean combination by selecting the node and edges with the appropriate labels. Polygonize areas and sew linear geometries together.</li>
+</ul>
+<h1 id="package-specification">Package Specification</h1>
+<ul>
+<li>Java Topology Suite Technical Specifications</li>
+<li><a href="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features Specification for SQL</a></li>
+</ul>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
@@ -142,6 +160,9 @@ These operations implement various bool combinations of the resultants of the ov
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/doc/overwrite/namespaces/NetTopologySuite.Operation.Overlay.md/#L2" class="contribution-link">Improve this Doc</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

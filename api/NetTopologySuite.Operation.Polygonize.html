@@ -82,19 +82,27 @@
   
   <h1 id="NetTopologySuite_Operation_Polygonize" data-uid="NetTopologySuite.Operation.Polygonize" class="text-break">Namespace NetTopologySuite.Operation.Polygonize
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary">
+<p>Contains classes to implement a polygonization algorithm. This package can be used to create polygons from fully noded linework.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
   </h3>
       <h4><a class="xref" href="NetTopologySuite.Operation.Polygonize.EdgeRing.html">EdgeRing</a></h4>
-      <section><p>Represents a ring of <code>PolygonizeDirectedEdge</code>s which form
+      <section><p>Represents a ring of <a class="xref" href="NetTopologySuite.Operation.Polygonize.PolygonizeDirectedEdge.html">PolygonizeDirectedEdge</a>s which form
 a ring of a polygon.  The ring may be either an outer shell or a hole.</p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Operation.Polygonize.EdgeRing.EnvelopeComparator.html">EdgeRing.EnvelopeComparator</a></h4>
       <section><p>Compares EdgeRings based on their envelope,
 using the standard lexicographic ordering.
 This ordering is sufficient to make edge ring sorting deterministic.</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Operation.Polygonize.HoleAssigner.html">HoleAssigner</a></h4>
+      <section><p>Assigns hole rings to shell rings
+during polygonization.
+Uses spatial indexing to improve performance
+of shell lookup.</p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Operation.Polygonize.PolygonizeDirectedEdge.html">PolygonizeDirectedEdge</a></h4>
       <section><p>A <code>DirectedEdge</code> of a <code>PolygonizeGraph</code>, which represents
@@ -122,6 +130,9 @@ represents the edges of a planar graph.</p>
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/doc/overwrite/namespaces/NetTopologySuite.Operation.Polygonize.md/#L2" class="contribution-link">Improve this Doc</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

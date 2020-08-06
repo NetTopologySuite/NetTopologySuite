@@ -91,43 +91,21 @@ from lists of Coordinates.</p>
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">GeometryFactory</span></div>
+      <div class="level2"><a class="xref" href="NetTopologySuite.Geometries.GeometryFactoryEx.html">GeometryFactoryEx</a></div>
       <div class="level2"><a class="xref" href="NetTopologySuite.Geometries.OgcCompliantGeometryFactory.html">OgcCompliantGeometryFactory</a></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.html">NetTopologySuite.Geometries</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Geometries_GeometryFactory_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Serializable]
-public class GeometryFactory</code></pre>
+    <pre><code class="lang-csharp hljs">public class GeometryFactory : object</code></pre>
   </div>
   <h5 id="NetTopologySuite_Geometries_GeometryFactory_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Note that the factory constructor methods do <strong>not</strong> change the input coordinates in any way.
 In particular, they are not rounded to the supplied <code>PrecisionModel</code>.
 It is assumed that input Coordinates meet the given precision.</p>
+<p>
+Instances of this class are thread-safe.
 </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -136,7 +114,7 @@ It is assumed that input Coordinates meet the given precision.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L123">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L125">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory__ctor_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory__ctor" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor">GeometryFactory()</h4>
@@ -153,7 +131,7 @@ PrecisionModel and a spatial-reference ID of 0.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory__ctor_NetTopologySuite_Geometries_CoordinateSequenceFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.%23ctor(NetTopologySuite.Geometries.CoordinateSequenceFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L97">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L99">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory__ctor_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory__ctor_NetTopologySuite_Geometries_CoordinateSequenceFactory_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor(NetTopologySuite.Geometries.CoordinateSequenceFactory)">GeometryFactory(CoordinateSequenceFactory)</h4>
@@ -188,7 +166,7 @@ spatial-reference ID of 0.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.%23ctor(NetTopologySuite.Geometries.PrecisionModel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L106">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L108">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory__ctor_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor(NetTopologySuite.Geometries.PrecisionModel)">GeometryFactory(PrecisionModel)</h4>
@@ -224,7 +202,7 @@ implementation.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.%23ctor(NetTopologySuite.Geometries.PrecisionModel%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L116">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L118">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory__ctor_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_System_Int32_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor(NetTopologySuite.Geometries.PrecisionModel,System.Int32)">GeometryFactory(PrecisionModel, Int32)</h4>
@@ -266,7 +244,7 @@ implementation.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_System_Int32_NetTopologySuite_Geometries_CoordinateSequenceFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.%23ctor(NetTopologySuite.Geometries.PrecisionModel%2CSystem.Int32%2CNetTopologySuite.Geometries.CoordinateSequenceFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L85">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L87">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory__ctor_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory__ctor_NetTopologySuite_Geometries_PrecisionModel_System_Int32_NetTopologySuite_Geometries_CoordinateSequenceFactory_" data-uid="NetTopologySuite.Geometries.GeometryFactory.#ctor(NetTopologySuite.Geometries.PrecisionModel,System.Int32,NetTopologySuite.Geometries.CoordinateSequenceFactory)">GeometryFactory(PrecisionModel, Int32, CoordinateSequenceFactory)</h4>
@@ -312,10 +290,10 @@ PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_Default.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.Default%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L26">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L28">View Source</a>
   </span>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_Default" data-uid="NetTopologySuite.Geometries.GeometryFactory.Default">Default</h4>
-  <div class="markdown level1 summary"><p>A predefined <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a> with <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_PrecisionModel">PrecisionModel</a>
+  <div class="markdown level1 summary"><p>A predefined <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a> with <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_PrecisionModel">PrecisionModel</a>c
 <code> == </code> <a class="xref" href="NetTopologySuite.Geometries.PrecisionModels.html#NetTopologySuite_Geometries_PrecisionModels_Floating">Floating</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -343,7 +321,7 @@ PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_Fixed.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.Fixed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L45">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L47">View Source</a>
   </span>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_Fixed" data-uid="NetTopologySuite.Geometries.GeometryFactory.Fixed">Fixed</h4>
   <div class="markdown level1 summary"><p>A predefined <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a> with <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_PrecisionModel">PrecisionModel</a>
@@ -374,7 +352,7 @@ PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_Floating.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.Floating%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L33">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L35">View Source</a>
   </span>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_Floating" data-uid="NetTopologySuite.Geometries.GeometryFactory.Floating">Floating</h4>
   <div class="markdown level1 summary"><p>A predefined <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a> with <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_PrecisionModel">PrecisionModel</a>
@@ -408,7 +386,7 @@ PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_FloatingSingle.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.FloatingSingle%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L39">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L41">View Source</a>
   </span>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_FloatingSingle" data-uid="NetTopologySuite.Geometries.GeometryFactory.FloatingSingle">FloatingSingle</h4>
   <div class="markdown level1 summary"><p>A predefined <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a> with <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html#NetTopologySuite_Geometries_GeometryFactory_PrecisionModel">PrecisionModel</a>
@@ -441,7 +419,7 @@ PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CoordinateSequenceFactory.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CoordinateSequenceFactory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L60">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L62">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CoordinateSequenceFactory_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CoordinateSequenceFactory*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CoordinateSequenceFactory" data-uid="NetTopologySuite.Geometries.GeometryFactory.CoordinateSequenceFactory">CoordinateSequenceFactory</h4>
@@ -471,7 +449,7 @@ PrecisionModel, spatial-reference ID, and CoordinateSequence implementation.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_PrecisionModel.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.PrecisionModel%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L53">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L55">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_PrecisionModel_" data-uid="NetTopologySuite.Geometries.GeometryFactory.PrecisionModel*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_PrecisionModel" data-uid="NetTopologySuite.Geometries.GeometryFactory.PrecisionModel">PrecisionModel</h4>
@@ -503,7 +481,7 @@ will be associated with.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_SRID.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.SRID%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L67">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L69">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_SRID_" data-uid="NetTopologySuite.Geometries.GeometryFactory.SRID*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_SRID" data-uid="NetTopologySuite.Geometries.GeometryFactory.SRID">SRID</h4>
@@ -533,13 +511,13 @@ will be associated with.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_BuildGeometry_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.BuildGeometry(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_BuildGeometry_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.BuildGeometry(IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L554">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L558">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_BuildGeometry_" data-uid="NetTopologySuite.Geometries.GeometryFactory.BuildGeometry*"></a>
-  <h4 id="NetTopologySuite_Geometries_GeometryFactory_BuildGeometry_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.BuildGeometry(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">BuildGeometry(IEnumerable&lt;Geometry&gt;)</h4>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_BuildGeometry_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.BuildGeometry(IEnumerable{NetTopologySuite.Geometries.Geometry})">BuildGeometry(IEnumerable&lt;Geometry&gt;)</h4>
   <div class="markdown level1 summary"><p>Build an appropriate <code>Geometry</code>, <code>MultiGeometry</code>, or
 <code>GeometryCollection</code> to contain the <code>Geometry</code>s in
 it.</p>
@@ -547,7 +525,7 @@ it.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Geometry BuildGeometry(IEnumerable&lt;Geometry&gt; geomList)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual Geometry BuildGeometry(IEnumerable&lt;Geometry&gt; geomList)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -560,7 +538,7 @@ it.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
         <td><span class="parametername">geomList</span></td>
         <td><p>The <code>Geometry</code> to combine.</p>
 </td>
@@ -584,7 +562,7 @@ class that can contain the elements of <code>geomList</code>.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="NetTopologySuite_Geometries_GeometryFactory_BuildGeometry_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry___remarks">Remarks</h5>
+  <h5 id="NetTopologySuite_Geometries_GeometryFactory_BuildGeometry_IEnumerable_NetTopologySuite_Geometries_Geometry___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>If <code>geomList</code> contains a single <code>Polygon</code>,
 the <code>Polygon</code> is returned.<br>
 If <code>geomList</code> contains several <code>Polygon</code>s, a
@@ -600,10 +578,62 @@ them will be returned.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateEmpty_NetTopologySuite_Geometries_Dimension_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateEmpty(NetTopologySuite.Geometries.Dimension)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L622">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Geometries_GeometryFactory_CreateEmpty_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateEmpty*"></a>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateEmpty_NetTopologySuite_Geometries_Dimension_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateEmpty(NetTopologySuite.Geometries.Dimension)">CreateEmpty(Dimension)</h4>
+  <div class="markdown level1 summary"><p>Creates an empty atomic geometry of the given dimension.
+If passed a dimension of <a class="xref" href="NetTopologySuite.Geometries.Dimension.html#NetTopologySuite_Geometries_Dimension_Dontcare">Dontcare</a>
+will create an empty <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Geometry CreateEmpty(Dimension dimension)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Dimension.html">Dimension</a></td>
+        <td><span class="parametername">dimension</span></td>
+        <td><p>The required dimension (<a class="xref" href="NetTopologySuite.Geometries.Dimension.html#NetTopologySuite_Geometries_Dimension_Dontcare">Dontcare</a>, <a class="xref" href="NetTopologySuite.Geometries.Dimension.html#NetTopologySuite_Geometries_Dimension_Point">Point</a>, <a class="xref" href="NetTopologySuite.Geometries.Dimension.html#NetTopologySuite_Geometries_Dimension_Curve">Curve</a> or <a class="xref" href="NetTopologySuite.Geometries.Dimension.html#NetTopologySuite_Geometries_Dimension_Surface">Surface</a>)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>An empty atomic geometry of given dimension</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateGeometry_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateGeometry(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L627">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L651">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreateGeometry_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateGeometry*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateGeometry_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateGeometry(NetTopologySuite.Geometries.Geometry)">CreateGeometry(Geometry)</h4>
@@ -622,7 +652,7 @@ but it does not allow changing the CoordinateSequence type.
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Geometry CreateGeometry(Geometry g)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual Geometry CreateGeometry(Geometry g)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -667,7 +697,7 @@ but it does not allow changing the CoordinateSequence type.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateGeometryCollection.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateGeometryCollection%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L514">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L518">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreateGeometryCollection_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateGeometryCollection*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateGeometryCollection" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateGeometryCollection">CreateGeometryCollection()</h4>
@@ -699,7 +729,7 @@ but it does not allow changing the CoordinateSequence type.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateGeometryCollection_NetTopologySuite_Geometries_Geometry___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateGeometryCollection(NetTopologySuite.Geometries.Geometry%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L525">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L529">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreateGeometryCollection_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateGeometryCollection*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateGeometryCollection_NetTopologySuite_Geometries_Geometry___" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateGeometryCollection(NetTopologySuite.Geometries.Geometry[])">CreateGeometryCollection(Geometry[])</h4>
@@ -709,7 +739,7 @@ array will create an empty GeometryCollection.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public GeometryCollection CreateGeometryCollection(Geometry[] geometries)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual GeometryCollection CreateGeometryCollection(Geometry[] geometries)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -750,7 +780,7 @@ array will create an empty GeometryCollection.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateLinearRing%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L328">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L332">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLinearRing*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLinearRing">CreateLinearRing()</h4>
@@ -782,7 +812,7 @@ array will create an empty GeometryCollection.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing_NetTopologySuite_Geometries_Coordinate___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateLinearRing(NetTopologySuite.Geometries.Coordinate%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L340">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L344">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLinearRing*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing_NetTopologySuite_Geometries_Coordinate___" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLinearRing(NetTopologySuite.Geometries.Coordinate[])">CreateLinearRing(Coordinate[])</h4>
@@ -829,28 +859,12 @@ linestring. Consecutive points must not be equal.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>If the ring is not closed, or has too few points</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing_NetTopologySuite_Geometries_CoordinateSequence_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateLinearRing(NetTopologySuite.Geometries.CoordinateSequence)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L353">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L357">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLinearRing*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateLinearRing_NetTopologySuite_Geometries_CoordinateSequence_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLinearRing(NetTopologySuite.Geometries.CoordinateSequence)">CreateLinearRing(CoordinateSequence)</h4>
@@ -861,7 +875,7 @@ linestring. Consecutive points must not be equal.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public LinearRing CreateLinearRing(CoordinateSequence coordinates)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual LinearRing CreateLinearRing(CoordinateSequence coordinates)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -897,28 +911,12 @@ linestring. Consecutive points must not be equal.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>If the ring is not closed, or has too few points</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateLineString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateLineString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L299">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L303">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreateLineString_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLineString*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateLineString" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLineString">CreateLineString()</h4>
@@ -950,7 +948,7 @@ linestring. Consecutive points must not be equal.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateLineString_NetTopologySuite_Geometries_Coordinate___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateLineString(NetTopologySuite.Geometries.Coordinate%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L310">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L314">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreateLineString_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLineString*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateLineString_NetTopologySuite_Geometries_Coordinate___" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLineString(NetTopologySuite.Geometries.Coordinate[])">CreateLineString(Coordinate[])</h4>
@@ -1001,7 +999,7 @@ A null or empty array creates an empty LineString.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateLineString_NetTopologySuite_Geometries_CoordinateSequence_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateLineString(NetTopologySuite.Geometries.CoordinateSequence)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L321">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L325">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreateLineString_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLineString*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateLineString_NetTopologySuite_Geometries_CoordinateSequence_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateLineString(NetTopologySuite.Geometries.CoordinateSequence)">CreateLineString(CoordinateSequence)</h4>
@@ -1011,7 +1009,7 @@ A null or empty CoordinateSequence creates an empty LineString.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public LineString CreateLineString(CoordinateSequence coordinates)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual LineString CreateLineString(CoordinateSequence coordinates)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1052,7 +1050,7 @@ A null or empty CoordinateSequence creates an empty LineString.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateMultiLineString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateMultiLineString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L476">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L480">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiLineString_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiLineString*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiLineString" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiLineString">CreateMultiLineString()</h4>
@@ -1084,7 +1082,7 @@ A null or empty CoordinateSequence creates an empty LineString.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateMultiLineString_NetTopologySuite_Geometries_LineString___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateMultiLineString(NetTopologySuite.Geometries.LineString%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L487">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L491">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiLineString_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiLineString*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiLineString_NetTopologySuite_Geometries_LineString___" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiLineString(NetTopologySuite.Geometries.LineString[])">CreateMultiLineString(LineString[])</h4>
@@ -1094,7 +1092,7 @@ array will create an empty MultiLineString.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MultiLineString CreateMultiLineString(LineString[] lineStrings)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual MultiLineString CreateMultiLineString(LineString[] lineStrings)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1135,7 +1133,7 @@ array will create an empty MultiLineString.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateMultiPoint%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L426">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L430">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPoint*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPoint">CreateMultiPoint()</h4>
@@ -1167,7 +1165,7 @@ array will create an empty MultiLineString.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint_NetTopologySuite_Geometries_CoordinateSequence_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateMultiPoint(NetTopologySuite.Geometries.CoordinateSequence)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L459">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L463">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPoint*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint_NetTopologySuite_Geometries_CoordinateSequence_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPoint(NetTopologySuite.Geometries.CoordinateSequence)">CreateMultiPoint(CoordinateSequence)</h4>
@@ -1218,7 +1216,7 @@ A null or empty CoordinateSequence will create an empty MultiPoint.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint_NetTopologySuite_Geometries_Point___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateMultiPoint(NetTopologySuite.Geometries.Point%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L437">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L441">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPoint*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPoint_NetTopologySuite_Geometries_Point___" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPoint(NetTopologySuite.Geometries.Point[])">CreateMultiPoint(Point[])</h4>
@@ -1228,7 +1226,7 @@ A null or empty array will  create an empty MultiPoint.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MultiPoint CreateMultiPoint(Point[] point)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual MultiPoint CreateMultiPoint(Point[] point)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1269,7 +1267,7 @@ A null or empty array will  create an empty MultiPoint.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateMultiPointFromCoords_NetTopologySuite_Geometries_Coordinate___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateMultiPointFromCoords(NetTopologySuite.Geometries.Coordinate%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L448">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L452">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPointFromCoords_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPointFromCoords*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPointFromCoords_NetTopologySuite_Geometries_Coordinate___" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPointFromCoords(NetTopologySuite.Geometries.Coordinate[])">CreateMultiPointFromCoords(Coordinate[])</h4>
@@ -1320,7 +1318,7 @@ A null or empty array will create an empty MultiPoint.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateMultiPolygon.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateMultiPolygon%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L494">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L498">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPolygon_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPolygon*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPolygon" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPolygon">CreateMultiPolygon()</h4>
@@ -1352,7 +1350,7 @@ A null or empty array will create an empty MultiPoint.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreateMultiPolygon_NetTopologySuite_Geometries_Polygon___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreateMultiPolygon(NetTopologySuite.Geometries.Polygon%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L507">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L511">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPolygon_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPolygon*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreateMultiPolygon_NetTopologySuite_Geometries_Polygon___" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreateMultiPolygon(NetTopologySuite.Geometries.Polygon[])">CreateMultiPolygon(Polygon[])</h4>
@@ -1364,7 +1362,7 @@ Specification for SQL.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MultiPolygon CreateMultiPolygon(Polygon[] polygons)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual MultiPolygon CreateMultiPolygon(Polygon[] polygons)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1405,7 +1403,7 @@ Specification for SQL.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreatePoint.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreatePoint%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L270">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L272">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreatePoint_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePoint*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreatePoint" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePoint">CreatePoint()</h4>
@@ -1437,7 +1435,7 @@ Specification for SQL.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreatePoint_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreatePoint(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L281">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L283">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreatePoint_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePoint*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreatePoint_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePoint(NetTopologySuite.Geometries.Coordinate)">CreatePoint(Coordinate)</h4>
@@ -1488,7 +1486,7 @@ A <code>null</code> coordinate creates an empty Geometry.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreatePoint_NetTopologySuite_Geometries_CoordinateSequence_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreatePoint(NetTopologySuite.Geometries.CoordinateSequence)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L292">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L294">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreatePoint_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePoint*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreatePoint_NetTopologySuite_Geometries_CoordinateSequence_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePoint(NetTopologySuite.Geometries.CoordinateSequence)">CreatePoint(CoordinateSequence)</h4>
@@ -1498,7 +1496,7 @@ CoordinateSequence will create an empty Point.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Point CreatePoint(CoordinateSequence coordinates)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual Point CreatePoint(CoordinateSequence coordinates)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1539,7 +1537,7 @@ CoordinateSequence will create an empty Point.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreatePointFromInternalCoord_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreatePointFromInternalCoord(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L75">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L77">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreatePointFromInternalCoord_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePointFromInternalCoord*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreatePointFromInternalCoord_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePointFromInternalCoord(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Geometry)">CreatePointFromInternalCoord(Coordinate, Geometry)</h4>
@@ -1591,7 +1589,7 @@ CoordinateSequence will create an empty Point.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreatePolygon.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreatePolygon%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L360">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L364">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon">CreatePolygon()</h4>
@@ -1623,7 +1621,7 @@ CoordinateSequence will create an empty Point.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_Coordinate___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreatePolygon(NetTopologySuite.Geometries.Coordinate%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L406">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L410">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_Coordinate___" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon(NetTopologySuite.Geometries.Coordinate[])">CreatePolygon(Coordinate[])</h4>
@@ -1670,28 +1668,12 @@ the empty geometry is to be created.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>If the boundary ring is invalid</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_CoordinateSequence_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreatePolygon(NetTopologySuite.Geometries.CoordinateSequence)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L393">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L397">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_CoordinateSequence_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon(NetTopologySuite.Geometries.CoordinateSequence)">CreatePolygon(CoordinateSequence)</h4>
@@ -1738,28 +1720,12 @@ the empty geometry is to be created.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>If the boundary ring is invalid</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_LinearRing_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreatePolygon(NetTopologySuite.Geometries.LinearRing)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L419">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L423">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_LinearRing_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon(NetTopologySuite.Geometries.LinearRing)">CreatePolygon(LinearRing)</h4>
@@ -1806,28 +1772,12 @@ the empty geometry is to be created.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
-        <td><p>If the boundary ring is invalid</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_LinearRing_NetTopologySuite_Geometries_LinearRing___.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.CreatePolygon(NetTopologySuite.Geometries.LinearRing%2CNetTopologySuite.Geometries.LinearRing%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L380">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L384">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_CreatePolygon_NetTopologySuite_Geometries_LinearRing_NetTopologySuite_Geometries_LinearRing___" data-uid="NetTopologySuite.Geometries.GeometryFactory.CreatePolygon(NetTopologySuite.Geometries.LinearRing,NetTopologySuite.Geometries.LinearRing[])">CreatePolygon(LinearRing, LinearRing[])</h4>
@@ -1888,7 +1838,7 @@ the empty point is to be created.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToGeometry_NetTopologySuite_Geometries_Envelope_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToGeometry(NetTopologySuite.Geometries.Envelope)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L231">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L233">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_ToGeometry_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToGeometry*"></a>
   <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToGeometry_NetTopologySuite_Geometries_Envelope_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToGeometry(NetTopologySuite.Geometries.Envelope)">ToGeometry(Envelope)</h4>
@@ -1950,13 +1900,13 @@ If the <code>Envelope</code> is:
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToGeometryArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToGeometryArray(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToGeometryArray_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToGeometryArray(IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L144">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L146">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_ToGeometryArray_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToGeometryArray*"></a>
-  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToGeometryArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToGeometryArray(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">ToGeometryArray(IEnumerable&lt;Geometry&gt;)</h4>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToGeometryArray_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToGeometryArray(IEnumerable{NetTopologySuite.Geometries.Geometry})">ToGeometryArray(IEnumerable&lt;Geometry&gt;)</h4>
   <div class="markdown level1 summary"><p>Converts the <code>IEnumerable</code> to an array.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1975,7 +1925,7 @@ If the <code>Envelope</code> is:
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
         <td><span class="parametername">geometries</span></td>
         <td><p>The <code>IEnumerable</code> of <code>Geometry</code>'s to convert.</p>
 </td>
@@ -2000,13 +1950,13 @@ If the <code>Envelope</code> is:
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToLinearRingArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToLinearRingArray(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToLinearRingArray_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToLinearRingArray(IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L164">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L166">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_ToLinearRingArray_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToLinearRingArray*"></a>
-  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToLinearRingArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToLinearRingArray(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">ToLinearRingArray(IEnumerable&lt;Geometry&gt;)</h4>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToLinearRingArray_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToLinearRingArray(IEnumerable{NetTopologySuite.Geometries.Geometry})">ToLinearRingArray(IEnumerable&lt;Geometry&gt;)</h4>
   <div class="markdown level1 summary"><p>Converts the <code>IEnumerable</code> to an array.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2025,7 +1975,7 @@ If the <code>Envelope</code> is:
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
         <td><span class="parametername">linearRings</span></td>
         <td><p>The <code>IEnumerable</code> of LinearRings to convert.</p>
 </td>
@@ -2050,13 +2000,13 @@ If the <code>Envelope</code> is:
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToLineStringArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToLineStringArray(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToLineStringArray_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToLineStringArray(IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L154">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L156">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_ToLineStringArray_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToLineStringArray*"></a>
-  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToLineStringArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToLineStringArray(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">ToLineStringArray(IEnumerable&lt;Geometry&gt;)</h4>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToLineStringArray_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToLineStringArray(IEnumerable{NetTopologySuite.Geometries.Geometry})">ToLineStringArray(IEnumerable&lt;Geometry&gt;)</h4>
   <div class="markdown level1 summary"><p>Converts the <code>IEnumerable</code> to an array.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2075,7 +2025,7 @@ If the <code>Envelope</code> is:
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
         <td><span class="parametername">lineStrings</span></td>
         <td><p>The <code>IEnumerable</code> of LineStrings to convert.</p>
 </td>
@@ -2100,13 +2050,13 @@ If the <code>Envelope</code> is:
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToMultiLineStringArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToMultiLineStringArray(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToMultiLineStringArray_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToMultiLineStringArray(IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L194">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L196">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_ToMultiLineStringArray_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToMultiLineStringArray*"></a>
-  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToMultiLineStringArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToMultiLineStringArray(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">ToMultiLineStringArray(IEnumerable&lt;Geometry&gt;)</h4>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToMultiLineStringArray_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToMultiLineStringArray(IEnumerable{NetTopologySuite.Geometries.Geometry})">ToMultiLineStringArray(IEnumerable&lt;Geometry&gt;)</h4>
   <div class="markdown level1 summary"><p>Converts the <code>IEnumerable</code> to an array.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2125,7 +2075,7 @@ If the <code>Envelope</code> is:
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
         <td><span class="parametername">multiLineStrings</span></td>
         <td><p>The <code>IEnumerable</code> of MultiLineStrings to convert.</p>
 </td>
@@ -2150,13 +2100,13 @@ If the <code>Envelope</code> is:
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToMultiPointArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToMultiPointArray(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToMultiPointArray_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToMultiPointArray(IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L184">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L186">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_ToMultiPointArray_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToMultiPointArray*"></a>
-  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToMultiPointArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToMultiPointArray(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">ToMultiPointArray(IEnumerable&lt;Geometry&gt;)</h4>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToMultiPointArray_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToMultiPointArray(IEnumerable{NetTopologySuite.Geometries.Geometry})">ToMultiPointArray(IEnumerable&lt;Geometry&gt;)</h4>
   <div class="markdown level1 summary"><p>Converts the <code>IEnumerable</code> to an array.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2175,7 +2125,7 @@ If the <code>Envelope</code> is:
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
         <td><span class="parametername">multiPoints</span></td>
         <td><p>The <code>IEnumerable</code> of MultiPoints to convert.</p>
 </td>
@@ -2200,13 +2150,13 @@ If the <code>Envelope</code> is:
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToMultiPolygonArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToMultiPolygonArray(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToMultiPolygonArray_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToMultiPolygonArray(IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L204">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L206">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_ToMultiPolygonArray_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToMultiPolygonArray*"></a>
-  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToMultiPolygonArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToMultiPolygonArray(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">ToMultiPolygonArray(IEnumerable&lt;Geometry&gt;)</h4>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToMultiPolygonArray_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToMultiPolygonArray(IEnumerable{NetTopologySuite.Geometries.Geometry})">ToMultiPolygonArray(IEnumerable&lt;Geometry&gt;)</h4>
   <div class="markdown level1 summary"><p>Converts the <code>IEnumerable</code> to an array.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2225,7 +2175,7 @@ If the <code>Envelope</code> is:
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
         <td><span class="parametername">multiPolygons</span></td>
         <td><p>The <code>IEnumerable</code> of MultiPolygons to convert.</p>
 </td>
@@ -2250,13 +2200,13 @@ If the <code>Envelope</code> is:
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToPointArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToPointArray(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToPointArray_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToPointArray(IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L130">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L132">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_ToPointArray_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToPointArray*"></a>
-  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToPointArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToPointArray(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">ToPointArray(IEnumerable&lt;Geometry&gt;)</h4>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToPointArray_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToPointArray(IEnumerable{NetTopologySuite.Geometries.Geometry})">ToPointArray(IEnumerable&lt;Geometry&gt;)</h4>
   <div class="markdown level1 summary"><p>Converts the <code>IEnumerable</code> to an array.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2275,7 +2225,7 @@ If the <code>Envelope</code> is:
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
         <td><span class="parametername">points</span></td>
         <td><p>The <code>IEnumerable</code> of Points to convert.</p>
 </td>
@@ -2300,13 +2250,13 @@ If the <code>Envelope</code> is:
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToPolygonArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToPolygonArray(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory_ToPolygonArray_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory.ToPolygonArray(IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L174">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L176">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_GeometryFactory_ToPolygonArray_" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToPolygonArray*"></a>
-  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToPolygonArray_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToPolygonArray(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">ToPolygonArray(IEnumerable&lt;Geometry&gt;)</h4>
+  <h4 id="NetTopologySuite_Geometries_GeometryFactory_ToPolygonArray_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.GeometryFactory.ToPolygonArray(IEnumerable{NetTopologySuite.Geometries.Geometry})">ToPolygonArray(IEnumerable&lt;Geometry&gt;)</h4>
   <div class="markdown level1 summary"><p>Converts the <code>IEnumerable</code> to an array.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2325,7 +2275,7 @@ If the <code>Envelope</code> is:
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
         <td><span class="parametername">polygons</span></td>
         <td><p>The <code>IEnumerable</code> of Polygons to convert.</p>
 </td>
@@ -2359,7 +2309,7 @@ If the <code>Envelope</code> is:
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_GeometryFactory.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.GeometryFactory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/GeometryFactory.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/GeometryFactory.cs/#L21" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

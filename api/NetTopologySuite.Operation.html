@@ -82,7 +82,9 @@
   
   <h1 id="NetTopologySuite_Operation" data-uid="NetTopologySuite.Operation" class="text-break">Namespace NetTopologySuite.Operation
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary">
+<p>Provides classes for implementing operations on geometries</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
@@ -102,6 +104,9 @@ always the empty <a class="xref" href="NetTopologySuite.Geometries.GeometryColle
       <section><p>Tests whether a <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> is simple.
 In general, the SFS specification of simplicity
 follows the rule:</p>
+<ul><li>
+A Geometry is simple if and only if the only self-intersections are at boundary points.
+</li></ul>
 </section>
 </article>
           </div>
@@ -110,6 +115,9 @@ follows the rule:</p>
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/doc/overwrite/namespaces/NetTopologySuite.Operation.md/#L2" class="contribution-link">Improve this Doc</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

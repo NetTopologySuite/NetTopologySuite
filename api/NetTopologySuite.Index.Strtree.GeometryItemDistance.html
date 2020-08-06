@@ -85,6 +85,12 @@
   </h1>
   <div class="markdown level0 summary"><p>An <a class="xref" href="NetTopologySuite.Index.Strtree.IItemDistance-2.html">IItemDistance&lt;T, TItem&gt;</a> function for
 items which are <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> using the <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Distance_NetTopologySuite_Geometries_Geometry_">Distance(Geometry)</a> method.</p>
+<p>
+To make this distance function suitable for
+using to query a single index tree,
+the distance metric is <em>anti-reflexive</em>.
+That is, if the two arguments are the same Geometry object,
+the distance returned is <see cref="!:double.MaxValue"></see>.
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -96,35 +102,11 @@ items which are <a class="xref" href="NetTopologySuite.Geometries.Geometry.html"
     <h5>Implements</h5>
     <div><a class="xref" href="NetTopologySuite.Index.Strtree.IItemDistance-2.html">IItemDistance</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Envelope.html">Envelope</a>, <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Index.Strtree.html">NetTopologySuite.Index.Strtree</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Index_Strtree_GeometryItemDistance_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class GeometryItemDistance : IItemDistance&lt;Envelope, Geometry&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class GeometryItemDistance : object, IItemDistance&lt;Envelope, Geometry&gt;</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -133,7 +115,7 @@ items which are <a class="xref" href="NetTopologySuite.Geometries.Geometry.html"
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_GeometryItemDistance_Distance_NetTopologySuite_Geometries_IBoundable_NetTopologySuite_Geometries_Envelope_NetTopologySuite_Geometries_Geometry__NetTopologySuite_Geometries_IBoundable_NetTopologySuite_Geometries_Envelope_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.GeometryItemDistance.Distance(NetTopologySuite.Geometries.IBoundable%7BNetTopologySuite.Geometries.Envelope%2CNetTopologySuite.Geometries.Geometry%7D%2CNetTopologySuite.Geometries.IBoundable%7BNetTopologySuite.Geometries.Envelope%2CNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Index/Strtree/GeometryItemDistance.cs/#L21">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/GeometryItemDistance.cs/#L27">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_Strtree_GeometryItemDistance_Distance_" data-uid="NetTopologySuite.Index.Strtree.GeometryItemDistance.Distance*"></a>
   <h4 id="NetTopologySuite_Index_Strtree_GeometryItemDistance_Distance_NetTopologySuite_Geometries_IBoundable_NetTopologySuite_Geometries_Envelope_NetTopologySuite_Geometries_Geometry__NetTopologySuite_Geometries_IBoundable_NetTopologySuite_Geometries_Envelope_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Index.Strtree.GeometryItemDistance.Distance(NetTopologySuite.Geometries.IBoundable{NetTopologySuite.Geometries.Envelope,NetTopologySuite.Geometries.Geometry},NetTopologySuite.Geometries.IBoundable{NetTopologySuite.Geometries.Envelope,NetTopologySuite.Geometries.Geometry})">Distance(IBoundable&lt;Envelope, Geometry&gt;, IBoundable&lt;Envelope, Geometry&gt;)</h4>
@@ -185,22 +167,6 @@ using the <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTop
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidcastexception">InvalidCastException</a></td>
-        <td><p>if either item is not a Geometry</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="NetTopologySuite.Index.Strtree.IItemDistance-2.html">IItemDistance&lt;T, TItem&gt;</a>
@@ -216,7 +182,7 @@ using the <a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTop
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_Strtree_GeometryItemDistance.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.Strtree.GeometryItemDistance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Index/Strtree/GeometryItemDistance.cs/#L11" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/Strtree/GeometryItemDistance.cs/#L17" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

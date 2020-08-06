@@ -91,35 +91,11 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">CGAlgorithmsDD</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Algorithm.html">NetTopologySuite.Algorithm</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Algorithm_CGAlgorithmsDD_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class CGAlgorithmsDD</code></pre>
+    <pre><code class="lang-csharp hljs">public static class CGAlgorithmsDD : object</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -128,13 +104,14 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_CGAlgorithmsDD_Intersection_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.CGAlgorithmsDD.Intersection(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/CGAlgorithmsDD.cs/#L143">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/CGAlgorithmsDD.cs/#L145">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_CGAlgorithmsDD_Intersection_" data-uid="NetTopologySuite.Algorithm.CGAlgorithmsDD.Intersection*"></a>
   <h4 id="NetTopologySuite_Algorithm_CGAlgorithmsDD_Intersection_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Algorithm.CGAlgorithmsDD.Intersection(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">Intersection(Coordinate, Coordinate, Coordinate, Coordinate)</h4>
   <div class="markdown level1 summary"><p>Computes an intersection point between two lines
 using DD arithmetic.
-Currently does not handle case of parallel lines.</p>
+If the lines are parallel (either identical
+or separate) a null value is returned.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -154,25 +131,25 @@ Currently does not handle case of parallel lines.</p>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
         <td><span class="parametername">p1</span></td>
-        <td><p>A point of 1st segment</p>
+        <td><p>An endpoint of line segment 1</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
         <td><span class="parametername">p2</span></td>
-        <td><p>Another point of 1st segment</p>
+        <td><p>An endpoint of line segment 1</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
         <td><span class="parametername">q1</span></td>
-        <td><p>A point of 2nd segment</p>
+        <td><p>An endpoint of line segment 2</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
         <td><span class="parametername">q2</span></td>
-        <td><p>Another point of 2nd segment</p>
+        <td><p>An endpoint of line segment 2</p>
 </td>
       </tr>
     </tbody>
@@ -188,7 +165,7 @@ Currently does not handle case of parallel lines.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
-        <td><p>An intersection point if one exists.</p>
+        <td><p>An intersection point if one exists, or <code>null</code> if lines are parallel.</p>
 </td>
       </tr>
     </tbody>
@@ -198,7 +175,7 @@ Currently does not handle case of parallel lines.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_CGAlgorithmsDD_OrientationIndex_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.CGAlgorithmsDD.OrientationIndex(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/CGAlgorithmsDD.cs/#L25">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/CGAlgorithmsDD.cs/#L26">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_CGAlgorithmsDD_OrientationIndex_" data-uid="NetTopologySuite.Algorithm.CGAlgorithmsDD.OrientationIndex*"></a>
   <h4 id="NetTopologySuite_Algorithm_CGAlgorithmsDD_OrientationIndex_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Algorithm.CGAlgorithmsDD.OrientationIndex(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">OrientationIndex(Coordinate, Coordinate, Coordinate)</h4>
@@ -251,7 +228,8 @@ a vector specified by <code>p1-p2</code>.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td></td>
+        <td><ul><li>1 if q is counter-clockwise (left) from p1-p2</li><li>-1 if q is clockwise (right) from p1-p2</li><li>0 if q is collinear with p1-p2</li></ul>
+</td>
       </tr>
     </tbody>
   </table>
@@ -260,7 +238,7 @@ a vector specified by <code>p1-p2</code>.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_CGAlgorithmsDD_SignOfDet2x2_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.CGAlgorithmsDD.SignOfDet2x2(NetTopologySuite.Mathematics.DD%2CNetTopologySuite.Mathematics.DD%2CNetTopologySuite.Mathematics.DD%2CNetTopologySuite.Mathematics.DD)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/CGAlgorithmsDD.cs/#L57">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/CGAlgorithmsDD.cs/#L58">View Source</a>
   </span>
   <a id="NetTopologySuite_Algorithm_CGAlgorithmsDD_SignOfDet2x2_" data-uid="NetTopologySuite.Algorithm.CGAlgorithmsDD.SignOfDet2x2*"></a>
   <h4 id="NetTopologySuite_Algorithm_CGAlgorithmsDD_SignOfDet2x2_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_NetTopologySuite_Mathematics_DD_" data-uid="NetTopologySuite.Algorithm.CGAlgorithmsDD.SignOfDet2x2(NetTopologySuite.Mathematics.DD,NetTopologySuite.Mathematics.DD,NetTopologySuite.Mathematics.DD,NetTopologySuite.Mathematics.DD)">SignOfDet2x2(DD, DD, DD, DD)</h4>
@@ -315,7 +293,8 @@ with the given entries.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td></td>
+        <td><ul><li>-1 if the determinant is negative,</li><li>1 if the determinant is positive,</li><li>0 if the determinant is 0.</li></ul>
+</td>
       </tr>
     </tbody>
   </table>
@@ -330,7 +309,7 @@ with the given entries.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Algorithm_CGAlgorithmsDD.md&amp;value=---%0Auid%3A%20NetTopologySuite.Algorithm.CGAlgorithmsDD%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Algorithm/CGAlgorithmsDD.cs/#L10" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Algorithm/CGAlgorithmsDD.cs/#L11" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -94,10 +94,6 @@ from the index.</p>
     <div class="level1"><a class="xref" href="NetTopologySuite.Geometries.LineSegment.html">LineSegment</a></div>
     <div class="level2"><span class="xref">TaggedLineSegment</span></div>
   </div>
-  <div classs="implements">
-    <h5>Implements</h5>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.LineSegment.html">LineSegment</a>&gt;</div>
-  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -188,6 +184,9 @@ from the index.</p>
       <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_ClosestPoints_NetTopologySuite_Geometries_LineSegment_">LineSegment.ClosestPoints(LineSegment)</a>
     </div>
     <div>
+      <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_Reflect_NetTopologySuite_Geometries_Coordinate_">LineSegment.Reflect(Coordinate)</a>
+    </div>
+    <div>
       <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_Intersection_NetTopologySuite_Geometries_LineSegment_">LineSegment.Intersection(LineSegment)</a>
     </div>
     <div>
@@ -211,24 +210,12 @@ from the index.</p>
     <div>
       <a class="xref" href="NetTopologySuite.Geometries.LineSegment.html#NetTopologySuite_Geometries_LineSegment_GetHashCode">LineSegment.GetHashCode()</a>
     </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Simplify.html">NetTopologySuite.Simplify</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Simplify_TaggedLineSegment_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TaggedLineSegment : LineSegment, IComparable&lt;LineSegment&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class TaggedLineSegment : LineSegment</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -237,7 +224,7 @@ from the index.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Simplify_TaggedLineSegment__ctor_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.TaggedLineSegment.%23ctor(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Simplify/TaggedLineSegment.cs/#L34">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Simplify/TaggedLineSegment.cs/#L34">View Source</a>
   </span>
   <a id="NetTopologySuite_Simplify_TaggedLineSegment__ctor_" data-uid="NetTopologySuite.Simplify.TaggedLineSegment.#ctor*"></a>
   <h4 id="NetTopologySuite_Simplify_TaggedLineSegment__ctor_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Simplify.TaggedLineSegment.#ctor(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">TaggedLineSegment(Coordinate, Coordinate)</h4>
@@ -274,7 +261,7 @@ from the index.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Simplify_TaggedLineSegment__ctor_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Geometry_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.TaggedLineSegment.%23ctor(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Geometry%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Simplify/TaggedLineSegment.cs/#L22">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Simplify/TaggedLineSegment.cs/#L22">View Source</a>
   </span>
   <a id="NetTopologySuite_Simplify_TaggedLineSegment__ctor_" data-uid="NetTopologySuite.Simplify.TaggedLineSegment.#ctor*"></a>
   <h4 id="NetTopologySuite_Simplify_TaggedLineSegment__ctor_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Geometry_System_Int32_" data-uid="NetTopologySuite.Simplify.TaggedLineSegment.#ctor(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Geometry,System.Int32)">TaggedLineSegment(Coordinate, Coordinate, Geometry, Int32)</h4>
@@ -323,7 +310,7 @@ from the index.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Simplify_TaggedLineSegment_Index.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.TaggedLineSegment.Index%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Simplify/TaggedLineSegment.cs/#L45">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Simplify/TaggedLineSegment.cs/#L45">View Source</a>
   </span>
   <a id="NetTopologySuite_Simplify_TaggedLineSegment_Index_" data-uid="NetTopologySuite.Simplify.TaggedLineSegment.Index*"></a>
   <h4 id="NetTopologySuite_Simplify_TaggedLineSegment_Index" data-uid="NetTopologySuite.Simplify.TaggedLineSegment.Index">Index</h4>
@@ -353,7 +340,7 @@ from the index.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Simplify_TaggedLineSegment_Parent.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.TaggedLineSegment.Parent%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Simplify/TaggedLineSegment.cs/#L40">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Simplify/TaggedLineSegment.cs/#L40">View Source</a>
   </span>
   <a id="NetTopologySuite_Simplify_TaggedLineSegment_Parent_" data-uid="NetTopologySuite.Simplify.TaggedLineSegment.Parent*"></a>
   <h4 id="NetTopologySuite_Simplify_TaggedLineSegment_Parent" data-uid="NetTopologySuite.Simplify.TaggedLineSegment.Parent">Parent</h4>
@@ -378,10 +365,6 @@ from the index.</p>
       </tr>
     </tbody>
   </table>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.icomparable-1">System.IComparable&lt;T&gt;</a>
-  </div>
 </article>
           </div>
           
@@ -393,7 +376,7 @@ from the index.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Simplify_TaggedLineSegment.md&amp;value=---%0Auid%3A%20NetTopologySuite.Simplify.TaggedLineSegment%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Simplify/TaggedLineSegment.cs/#L10" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Simplify/TaggedLineSegment.cs/#L10" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

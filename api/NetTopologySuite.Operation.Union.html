@@ -112,6 +112,19 @@ The best situation for using <tt>buffer(0)</tt> is the trivial case
 where there is <em>no</em> overlap between the input geometries.
 However, this case is likely rare in practice.
 </section>
+      <h4><a class="xref" href="NetTopologySuite.Operation.Union.OverlapUnion.html">OverlapUnion</a></h4>
+      <section><p>Unions MultiPolygons efficiently by
+using full topological union only for polygons which may overlap
+by virtue of intersecting the common area of the inputs.
+Other polygons are simply combined with the union result,
+which is much more performant.</p>
+<p>
+This situation is likely to occur during cascaded polygon union,
+since the partitioning of polygons is done heuristically
+and thus may group disjoint polygons which can lie far apart.
+It may also occur in real world data which contains many disjoint polygons
+(e.g.polygons representing parcels on different street blocks).
+</section>
       <h4><a class="xref" href="NetTopologySuite.Operation.Union.PointGeometryUnion.html">PointGeometryUnion</a></h4>
       <section></section>
       <h4><a class="xref" href="NetTopologySuite.Operation.Union.UnaryUnionOp.html">UnaryUnionOp</a></h4>

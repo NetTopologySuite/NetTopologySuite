@@ -91,35 +91,11 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">UnaryUnionOp</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Operation.Union.html">NetTopologySuite.Operation.Union</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Operation_Union_UnaryUnionOp_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class UnaryUnionOp</code></pre>
+    <pre><code class="lang-csharp hljs">public class UnaryUnionOp : object</code></pre>
   </div>
   <h5 id="NetTopologySuite_Operation_Union_UnaryUnionOp_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>
@@ -131,6 +107,16 @@ Heterogeneous <a class="xref" href="NetTopologySuite.Geometries.GeometryCollecti
 </p>
 <p>
 The result obeys the following contract:
+<ul><li>Unioning a set of <a class="xref" href="NetTopologySuite.Geometries.Polygon.html">Polygon</a>s has the effect of merging the areas (i.e. the same effect as iteratively unioning all individual polygons together).</li><li>Unioning a set of <a class="xref" href="NetTopologySuite.Geometries.LineString.html">LineString</a>s has the effect of <strong>fully noding</strong>
+and <strong>dissolving</strong> the input linework.
+In this context &quot;fully noded&quot; means that there will be
+an endpoint or node in the result
+for every endpoint or line segment crossing in the input.
+&quot;Dissolved&quot; means that any duplicate (e.g. coincident) line segments or portions
+of line segments will be reduced to a single line segment in the output.
+This is consistent with the semantics of the
+<a class="xref" href="NetTopologySuite.Geometries.Geometry.html#NetTopologySuite_Geometries_Geometry_Union_NetTopologySuite_Geometries_Geometry_">Union(Geometry)</a> operation.
+If <strong>merged</strong> linework is required, the <a class="xref" href="NetTopologySuite.Operation.Linemerge.LineMerger.html">LineMerger</a> class can be used.</li><li>Unioning a set of <a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a>s has the effect of merging all identical points (producing a set with no duplicates).</li></ul>
 </p>
 <p>
 <code>UnaryUnion</code> always operates on the individual components of MultiGeometries.
@@ -142,10 +128,88 @@ So it is possible to use it to &quot;clean&quot; invalid self-intersecting Multi
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_UnaryUnionOp__ctor_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.UnaryUnionOp.%23ctor(IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Union/UnaryUnionOp.cs/#L95">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Union_UnaryUnionOp__ctor_" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.#ctor*"></a>
+  <h4 id="NetTopologySuite_Operation_Union_UnaryUnionOp__ctor_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.#ctor(IEnumerable{NetTopologySuite.Geometries.Geometry})">UnaryUnionOp(IEnumerable&lt;Geometry&gt;)</h4>
+  <div class="markdown level1 summary"><p>Constructs a unary union operation for an enumeration
+of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s, using the <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a>
+of the input geometries.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnaryUnionOp(IEnumerable&lt;Geometry&gt; geoms)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">geoms</span></td>
+        <td><p>An enumeration of geometries</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_UnaryUnionOp__ctor_IEnumerable_NetTopologySuite_Geometries_Geometry__NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.UnaryUnionOp.%23ctor(IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D%2CNetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Union/UnaryUnionOp.cs/#L107">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Union_UnaryUnionOp__ctor_" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.#ctor*"></a>
+  <h4 id="NetTopologySuite_Operation_Union_UnaryUnionOp__ctor_IEnumerable_NetTopologySuite_Geometries_Geometry__NetTopologySuite_Geometries_GeometryFactory_" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.#ctor(IEnumerable{NetTopologySuite.Geometries.Geometry},NetTopologySuite.Geometries.GeometryFactory)">UnaryUnionOp(IEnumerable&lt;Geometry&gt;, GeometryFactory)</h4>
+  <div class="markdown level1 summary"><p>Constructs a unary union operation for an enumeration
+of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s. <p>
+If no input geometries were provided but a <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a> was provided,</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnaryUnionOp(IEnumerable&lt;Geometry&gt; geoms, GeometryFactory geomFact)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">geoms</span></td>
+        <td><p>An enumeration of geometries</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a></td>
+        <td><span class="parametername">geomFact</span></td>
+        <td><p>The geometry factory to use if the enumeration is empty</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_UnaryUnionOp__ctor_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.UnaryUnionOp.%23ctor(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Union/UnaryUnionOp.cs/#L122">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Union/UnaryUnionOp.cs/#L118">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Union_UnaryUnionOp__ctor_" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.#ctor*"></a>
   <h4 id="NetTopologySuite_Operation_Union_UnaryUnionOp__ctor_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.#ctor(NetTopologySuite.Geometries.Geometry)">UnaryUnionOp(Geometry)</h4>
@@ -175,84 +239,6 @@ So it is possible to use it to &quot;clean&quot; invalid self-intersecting Multi
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_UnaryUnionOp__ctor_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.UnaryUnionOp.%23ctor(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Union/UnaryUnionOp.cs/#L99">View Source</a>
-  </span>
-  <a id="NetTopologySuite_Operation_Union_UnaryUnionOp__ctor_" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.#ctor*"></a>
-  <h4 id="NetTopologySuite_Operation_Union_UnaryUnionOp__ctor_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.#ctor(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">UnaryUnionOp(IEnumerable&lt;Geometry&gt;)</h4>
-  <div class="markdown level1 summary"><p>Constructs a unary union operation for an enumeration
-of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s, using the <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a>
-of the input geometries.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UnaryUnionOp(IEnumerable&lt;Geometry&gt; geoms)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
-        <td><span class="parametername">geoms</span></td>
-        <td><p>An enumeration of geometries</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_UnaryUnionOp__ctor_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.UnaryUnionOp.%23ctor(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D%2CNetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Union/UnaryUnionOp.cs/#L111">View Source</a>
-  </span>
-  <a id="NetTopologySuite_Operation_Union_UnaryUnionOp__ctor_" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.#ctor*"></a>
-  <h4 id="NetTopologySuite_Operation_Union_UnaryUnionOp__ctor_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__NetTopologySuite_Geometries_GeometryFactory_" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.#ctor(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry},NetTopologySuite.Geometries.GeometryFactory)">UnaryUnionOp(IEnumerable&lt;Geometry&gt;, GeometryFactory)</h4>
-  <div class="markdown level1 summary"><p>Constructs a unary union operation for an enumeration
-of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s. <p>
-If no input geometries were provided but a <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a> was provided,</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UnaryUnionOp(IEnumerable&lt;Geometry&gt; geoms, GeometryFactory geomFact)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
-        <td><span class="parametername">geoms</span></td>
-        <td><p>An enumeration of geometries</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a></td>
-        <td><span class="parametername">geomFact</span></td>
-        <td><p>The geometry factory to use if the enumeration is empty</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -260,14 +246,13 @@ If no input geometries were provided but a <a class="xref" href="NetTopologySuit
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_UnaryUnionOp_Union.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.UnaryUnionOp.Union%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Union/UnaryUnionOp.cs/#L159">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Union/UnaryUnionOp.cs/#L151">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Union_UnaryUnionOp_Union_" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.Union*"></a>
   <h4 id="NetTopologySuite_Operation_Union_UnaryUnionOp_Union" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.Union">Union()</h4>
-  <div class="markdown level1 summary"><p>Gets the union of the input geometries.
-If no input geometries were provided but a <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a> was provided,
-an empty <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a> is returned.</p>
-<p>Otherwise, the return value is <code>null</code>
+  <div class="markdown level1 summary"><p>Gets the union of the input geometries.</p>
+<p>
+The result of empty input is determined as follows:
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -285,9 +270,119 @@ an empty <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.ht
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
-        <td><p>A Geometry containing the union
-or an empty <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a> if no geometries were provided in the input,
-or <code>null</code> if not GeometryFactory was provided</p>
+        <td><p>A Geometry containing the union,
+or an empty atomic geometry, or an empty <code>GEOMETRYCOLLECTION</code>,
+or<code>null</code> if no GeometryFactory was provided</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_UnaryUnionOp_Union_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.UnaryUnionOp.Union(IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Union/UnaryUnionOp.cs/#L53">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Union_UnaryUnionOp_Union_" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.Union*"></a>
+  <h4 id="NetTopologySuite_Operation_Union_UnaryUnionOp_Union_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.Union(IEnumerable{NetTopologySuite.Geometries.Geometry})">Union(IEnumerable&lt;Geometry&gt;)</h4>
+  <div class="markdown level1 summary"><p>Computes the geometric union of a <see cref="!:IEnumerable&lt;Geometry>"></see></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry Union(IEnumerable&lt;Geometry&gt; geoms)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">geoms</span></td>
+        <td><p>A collection of geometries</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The union of the geometries,
+or <code>null</code> if the input is empty</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_UnaryUnionOp_Union_IEnumerable_NetTopologySuite_Geometries_Geometry__NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.UnaryUnionOp.Union(IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D%2CNetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Union/UnaryUnionOp.cs/#L68">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Operation_Union_UnaryUnionOp_Union_" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.Union*"></a>
+  <h4 id="NetTopologySuite_Operation_Union_UnaryUnionOp_Union_IEnumerable_NetTopologySuite_Geometries_Geometry__NetTopologySuite_Geometries_GeometryFactory_" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.Union(IEnumerable{NetTopologySuite.Geometries.Geometry},NetTopologySuite.Geometries.GeometryFactory)">Union(IEnumerable&lt;Geometry&gt;, GeometryFactory)</h4>
+  <div class="markdown level1 summary"><p>Computes the geometric union of a <see cref="!:IEnumerable&lt;Geometry>"></see><p>
+If no input geometries were provided but a <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a> was provided,
+an empty <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a> is returned.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Geometry Union(IEnumerable&lt;Geometry&gt; geoms, GeometryFactory geomFact)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="parametername">geoms</span></td>
+        <td><p>A collection of geometries</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a></td>
+        <td><span class="parametername">geomFact</span></td>
+        <td><p>The geometry factory to use if the collection is empty</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
+        <td><p>The union of the geometries
+or an empty GEOMETRYCOLLECTION</p>
 </td>
       </tr>
     </tbody>
@@ -297,7 +392,7 @@ or <code>null</code> if not GeometryFactory was provided</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_UnaryUnionOp_Union_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.UnaryUnionOp.Union(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Union/UnaryUnionOp.cs/#L81">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Union/UnaryUnionOp.cs/#L80">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Union_UnaryUnionOp_Union_" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.Union*"></a>
   <h4 id="NetTopologySuite_Operation_Union_UnaryUnionOp_Union_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.Union(NetTopologySuite.Geometries.Geometry)">Union(Geometry)</h4>
@@ -344,116 +439,6 @@ or an empty GEOMETRYCOLLECTION</p>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_UnaryUnionOp_Union_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.UnaryUnionOp.Union(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Union/UnaryUnionOp.cs/#L54">View Source</a>
-  </span>
-  <a id="NetTopologySuite_Operation_Union_UnaryUnionOp_Union_" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.Union*"></a>
-  <h4 id="NetTopologySuite_Operation_Union_UnaryUnionOp_Union_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.Union(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry})">Union(IEnumerable&lt;Geometry&gt;)</h4>
-  <div class="markdown level1 summary"><p>Computes the geometric union of a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a></p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Geometry Union(IEnumerable&lt;Geometry&gt; geoms)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
-        <td><span class="parametername">geoms</span></td>
-        <td><p>A collection of geometries</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
-        <td><p>The union of the geometries,
-or <code>null</code> if the input is empty</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_UnaryUnionOp_Union_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__NetTopologySuite_Geometries_GeometryFactory_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.UnaryUnionOp.Union(System.Collections.Generic.IEnumerable%7BNetTopologySuite.Geometries.Geometry%7D%2CNetTopologySuite.Geometries.GeometryFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Union/UnaryUnionOp.cs/#L69">View Source</a>
-  </span>
-  <a id="NetTopologySuite_Operation_Union_UnaryUnionOp_Union_" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.Union*"></a>
-  <h4 id="NetTopologySuite_Operation_Union_UnaryUnionOp_Union_System_Collections_Generic_IEnumerable_NetTopologySuite_Geometries_Geometry__NetTopologySuite_Geometries_GeometryFactory_" data-uid="NetTopologySuite.Operation.Union.UnaryUnionOp.Union(System.Collections.Generic.IEnumerable{NetTopologySuite.Geometries.Geometry},NetTopologySuite.Geometries.GeometryFactory)">Union(IEnumerable&lt;Geometry&gt;, GeometryFactory)</h4>
-  <div class="markdown level1 summary"><p>Computes the geometric union of a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a><p>
-If no input geometries were provided but a <a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a> was provided,
-an empty <a class="xref" href="NetTopologySuite.Geometries.GeometryCollection.html">GeometryCollection</a> is returned.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Geometry Union(IEnumerable&lt;Geometry&gt; geoms, GeometryFactory geomFact)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
-        <td><span class="parametername">geoms</span></td>
-        <td><p>A collection of geometries</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="NetTopologySuite.Geometries.GeometryFactory.html">GeometryFactory</a></td>
-        <td><span class="parametername">geomFact</span></td>
-        <td><p>The geometry factory to use if the collection is empty</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a></td>
-        <td><p>The union of the geometries
-or an empty GEOMETRYCOLLECTION</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
 </article>
           </div>
           
@@ -465,7 +450,7 @@ or an empty GEOMETRYCOLLECTION</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_UnaryUnionOp.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.UnaryUnionOp%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Union/UnaryUnionOp.cs/#L46" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Union/UnaryUnionOp.cs/#L45" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

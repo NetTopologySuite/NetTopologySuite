@@ -91,32 +91,11 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">Vector3D</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Mathematics.html">NetTopologySuite.Mathematics</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Mathematics_Vector3D_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Vector3D</code></pre>
+    <pre><code class="lang-csharp hljs">public class Vector3D : object</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -125,15 +104,17 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D__ctor_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.%23ctor(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Mathematics/Vector3D.cs/#L57">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L83">View Source</a>
   </span>
   <a id="NetTopologySuite_Mathematics_Vector3D__ctor_" data-uid="NetTopologySuite.Mathematics.Vector3D.#ctor*"></a>
   <h4 id="NetTopologySuite_Mathematics_Vector3D__ctor_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Mathematics.Vector3D.#ctor(NetTopologySuite.Geometries.Coordinate)">Vector3D(Coordinate)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates a new 3D vector from a <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>.<p> The coordinate should have
+the X,Y and Z ordinates specified.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Vector3D(Coordinate v)</code></pre>
+    <pre><code class="lang-csharp hljs">public Vector3D(Coordinate coord)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -147,8 +128,9 @@
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
-        <td><span class="parametername">v</span></td>
-        <td></td>
+        <td><span class="parametername">coord</span></td>
+        <td><p>The coordinate to copy</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -157,11 +139,13 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D__ctor_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.%23ctor(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Mathematics/Vector3D.cs/#L84">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L97">View Source</a>
   </span>
   <a id="NetTopologySuite_Mathematics_Vector3D__ctor_" data-uid="NetTopologySuite.Mathematics.Vector3D.#ctor*"></a>
   <h4 id="NetTopologySuite_Mathematics_Vector3D__ctor_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Mathematics.Vector3D.#ctor(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">Vector3D(Coordinate, Coordinate)</h4>
-  <div class="markdown level1 summary"><p>Creates a vector, that is the difference of <code data-dev-comment-type="paramref" class="paramref">to</code> and <code data-dev-comment-type="paramref" class="paramref">from</code></p>
+  <div class="markdown level1 summary"><p>Creates a vector with the direction and magnitude
+of the difference between the <code data-dev-comment-type="paramref" class="paramref">to</code>
+and <code data-dev-comment-type="paramref" class="paramref">from</code> <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>s.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -197,11 +181,11 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D__ctor_System_Double_System_Double_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.%23ctor(System.Double%2CSystem.Double%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Mathematics/Vector3D.cs/#L97">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L110">View Source</a>
   </span>
   <a id="NetTopologySuite_Mathematics_Vector3D__ctor_" data-uid="NetTopologySuite.Mathematics.Vector3D.#ctor*"></a>
   <h4 id="NetTopologySuite_Mathematics_Vector3D__ctor_System_Double_System_Double_System_Double_" data-uid="NetTopologySuite.Mathematics.Vector3D.#ctor(System.Double,System.Double,System.Double)">Vector3D(Double, Double, Double)</h4>
-  <div class="markdown level1 summary"><p>Creates a vector with the ordinates <code data-dev-comment-type="paramref" class="paramref">x</code>, <code data-dev-comment-type="paramref" class="paramref">y</code> and <code data-dev-comment-type="paramref" class="paramref">z</code></p>
+  <div class="markdown level1 summary"><p>Creates a vector with the given <code data-dev-comment-type="paramref" class="paramref">x</code>, <code data-dev-comment-type="paramref" class="paramref">y</code> and <code data-dev-comment-type="paramref" class="paramref">z</code> components</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -221,19 +205,19 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
         <td><span class="parametername">x</span></td>
-        <td><p>The x-ordinate</p>
+        <td><p>The x component</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
         <td><span class="parametername">y</span></td>
-        <td><p>The y-ordinate</p>
+        <td><p>The y component</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
         <td><span class="parametername">z</span></td>
-        <td><p>The z-ordinate</p>
+        <td><p>The z component</p>
 </td>
       </tr>
     </tbody>
@@ -245,7 +229,7 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D_X.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.X%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Mathematics/Vector3D.cs/#L107">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L120">View Source</a>
   </span>
   <a id="NetTopologySuite_Mathematics_Vector3D_X_" data-uid="NetTopologySuite.Mathematics.Vector3D.X*"></a>
   <h4 id="NetTopologySuite_Mathematics_Vector3D_X" data-uid="NetTopologySuite.Mathematics.Vector3D.X">X</h4>
@@ -276,7 +260,7 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D_Y.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.Y%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Mathematics/Vector3D.cs/#L112">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L125">View Source</a>
   </span>
   <a id="NetTopologySuite_Mathematics_Vector3D_Y_" data-uid="NetTopologySuite.Mathematics.Vector3D.Y*"></a>
   <h4 id="NetTopologySuite_Mathematics_Vector3D_Y" data-uid="NetTopologySuite.Mathematics.Vector3D.Y">Y</h4>
@@ -307,7 +291,7 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D_Z.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.Z%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Mathematics/Vector3D.cs/#L117">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L130">View Source</a>
   </span>
   <a id="NetTopologySuite_Mathematics_Vector3D_Z_" data-uid="NetTopologySuite.Mathematics.Vector3D.Z*"></a>
   <h4 id="NetTopologySuite_Mathematics_Vector3D_Z" data-uid="NetTopologySuite.Mathematics.Vector3D.Z">Z</h4>
@@ -337,14 +321,68 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D_Add_NetTopologySuite_Mathematics_Vector3D_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.Add(NetTopologySuite.Mathematics.Vector3D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L138">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_Vector3D_Add_" data-uid="NetTopologySuite.Mathematics.Vector3D.Add*"></a>
+  <h4 id="NetTopologySuite_Mathematics_Vector3D_Add_NetTopologySuite_Mathematics_Vector3D_" data-uid="NetTopologySuite.Mathematics.Vector3D.Add(NetTopologySuite.Mathematics.Vector3D)">Add(Vector3D)</h4>
+  <div class="markdown level1 summary"><p>Computes a vector which is the sum
+of this vector and the given vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3D Add(Vector3D v)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.Vector3D.html">Vector3D</a></td>
+        <td><span class="parametername">v</span></td>
+        <td><p>The vector to add</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.Vector3D.html">Vector3D</a></td>
+        <td><p>The sum of this and <code>v</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D_Create_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.Create(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Mathematics/Vector3D.cs/#L52">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L56">View Source</a>
   </span>
   <a id="NetTopologySuite_Mathematics_Vector3D_Create_" data-uid="NetTopologySuite.Mathematics.Vector3D.Create*"></a>
   <h4 id="NetTopologySuite_Mathematics_Vector3D_Create_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Mathematics.Vector3D.Create(NetTopologySuite.Geometries.Coordinate)">Create(Coordinate)</h4>
-  <div class="markdown level1 summary"><p>Creates a new vector from a <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>.</p>
+  <div class="markdown level1 summary"><p>Creates a vector from a 3D <a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>.</p>
+<p>
+The coordinate should have the
+X,Y and Z ordinates specified.
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -390,7 +428,7 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D_Create_System_Double_System_Double_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.Create(System.Double%2CSystem.Double%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Mathematics/Vector3D.cs/#L42">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L43">View Source</a>
   </span>
   <a id="NetTopologySuite_Mathematics_Vector3D_Create_" data-uid="NetTopologySuite.Mathematics.Vector3D.Create*"></a>
   <h4 id="NetTopologySuite_Mathematics_Vector3D_Create_System_Double_System_Double_System_Double_" data-uid="NetTopologySuite.Mathematics.Vector3D.Create(System.Double,System.Double,System.Double)">Create(Double, Double, Double)</h4>
@@ -449,10 +487,62 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D_Divide_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.Divide(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L161">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_Vector3D_Divide_" data-uid="NetTopologySuite.Mathematics.Vector3D.Divide*"></a>
+  <h4 id="NetTopologySuite_Mathematics_Vector3D_Divide_System_Double_" data-uid="NetTopologySuite.Mathematics.Vector3D.Divide(System.Double)">Divide(Double)</h4>
+  <div class="markdown level1 summary"><p>Creates a new vector which has the same direction
+and with length equals to the length of this vector
+divided by the scalar value <code>d</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3D Divide(double d)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.double">Double</a></td>
+        <td><span class="parametername">d</span></td>
+        <td><p>The scalar divisor</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.Vector3D.html">Vector3D</a></td>
+        <td><p>A new vector with divided length</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D_Dot_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.Dot(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Mathematics/Vector3D.cs/#L70">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L68">View Source</a>
   </span>
   <a id="NetTopologySuite_Mathematics_Vector3D_Dot_" data-uid="NetTopologySuite.Mathematics.Vector3D.Dot*"></a>
   <h4 id="NetTopologySuite_Mathematics_Vector3D_Dot_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Mathematics.Vector3D.Dot(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">Dot(Coordinate, Coordinate)</h4>
@@ -508,7 +598,7 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D_Dot_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.Dot(NetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate%2CNetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Mathematics/Vector3D.cs/#L23">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L24">View Source</a>
   </span>
   <a id="NetTopologySuite_Mathematics_Vector3D_Dot_" data-uid="NetTopologySuite.Mathematics.Vector3D.Dot*"></a>
   <h4 id="NetTopologySuite_Mathematics_Vector3D_Dot_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Mathematics.Vector3D.Dot(NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate,NetTopologySuite.Geometries.Coordinate)">Dot(Coordinate, Coordinate, Coordinate, Coordinate)</h4>
@@ -532,25 +622,25 @@
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
         <td><span class="parametername">A</span></td>
-        <td><p>A coordinate</p>
+        <td><p>The start point of the 1st vector</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
         <td><span class="parametername">B</span></td>
-        <td><p>A coordinate</p>
+        <td><p>The end point of the 1st vector</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
         <td><span class="parametername">C</span></td>
-        <td><p>A coordinate</p>
+        <td><p>The start point of the 2nd vector</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
         <td><span class="parametername">D</span></td>
-        <td><p>A coordinate</p>
+        <td><p>The end point of the 2nd vector</p>
 </td>
       </tr>
     </tbody>
@@ -576,7 +666,7 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D_Dot_NetTopologySuite_Mathematics_Vector3D_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.Dot(NetTopologySuite.Mathematics.Vector3D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Mathematics/Vector3D.cs/#L124">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L171">View Source</a>
   </span>
   <a id="NetTopologySuite_Mathematics_Vector3D_Dot_" data-uid="NetTopologySuite.Mathematics.Vector3D.Dot*"></a>
   <h4 id="NetTopologySuite_Mathematics_Vector3D_Dot_NetTopologySuite_Mathematics_Vector3D_" data-uid="NetTopologySuite.Mathematics.Vector3D.Dot(NetTopologySuite.Mathematics.Vector3D)">Dot(Vector3D)</h4>
@@ -622,14 +712,91 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D_Equals_System_Object_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L228">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_Vector3D_Equals_" data-uid="NetTopologySuite.Mathematics.Vector3D.Equals*"></a>
+  <h4 id="NetTopologySuite_Mathematics_Vector3D_Equals_System_Object_" data-uid="NetTopologySuite.Mathematics.Vector3D.Equals(System.Object)">Equals(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object o)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">o</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D_GetHashCode.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L237">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_Vector3D_GetHashCode_" data-uid="NetTopologySuite.Mathematics.Vector3D.GetHashCode*"></a>
+  <h4 id="NetTopologySuite_Mathematics_Vector3D_GetHashCode" data-uid="NetTopologySuite.Mathematics.Vector3D.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D_Length.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.Length%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Mathematics/Vector3D.cs/#L133">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L181">View Source</a>
   </span>
   <a id="NetTopologySuite_Mathematics_Vector3D_Length_" data-uid="NetTopologySuite.Mathematics.Vector3D.Length*"></a>
   <h4 id="NetTopologySuite_Mathematics_Vector3D_Length" data-uid="NetTopologySuite.Mathematics.Vector3D.Length">Length()</h4>
-  <div class="markdown level1 summary"><p>Function to compute the length of this vector</p>
+  <div class="markdown level1 summary"><p>Computes the length of this vector</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -657,11 +824,11 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D_Length_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.Length(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Mathematics/Vector3D.cs/#L143">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L191">View Source</a>
   </span>
   <a id="NetTopologySuite_Mathematics_Vector3D_Length_" data-uid="NetTopologySuite.Mathematics.Vector3D.Length*"></a>
   <h4 id="NetTopologySuite_Mathematics_Vector3D_Length_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Mathematics.Vector3D.Length(NetTopologySuite.Geometries.Coordinate)">Length(Coordinate)</h4>
-  <div class="markdown level1 summary"><p>Function to compute the length of vector <code data-dev-comment-type="paramref" class="paramref">v</code>.</p>
+  <div class="markdown level1 summary"><p>Computes the length of vector <code data-dev-comment-type="paramref" class="paramref">v</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -681,7 +848,7 @@
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
         <td><span class="parametername">v</span></td>
-        <td><p>A coordinate, treated as vector</p>
+        <td><p>A coordinate representing a 3D Vector</p>
 </td>
       </tr>
     </tbody>
@@ -707,11 +874,12 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D_Normalize.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.Normalize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Mathematics/Vector3D.cs/#L152">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L201">View Source</a>
   </span>
   <a id="NetTopologySuite_Mathematics_Vector3D_Normalize_" data-uid="NetTopologySuite.Mathematics.Vector3D.Normalize*"></a>
   <h4 id="NetTopologySuite_Mathematics_Vector3D_Normalize" data-uid="NetTopologySuite.Mathematics.Vector3D.Normalize">Normalize()</h4>
-  <div class="markdown level1 summary"><p>Function to compute a normalized form of this vector</p>
+  <div class="markdown level1 summary"><p>Computes a vector having identical direction
+but normalized to have length 1.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -729,7 +897,7 @@
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Mathematics.Vector3D.html">Vector3D</a></td>
-        <td><p>A normalized form of this vector</p>
+        <td><p>A new normalized vector</p>
 </td>
       </tr>
     </tbody>
@@ -739,11 +907,12 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D_Normalize_NetTopologySuite_Geometries_Coordinate_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.Normalize(NetTopologySuite.Geometries.Coordinate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Mathematics/Vector3D.cs/#L175">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L215">View Source</a>
   </span>
   <a id="NetTopologySuite_Mathematics_Vector3D_Normalize_" data-uid="NetTopologySuite.Mathematics.Vector3D.Normalize*"></a>
   <h4 id="NetTopologySuite_Mathematics_Vector3D_Normalize_NetTopologySuite_Geometries_Coordinate_" data-uid="NetTopologySuite.Mathematics.Vector3D.Normalize(NetTopologySuite.Geometries.Coordinate)">Normalize(Coordinate)</h4>
-  <div class="markdown level1 summary"><p>Function to compute a normalized form of vector <code data-dev-comment-type="paramref" class="paramref">v</code>.</p>
+  <div class="markdown level1 summary"><p>Computes a vector having identical direction as <code>v</code>
+but normalized to have length 1.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -763,7 +932,7 @@
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
         <td><span class="parametername">v</span></td>
-        <td><p>A coordinate vector</p>
+        <td><p>A coordinate representing a 3D vector</p>
 </td>
       </tr>
     </tbody>
@@ -779,7 +948,58 @@
     <tbody>
       <tr>
         <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a></td>
-        <td><p>A normalized form of <code data-dev-comment-type="paramref" class="paramref">v</code></p>
+        <td><p>A coordinate representing the normalized vector</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D_Subtract_NetTopologySuite_Mathematics_Vector3D_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.Subtract(NetTopologySuite.Mathematics.Vector3D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L149">View Source</a>
+  </span>
+  <a id="NetTopologySuite_Mathematics_Vector3D_Subtract_" data-uid="NetTopologySuite.Mathematics.Vector3D.Subtract*"></a>
+  <h4 id="NetTopologySuite_Mathematics_Vector3D_Subtract_NetTopologySuite_Mathematics_Vector3D_" data-uid="NetTopologySuite.Mathematics.Vector3D.Subtract(NetTopologySuite.Mathematics.Vector3D)">Subtract(Vector3D)</h4>
+  <div class="markdown level1 summary"><p>Computes a vector which is the difference
+of this vector and the given vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3D Subtract(Vector3D v)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.Vector3D.html">Vector3D</a></td>
+        <td><span class="parametername">v</span></td>
+        <td><p>The vector to subtract</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Mathematics.Vector3D.html">Vector3D</a></td>
+        <td><p>The difference of this and <code>v</code></p>
 </td>
       </tr>
     </tbody>
@@ -789,7 +1009,7 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D_ToString.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Mathematics/Vector3D.cs/#L182">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L222">View Source</a>
   </span>
   <a id="NetTopologySuite_Mathematics_Vector3D_ToString_" data-uid="NetTopologySuite.Mathematics.Vector3D.ToString*"></a>
   <h4 id="NetTopologySuite_Mathematics_Vector3D_ToString" data-uid="NetTopologySuite.Mathematics.Vector3D.ToString">ToString()</h4>
@@ -814,8 +1034,6 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a></div>
 </article>
           </div>
           
@@ -827,7 +1045,7 @@
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Mathematics_Vector3D.md&amp;value=---%0Auid%3A%20NetTopologySuite.Mathematics.Vector3D%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Mathematics/Vector3D.cs/#L11" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Mathematics/Vector3D.cs/#L12" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

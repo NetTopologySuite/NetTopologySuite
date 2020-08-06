@@ -112,35 +112,11 @@ of chains to obtain fast performance.
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">MonotoneChainIndexer</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.GeometriesGraph.Index.html">NetTopologySuite.GeometriesGraph.Index</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_GeometriesGraph_Index_MonotoneChainIndexer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MonotoneChainIndexer</code></pre>
+    <pre><code class="lang-csharp hljs">public class MonotoneChainIndexer : object</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -149,7 +125,7 @@ of chains to obtain fast performance.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_Index_MonotoneChainIndexer_GetChainStartIndices_NetTopologySuite_Geometries_Coordinate___.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.Index.MonotoneChainIndexer.GetChainStartIndices(NetTopologySuite.Geometries.Coordinate%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/Index/MonotoneChainIndexer.cs/#L45">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/Index/MonotoneChainIndexer.cs/#L40">View Source</a>
   </span>
   <a id="NetTopologySuite_GeometriesGraph_Index_MonotoneChainIndexer_GetChainStartIndices_" data-uid="NetTopologySuite.GeometriesGraph.Index.MonotoneChainIndexer.GetChainStartIndices*"></a>
   <h4 id="NetTopologySuite_GeometriesGraph_Index_MonotoneChainIndexer_GetChainStartIndices_NetTopologySuite_Geometries_Coordinate___" data-uid="NetTopologySuite.GeometriesGraph.Index.MonotoneChainIndexer.GetChainStartIndices(NetTopologySuite.Geometries.Coordinate[])">GetChainStartIndices(Coordinate[])</h4>
@@ -158,6 +134,53 @@ of chains to obtain fast performance.
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public int[] GetChainStartIndices(Coordinate[] pts)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="NetTopologySuite.Geometries.Coordinate.html">Coordinate</a>[]</td>
+        <td><span class="parametername">pts</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_Index_MonotoneChainIndexer_OLDGetChainStartIndices_NetTopologySuite_Geometries_Coordinate___.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.Index.MonotoneChainIndexer.OLDGetChainStartIndices(NetTopologySuite.Geometries.Coordinate%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/Index/MonotoneChainIndexer.cs/#L63">View Source</a>
+  </span>
+  <a id="NetTopologySuite_GeometriesGraph_Index_MonotoneChainIndexer_OLDGetChainStartIndices_" data-uid="NetTopologySuite.GeometriesGraph.Index.MonotoneChainIndexer.OLDGetChainStartIndices*"></a>
+  <h4 id="NetTopologySuite_GeometriesGraph_Index_MonotoneChainIndexer_OLDGetChainStartIndices_NetTopologySuite_Geometries_Coordinate___" data-uid="NetTopologySuite.GeometriesGraph.Index.MonotoneChainIndexer.OLDGetChainStartIndices(NetTopologySuite.Geometries.Coordinate[])">OLDGetChainStartIndices(Coordinate[])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int[] OLDGetChainStartIndices(Coordinate[] pts)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -202,7 +225,7 @@ of chains to obtain fast performance.
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_GeometriesGraph_Index_MonotoneChainIndexer.md&amp;value=---%0Auid%3A%20NetTopologySuite.GeometriesGraph.Index.MonotoneChainIndexer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/GeometriesGraph/Index/MonotoneChainIndexer.cs/#L31" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/GeometriesGraph/Index/MonotoneChainIndexer.cs/#L31" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

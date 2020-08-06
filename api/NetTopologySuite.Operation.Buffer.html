@@ -82,7 +82,9 @@
   
   <h1 id="NetTopologySuite_Operation_Buffer" data-uid="NetTopologySuite.Operation.Buffer" class="text-break">Namespace NetTopologySuite.Operation.Buffer
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary">
+<p>Provides classes for computing buffers of geometries</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
@@ -98,12 +100,13 @@
 specify how a buffer should be constructed.</p>
 <p>
 The parameters allow control over:
+<ul><li>Quadrant segments (accuracy of approximation for circular arcs)</li><li>End Cap style</li><li>Join style</li><li>Mitre limit</li><li>whether the buffer is single-sided</li></ul>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Operation.Buffer.OffsetCurveBuilder.html">OffsetCurveBuilder</a></h4>
       <section><p>Computes the raw offset curve for a
 single <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> component (ring, line or point).
 A raw offset curve line is not noded -
-it may contain self-intersections (and usually will).
+it may contain self-intersections (and usually will).g
 The final buffer polygon is computed by forming a topological graph
 of all the noded raw curves and tracing outside contours.
 The points in the raw curve are rounded
@@ -118,6 +121,13 @@ Raw curves need to be noded together and polygonized to form the final buffer ar
 </section>
       <h4><a class="xref" href="NetTopologySuite.Operation.Buffer.OldOffsetCurveBuilder.html">OldOffsetCurveBuilder</a></h4>
       <section><p>Computes the raw offset curve for a single <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> component (ring, line or point).</p>
+</section>
+      <h4><a class="xref" href="NetTopologySuite.Operation.Buffer.VariableBuffer.html">VariableBuffer</a></h4>
+      <section><p>Creates a buffer polygon with a varying buffer distance
+at each vertex along a line.</p>
+<p>
+Only single lines are supported as input, since buffer widths
+generally need to be specified individually for each line.
 </section>
     <h3 id="enums">Enums
   </h3>
@@ -134,6 +144,9 @@ Raw curves need to be noded together and polygonized to form the final buffer ar
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/doc/overwrite/namespaces/NetTopologySuite.Operation.Buffer.md/#L2" class="contribution-link">Improve this Doc</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

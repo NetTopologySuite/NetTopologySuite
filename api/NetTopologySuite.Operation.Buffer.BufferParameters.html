@@ -87,6 +87,7 @@
 specify how a buffer should be constructed.</p>
 <p>
 The parameters allow control over:
+<ul><li>Quadrant segments (accuracy of approximation for circular arcs)</li><li>End Cap style</li><li>Join style</li><li>Mitre limit</li><li>whether the buffer is single-sided</li></ul>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -94,35 +95,11 @@ The parameters allow control over:
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">BufferParameters</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Operation.Buffer.html">NetTopologySuite.Operation.Buffer</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Operation_Buffer_BufferParameters_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class BufferParameters</code></pre>
+    <pre><code class="lang-csharp hljs">public class BufferParameters : object</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -131,7 +108,7 @@ The parameters allow control over:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferParameters__ctor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferParameters.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L51">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L51">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Buffer_BufferParameters__ctor_" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.#ctor*"></a>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferParameters__ctor" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.#ctor">BufferParameters()</h4>
@@ -147,7 +124,7 @@ The parameters allow control over:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferParameters__ctor_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferParameters.%23ctor(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L59">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L59">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Buffer_BufferParameters__ctor_" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.#ctor*"></a>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferParameters__ctor_System_Int32_" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.#ctor(System.Int32)">BufferParameters(Int32)</h4>
@@ -181,7 +158,7 @@ The parameters allow control over:
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferParameters__ctor_System_Int32_NetTopologySuite_Operation_Buffer_EndCapStyle_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferParameters.%23ctor(System.Int32%2CNetTopologySuite.Operation.Buffer.EndCapStyle)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L70">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L70">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Buffer_BufferParameters__ctor_" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.#ctor*"></a>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferParameters__ctor_System_Int32_NetTopologySuite_Operation_Buffer_EndCapStyle_" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.#ctor(System.Int32,NetTopologySuite.Operation.Buffer.EndCapStyle)">BufferParameters(Int32, EndCapStyle)</h4>
@@ -222,7 +199,7 @@ given quadrantSegments and endCapStyle values.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferParameters__ctor_System_Int32_NetTopologySuite_Operation_Buffer_EndCapStyle_NetTopologySuite_Operation_Buffer_JoinStyle_System_Double_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferParameters.%23ctor(System.Int32%2CNetTopologySuite.Operation.Buffer.EndCapStyle%2CNetTopologySuite.Operation.Buffer.JoinStyle%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L85">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L85">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Buffer_BufferParameters__ctor_" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.#ctor*"></a>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferParameters__ctor_System_Int32_NetTopologySuite_Operation_Buffer_EndCapStyle_NetTopologySuite_Operation_Buffer_JoinStyle_System_Double_" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.#ctor(System.Int32,NetTopologySuite.Operation.Buffer.EndCapStyle,NetTopologySuite.Operation.Buffer.JoinStyle,System.Double)">BufferParameters(Int32, EndCapStyle, JoinStyle, Double)</h4>
@@ -277,7 +254,7 @@ given parameter values.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferParameters_DefaultMitreLimit.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferParameters.DefaultMitreLimit%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L33">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L33">View Source</a>
   </span>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferParameters_DefaultMitreLimit" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.DefaultMitreLimit">DefaultMitreLimit</h4>
   <div class="markdown level1 summary"><p>The default mitre limit
@@ -286,7 +263,7 @@ Allows fairly pointy mitres.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const double DefaultMitreLimit = 5</code></pre>
+    <pre><code class="lang-csharp hljs">public const double DefaultMitreLimit = null</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -308,7 +285,7 @@ Allows fairly pointy mitres.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferParameters_DefaultQuadrantSegments.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferParameters.DefaultQuadrantSegments%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L27">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L27">View Source</a>
   </span>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferParameters_DefaultQuadrantSegments" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.DefaultQuadrantSegments">DefaultQuadrantSegments</h4>
   <div class="markdown level1 summary"><p>The default number of facets into which to divide a fillet of 90 degrees.
@@ -319,7 +296,7 @@ For a max error of &lt; 0.1%, use QS = 18.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int DefaultQuadrantSegments = 8</code></pre>
+    <pre><code class="lang-csharp hljs">public const int DefaultQuadrantSegments = null</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -341,7 +318,7 @@ For a max error of &lt; 0.1%, use QS = 18.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferParameters_DefaultSimplifyFactor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferParameters.DefaultSimplifyFactor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L40">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L40">View Source</a>
   </span>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferParameters_DefaultSimplifyFactor" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.DefaultSimplifyFactor">DefaultSimplifyFactor</h4>
   <div class="markdown level1 summary"><p>The default simplify factor.
@@ -351,7 +328,7 @@ the accuracy of the <a class="xref" href="NetTopologySuite.Operation.Buffer.Buff
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const double DefaultSimplifyFactor = 0.01</code></pre>
+    <pre><code class="lang-csharp hljs">public const double DefaultSimplifyFactor = null</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -375,7 +352,7 @@ the accuracy of the <a class="xref" href="NetTopologySuite.Operation.Buffer.Buff
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferParameters_EndCapStyle.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferParameters.EndCapStyle%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L176">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L176">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Buffer_BufferParameters_EndCapStyle_" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.EndCapStyle*"></a>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferParameters_EndCapStyle" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.EndCapStyle">EndCapStyle</h4>
@@ -414,7 +391,7 @@ The styles supported are <a class="xref" href="NetTopologySuite.Operation.Buffer
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferParameters_IsSingleSided.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferParameters.IsSingleSided%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L231">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L231">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Buffer_BufferParameters_IsSingleSided_" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.IsSingleSided*"></a>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferParameters_IsSingleSided" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.IsSingleSided">IsSingleSided</h4>
@@ -422,7 +399,8 @@ The styles supported are <a class="xref" href="NetTopologySuite.Operation.Buffer
 A single-sided buffer is constructed on only one side of each input line.</p>
 <p>
 The side used is determined by the sign of the buffer distance:
-<p>The single-sided buffer of point geometries is  the same as the regular buffer.</p>
+<ul><li>a positive distance indicates the left-hand side</li><li>a negative distance indicates the right-hand side</li></ul>
+The single-sided buffer of point geometries is  the same as the regular buffer.
 </p><p>
 The End Cap Style for single-sided buffers is always ignored,
 and forced to the equivalent of <a class="xref" href="NetTopologySuite.Operation.Buffer.EndCapStyle.html#NetTopologySuite_Operation_Buffer_EndCapStyle_Flat">Flat</a>.
@@ -453,7 +431,7 @@ and forced to the equivalent of <a class="xref" href="NetTopologySuite.Operation
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferParameters_JoinStyle.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferParameters.JoinStyle%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L189">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L189">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Buffer_BufferParameters_JoinStyle_" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.JoinStyle*"></a>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferParameters_JoinStyle" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.JoinStyle">JoinStyle</h4>
@@ -488,7 +466,7 @@ and forced to the equivalent of <a class="xref" href="NetTopologySuite.Operation
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferParameters_MitreLimit.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferParameters.MitreLimit%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L210">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L210">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Buffer_BufferParameters_MitreLimit_" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.MitreLimit*"></a>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferParameters_MitreLimit" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.MitreLimit">MitreLimit</h4>
@@ -531,7 +509,7 @@ Corners with a ratio which exceed the limit will be beveled.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferParameters_QuadrantSegments.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferParameters.QuadrantSegments%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L114">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L114">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Buffer_BufferParameters_QuadrantSegments_" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.QuadrantSegments*"></a>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferParameters_QuadrantSegments" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.QuadrantSegments">QuadrantSegments</h4>
@@ -559,21 +537,22 @@ Corners with a ratio which exceed the limit will be beveled.
   </table>
   <h5 id="NetTopologySuite_Operation_Buffer_BufferParameters_QuadrantSegments_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>QuadrantSegments is the number of line segments used to approximate an angle fillet.</p>
-<p>For round joins, <code>QuadrantSegments</code> determines the maximum
+<table><tbody><tr><td><code>QuadrantSegments</code> >>= 1</td><td>joins are round, and <code>QuadrantSegments</code> indicates the number of segments to use to approximate a quarter-circle.</td></tr><tr><td><code>QuadrantSegments</code> = 0</td><td>joins are beveled</td></tr><tr><td><code>QuadrantSegments</code> &lt; 0</td><td>joins are mitred, and the value of qs indicates the mitre ration limit as <code>mitreLimit = |<tt>QuadrantSegments</tt>|</code></td></tr></tbody></table>
+For round joins, <code>QuadrantSegments</code> determines the maximum
 error in the approximation to the true buffer curve.
 The default value of 8 gives less than 2% max error in the buffer distance.
 For a max error of &lt; 1%, use QS = 12.
 For a max error of &lt; 0.1%, use QS = 18.
 The error is always less than the buffer distance
 (in other words, the computed buffer curve is always inside the true
-curve).</p>
+curve).
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferParameters_SimplifyFactor.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferParameters.SimplifyFactor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L241">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L241">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Buffer_BufferParameters_SimplifyFactor_" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.SimplifyFactor*"></a>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferParameters_SimplifyFactor" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.SimplifyFactor">SimplifyFactor</h4>
@@ -611,7 +590,7 @@ Larger values sacrifice accuracy in return for performance.</p>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferParameters_BufferDistanceError_System_Int32_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferParameters.BufferDistanceError(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L159">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L159">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Buffer_BufferParameters_BufferDistanceError_" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.BufferDistanceError*"></a>
   <h4 id="NetTopologySuite_Operation_Buffer_BufferParameters_BufferDistanceError_System_Int32_" data-uid="NetTopologySuite.Operation.Buffer.BufferParameters.BufferDistanceError(System.Int32)">BufferDistanceError(Int32)</h4>
@@ -667,7 +646,7 @@ Larger values sacrifice accuracy in return for performance.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Buffer_BufferParameters.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Buffer.BufferParameters%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Buffer/BufferParameters.cs/#L19" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -113,47 +113,23 @@ However, this case is likely rare in practice.
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">CascadedPolygonUnion</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Operation.Union.html">NetTopologySuite.Operation.Union</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Operation_Union_CascadedPolygonUnion_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class CascadedPolygonUnion</code></pre>
+    <pre><code class="lang-csharp hljs">public class CascadedPolygonUnion : object</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_CascadedPolygonUnion__ctor_System_Collections_Generic_ICollection_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.CascadedPolygonUnion.%23ctor(System.Collections.Generic.ICollection%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_CascadedPolygonUnion__ctor_ICollection_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.CascadedPolygonUnion.%23ctor(ICollection%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Union/CascadedPolygonUnion.cs/#L66">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Union/CascadedPolygonUnion.cs/#L67">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Union_CascadedPolygonUnion__ctor_" data-uid="NetTopologySuite.Operation.Union.CascadedPolygonUnion.#ctor*"></a>
-  <h4 id="NetTopologySuite_Operation_Union_CascadedPolygonUnion__ctor_System_Collections_Generic_ICollection_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Operation.Union.CascadedPolygonUnion.#ctor(System.Collections.Generic.ICollection{NetTopologySuite.Geometries.Geometry})">CascadedPolygonUnion(ICollection&lt;Geometry&gt;)</h4>
+  <h4 id="NetTopologySuite_Operation_Union_CascadedPolygonUnion__ctor_ICollection_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Operation.Union.CascadedPolygonUnion.#ctor(ICollection{NetTopologySuite.Geometries.Geometry})">CascadedPolygonUnion(ICollection&lt;Geometry&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates a new instance to union
 the given collection of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s.</p>
 </div>
@@ -173,7 +149,7 @@ the given collection of <a class="xref" href="NetTopologySuite.Geometries.Geomet
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="xref">ICollection</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
         <td><span class="parametername">polys</span></td>
         <td><p>A collection of <a class="xref" href="NetTopologySuite.Geometries.IPolygonal.html">IPolygonal</a> <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s</p>
 </td>
@@ -187,7 +163,7 @@ the given collection of <a class="xref" href="NetTopologySuite.Geometries.Geomet
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_CascadedPolygonUnion_Union.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.CascadedPolygonUnion.Union%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Union/CascadedPolygonUnion.cs/#L104">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Union/CascadedPolygonUnion.cs/#L103">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Union_CascadedPolygonUnion_Union_" data-uid="NetTopologySuite.Operation.Union.CascadedPolygonUnion.Union*"></a>
   <h4 id="NetTopologySuite_Operation_Union_CascadedPolygonUnion_Union" data-uid="NetTopologySuite.Operation.Union.CascadedPolygonUnion.Union">Union()</h4>
@@ -223,31 +199,15 @@ or <code>null</code> if no input geometries were provided
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
-        <td><p>if this method is called more than once</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_CascadedPolygonUnion_Union_System_Collections_Generic_ICollection_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.CascadedPolygonUnion.Union(System.Collections.Generic.ICollection%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_CascadedPolygonUnion_Union_ICollection_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.CascadedPolygonUnion.Union(ICollection%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Union/CascadedPolygonUnion.cs/#L55">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Union/CascadedPolygonUnion.cs/#L56">View Source</a>
   </span>
   <a id="NetTopologySuite_Operation_Union_CascadedPolygonUnion_Union_" data-uid="NetTopologySuite.Operation.Union.CascadedPolygonUnion.Union*"></a>
-  <h4 id="NetTopologySuite_Operation_Union_CascadedPolygonUnion_Union_System_Collections_Generic_ICollection_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Operation.Union.CascadedPolygonUnion.Union(System.Collections.Generic.ICollection{NetTopologySuite.Geometries.Geometry})">Union(ICollection&lt;Geometry&gt;)</h4>
+  <h4 id="NetTopologySuite_Operation_Union_CascadedPolygonUnion_Union_ICollection_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Operation.Union.CascadedPolygonUnion.Union(ICollection{NetTopologySuite.Geometries.Geometry})">Union(ICollection&lt;Geometry&gt;)</h4>
   <div class="markdown level1 summary"><p>Computes the union of
 a collection of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s.</p>
 </div>
@@ -267,7 +227,7 @@ a collection of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html"
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="xref">ICollection</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
         <td><span class="parametername">polys</span></td>
         <td><p>A collection of <a class="xref" href="NetTopologySuite.Geometries.IPolygonal.html">IPolygonal</a> <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>s.</p>
 </td>
@@ -304,7 +264,7 @@ a collection of <a class="xref" href="NetTopologySuite.Geometries.Geometry.html"
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Operation_Union_CascadedPolygonUnion.md&amp;value=---%0Auid%3A%20NetTopologySuite.Operation.Union.CascadedPolygonUnion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Operation/Union/CascadedPolygonUnion.cs/#L42" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Operation/Union/CascadedPolygonUnion.cs/#L43" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

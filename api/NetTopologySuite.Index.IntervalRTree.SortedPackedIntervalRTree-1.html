@@ -92,35 +92,11 @@ using an R-Tree packed based on the order of the interval midpoints.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">SortedPackedIntervalRTree&lt;T&gt;</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Index.IntervalRTree.html">NetTopologySuite.Index.IntervalRTree</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Index_IntervalRTree_SortedPackedIntervalRTree_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class SortedPackedIntervalRTree&lt;T&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class SortedPackedIntervalRTree&lt;T&gt; : object</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -157,7 +133,7 @@ can be optimized based on a fixed set of items.
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_IntervalRTree_SortedPackedIntervalRTree_1_Insert_System_Double_System_Double__0_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.IntervalRTree.SortedPackedIntervalRTree%601.Insert(System.Double%2CSystem.Double%2C%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Index/IntervalRTree/SortedPackedIntervalRTree.cs/#L41">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/IntervalRTree/SortedPackedIntervalRTree.cs/#L48">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_IntervalRTree_SortedPackedIntervalRTree_1_Insert_" data-uid="NetTopologySuite.Index.IntervalRTree.SortedPackedIntervalRTree`1.Insert*"></a>
   <h4 id="NetTopologySuite_Index_IntervalRTree_SortedPackedIntervalRTree_1_Insert_System_Double_System_Double__0_" data-uid="NetTopologySuite.Index.IntervalRTree.SortedPackedIntervalRTree`1.Insert(System.Double,System.Double,`0)">Insert(Double, Double, T)</h4>
@@ -198,28 +174,12 @@ can be optimized based on a fixed set of items.
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></td>
-        <td><p>if the index has already been queried</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_IntervalRTree_SortedPackedIntervalRTree_1_Query_System_Double_System_Double_NetTopologySuite_Index_IItemVisitor__0__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.IntervalRTree.SortedPackedIntervalRTree%601.Query(System.Double%2CSystem.Double%2CNetTopologySuite.Index.IItemVisitor%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Index/IntervalRTree/SortedPackedIntervalRTree.cs/#L121">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/IntervalRTree/SortedPackedIntervalRTree.cs/#L135">View Source</a>
   </span>
   <a id="NetTopologySuite_Index_IntervalRTree_SortedPackedIntervalRTree_1_Query_" data-uid="NetTopologySuite.Index.IntervalRTree.SortedPackedIntervalRTree`1.Query*"></a>
   <h4 id="NetTopologySuite_Index_IntervalRTree_SortedPackedIntervalRTree_1_Query_System_Double_System_Double_NetTopologySuite_Index_IItemVisitor__0__" data-uid="NetTopologySuite.Index.IntervalRTree.SortedPackedIntervalRTree`1.Query(System.Double,System.Double,NetTopologySuite.Index.IItemVisitor{`0})">Query(Double, Double, IItemVisitor&lt;T&gt;)</h4>
@@ -272,7 +232,7 @@ and apply the visitor to them.</p>
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Index_IntervalRTree_SortedPackedIntervalRTree_1.md&amp;value=---%0Auid%3A%20NetTopologySuite.Index.IntervalRTree.SortedPackedIntervalRTree%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Index/IntervalRTree/SortedPackedIntervalRTree.cs/#L28" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Index/IntervalRTree/SortedPackedIntervalRTree.cs/#L28" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

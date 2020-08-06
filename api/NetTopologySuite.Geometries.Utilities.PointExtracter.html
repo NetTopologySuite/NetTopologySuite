@@ -95,47 +95,23 @@
     <h5>Implements</h5>
     <div><a class="xref" href="NetTopologySuite.Geometries.IGeometryFilter.html">IGeometryFilter</a></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="NetTopologySuite.Geometries.Utilities.html">NetTopologySuite.Geometries.Utilities</a></h6>
   <h6><strong>Assembly</strong>: NetTopologySuite.dll</h6>
   <h5 id="NetTopologySuite_Geometries_Utilities_PointExtracter_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PointExtracter : IGeometryFilter</code></pre>
+    <pre><code class="lang-csharp hljs">public class PointExtracter : object, IGeometryFilter</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_PointExtracter__ctor_System_Collections_Generic_ICollection_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.PointExtracter.%23ctor(System.Collections.Generic.ICollection%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_PointExtracter__ctor_ICollection_NetTopologySuite_Geometries_Geometry__.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.PointExtracter.%23ctor(ICollection%7BNetTopologySuite.Geometries.Geometry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Utilities/PointExtracter.cs/#L50">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Utilities/PointExtracter.cs/#L50">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Utilities_PointExtracter__ctor_" data-uid="NetTopologySuite.Geometries.Utilities.PointExtracter.#ctor*"></a>
-  <h4 id="NetTopologySuite_Geometries_Utilities_PointExtracter__ctor_System_Collections_Generic_ICollection_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.Utilities.PointExtracter.#ctor(System.Collections.Generic.ICollection{NetTopologySuite.Geometries.Geometry})">PointExtracter(ICollection&lt;Geometry&gt;)</h4>
+  <h4 id="NetTopologySuite_Geometries_Utilities_PointExtracter__ctor_ICollection_NetTopologySuite_Geometries_Geometry__" data-uid="NetTopologySuite.Geometries.Utilities.PointExtracter.#ctor(ICollection{NetTopologySuite.Geometries.Geometry})">PointExtracter(ICollection&lt;Geometry&gt;)</h4>
   <div class="markdown level1 summary"><p>Constructs a PointExtracterFilter with a list in which to store Points found.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -154,7 +130,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="xref">ICollection</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
         <td><span class="parametername">pts</span></td>
         <td></td>
       </tr>
@@ -167,7 +143,7 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_PointExtracter_Filter_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.PointExtracter.Filter(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Utilities/PointExtracter.cs/#L59">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Utilities/PointExtracter.cs/#L59">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Utilities_PointExtracter_Filter_" data-uid="NetTopologySuite.Geometries.Utilities.PointExtracter.Filter*"></a>
   <h4 id="NetTopologySuite_Geometries_Utilities_PointExtracter_Filter_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Geometries.Utilities.PointExtracter.Filter(NetTopologySuite.Geometries.Geometry)">Filter(Geometry)</h4>
@@ -199,11 +175,11 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_PointExtracter_GetPoints_NetTopologySuite_Geometries_Geometry_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.PointExtracter.GetPoints(NetTopologySuite.Geometries.Geometry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Utilities/PointExtracter.cs/#L38">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Utilities/PointExtracter.cs/#L38">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Utilities_PointExtracter_GetPoints_" data-uid="NetTopologySuite.Geometries.Utilities.PointExtracter.GetPoints*"></a>
   <h4 id="NetTopologySuite_Geometries_Utilities_PointExtracter_GetPoints_NetTopologySuite_Geometries_Geometry_" data-uid="NetTopologySuite.Geometries.Utilities.PointExtracter.GetPoints(NetTopologySuite.Geometries.Geometry)">GetPoints(Geometry)</h4>
-  <div class="markdown level1 summary"><p>Extracts the <a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a> elements from a single <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> and returns them in a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a>.</p>
+  <div class="markdown level1 summary"><p>Extracts the <a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a> elements from a single <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> and returns them in a <see cref="!:IList&lt;Point>"></see>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -238,7 +214,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.objectmodel.readonlycollection-1">ReadOnlyCollection</a>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
+        <td><span class="xref">ReadOnlyCollection</span>&lt;<a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -248,11 +224,11 @@
     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_PointExtracter_GetPoints__1_NetTopologySuite_Geometries_Geometry___0_.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.PointExtracter.GetPoints%60%601(NetTopologySuite.Geometries.Geometry%2C%60%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Utilities/PointExtracter.cs/#L18">View Source</a>
+    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Utilities/PointExtracter.cs/#L18">View Source</a>
   </span>
   <a id="NetTopologySuite_Geometries_Utilities_PointExtracter_GetPoints_" data-uid="NetTopologySuite.Geometries.Utilities.PointExtracter.GetPoints*"></a>
   <h4 id="NetTopologySuite_Geometries_Utilities_PointExtracter_GetPoints__1_NetTopologySuite_Geometries_Geometry___0_" data-uid="NetTopologySuite.Geometries.Utilities.PointExtracter.GetPoints``1(NetTopologySuite.Geometries.Geometry,``0)">GetPoints&lt;TCollection&gt;(Geometry, TCollection)</h4>
-  <div class="markdown level1 summary"><p>Extracts the <a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a> elements from a single <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> and adds them to the provided <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a>.</p>
+  <div class="markdown level1 summary"><p>Extracts the <a class="xref" href="NetTopologySuite.Geometries.Point.html">Point</a> elements from a single <a class="xref" href="NetTopologySuite.Geometries.Geometry.html">Geometry</a> and adds them to the provided <see cref="!:ICollection&lt;Point>"></see>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -329,7 +305,7 @@
                     <a href="https://github.com/NetTopologySuite/NetTopologySuite/new/master/doc/overwrite/new?filename=NetTopologySuite_Geometries_Utilities_PointExtracter.md&amp;value=---%0Auid%3A%20NetTopologySuite.Geometries.Utilities.PointExtracter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/NetTopologySuite/Geometries/Utilities/PointExtracter.cs/#L10" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/src/NetTopologySuite/Geometries/Utilities/PointExtracter.cs/#L10" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

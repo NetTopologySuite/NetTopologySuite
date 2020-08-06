@@ -106,6 +106,22 @@ giving access to the oppositely-oriented component.
 HalfEdges and the methods on them form an edge algebra,
 which can be used to traverse and query the topology
 of the graph formed by the edges.</p>
+<p>
+To support graphs where the edges are sequences of coordinates
+each edge may also have a direction point supplied.
+This is used to determine the ordering
+of the edges around the origin.
+HalfEdges with the same origin are ordered
+so that the ring of edges formed by them is oriented CCW.
+<p>
+By design HalfEdges carry minimal information
+about the actual usage of the graph they represent.
+They can be subclassed to carry more information if required.
+<p>
+HalfEdges form a complete and consistent data structure by themselves,
+but an <a class="xref" href="NetTopologySuite.EdgeGraph.EdgeGraph.html">EdgeGraph</a> is useful to allow retrieving edges
+by vertex and edge location, as well as ensuring
+edges are created and linked appropriately.
 </section>
       <h4><a class="xref" href="NetTopologySuite.EdgeGraph.MarkHalfEdge.html">MarkHalfEdge</a></h4>
       <section><p>A <a class="xref" href="NetTopologySuite.EdgeGraph.HalfEdge.html">HalfEdge</a> which supports

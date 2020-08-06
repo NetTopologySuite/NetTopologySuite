@@ -82,7 +82,9 @@
   
   <h1 id="NetTopologySuite_Noding" data-uid="NetTopologySuite.Noding" class="text-break">Namespace NetTopologySuite.Noding
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary">
+<p>Classes to compute nodings for arrangements of line segments and line segment sequences.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
@@ -155,7 +157,16 @@ for preserving topological or parentage information.
 All noded substrings are initialized with the same context object.</p>
 </section>
       <h4><a class="xref" href="NetTopologySuite.Noding.NodingIntersectionFinder.html">NodingIntersectionFinder</a></h4>
-      <section></section>
+      <section><p>Finds non-noded intersections in a set of {@link SegmentString}s,
+if any exist.</p>
+<p>
+Non-noded intersections include:
+<p>The finder can be limited to finding only interior intersections
+by setting <see cref="!:InteriorIntersectionOnly"></see>.</p>
+<p>
+By default only the first intersection is found,
+but all can be found by setting {@link #setFindAllIntersections(boolean)
+</section>
       <h4><a class="xref" href="NetTopologySuite.Noding.NodingValidator.html">NodingValidator</a></h4>
       <section><p>Validates that a collection of <a class="xref" href="NetTopologySuite.Noding.ISegmentString.html">ISegmentString</a>s is correctly noded.
 Throws an appropriate exception if an noding error is found.</p>
@@ -275,6 +286,9 @@ Octants are numbered as follows:</p>
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NetTopologySuite/NetTopologySuite/blob/master/doc/overwrite/namespaces/NetTopologySuite.Noding.md/#L2" class="contribution-link">Improve this Doc</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
