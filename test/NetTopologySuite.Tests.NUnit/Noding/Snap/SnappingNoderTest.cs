@@ -34,6 +34,22 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snap
             checkRounding(wkt1, null, 1, expected);
         }
 
+        [Test]
+        public void TestLineCondensePoints()
+        {
+            string wkt1 = "LINESTRING (1 1, 1.3 1, 1.6 1, 1.9 1, 2.2 1, 2.5 1, 2.8 1, 3.1 1, 3.5 1, 4 1)";
+            string expected = "LINESTRING (1 1, 2.2 1, 3.5 1)";
+            checkRounding(wkt1, null, 1, expected);
+        }
+
+        [Test]
+        public void TestLineDensePointsSelfSnap()
+        {
+            string wkt1 = "LINESTRING (1 1, 1.3 1, 1.6 1, 1.9 1, 2.2 1, 2.5 1, 2.8 1, 3.1 1, 3.5 1, 4.8 1, 3.8 3.1, 2.5 1.1, 0.5 3.1)";
+            string expected = "MULTILINESTRING ((1 1, 2.2 1), (2.2 1, 3.5 1, 4.8 1, 3.8 3.1, 2.2 1), (2.2 1, 1 1), (1 1, 0.5 3.1))";
+            checkRounding(wkt1, null, 1, expected);
+        }
+
         void checkRounding(string wkt1, string wkt2, double snapDist, string expectedWKT)
         {
             var geom1 = Read(wkt1);

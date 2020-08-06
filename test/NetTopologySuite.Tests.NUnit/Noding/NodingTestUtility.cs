@@ -7,7 +7,7 @@ namespace NetTopologySuite.Tests.NUnit.Noding
 {
     public static class NodingTestUtility
     {
-        public static MultiLineString ToLines(ICollection<ISegmentString> nodedList,
+        public static Geometry ToLines(ICollection<ISegmentString> nodedList,
             GeometryFactory geomFact)
         {
             var lines = new LineString[nodedList.Count];
@@ -18,6 +18,8 @@ namespace NetTopologySuite.Tests.NUnit.Noding
                 var line = geomFact.CreateLineString(pts);
                 lines[i++] = line;
             }
+
+            if (lines.Length == 1) return lines[0];
             return geomFact.CreateMultiLineString(lines);
         }
 
