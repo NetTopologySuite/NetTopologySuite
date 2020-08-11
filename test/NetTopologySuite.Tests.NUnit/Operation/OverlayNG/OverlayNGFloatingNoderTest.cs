@@ -7,12 +7,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
 {
     public partial class OverlayGraphTest
     {
-        /**
-         * Tests primarily the API for OverlayNG with floating precision.
-         * 
-         * @author Martin Davis
-         *
-         */
+        /// <summary>
+        /// Tests primarily the API for OverlayNG with floating precision.
+        /// </summary>
         public class OverlayNGFloatingPrecisionTest : GeometryTestCase
         {
             [Test]
