@@ -13,34 +13,6 @@ namespace NetTopologySuite.Operation.OverlayNg
     internal static class OverlayUtility
     {
 
-        private const int SafeEnvExpandFactor = 3;
-
-        static double ExpandDistance(Envelope env, PrecisionModel pm)
-        {
-            double envExpandDist;
-            if (pm == null || pm.IsFloating)
-            {
-                // if PM is FLOAT then there is no scale factor, so add 10%
-                double minSize = Math.Min(env.Height, env.Width);
-                envExpandDist = 0.1 * minSize;
-            }
-            else
-            {
-                // if PM is fixed, add a small multiple of the grid size
-                double gridSize = 1.0 / pm.Scale;
-                envExpandDist = SafeEnvExpandFactor * gridSize;
-            }
-            return envExpandDist;
-        }
-
-        static Envelope SafeOverlapEnv(Envelope env, PrecisionModel pm)
-        {
-            double envExpandDist = ExpandDistance(env, pm);
-            var safeEnv = env.Copy();
-            safeEnv.ExpandBy(envExpandDist);
-            return safeEnv;
-        }
-
         internal static Envelope ClippingEnvelope(SpatialFunction opCode, InputGeometry inputGeom, PrecisionModel pm)
         {
             Envelope clipEnv = null;
@@ -56,6 +28,42 @@ namespace NetTopologySuite.Operation.OverlayNg
                     break;
             }
             return clipEnv;
+        }
+
+        /// <summary>
+        /// Determines a safe geometry envelope for clipping,
+        /// taking into account the precision model being used.
+        /// </summary>
+        /// <param name="env">A safe geometry envelope for clipping</param>
+        /// <param name="pm">The precision model</param>
+        /// <returns>A safe envelope to use for clipping</returns>
+        static Envelope SafeOverlapEnv(Envelope env, PrecisionModel pm)
+        {
+            double envExpandDist = SafeExpandDistance(env, pm);
+            var safeEnv = env.Copy();
+            safeEnv.ExpandBy(envExpandDist);
+            return safeEnv;
+        }
+
+        private const double SafeEnvBufferFactor = 0.1;
+        private const double SafeEnvGridFactor = 3;
+
+        static double SafeExpandDistance(Envelope env, PrecisionModel pm)
+        {
+            double envExpandDist;
+            if (pm == null || pm.IsFloating)
+            {
+                // if PM is FLOAT then there is no scale factor, so add 10%
+                double minSize = Math.Min(env.Height, env.Width);
+                envExpandDist = SafeEnvBufferFactor * minSize;
+            }
+            else
+            {
+                // if PM is fixed, add a small multiple of the grid size
+                double gridSize = 1.0 / pm.Scale;
+                envExpandDist = SafeEnvGridFactor * gridSize;
+            }
+            return envExpandDist;
         }
 
         /// <summary>
