@@ -141,6 +141,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// <param name="geom1">The second geometry argument</param>
         /// <param name="opCode">The code for the desired overlay operation</param>
         /// <param name="pm">The precision model to use (which may be null if the noder does not use one)</param>
+        /// <param name="noder">The noder to use</param>
         /// <returns>The result of the overlay operation</returns>
         public static Geometry Overlay(Geometry geom0, Geometry geom1,
             SpatialFunction opCode, PrecisionModel pm, INoder noder)
@@ -151,6 +152,23 @@ namespace NetTopologySuite.Operation.OverlayNg
             return geomOv;
         }
 
+        /// <summary>
+        /// Computes an overlay operation on the given geometry operands,
+        /// using a supplied <see cref="INoder"/>.
+        /// </summary>
+        /// <param name="geom0">The first geometry argument</param>
+        /// <param name="geom1">The second geometry argument</param>
+        /// <param name="opCode">The code for the desired overlay operation</param>
+        /// <param name="noder">The noder to use</param>
+        /// <returns>The result of the overlay operation</returns>
+        public static Geometry Overlay(Geometry geom0, Geometry geom1,
+            SpatialFunction opCode, INoder noder)
+        {
+            var ov = new OverlayNG(geom0, geom1, null, opCode);
+            ov.Noder = noder;
+            var geomOv = ov.GetResult();
+            return geomOv;
+        }
         /// <summary>
         /// Computes an overlay operation on 
         /// the given geometry operands,
