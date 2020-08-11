@@ -3,6 +3,7 @@ using System.IO;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
+using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.Relate
 {
@@ -140,8 +141,8 @@ namespace NetTopologySuite.Operation.Relate
         /// <param name="geomIndex"></param>
         private void ComputeLabelSides(int geomIndex)
         {
-            ComputeLabelSide(geomIndex, Positions.Left);
-            ComputeLabelSide(geomIndex, Positions.Right);
+            ComputeLabelSide(geomIndex, Position.Left);
+            ComputeLabelSide(geomIndex, Position.Right);
         }
 
         /// <summary>
@@ -159,7 +160,7 @@ namespace NetTopologySuite.Operation.Relate
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="side"></param>
-        private void ComputeLabelSide(int geomIndex, Positions side)
+        private void ComputeLabelSide(int geomIndex, Position side)
         {
             foreach (var e in _edgeEnds)
             {

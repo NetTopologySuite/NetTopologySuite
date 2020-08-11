@@ -1,8 +1,12 @@
+using System;
+using NetTopologySuite.Geometries;
+
 namespace NetTopologySuite.GeometriesGraph
 {
     /// <summary>
     ///
     /// </summary>
+    [Obsolete("Use NetTopologySuite.Geometries.Position")]
     public enum Positions
     {
         /// <summary>
@@ -30,6 +34,7 @@ namespace NetTopologySuite.GeometriesGraph
     /// A Position indicates the position of a Location relative to a graph component
     /// (Node, Edge, or Area).
     /// </summary>
+    [Obsolete("Use NetTopologySuite.Geometries.PositionExtensions")]
     public class Position
     {
         /// <summary>
@@ -40,11 +45,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="position"></param>
         public static Positions Opposite(Positions position)
         {
-            if (position == Positions.Left)
-                return Positions.Right;
-            if (position == Positions.Right)
-                return Positions.Left;
-            return position;
+            return (Positions) PositionExtensions.Opposite((Geometries.Position) position);
         }
     }
 }

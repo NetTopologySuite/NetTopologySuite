@@ -52,9 +52,9 @@ namespace NetTopologySuite.GeometriesGraph
         public TopologyLocation(Location on, Location left, Location right)
         {
             Init(3);
-            _location[(int) Positions.On] = on;
-            _location[(int) Positions.Left] = left;
-            _location[(int) Positions.Right] = right;
+            _location[(int)Geometries.Position.On] = on;
+            _location[(int)Geometries.Position.Left] = left;
+            _location[(int)Geometries.Position.Right] = right;
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace NetTopologySuite.GeometriesGraph
         public TopologyLocation(Location on)
         {
             Init(1);
-            _location[(int) Positions.On] = on;
+            _location[(int)Geometries.Position.On] = on;
         }
 
         /// <summary>
@@ -96,7 +96,16 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public  Location Get(Positions posIndex)
+        [Obsolete("Use Get(Geometries.Position)")]
+        public Location Get(Positions posIndex) =>
+            Get((Geometries.Position) posIndex);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="posIndex"></param>
+        /// <returns></returns>
+        public Location Get(Geometries.Position posIndex)
         {
             int index = (int)posIndex;
             if (index < _location.Length)
@@ -110,10 +119,11 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="posIndex"></param>
         /// <returns></returns>
+        [Obsolete("Use Get/SetLocation")]
         public  Location this[Positions posIndex]
         {
-            get => Get(posIndex);
-            set => SetLocation(posIndex, value);
+            get => Get((Geometries.Position)posIndex);
+            set => SetLocation((Geometries.Position)posIndex, value);
         }
 
         /// <returns>
@@ -172,9 +182,9 @@ namespace NetTopologySuite.GeometriesGraph
         {
             if (_location.Length <= 1)
                 return;
-            var temp = _location[(int)Positions.Left];
-            _location[(int)Positions.Left] = _location[(int)Positions.Right];
-            _location[(int)Positions.Right] = temp;
+            var temp = _location[(int)Geometries.Position.Left];
+            _location[(int)Geometries.Position.Left] = _location[(int)Geometries.Position.Right];
+            _location[(int)Geometries.Position.Right] = temp;
         }
 
         /// <summary>
@@ -203,7 +213,16 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="locIndex"></param>
         /// <param name="locValue"></param>
-        public  void SetLocation(Positions locIndex, Location locValue)
+        [Obsolete("Use SetLocation(Geometries.Position, Location)")]
+        public void SetLocation(Positions locIndex, Location locValue) =>
+            SetLocation((Geometries.Position) locIndex, locValue);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="locIndex"></param>
+        /// <param name="locValue"></param>
+        public void SetLocation(Geometries.Position locIndex, Location locValue)
         {
             _location[(int)locIndex] = locValue;
         }
@@ -214,7 +233,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="locValue"></param>
         public  void SetLocation(Location locValue)
         {
-            SetLocation(Positions.On, locValue);
+            SetLocation(Geometries.Position.On, locValue);
         }
 
         /// <summary>
@@ -234,9 +253,9 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="right"></param>
         public  void SetLocations(Location on, Location left, Location right)
         {
-            _location[(int)Positions.On] = on;
-            _location[(int)Positions.Left] = left;
-            _location[(int)Positions.Right] = right;
+            _location[(int)Geometries.Position.On] = on;
+            _location[(int)Geometries.Position.Left] = left;
+            _location[(int)Geometries.Position.Right] = right;
         }
 
         /// <summary>
@@ -272,9 +291,9 @@ namespace NetTopologySuite.GeometriesGraph
             if (gl._location.Length > _location.Length)
             {
                 var newLoc = new Location[3];
-                newLoc[(int)Positions.On] = _location[(int)Positions.On];
-                newLoc[(int)Positions.Left] = Location.Null;
-                newLoc[(int)Positions.Right] = Location.Null;
+                newLoc[(int)Geometries.Position.On] = _location[(int)Geometries.Position.On];
+                newLoc[(int)Geometries.Position.Left] = Location.Null;
+                newLoc[(int)Geometries.Position.Right] = Location.Null;
                 _location = newLoc;
             }
             for (int i = 0; i < _location.Length; i++)
@@ -290,10 +309,10 @@ namespace NetTopologySuite.GeometriesGraph
         {
             var sb = new StringBuilder();
             if (_location.Length > 1)
-                sb.Append(LocationUtility.ToLocationSymbol(_location[(int)Positions.Left]));
-            sb.Append(LocationUtility.ToLocationSymbol(_location[(int)Positions.On]));
+                sb.Append(LocationUtility.ToLocationSymbol(_location[(int)Geometries.Position.Left]));
+            sb.Append(LocationUtility.ToLocationSymbol(_location[(int)Geometries.Position.On]));
             if (_location.Length > 1)
-                sb.Append(LocationUtility.ToLocationSymbol(_location[(int)Positions.Right]));
+                sb.Append(LocationUtility.ToLocationSymbol(_location[(int)Geometries.Position.Right]));
             return sb.ToString();
         }
     }

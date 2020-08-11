@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
+using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.Buffer
 {
@@ -139,7 +140,15 @@ namespace NetTopologySuite.Operation.Buffer
         /// This method handles the degenerate cases of single points and lines, as well as rings.
         /// </summary>
         /// <returns>a List of Coordinate[]</returns>
+        [Obsolete("Use GetRingCurve(Coordinate[], Geometries.Position, double)")]
         public IList<Coordinate[]> GetRingCurve(Coordinate[] inputPts, Positions side, double distance)
+            => GetRingCurve(inputPts, (Position) side, distance);
+
+        /// <summary>
+        /// This method handles the degenerate cases of single points and lines, as well as rings.
+        /// </summary>
+        /// <returns>a List of Coordinate[]</returns>
+        public IList<Coordinate[]> GetRingCurve(Coordinate[] inputPts, Position side, double distance)
         {
             var lineList = new List<Coordinate[]>();
             Init(distance);
@@ -213,7 +222,7 @@ namespace NetTopologySuite.Operation.Buffer
 
             int n1 = simp1.Length - 1;
 
-            InitSideSegments(simp1[0], simp1[1], Positions.Left);
+            InitSideSegments(simp1[0], simp1[1], Position.Left);
             for (int i = 2; i <= n1; i++)
             {
                 AddNextSegment(simp1[i], true);
@@ -230,7 +239,7 @@ namespace NetTopologySuite.Operation.Buffer
             int n2 = simp2.Length - 1;
 
             // since we are traversing line in opposite order, offset position is still LEFT
-            InitSideSegments(simp2[n2], simp2[n2 - 1], Positions.Left);
+            InitSideSegments(simp2[n2], simp2[n2 - 1], Position.Left);
             for (int i = n2 - 2; i >= 0; i--)
             {
                 AddNextSegment(simp2[i], true);
@@ -247,7 +256,7 @@ namespace NetTopologySuite.Operation.Buffer
             int n = inputPts.Length - 1;
 
             // compute points for left side of line
-            InitSideSegments(inputPts[0], inputPts[1], Positions.Left);
+            InitSideSegments(inputPts[0], inputPts[1], Position.Left);
             for (int i = 2; i <= n; i++)
             {
                 AddNextSegment(inputPts[i], true);
@@ -257,7 +266,7 @@ namespace NetTopologySuite.Operation.Buffer
             AddLineEndCap(inputPts[n - 1], inputPts[n]);
 
             // compute points for right side of line
-            InitSideSegments(inputPts[n], inputPts[n - 1], Positions.Left);
+            InitSideSegments(inputPts[n], inputPts[n - 1], Position.Left);
             for (int i = n - 2; i >= 0; i--)
             {
                 AddNextSegment(inputPts[i], true);
@@ -269,12 +278,12 @@ namespace NetTopologySuite.Operation.Buffer
             _vertexList.CloseRing();
         }
 
-        private void ComputeRingBufferCurve(Coordinate[] inputPts, Positions side)
+        private void ComputeRingBufferCurve(Coordinate[] inputPts, Position side)
         {
             // simplify input line to improve performance
             double distTol = SimplifyTolerance(_distance);
             // ensure that correct side is simplified
-            if (side == Positions.Right)
+            if (side == Position.Right)
                 distTol = -distTol;
             var simp = BufferInputLineSimplifier.Simplify(inputPts, distTol);
             // Coordinate[] simp = inputPts;
@@ -294,9 +303,9 @@ namespace NetTopologySuite.Operation.Buffer
         private readonly LineSegment _seg1 = new LineSegment();
         private readonly LineSegment _offset0 = new LineSegment();
         private readonly LineSegment _offset1 = new LineSegment();
-        private Positions _side;
+        private Position _side;
 
-        private void InitSideSegments(Coordinate s1, Coordinate s2, Positions side)
+        private void InitSideSegments(Coordinate s1, Coordinate s2, Position side)
         {
             _s1 = s1;
             _s2 = s2;
@@ -323,8 +332,8 @@ namespace NetTopologySuite.Operation.Buffer
 
             var orientation = Orientation.Index(_s0, _s1, _s2);
             bool outsideTurn =
-                  (orientation == OrientationIndex.Clockwise && _side == Positions.Left)
-              || (orientation == OrientationIndex.CounterClockwise && _side == Positions.Right);
+                  (orientation == OrientationIndex.Clockwise && _side == Position.Left)
+              || (orientation == OrientationIndex.CounterClockwise && _side == Position.Right);
 
             if (orientation == 0)
             { // lines are collinear
@@ -510,9 +519,9 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="side">The side of the segment (<see cref="Positions"/>) the offset lies on</param>
         /// <param name="distance">The offset distance</param>
         /// <param name="offset">The points computed for the offset segment</param>
-        private static void ComputeOffsetSegment(LineSegment seg, Positions side, double distance, LineSegment offset)
+        private static void ComputeOffsetSegment(LineSegment seg, Position side, double distance, LineSegment offset)
         {
-            int sideSign = side == Positions.Left ? 1 : -1;
+            int sideSign = side == Position.Left ? 1 : -1;
             double dx = seg.P1.X - seg.P0.X;
             double dy = seg.P1.Y - seg.P0.Y;
             double len = Math.Sqrt(dx * dx + dy * dy);
@@ -533,9 +542,9 @@ namespace NetTopologySuite.Operation.Buffer
             var seg = new LineSegment(p0, p1);
 
             var offsetL = new LineSegment();
-            ComputeOffsetSegment(seg, Positions.Left, _distance, offsetL);
+            ComputeOffsetSegment(seg, Position.Left, _distance, offsetL);
             var offsetR = new LineSegment();
-            ComputeOffsetSegment(seg, Positions.Right, _distance, offsetR);
+            ComputeOffsetSegment(seg, Position.Right, _distance, offsetR);
 
             double dx = p1.X - p0.X;
             double dy = p1.Y - p0.Y;
@@ -673,7 +682,7 @@ namespace NetTopologySuite.Operation.Buffer
             var bevelEndLeft = mitreMidLine.PointAlongOffset(1.0, bevelHalfLen);
             var bevelEndRight = mitreMidLine.PointAlongOffset(1.0, -bevelHalfLen);
 
-            if (_side == Positions.Left)
+            if (_side == Position.Left)
             {
                 _vertexList.AddPt(bevelEndLeft);
                 _vertexList.AddPt(bevelEndRight);

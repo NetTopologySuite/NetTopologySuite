@@ -1,3 +1,4 @@
+using System;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.GeometriesGraph
@@ -48,7 +49,17 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public int GetDepth(int geomIndex, Positions posIndex)
+        [Obsolete("Use GetDepth(int, Geometries.Position)")]
+        public int GetDepth(int geomIndex, Positions posIndex) =>
+            GetDepth(geomIndex, (Geometries.Position) posIndex);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="geomIndex"></param>
+        /// <param name="posIndex"></param>
+        /// <returns></returns>
+        public int GetDepth(int geomIndex, Geometries.Position posIndex)
         {
             return depth[geomIndex, (int)posIndex];
         }
@@ -59,7 +70,16 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <param name="depthValue"></param>
+        [Obsolete("Use SetDepth(int, Geometries.Position, int)")]
         public void SetDepth(int geomIndex, Positions posIndex, int depthValue)
+            => SetDepth(geomIndex, (Geometries.Position) posIndex, depthValue);
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="geomIndex"></param>
+        /// <param name="posIndex"></param>
+        /// <param name="depthValue"></param>
+        public void SetDepth(int geomIndex, Geometries.Position posIndex, int depthValue)
         {
             depth[geomIndex, (int)posIndex] = depthValue;
         }
@@ -70,6 +90,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <returns></returns>
+        [Obsolete("Use GetDepth, SetDepth")]
         public int this[int geomIndex, Positions posIndex]
         {
             get => GetDepth(geomIndex, posIndex);
@@ -82,7 +103,17 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <returns></returns>
+        [Obsolete("Use GetLocation(int, Geometries.Position)")]
         public Location GetLocation(int geomIndex, Positions posIndex)
+            => GetLocation(geomIndex, (Geometries.Position) posIndex);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="geomIndex"></param>
+        /// <param name="posIndex"></param>
+        /// <returns></returns>
+        public Location GetLocation(int geomIndex, Geometries.Position posIndex)
         {
             if (depth[geomIndex, (int)posIndex] <= 0)
                 return Location.Exterior;
@@ -95,6 +126,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <param name="_location"></param>
+        [Obsolete]
         public void Add(int geomIndex, Positions posIndex, Location _location)
         {
             if (_location == Location.Interior)
@@ -133,7 +165,17 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public bool IsNull(int geomIndex, Positions posIndex)
+        [Obsolete("Use IsNull(int, Geometries.Position)")]
+        public bool IsNull(int geomIndex, Positions posIndex) =>
+            IsNull(geomIndex, (Geometries.Position) posIndex);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="geomIndex"></param>
+        /// <param name="posIndex"></param>
+        /// <returns></returns>
+        public bool IsNull(int geomIndex, Geometries.Position posIndex)
         {
             return depth[geomIndex,(int)posIndex] == @null;
         }
@@ -148,11 +190,11 @@ namespace NetTopologySuite.GeometriesGraph
             {
                 for (int j = 1; j < 3; j++)
                 {
-                    var loc = lbl.GetLocation(i, (Positions)j);
+                    var loc = lbl.GetLocation(i, (Geometries.Position)j);
                     if (loc == Location.Exterior || loc == Location.Interior)
                     {
                         // initialize depth if it is null, otherwise add this location value
-                        if (IsNull(i, (Positions)j))
+                        if (IsNull(i, (Geometries.Position)j))
                              depth[i,j]  = DepthAtLocation(loc);
                         else depth[i,j] += DepthAtLocation(loc);
                     }
@@ -167,7 +209,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public int GetDelta(int geomIndex)
         {
-            return depth[geomIndex, (int)Positions.Right] - depth[geomIndex, (int)Positions.Left];
+            return depth[geomIndex, (int)Geometries.Position.Right] - depth[geomIndex, (int)Geometries.Position.Left];
         }
 
         /// <summary>

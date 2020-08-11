@@ -3,6 +3,7 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Utilities;
+using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.Buffer
 {
@@ -59,7 +60,7 @@ namespace NetTopologySuite.Operation.Buffer
              */
             orientedDe = minDe;
             var rightmostSide = GetRightmostSide(minDe, minIndex);
-            if (rightmostSide == Positions.Left)
+            if (rightmostSide == Position.Left)
                 orientedDe = minDe.Sym;
         }
 
@@ -132,7 +133,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="de"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        private Positions GetRightmostSide(DirectedEdge de, int index)
+        private Position GetRightmostSide(DirectedEdge de, int index)
         {
             var side = GetRightmostSideOfSegment(de, index);
             if (side < 0)
@@ -152,19 +153,19 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="de"></param>
         /// <param name="i"></param>
         /// <returns></returns>
-        private Positions GetRightmostSideOfSegment(DirectedEdge de, int i)
+        private Position GetRightmostSideOfSegment(DirectedEdge de, int i)
         {
             var e = de.Edge;
             var coord = e.Coordinates;
 
             if (i < 0 || i + 1 >= coord.Length)
-                return Positions.Parallel;
+                return Position.Parallel;
             if (coord[i].Y == coord[i + 1].Y)
-                return Positions.Parallel;
+                return Position.Parallel;
 
-            var pos = Positions.Left;
+            var pos = Position.Left;
             if (coord[i].Y < coord[i + 1].Y)
-                pos = Positions.Right;
+                pos = Position.Right;
 
             return pos;
         }

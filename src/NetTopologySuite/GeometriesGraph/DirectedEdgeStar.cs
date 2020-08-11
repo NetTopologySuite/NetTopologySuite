@@ -82,19 +82,19 @@ namespace NetTopologySuite.GeometriesGraph
                 return de0;
             var deLast = (DirectedEdge)edges[size - 1];
 
-            int quad0 = de0.Quadrant;
-            int quad1 = deLast.Quadrant;
-            if (QuadrantOp.IsNorthern(quad0) && QuadrantOp.IsNorthern(quad1))
+            var quad0 = de0.QuadrantValue;
+            var quad1 = deLast.QuadrantValue;
+            if (QuadrantExtensions.IsNorthern(quad0) && QuadrantExtensions.IsNorthern(quad1))
                 return de0;
-            else if (!QuadrantOp.IsNorthern(quad0) && !QuadrantOp.IsNorthern(quad1))
+            else if (!QuadrantExtensions.IsNorthern(quad0) && !QuadrantExtensions.IsNorthern(quad1))
                 return deLast;
             else
             {
-            // edges are in different hemispheres - make sure we return one that is non-horizontal
-            if (de0.Dy != 0)
-                return de0;
-            else if (deLast.Dy != 0)
-                return deLast;
+                // edges are in different hemispheres - make sure we return one that is non-horizontal
+                if (de0.Dy != 0)
+                    return de0;
+                else if (deLast.Dy != 0)
+                    return deLast;
             }
             Assert.ShouldNeverReachHere("found two horizontal edges incident on node");
             return null;
@@ -372,8 +372,8 @@ namespace NetTopologySuite.GeometriesGraph
         public void ComputeDepths(DirectedEdge de)
         {
             int edgeIndex = FindIndex(de);
-            int startDepth = de.GetDepth(Positions.Left);
-            int targetLastDepth = de.GetDepth(Positions.Right);
+            int startDepth = de.GetDepth(Geometries.Position.Left);
+            int targetLastDepth = de.GetDepth(Geometries.Position.Right);
             // compute the depths from this edge up to the end of the edge array
             int nextDepth = ComputeDepths(edgeIndex + 1, edgeList.Count, startDepth);
             // compute the depths for the initial part of the array
@@ -392,8 +392,8 @@ namespace NetTopologySuite.GeometriesGraph
             for (int i = startIndex; i < endIndex ; i++)
             {
                 var nextDe = (DirectedEdge)edgeList[i];
-                nextDe.SetEdgeDepths(Positions.Right, currDepth);
-                currDepth = nextDe.GetDepth(Positions.Left);
+                nextDe.SetEdgeDepths(Geometries.Position.Right, currDepth);
+                currDepth = nextDe.GetDepth(Geometries.Position.Left);
             }
             return currDepth;
         }

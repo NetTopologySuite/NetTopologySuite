@@ -1,6 +1,7 @@
 ﻿using System;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
+using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.Buffer
 {
@@ -98,7 +99,17 @@ namespace NetTopologySuite.Operation.Buffer
         /// </summary>
         /// <returns>A Coordinate array representing the curve<br/>
         /// or <c>null</c> if the curve is empty</returns>
+        [Obsolete("Use GetRingCurve(Coordinate[], Geometries.Position, double)")]
         public Coordinate[] GetRingCurve(Coordinate[] inputPts, Positions side, double distance)
+            => GetRingCurve(inputPts, (Position) side, distance);
+
+        /// <summary>
+        /// This method handles the degenerate cases of single points and lines,
+        /// as well as rings.
+        /// </summary>
+        /// <returns>A Coordinate array representing the curve<br/>
+        /// or <c>null</c> if the curve is empty</returns>
+        public Coordinate[] GetRingCurve(Coordinate[] inputPts, Position side, double distance)
         {
             _distance = distance;
             if (inputPts.Length <= 2)
@@ -190,7 +201,7 @@ namespace NetTopologySuite.Operation.Buffer
             //    Coordinate[] simp1 = inputPts;
 
             int n1 = simp1.Length - 1;
-            segGen.InitSideSegments(simp1[0], simp1[1], Positions.Left);
+            segGen.InitSideSegments(simp1[0], simp1[1], Position.Left);
             for (int i = 2; i <= n1; i++)
             {
                 segGen.AddNextSegment(simp1[i], true);
@@ -207,7 +218,7 @@ namespace NetTopologySuite.Operation.Buffer
             int n2 = simp2.Length - 1;
 
             // since we are traversing line in opposite order, offset position is still LEFT
-            segGen.InitSideSegments(simp2[n2], simp2[n2 - 1], Positions.Left);
+            segGen.InitSideSegments(simp2[n2], simp2[n2 - 1], Position.Left);
             for (int i = n2 - 2; i >= 0; i--)
             {
                 segGen.AddNextSegment(simp2[i], true);
@@ -237,7 +248,7 @@ namespace NetTopologySuite.Operation.Buffer
                 int n2 = simp2.Length - 1;
 
                 // since we are traversing line in opposite order, offset position is still LEFT
-                segGen.InitSideSegments(simp2[n2], simp2[n2 - 1], Positions.Left);
+                segGen.InitSideSegments(simp2[n2], simp2[n2 - 1], Position.Left);
                 segGen.AddFirstSegment();
                 for (int i = n2 - 2; i >= 0; i--)
                 {
@@ -256,7 +267,7 @@ namespace NetTopologySuite.Operation.Buffer
                 //      Coordinate[] simp1 = inputPts;
 
                 int n1 = simp1.Length - 1;
-                segGen.InitSideSegments(simp1[0], simp1[1], Positions.Left);
+                segGen.InitSideSegments(simp1[0], simp1[1], Position.Left);
                 segGen.AddFirstSegment();
                 for (int i = 2; i <= n1; i++)
                 {
@@ -281,7 +292,7 @@ namespace NetTopologySuite.Operation.Buffer
                 int n2 = simp2.Length - 1;
 
                 // since we are traversing line in opposite order, offset position is still LEFT
-                segGen.InitSideSegments(simp2[n2], simp2[n2 - 1], Positions.Left);
+                segGen.InitSideSegments(simp2[n2], simp2[n2 - 1], Position.Left);
                 segGen.AddFirstSegment();
                 for (int i = n2 - 2; i >= 0; i--)
                 {
@@ -297,7 +308,7 @@ namespace NetTopologySuite.Operation.Buffer
                 // Coordinate[] simp1 = inputPts;
 
                 int n1 = simp1.Length - 1;
-                segGen.InitSideSegments(simp1[0], simp1[1], Positions.Left);
+                segGen.InitSideSegments(simp1[0], simp1[1], Position.Left);
                 segGen.AddFirstSegment();
                 for (int i = 2; i <= n1; i++)
                 {
@@ -307,12 +318,12 @@ namespace NetTopologySuite.Operation.Buffer
             segGen.AddLastSegment();
         }
 
-        private void ComputeRingBufferCurve(Coordinate[] inputPts, Positions side, OffsetSegmentGenerator segGen)
+        private void ComputeRingBufferCurve(Coordinate[] inputPts, Position side, OffsetSegmentGenerator segGen)
         {
             // simplify input line to improve performance
             double distTol = SimplifyTolerance(_distance);
             // ensure that correct side is simplified
-            if (side == Positions.Right)
+            if (side == Position.Right)
                 distTol = -distTol;
             var simp = BufferInputLineSimplifier.Simplify(inputPts, distTol);
             // MD - used for testing only (to eliminate simplification)

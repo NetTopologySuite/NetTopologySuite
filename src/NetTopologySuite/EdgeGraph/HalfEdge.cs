@@ -394,8 +394,8 @@ namespace NetTopologySuite.EdgeGraph
             if (dx == dx2 && dy == dy2)
                 return 0;
 
-            int quadrant = QuadrantOp.Quadrant(dx, dy);
-            int quadrant2 = QuadrantOp.Quadrant(dx2, dy2);
+            var quadrant = QuadrantExtensions.Quadrant(dx, dy);
+            var quadrant2 = QuadrantExtensions.Quadrant(dx2, dy2);
 
             /*
              * if the vectors are in different quadrants,

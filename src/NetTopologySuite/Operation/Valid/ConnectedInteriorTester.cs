@@ -3,6 +3,7 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Utilities;
+using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.Valid
 {
@@ -93,7 +94,7 @@ namespace NetTopologySuite.Operation.Valid
         private static void SetInteriorEdgesInResult(PlanarGraph graph)
         {
             foreach (DirectedEdge de in graph.EdgeEnds)
-                if (de.Label.GetLocation(0, Positions.Right) == Location.Interior)
+                if (de.Label.GetLocation(0, Position.Right) == Location.Interior)
                     de.InResult = true;
         }
 
@@ -167,9 +168,9 @@ namespace NetTopologySuite.Operation.Valid
             var e = graph.FindEdgeInSameDirection(pt0, pt1);
             var de = (DirectedEdge) graph.FindEdgeEnd(e);
             DirectedEdge intDe = null;
-            if (de.Label.GetLocation(0, Positions.Right) == Location.Interior)
+            if (de.Label.GetLocation(0, Position.Right) == Location.Interior)
                 intDe = de;
-            else if (de.Sym.Label.GetLocation(0, Positions.Right) == Location.Interior)
+            else if (de.Sym.Label.GetLocation(0, Position.Right) == Location.Interior)
                 intDe = de.Sym;
             Assert.IsTrue(intDe != null, "unable to find dirEdge with Interior on RHS");
             VisitLinkedDirectedEdges(intDe);
@@ -211,7 +212,7 @@ namespace NetTopologySuite.Operation.Valid
                 var edges = er.Edges;
                 var de = edges[0];
                 // don't check CW rings which are holes
-                if (de.Label.GetLocation(0, Positions.Right) != Location.Interior) continue;
+                if (de.Label.GetLocation(0, Position.Right) != Location.Interior) continue;
 
                 // must have a CW ring which surrounds the INT of the area, so check all
                 // edges have been visited

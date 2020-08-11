@@ -111,7 +111,7 @@ namespace NetTopologySuite.Index.Chain
                 return pts.Length - 1;
             }
             // determine overall quadrant for chain (which is the starting quadrant)
-            int chainQuad = QuadrantOp.Quadrant(pts[safeStart], pts[safeStart + 1]);
+            var chainQuad = QuadrantExtensions.Quadrant(pts[safeStart], pts[safeStart + 1]);
             int last = start + 1;
             while (last < pts.Length)
             {
@@ -119,7 +119,7 @@ namespace NetTopologySuite.Index.Chain
                 if (!pts[last - 1].Equals2D(pts[last]))
                 {
                     // compute quadrant for next possible segment in chain
-                    int quad = QuadrantOp.Quadrant(pts[last - 1], pts[last]);
+                    var quad = QuadrantExtensions.Quadrant(pts[last - 1], pts[last]);
                     if (quad != chainQuad) break;
                 }
                 last++;

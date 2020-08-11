@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using NetTopologySuite.Geometries;
 
@@ -117,7 +118,17 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <returns></returns>
-        public  Location GetLocation(int geomIndex, Positions posIndex)
+        [Obsolete("Use GetLocation(int, Topology.Location)")]
+        public Location GetLocation(int geomIndex, Positions posIndex)
+            => GetLocation(geomIndex, (Geometries.Position) posIndex);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="geomIndex"></param>
+        /// <param name="posIndex"></param>
+        /// <returns></returns>
+        public Location GetLocation(int geomIndex, Geometries.Position posIndex)
         {
             return elt[geomIndex].Get(posIndex);
         }
@@ -129,7 +140,7 @@ namespace NetTopologySuite.GeometriesGraph
         /// <returns></returns>
         public  Location GetLocation(int geomIndex)
         {
-            return elt[geomIndex].Get(Positions.On);
+            return elt[geomIndex].Get(Geometries.Position.On);
         }
 
         /// <summary>
@@ -138,7 +149,16 @@ namespace NetTopologySuite.GeometriesGraph
         /// <param name="geomIndex"></param>
         /// <param name="posIndex"></param>
         /// <param name="_location"></param>
-        public  void SetLocation(int geomIndex, Positions posIndex, Location _location)
+        [Obsolete("Use SetLocation(int, Geometries.Position, Location)")]
+        public void SetLocation(int geomIndex, Positions posIndex, Location _location) =>
+            SetLocation(geomIndex, (Geometries.Position) posIndex, _location);
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="geomIndex"></param>
+        /// <param name="posIndex"></param>
+        /// <param name="_location"></param>
+        public void SetLocation(int geomIndex, Geometries.Position posIndex, Location _location)
         {
             elt[geomIndex].SetLocation(posIndex, _location);
         }
@@ -148,9 +168,9 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="geomIndex"></param>
         /// <param name="_location"></param>
-        public  void SetLocation(int geomIndex, Location _location)
+        public void SetLocation(int geomIndex, Location _location)
         {
-            elt[geomIndex].SetLocation(Positions.On, _location);
+            elt[geomIndex].SetLocation(Geometries.Position.On, _location);
         }
 
         /// <summary>

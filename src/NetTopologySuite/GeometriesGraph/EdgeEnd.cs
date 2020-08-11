@@ -28,7 +28,7 @@ namespace NetTopologySuite.GeometriesGraph
 
         private Coordinate _p0, _p1;  // points of initial line segment
         private double _dx, _dy;      // the direction vector for this edge from its starting point
-        private int _quadrant;
+        private Quadrant _quadrant;
 
         /// <summary>
         ///
@@ -73,7 +73,7 @@ namespace NetTopologySuite.GeometriesGraph
             _p1 = p1;
             _dx = p1.X - p0.X;
             _dy = p1.Y - p0.Y;
-            _quadrant = QuadrantOp.Quadrant(_dx, _dy);
+            _quadrant = QuadrantExtensions.Quadrant(_dx, _dy);
             Assert.IsTrue(! (_dx == 0 && _dy == 0), "EdgeEnd with identical endpoints found");
         }
 
@@ -104,7 +104,10 @@ namespace NetTopologySuite.GeometriesGraph
         /// <summary>
         ///
         /// </summary>
-        public int Quadrant => _quadrant;
+        [Obsolete("Use QuadrantValue")]
+        public int Quadrant => (int)_quadrant;
+
+        public Quadrant QuadrantValue => _quadrant;
 
         /// <summary>
         ///

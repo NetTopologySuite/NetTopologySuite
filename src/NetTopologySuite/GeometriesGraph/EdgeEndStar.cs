@@ -236,7 +236,7 @@ namespace NetTopologySuite.GeometriesGraph
             // initialize startLoc to location of last Curve side (if any)
             int lastEdgeIndex = edges.Count - 1;
             var startLabel = edges[lastEdgeIndex].Label;
-            var startLoc = startLabel.GetLocation(geomIndex, Positions.Left);
+            var startLoc = startLabel.GetLocation(geomIndex, Geometries.Position.Left);
             Assert.IsTrue(startLoc != Location.Null, "Found unlabelled area edge");
 
             var currLoc = startLoc;
@@ -245,8 +245,8 @@ namespace NetTopologySuite.GeometriesGraph
                 var label = e.Label;
                 // we assume that we are only checking a area
                 Assert.IsTrue(label.IsArea(geomIndex), "Found non-area edge");
-                var leftLoc = label.GetLocation(geomIndex, Positions.Left);
-                var rightLoc = label.GetLocation(geomIndex, Positions.Right);
+                var leftLoc = label.GetLocation(geomIndex, Geometries.Position.Left);
+                var rightLoc = label.GetLocation(geomIndex, Geometries.Position.Right);
                 // check that edge is really a boundary between inside and outside!
                 if (leftLoc == rightLoc)
                     return false;
@@ -271,8 +271,8 @@ namespace NetTopologySuite.GeometriesGraph
             foreach (var e in Edges)
             {
                 var label = e.Label;
-                if (label.IsArea(geomIndex) && label.GetLocation(geomIndex, Positions.Left) != Location.Null)
-                    startLoc = label.GetLocation(geomIndex, Positions.Left);
+                if (label.IsArea(geomIndex) && label.GetLocation(geomIndex, Geometries.Position.Left) != Location.Null)
+                    startLoc = label.GetLocation(geomIndex, Geometries.Position.Left);
             }
             // no labelled sides found, so no labels to propagate
             if (startLoc == Location.Null)
@@ -283,13 +283,13 @@ namespace NetTopologySuite.GeometriesGraph
             {
                 var label = e.Label;
                 // set null On values to be in current location
-                if (label.GetLocation(geomIndex, Positions.On) == Location.Null)
-                    label.SetLocation(geomIndex, Positions.On, currLoc);
+                if (label.GetLocation(geomIndex, Geometries.Position.On) == Location.Null)
+                    label.SetLocation(geomIndex, Geometries.Position.On, currLoc);
                 // set side labels (if any)
                 if (label.IsArea(geomIndex))
                 {
-                    var leftLoc   = label.GetLocation(geomIndex, Positions.Left);
-                    var rightLoc  = label.GetLocation(geomIndex, Positions.Right);
+                    var leftLoc   = label.GetLocation(geomIndex, Geometries.Position.Left);
+                    var rightLoc  = label.GetLocation(geomIndex, Geometries.Position.Right);
                     // if there is a right location, that is the next location to propagate
                     if (rightLoc != Location.Null)
                     {
@@ -307,9 +307,9 @@ namespace NetTopologySuite.GeometriesGraph
                         *  the other point (which is determined by the current location).
                         *  Assign both sides to be the current location.
                         */
-                        Assert.IsTrue(label.GetLocation(geomIndex, Positions.Left) == Location.Null, "found single null side");
-                        label.SetLocation(geomIndex, Positions.Right, currLoc);
-                        label.SetLocation(geomIndex, Positions.Left, currLoc);
+                        Assert.IsTrue(label.GetLocation(geomIndex, Geometries.Position.Left) == Location.Null, "found single null side");
+                        label.SetLocation(geomIndex, Geometries.Position.Right, currLoc);
+                        label.SetLocation(geomIndex, Geometries.Position.Left, currLoc);
                     }
                 }
             }

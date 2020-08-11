@@ -2,6 +2,7 @@
 using System.Text;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
+using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
@@ -26,39 +27,39 @@ namespace NetTopologySuite.Operation.OverlayNg
      * determination of the edge role in collapse cases).
      * <p>
      * For each input geometry, the label indicates that an edge is in one of the following states
-     * (denoted by the <code>dim</code> field).
+     * (denoted by the <c>dim</c> field).
      * Each state has some additional information about the edge.
      * <ul>
      * <li>A <b>Boundary</b> edge of an input Area (polygon)
      *   <ul>
-     *   <li><code>dim</code> = DIM_BOUNDARY</li>
-     *   <li><code>locLeft, locRight</code> : the locations of the edge sides for the input Area</li>
-     *   <li><code>isHole</code> : whether the 
+     *   <li><c>dim</c> = DIM_BOUNDARY</li>
+     *   <li><c>locLeft, locRight</c> : the locations of the edge sides for the input Area</li>
+     *   <li><c>isHole</c> : whether the 
      * edge was in a shell or a hole</li>
      *   </ul>
      * </li>
      * <li>A <b>Collapsed</b> edge of an input Area 
      * (which had two or more parent edges)
      *   <ul>
-     *   <li><code>dim</code> = DIM_COLLAPSE</li>
-     *   <li><code>locLine</code> : the location of the 
+     *   <li><c>dim</c> = DIM_COLLAPSE</li>
+     *   <li><c>locLine</c> : the location of the 
      * edge relative to the input Area</li>
-     *   <li><code>isHole</code> : whether some 
-     * contributing edge was in a shell (<code>false</code>), 
-     * or otherwise that all were in holes</li> (<code>true</code>)
+     *   <li><c>isHole</c> : whether some 
+     * contributing edge was in a shell (<c>false</c>), 
+     * or otherwise that all were in holes</li> (<c>true</c>)
      *   </ul>
      * </li>
      * <li>An edge from an input <b>Line</b>
      *   <ul>
-     *   <li><code>dim</code> = DIM_LINE</li>
-     *   <li><code>locLine</code> : initialized to LOC_UNKNOWN, 
+     *   <li><c>dim</c> = DIM_LINE</li>
+     *   <li><c>locLine</c> : initialized to LOC_UNKNOWN, 
      *          to simplify logic.</li>
      *   </ul>
      * </li>
      * <li>An edge which is <b>Not Part</b> of an input geometry
      * (and thus must be part of the other geometry).
      *   <ul>
-     *   <li><code>dim</code> = NOT_PART</li>
+     *   <li><c>dim</c> = NOT_PART</li>
      *   </ul>
      * </li>
      * </ul>
@@ -94,7 +95,7 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// determination of the edge role in collapse cases).
     /// <para/>
     /// For each input geometry, the label indicates that an edge is in one of the following states
-    /// (denoted by the<code>dim</code> field).
+    /// (denoted by the<c>dim</c> field).
     /// Each state has some additional information about the edge.
     /// <list type="bullet">
     /// <item><description>A <b>Boundary</b> edge of an input Area (polygon)
@@ -492,22 +493,26 @@ namespace NetTopologySuite.Operation.OverlayNg
             return _bLocLine == Location.Interior;
         }
 
+        [Obsolete("Use GetLocation(int, Geometries.Position")]
         public Location GetLocation(int index, Positions position, bool isForward)
+            => GetLocation(index, (Position) position, isForward);
+
+        public Location GetLocation(int index, Position position, bool isForward)
         {
             if (index == 0)
             {
                 switch (position)
                 {
-                    case Positions.Left: return isForward ? _aLocLeft : _aLocRight;
-                    case Positions.Right: return isForward ? _aLocRight : _aLocLeft;
-                    case Positions.On: return _aLocLine;
+                    case Position.Left: return isForward ? _aLocLeft : _aLocRight;
+                    case Position.Right: return isForward ? _aLocRight : _aLocLeft;
+                    case Position.On: return _aLocLine;
                 }
             }
             switch (position)
             {
-                case Positions.Left: return isForward ? _bLocLeft : _bLocRight;
-                case Positions.Right: return isForward ? _bLocRight : _bLocLeft;
-                case Positions.On: return _bLocLine;
+                case Position.Left: return isForward ? _bLocLeft : _bLocRight;
+                case Position.Right: return isForward ? _bLocRight : _bLocLeft;
+                case Position.On: return _bLocLine;
             }
             return LOC_UNKNOWN;
         }
@@ -522,7 +527,21 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// <param name="position">The position for a boundary label</param>
         /// <param name="isForward">The direction for a boundary label</param>
         /// <returns>The location for the specified position</returns>
+        [Obsolete("Use GetLocationBoundaryOrLine(int, Geometries.Position, bool)")]
         public Location GetLocationBoundaryOrLine(int index, Positions position, bool isForward)
+            => GetLocationBoundaryOrLine(index, (Position) position, isForward);
+
+        /// <summary>
+        /// Gets the location for this label for either
+        /// a Boundary or a Line edge.
+        /// This supports a simple determination of
+        /// whether the edge should be included as a result edge.
+        /// </summary>
+        /// <param name="index">The source index</param>
+        /// <param name="position">The position for a boundary label</param>
+        /// <param name="isForward">The direction for a boundary label</param>
+        /// <returns>The location for the specified position</returns>
+        public Location GetLocationBoundaryOrLine(int index, Position position, bool isForward)
         {
             if (IsBoundary(index))
             {
@@ -598,8 +617,8 @@ namespace NetTopologySuite.Operation.OverlayNg
             var buf = new StringBuilder();
             if (IsBoundary(index))
             {
-                buf.Append(LocationUtility.ToLocationSymbol(GetLocation(index, Positions.Left, isForward)));
-                buf.Append(LocationUtility.ToLocationSymbol(GetLocation(index, Positions.Right, isForward)));
+                buf.Append(LocationUtility.ToLocationSymbol(GetLocation(index, Position.Left, isForward)));
+                buf.Append(LocationUtility.ToLocationSymbol(GetLocation(index, Position.Right, isForward)));
             }
             else
             {

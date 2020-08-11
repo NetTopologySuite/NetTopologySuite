@@ -4,6 +4,7 @@ using NetTopologySuite.EdgeGraph;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.IO;
+using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
@@ -91,7 +92,11 @@ namespace NetTopologySuite.Operation.OverlayNg
             get => _label;
         }
 
+        [Obsolete("Use GetLocation(int, Geometries.Position)")]
         public Location GetLocation(int index, Positions position)
+            => GetLocation(index, (Position) position);
+
+        public Location GetLocation(int index, Position position)
         {
             return _label.GetLocation(index, position, _direction);
         }

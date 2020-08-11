@@ -99,7 +99,15 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="position"></param>
         /// <returns></returns>
-        public int GetDepth(Positions position)
+        [Obsolete("Use GetDepth(Geometries.Position)")]
+        public int GetDepth(Positions position) => GetDepth((Geometries.Position) position);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public int GetDepth(Geometries.Position position)
         {
             return _depth[(int)position];
         }
@@ -109,7 +117,15 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="position"></param>
         /// <param name="depthVal"></param>
-        public void SetDepth(Positions position, int depthVal)
+        [Obsolete("Use SetDepth(Geometries.Position, int)")]
+        public void SetDepth(Positions position, int depthVal) => SetDepth((Geometries.Position) position, depthVal);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="depthVal"></param>
+        public void SetDepth(Geometries.Position position, int depthVal)
         {
             if (_depth[(int)position] != -999)
                 if (_depth[(int)position] != depthVal)
@@ -208,8 +224,8 @@ namespace NetTopologySuite.GeometriesGraph
                 for (int i = 0; i < 2; i++)
                 {
                     if (!(Label.IsArea(i)
-                        && Label.GetLocation(i, Positions.Left)  == Location.Interior
-                        && Label.GetLocation(i, Positions.Right) == Location.Interior))
+                        && Label.GetLocation(i, Geometries.Position.Left)  == Location.Interior
+                        && Label.GetLocation(i, Geometries.Position.Right) == Location.Interior))
                     {
                         isInteriorAreaEdge = false;
                     }
@@ -236,7 +252,21 @@ namespace NetTopologySuite.GeometriesGraph
         /// </summary>
         /// <param name="depth"></param>
         /// <param name="position"></param>
+        [Obsolete("Use SetEdgeDepths(Topology.Postion, int)")]
         public void SetEdgeDepths(Positions position, int depth)
+        {
+            SetEdgeDepths((Geometries.Position)position, depth);
+        }
+
+        /// <summary>
+        /// Set both edge depths.
+        /// One depth for a given side is provided.
+        /// The other is computed depending on the Location
+        /// transition and the depthDelta of the edge.
+        /// </summary>
+        /// <param name="depth"></param>
+        /// <param name="position"></param>
+        public void SetEdgeDepths(Geometries.Position position, int depth)
         {
             // get the depth transition delta from R to Curve for this directed Edge
             int depthDelta = Edge.DepthDelta;
@@ -245,10 +275,10 @@ namespace NetTopologySuite.GeometriesGraph
 
             // if moving from Curve to R instead of R to Curve must change sign of delta
             int directionFactor = 1;
-            if (position == Positions.Left)
+            if (position == Geometries.Position.Left)
                 directionFactor = -1;
 
-            var oppositePos = Position.Opposite(position);
+            var oppositePos = PositionExtensions.Opposite(position);
             int delta = depthDelta * directionFactor;
             int oppositeDepth = depth + delta;
             SetDepth(position, depth);
@@ -262,7 +292,7 @@ namespace NetTopologySuite.GeometriesGraph
         public override void Write(StreamWriter outstream)
         {
             base.Write(outstream);
-            outstream.Write(" " + _depth[(int)Positions.Left] + "/" + _depth[(int)Positions.Right]);
+            outstream.Write(" " + _depth[(int)Geometries.Position.Left] + "/" + _depth[(int)Geometries.Position.Right]);
             outstream.Write(" (" + DepthDelta + ")");
             if (_isInResult)
                 outstream.Write(" inResult");

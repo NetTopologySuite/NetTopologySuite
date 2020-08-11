@@ -4,6 +4,7 @@ using NetTopologySuite.Algorithm;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Noding;
+using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.Buffer
 {
@@ -146,11 +147,11 @@ namespace NetTopologySuite.Operation.Buffer
         private void AddPolygon(Polygon p)
         {
             double offsetDistance = _distance;
-            var offsetSide = Positions.Left;
+            var offsetSide = Position.Left;
             if (_distance < 0.0)
             {
                 offsetDistance = -_distance;
-                offsetSide = Positions.Right;
+                offsetSide = Position.Right;
             }
 
             var shell = p.Shell;
@@ -179,7 +180,7 @@ namespace NetTopologySuite.Operation.Buffer
                 // Holes are topologically labelled opposite to the shell, since
                 // the interior of the polygon lies on their opposite side
                 // (on the left, if the hole is oriented CCW)
-                AddRingSide(holeCoord, offsetDistance, Position.Opposite(offsetSide),
+                AddRingSide(holeCoord, offsetDistance, PositionExtensions.Opposite(offsetSide),
                                Location.Interior, Location.Exterior);
             }
         }
@@ -187,11 +188,11 @@ namespace NetTopologySuite.Operation.Buffer
         private void AddRingBothSides(Coordinate[] coord, double distance)
         {
             AddRingSide(coord, distance,
-                Positions.Left,
+                Position.Left,
                 Location.Exterior, Location.Interior);
             // Add the opposite side of the ring
             AddRingSide(coord, distance,
-                Positions.Right,
+                Position.Right,
                 Location.Interior, Location.Exterior);
         }
 
@@ -209,7 +210,7 @@ namespace NetTopologySuite.Operation.Buffer
         /// <param name="cwLeftLoc">The location on the L side of the ring (if it is CW).</param>
         /// <param name="cwRightLoc">The location on the R side of the ring (if it is CW).</param>
         private void AddRingSide(Coordinate[] coord, double offsetDistance,
-            Positions side, Location cwLeftLoc, Location cwRightLoc)
+            Position side, Location cwLeftLoc, Location cwRightLoc)
         {
             // don't bother adding ring if it is "flat" and will disappear in the output
             if (offsetDistance == 0.0 && coord.Length < LinearRing.MinimumValidSize)
@@ -222,7 +223,7 @@ namespace NetTopologySuite.Operation.Buffer
             {
                 leftLoc = cwRightLoc;
                 rightLoc = cwLeftLoc;
-                side = Position.Opposite(side);
+                side = PositionExtensions.Opposite(side);
             }
             var curve = _curveBuilder.GetRingCurve(coord, side, offsetDistance);
             AddCurve(curve, leftLoc, rightLoc);

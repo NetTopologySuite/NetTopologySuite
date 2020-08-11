@@ -40,7 +40,7 @@ namespace NetTopologySuite.Planargraph
 
         private DirectedEdge _sym;  // optional
 
-        private readonly int _quadrant;
+        private readonly Quadrant _quadrant;
         private readonly double _angle;
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace NetTopologySuite.Planargraph
             p1 = directionPt;
             double dx = p1.X - p0.X;
             double dy = p1.Y - p0.Y;
-            _quadrant = QuadrantOp.Quadrant(dx, dy);
+            _quadrant = QuadrantExtensions.Quadrant(dx, dy);
             _angle = Math.Atan2(dy, dx);
         }
 
@@ -85,7 +85,14 @@ namespace NetTopologySuite.Planargraph
         /// Returns 0, 1, 2, or 3, indicating the quadrant in which this DirectedEdge's
         /// orientation lies.
         /// </summary>
-        public int Quadrant => _quadrant;
+        [Obsolete("Use QuadrantValue")]
+        public int Quadrant => (int)_quadrant;
+
+        /// <summary>
+        /// Returns 0, 1, 2, or 3, indicating the quadrant in which this DirectedEdge's
+        /// orientation lies.
+        /// </summary>
+        public Quadrant QuadrantValue => _quadrant;
 
         /// <summary>
         /// Returns a point to which an imaginary line is drawn from the from-node to
@@ -169,9 +176,9 @@ namespace NetTopologySuite.Planargraph
         public int CompareDirection(DirectedEdge e)
         {
             // if the rays are in different quadrants, determining the ordering is trivial
-            if (_quadrant > e.Quadrant)
+            if (_quadrant > e.QuadrantValue)
                 return 1;
-            if (_quadrant < e.Quadrant)
+            if (_quadrant < e.QuadrantValue)
                 return -1;
             // vectors are in the same quadrant - check relative orientation of direction vectors
             // this is > e if it is CCW of e

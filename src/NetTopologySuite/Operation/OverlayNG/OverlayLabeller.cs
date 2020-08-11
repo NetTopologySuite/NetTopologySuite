@@ -4,6 +4,7 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Operation.Overlay;
 using NetTopologySuite.Utilities;
+using Position = NetTopologySuite.Geometries.Position;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
@@ -83,7 +84,7 @@ namespace NetTopologySuite.Operation.OverlayNg
                 return;
 
             // initialize currLoc to location of L side
-            var currLoc = eStart.GetLocation(geomIndex, Positions.Left);
+            var currLoc = eStart.GetLocation(geomIndex, Position.Left);
             var e = eStart.ONextOE;
 
             //Debug.println("\npropagateSideLabels geomIndex = " + geomIndex + " : " + eStart);
@@ -108,7 +109,7 @@ namespace NetTopologySuite.Operation.OverlayNg
                      *  Update the current location from its labels.
                      *  Also check for topological consistency.
                      */
-                    var locRight = e.GetLocation(geomIndex, Positions.Right);
+                    var locRight = e.GetLocation(geomIndex, Position.Right);
                     if (locRight != currLoc)
                     {
                         /*
@@ -118,7 +119,7 @@ namespace NetTopologySuite.Operation.OverlayNg
                       //*/
                         throw new TopologyException("side location conflict: arg " + geomIndex, e.Coordinate);
                     }
-                    var locLeft = e.GetLocation(geomIndex, Positions.Left);
+                    var locLeft = e.GetLocation(geomIndex, Position.Left);
                     if (locLeft == Location.Null)
                     {
                         Assert.ShouldNeverReachHere("found single null side at " + e);
@@ -442,8 +443,8 @@ namespace NetTopologySuite.Operation.OverlayNg
             if (label.IsBoundaryEither
                 && OverlayNG.IsResultOfOp(
                     overlayOpCode,
-                    label.GetLocationBoundaryOrLine(0, Positions.Right, e.IsForward),
-                    label.GetLocationBoundaryOrLine(1, Positions.Right, e.IsForward)))
+                    label.GetLocationBoundaryOrLine(0, Position.Right, e.IsForward),
+                    label.GetLocationBoundaryOrLine(1, Position.Right, e.IsForward)))
             {
                 e.MarkInResultArea();
             }
