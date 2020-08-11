@@ -6,7 +6,10 @@ using NUnit.Framework;
 
 namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
 {
-    public class OverlayNGSnappingTest : GeometryTestCase
+    /// <summary>
+    /// Tests <see cref="NetTopologySuite.Operation.OverlayNg.OverlayNG"/> using the <see cref="SnappingNoder"/>
+    /// </summary>
+    public class OverlayNGSnappingNoderTest : GeometryTestCase
     {
 
         [Test]
