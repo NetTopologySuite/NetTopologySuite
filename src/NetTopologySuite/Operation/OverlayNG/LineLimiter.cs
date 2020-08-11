@@ -8,9 +8,15 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// to those which intersect an envelope.
     /// This creates zero or more sections of the input segment sequences,
     /// containing only line segments which intersect the limit envelope.
-    /// Segments are not clipped, since that happens in the overlay.
+    /// Segments are not clipped, since that can move
+    /// line segments enough to alter topology,
+    /// and it happens in the overlay in any case.
     /// This can substantially reduce the number of vertices which need to be
     /// processed during overlay.
+    /// <para/>
+    /// This optimization is only applicable to Line geometries,
+    /// since it does not maintain the closed topology of rings.
+    /// Polygonal geometries are optimized using the <see cref="RingClipper"/>.
     /// </summary>
     /// <seealso cref="RingClipper"/>
     /// <author>Martin Davis</author>
