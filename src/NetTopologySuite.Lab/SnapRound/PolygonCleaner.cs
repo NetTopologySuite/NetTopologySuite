@@ -44,7 +44,7 @@ namespace NetTopologySuite.SnapRound
                 if (area.IsValid) return area;
                 // TODO: this is slow and has potential errors (due to buffer robustness failure)
                 // TODO: replace with a proper polygon cleaner
-                /**
+                /*
                  * Creates a valid area geometry from one that possibly has bad topology (i.e.
                  * self-intersections). Since buffer can handle invalid topology, but always
                  * returns valid geometry, constructing a 0-width buffer "corrects" the

@@ -9,7 +9,7 @@ namespace NetTopologySuite.Algorithm
     /// if it possible to calculate such a point exactly.
     /// Otherwise, the point may lie on the boundary of the geometry.
     /// <para>
-    /// The interior point of an empty geometry is <code>POINT EMPTY</code>.
+    /// The interior point of an empty geometry is <c>POINT EMPTY</c>.
     /// </para>
     /// </summary>
     public static class InteriorPoint

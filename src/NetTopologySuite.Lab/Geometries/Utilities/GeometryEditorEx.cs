@@ -226,7 +226,7 @@ namespace NetTopologySuite.Geometries.Utilities
                 newPolygon = _targetFactory.CreatePolygon();
                 return newPolygon;
             }
-            /**
+            /*
              * If geometry was modified, return it
              */
             if (newPolygon != polygon)

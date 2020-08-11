@@ -12,7 +12,7 @@ namespace NetTopologySuite.Algorithm
         /// <summary>
         /// Computes the intersection point of two lines.
         /// If the lines are parallel or collinear this case is detected
-        /// and <code>null</code> is returned.
+        /// and <c>null</c> is returned.
         /// <para/>
         /// In general it is not possible to accurately compute
         /// the intersection point of two lines, due to

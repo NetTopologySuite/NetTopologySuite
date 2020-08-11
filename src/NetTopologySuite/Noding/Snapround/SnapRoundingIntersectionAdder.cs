@@ -68,7 +68,7 @@ namespace NetTopologySuite.Noding.Snapround
      * This method is called by clients
      * of the {@link SegmentIntersector} class to process
      * intersections for two segments of the {@link SegmentString}s being intersected.
-     * Note that some clients (such as <code>MonotoneChain</code>s) may optimize away
+     * Note that some clients (such as <c>MonotoneChain</c>s) may optimize away
      * this call for segment pairs which they have determined do not intersect
      * (e.g. by an disjoint envelope test).
      */
