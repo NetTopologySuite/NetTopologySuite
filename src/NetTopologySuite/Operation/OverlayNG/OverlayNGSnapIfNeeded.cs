@@ -10,12 +10,6 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// <summary>
     /// Performs an overlay operation using full precision
     /// if possible, and snap-rounding only as a fall-back for failure.
-    /// <para/>
-    /// <b>WARNING</b> - this approach can produce artifacts
-    /// when unioning polygonal coverages.
-    /// The issue occurs when one group of polygons is snapped,
-    /// and an adjacent polygon is not.  A gap can be
-    /// introduced between snapped and non-snapped segments.
     /// </summary>
     /// <author>Martin Davis</author>
     public class OverlayNGSnapIfNeeded
@@ -28,17 +22,17 @@ namespace NetTopologySuite.Operation.OverlayNg
             return Overlay(g0, g1, SpatialFunction.Intersection);
         }
 
-        public static Geometry union(Geometry g0, Geometry g1)
+        public static Geometry Union(Geometry g0, Geometry g1)
         {
             return Overlay(g0, g1, OverlayNG.UNION);
         }
 
-        public static Geometry difference(Geometry g0, Geometry g1)
+        public static Geometry Difference(Geometry g0, Geometry g1)
         {
             return Overlay(g0, g1, OverlayNG.DIFFERENCE);
         }
 
-        public static Geometry symDifference(Geometry g0, Geometry g1)
+        public static Geometry SymDifference(Geometry g0, Geometry g1)
         {
             return Overlay(g0, g1, OverlayNG.SYMDIFFERENCE);
         }
@@ -51,8 +45,11 @@ namespace NetTopologySuite.Operation.OverlayNg
             Exception exOriginal;
             try
             {
-                // start with operation using floating PM
                 result = OverlayNG.Overlay(geom0, geom1, opCode, PmFloat);
+
+                // Simple noding with no validation
+                // There are cases where this succeeds with invalid noding (e.g. STMLF 1608).
+                // So currently it is NOT safe to run overlay without noding validation
                 //result = OverlayNG.overlay(geom0, geom1, opCode, createFloatingNoder()); 
                 return result;
             }
@@ -77,6 +74,13 @@ namespace NetTopologySuite.Operation.OverlayNg
             throw exOriginal;
         }
 
+        /// <summary>
+        /// Creates a noder using simple floating noding
+        /// with no validation phase.
+        /// This is twice as fast, and should be safe since
+        /// OverlayNG is more sensitive to invalid noding.
+        /// </summary>
+        /// <returns>A floating noder with no validation</returns>
         private static INoder CreateFloatingNoder()
         {
             var noder = new MCIndexNoder();
@@ -85,7 +89,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             return noder;
         }
 
-        private static INoder CreateSnappingtNoder(double tolerance)
+        private static INoder CreateSnappingNoder(double tolerance)
         {
             var snapNoder = new SnappingNoder(tolerance);
             return snapNoder;
@@ -97,7 +101,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             Geometry result;
             try
             {
-                var noder = CreateSnappingtNoder(snapTol);
+                var noder = CreateSnappingNoder(snapTol);
                 //Console.WriteLine("Snapping with " + snapTol);
 
                 result = OverlayNG.Overlay(geom0, geom1, opCode, noder);
