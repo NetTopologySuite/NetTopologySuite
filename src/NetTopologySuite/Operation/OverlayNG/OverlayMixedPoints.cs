@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using NetTopologySuite.Algorithm.Locate;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Overlay;
@@ -8,13 +9,18 @@ namespace NetTopologySuite.Operation.OverlayNg
 {
     /// <summary>
     /// Computes an overlay where one input is Point(s) and one is not.
+    /// This class supports overlay being used as an efficient way
+    /// to find points within or outside a polygon.
     /// <para/>
-    /// The semantics are:
+    /// Input semantics are:
     /// <list type="bullet">
     /// <item><description>Duplicates are removed from Point output</description></item>
     /// <item><description>Non-point output is rounded and noded using the given precision model</description></item>
+    /// </list>
+    /// Output semantics are:
+    /// <list type="bullet">
     /// <item><description>An empty result is an empty atomic geometry
-    /// with dimension determined by the inputs and the operation
+    /// with dimension determined by the inputs and the operation as per overlay semantics
     /// </description></item>
     /// </list>
     /// For efficiency the following optimizations are used:
@@ -23,7 +29,8 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// (in particular, they do not participate in snap-rounding if that is used).</description></item>
     /// <item><description>If the non-point input geometry is not included in the output
     /// it is not rounded and noded.This means that points
-    /// are compared to the non-rounded geometry, which will be apparent in the result.</description></item>
+    /// are compared to the non-rounded geometry.
+    /// This will be apparent in the result.</description></item>
     /// </list>
     /// This means that overlay is efficient to use for finding points
     /// within or outside a polygon.
@@ -59,6 +66,7 @@ namespace NetTopologySuite.Operation.OverlayNg
 
 
             // name the dimensional geometries
+
             if (geom0.Dimension == 0)
             {
                 _geomPoint = geom0;
@@ -78,7 +86,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             // reduce precision of non-point input, if required
             _geomNonPoint = PrepareNonPoint(_geomNonPointInput);
             _geomNonPointDim = _geomNonPoint.Dimension;
-            CreateLocator(_geomNonPoint);
+            _locator = CreateLocator(_geomNonPoint);
 
             var coords = ExtractCoordinates(_geomPoint, _pm);
 
@@ -97,15 +105,15 @@ namespace NetTopologySuite.Operation.OverlayNg
             return null;
         }
 
-        private void CreateLocator(Geometry geomNonPoint)
+        private IPointOnGeometryLocator CreateLocator(Geometry geomNonPoint)
         {
             if (_geomNonPointDim == Dimension.Surface)
             {
-                _locator = new IndexedPointInAreaLocator(geomNonPoint);
+                return new IndexedPointInAreaLocator(geomNonPoint);
             }
             else
             {
-                _locator = new IndexedPointOnLineLocator(geomNonPoint);
+                return new IndexedPointOnLineLocator(geomNonPoint);
             }
         }
 
@@ -159,7 +167,13 @@ namespace NetTopologySuite.Operation.OverlayNg
             {
                 return _geometryFactory.CreateEmpty(0);
             }
-            return _geometryFactory.BuildGeometry(points);
+            if (points.Count == 1)
+            {
+                return points.First();
+            }
+
+            var pointsArray = GeometryFactory.ToPointArray(points);
+            return _geometryFactory.CreateMultiPoint(pointsArray);
         }
 
         private List<Point> FindPoints(bool isCovered, IEnumerable<Coordinate> coords)
@@ -170,7 +184,8 @@ namespace NetTopologySuite.Operation.OverlayNg
             {
                 if (HasLocation(isCovered, coord))
                 {
-                    resultCoords.Add(coord);
+                    // copy coordinate to avoid aliasing
+                    resultCoords.Add(coord.Copy());
                 }
             }
             return CreatePoints(resultCoords);
