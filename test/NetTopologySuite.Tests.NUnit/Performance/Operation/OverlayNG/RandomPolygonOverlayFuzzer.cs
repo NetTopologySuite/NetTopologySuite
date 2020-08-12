@@ -25,9 +25,9 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
             //overlayOrig(poly1, poly2);
             //overlayOrigNoSnap(poly1, poly2);
             //overlayNGFloat(poly1, poly2);
-            //overlayNGSnapIfNeeded(poly1, poly2);
+            OverlayNGSnapIfNeeded(poly1, poly2);
             //overlayNG(poly1, poly2);
-            OverlayNGSnapping(poly1, poly2);
+            //OverlayNGSnapping(poly1, poly2);
         }
 
         const bool IsVerbose = false;
@@ -68,6 +68,7 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
         [Test]
         public void Run()
         {
+            TestContext.WriteLine("Running {0:D} tests", N_TESTS);
             for (int i = 1; i <= N_TESTS; i++)
             {
                 testIndex = i;
@@ -167,8 +168,8 @@ namespace NetTopologySuite.Tests.NUnit.Performance.Operation.OverlayNG
 
         private void OverlayNGSnapIfNeeded(Geometry poly1, Geometry poly2)
         {
-            //OverlayNGSnapIfNeeded.intersection(poly1, poly2);
-            //poly1.Intersection(poly2);
+            NetTopologySuite.Operation.OverlayNg.OverlayNGSnapIfNeeded.Intersection(poly1, poly2);
+            poly1.Intersection(poly2);
             //Geometry diff1 = poly1.difference(poly2);
             //Geometry diff2 = poly2.difference(poly1);
             //Geometry union = inter.union(diff1).union(diff2);
