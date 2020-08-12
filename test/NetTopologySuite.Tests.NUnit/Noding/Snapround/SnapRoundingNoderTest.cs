@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Noding;
@@ -15,6 +16,14 @@ namespace NetTopologySuite.Tests.NUnit.Noding.Snaparound
         private static INoder GetSnapRounder(PrecisionModel pm)
         {
             return new SnapRoundingNoder(pm);
+        }
+
+        [Test]
+        public void TestSimple()
+        {
+            string wkt = "MULTILINESTRING ((1 1, 9 2), (3 3, 3 0))";
+            string expected = "MULTILINESTRING ((1 1, 3 1), (3 1, 9 2), (3 3, 3 1), (3 1, 3 0))";
+            CheckRounding(wkt, 1, expected);
         }
 
         /// <summary>
