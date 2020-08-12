@@ -117,7 +117,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         }
 
         [Test]
-        public void TestPolygoPolygonWithLineTouchIntersection()
+        public void TestPolygonPolygonWithLineTouchIntersection()
         {
             var a = Read("POLYGON ((360 200, 220 200, 220 180, 300 180, 300 160, 300 140, 360 200))");
             var b = Read("MULTIPOLYGON (((280 180, 280 160, 300 160, 300 180, 280 180)), ((220 230, 240 230, 240 180, 220 180, 220 230)))");
@@ -320,7 +320,7 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
         {
             var a = Read("POLYGON ((1 2, 1 1, 9 1, 1 2))");
             var b = Read("POLYGON ((9 2, 9 1, 8 1, 8 2, 9 2))");
-            var expected = Read("POLYGON EMPTY");
+            var expected = Read("POINT (8 1)");
             var actual = Intersection(a, b, 1);
             CheckEqual(expected, actual);
         }

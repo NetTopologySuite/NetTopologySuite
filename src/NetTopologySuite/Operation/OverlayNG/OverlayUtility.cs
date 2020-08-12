@@ -15,19 +15,35 @@ namespace NetTopologySuite.Operation.OverlayNg
 
         internal static Envelope ClippingEnvelope(SpatialFunction opCode, InputGeometry inputGeom, PrecisionModel pm)
         {
-            Envelope clipEnv = null;
+            var overlapEnv = OverlapEnvelope(opCode, inputGeom, pm);
+            if (overlapEnv == null)
+                return null;
+
+            Envelope clipEnv = RobustClipEnvelopeComputer.GetEnvelope(
+                inputGeom.GetGeometry(0),
+                inputGeom.GetGeometry(1),
+                overlapEnv);
+
+            var safeEnv = SafeEnv(clipEnv, pm);
+            return safeEnv;
+        }
+
+        private static Envelope OverlapEnvelope(SpatialFunction opCode, InputGeometry inputGeom, PrecisionModel pm)
+        {
+            Envelope overlapEnv = null;
             switch (opCode)
             {
                 case OverlayNG.INTERSECTION:
-                    var envA = SafeOverlapEnv(inputGeom.GetEnvelope(0), pm);
-                    var envB = SafeOverlapEnv(inputGeom.GetEnvelope(1), pm);
-                    clipEnv = envA.Intersection(envB);
+                    var envA = SafeEnv(inputGeom.GetEnvelope(0), pm);
+                    var envB = SafeEnv(inputGeom.GetEnvelope(1), pm);
+                    overlapEnv = envA.Intersection(envB);
                     break;
                 case OverlayNG.DIFFERENCE:
-                    clipEnv = SafeOverlapEnv(inputGeom.GetEnvelope(0), pm);
+                    overlapEnv = SafeEnv(inputGeom.GetEnvelope(0), pm);
                     break;
             }
-            return clipEnv;
+            // return null for UNION and SYMDIFFERENCE to indicate no clipping
+            return overlapEnv;
         }
 
         /// <summary>
@@ -37,7 +53,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// <param name="env">A safe geometry envelope for clipping</param>
         /// <param name="pm">The precision model</param>
         /// <returns>A safe envelope to use for clipping</returns>
-        static Envelope SafeOverlapEnv(Envelope env, PrecisionModel pm)
+       private static Envelope SafeEnv(Envelope env, PrecisionModel pm)
         {
             double envExpandDist = SafeExpandDistance(env, pm);
             var safeEnv = env.Copy();
@@ -48,7 +64,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         private const double SafeEnvBufferFactor = 0.1;
         private const double SafeEnvGridFactor = 3;
 
-        static double SafeExpandDistance(Envelope env, PrecisionModel pm)
+        private static double SafeExpandDistance(Envelope env, PrecisionModel pm)
         {
             double envExpandDist;
             if (pm == null || pm.IsFloating)

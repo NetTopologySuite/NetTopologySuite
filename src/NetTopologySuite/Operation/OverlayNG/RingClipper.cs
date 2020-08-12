@@ -10,13 +10,20 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// In particular, the output may contain coincident non-noded line segments
     /// along the clip rectangle sides.
     /// However, the output is sufficiently well-structured
-    /// that it can be used as input to the overlay algorithm
-    /// (which is able to handle coincident linework due
+    /// that it can be used as input to the <see cref="OverlayNG"/> algorithm
+    /// (which is able to process coincident linework due
     /// to the need to handle topology collapse under precision reduction).
     /// <para/>
     /// Because of the likelihood of creating
-    /// line segments along the rectangle side,
-    /// this code is not suitable for clipping linestrings.
+    /// extraneous line segments along the clipping rectangle sides,
+    /// this class is not suitable for clipping linestrings.
+    /// <para/>
+    /// The clipping envelope should be generated using <see cref="RobustClipEnvelopeComputer"/>,
+    /// to ensure that intersecting line segments are not perturbed
+    /// by clipping.
+    /// This is required to ensure that the overlay of the
+    /// clipped geometry is robust and correct (i.e. the same as
+    /// if clipping was not used).
     /// </summary>
     /// <seealso cref="LineLimiter"/>
     /// <author>Martin Davis</author>
