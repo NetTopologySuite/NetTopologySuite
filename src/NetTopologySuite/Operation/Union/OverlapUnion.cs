@@ -76,15 +76,10 @@ namespace NetTopologySuite.Operation.Union
         /// <param name="g1">A geometry to union</param>
         /// <param name="unionFun">Function to union two geometries</param>
         /// <returns>The union of the inputs</returns>
-        public static Geometry Union(Geometry g0, Geometry g1, UnionFunction unionFun)
+        public static Geometry Union(Geometry g0, Geometry g1, UnionStrategy unionFun)
         {
             var union = new OverlapUnion(g0, g1, unionFun);
             return union.Union();
-        }
-
-        public UnionFunction Wrap(UnionFunction unionFun)
-        {
-            return new UnionFunction((g0, g1) => OverlapUnion.Union(g0, g1, unionFun));
         }
 
         private readonly GeometryFactory _geomFactory;
@@ -93,14 +88,14 @@ namespace NetTopologySuite.Operation.Union
         private readonly Geometry _g1;
 
 
-        private UnionFunction _unionFun;
+        private readonly UnionStrategy _unionFun;
 
         /// <summary>
         /// Creates a new instance for unioning the given geometries.
         /// </summary>
         /// <param name="g0">A geometry to union</param>
         /// <param name="g1">A geometry to union</param>
-        public OverlapUnion(Geometry g0, Geometry g1) : this(g0, g1, CascadedPolygonUnion.CLASSIC_UNION)
+        public OverlapUnion(Geometry g0, Geometry g1) : this(g0, g1, CascadedPolygonUnion.ClassicUnion)
         { }
 
         /// <summary>
@@ -109,7 +104,7 @@ namespace NetTopologySuite.Operation.Union
         /// <param name="g0">A geometry to union</param>
         /// <param name="g1">A geometry to union</param>
         /// <param name="unionFun">Function to union two geometries</param>
-        public OverlapUnion(Geometry g0, Geometry g1, UnionFunction unionFun)
+        public OverlapUnion(Geometry g0, Geometry g1, UnionStrategy unionFun)
         {
             _g0 = g0;
             _g1 = g1;
@@ -209,6 +204,11 @@ namespace NetTopologySuite.Operation.Union
 
         private Geometry UnionFull(Geometry geom0, Geometry geom1)
         {
+            // if both are empty collections, just return a copy of one of them
+            if (geom0.NumGeometries == 0
+                && geom1.NumGeometries == 0)
+                return geom0.Copy();
+
             var union = _unionFun.Union(geom0, geom1);
             //var union = geom0.Union(geom1);
             return union;

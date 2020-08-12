@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Linemerge;
@@ -85,7 +86,8 @@ namespace NetTopologySuite.Operation.Union
 
         private InputExtracter _extracter;
         private GeometryFactory _geomFact;
-        private UnionFunction unionFunction;
+        //private UnionFunction _unionFunction;
+        private UnionStrategy _unionStrategy;
 
         /// <summary>
         /// Constructs a unary union operation for an enumeration
@@ -121,10 +123,13 @@ namespace NetTopologySuite.Operation.Union
             Extract(geom);
         }
 
-        public UnionFunction UnionFunction
+        /// <remarks>
+        /// Named setter named setUnionFun[ction] in JTS
+        /// </remarks>
+        public UnionStrategy UnionStrategy
         {
-            get => unionFunction ?? CascadedPolygonUnion.OVERLAP_CLASSIC_UNION;
-            set => unionFunction = value;
+            get => _unionStrategy ?? CascadedPolygonUnion.ClassicUnion;
+            set => _unionStrategy = value;
         }
 
         private void Extract(IEnumerable<Geometry> geoms)
@@ -196,7 +201,7 @@ namespace NetTopologySuite.Operation.Union
             Geometry unionPolygons = null;
             if (polygons.Count > 0)
             {
-                unionPolygons = CascadedPolygonUnion.Union(polygons, UnionFunction);
+                unionPolygons = CascadedPolygonUnion.Union(polygons, UnionStrategy);
             }
 
             /*

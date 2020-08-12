@@ -5,12 +5,14 @@ using IList = System.Collections.Generic.IList<object>;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 #if UseWorker
 using System.Threading;
 #endif
 using NetTopologySuite.Geometries;
 using NetTopologySuite.Geometries.Utilities;
 using NetTopologySuite.Index.Strtree;
+using NetTopologySuite.Operation.Overlay.Snap;
 using NetTopologySuite.Utilities;
 
 namespace NetTopologySuite.Operation.Union
@@ -44,29 +46,40 @@ namespace NetTopologySuite.Operation.Union
     /// <seealso href="http://code.google.com/p/nettopologysuite/issues/detail?id=44"/>
     public class CascadedPolygonUnion
     {
-        internal static UnionFunction CLASSIC_UNION => new UnionFunction((g0, g1) => g0.Union(g1));
+        /// <summary>
+        /// A union strategy that uses the classic NTS {@link SnapIfNeededOverlayOp},
+        /// and for polygonal geometries a robustness fallback using <c>Buffer(0)</c>.
+        /// </summary>
+        internal static readonly UnionStrategy ClassicUnion = new UnionStrategy(
+            (g0, g1) =>
+            {
+                try
+                {
+                    return SnapIfNeededOverlayOp.Union(g0, g1);
+                }
+                catch (TopologyException ex)
+                {
+                    // union-by-buffer only works for polygons
+                    if (g0.Dimension != Dimension.Surface || g1.Dimension != Dimension.Surface)
+                        throw ex;
+                    return UnionPolygonsByBuffer(g0, g1);
+                }
+            }, true);
 
-        internal static UnionFunction CLASSIC_UNION_SAFE => new UnionFunction((g0, g1) =>
+        /// <summary>
+        /// An alternative way of unioning polygonal geometries
+        /// by using <c>Buffer(0)</c>.
+        /// Only worth using if regular overlay union fails.
+        /// </summary>
+        /// <param name="g0">A polygonal geometry</param>
+        /// <param name="g1">A polygonal geometry</param>
+        /// <returns>The union of the geometries</returns>
+        private static Geometry UnionPolygonsByBuffer(Geometry g0, Geometry g1)
         {
-            try
-            {
-                return g0.Union(g1);
-            }
-            catch (TopologyException ex)
-            {
-                return UnionByBuffer(g0, g1);
-            }
-        });
-    
-
-    private static Geometry UnionByBuffer(Geometry g0, Geometry g1)
-    {
-        var coll = g0.Factory.CreateGeometryCollection(new [] { g0, g1 });
-        return coll.Buffer(0d);
-    }
-
-    internal static UnionFunction OVERLAP_CLASSIC_UNION = new UnionFunction((g0, g1) =>
-        OverlapUnion.Union(g0, g1, CLASSIC_UNION_SAFE));
+            //System.out.println("Unioning by buffer");
+            var coll = g0.Factory.CreateGeometryCollection(new [] { g0, g1 });
+            return coll.Buffer(0);
+        }
 
         /// <summary>
         /// Computes the union of
@@ -80,22 +93,15 @@ namespace NetTopologySuite.Operation.Union
             return op.Union();
         }
 
-        /// <summary>
-        /// Computes the union of
-        /// a collection of <see cref="Geometry"/>s.
-        /// </summary>
-        /// <param name="polys">A collection of <see cref="IPolygonal"/> <see cref="Geometry"/>s.</param>
-        /// <param name="unionFun">A function to union 2 geometries</param>
-        /// <returns>The unioned geometry.</returns>
-        public static Geometry Union(ICollection<Geometry> polys, UnionFunction unionFun)
+        public static Geometry Union(ICollection<Geometry> polys, UnionStrategy unionStrategy)
         {
-            var op = new CascadedPolygonUnion(polys, unionFun);
+            var op = new CascadedPolygonUnion(polys, unionStrategy);
             return op.Union();
         }
 
         private ICollection<Geometry> _inputPolys;
         private GeometryFactory _geomFactory;
-        private UnionFunction unionFun;
+        private readonly UnionStrategy _unionStrategy;
 
         private int countRemainder = 0;
         private int countInput = 0;
@@ -109,7 +115,7 @@ namespace NetTopologySuite.Operation.Union
         /// </summary>
         /// <param name="polys">A collection of <see cref="IPolygonal"/> <see cref="Geometry"/>s</param>
         public CascadedPolygonUnion(ICollection<Geometry> polys)
-            : this(polys, OVERLAP_CLASSIC_UNION)
+            : this(polys, ClassicUnion)
         {
         }
 
@@ -119,15 +125,15 @@ namespace NetTopologySuite.Operation.Union
       *
       * @param polys a collection of {@link Polygonal} {@link Geometry}s
       */
-        public CascadedPolygonUnion(ICollection<Geometry> polys, UnionFunction unionFun)
+        public CascadedPolygonUnion(ICollection<Geometry> polys, UnionStrategy unionStrategy)
         {
             _inputPolys = polys;
-            this.unionFun = unionFun;
+            _unionStrategy = unionStrategy;
             // guard against null input
             if (_inputPolys == null)
                 _inputPolys = new List<Geometry>();
-            this.countInput = _inputPolys.Count;
-            this.countRemainder = countInput;
+            countInput = _inputPolys.Count;
+            countRemainder = countInput;
         }
 
         /// <summary>
@@ -199,7 +205,7 @@ namespace NetTopologySuite.Operation.Union
 
         //========================================================
         // The following methods are for experimentation only
-
+        /*
         private Geometry RepeatedUnion(IEnumerable<Geometry> geoms)
         {
             Geometry union = null;
@@ -207,26 +213,13 @@ namespace NetTopologySuite.Operation.Union
             {
                 if (union == null)
                     union = g.Copy();
-                else union = unionFun.Union(union, g);
+                else
+                    union = _unionStrategy.Union(union, g);
             }
+
             return union;
         }
-
-        private Geometry BufferUnion(ICollection<Geometry> geoms)
-        {
-            var factory = Factory();
-            var gColl = factory.BuildGeometry(geoms);
-            var unionAll = gColl.Buffer(0.0);
-            return unionAll;
-        }
-
-        private Geometry BufferUnion(Geometry g0, Geometry g1)
-        {
-            var factory = g0.Factory;
-            var gColl = factory.CreateGeometryCollection(new[] { g0, g1 });
-            var unionAll = gColl.Buffer(0.0);
-            return unionAll;
-        }
+         */
 
         //=======================================
 
@@ -258,6 +251,7 @@ namespace NetTopologySuite.Operation.Union
                 g0 = GetGeometry(geoms, start);
                 return UnionSafe(g0, null);
             }
+
             if (end - start == 2)
                 return UnionSafe(GetGeometry(geoms, start), GetGeometry(geoms, start + 1));
 
@@ -346,11 +340,12 @@ namespace NetTopologySuite.Operation.Union
             {
                 Geometry geom = null;
                 if (o is IList)
-                    geom = UnionTree((IList)o);
+                    geom = UnionTree((IList) o);
                 else if (o is Geometry)
-                    geom = (Geometry)o;
+                    geom = (Geometry) o;
                 geoms.Add(geom);
             }
+
             return geoms;
         }
 
@@ -367,15 +362,15 @@ namespace NetTopologySuite.Operation.Union
             if (g0 == null && g1 == null)
                 return null;
             if (g0 == null)
-                return (Geometry)g1.Copy();
+                return (Geometry) g1.Copy();
             if (g1 == null)
-                return (Geometry)g0.Copy();
+                return (Geometry) g0.Copy();
 
             countRemainder--;
             Debug.WriteLine("Remainder: " + countRemainder + " out of " + countInput);
             Debug.WriteLine("Union: A: " + g0.NumPoints + " / B: " + g1.NumPoints + "  ---  ");
 
-            var union = UnionActual(g0, g1, unionFun);
+            var union = UnionActual(g0, g1, _unionStrategy);
 
             Debug.WriteLine(" Result: " + union.NumPoints);
             //if (TestBuilderProxy.isActive()) TestBuilderProxy.showIndicator(union);
@@ -389,10 +384,16 @@ namespace NetTopologySuite.Operation.Union
         /// </summary>
         /// <param name="g0">A geometry to union</param>
         /// <param name="g1">A geometry to union</param>
+        /// <param name="unionStrategy">A </param>
         /// <returns>The union of the inputs</returns>
-        private static Geometry UnionActual(Geometry g0, Geometry g1, UnionFunction unionFun)
+        private static Geometry UnionActual(Geometry g0, Geometry g1, UnionStrategy unionStrategy)
         {
-            var union = unionFun.Union(g0, g1); ;
+            Geometry union;
+            if (unionStrategy.IsFloatingPrecision)
+                union = OverlapUnion.Union(g0, g1, unionStrategy);
+            else 
+                union = unionStrategy.Union(g0, g1);
+        
             var unionPoly = RestrictToPolygons(union);
             return unionPoly;
         }
