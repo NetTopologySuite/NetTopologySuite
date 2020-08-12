@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.GeometriesGraph;
 using NetTopologySuite.Noding;
+using NetTopologySuite.Noding.Snap;
+using NetTopologySuite.Noding.Snapround;
 using NetTopologySuite.Operation.Overlay;
 
 namespace NetTopologySuite.Operation.OverlayNg
@@ -27,17 +30,23 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// This does two things: ensures robust computation;
     /// and forces the output to be validly rounded to the precision model.
     /// <para/>
-    /// For fixed precision models noding is performed using snap-rounding.
+    /// For fixed precision models noding is performed using a <see cref="SnapRoundingNoder"/>.
     /// This provides robust computation(as long as precision is limited to
     /// around 13 decimal digits).
     /// <para/>
-    /// For floating precision the conventional JTS noder is used.
+    /// For floating precision an <see cref="MCIndexNoder"/> is used.
     /// This is not fully robust, so can sometimes result in 
     /// <see cref="TopologyException"/>s being thrown.
+    /// For robust full-precision overlay see <see cref="OverlayNGSnapIfNeeded"/>.
     /// <para/>
     /// A custom <see cref="INoder"/> can be supplied.
     /// This allows using a more performant noding strategy in specific cases,
     /// for instance in <see cref="CoverageUnion"/>.
+    /// <para/>
+    /// <b>Note:</b If a <see cref="SnappingNoder"/> is used
+    /// it is best to specify a fairly small snap tolerance,
+    /// since the intersection clipping optimization can
+    /// interact with the snapping to alter the result.
     /// </summary>
     public class OverlayNG
     {
@@ -118,7 +127,8 @@ namespace NetTopologySuite.Operation.OverlayNg
 
         /// <summary>
         /// Computes an overlay operation for 
-        /// the given geometry operands.
+        /// the given geometry operands, with the
+        /// noding strategy determined by the precision model.
         /// </summary>
         /// <param name="geom0">The first geometry argument</param>
         /// <param name="geom1">The second geometry argument</param>
