@@ -17,9 +17,9 @@ namespace NetTopologySuite.Tests.NUnit.Operation.OverlayNG
             {
                 var a = Read("POLYGON ((0 0, 8 0, 8 3, 0 0))");
                 var b = Read("POLYGON ((0 5, 5 0, 0 0, 0 5))");
-                var expected = Read("POLYGON ((0 0, 3.6363636363636362 1.3636363636363635, 5 0, 0 0))");
+                var expected = Read("POLYGON ((0 0, 3.6363636363636367 1.3636363636363638, 5 0, 0 0))");
                 var actual = Intersection(a, b);
-                CheckEqual(expected, actual);
+                CheckEqual(expected, actual, 1E-10);
             }
 
             static Geometry Intersection(Geometry a, Geometry b)
