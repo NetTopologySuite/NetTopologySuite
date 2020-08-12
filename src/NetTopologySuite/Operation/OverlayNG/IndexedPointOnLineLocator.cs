@@ -4,6 +4,11 @@ using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
+    /// <summary>
+    /// Locates points on a linear geometry,
+    /// using a spatial index to provide good performance.
+    /// </summary>
+    /// <author>Martin Davis</author>
     internal class IndexedPointOnLineLocator : IPointOnGeometryLocator
     {
 
