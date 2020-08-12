@@ -2,29 +2,45 @@
 uid: NetTopologySuite.Operation.OverlayNG
 summary: *content
 ---
-Contains classes that perform topological overlay to compute boolean spatial functions. Overlay operations are used in spatial analysis for computing set-theoretic operations (boolean combinations) of input {@link Geometry}s.
+Contains classes that perform vector overlay to compute boolean set-theoretic spatial functions.
+Overlay operations are used in spatial analysis for computing set-theoretic operations (boolean combinations) of input <xref href="NetTopologySuite.Geometries.Geometry">Geometry</xref> s.
 
-The {@link OverlayNG} class provides the standard Simple Features boolean set-theoretic overlay operations, including:
+The <xref href="NetTopologySuite.Operation.OverlayNG.OverlayNG">OverlayNG</xref> class provides the standard Simple Features
+boolean set-theoretic overlay operations, including:
 * Intersection
 * Union
 * Difference
 * Symmetric Difference
- 
+
 These operations are supported for all combinations of the basic geometry types and their homogeneous collections.
 
 Additional operations include:
 
-* {@link UnaryUnion} unions collections of geometries in an efficient way
-* {@link CoverageUnion} provides enhanced performance for unioning valid polygonal and lineal coverages
-* {@link PrecisionReducer} allows reducing the precision of a geometry in a topologically-valid way
+* <xref href="NetTopologySuite.Operation.Union.UnaryUnionOp">UnaryUnion</xref> unions collections of geometries in an efficient way
+* <xref href="NetTopologySuite.Operation.OverlayNG.CoverageUnion">CoverageUnion</xref> provides enhanced performance for unioning valid polygonal and lineal coverages
+* <xref href="NetTopologySuite.Operation.OverlayNG.PrecisionReducer">PrecisionReducer</xref> allows reducing the precision of a geometry in a topologically-valid way
 
 ## Semantics
 The semantics of operation results are:
-* Results are always valid geometries
-* Empty results are empty atomic geometries of appropriate dimension
-* Duplicate vertices are removed
+* Results are always valid geometries. In particular, result `MultiPolygon`s are valid.
+* Empty results are `EMPTY` atomic geometries of appropriate dimension
+* Repeated vertices are removed
 * Linear results are merged node-to-node (e.g. are of maximial length)
 * Polygon edges which collapse completely due to rounding are not output
+* The `intersection` and `difference` operations
+  always produce a homogeneous result.   
+  The result dimension is equal to or less than the maximum dimension of the inputs.   
+  (For instance, the intersection of a `Polygon`
+  and a `LineString` might produce a `Point` result.)
+* The `union` and `symmetric difference` operations
+  may produce heterogeneous results   
+  (i.e. a collection containing components of different dimension).
+* Homogeneous results are output as `Multi` geometries.
+* Heterogeneous results are in the form of a `GeometryCollection`
+  containing a set of atomic geometries.  This provides backwards compatibility
+  with the original JTS overlay implementation.
+  However, this loses the information that the polygonal results
+  have valid `MultiPolygon` topology.
 
 ## Features
 Functionality
@@ -32,20 +48,28 @@ Functionality
 * **Robust Computation** - provides fully robust computation when an appropriate noder is used
 * **Performance optimizations** - including:
   * Short-circuiting for disjoint input envelopes
-  *Reduction of input segment count via clipping / limiting to overlap envelope
+  * Reduction of input segment count via clipping / limiting to overlap envelope
   * Optimizations can be disabled if required (e.g. for testing or performance evaluation)
 * **Pluggable Noding** - allows using different noders to change characteristics of performance and accuracy
 * **Precision Reduction** - in a topologically correct way. Implemented by unioning a single input with an empty geometry
 * **Fast Coverage Union** - of valid polygonal and linear coverages
 
 ## Pluggable Noding
-The noding phase of overlay uses a {@link Noder} subclass. This is determine automatically based on the precision model of the input. Or it can be provided explicity, which allows changing characteristics of performance and robustness. Examples of relevant noders include:
-{@link SegmentExtractingNoder} - requires node-clean input, and provides very fast noding
-{@link SnappingNoder} - a very robust full-precision noder
-{@link ValidatingNoder} - a wrapper which can be used to verify the noding prior to topology building
+The noding phase of overlay uses a <xref href="NetTopologySuite.Noding.INoder">INoder</xref> subclass. This is determine automatically based on the precision model of the input. Or it can be provided explicity, which allows changing characteristics of performance and robustness. Examples of relevant noders include:
+* <xref href="NetTopologySuite.Noding.MCIndexNoder">MCIndexNoder</xref> - a fast full-precision noder, which however may not produce 
+a valid noding in some situations. Should be combined with a <xref href="NetTopologySuite.Noding.ValidatingNoder">ValidatingNoder</xref> wrapper to detect
+noding failures.
+* <xref href="NetTopologySuite.Noding.Snap.SnappingNoder">SnappingNoder</xref> - a robust full-precision noder
+* <xref href="NetTopologySuite.Noding.Snapround.SnapRoundingNoder">SnapRoundingNoder</xref> - a noder which enforces a supplied fixed precision model 
+by snapping vertices and intersections to a grid
+* <xref href="NetTopologySuite.Noding.ValidatingNoder">ValidatingNoder</xref> - a wrapper which can be used to verify the noding prior to topology building
+* <xref href="NetTopologySuite.Operation.OverlayNG.SegmentExtractingNoder">SegmentExtractingNoder</xref> - requires node-clean input, and provides very fast noding
 
 ## Codebase
-* Defines a simpler topology model, with clear semantics.
+* Defines a simple, full-featured topology model, with clear semantics.
+  The topology model incorporates handling topology collapse, which is
+  essential for snapping and fixed-precision noding.
+* Uses a simple topology graph data structure (based on the winged edge pattern).
 * Uses a simpler topology graph data structure (based on winged edge pattern).
 * Decouples noding and topology-build phases. This makes the code clearer, and makes it possible to allow supplying alternate implementations and semantics for each phase.
 * All optimizations are implemented internally, so that clients do not have to add checks such as envelope overlap<./li>

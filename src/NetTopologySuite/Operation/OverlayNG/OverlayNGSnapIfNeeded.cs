@@ -10,21 +10,23 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// Performs an overlay operation, increasing robustness by using a series of
     /// increasingly aggressive(and slower) noding strategies.
     /// <para/>
-    /// This relies on each overlay operation attempt
-    /// throwing a <see cref="TopologyException"/> if it is unable
-    /// to compute the overlay correctly.
-    /// Generally this occurs because the noding phase does
-    /// not produce a valid noding.
-    /// It seems that this requires the use of a <see cref="ValidatingNoder"/>
-    /// in order to check the results of using a floating noder.
-    /// <para/>
     /// The noding strategies used are:
     /// <list type="number">
     /// <item><description>A simple fast noder using <see cref="PrecisionModels.Floating"/> precision</description></item>
     /// <item><description>A <see cref="SnappingNoder"/> using an automatically-determined snap tolerance</description></item>
-    /// <item><description>First snapping each geometry to itself, and then overlaying them wih a SnappingNoder</description></item>
+    /// <item><description>First snapping each geometry to itself, and then overlaying them wih a <see cref="SnappingNoder"/></description></item>
     /// <item><description>The above two strategies are repeated with increasing snap tolerance, up to a limit</description></item>
     /// </list>
+    /// If the above heuristics still fail to compute a valid overlay,
+    /// the original <see cref="TopologyException"/> is thrown.
+    /// <para/>
+    /// This algorithm relies on each overlay operation execution
+    /// throwing a <see cref="TopologyException"/> if it is unable
+    /// to compute the overlay correctly.
+    /// Generally this occurs because the noding phase does
+    /// not produce a valid noding.
+    /// This requires the use of a <see cref="ValidatingNoder"/>
+    /// in order to check the results of using a floating noder.
     /// </summary>
     /// <author>Martin Davis</author>
     public class OverlayNGSnapIfNeeded
