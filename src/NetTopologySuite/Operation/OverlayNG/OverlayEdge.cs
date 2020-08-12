@@ -35,6 +35,14 @@ namespace NetTopologySuite.Operation.OverlayNg
             return new OverlayEdge(origin, dirPt, direction, lbl, pts);
         }
 
+        public static OverlayEdge CreateEdgePair(Coordinate[] pts, OverlayLabel lbl)
+        {
+            var e0 = CreateEdge(pts, lbl, true);
+            var e1 = CreateEdge(pts, lbl, false);
+            e0.Link(e1);
+            return e0;
+        }
+
         /// <summary>
         /// Gets a <see cref="IComparer{T}"/> which sorts by the origin Coordinates.
         /// </summary>

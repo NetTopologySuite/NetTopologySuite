@@ -8,17 +8,21 @@ using NetTopologySuite.Noding.Snapround;
 namespace NetTopologySuite.Operation.OverlayNg
 {
     /// <summary>
-    /// The overlay noder does the following:
+    /// Builds a set of noded, unique, labelled Edges from
+    /// the edges of the two input geometries.
+    /// <para/>
+    /// It performs the following steps:
     /// <list type="bullet">
     /// <item><description>Extracts input edges, and attaches topological information</description></item>
     /// <item><description>if clipping is enabled, handles clipping or limiting input geometry</description></item>
-    /// <item><description>chooses a Noder based on provided precision model, unless a custom one is supplied</description></item>
+    /// <item><description>chooses a <see cref="INoder"/> based on provided precision model, unless a custom one is supplied</description></item>
     /// <item><description>calls the chosen Noder, with precision model</description></item>
     /// <item><description>removes any fully collapsed noded edges</description></item>
+    /// <item><description>builds <see cref="Edge"/>s and merges them</description></item>
     /// </list>
     /// </summary>
     /// <author>Martin Davis</author>
-    internal class OverlayNoder
+    internal class EdgeNodingBuilder
     {
 
         /*
@@ -55,26 +59,30 @@ namespace NetTopologySuite.Operation.OverlayNg
         }
 
         private readonly PrecisionModel _pm;
-        private readonly List<ISegmentString> _segStrings = new List<ISegmentString>();
+        private readonly List<ISegmentString> _inputEdges = new List<ISegmentString>();
         private INoder _customNoder;
-        private bool _hasEdgesA;
-        private bool _hasEdgesB;
 
         private Envelope _clipEnv;
         private RingClipper _clipper;
         private LineLimiter _limiter;
 
+        private readonly bool[] _hasEdges = new bool[2];
+
         /// <summary>
-        /// Creates an instance of this class.
+        /// Creates a new builder, with an optional custom noder.
+        /// If the noder is not provided, a suitable one will
+        /// be used based on the supplied precision model.
         /// </summary>
-        /// <param name="pm">A precision model</param>
-        public OverlayNoder(PrecisionModel pm)
+        /// <param name="pm">The precision model to use</param>
+        /// <param name="noder">An optional noder to use (may be null)</param>
+        public EdgeNodingBuilder(PrecisionModel pm, INoder noder)
         {
             _pm = pm;
+            _customNoder = noder;
         }
 
         /// <summary>
-        /// Gets or sets a noder appropriate for the precision model supplied.
+        /// Gets or sets a noder appropriate for the precision model supplied.<br/>
         /// This is one of:
         /// <list type="bullet">
         /// <item><term>Fixed precision:</term><description>a snap-rounding noder (which should be fully robust)</description></item>
@@ -105,44 +113,6 @@ namespace NetTopologySuite.Operation.OverlayNg
             }
         }
 
-        public IList<ISegmentString> Node()
-        {
-            var noder = Noder;
-            //Noder noder = getSRNoder();
-            //Noder noder = getSimpleNoder(false);
-            //Noder noder = getSimpleNoder(true);
-            noder.ComputeNodes(_segStrings);
-
-            var nodedSS = noder.GetNodedSubstrings();
-
-            ScanForEdges(nodedSS);
-
-            return nodedSS;
-        }
-
-        /// <summary>
-        /// Records if each geometry has edges present after noding.
-        /// If a geometry has collapsed to a point due to low precision,
-        /// no edges will be present.
-        /// </summary>
-        /// <param name="segStrings">Noded edges to scan</param>
-        private void ScanForEdges(IEnumerable<ISegmentString> segStrings)
-        {
-            foreach (var ss in segStrings)
-            {
-                var info = (EdgeSourceInfo)ss.Context;
-                int geomIndex = info.Index;
-                if (geomIndex == 0)
-                    _hasEdgesA = true;
-                else if (geomIndex == 1)
-                {
-                    _hasEdgesB = true;
-                }
-                // short-circuit if both have been found
-                if (_hasEdgesA && _hasEdgesB) return;
-            }
-        }
-
         /// <summary>
         /// Reports whether there are noded edges
         /// for the given input geometry.
@@ -154,11 +124,75 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// <returns><c>true</c> if there are edges for the geometry</returns>
         public bool HasEdgesFor(int geomIndex)
         {
-            if (geomIndex == 0) return _hasEdgesA;
-            return _hasEdgesB;
+            return _hasEdges[geomIndex];
         }
 
-        public void Add(Geometry g, int geomIndex)
+        /// <summary>
+        /// Creates a set of labelled {Edge}s.
+        /// representing the fully noded edges of the input geometries.
+        /// Coincident edges (from the same or both geometries)
+        /// are merged along with their labels
+        /// into a single unique, fully labelled edge.
+        /// </summary>
+        /// <param name="geom0">The first geometry</param>
+        /// <param name="geom1">The second geometry</param>
+        /// <returns>The noded, merged, labelled edges</returns>
+        public IList<Edge> Build(Geometry geom0, Geometry geom1)
+        {
+            Add(geom0, 0);
+            Add(geom1, 1);
+            var nodedEdges = Node(_inputEdges);
+
+            /*
+             * Merge the noded edges to eliminate duplicates.
+             * Labels are combined.
+             */
+            var mergedEdges = EdgeMerger.Merge(nodedEdges);
+            return mergedEdges;
+        }
+
+        /// <summary>
+        /// Nodes a set of segment strings and creates {@link Edge}s from the result.
+        /// The input segment strings each carry a {@link EdgeSourceInfo} object,
+        /// which is used to provide source topology info to the constructed Edges
+        /// (and is then discarded).
+        /// </summary>
+        private List<Edge> Node(IList<ISegmentString> segStrings)
+        {
+            var noder = Noder;
+            noder.ComputeNodes(segStrings);
+
+            var nodedSS = noder.GetNodedSubstrings();
+
+            //scanForEdges(nodedSS);
+
+            var edges = CreateEdges(nodedSS);
+
+            return edges;
+        }
+
+        private List<Edge> CreateEdges(IEnumerable<ISegmentString> segStrings)
+        {
+            var edges = new List<Edge>();
+            foreach (var ss in segStrings)
+            {
+                var pts = ss.Coordinates;
+
+                // don't create edges from collapsed lines
+                if (Edge.IsCollapsed(pts)) continue;
+
+                var info = (EdgeSourceInfo)ss.Context;
+                /*
+                 * Record that a non-collapsed edge exists for the parent geometry
+                 */
+                _hasEdges[info.Index] = true;
+
+                edges.Add(new Edge(pts, info));
+            }
+            return edges;
+        }
+
+        private void Add(Geometry g, int geomIndex)
         {
             if (g == null || g.IsEmpty) return;
 
@@ -171,10 +205,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             else if (g is MultiLineString ml)    AddCollection(ml, geomIndex);
             else if (g is MultiPolygon mp)       AddCollection(mp, geomIndex);
             else if (g is GeometryCollection gc) AddCollection(gc, geomIndex);
-            else
-            {
-                // ignore Point geometries - they are handled elsewhere
-            }
+            // ignore Point geometries - they are handled elsewhere
         }
 
         private void AddCollection(GeometryCollection gc, int geomIndex)
@@ -358,7 +389,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         private void AddEdge(Coordinate[] pts, EdgeSourceInfo info)
         {
             var ss = new NodedSegmentString(pts, info);
-            _segStrings.Add(ss);
+            _inputEdges.Add(ss);
         }
 
         /// <summary>
@@ -397,60 +428,5 @@ namespace NetTopologySuite.Operation.OverlayNg
             var pts = line.Coordinates;
             return _limiter.Limit(pts);
         }
-
-        /*
-
-        // rounding is carried out by Noder, if needed
-
-        private Coordinate[] round(Coordinate[] pts)  {
-
-          CoordinateList noRepeatCoordList = new CoordinateList();
-
-          for (int i = 0; i < pts.length; i++) {
-            Coordinate coord = new Coordinate(pts[i]);
-
-            // MD - disable for now to test improved snap-rounding
-            //makePrecise(coord);
-            noRepeatCoordList.add(coord, false);
-          }
-          Coordinate[] reducedPts = noRepeatCoordList.toCoordinateArray();
-          return reducedPts;
-        }  
-
-        private void makePrecise(Coordinate coord) {
-          // this allows clients to avoid rounding if needed by the noder
-          if (pm != null)
-            pm.makePrecise(coord);
-        }
-
-        private Coordinate[] round(Coordinate[] pts, int minLength)  {
-          CoordinateList noRepeatCoordList = new CoordinateList();
-
-          for (int i = 0; i < pts.length; i++) {
-            Coordinate coord = new Coordinate(pts[i]);
-            pm.makePrecise(coord);
-            noRepeatCoordList.add(coord, false);
-          }
-          Coordinate[] reducedPts = noRepeatCoordList.toCoordinateArray();
-          if (minLength > 0 && reducedPts.length < minLength) {
-            return pad(reducedPts, minLength);
-          }
-          return reducedPts;
-        }
-
-
-        private static Coordinate[] pad(Coordinate[] pts, int minLength) {
-          Coordinate[] pts2 = new Coordinate[minLength];
-          for (int i = 0; i < minLength; i++) {
-            if (i < pts.length) {
-              pts2[i] = pts[i];
-            }
-            else {
-              pts2[i] = pts[pts.length - 1];
-            }
-          }
-          return pts2;
-        }
-        */
     }
 }

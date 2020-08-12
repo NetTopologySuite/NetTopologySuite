@@ -393,8 +393,9 @@ namespace NetTopologySuite.Operation.OverlayNg
 
         private Geometry ComputeEdgeOverlay()
         {
+            var edges = NodeEdges();
 
-            var graph = BuildGraph();
+            var graph = BuildGraph(edges);
 
             if (_isOutputNodedEdges)
             {
@@ -411,43 +412,43 @@ namespace NetTopologySuite.Operation.OverlayNg
             return ExtractResult(_opCode, graph);
         }
 
-        private OverlayGraph BuildGraph()
+        private IList<Edge> NodeEdges()
         {
             /*
              * Node the edges, using whatever noder is being used
              */
-            var ovNoder = new OverlayNoder(_pm);
-
-            if (Noder != null) ovNoder.Noder = Noder;
+            var nodingBuilder = new EdgeNodingBuilder(_pm, _noder);
 
             if (_isOptimized)
             {
                 var clipEnv = OverlayUtility.ClippingEnvelope(_opCode, _inputGeom, _pm);
                 if (clipEnv != null)
-                    ovNoder.ClipEnvelope = clipEnv;
+                    nodingBuilder.ClipEnvelope = clipEnv;
             }
 
-            ovNoder.Add(_inputGeom.GetGeometry(0), 0);
-            ovNoder.Add(_inputGeom.GetGeometry(1), 1);
-            var nodedLines = ovNoder.Node();
-
-            /*
-             * Merge the noded edges to eliminate duplicates.
-             * Labels will be combined.
-             */
-            // nodedSegStrings are no longer needed, and will be GCed
-            var edges = Edge.CreateEdges(nodedLines);
-            var mergedEdges = EdgeMerger.Merge(edges);
+            var mergedEdges = nodingBuilder.Build(
+                _inputGeom.GetGeometry(0),
+                _inputGeom.GetGeometry(1));
 
             /*
              * Record if an input geometry has collapsed.
              * This is used to avoid trying to locate disconnected edges
              * against a geometry which has collapsed completely.
              */
-            _inputGeom.SetCollapsed(0, !ovNoder.HasEdgesFor(0));
-            _inputGeom.SetCollapsed(1, !ovNoder.HasEdgesFor(1));
+            _inputGeom.SetCollapsed(0, !nodingBuilder.HasEdgesFor(0));
+            _inputGeom.SetCollapsed(1, !nodingBuilder.HasEdgesFor(1));
 
-            return new OverlayGraph(mergedEdges);
+            return mergedEdges;
+        }
+
+        private OverlayGraph BuildGraph(IEnumerable<Edge> edges)
+        {
+            var graph = new OverlayGraph();
+            foreach (var e in edges)
+            {
+                graph.AddEdge(e.Coordinates, e.CreateLabel());
+            }
+            return graph;
         }
 
         private void LabelGraph(OverlayGraph graph)

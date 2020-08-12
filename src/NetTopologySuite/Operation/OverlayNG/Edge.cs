@@ -6,38 +6,28 @@ using NetTopologySuite.Noding;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
-    /// <summary>Represents a single edge in a topology graph,
-    /// carrying the topology information
+    /// <summary>
+    /// Represents the underlying linework for edges in a topology graph,
+    /// and carries the topology information
     /// derived from the two parent geometries.
-    /// The edge may be the result of the merger of
-    /// two or more edges which happen to have the same underlying linework
+    /// The edge may be the result of the merging of
+    /// two or more edges which have the same underlying linework
     /// (although possibly different orientations).
-    /// <para/>
     /// In this case the topology information is
     /// derived from the merging of the information in the
-    /// constituent edges.
+    /// source edges.
+    /// Merged edges can occur in the following situations
+    /// <list type="bullet">
+    /// <item><description>Due to topology collapse caused by snapping or rounding
+    /// of polygonal geometries.</description></item>
+    /// <item><description>Due to coincident linework in a linear input</description></item>
+    /// </list>
+    /// The source edges may have the same parent geometry,
+    /// or different ones, or a mix of the two.
     /// </summary>
     /// <author>Martin Davis</author>
     internal class Edge
     {
-
-        public static List<Edge> CreateEdges(IEnumerable<ISegmentString> segStrings)
-        {
-            var edges = new List<Edge>();
-            foreach (var ss in segStrings)
-            {
-                var pts = ss.Coordinates;
-
-                // don't create edges from collapsed lines
-                // TODO: perhaps convert these to points to be included in overlay?
-                if (IsCollapsed(pts)) continue;
-
-                var info = (EdgeSourceInfo)ss.Context;
-                edges.Add(new Edge(pts, info));
-            }
-            return edges;
-        }
-
         /// <summary>
         /// Tests if the given point sequence
         /// is a collapsed line.<para/>

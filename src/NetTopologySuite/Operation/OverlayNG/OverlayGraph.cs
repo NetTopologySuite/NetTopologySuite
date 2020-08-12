@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using NetTopologySuite.EdgeGraph;
 using NetTopologySuite.Geometries;
 
 namespace NetTopologySuite.Operation.OverlayNg
 {
     /// <summary>
-    /// A planar graph of {@link OverlayEdge}s, representing
+    /// A planar graph of edges, representing
     /// the topology resulting from an overlay operation.
-    /// Each source <see cref="Edge"/> is represented
-    /// by two OverlayEdges, with opposite orientation.
-    /// A single <see cref="OverlayLabel"/> is created for each symmetric pair of OverlayEdges.
+    /// Each source edge is represented
+    /// by a pair of <see cref="OverlayEdge"/>s,
+    /// with opposite(symmetric) orientation.
+    /// The pair of OverlayEdges share the edge coordinates
+    /// and a single <see cref="OverlayLabel"/>.
     /// </summary>
     /// <author>Martin Davis</author>
     internal class OverlayGraph
@@ -21,13 +21,10 @@ namespace NetTopologySuite.Operation.OverlayNg
         private readonly IDictionary<Coordinate, OverlayEdge> _nodeMap = new Dictionary<Coordinate, OverlayEdge>();
 
         /// <summary>
-        /// Creates a new graph for a set of noded, labelled <see cref="Edge"/>s.
+        /// Creates an empty graph
         /// </summary>
-        /// <param name="edges">The edges on which to build the graph</param>
-        public OverlayGraph(ICollection<Edge> edges)
-        {
-            Build(edges);
-        }
+        public OverlayGraph()
+        { }
 
         /// <summary>
         /// Gets the set of edges in this graph.
@@ -85,62 +82,41 @@ namespace NetTopologySuite.Operation.OverlayNg
             return resultEdges;
         }
 
-        private void Build(IEnumerable<Edge> edges)
-        {
-            var tmp = new List<Edge>(edges);
-            var sort = tmp.ToArray();
-            foreach (var e in sort)
-            {
-                AddEdge(e);
-            }
-        }
-
         /// <summary>
         /// Adds an edge between the coordinates orig and dest
         /// to this graph.<br/>
         /// Only valid edges can be added (in particular, zero-length segments cannot be added)
         /// </summary>
-        /// <param name="edge">The edge to add.</param>
-        ///// <seealso cref="IsValidEdge(Coordinate, Coordinate)"/>
-        private OverlayEdge AddEdge(Edge edge)
+        /// <param name="pts">The edge to add.</param>
+        /// <param name="label">The edge topology information</param>
+        /// <returns>The created graph edge with same orientation as the linework</returns>
+        public OverlayEdge AddEdge(Coordinate[] pts, OverlayLabel label)
         {
             //if (! isValidEdge(orig, dest)) return null;
-            var e = CreateEdges(edge.Coordinates, edge.CreateLabel());
+            var e = OverlayEdge.CreateEdgePair(pts, label);
             //Debug.println("added edge: " + e);
             Insert(e);
-            Insert((OverlayEdge)e.Sym);
+            Insert(e.SymOE);
             return e;
         }
 
-        private static OverlayEdge CreateEdges(Coordinate[] pts, OverlayLabel lbl)
-        {
-            var e0 = OverlayEdge.CreateEdge(pts, lbl, true);
-            var e1 = OverlayEdge.CreateEdge(pts, lbl, false);
-            e0.Link(e1);
-            return e0;
-        }
-
         /// <summary>
-        /// Tests if the given coordinates form a valid edge (with non-zero length).
+        /// Inserts a single half-edge into the graph.
+        /// The sym edge must also be inserted.
         /// </summary>
-        /// <param name="orig">The start coordinate</param>
-        /// <param name="dest">The end coordinate</param>
-        /// <returns><c>true</c> if the edge formed is valid</returns>
-        private static bool IsValidEdge(Coordinate orig, Coordinate dest)
-        {
-            int cmp = dest.CompareTo(orig);
-            return cmp != 0;
-        }
-
+        /// <param name="e">The half-edge to insert</param>
         private void Insert(OverlayEdge e)
         {
             _edges.Add(e);
+            /*
+             * If the edge origin node is already in the graph, 
+             * insert the edge into the star of edges around the node.
+             * Otherwise, add a new node for the origin.
+             */
             if (_nodeMap.TryGetValue(e.Orig, out var nodeEdge))
                 nodeEdge.Insert(e);
             else
             {
-                // add edge origin to node map
-                // (sym is also added in separate call)
                 _nodeMap.Add(e.Orig, e);
             }
         }
