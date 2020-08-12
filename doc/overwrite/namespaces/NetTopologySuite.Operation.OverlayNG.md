@@ -7,10 +7,10 @@ Overlay operations are used in spatial analysis for computing set-theoretic oper
 
 The <xref href="NetTopologySuite.Operation.OverlayNG.OverlayNG">OverlayNG</xref> class provides the standard Simple Features
 boolean set-theoretic overlay operations, including:
-* Intersection
-* Union
-* Difference
-* Symmetric Difference
+* **Intersection** - all points which lie in both geometries
+* **Union** - all points which lie in at least one geometry
+* **Difference** - all points which lie in the first geometry but not the second
+* **Symmetric Difference** - all points which lie in one geometry but not both
 
 These operations are supported for all combinations of the basic geometry types and their homogeneous collections.
 
@@ -21,7 +21,16 @@ Additional operations include:
 * <xref href="NetTopologySuite.Operation.OverlayNG.PrecisionReducer">PrecisionReducer</xref> allows reducing the precision of a geometry in a topologically-valid way
 
 ## Semantics
-The semantics of operation results are:
+##### The semantics of inputs are:
+* Input geometries may have different dimension.
+* Collections must be homogeneous   
+  (all elements must have the same dimension).
+* In general, inputs must be valid geometries.
+* However, polygonal inputs may contain the following two kinds of "mild" invalid topology:
+  * rings which self-touch at discrete points (sometimes called inverted shells and exverted holes).
+  * rings which touch along line segments (i.e. topology collapse).
+
+##### The semantics of operation results are:
 * Results are always valid geometries. In particular, result `MultiPolygon`s are valid.
 * Empty results are `EMPTY` atomic geometries of appropriate dimension
 * Repeated vertices are removed
@@ -52,6 +61,8 @@ Functionality
   * Optimizations can be disabled if required (e.g. for testing or performance evaluation)
 * **Pluggable Noding** - allows using different noders to change characteristics of performance and accuracy
 * **Precision Reduction** - in a topologically correct way. Implemented by unioning a single input with an empty geometry
+* **[Topology Correction / Conversion]** - handles certain kinds
+of polygonal inputs which are invalid
 * **Fast Coverage Union** - of valid polygonal and linear coverages
 
 ## Pluggable Noding
@@ -64,6 +75,20 @@ noding failures.
 by snapping vertices and intersections to a grid
 * <xref href="NetTopologySuite.Noding.ValidatingNoder">ValidatingNoder</xref> - a wrapper which can be used to verify the noding prior to topology building
 * <xref href="NetTopologySuite.Operation.OverlayNG.SegmentExtractingNoder">SegmentExtractingNoder</xref> - requires node-clean input, and provides very fast noding
+
+## Topology Correction / Conversion
+As noted above, the overlay process
+can handle polygonal inputs which are invalid according to the OGC topology model
+in certain limited ways.
+These invalid conditions are:
+* rings which self-touch at discrete points (sometimes called inverted shells and exverted holes).
+* rings which touch along line segments (i.e. topology collapse).
+
+These invalidities are corrected during the overlay process.
+
+Some of these invalidities are considered as valid in other geometry models.
+By peforming a self-overlay these inputs can be converted
+into the JTS OGC topological model.
 
 ## Codebase
 * Defines a simple, full-featured topology model, with clear semantics.
