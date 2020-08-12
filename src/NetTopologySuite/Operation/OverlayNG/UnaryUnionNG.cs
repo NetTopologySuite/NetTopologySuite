@@ -21,9 +21,10 @@ namespace NetTopologySuite.Operation.OverlayNg
         /// <returns>The union of the geometries</returns>
         public static Geometry Union(Geometry geom, PrecisionModel pm)
         {
-            var unionSRFun = new UnionStrategy((g0, g1) => OverlayNG.Overlay(g0, g1, SpatialFunction.Union, pm), pm.IsFloating);
-            var op = new UnaryUnionOp(geom)
-            {
+            var unionSRFun = new UnionStrategy((g0, g1) =>
+                OverlayNG.Overlay(g0, g1, SpatialFunction.Union, pm), OverlayUtility.IsFloating(pm));
+
+            var op = new UnaryUnionOp(geom) {
                 UnionStrategy = unionSRFun
             };
 

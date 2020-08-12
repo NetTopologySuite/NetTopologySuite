@@ -87,7 +87,7 @@ namespace NetTopologySuite.Operation.OverlayNg
             get
             {
                 if (_customNoder != null) return _customNoder;
-                if (_pm.IsFloating)
+                if (OverlayUtility.IsFloating(_pm))
                     return CreateFloatingPrecisionNoder(IsNodingValidated);
                 return CreateFixedPrecisionNoder(_pm);
             }

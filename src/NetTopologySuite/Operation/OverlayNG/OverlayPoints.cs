@@ -133,7 +133,7 @@ namespace NetTopologySuite.Operation.OverlayNg
         private Point CopyPoint(Point pt)
         {
             // if pm is floating, the point coordinate is not changed
-            if (_pm.IsFloating)
+            if (OverlayUtility.IsFloating(_pm))
                 return (Point) pt.Copy();
 
             // pm is fixed.  Round off X&Y ordinates, copy other ordinates unchanged

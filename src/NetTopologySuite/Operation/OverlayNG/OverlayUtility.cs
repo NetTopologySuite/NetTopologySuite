@@ -12,6 +12,11 @@ namespace NetTopologySuite.Operation.OverlayNg
     /// <author>Martin Davis</author>
     internal static class OverlayUtility
     {
+        internal static bool IsFloating(PrecisionModel pm)
+        {
+            if (pm == null) return true;
+            return pm.IsFloating;
+        }
 
         internal static Envelope ClippingEnvelope(SpatialFunction opCode, InputGeometry inputGeom, PrecisionModel pm)
         {
